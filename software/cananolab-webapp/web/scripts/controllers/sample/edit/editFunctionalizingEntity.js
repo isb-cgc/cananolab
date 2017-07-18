@@ -208,7 +208,7 @@ var app = angular.module('angularApp')
         };
 
         $scope.addInherentFunction = function() {
-        	if ($scope.theInherentFunction.type != null && $scope.theInherentFunction.description != null) {
+        	if ($scope.theInherentFunction.type != null) {
 	            if ( $scope.theInherentFunction.id != null && $scope.theInherentFunction.id != '' ) {
 	                for (var k = 0; k < $scope.composingElementForm.inherentFunction.length; ++k) {
 	                    var inherentFunctionL = $scope.composingElementForm.inherentFunction[k];

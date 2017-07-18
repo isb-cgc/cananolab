@@ -426,7 +426,7 @@ var app = angular.module('angularApp')
             inherentFunction.type = $scope.theInherentFunction.type;
             inherentFunction.modality = $scope.theInherentFunction.modality;
             inherentFunction.description = $scope.theInherentFunction.description;
-            if (inherentFunction.type.length > 0 && inherentFunction.description.length > 0) {
+            if (inherentFunction.type.length > 0) {
                 if (newInherentFunction) {
                     $scope.composingElementForm.inherentFunction.push(inherentFunction);
                 }
