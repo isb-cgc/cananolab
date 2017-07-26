@@ -205,14 +205,12 @@ L-->
 			<!-- replace tokens with values from build properties -->
 			<filterset>
 				<filter token="jboss.server.dir" value="${jboss.server.dir}" />
-				<filter token="file.repository.dir" value="${file.repository.dir}" />
 			</filterset>
 		</copy>
 		<copy overwrite="true" tofile="${common.dist.dir}/properties-service.xml" file="${common.dir}/resources/jboss-conf/properties-service.xml">
 			<!-- replace tokens with values from build properties -->
 			<filterset>
 				<filter token="jboss.server.dir" value="${jboss.server.dir}" />
-				<filter token="file.repository.dir" value="${file.repository.dir}" />
 			</filterset>
 		</copy>
 		<copy overwrite="true" tofile="${common.dist.dir}/csmupt.csm.new.hibernate.cfg.xml" file="${common.dir}/resources/jboss-conf/csmupt.csm.new.hibernate.cfg.xml" />
@@ -252,21 +250,11 @@ L-->
 						<filter token="database.user" value="${database.user}" />
 						<filter token="database.password" value="${database.password}" />
 						<filter token="logLevel" value="${logLevel}" />
-						<filter token="file.repository.dir" value ="${file.repository.dir}" />
 					</filterset>
 				</copy>
 		
-			<copy overwrite="true" tofile="${common.dist.dir}/caNanoLab_modules.cli" file="${basedir}/caNanoLab_modules.cli"> 
-			<filterset id="db.filterset">
-				<filter token="file.repository.dir" value="${file.repository.dir}" />
-			</filterset>
-			</copy>
-		
-			<copy overwrite="true" tofile="${common.dist.dir}/caNanoLab_deploy.cli" file="${basedir}/caNanoLab_deploy.cli"> 
-				<filterset id="db.filterset">
-					<filter token="file.repository.dir" value="${file.repository.dir}" />
-				</filterset>
-			</copy>
+			<copy overwrite="true" tofile="${common.dist.dir}/caNanoLab_modules.cli" file="${basedir}/caNanoLab_modules.cli"> </copy>
+			<copy overwrite="true" tofile="${common.dist.dir}/caNanoLab_deploy.cli" file="${basedir}/caNanoLab_deploy.cli"> </copy>
 				
 	</target>
 
