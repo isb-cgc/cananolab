@@ -8,7 +8,7 @@
     <tr ng-repeat="(key, entityTypes) in $parent.functionalizingentity">
         <td>
             <a href="{{key}}"></a>
-            <div class="characterization" style="display: inline-block; overflow:hidden; width:97%" ng-bind-html="key">{{key}}</div>
+            <div class="characterization" style="display: inline-block; overflow:hidden; width:97%" ng-bind-html="key | newlines">{{key}}</div>
             <table width="99%" align="center" class="summaryViewNoGrid"
                    style="background-color:#dbdbdb;" ng-repeat="entityType in entityTypes">
                 <tr>
@@ -19,7 +19,7 @@
                                 <th scope="row" class="cellLabel" width="10%">
                                     Name
                                 </th>
-                                <td style="width:40em;" ng-bind-html="entityType.Name">
+                                <td style="width:40em;" ng-bind-html="entityType.Name | newlines">
                                     {{entityType.Name}}
                                 </td>
                             </tr>
@@ -29,9 +29,9 @@
                                 </th>
                                 <td>
                                     <a href="{{entityType.pubChemLink}}"
-                                       target="caNanoLab - View PubChem" ng-bind-html="entityType.pubChemID">{{entityType.pubChemID}}
+                                       target="caNanoLab - View PubChem" ng-bind-html="entityType.pubChemID | newlines">{{entityType.pubChemID}}
                                     </a> &nbsp;(
-                                    <span ng-bind-html="entityType.pubChemDS">{{entityType.pubChemDS}}</span>
+                                    <span ng-bind-html="entityType.pubChemDS | newlines">{{entityType.pubChemDS}}</span>
                                     )
                                 </td>
                             </tr>
@@ -40,15 +40,15 @@
                                     Amount
                                 </th>
                                 <td>
-                                    <span ng-bind-html="entityType.value">{{entityType.value}}</span>
-                                    <span ng-bind-html="entityType.valueUnit">{{entityType.valueUnit}}</span>
+                                    <span ng-bind-html="entityType.value | newlines">{{entityType.value}}</span>
+                                    <span ng-bind-html="entityType.valueUnit | newlines">{{entityType.valueUnit}}</span>
                                 </td>
                             </tr>
                             <tr ng-if="entityType.MolecularFormulaDisplayName != ''">
                                 <th scope="row" class="cellLabel" width="10%">
                                     Molecular Formula
                                 </th>
-                                <td style="word-wrap: break-word; max-width: 280px;" ng-bind-html="entityType.MolecularFormulaDisplayName">
+                                <td style="word-wrap: break-word; max-width: 280px;" ng-bind-html="entityType.MolecularFormulaDisplayName | newlines">
                                     {{entityType.MolecularFormulaDisplayName}}
                                 </td>
                             </tr>
@@ -111,7 +111,7 @@
                                 <th scope="row" class="cellLabel" width="10%">
                                     Activation Method
                                 </th>
-                                <td ng-bind-html="entityType.ActivationMethod">
+                                <td ng-bind-html="entityType.ActivationMethod | newlines">
                                     {{entityType.ActivationMethod}}
                                 </td>
                             </tr>
@@ -119,7 +119,7 @@
                                 <th scope="row" class="cellLabel" width="10%">
                                     Description
                                 </th>
-                                <td ng-bind-html="entityType.description">
+                                <td ng-bind-html="entityType.description | newlines">
                                 </td>
                             </tr>
                             <tr ng-if="entityType.Files.length > 0">

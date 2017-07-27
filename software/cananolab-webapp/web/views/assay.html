@@ -17,8 +17,8 @@
 						<td>
 							<table class="dataConditions" cellspacing="0" cellpadding="0">
 								<tr ng-repeat="row in property.value">
-									<th ng-if="row.name=='colTitles'" ng-repeat="col in row.value track by $index" ng-bind-html="col"></th>
-									<td ng-if="row.name=='colValues'" ng-repeat="col in row.value track by $index" ng-bind-html="col"></td>		
+									<th ng-if="row.name=='colTitles'" ng-repeat="col in row.value track by $index" ng-bind-html="col | newlines"></th>
+									<td ng-if="row.name=='colValues'" ng-repeat="col in row.value track by $index" ng-bind-html="col | newlines"></td>		
 								</tr>	
 							</table>					
 						</td>
@@ -52,8 +52,8 @@
 						<td colspan="2" valign="top"><b>Data and Conditions</b><br />
 							<table class="dataConditions" cellspacing="0" cellpadding="0">
 								<tr ng-repeat="row in val['Data and Conditions']">
-									<th ng-if="row.name=='colTitles'" ng-repeat="col in row.value track by $index" ng-bind-html="col"></th>
-									<td ng-if="row.name=='colValues'" ng-repeat="col in row.value track by $index" ng-bind-html="col"></td>		
+									<th ng-if="row.name=='colTitles'" ng-repeat="col in row.value track by $index" ng-bind-html="col | newlines"></th>
+									<td ng-if="row.name=='colValues'" ng-repeat="col in row.value track by $index" ng-bind-html="col | newlines"></td>		
 								</tr>	
 							</table>
 						</td>
@@ -77,7 +77,7 @@
 </td>
 <td valign="top">
 	<b>Keywords</b>
-	<div ng-repeat="file in val.Files" ng-bind-html="file.keywordsString">
+	<div ng-repeat="file in val.Files" ng-bind-html="file.keywordsString | newlines">
 		
 	</div>
 </td>

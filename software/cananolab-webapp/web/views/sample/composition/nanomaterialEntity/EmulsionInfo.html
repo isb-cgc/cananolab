@@ -10,10 +10,10 @@
             </th>
         </tr>
         <tr>
-            <td ng-bind-html="$parent.entityType.Properties.isPolymerized">
+            <td ng-bind-html="$parent.entityType.Properties.isPolymerized | newlines">
                 {{$parent.entityType.Properties.isPolymerized}}
             </td>
-            <td ng-bind-html="$parent.entityType.Properties.polymerName">
+            <td ng-bind-html="$parent.entityType.Properties.polymerName | newlines">
                 {{$parent.entityType.Properties.polymerName}}
             </td>
         </tr>

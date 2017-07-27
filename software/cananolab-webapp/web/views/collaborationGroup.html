@@ -71,7 +71,7 @@
 			        	<div><a ng-init="searchType='simple'" href="" ng-click="redirectSample(s.sampleId)">{{s.sampleName}}</a></div>
 			        </td>
 			        <td>
-				        <div ng-bind-html="trustAsHtml(s.pointOfContact)"></div>
+				        <div ng-bind-html="trustAsHtml(s.pointOfContact) | newlines"></div>
 			        </td>
 			        <td>
 			            <div ng-repeat="com in s.composition track by $index">

@@ -260,6 +260,14 @@ app.config(function ($routeProvider, $httpProvider) {
       });
   });
 
+app.filter('newlines', function () {
+    return function(text) {
+      if(text)
+          return text.replace(/\n/g, '<br/>');
+        return '';
+    }
+});
+
 app.run(['$rootScope','$window','$location',function($rootScope,$window,$location) { 
 	//Google Analytics URL creation to track # (hash) changes
     $rootScope.$on('$viewContentLoaded', function(event) {

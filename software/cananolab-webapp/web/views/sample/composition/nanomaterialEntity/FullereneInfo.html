@@ -9,10 +9,10 @@
     </tr>
     <tr>
         <td>
-            <span ng-bind-html="$parent.entityType.Properties.averageDiameter">{{$parent.entityType.Properties.averageDiameter}}</span>
-            <span ng-bind-html="$parent.entityType.Properties.averageDiameterUnit">{{$parent.entityType.Properties.averageDiameterUnit}}</span>
+            <span ng-bind-html="$parent.entityType.Properties.averageDiameter | newlines">{{$parent.entityType.Properties.averageDiameter}}</span>
+            <span ng-bind-html="$parent.entityType.Properties.averageDiameterUnit | newlines">{{$parent.entityType.Properties.averageDiameterUnit}}</span>
         </td>
-        <td ng-bind-html="$parent.entityType.Properties.numberOfCarbon">
+        <td ng-bind-html="$parent.entityType.Properties.numberOfCarbon | newlines">
             {{$parent.entityType.Properties.numberOfCarbon}}
         </td>
     </tr>

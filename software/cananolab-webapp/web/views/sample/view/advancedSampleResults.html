@@ -107,7 +107,7 @@
                     'sort-desc': tableParams.isSortBy(column.value, 'desc')
                   }"
                 ng-click="tableParams.sorting(column.value, tableParams.isSortBy(column.value, 'asc') ? 'desc' : 'asc')">
-                <div ng-bind-html="column.label">{{column.label}}</div>
+                <div ng-bind-html="column.label | newlines">{{column.label}}</div>
             </th>
         </tr>
 
@@ -119,7 +119,7 @@
 
 			<div ng-if="colVal=='pointOfContact'" ng-init="poc=row[colVal]">
 				<div ng-repeat="p in poc track by $index" ng-init="pocList=p.split('|')">
-					<span ng-bind-html="pocList[0]">Entity</span><br /><br />
+					<span ng-bind-html="pocList[0] | newlines">Entity</span><br /><br />
 				</div><br /><a href="" ng-click="showPocDetails(row.sampleId)">Details</a>
 			</div>
 			<div ng-if="colVal=='physicalChemicalChar'||colVal=='invivoChar'||colVal=='invitroChar'||colVal=='exvivoChar'">
@@ -131,11 +131,11 @@
 			</div>	
 			<div ng-if="colVal=='functionalizingEntity'||colVal=='nanomaterialEntity'||colVal=='function'">
 				<div ng-if="colVal=='nanomaterialEntity'" ng-repeat="item in row[colVal] track by $index" ng-init="itemList=item.split('|')">
-					<span ng-bind-html="itemList[0]">Entity</span><br />
+					<span ng-bind-html="itemList[0] | newlines">Entity</span><br />
 					<a href="" ng-click="showNanoMaterialDetails(row.sampleId, itemList[1])">Details</a><br /><br />					
 				</div>
 				<div ng-if="colVal=='functionalizingEntity'" ng-repeat="item in row[colVal] track by $index" ng-init="itemList=item.split('|')">
-					<span ng-bind-html="itemList[0]">Entity</span><br />					<a href="" ng-click="showFunctionalizingEntityDetails(row.sampleId, itemList[1])">Details</a><br /><br />
+					<span ng-bind-html="itemList[0] | newlines">Entity</span><br />					<a href="" ng-click="showFunctionalizingEntityDetails(row.sampleId, itemList[1])">Details</a><br /><br />
 				</div>
 				<div ng-if="colVal=='function'" ng-repeat="item in row[colVal] track by $index" ng-init="itemList=item.split('|')">
 					{{itemList[0]}}<br />

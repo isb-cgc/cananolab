@@ -15,15 +15,15 @@
     </tr>
     <tr>
         <td>
-            <span ng-bind-html="$parent.entityType.Properties.AverageLength">{{$parent.entityType.Properties.AverageLength}}</span>
-            <span ng-bind-html="$parent.entityType.Properties.AverageLengthUnit">{{$parent.entityType.Properties.AverageLengthUnit}}</span>
+            <span ng-bind-html="$parent.entityType.Properties.AverageLength | newlines">{{$parent.entityType.Properties.AverageLength}}</span>
+            <span ng-bind-html="$parent.entityType.Properties.AverageLengthUnit | newlines">{{$parent.entityType.Properties.AverageLengthUnit}}</span>
         </td>
-        <td ng-bind-html="$parent.entityType.Properties.chirality">
+        <td ng-bind-html="$parent.entityType.Properties.chirality | newlines">
             {{$parent.entityType.Properties.chirality}}
         </td>
         <td>
-            <span ng-bind-html="$parent.entityType.Properties.Diameter">{{$parent.entityType.Properties.Diameter}}</span>
-            <span ng-bind-html="$parent.entityType.Properties.DiameterUnit">{{$parent.entityType.Properties.DiameterUnit}}</span>
+            <span ng-bind-html="$parent.entityType.Properties.Diameter | newlines">{{$parent.entityType.Properties.Diameter}}</span>
+            <span ng-bind-html="$parent.entityType.Properties.DiameterUnit | newlines">{{$parent.entityType.Properties.DiameterUnit}}</span>
         </td>
         <td ng-bind-html="$parent.entityType.Properties.WallType">
             {{$parent.entityType.Properties.WallType}}

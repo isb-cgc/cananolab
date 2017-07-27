@@ -35,7 +35,7 @@
             <td data-title="'Version'" sortable="'version'" width="15%">
                 {{row.version}}
             </td>
-            <td data-title="'Protocol File'" sortable="'protocolFile'" width="25%" ng-bind-html="row.fileInfo">{{row.fileInfo}}
+            <td data-title="'Protocol File'" sortable="'protocolFile'" width="25%" ng-bind-html="row.fileInfo | newlines">{{row.fileInfo}}
             </td>
             <td data-title="'Created Date'" sortable="'createdDate'" width="15%">
                 {{row.createdDate | date:'shortDate'}}

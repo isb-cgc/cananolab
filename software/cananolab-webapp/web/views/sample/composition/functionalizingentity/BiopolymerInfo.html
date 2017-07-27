@@ -8,10 +8,10 @@
         </th>
     </tr>
     <tr>
-        <td ng-bind-html="$parent.entityType.Properties.type">
+        <td ng-bind-html="$parent.entityType.Properties.type | newlines">
             {{$parent.entityType.Properties.type}}
         </td>
-        <td ng-bind-html="$parent.entityType.Properties.sequence">
+        <td ng-bind-html="$parent.entityType.Properties.sequence | newlines">
             {{$parent.entityType.Properties.sequence}}
         </td>
     </tr>
