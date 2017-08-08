@@ -29,7 +29,7 @@
              Keywords
            </th>
            <td>
-             <div ng-bind-html="sampleData.keywords" />
+             <div ng-bind-html="sampleData.keywords | newlines" />
            </td>
          </tr>  
          <tr>
@@ -54,8 +54,8 @@
                </tr>
                <tr ng-repeat="contact in sampleData.pointOfContactMap.contactPerson track by $index">
                 <td>{{returnUserReadableBoolean(sampleData.pointOfContactMap.primaryContact[$index])}}</td>
-                <td ng-bind-html="sampleData.pointOfContactMap.contactPerson[$index]"></td>
-                <td ng-bind-html="sampleData.pointOfContactMap.organizationDisplayName[$index]"></td>
+                <td ng-bind-html="sampleData.pointOfContactMap.contactPerson[$index] | newlines"></td>
+                <td ng-bind-html="sampleData.pointOfContactMap.organizationDisplayName[$index] | newlines"></td>
                 <td>{{sampleData.pointOfContactMap.role[$index]}}</td>
                </tr>
                <tr>

@@ -3,7 +3,7 @@
         <th scope="row" class="cellLabel">
             Alternate Name
         </th>
-        <td ng-bind-html="$parent.entityType.Properties.alternateName">
+        <td ng-bind-html="$parent.entityType.Properties.alternateName | newlines">
             {{$parent.entityType.Properties.alternateName}}
         </td>
     </tr>

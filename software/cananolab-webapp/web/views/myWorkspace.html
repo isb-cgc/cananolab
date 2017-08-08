@@ -68,7 +68,7 @@
             	<a href="" ng-click="doDeleteProtocol(data.id)" ng-if="data.editable">Delete</a>
             </td>
             <td>
-                <div ng-bind-html="data.name">{{data.name}}</div>
+                <div ng-bind-html="data.name | newlines">{{data.name}}</div>
             </td>
             <td>
                 <div>{{data.submisstionStatus}}</div>
@@ -101,10 +101,10 @@
             	<a href="" ng-click="doDeletePublication(data.id)" ng-if="data.editable">Delete</a>
             </td>
             <td>
-                <div ng-bind-html="data.pubMedDOIId">{{data.pubMedDOIId}}</div>
+                <div ng-bind-html="data.pubMedDOIId | newlines">{{data.pubMedDOIId}}</div>
             </td>
             <td>
-                <div ng-bind-html="data.name">{{data.name}}</div>
+                <div ng-bind-html="data.name | newlines">{{data.name}}</div>
             </td>
             <td>
                 <div>{{data.submisstionStatus}}</div>

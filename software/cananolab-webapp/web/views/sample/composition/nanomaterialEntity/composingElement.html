@@ -1,7 +1,7 @@
 <div ng-repeat="composingElement in $parent.entityType.ComposingElements">
     <table class="summaryViewNoGrid" width="99%" align="left">
         <tr>
-            <th class="cellLabel" colspan="2" scope="row" ng-bind-html="composingElement.DisplayName">
+            <th class="cellLabel" colspan="2" scope="row" ng-bind-html="composingElement.DisplayName | newlines">
                 {{composingElement.DisplayName}}
             </th>
         </tr>
@@ -20,7 +20,7 @@
             <th scope="row">
                 Molecular Formula
             </th>
-            <td ng-bind-html="composingElement.MolecularFormulaDisplayName">
+            <td ng-bind-html="composingElement.MolecularFormulaDisplayName | newlines">
                 {{composingElement.MolecularFormulaDisplayName}}
             </td>
         </tr>
@@ -29,7 +29,7 @@
             <th scope="row">
                 Description
             </th>
-            <td ng-bind-html="composingElement.Description">
+            <td ng-bind-html="composingElement.Description | newlines">
                 {{composingElement.Description}}
             </td>
         </tr>
@@ -37,7 +37,7 @@
             <th scope="row">
                 Function
             </th>
-            <td ng-repeat="func in composingElement.Function" ng-bind-html="func">
+            <td ng-repeat="func in composingElement.Function" ng-bind-html="func | newlines">
                 {{func}} <br/>
             </td>
         </tr>

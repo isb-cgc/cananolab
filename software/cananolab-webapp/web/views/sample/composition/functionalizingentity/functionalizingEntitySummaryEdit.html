@@ -136,7 +136,7 @@
                                 <th scope="row" class="cellLabel" width="10%">
                                     Description
                                 </th>
-                                <td ng-bind-html="entityType.description">
+                                <td ng-bind-html="entityType.description | newlines">
                                 </td>
                             </tr>
                             <tr ng-if="entityType.Files.length > 0">
