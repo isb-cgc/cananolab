@@ -928,7 +928,7 @@
 <!--                                                                 
 															<select ng-model="findingsColumn.columnName" data-ng-options="option for option in columnNameLookup" ng-change="onColumnNameDropdownChange()"> -->
 															<option value=""></option>
-                                                            <option ng-repeat="option in columnNameLookup" ng-disabled="disableColumn(option)">{{option}}</option>
+                                                            <option ng-repeat="option in columnNameLookup">{{option}}</option>
 																
 															</select>
 
