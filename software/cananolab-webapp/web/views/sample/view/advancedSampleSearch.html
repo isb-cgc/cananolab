@@ -288,14 +288,16 @@
 								</option></select>
 						</td>
 						<td ng-show="theCharacterizationQuery.datumName"><label for="charOperand">&nbsp;</label>
-							<select ng-model="theCharacterizationQuery.operand" name="theCharacterizationQuery.operand" id="charOperand"><option value="">
+							<select ng-model="theCharacterizationQuery.operand" name="theCharacterizationQuery.operand" id="charOperand">
+								<option value="">
 									-- Please Select --
 								</option>
 								<option value="=">=</option>
-<option value=">">&gt;</option>
-<option value=">=">&gt;=</option>
-<option value="<">&lt;</option>
-<option value="<=">&lt;=</option></select>
+								<option value=">">&gt;</option>
+								<option value=">=">&gt;=</option>
+								<option value="<">&lt;</option>
+								<option value="<=">&lt;=</option>
+							</select>
 						</td>
 						<td>
 							<div id="datumValueTextBlock" ng-if="theCharacterizationQuery.datumName">
@@ -375,12 +377,8 @@
 	</tr>
 	<tr>
 		<td align="right">
-
-					<button id="reset" ng-click="resetForm()">Reset</button>
-				
-					<button id="search" ng-disabled="" ng-click="search()">Search</button>
-				
-			
+			<button class="btn btn-danger" type="button" id="reset" ng-click="resetForm()">Reset</button>
+			<button class="btn btn-primary" type="button" id="search" ng-disabled="" ng-click="search()">Search</button>	
 		</td>
 	</tr>
 </tbody></table>
