@@ -90,7 +90,7 @@ public class ColumnHeader {
 	}
 	
 	public String getOperand() {
-		return opereand;
+		return operand;
 	}
 	
 	public String setOperand(String operand){
