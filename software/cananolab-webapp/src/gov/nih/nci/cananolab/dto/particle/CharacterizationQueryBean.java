@@ -122,6 +122,7 @@ public class CharacterizationQueryBean extends BaseQueryBean {
 	public void setDatumValueBoolean(Boolean datumValueBoolean) {
 		this.datumValueBoolean = datumValueBoolean;
 	}
+	
 
 	public String getDisplayName() {
 		List<String> strs = new ArrayList<String>();
