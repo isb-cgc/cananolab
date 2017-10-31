@@ -29,6 +29,7 @@ public class ColumnHeader {
 	private String displayName;
 	private String constantValue="";
 	private String numberMod;
+	private String operand="=";
 
 	// FR# 26194, matrix column order.
 	private Integer columnOrder;
@@ -40,7 +41,7 @@ public class ColumnHeader {
 		this.valueUnit = datum.getValueUnit();
 		this.columnType = FindingBean.DATUM_TYPE;
 		this.createdDate = datum.getCreatedDate();
-		this.operand = datum.operand();
+		this.operand = datum.getOperand();
 	}
 
 	public ColumnHeader(Condition condition) {
