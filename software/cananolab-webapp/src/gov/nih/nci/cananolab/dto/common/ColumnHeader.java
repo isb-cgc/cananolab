@@ -41,7 +41,7 @@ public class ColumnHeader {
 		this.valueUnit = datum.getValueUnit();
 		this.columnType = FindingBean.DATUM_TYPE;
 		this.createdDate = datum.getCreatedDate();
-		this.operand = datum.getOperand();
+//		this.operand = datum.getOperand();
 	}
 
 	public ColumnHeader(Condition condition) {
@@ -93,7 +93,7 @@ public class ColumnHeader {
 		return operand;
 	}
 	
-	public String setOperand(String operand){
+	public void setOperand(String operand){
 		this.operand = operand;
 	}
 
