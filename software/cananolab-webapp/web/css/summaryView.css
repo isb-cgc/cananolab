@@ -119,6 +119,7 @@
 	border-style: solid;
 	border-collapse: collapse;
 	color: #5C5C5C;
+	margin-top: 5px;
 }
 
 .editTableWithGrid caption {

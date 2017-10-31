@@ -274,16 +274,19 @@
                 </tr>
                 <tr>
                     <td ng-show="theAuthor.id != null || $scope.theAuthor.id != ''">
-                        <input class="promptButton"
+                       <!--  <input class="promptButton"
                                id="deleteAuthor" type="button" value="Remove"
-                               ng-click="deleteAuthor()" />
+                               ng-click="deleteAuthor()" /> -->
+                        <button class="btn btn-xs btn-danger" type="button" id="deleteAuthor" ng-click="deleteAuthor()" >Remove</button>
                     </td>
-                    <td>
+                    <td align="right" colspan="6">
                         <div align="right">
-                            <input class="promptButton" type="button" value="Save"
+                           <!--  <input class="promptButton" type="button" value="Save"
                                    ng-click="addAuthor();" />
                             <input class="promptButton" type="button" value="Cancel"
-                                   ng-click="addNewAuthor=false" />
+                                   ng-click="addNewAuthor=false" /> -->
+                            <button class="btn btn-xs btn-primary" type="button" ng-click="addAuthor();">Save</button>
+                            <button class="btn btn-xs btn-default" type="button" ng-click="addNewAuthor=false" >Cancel</button>
                         </div>
                     </td>
                 </tr>
@@ -391,7 +394,7 @@
                             <em>one name per line</em>
                         </td>
                         <td width="5">
-                            <button class="sampleSearchLookup" ng-click="showSearchSampleTable=true;searchMatchedSamples();">Search For Samples</button>
+                            <button class="btn btn-primary" type="button" ng-click="showSearchSampleTable=true;searchMatchedSamples();">Search For Samples</button>
                         </td>
                         <td>
                             <table class="invisibleTable" summary="layout" ng-show="showSearchSampleTable">
@@ -513,20 +516,33 @@
     <c:set var="showDelete" value="true" />
 </c:if> -->
 <table width="100%" class="invisibleTable" summary="layout">
-    <tbody><tr>
+    <tbody>
+        <tr>
         <td align="left" width="600">
-        	<button ng-click="doDelete()" ng-if="publicationId != null && (sampleId == null || sampleId == '')" class='btn btn-primary'>Delete</button>
-        	<button ng-click="removeFromSample()" id="removeFromSampleButton" ng-if="sampleId != null && sampleId != '' && publicationId != null">Remove from Sample</button>
+        	<button ng-click="doDelete()" ng-if="publicationId != null && (sampleId == null || sampleId == '')" class='btn btn-danger'>Delete</button>
+        	<button class="btn btn-danger" ng-click="removeFromSample()" id="removeFromSampleButton" ng-if="sampleId != null && sampleId != '' && publicationId != null">Remove from Sample</button>
         </td>
-        <td class="btn-group pull-right" width="300">
-            <button ng-click="resetForm()" class='btn btn-default'>Reset</button>
-            <button ng-click="doSubmit()" ng-if="publicationId == null" class='btn btn-primary'>Save</button>
-            <button ng-click="doSubmit()" ng-if="publicationId != null" class='btn btn-primary'>Update</button>
-            <button ng-click="submitForReview()" ng-if="publicationForm.review" class='btn btn-primary'>Submit for Review</button>
+        <td class="pull-right" align="right" width="300">
+            <button ng-click="resetForm()" type="reset" class="btn btn-danger">Reset</button>&nbsp;
+            <button ng-click="doSubmit()" type="submit" ng-if="publicationId == null" class="btn btn-primary">Save</button>
+            <button ng-click="doSubmit()" type="submit" ng-if="publicationId != null" class="btn btn-primary">Update</button>
+            <button ng-click="submitForReview()" ng-if="publicationForm.review" class="btn btn-primary">Submit for Review</button>
         </td>
     </tr>
     </tbody>
 </table>
+<!-- <div class="row">
+    <div class="col-md-6">
+        <button ng-click="doDelete()" ng-if="publicationId != null && (sampleId == null || sampleId == '')" class='btn btn-danger'>Delete</button>
+            <button class="btn btn-danger" ng-click="removeFromSample()" id="removeFromSampleButton" ng-if="sampleId != null && sampleId != '' && publicationId != null">Remove from Sample</button>
+    </div>
+    <div class="col-md-6">
+         <button ng-click="resetForm()" type="reset" class="btn btn-danger">Reset</button>&nbsp;
+        <button ng-click="doSubmit()" type="submit" ng-if="publicationId == null" class="btn btn-primary">Save</button>
+        <button ng-click="doSubmit()" type="submit" ng-if="publicationId != null" class="btn btn-primary">Update</button>
+        <button ng-click="submitForReview()" ng-if="publicationForm.review" class="btn btn-primary">Submit for Review</button>
+    </div>
+</div> -->
 </form>
 </div>
 </div>

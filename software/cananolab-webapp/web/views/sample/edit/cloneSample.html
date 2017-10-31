@@ -73,11 +73,25 @@
     <tbody>
         <tr>
             <td align="left" width="600">
+              <button class="btn btn-xs btn-danger" 
+                    ng-disabled="loader" 
+                    type="reset" ng-click="cloneForm = {};showSearchSampleTable=false;" 
+                    id="resetButton"
+                    >
+                Reset
+            </button>
             </td>
             <td align="right" width="300">
-                <input type="reset" ng-disabled="loader" value="Reset" ng-click="cloneForm = {};showSearchSampleTable=false;" id="resetButton">
+              <!--   <input type="reset" ng-disabled="loader" value="Reset" ng-click="cloneForm = {};showSearchSampleTable=false;" id="resetButton">
                 &nbsp;
-                <input type="button" ng-disabled="loader"  value="Submit" ng-click="doSubmit();" styleid="submitButton">
+                <input type="button" ng-disabled="loader"  value="Submit" ng-click="doSubmit();" styleid="submitButton"> -->
+                <button class="btn btn-xs btn-primary" 
+                        ng-disabled="loader" 
+                        type="submit"
+                         ng-click="doSubmit();"
+                         >
+                     Submit
+                 </button>
             </td>
         </tr>
     </tbody>

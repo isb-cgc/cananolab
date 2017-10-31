@@ -1,4 +1,4 @@
-<!-- <c:if test="${isOwner || newData eq 'true'}"> -->
+<c:if test="${isOwner || newData eq 'true'}">
 <tr>
     <td class="cellLabel" width="15%" id="addAccessLabel">
         Access to the {{$parent.dataType}}
@@ -108,11 +108,24 @@
                         <label for="userName" style="display:none">Login Name</label>
                         <input type="text" ng-model="accessForm.theAccess.recipient" value="" id="userName" ng-if="$parent.showAccessuser">
                     </td>
-                    <td><button id="browseIcon1" ng-if="$parent.showCollaborationGroup && accessForm.theAccess.recipient != 'ROLE_ANONYMOUS'"
-                           ng-click="getCollabGroups();">Search</button>
+                    <td>
+                        <button class="btn btn-primary btn-xs" 
+                                id="browseIcon1" 
+                                ng-if="$parent.showCollaborationGroup && accessForm.theAccess.recipient != 'ROLE_ANONYMOUS'"
+                                ng-click="getCollabGroups();"
+                                type="button" 
+                                >
+                            Search
+                        </button>
 
-                        <button id="browseIcon2" ng-if="$parent.showAccessuser"
-                           ng-click="getAccessUsers();">Search</button>
+                        <button class="btn btn-primary btn-xs"
+                                id="browseIcon2" 
+                                ng-if="$parent.showAccessuser"
+                                ng-click="getAccessUsers();"
+                                type="button"
+                                >
+                            Search
+                        </button>
                     </td>
                     <td width="50%">
                         <table class="invisibleTable">
@@ -154,9 +167,15 @@
                     <td></td>
                 </tr>
                 <tr>
-                    <td><input id="deleteAccess" type="button" value="Remove"
-                               ng-click="removeAccessSection()"
-                               ng-if="accessExists == true">
+                    <td><button id="deleteAccess"
+                                class="btn btn-danger btn-xs" 
+                                type="button"
+                                ng-click="removeAccessSection()"
+                                ng-if="accessExists == true"
+                               >
+                            Remove
+                        </button>
+                              
                     </td>
                     <td align="right" colspan="3">
                         <div align="right">
@@ -164,8 +183,10 @@
                                          styleId="hiddenRoleName" />
                             <html:hidden property="${accessParent}.theAccess.groupName"
                                          styleId="hiddenGroupName" />  -->
-                            <input type="button" value="Save" ng-click="saveAccessSection();" />
-                            <input type="button" value="Cancel" ng-click="hideAccessSection();" />
+                         <!--    <input type="button" value="Save" ng-click="saveAccessSection();" />
+                            <input type="button" value="Cancel" ng-click="hideAccessSection();" /> -->
+                            <button class="btn btn-primary btn-xs" type="button" ng-click="saveAccessSection()">Save</button>
+                            <button class="btn btn-default btn-xs" type="button" ng-click="hideAccessSection()">Cancel</button>
                         </div>
                     </td>
                 </tr>
@@ -173,4 +194,4 @@
         </div>
     </td>
 </tr>
-<!-- </c:if> -->
+<!-- </c:if>
