@@ -109,9 +109,7 @@
 <tr>
     <td colspan="2">
         <table width="600">
-            <ng-include src="'/caNanoLab/views/manageRoles.html'"></ng-include>
-        </table>
-    </td>
+            <ng-include src="'/caNanoLab/views/manageRoles.html'"></n
 </tr>
 
 </table>
@@ -119,7 +117,7 @@
 <table width="100%" class="invisibleTable" summary="layout">
     <tbody><tr>
  	<td class="btn-group pull-right" width="300">
-        <button ng-click="resetForm()" class='btn btn-dangher'>Reset</button>
+        <button ng-click="resetForm()" class='btn btn-danger'>Reset</button>
 	    <button ng-click="doSubmitData()" ng-if="userTag == null" class='btn btn-primary'>Save</button>
 	    <button ng-click="doUpdateData()" ng-if="userTag != null" class='btn btn-primary'>Update</button>
       </td>
