@@ -33,10 +33,12 @@ public class CharacterizationQueryBean extends BaseQueryBean {
 	private String datumName = "";
 	private String datumValue = "";
 	private String datumValueUnit = "";
+	private String datumOperand = "";
 	
 	
 	private String id;
 	private String operand = "";
+
 
 	public String getId() {
 		return id;
@@ -52,6 +54,14 @@ public class CharacterizationQueryBean extends BaseQueryBean {
 
 	public void setOperand(String operand) {
 		this.operand = operand;
+	}
+	
+	public String getDatumOperand(){
+		return this.datumOperand;
+	}
+	
+	public void setDatumOperand(String operand){
+		this.datumOperand = operand;
 	}
 
 	public boolean equals(Object obj) {

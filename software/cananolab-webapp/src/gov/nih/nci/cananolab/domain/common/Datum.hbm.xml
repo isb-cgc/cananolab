@@ -28,7 +28,8 @@ L-->
    name="valueType" type="string"/>
   <property column="value_unit" generated="never" lazy="false"
    name="valueUnit" type="string"/>
-  <property column="numberMod" generated="never" lazy="false" name="operand" type="string"/>
+  <property column="numberMod" generated="never" lazy="false"
+   name="operand" type="string"/>
   <!-- Associations mapping for the Datum class -->
   <set cascade="save-update" lazy="true" name="conditionCollection"
    sort="unsorted" table="datum_condition">
