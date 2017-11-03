@@ -214,7 +214,7 @@
         <div id="authorSection" style="position: relative;">
             <!-- <a style="display: block" id="addAuthor"
                ng-href="clearAuthor();openSubmissionForm('Author');">Add</a> -->
-            <button type="button" class="btn btn-primary btn-xxs" ng-click="addNewAuthor=true" id="addAuthor">Add</button>
+            <button type="button" class="btn btn-primary btn-xs" ng-click="addNewAuthor=true" id="addAuthor">Add</button>
             <br>
             <table id="authorTable" class="summaryViewNoGrid" width="85%" ng-show="showAuthorTable">
                 <tbody id="authorRows">
@@ -531,18 +531,6 @@
     </tr>
     </tbody>
 </table>
-<!-- <div class="row">
-    <div class="col-md-6">
-        <button ng-click="doDelete()" ng-if="publicationId != null && (sampleId == null || sampleId == '')" class='btn btn-danger'>Delete</button>
-            <button class="btn btn-danger" ng-click="removeFromSample()" id="removeFromSampleButton" ng-if="sampleId != null && sampleId != '' && publicationId != null">Remove from Sample</button>
-    </div>
-    <div class="col-md-6">
-         <button ng-click="resetForm()" type="reset" class="btn btn-danger">Reset</button>&nbsp;
-        <button ng-click="doSubmit()" type="submit" ng-if="publicationId == null" class="btn btn-primary">Save</button>
-        <button ng-click="doSubmit()" type="submit" ng-if="publicationId != null" class="btn btn-primary">Update</button>
-        <button ng-click="submitForReview()" ng-if="publicationForm.review" class="btn btn-primary">Submit for Review</button>
-    </div>
-</div> -->
 </form>
 </div>
 </div>

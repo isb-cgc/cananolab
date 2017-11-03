@@ -9,7 +9,7 @@
            onclick="confirmAddNew(['PointOfContact'], 'Access', 'Access', 'clearAccess(\'{{$parent.parentFormName}}\', \'{{$parent.dataType}}\')');"
            id="addAccess" style="display:block"><img
                 align="top" src="images/btn_add.gif" border="0" alt="add accessibility"/></a> -->
-        <button ng-click="$parent.accessForm = {}; $parent.addAccess=true; $parent.showAddAccessButton=false;$parent.accessForm.theAccess.recipient='';$parent.accessForm.theAccess.recipientDisplayName='';$parent.accessForm.theAccess.roleName='';" id="addAccess" class="btn btn-primary btn-xxs">Add</button>
+        <button ng-click="$parent.accessForm = {}; $parent.addAccess=true; $parent.showAddAccessButton=false;$parent.accessForm.theAccess.recipient='';$parent.accessForm.theAccess.recipientDisplayName='';$parent.accessForm.theAccess.roleName='';" id="addAccess" class="btn btn-primary btn-xs">Add</button>
     </td>
 </tr>
 <tr>
@@ -31,7 +31,7 @@
                 <td>
                     <!-- <div align="right" ng-if="access.groupName == 'Curator' || access.groupName == 'Public' && !$parent.user.curator" > -->
                     <div align="right" ng-if="access.recipient != 'ROLE_CURATOR' &&  $parent.isCurator.curator" >
-                        <button ng-click="$parent.accessForm.theAccess.recipient='';editGroupAccessSection('{{access.recipient}}','{{access.roleDisplayName}}');" class="btn btn-primary btn-xxs">Edit</button>
+                        <button ng-click="$parent.accessForm.theAccess.recipient='';editGroupAccessSection('{{access.recipient}}','{{access.roleDisplayName}}');" class="btn btn-primary btn-xs">Edit</button>
                     </div>
                 </td>
             </tr>

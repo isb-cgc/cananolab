@@ -67,7 +67,7 @@
                         Point of Contact *
                     </td>
                     <td>
-                            <button ng-disabled="!sampleData.sampleName" ng-click="openPointOfContactModal(sampleId.data, {},'add')" class="btn btn-primary btn-xxs">Add</button>
+                            <button ng-disabled="!sampleData.sampleName" ng-click="openPointOfContactModal(sampleId.data, {},'add')" class="btn btn-primary btn-xs">Add</button>
                     </td>
                 </tr>
                 <!-- Point of Contact Data -->
@@ -109,7 +109,12 @@
                                     <td>
                                         <div align="right">
                                            
-                                            <button ng-click="openPointOfContactModal(sampleId.data, poc)" class="btn btn-primary btn-xxs">Edit</button>
+                                            <button 
+                                                type="button" 
+                                                ng-click="openPointOfContactModal(sampleId.data, poc)" 
+                                                class="btn btn-primary btn-xs"
+                                                >Edit
+                                            </button>
                                             
 
                                         </div>
@@ -156,7 +161,7 @@
                             </td>
 
                         <td>
-                            <button ng-if="!sampleData.dataAvailability" ng-click="generateDataAvailability(sampleId.data)" class="btn btn-primary btn-xxs">Generate</button>
+                            <button ng-if="!sampleData.dataAvailability" ng-click="generateDataAvailability(sampleId.data)" class="btn btn-primary btn-xs">Generate</button>
                             <div id="loader" class="sample offset" ng-show="generateLoader">
                                 <div id="loaderText">
                                     Generating Data Availability Metrics
@@ -181,7 +186,7 @@
                                 <tr><td>{{sampleData.dataAvailability.caNanoLabScore}}</td>
                                     <td>{{sampleData.dataAvailability.mincharScore}}</td>
                                     <td>
-                                            <button ng-click="openDataAvailability(sampleId.data)" class="btn btn-primary btn-xxs">Edit</button>
+                                            <button ng-click="openDataAvailability(sampleId.data)" class="btn btn-primary btn-xs">Edit</button>
                                     </td>
                                 </tr>
                             </tbody></table>
@@ -194,9 +199,9 @@
         <div class="editSampleButtonBar">
             <div class="pull-left" ng-if="sampleId.data">
                 <button ng-click="delete()" class='btn btn-danger'>Delete</button>
-                <button ng-click="copy()" class='btn btn-primary'>Copy</button>
             </div>
             <div class="pull-right">
+                <button ng-click="copy()" class='btn btn-default'>Copy</button>                                    
                 <button ng-click="reset()" class='btn btn-danger' ng-disabled="!scratchPad.editSampleData.dirty">Reset</button> 
                 <button ng-click="update()" ng-if="updateButton=='Update'" class='btn btn-primary' ng-disabled="!scratchPad.editSampleData.dirty || !sampleData.pointOfContacts.length">{{updateButton}}</button>
                 <button ng-click="submitSample()" ng-if="updateButton=='Save'" class='btn btn-primary' ng-disabled="!scratchPad.editSampleData.dirty || !sampleData.pointOfContacts.length">{{updateButton}}</button>

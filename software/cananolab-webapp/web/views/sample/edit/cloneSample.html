@@ -72,20 +72,18 @@
 <table width="100%" class="invisibleTable" summary="layout">
     <tbody>
         <tr>
-            <td align="left" width="600">
-              <button class="btn btn-xs btn-danger" 
+            <td align="right">
+              <!--   <input type="reset" ng-disabled="loader" value="Reset" ng-click="cloneForm = {};showSearchSampleTable=false;" id="resetButton">
+                &nbsp;
+                <input type="button" ng-disabled="loader"  value="Submit" ng-click="doSubmit();" styleid="submitButton"> -->
+                <button class="btn btn-danger" 
                     ng-disabled="loader" 
                     type="reset" ng-click="cloneForm = {};showSearchSampleTable=false;" 
                     id="resetButton"
                     >
-                Reset
-            </button>
-            </td>
-            <td align="right" width="300">
-              <!--   <input type="reset" ng-disabled="loader" value="Reset" ng-click="cloneForm = {};showSearchSampleTable=false;" id="resetButton">
-                &nbsp;
-                <input type="button" ng-disabled="loader"  value="Submit" ng-click="doSubmit();" styleid="submitButton"> -->
-                <button class="btn btn-xs btn-primary" 
+                    Reset
+                </button>
+                <button class="btn btn-primary" 
                         ng-disabled="loader" 
                         type="submit"
                          ng-click="doSubmit();"

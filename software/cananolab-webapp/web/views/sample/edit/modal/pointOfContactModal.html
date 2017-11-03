@@ -180,12 +180,16 @@
 </div>
 <div style="clear:both;"></div>
 <div class="modal-footer">
-    <button ng-click="cancel()" class="btn btn-warning btn-modal" ng-disabled="loader">Cancel</button>
-    <button ng-if="!poc.primaryContact&&type!='add'" ng-click="delete()" class="btn btn-warning btn-danger" ng-disabled="loader">Delete</button>    
-    <button ng-click="save()" class='btn btn-primary btn-modal' ng-disabled="!poc.organization.name || loader">Save</button>
+    <div class="col-md-6 pull-left">
+        <button ng-if="!poc.primaryContact && type!='add'" ng-click="delete()" class="btn btn-danger" ng-disabled="loader">Delete</button> 
+    </div>
+    <div class="col-md-6">
+        <button ng-click="cancel()" class="btn btn-default btn-modal" ng-disabled="loader">Cancel</button>   
+        <button ng-click="save()" class='btn btn-primary btn-modal' ng-disabled="!poc.organization.name || loader">Save</button>
+    </div>
 </div>
 
-
+ <!-- ng-if="!poc.primaryContact && type!='add'" -->
 
 </div>
   <div id="loaderPopup" style="top:-300px;left:300px" ng-show="loader">
