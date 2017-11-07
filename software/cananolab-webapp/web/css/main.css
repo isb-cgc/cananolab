@@ -1184,3 +1184,8 @@ a:link.mainMenuLink.home,a:visited.mainMenuLink.home,a:active.mainMenuLink.home{
 a:hover.mainMenuLink.home {
   color: #fff; /* constant: white */
 }
+
+user-actions {
+  text-align: right;
+  padding: 25px;
+}

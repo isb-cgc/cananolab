@@ -46,7 +46,7 @@
         <td>
             <div>
             	<div align="right">
-					<button ng-click="editGroupCollaboration(item)">Edit</button>
+					<button class="btn btn-primary btn-xs" ng-click="editGroupCollaboration(item)">Edit</button>
 				</div>
             </div>
         </td>
@@ -127,7 +127,7 @@
 						</td>
 						<td>
 							<div id="userSection">
-								<a style="display:block" id="addUser" href="" ng-click="openUserInfo()">Add</a>
+								<button class="btn btn-xs btn-primary" id="addUser" ng-click="openUserInfo()">Add</button>
 								<br>
 								<br>
 								<table id="userTable" class="editTableWithGrid" style="display: block;" width="95%">
@@ -143,7 +143,7 @@
 												{{access.recipient}}
 											</td>
 											<td>
-												<button ng-click="openUserInfo(access)">Edit</button>
+												<button class="btn btn-xs btn-primary" ng-click="openUserInfo(access)">Edit</button>
 											</td>
 										</tr></tbody>
 								</table>
@@ -166,7 +166,7 @@
 											<input name="loginName" value="" id="loginName" ng-model="userInfoBean.recipient" type="text">
 										</td>
 										<td valign="top">
-											<button style="width:140px" ng-click="searchLoginName()">Search For User</button>
+											<button class="btn btn-primary btn-xs" ng-click="searchLoginName()">Search For User</button>
 										</td>
 										<td valign="top">
 											<table class="invisibleTable" summary="layout">
@@ -187,13 +187,14 @@
 												</tr>
 												<tr>
 													<td>
-														<button ng-hide="isUserInfoAdd" ng-click="removeUserInfo(access)" >Remove</button>
+														<button class="btn btn-xs btn-danger" ng-hide="isUserInfoAdd" ng-click="removeUserInfo(access)" >Remove</button>
 													</td>
 													<td colspan="3" align="right">
 														<div align="right">
 
-															<button style="float:right" ng-click="cancelUserInfo(access)">Cancel</button>
-															<button ng-click="saveUserInfo(access)" ng-disabled="!userInfoBean.recipient" style="float:right">Save</button>															</div>
+															<button class="btn btn-xs btn-default" ng-click="cancelUserInfo(access)">Cancel</button>
+															<button class="btn btn-xs btn-primary" ng-click="saveUserInfo(access)" ng-disabled="!userInfoBean.recipient" >Save</button>															
+														</div>
 													</td>
 												</tr>
 											</tbody></table>
@@ -201,11 +202,11 @@
 						</td>
 					</tr>
 					<tr ng-hide="userInfo">
-						<td>
-							<button ng-hide="hideRemoveGroupButton" ng-click="removeGroupCollaboration(item)">Remove</button>
-						<td>
-							<button style="float:right" ng-click="cancelGroupCollaboration(item)">Cancel</button>
-							<button style="float:right" ng-disabled="!collaborationGroup.name" ng-click="submit(item)">Submit</button>
+						<td >
+							<button class="btn btn-xs btn-danger" ng-hide="hideRemoveGroupButton" ng-click="removeGroupCollaboration(item)">Remove</button>
+						<td ng-style="{'text-align':'right'}">
+							<button class="btn btn-xs btn-default" ng-click="cancelGroupCollaboration(item)">Cancel</button>
+							<button class="btn btn-xs btn-primary" ng-disabled="!collaborationGroup.name" ng-click="submit(item)">Submit</button>
 						</td>
 					</tr>			
 				</tbody>	
@@ -221,7 +222,9 @@
         <th>Add a New Collaboration Group</th>
     </tr>
 	<tr>
-		<td class="columnOne"><button ng-click="addGroupCollaboration()">Add</button></td>
+		<td class="columnOne">
+			<button class="btn btn-primary btn-xs" ng-click="addGroupCollaboration()">Add</button>
+		</td>
 	</tr>
 </table>
 
