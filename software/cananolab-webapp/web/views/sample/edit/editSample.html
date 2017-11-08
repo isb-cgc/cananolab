@@ -198,10 +198,10 @@
 
         <div class="editSampleButtonBar">
             <div class="pull-left" ng-if="sampleId.data">
-                <button ng-click="delete()" class='btn btn-danger'>Delete</button>
+                <button ng-click="delete()" type="button" class='btn btn-danger'>Delete</button>
+                <button ng-click="copy()" type="button" class='btn btn-primary'>Copy</button>                                    
             </div>
             <div class="pull-right">
-                <button ng-click="copy()" class='btn btn-default'>Copy</button>                                    
                 <button ng-click="reset()" class='btn btn-danger' ng-disabled="!scratchPad.editSampleData.dirty">Reset</button> 
                 <button ng-click="update()" ng-if="updateButton=='Update'" class='btn btn-primary' ng-disabled="!scratchPad.editSampleData.dirty || !sampleData.pointOfContacts.length">{{updateButton}}</button>
                 <button ng-click="submitSample()" ng-if="updateButton=='Save'" class='btn btn-primary' ng-disabled="!scratchPad.editSampleData.dirty || !sampleData.pointOfContacts.length">{{updateButton}}</button>
