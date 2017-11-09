@@ -1808,3 +1808,8 @@ margin:4px;
 .invisibleTable.sample td{
 padding:4px !important;
 }
+
+.user-actions {
+  text-align: right;
+  padding: 25px 0;
+}
