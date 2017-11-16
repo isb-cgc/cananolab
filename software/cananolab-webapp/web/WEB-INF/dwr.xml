@@ -62,6 +62,7 @@ L-->
 			<include method="getDatumNameOptions" />
 			<include method="getDecoratedDatumNameOptions" />
 			<include method="getColumnValueUnitOptions" />
+			<include method="getDatumNumberModifier" />
 			<include method="resetTheFile" />
 		</create>
 		<create creator="new" javascript="CharacterizationManager"

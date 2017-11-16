@@ -199,6 +199,33 @@ public class CharacterizationResultManager {
 		return unitList;
 	}
 
+	public List<String> getDatumNumberModifier(HttpServletRequest request, 
+			String name, String property, boolean addOther)
+			throws Exception {
+		String valueName = name;
+		
+		if (!StringUtils.isEmpty(property)) {
+			if (!property.equalsIgnoreCase("null")) //quick fix
+				valueName = property;
+		}
+		
+		SortedSet<String> units = InitSetup.getInstance()
+				.getDefaultAndOtherTypesByLookup(request,
+						"numberModifier", valueName, "unit", "numberModifier", true);
+		// add other value unit stored in the session for the char
+		SortedSet<String> numberModifiers = (SortedSet<String>) request
+				.getSession().getAttribute("numberModifier");
+		if (numberModifiers != null) {
+			units.addAll(numberModifiers);
+		}
+		
+		List<String> unitList = new ArrayList<String>();
+		unitList.addAll(units);
+		if (addOther)
+			CommonUtil.addOtherToList(unitList);
+		return unitList;
+	}
+	
 	public FileBean getFileFromList(int index) {
 //		DynaValidatorForm charForm = (DynaValidatorForm) (WebContextFactory
 //				.get().getSession().getAttribute("characterizationForm"));
