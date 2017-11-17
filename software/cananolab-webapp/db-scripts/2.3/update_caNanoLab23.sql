@@ -7,7 +7,7 @@ LOCK TABLES `common_lookup` WRITE;
 insert into common_lookup (`common_lookup_pk_id`, `name`,`attribute`, `value` ) values (63307779, 'cytotoxicity', 'otherDatumName', 'cell viability B');
 insert into common_lookup (`common_lookup_pk_id`, `name`,`attribute`, `value` ) values (63307780, 'cytotoxicity', 'otherDatumName', 'cell viability C');
 insert into common_lookup (`common_lookup_pk_id`, `name`,`attribute`, `value` ) values (63307781, 'Number Modifier','numberModifier','<' );
-insert into common_lookup (`common_lookup_pk_id`, `name`,`attribute`, `value` ) values (63307782, 'Number Modifier','numberModifier','<' );
+insert into common_lookup (`common_lookup_pk_id`, `name`,`attribute`, `value` ) values (63307782, 'Number Modifier','numberModifier','>' );
 insert into common_lookup (`common_lookup_pk_id`, `name`,`attribute`, `value` ) values (63307783, 'Number Modifier','numberModifier','=' );
 insert into common_lookup (`common_lookup_pk_id`, `name`,`attribute`, `value` ) values (63307784, 'Number Modifier','numberModifier','~' );
 UNLOCK TABLES;
