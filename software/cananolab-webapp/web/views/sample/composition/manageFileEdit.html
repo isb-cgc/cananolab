@@ -5,7 +5,7 @@
         </td>
         <td>
             <!-- <a style="display: block;" id="addFile" href="javascript:clearFile('nanomaterialEntity'); openSubmissionForm('File');"><img align="top" src="images/btn_add.gif" border="0" alt="add a nanomaterial entity file"></a> -->
-            <button type="button" class="btn btn-primary btn-xxs" ng-click="openAddNewFile()" id="addFile">Add</button>
+            <button type="button" class="btn btn-primary btn-xs" ng-click="openAddNewFile()" id="addFile">Add</button>
         </td>
     </tr>
     <tr>
@@ -43,7 +43,7 @@
                         {{file.description}}
                     </td>
                     <td align="right">
-                        <button ng-click="editFile('{{file.id}}');" class="btn btn-primary btn-xxs">Edit</button>&nbsp;
+                        <button ng-click="editFile('{{file.id}}');" class="btn btn-primary btn-xs">Edit</button>&nbsp;
                     </td>
                 </tr>
                 </tbody>
@@ -113,8 +113,15 @@
                                         </tr>
                                         <tr>
                                             <td style="text-align: right">
-                                                <input type="button" class="promptButton" value="Add" ng-click="fileForm.type=localForm.otherCategoryText; fileTypes.push(localForm.otherCategoryText);">
-                                                <input type="button" class="promptButton" value="Cancel" ng-click="fileForm.type='';">
+
+                                            <button type="button" class="btn btn-primary btn-xs" ng-click="fileForm.type=localForm.otherCategoryText; fileTypes.push(localForm.otherCategoryText);">
+                                                Add
+                                            </button>
+
+                                            <button type="button" class="btn btn-default btn-xs" ng-click="fileForm.type='';">
+                                                Cancel
+                                            </button>                                                                        
+
                                             </td>
                                         </tr>
                                         </tbody>
@@ -153,7 +160,9 @@
 
                     <tr>
                         <td>
-                            <input type="button" value="Remove" ng-click="removeFile('{{fileForm.id}}');" id="deleteFile" ng-show="fileForm.id != null">
+                            <button type="button" class="btn btn-danger btn-xs" ng-click="removeFile('{{fileForm.id}}');" id="deleteFile" ng-show="fileForm.id != null">
+                                Remove
+                            </button>
                         </td>
                         <td colspan="3">
                             <div align="right">
@@ -161,10 +170,14 @@
             					 <input type="hidden" ng-model="fileForm.theAccess">
 								 <input type="hidden" ng-model="fileForm.createdBy">
             					 <input type="hidden" ng-model="fileForm.createdDate">            					 
-                                <input class="promptButton" type="button" value="Save"
-                                       ng-click="closeAddNewFile();saveFile();" />
-                                <input class="promptButton" type="button" value="Cancel"
-                                       ng-click="closeAddNewFile();" />
+
+                            <button type="button" class="btn btn-primary btn-xs" ng-click="closeAddNewFile();saveFile();">
+                                Save
+                            </button>
+
+                            <button type="button" class="btn btn-default btn-xs" ng-click="closeAddNewFile();">
+                                Cancel
+                            </button>                                                             
                             </div>
                         </td>
                     </tr>

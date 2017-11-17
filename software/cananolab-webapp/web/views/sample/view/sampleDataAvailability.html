@@ -204,17 +204,17 @@
 	    	<br /><br />Are you sure you wish to delete the data availability metric?<br /><br />
 	    	<div>
 	    	<button ng-disabled="loader" style="margin-right:50px !important;" ng-click="delete(1,1)" class="btn btn-danger btn-sm">Yes</button>
-	    	<button ng-disabled="loader" style="margin-right:50px !important;" ng-click="delete(0,1)" class="btn btn-warning btn-modal">No</button>
+	    	<button ng-disabled="loader" style="margin-right:50px !important;" ng-click="delete(0,1)" class="btn btn-default btn-modal">No</button>
 		</div>
 	</div>
 
 </div>
 
-<br />
-<div class="modal-footer">
-  <button ng-disabled="loader" ng-if="edit" class="btn btn-warning btn-danger" ng-click="delete()">Delete</button>
+<br /><br />
+<div class="modal-footer metrics">
+  <button ng-disabled="loader" ng-if="edit" class="btn btn-default btn-danger" ng-click="delete()">Delete</button>
   <button ng-disabled="loader" ng-if="edit" class="btn btn-primary btn-modal" ng-click="regenerate()">Regenerate</button>
-  <button ng-disabled="loader" class="btn btn-warning btn-modal" ng-click="ok()">Close</button>
+  <button ng-disabled="loader" class="btn btn-default btn-modal" ng-click="ok()">Close</button>
 </div>
   <div id="loaderPopup" ng-show="loader">
     <div id="loaderText">

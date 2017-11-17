@@ -1813,3 +1813,7 @@ padding:4px !important;
   text-align: right;
   padding: 25px 0;
 }
+
+.modal-footer.metrics button{
+    margin-top:15px
+}
