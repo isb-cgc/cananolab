@@ -68,9 +68,24 @@
     border-width:0px;
 }
 
-div.editSampleButtonBar {
-    padding:25px;
+/* div.editSampleButtonBar {
+    padding: 15px 0;
+    text-align: right;
+} */
+
+.button__grp {
+    padding: 15px 0;
 }
+
+.button__grp-left {
+    float: left;
+}
+
+.button__grp-right {
+    float: right;
+}
+    
+
 div.nanoPageContainer {
     width:900px;
 }
