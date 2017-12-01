@@ -46,6 +46,7 @@
 		<intercept-url pattern="/rest/publication/searchPublication" access="permitAll" />
 		<intercept-url pattern="/rest/publication/setup" access="permitAll" />
 		<intercept-url pattern="/rest/publication/searchById" access="permitAll" />
+		<intercept-url pattern="/rest/publication/searchByIdImage" access="permitAll" />
 		
 		<intercept-url pattern="/rest/protocol/searchProtocol" access="permitAll" />
 		<intercept-url pattern="/rest/protocol/download" access="permitAll" />
