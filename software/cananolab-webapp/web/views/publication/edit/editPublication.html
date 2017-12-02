@@ -515,22 +515,19 @@
         test="${publicationForm.map.publication.userDeletable && !empty param.publicationId}">
     <c:set var="showDelete" value="true" />
 </c:if> -->
-<table width="100%" class="invisibleTable" summary="layout">
-    <tbody>
-        <tr>
-        <td align="left" width="600">
-        	<button ng-click="doDelete()" ng-if="publicationId != null && (sampleId == null || sampleId == '')" class='btn btn-danger'>Delete</button>
-        	<button class="btn btn-danger" ng-click="removeFromSample()" id="removeFromSampleButton" ng-if="sampleId != null && sampleId != '' && publicationId != null">Remove from Sample</button>
-        </td>
-        <td class="pull-right" align="right" width="300">
+
+    <div class="form__actions form__actions--margin-tboff">
+        <div class="form__action form__action--left">
+            <button ng-click="doDelete()"  class='btn btn-danger'>Delete</button>
+            <button class="btn btn-danger" ng-click="removeFromSample()" id="removeFromSampleButton" >Remove from Sample</button>
+        </div>
+        <div class="form__action form__action--right">
             <button ng-click="resetForm()" type="reset" class="btn btn-danger">Reset</button>&nbsp;
             <button ng-click="doSubmit()" type="submit" ng-if="publicationId == null" class="btn btn-primary">Save</button>
             <button ng-click="doSubmit()" type="submit" ng-if="publicationId != null" class="btn btn-primary">Update</button>
             <button ng-click="submitForReview()" ng-if="publicationForm.review" class="btn btn-primary">Submit for Review</button>
-        </td>
-    </tr>
-    </tbody>
-</table>
+        </div>
+    </div>
 </form>
 </div>
 </div>

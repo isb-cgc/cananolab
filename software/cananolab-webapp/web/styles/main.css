@@ -1815,5 +1815,33 @@ padding:4px !important;
 }
 
 .modal-footer.metrics button{
-    margin-top:15px
+    margin-top:15px;
+}
+
+.form__actions {
+    margin: 15px 6px;
+    overflow: hidden;
+}
+
+.form__actions--margin-tboff {
+    margin-top: 0px;
+    margin-bottom: 0px;
+}
+
+.form__action {
+    min-width: 50%;
+    max-width: 50%;
+    float: left;
+}
+
+.form__action--left {
+    text-align: left
+}
+
+.form__action--right {
+    text-align: right;
+}
+
+.form__action__right {
+    float: right;
 }

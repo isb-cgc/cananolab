@@ -44,19 +44,12 @@
             </tr>
             </tbody></table>
         <br>
-        <table width="100%" class="invisibleTable" summary="layout">
-            <tbody><tr>
-                <td align="left" width="600">
-                </td>
-                <td align="right" width="300">
-                    <!-- <input type="reset" value="Reset" ng-click="resetForm()">
-                    <input type="submit" value="Submit" ng-click="doSubmit()"> -->
-                    <button class="btn btn-danger" type="reset" value="Reset" ng-click="resetForm()">Reset</button>
-                    <button class="btn btn-primary" type="submit" value="Submit" ng-click="doSubmit()">Submit</button>
-                </td>
-            </tr>
-            </tbody>
-        </table>
+        <div class="form__actions">
+            <div class="form__action__right">
+                <button class="btn btn-danger" type="reset" value="Reset" ng-click="resetForm()">Reset</button>
+                <button class="btn btn-primary" type="submit" value="Submit" ng-click="doSubmit()">Submit</button>
+            </div>
+        </div>
     </form>
     <div id="loader" ng-show="loader">
 	    <div id="loaderText">

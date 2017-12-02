@@ -145,31 +145,17 @@
     <br>
     
     
-    
-    
-
-
-
-
-
-<table width="100%" class="invisibleTable" summary="layout">
-    <tr>
-        <td align="center">
-            <span class="formMessage"> <em>Searching without any
-                    parameters returns all publications.</em> </span>
-        </td>
-    </tr>
-    <tr>
-        <td align="right">
-            <!-- <input ng-disabled="loader" type="reset" value="Reset" ng-click="resetForm()"> &nbsp; <input ng-disabled="loader" type="submit" value=
-            "Search" ng-click="doSearch()"> <input ng-disabled="loader" name="dispatch" type="hidden" value="search"> -->
-            <button class="btn btn-danger" type="reset" ng-click="resetForm()" ng-disabled="loader">Reset</button>&nbsp;
-            <button class="btn btn-primary" type="submit" ng-click="doSearch()" ng-disabled="loader">Search</button>
-            <input ng-disabled="loader" name="page" type="hidden" value="1">
-            
-        </td>
-    </tr>
-</table>
+<div class="form__actions">
+    <div align="center">
+        <span class="formMessage"> <em>Searching without any
+                parameters returns all publications.</em> </span>
+    </div>
+    <div class="form__action__right">
+        <button class="btn btn-danger" type="reset" ng-click="resetForm()" ng-disabled="loader">Reset</button>&nbsp;
+        <button class="btn btn-primary" type="submit" ng-click="doSearch()" ng-disabled="loader">Search</button>
+        <input ng-disabled="loader" name="page" type="hidden" value="1">
+    </div>
+</div>
 <div style="font-family:Arial,Helvetica,sans-serif;font-size:16px;color:red;" "ng-if="message">{{message}}</div>
   <div id="loader" ng-show="loader">
     <div id="loaderText">

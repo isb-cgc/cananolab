@@ -389,20 +389,16 @@
 	</tbody></table>
 	<br>
 
-<table class="invisibleTable" summary="layout" width="100%">
-	<tbody><tr>
-		<td align="center">
+	<div class="form__actions">
+		<div align="center">
 			<span class="formMessage"> <em>Searching without any
 					parameters returns all samples.</em> </span>
-		</td>
-	</tr>
-	<tr>
-		<td align="right">
+		</div>
+		<div class="form__action__right">
 			<button class="btn btn-danger" type="button" id="reset" ng-click="resetForm()">Reset</button>
 			<button class="btn btn-primary" type="button" id="search" ng-disabled="" ng-click="search()">Search</button>	
-		</td>
-	</tr>
-</tbody></table>
+		</div>
+	</div>
 </div>
 <div id="loader" ng-show="loader">
 	<div id="loaderText">

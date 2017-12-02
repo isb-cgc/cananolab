@@ -24,23 +24,17 @@
             </tr>
         </table>
         <br>
-        <table width="100%" class="invisibleTable" summary="layout">
-            <tr>
-                <td align="center">
-            <span class="formMessage"> <em>Note: You can search using Username, First Name or Last Name in the above field.<br />Searching without any parameters returns all users.</em> </span>
-                </td>
-            </tr>
-            <tr>
-                <td align="right">
-                    <!-- <input ng-disabled="loader" type="reset" value="Reset" ng-click="resetForm()"> &nbsp;
-                    <input ng-disabled="loader" type="submit" value="Search" ng-click="doSearch()"> <input ng-disabled="loader" name="dispatch" type="hidden" value="search"> -->
+         <div class="form__actions form__actions--margin-tboff">
+            <div align="center">
+                <span class="formMessage"> <em>Note: You can search using Username, First Name or Last Name in the above field.<br />Searching without any parameters returns all users.</em> </span>
+            </div>
+                <div class="form__action__right">
                     <button class="btn btn-danger" ng-disabled="loader" type="reset" ng-click="resetForm()">Reset</button>
                     <button class="btn btn-primary" ng-disabled="loader" type="submit" ng-click="doSearch()">Search</button>
                     <input ng-disabled="loader" name="page" type="hidden" value="1">
-
-                </td>
-            </tr>
-        </table></form>
+                </div>
+        </div>
+        </form>
         <div style="font-family:Arial,Helvetica,sans-serif;font-size:16px;color:red;" ng-if="message">{{message}}</div>
         <div id="loader" ng-show="loader">
             <div id="loaderText">
