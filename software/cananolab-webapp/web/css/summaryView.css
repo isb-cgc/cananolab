@@ -89,6 +89,7 @@
 	border-style: solid;
 	border-collapse: collapse;
 	color: #5C5C5C;
+	width:100%;
 	/*background-color: #F5F5f5;*/
 }
 
@@ -110,6 +111,8 @@
 	border-style: solid;
 	vertical-align: top;
 	text-align: left;
+	max-width:120px;
+	word-wrap: break-word;
 }
 
 .editTableWithGrid {
