@@ -112,26 +112,25 @@
 
 
             <br />
-            <table width="100%" class="invisibleTable" summary="layout">
-                <tbody><tr>
-                    <td align="left" width="600">
-                        <button class="btn btn-danger" type="button" value="Delete" ng-click="doDelete()" ng-if="nanoEntityId !== null">Delete</button>
-                    </td>
-                    <td align="right" width="300">
-			           	<input type="hidden" ng-model="nanoEntityForm.createdBy">
-			           	<input type="hidden" ng-model="nanoEntityForm.createdDate">
-                        <button class="btn btn-danger" type="reset" value="Reset" ng-click="resetForm()">Reset</button>
-                        <button class="btn btn-primary" 
-                                type="submit" 
-                                ng-click="doSubmit()" 
-                                ng-show="!addNewComposingElement">
-                                    {{ nanoEntityId === null ? 'Submit' : 'Update' }}
-                                </button>
-<!--                         <button class="btn btn-primary" type="submit" value="Update" ng-click="doSubmit()" ng-if="nanoEntityId != null" ng-show="!addNewComposingElement"></button>
- -->                    </td>
-                </tr>
-                </tbody>
-            </table>
+            <div class="form__actions">
+                <div class="form__action form__action--left">
+                    <button class="btn btn-danger" type="button" value="Delete" ng-click="doDelete()" ng-if="nanoEntityId !== null">Delete</button>                    
+                </div>
+                <div class="form__action form__action--right">
+                    <input type="hidden" ng-model="nanoEntityForm.createdBy">
+                    <input type="hidden" ng-model="nanoEntityForm.createdDate">
+                    <button class="btn btn-danger" type="reset" value="Reset" ng-click="resetForm()">Reset</button>
+                    <button class="btn btn-primary" 
+                            type="submit" 
+                            ng-click="doSubmit()" 
+                            ng-show="!addNewComposingElement">
+                                {{ nanoEntityId === null ? 'Submit' : 'Update' }}
+                            </button>
+
+                </div>
+            </div>
+
+
         </form>
       </div>
 </div>

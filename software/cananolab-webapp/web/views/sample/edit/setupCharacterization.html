@@ -1176,11 +1176,16 @@
 		</div>
 	</div>
 	<div style="clear:both;"></div>
-	<div class="modal-footer">
-		<button ng-click="remove()" class="btn btn-default btn-danger pull-left" ng-disabled="loader">Delete</button>  
-		<button ng-click="reset()" class="btn btn-default btn-danger" ng-disabled="loader">Reset</button>  		  
-		<button ng-disabled="data.type==''||data.name==''||loader||characterizationForm.criticalConcentration.$error.number" ng-click="save()" class='btn btn-primary btn-modal'>{{saveButton}}</button>
-	</div>
+    <div class="form__actions">
+        <div class="form__action form__action--left">  
+            <button ng-click="remove()" class="btn btn-default btn-danger" ng-disabled="loader">Delete</button>              
+        </div>
+        <div class="form__action form__action--right">  
+            <button ng-click="reset()" class="btn btn-default btn-danger" ng-disabled="loader">Reset</button>         
+            <button ng-disabled="data.type==''||data.name==''||loader||characterizationForm.criticalConcentration.$error.number" ng-click="save()" class='btn btn-primary btn-modal'>{{saveButton}}</button>
+        </div>
+    </div>  
+
 </div>
 </form>
 

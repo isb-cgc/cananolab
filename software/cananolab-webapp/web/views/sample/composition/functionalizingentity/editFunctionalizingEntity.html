@@ -311,32 +311,28 @@
     </tbody>
 </table>
 <br />
-<table width="100%" class="invisibleTable" summary="layout">
-    <tbody><tr>
-        <td align="left" width="600">
-        <button type="button" class="btn btn-danger" ng-click="doDelete()" ng-if="funcEntityId != null">
-            Delete
-        </button>             
-        </td>
-        <td align="right" width="300">
-           	<input type="hidden" ng-model="funcEntityForm.createdBy">
-           	<input type="hidden" ng-model="funcEntityForm.createdDate">
-        <button type="button" class="btn btn-danger" ng-click="resetForm()">
-            Reset
-        </button> 
+            <div class="form__actions">
+                <div class="form__action form__action--left">
+                    <button type="button" class="btn btn-danger" ng-click="doDelete()" ng-if="funcEntityId != null">
+                        Delete
+                    </button>                      
+                </div>
+                <div class="form__action form__action--right">
+                    <input type="hidden" ng-model="funcEntityForm.createdBy">
+                    <input type="hidden" ng-model="funcEntityForm.createdDate">
+                    <button type="button" class="btn btn-danger" ng-click="resetForm()">
+                    Reset
+                    </button> 
 
-        <button type="button" class="btn btn-primary" ng-click="doSubmit()" ng-if="funcEntityId == null" ng-show="!addNewInherentFunction">
-            Submit
-        </button> 
+                    <button type="button" class="btn btn-primary" ng-click="doSubmit()" ng-if="funcEntityId == null" ng-show="!addNewInherentFunction">
+                    Submit
+                    </button>  
+                    <button type="button" class="btn btn-primary" ng-click="doSubmit()" ng-if="funcEntityId != null" ng-show="!addNewInherentFunction">
+                    Update
+                    </button>                                    
+                </div>                
+            </div>
 
-        <button type="button" class="btn btn-primary" ng-click="doSubmit()" ng-if="funcEntityId != null" ng-show="!addNewInherentFunction">
-            Update
-        </button> 
-
-        </td>
-    </tr>
-    </tbody>
-</table>
 </form>
 </div>
 </div>

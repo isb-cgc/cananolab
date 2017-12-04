@@ -113,18 +113,17 @@
                 </tbody>
             </table>
             <br />
-            <table width="100%" class="invisibleTable" summary="layout">
-                <tbody><tr>
-                    <td align="left" width="600">
+            <div class="form__actions">
+                <div class="form__action form__action--left">
                         <button type="button" class="btn btn-danger" ng-click="removeFile('{{fileForm.id}}');" id="deleteFile" ng-show="fileForm.id != null">
                             Delete
-                        </button>
-                    </td>
-                    <td align="right" width="300">
+                        </button>                    
+                </div>
+                <div class="form__action form__action--right">
                         <input type="hidden" ng-model="fileForm.isPublic">
-            			<input type="hidden" ng-model="fileForm.theAccess">
-			           	<input type="hidden" ng-model="fileForm.createdBy">
-			           	<input type="hidden" ng-model="fileForm.createdDate">    
+                        <input type="hidden" ng-model="fileForm.theAccess">
+                        <input type="hidden" ng-model="fileForm.createdBy">
+                        <input type="hidden" ng-model="fileForm.createdDate">    
 
                         <button type="button" class="btn btn-danger" ng-click="resetForm()">
                             Reset
@@ -137,10 +136,11 @@
                         <button type="button" class="btn btn-primary" ng-click="saveFile()" ng-if="compositionFileId != null">
                             Update
                         </button>
-                    </td>
-                </tr>
-                </tbody>
-            </table>
+                    
+                </div>                
+            </div>         
+
+
         </form>
     </div>
 </div>
