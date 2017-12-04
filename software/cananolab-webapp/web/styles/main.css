@@ -1840,6 +1840,7 @@ padding:4px !important;
 
 .form__action--right {
     text-align: right;
+    float:right;
 }
 
 .form__action__right {

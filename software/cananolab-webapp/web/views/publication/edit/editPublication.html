@@ -518,8 +518,8 @@
 
     <div class="form__actions form__actions--margin-tboff">
         <div class="form__action form__action--left">
-            <button ng-click="doDelete()"  class='btn btn-danger'>Delete</button>
-            <button class="btn btn-danger" ng-click="removeFromSample()" id="removeFromSampleButton" >Remove from Sample</button>
+            <button ng-click="doDelete()" ng-if="publicationId != null && (sampleId == null || sampleId == '')" class='btn btn-danger'>Delete</button>
+            <button class="btn btn-danger" ng-click="removeFromSample()" id="removeFromSampleButton" ng-if="sampleId != null && sampleId != '' && publicationId != null">Remove from Sample</button>
         </div>
         <div class="form__action form__action--right">
             <button ng-click="resetForm()" type="reset" class="btn btn-danger">Reset</button>&nbsp;
