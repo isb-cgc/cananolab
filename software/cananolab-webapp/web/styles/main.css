@@ -1038,6 +1038,9 @@ select {
     border-style: solid;
 }
 
+    .submissionView.access {
+        border-collapse:collapse;
+    }
     .submissionView caption {
         background-color: #CCC; color: #333;
         font-weight: 700
