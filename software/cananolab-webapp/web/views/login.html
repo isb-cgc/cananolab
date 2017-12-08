@@ -27,7 +27,7 @@
         <label for="password">PASSWORD</label>
       </td>
       <td>
-        <input type="password" name="password" size="14" id="password" autocomplete="off" ng-model="password" ng-init="password=''" />
+       <input type="password" name="password" size="14" id="password" autocomplete="off" ng-model="password" ng-init="password=''" />
       </td>
     </tr>
     <tr>
@@ -35,7 +35,9 @@
          
       </td>
       <td align="left">
-        <input type="submit" value="Login" ng-click="loginDo()" />
+        <button type="button" class="btn btn-primary btn-xs" ng-click="loginDo()">
+        Login
+        </button> 
       </td>
     </tr>
     <tr>
