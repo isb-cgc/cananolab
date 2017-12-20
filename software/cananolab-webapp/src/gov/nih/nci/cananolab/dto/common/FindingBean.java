@@ -335,6 +335,7 @@ public class FindingBean {
 										+ Constants.PLACEHOLDER_DATUM_CONDITION_CREATED_BY);
 					} else {
 						datum.setValue(Float.valueOf(cell.getValue()));
+						datum.setOperand(cell.getOperand());
 					}
 					datum.setValueType(columnHeader.getValueType());
 					datum.setValueUnit(columnHeader.getValueUnit());

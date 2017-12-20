@@ -179,6 +179,8 @@ public class InitCharacterizationSetup {
 				InitSetup.getInstance().persistLookup(request,
 						"datum and condition", "valueType", "otherValueType",
 						datum.getValueType());
+				InitSetup.getInstance().persistLookup(request,
+						"datumOperator", "operand","numberModifier",datum.getOperand());
 				for (Condition condition : datum.getConditionCollection()) {
 					InitSetup.getInstance().persistLookup(request, "condition",
 							"name", "otherName", condition.getName());

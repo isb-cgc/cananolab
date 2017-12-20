@@ -247,7 +247,7 @@ public class AdvancedSampleBean {//extends SecuredDataBean{
 								}
 							}
 						}
-						item.getDisplayStrings().add(
+						item.getDisplayStrings().add(datum.getOperand()+" "+
 								datum.getValue() + " " + datum.getValueUnit());
 						hasDatum = true;
 						items.add(item);

@@ -23,6 +23,7 @@ import java.util.Date;
  */
 public class TableCell {
 	private String value;
+	private String operand = "=";
 	private String datumOrCondition;
 	private Datum datum = new Datum();
 	private Condition condition = new Condition();
@@ -54,6 +55,7 @@ public class TableCell {
 			}
 		} else {
 			this.value = datum.getValue().toString();
+			this.operand = datum.getOperand();
 		}
 		this.datum = datum;
 		this.condition = null;
@@ -128,5 +130,13 @@ public class TableCell {
 
 	public void setCreatedDate(Date createdDate) {
 		this.createdDate = createdDate;
+	}
+	
+	public String getOperand(){
+		return this.operand;
+	}
+	
+	public void setOperand(String operand){
+		this.operand = operand;
 	}
 }

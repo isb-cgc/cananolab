@@ -75,6 +75,7 @@ public class Datum implements java.io.Serializable {
 	public Float getValue() {
 		return this.value;
 	}
+	
 
 	public void setValue(float value) {
 		this.value = value;
