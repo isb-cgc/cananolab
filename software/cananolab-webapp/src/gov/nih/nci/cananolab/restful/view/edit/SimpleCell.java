@@ -11,18 +11,21 @@ public class SimpleCell {
 	//private Condition condition = new Condition();
 	Integer columnOrder;
 	Date createdDate;
+	String operand;
 	
 	public void transferFromTableCell(TableCell cell) {
 		if (cell == null) return;
 		value = cell.getValue();
 		datumOrCondition = cell.getDatumOrCondition();
 		columnOrder = cell.getColumnOrder();
+		operand = cell.getOperand();
 	}
 	
 	public void transferToTableCell(TableCell cell) {
 		cell.setColumnOrder(columnOrder);
 		cell.setDatumOrCondition(datumOrCondition);
 		cell.setValue(value);
+		cell.setOperand(operand);
 	}
 	
 	public String getValue() {
@@ -50,5 +53,11 @@ public class SimpleCell {
 		this.createdDate = createdDate;
 	}
 	
+	public String getOperand() {
+		return operand;
+	}
 	
+	public void setOperand(String operand){
+		this.operand = operand;
+	}
 }
