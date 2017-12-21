@@ -55,7 +55,9 @@ public class ClassUtils {
 		String jarPath = null, warPath = null;
 		
 		if (ind != -1) {
-			jarPath = path.substring(0, ind + 21);
+			int whack = path.indexOf("/", ind);
+			jarPath = path.substring(0, whack);
+//			jarPath = path.substring(0, ind + 21);
      		int ind2 = jarPath.indexOf(".war");
 			if (ind2 != -1) {
 				File warFile = (new File(jarPath)).getParentFile()
@@ -105,6 +107,7 @@ public class ClassUtils {
 			File file = new File(jarPath);
 			File[] children = file.listFiles();
 			JarFile jarFile = null;;
+			
 			for(int i = 0; i < children.length; i++){
 				if(!(children[i].isDirectory()))
 				jarFile = new JarFile(children[i].getPath());

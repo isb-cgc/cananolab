@@ -387,7 +387,7 @@ public class CharacterizationServices
 					(CharacterizationResultManager) SpringApplicationContext.getBean(httpRequest, "characterizationResultManager");
 
 			List<String> names = characterizationResultManager
-					.getDatumNumberModifier(httpRequest, columnName, conditionProperty, false);
+					.getDatumNumberModifier(httpRequest, columnName, conditionProperty, true);
 
 			return Response.ok(names).header("Access-Control-Allow-Credentials", "true")
 					.header("Access-Control-Allow-Origin", "*").header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS")

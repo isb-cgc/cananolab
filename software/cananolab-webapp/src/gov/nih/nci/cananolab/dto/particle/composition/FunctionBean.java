@@ -25,6 +25,8 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 
+import org.apache.log4j.Logger;
+
 /**
  *
  * Represents the view bean for Function domain object
@@ -50,12 +52,15 @@ public class FunctionBean {
 	private List<TargetBean> targets = new ArrayList<TargetBean>();
 
 	private TargetBean theTarget = new TargetBean();
+	
+	protected Logger logger = Logger.getLogger(FunctionBean.class);
 
 	public FunctionBean() {
 	}
 
 	public FunctionBean(Function function) {
 		// when function is copied its id is intentionally set to null.
+		logger.debug("Entered FunctionBean(Function)");
 		if (function.getId() != null && function.getId() != 0) {
 			id = function.getId().toString();
 		}
@@ -108,16 +113,20 @@ public class FunctionBean {
 
 	public void setDomainFunction(Function domainFunction) {
 		this.domainFunction = domainFunction;
+		logger.debug("setDomainFunction(Function)");
 	}
 
 	public void setDescription(String description) {
 		this.description = description;
+		logger.debug("setDescription("+description+")");
 	}
 
 	public void setupDomainFunction(String createdBy, int index)
 			throws Exception {
+		logger.debug("setupDomainFunction("+createdBy+",index");
 		className = ClassUtils.getShortClassNameFromDisplayName(type);
 
+		logger.debug("created by: "+ createdBy);
 		Class clazz = ClassUtils.getFullClass(className);
 		// special case for transfection as a function
 		if (clazz == null || className.equals("Transfection")) {
@@ -128,6 +137,7 @@ public class FunctionBean {
 				&& !clazz.getCanonicalName().equals(
 						domainFunction.getClass().getCanonicalName())) {
 			try {
+				logger.debug("domainFunction null");
 				domainFunction = (Function) clazz.newInstance();
 			} catch (ClassCastException ex) {
 				String tmpType = type;
@@ -138,6 +148,7 @@ public class FunctionBean {
 
 		if (domainFunction instanceof ImagingFunction) {
 			domainFunction = imagingFunction;
+			logger.debug("ImagingFunction");
 		} else if (domainFunction instanceof TargetingFunction) {
 			if (((TargetingFunction) domainFunction).getTargetCollection() != null) {
 				((TargetingFunction) domainFunction).getTargetCollection()
@@ -155,13 +166,16 @@ public class FunctionBean {
 				i++;
 			}
 		} else if (domainFunction instanceof OtherFunction) {
+			logger.debug("OtherFunction");
 			((OtherFunction) domainFunction).setType(type);
 		}
 		domainFunction.setDescription(description);
 
 		// updated created_date and created_by if id is null
 		if (domainFunction.getId() == null) {
+			logger.debug("Setting createdBy and createdate");
 			domainFunction.setCreatedBy(createdBy);
+			logger.debug("domainFunction.getCreatedBy()" + domainFunction.getCreatedBy());
 			// fix for MySQL database, which supports precision only up to
 			// seconds
 			domainFunction.setCreatedDate(DateUtils
