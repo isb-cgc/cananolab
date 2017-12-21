@@ -8,7 +8,7 @@ var app = angular.module('angularApp')
     $scope.domainFileUri = "";
     $scope.data = {};  
     $scope.sampleMessage = sampleService.message.data;
-
+    $scope.operands = ['='];
     $scope.PE = {};
     // can remove this after done testing local data
     $scope.dataCopy = angular.copy($scope.data);
@@ -115,9 +115,24 @@ var app = angular.module('angularApp')
             $scope.loader = false;        
         });         
     };
+
+
     if($scope.data.characterizationDate) { 
         $scope.data.characterizationDate = new Date($scope.data.characterizationDate);
     };    
+
+    $http({method: 'GET', url: 'rest/characterization/getDatumNumberModifier?columnName=Number%20Modifier'}).
+        success(function(data, status) {
+        $scope.operands = data;
+        if (data.includes("other")) {
+            var index = data.indexOf("other");
+            data.splice(index,1);
+            $scope.operands = data;
+        };
+
+    }); 
+
+
 
     // gets characterization names when characterization type dropdown is changed //
     $scope.characterizationTypeDropdownChanged = function() {

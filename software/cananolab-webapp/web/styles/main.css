@@ -1848,3 +1848,15 @@ padding:4px !important;
 .form__action__right {
     float: right;
 }
+
+
+.finding_row {
+    display:table;
+}
+.finding_row input {
+    width:75px;
+}
+.finding_cell {
+    display:table-cell;
+    padding-right:5px;
+}

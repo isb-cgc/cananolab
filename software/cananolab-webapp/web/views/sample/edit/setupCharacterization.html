@@ -857,7 +857,7 @@
 										</tr>
 										<tr ng-repeat="row in finding.rows">
 											<td ng-repeat="cell in row.cells">
-												{{cell.value}}
+												<span ng-if="cell.operand!='='">{{cell.operand}}</span>{{cell.value}}
 											</td>
 										</tr>
 									</tbody>
@@ -1097,7 +1097,18 @@
 										</tr>
 										<tr ng-repeat="row in currentFinding.rows">
 											<td ng-repeat="cell in row.cells">
-												<input type="text" name="cellRow" ng-model="cell.value"></td>
+                                                <div class="finding_row">
+                                                    <div class="finding_cell">
+                                <select ng-hide="loader" data-ng-model="cell.operand" 
+                                data-ng-options="option for option in operands" id="operand" aria-label="operand">                                                      </select>  
+          
+                                                    </div>
+                                                    <div class="finding_cell">
+                                                        <input type="text" name="cellRow" ng-model="cell.value">
+                                                    </div>
+                                                </div>
+												</td>
+
 											<td><button ng-click="deleteDataConditionRow(row)" class="btn btn-primary btn-xs">Delete</button></td>
 										</tr>										
 									</tbody>
