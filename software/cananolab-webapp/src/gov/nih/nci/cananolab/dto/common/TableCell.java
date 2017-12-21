@@ -54,7 +54,7 @@ public class TableCell {
 				this.value = "0";
 			}
 		} else {
-			this.value = datum.getOperand() + " " + datum.getValue().toString();
+			this.value = datum.getValue().toString();
 			this.operand = datum.getOperand();
 		}
 		this.datum = datum;
