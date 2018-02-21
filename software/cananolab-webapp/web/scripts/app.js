@@ -263,7 +263,7 @@ app.config(function ($routeProvider, $httpProvider) {
 app.filter('newlines', function () {
     return function(text) {
       if(text)
-          return text.replace(/\n/g, '<br/>');
+          return text.replace(/\n/g, '<br/>').replace(/&amp;apos;/g, "'");
         return '';
     }
 });

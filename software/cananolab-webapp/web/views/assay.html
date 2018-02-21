@@ -8,7 +8,7 @@
 		</div> 
 		<div class="right">
 			<!-- property value -->
-			<span class="propertyValue" ng-switch-default ng-bind-html="property.value">
+			<span ng-switch-default ng-bind-html="property.value | newlines">
 				
 			</span>
 			<span ng-switch-when="Properties">
