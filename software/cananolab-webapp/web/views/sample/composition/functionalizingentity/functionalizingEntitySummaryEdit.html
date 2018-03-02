@@ -1,8 +1,8 @@
 <table id="summarySection{{index}}" width="100%" align="center"
-       style="display: block; width:100em;" class="summaryViewNoGrid dataTable">
+       class="summaryViewNoGrid dataTable">
     <tr>
         <th align="left"  class="heading" style="padding: 0.5em;">
-            functionalizing entity
+            functionalizing entity 
             &nbsp;&nbsp;
             <a href="/caNanoLab/#/editFunctionalizingEntity?sampleId={{sampleId.data}}&&type={{type}}&&sampleName={{sampleName.name}}" class="btn btn-primary btn-xs" style="color:white;text-decoration: none;">
                 Add
@@ -12,8 +12,8 @@
     <tr ng-repeat="(key, entityTypes) in $parent.functionalizingentity">
         <td>
             <a href="{{key}}"></a>
-            <div class="characterization" style="display: inline-block; overflow:hidden; width:97%">{{key}}</div>
-            <table width="99%" align="center" class="summaryViewNoGrid"
+            <div class="characterization">{{key}}</div>
+            <table width="100%" align="center" class="summaryViewNoGrid"
                    style="background-color:#dbdbdb;" ng-repeat="entityType in entityTypes">
                 <tr>
                     <td>

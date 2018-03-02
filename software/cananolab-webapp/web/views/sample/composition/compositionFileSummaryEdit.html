@@ -1,5 +1,5 @@
 <table id="summarySection${index}" width="100%" align="center"
-       style="display: block" class="summaryViewNoGrid dataTable">
+        class="summaryViewNoGrid dataTable">
     <tr>
         <th align="left" class="heading" style="padding: 0.5em;">
             composition file
@@ -12,8 +12,8 @@
     <tr ng-repeat="(key, fileTypes) in $parent.compositionfile">
         <td>
             <a href="{{key}}"></a>
-            <div class="characterization" style="display: inline-block; overflow:hidden; width:97%">{{key}}</div>
-            <table width="99%" align="center" class="summaryViewNoGrid"
+            <div class="characterization">{{key}}</div>
+            <table width="100%" align="center" class="summaryViewNoGrid"
                    style="background-color:#dbdbdb;" ng-repeat="indFile in fileTypes">
                 <tr>
                     <td colspan="2">
