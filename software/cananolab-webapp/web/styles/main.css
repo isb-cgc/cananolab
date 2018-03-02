@@ -59,6 +59,16 @@ body {
 }
 
 /*###############
+Main Buttons
+###############*/
+
+.btn-primary {
+    color: #ffffff;
+    background-color: #0073b9;
+    border-color: #357ebd;
+}
+
+/*###############
 HDR AND FTR BEGINS
 ###############*/
 
