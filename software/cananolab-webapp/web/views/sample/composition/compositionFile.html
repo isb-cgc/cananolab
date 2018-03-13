@@ -1,14 +1,14 @@
 <table id="summarySection${index}" width="100%" align="center"
-       style="display: block" class="summaryViewNoGrid dataTable">
+        class="summaryViewNoGrid dataTable">
     <tr>
-        <th align="left" class="heading" style="padding: 0.5em;">
+        <th align="left" class="heading">
             composition file
         </th>
     </tr>
     <tr ng-repeat="(key, fileTypes) in $parent.compositionfile">
         <td>
                 <a href="{{key}}"></a>
-                <table width="99%" align="center" class="summaryViewNoGrid"
+                <table width="100%" align="center" class="summaryViewNoGrid"
                        style="background-color:#dbdbdb;">
                     <tr>
                         <th align="left"  class="characterization">
@@ -17,7 +17,7 @@
                     </tr>
                     <tr ng-repeat="indFile in fileTypes">
                         <td>
-                                <table class="summaryViewNoGrid" width="99%" align="center" style="background-color:#F5F5f5;">
+                                <table class="summaryViewNoGrid" width="100%" align="center" style="background-color:#F5F5f5;">
                                     <tr>
                                         <td class="cellLabel" width="20%">
                                             Title and Download Link
@@ -57,17 +57,15 @@
                                             </td>
                                             <td>
                                                 {{indFile.Description}}
+                                                <br ng-if="$index < fileTypes.length"/>
+                                <br ng-if="$index < fileTypes.length"/>
                                             </td>
                                         </tr>
                                 </table>
-                                
-                                <br ng-if="$index < fileTypes.length"/>
-                                <br ng-if="$index < fileTypes.length"/>
+                              
                         </td>
                     </tr>
-                    <tr>
-                        <th valign="top" align="left" height="6">
-                        </th>
+                    
                     </tr>
                 </table>
         </td>
