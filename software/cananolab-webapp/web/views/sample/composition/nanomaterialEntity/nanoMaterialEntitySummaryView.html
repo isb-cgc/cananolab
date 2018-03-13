@@ -1,25 +1,25 @@
 <table id="summarySection{{index}}" width="100%" align="center"
-       style="display: block" class="summaryViewNoGrid dataTable">
+        class="summaryViewNoGrid dataTable">
     <tr>
-        <th align="left"  class="heading" style="padding: 0.5em;">
+        <th align="left"  class="heading">
             nanomaterial entity
         </th>
     </tr>
     <tr ng-repeat="(key, entityTypes) in $parent.nanomaterialentity">
         <td align="left">
             <a href="{{key}}"></a>
-            <div class="characterization" style="display: inline-block; overflow:hidden; width:97%">{{key}}</div>
-            <table width="99%" align="center" class="summaryViewNoGrid"
+            <div class="characterization">{{key}}</div>
+            <table width="100%" align="center" class="summaryViewNoGrid"
                    style="background-color:#dbdbdb;" ng-repeat="entityType in entityTypes">
                 <tr>
                     <td>
-                        <table class="summaryViewNoGrid" width="99%" align="center"
+                        <table class="summaryViewNoGrid" width="100%" align="center"
                                style="background-color:#F5F5f5;">
                             <tr  ng-if="entityType.description != ''">
                                 <td class="cellLabel" width="10%">
                                     Description
                                 </td>
-                                <td><pre>{{entityType.Description}}</pre>
+                                <td ng-bind-html="entityType.Description" style="padding-right: 10px; padding-top: 5px; padding-left: 15px;">Entity Type Description
                                 </td>
                             </tr>
                             <!--            <c:choose>
@@ -91,10 +91,7 @@
                         </table>
                     </td>
                 </tr>
-                <tr>
-                    <th valign="top" align="left" height="6">
-                    </th>
-                </tr>
+                
             </table>
             <br/>
         </td>
