@@ -1,0 +1,1 @@
+alter table characterization add column targeting_cell_line TEXT after assay_type;

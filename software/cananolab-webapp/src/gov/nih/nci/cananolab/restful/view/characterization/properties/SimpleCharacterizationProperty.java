@@ -24,7 +24,8 @@ defaultImpl = SimplePropertyDefault.class)
 @JsonSubTypes.Type(value = SimpleShape.class, name = "SimpleShape"),
 @JsonSubTypes.Type(value = SimpleSolubility.class, name = "SimpleSolubility"),
 @JsonSubTypes.Type(value = SimpleSurface.class, name = "SimpleSurface"),
-@JsonSubTypes.Type(value = SimpleTransfection.class, name = "SimpleTransfection")
+@JsonSubTypes.Type(value = SimpleTransfection.class, name = "SimpleTransfection"),
+@JsonSubTypes.Type(value = SimpleTargeting.class, name = "SimpleTargeting")
 })
 @JsonTypeName("SimpleCharacterizationProperty")
 public class SimpleCharacterizationProperty {
