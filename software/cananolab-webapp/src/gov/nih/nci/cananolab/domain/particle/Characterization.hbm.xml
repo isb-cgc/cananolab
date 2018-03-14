@@ -70,7 +70,8 @@ L-->
 
 			</subclass>
 			<subclass name="gov.nih.nci.cananolab.domain.characterization.invitro.Targeting" discriminator-value="Targeting">
-
+				<!-- Attributes mapping for the Targeting class -->
+				<property name="cellLine" type="string" column="targeting_cell_line"/>
 			</subclass>
 			<subclass name="gov.nih.nci.cananolab.domain.characterization.invitro.BloodContact" discriminator-value="BloodContact">
 

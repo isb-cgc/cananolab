@@ -503,15 +503,15 @@ public class CharacterizationBean {
 	public boolean isWithProperties() {
 		return withProperties;
 	}
-
+	
 	public Targeting getTargeting() {
 		return targeting;
 	}
-	
-	public void setTargeting(Targeting targeting) {
+
+	public void setTargeting(Targeting target) {
 		this.targeting = targeting;
 	}
-	
+
 	public Transfection getTransfection() {
 		return transfection;
 	}
@@ -519,6 +519,7 @@ public class CharacterizationBean {
 	public void setTransfection(Transfection transfection) {
 		this.transfection = transfection;
 	}
+	
 
 	public void updateType() {
 		if (domainChar instanceof OtherCharacterization) {
