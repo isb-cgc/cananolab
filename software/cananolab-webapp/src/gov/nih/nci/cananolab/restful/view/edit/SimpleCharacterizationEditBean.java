@@ -19,6 +19,7 @@ import gov.nih.nci.cananolab.restful.view.characterization.properties.SimpleShap
 import gov.nih.nci.cananolab.restful.view.characterization.properties.SimpleSolubility;
 import gov.nih.nci.cananolab.restful.view.characterization.properties.SimpleSurface;
 import gov.nih.nci.cananolab.restful.view.characterization.properties.SimpleTransfection;
+import gov.nih.nci.cananolab.restful.view.characterization.properties.SimpleTargeting;
 import gov.nih.nci.cananolab.security.enums.SecureClassesEnum;
 import gov.nih.nci.cananolab.security.service.SpringSecurityAclService;
 import gov.nih.nci.cananolab.service.protocol.ProtocolService;
@@ -173,6 +174,8 @@ public class SimpleCharacterizationEditBean
 			((SimpleEnzymeInduction)property).transferToPropertyBean(charBean);
 		else if (name.contains("transfection"))
 			((SimpleTransfection)property).transferToPropertyBean(charBean);
+		else if (name.contains("targeting"))
+			((SimpleTargeting)property).transferToPropertyBean(charBean);
 
 	}
 
@@ -201,6 +204,8 @@ public class SimpleCharacterizationEditBean
 			return new SimpleEnzymeInduction();
 		else if (charName.contains("transfection"))
 			return new SimpleTransfection();
+		else if (charName.contains("targeting"))
+			return new SimpleTargeting();
 		else 
 			throw new Exception("Unknown charName: " + charName);
 

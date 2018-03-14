@@ -18,6 +18,8 @@ public class CharacterizationPropertyUtil {
 			return new SimpleEnzymeInduction();
 		else if (charName.contains("transfection"))
 			return new SimpleTransfection();
+		else if (charName.contains("targeting"))
+			return new SimpleTargeting();
 		else 
 			return null;
 

@@ -12,6 +12,7 @@ import gov.nih.nci.cananolab.domain.characterization.OtherCharacterization;
 import gov.nih.nci.cananolab.domain.characterization.invitro.Cytotoxicity;
 import gov.nih.nci.cananolab.domain.characterization.invitro.EnzymeInduction;
 import gov.nih.nci.cananolab.domain.characterization.invitro.Transfection;
+import gov.nih.nci.cananolab.domain.characterization.invitro.Targeting;
 import gov.nih.nci.cananolab.domain.characterization.physical.PhysicalState;
 import gov.nih.nci.cananolab.domain.characterization.physical.Shape;
 import gov.nih.nci.cananolab.domain.characterization.physical.Solubility;
@@ -91,6 +92,8 @@ public class CharacterizationBean {
 	private boolean withProperties = false;
 
 	private Transfection transfection = new Transfection();
+	
+	private Targeting targeting = new Targeting();
 
 	private String isSoluble; // Data holder for Boolean field in Solubility.
 
@@ -163,6 +166,9 @@ public class CharacterizationBean {
 			withProperties = true;
 		} else if (chara instanceof Transfection) {
 			transfection = (Transfection) chara;
+			withProperties = true;
+		} else if (chara instanceof Targeting) {
+			targeting = (Targeting) chara;
 			withProperties = true;
 		} else {
 			withProperties = false;
@@ -241,6 +247,8 @@ public class CharacterizationBean {
 			domainChar = enzymeInduction;
 		} else if (domainChar instanceof Transfection) {
 			domainChar = transfection;
+		} else if (domainChar instanceof Targeting) {
+			domainChar = targeting;
 		}
 		// updated created_date and created_by if id is null
 		if (domainChar.getId() == null) {
@@ -496,6 +504,14 @@ public class CharacterizationBean {
 		return withProperties;
 	}
 
+	public Targeting getTargeting() {
+		return targeting;
+	}
+	
+	public void setTargeting(Targeting targeting) {
+		this.targeting = targeting;
+	}
+	
 	public Transfection getTransfection() {
 		return transfection;
 	}

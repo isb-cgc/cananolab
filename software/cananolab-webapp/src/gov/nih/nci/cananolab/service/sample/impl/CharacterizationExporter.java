@@ -9,6 +9,8 @@
 package gov.nih.nci.cananolab.service.sample.impl;
 
 import gov.nih.nci.cananolab.domain.characterization.invitro.Cytotoxicity;
+import gov.nih.nci.cananolab.domain.characterization.invitro.Transfection;
+import gov.nih.nci.cananolab.domain.characterization.invitro.Targeting;
 import gov.nih.nci.cananolab.domain.characterization.invitro.EnzymeInduction;
 import gov.nih.nci.cananolab.domain.characterization.physical.PhysicalState;
 import gov.nih.nci.cananolab.domain.characterization.physical.Shape;
@@ -329,6 +331,48 @@ public class CharacterizationExporter {
 		}
 		return rowIndex;
 	}
+	
+	/**
+	 * Output Transfection Info, => bodyTransfectionInfo.jsp
+	 *
+	 * @param charBean
+	 * @param sheet
+	 * @param headerStyle
+	 * @param rowIndex
+	 */
+	private static int outputTransfection(CharacterizationBean charBean,
+			HSSFSheet sheet, HSSFCellStyle headerStyle, int rowIndex) {
+		// 7a. Output Transfection Info.
+		if (!StringUtils.isEmpty(charBean.getTransfection().getCellLine())) {
+			HSSFRow row = sheet.createRow(rowIndex++);
+			ExportUtils.createCell(row, 0, headerStyle, CELL_LINE);
+			row = sheet.createRow(rowIndex++);
+			ExportUtils.createCell(row, 0, charBean.getTransfection()
+					.getCellLine());
+		}
+		return rowIndex;
+	}
+	
+	/**
+	 * Output Targeting Info, => bodyTargetingInfo.jsp
+	 *
+	 * @param charBean
+	 * @param sheet
+	 * @param headerStyle
+	 * @param rowIndex
+	 */
+	private static int outputTargeting(CharacterizationBean charBean,
+			HSSFSheet sheet, HSSFCellStyle headerStyle, int rowIndex) {
+		// 7a. Output Targeting Info.
+		if (!StringUtils.isEmpty(charBean.getTargeting().getCellLine())) {
+			HSSFRow row = sheet.createRow(rowIndex++);
+			ExportUtils.createCell(row, 0, headerStyle, CELL_LINE);
+			row = sheet.createRow(rowIndex++);
+			ExportUtils.createCell(row, 0, charBean.getTargeting()
+					.getCellLine());
+		}
+		return rowIndex;
+	}
 
 	/**
 	 * Output Datums in Characterization Results for work sheet.
@@ -569,6 +613,10 @@ public class CharacterizationExporter {
 						rowIndex);
 			} else if (domainChar instanceof Surface) {
 				rowIndex = outputSurface(charBean, sheet, headerStyle, rowIndex);
+			} else if (domainChar instanceof Transfection) {
+				rowIndex = outputTransfection(charBean, sheet, headerStyle, rowIndex);
+			} else if (domainChar instanceof Targeting) {
+				rowIndex = outputTargeting(charBean, sheet, headerStyle, rowIndex);
 			}
 
 			rowIndex++; // Leave one empty line as separator.
