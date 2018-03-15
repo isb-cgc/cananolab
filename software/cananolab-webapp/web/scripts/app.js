@@ -9,6 +9,29 @@
  * Main module of the application.
  */
 
+ function testInterceptor($rootScope) {
+  return {
+    request: function(config) {
+      // console.log(config)
+      return config;
+    },
+
+    requestError: function(config) {
+      return config;
+    },
+
+    response: function(res) {
+      console.log(res)
+
+      return res;
+    },
+
+    responseError: function(res) {
+      return res;
+    }
+  }
+};
+
 var app = angular.module('angularApp', [
     'ngAnimate',
     'ngCookies',
@@ -21,8 +44,13 @@ var app = angular.module('angularApp', [
     'ui.bootstrap',
     'angularFileUpload']);
 
+app.factory('testInterceptor', testInterceptor);
 
 app.config(function ($routeProvider, $httpProvider) {
+  $httpProvider.interceptors.push('testInterceptor');
+
+
+
   $httpProvider.defaults.useXDomain = true;  
   $httpProvider.defaults.cache = false;  
     if (!$httpProvider.defaults.headers.get) {
@@ -268,9 +296,10 @@ app.filter('newlines', function () {
     }
 });
 
-app.run(['$rootScope','$window','$location',function($rootScope,$window,$location) { 
-	//Google Analytics URL creation to track # (hash) changes
+app.run(['$rootScope','$window','$location','$modal','$http', function($rootScope,$window,$location, $modal, $http) { 
+  //Google Analytics URL creation to track # (hash) changes
+
     $rootScope.$on('$viewContentLoaded', function(event) {
-    	$window.ga('send', 'pageview', { page: $location.url() });
+      $window.ga('send', 'pageview', { page: $location.url() });
     });
 }]);
