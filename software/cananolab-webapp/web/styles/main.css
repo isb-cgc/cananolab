@@ -1870,3 +1870,12 @@ padding:4px !important;
     display:table-cell;
     padding-right:5px;
 }
+
+.btn.btn-primary.timeout {
+   width:100px;
+   margin-top:10px;
+}
+
+.modal-body.timeout {
+    font-size:14px;
+}

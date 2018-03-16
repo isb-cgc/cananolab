@@ -1,7 +1,11 @@
 'use strict';
 
 var app = angular.module('angularApp')
-.controller('LoginCtrl', function (navigationService,groupService,$rootScope,$scope, $http, $location, $routeParams) {
+.controller('LoginCtrl', function (navigationService,groupService,$rootScope,$scope, $http, $location,$interval, $routeParams, loginService) {
+    
+    $scope.message = loginService.getMessage();
+    loginService.setMessage(""); // reset status message for next time //
+
   	$scope.userActions = 1;
   	$scope.loginShow = 0;
     $scope.authErrors = 0;
@@ -29,7 +33,7 @@ var app = angular.module('angularApp')
       	  $rootScope.loggedInUser = data;
       	  $scope.loginShow = 0; 
       	  $location.path("/").replace();
-      	  $route.reload();
+      	  // $route.reload();
 
           //Set tabs here.. Delete on logout. Use variable instead of rest call
 

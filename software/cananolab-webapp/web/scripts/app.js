@@ -9,7 +9,14 @@
  * Main module of the application.
  */
 
- function testInterceptor($rootScope) {
+ function testInterceptor($rootScope, $interval, $injector) {
+  function _getModal(){
+     return $injector.get('$modal');
+  }  
+
+  function _getHeartbeat(){
+     return $injector.get('$http');
+  }    
   return {
     request: function(config) {
       // console.log(config)
@@ -21,7 +28,28 @@
     },
 
     response: function(res) {
-      console.log(res)
+
+      // cancels the timer //
+      function cancelTimer() {
+        $interval.cancel($rootScope.sessionTimer); // cancel existing timer if it exists //
+      };
+
+      // if tabs exist and modal is not open start a new timer //
+      if ($rootScope.tabs && $rootScope.modalOpen == false) {
+          cancelTimer(); // cancel any existing timer //
+
+          $rootScope.sessionTimer = $interval(function() { // create new timer //
+              if ($rootScope.tabs.userLoggedIn) {
+                  $rootScope.modalOpen = true;
+                  $rootScope.modalInstance = _getModal().open({
+                      templateUrl: 'views/sessionTimeout.html',
+                      controller: 'SessionTimeoutCtrl',
+                      size: 'sm'            
+                  }); 
+              };
+
+          }, 1500000, 1); // 25 minutes (25*60*1000 milliseconds) //  
+      };
 
       return res;
     },
@@ -47,6 +75,7 @@ var app = angular.module('angularApp', [
 app.factory('testInterceptor', testInterceptor);
 
 app.config(function ($routeProvider, $httpProvider) {
+
   $httpProvider.interceptors.push('testInterceptor');
 
 
@@ -296,9 +325,9 @@ app.filter('newlines', function () {
     }
 });
 
-app.run(['$rootScope','$window','$location','$modal','$http', function($rootScope,$window,$location, $modal, $http) { 
+app.run(['$rootScope','$window','$location','$http', function($rootScope,$window,$location, $http) { 
   //Google Analytics URL creation to track # (hash) changes
-
+    $rootScope.modalOpen = false;
     $rootScope.$on('$viewContentLoaded', function(event) {
       $window.ga('send', 'pageview', { page: $location.url() });
     });
