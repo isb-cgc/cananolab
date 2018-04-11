@@ -2,7 +2,17 @@
 var app = angular.module('angularApp')
 
   .controller('TemplateCtrl', function ($route,$scope, $location, $http, keywordService) {
-  $scope.keywordData = keywordService.keywordData;    
+  $scope.keywordData = keywordService.keywordData;
+
+  // create skip nav url //
+  $scope.createSkipNavUrl = function() {
+    var loc = $location.$$absUrl;
+    if (loc.indexOf('maincontent')==-1) {
+      loc = loc+='#maincontent';
+    };
+    return loc;
+  };
+
   $scope.doKeywordSearch = function() {
     $scope.isSearching = true;
     $http({method: 'GET', url: '/caNanoLab/rest/customsearch/search?keyword=' + $scope.keyword_search_text}).

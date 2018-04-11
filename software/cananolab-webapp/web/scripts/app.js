@@ -327,16 +327,6 @@ app.filter('newlines', function () {
 
 app.run(['$rootScope','$interval','$window','$location','$http', function($rootScope,$interval, $window,$location, $http) { 
   //Google Analytics URL creation to track # (hash) changes
-    window.loc = $location;
-    $rootScope.loc = $location;
-    $rootScope.createAnchor = function(url) {
-      if (url.indexOf('maincontent')==-1) {
-        return url+='#maincontent';
-      }
-      else {
-        return url;
-      };
-    };
 
     $rootScope.modalOpen = false;
     $rootScope.$on('$viewContentLoaded', function(event) {
