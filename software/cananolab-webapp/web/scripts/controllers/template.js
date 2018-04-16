@@ -32,3 +32,18 @@ var app = angular.module('angularApp')
 
 
   });
+
+  $( document ).ready(function() {
+  
+  // bind a click event to the 'skip' link
+  $(".skipLink").click(function(event){
+  $("#maincontent").attr('tabindex', 0).on('blur focusout', function () {
+      
+      // when focus leaves this element, 
+      // remove the tabindex attribute
+      $(this).removeAttr('tabindex');
+      
+    }).focus(); // focus on the content
+  });
+  
+});
