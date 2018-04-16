@@ -1,5 +1,5 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
-<html>
+<html lang="en-US">
    <head>
       <script src="//assets.adobedtm.com/f1bfa9f7170c81b1a9a9ecdcc6c5215ee0b03c84/satelliteLib-4b219b82c4737db0e1797b6c511cf10c802c95cb.js"></script>
       <title>caNanoLab</title>
@@ -41,8 +41,7 @@
                            <tr>
                               <td align="left">
                                           <!-- anchor to skip main menu -->
-                                 <div id="skiptocontent">
-                                        <a ng-href="{{createSkipNavUrl()}}">skip to main content</a>
+                                 <div id="skiptocontent"><a ng-href="{{createSkipNavUrl()}}" class="skipLink">skip to main content</a>
                                     </div>
                                  <a href="http://www.cancer.gov/"><img alt="National Cancer Institute" src="images/CBIIT-36px-Logo-COLOR_contrast.png" border="0" height="37" width="283"></a>
                               </td>
@@ -80,7 +79,7 @@
                   <td class="sideMenu">
                      <navigation></navigation>
                   </td>
-                  <td class="mainContent" role="main">
+                  <td class="mainContent" >
                      <table cellspacing="0" cellpadding="0" summary="layout" border="0" width="900px">
                         <tbody>
                            <tr>
@@ -123,7 +122,7 @@ src="images/mainMenuSeparator.gif" width="1">
                               </td>
                            </tr>
                            <tr>
-                              <td class="mainContent" id="maincontent" ng-view="" autoscroll="true" >
+                              <td class="mainContent" id="maincontent" ng-view="" autoscroll="true" role="main">
                               </td>
                            </tr>
                         </tbody>
