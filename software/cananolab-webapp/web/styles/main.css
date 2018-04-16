@@ -132,7 +132,7 @@ td:hover.mainMenuItem {
     /* darker */
 }
 
-th.mainMenuItem {
+td.mainMenuItem {
     height: 23px;
     padding-right: 1em; padding-left: 1em;
     background-color: #01045A;
@@ -141,7 +141,7 @@ th.mainMenuItem {
     /* constant: dark gray */;;;;;;;;
 }
 
-th:hover.mainMenuItem {
+td:hover.mainMenuItem {
     padding-right: 1em; padding-left: 1em;
     background-color: #0089BB;
     font-weight: 700;
@@ -149,7 +149,7 @@ th:hover.mainMenuItem {
     /* darker */
 }
 
-th.mainMenuItemSelected {
+td.mainMenuItemSelected {
     padding-right: 1em; padding-left: 1em;
     background-color: #6a8989;
     font-weight: 700;
@@ -1904,16 +1904,11 @@ padding:4px !important;
     transition: top .1s ease-in;
 }
 
-.menuDivider:after {
-   content: "";
-   background: url(/images/mainMenuSeparator.gif) no-repeat;
-   position:absolute;
-   top: 0;
-   left: 0;
+.menuDivider {
+   background: url("../images/mainMenuSeparator.gif") no-repeat;
    width: 1px;
    height: 16px;
 }
-
 
 
 
