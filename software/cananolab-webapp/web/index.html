@@ -43,7 +43,7 @@
                                           <!-- anchor to skip main menu -->
                                  <div id="skiptocontent"><a ng-href="{{createSkipNavUrl()}}" class="skipLink">skip to main content</a>
                                     </div>
-                                 <a href="http://www.cancer.gov/"><img alt="National Cancer Institute" src="images/CBIIT-36px-Logo-COLOR_contrast.png" border="0" height="37" width="283"></a>
+                                 <a href="http://www.cancer.gov/"><img alt="National Cancer Institute" src="images/CBIIT-36px-Logo-COLOR_contrast.png" border="0" height="32" width="228" style="padding-top: 5px; padding-bottom:3px;"></a>
                               </td>
                               <td>
                                  &nbsp;
@@ -90,16 +90,15 @@
                                           <td width="1">
 
                                           </td>
-                                             <th ng-repeat-start="t in tabs.tabs" scope="row" ng-class="{mainMenuItem: t[0]!='HOME', 'mainMenuItem home':t[0]=='HOME'}">
+                                             <td ng-repeat-start="t in tabs.tabs" scope="row" ng-class="{mainMenuItem: t[0]!='HOME', 'mainMenuItem home':t[0]=='HOME'}">
                                              <a tabindex="0" ng-if="t[0]=='GLOSSARY'||t[0]=='HELP'" ng-class="{mainMenuLink: t[0]!='HOME', 'mainMenuLink home':t[0]=='HOME'}" href="{{t[1]}}" target="_blank">{{t[0]}}
                                              </a>
                                              <a ng-if="t[0]!='GLOSSARY'&&t[0]!='HELP'" ng-class="{mainMenuLink: t[0]!='HOME', 'mainMenuLink home':t[0]=='HOME'}" href="{{t[1]}}">{{t[0]}}
                                              </a>
-                                          </th>
+                                          </td>
                                            
 
-                                          <td ng-repeat-end><img height="16" alt="menu separator"
-                                             src="images/mainMenuSeparator.gif" width="1">
+                                          <td ng-repeat-end class="menuDivider">
                                           </td>
 
                                           <!--
