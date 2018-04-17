@@ -1910,6 +1910,10 @@ padding:4px !important;
    height: 16px;
 }
 
-
+.footerDivider {
+   background: url("../images/ftrMenuSeparator.gif") no-repeat;
+   width: 1px;
+   height: 16px;
+}
 
 
