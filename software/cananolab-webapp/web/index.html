@@ -30,13 +30,15 @@
    </head>
    <body style="cursor: default" ng-app="angularApp" ng-controller="TemplateCtrl">
       <div class="container">
-         <table cellspacing="0" cellpadding="0" summary="layout"
+       <table cellspacing="0" cellpadding="0" summary="layout"
             border="0">
             <!-- nci hdr begins -->
-            <tbody>
+              <tbody>
+               
                <tr>
+                 
                   <td colspan="2">
-                     <table border="0" cellpadding="0" cellspacing="0" width="100%">
+                     <table border="0" cellpadding="0" cellspacing="0" width="100%" role="banner">
                         <tbody>
                            <tr>
                               <td align="left">
@@ -58,7 +60,7 @@
                </tr>
                <tr>
                   <td colspan="2">
-                     <table class="subhdrBG" cellspacing="0" cellpadding="0" width="100%" border="0" summary="layout">
+                     <table class="subhdrBG" cellspacing="0" cellpadding="0" width="100%" border="0" summary="layout" role="search">
                         <tbody>
                            <tr>
                               <td class="subhdrBG" align="left">
@@ -74,16 +76,16 @@
                         </tbody>
                      </table>
                   </td>
-               </tr>
+              </tr>
                <tr>
-                  <td class="sideMenu">
+                  <td class="sideMenu" role="complementary">
                      <navigation></navigation>
                   </td>
                   <td class="mainContent" >
                      <table cellspacing="0" cellpadding="0" summary="layout" border="0" width="900px">
                         <tbody>
                            <tr>
-                              <td class="mainMenu">
+                              <td class="mainMenu" role="navigation">
                                  <table cellspacing="0" cellpadding="0" border="0">
                                     <tbody>
                                        <tr>
@@ -116,33 +118,37 @@ src="images/mainMenuSeparator.gif" width="1">
 </td>
 -->
                                        </tr>
+                                      
                                     </tbody>
+
                                  </table>
                               </td>
                            </tr>
-                           <tr>
-                              <td class="mainContent" id="maincontent" ng-view="" autoscroll="true" role="main">
+                           <tr role="main">
+                              <td class="mainContent" id="maincontent" ng-view="" autoscroll="true" >
                               </td>
                            </tr>
                         </tbody>
+                   
                      </table>
                   </td>
                </tr>
-               <tr>
-                  <td class="footerMenu">&nbsp;</td>
+               <tr role="complementary">
+                
+                  <td class="footerMenu" >&nbsp;</td>
                   <td class="footerMenu">
                      <!-- application ftr begins -->
                      <table cellspacing="0" cellpadding="0" border="0" align="center">
                         <tbody>
                            <tr>
-                              <td><div class="footerDivider"</div>
+                              <td><div class="footerDivider"></div>
                               </td>
                               <td class="footerMenuItem" onclick="document.location.href='#'"
                                  height="20">&nbsp;&nbsp;<a class="footerMenuLink"
                                  href="mailto:ncicbiit@mail.nih.gov?subject=caNanoLab - cancer Nanotechnology Laboratory Analysis Bench"
                                  target="new">CONTACT US</a>&nbsp;&nbsp;
                               </td>
-                              <td ><div class="footerDivider"</div>
+                              <td ><div class="footerDivider"></div>
                               </td>
                               <td class="footerMenuItem"
                                  onclick="window.open('http://www.hhs.gov/Privacy.html', 'new' ,'screenX=0,screenY=0,status=yes,toolbar=yes,menubar=yes,location=yes,width=760,height=500,scrollbars=yes,resizable=yes')"
@@ -150,20 +156,20 @@ src="images/mainMenuSeparator.gif" width="1">
                                  href="http://www.hhs.gov/Privacy.html" target="new">PRIVACY
                                  NOTICE</a>&nbsp;&nbsp;
                               </td>
-                               <td><div class="footerDivider"</div>
+                               <td><div class="footerDivider"></div>
                               </td>
                               <td class="footerMenuItem"
                                  onclick="window.open('http://www.cancer.gov/global/web/policies', 'new' ,'screenX=0,screenY=0,status=yes,toolbar=yes,menubar=yes,location=yes,width=760,height=500,scrollbars=yes,resizable=yes')"
                                      height="20">&nbsp;&nbsp;<a class="footerMenuLink"
                                          href="http://www.cancer.gov/global/web/policies" target="new">POLICIES</a>&nbsp;&nbsp;
                               </td>
-                              <td><div class="footerDivider"</div>
+                              <td><div class="footerDivider"></div>
                               </td>
                               <td class="footerMenuItem" onclick="document.location.href='#'"
                                  height="20">&nbsp;&nbsp;<a class="footerMenuLink"
                                  href="html/cananoDisclaimer.html" target="new">DISCLAIMER</a>&nbsp;&nbsp;
                               </td>
-                              <td ><div class="footerDivider"</div>
+                              <td ><div class="footerDivider"></div>
                               </td>
                            </tr>
                         </tbody>
@@ -171,7 +177,7 @@ src="images/mainMenuSeparator.gif" width="1">
                      <!-- application ftr ends -->
                   </td>
                </tr>
-               <tr>
+               <tr role="contentinfo">
                   <td colspan="2">
                   <!-- footer begins -->
                      <div id="portal-footer">
