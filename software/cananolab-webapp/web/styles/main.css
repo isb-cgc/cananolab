@@ -1916,4 +1916,16 @@ padding:4px !important;
    height: 16px;
 }
 
+h1 {
+    display: inline;
+    font-size: 1.1em;
+    -webkit-margin-before: 0;
+    -webkit-margin-after: 0;
+    -webkit-margin-start: 0;
+    -moz-margin-start: 0;
+    -webkit-margin-end: 0;
+    -moz-margin-end: 0;
+    font-weight: 700;
+}
+
 
