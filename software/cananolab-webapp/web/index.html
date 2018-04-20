@@ -38,14 +38,14 @@
                <tr>
                  
                   <td colspan="2">
-                     <table border="0" cellpadding="0" cellspacing="0" width="100%" role="banner">
+                     <table border="0" cellpadding="0" cellspacing="0" width="100%" role="banner" aria-labelledby="banner">
                         <tbody>
-                           <tr>
-                              <td align="left">
+                           <tr id="banner">
+                              <td align="left" >
                                           <!-- anchor to skip main menu -->
-                                 <div id="skiptocontent"><a ng-href="{{createSkipNavUrl()}}" class="skipLink">skip to main content</a>
+                                 <div id="skiptocontent" class="skiptocontent"><a ng-href="{{createSkipNavUrl()}}" class="skipLink">skip to main content</a>
                                     </div>
-                                 <a href="http://www.cancer.gov/"><img alt="National Cancer Institute" src="images/CBIIT-36px-Logo-COLOR_contrast.png" border="0" height="32" width="228" style="padding-top: 5px; padding-bottom:3px;"></a>
+                                 <a href="http://www.cancer.gov/" target="_blank"><img alt="National Cancer Institute" src="images/CBIIT-36px-Logo-COLOR_contrast.png" border="0" height="32" width="228" style="padding-top: 5px; padding-bottom:3px;"></a>
                               </td>
                               <td>
                                  &nbsp;
@@ -60,7 +60,7 @@
                </tr>
                <tr>
                   <td colspan="2">
-                     <table class="subhdrBG" cellspacing="0" cellpadding="0" width="100%" border="0" summary="layout" role="search">
+                     <table class="subhdrBG" cellspacing="0" cellpadding="0" width="100%" border="0" summary="layout" role="search" aria-labelledby="keywordSearch">
                         <tbody>
                            <tr>
                               <td class="subhdrBG" align="left">
@@ -78,15 +78,17 @@
                   </td>
               </tr>
                <tr>
-                  <td class="sideMenu" role="complementary">
+                  <td class="sideMenu" role="complementary" aria-labelledby="sideMenu">
+                      <div id="skiptomain" class="skiptocontent"><a ng-href="{{createSkipNavUrl()}}" class="skipLink">skip to main content</a>
+                                    </div>
                      <navigation></navigation>
                   </td>
                   <td class="mainContent" >
                      <table cellspacing="0" cellpadding="0" summary="layout" border="0" width="900px">
                         <tbody>
                            <tr>
-                              <td class="mainMenu" role="navigation">
-                                 <table cellspacing="0" cellpadding="0" border="0">
+                              <td class="mainMenu" role="navigation" aria-labelledby="mainNavigation">
+                                 <table cellspacing="0" cellpadding="0" border="0" id="mainNavigation">
                                     <tbody>
                                        <tr>
                                           <td width="1">
@@ -133,12 +135,12 @@ src="images/mainMenuSeparator.gif" width="1">
                      </table>
                   </td>
                </tr>
-               <tr role="complementary">
+               <tr role="complementary" aria-labelledby="footerLinks">
                 
                   <td class="footerMenu" >&nbsp;</td>
                   <td class="footerMenu">
                      <!-- application ftr begins -->
-                     <table cellspacing="0" cellpadding="0" border="0" align="center">
+                     <table cellspacing="0" cellpadding="0" border="0" align="center" id="footerLinks">
                         <tbody>
                            <tr>
                               <td><div class="footerDivider"></div>
@@ -177,11 +179,11 @@ src="images/mainMenuSeparator.gif" width="1">
                      <!-- application ftr ends -->
                   </td>
                </tr>
-               <tr role="contentinfo">
+               <tr role="contentinfo" aria-labelledby="additionalFooter">
                   <td colspan="2">
                   <!-- footer begins -->
                      <div id="portal-footer">
-                        <div class="footerLinks">
+                        <div class="footerLinks" id="additionalFooter">
                            <a href="http://www.dhhs.gov/" target="_blank" tabindex="0">Department of Health and Human Services</a>&nbsp;&nbsp;|&nbsp;&nbsp;
                            <a href="http://www.nih.gov/" target="_blank" tabindex="0">National Institutes of Health</a>&nbsp;&nbsp;|&nbsp;&nbsp;
                            <a href="http://www.cancer.gov/" target="_blank" tabindex="0">National Cancer Institute</a>&nbsp;&nbsp;|&nbsp;&nbsp;<a href="http://www.usa.gov/" target="_blank">USA.gov</a>
