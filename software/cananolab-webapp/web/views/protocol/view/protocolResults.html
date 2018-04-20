@@ -1,9 +1,9 @@
 <div class="spacer">
     <table border="0" class="contentTitle" summary="layout" width="100%">
         <tr>
-            <th scope="col" align="left">
-                Protocol Search Results
-            </th>
+            <td scope="col" align="left">
+                <h1>Protocol Search Results</h1>
+            </td>
             <td align="right" width="30%">
                 <button class="btn back btn-xs" ng-click="goBack()">Back</button>
                 <a class="helpText" href=
@@ -16,28 +16,29 @@
 				length=protocolData.data.length;
 				">{{utilsService.resultCount(tableParams.$params,length,tableParams.data.length)}}
 </div><br />
-    <table ng-table="tableParams" class="table sample" cellspacing="0" cellpadding="0">
+    <table ng-table="tableParams" class="table sample" cellspacing="0" cellpadding="0" aria-label="Search Results">
+        <caption>Search Results</caption>
         <tr ng-repeat="row in $data track by $index" ng-class="{ 'emphasis': $index%2==0}">
             <td data-title="'Actions'" width="5%" class="columnOne">
                 <a ng-if="row.editable" href="#/editProtocol?protocolId={{row.id}}">Edit</a><br/><br/>
                 <a id="href{{row.id}}" href="" ng-click="addToFavorites(row.id, row.viewName, row.fileId, row.editable, row.fileTitle)" ng-if="tabs.userLoggedIn"><i class="fa fa-plus fa-1"></i>&nbsp;Add to Favorites</a>
                 <span id="msg{{row.id}}" style="color:#2276ff;font-weight:bold;"></span>
             </td>
-            <td data-title="'Protocol Type'" sortable="'protocolType'" width="15%">
+            <td data-title="'Protocol Type'" sortable="'protocolType'" width="15%" >
                 {{row.type}}
             </td>
-            <td data-title="'Protocol Name'" sortable="'protocolName'" width="20%">
+            <td data-title="'Protocol Name'" sortable="'protocolName'" width="20%" >
                 {{row.viewName}}
             </td>
-            <td data-title="'Protocol Abbreviation'" sortable="'protocolAbbreviation'" width="15%">
+            <td data-title="'Protocol Abbreviation'" sortable="'protocolAbbreviation'" width="15%" >
                 {{row.abbreviation}}
             </td>
             <td data-title="'Version'" sortable="'version'" width="15%">
                 {{row.version}}
             </td>
-            <td data-title="'Protocol File'" sortable="'protocolFile'" width="25%" ng-bind-html="row.fileInfo | newlines">{{row.fileInfo}}
+            <td data-title="'Protocol File'" sortable="'protocolFile'" width="25%" ng-bind-html="row.fileInfo | newlines" >{{row.fileInfo}}
             </td>
-            <td data-title="'Created Date'" sortable="'createdDate'" width="15%">
+            <td data-title="'Created Date'" sortable="'createdDate'" width="15%" >
                 {{row.createdDate | date:'shortDate'}}
             </td>
         </tr>
