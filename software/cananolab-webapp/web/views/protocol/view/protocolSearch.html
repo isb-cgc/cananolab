@@ -2,7 +2,7 @@
     <div ng-class="{formFocus:loader}">
         <table border="0" class="contentTitle" summary="layout" width="100%">
             <tr>
-                <th align="left" scope="col">Protocol Search</th>
+                <td align="left" scope="col"><h1>Protocol Search</h1></td>
 
                 <td align="right" width="30%">
                     <a class="helpText" href=
@@ -38,11 +38,12 @@
                 <td>
                     <table class="invisibleTable" summary="layout">
                         <tbody><tr>
-                            <td><label for="nameOperand" style="display:none">Name Operand</label>
+                            <td><label for="nameOperand">
                                 <select name="nameOperand" id="nameOperand" ng-model="searchProtocolForm.nameOperand" ng-init="searchProtocolForm.nameOperand='contains'">
                                     <option value="contains">contains</option>
                                     <option value="equals">equals</option>
                                 </select>
+                                </label>
                             </td>
                             <td>
                                 <input type="text" name="protocolName" ng-model="searchProtocolForm.protocolName" size="80" value="" id="protocolName">
@@ -58,11 +59,12 @@
                 <td>
                     <table class="invisibleTable" summary="layout">
                         <tbody><tr>
-                            <td><label for="abbreviationOperand" style="display:none">Abbreviation Operand</label>
+                            <td><label for="abbreviationOperand">
                                 <select name="abbreviationOperand" id="abbreviationOperand" ng-model="searchProtocolForm.abbreviationOperand" ng-init="searchProtocolForm.abbreviationOperand='contains'">
                                     <option value="contains">contains</option>
                                     <option value="equals">equals</option>
                                 </select>
+                                </label>
                             </td>
                             <td>
                                 <input type="text" name="protocolAbbreviation" size="80" value="" id="protocolAbbreviation" ng-model="searchProtocolForm.protocolAbbreviation">
@@ -78,11 +80,12 @@
                 <td>
                     <table class="invisibleTable" summary="layout">
                         <tbody><tr>
-                            <td><label for="titleOperand" style="display:none">Title Operand</label>
+                            <td><label for="titleOperand">
                                 <select name="titleOperand" id="titleOperand" ng-model="searchProtocolForm.titleOperand" ng-init="searchProtocolForm.titleOperand='contains'">
                                     <option value="contains">contains</option>
                                     <option value="equals">equals</option>
                                 </select>
+                                </label>
                             </td>
                             <td>
                                 <input type="text" name="fileTitle" size="80" value="" id="fileTitle" ng-model="searchProtocolForm.fileTitle">
