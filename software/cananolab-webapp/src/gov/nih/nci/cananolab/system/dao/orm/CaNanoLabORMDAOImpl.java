@@ -38,6 +38,7 @@ public class CaNanoLabORMDAOImpl extends WritableORMDAOImpl implements CaNanoLab
 
 
 	public Object load(Class domainClass, Serializable id) {
+		logger.debug("in caNanoLabORMDAOImpl.load()");
 		return getHibernateTemplate().load(domainClass, id);
 	}
 

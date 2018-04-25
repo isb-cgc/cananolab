@@ -29,6 +29,7 @@ import java.util.Map;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 import java.util.jar.JarInputStream;
+import org.apache.log4j.Logger;
 
 /**
  * Utility class to handle domain class manipulations
@@ -44,13 +45,17 @@ public class ClassUtils {
 	 * @return
 	 * @throws Exception
 	 */
+	protected static Logger logger = Logger.getLogger(ClassUtils.class);
 
 	public static Collection<Class> getDomainClasses() throws Exception {
+		logger.debug("In ClassUtils.getDomainClasses");
+		
 		// get the URL of the jar containing the Dendrimer class
 		Class clazz = gov.nih.nci.cananolab.domain.nanomaterial.Dendrimer.class;
 		boolean packedWar = false;
 		URL url = clazz.getResource(clazz.getSimpleName() + ".class");
 		String path = getRealPath(url);
+		logger.debug("ClassUtils.getDomainClasses path "+ path);
 		int ind = path.indexOf(".jar");
 		String jarPath = null, warPath = null;
 		
@@ -150,6 +155,7 @@ public class ClassUtils {
 		} 
 
 	     String path = fileNameDecodedTmp.getPath();
+	     logger.debug("ClassUtils.getRealPath "+ path);
 	     return path; 
 		
 	}

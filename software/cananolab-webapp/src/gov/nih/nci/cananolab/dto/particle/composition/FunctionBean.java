@@ -123,7 +123,7 @@ public class FunctionBean {
 
 	public void setupDomainFunction(String createdBy, int index)
 			throws Exception {
-		logger.debug("setupDomainFunction("+createdBy+",index");
+		logger.debug("setupDomainFunction("+createdBy+",index)");
 		className = ClassUtils.getShortClassNameFromDisplayName(type);
 
 		logger.debug("created by: "+ createdBy);
@@ -175,7 +175,7 @@ public class FunctionBean {
 		if (domainFunction.getId() == null) {
 			logger.debug("Setting createdBy and createdate");
 			domainFunction.setCreatedBy(createdBy);
-			logger.debug("domainFunction.getCreatedBy()" + domainFunction.getCreatedBy());
+			logger.debug("domainFunction.getCreatedBy() " + domainFunction.getCreatedBy());
 			// fix for MySQL database, which supports precision only up to
 			// seconds
 			domainFunction.setCreatedDate(DateUtils
@@ -187,6 +187,7 @@ public class FunctionBean {
 				|| !StringUtils.isEmpty(domainFunction.getCreatedBy())
 				&& domainFunction.getCreatedBy().contains(
 						Constants.AUTO_COPY_ANNOTATION_PREFIX)) {
+			logger.debug("FunctionBean createdBy contains copy");
 			domainFunction.setCreatedBy(createdBy);
 		}
 	}
