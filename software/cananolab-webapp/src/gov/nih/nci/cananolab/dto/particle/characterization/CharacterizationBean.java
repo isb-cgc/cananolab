@@ -509,7 +509,7 @@ public class CharacterizationBean {
 	}
 
 	public void setTargeting(Targeting target) {
-		this.targeting = targeting;
+		this.targeting = target;
 	}
 
 	public Transfection getTransfection() {

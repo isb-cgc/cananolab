@@ -12,7 +12,7 @@ L-->
 	version="3.0">
 	<display-name>caNanoLab</display-name>
 	<session-config>
-    	<session-timeout>5</session-timeout>
+    	<session-timeout>30</session-timeout>
 	</session-config>
 	<filter>
 		<filter-name>springSecurityFilterChain</filter-name>

@@ -65,6 +65,7 @@ public class CompositionServiceLocalImpl extends BaseServiceLocalImpl implements
 	public void saveNanomaterialEntity(SampleBean sampleBean, NanomaterialEntityBean entityBean) throws CompositionException,
 			NoAccessException
 	{
+		logger.debug("In saveNanomaterialEntity");
 		if (SpringSecurityUtil.getPrincipal() == null) {
 			throw new NoAccessException();
 		}
@@ -75,12 +76,15 @@ public class CompositionServiceLocalImpl extends BaseServiceLocalImpl implements
 			}
 			CaNanoLabApplicationService appService = (CaNanoLabApplicationService) ApplicationServiceProvider.getApplicationService();
 			NanomaterialEntity entity = entityBean.getDomainEntity();
+			logger.debug("NanomaterialEntity " + entity.getCreatedBy());
 			Boolean newEntity = true;
 			Boolean newComp = true;
 			if (entity.getId() != null) {
 				newEntity = false;
 				try {
+					logger.debug("Calling appService.load");
 					NanomaterialEntity dbEntity = (NanomaterialEntity) appService.load(NanomaterialEntity.class, entity.getId());
+					logger.debug("dbEntity retrieved");
 				} catch (Exception e) {
 					String err = "Object doesn't exist in the database anymore.  Please log in again.";
 					logger.error(err);
