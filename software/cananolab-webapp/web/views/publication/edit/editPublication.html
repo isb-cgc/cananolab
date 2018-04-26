@@ -4,21 +4,21 @@
 <table class="contentTitle" width="100%" border="0" summary="layout">
     <tbody>
     <tr>
-        <th scope="col" align="left" ng-if="(sampleId==null || sampleId=='') && publicationId==null">
-            Create Publication
-        </th>
+        <td scope="col" align="left" ng-if="(sampleId==null || sampleId=='') && publicationId==null">
+            <h1>Create Publication</h1>
+        </td>
         
-        <th scope="col" align="left" ng-if="(sampleId==null || sampleId=='') && publicationId!=null">
-            Update Publication
-        </th>
+        <td scope="col" align="left" ng-if="(sampleId==null || sampleId=='') && publicationId!=null">
+            <h1>Update Publication</h1>
+        </td>
         
-        <th scope="col" align="left" ng-if="sampleId!=null && sampleId != '' && publicationId!=null">
-            Update Publication for Sample {{sampleName}}
-        </th>    
+        <td scope="col" align="left" ng-if="sampleId!=null && sampleId != '' && publicationId!=null">
+            <h1>Update Publication for Sample {{sampleName}}</h1>
+        </td>    
         
-        <th scope="col" align="left" ng-if="sampleId!=null && sampleId != '' && publicationId==null">
-            Submit Publication for {{sampleName}}
-        </th>    
+        <td scope="col" align="left" ng-if="sampleId!=null && sampleId != '' && publicationId==null">
+            <h1>Submit Publication for {{sampleName}}</h1>
+        </td>    
 
         <td align="right" width="30%">
             <a class="helpText" href="javascript:openHelpWindow('https://wiki.nci.nih.gov/display/caNanoLab/Managing+Publications+in+caNanoLab#ManagingPublicationsincaNanoLab-SubmitPublication')" ng-if="(sampleId==null || sampleId=='') && publicationId==null">Help</a>
@@ -357,7 +357,8 @@
                     <tr>
                         <td colspan="2">
                             <span id="load" style="display: block;" ng-show="publicationForm.uriExternal=='false'">
-        						<input type="file" ng-model="publicationForm.uploadedFile" size="60" value="" ng-file-select="onFileSelect($files)" id="uploadedFile">
+                                <label for="uploadedFile" aria-label="Upload File">
+        						<input type="file" ng-model="publicationForm.uploadedFile" size="60" value="" ng-file-select="onFileSelect($files)" id="uploadedFile"></label>
         						<span ng-if="ie9">{{selectedFileName}}</span>
         						
         						<!-- <input type="file" file-model="localForm.uploadedFile" ng-model="localForm.uploadedFile" size="60" value="" onchange="angular.element(this).scope().uploadFile(this);" id="uploadedFile"> -->
@@ -365,11 +366,11 @@
                             <span id="uploadedUri" ng-show="publicationForm.uriExternal=='false' && publicationForm.fileId != null">
 			                    <a href="rest/publication/download?fileId={{publicationForm.fileId}}">{{publicationForm.uri}}</a>
                             </span>
-                            <label for="uploadedFile">&nbsp;&nbsp;</label>
+                           
 			                <span id="link" ng-show="publicationForm.uriExternal=='true'">
-                                <input type="text" ng-model="publicationForm.externalUrl" size="60" value="" id="externalUrl">&nbsp;&nbsp;[<a class="disclaimerLink" href="html/cananoDisclaimer.html" target="new" id="pubExternalLink">Disclaimer</a>]
+                                <label for="externalUrl" aria-label="External URL"><input type="text" ng-model="publicationForm.externalUrl" size="60" value="" id="externalUrl"></label>&nbsp;&nbsp;[<a class="disclaimerLink" href="html/cananoDisclaimer.html" target="new" id="pubExternalLink">Disclaimer</a>]
 					        </span>
-                            <label for="externalUrl">&nbsp;</label>
+                            
                         </td>
                     </tr>
                     </tbody>

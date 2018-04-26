@@ -2,7 +2,7 @@
   <div ng-class="{formFocus:loader}">
     <table border="0" class="contentTitle" summary="layout" width="100%">
         <tr>
-            <th align="left" scope="col">Publication Search</th>
+            <td align="left"><h1>Publication Search</h1></td>
 
             <td align="right" width="30%">
                 <a class="helpText" href=
@@ -26,10 +26,10 @@
         </tr>
         <tr>
             <td class="cellLabel">
-                <label for="researchArea">Research Category</label>
+                <label>Research Category</label>
             </td>
             <td colspan="2">
-                    <label style="padding-left:1px;padding-right:5px;"><input ng-repeat-start="(key,val) in researchArea track by $index" ng-disabled="loader" ng-model="researchArea[key]" type="checkbox" id="researchArea"><span style="padding-left:1px;padding-right:5px;" ng-repeat-end>{{key}}</span></label>
+                    <label style="padding-left:1px;padding-right:10px;" for="researchArea" aria-label="Research Area"><input ng-repeat-start="(key,val) in researchArea track by $index" ng-disabled="loader" ng-model="researchArea[key]" type="checkbox" id="researchArea"><span style="padding-left:1px;padding-right:10px;" ng-repeat-end>{{key}}</span></label>
                     </td>
         </tr>
         <tr id="pubMedRow" ng-hide="pubMed">
@@ -57,15 +57,15 @@
             <td colspan="2" style="padding-left:7px;">
                 <table class="invisibleTable" summary="layout">
                     <tr>
-                        <td><label for="titleOperand" style="display:none">Title Operand</label>
-                            <select name="titleOperand" ng-init="searchPublicationForm.titleOperand='contains'" ng-model="searchPublicationForm.titleOperand" id="titleOperand" ng-disabled="loader">                   <option value="contains">
+                        <td><label for="titleOperand" for="pubSelect" aria-label="Title Contains Select">
+                            <select name="titleOperand" ng-init="searchPublicationForm.titleOperand='contains'" ng-model="searchPublicationForm.titleOperand" id="titleOperand" ng-disabled="loader" id="pubSelect">                   <option value="contains">
                                 contains
                             </option>
 
                             <option value="equals">
                                 equals
                             </option>
-                        </select>
+                        </select></label>
                         </td>
                         <td align="left">
                             <input type="text" name="title" size="61" value="" id="title" ng-model="searchPublicationForm.title" ng-disabled="loader">
@@ -102,7 +102,7 @@
                 <label for="sampleName">Sample Name</label>
             </td>
             <td valign="top"  align="left" colspan="5">
-                <label for="nameOperand" style="display:none">name operand</label>
+                <label for="nameOperand" aria-label="name operand">
                 <select name="nameOperand" id="nameOperand" ng-init="searchPublicationForm.nameOperand='contains'" ng-disabled="loader" ng-model="searchPublicationForm.nameOperand">                            
                     <option value="contains">
                                 contains
@@ -111,7 +111,7 @@
                             <option value="equals">
                                 equals
                             </option>
-                        </select>&nbsp;&nbsp;&nbsp;
+                        </select></label>&nbsp;&nbsp;&nbsp;
                 <input type="text" name="sampleName" ng-disabled="loader" ng-model="searchPublicationForm.sampleName" size="80" value="" id="sampleName">
             </td>
         </tr>
