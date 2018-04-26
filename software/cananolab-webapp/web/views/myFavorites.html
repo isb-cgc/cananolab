@@ -1,9 +1,9 @@
 <div class="spacer" ng-class="{formFocus:loader}">
     <table border="0" class="contentTitle" summary="layout" width="100%">
         <tr>
-            <th scope="col" align="left">
-                My Favorites
-            </th>
+            <td  align="left">
+                <h1>My Favorites</h1>
+            </td>
             <td align="right" width="30%">
                 <a class="helpText" href="javascript:openHelpWindow('https://wiki.nci.nih.gov/x/b4AnEQ')">Help</a> 
                 <a class="helpText" href="javascript:openHelpWindow('https://wiki.nci.nih.gov/display/caNanoLab/caNanoLab+Glossary')">Glossary</a>            
@@ -13,9 +13,9 @@
     <br />
     <span ng-if="(samples != null && samples.length > 0) || (protocols != null && protocols.length > 0) || (publications != null && publications.length > 0)">
 	    <div>
-	        <input type="checkbox" ng-model="mySamples"><span style="font-size:16px;"> Samples </span>
-	        <input type="checkbox" ng-model="myProtocols"><span style="font-size:16px;"> Protocols </span>
-	        <input type="checkbox" ng-model="myPublications"><span style="font-size:16px;"> Publications </span>
+	        <input type="checkbox" ng-model="mySamples" id="mySampleslabel"><label style="font-size:16px;" for="mySampleslabel"> Samples </label>
+	        <input type="checkbox" ng-model="myProtocols" id="myProtocolslabel"><label for="myProtocolslabel" style="font-size:16px;"> Protocols </label>
+	        <input type="checkbox" ng-model="myPublications" id="myPublicationsLabel"><label style="font-size:16px;" for="myPublicationsLabel"> Publications </label>
 	    </div>
 	    <hr>
 	    <div style="font-size:18px;" ng-show="mySamples">My Samples</div>

@@ -1,9 +1,9 @@
 <div class="spacer">
     <table border="0" class="contentTitle" summary="layout" width="100%">
         <tr>
-            <th scope="col" align="left">
-                Manage Batch Data Availability
-            </th>
+            <td  align="left">
+                <h1>Manage Batch Data Availability</h1>
+            </td>
             <td align="right" width="30%">
                 <a class="helpText" href=
                         "javascript:openHelpWindow('https://wiki.nci.nih.gov/display/caNanoLab/Managing+Data+Curation#ManagingDataCuration-ManageBatch')">Help</a>
@@ -22,15 +22,13 @@
     </span>
 
     <form name="generateBatchDataAvailabilityForm" id="generateBatchDataAvailabilityForm">
-        <br>
+       
         <table width="100%" align="center" class="submissionView" summary="layout">
             <tbody><tr>
-                <th>
-                    Please select an option
-                </th>
-            </tr>
-            <tr>
                 <td class="cellLabel">
+                    <fieldset>
+                    <legend style="font-size: 14px; margin-bottom: 10px;">Please select an option:</legend>
+                    
                     <input type="radio" name="option" ng-model="generateBatchDataAvailabilityForm.option" value="generate all" ng-checked id="option1">
                     <label for="option1">Generate data availability for all samples</label>
                     <br>
@@ -40,6 +38,7 @@
                     <br>
                     <input type="radio" name="option" ng-model="generateBatchDataAvailabilityForm.option" value="delete all" id="option3">
                     <label for="option3">Delete existing data availability</label>
+                </fieldset>
                 </td>
             </tr>
             </tbody></table>

@@ -2,7 +2,7 @@
   <div ng-class="{formFocus:loader}">
     <table border="0" class="contentTitle" summary="layout" width="100%">
         <tr>
-            <th align="left" scope="col">Sample Search by Publication</th>
+            <td align="left" scope="col"><h1>Sample Search by Publication</h1></td>
 
             <td align="right" width="30%">
                 <a class="helpText" href=
@@ -19,7 +19,7 @@
 <table width="100%" align="center" class="submissionView" summary="layout">
         <tr>
             <td class="cellLabel" width="15%">
-                <label for="sampleid">ID</label>
+                <label for="id">ID</label>
             </td>
             <td colspan="2">
                 <input type="text" ng-disabled="loader" name="id" size="30" value="" id="id" ng-model="id">
@@ -27,7 +27,7 @@
         </tr>
         <tr>
             <td class="cellLabel">
-                <label for="type">Type</label>
+                <label for="titleOperand">Type</label>
             </td>
             <td colspan="2">
                 <select name="type" ng-init="type='PubMed'" ng-model="type" id="titleOperand" ng-disabled="loader">

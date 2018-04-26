@@ -1,9 +1,9 @@
 <div class="spacer">
     <table border="0" class="contentTitle" summary="layout" width="100%">
         <tr>
-            <th scope="col" align="left">
-                My Workspace
-            </th>
+            <td scope="col" align="left">
+               <h1> My Workspace</h1>
+            </td>
             <td align="right" width="30%">
                 <a class="helpText" href=
                         "javascript:openHelpWindow('https://wiki.nci.nih.gov/x/fYQfEQ')">Help</a>   <a class=
@@ -15,9 +15,9 @@
     <div class="message">{{sampleMessage}}</div>
 <br />
     <div>
-        <input type="checkbox" ng-model="mySamples"><span style="font-size:16px;"> Samples </span>
-        <input type="checkbox" ng-model="myProtocols"><span style="font-size:16px;"> Protocols </span>
-        <input type="checkbox" ng-model="myPublications"><span style="font-size:16px;"> Publications </span>
+        <input type="checkbox" ng-model="mySamples" id="mySampleslabel"><label style="font-size:16px;" for="mySampleslabel"> Samples </label>
+            <input type="checkbox" ng-model="myProtocols" id="myProtocolslabel"><label for="myProtocolslabel" style="font-size:16px;"> Protocols </label>
+            <input type="checkbox" ng-model="myPublications" id="myPublicationsLabel"><label style="font-size:16px;" for="myPublicationsLabel"> Publications </label>
     </div>
     <hr>
     <div style="font-size:18px;" ng-show="mySamples">My Samples</div>
