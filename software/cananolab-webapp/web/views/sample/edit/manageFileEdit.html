@@ -69,17 +69,17 @@
                     <tr>
                         <td colspan="2">
                             <span id="load" style="display: block;" ng-show="fileForm.uriExternal=='false'">
-        						<input type="file" ng-model="fileForm.uploadedFile" size="60" value="" ng-file-select="onFileSelect($files)" id="uploadedFile">
+        						 <label for="uploadedFile" aria-label="Upload File"><input type="file" ng-model="fileForm.uploadedFile" size="60" value="" ng-file-select="onFileSelect($files)" id="uploadedFile"></label>
         						<span ng-if="ie9">{{selectedFileName}}</span>
 				            </span>
                             <span id="uploadedUri" ng-show="fileForm.uriExternal=='false' && fileForm.id != null">
 			                    <a href="rest/composition/download?fileId={{fileForm.id}}">{{fileForm.title}}</a>
                             </span>
-                            <label for="uploadedFile">&nbsp;&nbsp;</label>
+                        
 			                <span id="link" ng-show="fileForm.uriExternal=='true'">
-                                <input type="text" ng-model="fileForm.externalUrl" size="60" value="" id="externalUrl">&nbsp;&nbsp;[<a class="disclaimerLink" href="html/cananoDisclaimer.html" target="new" id="pubExternalLink">Disclaimer</a>]
+                                <label for="externalUrl" aria-label="External URL"><input type="text" ng-model="fileForm.externalUrl" size="60" value="" id="externalUrl"></label>&nbsp;&nbsp;[<a class="disclaimerLink" href="html/cananoDisclaimer.html" target="new" id="pubExternalLink">Disclaimer</a>]
 					        </span>
-                            <label for="externalUrl">&nbsp;</label>
+                         
                         </td>
                     </tr>
                     <tr>

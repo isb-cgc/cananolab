@@ -1,6 +1,7 @@
 <div ng-class="{formFocus:loader}">
-<div class="modal-header">
-    <h3 class="modal-title pull-left">Point Of Contact Information</h3>
+<div class="modal-header" role="form" aria-labelledby="pointofContact">
+    
+    <h2 class="modal-title pull-left" id="pointofContact">Point Of Contact Information</h2>
     <div class="pull-right">
         <a href="https://wiki.nci.nih.gov/display/caNanoLab/3+-+Managing+Samples+in+caNanoLab#id-3-ManagingSamplesincaNanoLab-UpdatingaSample" target="_blank" class="help">Help</a>
         <a href="" ng-click="cancel()" class="help">Hide</a>
@@ -9,7 +10,7 @@
 <!--     <h4 ng-if="poc.primaryContact" class="modal-title">Primary</h4>
     <h4 ng-if="!poc.primaryContact" class="modal-title">Secondary</h4> -->
 </div>
-<div class="modal-body" width='750px'>
+<div class="modal-body" width='750px' role="form" aria-labelledby="pointForm">
     <div style="clear:both"></div>
     <div>
         <div class="message">
@@ -18,29 +19,29 @@
         <div class="message">
             <div ng-repeat="i in sampleData.errors track by $index">{{i}}</div><br />
         </div>        
-
-        <table class="subSubmissionView" width="85%" align="center" summary="layout">
+<fieldset>
+        <table class="subSubmissionView" width="85%" align="center" summary="layout" id="pointForm">
             <tbody>
                 <tr>
                     <td>
                         <table>
                             <tbody><tr>
                                 <td class="cellLabel">
-                                    <label for="organization-name">Organization Name*</label>
+                                    <label for="organization-nameLabel">Organization Name*</label>
                                 </td>
                                 <td>
-                                    <div id="organization-name">
+                                    <div>
                                         <select data-ng-model="poc.organization.name"
-                                        data-ng-options="orginization for orginization in organizations" ng-change="organizationDropdownChanged()">
+                                        data-ng-options="orginization for orginization in organizations" ng-change="organizationDropdownChanged()" id="organization-nameLabel">
                                         </select>
                                 </div>
                             </td>
                             <td class="cellLabel" valign="top">
-                                <label for="role">Role</label>
+                                <label for="roleLabel">Role</label>
                             </td>
                             <td valign="top" colspan="4">
-                                <div id="role">
-                                    <select data-ng-model="poc.role" ng-change="organizationDropdownChanged()" data-ng-options="role for role in roles">
+                                <div>
+                                    <select data-ng-model="poc.role" ng-change="organizationDropdownChanged()" data-ng-options="role for role in roles" id="roleLabel">
                                     </select>
                             </div>
                         </td>
@@ -168,6 +169,7 @@
                 </td>
             </tr>
         </tbody></table>
+        </fieldset>
     </div>
 <div style="padding-top:20px;margin-left:38px;width:300px" ng-show="deleteBlock" class="message">
     Are you sure you wish to delete this contact?<br /><br />
@@ -179,14 +181,15 @@
 
 </div>
 <div style="clear:both;"></div>
-<div class="modal-footer">
-    <div class="col-md-6 pull-left">
+<div class="modal-footer" role="form" aria-labelledby="actionLabel">
+    <div class="col-md-6 pull-left" id="action">
         <button ng-if="!poc.primaryContact && type!='add'" ng-click="delete()" class="btn btn-danger" ng-disabled="loader">Delete</button> 
     </div>
     <div class="col-md-6">
         <button ng-click="cancel()" class="btn btn-default btn-modal" ng-disabled="loader">Cancel</button>   
         <button ng-click="save()" class='btn btn-primary btn-modal' ng-disabled="!poc.organization.name || loader">Save</button>
     </div>
+
 </div>
 
  <!-- ng-if="!poc.primaryContact && type!='add'" -->

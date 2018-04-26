@@ -4,12 +4,12 @@
 <!-- Menu Bar -->
     <table border="0" class="contentTitle" summary="layout" width="100%">
         <tr>
-	        <th scope="col" align="left" ng-if="updateButton == 'Save'">
-	            Create Sample
-	        </th>
+	        <td scope="col" align="left" ng-if="updateButton == 'Save'">
+	            <h1>Create Sample</h1>
+	        </td>
 	
-	        <th scope="col" align="left" ng-if="updateButton == 'Update'">
-	            Update Sample
+	        <td scope="col" align="left" ng-if="updateButton == 'Update'">
+	            <h1>Update Sample</h1>
 	        </th>
             <td align="right" width="30%">
                 <button class="btn back btn-xs" ng-click="goBack()">Back</button>
@@ -74,21 +74,22 @@
                 <tr>
                     <td colspan="2">
                         <table class="editTableWithGrid" width="95%" align="center">
+                            <caption style="display:none;">Point of Contacts</caption>
                             <tbody>
                                 <tr>
-                                    <th>
+                                    <th role="columnheader">
                                         Primary Contact?
                                     </th>
-                                    <th>
+                                    <th role="columnheader">
                                         Contact Person
                                     </th>
-                                    <th>
+                                    <th role="columnheader">
                                         Organization
                                     </th>
-                                    <th>
+                                    <th role="columnheader">
                                         Role
                                     </th>
-                                    <th></th>
+                                    <th role="columnheader"></th>
                                 </tr>
 
                                 <tr ng-repeat="poc in sampleData.pointOfContacts track by $index">
@@ -140,7 +141,7 @@
                             </ul>
                         </div>
 
-                        <input id="newKeyword" type="text" ng-model="newKeyword">
+                        <label for="newKeyword" aria-label="New Keyword"><input id="newKeyword" type="text" ng-model="newKeyword"></label>
                         <button type="button" class="btn btn-primary btn-xs" ng-click="addKeyword()">Add</button>
                    </td>
                 </tr>
@@ -174,14 +175,15 @@
                     <tr ng-show="sampleData.dataAvailability && sampleData.pointOfContacts.length">
                         <td colspan="2">
                             <table class="editTableWithGrid" width="95%" align="center">
+                                <caption style="display:none;">Data Availability Metrics</caption>
                                 <tbody><tr>
-                                    <th scope="row">
+                                    <th role="columnheader">
                                         caNanoLab Availability Score
                                     </th>
-                                    <th scope="row">
+                                    <th role="columnheader">
                                         MINChar Availability Score
                                     </th>
-                                    <th scope="row"></th>
+                                    <th role="columnheader"></th>
                                 </tr>
                                 <tr><td>{{sampleData.dataAvailability.caNanoLabScore}}</td>
                                     <td>{{sampleData.dataAvailability.mincharScore}}</td>

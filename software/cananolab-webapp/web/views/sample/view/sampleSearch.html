@@ -2,7 +2,7 @@
   <div ng-class="{formFocus:loader}">
     <table border="0" class="contentTitle" summary="layout" width="100%">
         <tr>
-            <th align="left" scope="col">Sample Search</th>
+            <td align="left" scope="col"><h1>Sample Search</h1></td>
 
             <td align="right" width="30%">
                 <a class="helpText" href="#/advancedSampleSearch">
@@ -43,9 +43,8 @@
                         <td class="cellLabel" width="100"><label for=
                         "sampleName">Sample Name</label></td>
 
-                        <td><label for="nameOperand" style="display:none">name
-                        operand</label> <select ng-disabled="loader" ng-init="searchSampleForm.nameOperand='contains'" id="nameOperand" ng-model="searchSampleForm.nameOperand" name=
-                        "nameOperand">
+                        <td><label for="nameOperand" aria-label="Sample Name Select"> <select ng-disabled="loader" ng-init="searchSampleForm.nameOperand='contains'" id="nameOperand" ng-model="searchSampleForm.nameOperand" name=
+                        "nameOperand"></label> 
                             <option value="contains">
                                 contains
                             </option>
@@ -69,9 +68,8 @@
                         <td class="cellLabel" width="100"><label for=
                         "samplePOC">Sample Point of Contact</label></td>
 
-                        <td><label for="pocOperand" style="display:none">POC
-                        Operand</label> <select ng-disabled="loader" id="pocOperand" name=
-                        "pocOperand" ng-init="searchSampleForm.pocOperand='contains'" ng-model="searchSampleForm.pocOperand">
+                        <td><label for="pocOperand" aria-label="Sample Point of Contact Select"><select ng-disabled="loader" id="pocOperand" name=
+                        "pocOperand" ng-init="searchSampleForm.pocOperand='contains'" ng-model="searchSampleForm.pocOperand"></label> 
                             <option value="contains">
                                 contains
                             </option>

@@ -2,9 +2,9 @@
 <div ng-class="{formFocus:loader}"> 
 <table class="contentTitle" summary="layout" width="100%" border="0">
 	<tbody><tr>
-		<th scope="col" align="left">
-			Advanced Sample Search
-		</th>
+		<td scope="col" align="left">
+			<h1>Advanced Sample Search</h1>
+		</td>
 		
 			<td width="30%" align="right">
   
@@ -69,7 +69,7 @@
 					<tbody><tr>
 						<td>
 
-							<label for="nameType">&nbsp;</label>
+							<label for="nameType" aria-label="Sample Criteria Select">
 							<select ng-model="theSampleQuery.nameType" name="theSampleQuery.nameType" ng-init="theSampleQuery.nameType=''" id="nameType"><option value="">
 									-- Please Select --
 								</option>
@@ -78,19 +78,19 @@
 								</option>
 								<option value="point of contact name">
 									point of contact name
-								</option></select>
+								</option></select></label>
 						</td>
 						<td>
-						    <label for="sampleOperand">&nbsp;</label>
+						    <label for="sampleOperand" aria-label="Sample Criteria Select for Contains or Equals">
 							<select ng-model="theSampleQuery.operand" name="theSampleQuery.operand" ng-init="theSampleQuery.operand=''" id="sampleOperand"><option value="">
 									-- Please Select --
 								</option>
 								<option value="contains">contains</option>
-								<option value="equals">equals</option></select>
+								<option value="equals">equals</option></select></label>
 						</td>
 						<td>
-						    <label for="name">&nbsp;</label>
-							<input ng-model="theSampleQuery.name" name="theSampleQuery.name" size="50" value="" id="name" type="text">
+						    <label for="name" aria-label="Criteria Freeform">
+							<input ng-model="theSampleQuery.name" name="theSampleQuery.name" size="50" value="" id="name" type="text"></label>
 						</td>
 					</tr>
 					<tr>
@@ -161,7 +161,7 @@
 				<table id="newCompositionQuery" style="display: block;" class="promptbox" summary="layout">
 					<tbody><tr>
 						<td>
-							<label for="compType">&nbsp;</label>
+							<label for="compType" aria-label="Composition Select">
 							<select name="theCompositionQuery.compositionType" ng-model="theCompositionQuery.compositionType" ng-change="setCompositionEntityOptions();" id="compType"><option value="">
 									-- Please Select --
 								</option>
@@ -173,30 +173,30 @@
 								</option>
 								<option value="function">
 									function
-								</option></select>
+								</option></select></label>
 						</td>
 						<td>
-							<label for="entityType">&nbsp;</label>
+							<label for="entityType" aria-label="Entity Type Select">
 							<select ng-options="option for option in entityTypes" ng-model="theCompositionQuery.entityType" id="entityType">
 								<option value="">
 									-- Please Select --
 								</option>
-							</select>
+							</select></label>
 						</td>
 						<td class="cellLabel" ng-show="theCompositionQuery.compositionType != 'function'">
-							<span id="compChemicalNameLabel"><label for="chemicalName">with chemical name</label></span>
+							<span id="compChemicalNameLabel"><label>with chemical name</label></span>
 						</td>
 						<td ng-show="theCompositionQuery.compositionType != 'function'">
-							<label for="compOperand">&nbsp;</label>
+							<label for="compOperand" aria-label="Composition Select Contains/Equals">
 							<select name="theCompositionQuery.operand" ng-model="theCompositionQuery.operand" id="compOperand" ><option value="">
 									-- Please Select --
 								</option>
 								<option value="contains">contains</option>
 								<option value="equals">equals</option>
-							</select>
+							</select></label>
 						</td>
 						<td ng-show="theCompositionQuery.compositionType != 'function'">
-							<input name="theCompositionQuery.chemicalName" ng-model="theCompositionQuery.chemicalName" size="50" value="" id="chemicalName" type="text">
+							<label for="chemicalName" aria-label="Chemical Name Freeform"><input name="theCompositionQuery.chemicalName" ng-model="theCompositionQuery.chemicalName" size="50" value="" id="chemicalName" type="text"></label>
 						</td>
 					</tr>
 					<tr>
@@ -240,7 +240,7 @@
 		</tr>
 		<tr ng-if="searchSampleForm.compositionQueries.length>1">
 			<td>
-				<div id="compositionLogicalOperator">
+				<div id="compositionLogicalOperator" role="radiogroup" aria-label="Sample Search">
 					<input name="searchSampleForm.compositionLogicalOperator" value="and" ng-model="searchSampleForm.compositionLogicalOperator" id="compositionLogicalOperator" type="radio">
 					<label for="compositionLogicalOperatorAnd">AND</label>
 					<input name="searchSampleForm.compositionLogicalOperator" value="or" ng-model="searchSampleForm.compositionLogicalOperator" id="compositionLogicalOperator" type="radio">
@@ -291,23 +291,23 @@
 				<table id="newCharacterizationQuery" style="display: block;" class="promptbox" summary="layout">
 					<tbody><tr>
 						<td>
-							<label for="charType">&nbsp;</label>
+							<label for="charType" aria-label="Characterization Criteria Select">
 								<select data-ng-model="theCharacterizationQuery.characterizationType"
 								data-ng-options="option.value as option.label for option in data.characterizationTypes" id="charType" ng-change="setCharacterizationOptions()">
 								<option value="">-- Please Select --</option>
-								</select>
+								</select></label>
 						</td>
-						<td><label for="charName">&nbsp;</label>
+						<td><label for="charName" aria-label="Characterization Criteria Name">
 							<select data-ng-options="option.value as option.label for option in characterizationNameList" name="theCharacterizationQuery.characterizationName" ng-change="setDatumNameOptionsByCharName()" data-ng-model="theCharacterizationQuery.characterizationName" id="charName"><option value="">
 									-- Please Select --
-								</option></select>
+								</option></select></label>
 						</td>
-						<td><label for="datumName">&nbsp;</label>
+						<td><label for="datumName" aria-label="Characterization Datum Name Select">
 							<select name="theCharacterizationQuery.datumName" data-ng-options="option.value as option.label for option in datumNameList" ng-change="setDatumValueUnitOptions()" ng-model="theCharacterizationQuery.datumName" id="datumName"><option value="">
 									-- Please Select --
-								</option></select>
+								</option></select></label>
 						</td>
-						<td ng-show="theCharacterizationQuery.datumName"><label for="charOperand">&nbsp;</label>
+						<td ng-show="theCharacterizationQuery.datumName"><label for="charOperand" aria-label="Characterization Select">
 							<select ng-model="theCharacterizationQuery.operand" name="theCharacterizationQuery.operand" id="charOperand">
 								<option value="">
 									-- Please Select --
@@ -317,12 +317,12 @@
 								<option value=">=">&gt;=</option>
 								<option value="<">&lt;</option>
 								<option value="<=">&lt;=</option>
-							</select>
+							</select></label>
 						</td>
 						<td>
 							<div id="datumValueTextBlock" ng-if="theCharacterizationQuery.datumName">
-								<label for="datumValue">&nbsp;</label>
-								<input ng-model="theCharacterizationQuery.datumValue" name="theCharacterizationQuery.datumValue" size="10" value="" id="datumValue" type="text">
+								<label for="datumValue" aria-label="Characterization Criteria Freeform">
+								<input ng-model="theCharacterizationQuery.datumValue" name="theCharacterizationQuery.datumValue" size="10" value="" id="datumValue" type="text"></label>
 								
 							</div>
 <!-- 							<div id="datumValueSelectBlock" style="display:none">
@@ -336,9 +336,9 @@
 						</td>
 						<td ng-show="datumUnitOptionsList.length">
 							<div id="datumValueUnitBlock">
-							    <label for="datumValueUnit">&nbsp;</label>
+							    <label for="datumValueUnit" aria-label="Datum Unit Options List">
 								<select ng-init="theCharacterizationQuery.datumValueUnit=''" data-ng-options="option for option in datumUnitOptionsList" ng-model="theCharacterizationQuery.datumValueUnit" name="theCharacterizationQuery.datumValueUnit" id="datumValueUnit"><option value=""> -- Please Select --
-									</option></select>
+									</option></select></label>
 							</div>
 						</td>
 					</tr>
@@ -365,7 +365,7 @@
 		</tr>
 		<tr ng-if="searchSampleForm.characterizationQueries.length>1">
 			<td>
-				<div id="characterizationLogicalOperator">
+				<div id="characterizationLogicalOperator" role="radiogroup" aria-label="Sample Search">
 					<input name="searchSampleForm.characterizationLogicalOperator" value="and" ng-model="searchSampleForm.characterizationLogicalOperator" id="characterizationLogicalOperator" type="radio">
 					<label for="characterizationLogicalOperatorAnd">AND</label>
 					<input name="searchSampleForm.characterizationLogicalOperator" value="or" ng-model="searchSampleForm.characterizationLogicalOperator" id="characterizationLogicalOperator" type="radio">
@@ -378,7 +378,7 @@
 	<table class="submissionView" summary="layout" style="border: 0" width="100%" align="center">
 		<tbody><tr>
 			<td>
-				<div id="logicalOperator" style="display: block">
+				<div id="logicalOperator" style="display: block" role="radiogroup" aria-label="Sample Search">
 					<input name="searchSampleForm.logicalOperator" ng-model="searchSampleForm.logicalOperator" value="and" id="masterLogicalOperatorAnd" type="radio">
 					<label for="masterLogicalOperatorAnd">AND</label>
 					<input name="searchSampleForm.logicalOperator" ng-model="searchSampleForm.logicalOperator" value="or" id="masterLogicalOperatorOr" type="radio">
