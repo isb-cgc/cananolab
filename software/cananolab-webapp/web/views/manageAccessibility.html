@@ -16,6 +16,7 @@
     <td colspan="2">
         <!-- <c:set var="edit" value="true" /> -->
         <table class="editTableWithGrid" width="95%" align="center" ng-if="$parent.groupAccesses">
+            <caption aria-label="Access to the {{$parent.dataType}}" style="display:none;"></caption>
             <tr>
                 <th width="40%" scope="col">Group Name</th>
                 <th width="55%" scope="col">Access</th>
@@ -78,8 +79,9 @@
         </c:if> -->
         <div id="newAccess" ng-if="$parent.addAccess">
             <table class="subSubmissionView" width="85%" align="center" summary="layout">
+                <caption aria-label="Access Information" style="display:none;"></caption>
                 <tr>
-                    <th colspan="4">
+                    <th colspan="4" role="columnheader">
                         Access Information
                     </th>
                 </tr>
@@ -93,7 +95,7 @@
                         <input type="radio" ng-model="accessForm.theAccess.accessType" value="user" ng-click="selectUserAccess();" id="byUser">
                         <label for="byUser">User&nbsp;&nbsp;</label>
                         <input type="radio" ng-model="accessForm.theAccess.accessType" value="role" ng-click="selectPublicAccess();" id="byPublic" ng-show="$parent.isCurator.curator">
-                        <label for="byPublic" ng-if="$parent.isCurator.curator">Public</label>
+                        <label for="byPublic"  ng-if="$parent.isCurator.curator">Public</label>
                     </td>
                 </tr>
                 <tr>
@@ -103,10 +105,10 @@
                     <td class="cellLabel" id="userNameLabel" ng-if="$parent.showAccessuser">
                         User Login Name *
                     </td>
-                    <td><label for="groupName" style="display:none">Group Name</label>
-                        <input type="text" ng-model="accessForm.theAccess.recipient" value="" id="groupName" ng-if="$parent.showCollaborationGroup" ng-disabled="accessForm.theAccess.recipient == 'public'">
-                        <label for="userName" style="display:none">Login Name</label>
-                        <input type="text" ng-model="accessForm.theAccess.recipient" value="" id="userName" ng-if="$parent.showAccessuser">
+                    <td><label for="groupName" style="display:none" aria-label="Group Name">
+                        <input type="text" ng-model="accessForm.theAccess.recipient" value="" id="groupName" ng-if="$parent.showCollaborationGroup" ng-disabled="accessForm.theAccess.recipient == 'public'"></label>
+                        <label for="userName" style="display:none" aria-label="Login Name">
+                        <input type="text" ng-model="accessForm.theAccess.recipient" value="" id="userName" ng-if="$parent.showAccessuser"></label>
                     </td>
                     <td>
                         <button class="btn btn-primary btn-xs" 
@@ -158,7 +160,7 @@
                 </tr>
                 <tr>
                     <td class="cellLabel" width="10%">
-                        Access to the {{$parent.dataType}} *
+                       <label for="roleName"> Access to the {{$parent.dataType}} *</label>
                     </td>
                     <td colspan="2">
                         <select ng-disabled="accessForm.theAccess.recipient == 'ROLE_ANONYMOUS'" ng-model="accessForm.theAccess.roleName" id="roleName" ng-options="key as value for (key , value) in $parent.csmRoleNames" >

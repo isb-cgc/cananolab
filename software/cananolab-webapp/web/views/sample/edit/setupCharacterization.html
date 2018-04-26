@@ -11,9 +11,9 @@
 <div ng-class="{formFocus:loader}">
 <table border="0" class="contentTitle" summary="layout" width="100%">
   <tr>
-    <th align="left" scope="col">
-      Sample {{sampleName.name}} {{title}} Characterization
-    </th>
+    <td align="left" scope="col">
+      <h1>Sample {{sampleName.name}} {{title}} Characterization</h1>
+    </td>
     <td align="right" width="30%">
       <a class="helpText" href=
       "javascript:openHelpWindow('https://wiki.nci.nih.gov/display/caNanoLab/Managing+Sample+Characterizations#ManagingSampleCharacterizations-SubmittingCharacterizations')">Help</a>   <a class=
@@ -156,7 +156,7 @@
 </tr>
 <tr>
 	<td class="cellLabel">
-		<label for="charSource">Characterization Source</label>
+		<label for="characterizationSourceId">Characterization Source</label>
 	</td>
 	<td>
 		<select ng-hide="loader" data-ng-model="data.characterizationSourceId"
@@ -164,14 +164,14 @@
 	</select>
 </td>
 <td class="cellLabel">
-	<label for="charDate">Characterization Date</label>
+	<label for="characterizationDateLabel">Characterization Date</label>
 </td>
 <td>
 
 	<div class="input-group" style="width:350px;">
-		<input type="text" class="form-control" datepicker-popup="{{format}}" ng-model="data.characterizationDate" is-open="opened" min-date="minDate" datepicker-options="dateOptions" date-disabled="disabled(date, mode)" ng-required="true" close-text="Close" readonly />
+		<input id="characterizationDateLabel" type="text" class="form-control" datepicker-popup="{{format}}" ng-model="data.characterizationDate" is-open="opened" min-date="minDate" datepicker-options="dateOptions" date-disabled="disabled(date, mode)" ng-required="true" close-text="Close" readonly />
 		<span class="input-group-btn">
-			<button type="button" class="btn btn-default" ng-click="open($event)"><i class="glyphicon glyphicon-calendar"></i></button>
+			<button type="button" class="btn btn-default" ng-click="open($event)" aria-label="Characterization Date Calendar"><i class="glyphicon glyphicon-calendar"></i></button>
 		</span>
 	</div>
 
@@ -904,10 +904,10 @@
 								Data and Conditions
 							</td>
 							<td class="cellLabel">
-								<input type="text" ng-model="currentFinding.numberOfColumns" name="numberOfRows" size="4">
+								<input type="text" ng-model="currentFinding.numberOfColumns" name="numberOfRows" size="4" id="colNum">
 								<label for="colNum">columns</label>
-								<input type="text" ng-model="currentFinding.numberOfRows" name="numberOfRows" size="4">
-								<label for="colNum">rows</label>			
+								<input type="text" ng-model="currentFinding.numberOfRows" name="numberOfRows" size="4" id="rowNum">
+								<label for="rowNum">rows</label>			
 								<button ng-click="updateRowsColsForFinding()" class="btn btn-primary btn-xs">Update</button>
 								<button ng-hide="isNewFinding" ng-click="openColumnOrderForm()" class="btn btn-primary btn-xs">Set Column Order</button>							</td>
 						</tr>
@@ -1160,7 +1160,7 @@
 <table class="submissionView" width="100%" align="center">
 	<tbody><tr>
 		<td class="cellLabel">
-			<label for="charConclusion">Analysis and Conclusion</label>
+			<label for="analysisConclusion">Analysis and Conclusion</label>
 		</td>
 		<td>
 			<textarea ng-model="data.analysisConclusion" name="analysisConclusion" cols="120" rows="3" id="analysisConclusion"></textarea>
@@ -1176,7 +1176,7 @@
 			
 				<tr>
 					<td width="20%">
-						<strong><label for="otherSamples">Copy to other samples with the same primary organization?</label></strong>
+						<strong><label for="selectedOtherSampleNames">Copy to other samples with the same primary organization?</label></strong>
 					</td>
 					<td width="20%">
 
@@ -1185,7 +1185,7 @@
 						data-ng-options="option for option in data.otherSampleNameLookup" id="selectedOtherSampleNames" ng-multiple="true" multiple>
 					</select>  
 					</td>
-					<td><input type="checkbox" ng-model="data.copyToOtherSamples" ng-true-value="true" ng-false-value="false">
+					<td><input type="checkbox" ng-model="data.copyToOtherSamples" ng-true-value="true" ng-false-value="false" id="copyData"> 
 						
 						<!-- 	<input name="copyData" value="on" id="copyData" type="checkbox"> -->
 							<strong><label for="copyData">Also copy finding data and conditions ?</label></strong>
