@@ -4,9 +4,9 @@
             <table class="contentTitle" width="100%" border="0" summary="layout">
                 <tbody>
                 <tr>
-                    <th scope="col" align="left">
-                        {{sampleName}} Sample Composition - Composition File
-                    </th>
+                    <td scope="col" align="left">
+                        <h1>{{sampleName}} Sample Composition - Composition File</h1>
+                    </td>
 
                     <td align="right" width="30%">
                         <a class="helpText" href="javascript:openHelpWindow('https://wiki.nci.nih.gov/display/caNanoLab/Managing+Sample+Composition+Annotations#ManagingSampleCompositionAnnotations-AddingCompositionFiles')">Help</a>
@@ -44,17 +44,18 @@
                                 <tr>
                                     <td colspan="2">
                             <span id="load" style="display: block;" ng-show="fileForm.uriExternal=='false'">
-        						<input type="file" ng-model="fileForm.uploadedFile" size="60" value="" ng-file-select="onFileSelect($files)" id="uploadedFile">
+                                <label for="uploadedFile" aria-label="Upload File">
+        						<input type="file" ng-model="fileForm.uploadedFile" size="60" value="" ng-file-select="onFileSelect($files)" id="uploadedFile"></label>
         						<span ng-if="ie9">{{selectedFileName}}</span>
 				            </span>
                             <span id="uploadedUri" ng-show="fileForm.uriExternal=='false' && fileForm.id != null">
 			                    <a href="rest/composition/download?fileId={{fileForm.id}}">{{fileForm.uri}}</a>
                             </span>
-                                        <label for="uploadedFile">&nbsp;&nbsp;</label>
+                                       
 			                <span id="link" ng-show="fileForm.uriExternal=='true'">
-                                <input type="text" ng-model="fileForm.externalUrl" size="60" value="" id="externalUrl">&nbsp;&nbsp;[<a class="disclaimerLink" href="html/cananoDisclaimer.html" target="new" id="pubExternalLink">Disclaimer</a>]
+                                <label for="externalUrl" aria-label="External URL"><input type="text" ng-model="fileForm.externalUrl" size="60" value="" id="externalUrl">&nbsp;&nbsp;[<a class="disclaimerLink" href="html/cananoDisclaimer.html" target="new" id="pubExternalLink"></label>Disclaimer</a>]
 					        </span>
-                                        <label for="externalUrl">&nbsp;</label>
+                                       
                                     </td>
                                 </tr>
                                 <tr>

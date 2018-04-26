@@ -12,7 +12,7 @@
     </tr>
     <tr ng-repeat="(key, entityTypes) in $parent.nanomaterialentity">
         <td align="left">
-            <a href="{{key}}"></a>
+            <!-- why do we have this link? <a href="{{key}}"></a> -->
             <div class="characterization">{{key}}</div>
             <table width="100%" align="center" class="summaryViewNoGrid"
                    style="background-color:#F5F5f5;" ng-repeat="entityType in entityTypes">
