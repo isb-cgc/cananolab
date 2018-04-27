@@ -80,10 +80,10 @@ public class CharacterizationServiceHelper
 
 	public List<Finding> findFindingsByCharacterizationId(String charId)
 			throws Exception {
-		if (!springSecurityAclService.currentUserHasReadPermission(Long.valueOf(charId), SecureClassesEnum.CHAR.getClazz()) &&
-			!springSecurityAclService.currentUserHasWritePermission(Long.valueOf(charId), SecureClassesEnum.CHAR.getClazz())) {
-			new NoAccessException("User has no access to the characterization " + charId);
-		}
+//		if (!springSecurityAclService.currentUserHasReadPermission(Long.valueOf(charId), SecureClassesEnum.CHAR.getClazz()) &&
+//			!springSecurityAclService.currentUserHasWritePermission(Long.valueOf(charId), SecureClassesEnum.CHAR.getClazz())) {
+//			new NoAccessException("User has no access to the characterization " + charId);
+//		}
 		List<Finding> findings = new ArrayList<Finding>();
 
 		CaNanoLabApplicationService appService = (CaNanoLabApplicationService) ApplicationServiceProvider.getApplicationService();
