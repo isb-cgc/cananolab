@@ -272,11 +272,23 @@ public class SimpleCharacterizationEditBean
 
 		charTypesLookup = InitCharacterizationSetup.getInstance().getCharacterizationTypes(request);
 		charTypesLookup.add("other");
+		
 
 		charNamesForCurrentType = new ArrayList<String>();
 		SortedSet<String> charNames = InitCharacterizationSetup.getInstance().getCharNamesByCharType(request, charType, characterizationService);
 		charNamesForCurrentType.addAll(charNames);
 		charNamesForCurrentType.add("other");
+		//Check char types and add appropriate other
+		if(charType.equals("physico-chemical characterization")){
+			charNamesForCurrentType.add("other_pc");
+		} else if (charType.equals("in vivo characterization")){
+			charNamesForCurrentType.add("other_vv");
+		} else if (charType.equals("in vitro characterization")){
+			charNamesForCurrentType.add("other_vt");
+		} else if (charType.equals("ex vivo")){
+			charNamesForCurrentType.add("other_ev");
+		}
+		
 
 		setProtocolLookup(request, charType, protocolService);
 		setPOCLookup(request, sampleId, service);
