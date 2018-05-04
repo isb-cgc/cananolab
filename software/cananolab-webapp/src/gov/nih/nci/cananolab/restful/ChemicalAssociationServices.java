@@ -119,6 +119,32 @@ public class ChemicalAssociationServices
 	}
 
 	@POST
+	@Path("/getDisplayNameForFunctionalizingEntityId")   
+	@Produces ("application/json")
+	public Response getDisplayNameForFunctionalizingEntityId(@Context HttpServletRequest httpRequest, @DefaultValue("") @QueryParam("id") String id)
+	{
+		try { 
+			CompositionManager comp = (CompositionManager) SpringApplicationContext.getBean(httpRequest, "compositionManager");
+			if (!SpringSecurityUtil.isUserLoggedIn())
+				return Response.status(Response.Status.UNAUTHORIZED).entity(Constants.MSG_SESSION_INVALID).build();
+
+//			List<ComposingElementBean> beans = comp.getComposingElementsByFunctionalizingEntityId(id, httpRequest);
+//			List<SimpleComposingElementBean> simpleBeans = new ArrayList<SimpleComposingElementBean>();
+//			for(ComposingElementBean compBean : beans){
+//				SimpleComposingElementBean simpleBean = new SimpleComposingElementBean();
+//				simpleBean.trasferSimpleComposingElementBean(compBean);
+//				simpleBeans.add(simpleBean);
+//			}
+			String displayName = comp.getDisplayNameForFunctionalizingEntityId(id, httpRequest);
+			return Response.ok(displayName).header("Access-Control-Allow-Credentials", "true").header("Access-Control-Allow-Origin", "*").header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS").header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization").build();
+
+		} catch (Exception e) {
+			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(CommonUtil.wrapErrorMessageInList("Error while getting ComposingElementsByFunctionalizingEntityId" + e.getMessage())).build();
+
+		}
+	}
+
+	@POST
 	@Path("/saveFile")
 	@Produces ("application/json")
 	public Response saveFile(@Context HttpServletRequest httpRequest, SimpleChemicalAssociationBean chemBean)
