@@ -18,6 +18,7 @@ import gov.nih.nci.cananolab.dto.common.FileBean;
 import gov.nih.nci.cananolab.dto.particle.composition.BaseCompositionEntityBean;
 import gov.nih.nci.cananolab.dto.particle.composition.ComposingElementBean;
 import gov.nih.nci.cananolab.dto.particle.composition.NanomaterialEntityBean;
+import gov.nih.nci.cananolab.dto.particle.composition.FunctionalizingEntityBean;
 import gov.nih.nci.cananolab.exception.BaseException;
 import gov.nih.nci.cananolab.security.utils.SpringSecurityUtil;
 import gov.nih.nci.cananolab.service.sample.CompositionService;
@@ -133,6 +134,18 @@ public class CompositionManager
 		NanomaterialEntityBean entityBean = compositionService.findNanomaterialEntityById(sampleId, id);
 		List<ComposingElementBean> composingElements = entityBean.getComposingElements();
 		return composingElements;
+	}
+	
+	public String getDisplayNameForFunctionalizingEntityId(String id, HttpServletRequest request) throws Exception
+	{
+		if (!SpringSecurityUtil.isUserLoggedIn() || StringUtils.isEmpty(id))
+			return null;
+		
+		String sampleId = (String) request.getSession().getAttribute("sampleId");
+		
+		FunctionalizingEntityBean entityBean = compositionService.findFunctionalizingEntityById(sampleId, id);
+		String displayName = entityBean.getDisplayName();
+		return displayName;
 	}
 	
 }
