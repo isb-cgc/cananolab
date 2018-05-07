@@ -19,6 +19,7 @@ L-->
 			<include method="resetTheFile" />
 			<include method="getAssociatedElementOptions" />
 			<include method="getComposingElementsByNanomaterialEntityId" />
+			<include method="getDisplayNameForFunctionalizingEntityId" />
 		</create>
 		<create creator="new" javascript="NanomaterialEntityManager"
 			scope="session">
