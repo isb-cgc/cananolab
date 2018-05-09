@@ -19,6 +19,8 @@ public class SimpleBaseCompositionEntityBean {
 	List<SimpleFileBean> files;
 
 	String domainId, displayName; // used for DWR ajax in
+	
+	String name;
 
 	public String getType() {
 		return type;
@@ -76,11 +78,21 @@ public class SimpleBaseCompositionEntityBean {
 		this.displayName = displayName;
 	}
 	
+	public String getName(){
+		return name;
+	}
+	
+	public void setName(String name){
+		this.name = name;
+	}
+	
 	public void trasferSimpleBaseCompositionBean(BaseCompositionEntityBean bean){
 		setType(bean.getType());
 		setClassName(bean.getClassName());
 		setDescription(bean.getDescription());
 		setDomainId(bean.getDomainId());
+		setDisplayName(bean.getDisplayName());
+		setName(bean.getName());
 		
 		theFile = new SimpleFileBean();
 		theFile.setCreatedBy(bean.getTheFile().getDomainFile().getCreatedBy());
