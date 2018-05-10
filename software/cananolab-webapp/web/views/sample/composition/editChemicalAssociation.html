@@ -146,7 +146,7 @@
                             <br>
                             <label for="entityIdA">&nbsp;</label>
                             <select ng-model="chemAssociationForm.associatedElementA.entityId" ng-change="loadComposingElements('A', chemAssociationForm.associatedElementA.compositionType, chemAssociationForm.associatedElementA.entityId);" id="entityIdA"
-                                    ng-options="element.domainId as element.type for element in associatedElementsA">
+                                    ng-options="element.domainId as element.displayName for element in associatedElementsA">
                                 <option value=""></option>
                             </select>
                         </div><br />  
@@ -186,7 +186,7 @@
                             <br>
                             <label for="entityIdB">&nbsp;</label>
                             <select ng-model="chemAssociationForm.associatedElementB.entityId" ng-change="loadComposingElements('B', chemAssociationForm.associatedElementB.compositionType, chemAssociationForm.associatedElementB.entityId);" id="entityIdB"
-                                    ng-options="element.domainId as element.type for element in associatedElementsB">
+                                    ng-options="element.domainId as element.displayName for element in associatedElementsB">
                                 <option value=""></option>
                             </select>
                         </div>
