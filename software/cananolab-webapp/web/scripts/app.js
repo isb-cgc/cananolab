@@ -52,11 +52,8 @@
       };
 
       return res;
-    },
-
-    responseError: function(res) {
-      return res;
     }
+
   }
 };
 
