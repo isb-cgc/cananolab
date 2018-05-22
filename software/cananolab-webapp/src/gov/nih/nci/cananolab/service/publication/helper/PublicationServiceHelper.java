@@ -175,15 +175,17 @@ public class PublicationServiceHelper
 			Disjunction disjunction = Restrictions.disjunction();
 			crit.createAlias("authorCollection", "author");
 			for (String author : authors) {
+				//The column in MySQL is VARCHAR so search will be case insensitive, whether we use like or ilike
 				Criterion crit1 = Restrictions.ilike("author.lastName", author,
 						MatchMode.ANYWHERE);
 				disjunction.add(crit1);
-				Criterion crit2 = Restrictions.ilike("author.firstName",
-						author, MatchMode.ANYWHERE);
-				disjunction.add(crit2);
-				Criterion crit3 = Restrictions.ilike("author.initial", author,
-						MatchMode.ANYWHERE);
-				disjunction.add(crit3);
+				//Searching by first name and middle initial creates lots of false positives. ilike creates '%xxx%'
+//				Criterion crit2 = Restrictions.ilike("author.firstName",
+//						author, MatchMode.ANYWHERE);
+//				disjunction.add(crit2);
+//				Criterion crit3 = Restrictions.ilike("author.initial", author,
+//						MatchMode.ANYWHERE);
+//				disjunction.add(crit3);
 			}
 			crit.add(disjunction);
 		}
