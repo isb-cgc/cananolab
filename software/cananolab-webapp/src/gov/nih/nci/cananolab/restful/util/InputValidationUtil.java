@@ -48,9 +48,16 @@ public class InputValidationUtil {
 	}
 	
 	public static boolean isZipValid(String input) {
-		String reg = "^(\\d{5}(-\\d{4})?)|([a-zA-Z0-9\\s])$";
-		boolean match = input.matches(reg);
-		return (input == null) ? false : input.matches(reg);
+		//CANANOLAB-240. User needs to input international postal codes, not just US pattern
+		boolean match = isRelaxedAlphanumeric(input);
+		if(match) {
+			match = (input.length <= 10);
+		}
+		return match;
+		
+//		String reg = "^(\\d{5}(-\\d{4})?)|([a-zA-Z0-9\\s])$";
+//		boolean match = input.matches(reg);
+//		return (input == null) ? false : input.matches(reg);
 	}
 	
 	public static boolean isPhoneValid(String input) {

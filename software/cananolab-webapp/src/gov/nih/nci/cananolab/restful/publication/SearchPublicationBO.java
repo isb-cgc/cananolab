@@ -170,7 +170,8 @@ public class SearchPublicationBO extends BaseAnnotationBO
 	//	category = (String) theForm.get("category");
 		category = form.getCategory();
 		String keywordsStr = form.getKeywordsStr();
-		List<String> wordList = StringUtils.parseToWords(keywordsStr, "\r\n");
+		List<String> wordList = StringUtils.parseToWords(keywordsStr, "\n");
+
 		if (wordList != null) {
 			keywords = new String[wordList.size()];
 			wordList.toArray(keywords);
@@ -178,7 +179,7 @@ public class SearchPublicationBO extends BaseAnnotationBO
 		pubMedId = form.getPubMedId();
 		digitalObjectId = form.getDigitalObjectId();
 		String authorsStr = form.getAuthorsStr();
-		List<String> authorList = StringUtils.parseToWords(authorsStr, "\r\n");
+		List<String> authorList = StringUtils.parseToWords(authorsStr, "\n");
 		if (authorList != null) {
 			authors = new String[authorList.size()];
 			authorList.toArray(authors);
