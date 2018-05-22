@@ -175,6 +175,7 @@ public class PublicationServiceHelper
 			Disjunction disjunction = Restrictions.disjunction();
 			crit.createAlias("authorCollection", "author");
 			for (String author : authors) {
+				//The column in MySQL is VARCHAR so search will be case insensitive, whether we use like or ilike
 				Criterion crit1 = Restrictions.ilike("author.lastName", author,
 						MatchMode.ANYWHERE);
 				disjunction.add(crit1);

@@ -51,7 +51,7 @@ public class InputValidationUtil {
 		//CANANOLAB-240. User needs to input international postal codes, not just US pattern
 		boolean match = isRelaxedAlphanumeric(input);
 		if(match) {
-			match = (input.length <= 10);
+			match = (input.length() <= 10);
 		}
 		return match;
 		
