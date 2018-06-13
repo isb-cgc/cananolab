@@ -286,7 +286,7 @@ public class SimpleCharacterizationEditBean
 		} else if (charType.equals("in vitro characterization")){
 			charNamesForCurrentType.add("other_vt");
 		} else if (charType.equals("ex vivo")){
-			charNamesForCurrentType.add("other_ev");
+			charNamesForCurrentType.add("other_ex_vv");
 		}
 		
 
