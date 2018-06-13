@@ -322,6 +322,14 @@ app.filter('newlines', function () {
     }
 });
 
+app.filter('apostrophe', function () {
+  return function(text) {
+    if(text)
+        return text.replace(/&amp;apos;/g, "'");
+      return '';
+  }
+});
+
 app.run(['$rootScope','$interval','$window','$location','$http', function($rootScope,$interval, $window,$location, $http) { 
   //Google Analytics URL creation to track # (hash) changes
 
