@@ -2,6 +2,11 @@
 var app = angular.module('angularApp')
 
     .controller('EditNanoEntityCtrl', function (navigationService,groupService,$rootScope,$scope,$http,$location,$timeout,$routeParams,$upload) {
+        var replaceCharacters = function(text) {
+            var t_text = text.replace(/&amp;apos;/g, "'").replace(/&apos;/g, "'").replace(/&gt;/g, ">").replace(/&lt;/g, "<").replace(/&quot;/g,'"').replace(/&amp;/g,"&")
+            return t_text
+        };
+
         $scope.nanoEntityForm = {};
         $rootScope.tabs = navigationService.get();
         $rootScope.groups = groupService.getGroups.data.get();
@@ -179,7 +184,11 @@ var app = angular.module('angularApp')
             }
             
             $scope.nanoEntityForm.otherSampleNames = $scope.localForm.otherSampleNames;
-
+            for (var i=0; i<$scope.nanoEntityForm.composingElements.length; i++) {
+                var ce = $scope.nanoEntityForm.composingElements[i];
+                ce["description"]=replaceCharacters(ce["description"]);
+                delete ce["expand"]
+            };
             $http({method: 'POST', url: '/caNanoLab/rest/nanomaterialEntity/submit',data: $scope.nanoEntityForm}).
                 success(function(data, status, headers, config) {
                     if (data == "success") {
@@ -266,7 +275,7 @@ var app = angular.module('angularApp')
                     $scope.composingElementForm.valueUnit = element.valueUnit;
                     $scope.composingElementForm.molecularFormulaType = element.molecularFormulaType;
                     $scope.composingElementForm.molecularFormula = element.molecularFormula;
-                    $scope.composingElementForm.description = element.description.replace(/&amp;apos;/g, "'").replace(/&apos;/g, "'").replace(/&gt;/g, ">").replace(/&lt;/g, "<").replace(/&quot;/g,'"').replace(/&amp;/g,"&")
+                    $scope.composingElementForm.description = replaceCharacters(element.description);
                     $scope.composingElementForm.id = element.id;
                     $scope.composingElementForm.inherentFunction = element.inherentFunction;
                     $scope.composingElementForm.createdBy = element.createdBy;
@@ -380,8 +389,15 @@ var app = angular.module('angularApp')
             }
 
             $scope.messages = [];
+            for (var i=0; i<$scope.nanoEntityForm.composingElements.length; i++) {
+                var ce = $scope.nanoEntityForm.composingElements[i];
+                ce["description"]=replaceCharacters(ce["description"]);
+                delete ce["expand"]
+            };
+            console.log($scope.nanoEntityForm)
             $http({method: 'POST', url: '/caNanoLab/rest/nanomaterialEntity/saveComposingElement',data: $scope.nanoEntityForm}).
                 success(function(data, status, headers, config) {
+
                 	$scope.nanoEntityForm = data;
                 	$scope.composingElements = $scope.nanoEntityForm.composingElements;
                     $scope.loader = false;
