@@ -159,7 +159,10 @@ public class CharacterizationServices
 			CharacterizationManager characterizationMgr = (CharacterizationManager) SpringApplicationContext.getBean(httpRequest, "characterizationManager");
 
 			List<String> assayTypes = characterizationMgr.getAssayTypes(httpRequest, charName);
-
+			logger.debug("retrieved assayTypes");
+			if(!assayTypes.contains("other")){
+				assayTypes.add("other");
+			}
 			return Response.ok(assayTypes).header("Access-Control-Allow-Credentials", "true")
 					.header("Access-Control-Allow-Origin", "*").header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS")
 					.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization").build();
