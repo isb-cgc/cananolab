@@ -85,6 +85,7 @@ L-->
 			<fileset refid="compiletime.dependency.fileset" />
 			<fileset dir="${common.dir}/lib">
 				<include name="**/sdk/*.jar" />
+				<include name="**/globus/*.jar" />
 				<exclude name="**/maven-ant-tasks-*.jar" />
 				<exclude name="**/ant-contrib-*.jar" />
 			</fileset>

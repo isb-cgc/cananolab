@@ -52,29 +52,29 @@ import org.springframework.transaction.annotation.Transactional;
  *
  */
 @Component("compositionService")
-public class CompositionServiceLocalImpl extends BaseServiceLocalImpl implements CompositionService
-{
+public class CompositionServiceLocalImpl extends BaseServiceLocalImpl implements CompositionService {
 	private static Logger logger = Logger.getLogger(CompositionServiceLocalImpl.class);
 
 	@Autowired
 	private SpringSecurityAclService springSecurityAclService;
-	
+
 	@Autowired
 	private CompositionServiceHelper compositionServiceHelper;
 
-	public void saveNanomaterialEntity(SampleBean sampleBean, NanomaterialEntityBean entityBean) throws CompositionException,
-			NoAccessException
-	{
+	public void saveNanomaterialEntity(SampleBean sampleBean, NanomaterialEntityBean entityBean)
+			throws CompositionException, NoAccessException {
 		logger.debug("In saveNanomaterialEntity");
 		if (SpringSecurityUtil.getPrincipal() == null) {
 			throw new NoAccessException();
 		}
 		try {
 			Sample sample = sampleBean.getDomain();
-			if (!springSecurityAclService.currentUserHasWritePermission(sample.getId(), SecureClassesEnum.SAMPLE.getClazz())) {
+			if (!springSecurityAclService.currentUserHasWritePermission(sample.getId(),
+					SecureClassesEnum.SAMPLE.getClazz())) {
 				throw new NoAccessException();
 			}
-			CaNanoLabApplicationService appService = (CaNanoLabApplicationService) ApplicationServiceProvider.getApplicationService();
+			CaNanoLabApplicationService appService = (CaNanoLabApplicationService) ApplicationServiceProvider
+					.getApplicationService();
 			NanomaterialEntity entity = entityBean.getDomainEntity();
 			logger.debug("NanomaterialEntity " + entity.getCreatedBy());
 			Boolean newEntity = true;
@@ -83,7 +83,8 @@ public class CompositionServiceLocalImpl extends BaseServiceLocalImpl implements
 				newEntity = false;
 				try {
 					logger.debug("Calling appService.load");
-					NanomaterialEntity dbEntity = (NanomaterialEntity) appService.load(NanomaterialEntity.class, entity.getId());
+					NanomaterialEntity dbEntity = (NanomaterialEntity) appService.load(NanomaterialEntity.class,
+							entity.getId());
 					logger.debug("dbEntity retrieved");
 				} catch (Exception e) {
 					String err = "Object doesn't exist in the database anymore.  Please log in again.";
@@ -116,30 +117,33 @@ public class CompositionServiceLocalImpl extends BaseServiceLocalImpl implements
 			for (FileBean fileBean : entityBean.getFiles()) {
 				fileUtils.writeFile(fileBean);
 			}
-			
-			//Commented when replacing CSM - saving Composition and NanoMaterial Entity accessibility may not be required
-			//since ACL inheritance is implemented
-			/*
-			if (newComp)
-				springSecurityAclService.saveAccessForChildObject(sample.getId(), SecureClassesEnum.SAMPLE.getClazz(), 
-																  sample.getSampleComposition().getId(), SecureClassesEnum.COMPOSITION.getClazz());
-			
-			
-			if (newEntity)
-				springSecurityAclService.saveAccessForChildObject(sample.getSampleComposition().getId(), SecureClassesEnum.COMPOSITION.getClazz(), 
-																  entity.getId(), SecureClassesEnum.NANO.getClazz());
 
-			// find sample accesses
-			List<AccessibilityBean> sampleAccesses = super.findSampleAccesses(entity.getSampleComposition().getSample().getId().toString());
-			// save sample accesses
-			for (AccessibilityBean access : sampleAccesses) {
-				if (newComp) {
-					this.saveAccessibility(access, sample.getSampleComposition().getId().toString());
-				}
-				if (newEntity) {
-					this.saveAccessibility(access, entity.getId().toString());
-				}
-			}*/
+			// Commented when replacing CSM - saving Composition and
+			// NanoMaterial Entity accessibility may not be required
+			// since ACL inheritance is implemented
+			/*
+			 * if (newComp)
+			 * springSecurityAclService.saveAccessForChildObject(sample.getId(),
+			 * SecureClassesEnum.SAMPLE.getClazz(),
+			 * sample.getSampleComposition().getId(),
+			 * SecureClassesEnum.COMPOSITION.getClazz());
+			 * 
+			 * 
+			 * if (newEntity)
+			 * springSecurityAclService.saveAccessForChildObject(sample.
+			 * getSampleComposition().getId(),
+			 * SecureClassesEnum.COMPOSITION.getClazz(), entity.getId(),
+			 * SecureClassesEnum.NANO.getClazz());
+			 * 
+			 * // find sample accesses List<AccessibilityBean> sampleAccesses =
+			 * super.findSampleAccesses(entity.getSampleComposition().getSample(
+			 * ).getId().toString()); // save sample accesses for
+			 * (AccessibilityBean access : sampleAccesses) { if (newComp) {
+			 * this.saveAccessibility(access,
+			 * sample.getSampleComposition().getId().toString()); } if
+			 * (newEntity) { this.saveAccessibility(access,
+			 * entity.getId().toString()); } }
+			 */
 		} catch (NoAccessException e) {
 			logger.error(e);
 			throw e;
@@ -150,8 +154,8 @@ public class CompositionServiceLocalImpl extends BaseServiceLocalImpl implements
 		}
 	}
 
-	public NanomaterialEntityBean findNanomaterialEntityById(String sampleId, String entityId) throws CompositionException, NoAccessException
-	{
+	public NanomaterialEntityBean findNanomaterialEntityById(String sampleId, String entityId)
+			throws CompositionException, NoAccessException {
 		NanomaterialEntityBean entityBean = null;
 		try {
 			NanomaterialEntity entity = compositionServiceHelper.findNanomaterialEntityById(sampleId, entityId);
@@ -168,15 +172,15 @@ public class CompositionServiceLocalImpl extends BaseServiceLocalImpl implements
 		return entityBean;
 	}
 
-	public void saveFunctionalizingEntity(SampleBean sampleBean,
-			FunctionalizingEntityBean entityBean) throws CompositionException,
-			NoAccessException {
+	public void saveFunctionalizingEntity(SampleBean sampleBean, FunctionalizingEntityBean entityBean)
+			throws CompositionException, NoAccessException {
 		if (SpringSecurityUtil.getPrincipal() == null) {
 			throw new NoAccessException();
 		}
 		try {
 			Sample sample = sampleBean.getDomain();
-			if (!springSecurityAclService.currentUserHasWritePermission(sample.getId(), SecureClassesEnum.SAMPLE.getClazz())) {
+			if (!springSecurityAclService.currentUserHasWritePermission(sample.getId(),
+					SecureClassesEnum.SAMPLE.getClazz())) {
 				throw new NoAccessException();
 			}
 			CaNanoLabApplicationService appService = (CaNanoLabApplicationService) ApplicationServiceProvider
@@ -187,12 +191,15 @@ public class CompositionServiceLocalImpl extends BaseServiceLocalImpl implements
 			if (entity.getId() != null) {
 				newEntity = false;
 				try {
-					//TODO:Commeted to removeCSM. Revisit for access inheritance.
-					/*if (!securityService.checkCreatePermission(entityBean
-							.getDomainEntity().getId().toString())) {
-						throw new NoAccessException();
-					}*/
-					FunctionalizingEntity dbEntity = (FunctionalizingEntity) appService.load(FunctionalizingEntity.class, entity.getId());
+					// TODO:Commeted to removeCSM. Revisit for access
+					// inheritance.
+					/*
+					 * if (!securityService.checkCreatePermission(entityBean
+					 * .getDomainEntity().getId().toString())) { throw new
+					 * NoAccessException(); }
+					 */
+					FunctionalizingEntity dbEntity = (FunctionalizingEntity) appService
+							.load(FunctionalizingEntity.class, entity.getId());
 				} catch (Exception e) {
 					String err = "Object doesn't exist in the database anymore.  Please log in again.";
 					logger.error(err);
@@ -224,30 +231,31 @@ public class CompositionServiceLocalImpl extends BaseServiceLocalImpl implements
 			for (FileBean fileBean : entityBean.getFiles()) {
 				fileUtils.writeFile(fileBean);
 			}
-			//Commented when replacing CSM - saving Composition and Functionalizing Entity accessibility may not be required
-			//since ACL inheritance is implemented
+			// Commented when replacing CSM - saving Composition and
+			// Functionalizing Entity accessibility may not be required
+			// since ACL inheritance is implemented
 			/*
-			if (newComp)
-				springSecurityAclService.saveAccessForChildObject(sample.getId(), SecureClassesEnum.SAMPLE.getClazz(), 
-																  sample.getSampleComposition().getId(), SecureClassesEnum.COMPOSITION.getClazz());
-			
-			if (newEntity)
-				springSecurityAclService.saveAccessForChildObject(sample.getSampleComposition().getId(), SecureClassesEnum.COMPOSITION.getClazz(), 
-						  										  entity.getId(), SecureClassesEnum.FUNCTIONALIZING.getClazz());
-
-			
-			// find sample accesses
-			List<AccessibilityBean> sampleAccesses = super.findSampleAccesses(entity.getSampleComposition().getSample().getId().toString());
-			// save sample accesses
-			for (AccessibilityBean access : sampleAccesses) {
-				if (newComp) {
-					this.saveAccessibility(access, sample
-							.getSampleComposition().getId().toString());
-				}
-				if (newEntity) {
-					this.saveAccessibility(access, entity.getId().toString());
-				}
-			}*/
+			 * if (newComp)
+			 * springSecurityAclService.saveAccessForChildObject(sample.getId(),
+			 * SecureClassesEnum.SAMPLE.getClazz(),
+			 * sample.getSampleComposition().getId(),
+			 * SecureClassesEnum.COMPOSITION.getClazz());
+			 * 
+			 * if (newEntity)
+			 * springSecurityAclService.saveAccessForChildObject(sample.
+			 * getSampleComposition().getId(),
+			 * SecureClassesEnum.COMPOSITION.getClazz(), entity.getId(),
+			 * SecureClassesEnum.FUNCTIONALIZING.getClazz());
+			 * 
+			 * 
+			 * // find sample accesses List<AccessibilityBean> sampleAccesses =
+			 * super.findSampleAccesses(entity.getSampleComposition().getSample(
+			 * ).getId().toString()); // save sample accesses for
+			 * (AccessibilityBean access : sampleAccesses) { if (newComp) {
+			 * this.saveAccessibility(access, sample
+			 * .getSampleComposition().getId().toString()); } if (newEntity) {
+			 * this.saveAccessibility(access, entity.getId().toString()); } }
+			 */
 		} catch (NoAccessException e) {
 			throw e;
 		} catch (Exception e) {
@@ -257,29 +265,33 @@ public class CompositionServiceLocalImpl extends BaseServiceLocalImpl implements
 		}
 	}
 
-	public void saveChemicalAssociation(SampleBean sampleBean, ChemicalAssociationBean assocBean) throws CompositionException,
-			NoAccessException {
+	public void saveChemicalAssociation(SampleBean sampleBean, ChemicalAssociationBean assocBean)
+			throws CompositionException, NoAccessException {
 		if (SpringSecurityUtil.getPrincipal() == null) {
 			throw new NoAccessException();
 		}
 		try {
-			CaNanoLabApplicationService appService = (CaNanoLabApplicationService) ApplicationServiceProvider.getApplicationService();
+			CaNanoLabApplicationService appService = (CaNanoLabApplicationService) ApplicationServiceProvider
+					.getApplicationService();
 			ChemicalAssociation assoc = assocBean.getDomainAssociation();
 			Sample sample = sampleBean.getDomain();
-			if (!springSecurityAclService.currentUserHasWritePermission(sample.getId(), SecureClassesEnum.SAMPLE.getClazz())) {
+			if (!springSecurityAclService.currentUserHasWritePermission(sample.getId(),
+					SecureClassesEnum.SAMPLE.getClazz())) {
 				throw new NoAccessException();
 			}
 			Boolean newAssoc = true;
 			Boolean newComp = true;
 			if (assoc.getId() != null) {
 				newAssoc = false;
-				//TODO:Commeted to removeCSM. Revisit for access inheritance.
-				/*if (!securityService.checkCreatePermission(assocBean
-						.getDomainAssociation().getId().toString())) {
-					throw new NoAccessException();
-				}*/
+				// TODO:Commeted to removeCSM. Revisit for access inheritance.
+				/*
+				 * if (!securityService.checkCreatePermission(assocBean
+				 * .getDomainAssociation().getId().toString())) { throw new
+				 * NoAccessException(); }
+				 */
 				try {
-					ChemicalAssociation dbAssoc = (ChemicalAssociation) appService.load(ChemicalAssociation.class, assoc.getId());
+					ChemicalAssociation dbAssoc = (ChemicalAssociation) appService.load(ChemicalAssociation.class,
+							assoc.getId());
 				} catch (Exception e) {
 					String err = "Object doesn't exist in the database anymore.  Please log in again.";
 					logger.error(err);
@@ -308,32 +320,31 @@ public class CompositionServiceLocalImpl extends BaseServiceLocalImpl implements
 			for (FileBean fileBean : assocBean.getFiles()) {
 				fileUtils.writeFile(fileBean);
 			}
-			
-			//Commented when replacing CSM - saving Composition and NanoMaterial Entity accessibility may not be required
-			//since access is controlled by access to sample
+
+			// Commented when replacing CSM - saving Composition and
+			// NanoMaterial Entity accessibility may not be required
+			// since access is controlled by access to sample
 			/*
-			if (newComp)
-				springSecurityAclService.saveAccessForChildObject(sample.getId(), SecureClassesEnum.SAMPLE.getClazz(), 
-																  sample.getSampleComposition().getId(), SecureClassesEnum.COMPOSITION.getClazz());
-			
-			if (newAssoc)
-				springSecurityAclService.saveAccessForChildObject(sample.getSampleComposition().getId(), SecureClassesEnum.COMPOSITION.getClazz(), 
-																  assoc.getId(), SecureClassesEnum.CHEMASSOC.getClazz());
-			
-			// find sample accesses
-			List<AccessibilityBean> sampleAccesses = super
-					.findSampleAccesses(assoc.getSampleComposition()
-							.getSample().getId().toString());
-			// save sample accesses
-			for (AccessibilityBean access : sampleAccesses) {
-				if (newComp) {
-					this.saveAccessibility(access, sample
-							.getSampleComposition().getId().toString());
-				}
-				if (newAssoc) {
-					this.saveAccessibility(access, assoc.getId().toString());
-				}
-			}*/
+			 * if (newComp)
+			 * springSecurityAclService.saveAccessForChildObject(sample.getId(),
+			 * SecureClassesEnum.SAMPLE.getClazz(),
+			 * sample.getSampleComposition().getId(),
+			 * SecureClassesEnum.COMPOSITION.getClazz());
+			 * 
+			 * if (newAssoc)
+			 * springSecurityAclService.saveAccessForChildObject(sample.
+			 * getSampleComposition().getId(),
+			 * SecureClassesEnum.COMPOSITION.getClazz(), assoc.getId(),
+			 * SecureClassesEnum.CHEMASSOC.getClazz());
+			 * 
+			 * // find sample accesses List<AccessibilityBean> sampleAccesses =
+			 * super .findSampleAccesses(assoc.getSampleComposition()
+			 * .getSample().getId().toString()); // save sample accesses for
+			 * (AccessibilityBean access : sampleAccesses) { if (newComp) {
+			 * this.saveAccessibility(access, sample
+			 * .getSampleComposition().getId().toString()); } if (newAssoc) {
+			 * this.saveAccessibility(access, assoc.getId().toString()); } }
+			 */
 		} catch (NoAccessException e) {
 			throw e;
 		} catch (Exception e) {
@@ -343,14 +354,15 @@ public class CompositionServiceLocalImpl extends BaseServiceLocalImpl implements
 		}
 	}
 
-	public void saveCompositionFile(SampleBean sampleBean, FileBean fileBean) throws CompositionException, NoAccessException
-	{
+	public void saveCompositionFile(SampleBean sampleBean, FileBean fileBean)
+			throws CompositionException, NoAccessException {
 		if (SpringSecurityUtil.getPrincipal() == null) {
 			throw new NoAccessException();
 		}
 		try {
 			Sample sample = sampleBean.getDomain();
-			if (!springSecurityAclService.currentUserHasWritePermission(sample.getId(), SecureClassesEnum.SAMPLE.getClazz())) {
+			if (!springSecurityAclService.currentUserHasWritePermission(sample.getId(),
+					SecureClassesEnum.SAMPLE.getClazz())) {
 				throw new NoAccessException();
 			}
 			File file = fileBean.getDomainFile();
@@ -359,63 +371,46 @@ public class CompositionServiceLocalImpl extends BaseServiceLocalImpl implements
 			if (file.getId() != null) {
 				newFile = false;
 			}
-			//TODO:Commeted to removeCSM. Revisit for access inheritance.
+			// TODO:Commeted to removeCSM. Revisit for access inheritance.
 			/*
-			 && !securityService.checkCreatePermission(file.getId().toString())
+			 * &&
+			 * !securityService.checkCreatePermission(file.getId().toString())
 			 */
+			CaNanoLabApplicationService appService = (CaNanoLabApplicationService) ApplicationServiceProvider
+					.getApplicationService();
 			if (!newFile) {
-				throw new NoAccessException();
-			}
-			fileUtils.prepareSaveFile(file);
-			CaNanoLabApplicationService appService = (CaNanoLabApplicationService) ApplicationServiceProvider.getApplicationService();
-			SampleComposition comp = sample.getSampleComposition();
-			if (comp == null) {
-				comp = new SampleComposition();
-				comp.setSample(sampleBean.getDomain());
-				comp.setFileCollection(new HashSet<File>());
-			} else if (comp.getId() == null) {
-				comp.setFileCollection(new HashSet<File>());
-			} else {
-				newComp = false;
-				// need to load the composition file collection to save
-				// composition
-				// because of
-				// unidirectional relationship between composition and file
-
-				comp = compositionServiceHelper.findCompositionBySampleId(sample.getId().toString());
-			}
-			comp.getFileCollection().add(file);
-			sample.setSampleComposition(comp);
-			if (file.getId() == null) { // because of unidirectional
-				// relationship between composition
-				// and lab files
-				appService.saveOrUpdate(comp);
-			} else {
 				appService.saveOrUpdate(file);
+			} else {
+				fileUtils.prepareSaveFile(file);
+
+				SampleComposition comp = sample.getSampleComposition();
+				if (comp == null) {
+					comp = new SampleComposition();
+					comp.setSample(sampleBean.getDomain());
+					comp.setFileCollection(new HashSet<File>());
+				} else if (comp.getId() == null) {
+					comp.setFileCollection(new HashSet<File>());
+				} else {
+					newComp = false;
+					// need to load the composition file collection to save
+					// composition
+					// because of
+					// unidirectional relationship between composition and file
+
+					comp = compositionServiceHelper.findCompositionBySampleId(sample.getId().toString());
+				}
+				comp.getFileCollection().add(file);
+				sample.setSampleComposition(comp);
+				if (file.getId() == null) { // because of unidirectional
+					// relationship between composition
+					// and lab files
+					appService.saveOrUpdate(comp);
+				} else {
+					appService.saveOrUpdate(file);
+				}
+				// write file to file system
+				fileUtils.writeFile(fileBean);
 			}
-			// write file to file system
-			fileUtils.writeFile(fileBean);
-			/*
-			if (newComp)
-				springSecurityAclService.saveAccessForChildObject(sample.getId(), SecureClassesEnum.SAMPLE.getClazz(), 
-						  										  comp.getId(), SecureClassesEnum.COMPOSITION.getClazz());
-			if (newFile)
-				springSecurityAclService.saveAccessForChildObject(comp.getId(), SecureClassesEnum.COMPOSITION.getClazz(), 
-						  										  file.getId(), SecureClassesEnum.FILE.getClazz());
-		
-			// save default access
-			// find sample accesses
-			List<AccessibilityBean> sampleAccesses = super
-					.findSampleAccesses(sample.getId().toString());
-			// save sample accesses
-			for (AccessibilityBean access : sampleAccesses) {
-				if (newComp) {
-					this.saveAccessibility(access, comp.getId().toString());
-				}
-				if (newFile) {
-					this.saveAccessibility(access, file.getId().toString());
-				}
-			}*/
 		} catch (NoAccessException e) {
 			throw e;
 		} catch (Exception e) {
@@ -425,8 +420,8 @@ public class CompositionServiceLocalImpl extends BaseServiceLocalImpl implements
 		}
 	}
 
-	public FunctionalizingEntityBean findFunctionalizingEntityById(String sampleId, String entityId) throws CompositionException, NoAccessException
-	{
+	public FunctionalizingEntityBean findFunctionalizingEntityById(String sampleId, String entityId)
+			throws CompositionException, NoAccessException {
 		FunctionalizingEntityBean entityBean = null;
 		try {
 			FunctionalizingEntity entity = compositionServiceHelper.findFunctionalizingEntityById(sampleId, entityId);
@@ -458,8 +453,7 @@ public class CompositionServiceLocalImpl extends BaseServiceLocalImpl implements
 		} catch (NoAccessException e) {
 			throw e;
 		} catch (Exception e) {
-			String err = "Problem finding the chemical association by id: "
-					+ assocId;
+			String err = "Problem finding the chemical association by id: " + assocId;
 			logger.error(err, e);
 			throw new CompositionException(err, e);
 		}
@@ -467,8 +461,7 @@ public class CompositionServiceLocalImpl extends BaseServiceLocalImpl implements
 	}
 
 	public void deleteNanomaterialEntity(NanomaterialEntity entity)
-			throws CompositionException, ChemicalAssociationViolationException,
-			NoAccessException {
+			throws CompositionException, ChemicalAssociationViolationException, NoAccessException {
 		if (SpringSecurityUtil.getPrincipal() == null) {
 			throw new NoAccessException();
 		}
@@ -478,7 +471,8 @@ public class CompositionServiceLocalImpl extends BaseServiceLocalImpl implements
 					"The nanomaterial entity is used in a chemical association.  Please delete the chemcial association first before deleting the nanomaterial entity.");
 		}
 		try {
-			CaNanoLabApplicationService appService = (CaNanoLabApplicationService) ApplicationServiceProvider.getApplicationService();
+			CaNanoLabApplicationService appService = (CaNanoLabApplicationService) ApplicationServiceProvider
+					.getApplicationService();
 			appService.delete(entity);
 		} catch (Exception e) {
 			String err = "Error deleting nanomaterial entity " + entity.getId();
@@ -488,20 +482,18 @@ public class CompositionServiceLocalImpl extends BaseServiceLocalImpl implements
 	}
 
 	public void deleteFunctionalizingEntity(FunctionalizingEntity entity)
-			throws CompositionException, ChemicalAssociationViolationException,
-			NoAccessException {
+			throws CompositionException, ChemicalAssociationViolationException, NoAccessException {
 		if (SpringSecurityUtil.getPrincipal() == null) {
 			throw new NoAccessException();
 		}
 		Boolean canDelete = this.checkChemicalAssociationBeforeDelete(entity.getSampleComposition(), entity);
 		if (!canDelete) {
-			throw new ChemicalAssociationViolationException(
-					"The functionalizing entity "
-							+ entity.getName()
-							+ " is used in a chemical association.  Please delete the chemcial association first before deleting the functionalizing entity.");
+			throw new ChemicalAssociationViolationException("The functionalizing entity " + entity.getName()
+					+ " is used in a chemical association.  Please delete the chemcial association first before deleting the functionalizing entity.");
 		}
 		try {
-			CaNanoLabApplicationService appService = (CaNanoLabApplicationService) ApplicationServiceProvider.getApplicationService();
+			CaNanoLabApplicationService appService = (CaNanoLabApplicationService) ApplicationServiceProvider
+					.getApplicationService();
 			appService.delete(entity);
 		} catch (Exception e) {
 			String err = "Error deleting functionalizing entity " + entity.getId();
@@ -510,13 +502,13 @@ public class CompositionServiceLocalImpl extends BaseServiceLocalImpl implements
 		}
 	}
 
-	public void deleteChemicalAssociation(ChemicalAssociation assoc)
-			throws CompositionException, NoAccessException {
+	public void deleteChemicalAssociation(ChemicalAssociation assoc) throws CompositionException, NoAccessException {
 		if (SpringSecurityUtil.getPrincipal() == null) {
 			throw new NoAccessException();
 		}
 		try {
-			CaNanoLabApplicationService appService = (CaNanoLabApplicationService) ApplicationServiceProvider.getApplicationService();
+			CaNanoLabApplicationService appService = (CaNanoLabApplicationService) ApplicationServiceProvider
+					.getApplicationService();
 			appService.delete(assoc);
 		} catch (Exception e) {
 			String err = "Error deleting chemical association " + assoc.getId();
@@ -525,15 +517,17 @@ public class CompositionServiceLocalImpl extends BaseServiceLocalImpl implements
 		}
 	}
 
-	public void deleteCompositionFile(SampleComposition comp, File file) throws CompositionException, NoAccessException
-	{
+	public void deleteCompositionFile(SampleComposition comp, File file)
+			throws CompositionException, NoAccessException {
 		if (SpringSecurityUtil.getPrincipal() == null) {
 			throw new NoAccessException();
 		}
 		try {
-			CaNanoLabApplicationService appService = (CaNanoLabApplicationService) ApplicationServiceProvider.getApplicationService();
+			CaNanoLabApplicationService appService = (CaNanoLabApplicationService) ApplicationServiceProvider
+					.getApplicationService();
 			// load files first
-			List<File> fileList = compositionServiceHelper.findFilesByCompositionInfoId(comp.getSample().getId(), comp.getId().toString(), "SampleComposition");
+			List<File> fileList = compositionServiceHelper.findFilesByCompositionInfoId(comp.getSample().getId(),
+					comp.getId().toString(), "SampleComposition");
 			comp.setFileCollection(new HashSet<File>(fileList));
 			comp.getFileCollection().remove(file);
 			appService.saveOrUpdate(comp);
@@ -563,8 +557,7 @@ public class CompositionServiceLocalImpl extends BaseServiceLocalImpl implements
 
 	// check if the associated element is involved in the chemical
 	// association
-	public boolean checkChemicalAssociationBeforeDelete(SampleComposition comp, AssociatedElement assocElement)
-	{
+	public boolean checkChemicalAssociationBeforeDelete(SampleComposition comp, AssociatedElement assocElement) {
 		// need to delete chemical associations first if associated elements
 		// are functionalizing entities or composing elements
 		Collection<ChemicalAssociation> assocSet = comp.getChemicalAssociationCollection();
@@ -579,8 +572,7 @@ public class CompositionServiceLocalImpl extends BaseServiceLocalImpl implements
 		return true;
 	}
 
-	public CompositionBean findCompositionBySampleId(String sampleId) throws CompositionException
-	{
+	public CompositionBean findCompositionBySampleId(String sampleId) throws CompositionException {
 		CompositionBean comp = null;
 		try {
 			SampleComposition composition = compositionServiceHelper.findCompositionBySampleId(sampleId);
@@ -594,9 +586,8 @@ public class CompositionServiceLocalImpl extends BaseServiceLocalImpl implements
 		return comp;
 	}
 
-	public void copyAndSaveNanomaterialEntity(NanomaterialEntityBean entityBean, SampleBean oldSampleBean, SampleBean[] newSampleBeans) 
-			throws CompositionException, NoAccessException
-	{
+	public void copyAndSaveNanomaterialEntity(NanomaterialEntityBean entityBean, SampleBean oldSampleBean,
+			SampleBean[] newSampleBeans) throws CompositionException, NoAccessException {
 		try {
 			for (SampleBean sampleBean : newSampleBeans) {
 				NanomaterialEntityBean copyBean = null;
@@ -605,7 +596,8 @@ public class CompositionServiceLocalImpl extends BaseServiceLocalImpl implements
 					copyBean = new NanomaterialEntityBean(copy);
 					// copy file file content
 					for (FileBean fileBean : copyBean.getFiles()) {
-						fileUtils.updateClonedFileInfo(fileBean, oldSampleBean.getDomain().getName(), sampleBean.getDomain().getName());
+						fileUtils.updateClonedFileInfo(fileBean, oldSampleBean.getDomain().getName(),
+								sampleBean.getDomain().getName());
 					}
 				} catch (Exception e) {
 					String error = "Error in copying the nanomaterial entity.";
@@ -613,21 +605,23 @@ public class CompositionServiceLocalImpl extends BaseServiceLocalImpl implements
 				}
 				if (copyBean != null) {
 					saveNanomaterialEntity(sampleBean, copyBean);
-					//Commented while removing CSM
+					// Commented while removing CSM
 					/*
-					// save associated accessibility for the copied entity
-					// save sample accesses
-					springSecurityAclService.saveAccessForChildObject(sampleBean.getDomain().getSampleComposition().getId(), SecureClassesEnum.COMPOSITION.getClazz(),
-																	  copy.getId(), SecureClassesEnum.NANO.getClazz());
-					
-					// find sample accesses
-					List<AccessibilityBean> sampleAccesses = super
-							.findSampleAccesses(copy.getSampleComposition()
-									.getSample().getId().toString());
-					
-					for (AccessibilityBean access : sampleAccesses) {
-						this.accessUtils.assignAccessibility(access, copy);
-					}*/
+					 * // save associated accessibility for the copied entity //
+					 * save sample accesses
+					 * springSecurityAclService.saveAccessForChildObject(
+					 * sampleBean.getDomain().getSampleComposition().getId(),
+					 * SecureClassesEnum.COMPOSITION.getClazz(), copy.getId(),
+					 * SecureClassesEnum.NANO.getClazz());
+					 * 
+					 * // find sample accesses List<AccessibilityBean>
+					 * sampleAccesses = super
+					 * .findSampleAccesses(copy.getSampleComposition()
+					 * .getSample().getId().toString());
+					 * 
+					 * for (AccessibilityBean access : sampleAccesses) {
+					 * this.accessUtils.assignAccessibility(access, copy); }
+					 */
 				}
 			}
 		} catch (NoAccessException e) {
@@ -639,10 +633,8 @@ public class CompositionServiceLocalImpl extends BaseServiceLocalImpl implements
 		}
 	}
 
-	public void copyAndSaveFunctionalizingEntity(
-			FunctionalizingEntityBean entityBean, SampleBean oldSampleBean,
-			SampleBean[] newSampleBeans) throws CompositionException,
-			NoAccessException {
+	public void copyAndSaveFunctionalizingEntity(FunctionalizingEntityBean entityBean, SampleBean oldSampleBean,
+			SampleBean[] newSampleBeans) throws CompositionException, NoAccessException {
 		try {
 			for (SampleBean sampleBean : newSampleBeans) {
 				FunctionalizingEntityBean copyBean = null;
@@ -651,9 +643,8 @@ public class CompositionServiceLocalImpl extends BaseServiceLocalImpl implements
 					copyBean = new FunctionalizingEntityBean(copy);
 					// copy file visibility and file content
 					for (FileBean fileBean : copyBean.getFiles()) {
-						fileUtils.updateClonedFileInfo(fileBean, oldSampleBean
-								.getDomain().getName(), sampleBean.getDomain()
-								.getName());
+						fileUtils.updateClonedFileInfo(fileBean, oldSampleBean.getDomain().getName(),
+								sampleBean.getDomain().getName());
 					}
 				} catch (Exception e) {
 					String error = "Error in copying the functionalizing entity.";
@@ -662,18 +653,20 @@ public class CompositionServiceLocalImpl extends BaseServiceLocalImpl implements
 				if (copyBean != null) {
 					saveFunctionalizingEntity(sampleBean, copyBean);
 					// Commented while removing CSM
-					/*springSecurityAclService.saveAccessForChildObject(sampleBean.getDomain().getSampleComposition().getId(), SecureClassesEnum.COMPOSITION.getClazz(),
-							  										  copy.getId(), SecureClassesEnum.FUNCTIONALIZING.getClazz());
-
-					// save associated accessibility for the copied entity
-					// find sample accesses
-					List<AccessibilityBean> sampleAccesses = super
-							.findSampleAccesses(copy.getSampleComposition()
-									.getSample().getId().toString());
-					// save sample accesses
-					for (AccessibilityBean access : sampleAccesses) {
-						this.accessUtils.assignAccessibility(access, copy);
-					}*/
+					/*
+					 * springSecurityAclService.saveAccessForChildObject(
+					 * sampleBean.getDomain().getSampleComposition().getId(),
+					 * SecureClassesEnum.COMPOSITION.getClazz(), copy.getId(),
+					 * SecureClassesEnum.FUNCTIONALIZING.getClazz());
+					 * 
+					 * // save associated accessibility for the copied entity //
+					 * find sample accesses List<AccessibilityBean>
+					 * sampleAccesses = super
+					 * .findSampleAccesses(copy.getSampleComposition()
+					 * .getSample().getId().toString()); // save sample accesses
+					 * for (AccessibilityBean access : sampleAccesses) {
+					 * this.accessUtils.assignAccessibility(access, copy); }
+					 */
 				}
 			}
 		} catch (NoAccessException e) {
@@ -685,8 +678,7 @@ public class CompositionServiceLocalImpl extends BaseServiceLocalImpl implements
 	}
 
 	public void deleteComposition(SampleComposition comp)
-			throws ChemicalAssociationViolationException, CompositionException,
-			NoAccessException {
+			throws ChemicalAssociationViolationException, CompositionException, NoAccessException {
 		if (SpringSecurityUtil.getPrincipal() == null) {
 			throw new NoAccessException();
 		}
@@ -699,8 +691,7 @@ public class CompositionServiceLocalImpl extends BaseServiceLocalImpl implements
 		}
 		// delete chemical association
 		if (comp.getChemicalAssociationCollection() != null) {
-			for (ChemicalAssociation assoc : comp
-					.getChemicalAssociationCollection()) {
+			for (ChemicalAssociation assoc : comp.getChemicalAssociationCollection()) {
 				deleteChemicalAssociation(assoc);
 			}
 		}
@@ -708,15 +699,13 @@ public class CompositionServiceLocalImpl extends BaseServiceLocalImpl implements
 
 		// delete nanomaterial entities
 		if (comp.getNanomaterialEntityCollection() != null) {
-			for (NanomaterialEntity entity : comp
-					.getNanomaterialEntityCollection()) {
+			for (NanomaterialEntity entity : comp.getNanomaterialEntityCollection()) {
 				deleteNanomaterialEntity(entity);
 			}
 		}
 		// delete functionalizing entities
 		if (comp.getFunctionalizingEntityCollection() != null) {
-			for (FunctionalizingEntity entity : comp
-					.getFunctionalizingEntityCollection()) {
+			for (FunctionalizingEntity entity : comp.getFunctionalizingEntityCollection()) {
 				deleteFunctionalizingEntity(entity);
 			}
 		}
@@ -727,7 +716,8 @@ public class CompositionServiceLocalImpl extends BaseServiceLocalImpl implements
 			}
 		}
 		try {
-			CaNanoLabApplicationService appService = (CaNanoLabApplicationService) ApplicationServiceProvider.getApplicationService();
+			CaNanoLabApplicationService appService = (CaNanoLabApplicationService) ApplicationServiceProvider
+					.getApplicationService();
 			appService.delete(comp);
 		} catch (Exception e) {
 			String err = "Problem deleting composition by id: " + comp.getId();
@@ -742,51 +732,27 @@ public class CompositionServiceLocalImpl extends BaseServiceLocalImpl implements
 
 	public void assignAccesses(ComposingElement composingElement) throws CompositionException, NoAccessException {
 		try {
-			
-			if (!springSecurityAclService.isOwnerOfObject(composingElement.getNanomaterialEntity().getSampleComposition().getSample().getId(), SecureClassesEnum.SAMPLE.getClazz())) {
+
+			if (!springSecurityAclService.isOwnerOfObject(
+					composingElement.getNanomaterialEntity().getSampleComposition().getSample().getId(),
+					SecureClassesEnum.SAMPLE.getClazz())) {
 				throw new NoAccessException();
 			}
-			// Commented while removing CSM
-			/*springSecurityAclService.saveAccessForChildObject(composingElement.getNanomaterialEntity().getId(), SecureClassesEnum.NANO.getClazz(),
-					  										  composingElement.getId(), SecureClassesEnum.COMPOSINGELEMENT.getClazz());
-
-			// find sample accesses, already contains owner for composing element
-			List<AccessibilityBean> sampleAccesses = this
-					.findSampleAccesses(composingElement
-							.getNanomaterialEntity().getSampleComposition()
-							.getSample().getId().toString());
-			for (AccessibilityBean access : sampleAccesses) {
-				accessUtils.assignAccessibility(access, composingElement);
-			}*/
-		} catch (NoAccessException e) {
-			throw e;
-		} catch (Exception e) {
-			String error = "Error in assigning nanomaterial entity accessibility";
-			throw new CompositionException(error, e);
-		}
-	}
-
-	public void removeAccesses(NanomaterialEntity entity,
-			ComposingElement composingElement) throws CompositionException,
-			NoAccessException {
-		try 
-		{
-			if (!springSecurityAclService.currentUserHasWritePermission(entity.getSampleComposition().getSample().getId(), SecureClassesEnum.SAMPLE.getClazz())) {
-				throw new NoAccessException();
-			}
-			//springSecurityAclService.deleteAccessObject(composingElement.getId(), SecureClassesEnum.COMPOSINGELEMENT.getClazz());
-
 			// Commented while removing CSM
 			/*
-			// find sample accesses
-			List<AccessibilityBean> sampleAccesses = super
-					.findSampleAccesses(entity.getSampleComposition()
-							.getSample().getId().toString());
-			for (AccessibilityBean access : sampleAccesses) {
-				accessUtils
-						.removeAccessibility(access, composingElement, false);
-			}
-			*/
+			 * springSecurityAclService.saveAccessForChildObject(
+			 * composingElement.getNanomaterialEntity().getId(),
+			 * SecureClassesEnum.NANO.getClazz(), composingElement.getId(),
+			 * SecureClassesEnum.COMPOSINGELEMENT.getClazz());
+			 * 
+			 * // find sample accesses, already contains owner for composing
+			 * element List<AccessibilityBean> sampleAccesses = this
+			 * .findSampleAccesses(composingElement
+			 * .getNanomaterialEntity().getSampleComposition()
+			 * .getSample().getId().toString()); for (AccessibilityBean access :
+			 * sampleAccesses) { accessUtils.assignAccessibility(access,
+			 * composingElement); }
+			 */
 		} catch (NoAccessException e) {
 			throw e;
 		} catch (Exception e) {
@@ -795,26 +761,53 @@ public class CompositionServiceLocalImpl extends BaseServiceLocalImpl implements
 		}
 	}
 
-	public void assignAccesses(Function function) throws CompositionException, NoAccessException
-	{
+	public void removeAccesses(NanomaterialEntity entity, ComposingElement composingElement)
+			throws CompositionException, NoAccessException {
 		try {
-			if (!springSecurityAclService.currentUserHasWritePermission(function.getFunctionalizingEntity().getSampleComposition().getSample().getId(), SecureClassesEnum.SAMPLE.getClazz())) {
+			if (!springSecurityAclService.currentUserHasWritePermission(
+					entity.getSampleComposition().getSample().getId(), SecureClassesEnum.SAMPLE.getClazz())) {
 				throw new NoAccessException();
 			}
-			/*springSecurityAclService.saveAccessForChildObject(function.getFunctionalizingEntity().getId(), SecureClassesEnum.FUNCTIONALIZING.getClazz(),
-					  										  function.getId(), SecureClassesEnum.FUNCTION.getClazz());
-			*/
+			// springSecurityAclService.deleteAccessObject(composingElement.getId(),
+			// SecureClassesEnum.COMPOSINGELEMENT.getClazz());
+
 			// Commented while removing CSM
 			/*
-			// find sample accesses
-			List<AccessibilityBean> sampleAccesses = this
-					.findSampleAccesses(function.getFunctionalizingEntity()
-							.getSampleComposition().getSample().getId()
-							.toString());
-			for (AccessibilityBean access : sampleAccesses) {
-				accessUtils.assignAccessibility(access, function);
+			 * // find sample accesses List<AccessibilityBean> sampleAccesses =
+			 * super .findSampleAccesses(entity.getSampleComposition()
+			 * .getSample().getId().toString()); for (AccessibilityBean access :
+			 * sampleAccesses) { accessUtils .removeAccessibility(access,
+			 * composingElement, false); }
+			 */
+		} catch (NoAccessException e) {
+			throw e;
+		} catch (Exception e) {
+			String error = "Error in assigning nanomaterial entity accessibility";
+			throw new CompositionException(error, e);
+		}
+	}
+
+	public void assignAccesses(Function function) throws CompositionException, NoAccessException {
+		try {
+			if (!springSecurityAclService.currentUserHasWritePermission(
+					function.getFunctionalizingEntity().getSampleComposition().getSample().getId(),
+					SecureClassesEnum.SAMPLE.getClazz())) {
+				throw new NoAccessException();
 			}
-			*/
+			/*
+			 * springSecurityAclService.saveAccessForChildObject(function.
+			 * getFunctionalizingEntity().getId(),
+			 * SecureClassesEnum.FUNCTIONALIZING.getClazz(), function.getId(),
+			 * SecureClassesEnum.FUNCTION.getClazz());
+			 */
+			// Commented while removing CSM
+			/*
+			 * // find sample accesses List<AccessibilityBean> sampleAccesses =
+			 * this .findSampleAccesses(function.getFunctionalizingEntity()
+			 * .getSampleComposition().getSample().getId() .toString()); for
+			 * (AccessibilityBean access : sampleAccesses) {
+			 * accessUtils.assignAccessibility(access, function); }
+			 */
 		} catch (NoAccessException e) {
 			throw e;
 		} catch (Exception e) {
@@ -826,21 +819,21 @@ public class CompositionServiceLocalImpl extends BaseServiceLocalImpl implements
 	public void removeAccesses(FunctionalizingEntity entity, Function function)
 			throws CompositionException, NoAccessException {
 		try {
-			if (!springSecurityAclService.currentUserHasWritePermission(entity.getSampleComposition().getSample().getId(), SecureClassesEnum.SAMPLE.getClazz())) {
+			if (!springSecurityAclService.currentUserHasWritePermission(
+					entity.getSampleComposition().getSample().getId(), SecureClassesEnum.SAMPLE.getClazz())) {
 				throw new NoAccessException();
 			}
-			//springSecurityAclService.deleteAccessObject(function.getId(), SecureClassesEnum.FUNCTION.getClazz());
+			// springSecurityAclService.deleteAccessObject(function.getId(),
+			// SecureClassesEnum.FUNCTION.getClazz());
 
 			// Commented while removing CSM
 			/*
-			// find sample accesses
-			List<AccessibilityBean> sampleAccesses = super
-					.findSampleAccesses(entity.getSampleComposition()
-							.getSample().getId().toString());
-			for (AccessibilityBean access : sampleAccesses) {
-				accessUtils.removeAccessibility(access, function, false);
-			}
-			*/
+			 * // find sample accesses List<AccessibilityBean> sampleAccesses =
+			 * super .findSampleAccesses(entity.getSampleComposition()
+			 * .getSample().getId().toString()); for (AccessibilityBean access :
+			 * sampleAccesses) { accessUtils.removeAccessibility(access,
+			 * function, false); }
+			 */
 		} catch (NoAccessException e) {
 			throw e;
 		} catch (Exception e) {
@@ -849,47 +842,41 @@ public class CompositionServiceLocalImpl extends BaseServiceLocalImpl implements
 		}
 	}
 
-	//TODO: Commented while removing CSM - method may not be used.
-	/*public void assignAccessibility(ChemicalAssociation assoc) throws CompositionException, NoAccessException
-	{
-		try 
-		{
-			if (!springSecurityAclService.isOwnerOfObject(assoc.getId(), SecureClassesEnum.CHEMASSOC.getClazz())) {
-				throw new NoAccessException();
-			}
-			// find sample accesses
-			List<AccessibilityBean> sampleAccesses = super.findSampleAccesses(assoc.getSampleComposition()
-							.getSample().getId().toString());
-			for (AccessibilityBean access : sampleAccesses) {
-				this.saveAccessibility(access, assoc.getSampleComposition()
-						.getId().toString());
-				accessUtils.assignAccessibility(access, assoc);
-			}
-		} catch (NoAccessException e) {
-			throw e;
-		} catch (Exception e) {
-			String error = "Error in assigning chemical association accessibility";
-			throw new CompositionException(error, e);
-		}
-	}*/
+	// TODO: Commented while removing CSM - method may not be used.
+	/*
+	 * public void assignAccessibility(ChemicalAssociation assoc) throws
+	 * CompositionException, NoAccessException { try { if
+	 * (!springSecurityAclService.isOwnerOfObject(assoc.getId(),
+	 * SecureClassesEnum.CHEMASSOC.getClazz())) { throw new NoAccessException();
+	 * } // find sample accesses List<AccessibilityBean> sampleAccesses =
+	 * super.findSampleAccesses(assoc.getSampleComposition()
+	 * .getSample().getId().toString()); for (AccessibilityBean access :
+	 * sampleAccesses) { this.saveAccessibility(access,
+	 * assoc.getSampleComposition() .getId().toString());
+	 * accessUtils.assignAccessibility(access, assoc); } } catch
+	 * (NoAccessException e) { throw e; } catch (Exception e) { String error =
+	 * "Error in assigning chemical association accessibility"; throw new
+	 * CompositionException(error, e); } }
+	 */
 
-	public void assignAccesses(SampleComposition comp, File file) throws CompositionException, NoAccessException
-	{
+	public void assignAccesses(SampleComposition comp, File file) throws CompositionException, NoAccessException {
 		try {
-			if (!springSecurityAclService.isOwnerOfObject(comp.getSample().getId(), SecureClassesEnum.SAMPLE.getClazz())) {
+			if (!springSecurityAclService.isOwnerOfObject(comp.getSample().getId(),
+					SecureClassesEnum.SAMPLE.getClazz())) {
 				throw new NoAccessException();
 			}
 			// TODO check if file is in the comp fileCollection
-			//Commented while removing CSM
+			// Commented while removing CSM
 			/*
-			// find sample accesses
-			springSecurityAclService.saveAccessForChildObject(comp.getId(), SecureClassesEnum.COMPOSITION.getClazz(), 
-															  file.getId(), SecureClassesEnum.FILE.getClazz());	
-			List<AccessibilityBean> sampleAccesses = this
-					.findSampleAccesses(comp.getSample().getId().toString());
-			for (AccessibilityBean access : sampleAccesses) {
-				this.saveAccessibility(access, file.getId().toString());
-			}*/
+			 * // find sample accesses
+			 * springSecurityAclService.saveAccessForChildObject(comp.getId(),
+			 * SecureClassesEnum.COMPOSITION.getClazz(), file.getId(),
+			 * SecureClassesEnum.FILE.getClazz()); List<AccessibilityBean>
+			 * sampleAccesses = this
+			 * .findSampleAccesses(comp.getSample().getId().toString()); for
+			 * (AccessibilityBean access : sampleAccesses) {
+			 * this.saveAccessibility(access, file.getId().toString()); }
+			 */
 		} catch (NoAccessException e) {
 			throw e;
 		} catch (Exception e) {
@@ -898,24 +885,23 @@ public class CompositionServiceLocalImpl extends BaseServiceLocalImpl implements
 		}
 	}
 
-	public void removeAccesses(NanomaterialEntity entity) throws CompositionException, NoAccessException
-	{
+	public void removeAccesses(NanomaterialEntity entity) throws CompositionException, NoAccessException {
 		try {
-			if (!springSecurityAclService.currentUserHasWritePermission(entity.getSampleComposition().getSample().getId(), SecureClassesEnum.SAMPLE.getClazz())) {
+			if (!springSecurityAclService.currentUserHasWritePermission(
+					entity.getSampleComposition().getSample().getId(), SecureClassesEnum.SAMPLE.getClazz())) {
 				throw new NoAccessException();
 			}
-			//springSecurityAclService.deleteAccessObject(entity.getId(), SecureClassesEnum.NANO.getClazz());
+			// springSecurityAclService.deleteAccessObject(entity.getId(),
+			// SecureClassesEnum.NANO.getClazz());
 
 			// Commented while removing CSM
 			/*
-			// find sample accesses
-			List<AccessibilityBean> sampleAccesses = super
-					.findSampleAccesses(entity.getSampleComposition()
-							.getSample().getId().toString());
-			for (AccessibilityBean access : sampleAccesses) {
-				accessUtils.removeAccessibility(access, entity, false);
-			}
-			*/
+			 * // find sample accesses List<AccessibilityBean> sampleAccesses =
+			 * super .findSampleAccesses(entity.getSampleComposition()
+			 * .getSample().getId().toString()); for (AccessibilityBean access :
+			 * sampleAccesses) { accessUtils.removeAccessibility(access, entity,
+			 * false); }
+			 */
 		} catch (NoAccessException e) {
 			throw e;
 		} catch (Exception e) {
@@ -924,23 +910,24 @@ public class CompositionServiceLocalImpl extends BaseServiceLocalImpl implements
 		}
 	}
 
-	public void removeAccesses(FunctionalizingEntity entity) throws CompositionException, NoAccessException
-	{
+	public void removeAccesses(FunctionalizingEntity entity) throws CompositionException, NoAccessException {
 		try {
-			if (!springSecurityAclService.currentUserHasWritePermission(entity.getSampleComposition().getSample().getId(), SecureClassesEnum.SAMPLE.getClazz())) {
+			if (!springSecurityAclService.currentUserHasWritePermission(
+					entity.getSampleComposition().getSample().getId(), SecureClassesEnum.SAMPLE.getClazz())) {
 				throw new NoAccessException();
 			}
-			//springSecurityAclService.deleteAccessObject(entity.getId(), SecureClassesEnum.FUNCTIONALIZING.getClazz());
+			// springSecurityAclService.deleteAccessObject(entity.getId(),
+			// SecureClassesEnum.FUNCTIONALIZING.getClazz());
 
 			// Commented while removing CSM
 			/*
-			// find sample accesses
-			List<AccessibilityBean> sampleAccesses = super
-					.findSampleAccesses(entity.getSampleComposition().getSample().getId().toString());
-			for (AccessibilityBean access : sampleAccesses) {
-				accessUtils.removeAccessibility(access, entity, false);
-			}
-			*/
+			 * // find sample accesses List<AccessibilityBean> sampleAccesses =
+			 * super
+			 * .findSampleAccesses(entity.getSampleComposition().getSample().
+			 * getId().toString()); for (AccessibilityBean access :
+			 * sampleAccesses) { accessUtils.removeAccessibility(access, entity,
+			 * false); }
+			 */
 		} catch (NoAccessException e) {
 			throw e;
 		} catch (Exception e) {
@@ -950,24 +937,23 @@ public class CompositionServiceLocalImpl extends BaseServiceLocalImpl implements
 
 	}
 
-	public void removeAccesses(ChemicalAssociation assoc) throws CompositionException, NoAccessException
-	{
+	public void removeAccesses(ChemicalAssociation assoc) throws CompositionException, NoAccessException {
 		try {
-			if (!springSecurityAclService.currentUserHasWritePermission(assoc.getSampleComposition().getSample().getId(), SecureClassesEnum.SAMPLE.getClazz())) {
+			if (!springSecurityAclService.currentUserHasWritePermission(
+					assoc.getSampleComposition().getSample().getId(), SecureClassesEnum.SAMPLE.getClazz())) {
 				throw new NoAccessException();
 			}
-			//springSecurityAclService.deleteAccessObject(assoc.getId(), SecureClassesEnum.CHEMASSOC.getClazz());
+			// springSecurityAclService.deleteAccessObject(assoc.getId(),
+			// SecureClassesEnum.CHEMASSOC.getClazz());
 
 			// Commented while removing CSM
 			/*
-			// find sample accesses
-			List<AccessibilityBean> sampleAccesses = super
-					.findSampleAccesses(assoc.getSampleComposition()
-							.getSample().getId().toString());
-			for (AccessibilityBean access : sampleAccesses) {
-				accessUtils.removeAccessibility(access, assoc, false);
-			}
-			*/
+			 * // find sample accesses List<AccessibilityBean> sampleAccesses =
+			 * super .findSampleAccesses(assoc.getSampleComposition()
+			 * .getSample().getId().toString()); for (AccessibilityBean access :
+			 * sampleAccesses) { accessUtils.removeAccessibility(access, assoc,
+			 * false); }
+			 */
 		} catch (NoAccessException e) {
 			throw e;
 		} catch (Exception e) {
@@ -976,25 +962,24 @@ public class CompositionServiceLocalImpl extends BaseServiceLocalImpl implements
 		}
 	}
 
-	public void removeAccesses(SampleComposition comp, File file) throws CompositionException, NoAccessException
-	{
+	public void removeAccesses(SampleComposition comp, File file) throws CompositionException, NoAccessException {
 		try {
-			if (!springSecurityAclService.currentUserHasWritePermission(comp.getSample().getId(), SecureClassesEnum.SAMPLE.getClazz())) {
+			if (!springSecurityAclService.currentUserHasWritePermission(comp.getSample().getId(),
+					SecureClassesEnum.SAMPLE.getClazz())) {
 				throw new NoAccessException();
 			}
-			//springSecurityAclService.deleteAccessObject(file.getId(), SecureClassesEnum.FILE.getClazz());
+			// springSecurityAclService.deleteAccessObject(file.getId(),
+			// SecureClassesEnum.FILE.getClazz());
 
 			// Commented while removing CSM
 			/*
-			// TODO check if file is in the comp fileCollection
-
-			// find sample accesses
-			List<AccessibilityBean> sampleAccesses = super
-					.findSampleAccesses(comp.getSample().getId().toString());
-			for (AccessibilityBean access : sampleAccesses) {
-				super.deleteAccessibility(access, file.getId().toString());
-			}
-			*/
+			 * // TODO check if file is in the comp fileCollection
+			 * 
+			 * // find sample accesses List<AccessibilityBean> sampleAccesses =
+			 * super .findSampleAccesses(comp.getSample().getId().toString());
+			 * for (AccessibilityBean access : sampleAccesses) {
+			 * super.deleteAccessibility(access, file.getId().toString()); }
+			 */
 		} catch (NoAccessException e) {
 			throw e;
 		} catch (Exception e) {
