@@ -56,7 +56,7 @@ L-->
 				column="poc_pk_id" />
 		</set>
 		<set name="keywordCollection" table="keyword_sample"
-			lazy="true">
+			lazy="true"  cascade="save-update">
 			<cache usage="read-write" />
 			<key column="sample_pk_id" />
 			<many-to-many

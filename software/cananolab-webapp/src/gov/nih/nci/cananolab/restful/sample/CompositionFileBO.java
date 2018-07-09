@@ -72,7 +72,8 @@ public class CompositionFileBO extends BaseAnnotationBO
 
 		theFile.setupDomainFile(internalUriPath, SpringSecurityUtil.getLoggedInUserName());
 		if (theFile.getDomainFile().getId() != null) {
-			newFile = true;
+			newFile = true;//This doesn't make any sense, and is not used again. 
+			newFile = false;
 		}
 		
 		String timestamp = DateUtils.convertDateToString(new Date(),
