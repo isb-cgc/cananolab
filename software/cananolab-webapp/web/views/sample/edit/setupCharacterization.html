@@ -790,7 +790,7 @@
 												</tr>
 												<tr>
 													<td>
-														<button ng-show="!isNewInstrument" ng-click="removeInstrument(instrument)" class="btn btn-danger btn-xs">Remove</button>	
+														<button ng-show="!isNewInstrument" ng-click="removeInstrument(instrument)" class="btn btn-danger btn-xs">Delete</button>	
 													</td>
 													<td>
 														<div align="right">
@@ -813,8 +813,8 @@
 								</tr>
 								<tr>
 									<td>
-<button ng-show="!isNewExperimentConfig" ng-click="removeExperimentConfig()" class="btn btn-danger btn-xs">Remove</button>
-										<input style="display: none;" id="deleteExperimentConfig" value="Remove" onclick="javascript:deleteTheExperimentConfig('false')" type="button">
+<button ng-show="!isNewExperimentConfig" ng-click="removeExperimentConfig()" class="btn btn-danger btn-xs">Delete</button>
+										<input style="display: none;" id="deleteExperimentConfig" value="Delete" onclick="javascript:deleteTheExperimentConfig('false')" type="button">
 
 									</td>
 									<td align="right">
@@ -1099,7 +1099,7 @@
 													</tr>
 													<tr>
 														<td>
-															<button ng-click="removeColumnForm()" class="btn btn-danger btn-xs">Remove</button>
+															<button ng-click="removeColumnForm()" class="btn btn-danger btn-xs">Delete</button>
 														</td>
 														<td>
                                                 
@@ -1136,7 +1136,7 @@
 			            </tr>						
 						<tr>
 							<td>
-								<button ng-if="!isNewFinding" ng-click="removeFindingInfo()" class="btn btn-danger btn-xs" ng-disabled="columnForm">Remove</button>								
+								<button ng-if="!isNewFinding" ng-click="removeFindingInfo()" class="btn btn-danger btn-xs" ng-disabled="columnForm">Delete</button>								
 							</td>
 							<td align="right" style="float:right;">
 								<button ng-click="saveFindingInfo()" ng-disabled="data.type==''||data.name==''||columnForm||columnInvalid()" class="btn btn-primary btn-xs">Save</button>									
