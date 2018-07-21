@@ -38,7 +38,7 @@ var app = angular.module('angularApp')
         //$scope.publications = [{'id':'1','publicationTitle':'Pub 1', 'status':'in preparation', 'createdDate':'01/01/2014', 'user' : []}];
         
         $scope.removeFromFavorites = function(data, dataType) {
-        	if (confirm("Remove from Favorites?")) {
+        	if (confirm("Delete from Favorites?")) {
 	            $scope.loader = true;
 	            
                 $scope.favoriteBean = {"id": data.id, "dataType" : dataType, "dataName" : data.dataName, "dataId" : data.dataId, "loginName" : $scope.loggedInUser.name};
