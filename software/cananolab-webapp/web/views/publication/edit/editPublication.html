@@ -390,11 +390,13 @@
             <td>
                 <table class="invisibleTable" summary="layout">
                     <tr>
-                        <td>
+                        <td colspan="2">
                             <textarea ng-model="publicationForm.sampleNamesStr" cols="60" rows="5" id="publicationForm.associatedSampleNames"></textarea>
                             <em>one name per line</em>
                         </td>
-                        <td width="5">
+                    </tr>
+                    <tr>
+                        <td style="width:100px;">
                             <button class="btn btn-primary" type="button" ng-click="showSearchSampleTable=true;searchMatchedSamples();">Search For Samples</button>
                         </td>
                         <td>
@@ -405,8 +407,8 @@
                                              id="loaderImg" style="display: none" alt="load existing samples">
                                              <label for="sampleFilter">Filter Samples</label>
                                              <input type="text" id="sampleFilter" ng-model="sampleFilter"><br />                                        
-                                    <select ng-hide="loader" ng-hide="matchSampleSearch" data-ng-model="localForm.matchedSampleSelect | filter:sampleFilter" 
-                                    data-ng-options="option for option in sampleResults" ng-multiple="true" multiple id="matchedSampleSelect">
+                                    <select ng-hide="loader" ng-hide="matchSampleSearch" data-ng-model="localForm.matchedSampleSelect" 
+                                    data-ng-options="option for option in sampleResults | filter:sampleFilter" ng-multiple="true" multiple id="matchedSampleSelect">
                                     </select>                                                                            
                                     </td>
                                     <td><label for="matchedSampleSelect">
