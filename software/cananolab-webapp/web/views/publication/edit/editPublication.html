@@ -404,18 +404,18 @@
                             <button class="btn btn-primary" type="button" ng-click="showSearchSampleTable=true;searchMatchedSamples();">Search For Samples</button>
                         </td>
                         <td valign="top">
-                            <table class="invisibleTable" summary="layout" ng-show="showSearchSampleTable">
+                            <table class="invisibleTable" style="margin-left:6px;" summary="layout" ng-show="showSearchSampleTable">
                                 <tr>
                                     <td>
                                         <img ng-src="images/ajax-loader.gif" border="0" class="counts"
                                              id="loaderImg" style="display: none" alt="load existing samples">
                                              <label for="sampleFilter">Filter Samples</label>
-                                             <input type="text" id="sampleFilter" ng-model="sampleFilter"><br />                                        
+                                             <input type="text" id="sampleFilter" ng-model="sampleFilter"><br />  <br />                                        
                                     <select ng-hide="loader" ng-hide="matchSampleSearch" data-ng-model="localForm.matchedSampleSelect" 
                                     data-ng-options="option for option in sampleResults | filter:sampleFilter" ng-multiple="true" multiple id="matchedSampleSelect">
                                     </select>                                                                            
                                     </td>
-                                    <td><label for="matchedSampleSelect">
+                                    <td style="padding-top:5px !important; padding-left:10px !important;"><br /><label for="matchedSampleSelect">
                                         <a href ng-click="updateAssociatedSamples()"
                                            id="selectMatchedSampleButton">select</a></label>
                                     </td>
