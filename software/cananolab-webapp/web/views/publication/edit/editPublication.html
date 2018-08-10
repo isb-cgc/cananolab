@@ -388,18 +388,22 @@
                 <label for="publicationForm.associatedSampleNames">Sample Name</label>
             </td>
             <td>
+                <textarea ng-model="publicationForm.sampleNamesStr" cols="60" rows="5" id="publicationForm.associatedSampleNames"></textarea>
+                <em>one name per line</em>
+            </td>
+        </tr>
+        <tr>
+            <td colspan="2">
                 <table class="invisibleTable" summary="layout">
                     <tr>
-                        <td colspan="2">
-                            <textarea ng-model="publicationForm.sampleNamesStr" cols="60" rows="5" id="publicationForm.associatedSampleNames"></textarea>
-                            <em>one name per line</em>
-                        </td>
+
+
                     </tr>
                     <tr>
-                        <td style="width:100px;">
+                        <td valign="top">
                             <button class="btn btn-primary" type="button" ng-click="showSearchSampleTable=true;searchMatchedSamples();">Search For Samples</button>
                         </td>
-                        <td>
+                        <td valign="top">
                             <table class="invisibleTable" summary="layout" ng-show="showSearchSampleTable">
                                 <tr>
                                     <td>
