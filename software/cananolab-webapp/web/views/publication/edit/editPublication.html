@@ -403,8 +403,9 @@
                                     <td>
                                         <img ng-src="images/ajax-loader.gif" border="0" class="counts"
                                              id="loaderImg" style="display: none" alt="load existing samples">
-                                        
-                                    <select ng-hide="loader" ng-hide="matchSampleSearch" data-ng-model="localForm.matchedSampleSelect" 
+                                             <label for="sampleFilter">Filter Samples</label>
+                                             <input type="text" id="sampleFilter" ng-model="sampleFilter"><br />                                        
+                                    <select ng-hide="loader" ng-hide="matchSampleSearch" data-ng-model="localForm.matchedSampleSelect | sampleFilter" 
                                     data-ng-options="option for option in sampleResults" ng-multiple="true" multiple id="matchedSampleSelect">
                                     </select>                                                                            
                                     </td>
