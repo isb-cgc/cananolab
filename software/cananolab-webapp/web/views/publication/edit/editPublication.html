@@ -400,11 +400,11 @@
 
                     </tr>
                     <tr>
-                        <td valign="top">
+                        <td valign="top" style="padding-left:15px !important;">
                             <button class="btn btn-primary" type="button" ng-click="showSearchSampleTable=true;searchMatchedSamples();">Search For Samples</button>
                         </td>
                         <td valign="top">
-                            <table class="invisibleTable" style="margin-left:6px;" summary="layout" ng-show="showSearchSampleTable">
+                            <table class="invisibleTable" style="margin-left:15px;" summary="layout" ng-show="showSearchSampleTable">
                                 <tr>
                                     <td>
                                         <img ng-src="images/ajax-loader.gif" border="0" class="counts"
@@ -415,7 +415,7 @@
                                     data-ng-options="option for option in sampleResults | filter:sampleFilter" ng-multiple="true" multiple id="matchedSampleSelect">
                                     </select>                                                                            
                                     </td>
-                                    <td style="padding-top:5px !important; padding-left:10px !important;"><br /><label for="matchedSampleSelect">
+                                    <td style="padding-top:20px !important; padding-left:10px !important;"><br /><label for="matchedSampleSelect">
                                         <a href ng-click="updateAssociatedSamples()"
                                            id="selectMatchedSampleButton">select</a></label>
                                     </td>
