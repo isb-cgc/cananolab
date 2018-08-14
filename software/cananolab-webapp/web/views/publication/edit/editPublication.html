@@ -411,7 +411,7 @@
                                              id="loaderImg" style="display: none" alt="load existing samples">
                                              <label for="sampleFilter">Filter Samples</label>
                                              <input type="text" id="sampleFilter" ng-model="sampleFilter"><br />  <br />                                        
-                                    <select ng-hide="loader" ng-hide="matchSampleSearch" data-ng-model="localForm.matchedSampleSelect" 
+                                    <select size="20" ng-hide="loader" ng-hide="matchSampleSearch" data-ng-model="localForm.matchedSampleSelect" 
                                     data-ng-options="option for option in sampleResults | filter:sampleFilter" ng-multiple="true" multiple id="matchedSampleSelect">
                                     </select>                                                                            
                                     </td>
