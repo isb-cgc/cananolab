@@ -38,7 +38,7 @@
                 <table id="summarySection${{$index}}" class="summaryViewNoGrid"
                        align="center" width="99%">
                     <tr>
-                        <th align="left" scope="col">
+                        <th align="left" scope="col" class="summaryViewHeading">
                             <a name="{{type}}" class="anchorLink"><span
                                     class="summaryViewHeading">{{type}}</span> </a>
                                 &nbsp;&nbsp;
@@ -49,83 +49,82 @@
                     </tr>
                     <tr>
                         <td>
-                            <table width="99%" align="center" class="summaryViewNoGrid" ng-style="{'background-color':'#dbdbdb'}"
-                                   summary="layout">
-                                <tr>
-                                    <th valign="top" align="left" height="6">
-                                    </th>
-                                </tr>
+                            <table width="101%" align="center" class="summaryViewNoGrid"  summary="layout" style="margin-bottom: 10px;">
+                                
                                 <tr  ng-repeat="pubBean in category2Publications[type]" ng-init="pubObj = pubBean.domainFile" ng-if="category2Publications[type] != null">
                                     <td>
-	                                    	<div class="editButton" ng-if="pubBean.userUpdatable == true">
-												<a href="#/editPublication?sampleId={{sampleId.data}}&amp;publicationId={{pubBean.publicationId}}&amp;sampleName={{sampleName.name}}">Edit</a>
-											</div>
+                                            <div class="editButton" ng-if="pubBean.userUpdatable == true">
+                                                <a href="#/editPublication?sampleId={{sampleId.data}}&amp;publicationId={{pubBean.publicationId}}&amp;sampleName={{sampleName.name}}">Edit</a>
+                                            </div>
                                             <table class="summaryViewNoGrid" width="99%" align="center" ng-style="{'background-color':'#F5F5f5'}">
 
                                                 <tr>
-                                                    <th scope="row" class="cellLabel" width="10%">
+                                                    <th scope="row" class="cellLabel" width="10%" style="vertical-align: text-top;">
                                                         Bibliography Info
                                                     </th>
-                                                    <td ng-bind-html="pubBean.displayName | newlines">
+                                                    <td ng-bind-html="pubBean.displayName | newlines" style="padding: 5px 5px 5px 0px !important;">
                                                         &nbsp;
                                                     </td>
                                                 </tr>
                                                     <tr ng-if="pubObj.researchAreas != null">
-                                                        <th scope="row" class="cellLabel" width="10%">
+                                                        <th scope="row" class="cellLabel" width="10%" style="vertical-align: text-top;">
                                                             Research Category
                                                         </th>
-                                                        <td colspan="2">
+                                                        <td colspan="2" style="padding: 5px 5px 5px 0px !important;">
                                                             {{pubObj.researchAreas}}
                                                             &nbsp;
                                                         </td>
                                                     </tr>
                                                     <tr ng-if="pubObj.description != ''">
-                                                        <th scope="row" class="cellLabel" width="10%">
+                                                        <th scope="row" class="cellLabel" width="10%" style="vertical-align: text-top;">
                                                             Description
                                                         </th>
-                                                        <td>
+                                                        <td style="padding: 5px 5px 5px 0px !important;">
                                                             {{pubBean.description}}
                                                             &nbsp;
                                                         </td>
                                                     </tr>
                                                     <tr ng-if="pubBean.keywordsStr != ''">
-                                                        <th scope="row" class="cellLabel" width="10%">
+                                                        <th scope="row" class="cellLabel" width="10%" style="vertical-align: text-top;">
                                                             Keywords
                                                         </th>
-                                                        <td ng-bind-html="pubBean.keywordsDisplayName | newlines">
+                                                        <td ng-bind-html="pubBean.keywordsDisplayName | newlines" style="padding: 5px 5px 5px 0px !important;">
                                                             &nbsp;
                                                         </td>
                                                     </tr>
                                                 <tr>
-                                                    <th scope="row" class="cellLabel" width="10%">
+                                                    <th scope="row" class="cellLabel" width="10%" style="vertical-align: text-top;">
                                                         Publication Status
                                                     </th>
-                                                    <td>
+                                                    <td style="padding: 5px 5px 5px 0px !important;">
                                                         {{pubBean.status}}
                                                         &nbsp;
                                                     </td>
                                                 </tr>
                                             </table>
+                                            
                                             <br ng-if="$index < category2Publications.length"/>
                                     </td>
                                 </tr>
-                                <tr ng-if="category2Publications[type] == null">
-                                        <td>N/A
-                                        </td>
-                                </tr>
-                                <tr>
-                                    <th valign="top" align="left" height="6">
-                                    </th>
-                                </tr>
+                               
+                                
                             </table>
+
+
                         </td>
-                    </tr>
+
+                      
+                    </tr>   
+
+                    <tr ng-if="category2Publications[type] == null">            
+                                </tr>
+                      
                 </table>
-                <div id="summarySeparator{{$index}}">
-                    <br />
-                </div>
+
+               
         </td>
     </tr>
+    
 </table>
 </div>
 </div>
