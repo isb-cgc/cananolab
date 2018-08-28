@@ -179,6 +179,7 @@ public class PublicationServiceHelper
 				Criterion crit1 = Restrictions.ilike("author.lastName", author,
 						MatchMode.ANYWHERE);
 				disjunction.add(crit1);
+				
 				//Searching by first name and middle initial creates lots of false positives. ilike creates '%xxx%'
 //				Criterion crit2 = Restrictions.ilike("author.firstName",
 //						author, MatchMode.ANYWHERE);

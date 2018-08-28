@@ -17,3 +17,7 @@ software/cananolab-webapp/.settings/*
 
 node_modules/
 
+
+\.settings/
+
+software/common/lib/globus/
