@@ -355,6 +355,7 @@ CREATE TABLE `characterization` (
   `other_char_assay_category` varchar(200) DEFAULT NULL,
   `other_char_name` varchar(200) DEFAULT NULL,
   `assay_type` varchar(200) DEFAULT NULL,
+  `targeting_cell_line` text,
   PRIMARY KEY (`characterization_pk_id`),
   KEY `particle_sample_pk_id` (`sample_pk_id`),
   KEY `protocol_file_pk_id` (`protocol_pk_id`),
