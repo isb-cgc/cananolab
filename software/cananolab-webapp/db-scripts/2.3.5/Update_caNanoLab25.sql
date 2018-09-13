@@ -8,11 +8,6 @@ update other_nanomaterial_entity
 set type = 'silica' where type = 'Silica';
 
 
-/*CANANOLAB-542*/
-update nano_function
-set other_function_type = NULL
-where other_function_type in ('Adjuvant','Drug Carrier', 'Linker','other');
-
 /*CANANOLAB-543*/
 delete from common_lookup
 where 
@@ -76,6 +71,9 @@ update publication
 set category = 'peer review article'
 where category = 'Article';
 
+delete from common_lookup
+where name='publication'
+and value = 'Article'
 
 /*CANANOLAB-544*/
 delete from common_lookup
