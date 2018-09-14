@@ -8,11 +8,6 @@ update other_nanomaterial_entity
 set type = 'silica' where type = 'Silica';
 
 
-/*CANANOLAB-542*/
-update nano_function
-set other_function_type = NULL
-where other_function_type in ('Adjuvant','Drug Carrier', 'Linker','other');
-
 /*CANANOLAB-543*/
 delete from common_lookup
 where 
@@ -59,13 +54,28 @@ update technique
 set type = 'spectrophotometry'
 where type = 'microplate reader';
 
+update common_lookup
+set value = 'spectrophotometry'
+where name = 'technique'
+and value = 'microplate reader';
+
 update technique
 set type = 'imaging'
 where type = 'IVIS Lumina LT in Vivo Imaging System';
 
+update common_lookup
+set value = 'imaging'
+where name = 'technique'
+and value = 'IVIS Lumina LT in Vivo Imaging System';
+
 update technique
 set type = 'gas sorption'
 where type = 'surface area';
+
+update common_lookup
+set value = 'gas sorption'
+where name = 'technique'
+and value = 'surface area';
 	
 /*CANANOLAB-547*/
 Delete from common_lookup where value = 'cell exxpansion' ;
@@ -76,6 +86,9 @@ update publication
 set category = 'peer review article'
 where category = 'Article';
 
+delete from common_lookup
+where name='publication'
+and value = 'Article';
 
 /*CANANOLAB-544*/
 delete from common_lookup
@@ -108,6 +121,17 @@ delete from common_lookup
 where name = 'other_pc' 
 and attribute = 'otherAssayType'
 and value = 'fluorescence spectrophotometry';
+
+update characterization
+set assay_type = 'fluorescence intensity correlation analysis'
+where assay_type = 'fluorescence correlation spectroscopy';
+
+update common_lookup
+set value = 'fluorescence intensity correlation analysis'
+where name = 'other_pc'
+and attribute = 'otherAssayType'
+and value = 'fluorescence correlation spectroscopy';
+
 
 update characterization
 set assay_type = 'surface chemistry'
@@ -166,6 +190,12 @@ and value = 'NMR spectroscopy';
 update characterization
 set assay_type = 'chemical analysis'
 where assay_type = 'nuclear magnetic resonance';
+
+delete from common_lookup
+where name = 'other_pc'
+and attribute = 'otherAssayType'
+and value = 'nuclear magnetic resonance';
+
 
 update characterization
 set assay_type = 'photoacoustic sensing'
