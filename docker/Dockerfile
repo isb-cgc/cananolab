@@ -33,7 +33,6 @@ COPY resources/standalone-full.xml /opt/wildfly-8.2.1.Final/standalone/configura
 COPY resources/module.xml /opt/wildfly-8.2.1.Final/modules/com/mysql/main
 COPY resources/mysql-connector-java-5.1.26.jar /opt/wildfly-8.2.1.Final/modules/com/mysql/main 
 COPY resources/run.sh /opt/wildfly-8.2.1.Final/bin
-COPY resources/build.sh /opt/wildfly-8.2.1.Final/bin
 
 EXPOSE 8080
 ENTRYPOINT ["/usr/bin/run.sh"]

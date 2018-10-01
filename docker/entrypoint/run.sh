@@ -1,5 +1,5 @@
 #!/bin/sh
-if [ -d "/usr/local/cananolab" ]; then
+if [ -d "/usr/local/cananolab/software" ]; then
         echo "Skipping cananolab install"
 else
   cp -R /tmp/cananolab /usr/local  
