@@ -52,7 +52,7 @@ public class SimpleShape extends SimpleCharacterizationProperty {
 		super.transferFromPropertyBean(request, charBean, needOptions);
 		
 		Shape shape = charBean.getShape();
-		
+
 		this.type = shape.getType();
 		this.aspectRatio = shape.getAspectRatio();
 		this.maxDimension = shape.getMaxDimension();
@@ -83,9 +83,9 @@ public class SimpleShape extends SimpleCharacterizationProperty {
 		List<String> vals = new ArrayList<String>();
 		vals.add("Type");
 		vals.add("Aspect Ratio");
-		vals.add("Minimum Dimention");
-		vals.add("Maximum Dimention");
-		return vals;
+		vals.add("Minimum Dimension");
+		vals.add("Maximum Dimension");
+        return vals;
 	}
 
 	@Override
@@ -98,15 +98,15 @@ public class SimpleShape extends SimpleCharacterizationProperty {
 			vals.add("");
 		
 		if (this.minDimension != null)
-			vals.add(String.valueOf(this.minDimension));
+			vals.add(String.valueOf(this.minDimension) + "  " + this.minDimensionUnit);
 		else
 			vals.add("");
 
 		if (this.maxDimension != null)
-			vals.add(String.valueOf(this.maxDimension));
+			vals.add(String.valueOf(this.maxDimension) + "  " + this.maxDimensionUnit);
 		else
 			vals.add("");
-		
+
 		return vals;
 	}
 
