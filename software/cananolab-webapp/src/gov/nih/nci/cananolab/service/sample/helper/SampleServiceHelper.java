@@ -690,7 +690,7 @@ public class SampleServiceHelper
 		crit.setResultTransformer(CriteriaSpecification.DISTINCT_ROOT_ENTITY);
 		
 		List result = appService.query(crit);
-		if (!result.isEmpty()) {
+		if (!result.isEmpty() || result.size() > 0) {
 			sample = (Sample) result.get(0);
 		}
 		return sample;

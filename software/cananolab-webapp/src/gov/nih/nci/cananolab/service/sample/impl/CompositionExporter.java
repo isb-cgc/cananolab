@@ -10,6 +10,7 @@ package gov.nih.nci.cananolab.service.sample.impl;
 
 import gov.nih.nci.cananolab.domain.agentmaterial.Antibody;
 import gov.nih.nci.cananolab.domain.agentmaterial.SmallMolecule;
+import gov.nih.nci.cananolab.domain.agentmaterial.Synthesis;
 import gov.nih.nci.cananolab.domain.common.File;
 import gov.nih.nci.cananolab.domain.common.Keyword;
 import gov.nih.nci.cananolab.domain.nanomaterial.Biopolymer;
@@ -450,6 +451,32 @@ public class CompositionExporter {
 
 		return rowIndex;
 	}
+	
+	/**
+	 * Output Synthesis Info for FunctionalizingEntityBean.
+	 *
+	 * @param entityBean
+	 * @param sheet
+	 * @param headerStyle
+	 * @param rowIndex
+	 * @return
+	 */
+	private static int outputFuncProperties(
+			gov.nih.nci.cananolab.domain.agentmaterial.Synthesis entityBean,
+			HSSFSheet sheet, HSSFCellStyle headerStyle, int rowIndex) {
+
+		// 1. Output table header.
+		HSSFRow row = sheet.createRow(rowIndex++);
+		ExportUtils.createCell(row, 0, headerStyle, "Type");
+		ExportUtils.createCell(row, 1, headerStyle, "Isotype");
+
+		// 2. Output table data.
+		row = sheet.createRow(rowIndex++);
+		ExportUtils.createCell(row, 0, entityBean.getName());
+		ExportUtils.createCell(row, 1, entityBean.getLot());
+
+		return rowIndex;
+	}
 
 	/**
 	 * Output SmallMolecule Info for FunctionalizingEntityBean.
@@ -567,6 +594,10 @@ public class CompositionExporter {
 						} else if (domainEntity instanceof gov.nih.nci.cananolab.domain.agentmaterial.Biopolymer) {
 							rowIndex = outputFuncProperties(
 									(gov.nih.nci.cananolab.domain.agentmaterial.Biopolymer) domainEntity,
+									sheet, headerStyle, rowIndex);
+						} else if (domainEntity instanceof Synthesis) {
+							rowIndex = outputFuncProperties(
+									(Synthesis) domainEntity,
 									sheet, headerStyle, rowIndex);
 						}
 						rowIndex++; // Create one empty line as separator.

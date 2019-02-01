@@ -82,6 +82,13 @@ L-->
 				<property name="alternateName" type="string" column="alternate_name"/>
 
 			</joined-subclass>
+			<joined-subclass name="gov.nih.nci.cananolab.domain.agentmaterial.Synthesis" table="supplier lazy="true">
+				<key column="supplier_pk_id" />
+				<!-- Attributes mapping for the Supplier class -->
+				<property name="supplierName" type="string" column="supplier_name"/>
+				<property name="lot" type="string" column="lot"/>
+
+			</joined-subclass>
 
 		</joined-subclass>
 		<joined-subclass name="gov.nih.nci.cananolab.domain.particle.ComposingElement" table="composing_element" lazy="true">

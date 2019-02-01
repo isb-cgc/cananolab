@@ -24,6 +24,7 @@ import gov.nih.nci.cananolab.ui.form.CompositionForm;
 import gov.nih.nci.cananolab.util.ExportUtils;
 import gov.nih.nci.cananolab.util.StringUtils;
 
+import gov.nih.nci.cananolab.exception.NotExistException;
 import java.util.Collections;
 import java.util.List;
 
@@ -206,7 +207,11 @@ public class CompositionBO extends BaseAnnotationBO
 		session.removeAttribute("theSample");
 
 	//	DynaValidatorForm theForm = (DynaValidatorForm) form;
+		if(form==null) {
+			throw new Exception("CompositionForm is null");
+		}
 		String sampleId = form.getSampleId();  //Sting(SampleConstants.SAMPLE_ID);
+		
 		SampleBean sampleBean = setupSampleById(sampleId, request);
 
 		CompositionBean compBean = compositionService.findCompositionBySampleId(sampleId);
@@ -296,6 +301,10 @@ public class CompositionBO extends BaseAnnotationBO
 	public SampleService getSampleService() {
 		return this.sampleService;
 	}
+//	
+//	public void setSampleService(SampleService sampleService) {
+//		this.sampleService = sampleService;
+//	}
 
 	@Override
 	public SpringSecurityAclService getSpringSecurityAclService() {
@@ -307,4 +316,24 @@ public class CompositionBO extends BaseAnnotationBO
 		return userDetailsService;
 	}
 	
+	@Override
+	protected SampleBean setupSampleById(String sampleId, HttpServletRequest request) throws Exception
+	{
+		if (StringUtils.isEmpty(sampleId)) 
+			throw new NotExistException("Null or empty sample Id passed in setupSampleById()");
+		SampleBean sampleBean=null;
+		// sample service has been created earlier
+		if(!(this.getSampleService() == null)){
+		 sampleBean = getSampleService().findSampleById(sampleId, true);
+		}
+		
+		sampleBean = sampleService.findSampleById(sampleId, true);
+
+		if (sampleBean == null) {
+			throw new NotExistException("No such sample in the system");
+		}
+		//request.setAttribute("theSample", sampleBean);
+
+		return sampleBean;
+	}
 }
