@@ -95,6 +95,7 @@ public class Constants {
 	// inheritance with joined-subclass
 	// TODO check the order generated in the hibernate mapping file for each
 	// release, the parent class is 1.
+	
 	public static final Map<String, Integer> FUNCTIONALIZING_ENTITY_SUBCLASS_ORDER_MAP = new HashMap<String, Integer>();
 	static {
 		FUNCTIONALIZING_ENTITY_SUBCLASS_ORDER_MAP.put(new String(
@@ -105,6 +106,8 @@ public class Constants {
 				new Integer(4));
 		FUNCTIONALIZING_ENTITY_SUBCLASS_ORDER_MAP.put(new String(
 				"SmallMolecule"), new Integer(5));
+		FUNCTIONALIZING_ENTITY_SUBCLASS_ORDER_MAP.put(new String(
+				"Synthesis"), new Integer(6));
 	}
 
 	/* image file name extension */

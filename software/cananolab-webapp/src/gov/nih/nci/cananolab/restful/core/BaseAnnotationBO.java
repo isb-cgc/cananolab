@@ -77,9 +77,11 @@ public abstract class BaseAnnotationBO extends AbstractDispatchBO
 	{
 		if (StringUtils.isEmpty(sampleId)) 
 			throw new NotExistException("Null or empty sample Id passed in setupSampleById()");
-		
+		SampleBean sampleBean=null;
 		// sample service has been created earlier
-		SampleBean sampleBean = getSampleService().findSampleById(sampleId, true);
+		if(!(this.getSampleService() == null)){
+		 sampleBean = getSampleService().findSampleById(sampleId, true);
+		}
 		if (sampleBean == null) {
 			throw new NotExistException("No such sample in the system");
 		}

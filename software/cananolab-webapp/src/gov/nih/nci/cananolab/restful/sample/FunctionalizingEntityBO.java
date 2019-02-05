@@ -14,6 +14,7 @@ import gov.nih.nci.cananolab.domain.common.File;
 import gov.nih.nci.cananolab.domain.common.Keyword;
 import gov.nih.nci.cananolab.domain.function.ImagingFunction;
 import gov.nih.nci.cananolab.domain.agentmaterial.Biopolymer;
+import gov.nih.nci.cananolab.domain.agentmaterial.Synthesis;
 import gov.nih.nci.cananolab.domain.particle.ActivationMethod;
 import gov.nih.nci.cananolab.domain.particle.Function;
 import gov.nih.nci.cananolab.domain.particle.FunctionalizingEntity;
@@ -401,7 +402,23 @@ public class FunctionalizingEntityBO extends BaseAnnotationBO
 				msgs.add(PropertyUtil.getProperty("sample",
 						"functionalizingEntity.biopolymer.type.invalid"));
 			}
+		} if(entityBean.getType().equalsIgnoreCase("synthesis")) {
+			if(entityBean.getSynthesis().getName()==null) {
+				msgs.add("Supplier Name is required.");
+			}
+			if (entityBean.getSynthesis().getName() != null
+					&& !StringUtils.xssValidate(entityBean.getSynthesis().getName())) {
+				msgs.add(PropertyUtil.getProperty("sample",
+						"functionalizingEntity.synthesis.name.invalid"));
+			}
+			if (entityBean.getSynthesis().getLot() != null
+					&& !StringUtils.xssValidate(entityBean.getSynthesis().getLot())) {
+				msgs.add(PropertyUtil.getProperty("sample",
+						"functionalizingEntity.synthesis.lot.invalid"));
+			}
 		}
+		
+		
 		if (entityBean.getType().equalsIgnoreCase("antibody")) {
 			if (entityBean.getAntibody().getType() != null
 					&& !StringUtils.xssValidate(entityBean.getAntibody()
@@ -679,8 +696,8 @@ public class FunctionalizingEntityBO extends BaseAnnotationBO
 	
 				}
 			}
-			mol.setFunctionCollection(funCollection);
-			mol.setFileCollection(filecoll);
+			mol.setFunctionCollection(new HashSet<Function>(funCollection));
+			mol.setFileCollection(new HashSet<File>(filecoll));
 			funcBean.setSmallMolecule(mol);
 			domainEntity = mol;
 		} else if (bean.getType().equalsIgnoreCase("Biopolymer")) {
@@ -704,10 +721,35 @@ public class FunctionalizingEntityBO extends BaseAnnotationBO
 				}
 			}
 			
-			bio.setFunctionCollection(funCollection);
-			bio.setFileCollection(filecoll);
+			bio.setFunctionCollection(new HashSet<Function>(funCollection));
+			bio.setFileCollection(new HashSet<File>(filecoll));
 			funcBean.setBiopolymer(bio);
 			domainEntity = bio;
+		} else if (bean.getType().equalsIgnoreCase("Synthesis")) {
+
+			Synthesis syn = new Synthesis();
+			if (bean.getDomainEntity() != null) {
+				if(bean.getDomainEntity().get("name")!=null)
+					syn.setName((String) bean.getDomainEntity().get("name"));
+				if(bean.getDomainEntity().get("lot")!=null)
+					syn.setLot((String) bean.getDomainEntity().get("lot"));
+				if (bean.getDomainEntity().get("id") != null) {
+					syn.setId(new Long((Integer) bean.getDomainEntity().get("id")));
+					syn.setCreatedBy((String) bean.getDomainEntity().get(
+							"createdBy"));
+					syn.setCreatedDate(new Date((Long) bean.getDomainEntity().get(
+							"createdDate")));
+					syn.setSampleComposition(sampleComp);
+	
+				} else {
+					syn.setSampleComposition(null);
+				}
+			}
+			
+			syn.setFunctionCollection(new HashSet<Function>(funCollection));
+			syn.setFileCollection(new HashSet<File>(filecoll));
+			funcBean.setSynthesis(syn);
+			domainEntity = syn;
 		} else if (bean.getType().equalsIgnoreCase("Antibody")) {
 			Antibody body = new Antibody();
 			if (bean.getDomainEntity() != null) {
@@ -729,8 +771,8 @@ public class FunctionalizingEntityBO extends BaseAnnotationBO
 					body.setSampleComposition(null);
 				}
 			}
-			body.setFunctionCollection(funCollection);
-			body.setFileCollection(filecoll);
+			body.setFunctionCollection(new HashSet<Function>(funCollection));
+			body.setFileCollection(new HashSet<File>(filecoll));
 			funcBean.setAntibody(body);
 			domainEntity = body;
 		} else {
@@ -748,8 +790,8 @@ public class FunctionalizingEntityBO extends BaseAnnotationBO
 				} else {
 					domainEntity.setSampleComposition(null);
 				}
-				domainEntity.setFunctionCollection(funCollection);
-				domainEntity.setFileCollection(filecoll);
+				domainEntity.setFunctionCollection(new HashSet<Function>(funCollection));
+				domainEntity.setFileCollection(new HashSet<File>(filecoll));
 			}
 		}
 		ActivationMethod act = new ActivationMethod();
