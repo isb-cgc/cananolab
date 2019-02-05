@@ -7,6 +7,7 @@ import gov.nih.nci.cananolab.domain.particle.SampleComposition;
 import gov.nih.nci.cananolab.domain.particle.Function;
 import java.util.Date;
 import java.util.Collection;
+import java.util.HashSet;
 import gov.nih.nci.cananolab.domain.common.File;
 
 /**
@@ -23,8 +24,8 @@ public class Synthesis extends gov.nih.nci.cananolab.domain.particle.Functionali
 
 	public Synthesis(String createdBy, Date createdDate, String description, String molecularFormula,
 			String molecularFormulaType, String name, float value, String valueUnit, String pubChemDataSourceName,
-			long pubChemId, Collection<ChemicalAssociation> chemicalAssociationACollection, Collection<ChemicalAssociation> chemicalAssociationBCollection, Collection<File> fileCollection,
-			SampleComposition sampleComposition, ActivationMethod activationMethod, Collection<Function> functionCollection,
+			long pubChemId, HashSet<ChemicalAssociation> chemicalAssociationACollection, HashSet<ChemicalAssociation> chemicalAssociationBCollection, HashSet<File> fileCollection,
+			SampleComposition sampleComposition, ActivationMethod activationMethod, HashSet<Function> functionCollection,
 			String supplier_name, String lot) {
 		super(createdBy, createdDate, description, molecularFormula, molecularFormulaType, name, value, valueUnit,
 				pubChemDataSourceName, pubChemId, chemicalAssociationACollection, chemicalAssociationBCollection,
