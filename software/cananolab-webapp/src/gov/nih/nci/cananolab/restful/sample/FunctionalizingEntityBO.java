@@ -729,8 +729,8 @@ public class FunctionalizingEntityBO extends BaseAnnotationBO
 
 			Synthesis syn = new Synthesis();
 			if (bean.getDomainEntity() != null) {
-				if(bean.getDomainEntity().get("name")!=null)
-					syn.setName((String) bean.getDomainEntity().get("name"));
+				if(bean.getDomainEntity().get("supplierName")!=null)
+					syn.setName((String) bean.getDomainEntity().get("supplierName"));
 				if(bean.getDomainEntity().get("lot")!=null)
 					syn.setLot((String) bean.getDomainEntity().get("lot"));
 				if (bean.getDomainEntity().get("id") != null) {
