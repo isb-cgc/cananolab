@@ -403,11 +403,11 @@ public class FunctionalizingEntityBO extends BaseAnnotationBO
 						"functionalizingEntity.biopolymer.type.invalid"));
 			}
 		} if(entityBean.getType().equalsIgnoreCase("synthesis")) {
-			if(entityBean.getSynthesis().getName()==null) {
+			if(entityBean.getSynthesis().getSupplierName()==null) {
 				msgs.add("Supplier Name is required.");
 			}
-			if (entityBean.getSynthesis().getName() != null
-					&& !StringUtils.xssValidate(entityBean.getSynthesis().getName())) {
+			if (entityBean.getSynthesis().getSupplierName() != null
+					&& !StringUtils.xssValidate(entityBean.getSynthesis().getSupplierName())) {
 				msgs.add(PropertyUtil.getProperty("sample",
 						"functionalizingEntity.synthesis.name.invalid"));
 			}
@@ -730,7 +730,7 @@ public class FunctionalizingEntityBO extends BaseAnnotationBO
 			Synthesis syn = new Synthesis();
 			if (bean.getDomainEntity() != null) {
 				if(bean.getDomainEntity().get("supplierName")!=null)
-					syn.setName((String) bean.getDomainEntity().get("supplierName"));
+					syn.setSupplierName((String) bean.getDomainEntity().get("supplierName"));
 				if(bean.getDomainEntity().get("lot")!=null)
 					syn.setLot((String) bean.getDomainEntity().get("lot"));
 				if (bean.getDomainEntity().get("id") != null) {
