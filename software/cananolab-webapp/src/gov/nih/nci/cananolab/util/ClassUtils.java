@@ -522,7 +522,8 @@ public class ClassUtils {
 		// with physico-chemical
 		displayName = displayName.replaceAll("invivo", "in vivo")
 				.replaceAll("invitro", "in vitro")
-				.replaceAll("physico ", "physico-");
+				.replaceAll("physico ", "physico-")
+				.replaceAll("synthesis", "Synthesis");
 		return displayName;
 	}
 
