@@ -326,7 +326,9 @@ public class CompositionBO extends BaseAnnotationBO
 		if(!(this.getSampleService() == null)){
 		 sampleBean = getSampleService().findSampleById(sampleId, true);
 		}
-		
+		if(!(this.sampleService == null)){
+			 sampleBean = sampleService.findSampleById(sampleId, true);
+			}
 //		sampleBean = sampleService.findSampleById(sampleId, true);
 
 		if (sampleBean == null) {
