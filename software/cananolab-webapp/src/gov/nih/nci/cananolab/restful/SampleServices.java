@@ -89,7 +89,7 @@ public class SampleServices {
 			
 			Object result = results.get(0);
 			if (result instanceof String) {
-				logger.debug("Search sampel has error: " + results.get(0));
+				logger.debug("Search sample has error: " + results.get(0));
 				return Response.status(Response.Status.NOT_FOUND).entity(result).build();
 			} else {
 				logger.debug("Sample search successful");

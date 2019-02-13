@@ -327,7 +327,7 @@ public class CompositionBO extends BaseAnnotationBO
 		 sampleBean = getSampleService().findSampleById(sampleId, true);
 		}
 		
-		sampleBean = sampleService.findSampleById(sampleId, true);
+//		sampleBean = sampleService.findSampleById(sampleId, true);
 
 		if (sampleBean == null) {
 			throw new NotExistException("No such sample in the system");

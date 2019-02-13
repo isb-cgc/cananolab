@@ -123,6 +123,7 @@ public class ORMDAOImpl extends HibernateDaoSupport implements DAO
 	//	if (obj instanceof NestedCriteriaPath)
 	protected Response query(Request request, NestedCriteriaPath obj) throws Exception	
 	{
+		log.info("Nested Criteria Query :"+obj.toString());
 		NestedCriteria nc = Path2NestedCriteria.createNestedCriteria(obj.getpathString(), obj.getParameters(), request.getClassCache());
 		NestedCriteria2HQL converter = new NestedCriteria2HQL(nc, config, caseSensitive);
 		HQLCriteria hqlCriteria = converter.translate();
@@ -132,6 +133,7 @@ public class ORMDAOImpl extends HibernateDaoSupport implements DAO
 	//if (obj instanceof CQLQuery)
 	protected Response query(Request request, CQLQuery obj) throws Exception	
 	{
+		log.info("CQL Query :"+obj.toString());
 		CQL2HQL converter = new CQL2HQL(request.getClassCache());
 		HQLCriteria hqlCriteria = converter.translate((CQLQuery)obj, false, caseSensitive);
 		return query(request, hqlCriteria);		
@@ -166,9 +168,9 @@ public class ORMDAOImpl extends HibernateDaoSupport implements DAO
 	}
 	
 	protected HibernateCallback getExecuteFindQueryHibernateCallback(final String hql, final List params, final int firstResult, final int maxResult)
-	{
+	{   log.info("Hibernate Callback Find Query :"+hql);
 		HibernateCallback callBack = new HibernateCallback(){
-
+			
 			public Object doInHibernate(Session session) throws HibernateException, SQLException {
 				Query query = session.createQuery(hql);
 				query.setFirstResult(firstResult);				    		
@@ -185,9 +187,9 @@ public class ORMDAOImpl extends HibernateDaoSupport implements DAO
 	}
 
 	protected HibernateCallback getExecuteCountQueryHibernateCallback(final String hql, final List params)
-	{
+	{log.info("Hibernate Callback Count Query :"+hql);
 		HibernateCallback callBack = new HibernateCallback(){
-
+			
 			public Object doInHibernate(Session session) throws HibernateException, SQLException {
 				Query query = session.createQuery(hql);
 				query.setMaxResults(1);
