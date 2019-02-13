@@ -337,6 +337,15 @@ public class SimpleCompositionBean {
 											.getBiopolymer().getSequence());
 
 								}
+								if (detailPage.contains("Synthesis")) {
+									properties = new HashMap<String, Object>();
+
+									properties.put("supplierName", funcBean.getSynthesis()
+											.getSupplierName());
+									properties.put("lot", funcBean.getSynthesis()
+											.getLot());
+
+								}
 								if (detailPage.contains("Antibody")) {
 									properties = new HashMap<String, Object>();
 
