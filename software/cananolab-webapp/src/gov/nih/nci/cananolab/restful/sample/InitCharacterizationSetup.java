@@ -105,6 +105,7 @@ public class InitCharacterizationSetup {
 					.getDisplayName("PhysicoChemicalCharacterization"));
 			types.add(ClassUtils.getDisplayName("InvitroCharacterization"));
 			types.add(ClassUtils.getDisplayName("InvivoCharacterization"));
+			types.add(ClassUtils.getDisplayName("SynthesisCharacterization"));
 			appContext.setAttribute("defaultCharacterizationTypes", types);
 		} else {
 			types = new ArrayList<String>((List<? extends String>) appContext
