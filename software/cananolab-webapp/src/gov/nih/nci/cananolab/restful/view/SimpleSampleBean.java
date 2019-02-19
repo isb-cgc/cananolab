@@ -48,6 +48,7 @@ public class SimpleSampleBean {
 	String[] physicoChars;
 	String[] invitroChars;
 	String[] invivoChars;
+	String[] synthesisChars;
 
 	Map<String, String> caNano2MINChar;
 
@@ -67,6 +68,14 @@ public class SimpleSampleBean {
 
 	public void setInvivoChars(String[] invivoChars) {
 		this.invivoChars = invivoChars;
+	}
+	
+	public String[] getSynthesisChars() {
+		return synthesisChars;
+	}
+
+	public void setSynthesisChars(String[] synthesisChars) {
+		this.synthesisChars = synthesisChars;
 	}
 
 	public Map<String, String> getCaNano2MINChar() {
@@ -291,6 +300,8 @@ public class SimpleSampleBean {
 		this.invitroChars = SampleUtil.getStringArrayFromSortedSet(iv);
 		SortedSet<String> invivo = (SortedSet<String>) request.getSession().getServletContext().getAttribute("invivoChars");
 		this.invivoChars = SampleUtil.getStringArrayFromSortedSet(invivo);
+		SortedSet<String> synth = (SortedSet<String>) request.getSession().getServletContext().getAttribute("synthesisChars");
+		this.synthesisChars = SampleUtil.getStringArrayFromSortedSet(synth);
 		
 
 	}

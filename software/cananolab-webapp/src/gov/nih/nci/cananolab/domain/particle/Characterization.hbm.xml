@@ -90,6 +90,7 @@ L-->
 			</subclass>
 
 		</subclass>
+
 		<subclass name="gov.nih.nci.cananolab.domain.characterization.physical.PhysicoChemicalCharacterization" discriminator-value="PhysicalCharacterization">
 			<subclass name="gov.nih.nci.cananolab.domain.characterization.physical.Purity" discriminator-value="Purity">
 
@@ -138,6 +139,12 @@ L-->
 			<subclass name="gov.nih.nci.cananolab.domain.characterization.physical.Surface" discriminator-value="Surface">
 				<!-- Attributes mapping for the Surface class -->
 				<property name="isHydrophobic" type="boolean" column="surface_is_hydrophobic"/>
+
+			</subclass>
+
+		</subclass>
+		<subclass name="gov.nih.nci.cananolab.domain.characterization.synthesis.SynthesisCharacterization" discriminator-value="SynthesisCharacterization">
+			<subclass name="gov.nih.nci.cananolab.domain.characterization.synthesis.Purification" discriminator-value="Purification">
 
 			</subclass>
 

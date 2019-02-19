@@ -8,3 +8,6 @@ CREATE TABLE `supplier` (
   CONSTRAINT `supplier_ibfk_1` FOREIGN KEY (`supplier_pk_id`) REFERENCES `functionalizing_entity` (`functionalizing_entity_pk_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
+insert into common_lookup
+(common_lookup_pk_id, name, attribute, value) 
+VALUES (1000, "protocol", "type", "functionalization");
