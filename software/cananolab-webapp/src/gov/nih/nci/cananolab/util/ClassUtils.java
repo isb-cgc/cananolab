@@ -21,6 +21,7 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Enumeration;
 import java.util.HashMap;
@@ -49,94 +50,164 @@ public class ClassUtils {
 
 	public static Collection<Class> getDomainClasses() throws Exception {
 		logger.debug("In ClassUtils.getDomainClasses");
-		
+
 		// get the URL of the jar containing the Dendrimer class
 		Class clazz = gov.nih.nci.cananolab.domain.nanomaterial.Dendrimer.class;
 		boolean packedWar = false;
 		URL url = clazz.getResource(clazz.getSimpleName() + ".class");
 		String path = getRealPath(url);
-		logger.debug("ClassUtils.getDomainClasses path "+ path);
+		logger.debug("ClassUtils.getDomainClasses path " + path);
 		int ind = path.indexOf(".jar");
 		String jarPath = null, warPath = null;
-		
+		Collection<Class> list = new ArrayList<Class>();
+
 		if (ind != -1) {
 			int whack = path.indexOf("/", ind);
 			jarPath = path.substring(0, whack);
-//			jarPath = path.substring(0, ind + 21);
-     		int ind2 = jarPath.indexOf(".war");
+			// jarPath = path.substring(0, ind + 21);
+			int ind2 = jarPath.indexOf(".war");
 			if (ind2 != -1) {
-				File warFile = (new File(jarPath)).getParentFile()
-						.getParentFile().getParentFile();
-				warPath=warFile.getPath();
+				File warFile = (new File(jarPath)).getParentFile().getParentFile().getParentFile();
+				warPath = warFile.getPath();
 				// detected whether the war file is packed or unpacked.
-				// in Jboss 5.1, when the war file is unpacked during development, creating
-				// a JarFile on the jar file works, but when the war file is packed, the jar
+				// in Jboss 5.1, when the war file is unpacked during
+				// development, creating
+				// a JarFile on the jar file works, but when the war file is
+				// packed, the jar
 				// file is not recognized
 				if (!warFile.isDirectory()) {
 					packedWar = true;
 				}
-			}
-		}
 
-		Collection<Class> list = new ArrayList<Class>();
-		// in jboss 5.1, when the war file is packed, JarFile(jarPath) would
-		// fail, need to create a file JarFile based on the war file first and
-		// then iterate through war file to find the jar file
-		if (packedWar) {
-			JarFile file = new JarFile(warPath);
-			Enumeration entries = file.entries();
+
+
+
+				// in jboss 5.1, when the war file is packed, JarFile(jarPath) would
+				// fail, need to create a file JarFile based on the war file first and
+				// then iterate through war file to find the jar file
+				if (packedWar) {
+					JarFile file = new JarFile(warPath);
+					Enumeration entries = file.entries();
+
+					while (entries.hasMoreElements()) {
+						JarEntry jarEntry = (JarEntry) entries.nextElement();
+						if (jarEntry.getName().endsWith(Constants.SDK_BEAN_JAR)) {
+							JarInputStream jarIS = new JarInputStream(file.getInputStream(jarEntry));
+							JarEntry innerEntry = jarIS.getNextJarEntry();
+							while (innerEntry != null) {
+								String name = innerEntry.getName();
+								if (name.endsWith(".class")) {
+									String klassName = name.replace('/', '.').substring(0, name.lastIndexOf('.'));
+									list.add(Class.forName(klassName));
+								}
+								innerEntry = jarIS.getNextJarEntry();
+							}
+						}
+					}
+				} else {
+					// remove the extra file: in the front
+					if (jarPath.startsWith("file:")) {
+						jarPath = jarPath.replace("file:", "");
+					}
+					// wildfly deployment path is different from jboss 5.1, so retrieved
+					// the jar file first
+					File file = new File(jarPath);
+					File[] children = file.listFiles();
+					JarFile jarFile = null;
+					;
+
+					for (int i = 0; i < children.length; i++) {
+						if (!(children[i].isDirectory()))
+							jarFile = new JarFile(children[i].getPath());
+					}
+
+					Enumeration e = jarFile.entries();
+					while (e.hasMoreElements()) {
+						JarEntry o = (JarEntry) e.nextElement();
+						if (!o.isDirectory()) {
+							String name = o.getName();
+							if (name.endsWith(".class")) {
+								String klassName = name.replace('/', '.').substring(0, name.lastIndexOf('.'));
+								list.add(Class.forName(klassName));
+							}
+						}
+					}
+				}
+
+			}
+		}else
+		{
+			ind = path.indexOf("domain");
+			int whack = path.indexOf("/", ind);
+			jarPath = path.substring(0, whack);
+			File directory = new File(jarPath);
+			File warFile = (new File(jarPath)).getParentFile().getParentFile().getParentFile();
+			warPath = warFile.getPath();
+			JarFile jfile = new JarFile(warPath);
+
+			List<File> fList = listf(directory.getAbsolutePath());
+			// Get all files from a directory.
+			//	    File[] fList = directory.listFiles();
+			if(fList != null)
+				for (File file : fList) {      
+					if (file.isFile()) {
+						String name = file.getName();
+						if (name.endsWith(".class")) {
+							String klassName = name.replace('/', '.').substring(0, name.lastIndexOf('.'));
+							list.add(Class.forName(klassName));
+						}
+						//	                list.add(file);
+					} else if (file.isDirectory()) {
+						listf(file.getAbsolutePath());
+					}
+				}
+
+			Enumeration entries = jfile.entries();
 
 			while (entries.hasMoreElements()) {
 				JarEntry jarEntry = (JarEntry) entries.nextElement();
 				if (jarEntry.getName().endsWith(Constants.SDK_BEAN_JAR)) {
-					JarInputStream jarIS = new JarInputStream(
-							file.getInputStream(jarEntry));
+					JarInputStream jarIS = new JarInputStream(jfile.getInputStream(jarEntry));
 					JarEntry innerEntry = jarIS.getNextJarEntry();
 					while (innerEntry != null) {
 						String name = innerEntry.getName();
 						if (name.endsWith(".class")) {
-							String klassName = name.replace('/', '.')
-									.substring(0, name.lastIndexOf('.'));
+							String klassName = name.replace('/', '.').substring(0, name.lastIndexOf('.'));
 							list.add(Class.forName(klassName));
 						}
 						innerEntry = jarIS.getNextJarEntry();
 					}
 				}
 			}
-		} else {
-			//remove the extra file: in the front
-			if (jarPath.startsWith("file:")) {
-				jarPath=jarPath.replace("file:", "");
-			}
-			//wildfly deployment path is different from jboss 5.1, so retrieved the jar file first
-			File file = new File(jarPath);
-			File[] children = file.listFiles();
-			JarFile jarFile = null;;
-			
-			for(int i = 0; i < children.length; i++){
-				if(!(children[i].isDirectory()))
-				jarFile = new JarFile(children[i].getPath());
-			}
-	 
-			Enumeration e = jarFile.entries();
-			while (e.hasMoreElements()) {
-				JarEntry o = (JarEntry) e.nextElement();
-				if (!o.isDirectory()) {
-					String name = o.getName();
-					if (name.endsWith(".class")) {
-						String klassName = name.replace('/', '.').substring(0,
-								name.lastIndexOf('.'));
-						list.add(Class.forName(klassName));
-					}
-				}
-			}
 		}
+
 		return list;
 	}
-/*
- * Wildfly deployment path returns a fake path with getResource, so added this function to get realPath.
- */
-	
+
+	public static List<File> listf(String directoryName) {
+		File directory = new File(directoryName);
+
+		List<File> resultList = new ArrayList<File>();
+
+		// get all the files from a directory
+		File[] fList = directory.listFiles();
+		resultList.addAll(Arrays.asList(fList));
+		for (File file : fList) {
+			if (file.isFile()) {
+				System.out.println(file.getAbsolutePath());
+			} else if (file.isDirectory()) {
+				resultList.addAll(listf(file.getAbsolutePath()));
+			}
+		}
+		//System.out.println(fList);
+		return resultList;
+	}
+
+	/*
+	 * Wildfly deployment path returns a fake path with getResource, so added
+	 * this function to get realPath.
+	 */
+
 	private static String getRealPath(URL url) {
 		org.jboss.vfs.VirtualFile vFile = null;
 		try {
@@ -146,7 +217,7 @@ public class ClassUtils {
 			e.printStackTrace();
 		}
 
-	     URI fileNameDecodedTmp = null;
+		URI fileNameDecodedTmp = null;
 		try {
 			fileNameDecodedTmp = org.jboss.vfs.VFSUtils.getPhysicalURI(vFile);
 		} catch (IOException e) {
@@ -154,10 +225,10 @@ public class ClassUtils {
 			e.printStackTrace();
 		} 
 
-	     String path = fileNameDecodedTmp.getPath();
-	     logger.debug("ClassUtils.getRealPath "+ path);
-	     return path; 
-		
+		String path = fileNameDecodedTmp.getPath();
+		logger.debug("ClassUtils.getRealPath "+ path);
+		return path; 
+
 	}
 
 	/**
@@ -186,8 +257,7 @@ public class ClassUtils {
 	 * @return
 	 * @throws Exception
 	 */
-	public static List<String> getChildClassNames(String parentClassName)
-			throws Exception {
+	public static List<String> getChildClassNames(String parentClassName) throws Exception {
 		List<Class> childClasses = getChildClasses(parentClassName);
 		List<String> childClassNames = new ArrayList<String>();
 		for (Class c : childClasses) {
@@ -214,14 +284,12 @@ public class ClassUtils {
 	 *            class name
 	 * @return
 	 */
-	public static boolean hasChildrenClasses(String parentClassName)
-			throws Exception {
+	public static boolean hasChildrenClasses(String parentClassName) throws Exception {
 		boolean hasChildernFlag = false;
 		if (parentClassName == null) {
 			return hasChildernFlag;
 		}
-		List<String> subclassList = ClassUtils
-				.getChildClassNames(parentClassName);
+		List<String> subclassList = ClassUtils.getChildClassNames(parentClassName);
 		if (subclassList == null || subclassList.size() == 0)
 			hasChildernFlag = false;
 		else
@@ -237,8 +305,7 @@ public class ClassUtils {
 		Collection<Class> classes = getDomainClasses();
 		for (Class clazz : classes) {
 			if (clazz.getCanonicalName().equals(shortClassName)
-					|| clazz.getCanonicalName().matches(
-							"([a-z]+\\.)+" + shortClassName)) {
+					|| clazz.getCanonicalName().matches("([a-z]+\\.)+" + shortClassName)) {
 				return clazz;
 			}
 		}
@@ -277,8 +344,7 @@ public class ClassUtils {
 
 			// Make an input stream from the byte array and read
 			// a copy of the object back in.
-			ObjectInputStream in = new ObjectInputStream(
-					new ByteArrayInputStream(bos.toByteArray()));
+			ObjectInputStream in = new ObjectInputStream(new ByteArrayInputStream(bos.toByteArray()));
 			obj = in.readObject();
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -357,14 +423,11 @@ public class ClassUtils {
 		if (inputObjects != null && inputObjects.size() > 0) {
 			// put to inputObjects map
 			Map<String, Method> setterMethodsMap = new HashMap<String, Method>();
-			Method[] inputObjectMethods = inputObjects.get(0).getClass()
-					.getMethods();
+			Method[] inputObjectMethods = inputObjects.get(0).getClass().getMethods();
 			for (Method method : inputObjectMethods) {
-				if (method.getName().startsWith("set")
-						&& method.getParameterTypes().length == 1
+				if (method.getName().startsWith("set") && method.getParameterTypes().length == 1
 						&& method.getReturnType().toString().equals("void")) {
-					setterMethodsMap.put(
-							method.getName().replaceFirst("set", ""), method);
+					setterMethodsMap.put(method.getName().replaceFirst("set", ""), method);
 				}
 			}
 			Method setterMethod = null;
@@ -374,11 +437,9 @@ public class ClassUtils {
 				Method[] allMethods = objClazz.getMethods();
 
 				// qualified getter methods
-				List<Method> methods = new ArrayList<Method>(
-						(int) (allMethods.length / 2));
+				List<Method> methods = new ArrayList<Method>((int) (allMethods.length / 2));
 				for (Method method : allMethods) {
-					if (method.getName().startsWith("get")
-							&& !method.getName().equals("getClass")
+					if (method.getName().startsWith("get") && !method.getName().equals("getClass")
 							&& method.getParameterTypes().length == 0) {
 						methods.add(method);
 					}
@@ -390,30 +451,18 @@ public class ClassUtils {
 					resultObjs.add(aTargetClazz.newInstance());
 					for (Method method : methods) {
 						System.out.println("method: " + method);
-						getterResult = method.invoke(inputObjects.get(0),
-								(Object[]) null);
-						setterMethod = setterMethodsMap.get(method.getName()
-								.replaceFirst("get", ""));
+						getterResult = method.invoke(inputObjects.get(0), (Object[]) null);
+						setterMethod = setterMethodsMap.get(method.getName().replaceFirst("get", ""));
 
-						if (getterResult != null
-								&& getterResult
-										.getClass()
-										.getName()
-										.equals(setterMethod
-												.getParameterTypes()[0]
-												.getName())) {
-							System.out
-									.println(" getterResult.getClass().getName(): "
-											+ getterResult.getClass().getName());
-							System.out
-									.println(" setterMethod.getParameterTypes()[0].getName(): "
-											+ setterMethod.getParameterTypes()[0]
-													.getName());
+						if (getterResult != null && getterResult.getClass().getName()
+								.equals(setterMethod.getParameterTypes()[0].getName())) {
+							System.out.println(
+									" getterResult.getClass().getName(): " + getterResult.getClass().getName());
+							System.out.println(" setterMethod.getParameterTypes()[0].getName(): "
+									+ setterMethod.getParameterTypes()[0].getName());
 							// invoke setter
-							System.out
-									.println(" going to set: " + getterResult);
-							setterMethod
-									.invoke(resultObjs.get(i), getterResult);
+							System.out.println(" going to set: " + getterResult);
+							setterMethod.invoke(resultObjs.get(i), getterResult);
 						}
 					}
 				}
@@ -516,29 +565,23 @@ public class ClassUtils {
 	}
 
 	public static String getDisplayName(String shortClassName) {
-		String displayName = shortClassName.replaceAll("([A-Z])", " $1").trim()
-				.toLowerCase();
+		String displayName = shortClassName.replaceAll("([A-Z])", " $1").trim().toLowerCase();
 		// replace invivo with in vivo, invitro with in vitro, physico chemical
 		// with physico-chemical
-		displayName = displayName.replaceAll("invivo", "in vivo")
-				.replaceAll("invitro", "in vitro")
-				.replaceAll("physico ", "physico-")
-				.replaceAll("synthesis", "Synthesis");
+		displayName = displayName.replaceAll("invivo", "in vivo").replaceAll("invitro", "in vitro")
+				.replaceAll("physico ", "physico-").replaceAll("synthesis", "Synthesis");
 		return displayName;
 	}
 
 	public static String getShortClassNameFromDisplayName(String displayName) {
 		// replace physico-chemical with physico chemical, in vivo with invivo,
 		// In vitro with invitro
-		displayName = displayName
-				.replaceAll("physico-chemical", "physico chemical")
-				.replaceAll("in vivo", "invivo")
+		displayName = displayName.replaceAll("physico-chemical", "physico chemical").replaceAll("in vivo", "invivo")
 				.replaceAll("in vitro", "invitro");
 		String[] words = displayName.toLowerCase().split(" ");
 		List<String> newWords = new ArrayList<String>();
 		for (String word : words) {
-			String newWord = Character.toString(word.charAt(0)).toUpperCase()
-					+ word.substring(1);
+			String newWord = Character.toString(word.charAt(0)).toUpperCase() + word.substring(1);
 			newWords.add(newWord);
 		}
 		String shortClassName = StringUtils.join(newWords, "");
@@ -556,8 +599,7 @@ public class ClassUtils {
 			String displayName = ClassUtils.getDisplayName("SmallMolecule");
 			System.out.println(displayName);
 
-			String className = ClassUtils
-					.getShortClassNameFromDisplayName("other small molecule");
+			String className = ClassUtils.getShortClassNameFromDisplayName("other small molecule");
 			System.out.println(className);
 
 			// test, put this to the beginnging of ClassUtils.mapObjects
@@ -571,7 +613,8 @@ public class ClassUtils {
 			// end of test
 
 			// List<Report> reportLists = ClassUtils.mapObjects(null, null);
-			// System.out.println("report ========="+reportLists.get(0).getCategory());
+			// System.out.println("report
+			// ========="+reportLists.get(0).getCategory());
 			System.out.println(ClassUtils.getFullClass("SampleComposition"));
 			ClassUtils.getDomainClasses();
 		} catch (Exception e) {

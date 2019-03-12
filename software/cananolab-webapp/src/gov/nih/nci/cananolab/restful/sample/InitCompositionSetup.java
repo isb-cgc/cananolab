@@ -92,7 +92,7 @@ public class InitCompositionSetup {
 		if (entityBean.getDomainEntity() instanceof Emulsion) {
 			InitSetup.getInstance().persistLookup(request, "emulsion",
 					"composingElementType", "otherComposingElementType",
-					entityBean.getTheComposingElement().getDomain().getType());
+					theComposingElement.getDomain().getType());
 		} else {
 			InitSetup.getInstance().persistLookup(request, "composing element",
 					"type", "otherType",

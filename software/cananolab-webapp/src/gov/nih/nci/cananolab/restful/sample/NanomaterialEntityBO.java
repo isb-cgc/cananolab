@@ -362,8 +362,9 @@ public class NanomaterialEntityBO extends BaseAnnotationBO
 			entity = transferNanoMateriaEntityBean(nanoBean, request);
 			List<String> msgs =new ArrayList<String>();
 			ComposingElementBean composingElement = entity.getTheComposingElement();
+//			ComposingElementBean composingElement = entity.getComposingElements().get(0);
 			composingElement.setupDomain(SpringSecurityUtil.getLoggedInUserName());
-			entity.addComposingElement(composingElement);
+//			entity.addComposingElement(composingElement);
 			
 			// save nanomaterial entity
 			msgs = validateInputs(request, entity);
@@ -414,6 +415,7 @@ public class NanomaterialEntityBO extends BaseAnnotationBO
 		Collection<Function> hash = new HashSet<Function>();
 		List<Map<String, Object>> funclist;
 		List<FunctionBean> inherentFunctions = new ArrayList<FunctionBean>();
+		List<ComposingElementBean> compList = new ArrayList<ComposingElementBean>();
 		if(sBean!=null){
 			comp.setDescription(sBean.getDescription());
 			comp.setType(sBean.getType());
@@ -443,7 +445,10 @@ public class NanomaterialEntityBO extends BaseAnnotationBO
 					function.setCreatedBy((String) funclist.get(j).get("createdBy"));
 					function.setCreatedDate(new Date((Long) funclist.get(j).get("createdDate")));
 					function.setId(new Long((String) funclist.get(j).get("id")));
-				}
+				}else {
+					function.setCreatedBy(sBean.getCreatedBy());
+					function.setCreatedDate(sBean.getCreatedDate());
+					}
 				func.setDomainFunction(function);
 				hash.add(function);
 				inherentFunctions.add(func);
@@ -454,7 +459,9 @@ public class NanomaterialEntityBO extends BaseAnnotationBO
 		compBean.setDomain(comp);
 		compBean.setInherentFunctions(inherentFunctions);
 		
+		bean.addComposingElement(compBean);
 		bean.setTheComposingElement(compBean);
+		compList.add(compBean);
 		}
 		//setting up composing elements if there exists composingElements
 		List<SimpleComposingElementBean> list = nanoBean.getComposingElements();
@@ -463,12 +470,11 @@ public class NanomaterialEntityBO extends BaseAnnotationBO
 		img = new ImagingFunction();
 		hash = new HashSet<Function>();
 
-		List<ComposingElementBean> compList = new ArrayList<ComposingElementBean>();
+//		List<ComposingElementBean> compList = new ArrayList<ComposingElementBean>();
 		if(list!=null){
 		for(SimpleComposingElementBean simpleComp : list){
 			compBean = new ComposingElementBean();
 			comp = new ComposingElement();
-
 			comp.setDescription(simpleComp.getDescription());
 			comp.setType(simpleComp.getType());
 			comp.setName(simpleComp.getName());
@@ -489,13 +495,15 @@ public class NanomaterialEntityBO extends BaseAnnotationBO
 					func.setDescription((String) funclist.get(j).get("description"));
 					func.setImagingFunction(img);
 					Function function = new Function();
-					function.setDescription((String) funclist.get(j).get("description"));
-					
+					function.setDescription((String) funclist.get(j).get("description"));		
 					if(new Long((String) funclist.get(j).get("id"))>0){
 						function.setId(new Long((String) funclist.get(j).get("id")));
 						function.setCreatedBy((String) funclist.get(j).get("createdBy"));
 						function.setCreatedDate(new Date((Long) funclist.get(j).get("createdDate")));
-					}
+					} else {
+						function.setCreatedBy(sBean.getCreatedBy());
+						function.setCreatedDate(sBean.getCreatedDate());
+						}
 					hash.add(function);
 					func.setDomainFunction(function);
 				}
@@ -768,6 +776,9 @@ public class NanomaterialEntityBO extends BaseAnnotationBO
 		List<String> msgs = new ArrayList<String>();
 		NanomaterialEntityBean entity = transferNanoMateriaEntityBean(nanoBean, request);
 		ComposingElementBean composingElement = entity.getTheComposingElement();
+//		ComposingElementBean composingElement = entity.getComposingElements().get(0);
+		//TODO  EH. what?  So it doesn't even check what composing element to remove?  I don't even....
+		
 		// check if composing element is associated with an association
 		SimpleNanomaterialEntityBean nano = new SimpleNanomaterialEntityBean();
 		if (!compositionService.checkChemicalAssociationBeforeDelete(entity
@@ -900,6 +911,8 @@ public class NanomaterialEntityBO extends BaseAnnotationBO
 		// function type
 		String functionType = entity.getTheComposingElement().getTheFunction()
 				.getType();
+
+		
 		setOtherValueOption(request, functionType, "functionTypes");
 
 		String detailPage = null;
