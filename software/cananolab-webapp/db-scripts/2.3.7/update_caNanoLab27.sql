@@ -11,3 +11,11 @@ CREATE TABLE `supplier` (
 insert into common_lookup
 (common_lookup_pk_id, name, attribute, value) 
 VALUES (1000, "protocol", "type", "functionalization");
+
+insert into common_lookup
+(common_lookup_pk_id, name, attribute, value) 
+VALUES (1001, "Purification", "otherAssayType", "Interim Purification");
+
+insert into common_lookup
+(common_lookup_pk_id, name, attribute, value) 
+VALUES (1002, "Purification", "otherAssayType", "Final Purification");
