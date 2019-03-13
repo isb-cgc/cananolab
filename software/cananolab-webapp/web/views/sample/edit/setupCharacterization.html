@@ -1,5 +1,5 @@
 
-<form name="characterizationForm">
+<form name="characterizationForm" onload="">
 
 <div id="loader" ng-show="loader">
 	<div id="loaderText">
@@ -17,10 +17,10 @@
     <td align="right" width="30%">
       <a class="helpText" href=
       "javascript:openHelpWindow('https://wiki.nci.nih.gov/display/caNanoLab/Managing+Sample+Characterizations#ManagingSampleCharacterizations-SubmittingCharacterizations')">Help</a>   <a class=
-      "helpText" href="javascript:openHelpWindow('https://wiki.nci.nih.gov/display/caNanoLab/caNanoLab+Glossary')">Glossary</a>  
+      "helpText" href="javascript:openHelpWindow('https://wiki.nci.nih.gov/display/caNanoLab/caNanoLab+Glossary')">Glossary</a>
     </td>
-  </tr> 
-</table>		
+  </tr>
+</table>
 <Br />
 	<div>
 		<div class="message" ng-if="data.messages.length">
@@ -28,7 +28,7 @@
 		</div>
 		<div class="message" ng-if="data.errors.length">
 			<div ng-repeat="i in data.errors track by $index">{{i}}</div><br />
-		</div>  
+		</div>
 		<table class="submissionView" align="center" width="100%">
 			<tbody><tr ng-if="!isEdit">
 				<td class="cellLabel">
@@ -36,9 +36,9 @@
 				</td>
 				<td>
 					<div id="charTypePrompt">
-						<select ng-hide="loader" data-ng-model="data.type" 
+						<select ng-hide="loader" data-ng-model="data.type"
 						data-ng-options="option for option in data.charTypesLookup" ng-change="characterizationTypeDropdownChanged()" id="charType" style="width:200px;">
-					</select>   
+					</select>
 					<div id="promptCategory" ng-if="data.type=='other'">
                          <table cellspacing="5" cellpadding="0" border="0" width="100%" class="promptbox" summary="layout">
                              <tbody>
@@ -55,14 +55,14 @@
                              <tr>
                                  <td style="text-align: right">
 
-                                <button type="button" class="btn btn-primary btn-xs" ng-click="data.type=localForm.otherCategoryText; data.charTypesLookup.push(localForm.otherCategoryText);">Add</button>  
+                                <button type="button" class="btn btn-primary btn-xs" ng-click="data.type=localForm.otherCategoryText; data.charTypesLookup.push(localForm.otherCategoryText);">Add</button>
 
-                                <button type="button" class="btn btn-default btn-xs" ng-click="data.type='';">Cancel</button>                                                             
+                                <button type="button" class="btn btn-default btn-xs" ng-click="data.type='';">Cancel</button>
                                  </td>
                              </tr>
                              </tbody>
                          </table>
-                 	</div>	                     
+                 	</div>
 				</div>
 			</td>
 			<td class="cellLabel">
@@ -72,7 +72,7 @@
 				<div id="charNamePrompt">
 					<select ng-hide="loader" data-ng-model="data.name"
 					data-ng-options="option for option in data.charNamesForCurrentType" ng-change="characterizationNameDropdownChanged()" id="charName">
-				</select>  
+				</select>
 					<div id="promptCategory" ng-if="data.name=='other'">
                          <table cellspacing="5" cellpadding="0" border="0" width="100%" class="promptbox" summary="layout">
                              <tbody>
@@ -90,13 +90,13 @@
                                  <td style="text-align: right">
                              <button type="button" class="btn btn-primary btn-xs" ng-click="data.name=localForm.otherCategoryText; data.charNamesForCurrentType.push(localForm.otherCategoryText);">Add</button>
 
-                             <button type="button" class="btn btn-default btn-xs" ng-click="data.name='';">Cancel</button>                                                                 
-      
+                             <button type="button" class="btn btn-default btn-xs" ng-click="data.name='';">Cancel</button>
+
                                  </td>
                              </tr>
                              </tbody>
                          </table>
-                 	</div>	
+                 	</div>
 
 			</div>
 		</td>
@@ -109,8 +109,8 @@
 		<td>
 			<div style="" id="assayTypePrompt">
 				<select ng-hide="loader" data-ng-model="data.assayType"
-				data-ng-options="option for option in data.assayTypesByCharNameLookup" id="assayType"><option value=""></option>	
-			</select>  
+				data-ng-options="option for option in data.assayTypesByCharNameLookup" id="assayType"><option value=""></option>
+			</select>
 					<div id="promptCategory" ng-if="data.assayType=='other'">
                          <table cellspacing="5" cellpadding="0" border="0" width="100%" class="promptbox" summary="layout">
                              <tbody>
@@ -126,15 +126,15 @@
                              </tr>
                              <tr>
                                  <td style="text-align: right">
-                             <button type="button" class="btn btn-primary btn-xs" ng-click="data.assayType=localForm.otherCategoryText; data.assayTypesByCharNameLookup.push(localForm.otherCategoryText);">Add</button>   
+                             <button type="button" class="btn btn-primary btn-xs" ng-click="data.assayType=localForm.otherCategoryText; data.assayTypesByCharNameLookup.push(localForm.otherCategoryText);">Add</button>
 
-                             <button type="button" class="btn btn-default btn-xs" ng-click="data.assayType='';">Cancel</button>                                                                    
+                             <button type="button" class="btn btn-default btn-xs" ng-click="data.assayType='';">Cancel</button>
 
                                  </td>
                              </tr>
                              </tbody>
                          </table>
-                 	</div>	
+                 	</div>
 		</div>
 	</td>
 	<td class="cellLabel">
@@ -194,10 +194,10 @@
 			<td>
 
 
-				<select ng-hide="loader" data-ng-model="data.property.type" 
+				<select ng-hide="loader" data-ng-model="data.property.type"
 				data-ng-options="option for option in data.property.typeOptions" id="type">
 					<option value=""></option>
-				</select>  
+				</select>
 
 					<div id="promptCategory" ng-if="data.property.type=='other'">
                          <table cellspacing="5" cellpadding="0" border="0" width="100%" class="promptbox" summary="layout">
@@ -221,7 +221,7 @@
                              </tr>
                              </tbody>
                          </table>
-                 	</div>				
+                 	</div>
 			</td>
 		</tr>
 	</tbody>
@@ -235,10 +235,10 @@
 				<strong><label for="type">Type</label></strong>
 			</td>
 			<td width="40%">
-				<select ng-hide="loader" data-ng-model="data.property.type" 
+				<select ng-hide="loader" data-ng-model="data.property.type"
 				data-ng-options="option for option in data.property.shapeTypeOptions" id="type">
 					<option value=""></option>
-				</select>  
+				</select>
 
 					<div id="promptCategory" ng-if="data.property.type=='other'">
                          <table cellspacing="5" cellpadding="0" border="0" width="100%" class="promptbox" summary="layout">
@@ -262,24 +262,24 @@
                              </tr>
                              </tbody>
                          </table>
-                 	</div>				
+                 	</div>
 			</td>
 			<td width="10%">
 				<strong><label for="aspectRatio">Aspect Ratio</label></strong>
 			</td>
 			<td width="40%">
 				<input type="text" id="aspectratio" ng-model="data.property.aspectRatio">
-			</td>			
+			</td>
 		</tr>
 		<tr>
 			<td width="10%">
 				<strong><label for="minDimension">Minimum Dimension</label></strong>
 			</td>
 			<td width="40%"><input type="text" id="minDimension" ng-model="data.property.minDimension">
-				<select ng-hide="loader" data-ng-model="data.property.minDimensionUnit" 
+				<select ng-hide="loader" data-ng-model="data.property.minDimensionUnit"
 				data-ng-options="option for option in data.property.unitOptions" id="type">
 					<option value=""></option>
-				</select>  
+				</select>
 					<div id="promptCategory" ng-if="data.property.minDimensionUnit=='other'">
                          <table cellspacing="5" cellpadding="0" border="0" width="100%" class="promptbox" summary="layout">
                              <tbody>
@@ -297,23 +297,23 @@
                                  <td style="text-align: right">
                            <button type="button" class="btn btn-primary btn-xs" ng-click="data.property.minDimensionUnit=localForm.otherCategoryText; data.property.unitOptions.push(localForm.otherCategoryText);">Add</button>
 
-                           <button type="button" class="btn btn-default btn-xs" ng-click="data.property.minDimensionUnit='';">Cancel</button>                                                               
-               
+                           <button type="button" class="btn btn-default btn-xs" ng-click="data.property.minDimensionUnit='';">Cancel</button>
+
                                  </td>
                              </tr>
                              </tbody>
                          </table>
-                 	</div>				
+                 	</div>
 			</td>
 			<td width="10%">
 				<strong><label for="maxDimension">Maximum Dimension</label></strong>
 			</td>
 			<td width="40%">
 				<input type="text" id="maxDimension" ng-model="data.property.maxDimension">
-				<select ng-hide="loader" data-ng-model="data.property.maxDimensionUnit" 
+				<select ng-hide="loader" data-ng-model="data.property.maxDimensionUnit"
 				data-ng-options="option for option in data.property.unitOptions" id="type">
 					<option value=""></option>
-				</select>  
+				</select>
 					<div id="promptCategory" ng-if="data.property.maxDimensionUnit=='other'">
                          <table cellspacing="5" cellpadding="0" border="0" width="100%" class="promptbox" summary="layout">
                              <tbody>
@@ -332,14 +332,14 @@
 
                            <button type="button" class="btn btn-primary btn-xs" ng-click="data.property.maxDimensionUnit=localForm.otherCategoryText; data.property.unitOptions.push(localForm.otherCategoryText);">Add</button>
 
-                           <button type="button" class="btn btn-default btn-xs" ng-click="data.property.maxDimensionUnit='';">Cancel</button>                                                               
+                           <button type="button" class="btn btn-default btn-xs" ng-click="data.property.maxDimensionUnit='';">Cancel</button>
                                  </td>
                              </tr>
                              </tbody>
                          </table>
-                 	</div>								
-			</td>			
-		</tr>		
+                 	</div>
+			</td>
+		</tr>
 	</tbody>
 
 	<tbody ng-if="data.name=='solubility'">
@@ -352,10 +352,10 @@
 			</td>
 			<td width="40%">
 
-				<select ng-hide="loader" data-ng-model="data.property.solvent" 
+				<select ng-hide="loader" data-ng-model="data.property.solvent"
 				data-ng-options="option for option in data.property.solventOptions" id="type">
 					<option value=""></option>
-				</select>  
+				</select>
 					<div id="promptCategory" ng-if="data.property.solvent=='other'">
                          <table cellspacing="5" cellpadding="0" border="0" width="100%" class="promptbox" summary="layout">
                              <tbody>
@@ -374,25 +374,25 @@
 
                            <button type="button" class="btn btn-primary btn-xs" ng-click="data.property.solvent=localForm.otherCategoryText; data.property.solventOptions.push(localForm.otherCategoryText);">Add</button>
 
-                           <button type="button" class="btn btn-default btn-xs" ng-click="data.property.solvent='';">Cancel</button>                                    
+                           <button type="button" class="btn btn-default btn-xs" ng-click="data.property.solvent='';">Cancel</button>
 
                                  </td>
                              </tr>
                              </tbody>
                          </table>
-                 	</div>					
+                 	</div>
 			</td>
 			<td width="10%">
 				<strong><label for="isSoluble">Is Soluble</label></strong>
 			</td>
 			<td width="40%">
 
-				<select ng-hide="loader" data-ng-model="data.property.isSoluble" 
+				<select ng-hide="loader" data-ng-model="data.property.isSoluble"
 				data-ng-options="option for option in data.property.isSolubleOptions" id="type">
 					<option value=""></option>
-				</select>  
+				</select>
 
-                </td>			
+                </td>
 		</tr>
 		<tr>
 			<td width="10%">
@@ -403,10 +403,10 @@
 <span class="error" style="color:red;padding-left:5px;" ng-show="characterizationForm.criticalConcentration.$error.number">
     Not valid number!</span>
 
-				<select ng-hide="loader" data-ng-model="data.property.concentrationUnit" 
+				<select ng-hide="loader" data-ng-model="data.property.concentrationUnit"
 				data-ng-options="option for option in data.property.concentrationUnitOptions" id="type">
 					<option value=""></option>
-				</select>  
+				</select>
 					<div id="promptCategory" ng-if="data.property.concentrationUnit=='other'">
                          <table cellspacing="5" cellpadding="0" border="0" width="100%" class="promptbox" summary="layout">
                              <tbody>
@@ -425,16 +425,16 @@
 
                            <button type="button" class="btn btn-primary btn-xs" ng-click="data.property.concentrationUnit=localForm.otherCategoryText; data.property.concentrationUnitOptions.push(localForm.otherCategoryText);">Add</button>
 
-                           <button type="button" class="btn btn-default btn-xs" ng-click="data.property.concentrationUnit='';">Cancel</button>   
+                           <button type="button" class="btn btn-default btn-xs" ng-click="data.property.concentrationUnit='';">Cancel</button>
 
-   
+
                                  </td>
                              </tr>
                              </tbody>
                          </table>
-                 	</div>					
-			</td>			
-		</tr>		
+                 	</div>
+			</td>
+		</tr>
 	</tbody>
 
 	<tbody ng-if="data.name=='surface'">
@@ -446,10 +446,10 @@
 				<strong><label for="isHydrophobic">Is Hydrophobic</label></strong>
 			</td>
 			<td>
-				<select ng-hide="loader" data-ng-model="data.property.isHydrophobic" 
+				<select ng-hide="loader" data-ng-model="data.property.isHydrophobic"
 				data-ng-options="option for option in data.property.isHydrophobicOptions" id="isHydrophobic">
 					<option value=""></option>
-				</select>  			
+				</select>
 			</td>
 		</tr>
 	</tbody>
@@ -478,10 +478,10 @@
 			</td>
 			<td width="90%">
 
-				<select ng-hide="loader" data-ng-model="data.property.enzymeName" 
+				<select ng-hide="loader" data-ng-model="data.property.enzymeName"
 				data-ng-options="option for option in data.property.enzymeNameOptions" id="enzymeName">
 					<option value=""></option>
-				</select> 
+				</select>
 					<div id="promptCategory" ng-if="data.property.enzymeName=='other'">
                          <table cellspacing="5" cellpadding="0" border="0" width="100%" class="promptbox" summary="layout">
                              <tbody>
@@ -500,13 +500,13 @@
 
                            <button type="button" class="btn btn-primary btn-xs" ng-click="data.property.enzymeName=localForm.otherCategoryText; data.property.enzymeNameOptions.push(localForm.otherCategoryText);">Add</button>
 
-                           <button type="button" class="btn btn-default btn-xs" ng-click="data.property.enzymeName='';">Cancel</button>  
+                           <button type="button" class="btn btn-default btn-xs" ng-click="data.property.enzymeName='';">Cancel</button>
 
                                  </td>
                              </tr>
                              </tbody>
                          </table>
-                 	</div>				 
+                 	</div>
 			</td>
 		</tr>
 	</tbody>
@@ -523,8 +523,8 @@
 				<textarea ng-model="data.property.cellLine" name="cellLine" cols="120" rows="3" id="cellLine"></textarea>
 			</td>
 		</tr>
-	</tbody>			
-	
+	</tbody>
+
 	<tbody ng-if="data.name=='targeting'">
 		<tr>
 			<th colspan="2">Targeting Properties</th>
@@ -537,7 +537,7 @@
 				<textarea ng-model="data.property.cellLine" name="cellLine" cols="120" rows="3" id="cellLine"></textarea>
 			</td>
 		</tr>
-	</tbody>		
+	</tbody>
 </table>
 
 
@@ -557,7 +557,7 @@
 			Technique and Instrument
 		</td>
 		<td>
-<button ng-click="openNewExperimentConfig()" ng-disabled="updateExperimentConfig" class="btn btn-primary btn-xs">Add</button>		
+<button ng-click="openNewExperimentConfig()" ng-disabled="updateExperimentConfig" class="btn btn-primary btn-xs">Add</button>
 		</td>
 	</tr>
 	<tr ng-if="data.techniqueInstruments.experiments.length">
@@ -577,7 +577,7 @@
 						<th>
 						</th>
 					</tr>
-	
+
 					<tr ng-repeat="item in data.techniqueInstruments.experiments">
 						<td>
 							{{item.techniqueType}}
@@ -586,24 +586,24 @@
 							<div ng-repeat="instrument in item.instruments">
 								{{instrument.type}} ({{instrument.manufacturer}}, {{instrument.modelName}})
 							</div>
-								
-									
+
+
 									<br>
-								
-							
+
+
 						</td>
 						<td>
 							{{item.description}}
 						</td>
-						
-							<td><button ng-disabled="updateExperimentConfig" ng-click="openUpdateExperimentConfig(item)" class="btn btn-primary btn-xs">Edit</button>	
+
+							<td><button ng-disabled="updateExperimentConfig" ng-click="openUpdateExperimentConfig(item)" class="btn btn-primary btn-xs">Edit</button>
 
 							</td>
-						
+
 					</tr>
-	
+
 				</tbody>
-			</table>			
+			</table>
 		</td>
 	</tr>
 	<tr>
@@ -625,7 +625,7 @@
 						<td>
 							<div id="techniqueTypePrompt">
 		<select ng-hide="loader" data-ng-model="techniqueInstrument.techniqueType"
-		data-ng-options="option for option in data.techniqueInstruments.techniqueTypeLookup" id="techniqueType" ng-change="techniqueTypeInstrumentDropdownChanged()"><option value=""></option></select>		
+		data-ng-options="option for option in data.techniqueInstruments.techniqueTypeLookup" id="techniqueType" ng-change="techniqueTypeInstrumentDropdownChanged()"><option value=""></option></select>
 
 					<div id="promptCategory" ng-if="techniqueInstrument.techniqueType=='other'">
                          <table cellspacing="5" cellpadding="0" border="0" width="100%" class="promptbox" summary="layout">
@@ -642,13 +642,13 @@
                              </tr>
                              <tr>
                                  <td style="text-align: right">
-                               <button type="button" class="btn btn-primary btn-xs" ng-click="techniqueInstrument.techniqueType=localForm.otherCategoryText; data.techniqueInstruments.techniqueTypeLookup.push(localForm.otherCategoryText);">Add</button>    
+                               <button type="button" class="btn btn-primary btn-xs" ng-click="techniqueInstrument.techniqueType=localForm.otherCategoryText; data.techniqueInstruments.techniqueTypeLookup.push(localForm.otherCategoryText);">Add</button>
                                <button type="button" class="btn btn-default btn-xs" ng-click="techniqueInstrument.techniqueType='';">Cancel</button>
                                  </td>
                              </tr>
                              </tbody>
                          </table>
-                 	</div>								
+                 	</div>
 								</div>
 							</td>
 						</tr>
@@ -666,7 +666,7 @@
 							</td>
 							<td>
 								<div id="instrumentSection">
-									<button ng-disabled="updateInstrument||!techniqueInstrument.techniqueType" ng-click="openNewInstrument()" class="btn btn-primary btn-xs">Add</button>	<br />	
+									<button ng-disabled="updateInstrument||!techniqueInstrument.techniqueType" ng-click="openNewInstrument()" class="btn btn-primary btn-xs">Add</button>	<br />
 									<table style="margin-top:15px;" ng-if="techniqueInstrument.instruments.length" id="instrumentTable" class="editTableWithGrid" width="85%">
 										<tbody id="instrumentRows">
 											<tr id="patternHeader">
@@ -790,12 +790,12 @@
 												</tr>
 												<tr>
 													<td>
-														<button ng-show="!isNewInstrument" ng-click="removeInstrument(instrument)" class="btn btn-danger btn-xs">Delete</button>	
+														<button ng-show="!isNewInstrument" ng-click="removeInstrument(instrument)" class="btn btn-danger btn-xs">Delete</button>
 													</td>
 													<td>
 														<div align="right">
-															<button ng-click="saveInstrument(instrument)" class="btn btn-primary btn-xs" ng-disabled="!instrument.manufacturer&&!instrument.modelName&&!instrument.type">Save</button>		
-															<button ng-click="cancelInstrument(instrument)" class="btn btn-default btn-xs">Cancel</button>	
+															<button ng-click="saveInstrument(instrument)" class="btn btn-primary btn-xs" ng-disabled="!instrument.manufacturer&&!instrument.modelName&&!instrument.type">Save</button>
+															<button ng-click="cancelInstrument(instrument)" class="btn btn-default btn-xs">Cancel</button>
 														</div>
 													</td>
 												</tr>
@@ -819,8 +819,8 @@
 									</td>
 									<td align="right">
 										<div align="right">
-											<button value="Save" ng-disabled="!techniqueInstrument.techniqueType||data.type==''||data.name==''" ng-click="saveExperimentConfig()" class="btn btn-primary btn-xs">Save</button>		
-											<button value="Cancel" ng-click="cancelExperimentConfig()" class="btn btn-default btn-xs">Cancel</button>											
+											<button value="Save" ng-disabled="!techniqueInstrument.techniqueType||data.type==''||data.name==''" ng-click="saveExperimentConfig()" class="btn btn-primary btn-xs">Save</button>
+											<button value="Cancel" ng-click="cancelExperimentConfig()" class="btn btn-default btn-xs">Cancel</button>
 										</div>
 									</td>
 								</tr>
@@ -850,24 +850,24 @@
 						<tr>
 							<th style="text-align: right">
 								<button ng-click="updateExistingFinding(finding)" ng-disabled="updateFinding" class="btn btn-primary btn-xs">	Edit
-								</button>					
+								</button>
 
 							</th>
 						</tr>
-		
+
 						<tr>
 							<td class="cellLabel">
 								Data and Conditions
 							</td>
 						</tr>
 						<tr ng-if="finding.columnHeaders.length">
-							<td>	
+							<td>
 								<table class="summaryViewWithGrid" width="95%" align="center">
 									<tbody>
 										<tr>
 											<td class="cellLabel" ng-repeat="header in finding.columnHeaders" ng-bind-html="header.displayName">
 												{{header.displayName}}
-											</td>								
+											</td>
 										</tr>
 										<tr ng-repeat="row in finding.rows">
 											<td ng-repeat="cell in row.cells">
@@ -890,9 +890,9 @@
 			</td>
 		</tr>
 		<tr>
-			<td colspan="2">  
+			<td colspan="2">
 				<span id="editFindingInfo"></span>
-				<table class="subSubmissionView" summary="layout" width="95%" align="center" ng-if="updateFinding">
+				<table  class="subSubmissionView" summary="layout" width="95%" align="center" ng-if="updateFinding">
 					<tbody>
 						<tr>
 							<th colspan="2">
@@ -907,9 +907,24 @@
 								<input type="text" ng-model="currentFinding.numberOfColumns" name="numberOfRows" size="4" id="colNum">
 								<label for="colNum">columns</label>
 								<input type="text" ng-model="currentFinding.numberOfRows" name="numberOfRows" size="4" id="rowNum">
-								<label for="rowNum">rows</label>			
-								<button ng-click="updateRowsColsForFinding()" class="btn btn-primary btn-xs">Update</button>
-								<button ng-hide="isNewFinding" ng-click="openColumnOrderForm()" class="btn btn-primary btn-xs">Set Column Order</button>							</td>
+								<label for="rowNum">rows</label>
+                                <button ng-click="updateRowsColsForFinding()" class="btn btn-primary btn-xs">Update</button>
+								<button ng-hide="isNewFinding" ng-click="openColumnOrderForm()" class="btn btn-primary btn-xs">Set Column Order</button>
+
+                                <!-- Import a comma separated list to Characterization -> Finding ->Finding Info -> Data & Conditions  -->
+                                <!-- Whe the user selects a file from the local machine, the file name is passed to the function fileNameChanged.  -->
+                                <label class="btn btn-primary btn-xs  btn-file readBytesButtons">
+                                    Import csv
+                                    <input
+                                        type="file"
+                                        id="csvFile"
+                                        style="display: none"
+                                        onchange="angular.element(this).scope().fileNameChanged(this.files)"
+                                >
+                                </label>
+
+
+                            </td>
 						</tr>
 						<tr ng-show="columnOrder">
 							<td colspan="2">
@@ -925,27 +940,29 @@
 											<td ng-repeat="cell in currentFinding.columnHeaders">
 												<input type="text" name="cellRow" ng-model="cell.columnOrder"></td>
 											<td><button ng-click="updateColumnOrder()" class="btn btn-primary btn-xs">Update Order</button></td>
-										</tr>										
+										</tr>
 									</tbody>
 								</table>
 							</td>
-						</tr>						
+						</tr>
 						<tr>
 							<td colspan="2">
 								<table class="promptbox" width="85%" align="center" id="matrix" ng-if="currentFinding.columnHeaders.length">
 									<tbody>
 										<tr>
 											<td colspan="{{currentFinding.columnHeaders.length}}"><h3 style="margin:0px;padding:0px;">Column Data</h3></td>
-										</tr>										
+										</tr>
 										<tr>
 											<td ng-repeat="cell in currentFinding.columnHeaders" class="cellLabel"><a ng-click="openColumnForm(cell)" href="" ng-bind-html="cell.displayName">{{cell.displayName}}</a></td>
 										</tr>
+
+
 										<tr ng-if="columnForm">
 											<td colspan="{{currentFinding.columnHeaders.length}}">
-												<table class="subSubmissionView" width="100%" align="center" id="matrix" ng-if="currentFinding.columnHeaders.length">
+												<table style="background-color: #00b3ee"  class="subSubmissionView" width="100%" align="center" id="matrix" ng-if="currentFinding.columnHeaders.length">
 													<tr>
 														<td colspan="2"><h3 style="margin:0px;padding:0px;">Column Definitions</h3></td>
-													</tr>	
+													</tr>
 													<tr>
 														<td width="30%">
 															<label for="columnType">Column Type *</label>
@@ -954,7 +971,7 @@
 															<select ng-hide="loader" ng-model="findingsColumn.columnType" ng-change="onColumnTypeDropdownChange()">
 																<option value=""></option>
 																<option>datum</option>
-																<option>condition</option>		
+																<option>condition</option>
 															</select>
 														</td>
 													</tr>
@@ -965,11 +982,11 @@
 														<td>
                                                             <select ng-hide="loader" ng-model="findingsColumn.columnName" ng-init="findingsColumn.columnName=findingsColumn.columnName" ng-change="onColumnNameDropdownChange()">
 
-<!--                                                                 
+<!--
 															<select ng-model="findingsColumn.columnName" data-ng-options="option for option in columnNameLookup" ng-change="onColumnNameDropdownChange()"> -->
 															<option value=""></option>
                                                             <option ng-repeat="option in columnNameLookup" ng-disabled="disableColumn(option)">{{option}}</option>
-																
+
 															</select>
 
 					<div id="promptCategory" ng-if="findingsColumn.columnName=='other'">
@@ -989,13 +1006,13 @@
                                  <td style="text-align: right">
                              <button type="button" class="btn btn-primary btn-xs" ng-click="findingsColumn.columnName=localForm.otherCategoryText; columnNameLookup.push(localForm.otherCategoryText);">Add</button>
 
-                             <button type="button" class="btn btn-default btn-xs" ng-click="findingsColumn.columnName='';">Cancel</button>                                                                 
-  
+                             <button type="button" class="btn btn-default btn-xs" ng-click="findingsColumn.columnName='';">Cancel</button>
+
                                  </td>
                              </tr>
                              </tbody>
                          </table>
-                 	</div>															
+                 	</div>
 														</td>
 													</tr>
 													<tr ng-if="findingsColumn.columnType=='condition'">
@@ -1024,7 +1041,7 @@
                              </tr>
                              </tbody>
                          </table>
-                 	</div>	
+                 	</div>
 														</td>
 													</tr>
 													<tr>
@@ -1052,13 +1069,13 @@
                              </tr>
                              </tbody>
                          </table>
-                 	</div>	
+                 	</div>
 														</td>
 
-						
+
 													</td>
 													</tr>
-													
+
 													<tr>
 														<td><label for="valueUnit">Column Value Unit</label></td>
 														<td><select ng-hide="loader" ng-model="findingsColumn.valueUnit" data-ng-options="option for option in valueUnitsLookup"><option value=""></option></select>
@@ -1086,7 +1103,7 @@
                              </tr>
                              </tbody>
                          </table>
-                 	</div>																
+                 	</div>
 </td>
 
 														</td>
@@ -1102,29 +1119,44 @@
 															<button ng-click="removeColumnForm()" class="btn btn-danger btn-xs">Delete</button>
 														</td>
 														<td>
-                                                
+
 															<button ng-disabled="!findingsColumn.columnType||columnNameLookup.indexOf(findingsColumn.columnName)==-1" ng-click="saveColumnForm()" class="btn btn-primary btn-xs">Save</button>&nbsp;<button ng-click="closeColumnForm()" class="btn btn-default btn-xs">Cancel</button>
 														</td>
 													</tr>
 												</table>
 											</td>
 										</tr>
-										<tr ng-repeat="row in currentFinding.rows">
-											<td ng-repeat="cell in row.cells">
+
+
+										<tr ng-repeat="row in currentFinding.rows   track by $index">
+											<td ng-repeat="cell in row.cells  track by $index">
                                                 <div class="finding_row">
                                                     <div class="finding_cell">
-                                <select ng-hide="loader" data-ng-model="cell.operand" 
-                                data-ng-options="option for option in operands" id="operand" aria-label="operand">                                                      </select>  
-          
+                                                        <select ng-hide="loader"
+                                                            data-ng-model="cell.operand"
+                                                            data-ng-options="option for option in operands"
+                                                            id="operand"
+                                                            aria-label="operand"
+                                                        >
+                                                        </select>
+
                                                     </div>
                                                     <div class="finding_cell">
-                                                        <input type="text" name="cellRow" ng-model="cell.value">
+                                                        <input
+                                                            id = {{$index}}:{{$parent.$index}}
+                                                            ng-class="{finding_cell_bad: badFindingCell[$index][$parent.$index]}"
+                                                            type="text"
+                                                            name="cellRow"
+                                                            ng-model="cell.value"
+                                                            oninput="angular.element(this).scope().currentFindingCellChanged( this)"
+                                                        >
                                                     </div>
                                                 </div>
 												</td>
 
 											<td><button ng-click="deleteDataConditionRow(row)" class="btn btn-danger btn-xs">Delete</button></td>
-										</tr>										
+										</tr>
+
 									</tbody>
 								</table>
 							</td>
@@ -1133,18 +1165,18 @@
 			                <td colspan="{{currentFinding.columnHeaders.length}}">
 			                    <ng-include src="'/caNanoLab/views/sample/edit/manageFileEdit.html'"></ng-include>
 			                </td>
-			            </tr>						
+			            </tr>
 						<tr>
 							<td>
-								<button ng-if="!isNewFinding" ng-click="removeFindingInfo()" class="btn btn-danger btn-xs" ng-disabled="columnForm">Delete</button>								
+								<button ng-if="!isNewFinding" ng-click="removeFindingInfo()" class="btn btn-danger btn-xs" ng-disabled="columnForm">Delete</button>
 							</td>
 							<td align="right" style="float:right;">
-								<button ng-click="saveFindingInfo()" ng-disabled="data.type==''||data.name==''||columnForm||columnInvalid()" class="btn btn-primary btn-xs">Save</button>									
+								<button ng-click="saveFindingInfo()" ng-disabled="data.type==''||data.name==''||columnForm||columnInvalid()" class="btn btn-primary btn-xs">Save</button>
 								<button ng-disabled="columnForm" ng-click="cancelFindingInfo()" class="btn btn-default btn-xs">Cancel</button>
 							</td>
 						</tr>
 					</tbody>
-				</table>	
+				</table>
 			</td>
 		</tr>
 	</tbody>
@@ -1172,8 +1204,8 @@
 
 <table class="submissionView" width="100%" align="center">
 	<tbody>
-		
-			
+
+
 				<tr>
 					<td width="20%">
 						<strong><label for="selectedOtherSampleNames">Copy to other samples with the same primary organization?</label></strong>
@@ -1181,35 +1213,35 @@
 					<td width="20%">
 
 
-						<select ng-hide="loader" data-ng-model="data.selectedOtherSampleNames" 
+						<select ng-hide="loader" data-ng-model="data.selectedOtherSampleNames"
 						data-ng-options="option for option in data.otherSampleNameLookup" id="selectedOtherSampleNames" ng-multiple="true" multiple>
-					</select>  
+					</select>
 					</td>
-					<td><input type="checkbox" ng-model="data.copyToOtherSamples" ng-true-value="true" ng-false-value="false" id="copyData"> 
-						
+					<td><input type="checkbox" ng-model="data.copyToOtherSamples" ng-true-value="true" ng-false-value="false" id="copyData">
+
 						<!-- 	<input name="copyData" value="on" id="copyData" type="checkbox"> -->
 							<strong><label for="copyData">Also copy finding data and conditions ?</label></strong>
-						
+
 						&nbsp;
 					</td>
 				</tr>
-			
-			
-		
+
+
+
 	</tbody>
 </table>
 		</div>
 	</div>
 	<div style="clear:both;"></div>
     <div class="form__actions">
-        <div class="form__action form__action--left">  
-            <button ng-click="remove()" class="btn btn-default btn-danger" ng-disabled="loader">Delete</button>              
+        <div class="form__action form__action--left">
+            <button ng-click="remove()" class="btn btn-default btn-danger" ng-disabled="loader">Delete</button>
         </div>
-        <div class="form__action form__action--right">  
-            <button ng-click="reset()" class="btn btn-default btn-danger" ng-disabled="loader">Reset</button>         
+        <div class="form__action form__action--right">
+            <button ng-click="reset()" class="btn btn-default btn-danger" ng-disabled="loader">Reset</button>
             <button ng-disabled="data.type==''||data.name==''||loader||characterizationForm.criticalConcentration.$error.number" ng-click="save()" class='btn btn-primary'>{{saveButton}}</button>
         </div>
-    </div>  
+    </div>
 
 </div>
 </form>

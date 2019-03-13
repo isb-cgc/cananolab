@@ -53,6 +53,7 @@ import java.util.Set;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -647,8 +648,7 @@ public class CharacterizationBO extends BaseAnnotationBO {
 			SimpleCharacterizationEditBean editBean
 			/*SimpleFindingBean simpleFinding*/)
 			throws Exception {
-		
-		CharacterizationBean achar = (CharacterizationBean) request.getSession().getAttribute("theChar");
+        CharacterizationBean achar = (CharacterizationBean) request.getSession().getAttribute("theChar");
 //		SimpleCharacterizationEditBean editBean = 
 //				(SimpleCharacterizationEditBean) request.getSession().getAttribute("theEditChar");
 		
@@ -999,10 +999,18 @@ public class CharacterizationBO extends BaseAnnotationBO {
 			SimpleFindingBean simpleFinding) throws Exception {
 		
 		CharacterizationBean achar = (CharacterizationBean) request.getSession().getAttribute("theChar");
-//		SimpleCharacterizationEditBean editBean = 
+//		SimpleCharacterizationEditBean editBean =
 //				(SimpleCharacterizationEditBean) request.getSession().getAttribute("theEditChar");
 		
 		FindingBean findingBean = findMatchFindingBean(achar, simpleFinding);
+
+        for( int f = 0; f < (simpleFinding.getRows()).size(); f++){
+             // Each SimpleFindingBean row has a list of SimpleCell
+            for( int f0 = 0; f0 < (simpleFinding.getRows()).get(f).getCells().size(); f0++){
+                (findingBean.getRows()).get(f).getCells().get(f0).setValue((simpleFinding.getRows()).get(f).getCells().get(f0).getValue());
+                (findingBean.getRows()).get(f).getCells().get(f0).setOperand((simpleFinding.getRows()).get(f).getCells().get(f0).getOperand());
+            }
+        }
 		simpleFinding.transferColumnOrderToFindingBean(findingBean);
 
 		findingBean.updateColumnOrder();

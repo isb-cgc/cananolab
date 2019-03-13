@@ -6,7 +6,7 @@ var app = angular.module('angularApp')
     $scope.sampleData = sampleService.sampleData;
     $scope.sampleId = sampleService.sampleId.data;
     $scope.domainFileUri = "";
-    $scope.data = {};  
+    $scope.data = {};
     $scope.sampleMessage = sampleService.message.data;
     $scope.operands = ['='];
     $scope.PE = {};
@@ -19,7 +19,7 @@ var app = angular.module('angularApp')
     $scope.techniqueInstrument = {};
     $scope.loader = true;
     $scope.loaderMessage = "Loading";
-    
+
     /* File Variables */
     $scope.usingFlash = FileAPI && FileAPI.upload != null;
     $scope.fileReaderSupported = window.FileReader != null && (window.FileAPI == null || FileAPI.html5 != false);
@@ -27,8 +27,21 @@ var app = angular.module('angularApp')
     $scope.fileForm.uriExternal = false;
     $scope.externalUrlEnabled = false;
     $scope.addNewFile = false;
-    $scope.selectedFileName = '';    
-    
+    $scope.selectedFileName = '';
+
+    /* csv upload */
+    var csvColumnMaxCount = 25;  // Maximum number of columns allowed
+    var csvMaxNumberOfLines = 5000;  // Maximum number of rows allowed
+    var csvMaxLenOfEntry = 200;
+    var runaway = 10240; // A counter used to prevent an endless loop if something goes wrong.  @TODO needs a better name
+    var csvDataColCount = 0;
+    var csvDataObj;
+    var csvDataRowCount;
+    var csvImportError = '';
+
+    $scope.badFindingCell = [];
+
+
     var uploadUrl = '/caNanoLab/rest/core/uploadFile';
     $scope.ie9 = false;
     if(navigator.appVersion.indexOf("MSIE 9.")!=-1){
@@ -73,7 +86,7 @@ var app = angular.module('angularApp')
         $scope.initDate = new Date('2016-15-20');
         $scope.formats = ['dd-MMMM-yyyy', 'yyyy/MM/dd', 'dd.MM.yyyy', 'shortDate'];
         $scope.format = 'shortDate';
-    }
+    };
 
 
     $scope.setupCalendar();
@@ -92,16 +105,16 @@ var app = angular.module('angularApp')
                 $scope.data.characterizationDate = null;
             };
             $scope.loader = false;
-            $scope.dataCopy = angular.copy($scope.data);   
+            $scope.dataCopy = angular.copy($scope.data);
         }).
             error(function(data, status, headers, config) {
-            $scope.loader = false;        
-        });     
+            $scope.loader = false;
+        });
     }
     else {
         // run initial rest call to setup characterization add form //
         $scope.title = "Add";
-        $scope.saveButton = "Submit";        
+        $scope.saveButton = "Submit";
         $http({method: 'GET', url: '/caNanoLab/rest/characterization/setupAdd?sampleId='+$scope.sampleId+'&charType='+$scope.type}).
             success(function(data, status, headers, config) {
             $scope.data = data;
@@ -109,17 +122,17 @@ var app = angular.module('angularApp')
 
             // $scope.today();
             $scope.loader = false;
-            $scope.dataCopy = angular.copy($scope.data);    
+            $scope.dataCopy = angular.copy($scope.data);
         }).
             error(function(data, status, headers, config) {
-            $scope.loader = false;        
-        });         
+            $scope.loader = false;
+        });
     };
 
 
-    if($scope.data.characterizationDate) { 
+    if($scope.data.characterizationDate) {
         $scope.data.characterizationDate = new Date($scope.data.characterizationDate);
-    };    
+    };
 
     $http({method: 'GET', url: 'rest/characterization/getDatumNumberModifier?columnName=Number%20Modifier'}).
         success(function(data, status) {
@@ -130,7 +143,7 @@ var app = angular.module('angularApp')
             $scope.operands = data;
         };
 
-    }); 
+    });
 
 
 
@@ -150,8 +163,8 @@ var app = angular.module('angularApp')
             $scope.loader = false;
         }).
             error(function(data, status, headers, config) {
-            $scope.loader = false;        
-        });  
+            $scope.loader = false;
+        });
     };
 
     // gets assay types when characterization name dropdown is changed //
@@ -165,8 +178,8 @@ var app = angular.module('angularApp')
             $scope.loader = false;
         }).
             error(function(data, status, headers, config) {
-            $scope.loader = false;        
-        }); 
+            $scope.loader = false;
+        });
 
         // gets property block //
         $http({method: 'GET', url: '/caNanoLab/rest/characterization/getCharProperties?charName='+ $scope.data.name}).
@@ -174,18 +187,18 @@ var app = angular.module('angularApp')
             $scope.data.property = data;
         }).
             error(function(data, status, headers, config) {
-            $scope.loader = false;        
-        });         
+            $scope.loader = false;
+        });
     };
 
-    // looks to see if technique type has abbreviation // 
+    // looks to see if technique type has abbreviation //
     $scope.techniqueTypeInstrumentDropdownChanged = function() {
         $http({method: 'GET', url: '/caNanoLab/rest/characterization/getInstrumentTypesByTechniqueType?techniqueType='+$scope.techniqueInstrument.techniqueType}).
             success(function(data, status, headers, config) {
             $scope.instrumentTypesLookup = data;
         }).
             error(function(data, status, headers, config) {
-        }); 
+        });
     };
 
     // gets URL for protocol name //
@@ -193,7 +206,7 @@ var app = angular.module('angularApp')
         for (var x = 0; x < $scope.data.protocolLookup.length;x++) {
             if ($scope.data.protocolId==$scope.data.protocolLookup[x].domainId) {
                 $scope.domainFileUri = $scope.data.protocolLookup[x].domainFileUri;
-            };  
+            };
         };
     };
 
@@ -216,11 +229,11 @@ var app = angular.module('angularApp')
             $scope.instrumentTypesLookup = data;
         }).
             error(function(data, status, headers, config) {
-        });         
+        });
         // $scope.instrumentTypesLookup = ["control module","guard column","multi angle light scattering detector","photometer","refractometer","separation column","separations module","spectrophotometer","other"];
-        $scope.techniqueInstrumentCopy = angular.copy(item);        
+        $scope.techniqueInstrumentCopy = angular.copy(item);
         $scope.scroll('editTechniqueInstrumentInfo');
-    };  
+    };
 
     // save experiment config and close section //
     $scope.saveExperimentConfig = function() {
@@ -232,29 +245,29 @@ var app = angular.module('angularApp')
         $scope.techniqueInstrument.parentCharName = $scope.data.name;
         $scope.techniqueInstrument.dirty = 1;
         $http({method: 'POST', url: '/caNanoLab/rest/characterization/saveExperimentConfig',data: $scope.data}).
-        success(function(data, status, headers, config) {   
-            $scope.saveButton = "Update";        
+        success(function(data, status, headers, config) {
+            $scope.saveButton = "Update";
             $scope.loader = false;
             $scope.data=data;
         }).
         error(function(data, status, headers, config) {
             $scope.loader = false;
-        });  
-        $scope.updateExperimentConfig = 0; 
-    };  
+        });
+        $scope.updateExperimentConfig = 0;
+    };
 
     // removes experiment config and close section //
     $scope.removeExperimentConfig = function() {
         $scope.loader = true;
         $http({method: 'POST', url: '/caNanoLab/rest/characterization/removeExperimentConfig',data: $scope.techniqueInstrument}).
-        success(function(data, status, headers, config) {            
+        success(function(data, status, headers, config) {
             $scope.loader = false;
             $scope.data=data;
         }).
         error(function(data, status, headers, config) {
             $scope.loader = false;
-        });  
-        $scope.updateExperimentConfig = 0;              
+        });
+        $scope.updateExperimentConfig = 0;
     };
 
     // cancel experiment config and close section //
@@ -263,40 +276,40 @@ var app = angular.module('angularApp')
         angular.copy($scope.techniqueInstrumentCopy,$scope.techniqueInstrument);
         $scope.updateInstrument = 0;
 
-    };        
+    };
 
-    // open new instrument section //  
+    // open new instrument section //
     $scope.openNewInstrument = function() {
         $scope.updateInstrument = 1;
         $scope.instrument = {"manufacturer":null,"modelName":null,"type":null};
         $scope.isNewInstrument = 1;
     };
 
-    // open existing instrument section //  
+    // open existing instrument section //
     $scope.openExistingInstrument = function(instrument) {
         $scope.updateInstrument = 1;
-        $scope.instrument = instrument;   
+        $scope.instrument = instrument;
         $scope.isNewInstrument = 0;
         $scope.instrumentCopy = angular.copy(instrument);
         if ($scope.instrumentTypesLookup.indexOf($scope.instrument.type)==-1) {
             $scope.instrument.type="";
-        };                
-    };    
+        };
+    };
 
-    // saves instrument. checks if it is new. if it is add it to techniqueInstrument //  
+    // saves instrument. checks if it is new. if it is add it to techniqueInstrument //
     $scope.saveInstrument = function(instrument) {
         if ($scope.isNewInstrument) {
             $scope.techniqueInstrument.instruments.push($scope.instrument);
         };
         $scope.updateInstrument = 0;
 
-    };     
+    };
 
     // removes instrument from list //
     $scope.removeInstrument = function(instrument) {
         $scope.techniqueInstrument.instruments.splice($scope.techniqueInstrument.instruments.indexOf(instrument),1);
-        $scope.updateInstrument = 0;        
-    };       
+        $scope.updateInstrument = 0;
+    };
 
     // closes instrument section, reset instrument if it exists //
     $scope.cancelInstrument = function(instrument) {
@@ -312,7 +325,7 @@ var app = angular.module('angularApp')
         $scope.updateFinding = 1;
         $scope.finding = {};
         $scope.scroll('editFindingInfo');
-        $scope.isNewFinding = 1; 
+        $scope.isNewFinding = 1;
         $scope.currentFindingCopy = angular.copy($scope.currentFinding);
 
     };
@@ -320,25 +333,49 @@ var app = angular.module('angularApp')
     // open finding dialog with existing finding //
     $scope.updateExistingFinding = function(finding) {
         var old = $location.hash();
-        $scope.updateFinding = 1;        
+        $scope.updateFinding = 1;
         $scope.currentFinding = finding;
+        checkAllFindingCells();
         $scope.scroll('editFindingInfo');
-        $scope.isNewFinding = 0;  
+        $scope.isNewFinding = 0;
         $scope.currentFinding.dirty = 1;
         $scope.currentFindingCopy = angular.copy(finding);
     };
 
     // updates rows and columns and runs rest call update //
+    // Check that input is valid for it's column type.
     $scope.updateRowsColsForFinding = function() {
-        $scope.loader = true;        
+        $scope.loader = true;
+        $scope.badFindingCell = createArray(csvDataColCount, csvDataRowCount);
+
         $http({method: 'POST', url: '/caNanoLab/rest/characterization/updateDataConditionTable',data: $scope.currentFinding}).
-        success(function(data, status, headers, config) {            
+        success(function(data, status, headers, config) {
+            for( var y = 0; y < csvDataRowCount; y++){
+                for( var x = 0; x < csvDataColCount; x++){
+                    data.rows[y].cells[x].value = Object(csvDataObj[y][x]);
+                    if( x < $scope.currentFinding.length) {
+                        data.rows[y].cells[x].datumOrCondition = $scope.currentFinding.columnHeaders[x].columnType;
+                    }
+                    // When the column type is set or reset, check all cell contents for valid entries for each column, one row at a time.
+                    if( x < $scope.currentFinding.columnHeaders.length ) {
+                        $scope.badFindingCell[x][y] = validateFindingCellInput($scope.currentFinding.columnHeaders[x].columnType,
+                            data.rows[y].cells[x].value);
+                    }
+                    // If there are fewer column types/header set than there are columns.
+                    // Data put in a cell with a column that does not have it's type set is never considered invalid.
+                    else{
+                        $scope.badFindingCell[x][y] = false;
+                    }
+
+                }
+            }
+
             $scope.loader = false;
             $scope.currentFinding=data;
         }).
         error(function(data, status, headers, config) {
             $scope.loader = false;
-        });        
+        });
     };
 
     // opens column form to change properties for column //
@@ -351,7 +388,442 @@ var app = angular.module('angularApp')
         }
     };
 
-    // close column form without saving //
+
+    /**
+     * Called when Finding cell input changes.
+     *
+     * @param textInput   Text input from the HTML.
+     */
+    $scope.currentFindingCellChanged = function(textInput){
+        var xy = textInput.id.split(":");
+        $scope.badFindingCell[xy[0]][xy[1]] = validateFindingCellInput( $scope.currentFinding.columnHeaders[xy[0]].columnType, textInput.value);
+    };
+
+    /**
+     * Check for valid cell data for column type
+     * @param colType
+     * @param cellData
+     * @returns True on bad cell data for column type.
+     */
+    function validateFindingCellInput( colType, cellData){
+        if( ( colType === null) || ( colType === undefined)){
+            return false;
+        }
+       return (colType === 'datum') && (isNaN(cellData.replace(/(d|f)$/, '')));
+    }
+
+    /**
+     * Check each cell for valid data for column type and set status in $scope.badFindingCell array.
+     */
+    function checkAllFindingCells(){
+        var rowCount = $scope.currentFinding.rows.length;
+        var cellCount = $scope.currentFinding.rows[0].cells.length;
+        $scope.badFindingCell = createArray(cellCount, rowCount);
+        for( var y = 0; y < rowCount; y++){
+            for( var x = 0; x < cellCount; x++){
+                $scope.badFindingCell[x][y] = validateFindingCellInput( $scope.currentFinding.rows[y].cells[x].datumOrCondition,
+                    $scope.currentFinding.rows[y].cells[x].value);
+            }
+        }
+    }
+
+
+     /**
+      * Create multi dimensional array.
+      * @param len  The length of one or more dimensions of array
+      * @returns {any[]}  The array
+      */
+     function createArray(len) {
+         var arr = new Array(len || 0), i = len;
+         if (arguments.length > 1) {
+             var args = Array.prototype.slice.call(arguments, 1);
+             while(i--) arr[len-1 - i] = createArray.apply(this, args);
+         }
+            return arr;
+     }
+
+
+     /**
+      * This is called when a file in the users local machine is selected for csv upload.
+      *
+      * @param v File data.
+      */
+     $scope.fileNameChanged = function(v) {
+         dataReaderReadFile(0, v[0].size);
+     };
+
+
+     /**
+      * Called by the call back, get the file data here.
+      *
+      * @param opt_startByte
+      * @param opt_stopByte
+      */
+     var dataReaderReadFile = function (opt_startByte, opt_stopByte) {
+         var files = document.getElementById('csvFile').files;
+         var reader = new FileReader();
+         reader.onloadend = function (evt) {
+             csvDataObj = parseCsv(evt.target.result);
+
+             // Did we get a parse error
+             if(csvDataObj === null){
+                 console.error('CSV import parse error: ', csvImportError);
+                 alert( 'CSV import parse error: ' + csvImportError);
+                 return;
+             }
+
+             // Get dimensions of csv data.
+             csvDataColCount = 0;
+             csvDataRowCount = csvDataObj.length;
+             for (var y = 0; y < csvDataRowCount; y++) {
+                 if( csvDataObj[y].length > csvDataColCount){
+                     csvDataColCount = csvDataObj[y].length;
+                 }
+             }
+             $scope.currentFinding.numberOfColumns = csvDataColCount;
+             $scope.currentFinding.numberOfRows = csvDataRowCount;
+
+             $scope.updateRowsColsForFinding();
+         };
+        reader.readAsBinaryString(files[0].slice(0, files[0].size));
+     };
+
+
+    /**
+     * Return true if: not too many rows, no row is too long, and csv format is correct.
+     *
+     * @param csv
+     * @returns {boolean}
+     */
+    var validateCsv = function( csv){
+        // Normalize line feeds
+        var temp = (csv.replace(/\r\n/g, '\r').replace(/\n\r/g, '\r').replace(/\n/g, '\r')).split(/\r/);
+
+        // Do we have too many rows?
+        if( temp.length > csvMaxNumberOfLines){
+            csvImportError = 'Too many Lines (' + temp.length + ')';
+            return false;
+        }
+
+        // Are any cells too long?
+        // Determine length of longest cell entry
+        var biggestLine = 0;
+        for( var f0 = 0; f0 < temp.length; f0++){
+            if( biggestLine < temp[f0].length){
+                biggestLine = temp[f0].length;
+            }
+        }
+
+        // If at least one entry is too long, set error and return false
+        if( biggestLine > csvMaxLenOfEntry){
+            console.error('ERROR line(s) too long (' + biggestLine + ')');
+            csvImportError = 'line(s) too long (' + biggestLine + ')';
+            return false;
+        }
+
+
+        // Send each line to csv validation function.
+        // Remove anything that is not a quote or a comma. That is all we need for validating csv.
+        var regex = new RegExp('[^",]', 'g');
+        for( var f = 0; f < temp.length; f++){
+            var csvString = temp[f].replace(regex, '');
+            var isValid = validateCsvLine(csvString);
+            if( ! isValid ){
+                return false;
+            }
+        }
+
+        // Return true if: not too many rows, no row is too long, and csv format is correct.
+        return true;
+    };
+
+
+    /**
+     * Check for correctly nested quotes.
+     *
+     * @param csvLine
+     * @returns {boolean}
+     */
+    function validateCsvLine( csvLine ) {
+        var inQ = false;
+        var badData = false;
+        for( var f = 0; f < csvLine.length; f++){
+            if( ! inQ ){
+
+                // A starting quote plus a nested quote (3 quotes)
+                if( (csvLine.length <= (f+2)) && csvLine[f] ==='"' && csvLine[f+1] ==='"' && csvLine[f+2] ==='"'){
+                    inQ = true;
+                }
+
+                // Two quotes, BUT not in a quote, and ends.
+                else if( (csvLine.length <= (f+1)) && csvLine[f] ==='"' && csvLine[f+1] ==='"'){
+                    badData = false;
+                    break;
+                }
+                else if(csvLine[f] ==='"'){
+                    inQ = true;
+                }
+            }
+            else{
+                // An ending quote
+                if( csvLine[f] ==='"' && csvLine[f+1] !=='"' ){
+                    inQ = false;
+                }
+                else if( csvLine[f] ==='"' && csvLine[f+1] ==='"')
+                {
+                    f++;
+                }
+            }
+        }
+
+        // Are we still in a quote at the end
+        if(inQ){
+            badData = true;
+            csvImportError = 'csv validation error';
+        }
+        return (! badData );
+    };
+
+
+        /**
+         * Convert csv data to javascript array.
+         *
+         * @param data
+         * @returns {*}   javascript array.
+         */
+    function parseCsv(data) {
+        if( ! validateCsv(data) ){
+            return null;
+        }
+
+        // Split on the CR or LF
+        var dataLines = qFix(data.replace(/\r\n/g, '\r').replace(/\n\r/g, '\r').replace(/\n/g, '\r')).split(/\r/);
+        var startCell = 1; //true
+        var currentCell = '';
+        var currentCellType = 0; // 0=unknown  1=comma no double quote  2=comma with double quote
+        var i = 0;
+        var csvData;
+        var csvDataObj = [];
+
+        for (var dataLine = 0; dataLine < dataLines.length && runaway > 0; dataLine++){
+            csvData = dataLines[dataLine];
+
+            if (csvData.length < 1) {
+                continue;
+            }
+
+            var lineOfValues = [];
+            i = 0;
+            while (i < csvData.length && runaway > 0) {
+                var trailingCommas = [];
+                trailingCommas = csvData.match(/(,+)$/g);
+                if (trailingCommas !== null) {
+                    var replacementStr = '';
+                    for (var f = 0; f < trailingCommas[0].length; f++) {
+                        replacementStr += ',""';
+                    }
+                    var re = new RegExp(trailingCommas[0] + '$');
+                    csvData = csvData.replace(re, replacementStr);
+                }
+
+                // Determine cell type
+                if (csvData.substr(i, 1) === '"') {
+                    currentCellType = 2;
+                }
+                else {
+                    currentCellType = 1;
+                }
+
+                if (currentCellType === 1) {
+                    // Just grab to the first comma
+                    currentCell = csvData.substr(i).match(/[^,]*,/);
+                    if (currentCell !== null) {
+                        currentCell = currentCell[0];
+                        lineOfValues.push(cleanCsvValue(currentCell));
+                    }
+                    // No comma, we are at the end.
+                    else {
+                        currentCell = csvData.substr(i);
+                        lineOfValues.push(cleanCsvValue(currentCell));
+                    }
+                    i += currentCell.length;
+                } else if (currentCellType === 2) {
+                    csvData = csvData.substr(i);
+                    i = 0;
+                    startCell = 1;
+                    var charStatus = 0;  // Nothing yet
+                    var currentChar = '';
+                    var currentNextChar = '';
+                    var i1 = 0;
+
+                    while (i1 < csvData.length) {
+                        currentChar = csvData.substr(i1, 1);
+                        if (i1 + 1 < csvData.length) {
+                            currentNextChar = csvData.substr(i1 + 1, 1);
+                        }
+                        else {
+                            currentNextChar = '';
+                        }
+                        i1++;
+
+                        // The first char
+                        if (charStatus === 0 && startCell === 1) {
+                            // Is it a quote (it should be)
+                            if (currentChar === '"') {
+                                charStatus = 1;  // We have seen the first quote
+                            }
+                            startCell = 0;  // No longer looking at the first char
+                            currentChar = csvData.substr(i1, 1);
+                            if (i1 + 1 < csvData.length) {
+                                currentNextChar = csvData.substr(i1 + 1, 1);
+                            }
+                            else {
+                                currentNextChar = '';
+                            }
+                        }  // END if (charStatus === 0 && startCell === 1)
+
+                        // Not the first char
+                        else if (startCell !== 1) {
+                            // We are past the first quote
+                            if (charStatus === 1) {  // We have seen the first quote
+                                // Check for two double quotes, this is a quote within a quoted cell - ignore it and go past it
+                                if (currentChar === '"' && currentNextChar === '"') {
+                                    i1 += 1;
+                                }
+                                // A quote here means the end
+                                else if (currentChar === '"') {
+                                    // Find the next comma or the end of the line.
+                                    currentCell = csvData.substr(0, i1);
+                                    csvData = csvData.substr(currentCell.length + 1);
+                                    i1 = 0;
+                                    startCell = 1; //true
+                                    charStatus = 0;
+                                    lineOfValues.push(cleanCsvValue(currentCell));
+                                }
+                            }
+
+                        }  // END else if( startCell !== 1)
+                            runaway--;
+                    }
+                }
+                runaway--;
+            } // End while loop
+            csvDataObj.push(lineOfValues);
+            runaway--;
+
+        } // End for loop
+
+        // Check here for too may columns
+        if( getMaxColumnCount( csvDataObj) > csvColumnMaxCount ){
+            csvImportError = 'Too many columns (' + getMaxColumnCount( csvDataObj) +')';
+            return null;
+        }
+        return csvDataObj;
+    };
+
+    /**
+     * Returns number of columns, it is possible for csv data to have inconsistent column count for rows
+     * @param csvData
+     * @returns {number}  The column count for the row(s) with the most columns.
+     */
+    function getMaxColumnCount( csvData){
+        var columnCount = 0;
+        for( var row = 0; row < csvData.length; row++ ){
+            if( columnCount < csvData[row].length){
+                columnCount = csvData[row].length;
+            }
+        }
+        return columnCount;
+    }
+
+
+    /**
+     * Clean up Unicode type quotes and UTF-8 chars
+     *
+     * @param input
+     * @returns {string}
+     */
+    function qFix(input) {
+        var output = '';
+        for (var i = 0; i < input.length; ++i) {
+
+            if (input.charCodeAt(i) === 226) {
+                // Unicode double quote
+                if (
+                    (input.charCodeAt(i + 1) === 128 && input.charCodeAt(i + 2) === 157) ||
+                    (input.charCodeAt(i + 1) === 128 && input.charCodeAt(i + 2) === 156)
+                ) {
+                    i += 2;
+                    output += '"';
+                }
+                // Unicode single quote
+                else if ( input.charCodeAt(i + 1) === 128 && input.charCodeAt(i + 2) === 153) {
+                    i += 2;
+                    output += '\'';
+                }
+
+            } else if ( input.charCodeAt(i) === 194 || input.charCodeAt(i) === 195 ){
+                var hexDigit0 = input.charCodeAt(i).toString(16);
+                if (hexDigit0.length % 2) {
+                    hexDigit0 = '0' + hexDigit0;
+                }
+                var hexDigit1 = input.charCodeAt(i+1).toString(16);
+                if (hexDigit1.length % 2) {
+                    hexDigit1 = '0' + hexDigit1;
+                }
+                var hex = '%' + hexDigit0 +'%' + hexDigit1;
+                let decoded = decode_utf8(hex);
+                if( decoded === 'ERROR-ERROR'){
+                    console.error('ERROR ');
+                    output = '';
+                    return output;
+                }
+                output += decoded;
+                i++;
+            }
+            else {
+                output += input[i];
+            }
+        }
+        return (output);
+    };
+
+
+    function cleanCsvValue(val) {
+        if (val.substr(0, 1) === '"') {
+                val = val.substr(1);
+        }
+        if (val.substr(val.length - 1) === ',') {
+            val = val.substr(0, val.length - 1);
+        }
+        if (val.substr(val.length - 1) === '"') {
+            val = val.substr(0, val.length - 1);
+        }
+
+        val = val.replace(/""/g, '"');
+        return val;
+    };
+
+
+    /**
+     *
+     * @param s
+     * @returns {string}
+     */
+    function decode_utf8(s) {
+        var returnData = '';
+        try {
+            returnData = decodeURIComponent(s);
+        }
+        catch (e) {
+            returnData = 'ERROR-ERROR'; // TODO  Make this a const
+            console.error('ERROR: ' , e);
+        }
+        return returnData;
+    }
+
+
+        // close column form without saving //
     $scope.closeColumnForm = function() {
         angular.copy($scope.findingsColumnCopy, $scope.findingsColumn);
         $scope.columnForm = 0;
@@ -360,7 +832,7 @@ var app = angular.module('angularApp')
     // close column form with saving //
     $scope.saveColumnForm = function() {
         $scope.columnForm = 0;
-        
+
         var columnIndex = 0;
         if( $scope.findingsColumn.columnOrder != null ) {
             columnIndex = parseInt($scope.findingsColumn.columnOrder) - 1;
@@ -368,7 +840,6 @@ var app = angular.module('angularApp')
                 var curCell = $scope.currentFinding.rows[x].cells[columnIndex];
                 if ($scope.findingsColumn.constantValue!='') {
                     curCell.value=$scope.findingsColumn.constantValue;
-                    curCell.datumOrCondition = $scope.findingsColumn.columnType;                    
                 }
             };
             var headerName = $scope.findingsColumn.columnName;
@@ -379,19 +850,34 @@ var app = angular.module('angularApp')
             $scope.currentFinding.columnHeaders[columnIndex].displayName = headerName;
 
         }
-    };    
+
+        // Check here for valid cell data with the new column type.
+        initDatumOrCondition();
+        checkAllFindingCells();
+    };
+
+    function initDatumOrCondition() {
+        var rowCount = $scope.currentFinding.rows.length;
+        var cellCount = $scope.currentFinding.rows[0].cells.length;
+        for (var y = 0; y < rowCount; y++) {
+            for (var x = 0; x < cellCount; x++) {
+                $scope.currentFinding.rows[y].cells[x].datumOrCondition = $scope.currentFinding.columnHeaders[x].columnType;
+            }
+        }
+    }
+
 
     // remove column data //
     $scope.removeColumnForm = function() {
         angular.copy($scope.findingsColumnCopy, $scope.findingsColumn);
         $scope.columnForm = 0;
 
-    };    
+    };
 
     // opens column form to change order for columns. Does not actually order columns //
     $scope.openColumnOrderForm = function() {
         $scope.columnOrder = 1;
-    }; 
+    };
 
     // called when columnType dropdown is changed on column form //
     $scope.onColumnTypeDropdownChange = function(newOpen) {
@@ -401,12 +887,12 @@ var app = angular.module('angularApp')
             $scope.loader = false;
         }).
             error(function(data, status, headers, config) {
-            $scope.loader = false;        
-        });  
+            $scope.loader = false;
+        });
 
         if (newOpen) {
             $scope.getColumnValueUnitOptions();
-        };        
+        };
     };
 
     // gets column value unit options based on  name and condition //
@@ -417,8 +903,8 @@ var app = angular.module('angularApp')
             $scope.loader = false;
         }).
             error(function(data, status, headers, config) {
-            $scope.loader = false;        
-        }); 
+            $scope.loader = false;
+        });
     };
 
     // called when columnType dropdown is changed on column form //
@@ -430,30 +916,33 @@ var app = angular.module('angularApp')
             $scope.loader = false;
         }).
             error(function(data, status, headers, config) {
-            $scope.loader = false;        
-        });        
-    };    
+            $scope.loader = false;
+        });
+    };
 
     // sets the column order //
     $scope.updateColumnOrder = function() {
-        $scope.loader = true;        
+        $scope.loader = true;
         $http({method: 'POST', url: '/caNanoLab/rest/characterization/setColumnOrder',data: $scope.currentFinding}).
-        success(function(data, status, headers, config) {            
+        success(function(data, status, headers, config) {
             $scope.loader = false;
             $scope.currentFinding=data;
             $scope.columnOrder = 0;
+
+            initDatumOrCondition();
+            checkAllFindingCells();
         }).
         error(function(data, status, headers, config) {
             $scope.loader = false;
             $scope.columnOrder = 0;
-        });         
-    }; 
+        });
+    };
 
     // saves finding info //
     $scope.saveFindingInfo = function() {
         $scope.loader = true;
         if ($scope.isNewFinding) {
-            $scope.data.finding.push($scope.currentFinding);            
+            $scope.data.finding.push($scope.currentFinding);
         };
 
         for (var x=0; x<$scope.data.finding.length;x++) {
@@ -465,15 +954,16 @@ var app = angular.module('angularApp')
         };
 
         $http({method: 'POST', url: '/caNanoLab/rest/characterization/saveFinding',data: $scope.data}).
-        success(function(data, status, headers, config) { 
-            $scope.saveButton = "Update";                           
+        success(function(data, status, headers, config) {
+            $scope.saveButton = "Update";
             $scope.loader = false;
             $scope.data=data;
         }).
         error(function(data, status, headers, config) {
             $scope.loader = false;
-        }); 
-        $scope.updateFinding = 0;        
+            alert(data[0]);
+        });
+        $scope.updateFinding = 0;
     };
 
     // removes finding info //
@@ -481,21 +971,21 @@ var app = angular.module('angularApp')
     	if (confirm("Delete the Finding?")) {
     		$scope.loader = true;
             $http({method: 'POST', url: '/caNanoLab/rest/characterization/removeFinding',data: $scope.currentFinding}).
-            success(function(data, status, headers, config) {            
+            success(function(data, status, headers, config) {
                 $scope.loader = false;
                 $scope.data=data;
             }).
             error(function(data, status, headers, config) {
                 $scope.loader = false;
-            }); 
-    		$scope.updateFinding = 0;        
+            });
+    		$scope.updateFinding = 0;
     	}
-    };    
+    };
 
     $scope.cancelFindingInfo = function() {
-        $scope.updateFinding = 0; 
+        $scope.updateFinding = 0;
         angular.copy($scope.currentFindingCopy, $scope.currentFinding);
-    };   
+    };
 
     // deletes data and condition row //
     $scope.deleteDataConditionRow = function(row) {
@@ -504,47 +994,47 @@ var app = angular.module('angularApp')
 
     // save characterization record. //
     $scope.save = function() {
-        $scope.loader = true;    
+        $scope.loader = true;
         $http({method: 'POST', url: '/caNanoLab/rest/characterization/saveCharacterization',data: $scope.data}).
-        success(function(data, status, headers, config) {  
+        success(function(data, status, headers, config) {
             $location.path("/editCharacterization").search({'sampleId':$scope.sampleId,'charMessage':'Characterization Saved'}).replace();
             $scope.loader = false;
             $scope.sampleMessage = 'Characterization Saved';
         }).
         error(function(data, status, headers, config) {
             $scope.loader = false;
-        }); 
+        });
     };
 
     // remove characterization record. //
     $scope.remove = function() {
         $scope.loader = true;
         $http({method: 'POST', url: '/caNanoLab/rest/characterization/removeCharacterization',data: $scope.data}).
-        success(function(data, status, headers, config) {            
+        success(function(data, status, headers, config) {
             $scope.loader = false;
             $location.path("/editCharacterization").search({'sampleId':$scope.sampleId}).replace();
         }).
         error(function(data, status, headers, config) {
             $scope.loader = false;
-        }); 
-    };    
+        });
+    };
 
     // reset form //
     $scope.reset = function() {
         $scope.data = angular.copy($scope.dataCopy);
         $scope.domainFileUri = "";
         $scope.updateExperimentConfig = 0;
-    };    
-    
+    };
+
     /* File Section */
     $scope.onFileSelect = function($files) {
         $scope.selectedFiles = [];
         $scope.selectedFiles = $files;
-          
-        
-        if ($scope.selectedFiles != null && $scope.selectedFiles.length > 0 ) 
-        	$scope.selectedFileName = $scope.selectedFiles[0].name;        
-        
+
+
+        if ($scope.selectedFiles != null && $scope.selectedFiles.length > 0 )
+        	$scope.selectedFileName = $scope.selectedFiles[0].name;
+
         $scope.dataUrls = [];
 		for ( var i = 0; i < $files.length; i++) {
 			var $file = $files[i];
@@ -559,11 +1049,11 @@ var app = angular.module('angularApp')
 					}
 				}(fileReader, i);
 			}
-		}         
+		}
     };
 
     $scope.editFile = function(fileId) {
-    	$scope.selectedFileName = ''; 
+    	$scope.selectedFileName = '';
         for (var k = 0; k < $scope.currentFinding.files.length; ++k) {
 
             var element = $scope.currentFinding.files[k];
@@ -580,8 +1070,8 @@ var app = angular.module('angularApp')
                 $scope.fileForm.createdDate = element.createdDate;
 
                 $scope.addNewFile = true;
-                
-                
+
+
                 if( $scope.fileForm.externalUrl != null && $scope.fileForm.externalUrl != '') {
                     $scope.externalUrlEnabled = true;
                     $scope.fileForm.uriExternal = 'true';
@@ -675,7 +1165,7 @@ var app = angular.module('angularApp')
                     if(navigator.appVersion.indexOf("MSIE 9.")!=-1) {
                         $scope.saveFileData();
                     }
-                });            	
+                });
                 if (response.status > 0) {
                 	$scope.data.errors = response.status + ': ' + response.data;
                     $scope.loader = false;
@@ -720,7 +1210,7 @@ var app = angular.module('angularApp')
         	$scope.currentFinding.theFile.uri = $scope.selectedFileName;
         } else {
         	$scope.currentFinding.theFile.uri = $scope.fileForm.uri;
-        }        
+        }
         $scope.currentFinding.theFile.uriExternal = $scope.fileForm.uriExternal;
         $scope.currentFinding.theFile.type = $scope.fileForm.type;
         $scope.currentFinding.theFile.title = $scope.fileForm.title;
@@ -773,7 +1263,7 @@ var app = angular.module('angularApp')
             if (!col.columnType || col.columnType=='') {
                 return 1
                 break
-            };            
+            };
         };
     };
 
@@ -785,15 +1275,15 @@ var app = angular.module('angularApp')
                 break;
             };
 
-        };        
+        };
     };
 
     $scope.openAddNewFile = function() {
         $scope.addNewFile = true;
         $scope.fileForm = {};
-        
+
         $scope.fileForm.uriExternal = 'false';
-        $scope.externalUrlEnabled = false;          
+        $scope.externalUrlEnabled = false;
     };
 
     /* End File Section */

@@ -286,6 +286,7 @@ public class FindingBean {
 
 	public void setupDomain(String internalFileUriPath, String createdBy)
 			throws Exception {
+
 		if (domain.getId() != null && domain.getId() <= 0) {
 			domain.setId(null);
 		}
@@ -324,6 +325,7 @@ public class FindingBean {
 			List<Datum> rowData = new ArrayList<Datum>();
 			for (TableCell cell : row.getCells()) {
 				ColumnHeader columnHeader = columnHeaders.get(cInd);
+
 				if (FindingBean.DATUM_TYPE.equals(columnHeader.getColumnType())) {
 					Datum datum = cell.getDatum();
 					// set bogus empty cell
@@ -334,8 +336,20 @@ public class FindingBean {
 										+ ":"
 										+ Constants.PLACEHOLDER_DATUM_CONDITION_CREATED_BY);
 					} else {
-						datum.setValue(Float.valueOf(cell.getValue()));
-						datum.setOperand(cell.getOperand());
+                        // datum.setValue(Float.valueOf(cell.getValue()));
+
+                        try
+                        {
+                            datum.setValue(Float.valueOf(cell.getValue()));
+                        }
+                        catch( NumberFormatException e )
+                        {
+                            e.printStackTrace();
+                            throw new BadCellInputException( "Bad cell input data", cell.getValue(), columnHeader.getColumnName(), columnHeader.getColumnType() );
+                        }
+
+
+                        datum.setOperand(cell.getOperand());
 					}
 					datum.setValueType(columnHeader.getValueType());
 					datum.setValueUnit(columnHeader.getValueUnit());
@@ -630,4 +644,5 @@ public class FindingBean {
 			}
 		}
 	}
+
 }

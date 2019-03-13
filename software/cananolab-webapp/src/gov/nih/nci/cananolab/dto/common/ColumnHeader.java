@@ -191,4 +191,20 @@ public class ColumnHeader {
 	public void setCreatedDate(Date createdDate) {
 		this.createdDate = createdDate;
 	}
+
+    @Override
+    public String toString()
+    {
+        return "{\"ColumnHeader\":{"
+                + "                        \"columnName\":\"" + columnName + "\""
+                + ",                         \"conditionProperty\":\"" + conditionProperty + "\""
+                + ",                         \"valueType\":\"" + valueType + "\""
+                + ",                         \"valueUnit\":\"" + valueUnit + "\""
+                + ",                         \"columnType\":\"" + columnType + "\""
+                + ",                         \"displayName\":\"" + displayName + "\""
+                + ",                         \"constantValue\":\"" + constantValue + "\""
+                + ",                         \"columnOrder\":\"" + columnOrder + "\""
+                + ",                         \"createdDate\":" + createdDate
+                + "}}";
+    }
 }

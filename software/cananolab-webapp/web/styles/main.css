@@ -1870,6 +1870,9 @@ padding:4px !important;
     display:table-cell;
     padding-right:5px;
 }
+.finding_cell_bad{
+    color: #a00;
+}
 
 .btn.btn-primary.timeout {
    width:100px;
