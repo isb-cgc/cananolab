@@ -147,6 +147,11 @@ L-->
    <ns2:SchemaElement className="Pharmacokinetics" deserializer="gov.nih.nci.cagrid.sdkquery4.encoding.SDK40DeserializerFactory" serializer="gov.nih.nci.cagrid.sdkquery4.encoding.SDK40SerializerFactory" type="Pharmacokinetics" xsi:type="ns2:SchemaElementType"/>
    <ns2:SchemaElement className="Toxicology" deserializer="gov.nih.nci.cagrid.sdkquery4.encoding.SDK40DeserializerFactory" serializer="gov.nih.nci.cagrid.sdkquery4.encoding.SDK40SerializerFactory" type="Toxicology" xsi:type="ns2:SchemaElementType"/>
   </ns2:Namespace>
+  <ns2:Namespace generateStubs="false" location="gov.nih.nci.cananolab.domain.characterization.synthesis.xsd" namespace="gme://caNanoLab.caBIG/1.5/gov.nih.nci.cananolab.domain.characterization.synthesis" packageName="gov.nih.nci.cananolab.domain.characterization.synthesis" xsi:type="ns2:NamespaceType">
+   <ns2:SchemaElement className="SynthesisCharacterization" deserializer="gov.nih.nci.cagrid.sdkquery4.encoding.SDK40DeserializerFactory" serializer="gov.nih.nci.cagrid.sdkquery4.encoding.SDK40SerializerFactory" type="SynthesisCharacterization" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement className="Purification" deserializer="gov.nih.nci.cagrid.sdkquery4.encoding.SDK40DeserializerFactory" serializer="gov.nih.nci.cagrid.sdkquery4.encoding.SDK40SerializerFactory" type="Purification" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement className="FinalPurification" deserializer="gov.nih.nci.cagrid.sdkquery4.encoding.SDK40DeserializerFactory" serializer="gov.nih.nci.cagrid.sdkquery4.encoding.SDK40SerializerFactory" type="FinalPurification" xsi:type="ns2:SchemaElementType"/>
+  </ns2:Namespace>
   <ns2:Namespace generateStubs="false" location="gov.nih.nci.cananolab.domain.common.xsd" namespace="gme://caNanoLab.caBIG/1.5/gov.nih.nci.cananolab.domain.common" packageName="gov.nih.nci.cananolab.domain.common" xsi:type="ns2:NamespaceType">
    <ns2:SchemaElement className="Author" deserializer="gov.nih.nci.cagrid.sdkquery4.encoding.SDK40DeserializerFactory" serializer="gov.nih.nci.cagrid.sdkquery4.encoding.SDK40SerializerFactory" type="Author" xsi:type="ns2:SchemaElementType"/>
    <ns2:SchemaElement className="CommonLookup" deserializer="gov.nih.nci.cagrid.sdkquery4.encoding.SDK40DeserializerFactory" serializer="gov.nih.nci.cagrid.sdkquery4.encoding.SDK40SerializerFactory" type="CommonLookup" xsi:type="ns2:SchemaElementType"/>
@@ -659,7 +664,26 @@ L-->
       </ns22:ModelPackage>
 
 
+                          <ns22:ModelPackage packageName="gov.nih.nci.cananolab.domain.characterization.synthesis" xsi:type="ns22:ModelPackage">
+                           <ns22:ModelClass selected="true" shortClassName="Purification" targetable="true" xsi:type="ns22:ModelClass"/>
 
+
+
+
+
+                           <ns22:ModelClass selected="true" shortClassName="FinalPurification" targetable="true" xsi:type="ns22:ModelClass"/>
+
+
+
+
+
+                           <ns22:ModelClass selected="true" shortClassName="SynthesisCharacterization" targetable="true" xsi:type="ns22:ModelClass"/>
+
+
+
+
+
+      </ns22:ModelPackage>
 
 
                           <ns22:ModelPackage packageName="gov.nih.nci.cananolab.domain.characterization.physical" xsi:type="ns22:ModelPackage">
