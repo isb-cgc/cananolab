@@ -143,11 +143,5 @@ L-->
 			</subclass>
 
 		</subclass>
-		<subclass name="gov.nih.nci.cananolab.domain.characterization.synthesis.SynthesisCharacterization" discriminator-value="SynthesisCharacterization">
-			<subclass name="gov.nih.nci.cananolab.domain.characterization.synthesis.Purification" discriminator-value="Purification">
-
-			</subclass>
-
-		</subclass>
 	</class>
 </hibernate-mapping>

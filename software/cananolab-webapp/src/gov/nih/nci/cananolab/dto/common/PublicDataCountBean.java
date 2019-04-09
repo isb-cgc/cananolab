@@ -17,7 +17,6 @@ public class PublicDataCountBean {
 	private Integer numOfPublicPhysicoChemicalCharacterizations=0;
 	private Integer numOfPublicInvitroCharacterizations=0;
 	private Integer numOfPublicInvivoCharacterizations=0;
-	private Integer numOfPublicSynthesisCharacterizations=0;
 	private Integer numOfPublicOtherCharacterizations=0;
 	private Integer numOfPublicPublications=0;
 	private String countDateString;
@@ -105,10 +104,6 @@ public class PublicDataCountBean {
 	public void setNumOfPublicInvivoCharacterizations(
 			Integer numOfPublicInvivoCharacterizations) {
 		this.numOfPublicInvivoCharacterizations = numOfPublicInvivoCharacterizations;
-	}
-	
-	public void setNumOfPublicSynthesisCharacterizations(Integer numOfPublicSynthesisCharacterizations){
-		this.numOfPublicSynthesisCharacterizations = numOfPublicSynthesisCharacterizations;
 	}
 
 }

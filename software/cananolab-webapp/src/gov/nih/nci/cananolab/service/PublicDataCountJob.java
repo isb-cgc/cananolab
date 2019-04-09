@@ -71,9 +71,6 @@ public class PublicDataCountJob extends QuartzJobBean
 		int invivoCharacterizationCount = getPublicCharacterizationCount(CharacterizationEnum.INVIVO);
 		dataCountBean.setNumOfPublicInvivoCharacterizations(invivoCharacterizationCount);
 		
-		int synCharacterizationCount= getPublicCharacterizationCount(CharacterizationEnum.SYNTHESIS);
-		dataCountBean.setNumOfPublicSynthesisCharacterizations(synCharacterizationCount);
-		
 		int otherCharacterizationCount = getPublicCharacterizationCount(CharacterizationEnum.OTHER);
 		dataCountBean.setNumOfPublicOtherCharacterizations(otherCharacterizationCount);
 		

@@ -106,8 +106,6 @@ public class Constants {
 				new Integer(4));
 		FUNCTIONALIZING_ENTITY_SUBCLASS_ORDER_MAP.put(new String(
 				"SmallMolecule"), new Integer(5));
-		FUNCTIONALIZING_ENTITY_SUBCLASS_ORDER_MAP.put(new String(
-				"Synthesis"), new Integer(6));
 	}
 
 	/* image file name extension */

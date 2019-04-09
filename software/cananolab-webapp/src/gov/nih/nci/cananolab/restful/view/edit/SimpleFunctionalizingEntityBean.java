@@ -276,12 +276,7 @@ public class SimpleFunctionalizingEntityBean {
 			domainEntity.put("createdDate", bean.getBiopolymer().getCreatedDate());
 			domainEntity.put("createdBy", bean.getBiopolymer().getCreatedBy());
 			domainEntity.put("id", bean.getBiopolymer().getId());
-		}else if(bean.getType().equalsIgnoreCase("Synthesis")){
-			domainEntity.put("supplierName", bean.getSynthesis().getSupplierName());
-			domainEntity.put("lot", bean.getSynthesis().getLot());
-			domainEntity.put("createdDate", bean.getSynthesis().getCreatedDate());
-			domainEntity.put("createdBy", bean.getSynthesis().getCreatedBy());
-			domainEntity.put("id", bean.getSynthesis().getId());
+
 		}else if(bean.getType().equalsIgnoreCase("Antibody")){
 			domainEntity.put("type", bean.getAntibody().getType());
 			domainEntity.put("isoType", bean.getAntibody().getIsotype());

@@ -8,7 +8,6 @@ public enum CharacterizationEnum
 	OTHER(Arrays.asList("OtherCharacterization")),
 	INVITRO(Arrays.asList("MetabolicStability", "OxidativeStress", "EnzymeInduction", "Sterility", "ImmuneCellFunction", "Cytotoxicity", "Targeting", "BloodContact", "Transfection")),
 	INVIVO(Arrays.asList("Pharmacokinetics", "Toxicology")),
-	SYNTHESIS(Arrays.asList("Purification")),
 	PHYSICO(Arrays.asList("Purity", "Size", "Shape", "PhysicalState", "Solubility", "Relaxivity", "MolecularWeight", "Surface"));
 	
 	private List<String> subChars;

@@ -8,7 +8,7 @@
    See http://ncip.github.com/cananolab/LICENSE.txt for details.
 L-->
 
-<project name="cananolab-webapp" basedir="." xmlns:artifact="antlib:org.apache.maven.artifact.ant" xmlns:rsel="antlib:org.apache.tools.ant.types.resources.selectors">
+<project name="cananolab-webapp" default="dist" basedir="." xmlns:artifact="antlib:org.apache.maven.artifact.ant" xmlns:rsel="antlib:org.apache.tools.ant.types.resources.selectors">
 	<description>
 	This is the build file for the caNanoLab webapp project.
 	</description>
@@ -126,7 +126,7 @@ L-->
 		</javac>
 	</target>
 
-	<target name="war" depends="clean, compile, jar:beano">
+	<target name="war" depends="clean, compile">
 		<!--copy properties files -->
 		<copy todir="${build.dir}/WEB-INF/classes">
 			<fileset dir="${src.dir}">
