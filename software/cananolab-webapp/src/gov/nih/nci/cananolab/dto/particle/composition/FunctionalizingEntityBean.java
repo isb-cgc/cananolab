@@ -10,7 +10,6 @@ package gov.nih.nci.cananolab.dto.particle.composition;
 
 import gov.nih.nci.cananolab.domain.agentmaterial.Antibody;
 import gov.nih.nci.cananolab.domain.agentmaterial.Biopolymer;
-import gov.nih.nci.cananolab.domain.agentmaterial.Synthesis;
 import gov.nih.nci.cananolab.domain.agentmaterial.OtherFunctionalizingEntity;
 import gov.nih.nci.cananolab.domain.agentmaterial.SmallMolecule;
 import gov.nih.nci.cananolab.domain.common.File;
@@ -59,8 +58,6 @@ public class FunctionalizingEntityBean extends BaseCompositionEntityBean {
 	private Antibody antibody = new Antibody();
 
 	private Biopolymer biopolymer = new Biopolymer();
-	
-	private Synthesis synthesis = new Synthesis();
 
 	private FunctionalizingEntity domainEntity;
 
@@ -105,10 +102,7 @@ public class FunctionalizingEntityBean extends BaseCompositionEntityBean {
 		} else if (functionalizingEntity instanceof Biopolymer) {
 			biopolymer = (Biopolymer) functionalizingEntity;
 			withProperties = true;
-		} else if (functionalizingEntity instanceof Synthesis) {
-			synthesis = (Synthesis) functionalizingEntity;
-			withProperties = true;
-		}
+		} 
 		className = ClassUtils.getShortClassName(functionalizingEntity
 				.getClass().getName());
 		Collection<Function> funcs = functionalizingEntity
@@ -191,10 +185,6 @@ public class FunctionalizingEntityBean extends BaseCompositionEntityBean {
 	public void setBiopolymer(Biopolymer biopolymer) {
 		this.biopolymer = biopolymer;
 	}
-	
-	public void setSynthesis(Synthesis synthesis) {
-		this.synthesis = synthesis;
-	}
 
 	public Antibody getAntibody() {
 		return antibody;
@@ -202,10 +192,6 @@ public class FunctionalizingEntityBean extends BaseCompositionEntityBean {
 
 	public Biopolymer getBiopolymer() {
 		return biopolymer;
-	}
-	
-	public Synthesis getSynthesis() {
-		return synthesis;
 	}
 
 	public SmallMolecule getSmallMolecule() {
@@ -286,9 +272,7 @@ public class FunctionalizingEntityBean extends BaseCompositionEntityBean {
 			domainEntity = smallMolecule;
 		} else if (domainEntity instanceof Biopolymer) {
 			domainEntity = biopolymer;
-		} else if (domainEntity instanceof Synthesis) {
-			domainEntity = synthesis;
-		}
+		} 
 		domainEntity.setDescription(description);
 		domainEntity.setMolecularFormula(molecularFormula);
 		domainEntity.setMolecularFormulaType(molecularFormulaType);

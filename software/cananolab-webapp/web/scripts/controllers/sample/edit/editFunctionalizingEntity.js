@@ -88,9 +88,6 @@ var app = angular.module('angularApp')
             }else if( $scope.funcEntityForm.type == 'antibody') {
                 $scope.withProperties = true;
                 $scope.detailsPage = '/caNanoLab/views/sample/composition/functionalizingentity/AntibodyInfoEdit.html';
-            }else if( $scope.funcEntityForm.type == 'Synthesis') {
-                $scope.withProperties = true;
-                $scope.detailsPage = '/caNanoLab/views/sample/composition/functionalizingentity/SynthesisEdit.html';
             }else if( $scope.funcEntityForm.type == 'small molecule') {
                 $scope.withProperties = true;
                 $scope.detailsPage = '/caNanoLab/views/sample/composition/functionalizingentity/SmallMoleculeInfoEdit.html';

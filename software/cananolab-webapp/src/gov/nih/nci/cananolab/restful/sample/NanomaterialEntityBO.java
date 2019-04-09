@@ -426,6 +426,10 @@ public class NanomaterialEntityBO extends BaseAnnotationBO
 				comp.setId(sBean.getId());
 				comp.setCreatedBy(sBean.getCreatedBy());
 				comp.setCreatedDate(sBean.getCreatedDate());
+			}  else {
+				//TODO see if there is a way to grab user directly
+				comp.setCreatedBy(nanoBean.getCreatedBy());
+				comp.setCreatedDate(nanoBean.getCreatedDate());
 			}
 			comp.setMolecularFormula(sBean.getMolecularFormula());
 			comp.setMolecularFormulaType(sBean.getMolecularFormulaType());
@@ -433,7 +437,7 @@ public class NanomaterialEntityBO extends BaseAnnotationBO
 			comp.setValueUnit(sBean.getValueUnit());
 			funclist = sBean.getInherentFunction();
 			if(funclist!= null){
-			for(int j=0;j<funclist.size();j++){
+				for(int j=0;j<funclist.size();j++){
 				func = new FunctionBean();
 				img.setModality((String) funclist.get(j).get("modality"));
 				func.setType((String) funclist.get(j).get("type"));
@@ -446,15 +450,15 @@ public class NanomaterialEntityBO extends BaseAnnotationBO
 					function.setCreatedDate(new Date((Long) funclist.get(j).get("createdDate")));
 					function.setId(new Long((String) funclist.get(j).get("id")));
 				}else {
-					function.setCreatedBy(sBean.getCreatedBy());
-					function.setCreatedDate(sBean.getCreatedDate());
+					function.setCreatedBy(nanoBean.getCreatedBy());
+					function.setCreatedDate(nanoBean.getCreatedDate());
 					}
 				func.setDomainFunction(function);
 				hash.add(function);
 				inherentFunctions.add(func);
 
-		}
-		}
+				}
+			}
 		compBean.setTheFunction(func);
 		compBean.setDomain(comp);
 		compBean.setInherentFunctions(inherentFunctions);
@@ -501,8 +505,8 @@ public class NanomaterialEntityBO extends BaseAnnotationBO
 						function.setCreatedBy((String) funclist.get(j).get("createdBy"));
 						function.setCreatedDate(new Date((Long) funclist.get(j).get("createdDate")));
 					} else {
-						function.setCreatedBy(sBean.getCreatedBy());
-						function.setCreatedDate(sBean.getCreatedDate());
+						function.setCreatedBy(nanoBean.getCreatedBy());
+						function.setCreatedDate(nanoBean.getCreatedDate());
 						}
 					hash.add(function);
 					func.setDomainFunction(function);

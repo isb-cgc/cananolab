@@ -659,7 +659,26 @@ L-->
       </ns22:ModelPackage>
 
 
+                          <ns22:ModelPackage packageName="gov.nih.nci.cananolab.domain.characterization.synthesis" xsi:type="ns22:ModelPackage">
+                           <ns22:ModelClass selected="true" shortClassName="Purification" targetable="true" xsi:type="ns22:ModelClass"/>
 
+
+
+
+
+                           <ns22:ModelClass selected="true" shortClassName="FinalPurification" targetable="true" xsi:type="ns22:ModelClass"/>
+
+
+
+
+
+                           <ns22:ModelClass selected="true" shortClassName="SynthesisCharacterization" targetable="true" xsi:type="ns22:ModelClass"/>
+
+
+
+
+
+      </ns22:ModelPackage>
 
 
                           <ns22:ModelPackage packageName="gov.nih.nci.cananolab.domain.characterization.physical" xsi:type="ns22:ModelPackage">

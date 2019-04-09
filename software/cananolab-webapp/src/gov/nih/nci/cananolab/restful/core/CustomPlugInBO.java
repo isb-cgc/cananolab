@@ -104,10 +104,6 @@ public class CustomPlugInBO implements ServletContextAware { //implements PlugIn
 					.getInstance()
 					.getDefaultTypesByReflection(appContext, "invivoChars",
 							"gov.nih.nci.cananolab.domain.characterization.invivo.InvivoCharacterization");
-			InitSetup
-			.getInstance()
-			.getDefaultTypesByReflection(appContext, "synthesisChars",
-					"gov.nih.nci.cananolab.domain.characterization.synthesis.SynthesisCharacterization");
 
 			InitSetup
 					.getInstance()

@@ -60,13 +60,6 @@ L-->
 		timeToLiveSeconds="100000"
 		overflowToDisk="true"/>
 		
-	<cache name="gov.nih.nci.cananolab.domain.agentmaterial.Synthesis"
-		maxElementsInMemory="500"
-		eternal="false"
-		timeToIdleSeconds="1800"
-		timeToLiveSeconds="100000"
-		overflowToDisk="true"/>
-		
 	<cache name="gov.nih.nci.cananolab.domain.characterization.physical.PhysicoChemicalCharacterization"
 		maxElementsInMemory="500"
 		eternal="false"

@@ -23,7 +23,6 @@ public class SimpleDataAvailabilityBean {
 	List<String> physicoChars;
 	List<String> invitroChars;
 	List<String> invivoChars;
-	List<String> synthesisChars;
 	
 	List<String> availableEntityNames;
 	
@@ -56,8 +55,6 @@ public class SimpleDataAvailabilityBean {
 		setInvitroChars(new ArrayList<String>(iv));
 		SortedSet<String> invivo = (SortedSet<String>) request.getSession().getServletContext().getAttribute("invivoChars");
 		setInvivoChars(new ArrayList<String>(invivo));
-		SortedSet<String> synth = (SortedSet<String>) request.getSession().getServletContext().getAttribute("synthesisChars");
-		setSynthesisChars(new ArrayList<String>(synth));
 		
 		if (availableEntityNames != null)
 			this.availableEntityNames = new ArrayList<String>(Arrays.asList(availableEntityNames));
@@ -143,12 +140,6 @@ public class SimpleDataAvailabilityBean {
 	}
 	public void setInvivoChars(List<String> invivoChars) {
 		this.invivoChars = invivoChars;
-	}
-	public List<String> getSynthesisChars(){
-		return synthesisChars;
-	}
-	public void setSynthesisChars(List<String> synthesisChars){
-		this.synthesisChars = synthesisChars;
 	}
 	public Map<String, String> getCaNano2MINChar() {
 		return caNano2MINChar;
