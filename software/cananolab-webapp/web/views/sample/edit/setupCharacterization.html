@@ -955,11 +955,9 @@
 										<tr>
 											<td ng-repeat="cell in currentFinding.columnHeaders" class="cellLabel"><a ng-click="openColumnForm(cell)" href="" ng-bind-html="cell.displayName">{{cell.displayName}}</a></td>
 										</tr>
-
-
 										<tr ng-if="columnForm">
 											<td colspan="{{currentFinding.columnHeaders.length}}">
-												<table style="background-color: #00b3ee"  class="subSubmissionView" width="100%" align="center" id="matrix" ng-if="currentFinding.columnHeaders.length">
+												<table class="subSubmissionView" width="100%" align="center" id="matrix" ng-if="currentFinding.columnHeaders.length">
 													<tr>
 														<td colspan="2"><h3 style="margin:0px;padding:0px;">Column Definitions</h3></td>
 													</tr>

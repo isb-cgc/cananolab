@@ -351,27 +351,38 @@ var app = angular.module('angularApp')
         $http({method: 'POST', url: '/caNanoLab/rest/characterization/updateDataConditionTable',data: $scope.currentFinding}).
         success(function(data, status, headers, config) {
             for( var y = 0; y < csvDataRowCount; y++){
-                for( var x = 0; x < csvDataColCount; x++){
-                    data.rows[y].cells[x].value = Object(csvDataObj[y][x]);
-                    if( x < $scope.currentFinding.length) {
-                        data.rows[y].cells[x].datumOrCondition = $scope.currentFinding.columnHeaders[x].columnType;
-                    }
-                    // When the column type is set or reset, check all cell contents for valid entries for each column, one row at a time.
-                    if( x < $scope.currentFinding.columnHeaders.length ) {
-                        $scope.badFindingCell[x][y] = validateFindingCellInput($scope.currentFinding.columnHeaders[x].columnType,
-                            data.rows[y].cells[x].value);
-                    }
-                    // If there are fewer column types/header set than there are columns.
-                    // Data put in a cell with a column that does not have it's type set is never considered invalid.
-                    else{
-                        $scope.badFindingCell[x][y] = false;
-                    }
 
+                for (var x = 0; x < csvDataColCount; x++) {
+                    // If the user has reduced the number of columns, make sure we don't try to update columns that no longer exist.
+                    if( (data.rows[y].cells[x] !== null) && (data.rows[y].cells[x] !== undefined)) {
+                        data.rows[y].cells[x].value = Object(csvDataObj[y][x]);
+                        if (x < $scope.currentFinding.length) {
+                            data.rows[y].cells[x].datumOrCondition = $scope.currentFinding.columnHeaders[x].columnType;
+                        }
+                        // When the column type is set or reset, check all cell contents for valid entries for each column, one row at a time.
+                        if (x < $scope.currentFinding.columnHeaders.length) {
+                            $scope.badFindingCell[x][y] = validateFindingCellInput($scope.currentFinding.columnHeaders[x].columnType,
+                                data.rows[y].cells[x].value);
+                        }
+                        // If there are fewer column types/header set than there are columns.
+                        // Data put in a cell with a column that does not have it's type set is never considered invalid.
+                        else {
+                            $scope.badFindingCell[x][y] = false;
+                        }
+                    }
+                }
+            }
+
+            // If there are already column headers set, preserve them.
+            for( var colX = 0; colX < csvDataColCount; colX++){
+                if( ($scope.currentFinding.columnHeaders[colX] !== null) &&($scope.currentFinding.columnHeaders[colX] !== undefined)){
+                    data.columnHeaders[colX] = $scope.currentFinding.columnHeaders[colX];
                 }
             }
 
             $scope.loader = false;
             $scope.currentFinding=data;
+
         }).
         error(function(data, status, headers, config) {
             $scope.loader = false;
@@ -409,7 +420,10 @@ var app = angular.module('angularApp')
         if( ( colType === null) || ( colType === undefined)){
             return false;
         }
-       return (colType === 'datum') && (isNaN(cellData.replace(/(d|f)$/, '')));
+       return (
+           (colType === 'datum') &&
+           ( cellData !== null) && (isNaN(cellData.replace(/(d|f)$/, '')))
+       );
     }
 
     /**
@@ -625,7 +639,6 @@ var app = angular.module('angularApp')
                     var re = new RegExp(trailingCommas[0] + '$');
                     csvData = csvData.replace(re, replacementStr);
                 }
-
                 // Determine cell type
                 if (csvData.substr(i, 1) === '"') {
                     currentCellType = 2;
@@ -708,7 +721,9 @@ var app = angular.module('angularApp')
                 }
                 runaway--;
             } // End while loop
+
             csvDataObj.push(lineOfValues);
+
             runaway--;
 
         } // End for loop
@@ -718,8 +733,14 @@ var app = angular.module('angularApp')
             csvImportError = 'Too many columns (' + getMaxColumnCount( csvDataObj) +')';
             return null;
         }
-        return csvDataObj;
-    };
+            let columnCount =  getMaxColumnCount(csvDataObj);
+            for( let f = 0; f < csvDataObj.length; f++){
+                while( csvDataObj[f].length < columnCount){
+                    csvDataObj[f].push('');
+                }
+            }
+            return csvDataObj;
+    }
 
     /**
      * Returns number of columns, it is possible for csv data to have inconsistent column count for rows

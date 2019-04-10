@@ -1,78 +1,38 @@
 package gov.nih.nci.cananolab.dto.common;
 
+import java.util.ArrayList;
+
 /**
  * Exception when bad data causes save to fail when saving Finding Info data.
  */
-public class BadCellInputException  extends Exception {
+public class BadCellInputException  extends Exception
+{
 
-    private String message;
-    private String badData;
-    private String columnName;
-    private String columnType;
+    ArrayList<ArrayList<String>> errorData;
+    String errorMessage = "";
 
-    public BadCellInputException( String badData) {
-        this.badData = badData;
+    public BadCellInputException(  ArrayList<ArrayList<String>> errorData )
+    {
+        this.errorMessage = "Cell data error";
+        this.errorData = errorData;
     }
 
 
-    public BadCellInputException( String message, String badData, String columnName, String columnType )
+    public BadCellInputException( String message,  ArrayList<ArrayList<String>> errorData )
     {
-        this.badData = badData;
-        this.message = message;
-        this.columnName = columnName;
-        this.columnType = columnType;
-    }
-
-
-    public String getBadData()
-    {
-        return badData;
-    }
-
-    public void setBadData( String badData )
-    {
-        this.badData = badData;
-    }
-
-    public String getColumnName()
-    {
-        return columnName;
-    }
-
-    public void setColumnName( String columnName )
-    {
-        this.columnName = columnName;
-    }
-
-    public String getColumnType()
-    {
-        return columnType;
-    }
-
-    public void setColumnType( String columnType )
-    {
-        this.columnType = columnType;
+        this.errorMessage = message;
+        this.errorData = errorData;
     }
 
     @Override
     public String getMessage()
     {
-        return message + "\nColumn: " + columnName + "\nCell data: " + badData;
+        StringBuilder sb = new StringBuilder( "Bad cell input data:\n" );
+        for (ArrayList<String> row : errorData) {
+            sb.append(  "\nColumn: " + row.get(1) + "\nCell data: " + row.get(0) +"\n");
+        }
+
+        return sb.toString();
     }
 
-    public void setMessage( String message )
-    {
-        this.message = message;
-    }
-
-    @Override
-    public String toString()
-    {
-        return "{\n \"BadCellInputException\":\n"
-                + " \"message\":\"" + message + "\",\n"
-                + " \"badData\":\"" + badData + "\",\n"
-                + " \"columnName\":\"" + columnName + "\",\n"
-                + " \"columnType\":\"" + columnType + "\",\n"
-                + "}";
-    }
 }

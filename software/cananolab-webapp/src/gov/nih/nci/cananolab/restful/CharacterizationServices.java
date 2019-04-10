@@ -129,7 +129,6 @@ public class CharacterizationServices
 	public Response getCharNamesByCharType(@Context HttpServletRequest httpRequest, 
 			@DefaultValue("") @QueryParam("charType") String charType)
 	{
-		logger.debug("In getCharNamesByCharType");		
 
 		try {
 
@@ -278,13 +277,15 @@ public class CharacterizationServices
 	@Produces ("application/json")
 	public Response updateDataConditionTable(@Context HttpServletRequest httpRequest, SimpleFindingBean simpleFinding)
 	{
-		logger.debug("In updateDataConditionTable");	
+        logger.debug("In updateDataConditionTable");
 
 		if (!SpringSecurityUtil.isUserLoggedIn())
-			return Response.status(Response.Status.UNAUTHORIZED).entity(Constants.MSG_SESSION_INVALID).build();
+        {
+            return Response.status( Response.Status.UNAUTHORIZED ).entity( Constants.MSG_SESSION_INVALID ).build();
+        }
 
 		try {
-			CharacterizationBO characterizationBO = 
+            CharacterizationBO characterizationBO =
 					(CharacterizationBO) SpringApplicationContext.getBean(httpRequest, "characterizationBO");
 
 			SimpleFindingBean simpleFindingBean = characterizationBO.drawMatrix(httpRequest, simpleFinding);
@@ -293,7 +294,7 @@ public class CharacterizationServices
 					.header("Access-Control-Allow-Origin", "*").header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS")
 					.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization").build();
 		} catch (Exception e) {
-			return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
 					.entity(CommonUtil.wrapErrorMessageInList(e.getMessage())).build();
 		}
 	}
@@ -303,7 +304,7 @@ public class CharacterizationServices
 	@Produces ("application/json")
 	public Response setColumnOrder(@Context HttpServletRequest httpRequest, SimpleFindingBean simpleFinding)
 	{
-		logger.debug("In setColumnOrder");	
+		logger.debug("In setColumnOrder");
 
 		if (!SpringSecurityUtil.isUserLoggedIn())
 			return Response.status(Response.Status.UNAUTHORIZED).entity(Constants.MSG_SESSION_INVALID).build();
@@ -466,7 +467,7 @@ public class CharacterizationServices
 			return Response.status(Response.Status.UNAUTHORIZED).entity(Constants.MSG_SESSION_INVALID).build();
 
 		try {
-			CharacterizationBO characterizationBO = 
+            CharacterizationBO characterizationBO =
 					(CharacterizationBO) SpringApplicationContext.getBean(httpRequest, "characterizationBO");
 
 			SimpleCharacterizationEditBean editBean = characterizationBO.saveFinding(httpRequest, charEditBean);
