@@ -41,6 +41,7 @@ var app = angular.module('angularApp')
 
     $scope.badFindingCell = [];
 
+    $scope.disableChangeColumnOrder = false;
 
     var uploadUrl = '/caNanoLab/rest/core/uploadFile';
     $scope.ie9 = false;
@@ -350,6 +351,10 @@ var app = angular.module('angularApp')
 
         $http({method: 'POST', url: '/caNanoLab/rest/characterization/updateDataConditionTable',data: $scope.currentFinding}).
         success(function(data, status, headers, config) {
+            if( data.rows[csvDataRowCount - 1] === undefined ){
+                csvDataRowCount = data.numberOfRows;
+            }
+
             for( var y = 0; y < csvDataRowCount; y++){
 
                 for (var x = 0; x < csvDataColCount; x++) {
@@ -393,9 +398,37 @@ var app = angular.module('angularApp')
     $scope.openColumnForm = function(cell) {
         $scope.findingsColumn = cell;
         $scope.columnForm = 1;
+
+        $scope.findingsColumnCopyForRestore =  {
+            "columnName":"Column 1",
+            "conditionProperty":null,
+            "valueType":null,
+            "valueUnit":null,
+            "columnType":null,
+            "displayName":"Column 1",
+            "constantValue":"",
+            "columnOrder":1,
+            "createdDate":null
+        };
+
         $scope.findingsColumnCopy = angular.copy($scope.findingsColumn);
+
         if ($scope.findingsColumn.columnType) {
             $scope.onColumnTypeDropdownChange(1);
+        }
+    };
+
+    // In the HTML the user is limited only numbers, and in a range from 1 to column count.
+    // Here we need to add the limitation of, no duplicate numbers.
+    $scope.columnOrderChanged = function(numberInput, index){
+        $scope.disableChangeColumnOrder = false;
+        for( let i0 = 0; i0 < ( $scope.currentFinding.columnHeaders.length - 1); i0++){
+            for( let i1 = ( i0 + 1 ); i1 < $scope.currentFinding.columnHeaders.length; i1++){
+                if( $scope.currentFinding.columnHeaders[i0].columnOrder === $scope.currentFinding.columnHeaders[i1].columnOrder){
+                    $scope.disableChangeColumnOrder = true;
+                    return;
+                }
+            }
         }
     };
 
@@ -406,7 +439,7 @@ var app = angular.module('angularApp')
      * @param textInput   Text input from the HTML.
      */
     $scope.currentFindingCellChanged = function(textInput){
-        var xy = textInput.id.split(":");
+        let xy = textInput.id.split(":");
         $scope.badFindingCell[xy[0]][xy[1]] = validateFindingCellInput( $scope.currentFinding.columnHeaders[xy[0]].columnType, textInput.value);
     };
 
@@ -429,14 +462,16 @@ var app = angular.module('angularApp')
     /**
      * Check each cell for valid data for column type and set status in $scope.badFindingCell array.
      */
-    function checkAllFindingCells(){
-        var rowCount = $scope.currentFinding.rows.length;
-        var cellCount = $scope.currentFinding.rows[0].cells.length;
-        $scope.badFindingCell = createArray(cellCount, rowCount);
-        for( var y = 0; y < rowCount; y++){
-            for( var x = 0; x < cellCount; x++){
-                $scope.badFindingCell[x][y] = validateFindingCellInput( $scope.currentFinding.rows[y].cells[x].datumOrCondition,
-                    $scope.currentFinding.rows[y].cells[x].value);
+    function checkAllFindingCells() {
+        let rowCount = $scope.currentFinding.rows.length;
+        if (rowCount > 0) {
+            let cellCount = $scope.currentFinding.rows[0].cells.length;
+            $scope.badFindingCell = createArray(cellCount, rowCount);
+            for (let y = 0; y < rowCount; y++) {
+                for (let x = 0; x < cellCount; x++) {
+                    $scope.badFindingCell[x][y] = validateFindingCellInput($scope.currentFinding.rows[y].cells[x].datumOrCondition,
+                        $scope.currentFinding.rows[y].cells[x].value);
+                }
             }
         }
     }
@@ -448,7 +483,7 @@ var app = angular.module('angularApp')
       * @returns {any[]}  The array
       */
      function createArray(len) {
-         var arr = new Array(len || 0), i = len;
+         let arr = new Array(len || 0), i = len;
          if (arguments.length > 1) {
              var args = Array.prototype.slice.call(arguments, 1);
              while(i--) arr[len-1 - i] = createArray.apply(this, args);
@@ -474,8 +509,8 @@ var app = angular.module('angularApp')
       * @param opt_stopByte
       */
      var dataReaderReadFile = function (opt_startByte, opt_stopByte) {
-         var files = document.getElementById('csvFile').files;
-         var reader = new FileReader();
+         let files = document.getElementById('csvFile').files;
+         let reader = new FileReader();
          reader.onloadend = function (evt) {
              csvDataObj = parseCsv(evt.target.result);
 
@@ -509,9 +544,9 @@ var app = angular.module('angularApp')
      * @param csv
      * @returns {boolean}
      */
-    var validateCsv = function( csv){
+    let validateCsv = function( csv){
         // Normalize line feeds
-        var temp = (csv.replace(/\r\n/g, '\r').replace(/\n\r/g, '\r').replace(/\n/g, '\r')).split(/\r/);
+        let temp = (csv.replace(/\r\n/g, '\r').replace(/\n\r/g, '\r').replace(/\n/g, '\r')).split(/\r/);
 
         // Do we have too many rows?
         if( temp.length > csvMaxNumberOfLines){
@@ -521,8 +556,8 @@ var app = angular.module('angularApp')
 
         // Are any cells too long?
         // Determine length of longest cell entry
-        var biggestLine = 0;
-        for( var f0 = 0; f0 < temp.length; f0++){
+        let biggestLine = 0;
+        for( let f0 = 0; f0 < temp.length; f0++){
             if( biggestLine < temp[f0].length){
                 biggestLine = temp[f0].length;
             }
@@ -538,10 +573,10 @@ var app = angular.module('angularApp')
 
         // Send each line to csv validation function.
         // Remove anything that is not a quote or a comma. That is all we need for validating csv.
-        var regex = new RegExp('[^",]', 'g');
-        for( var f = 0; f < temp.length; f++){
-            var csvString = temp[f].replace(regex, '');
-            var isValid = validateCsvLine(csvString);
+        let regex = new RegExp('[^",]', 'g');
+        for( let f = 0; f < temp.length; f++){
+            let csvString = temp[f].replace(regex, '');
+            let isValid = validateCsvLine(csvString);
             if( ! isValid ){
                 return false;
             }
@@ -559,9 +594,9 @@ var app = angular.module('angularApp')
      * @returns {boolean}
      */
     function validateCsvLine( csvLine ) {
-        var inQ = false;
-        var badData = false;
-        for( var f = 0; f < csvLine.length; f++){
+        let inQ = false;
+        let badData = false;
+        for( let f = 0; f < csvLine.length; f++){
             if( ! inQ ){
 
                 // A starting quote plus a nested quote (3 quotes)
@@ -596,7 +631,7 @@ var app = angular.module('angularApp')
             csvImportError = 'csv validation error';
         }
         return (! badData );
-    };
+    }
 
 
         /**
@@ -611,32 +646,32 @@ var app = angular.module('angularApp')
         }
 
         // Split on the CR or LF
-        var dataLines = qFix(data.replace(/\r\n/g, '\r').replace(/\n\r/g, '\r').replace(/\n/g, '\r')).split(/\r/);
-        var startCell = 1; //true
-        var currentCell = '';
-        var currentCellType = 0; // 0=unknown  1=comma no double quote  2=comma with double quote
-        var i = 0;
-        var csvData;
-        var csvDataObj = [];
+        let dataLines = qFix(data.replace(/\r\n/g, '\r').replace(/\n\r/g, '\r').replace(/\n/g, '\r')).split(/\r/);
+        let startCell = 1; //true
+        let currentCell = '';
+        let currentCellType = 0; // 0=unknown  1=comma no double quote  2=comma with double quote
+        let i = 0;
+        let csvData;
+        let csvDataObj = [];
 
-        for (var dataLine = 0; dataLine < dataLines.length && runaway > 0; dataLine++){
+        for (let dataLine = 0; dataLine < dataLines.length && runaway > 0; dataLine++){
             csvData = dataLines[dataLine];
 
             if (csvData.length < 1) {
                 continue;
             }
 
-            var lineOfValues = [];
+            let lineOfValues = [];
             i = 0;
             while (i < csvData.length && runaway > 0) {
-                var trailingCommas = [];
+                let trailingCommas = [];
                 trailingCommas = csvData.match(/(,+)$/g);
                 if (trailingCommas !== null) {
-                    var replacementStr = '';
-                    for (var f = 0; f < trailingCommas[0].length; f++) {
+                    let replacementStr = '';
+                    for (let f = 0; f < trailingCommas[0].length; f++) {
                         replacementStr += ',""';
                     }
-                    var re = new RegExp(trailingCommas[0] + '$');
+                    let re = new RegExp(trailingCommas[0] + '$');
                     csvData = csvData.replace(re, replacementStr);
                 }
                 // Determine cell type
@@ -664,10 +699,10 @@ var app = angular.module('angularApp')
                     csvData = csvData.substr(i);
                     i = 0;
                     startCell = 1;
-                    var charStatus = 0;  // Nothing yet
-                    var currentChar = '';
-                    var currentNextChar = '';
-                    var i1 = 0;
+                    let charStatus = 0;  // Nothing yet
+                    let currentChar = '';
+                    let currentNextChar = '';
+                    let i1 = 0;
 
                     while (i1 < csvData.length) {
                         currentChar = csvData.substr(i1, 1);
@@ -890,7 +925,9 @@ var app = angular.module('angularApp')
 
     // remove column data //
     $scope.removeColumnForm = function() {
-        angular.copy($scope.findingsColumnCopy, $scope.findingsColumn);
+        // angular.copy($scope.findingsColumnCopy, $scope.findingsColumn);
+        angular.copy($scope.findingsColumnCopyForRestore, $scope.findingsColumn);
+
         $scope.columnForm = 0;
 
     };
@@ -944,6 +981,8 @@ var app = angular.module('angularApp')
     // sets the column order //
     $scope.updateColumnOrder = function() {
         $scope.loader = true;
+
+
         $http({method: 'POST', url: '/caNanoLab/rest/characterization/setColumnOrder',data: $scope.currentFinding}).
         success(function(data, status, headers, config) {
             $scope.loader = false;

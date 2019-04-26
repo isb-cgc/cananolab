@@ -938,8 +938,16 @@
 										</tr>
 										<tr>
 											<td ng-repeat="cell in currentFinding.columnHeaders">
-												<input type="text" name="cellRow" ng-model="cell.columnOrder"></td>
-											<td><button ng-click="updateColumnOrder()" class="btn btn-primary btn-xs">Update Order</button></td>
+												<input
+                                                        style="min-height: 28px"
+                                                        type="number"
+                                                        name="cellRow"
+                                                        min=1
+                                                        max={{currentFinding.columnHeaders.length}}
+                                                        ng-model="cell.columnOrder"
+                                                        ng-change="columnOrderChanged(cell.columnOrder, $index)"
+                                                ></td>
+											<td><button ng-click="updateColumnOrder()"  ng-disabled="disableChangeColumnOrder" class="btn btn-primary btn-xs">Update Order</button></td>
 										</tr>
 									</tbody>
 								</table>
@@ -1002,7 +1010,12 @@
                              </tr>
                              <tr>
                                  <td style="text-align: right">
-                             <button type="button" class="btn btn-primary btn-xs" ng-click="findingsColumn.columnName=localForm.otherCategoryText; columnNameLookup.push(localForm.otherCategoryText);">Add</button>
+                             <button
+                                     type="button"
+                                     class="btn btn-primary btn-xs"
+                                     ng-click="findingsColumn.columnName=localForm.otherCategoryText; columnNameLookup.push(localForm.otherCategoryText);"
+                                     ng-disabled='localForm.otherCategoryText.length < 1 || localForm.otherCategoryText === undefined '
+                             >Add</button>
 
                              <button type="button" class="btn btn-default btn-xs" ng-click="findingsColumn.columnName='';">Cancel</button>
 
@@ -1114,7 +1127,7 @@
 													</tr>
 													<tr>
 														<td>
-															<button ng-click="removeColumnForm()" class="btn btn-danger btn-xs">Delete</button>
+															<button ng-click="removeColumnForm()" class="btn btn-danger btn-xs">Reset</button>
 														</td>
 														<td>
 
