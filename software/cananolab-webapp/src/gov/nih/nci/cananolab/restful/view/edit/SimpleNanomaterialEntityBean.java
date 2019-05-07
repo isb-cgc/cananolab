@@ -33,7 +33,7 @@ import javax.servlet.http.HttpServletRequest;
 
 public class SimpleNanomaterialEntityBean {
 
-	SimpleComposingElementBean simpleCompBean;
+//	SimpleComposingElementBean simpleCompBean;
 	
 	SimpleSampleComposition sampleComposition;
 	
@@ -112,13 +112,13 @@ public class SimpleNanomaterialEntityBean {
 		this.errors = errors;
 	}
 
-	public SimpleComposingElementBean getSimpleCompBean() {
-		return simpleCompBean;
-	}
-
-	public void setSimpleCompBean(SimpleComposingElementBean simpleCompBean) {
-		this.simpleCompBean = simpleCompBean;
-	}
+//	public SimpleComposingElementBean getSimpleCompBean() {
+//		return simpleCompBean;
+//	}
+//
+//	public void setSimpleCompBean(SimpleComposingElementBean simpleCompBean) {
+//		this.simpleCompBean = simpleCompBean;
+//	}
 
 	public SimpleFileBean getFileBean() {
 		return fileBean;

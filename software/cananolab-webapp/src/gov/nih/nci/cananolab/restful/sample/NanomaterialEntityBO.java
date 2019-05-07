@@ -361,9 +361,14 @@ public class NanomaterialEntityBO extends BaseAnnotationBO
 		try {
 			entity = transferNanoMateriaEntityBean(nanoBean, request);
 			List<String> msgs =new ArrayList<String>();
-			ComposingElementBean composingElement = entity.getTheComposingElement();
-//			ComposingElementBean composingElement = entity.getComposingElements().get(0);
-			composingElement.setupDomain(SpringSecurityUtil.getLoggedInUserName());
+			
+			List<ComposingElementBean> composingElements = entity.getComposingElements();
+//			ComposingElementBean composingElement = entity.getTheComposingElement();
+//			composingElement.setupDomain(SpringSecurityUtil.getLoggedInUserName());
+			for(ComposingElementBean element:composingElements) {
+				
+				element.setupDomain(SpringSecurityUtil.getLoggedInUserName());
+			}
 //			entity.addComposingElement(composingElement);
 			
 			// save nanomaterial entity
@@ -375,7 +380,7 @@ public class NanomaterialEntityBO extends BaseAnnotationBO
 			}
 			msgs = this.saveEntity(request, sampleId, entity);
 			
-			compositionService.assignAccesses(composingElement.getDomain());
+			compositionService.assignAccesses(composingElements.get(0).getDomain());
 
 			// return to setupUpdate to retrieve the correct entity from database
 			// after saving to database.
@@ -391,7 +396,7 @@ public class NanomaterialEntityBO extends BaseAnnotationBO
 		NanomaterialEntityBean bean = new NanomaterialEntityBean();
 		NanomaterialEntity nanoEntity = null;
 		
-		Collection<ComposingElement> coll = new HashSet<ComposingElement>();
+		Collection<ComposingElement> composingElementCollection = new HashSet<ComposingElement>();
 		Collection<File> filecoll = new HashSet<File>();
 		//setting up sampleComposition 
 		//Managed to get the sampleComposition in the backend to avoid lazy loading things
@@ -404,81 +409,89 @@ public class NanomaterialEntityBO extends BaseAnnotationBO
 			}
 		
 		//Setting up the ComposingElement
-		ComposingElementBean compBean = new ComposingElementBean();
+//		ComposingElementBean compBean = new ComposingElementBean();
 		
-		SimpleComposingElementBean sBean = nanoBean.getSimpleCompBean();
-		
-		ComposingElement comp = new ComposingElement();
-		
+//		SimpleComposingElementBean sBean = nanoBean.getSimpleCompBean();
+//		List<SimpleComposingElementBean> lsBeans = nanoBean.getComposingElements();
+//		
+//		ComposingElement comp = new ComposingElement();
+//		
 		FunctionBean func = new FunctionBean();
 		ImagingFunction img = new ImagingFunction();
 		Collection<Function> hash = new HashSet<Function>();
 		List<Map<String, Object>> funclist;
 		List<FunctionBean> inherentFunctions = new ArrayList<FunctionBean>();
 		List<ComposingElementBean> compList = new ArrayList<ComposingElementBean>();
-		if(sBean!=null){
-			comp.setDescription(sBean.getDescription());
-			comp.setType(sBean.getType());
-			comp.setName(sBean.getName());
-			comp.setPubChemDataSourceName(sBean.getPubChemDataSourceName());
-			comp.setPubChemId(sBean.getPubChemId());
-			if((sBean.getId()!=null)&&(sBean.getId()>0)){
-				comp.setId(sBean.getId());
-				comp.setCreatedBy(sBean.getCreatedBy());
-				comp.setCreatedDate(sBean.getCreatedDate());
-			}  else {
-				//TODO see if there is a way to grab user directly
-				comp.setCreatedBy(nanoBean.getCreatedBy());
-				comp.setCreatedDate(nanoBean.getCreatedDate());
-			}
-			comp.setMolecularFormula(sBean.getMolecularFormula());
-			comp.setMolecularFormulaType(sBean.getMolecularFormulaType());
-			comp.setValue(sBean.getValue());
-			comp.setValueUnit(sBean.getValueUnit());
-			funclist = sBean.getInherentFunction();
-			if(funclist!= null){
-				for(int j=0;j<funclist.size();j++){
-				func = new FunctionBean();
-				img.setModality((String) funclist.get(j).get("modality"));
-				func.setType((String) funclist.get(j).get("type"));
-				func.setDescription((String) funclist.get(j).get("description"));
-				func.setImagingFunction(img);
-				Function function = new Function();
-				function.setDescription((String) funclist.get(j).get("description"));
-				if(new Long((String) funclist.get(j).get("id"))>0){
-					function.setCreatedBy((String) funclist.get(j).get("createdBy"));
-					function.setCreatedDate(new Date((Long) funclist.get(j).get("createdDate")));
-					function.setId(new Long((String) funclist.get(j).get("id")));
-				}else {
-					function.setCreatedBy(nanoBean.getCreatedBy());
-					function.setCreatedDate(nanoBean.getCreatedDate());
-					}
-				func.setDomainFunction(function);
-				hash.add(function);
-				inherentFunctions.add(func);
-
-				}
-			}
-		compBean.setTheFunction(func);
-		compBean.setDomain(comp);
-		compBean.setInherentFunctions(inherentFunctions);
-		
-		bean.addComposingElement(compBean);
-		bean.setTheComposingElement(compBean);
-		compList.add(compBean);
-		}
+//		for(SimpleComposingElementBean sBean: lsBeans) {
+//			ComposingElement comp = new ComposingElement();
+//		
+//		if(sBean!=null){
+//			comp.setDescription(sBean.getDescription());
+//			comp.setType(sBean.getType());
+//			comp.setName(sBean.getName());
+//			comp.setPubChemDataSourceName(sBean.getPubChemDataSourceName());
+//			comp.setPubChemId(sBean.getPubChemId());
+//			if((sBean.getId()!=null)&&(sBean.getId()>0)){
+//				comp.setId(sBean.getId());
+//				comp.setCreatedBy(sBean.getCreatedBy());
+//				comp.setCreatedDate(sBean.getCreatedDate());
+//			}  else {
+//				//TODO see if there is a way to grab user directly
+//				comp.setCreatedBy(nanoBean.getCreatedBy());
+//				comp.setCreatedDate(nanoBean.getCreatedDate());
+//			}
+//			comp.setMolecularFormula(sBean.getMolecularFormula());
+//			comp.setMolecularFormulaType(sBean.getMolecularFormulaType());
+//			comp.setValue(sBean.getValue());
+//			comp.setValueUnit(sBean.getValueUnit());
+//			funclist = sBean.getInherentFunction();
+//			if(funclist!= null){
+//				for(int j=0;j<funclist.size();j++){
+//				func = new FunctionBean();
+//				img.setModality((String) funclist.get(j).get("modality"));
+//				func.setType((String) funclist.get(j).get("type"));
+//				func.setDescription((String) funclist.get(j).get("description"));
+//				func.setImagingFunction(img);
+//				Function function = new Function();
+//				function.setDescription((String) funclist.get(j).get("description"));
+//				if(new Long((String) funclist.get(j).get("id"))>0){
+//					function.setCreatedBy((String) funclist.get(j).get("createdBy"));
+//					function.setCreatedDate(new Date((Long) funclist.get(j).get("createdDate")));
+//					function.setId(new Long((String) funclist.get(j).get("id")));
+//				}else {
+//					function.setCreatedBy(nanoBean.getCreatedBy());
+//					function.setCreatedDate(nanoBean.getCreatedDate());
+//					}
+//				func.setDomainFunction(function);
+//				hash.add(function);
+//				inherentFunctions.add(func);
+//
+//				}
+//			}
+//		compBean.setTheFunction(func);
+//		compBean.setDomain(comp);
+//		compBean.setInherentFunctions(inherentFunctions);
+//		
+//		bean.addComposingElement(compBean);
+////		bean.setTheComposingElement(compBean);
+//		compList.add(compBean);
+//		}
+//		}
 		//setting up composing elements if there exists composingElements
 		List<SimpleComposingElementBean> list = nanoBean.getComposingElements();
 
-		func = new FunctionBean();
+
 		img = new ImagingFunction();
-		hash = new HashSet<Function>();
+
+
 
 //		List<ComposingElementBean> compList = new ArrayList<ComposingElementBean>();
 		if(list!=null){
 		for(SimpleComposingElementBean simpleComp : list){
-			compBean = new ComposingElementBean();
-			comp = new ComposingElement();
+			ComposingElementBean compBean = new ComposingElementBean();
+			ComposingElement comp = new ComposingElement();
+			inherentFunctions = new ArrayList<FunctionBean>();
+			hash = new HashSet<Function>();
 			comp.setDescription(simpleComp.getDescription());
 			comp.setType(simpleComp.getType());
 			comp.setName(simpleComp.getName());
@@ -494,6 +507,7 @@ public class NanomaterialEntityBO extends BaseAnnotationBO
 			funclist = simpleComp.getInherentFunction();
 			if(funclist!= null){
 				for(int j=0;j<funclist.size();j++){
+					func = new FunctionBean();
 					img.setModality((String) funclist.get(j).get("modality"));
 					func.setType((String) funclist.get(j).get("type"));
 					func.setDescription((String) funclist.get(j).get("description"));
@@ -510,11 +524,13 @@ public class NanomaterialEntityBO extends BaseAnnotationBO
 						}
 					hash.add(function);
 					func.setDomainFunction(function);
+					inherentFunctions.add(func);
 				}
 			}
 			comp.setInherentFunctionCollection(hash);
-			coll.add(comp);
-			compBean.setTheFunction(func);
+			composingElementCollection.add(comp);
+//			compBean.setTheFunction(func);
+			compBean.setInherentFunctions(inherentFunctions);
 			compBean.setDomain(comp);
 			compList.add(compBean);
 		}
@@ -596,7 +612,7 @@ public class NanomaterialEntityBO extends BaseAnnotationBO
 					fullerene.setSampleComposition(null);
 				}	
 			}
-			fullerene.setComposingElementCollection(coll);
+			fullerene.setComposingElementCollection(composingElementCollection);
 			fullerene.setFileCollection(filecoll);
 			bean.setFullerene(fullerene);
 			nanoEntity = fullerene;
@@ -618,7 +634,7 @@ public class NanomaterialEntityBO extends BaseAnnotationBO
 					den.setSampleComposition(null);
 	    		}
 			}
-			den.setComposingElementCollection(coll);
+			den.setComposingElementCollection(composingElementCollection);
 			den.setFileCollection(filecoll);
 			nanoEntity = den;
 			bean.setDendrimer(den);
@@ -642,7 +658,7 @@ public class NanomaterialEntityBO extends BaseAnnotationBO
 					bio.setSampleComposition(null);
 				}
 			}
-			bio.setComposingElementCollection(coll);
+			bio.setComposingElementCollection(composingElementCollection);
 			bio.setFileCollection(filecoll);
 			bean.setBiopolymer(bio);
 			nanoEntity = bio;
@@ -666,7 +682,7 @@ public class NanomaterialEntityBO extends BaseAnnotationBO
 					lipo.setSampleComposition(null);
 				}
 			}
-			lipo.setComposingElementCollection(coll);
+			lipo.setComposingElementCollection(composingElementCollection);
 			lipo.setFileCollection(filecoll);
 			nanoEntity = lipo;
 			bean.setLiposome(lipo);
@@ -689,7 +705,7 @@ public class NanomaterialEntityBO extends BaseAnnotationBO
 					em.setSampleComposition(null);
 				}
 			}
-			em.setComposingElementCollection(coll);
+			em.setComposingElementCollection(composingElementCollection);
 			em.setFileCollection(filecoll);
 			bean.setEmulsion(em);
 			nanoEntity = em;
@@ -714,7 +730,7 @@ public class NanomaterialEntityBO extends BaseAnnotationBO
 					poly.setSampleComposition(null);
 				}
 			}
-			poly.setComposingElementCollection(coll);
+			poly.setComposingElementCollection(composingElementCollection);
 			poly.setFileCollection(filecoll);
 			bean.setPolymer(poly);
 			nanoEntity = poly;
@@ -744,7 +760,7 @@ public class NanomaterialEntityBO extends BaseAnnotationBO
 					ctube.setSampleComposition(null);
 				}
 			}
-			ctube.setComposingElementCollection(coll);
+			ctube.setComposingElementCollection(composingElementCollection);
 			ctube.setFileCollection(filecoll);
 			bean.setCarbonNanotube(ctube);
 			nanoEntity = ctube;
@@ -761,7 +777,7 @@ public class NanomaterialEntityBO extends BaseAnnotationBO
 			}else
 				nanoEntity.setSampleComposition(null);
 			}
-			nanoEntity.setComposingElementCollection(coll);
+			nanoEntity.setComposingElementCollection(composingElementCollection);
 			
 			nanoEntity.setFileCollection(filecoll);
 		}
@@ -776,13 +792,14 @@ public class NanomaterialEntityBO extends BaseAnnotationBO
 	}
 	
 
-	public SimpleNanomaterialEntityBean removeComposingElement(SimpleNanomaterialEntityBean nanoBean, HttpServletRequest request) throws Exception {
+	public SimpleNanomaterialEntityBean removeComposingElement(SimpleNanomaterialEntityBean nanoBean, String composingElementId, HttpServletRequest request) throws Exception {
 		List<String> msgs = new ArrayList<String>();
 		NanomaterialEntityBean entity = transferNanoMateriaEntityBean(nanoBean, request);
-		ComposingElementBean composingElement = entity.getTheComposingElement();
-//		ComposingElementBean composingElement = entity.getComposingElements().get(0);
-		//TODO  EH. what?  So it doesn't even check what composing element to remove?  I don't even....
-		
+//		ComposingElementBean composingElement = entity.getTheComposingElement();
+
+		List<ComposingElementBean> composingElements = entity.getComposingElements();
+		ComposingElementBean composingElement = compositionService.findComposingElementByID(composingElementId);
+	
 		// check if composing element is associated with an association
 		SimpleNanomaterialEntityBean nano = new SimpleNanomaterialEntityBean();
 		if (!compositionService.checkChemicalAssociationBeforeDelete(entity
@@ -913,12 +930,15 @@ public class NanomaterialEntityBO extends BaseAnnotationBO
 		String entityType = entity.getType();
 		setOtherValueOption(request, entityType, "nanomaterialEntityTypes");
 		// function type
-		String functionType = entity.getTheComposingElement().getTheFunction()
-				.getType();
+		//TODO This only grabs the first, which is dumb.  Fix it
+		List ces = entity.getComposingElements();
+		if(ces.size()>0) {
+			String functionType = entity.getComposingElements().get(0).getTheFunction()
+					.getType();
 
-		
-		setOtherValueOption(request, functionType, "functionTypes");
 
+			setOtherValueOption(request, functionType, "functionTypes");
+		}
 		String detailPage = null;
 		if (entity.isWithProperties()) {
 			if (!StringUtils.isEmpty(entity.getType())) {

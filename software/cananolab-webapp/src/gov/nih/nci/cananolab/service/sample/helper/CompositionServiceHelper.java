@@ -123,7 +123,6 @@ public class CompositionServiceHelper
 			new NoAccessException("User has no access to the sample " + sampleId);
 		}
 		SampleComposition composition = null;
-
 		CaNanoLabApplicationService appService = (CaNanoLabApplicationService) ApplicationServiceProvider.getApplicationService();
 		DetachedCriteria crit = DetachedCriteria.forClass(SampleComposition.class);
 		crit.createAlias("sample", "sample");
@@ -169,10 +168,16 @@ public class CompositionServiceHelper
 			!springSecurityAclService.currentUserHasWritePermission(Long.valueOf(sampleId), SecureClassesEnum.SAMPLE.getClazz())) {
 			new NoAccessException("User has no access to the nanomaterial entity " + entityId);
 		}
+		Long longID = null;
+		try {
+			longID = new Long(entityId);
+			Property pID = Property.forName("id");
+		} catch (Exception e){
+			throw e;
+		}
 		CaNanoLabApplicationService appService = (CaNanoLabApplicationService) ApplicationServiceProvider.getApplicationService();
-
 		DetachedCriteria crit = DetachedCriteria.forClass(NanomaterialEntity.class).add(
-				Property.forName("id").eq(new Long(entityId)));
+				Property.forName("id").eq(longID));
 		crit.setFetchMode("sampleComposition", FetchMode.JOIN);
 		crit.setFetchMode("sampleComposition.chemicalAssociationCollection", FetchMode.JOIN);
 		crit.setFetchMode("sampleComposition.chemicalAssociationCollection.associatedElementA", FetchMode.JOIN);
