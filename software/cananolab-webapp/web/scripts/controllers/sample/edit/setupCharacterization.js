@@ -40,6 +40,7 @@ var app = angular.module('angularApp')
     var csvImportError = '';
 
     $scope.badFindingCell = [];
+        var resetColumnConfirmDialog;
 
     $scope.disableChangeColumnOrder = false;
 
@@ -923,13 +924,27 @@ var app = angular.module('angularApp')
     }
 
 
-    // remove column data //
+
+        // remove column data //
     $scope.removeColumnForm = function() {
-        // angular.copy($scope.findingsColumnCopy, $scope.findingsColumn);
-        angular.copy($scope.findingsColumnCopyForRestore, $scope.findingsColumn);
+         resetColumnConfirmDialog = $modal.open({
+            templateUrl: 'views/sample/view/dataColumnHeaderReset.html',
+            controller: 'DataColumnHeaderResetCtrl',
+            size: 'sm',
+            resolve: {
 
-        $scope.columnForm = 0;
+                col: function () {
+                    return $scope.findingsColumn;
+                }
+            }
+        });
 
+        resetColumnConfirmDialog.result.then(function (closeType) {
+            if( closeType){
+                angular.copy($scope.findingsColumnCopyForRestore, $scope.findingsColumn);
+                $scope.columnForm = 0;
+            }
+        });
     };
 
     // opens column form to change order for columns. Does not actually order columns //

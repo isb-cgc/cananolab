@@ -23,7 +23,6 @@ var app = angular.module('angularApp')
     };
 
     $scope.openDataAvailability = function(sampleId) {
-
           $http({method: 'GET', url: '/caNanoLab/rest/sample/viewDataAvailability',params: {"sampleId":sampleId}}).
           success(function(data, status, headers, config) {
             var modalInstance = $modal.open({

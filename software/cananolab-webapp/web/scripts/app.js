@@ -116,7 +116,11 @@ app.config(function ($routeProvider, $httpProvider) {
       .when('/advancedSampleResults', {
         templateUrl: 'views/sample/view/advancedSampleResults.html',
         controller: 'AdvancedSampleResultsCtrl'
-      })                        
+      })
+      .when('/dataColumnHeaderReset', {
+        templateUrl: 'views/sample/view/dataColumnHeaderReset.html',
+        controller: 'DataColumnHeaderResetCtrl'
+      })
       .when('/about', {
         templateUrl: 'views/about.html',
         controller: 'AboutCtrl'
