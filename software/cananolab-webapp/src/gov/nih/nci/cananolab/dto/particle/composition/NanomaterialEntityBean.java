@@ -341,13 +341,13 @@ public class NanomaterialEntityBean extends BaseCompositionEntityBean {
 		return withProperties;
 	}
 
-//	public ComposingElementBean getTheComposingElement() {
-//		return theComposingElement;
-//	}
+	public ComposingElementBean getTheComposingElement() {
+		return theComposingElement;
+	}
 
-//	public void setTheComposingElement(ComposingElementBean theComposingElement) {
-//		this.theComposingElement = theComposingElement;
-//	}
+	public void setTheComposingElement(ComposingElementBean theComposingElement) {
+		this.theComposingElement = theComposingElement;
+	}
 
 	// used for DWR ajax in bodySubmitChemicalAssociation.jsp
 	public String getDomainId() {

@@ -21,7 +21,6 @@ import gov.nih.nci.cananolab.dto.common.FileBean;
 import gov.nih.nci.cananolab.dto.particle.SampleBean;
 import gov.nih.nci.cananolab.dto.particle.composition.ChemicalAssociationBean;
 import gov.nih.nci.cananolab.dto.particle.composition.CompositionBean;
-import gov.nih.nci.cananolab.dto.particle.composition.ComposingElementBean;
 import gov.nih.nci.cananolab.dto.particle.composition.FunctionalizingEntityBean;
 import gov.nih.nci.cananolab.dto.particle.composition.NanomaterialEntityBean;
 import gov.nih.nci.cananolab.exception.ChemicalAssociationViolationException;
@@ -420,25 +419,6 @@ public class CompositionServiceLocalImpl extends BaseServiceLocalImpl implements
 			throw new CompositionException(err, e);
 		}
 	}
-	
-	public ComposingElementBean findComposingElementByID(String composingElementId) throws CompositionException, NoAccessException {
-		ComposingElementBean ceBean = null;
-		try {
-			ComposingElement cElement = compositionServiceHelper.findComposingElementById(composingElementId);
-			if(cElement != null) {
-				ceBean = new ComposingElementBean(cElement);
-			} else {
-				throw new NoAccessException("User doesn't have access to the sample");
-			}
-		}catch (NoAccessException e) {
-			throw e;
-		} catch (Exception e) {
-			String err = "Problem finding the composing element by id: " + composingElementId;
-			logger.error(err, e);
-			throw new CompositionException(err, e);
-		}
-		return ceBean;
-	}
 
 	public FunctionalizingEntityBean findFunctionalizingEntityById(String sampleId, String entityId)
 			throws CompositionException, NoAccessException {
@@ -591,8 +571,6 @@ public class CompositionServiceLocalImpl extends BaseServiceLocalImpl implements
 		}
 		return true;
 	}
-	
-
 
 	public CompositionBean findCompositionBySampleId(String sampleId) throws CompositionException {
 		CompositionBean comp = null;

@@ -87,36 +87,31 @@ public class InitCompositionSetup {
 				"averageLengthUnit", "otherAverageLengthUnit",
 				entityBean.getCarbonNanotube().getAverageLengthUnit());
 
-		List ces = entityBean.getComposingElements();
-		if (ces.size()>0) {
-
-
-			ComposingElementBean theComposingElement = entityBean
-					.getComposingElements().get(0);
-			if (entityBean.getDomainEntity() instanceof Emulsion) {
-				InitSetup.getInstance().persistLookup(request, "emulsion",
-						"composingElementType", "otherComposingElementType",
-						theComposingElement.getDomain().getType());
-			} else {
-				InitSetup.getInstance().persistLookup(request, "composing element",
-						"type", "otherType",
-						theComposingElement.getDomain().getType());
-			}
+		ComposingElementBean theComposingElement = entityBean
+				.getTheComposingElement();
+		if (entityBean.getDomainEntity() instanceof Emulsion) {
+			InitSetup.getInstance().persistLookup(request, "emulsion",
+					"composingElementType", "otherComposingElementType",
+					theComposingElement.getDomain().getType());
+		} else {
 			InitSetup.getInstance().persistLookup(request, "composing element",
-					"valueUnit", "otherValueUnit",
-					theComposingElement.getDomain().getValueUnit());
-			InitSetup.getInstance().persistLookup(request, "molecular formula",
 					"type", "otherType",
-					theComposingElement.getDomain().getMolecularFormulaType());
-
-			InitSetup.getInstance().persistLookup(
-					request,
-					"imaging function",
-					"modality",
-					"otherModality",
-					theComposingElement.getTheFunction().getImagingFunction()
-							.getModality());
+					theComposingElement.getDomain().getType());
 		}
+		InitSetup.getInstance().persistLookup(request, "composing element",
+				"valueUnit", "otherValueUnit",
+				theComposingElement.getDomain().getValueUnit());
+		InitSetup.getInstance().persistLookup(request, "molecular formula",
+				"type", "otherType",
+				theComposingElement.getDomain().getMolecularFormulaType());
+
+		InitSetup.getInstance().persistLookup(
+				request,
+				"imaging function",
+				"modality",
+				"otherModality",
+				theComposingElement.getTheFunction().getImagingFunction()
+						.getModality());
 
 		InitSetup.getInstance().persistLookup(request, "file", "type",
 				"otherType", entityBean.getTheFile().getDomainFile().getType());

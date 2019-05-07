@@ -305,23 +305,23 @@ var app = angular.module('angularApp')
                 }
                 $scope.nanoEntityForm.composingElements = $scope.composingElements;
                 
-                // if( $scope.nanoEntityForm.simpleCompBean == null ) {
-                // 	$scope.nanoEntityForm.simpleCompBean = {};
-                // }
-                //
-                // $scope.nanoEntityForm.simpleCompBean.id = $scope.composingElementForm.id;
-                // $scope.nanoEntityForm.simpleCompBean.type = $scope.composingElementForm.type;
-                // $scope.nanoEntityForm.simpleCompBean.name = $scope.composingElementForm.name;
-                // $scope.nanoEntityForm.simpleCompBean.pubChemDataSourceName = $scope.composingElementForm.pubChemDataSourceName;
-                // $scope.nanoEntityForm.simpleCompBean.pubChemId = $scope.composingElementForm.pubChemId;
-                // $scope.nanoEntityForm.simpleCompBean.value = $scope.composingElementForm.value;
-                // $scope.nanoEntityForm.simpleCompBean.valueUnit = $scope.composingElementForm.valueUnit;
-                // $scope.nanoEntityForm.simpleCompBean.molecularFormulaType = $scope.composingElementForm.molecularFormulaType;
-                // $scope.nanoEntityForm.simpleCompBean.molecularFormula = $scope.composingElementForm.molecularFormula;
-                // $scope.nanoEntityForm.simpleCompBean.description = $scope.composingElementForm.description;
-                // $scope.nanoEntityForm.simpleCompBean.inherentFunction = $scope.composingElementForm.inherentFunction;
-                // $scope.nanoEntityForm.simpleCompBean.createdBy = $scope.composingElementForm.createdBy;
-                // $scope.nanoEntityForm.simpleCompBean.createdDate = $scope.composingElementForm.createdDate;
+                if( $scope.nanoEntityForm.simpleCompBean == null ) {
+                	$scope.nanoEntityForm.simpleCompBean = {};
+                }
+
+                $scope.nanoEntityForm.simpleCompBean.id = $scope.composingElementForm.id;
+                $scope.nanoEntityForm.simpleCompBean.type = $scope.composingElementForm.type;
+                $scope.nanoEntityForm.simpleCompBean.name = $scope.composingElementForm.name;
+                $scope.nanoEntityForm.simpleCompBean.pubChemDataSourceName = $scope.composingElementForm.pubChemDataSourceName;
+                $scope.nanoEntityForm.simpleCompBean.pubChemId = $scope.composingElementForm.pubChemId;
+                $scope.nanoEntityForm.simpleCompBean.value = $scope.composingElementForm.value;
+                $scope.nanoEntityForm.simpleCompBean.valueUnit = $scope.composingElementForm.valueUnit;
+                $scope.nanoEntityForm.simpleCompBean.molecularFormulaType = $scope.composingElementForm.molecularFormulaType;
+                $scope.nanoEntityForm.simpleCompBean.molecularFormula = $scope.composingElementForm.molecularFormula;
+                $scope.nanoEntityForm.simpleCompBean.description = $scope.composingElementForm.description;
+                $scope.nanoEntityForm.simpleCompBean.inherentFunction = $scope.composingElementForm.inherentFunction;
+                $scope.nanoEntityForm.simpleCompBean.createdBy = $scope.composingElementForm.createdBy;
+                $scope.nanoEntityForm.simpleCompBean.createdDate = $scope.composingElementForm.createdDate;
                 
 
                 if( $scope.sampleId != null ) {
@@ -329,7 +329,7 @@ var app = angular.module('angularApp')
                 }
                 
 
-                $http({method: 'POST', url: '/caNanoLab/rest/nanomaterialEntity/removeComposingElement?id='+ composingElementId ,data: $scope.nanoEntityForm}).
+                $http({method: 'POST', url: '/caNanoLab/rest/nanomaterialEntity/removeComposingElement',data: $scope.nanoEntityForm}).
                     success(function(data, status, headers, config) {
                     	$scope.nanoEntityForm = data;
                     	$scope.composingElements = $scope.nanoEntityForm.composingElements;
@@ -366,23 +366,23 @@ var app = angular.module('angularApp')
 
             $scope.nanoEntityForm.composingElements = $scope.composingElements;
 
-            // if( $scope.nanoEntityForm.simpleCompBean == null ) {
-            // 	$scope.nanoEntityForm.simpleCompBean = {};
-            // }
-            //
-            // $scope.nanoEntityForm.simpleCompBean.id = $scope.composingElementForm.id;
-            // $scope.nanoEntityForm.simpleCompBean.type = $scope.composingElementForm.type;
-            // $scope.nanoEntityForm.simpleCompBean.name = $scope.composingElementForm.name;
-            // $scope.nanoEntityForm.simpleCompBean.pubChemDataSourceName = $scope.composingElementForm.pubChemDataSourceName;
-            // $scope.nanoEntityForm.simpleCompBean.pubChemId = $scope.composingElementForm.pubChemId;
-            // $scope.nanoEntityForm.simpleCompBean.value = $scope.composingElementForm.value;
-            // $scope.nanoEntityForm.simpleCompBean.valueUnit = $scope.composingElementForm.valueUnit;
-            // $scope.nanoEntityForm.simpleCompBean.molecularFormulaType = $scope.composingElementForm.molecularFormulaType;
-            // $scope.nanoEntityForm.simpleCompBean.molecularFormula = $scope.composingElementForm.molecularFormula;
-            // $scope.nanoEntityForm.simpleCompBean.description = $scope.composingElementForm.description;
-            // $scope.nanoEntityForm.simpleCompBean.inherentFunction = $scope.composingElementForm.inherentFunction;
-            // $scope.nanoEntityForm.simpleCompBean.createdBy = $scope.composingElementForm.createdBy;
-            // $scope.nanoEntityForm.simpleCompBean.createdDate = $scope.composingElementForm.createdDate;
+            if( $scope.nanoEntityForm.simpleCompBean == null ) {
+            	$scope.nanoEntityForm.simpleCompBean = {};
+            }
+
+            $scope.nanoEntityForm.simpleCompBean.id = $scope.composingElementForm.id;
+            $scope.nanoEntityForm.simpleCompBean.type = $scope.composingElementForm.type;
+            $scope.nanoEntityForm.simpleCompBean.name = $scope.composingElementForm.name;
+            $scope.nanoEntityForm.simpleCompBean.pubChemDataSourceName = $scope.composingElementForm.pubChemDataSourceName;
+            $scope.nanoEntityForm.simpleCompBean.pubChemId = $scope.composingElementForm.pubChemId;
+            $scope.nanoEntityForm.simpleCompBean.value = $scope.composingElementForm.value;
+            $scope.nanoEntityForm.simpleCompBean.valueUnit = $scope.composingElementForm.valueUnit;
+            $scope.nanoEntityForm.simpleCompBean.molecularFormulaType = $scope.composingElementForm.molecularFormulaType;
+            $scope.nanoEntityForm.simpleCompBean.molecularFormula = $scope.composingElementForm.molecularFormula;
+            $scope.nanoEntityForm.simpleCompBean.description = $scope.composingElementForm.description;
+            $scope.nanoEntityForm.simpleCompBean.inherentFunction = $scope.composingElementForm.inherentFunction;
+            $scope.nanoEntityForm.simpleCompBean.createdBy = $scope.composingElementForm.createdBy;
+            $scope.nanoEntityForm.simpleCompBean.createdDate = $scope.composingElementForm.createdDate;
 
             if( $scope.sampleId != null ) {
             	$scope.nanoEntityForm.sampleId = $scope.sampleId;

@@ -40,7 +40,7 @@ public class NanomaterialEntityServices {
 			return Response.ok(dropdownMap).header("Access-Control-Allow-Credentials", "true").header("Access-Control-Allow-Origin", "*").header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS").header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization").build();
 
 		} catch (Exception e) {
-			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(CommonUtil.wrapErrorMessageInList("Error while setting up drop down lists " + e.getMessage())).build();
+			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(CommonUtil.wrapErrorMessageInList("Error while setting up drop down lists" + e.getMessage())).build();
 
 		}
 	}
@@ -98,7 +98,7 @@ public class NanomaterialEntityServices {
 	@POST
 	@Path("/removeComposingElement")
 	@Produces ("application/json")
-    public Response removeComposingElement(@Context HttpServletRequest httpRequest, @DefaultValue("") @QueryParam("composingElementId") String composingElementId, SimpleNanomaterialEntityBean nanoBean) {
+    public Response removeComposingElement(@Context HttpServletRequest httpRequest, SimpleNanomaterialEntityBean nanoBean) {
 				
 		try { 
 			NanomaterialEntityBO nanomaterialEntityBO = 
@@ -107,7 +107,7 @@ public class NanomaterialEntityServices {
 				return Response.status(Response.Status.UNAUTHORIZED)
 						.entity("Session expired").build();
 			
-			SimpleNanomaterialEntityBean nano = nanomaterialEntityBO.removeComposingElement(nanoBean, composingElementId, httpRequest);
+			SimpleNanomaterialEntityBean nano = nanomaterialEntityBO.removeComposingElement(nanoBean, httpRequest);
 			List<String> errors = nano.getErrors();
 			return (errors == null || errors.size() == 0) ?
 					Response.ok(nano).build() :
