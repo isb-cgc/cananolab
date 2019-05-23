@@ -3106,400 +3106,6 @@ CREATE TABLE `composition_file` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
---
--- Table structure for table `csm_application`
---
-
-DROP TABLE IF EXISTS `csm_application`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `csm_application` (
-  `application_id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `application_name` varchar(255) NOT NULL,
-  `application_description` varchar(200) NOT NULL,
-  `declarative_flag` tinyint(1) DEFAULT NULL,
-  `active_flag` tinyint(1) NOT NULL,
-  `update_date` date NOT NULL,
-  `database_url` varchar(100) DEFAULT NULL,
-  `database_user_name` varchar(100) DEFAULT NULL,
-  `database_password` varchar(100) DEFAULT NULL,
-  `database_dialect` varchar(100) DEFAULT NULL,
-  `database_driver` varchar(100) DEFAULT NULL,
-  `csm_version` varchar(20) DEFAULT NULL,
-  PRIMARY KEY (`application_id`),
-  UNIQUE KEY `uq_application_name` (`application_name`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `csm_application`
---
-
-LOCK TABLES `csm_application` WRITE;
-/*!40000 ALTER TABLE `csm_application` DISABLE KEYS */;
-INSERT INTO `csm_application` VALUES (1,'csmupt','CSM UPT Super Admin Application',0,0,'2015-11-17','jdbc:mysql://nano.nci.nih.gov:3634/canano','nanouser','Bq4UOQzh1r9Uf7cnX+8NVw==','org.hibernate.dialect.MySQLDialect','com.mysql.jdbc.Driver',''),(2,'caNanoLab','Application Description caNanoLab',0,0,'2015-11-17','jdbc:mysql://nano.nci.nih.gov:3634/canano','nanouser','Bq4UOQzh1r9Uf7cnX+8NVw==','org.hibernate.dialect.MySQLDialect','com.mysql.jdbc.Driver','csmupt52');
-/*!40000 ALTER TABLE `csm_application` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `csm_configuration_props`
---
-
-DROP TABLE IF EXISTS `csm_configuration_props`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `csm_configuration_props` (
-  `PROPERTY_KEY` varchar(300) NOT NULL,
-  `PROPERTY_VALUE` varchar(3000) DEFAULT NULL,
-  PRIMARY KEY (`PROPERTY_KEY`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `csm_configuration_props`
---
-
-LOCK TABLES `csm_configuration_props` WRITE;
-/*!40000 ALTER TABLE `csm_configuration_props` DISABLE KEYS */;
-INSERT INTO `csm_configuration_props` VALUES ('AES_ENCRYPTION_KEY','super secret'),('ALLOWED_ATTEMPTS','3'),('ALLOWED_LOGIN_TIME','600000'),('MD5_HASH_KEY','true'),('PASSWORD_EXPIRY_DAYS','60'),('PASSWORD_LOCKOUT_TIME','1800000'),('PASSWORD_MATCH_NUM','24'),('PASSWORD_PATTERN_DESCRIPTION','At least one Upper case alphabet, at least one lower case alphabet, at least one number and minimum 8 characters length'),('PASSWORD_PATTERN_MATCH','^.*(?=.{8,})(?=..*[0-9])(?=.*[a-z])(?=.*[A-Z]).*$');
-/*!40000 ALTER TABLE `csm_configuration_props` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `csm_filter_clause`
---
-
-DROP TABLE IF EXISTS `csm_filter_clause`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `csm_filter_clause` (
-  `filter_clause_id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `class_name` varchar(100) NOT NULL,
-  `filter_chain` varchar(2000) NOT NULL,
-  `target_class_name` varchar(100) NOT NULL,
-  `target_class_attribute_name` varchar(100) NOT NULL,
-  `target_class_attribute_type` varchar(100) NOT NULL,
-  `target_class_alias` varchar(100) DEFAULT NULL,
-  `target_class_attribute_alias` varchar(100) DEFAULT NULL,
-  `generated_sql_user` varchar(4000) NOT NULL,
-  `application_id` bigint(20) NOT NULL,
-  `update_date` date NOT NULL,
-  `generated_sql_group` varchar(4000) NOT NULL,
-  PRIMARY KEY (`filter_clause_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
-
---
--- Table structure for table `csm_group`
---
-
-DROP TABLE IF EXISTS `csm_group`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `csm_group` (
-  `group_id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `group_name` varchar(255) NOT NULL,
-  `group_desc` varchar(200) DEFAULT NULL,
-  `update_date` date NOT NULL,
-  `application_id` bigint(20) NOT NULL,
-  PRIMARY KEY (`group_id`),
-  UNIQUE KEY `uq_group_group_name` (`application_id`,`group_name`),
-  KEY `idx_application_id` (`application_id`),
-  CONSTRAINT `fk_application_group` FOREIGN KEY (`application_id`) REFERENCES `csm_application` (`application_id`) ON DELETE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=160 DEFAULT CHARSET=latin1;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `csm_group`
---
-
-LOCK TABLES `csm_group` WRITE;
-/*!40000 ALTER TABLE `csm_group` DISABLE KEYS */;
-INSERT INTO `csm_group` VALUES (1,'Public','caBIG and public','2008-01-24',2),(2,'Curator',NULL,'2008-01-24',2),(145,'Demo University','','2010-12-17',2),(146,'Demo-Collaboration','Demonstration Collaboration Group','2011-11-01',2);
-/*!40000 ALTER TABLE `csm_group` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `csm_mapping`
---
-
-DROP TABLE IF EXISTS `csm_mapping`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `csm_mapping` (
-  `mapping_id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `application_id` bigint(20) NOT NULL,
-  `object_name` varchar(100) NOT NULL,
-  `attribute_name` varchar(100) NOT NULL,
-  `object_package_name` varchar(100) DEFAULT NULL,
-  `table_name` varchar(100) DEFAULT NULL,
-  `table_name_group` varchar(100) DEFAULT NULL,
-  `table_name_user` varchar(100) DEFAULT NULL,
-  `view_name_group` varchar(100) DEFAULT NULL,
-  `view_name_user` varchar(100) DEFAULT NULL,
-  `active_flag` tinyint(1) NOT NULL DEFAULT '0',
-  `maintained_flag` tinyint(1) NOT NULL DEFAULT '0',
-  `update_date` date DEFAULT '0000-00-00',
-  PRIMARY KEY (`mapping_id`),
-  UNIQUE KEY `uq_mp_obj_name_attri_name_app_id` (`object_name`,`attribute_name`,`application_id`),
-  KEY `fk_csm_mapping_application` (`application_id`),
-  CONSTRAINT `fk_csm_mapping_application` FOREIGN KEY (`application_id`) REFERENCES `csm_application` (`application_id`) ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `csm_password_history`
---
-
-DROP TABLE IF EXISTS `csm_password_history`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `csm_password_history` (
-  `CSM_PASSWORD_HISTORY_ID` bigint(20) NOT NULL AUTO_INCREMENT,
-  `LOGIN_NAME` varchar(500) DEFAULT NULL,
-  `PASSWORD` varchar(255) DEFAULT NULL,
-  PRIMARY KEY (`CSM_PASSWORD_HISTORY_ID`)
-) ENGINE=InnoDB AUTO_INCREMENT=235 DEFAULT CHARSET=latin1;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
-
---
--- Table structure for table `csm_pg_pe`
---
-
-DROP TABLE IF EXISTS `csm_pg_pe`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `csm_pg_pe` (
-  `pg_pe_id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `protection_group_id` bigint(20) NOT NULL,
-  `protection_element_id` bigint(20) NOT NULL,
-  `update_date` date DEFAULT '0000-00-00',
-  PRIMARY KEY (`pg_pe_id`),
-  UNIQUE KEY `uq_protection_group_protection_element_protection_group_id` (`protection_element_id`,`protection_group_id`),
-  KEY `idx_protection_element_id` (`protection_element_id`),
-  KEY `idx_protection_group_id` (`protection_group_id`),
-  CONSTRAINT `fk_protection_element_protection_group` FOREIGN KEY (`protection_element_id`) REFERENCES `csm_protection_element` (`protection_element_id`) ON DELETE CASCADE,
-  CONSTRAINT `fk_protection_group_protection_element` FOREIGN KEY (`protection_group_id`) REFERENCES `csm_protection_group` (`protection_group_id`) ON DELETE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=126044 DEFAULT CHARSET=latin1;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
-
---
--- Table structure for table `csm_privilege`
---
-
-DROP TABLE IF EXISTS `csm_privilege`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `csm_privilege` (
-  `privilege_id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `privilege_name` varchar(100) NOT NULL,
-  `privilege_description` varchar(200) DEFAULT NULL,
-  `update_date` date NOT NULL,
-  PRIMARY KEY (`privilege_id`),
-  UNIQUE KEY `uq_privilege_name` (`privilege_name`)
-) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=latin1;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `csm_privilege`
---
-
-LOCK TABLES `csm_privilege` WRITE;
-/*!40000 ALTER TABLE `csm_privilege` DISABLE KEYS */;
-INSERT INTO `csm_privilege` VALUES (1,'CREATE','This privilege grants permission to a user to create an entity. This entity can be an object, a database entry, or a resource such as a network connection','2008-01-24'),(2,'ACCESS','This privilege allows a user to access a particular resource.  Examples of resources include a network or database connection, socket, module of the application, or even the application itself','2008-01-24'),(3,'READ','This privilege permits the user to read data from a file, URL, database, an object, etc. This can be used at an entity level signifying that the user is allowed to read data about a particular entry','2008-01-24'),(4,'WRITE','This privilege allows a user to write data to a file, URL, database, an object, etc. This can be used at an entity level signifying that the user is allowed to write data about a particular entity','2008-01-24'),(5,'UPDATE','This privilege grants permission at an entity level and signifies that the user is allowed to update data for a particular entity. Entities may include an object, object attribute, database row etc','2008-01-24'),(6,'DELETE','This privilege permits a user to delete a logical entity. This entity can be an object, a database entry, a resource such as a network connection, etc','2008-01-24'),(7,'EXECUTE','This privilege allows a user to execute a particular resource. The resource can be a method, function, behavior of the application, URL, button etc','2008-01-24');
-/*!40000 ALTER TABLE `csm_privilege` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `csm_protection_element`
---
-
-DROP TABLE IF EXISTS `csm_protection_element`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `csm_protection_element` (
-  `protection_element_id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `protection_element_name` varchar(100) NOT NULL,
-  `protection_element_description` varchar(200) DEFAULT NULL,
-  `object_id` varchar(100) NOT NULL,
-  `attribute` varchar(100) DEFAULT NULL,
-  `application_id` bigint(20) NOT NULL,
-  `update_date` date NOT NULL,
-  `protection_element_type` varchar(100) DEFAULT NULL,
-  `attribute_value` varchar(100) DEFAULT NULL,
-  PRIMARY KEY (`protection_element_id`),
-  UNIQUE KEY `uq_pe_pe_name_attribute_app_id` (`object_id`,`attribute`,`application_id`),
-  UNIQUE KEY `uq_pe_pe_name_attribute_value_app_id` (`object_id`,`attribute`,`attribute_value`,`application_id`),
-  KEY `idx_application_id` (`application_id`),
-  KEY `idx_obj_attr_app` (`object_id`,`attribute`,`application_id`),
-  CONSTRAINT `fk_pe_application` FOREIGN KEY (`application_id`) REFERENCES `csm_application` (`application_id`) ON DELETE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=126113 DEFAULT CHARSET=latin1;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `csm_protection_group`
---
-
-DROP TABLE IF EXISTS `csm_protection_group`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `csm_protection_group` (
-  `protection_group_id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `protection_group_name` varchar(100) NOT NULL,
-  `protection_group_description` varchar(200) DEFAULT NULL,
-  `application_id` bigint(20) NOT NULL,
-  `large_element_count_flag` tinyint(1) NOT NULL,
-  `update_date` date NOT NULL,
-  `parent_protection_group_id` bigint(20) DEFAULT NULL,
-  PRIMARY KEY (`protection_group_id`),
-  UNIQUE KEY `uq_protection_group_protection_group_name` (`application_id`,`protection_group_name`),
-  KEY `idx_application_id` (`application_id`),
-  KEY `idx_parent_protection_group_id` (`parent_protection_group_id`),
-  CONSTRAINT `fk_pg_application` FOREIGN KEY (`application_id`) REFERENCES `csm_application` (`application_id`) ON DELETE CASCADE,
-  CONSTRAINT `fk_protection_group` FOREIGN KEY (`parent_protection_group_id`) REFERENCES `csm_protection_group` (`protection_group_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=126197 DEFAULT CHARSET=latin1;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `csm_role`
---
-
-DROP TABLE IF EXISTS `csm_role`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `csm_role` (
-  `role_id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `role_name` varchar(100) NOT NULL,
-  `role_description` varchar(200) DEFAULT NULL,
-  `application_id` bigint(20) NOT NULL,
-  `active_flag` tinyint(1) NOT NULL,
-  `update_date` date NOT NULL,
-  PRIMARY KEY (`role_id`),
-  UNIQUE KEY `uq_role_role_name` (`application_id`,`role_name`),
-  KEY `idx_application_id` (`application_id`),
-  CONSTRAINT `fk_application_role` FOREIGN KEY (`application_id`) REFERENCES `csm_application` (`application_id`) ON DELETE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=latin1;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `csm_role_privilege`
---
-
-DROP TABLE IF EXISTS `csm_role_privilege`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `csm_role_privilege` (
-  `role_privilege_id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `role_id` bigint(20) NOT NULL,
-  `privilege_id` bigint(20) NOT NULL,
-  PRIMARY KEY (`role_privilege_id`),
-  UNIQUE KEY `uq_role_privilege_role_id` (`privilege_id`,`role_id`),
-  KEY `idx_privilege_id` (`privilege_id`),
-  KEY `idx_role_id` (`role_id`),
-  CONSTRAINT `fk_privilege_role` FOREIGN KEY (`privilege_id`) REFERENCES `csm_privilege` (`privilege_id`) ON DELETE CASCADE,
-  CONSTRAINT `fk_role` FOREIGN KEY (`role_id`) REFERENCES `csm_role` (`role_id`) ON DELETE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=latin1;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `csm_user`
---
-
-DROP TABLE IF EXISTS `csm_user`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `csm_user` (
-  `user_id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `login_name` varchar(500) DEFAULT NULL,
-  `first_name` varchar(100) NOT NULL,
-  `last_name` varchar(100) NOT NULL,
-  `ORGANIZATION` varchar(500) DEFAULT NULL,
-  `department` varchar(100) DEFAULT NULL,
-  `title` varchar(100) DEFAULT NULL,
-  `PHONE_NUMBER` varchar(100) DEFAULT NULL,
-  `password` varchar(100) DEFAULT NULL,
-  `email_id` varchar(100) DEFAULT NULL,
-  `start_date` date DEFAULT NULL,
-  `end_date` date DEFAULT NULL,
-  `update_date` date NOT NULL,
-  `migrated_flag` tinyint(1) NOT NULL DEFAULT '0',
-  `premgrt_login_name` varchar(100) DEFAULT NULL,
-  `PASSWORD_EXPIRED` tinyint(1) DEFAULT '0',
-  `FIRST_TIME_LOGIN` tinyint(1) DEFAULT '0',
-  `ACTIVE_FLAG` tinyint(1) DEFAULT '1',
-  `PASSWORD_EXPIRY_DATE` date DEFAULT '2012-10-10',
-  PRIMARY KEY (`user_id`),
-  UNIQUE KEY `uq_login_name` (`login_name`)
-) ENGINE=InnoDB AUTO_INCREMENT=214 DEFAULT CHARSET=latin1;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `csm_user_group`
---
-
-DROP TABLE IF EXISTS `csm_user_group`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `csm_user_group` (
-  `user_group_id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `user_id` bigint(20) NOT NULL,
-  `group_id` bigint(20) NOT NULL,
-  PRIMARY KEY (`user_group_id`),
-  KEY `idx_user_id` (`user_id`),
-  KEY `idx_group_id` (`group_id`),
-  CONSTRAINT `fk_ug_group` FOREIGN KEY (`group_id`) REFERENCES `csm_group` (`group_id`) ON DELETE CASCADE,
-  CONSTRAINT `fk_user_group` FOREIGN KEY (`user_id`) REFERENCES `csm_user` (`user_id`) ON DELETE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=412 DEFAULT CHARSET=latin1;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `csm_user_group_role_pg`
---
-
-DROP TABLE IF EXISTS `csm_user_group_role_pg`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `csm_user_group_role_pg` (
-  `user_group_role_pg_id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `user_id` bigint(20) DEFAULT NULL,
-  `group_id` bigint(20) DEFAULT NULL,
-  `role_id` bigint(20) NOT NULL,
-  `protection_group_id` bigint(20) NOT NULL,
-  `update_date` date NOT NULL DEFAULT '0000-00-00',
-  PRIMARY KEY (`user_group_role_pg_id`),
-  KEY `idx_group_id` (`group_id`),
-  KEY `idx_role_id` (`role_id`),
-  KEY `idx_protection_group_id` (`protection_group_id`),
-  KEY `idx_user_id` (`user_id`),
-  CONSTRAINT `fk_user_group_role_protection_group_groups` FOREIGN KEY (`group_id`) REFERENCES `csm_group` (`group_id`) ON DELETE CASCADE,
-  CONSTRAINT `fk_user_group_role_protection_group_protection_group` FOREIGN KEY (`protection_group_id`) REFERENCES `csm_protection_group` (`protection_group_id`) ON DELETE CASCADE,
-  CONSTRAINT `fk_user_group_role_protection_group_role` FOREIGN KEY (`role_id`) REFERENCES `csm_role` (`role_id`) ON DELETE CASCADE,
-  CONSTRAINT `fk_user_group_role_protection_group_user` FOREIGN KEY (`user_id`) REFERENCES `csm_user` (`user_id`) ON DELETE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=495928 DEFAULT CHARSET=latin1;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `csm_user_pe`
---
-
-DROP TABLE IF EXISTS `csm_user_pe`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `csm_user_pe` (
-  `user_protection_element_id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `protection_element_id` bigint(20) NOT NULL,
-  `user_id` bigint(20) NOT NULL,
-  PRIMARY KEY (`user_protection_element_id`),
-  UNIQUE KEY `uq_user_protection_element_protection_element_id` (`user_id`,`protection_element_id`),
-  KEY `idx_user_id` (`user_id`),
-  KEY `idx_protection_element_id` (`protection_element_id`),
-  CONSTRAINT `fk_pe_user` FOREIGN KEY (`user_id`) REFERENCES `csm_user` (`user_id`) ON DELETE CASCADE,
-  CONSTRAINT `fk_protection_element_user` FOREIGN KEY (`protection_element_id`) REFERENCES `csm_protection_element` (`protection_element_id`) ON DELETE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=229 DEFAULT CHARSET=latin1;
-/*!40101 SET character_set_client = @saved_cs_client */;
 
 --
 -- Table structure for table `data_availability`
@@ -4437,4 +4043,538 @@ INSERT INTO `users` VALUES ('guest1','$2a$10$igGk864rQo.kmKRushHSkuFY2yCrpzII7Ax
 /*!40000 ALTER TABLE `users` ENABLE KEYS */;
 UNLOCK TABLES;
 
+DROP TABLE IF EXISTS `purity_datum`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+create table purity_datum
+(
+    purity_datum_pk_id BIGINT not null,
+    `name`     VARCHAR(200)   NOT NULL COMMENT 'name',
+    `value`        DECIMAL(30,10) NOT NULL COMMENT 'value',
+    `value_type`   VARCHAR(200)   NULL     COMMENT 'value_type',
+    `value_unit`   VARCHAR(200)   NULL     COMMENT 'value_unit',
+    `created_by`   VARCHAR(200)   NOT NULL COMMENT 'created_by',
+    `created_date` DATETIME       NOT NULL COMMENT 'created_date',
+    `numberMod`    VARCHAR(20)    NULL     DEFAULT '=' COMMENT 'numberMod',
+    `purity_pk_id` BIGINT(200)    NULL     COMMENT 'purity_pk_id',
+    `file_pk_id`   BIGINT(20)     NULL     COMMENT 'file_pk_id'
+);
 
+ALTER TABLE `canano`.`purity_datum`
+    ADD CONSTRAINT
+        PRIMARY KEY (
+                     `purity_datum_pk_id`
+            );
+
+
+
+-- synthesis
+DROP TABLE IF EXISTS `synthesis`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `canano`.`synthesis` (
+                                      `synthesis_pk_id` BIGINT(20) NOT NULL COMMENT 'synthesis_pk_id',
+                                      `sample_pk_id`    BIGINT(20) NOT NULL COMMENT 'sample_pk_id'
+)
+    COMMENT 'synthesis';
+
+-- synthesis
+ALTER TABLE `canano`.`synthesis`
+    ADD CONSTRAINT `PK_synthesis`
+        PRIMARY KEY (
+                     `synthesis_pk_id`
+            );
+
+-- synthesis_file
+DROP TABLE IF EXISTS `synthesis_file`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `canano`.`synthesis_file` (
+                                           `synthesis_pk_id` BIGINT(20) NOT NULL COMMENT 'synthesis_pk_id', -- synthesis_pk_id
+                                           `file_pk_id`      BIGINT(20) NOT NULL COMMENT 'file_pk_id' -- file_pk_id
+)
+    COMMENT 'synthesis_file';
+
+-- synthesis_file
+ALTER TABLE `canano`.`synthesis_file`
+    ADD CONSTRAINT `synthesis_file` -- synthesis_file Primary key
+        PRIMARY KEY (
+                     `synthesis_pk_id`, -- synthesis_pk_id
+                     `file_pk_id`       -- file_pk_id
+            );
+
+
+-- synthesis_materials
+DROP TABLE IF EXISTS `synthesis_materials`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `canano`.`synthesis_materials` (
+                                                `synthesis_materials_pk_id` BIGINT(20)   NOT NULL COMMENT 'synthesis_materials_pk_id', -- synthesis_materials_pk_id
+                                                `synthesis_pk_id`           BIGINT(20)   NOT NULL COMMENT 'synthesis_pk_id', -- synthesis_pk_id
+                                                `protocol_pk_id`            BIGINT(20)   NULL     COMMENT 'protocol_pk_id', -- protocol_pk_id
+                                                `description`               TEXT         NULL     COMMENT 'description', -- description
+                                                `created_date`              DATETIME     NOT NULL COMMENT 'created_date', -- created_date
+                                                `created_by`                VARCHAR(200) NOT NULL COMMENT 'created_by', -- created_by
+                                                `type`                      VARCHAR(200) NULL     COMMENT 'type' -- type
+)
+    COMMENT 'synthesis_materials';
+
+-- synthesis_materials
+ALTER TABLE `canano`.`synthesis_materials`
+    ADD CONSTRAINT `PK_synthesis_materials` -- synthesis_materials Primary key
+        PRIMARY KEY (
+                     `synthesis_materials_pk_id` -- synthesis_materials_pk_id
+            );
+
+-- synthesis_functionalization
+DROP TABLE IF EXISTS `synthesis_functionalization`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `canano`.`synthesis_functionalization` (
+                                                        `synthesis_funtionalization_pk_id` BIGINT(20) NOT NULL COMMENT 'synthesis_funtionalization_pk_id', -- synthesis_funtionalization_pk_id
+                                                        `synthesis_pk_id`                  BIGINT(20) NULL     COMMENT 'synthesis_pk_id' -- synthesis_pk_id
+)
+    COMMENT 'synthesis_functionalization';
+
+-- synthesis_functionalization
+ALTER TABLE `canano`.`synthesis_functionalization`
+    ADD CONSTRAINT `PK_synthesis_functionalization` -- synthesis_functionalization Primary key
+        PRIMARY KEY (
+                     `synthesis_funtionalization_pk_id` -- synthesis_funtionalization_pk_id
+            );
+
+-- synthesis_func_purification
+DROP TABLE IF EXISTS `synthesis_func_purification`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `canano`.`synthesis_func_purification` (
+                                                        `synthesis_func_purification_pk_id` BIGINT(20)   NOT NULL COMMENT 'synthesis_func_purification_pk_id', -- synthesis_func_purification_pk_id
+                                                        `synthesis_funtionalization_pk_id`  BIGINT(20)   NOT NULL COMMENT 'synthesis_funtionalization_pk_id', -- synthesis_funtionalization_pk_id
+                                                        `protocol_pk_id`                    BIGINT(20)   NOT NULL COMMENT 'protocol_pk_id', -- protocol_pk_id
+                                                        `type`                              VARCHAR(200) NULL     COMMENT 'type', -- type
+                                                        `method_name`                       VARCHAR(200) NULL     COMMENT 'method_name', -- method_name
+                                                        `design_method_description`         TEXT         NULL     COMMENT 'design_method_description', -- design_method_description
+                                                        `created_by`                        VARCHAR(200) NOT NULL COMMENT 'created_by', -- created_by
+                                                        `created_date`                      DATETIME     NOT NULL COMMENT 'created_date' -- created_date
+)
+    COMMENT 'synthesis_func_purification';
+
+-- synthesis_func_purification
+ALTER TABLE `canano`.`synthesis_func_purification`
+    ADD CONSTRAINT `PK_synthesis_func_purification` -- synthesis_func_purification Primary key
+        PRIMARY KEY (
+                     `synthesis_func_purification_pk_id` -- synthesis_func_purification_pk_id
+            );
+
+-- synthesis_material_element
+DROP TABLE IF EXISTS `synthesis_material_element`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `canano`.`synthesis_material_element` (
+                                                       `synthesis_material_element_pk_id` BIGINT(20)    NOT NULL COMMENT 'synthesis_material_element_pk_id', -- synthesis_material_element_pk_id
+                                                       `synthesis_materials_pk_id`        BIGINT(20)    NOT NULL COMMENT 'synthesis_materials_pk_id', -- synthesis_materials_pk_id
+                                                       `molecular_formula`                VARCHAR(2000) NULL     COMMENT 'molecular_formula', -- molecular_formula
+                                                       `molecular_formula_type`           VARCHAR(200)  NULL     COMMENT 'molecular_formula_type', -- molecular_formula_type
+                                                       `description`                      TEXT          NULL     COMMENT 'description', -- description
+                                                       `created_by`                       VARCHAR(200)  NOT NULL COMMENT 'created_by', -- created_by
+                                                       `created_date`                     DATETIME      NOT NULL COMMENT 'created_date', -- created_date
+                                                       `chemical_name`                    VARCHAR(200)  NULL     COMMENT 'chemical_name', -- chemical_name
+                                                       `value`                            DECIMAL(22,3) NULL     COMMENT 'value', -- value
+                                                       `value_unit`                       VARCHAR(200)  NULL     COMMENT 'value_unit', -- value_unit
+                                                       `pub_chem_datasource_name`         VARCHAR(200)  NULL     COMMENT 'pub_chem_datasource_name', -- pub_chem_datasource_name
+                                                       `pub_chem_id`                      BIGINT(20)    NULL     COMMENT 'pub_chem_id' -- pub_chem_id
+)
+    COMMENT 'synthesis_material_element';
+
+-- synthesis_material_element
+ALTER TABLE `canano`.`synthesis_material_element`
+    ADD CONSTRAINT `PK_synthesis_material_element` -- synthesis_material_element Primary key
+        PRIMARY KEY (
+                     `synthesis_material_element_pk_id` -- synthesis_material_element_pk_id
+            );
+
+-- sme_inherent_funtion
+DROP TABLE IF EXISTS `sme_inherent_function`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `canano`.`sme_inherent_function` (
+                                                  `sme_inherent__function_pk_id`     BIGINT(20)   NOT NULL COMMENT 'sme_inherent__function_pk_id', -- sme_inherent__function_pk_id
+                                                  `synthesis_material_element_pk_id` BIGINT(20)   NOT NULL COMMENT 'synthesis_material_element_pk_id', -- synthesis_material_element_pk_id
+                                                  `type`                             VARCHAR(200) NULL     COMMENT 'type', -- type
+                                                  `description`                      TEXT         NULL     COMMENT 'description' -- description
+)
+    COMMENT 'sme_inherent_funtion';
+
+-- sme_inherent_funtion
+ALTER TABLE `canano`.`sme_inherent_function`
+    ADD CONSTRAINT `PK_sme_inherent_function` -- sme_inherent_funtion Primary key
+        PRIMARY KEY (
+                     `sme_inherent__function_pk_id` -- sme_inherent__function_pk_id
+            );
+
+-- synthesis_material_element_file
+DROP TABLE IF EXISTS `synthesis_material_element_file`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `canano`.`synthesis_material_element_file` (
+                                                            `synthesis_material_element_pk_id` BIGINT(20) NOT NULL COMMENT 'synthesis_material_element_pk_id', -- synthesis_material_element_pk_id
+                                                            `file_pk_id`                       BIGINT(20) NOT NULL COMMENT 'file_pk_id' -- file_pk_id
+)
+    COMMENT 'synthesis_material_element_file';
+
+-- synthesis_material_element_file
+ALTER TABLE `canano`.`synthesis_material_element_file`
+    ADD CONSTRAINT `PK_synthesis_material_element_file` -- synthesis_material_element_file Primary key
+        PRIMARY KEY (
+                     `synthesis_material_element_pk_id`, -- synthesis_material_element_pk_id
+                     `file_pk_id`                        -- file_pk_id
+            );
+
+-- purity
+DROP TABLE IF EXISTS `purity`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `canano`.`purity` (
+                                   `purity_pk_id`                      BIGINT(200)  NOT NULL COMMENT 'purity_pk_id', -- purity_pk_id
+                                   `synthesis_func_purification_pk_id` BIGINT(20)   NOT NULL COMMENT 'synthesis_func_purification_pk_id', -- synthesis_func_purification_pk_id
+                                   `created_by`                        VARCHAR(200) NOT NULL COMMENT 'created_by', -- created_by
+                                   `created_date`                      DATETIME     NOT NULL COMMENT 'created_date' -- created_date
+)
+    COMMENT 'purity';
+
+-- purity
+ALTER TABLE `canano`.`purity`
+    ADD CONSTRAINT `PK_purity` -- purity Primary key
+        PRIMARY KEY (
+                     `purity_pk_id` -- purity_pk_id
+            );
+
+-- purity_file
+DROP TABLE IF EXISTS `purity_file`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `canano`.`purity_file` (
+                                        `purity_pk_id` BIGINT(200) NOT NULL COMMENT 'purity_pk_id', -- purity_pk_id
+                                        `file_pk_id`   BIGINT(20)  NOT NULL COMMENT 'file_pk_id' -- file_pk_id
+)
+    COMMENT 'purity_file';
+
+-- purity_file
+ALTER TABLE `canano`.`purity_file`
+    ADD CONSTRAINT `PK_purity_file` -- purity_file Primary key
+        PRIMARY KEY (
+                     `purity_pk_id`, -- purity_pk_id
+                     `file_pk_id`    -- file_pk_id
+            );
+
+-- purification_config
+DROP TABLE IF EXISTS `purification_config`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `canano`.`purification_config` (
+                                                `purification_config_pk_id`         BIGINT(20)   NOT NULL COMMENT 'purification_config_pk_id', -- purification_config_pk_id
+                                                `synthesis_func_purification_pk_id` BIGINT(20)   NULL     COMMENT 'synthesis_func_purification_pk_id', -- synthesis_func_purification_pk_id
+                                                `technique_pk_id`                   BIGINT(20)   NULL     COMMENT 'technique_pk_id', -- technique_pk_id
+                                                `description`                       TEXT         NULL     COMMENT 'description', -- description
+                                                `created_by`                        VARCHAR(200) NOT NULL COMMENT 'created_by', -- created_by
+                                                `created_date`                      DATETIME     NOT NULL COMMENT 'created_date' -- created_date
+)
+    COMMENT 'purification_config';
+
+-- purification_config
+ALTER TABLE `canano`.`purification_config`
+    ADD CONSTRAINT `PK_purification_config` -- purification_config Primary key
+        PRIMARY KEY (
+                     `purification_config_pk_id` -- purification_config_pk_id
+            );
+
+-- purification_config_instrument
+DROP TABLE IF EXISTS `purification_config_instrument`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `canano`.`purification_config_instrument` (
+                                                           `purification_config_pk_id` BIGINT(20) NOT NULL COMMENT 'purification_config_pk_id', -- purification_config_pk_id
+                                                           `instrument_pk_id`          BIGINT(20) NOT NULL COMMENT 'instrument_pk_id' -- instrument_pk_id
+)
+    COMMENT 'purification_config_instrument';
+
+-- purification_config_instrument
+ALTER TABLE `canano`.`purification_config_instrument`
+    ADD CONSTRAINT `PK_purification_config_instrument` -- purification_config_instrument Primary key
+        PRIMARY KEY (
+                     `purification_config_pk_id`, -- purification_config_pk_id
+                     `instrument_pk_id`           -- instrument_pk_id
+            );
+
+-- purity_datum_condition
+DROP TABLE IF EXISTS `purity_datum_condition`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `canano`.`purity_datum_condition` (
+                                                   `datum_pk_id`     BIGINT(20) NOT NULL COMMENT 'purity_datum_pk_id', -- purity_datum_pk_id
+                                                   `condition_pk_id` BIGINT(20) NOT NULL COMMENT 'condition_pk_id' -- condition_pk_id
+)
+    COMMENT 'purity_datum_condition';
+
+-- purity_datum_condition
+ALTER TABLE `canano`.`purity_datum_condition`
+    ADD CONSTRAINT `PK_purity_datum_condition` -- purity_datum_condition Primary key
+        PRIMARY KEY (
+                     `datum_pk_id`,     -- purity_datum_pk_id
+                     `condition_pk_id`  -- condition_pk_id
+            );
+
+-- supplier
+CREATE TABLE `canano`.`supplier` (
+                                     `synthesis_material_element_pk_id` BIGINT(20)   NOT NULL COMMENT 'synthesis_material_element_pk_id', -- synthesis_material_element_pk_id
+                                     `supplier_name`                    VARCHAR(200) NOT NULL COMMENT 'supplier_name', -- supplier_name
+                                     `lot`                              VARCHAR(50)  NULL     COMMENT 'lot' -- lot
+)
+    COMMENT 'supplier';
+
+-- supplier
+ALTER TABLE `canano`.`supplier`
+    ADD CONSTRAINT
+        PRIMARY KEY (
+                     `synthesis_material_element_pk_id` -- synthesis_material_element_pk_id
+            );
+
+-- supplier
+ALTER TABLE `canano`.`supplier`
+    ADD CONSTRAINT `FK_synthesis_material_element_TO_supplier` -- synthesis_material_element -> supplier
+        FOREIGN KEY (
+                     `synthesis_material_element_pk_id` -- synthesis_material_element_pk_id
+            )
+            REFERENCES `canano`.`synthesis_material_element` ( -- synthesis_material_element
+                                                              `synthesis_material_element_pk_id` -- synthesis_material_element_pk_id
+                );
+
+-- purity_datum
+ALTER TABLE `canano`.`purity_datum`
+    ADD CONSTRAINT `FK_purity_TO_purity_datum` -- purity -> purity_datum
+        FOREIGN KEY (
+                     `purity_pk_id` -- purity_pk_id
+            )
+            REFERENCES `canano`.`purity` ( -- purity
+                                          `purity_pk_id` -- purity_pk_id
+                );
+
+-- purity_datum
+ALTER TABLE `canano`.`purity_datum`
+    ADD CONSTRAINT `FK_file_TO_purity_datum` -- file -> purity_datum
+        FOREIGN KEY (
+                     `file_pk_id` -- file_pk_id
+            )
+            REFERENCES `canano`.`file` ( -- file
+                                        `file_pk_id` -- file_pk_id
+                );
+
+-- synthesis
+ALTER TABLE `canano`.`synthesis`
+    ADD CONSTRAINT `FK_sample_TO_synthesis` -- sample -> synthesis
+        FOREIGN KEY (
+                     `sample_pk_id` -- sample_pk_id
+            )
+            REFERENCES `canano`.`sample` ( -- sample
+                                          `sample_pk_id` -- sample_pk_id
+                );
+
+-- synthesis_file
+ALTER TABLE `canano`.`synthesis_file`
+    ADD CONSTRAINT `FK_synthesis_TO_synthesis_file` -- synthesis -> synthesis_file
+        FOREIGN KEY (
+                     `synthesis_pk_id` -- synthesis_pk_id
+            )
+            REFERENCES `canano`.`synthesis` ( -- synthesis
+                                             `synthesis_pk_id` -- synthesis_pk_id
+                );
+
+-- synthesis_file
+ALTER TABLE `canano`.`synthesis_file`
+    ADD CONSTRAINT `FK_file_TO_synthesis_file` -- file -> synthesis_file
+        FOREIGN KEY (
+                     `file_pk_id` -- file_pk_id
+            )
+            REFERENCES `canano`.`file` ( -- file
+                                        `file_pk_id` -- file_pk_id
+                );
+
+-- synthesis_materials
+ALTER TABLE `canano`.`synthesis_materials`
+    ADD CONSTRAINT `FK_synthesis_TO_synthesis_materials` -- synthesis -> synthesis_materials
+        FOREIGN KEY (
+                     `synthesis_pk_id` -- synthesis_pk_id
+            )
+            REFERENCES `canano`.`synthesis` ( -- synthesis
+                                             `synthesis_pk_id` -- synthesis_pk_id
+                );
+
+-- synthesis_materials
+ALTER TABLE `canano`.`synthesis_materials`
+    ADD CONSTRAINT `FK_protocol_TO_synthesis_materials` -- protocol -> synthesis_materials
+        FOREIGN KEY (
+                     `protocol_pk_id` -- protocol_pk_id
+            )
+            REFERENCES `canano`.`protocol` ( -- protocol
+                                            `protocol_pk_id` -- protocol_pk_id
+                );
+
+-- synthesis_functionalization
+ALTER TABLE `canano`.`synthesis_functionalization`
+    ADD CONSTRAINT `FK_synthesis_TO_synthesis_functionalization` -- synthesis -> synthesis_functionalization
+        FOREIGN KEY (
+                     `synthesis_pk_id` -- synthesis_pk_id
+            )
+            REFERENCES `canano`.`synthesis` ( -- synthesis
+                                             `synthesis_pk_id` -- synthesis_pk_id
+                );
+
+-- synthesis_func_purification
+ALTER TABLE `canano`.`synthesis_func_purification`
+    ADD CONSTRAINT `FK_synthesis_functionalization_TO_synthesis_func_purification` -- synthesis_functionalization -> synthesis_func_purification
+        FOREIGN KEY (
+                     `synthesis_funtionalization_pk_id` -- synthesis_funtionalization_pk_id
+            )
+            REFERENCES `canano`.`synthesis_functionalization` ( -- synthesis_functionalization
+                                                               `synthesis_funtionalization_pk_id` -- synthesis_funtionalization_pk_id
+                );
+
+-- synthesis_func_purification
+ALTER TABLE `canano`.`synthesis_func_purification`
+    ADD CONSTRAINT `FK_protocol_TO_synthesis_func_purification` -- protocol -> synthesis_func_purification
+        FOREIGN KEY (
+                     `protocol_pk_id` -- protocol_pk_id
+            )
+            REFERENCES `canano`.`protocol` ( -- protocol
+                                            `protocol_pk_id` -- protocol_pk_id
+                );
+
+-- synthesis_material_element
+ALTER TABLE `canano`.`synthesis_material_element`
+    ADD CONSTRAINT `FK_synthesis_materials_TO_synthesis_material_element` -- synthesis_materials -> synthesis_material_element
+        FOREIGN KEY (
+                     `synthesis_materials_pk_id` -- synthesis_materials_pk_id
+            )
+            REFERENCES `canano`.`synthesis_materials` ( -- synthesis_materials
+                                                       `synthesis_materials_pk_id` -- synthesis_materials_pk_id
+                );
+
+-- sme_inherent_funtion
+ALTER TABLE `canano`.`sme_inherent_function`
+    ADD CONSTRAINT `FK_synthesis_material_element_TO_sme_inherent_function` -- synthesis_material_element -> sme_inherent_funtion
+        FOREIGN KEY (
+                     `synthesis_material_element_pk_id` -- synthesis_material_element_pk_id
+            )
+            REFERENCES `canano`.`synthesis_material_element` ( -- synthesis_material_element
+                                                              `synthesis_material_element_pk_id` -- synthesis_material_element_pk_id
+                );
+
+-- synthesis_material_element_file
+ALTER TABLE `canano`.`synthesis_material_element_file`
+    ADD CONSTRAINT `FK_synthesis_material_element_TO_synthesis_material_element_file` -- synthesis_material_element -> synthesis_material_element_file
+        FOREIGN KEY (
+                     `synthesis_material_element_pk_id` -- synthesis_material_element_pk_id
+            )
+            REFERENCES `canano`.`synthesis_material_element` ( -- synthesis_material_element
+                                                              `synthesis_material_element_pk_id` -- synthesis_material_element_pk_id
+                );
+
+-- synthesis_material_element_file
+ALTER TABLE `canano`.`synthesis_material_element_file`
+    ADD CONSTRAINT `FK_file_TO_synthesis_material_element_file` -- file -> synthesis_material_element_file
+        FOREIGN KEY (
+                     `file_pk_id` -- file_pk_id
+            )
+            REFERENCES `canano`.`file` ( -- file
+                                        `file_pk_id` -- file_pk_id
+                );
+
+-- purity
+ALTER TABLE `canano`.`purity`
+    ADD CONSTRAINT `FK_synthesis_func_purification_TO_purity` -- synthesis_func_purification -> purity
+        FOREIGN KEY (
+                     `synthesis_func_purification_pk_id` -- synthesis_func_purification_pk_id
+            )
+            REFERENCES `canano`.`synthesis_func_purification` ( -- synthesis_func_purification
+                                                               `synthesis_func_purification_pk_id` -- synthesis_func_purification_pk_id
+                );
+
+-- purity_file
+ALTER TABLE `canano`.`purity_file`
+    ADD CONSTRAINT `FK_purity_TO_purity_file` -- purity -> purity_file
+        FOREIGN KEY (
+                     `purity_pk_id` -- purity_pk_id
+            )
+            REFERENCES `canano`.`purity` ( -- purity
+                                          `purity_pk_id` -- purity_pk_id
+                );
+
+-- purity_file
+ALTER TABLE `canano`.`purity_file`
+    ADD CONSTRAINT `FK_file_TO_purity_file` -- file -> purity_file
+        FOREIGN KEY (
+                     `file_pk_id` -- file_pk_id
+            )
+            REFERENCES `canano`.`file` ( -- file
+                                        `file_pk_id` -- file_pk_id
+                );
+
+-- purification_config
+ALTER TABLE `canano`.`purification_config`
+    ADD CONSTRAINT `FK_synthesis_func_purification_TO_purification_config` -- synthesis_func_purification -> purification_config
+        FOREIGN KEY (
+                     `synthesis_func_purification_pk_id` -- synthesis_func_purification_pk_id
+            )
+            REFERENCES `canano`.`synthesis_func_purification` ( -- synthesis_func_purification
+                                                               `synthesis_func_purification_pk_id` -- synthesis_func_purification_pk_id
+                );
+
+-- purification_config
+ALTER TABLE `canano`.`purification_config`
+    ADD CONSTRAINT `FK_technique_TO_purification_config` -- technique -> purification_config
+        FOREIGN KEY (
+                     `technique_pk_id` -- technique_pk_id
+            )
+            REFERENCES `canano`.`technique` ( -- technique
+                                             `technique_pk_id` -- technique_pk_id
+                );
+
+-- purification_config_instrument
+ALTER TABLE `canano`.`purification_config_instrument`
+    ADD CONSTRAINT `FK_purification_config_TO_purification_config_instrument` -- purification_config -> purification_config_instrument
+        FOREIGN KEY (
+                     `purification_config_pk_id` -- purification_config_pk_id
+            )
+            REFERENCES `canano`.`purification_config` ( -- purification_config
+                                                       `purification_config_pk_id` -- purification_config_pk_id
+                );
+
+-- purification_config_instrument
+ALTER TABLE `canano`.`purification_config_instrument`
+    ADD CONSTRAINT `FK_instrument_TO_purification_config_instrument` -- instrument -> purification_config_instrument
+        FOREIGN KEY (
+                     `instrument_pk_id` -- instrument_pk_id
+            )
+            REFERENCES `canano`.`instrument` ( -- instrument
+                                              `instrument_pk_id` -- instrument_pk_id
+                );
+
+-- purity_datum_condition
+ALTER TABLE `canano`.`purity_datum_condition`
+    ADD CONSTRAINT `FK_purity_datum_TO_purity_datum_condition` -- purity_datum -> purity_datum_condition
+        FOREIGN KEY (
+                     `datum_pk_id` -- purity_datum_pk_id
+            )
+            REFERENCES `canano`.`purity_datum` ( -- purity_datum
+                                                `purity_datum_pk_id` -- purity_datum_pk_id
+                );
+
+-- purity_datum_condition
+ALTER TABLE `canano`.`purity_datum_condition`
+    ADD CONSTRAINT `FK_experiment_condition_TO_purity_datum_condition` -- experiment_condition -> purity_datum_condition
+        FOREIGN KEY (
+                     `condition_pk_id` -- condition_pk_id
+            )
+            REFERENCES `canano`.`experiment_condition` ( -- experiment_condition
+                                                        `condition_pk_id` -- condition_pk_id
+                );
