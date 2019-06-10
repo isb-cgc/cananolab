@@ -10,7 +10,7 @@ software/cananolab-webapp/target/
 **/.DS_Store
 .classpath
 .project
-
+indexDir/*
 software/cananolab-webapp/.settings/*
 
 ## Ignore node modules ##

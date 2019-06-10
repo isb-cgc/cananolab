@@ -176,7 +176,15 @@ app.config(function ($routeProvider, $httpProvider) {
       .when('/setupCharacterization', {
        templateUrl: 'views/sample/edit/setupCharacterization.html',
        controller: 'SetupCharacterizationCtrl'
-      })             
+      })    
+      .when('/synthesis', {
+        templateUrl: 'views/sample/view/synthesis.html',
+        controller: 'SynthesisCtrl'
+       }) 
+       .when('/editSynthesis', {
+        templateUrl: 'views/sample/edit/editSynthesis.html',
+        controller: 'EditSynthesisCtrl'
+       })                 
       .when('/publication', {
        templateUrl: 'views/sample/view/publication.html',
        controller: 'PublicationCtrl'
