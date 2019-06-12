@@ -31,6 +31,7 @@ public class GroupDaoImpl extends JdbcDaoSupport implements GroupDao
 	private static final String INSERT_GROUP_SQL = "INSERT INTO groups (group_name, group_description, created_by) VALUES (?,?,?)";
 	private static final String INSERT_GROUP_MEMBER_SQL = "INSERT INTO group_members (group_id, username) VALUES (?,?)";
 	private static final String UPDATE_GROUP_SQL = "UPDATE groups SET group_description = ? WHERE id = ?";
+    private static final String UPDATE_GROUP_WITH_NAME_SQL = "UPDATE groups SET group_name = ?,group_description = ? WHERE id = ?";
 	private static final String FETCH_GROUP_MEMBERS_SQL = "SELECT gm.username FROM group_members gm where gm.group_id = ?";
 	private static final String DEL_GROUP_MEMBERS_SQL = "DELETE FROM group_members where group_id = ?";
 	private static final String DEL_GROUP_MEMBER_SQL = "DELETE FROM group_members where group_id = ? and username = ?";
@@ -98,6 +99,15 @@ public class GroupDaoImpl extends JdbcDaoSupport implements GroupDao
 		int status = this.getJdbcTemplate().update(UPDATE_GROUP_SQL, args);
 		return status;
 		
+	}
+
+    @Override
+	public int updateGroupWithName(Long groupId, String groupDesc, String groupName)
+	{
+		Object[] args = {groupName, groupDesc, groupId};
+		int status = this.getJdbcTemplate().update(UPDATE_GROUP_WITH_NAME_SQL, args);
+		return status;
+
 	}
 
 	@Override

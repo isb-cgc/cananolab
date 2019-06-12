@@ -34,8 +34,7 @@ public class GroupServiceImpl implements GroupService
 	public Long createNewGroup(Group newGroup)
 	{
 		Long id = 0L;
-		if (newGroup != null && !StringUtils.isEmpty(newGroup.getGroupName()) &&
-			!StringUtils.isEmpty(newGroup.getGroupDesc()))
+		if (newGroup != null && !StringUtils.isEmpty(newGroup.getGroupName()))
 		{
 			int status = groupDao.insertGroup(newGroup);
 			Group insGroup = groupDao.getGroupByName(newGroup.getGroupName());
@@ -63,7 +62,17 @@ public class GroupServiceImpl implements GroupService
 		return status;
 	}
 
-	@Override
+    @Override
+    public int updateGroupWithName( Long groupId, String groupDesc, String groupName )
+    {
+        int status = 0;
+        if (groupId != null && groupId > 0 )
+            status = groupDao.updateGroupWithName(groupId, groupDesc, groupName);
+        return status;
+    }
+
+
+    @Override
 	public List<String> getGroupMembers(Long groupId)
 	{
 		return groupDao.getGroupMembers(groupId);

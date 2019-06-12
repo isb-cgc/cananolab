@@ -15,7 +15,9 @@ public interface GroupService
 	public int addGroupMember(Long groupId, String userName);
 	
 	public int updateGroup(Long groupId, String groupDesc);
-	
+
+	public int updateGroupWithName(Long groupId, String groupDesc, String groupName);
+
 	public List<String> getGroupMembers(Long groupId);
 	
 	public int removeGroupMembers(Long groupId);

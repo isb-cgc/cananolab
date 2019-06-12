@@ -461,29 +461,34 @@ public class CharacterizationServices
 	@Produces ("application/json")
 	public Response saveFinding(@Context HttpServletRequest httpRequest, SimpleCharacterizationEditBean charEditBean)
 	{
-		logger.debug("In saveFinding");	
+		logger.debug("In saveFinding");
 
 		if (!SpringSecurityUtil.isUserLoggedIn())
-			return Response.status(Response.Status.UNAUTHORIZED).entity(Constants.MSG_SESSION_INVALID).build();
+        {
+            return Response.status( Response.Status.UNAUTHORIZED ).entity( Constants.MSG_SESSION_INVALID ).build();
+        }
 
 		try {
             CharacterizationBO characterizationBO =
 					(CharacterizationBO) SpringApplicationContext.getBean(httpRequest, "characterizationBO");
 
 			SimpleCharacterizationEditBean editBean = characterizationBO.saveFinding(httpRequest, charEditBean);
-			List<String> errors = editBean.getErrors();
-			if (errors != null && errors.size() > 0) {
-				return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(errors).build();
+            List<String> errors = editBean.getErrors();
+            if (errors != null && errors.size() > 0) {
+                return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(errors).build();
 			}
 
 			return Response.ok(editBean).header("Access-Control-Allow-Credentials", "true")
 					.header("Access-Control-Allow-Origin", "*").header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS")
 					.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization").build();
 		} catch (Exception e) {
-			return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
+            e.printStackTrace();
+
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
 					.entity(CommonUtil.wrapErrorMessageInList(e.getMessage())).build();
 		}
-	}
+
+    }
 
 	@POST
 	@Path("/saveCharacterization")

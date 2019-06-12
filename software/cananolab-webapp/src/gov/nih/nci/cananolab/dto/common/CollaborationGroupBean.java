@@ -16,6 +16,7 @@ public class CollaborationGroupBean extends SecuredDataBean
 {
 	private String id;
 	private String name;
+	private String originalName;
 	private String description;
 	private String ownerName;
 
@@ -31,6 +32,7 @@ public class CollaborationGroupBean extends SecuredDataBean
 
 	public CollaborationGroupBean(Group group) {
 		this.name = group.getGroupName();
+		this.originalName = group.getGroupName();
 		this.description = group.getGroupDesc();
 		this.id = group.getGroupId().toString();
 	}
@@ -59,7 +61,17 @@ public class CollaborationGroupBean extends SecuredDataBean
 		this.description = description;
 	}
 
-	public void addUserAccess(AccessControlInfo userAccess)
+    public String getOriginalName()
+    {
+        return originalName;
+    }
+
+    public void setOriginalName( String originalName )
+    {
+        this.originalName = originalName;
+    }
+
+    public void addUserAccess( AccessControlInfo userAccess)
 	{
 		boolean found = false;
 		for(int i = 0 ; i < this.getUserAccesses().size() ; i++)
@@ -96,4 +108,18 @@ public class CollaborationGroupBean extends SecuredDataBean
 		this.ownerName = ownerName;
 	}
 
+
+    @Override
+    public String toString()
+    {
+        return "{\"CollaborationGroupBean\":\n"
+                + super.toString()
+                + ",                         \"id\":\"" + id + "\"\n"
+                + ",                         \"name\":\"" + name + "\"\n"
+                + ",                         \"originalName\":\"" + originalName + "\"\n"
+                + ",                         \"description\":\"" + description + "\"\n"
+                + ",                         \"ownerName\":\"" + ownerName + "\"\n"
+                + ",                         \"createdBy\":\"" + createdBy + "\"\n"
+                + "}";
+    }
 }
