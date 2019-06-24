@@ -1,0 +1,47 @@
+<div class="spacer">
+    <div ng-class="{formFocus:loader}">
+    <tabset justified="true">
+    <tab heading="All" ng-click="select(-1)"></tab>
+    <tab heading="Materials" ng-click="select(0)"></tab>
+    <tab heading="Functionalization" ng-click="select(1)"></tab>
+    <tab heading="Purification" ng-click="select(2)"></tab>
+</tabset>
+
+<table id="summarySection{{index}}" width="100%" align="center"
+       class="summaryViewNoGrid dataTable">
+       <tr>
+            <th align="left"  class="heading" style="padding: 0.5em;">
+                Materials
+                &nbsp;&nbsp; 
+                <a href="/caNanoLab/#/editSynthesisMaterials?sampleId={{sampleId.data}}&&type={{type}}&&sampleName={{sampleName.name}}" class="btn btn-primary btn-xs" style="color:white;text-decoration: none;">
+                    Add
+                </a>
+            </th>
+        </tr>
+        <tr>
+                <td class="break">&nbsp;</td>
+        </tr>         
+        <tr>
+                <th align="left"  class="heading" style="padding: 0.5em;">
+                    Functionalization
+                    &nbsp;&nbsp; 
+                    <a href="/caNanoLab/#/editSynthesisFunctionalization?sampleId={{sampleId.data}}&&type={{type}}&&sampleName={{sampleName.name}}" class="btn btn-primary btn-xs" style="color:white;text-decoration: none;">
+                        Add
+                    </a>
+                </th>
+            </tr>
+            <tr>
+                    <td class="break">&nbsp;</td>
+            </tr> 
+            <tr>
+                    <th align="left"  class="heading" style="padding: 0.5em;">
+                        Purification
+                        &nbsp;&nbsp; 
+                        <a href="/caNanoLab/#/editSynthesisPurification?sampleId={{sampleId.data}}&&type={{type}}&&sampleName={{sampleName.name}}" class="btn btn-primary btn-xs" style="color:white;text-decoration: none;">
+                            Add
+                        </a>
+                    </th>
+                </tr>                    
+</table>
+</div>
+</div>

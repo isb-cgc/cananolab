@@ -186,9 +186,21 @@ app.config(function ($routeProvider, $httpProvider) {
         controller: 'SynthesisCtrl'
        }) 
        .when('/editSynthesis', {
-        templateUrl: 'views/sample/edit/editSynthesis.html',
+        templateUrl: 'views/sample/edit/synthesis/editSynthesis.html',
         controller: 'EditSynthesisCtrl'
-       })                 
+       })   
+       .when('/editSynthesisMaterials', {
+        templateUrl: 'views/sample/edit/synthesis/editSynthesisMaterials.html',
+        controller: 'EditSynthesisMaterialsCtrl'
+       })   
+       .when('/editSynthesisFunctionalization', {
+        templateUrl: 'views/sample/edit/synthesis/editSynthesisFunctionalization.html',
+        controller: 'EditSynthesisFunctionalizationCtrl'
+       })   
+       .when('/editSynthesisPurification', {
+        templateUrl: 'views/sample/edit/synthesis/editSynthesisPurification.html',
+        controller: 'EditSynthesisPurificationCtrl'
+       })                                      
       .when('/publication', {
        templateUrl: 'views/sample/view/publication.html',
        controller: 'PublicationCtrl'
