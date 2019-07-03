@@ -38,6 +38,7 @@ import gov.nih.nci.cananolab.security.utils.SpringSecurityUtil;
 import gov.nih.nci.cananolab.service.curation.CurationService;
 import gov.nih.nci.cananolab.service.sample.DataAvailabilityService;
 import gov.nih.nci.cananolab.service.sample.SampleService;
+import gov.nih.nci.cananolab.ui.form.CompositionForm;
 import gov.nih.nci.cananolab.ui.form.SampleForm;
 import gov.nih.nci.cananolab.util.Comparators;
 import gov.nih.nci.cananolab.util.StringUtils;
@@ -97,7 +98,8 @@ public class SampleBO extends BaseAnnotationBO {
 	@Autowired
 	private UserDetailsService userDetailsService;
 
-	/**
+
+    /**
 	 * 
 	 * Method to support the Update button on Update Sample page. Given the current implementation, when it gets here, 
 	 * a saveAccess or savePOC has been called and the sample's id has been generated. 
@@ -222,6 +224,14 @@ public class SampleBO extends BaseAnnotationBO {
 		simpleBean.transferSampleBeanForSummaryView(sampleBean);
 		return simpleBean;
 	}
+
+
+	public String summaryExport( String sampleId, String type, HttpServletRequest request, HttpServletResponse response)
+            throws Exception {
+        SimpleSampleBean simpleSampleBean = summaryView( sampleId ,request);
+
+        return simpleSampleBean.toJsonString();
+    }
 
 	private void checkOpenForms(SampleForm theForm, HttpServletRequest request) throws Exception {
 		String dispatch = request.getParameter("dispatch");
@@ -1298,4 +1308,18 @@ public class SampleBO extends BaseAnnotationBO {
 		return userDetailsService;
 	}
 
+
+    @Override
+    public String toString()
+    {
+        return "{\"SampleBO\":"
+                + super.toString()
+                + ",                         \"dataAvailabilityServiceDAO\":" + dataAvailabilityServiceDAO
+                + ",                         \"curationServiceDAO\":" + curationServiceDAO
+                + ",                         \"sampleService\":" + sampleService
+                + ",                         \"springSecurityAclService\":" + springSecurityAclService
+                + ",                         \"userService\":" + userService
+                + ",                         \"userDetailsService\":" + userDetailsService
+                + "}";
+    }
 }

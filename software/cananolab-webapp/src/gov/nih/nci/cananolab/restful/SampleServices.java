@@ -1,5 +1,6 @@
 package gov.nih.nci.cananolab.restful;
 
+import java.io.*;
 import java.util.List;
 import java.util.Map;
 
@@ -13,29 +14,47 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.Response;
+import javax.xml.transform.OutputKeys;
+import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.stream.StreamResult;
+import javax.xml.transform.stream.StreamSource;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import gov.nih.nci.cananolab.dto.common.PublicationSummaryViewBean;
+import gov.nih.nci.cananolab.dto.particle.composition.CompositionBean;
+import gov.nih.nci.cananolab.restful.publication.PublicationBO;
+import gov.nih.nci.cananolab.restful.sample.*;
+import gov.nih.nci.cananolab.restful.view.*;
+import gov.nih.nci.cananolab.ui.form.CompositionForm;
 import org.apache.log4j.Logger;
 
 import gov.nih.nci.cananolab.dto.common.DataReviewStatusBean;
 import gov.nih.nci.cananolab.dto.particle.AdvancedSampleSearchBean;
 import gov.nih.nci.cananolab.dto.particle.characterization.CharacterizationSummaryViewBean;
 import gov.nih.nci.cananolab.restful.bean.LabelValueBean;
-import gov.nih.nci.cananolab.restful.sample.AdvancedSampleSearchBO;
-import gov.nih.nci.cananolab.restful.sample.CharacterizationBO;
-import gov.nih.nci.cananolab.restful.sample.CharacterizationManager;
-import gov.nih.nci.cananolab.restful.sample.CharacterizationResultManager;
-import gov.nih.nci.cananolab.restful.sample.SampleBO;
-import gov.nih.nci.cananolab.restful.sample.SearchSampleBO;
 import gov.nih.nci.cananolab.restful.util.CommonUtil;
-import gov.nih.nci.cananolab.restful.view.SimpleAdvancedSearchResultView;
-import gov.nih.nci.cananolab.restful.view.SimpleCharacterizationSummaryViewBean;
-import gov.nih.nci.cananolab.restful.view.SimpleCharacterizationsByTypeBean;
-import gov.nih.nci.cananolab.restful.view.SimpleSampleBean;
 import gov.nih.nci.cananolab.restful.view.edit.SampleEditGeneralBean;
 import gov.nih.nci.cananolab.restful.view.edit.SimplePointOfContactBean;
 import gov.nih.nci.cananolab.security.utils.SpringSecurityUtil;
 import gov.nih.nci.cananolab.ui.form.SearchSampleForm;
 import gov.nih.nci.cananolab.util.Constants;
+import org.json.JSONObject;
+import org.json.XML;
+
+
+import javax.xml.parsers.*;
+import javax.xml.transform.dom.DOMSource;
+import javax.xml.xpath.XPath;
+import javax.xml.xpath.XPathConstants;
+import javax.xml.xpath.XPathFactory;
+
+import org.w3c.dom.Document;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
+import org.xml.sax.InputSource;
+
 
 @Path("/sample")
 public class SampleServices {
@@ -812,8 +831,7 @@ public class SampleServices {
 	@Path("/summaryExport")
 	@Produces ("application/vnd.ms-excel")
 	 public Response summaryExport(@Context HttpServletRequest httpRequest, @Context HttpServletResponse httpResponse){
-		
-		try { 
+		try {
 			AdvancedSampleSearchBO searchSampleBO = (AdvancedSampleSearchBO) SpringApplicationContext.getBean(httpRequest, "advancedSampleSearchBO");
 			
 			 String result = searchSampleBO.export(httpRequest, httpResponse);
@@ -825,4 +843,258 @@ public class SampleServices {
 
 		}
 	}
+
+    @GET
+    @Path("/fullSampleExportJson")
+    public void fullSampleExportJson(@Context HttpServletRequest httpRequest, @Context HttpServletResponse httpResponse,
+                                     @DefaultValue("") @QueryParam("sampleId") String sampleId, @DefaultValue("") @QueryParam("type") String type)
+    {
+        String jsonData = buildJson( httpRequest, httpResponse, sampleId);
+
+        // Send to user
+        try
+        {
+            PrintWriter out = httpResponse.getWriter();
+            httpResponse.setContentType("application/force-download");
+            httpResponse.setContentLength(jsonData.length() );
+            httpResponse.setHeader("Content-Disposition","attachment; filename=\"SampleData_" + sampleId + ".json\"");
+            out.print( jsonData);
+            out.close();
+            }
+        catch( Exception e )
+        {
+            System.err.println( "Error sending JSON to client: " + e.getMessage() );
+        }
+    }
+
+    @GET
+    @Path("/fullSampleExportXml")
+    public void fullSampleExportXml(@Context HttpServletRequest httpRequest, @Context HttpServletResponse httpResponse,
+                                     @DefaultValue("") @QueryParam("sampleId") String sampleId, @DefaultValue("") @QueryParam("type") String type)
+    {
+        String xmlData = null;
+
+        // Get data as JSON
+        String jsonData =  buildJson( httpRequest, httpResponse, sampleId);
+
+        // Build XML from JSON
+        try
+        {
+            xmlData = jsonToXml( jsonData );
+        }
+        catch( Exception e )
+        {
+            System.err.println( "Error converting JSON to XML: " + e.getMessage() );
+        }
+
+        ///////////////////////////////////////////////////////////////////////////////
+        // Send to user
+        try
+        {
+            PrintWriter out = httpResponse.getWriter();
+            httpResponse.setContentType("application/force-download");
+            httpResponse.setContentLength( xmlData.length() );
+            httpResponse.setHeader("Content-Disposition","attachment; filename=\"SampleData_" + sampleId + ".xml\"");
+            out.print( xmlData );
+            out.close();
+        }
+        catch( Exception e )
+        {
+            System.err.println( "Error sending XML to client: " + e.getMessage() );
+        }
+    }
+
+
+
+    private String buildJson( HttpServletRequest httpRequest, HttpServletResponse httpResponse, String sampleId ){
+        // Opening brace of results
+        StringBuilder jasonData = new StringBuilder( "{");
+        Gson gson = new GsonBuilder().setPrettyPrinting().create();
+
+        // General Info
+        SampleBO sampleBO = (SampleBO) SpringApplicationContext.getBean(httpRequest, "sampleBO");
+        String sampleBeanData = "";
+        try
+        {
+            sampleBeanData = sampleBO.summaryExport( sampleId, "all", httpRequest, httpResponse );
+        }
+        catch( Exception e )
+        {
+            e.printStackTrace();
+        }
+        jasonData.append( "\"GeneralInfo\":" );
+        jasonData.append(  sampleBeanData );
+        jasonData.append(  "\n" );
+
+        // Composition
+        CompositionForm form;
+        CompositionBO compositionBO;
+        CompositionBean compBean;
+        SimpleCompositionBean view = null;
+        try
+        {
+            form = new CompositionForm();
+            form.setSampleId(sampleId);
+            compositionBO = (CompositionBO) SpringApplicationContext.getBean( httpRequest, "compositionBO" );
+            compBean = compositionBO.summaryView( form, httpRequest );
+            view = new SimpleCompositionBean();
+            view.transferCompositionBeanForSummaryView( compBean );
+        }
+        catch( Exception e )
+        {
+            e.printStackTrace();
+        }
+        jasonData.append( ",\"Composition\":" );
+        jasonData.append(  gson.toJson(view) );
+
+        // Characterization
+        CharacterizationSummaryViewBean charView = null;
+        SimpleCharacterizationSummaryViewBean viewBean = null;
+        List<SimpleCharacterizationsByTypeBean> finalBean = null;
+
+        try {
+            CharacterizationBO characterizationBO = ( CharacterizationBO) SpringApplicationContext.getBean(httpRequest, "characterizationBO" );
+            charView = characterizationBO.summaryView( sampleId,httpRequest );
+            viewBean = new SimpleCharacterizationSummaryViewBean();
+            finalBean = viewBean.transferData( httpRequest, charView, sampleId );
+        }
+        catch( Exception e )
+        {
+            e.printStackTrace();
+        }
+
+        jasonData.append( ",\"characterization\":"  );
+        jasonData.append(  gson.toJson( finalBean ) );
+
+        // Publication
+        PublicationBO publicationBO = null;
+        PublicationSummaryViewBean pubBean = null;
+        SimplePublicationSummaryViewBean publicationView = null;
+        try {
+            publicationBO = (PublicationBO) SpringApplicationContext.getBean( httpRequest, "publicationBO" );
+            pubBean = publicationBO.summaryView( sampleId, httpRequest );
+            publicationView = new SimplePublicationSummaryViewBean();
+            publicationView.transferPublicationBeanForSummaryView( pubBean );
+
+        }
+        catch( Exception e )
+        {
+            e.printStackTrace();
+        }
+        jasonData.append( ",\"Publication\":" );
+        jasonData.append( gson.toJson( publicationView ) );
+
+        // Closing brace
+        jasonData.append( "}" );
+       return jasonData.toString();
+    }
+
+
+    /**
+     *  Convert (formatted) JSON to XML
+     *
+     * @param jsonText Formatted JSON String
+     * @return XML String
+     */
+    private String jsonToXml( String jsonText ) {
+        try {
+            JSONObject jso = new JSONObject( cleanJson(jsonText) );
+            String xml = XML.toString(jso, "caNanoLabXml");
+            StreamSource source = new StreamSource(new StringReader(xml));
+            StringWriter writer = new StringWriter();
+            StreamResult result = new StreamResult(writer);
+            Transformer transformer = TransformerFactory.newInstance().newTransformer();
+            transformer.setOutputProperty( OutputKeys.ENCODING, "UTF-8");
+            transformer.setOutputProperty(OutputKeys.INDENT, "yes");
+            transformer.transform(source, result);
+            return xmlFormat( writer.toString(), 4);
+        }
+        catch (Exception e)
+        {
+            System.err.println( "Error converting JSON to XML: " + e.getMessage() );
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+
+    /**
+     * Some JSON elements do not translate cleanly to XML
+     * @param json
+     * @return modified JSON String
+     */
+    private String cleanJson( String json){
+	    StringBuilder cleanData = new StringBuilder(  );
+        try
+        {
+            BufferedReader bufReader = new BufferedReader(new StringReader(json));
+            String line;
+
+            while( (line=bufReader.readLine()) != null )
+            {
+                if(line.matches("^\\s*\\\"[^:]+\\s.*:.*\\[")){
+                    String pattern = "^(.*):.*";
+                    String temp = line.replaceAll(pattern, "$1");
+                    pattern = "^(\\s*)(.*)";
+                    String data = temp.replaceAll( pattern, "$2");
+                    temp = temp.replaceAll( pattern, "$1" + data.replaceAll( " ", "_" ));
+                    line = temp  + ": [";
+                }
+                cleanData.append( line );
+                cleanData.append( "\n" );
+            }
+        }
+        catch( IOException e )
+        {
+            e.printStackTrace();
+        }
+        return cleanData.toString();
+    }
+
+
+    /**
+     * Format (indent etc.)
+     *
+     * @param xml
+     * @param indent  number of spaces per indent.
+     * @return formatted xml
+     */
+    private String xmlFormat( String xml, int indent ) {
+        try {
+            // Turn xml string into a document
+            Document document = DocumentBuilderFactory.newInstance()
+                    .newDocumentBuilder()
+                    .parse(new InputSource(new ByteArrayInputStream(xml.getBytes("utf-8"))));
+
+            // Remove whitespaces outside tags
+            document.normalize();
+            XPath xPath = XPathFactory.newInstance().newXPath();
+            NodeList nodeList = (NodeList) xPath.evaluate("//text()[normalize-space()='']",
+                    document,
+                    XPathConstants.NODESET);
+
+            for (int i = 0; i < nodeList.getLength(); ++i) {
+                Node node = nodeList.item(i);
+                node.getParentNode().removeChild(node);
+            }
+
+            // Setup transformer options
+            TransformerFactory transformerFactory = TransformerFactory.newInstance();
+            transformerFactory.setAttribute("indent-number", indent);
+            Transformer transformer = transformerFactory.newTransformer();
+            transformer.setOutputProperty(OutputKeys.ENCODING, "UTF-8");
+            transformer.setOutputProperty(OutputKeys.OMIT_XML_DECLARATION, "yes");
+            transformer.setOutputProperty(OutputKeys.INDENT, "yes");
+
+            // Return the formatted xml string
+            StringWriter stringWriter = new StringWriter();
+            transformer.transform(new DOMSource(document), new StreamResult(stringWriter));
+            return stringWriter.toString();
+        }
+        catch (Exception e)
+        {
+            throw new RuntimeException(e);
+        }
+    }
+
 }
