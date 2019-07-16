@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated Apr 3, 2019, 8:32:55 PM by Hibernate Tools 5.4.2.Final -->
+<hibernate-mapping package="gov.nih.nci.cananolab.domain.common">
+    <class catalog="canano" name="PurityDatum" table="purity_datum">
+        <cache include="all" usage="read-write"/>
+        <id column="datum_pk_id" name="id" type="long">
+            <column name="datum_pk_id"/>
+            <generator class="hilo"/>
+        </id>
+        <property generated="never" lazy="false" name="createdBy" type="string">
+            <column length="200" name="created_by" not-null="true">
+                <comment>created_by</comment>
+            </column>
+        </property>
+        <property generated="never" lazy="false" name="createdDate" type="timestamp">
+            <column length="19" name="created_date" not-null="true">
+                <comment>created_date</comment>
+            </column>
+        </property>
+        <property generated="never" lazy="false" name="name" type="string">
+            <column length="200" name="name" not-null="true">
+                <comment>name</comment>
+            </column>
+        </property>
+        <property generated="never" lazy="false" name="value" type="float">
+            <column name="value" not-null="true" precision="30" scale="10">
+                <comment>value</comment>
+            </column>
+        </property>
+        <property generated="never" lazy="false" name="valueType" type="string">
+            <column length="200" name="value_type">
+                <comment>value_type</comment>
+            </column>
+        </property>
+        <property generated="never" lazy="false" name="valueUnit" type="string">
+            <column length="200" name="value_unit">
+                <comment>value_unit</comment>
+            </column>
+        </property>
+        <property column="numberMod" generated="never" lazy="false"
+                  name="operand" type="string">
+            <column length="20" name="numberMod">
+                <comment>numberMod</comment>
+            </column>
+        </property>
+        <set fetch="select" lazy="true" name="conditionCollection"
+             sort="unsorted" table="purity_datum_condition">
+            <cache include="all" usage="read-write"/>
+            <key>
+                <column name="datum_pk_id" not-null="true">
+                    <comment>purity_datum_pk_id</comment>
+                </column>
+            </key>
+            <many-to-many class="gov.nih.nci.cananolab.domain.common.Condition" unique="false">
+                <column name="condition_pk_id" not-null="true">
+                    <comment>condition_pk_id</comment>
+                </column>
+            </many-to-many>
+        </set>
+        <many-to-one class="gov.nih.nci.cananolab.domain.common.Purity"
+                     fetch="select" name="purity">
+            <column name="purity_pk_id">
+                <comment>purity_pk_id</comment>
+            </column>
+        </many-to-one>
+        <many-to-one class="gov.nih.nci.cananolab.domain.common.File"
+                     fetch="select" name="file">
+            <column name="file_pk_id">
+                <comment>file_pk_id</comment>
+            </column>
+        </many-to-one>
+    </class>
+</hibernate-mapping>

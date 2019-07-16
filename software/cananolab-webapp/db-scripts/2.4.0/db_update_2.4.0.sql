@@ -116,6 +116,7 @@ CREATE TABLE `canano`.`synthesis_func_purification` (
                                                         `design_method_description`         TEXT         NULL     COMMENT 'design_method_description', -- design_method_description
                                                         `created_by`                        VARCHAR(200) NOT NULL COMMENT 'created_by', -- created_by
                                                         `created_date`                      DATETIME     NOT NULL COMMENT 'created_date' -- created_date
+                                                        `yield`                             INTEGER      NOT NULL COMMENT 'yield' 
 )
     COMMENT 'synthesis_func_purification';
 

@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated Apr 3, 2019, 8:32:55 PM by Hibernate Tools 5.4.2.Final -->
+<hibernate-mapping package="gov.nih.nci.cananolab.domain.common">
+    <class catalog="canano" name="Purity" table="purity">
+        <id column="purity_pk_id" name="id" type="long">
+            <column name="purity_pk_id"/>
+            <generator class="hilo"/>
+        </id>
+        <property generated="never" lazy="false" name="createdDate" type="timestamp">
+            <column length="19" name="created_date" not-null="true">
+                <comment>created_date</comment>
+            </column>
+        </property>
+        <property generated="never" lazy="false" name="createdBy" type="string">
+            <column length="200" name="created_by" not-null="true">
+                <comment>created_by</comment>
+            </column>
+        </property>
+        <many-to-one
+                class="gov.nih.nci.cananolab.domain.common.SynthesisFuncPurification"
+                fetch="select" name="synthesisFuncPurification">
+            <column name="synthesis_func_purification_pk_id" not-null="true">
+                <comment>synthesis_func_purification_pk_id</comment>
+            </column>
+        </many-to-one>
+        <set fetch="select" inverse="true" lazy="true"
+             name="purityDatumCollection" sort="unsorted" table="purity_datum">
+            <key>
+                <column name="purity_pk_id">
+                    <comment>purity_pk_id</comment>
+                </column>
+            </key>
+            <one-to-many class="gov.nih.nci.cananolab.domain.common.PurityDatum"/>
+        </set>
+        <set fetch="select" lazy="true" name="files" sort="unsorted" table="purity_file">
+            <key>
+                <column name="purity_pk_id" not-null="true">
+                    <comment>purity_pk_id</comment>
+                </column>
+            </key>
+            <many-to-many entity-name="gov.nih.nci.cananolab.domain.common.File" unique="false">
+                <column name="file_pk_id" not-null="true">
+                    <comment>file_pk_id</comment>
+                </column>
+            </many-to-many>
+        </set>
+    </class>
+</hibernate-mapping>

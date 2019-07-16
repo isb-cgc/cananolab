@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated Apr 3, 2019, 8:32:55 PM by Hibernate Tools 5.4.2.Final -->
+<hibernate-mapping package="gov.nih.nci.cananolab.domain.particle">
+    <class catalog="canano" name="SynthesisFuncPurification" table="synthesis_func_purification">
+        <id column="synthesis_func_purification_pk_id" name="id" type="long">
+            <column name="synthesis_func_purification_pk_id"/>
+            <generator class="hilo"/>
+        </id>
+        <many-to-one class="gov.nih.nci.cananolab.domain.Protocol"
+                     fetch="select" name="protocol">
+            <column name="protocol_pk_id" not-null="true">
+                <comment>protocol_pk_id</comment>
+            </column>
+        </many-to-one>
+        <many-to-one
+                class="gov.nih.nci.cananolab.domain.SynthesisFunctionalization"
+                fetch="select" name="synthesisFunctionalization">
+            <column name="synthesis_funtionalization_pk_id" not-null="true">
+                <comment>synthesis_funtionalization_pk_id</comment>
+            </column>
+        </many-to-one>
+        <property generated="never" lazy="false" name="type" type="string">
+            <column length="200" name="type">
+                <comment>type</comment>
+            </column>
+        </property>
+        <property generated="never" lazy="false" name="methodName" type="string">
+            <column length="200" name="method_name">
+                <comment>method_name</comment>
+            </column>
+        </property>
+        <property generated="never" lazy="false"
+                  name="designMethodDescription" type="string">
+            <column length="65535" name="design_method_description">
+                <comment>design_method_description</comment>
+            </column>
+        </property>
+        <property generated="never" lazy="false" name="createdBy" type="string">
+            <column length="200" name="created_by" not-null="true">
+                <comment>created_by</comment>
+            </column>
+        </property>
+        <property generated="never" lazy="false" name="createdDate" type="timestamp">
+            <column length="19" name="created_date" not-null="true">
+                <comment>created_date</comment>
+            </column>
+        </property>
+        <set fetch="select" inverse="true" lazy="true" name="purities"
+             sort="unsorted" table="purity">
+            <key>
+                <column name="synthesis_func_purification_pk_id" not-null="true">
+                    <comment>synthesis_func_purification_pk_id</comment>
+                </column>
+            </key>
+            <one-to-many class="gov.nih.nci.cananolab.domain.common.Purity"/>
+        </set>
+        <set fetch="select" inverse="true" lazy="true"
+             name="purificationConfigs" sort="unsorted" table="purification_config">
+            <key>
+                <column name="synthesis_func_purification_pk_id">
+                    <comment>synthesis_func_purification_pk_id</comment>
+                </column>
+            </key>
+            <one-to-many class="gov.nih.nci.cananolab.domain.common.PurificationConfig"/>
+        </set>
+    </class>
+</hibernate-mapping>

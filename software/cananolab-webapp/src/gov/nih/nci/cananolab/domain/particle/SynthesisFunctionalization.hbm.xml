@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated Apr 3, 2019, 8:32:55 PM by Hibernate Tools 5.4.2.Final -->
+<hibernate-mapping package="gov.nih.nci.cananolab.domain.particle">
+    <class catalog="canano" name="SynthesisFunctionalization" table="synthesis_functionalization">
+        <id column="synthesis_funtionalization_pk_id" name="id" type="long">
+            <column name="synthesis_funtionalization_pk_id"/>
+            <generator class="hilo"/>
+        </id>
+        <many-to-one class="gov.nih.nci.cananolab.domain.common.Synthesis"
+                     fetch="select" name="synthesis">
+            <column name="synthesis_pk_id">
+                <comment>synthesis_pk_id</comment>
+            </column>
+        </many-to-one>
+        <set fetch="select" inverse="true" lazy="true"
+             name="synthesisFuncPurifications" sort="unsorted" table="synthesis_func_purification">
+            <key>
+                <column name="synthesis_funtionalization_pk_id" not-null="true">
+                    <comment>synthesis_funtionalization_pk_id</comment>
+                </column>
+            </key>
+            <one-to-many class="gov.nih.nci.cananolab.domain.common.SynthesisFuncPurification"/>
+        </set>
+    </class>
+</hibernate-mapping>
