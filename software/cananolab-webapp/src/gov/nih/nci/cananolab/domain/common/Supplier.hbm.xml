@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated Apr 3, 2019, 8:32:55 PM by Hibernate Tools 5.4.2.Final -->
+<hibernate-mapping package="gov.nih.nci.cananolab.domain.common">
+    <class catalog="canano" name="Supplier" table="supplier">
+        <id column="supplier_pk_id" name="id" type="long">
+            <column name="supplier_pk_id"/>
+            <generator class="foreign">
+                <param name="property">functionalizingEntity</param>
+            </generator>
+        </id>
+        <one-to-one class="gov.nih.nci.cananolab.domain.FunctionalizingEntity"
+                    constrained="true" name="functionalizingEntity"/>
+        <property generated="never" lazy="false" name="supplierName" type="string">
+            <column length="200" name="supplier_name" not-null="true"/>
+        </property>
+        <property generated="never" lazy="false" name="lot" type="string">
+            <column length="50" name="lot"/>
+        </property>
+    </class>
+</hibernate-mapping>

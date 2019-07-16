@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated Apr 3, 2019, 8:32:55 PM by Hibernate Tools 5.4.2.Final -->
+<hibernate-mapping package="gov.nih.nci.cananolab.domain.particle">
+    <class catalog="canano" name="Synthesis" table="synthesis">
+        <id column="synthesis_pk_id" name="id" type="long">
+            <column name="synthesis_pk_id"/>
+            <generator class="hilo"/>
+        </id>
+        <many-to-one class="gov.nih.nci.cananolab.domain.particle.Sample"
+                     fetch="select" name="sample">
+            <column name="sample_pk_id" not-null="true">
+                <comment>sample_pk_id</comment>
+            </column>
+        </many-to-one>
+        <set fetch="select" inverse="true" lazy="true"
+             name="synthesisMaterialses" sort="unsorted" table="synthesis_materials">
+            <key>
+                <column name="synthesis_pk_id" not-null="true">
+                    <comment>synthesis_pk_id</comment>
+                </column>
+            </key>
+            <one-to-many class="gov.nih.nci.cananolab.domain.particle.SynthesisMaterials"/>
+        </set>
+        <set fetch="select" lazy="true" name="files" sort="unsorted" table="synthesis_file">
+            <key>
+                <column name="synthesis_pk_id" not-null="true">
+                    <comment>synthesis_pk_id</comment>
+                </column>
+            </key>
+            <many-to-many entity-name="gov.nih.nci.cananolab.domain.common.File" unique="false">
+                <column name="file_pk_id" not-null="true">
+                    <comment>file_pk_id</comment>
+                </column>
+            </many-to-many>
+        </set>
+        <set fetch="select" inverse="true" lazy="true"
+             name="synthesisFunctionalizations" sort="unsorted" table="synthesis_functionalization">
+            <key>
+                <column name="synthesis_pk_id">
+                    <comment>synthesis_pk_id</comment>
+                </column>
+            </key>
+            <one-to-many class="gov.nih.nci.cananolab.domain.common.SynthesisFunctionalization"/>
+        </set>
+    </class>
+</hibernate-mapping>

@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated Apr 3, 2019, 8:32:55 PM by Hibernate Tools 5.4.2.Final -->
+<hibernate-mapping package="gov.nih.nci.cananolab.domain.particle">
+    <class catalog="canano" name="SmeInherentFuntion" table="sme_inherent_funtion">
+        <id column="sme_inherent__function_pk_id" name="id" type="long">
+            <column name="sme_inherent__function_pk_id"/>
+            <generator class="assigned"/>
+        </id>
+        <many-to-one
+                class="gov.nih.nci.cananolab.domain.particle.SynthesisMaterialElement"
+                fetch="select" name="synthesisMaterialElement">
+            <column name="synthesis_material_element_pk_id" not-null="true">
+                <comment>synthesis_material_element_pk_id</comment>
+            </column>
+        </many-to-one>
+        <property generated="never" lazy="false" name="type" type="string">
+            <column length="200" name="type">
+                <comment>type</comment>
+            </column>
+        </property>
+        <property generated="never" lazy="false" name="description" type="string">
+            <column length="65535" name="description">
+                <comment>description</comment>
+            </column>
+        </property>
+    </class>
+</hibernate-mapping>
