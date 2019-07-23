@@ -80,20 +80,7 @@ L-->
 		timeToIdleSeconds="1800"
 		timeToLiveSeconds="100000"
 		overflowToDisk="true"/>
-		
-	<cache name="gov.nih.nci.cananolab.domain.characterization.synthesis.SynthesisCharacterization"
-		maxElementsInMemory="500"
-		eternal="false"
-		timeToIdleSeconds="1800"
-		timeToLiveSeconds="100000"
-		overflowToDisk="true"/>
-		
-	<cache name="gov.nih.nci.cananolab.domain.characterization.synthesis.Purification"
-		maxElementsInMemory="500"
-		eternal="false"
-		timeToIdleSeconds="1800"
-		timeToLiveSeconds="100000"
-		overflowToDisk="true"/>
+
 		
 	<cache name="gov.nih.nci.cananolab.domain.particle.FunctionalizingEntity"
 		maxElementsInMemory="500"
