@@ -1,14 +1,12 @@
 package gov.nih.nci.cananolab.restful.view;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import gov.nih.nci.cananolab.dto.common.PointOfContactBean;
 import gov.nih.nci.cananolab.dto.particle.SampleBean;
 import gov.nih.nci.cananolab.restful.util.SampleUtil;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
-import java.util.SortedSet;
+import java.util.*;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -295,4 +293,36 @@ public class SimpleSampleBean {
 
 	}
 
+
+    @Override
+    public String toString()
+    {
+        return "{\"SimpleSampleBean\":{"
+                + "                        \"sampleId\":\"" + sampleId + "\""
+                + ",                         \"sampleName\":\"" + sampleName + "\""
+                + ",                         \"pointOfContact\":\"" + pointOfContact + "\""
+                + ",                         \"composition\":\"" + composition + "\""
+                + ",                         \"functions\":" + Arrays.toString( functions )
+                + ",                         \"characterizations\":" + Arrays.toString( characterizations )
+                + ",                         \"dataAvailability\":\"" + dataAvailability + "\""
+                + ",                         \"createdDate\":\"" + createdDate + "\""
+                + ",                         \"keywords\":\"" + keywords + "\""
+                + ",                         \"pointOfContactMap\":" + new Gson().toJson(pointOfContactMap )
+                + ",                         \"pocBeanDomainId\":\"" + pocBeanDomainId + "\""
+                + ",                         \"availableEntityNames\":" + Arrays.toString( availableEntityNames )
+                + ",                         \"caNanoLabScore\":\"" + caNanoLabScore + "\""
+                + ",                         \"mincharScore\":\"" + mincharScore + "\""
+                + ",                         \"chemicalAssocs\":" + Arrays.toString( chemicalAssocs )
+                + ",                         \"physicoChars\":" + Arrays.toString( physicoChars )
+                + ",                         \"invitroChars\":" + Arrays.toString( invitroChars )
+                + ",                         \"invivoChars\":" + Arrays.toString( invivoChars )
+                + ",                         \"caNano2MINChar\":" + caNano2MINChar
+                + ",                         \"errors\":" + errors
+                + "}}";
+    }
+
+    public String toJsonString()
+    {
+        return new  GsonBuilder().setPrettyPrinting().create().toJson(this);
+    }
 }

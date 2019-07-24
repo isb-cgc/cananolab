@@ -121,6 +121,10 @@ app.config(function ($routeProvider, $httpProvider) {
         templateUrl: 'views/sample/view/dataColumnHeaderReset.html',
         controller: 'DataColumnHeaderResetCtrl'
       })
+      .when('/noDatumColumn', {
+        templateUrl: 'views/sample/view/noDatumColumn.html',
+        controller: 'NoDatumColumnCtrl'
+      })
       .when('/about', {
         templateUrl: 'views/about.html',
         controller: 'AboutCtrl'

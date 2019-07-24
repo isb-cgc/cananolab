@@ -391,7 +391,7 @@ public class FindingBean
 
 
         // Test each cell for valid value here, so we can give a complete error list.
-        ArrayList<ArrayList<String>> errorDataArray = new ArrayList<>();
+        ArrayList<ArrayList<String>> errorDataArray = new ArrayList<ArrayList<String>>();
         boolean errorFlag = false;
         for( Row row : rows )
         {
@@ -404,7 +404,11 @@ public class FindingBean
 
                     try
                     {
-                        Float errorTestFloat = Float.valueOf( cell.getValue() );
+                        // Don't reject an empty value.
+                        if( ( cell != null ) && (cell.getValue() != null ) && (cell.getValue().length() > 0 ) )
+                        {
+                            Float errorTestFloat = Float.valueOf( cell.getValue() );
+                        }
                     }
                     catch( NumberFormatException e )
                     {

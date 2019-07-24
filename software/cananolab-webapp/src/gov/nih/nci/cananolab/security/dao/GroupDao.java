@@ -15,6 +15,8 @@ public interface GroupDao
 	public int inserGroupMember(Long groupId, String userName);
 	
 	public int updateGroup(Long groupId, String groupDesc);
+
+    public int updateGroupWithName(Long groupId, String groupDesc, String groupName);
 	
 	public List<String> getGroupMembers(Long groupId);
 	

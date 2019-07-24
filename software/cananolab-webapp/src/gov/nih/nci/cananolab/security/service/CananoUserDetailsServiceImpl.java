@@ -17,12 +17,13 @@ import gov.nih.nci.cananolab.security.CananoUserDetails;
 @Component("cananoUserDetailsService")
 public class CananoUserDetailsServiceImpl implements UserDetailsService
 {
-	protected Logger logger = Logger.getLogger(CananoUserDetailsServiceImpl.class);
+
+    protected Logger logger = Logger.getLogger(CananoUserDetailsServiceImpl.class);
 	
 	@Autowired
 	private UserDao userDao;
 	
-	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException
+	public CananoUserDetails loadUserByUsername(String username) throws UsernameNotFoundException
 	{
 		logger.debug("Loading user details: " + username);
 
@@ -30,12 +31,14 @@ public class CananoUserDetailsServiceImpl implements UserDetailsService
 		
 		if (!StringUtils.isEmpty(username))
 		{
-			userDetails = userDao.getUserByName(username);
-			
-			if (userDetails != null)
+
+            userDetails = userDao.getUserByName(username);
+
+            if (userDetails != null)
 			{
 				userDetails.setGroups(userDao.getUserGroups(username));
-				userDetails.setRoles(userDao.getUserRoles(username));
+
+                userDetails.setRoles(userDao.getUserRoles(username));
 			}
 			else
 				throw new UsernameNotFoundException("User: " + username + " not found.");

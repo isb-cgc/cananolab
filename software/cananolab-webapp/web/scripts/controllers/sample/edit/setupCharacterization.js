@@ -911,6 +911,7 @@ var app = angular.module('angularApp')
         // Check here for valid cell data with the new column type.
         initDatumOrCondition();
         checkAllFindingCells();
+
     };
 
     function initDatumOrCondition() {
@@ -1015,6 +1016,7 @@ var app = angular.module('angularApp')
 
     // saves finding info //
     $scope.saveFindingInfo = function() {
+
         $scope.loader = true;
         if ($scope.isNewFinding) {
             $scope.data.finding.push($scope.currentFinding);
@@ -1028,8 +1030,34 @@ var app = angular.module('angularApp')
             }
         };
 
+
+        let haveDatum = false;
+        for( let i0=0; i0 < $scope.data.finding.length; i0++) {
+            for( let i1 = 0; i1 <  $scope.data.finding[i0].columnHeaders.length; i1++ ){
+                if( $scope.data.finding[i0].columnHeaders[i1].columnType === 'datum'){
+                    haveDatum = true;
+                    break;
+                }
+            }
+            if( haveDatum ){
+                break;
+            }
+        }
+
+        if( ! haveDatum ){
+            resetColumnConfirmDialog = $modal.open({
+                templateUrl: 'views/sample/view/noDatumColumn.html',
+                controller: 'NoDatumColumnCtrl',
+                size: 'sm',
+            });
+
+            $scope.loader = false;
+            return;
+        }
+
         $http({method: 'POST', url: '/caNanoLab/rest/characterization/saveFinding',data: $scope.data}).
         success(function(data, status, headers, config) {
+
             $scope.saveButton = "Update";
             $scope.loader = false;
             $scope.data=data;

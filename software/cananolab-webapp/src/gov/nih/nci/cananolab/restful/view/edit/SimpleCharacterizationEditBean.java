@@ -673,5 +673,37 @@ public class SimpleCharacterizationEditBean
 		this.property = property;
 	}
 
-
+    @Override
+    public String toString()
+    {
+        return "{\"SimpleCharacterizationEditBean\":{"
+                + "                        \"type\":\"" + type + "\""
+                + ",                         \"name\":\"" + name + "\""
+                + ",                         \"parentSampleId\":\"" + parentSampleId + "\""
+                + ",                         \"charId\":\"" + charId + "\""
+                + ",                         \"assayType\":\"" + assayType + "\""
+                + ",                         \"protocolId\":\"" + protocolId + "\""
+                + ",                         \"characterizationSourceId\":\"" + characterizationSourceId + "\""
+                + ",                         \"characterizationDate\":" + characterizationDate
+                + ",                         \"charNamesForCurrentType\":" + charNamesForCurrentType
+                + ",                         \"property\":" + property
+                + ",                         \"designMethodsDescription\":\"" + designMethodsDescription + "\""
+                + ",                         \"techniqueInstruments\":" + techniqueInstruments
+                + ",                         \"finding\":" + finding
+                + ",                         \"analysisConclusion\":\"" + analysisConclusion + "\""
+                + ",                         \"selectedOtherSampleNames\":" + selectedOtherSampleNames
+                + ",                         \"copyToOtherSamples\":\"" + copyToOtherSamples + "\""
+                + ",                         \"submitNewChar\":\"" + submitNewChar + "\""
+                + ",                         \"charTypesLookup\":" + charTypesLookup
+                + ",                         \"protocolLookup\":" + protocolLookup
+                + ",                         \"charSourceLookup\":" + charSourceLookup
+                + ",                         \"otherSampleNameLookup\":" + otherSampleNameLookup
+                + ",                         \"datumConditionValueTypeLookup\":" + datumConditionValueTypeLookup
+                + ",                         \"assayTypesByCharNameLookup\":" + assayTypesByCharNameLookup
+                + ",                         \"errors\":" + errors
+                + ",                         \"messages\":" + messages
+                + ",                         \"dirtyFindingBean\":" + dirtyFindingBean
+                + ",                         \"dirtyExperimentBean\":" + dirtyExperimentBean
+                + "}}";
+    }
 }

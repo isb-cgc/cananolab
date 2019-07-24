@@ -1425,6 +1425,12 @@ td:hover.subMenuSecondaryTitleSelectedSample {
         border-radius: 7px
     }
 
+.small-link-text{
+    font-size: 7pt;
+    font-weight: bold;
+}
+
+
 table.summaryViewNoGrid {
     border: 1px solid #0089BB;
 }
