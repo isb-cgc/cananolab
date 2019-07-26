@@ -24,9 +24,8 @@ public class InvitroCharacterization extends Characterization implements Seriali
 	{
 		if(obj instanceof InvitroCharacterization) 
 		{
-			InvitroCharacterization c =(InvitroCharacterization)obj; 			 
-			if(getId() != null && getId().equals(c.getId()))
-				return true;
+			InvitroCharacterization c =(InvitroCharacterization)obj;
+            return getId() != null && getId().equals(c.getId());
 		}
 		return false;
 	}

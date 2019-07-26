@@ -9,43 +9,44 @@ import gov.nih.nci.cananolab.security.AccessControlInfo;
 
 public interface SpringSecurityAclService
 {
-	public boolean checkObjectPublic(Long securedObjectId, Class clazz);
+	boolean checkObjectPublic(Long securedObjectId, Class clazz);
 
-	public boolean currentUserHasWritePermission(Long securedObjectId, Class clazz);
+	boolean currentUserHasWritePermission(Long securedObjectId, Class clazz);
 
-	public boolean currentUserHasDeletePermission(Long securedObjectId, Class clazz);
+	boolean currentUserHasDeletePermission(Long securedObjectId, Class clazz);
 	
-	public boolean currentUserHasReadPermission(Long securedObjectId, Class clazz);
+	boolean currentUserHasReadPermission(Long securedObjectId, Class clazz);
 	
 	
-	public void retractObjectFromPublic(Long securedObjectId, Class clazz);
+	void retractObjectFromPublic(Long securedObjectId, Class clazz);
 
-	public void retractAccessToObjectForSid(Long securedObjectId, Class clazz, String sid);
+	void retractAccessToObjectForSid(Long securedObjectId, Class clazz, String sid);
 	
 
-	public void saveDefaultAccessForNewObject(Long securedObjectId, Class clazz);
+	void saveDefaultAccessForNewObject(Long securedObjectId, Class clazz);
 	
-	public void saveDefaultAccessForNewObjectWithOwner(Long securedObjectId, Class clazz, String owner, List<Permission> rwdPerms, List<Permission> readPerm);
+	void saveDefaultAccessForNewObjectWithOwner(Long securedObjectId, Class clazz, String owner,
+                                                List<Permission> rwdPerms, List<Permission> readPerm);
 
-	public void savePublicAccessForObject(Long securedObjectId, Class clazz);
+	void savePublicAccessForObject(Long securedObjectId, Class clazz);
 
-	public void saveAccessForObject(Long securedObjectId, Class clazz, String recipient, boolean principal, String perms);
+	void saveAccessForObject(Long securedObjectId, Class clazz, String recipient, boolean principal, String perms);
 	
-	public void saveAccessForChildObject(Long parentObjectId, Class parentClass, Long securedObjectId, Class childClass);
+	void saveAccessForChildObject(Long parentObjectId, Class parentClass, Long securedObjectId, Class childClass);
 
 	
-	public boolean isOwnerOfObject(Long securedObjectId, Class clazz);
+	boolean isOwnerOfObject(Long securedObjectId, Class clazz);
 
-	public String getAccessString(Long securedObjectId, Class clazz);
+	String getAccessString(Long securedObjectId, Class clazz);
 
-	public void loadAccessControlInfoForObject(Long securedObjectId, Class clazz, SecuredDataBean accessControlData);
+	void loadAccessControlInfoForObject(Long securedObjectId, Class clazz, SecuredDataBean accessControlData);
 
-	public void deleteAllAccessExceptPublicAndDefault(Long securedObjectId, Class clazz);
+	void deleteAllAccessExceptPublicAndDefault(Long securedObjectId, Class clazz);
 	
-	public void updateObjectOwner(Long securedObjectId, Class clazz, String newOwner);
+	void updateObjectOwner(Long securedObjectId, Class clazz, String newOwner);
 	
-	public void deleteAccessObject(Long securedObjectId, Class clazz);
+	void deleteAccessObject(Long securedObjectId, Class clazz);
 
-	public AccessControlInfo fetchAccessControlInfoForObjectForUser(Long securedObjectId, Class clazz, String recipient);
+	AccessControlInfo fetchAccessControlInfoForObjectForUser(Long securedObjectId, Class clazz, String recipient);
 
 }

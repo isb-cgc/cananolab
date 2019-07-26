@@ -10,7 +10,7 @@ import javax.servlet.http.HttpServletRequest;
 
 public interface CustomSearchService {
 
-	public List<CustomSearchBean> customSearchByKeyword(
-			HttpServletRequest httpRequest, String keyword) throws CustomSearchException, NoAccessException;
+	List<CustomSearchBean> customSearchByKeyword(
+            HttpServletRequest httpRequest, String keyword) throws CustomSearchException, NoAccessException;
 
 }

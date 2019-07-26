@@ -35,9 +35,9 @@ public class PublicationBean extends FileBean {
 	private String sampleNamesStr;
 	private Boolean fromSamplePage = false;
 
-	private String displayName = "";;
+	private String displayName = "";
 
-	public PublicationBean() {
+    public PublicationBean() {
 		domainFile = new Publication();
 		domainFile.setUriExternal(false);
 	}
@@ -80,8 +80,7 @@ public class PublicationBean extends FileBean {
 	 * Copy PubMed data from source PublicationBean to this PublicationBean.
 	 * 
 	 * @param source
-	 * @param taget
-	 */
+     */
 	public void copyPubMedFieldsFromPubMedXML(PublicationBean source) {
 		Publication oldPub = (Publication) this.getDomainFile();
 		Publication xmlPub = (Publication) source.getDomainFile();
@@ -426,6 +425,7 @@ public class PublicationBean extends FileBean {
 		authors.remove(author);
 	}
 
+	//TODO remove?
 	public void resetDomainCopy(String createdBy, Publication copy) {
 		// don't need to reset anything because publications can be shared
 	}

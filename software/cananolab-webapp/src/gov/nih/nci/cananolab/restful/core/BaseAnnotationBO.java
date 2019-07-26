@@ -8,25 +8,6 @@
 
 package gov.nih.nci.cananolab.restful.core;
 
-import java.io.BufferedInputStream;
-import java.io.FileInputStream;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Date;
-import java.util.List;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
-
-import org.apache.commons.lang.StringEscapeUtils;
-import org.springframework.security.acls.domain.BasePermission;
-import org.springframework.security.acls.model.Permission;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
-
 import gov.nih.nci.cananolab.domain.common.File;
 import gov.nih.nci.cananolab.dto.common.DataReviewStatusBean;
 import gov.nih.nci.cananolab.dto.common.FileBean;
@@ -39,7 +20,6 @@ import gov.nih.nci.cananolab.security.AccessControlInfo;
 import gov.nih.nci.cananolab.security.CananoUserDetails;
 import gov.nih.nci.cananolab.security.enums.AccessTypeEnum;
 import gov.nih.nci.cananolab.security.enums.CaNanoRoleEnum;
-import gov.nih.nci.cananolab.security.enums.SecureClassesEnum;
 import gov.nih.nci.cananolab.security.service.SpringSecurityAclService;
 import gov.nih.nci.cananolab.security.utils.SpringSecurityUtil;
 import gov.nih.nci.cananolab.service.BaseService;
@@ -50,6 +30,20 @@ import gov.nih.nci.cananolab.util.Constants;
 import gov.nih.nci.cananolab.util.ExportUtils;
 import gov.nih.nci.cananolab.util.PropertyUtils;
 import gov.nih.nci.cananolab.util.StringUtils;
+import java.io.BufferedInputStream;
+import java.io.FileInputStream;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Date;
+import java.util.List;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+import org.apache.commons.lang.StringEscapeUtils;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
 
 /**
  * Base action for all annotation actions
@@ -139,22 +133,14 @@ public abstract class BaseAnnotationBO extends AbstractDispatchBO
 			
 			ExportUtils.prepareReponseForImage(response, fileBean.getDomainFile().getUri());
 
-			InputStream in = null;
-			OutputStream out = null;
-			try {
-				in = new BufferedInputStream(new FileInputStream(dFile));
-				out = response.getOutputStream();
+			try (InputStream in = new BufferedInputStream(new FileInputStream(dFile)); OutputStream out =
+					response.getOutputStream()) {
 				byte[] bytes = new byte[32768];
 				int numRead = 0;
 				while ((numRead = in.read(bytes)) > 0) {
 					out.write(bytes, 0, numRead);
 				}
-				
-			} finally {
-				if (in != null)
-					in.close();
-				if (out != null)
-					out.close();
+
 			}
 		} else {
 			String msg = PropertyUtil.getProperty("sample", "error.noFile");
@@ -236,7 +222,7 @@ public abstract class BaseAnnotationBO extends AbstractDispatchBO
 					|| fileBean.getExternalUrl().trim().length() == 0) {
 				msgs.add("External URL is required.");
 			}else{
-				if(!InputValidationUtil.isUrlValid(fileBean.getExternalUrl())){
+				if(InputValidationUtil.isUrlValid(fileBean.getExternalUrl())){
 					msgs.add("External URL is invalid");
 				}
 			}
@@ -271,8 +257,7 @@ public abstract class BaseAnnotationBO extends AbstractDispatchBO
 	 * @param request
 	 * @param value
 	 * @param sessionName
-	 * @param attributeName
-	 */
+     */
 	protected void setOtherValueOption(HttpServletRequest request, String value, String sessionName)
 	{
 		if (!StringUtils.isEmpty(value)) {
@@ -287,7 +272,6 @@ public abstract class BaseAnnotationBO extends AbstractDispatchBO
 	 * Returns a partial URL for downloading a file from local/remote host.
 	 * 
 	 * @param request
-	 * @param serviceUrl
 	 * @return
 	 * @throws Exception
 	 */
@@ -403,7 +387,6 @@ public abstract class BaseAnnotationBO extends AbstractDispatchBO
 
 	/**
 	 * 
-	 * @param entityId sample id, publication id, etc.
 	 * @param request
 	 * @param dataId
 	 * @param dataName
@@ -428,10 +411,8 @@ public abstract class BaseAnnotationBO extends AbstractDispatchBO
 		}
 		else if (AccessTypeEnum.GROUP.getAccessType().equalsIgnoreCase(access.getAccessType()))
 			return userDetails.belongsToGroup(access.getRecipient());
-		else if (AccessTypeEnum.USER.getAccessType().equalsIgnoreCase(access.getAccessType()))
-			return true;
-		
-		return false;
+		else return AccessTypeEnum.USER.getAccessType().equalsIgnoreCase(access.getAccessType());
+
 	}
 
 	// check if the entered user name is valid
@@ -440,13 +421,11 @@ public abstract class BaseAnnotationBO extends AbstractDispatchBO
 		if (AccessTypeEnum.USER.getAccessType().equalsIgnoreCase(access.getAccessType()))
 		{
 			UserDetails userDetails = getUserDetailsService().loadUserByUsername(access.getRecipient());
-			if (userDetails != null)
-				return true;
+			return userDetails != null;
 		}
 		else 
 			return true;
-		
-		return false;
+
 	}
 
 	protected List<String> validateAccess(HttpServletRequest request, AccessControlInfo theAccess) throws Exception
@@ -500,7 +479,6 @@ public abstract class BaseAnnotationBO extends AbstractDispatchBO
 	/**
 	 * Another version of validateId() with id value passed in.
 	 * 
-	 * @param request
 	 * @param id
 	 * @return
 	 * @throws Exception

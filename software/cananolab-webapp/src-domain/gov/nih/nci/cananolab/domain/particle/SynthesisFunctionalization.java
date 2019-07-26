@@ -13,7 +13,7 @@ public class SynthesisFunctionalization implements java.io.Serializable {
 
 	private long synthesisFuntionalizationPkId;
 	private Synthesis synthesis;
-	private Set synthesisFuncPurifications = new HashSet(0);
+	private Set synthesisPurifications = new HashSet(0);
 
 	public SynthesisFunctionalization() {
 	}
@@ -26,7 +26,7 @@ public class SynthesisFunctionalization implements java.io.Serializable {
 			Set synthesisFuncPurifications) {
 		this.synthesisFuntionalizationPkId = synthesisFuntionalizationPkId;
 		this.synthesis = synthesis;
-		this.synthesisFuncPurifications = synthesisFuncPurifications;
+		this.synthesisPurifications = synthesisFuncPurifications;
 	}
 
 	public long getId() {
@@ -45,12 +45,12 @@ public class SynthesisFunctionalization implements java.io.Serializable {
 		this.synthesis = synthesis;
 	}
 
-	public Set getSynthesisFuncPurifications() {
-		return this.synthesisFuncPurifications;
+	public Set getSynthesisPurifications() {
+		return this.synthesisPurifications;
 	}
 
-	public void setSynthesisFuncPurifications(Set synthesisFuncPurifications) {
-		this.synthesisFuncPurifications = synthesisFuncPurifications;
+	public void setSynthesisPurifications(Set synthesisFuncPurifications) {
+		this.synthesisPurifications = synthesisFuncPurifications;
 	}
 
 }

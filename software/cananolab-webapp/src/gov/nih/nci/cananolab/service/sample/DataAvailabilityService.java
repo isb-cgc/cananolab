@@ -25,36 +25,33 @@ public interface DataAvailabilityService {
 	 * find data availability for a sample
 	 *
 	 * @param sampleId
-	 * @param securityService
 	 * @return
 	 * @throws DataAvailabilityException
 	 * @throws NoAccessException
 	 * @throws SecurityException
 	 */
-	public Set<DataAvailabilityBean> findDataAvailabilityBySampleId(String sampleId) throws DataAvailabilityException, NoAccessException, SecurityException;
+    Set<DataAvailabilityBean> findDataAvailabilityBySampleId(String sampleId) throws DataAvailabilityException, NoAccessException, SecurityException;
 
 	/**
 	 * save data availability for the sample and persist to database table
 	 *
 	 * @param sampleBean
-	 * @param user
 	 * @return
 	 * @throws DataAvailabilityException
 	 */
 
-	public Set<DataAvailabilityBean> saveDataAvailability(SampleBean sampleBean)
+    Set<DataAvailabilityBean> saveDataAvailability(SampleBean sampleBean)
 			throws DataAvailabilityException, NoAccessException, SecurityException;
 
 	/**
 	 * save data availability for the sample and persist to database table
 	 *
 	 * @param sampleId
-	 * @param user
 	 * @return
 	 * @throws DataAvailabilityException
 	 * @throws SampleException
 	 */
-	public Set<DataAvailabilityBean> saveDataAvailability(String sampleId) throws DataAvailabilityException,
+    Set<DataAvailabilityBean> saveDataAvailability(String sampleId) throws DataAvailabilityException,
 			NoAccessException, SecurityException, SampleException;
 
 	/*
@@ -98,32 +95,29 @@ public interface DataAvailabilityService {
 	 * delete data availability for the sample from database table
 	 *
 	 * @param sampleId
-	 * @param securityService
 	 * @throws DataAvailabilityException
 	 * @throws NoAccessException
 	 * @throws SecurityException
 	 */
-	public void deleteDataAvailability(String sampleId) throws DataAvailabilityException, NoAccessException, SecurityException;
+    void deleteDataAvailability(String sampleId) throws DataAvailabilityException, NoAccessException, SecurityException;
 
 	/**
 	 *
 	 * @param sampleIds
-	 * @param securityService
 	 * @return number of samples that failed
 	 * @throws Exception
 	 */
-	public int saveBatchDataAvailability(List<String> sampleIds) throws Exception;
+    int saveBatchDataAvailability(List<String> sampleIds) throws Exception;
 
-	public void deleteBatchDataAvailability() throws Exception;
+	void deleteBatchDataAvailability() throws Exception;
 
 	/**
 	 *
 	 * @param sampleIds
-	 * @param securityService
 	 * @return number of samples that failed
 	 * @throws Exception
 	 */
-	public int deleteBatchDataAvailability(List<String> sampleIds) throws Exception;
+    int deleteBatchDataAvailability(List<String> sampleIds) throws Exception;
 
-	public List<String> findSampleIdsWithDataAvailability() throws Exception;
+	List<String> findSampleIdsWithDataAvailability() throws Exception;
 }

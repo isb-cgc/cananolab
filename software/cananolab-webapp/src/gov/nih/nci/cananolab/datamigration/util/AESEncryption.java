@@ -29,7 +29,7 @@ public class AESEncryption {
 		try
 		{
 			this.provider = new BouncyCastleProvider();        
-			SecretKeySpec skey = getSKeySpec(passphrase, true);
+			SecretKeySpec skey = getSKeySpec();
 			encryptCipher = Cipher.getInstance(AES_ENCRYPTION_SCHEME,provider);
 			decryptCipher = Cipher.getInstance(AES_ENCRYPTION_SCHEME,provider);            
 			encryptCipher.init(Cipher.ENCRYPT_MODE, skey);
@@ -83,17 +83,16 @@ public class AESEncryption {
 		return bytes2String(cleartext);
 	}
 
-	private SecretKeySpec getSKeySpec(String passphrase, boolean isMD5Hash) {	        
+	private SecretKeySpec getSKeySpec() {
 		try 
 		{
 			MessageDigest md = null;
 			md = MessageDigest.getInstance(MD5_HASH, provider);
 
-			md.update((passphrase + SALT).getBytes(UNICODE_FORMAT));
+			md.update((AESEncryption.passphrase + SALT).getBytes(UNICODE_FORMAT));
 			byte[] thedigest = md.digest();
 
-			SecretKeySpec skeySpec = new SecretKeySpec(thedigest,AES_ALGORITHM);	
-			return skeySpec;
+            return new SecretKeySpec(thedigest,AES_ALGORITHM);
 		} 
 		catch (Exception e) 
 		{

@@ -161,6 +161,7 @@ public class PointOfContactBean {
 		}
 	}
 
+	//TODO Can this be removed?
 	public void resetDomainCopy(String createdBy, PointOfContact copy) {
 		// don't need to set point of contact because POCs are shared
 		// don't need to set organization because organizations are shared

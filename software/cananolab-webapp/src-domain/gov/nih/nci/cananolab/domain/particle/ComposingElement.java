@@ -96,9 +96,8 @@ public class ComposingElement extends AssociatedElement implements Serializable
 	{
 		if(obj instanceof ComposingElement) 
 		{
-			ComposingElement c =(ComposingElement)obj; 			 
-			if(getId() != null && getId().equals(c.getId()))
-				return true;
+			ComposingElement c =(ComposingElement)obj;
+            return getId() != null && getId().equals(c.getId());
 		}
 		return false;
 	}

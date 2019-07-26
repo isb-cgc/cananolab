@@ -6,7 +6,6 @@ import gov.nih.nci.cananolab.dto.common.PointOfContactBean;
 import gov.nih.nci.cananolab.dto.particle.SampleBean;
 import gov.nih.nci.cananolab.restful.sample.InitSampleSetup;
 import gov.nih.nci.cananolab.security.AccessControlInfo;
-import gov.nih.nci.cananolab.security.CananoUserDetails;
 import gov.nih.nci.cananolab.security.enums.CaNanoPermissionEnum;
 import gov.nih.nci.cananolab.security.enums.SecureClassesEnum;
 import gov.nih.nci.cananolab.security.service.SpringSecurityAclService;
@@ -14,15 +13,12 @@ import gov.nih.nci.cananolab.security.service.UserService;
 import gov.nih.nci.cananolab.security.utils.SpringSecurityUtil;
 import gov.nih.nci.cananolab.service.curation.CurationService;
 import gov.nih.nci.cananolab.service.sample.SampleService;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.SortedSet;
-
 import javax.servlet.http.HttpServletRequest;
-
 import org.apache.log4j.Logger;
 
 public class SampleEditGeneralBean {
@@ -33,8 +29,8 @@ public class SampleEditGeneralBean {
 	String newSampleName;
 	long sampleId;
 
-	List<SimplePointOfContactBean> pointOfContacts = new ArrayList<SimplePointOfContactBean>();;
-	List<String> keywords = new ArrayList<String>();
+	List<SimplePointOfContactBean> pointOfContacts = new ArrayList<SimplePointOfContactBean>();
+    List<String> keywords = new ArrayList<String>();
 	Map<String, List<SimpleAccessBean>> accessToSample;
 
 	List<AccessControlInfo> groupAccesses;// = new ArrayList<AccessibilityBean>();
@@ -239,12 +235,8 @@ public class SampleEditGeneralBean {
 		{
 			DataReviewStatusBean reviewStatus = curatorService.findDataReviewStatusBeanByDataId(sampleBean.getDomain().getId().toString());
 
-			if (!SpringSecurityUtil.getPrincipal().isCurator() && (reviewStatus == null || reviewStatus != null && 
-				reviewStatus.getReviewStatus().equals(DataReviewStatusBean.RETRACTED_STATUS))) {
-				this.showReviewButton = true;
-			} else {
-				this.showReviewButton = false;
-			}
+            this.showReviewButton = !SpringSecurityUtil.getPrincipal().isCurator() && (reviewStatus == null || reviewStatus != null &&
+                    reviewStatus.getReviewStatus().equals(DataReviewStatusBean.RETRACTED_STATUS));
 		} else {
 			this.showReviewButton = false;
 		}
@@ -413,13 +405,13 @@ public class SampleEditGeneralBean {
 		//ref. SampleServiceLocalImpl.saveSample()
 		List<String> keywords = this.getKeywords();
 		if (keywords != null) {
-			String keywordString = "";
+			StringBuilder keywordString = new StringBuilder();
 			for (String keyword : keywords) {
-				keywordString += keyword;
-				keywordString += "\r\n";
+				keywordString.append(keyword);
+				keywordString.append("\r\n");
 			}
 
-			destSampleBean.setKeywordsStr(keywordString);
+			destSampleBean.setKeywordsStr(keywordString.toString());
 		}
 
 		destSampleBean.getDomain().setName(this.sampleName);

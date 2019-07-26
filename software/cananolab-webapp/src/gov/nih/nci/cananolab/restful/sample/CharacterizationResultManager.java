@@ -58,9 +58,8 @@ public class CharacterizationResultManager {
 		if (otherCharConditionNames != null) {
 			conditions.addAll(otherCharConditionNames);
 		}
-		
-		List<String> nms = new ArrayList<String>();
-		nms.addAll(conditions);
+
+		List<String> nms = new ArrayList<String>(conditions);
 		nms.add("other");
 		return nms;
 	}
@@ -80,9 +79,9 @@ public class CharacterizationResultManager {
 		if (otherConditionProperties != null) {
 			properties.addAll(otherConditionProperties);
 		}
-		
-		List<String> props = new ArrayList<String>();
-		props.addAll(properties);
+
+		List<String> props = new ArrayList<String>(properties);
+		//TODO this isn't returning the actual list with "other" added.
 		CommonUtil.addOtherToList(props);
 		
 		return props;
@@ -111,9 +110,8 @@ public class CharacterizationResultManager {
 		if (otherColumnNames != null) {
 			names.addAll(otherColumnNames);
 		}
-		
-		List<String> nms = new ArrayList<String>();
-		nms.addAll(names);
+
+		List<String> nms = new ArrayList<String>(names);
 		nms.add("other");
 		return nms;
 	}
@@ -191,10 +189,10 @@ public class CharacterizationResultManager {
 		if (otherValueUnits != null) {
 			units.addAll(otherValueUnits);
 		}
-		
-		List<String> unitList = new ArrayList<String>();
-		unitList.addAll(units);
+
+		List<String> unitList = new ArrayList<String>(units);
 		if (addOther)
+			//TODO this isn't returning the actual list with "other" added.
 			CommonUtil.addOtherToList(unitList);
 		return unitList;
 	}
@@ -218,10 +216,10 @@ public class CharacterizationResultManager {
 		if (numberModifiers != null) {
 			units.addAll(numberModifiers);
 		}
-		
-		List<String> unitList = new ArrayList<String>();
-		unitList.addAll(units);
+
+		List<String> unitList = new ArrayList<String>(units);
 		if (addOther)
+			//TODO this isn't returning the actual list with "other" added.
 			CommonUtil.addOtherToList(unitList);
 		return unitList;
 	}
@@ -371,11 +369,8 @@ public class CharacterizationResultManager {
 		if (!header.getValueUnit().matches(Constants.UNIT_PATTERN)) {
 			return false;
 		}
-		if (!StringUtils.xssValidate(header.getConstantValue())) {
-			return false;
-		}
-		return true;
-	}
+        return StringUtils.xssValidate(header.getConstantValue());
+    }
 
 	public String getSubmitColumnPage(int columnNumber)
 			throws ServletException, IOException, BaseException {
@@ -383,8 +378,7 @@ public class CharacterizationResultManager {
 			WebContext wctx = WebContextFactory.get();
 			String page = "/sample/characterization/shared/bodySubmitDataConditionMatrixColumn.jsp?cInd="
 					+ columnNumber;
-			String content = wctx.forwardToString(page);
-			return content;
+			return wctx.forwardToString(page);
 		} catch (Exception e) {
 			return "";
 		}

@@ -72,10 +72,6 @@ public class PublicationServiceLocalImpl extends BaseServiceLocalImpl implements
 	/**
 	 * Persist a new publication or update an existing publication
 	 *
-	 * @param publication
-	 * @param sampleNames
-	 * @param fileData
-	 * @param authors
 	 * @throws Exception
 	 */
 	public void savePublication(PublicationBean publicationBean) throws PublicationException, NoAccessException
@@ -275,8 +271,7 @@ public class PublicationServiceLocalImpl extends BaseServiceLocalImpl implements
 
 	public int getNumberOfPublicPublications() throws PublicationException {
 		try {
-			int count = publicationServiceHelper.getNumberOfPublicPublications();
-			return count;
+            return publicationServiceHelper.getNumberOfPublicPublications();
 		} catch (Exception e) {
 			String err = "Error finding counts of public publication.";
 			logger.error(err, e);
@@ -286,8 +281,7 @@ public class PublicationServiceLocalImpl extends BaseServiceLocalImpl implements
 
 	public int getNumberOfPublicPublicationsForJob() throws PublicationException {
 		try {
-			int count = publicationServiceHelper.getNumberOfPublicPublicationsForJob();
-			return count;
+            return publicationServiceHelper.getNumberOfPublicPublicationsForJob();
 		} catch (Exception e) {
 			String err = "Error finding counts of public publication.";
 			logger.error(err, e);
@@ -298,9 +292,7 @@ public class PublicationServiceLocalImpl extends BaseServiceLocalImpl implements
 	/**
 	 * Remove sample-publication association for an existing publication.
 	 *
-	 * @param sampleId
 	 * @param publication
-	 * @param user
 	 * @throws PublicationException
 	 *             , NoAccessException
 	 */

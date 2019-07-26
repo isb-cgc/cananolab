@@ -24,10 +24,10 @@
             </column>
         </property>
         <many-to-one
-                class="gov.nih.nci.cananolab.domain.common.SynthesisFuncPurification"
-                fetch="select" name="synthesisFuncPurification">
-            <column name="synthesis_func_purification_pk_id">
-                <comment>synthesis_func_purification_pk_id</comment>
+                class="gov.nih.nci.cananolab.domain.common.SynthesisPurification"
+                fetch="select" name="synthesisPurification">
+            <column name="synthesis_purification_pk_id">
+                <comment>synthesis_purification_pk_id</comment>
             </column>
         </many-to-one>
         <many-to-one class="gov.nih.nci.cananolab.domain.common.Technique"

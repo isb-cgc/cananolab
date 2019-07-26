@@ -23,9 +23,8 @@ public class Pharmacokinetics extends InvivoCharacterization implements Serializ
 	{
 		if(obj instanceof Pharmacokinetics) 
 		{
-			Pharmacokinetics c =(Pharmacokinetics)obj; 			 
-			if(getId() != null && getId().equals(c.getId()))
-				return true;
+			Pharmacokinetics c =(Pharmacokinetics)obj;
+            return getId() != null && getId().equals(c.getId());
 		}
 		return false;
 	}

@@ -87,10 +87,8 @@ public class CompositionExporter {
 	 * bodyChemicalAssociationSummaryView.jsp
 	 *
 	 * @param compBean
-	 * @param sheet
 	 * @param headerStyle
-	 * @param rowIndex
-	 */
+     */
 	private static int outputChemicalEntities(CompositionBean compBean,
 			HSSFWorkbook wb, HSSFCellStyle headerStyle,
 			HSSFCellStyle hlinkStyle, int entityCount, String downloadURL) {
@@ -211,7 +209,6 @@ public class CompositionExporter {
 	/**
 	 * Output Composition File info => bodyCompositionFileSummaryView.jsp
 	 *
-	 * @param fileBeans
 	 * @param sheet
 	 * @param headerStyle
 	 * @param rowIndex
@@ -362,10 +359,8 @@ public class CompositionExporter {
 	 * Output Composition Files data => bodyCompositionFileSummaryView.jsp
 	 *
 	 * @param compBean
-	 * @param sheet
 	 * @param headerStyle
-	 * @param rowIndex
-	 */
+     */
 	private static int outputFilesEntities(CompositionBean compBean,
 			HSSFWorkbook wb, HSSFCellStyle headerStyle,
 			HSSFCellStyle hlinkStyle, int entityCount, String downloadURL) {
@@ -476,10 +471,8 @@ public class CompositionExporter {
 	 * bodyFunctionalizingEntitySummaryView.jsp
 	 *
 	 * @param compBean
-	 * @param sheet
 	 * @param headerStyle
-	 * @param rowIndex
-	 */
+     */
 	private static int outputFunctionalEntities(CompositionBean compBean,
 			HSSFWorkbook wb, HSSFCellStyle headerStyle,
 			HSSFCellStyle hlinkStyle, int entityCount, String downloadURL) {

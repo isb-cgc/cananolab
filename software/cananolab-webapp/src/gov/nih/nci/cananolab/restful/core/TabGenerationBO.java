@@ -37,8 +37,8 @@ public class TabGenerationBO {
 				
 				tabWithLink = new String[2];
 				tabWithLink[0] = "PROTOCOLS";
-				tabWithLink[1] =  urlBase + "#/manageProtocols";;
-				tabs.add(tabWithLink);
+				tabWithLink[1] =  urlBase + "#/manageProtocols";
+                tabs.add(tabWithLink);
 				
 				tabWithLink = new String[2];
 				tabWithLink[0] = "SAMPLES";
@@ -47,8 +47,8 @@ public class TabGenerationBO {
 				
 				tabWithLink = new String[2];
 				tabWithLink[0] = "PUBLICATIONS";
-				tabWithLink[1] =  urlBase + "#/managePublications";;
-				tabs.add(tabWithLink);
+				tabWithLink[1] =  urlBase + "#/managePublications";
+                tabs.add(tabWithLink);
 			}
 			tabWithLink = new String[2];
 			tabWithLink[0] = "HELP";
@@ -62,8 +62,8 @@ public class TabGenerationBO {
 			if (homePage.length() == 0 || !homePage.startsWith("true")) {
 				tabWithLink = new String[2];
 				tabWithLink[0] = "LOGIN";
-				tabWithLink[1] =  urlBase + "index.html#/login";;
-				tabs.add(tabWithLink);
+				tabWithLink[1] =  urlBase + "index.html#/login";
+                tabs.add(tabWithLink);
 			}
 		} else {
 			
@@ -75,24 +75,24 @@ public class TabGenerationBO {
 			
 			tabWithLink = new String[2];
 			tabWithLink[0] = "WORKFLOW";
-			tabWithLink[1] =  urlBase + "#/workflow";;
-			tabs.add(tabWithLink);
+			tabWithLink[1] =  urlBase + "#/workflow";
+            tabs.add(tabWithLink);
 			
 
 			tabWithLink = new String[2];
 			tabWithLink[0] = "PROTOCOLS";
-			tabWithLink[1] =  urlBase + "#/manageProtocols";;
-			tabs.add(tabWithLink);
+			tabWithLink[1] =  urlBase + "#/manageProtocols";
+            tabs.add(tabWithLink);
 
 			tabWithLink = new String[2];
 			tabWithLink[0] = "SAMPLES";
-			tabWithLink[1] =  urlBase + "#/manageSamples";;
-			tabs.add(tabWithLink);
+			tabWithLink[1] =  urlBase + "#/manageSamples";
+            tabs.add(tabWithLink);
 
 			tabWithLink = new String[2];
 			tabWithLink[0] = "PUBLICATIONS";
-			tabWithLink[1] =  urlBase + "#/managePublications";;
-			tabs.add(tabWithLink);
+			tabWithLink[1] =  urlBase + "#/managePublications";
+            tabs.add(tabWithLink);
 			
 			tabWithLink = new String[2];
 			tabWithLink[0] = "GROUPS";
@@ -117,13 +117,13 @@ public class TabGenerationBO {
 			
 			tabWithLink = new String[2];
 			tabWithLink[0] = "MY WORKSPACE";
-			tabWithLink[1] =  urlBase + "#/myWorkspace";;
-			tabs.add(tabWithLink);
+			tabWithLink[1] =  urlBase + "#/myWorkspace";
+            tabs.add(tabWithLink);
 			
 			tabWithLink = new String[2];
 			tabWithLink[0] = "MY FAVORITES";
-			tabWithLink[1] =  urlBase + "#/myFavorites";;
-			tabs.add(tabWithLink);
+			tabWithLink[1] =  urlBase + "#/myFavorites";
+            tabs.add(tabWithLink);
 			
 //			tabWithLink = new String[2];
 //			tabWithLink[0] = "HELP";
@@ -145,8 +145,8 @@ public class TabGenerationBO {
 			
 			tabWithLink = new String[2];
 			tabWithLink[0] = "LOGOUT";
-			tabWithLink[1] =  urlBase + "index.html#/logout";;
-			tabs.add(tabWithLink);
+			tabWithLink[1] =  urlBase + "index.html#/logout";
+            tabs.add(tabWithLink);
 		}
 		
 		tabsBean.setTabs(tabs);

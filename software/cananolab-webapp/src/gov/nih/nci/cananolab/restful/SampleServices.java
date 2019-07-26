@@ -1,5 +1,26 @@
 package gov.nih.nci.cananolab.restful;
 
+import java.nio.charset.StandardCharsets;
+import java.util.List;
+import java.util.Map;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.ws.rs.DefaultValue;
+import javax.ws.rs.GET;
+import javax.ws.rs.POST;
+import javax.ws.rs.Path;
+import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
+import javax.ws.rs.core.Context;
+import javax.ws.rs.core.Response;
+import javax.xml.transform.OutputKeys;
+import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.stream.StreamResult;
+import javax.xml.transform.stream.StreamSource;
+
+import java.io.*;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonParser;
@@ -1219,7 +1240,7 @@ public class SampleServices {
             transformer.setOutputProperty( OutputKeys.ENCODING, "UTF-8");
             transformer.setOutputProperty(OutputKeys.INDENT, "yes");
             transformer.transform(source, result);
-            return xmlFormat( writer.toString(), 4);
+            return xmlFormat( writer.toString());
         }
         catch (Exception e)
         {
@@ -1271,15 +1292,14 @@ public class SampleServices {
      * Format (indent etc.) XML
      *
      * @param xml
-     * @param indent  number of spaces per indent.
      * @return formatted xml
      */
-    private String xmlFormat( String xml, int indent ) {
+    private String xmlFormat(String xml) {
         try {
             // Turn xml string into a document
             Document document = DocumentBuilderFactory.newInstance()
                     .newDocumentBuilder()
-                    .parse(new InputSource(new ByteArrayInputStream(xml.getBytes( StandardCharsets.UTF_8 ))));
+                    .parse(new InputSource(new ByteArrayInputStream(xml.getBytes(StandardCharsets.UTF_8))));
 
             // Remove whitespaces outside tags
             document.normalize();
@@ -1295,7 +1315,7 @@ public class SampleServices {
 
             // Setup transformer options
             TransformerFactory transformerFactory = TransformerFactory.newInstance();
-            transformerFactory.setAttribute("indent-number", indent);
+            transformerFactory.setAttribute("indent-number", 4);
             Transformer transformer = transformerFactory.newTransformer();
             transformer.setOutputProperty(OutputKeys.ENCODING, "UTF-8");
             transformer.setOutputProperty(OutputKeys.OMIT_XML_DECLARATION, "yes");

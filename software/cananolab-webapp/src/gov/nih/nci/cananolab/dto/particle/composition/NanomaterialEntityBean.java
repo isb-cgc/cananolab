@@ -392,14 +392,14 @@ public class NanomaterialEntityBean extends BaseCompositionEntityBean {
 			if (StringUtils.isEmpty(isPolymerized)) {
 				liposome.setPolymerized(null);
 			} else {
-				liposome.setPolymerized(new Boolean(isPolymerized));
+				liposome.setPolymerized(Boolean.valueOf(isPolymerized));
 			}
 		}
 		if (emulsion != null) {
 			if (StringUtils.isEmpty(isPolymerized)) {
 				emulsion.setPolymerized(null);
 			} else {
-				emulsion.setPolymerized(new Boolean(isPolymerized));
+				emulsion.setPolymerized(Boolean.valueOf(isPolymerized));
 			}
 		}
 		if (dendrimer != null && dendrimer.getGeneration() != null
@@ -434,7 +434,7 @@ public class NanomaterialEntityBean extends BaseCompositionEntityBean {
 			if (StringUtils.isEmpty(isCrossLinked)) {
 				polymer.setCrossLinked(null);
 			} else {
-				polymer.setCrossLinked(new Boolean(isCrossLinked));
+				polymer.setCrossLinked(Boolean.valueOf(isCrossLinked));
 			}
 		}
 	}

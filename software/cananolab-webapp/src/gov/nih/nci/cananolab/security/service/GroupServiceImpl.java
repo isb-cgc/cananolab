@@ -108,14 +108,12 @@ public class GroupServiceImpl implements GroupService
 
 	@Override
 	public List<Group> getGroupsAccessibleToUser(String userName) {
-		List<Group> groups = groupDao.getGroupsWithMember(userName);
-		return groups;
+        return groupDao.getGroupsWithMember(userName);
 	}
 
 	@Override
 	public List<Group> getAllGroups() {
-		List<Group> groups = groupDao.getAllGroups();
-		return groups;
+        return groupDao.getAllGroups();
 	}
 
 }

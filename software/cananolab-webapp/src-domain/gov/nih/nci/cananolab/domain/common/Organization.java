@@ -148,7 +148,7 @@ public class Organization  implements Serializable
 	}
 	
 	/**
-	* Any system designed to expedite the sorting and delivery of mail by assigning a series of alphanumeric codes to each delivery area.  Also used to refer to any individual delivery area code.
+	* Any gov.nih.nci.cananolab.system designed to expedite the sorting and delivery of mail by assigning a series of alphanumeric codes to each delivery area.  Also used to refer to any individual delivery area code.
 	**/
 	
 	private String postalCode;
@@ -266,9 +266,8 @@ public class Organization  implements Serializable
 	{
 		if(obj instanceof Organization) 
 		{
-			Organization c =(Organization)obj; 			 
-			if(getId() != null && getId().equals(c.getId()))
-				return true;
+			Organization c =(Organization)obj;
+            return getId() != null && getId().equals(c.getId());
 		}
 		return false;
 	}

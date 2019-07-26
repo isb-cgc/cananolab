@@ -6,15 +6,10 @@ import gov.nih.nci.cananolab.dto.particle.AdvancedSampleSearchBean;
 import gov.nih.nci.cananolab.restful.bean.LabelValueBean;
 import gov.nih.nci.cananolab.restful.bean.SimpleAdvancedResultCellBean;
 import gov.nih.nci.cananolab.restful.bean.SimpleAdvancedResultCellUnitBean;
-import gov.nih.nci.cananolab.service.security.UserBean;
-
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
 import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.log4j.Logger;
 import org.codehaus.jackson.annotate.JsonIgnore;
@@ -128,7 +123,6 @@ public class SimpleAdvancedSearchSampleBean extends SimpleSearchSampleBean {
 	 * 
 	 * @param items
 	 * @param colName
-	 * @param dataMap
 	 * @return
 	 */
 	protected List<SimpleAdvancedResultCellUnitBean> transferFromLinkableItems(List<LinkableItem> items, 
@@ -147,14 +141,14 @@ public class SimpleAdvancedSearchSampleBean extends SimpleSearchSampleBean {
 			
 			SimpleAdvancedResultCellUnitBean unit = new SimpleAdvancedResultCellUnitBean();
 			
-			String names = "";
+			StringBuilder names = new StringBuilder();
 			for (String dnStr : dnStrs) {
 				if (names.length() > 0)
-					names += "<br>";
-				names += dnStr;
+					names.append("<br>");
+				names.append(dnStr);
 			}
 			
-			unit.setDisplayName(names);
+			unit.setDisplayName(names.toString());
 			//displayables.add(names);
 			
 			if (dataId != null) {

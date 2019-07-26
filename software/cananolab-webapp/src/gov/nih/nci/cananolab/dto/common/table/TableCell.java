@@ -1,4 +1,4 @@
-/*L
+/*
  *  Copyright SAIC
  *  Copyright SAIC-Frederick
  *
@@ -6,10 +6,12 @@
  *  See http://ncip.github.com/cananolab/LICENSE.txt for details.
  */
 
-package gov.nih.nci.cananolab.dto.common;
+package gov.nih.nci.cananolab.dto.common.table;
 
 import gov.nih.nci.cananolab.domain.common.Condition;
 import gov.nih.nci.cananolab.domain.common.Datum;
+import gov.nih.nci.cananolab.domain.common.PurityDatum;
+import gov.nih.nci.cananolab.dto.common.FindingBean;
 import gov.nih.nci.cananolab.util.Constants;
 import gov.nih.nci.cananolab.util.StringUtils;
 
@@ -22,15 +24,16 @@ import java.util.Date;
  *
  */
 public class TableCell {
-	private String value;
-	private String operand = "=";
-	private String datumOrCondition;
-	private Datum datum = new Datum();
-	private Condition condition = new Condition();
+	String value;
+	String operand = "=";
+	String datumOrCondition;
+	Datum datum = new Datum();
+	Condition condition = new Condition();
+	PurityDatum purityDatum = new PurityDatum();
 
 	// FR# 26194, matrix column order.
-	private Integer columnOrder;
-	private Date createdDate;
+	Integer columnOrder;
+	Date createdDate;
 
 	public TableCell() {
 	}
@@ -58,6 +61,33 @@ public class TableCell {
 			this.operand = datum.getOperand();
 		}
 		this.datum = datum;
+		this.condition = null;
+		this.createdDate = datum.getCreatedDate();
+	}
+
+	public TableCell(PurityDatum datum) {
+		this.datumOrCondition = FindingBean.DATUM_TYPE;
+		// display bogus placeholder datum as emtpy string
+		if (datum.getValue() == null
+				|| datum.getValue() == -1
+				&& datum.getCreatedBy().contains(
+				Constants.PLACEHOLDER_DATUM_CONDITION_CREATED_BY)) {
+			this.value = "";
+		}
+		// remove .0 from boolean
+		else if (datum.getValueType() != null
+				&& datum.getValueType().equals("boolean")) {
+			if (datum.getValue() == 1) {
+				// remove .0 from number
+				this.value = "1";
+			} else if (datum.getValue() == 0) {
+				this.value = "0";
+			}
+		} else {
+			this.value = datum.getValue().toString();
+			this.operand = datum.getOperand();
+		}
+		this.purityDatum = datum;
 		this.condition = null;
 		this.createdDate = datum.getCreatedDate();
 	}
@@ -106,6 +136,12 @@ public class TableCell {
 
 	public void setDatum(Datum datum) {
 		this.datum = datum;
+	}
+
+	public PurityDatum getPurityDatum() {return purityDatum;}
+
+	public void setPurityDatum(PurityDatum purityDatum){
+		this.purityDatum = purityDatum;
 	}
 
 	public Condition getCondition() {

@@ -38,98 +38,96 @@ public interface SampleService extends BaseService {
 	/**
 	 * Persist a new sample or update an existing sample
 	 *
-	 * @param sample
-	 *
 	 * @throws SampleException
 	 *             , DuplicateEntriesException
 	 */
-	public void saveSample(SampleBean sampleBean) throws SampleException,
+    void saveSample(SampleBean sampleBean) throws SampleException,
 			DuplicateEntriesException, NoAccessException;
 
-	public List<String> findSampleIdsBy(String sampleName,
-			String samplePointOfContact, String[] nanomaterialEntityClassNames,
-			String[] otherNanomaterialEntityTypes,
-			String[] functionalizingEntityClassNames,
-			String[] otherFunctionalizingEntityTypes,
-			String[] functionClassNames, String[] otherFunctionTypes,
-			String[] characterizationClassNames,
-			String[] otherCharacterizationTypes, String[] wordList)
+	List<String> findSampleIdsBy(String sampleName,
+                                 String samplePointOfContact, String[] nanomaterialEntityClassNames,
+                                 String[] otherNanomaterialEntityTypes,
+                                 String[] functionalizingEntityClassNames,
+                                 String[] otherFunctionalizingEntityTypes,
+                                 String[] functionClassNames, String[] otherFunctionTypes,
+                                 String[] characterizationClassNames,
+                                 String[] otherCharacterizationTypes, String[] wordList)
 			throws SampleException;
 
-	public SampleBean findSampleById(String sampleId, Boolean loadAccessInfo)
+	SampleBean findSampleById(String sampleId, Boolean loadAccessInfo)
 			throws SampleException, NoAccessException;
 
-	public SampleBean findSampleByName(String sampleName)
+	SampleBean findSampleByName(String sampleName)
 			throws SampleException, NoAccessException;
 
-	public int getNumberOfPublicSamplesForJob() throws SampleException;
+	int getNumberOfPublicSamplesForJob() throws SampleException;
 
-	public PointOfContactBean findPointOfContactById(String pocId) throws PointOfContactException;
+	PointOfContactBean findPointOfContactById(String pocId) throws PointOfContactException;
 
-	public List<PointOfContactBean> findPointOfContactsBySampleId(String sampleId) throws PointOfContactException;
+	List<PointOfContactBean> findPointOfContactsBySampleId(String sampleId) throws PointOfContactException;
 
-	public SortedSet<String> getAllOrganizationNames() throws PointOfContactException;
+	SortedSet<String> getAllOrganizationNames() throws PointOfContactException;
 
-	public void savePointOfContact(PointOfContactBean pointOfContactBean)
+	void savePointOfContact(PointOfContactBean pointOfContactBean)
 			throws PointOfContactException, NoAccessException;
 
-	public List<String> findSampleIdsByAdvancedSearch(
-			AdvancedSampleSearchBean searchBean) throws SampleException;
+	List<String> findSampleIdsByAdvancedSearch(
+            AdvancedSampleSearchBean searchBean) throws SampleException;
 
-	public AdvancedSampleBean findAdvancedSampleByAdvancedSearch(
-			String sampleName, AdvancedSampleSearchBean searchBean)
+	AdvancedSampleBean findAdvancedSampleByAdvancedSearch(
+            String sampleName, AdvancedSampleSearchBean searchBean)
 			throws SampleException;
 
-	public SampleBean cloneSample(String originalSampleName,
-			String newSampleName) throws SampleException, NoAccessException,
+	SampleBean cloneSample(String originalSampleName,
+                           String newSampleName) throws SampleException, NoAccessException,
 			DuplicateEntriesException, NotExistException;
 
-	public void deleteSample(String sampleName) throws SampleException,
+	void deleteSample(String sampleName) throws SampleException,
 			NoAccessException, NotExistException;
 
-	public int getNumberOfPublicSampleSources() throws SampleException;
+	int getNumberOfPublicSampleSources() throws SampleException;
 	
-	public int getNumberOfPublicSampleSourcesForJob() throws SampleException;
+	int getNumberOfPublicSampleSourcesForJob() throws SampleException;
 
-	public List<String> findOtherSampleNamesFromSamePrimaryOrganization(
-			String sampleId) throws SampleException;
+	List<String> findOtherSampleNamesFromSamePrimaryOrganization(
+            String sampleId) throws SampleException;
 	
-	public void assignAccessibility(AccessControlInfo accessInfo, Sample sample) throws SampleException, NoAccessException;
+	void assignAccessibility(AccessControlInfo accessInfo, Sample sample) throws SampleException, NoAccessException;
 
-	public void removeAccessibility(AccessControlInfo access, Sample sample)
+	void removeAccessibility(AccessControlInfo access, Sample sample)
 			throws SampleException, NoAccessException;
 
 	//may not be used
 	/*public List<String> removeAccesses(Sample sample, Boolean removeLater)
 			throws SampleException, NoAccessException;*/
 
-	public List<String> findSampleIdsByOwner(String currentOwner) throws SampleException;
+	List<String> findSampleIdsByOwner(String currentOwner) throws SampleException;
 	
-	public List<String> findSampleIdsSharedWithUser(CananoUserDetails userDetails) throws SampleException;
+	List<String> findSampleIdsSharedWithUser(CananoUserDetails userDetails) throws SampleException;
 
-	public SampleBasicBean findSampleBasicById(String sampleId, Boolean loadAccessInfo)
+	SampleBasicBean findSampleBasicById(String sampleId, Boolean loadAccessInfo)
 			throws SampleException, NoAccessException;
 	
-	public Map<String, String> findSampleIdNamesByAdvancedSearch (AdvancedSampleSearchBean searchBean) 
+	Map<String, String> findSampleIdNamesByAdvancedSearch(AdvancedSampleSearchBean searchBean)
 			throws SampleException;
 	
-	public SampleBasicBean findSWorkspaceSampleById(String sampleId, boolean loadAccessInfo)
+	SampleBasicBean findSWorkspaceSampleById(String sampleId, boolean loadAccessInfo)
 			throws SampleException, NoAccessException;
 	
-	public List<Sample> findSamplesBy(String sampleName,
-			String samplePointOfContact, String[] nanomaterialEntityClassNames,
-			String[] otherNanomaterialEntityTypes,
-			String[] functionalizingEntityClassNames,
-			String[] otherFunctionalizingEntityTypes,
-			String[] functionClassNames, String[] otherFunctionTypes,
-			String[] characterizationClassNames,
-			String[] otherCharacterizationTypes, String[] wordList)
+	List<Sample> findSamplesBy(String sampleName,
+                               String samplePointOfContact, String[] nanomaterialEntityClassNames,
+                               String[] otherNanomaterialEntityTypes,
+                               String[] functionalizingEntityClassNames,
+                               String[] otherFunctionalizingEntityTypes,
+                               String[] functionClassNames, String[] otherFunctionTypes,
+                               String[] characterizationClassNames,
+                               String[] otherCharacterizationTypes, String[] wordList)
 			throws SampleException;
 	
-	public void updatePOCAssociatedWithCharacterizations(String sampleName, Long oldPOCId, Long newPOCId) throws SampleException;
+	void updatePOCAssociatedWithCharacterizations(String sampleName, Long oldPOCId, Long newPOCId) throws SampleException;
 	
-	public List<String> findSampleNamesBy(String nameStr) throws Exception;
+	List<String> findSampleNamesBy(String nameStr) throws Exception;
 	
-	public void setUpdateDeleteFlags(SampleBean sample);
+	void setUpdateDeleteFlags(SampleBean sample);
 	
 }

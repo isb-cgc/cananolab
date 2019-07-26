@@ -35,10 +35,6 @@ public class BatchOwnershipTransferProcess extends LongRunningProcess {
 	/**
 	 * Find the sampleIds to process
 	 *
-	 * @param dataAvailabilityService
-	 * @param securityService
-	 * @param batchOption
-	 * @param user
 	 * @throws Exception
 	 */
 	public BatchOwnershipTransferProcess(

@@ -23,9 +23,8 @@ public class BloodContact extends InvitroCharacterization implements Serializabl
 	{
 		if(obj instanceof BloodContact) 
 		{
-			BloodContact c =(BloodContact)obj; 			 
-			if(getId() != null && getId().equals(c.getId()))
-				return true;
+			BloodContact c =(BloodContact)obj;
+            return getId() != null && getId().equals(c.getId());
 		}
 		return false;
 	}

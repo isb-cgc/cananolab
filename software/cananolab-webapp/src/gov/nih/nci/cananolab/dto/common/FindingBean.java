@@ -12,6 +12,7 @@ import gov.nih.nci.cananolab.domain.common.Condition;
 import gov.nih.nci.cananolab.domain.common.Datum;
 import gov.nih.nci.cananolab.domain.common.File;
 import gov.nih.nci.cananolab.domain.common.Finding;
+import gov.nih.nci.cananolab.dto.common.table.TableCell;
 import gov.nih.nci.cananolab.util.Comparators;
 import gov.nih.nci.cananolab.util.Constants;
 import gov.nih.nci.cananolab.util.DateUtils;
@@ -584,11 +585,8 @@ public class FindingBean
         if( obj instanceof FindingBean )
         {
             FindingBean findingBean = (FindingBean) obj;
-            if( domain.getId() != null
-                    && domain.getId().equals( findingBean.getDomain().getId() ) )
-            {
-                return true;
-            }
+            return domain.getId() != null
+                    && domain.getId().equals(findingBean.getDomain().getId());
         }
         return false;
     }

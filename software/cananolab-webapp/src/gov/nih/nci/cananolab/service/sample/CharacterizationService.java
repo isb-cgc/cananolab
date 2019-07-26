@@ -30,32 +30,32 @@ import java.util.List;
  */
 public interface CharacterizationService extends BaseService {
 
-	public void saveCharacterization(SampleBean sampleBean,
-			CharacterizationBean achar) throws Exception;
+	void saveCharacterization(SampleBean sampleBean,
+                              CharacterizationBean achar) throws Exception;
 
-	public CharacterizationBean findCharacterizationById(String charId)
+	CharacterizationBean findCharacterizationById(String charId)
 			throws CharacterizationException, NoAccessException;
 
-	public void deleteCharacterization(Characterization chara)
+	void deleteCharacterization(Characterization chara)
 			throws CharacterizationException, NoAccessException;
 
-	public List<CharacterizationBean> findCharacterizationsBySampleId(
-			String sampleId) throws CharacterizationException,
+	List<CharacterizationBean> findCharacterizationsBySampleId(
+            String sampleId) throws CharacterizationException,
 			NoAccessException;
 
-	public void saveFinding(FindingBean findingBean)
+	void saveFinding(FindingBean findingBean)
 			throws CharacterizationException, NoAccessException;
 
 	/*public FindingBean findFindingById(String findingId)
 			throws CharacterizationException, NoAccessException;*/
 
-	public void deleteFinding(Finding finding)
+	void deleteFinding(Finding finding)
 			throws CharacterizationException, NoAccessException;
 
-	public void saveExperimentConfig(String sampleId, ExperimentConfigBean experimentConfigBean)
+	void saveExperimentConfig(String sampleId, ExperimentConfigBean experimentConfigBean)
 			throws ExperimentConfigException, NoAccessException;
 
-	public void deleteExperimentConfig(String sampleId, ExperimentConfig experimentConfig)
+	void deleteExperimentConfig(String sampleId, ExperimentConfig experimentConfig)
 			throws ExperimentConfigException, NoAccessException;
 
 	/**
@@ -68,32 +68,32 @@ public interface CharacterizationService extends BaseService {
 	 * @throws CharacterizationException
 	 * @throws NoAccessException
 	 */
-	public void copyAndSaveCharacterization(CharacterizationBean charBean,
-			SampleBean oldSampleBean, SampleBean[] newSampleBeans,
-			boolean copyData) throws CharacterizationException,
+    void copyAndSaveCharacterization(CharacterizationBean charBean,
+                                     SampleBean oldSampleBean, SampleBean[] newSampleBeans,
+                                     boolean copyData) throws CharacterizationException,
 			NoAccessException;
 
-	public int getNumberOfPublicCharacterizations(
-			String characterizationClassName) throws CharacterizationException;
+	int getNumberOfPublicCharacterizations(
+            String characterizationClassName) throws CharacterizationException;
 	
-	public int getNumberOfPublicCharacterizationsForJob(List<String> characterizationClassName) throws CharacterizationException;
+	int getNumberOfPublicCharacterizationsForJob(List<String> characterizationClassName) throws CharacterizationException;
 
-	public List<String> findOtherCharacterizationByAssayCategory(
-			String assayCategory) throws CharacterizationException;
+	List<String> findOtherCharacterizationByAssayCategory(
+            String assayCategory) throws CharacterizationException;
 
-	public void assignAccesses(Characterization achar, ExperimentConfig config)
+	void assignAccesses(Characterization achar, ExperimentConfig config)
 			throws CharacterizationException, NoAccessException;
 
-	public void removeAccesses(Characterization achar, ExperimentConfig config)
+	void removeAccesses(Characterization achar, ExperimentConfig config)
 			throws CharacterizationException, NoAccessException;
 
-	public void assignAccesses(Characterization achar, Finding finding)
+	void assignAccesses(Characterization achar, Finding finding)
 			throws CharacterizationException, NoAccessException;
 
-	public void removeAccesses(Characterization achar, Finding finding)
+	void removeAccesses(Characterization achar, Finding finding)
 			throws CharacterizationException, NoAccessException;
 
-	public void removeAccesses(Characterization achar)
+	void removeAccesses(Characterization achar)
 			throws CharacterizationException, NoAccessException;
 
 }

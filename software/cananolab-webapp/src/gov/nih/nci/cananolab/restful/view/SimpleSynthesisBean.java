@@ -1,15 +1,16 @@
 package gov.nih.nci.cananolab.restful.view;
 
-import org.apache.commons.collections4.MultiMap;
-
+import gov.nih.nci.cananolab.dto.particle.synthesis.SynthesisBean;
 import java.util.ArrayList;
 import java.util.List;
+import org.apache.commons.collections.MultiMap;
 
 public class SimpleSynthesisBean {
     List<String> synthesisSections = new ArrayList<String>();
     MultiMap synthesisFunctionalization;
     MultiMap synthesisPurification;
     MultiMap synthesisMaterials;
+    List<String> errors;
 
     public MultiMap getSynthesisMaterials() {
         return synthesisMaterials;
@@ -23,7 +24,9 @@ public class SimpleSynthesisBean {
         return synthesisPurification;
     }
 
-
+    public List<String> getErrors() {
+        return errors;
+    }
 
     public void setSynthesisMaterials(MultiMap synthesisMaterials) {
         this.synthesisMaterials = synthesisMaterials;
@@ -47,7 +50,7 @@ public class SimpleSynthesisBean {
         this.synthesisSections = synthesisSections;
     }
 
-    transferSynthesisForSummaryView(SynthesisBean synBean){
+    public void transferSynthesisForSummaryView(SynthesisBean synBean){
         /* TODO write */
 
     }

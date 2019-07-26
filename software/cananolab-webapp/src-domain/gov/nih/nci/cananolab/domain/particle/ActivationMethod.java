@@ -110,9 +110,8 @@ public class ActivationMethod  implements Serializable
 	{
 		if(obj instanceof ActivationMethod) 
 		{
-			ActivationMethod c =(ActivationMethod)obj; 			 
-			if(getId() != null && getId().equals(c.getId()))
-				return true;
+			ActivationMethod c =(ActivationMethod)obj;
+			return getId() != null && getId().equals(c.getId());
 		}
 		return false;
 	}

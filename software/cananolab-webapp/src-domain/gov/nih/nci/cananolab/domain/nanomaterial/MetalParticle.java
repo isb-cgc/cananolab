@@ -24,9 +24,8 @@ public class MetalParticle extends NanomaterialEntity implements Serializable
 	{
 		if(obj instanceof MetalParticle) 
 		{
-			MetalParticle c =(MetalParticle)obj; 			 
-			if(getId() != null && getId().equals(c.getId()))
-				return true;
+			MetalParticle c =(MetalParticle)obj;
+            return getId() != null && getId().equals(c.getId());
 		}
 		return false;
 	}

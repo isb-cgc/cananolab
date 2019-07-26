@@ -1,18 +1,14 @@
 package gov.nih.nci.cananolab.security;
 
+import gov.nih.nci.cananolab.security.enums.CaNanoRoleEnum;
+import gov.nih.nci.cananolab.util.StringUtils;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Set;
-import java.util.TreeSet;
-
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
-
-import gov.nih.nci.cananolab.security.enums.CaNanoRoleEnum;
-import gov.nih.nci.cananolab.util.StringUtils;
 
 public class CananoUserDetails implements UserDetails
 {
@@ -179,7 +175,7 @@ public class CananoUserDetails implements UserDetails
 	
 	public boolean belongsToGroup(String groupName)
 	{
-		return (this.groups != null) ? this.groups.contains(groupName) : false;
+		return (this.groups != null) && this.groups.contains(groupName);
 	}
 
 	public Collection<GrantedAuthority> getAuthorities() {

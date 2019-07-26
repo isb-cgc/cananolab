@@ -8,6 +8,7 @@
 
 package gov.nih.nci.cananolab.dto.common;
 
+import gov.nih.nci.cananolab.dto.common.table.TableCell;
 import java.util.ArrayList;
 import java.util.List;
 

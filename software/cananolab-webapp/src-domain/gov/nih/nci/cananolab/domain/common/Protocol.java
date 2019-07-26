@@ -199,9 +199,8 @@ public class Protocol  implements Serializable
 	{
 		if(obj instanceof Protocol) 
 		{
-			Protocol c =(Protocol)obj; 			 
-			if(getId() != null && getId().equals(c.getId()))
-				return true;
+			Protocol c =(Protocol)obj;
+            return getId() != null && getId().equals(c.getId());
 		}
 		return false;
 	}

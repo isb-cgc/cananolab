@@ -45,9 +45,8 @@ public class Surface extends PhysicoChemicalCharacterization implements Serializ
 	{
 		if(obj instanceof Surface) 
 		{
-			Surface c =(Surface)obj; 			 
-			if(getId() != null && getId().equals(c.getId()))
-				return true;
+			Surface c =(Surface)obj;
+            return getId() != null && getId().equals(c.getId());
 		}
 		return false;
 	}

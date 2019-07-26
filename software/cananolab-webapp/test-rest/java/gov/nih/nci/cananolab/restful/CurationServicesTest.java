@@ -1,18 +1,19 @@
 package gov.nih.nci.cananolab.restful;
 
-import static org.junit.Assert.*;
 import gov.nih.nci.cananolab.service.sample.impl.BatchDataAvailabilityProcess;
 import gov.nih.nci.cananolab.ui.form.GenerateBatchDataAvailabilityForm;
-
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.client.Entity;
 import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.Response;
-
-import org.glassfish.jersey.client.ClientConfig;
 import org.junit.Before;
 import org.junit.Test;
+
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
+
+//import org.glassfish.jersey.client.ClientConfig;ClientConfig
 
 public class CurationServicesTest {
 

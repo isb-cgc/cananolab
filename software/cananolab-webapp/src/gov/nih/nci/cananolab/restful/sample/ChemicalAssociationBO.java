@@ -3,6 +3,7 @@ package gov.nih.nci.cananolab.restful.sample;
 import gov.nih.nci.cananolab.domain.common.File;
 import gov.nih.nci.cananolab.domain.common.Keyword;
 import gov.nih.nci.cananolab.domain.linkage.Attachment;
+import gov.nih.nci.cananolab.domain.linkage.OtherChemicalAssociation;
 import gov.nih.nci.cananolab.domain.particle.AssociatedElement;
 import gov.nih.nci.cananolab.domain.particle.ChemicalAssociation;
 import gov.nih.nci.cananolab.domain.particle.ComposingElement;
@@ -26,13 +27,9 @@ import gov.nih.nci.cananolab.security.utils.SpringSecurityUtil;
 import gov.nih.nci.cananolab.service.curation.CurationService;
 import gov.nih.nci.cananolab.service.sample.CompositionService;
 import gov.nih.nci.cananolab.service.sample.SampleService;
-import gov.nih.nci.cananolab.ui.form.CompositionForm;
 import gov.nih.nci.cananolab.util.Constants;
 import gov.nih.nci.cananolab.util.DateUtils;
 import gov.nih.nci.cananolab.util.StringUtils;
-import gov.nih.nci.cananolab.domain.linkage.Attachment;
-import gov.nih.nci.cananolab.domain.linkage.OtherChemicalAssociation;
-
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
@@ -40,11 +37,8 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Component;
@@ -401,16 +395,14 @@ public class ChemicalAssociationBO extends BaseAnnotationBO
 		Boolean hasFunctionalizingEntity = (Boolean) request.getSession().getAttribute("hasFunctionalizingEntity");
 		InitCompositionSetup.getInstance().persistChemicalAssociationDropdowns(
 				request, assocBean, hasFunctionalizingEntity);
+		//TODO This is never used by calling methods.  Is it ever filled?
 		return msgs;
 	}
 
 	/**
 	 * Set up the input form for adding new chemical association
 	 *
-	 * @param mapping
-	 * @param form
 	 * @param request
-	 * @param response
 	 * @return
 	 * @throws Exception
 	 */

@@ -222,9 +222,8 @@ public class Condition  implements Serializable
 	{
 		if(obj instanceof Condition) 
 		{
-			Condition c =(Condition)obj; 			 
-			if(getId() != null && getId().equals(c.getId()))
-				return true;
+			Condition c =(Condition)obj;
+            return getId() != null && getId().equals(c.getId());
 		}
 		return false;
 	}

@@ -19,10 +19,10 @@
             </column>
         </property>
         <many-to-one
-                class="gov.nih.nci.cananolab.domain.common.SynthesisFuncPurification"
+                class="gov.nih.nci.cananolab.domain.particle.SynthesisPurification"
                 fetch="select" name="synthesisFuncPurification">
-            <column name="synthesis_func_purification_pk_id" not-null="true">
-                <comment>synthesis_func_purification_pk_id</comment>
+            <column name="synthesis_purification_pk_id" not-null="true">
+                <comment>synthesis_purification_pk_id</comment>
             </column>
         </many-to-one>
         <set fetch="select" inverse="true" lazy="true"

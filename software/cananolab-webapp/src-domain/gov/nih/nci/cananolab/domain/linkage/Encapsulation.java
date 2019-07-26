@@ -24,9 +24,8 @@ public class Encapsulation extends ChemicalAssociation implements Serializable
 	{
 		if(obj instanceof Encapsulation) 
 		{
-			Encapsulation c =(Encapsulation)obj; 			 
-			if(getId() != null && getId().equals(c.getId()))
-				return true;
+			Encapsulation c =(Encapsulation)obj;
+            return getId() != null && getId().equals(c.getId());
 		}
 		return false;
 	}

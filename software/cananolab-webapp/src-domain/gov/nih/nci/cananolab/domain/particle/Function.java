@@ -153,9 +153,8 @@ public class Function  implements Serializable
 	{
 		if(obj instanceof Function) 
 		{
-			Function c =(Function)obj; 			 
-			if(getId() != null && getId().equals(c.getId()))
-				return true;
+			Function c =(Function)obj;
+            return getId() != null && getId().equals(c.getId());
 		}
 		return false;
 	}

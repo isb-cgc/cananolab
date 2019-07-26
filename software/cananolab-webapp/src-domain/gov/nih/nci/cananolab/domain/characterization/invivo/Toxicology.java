@@ -23,9 +23,8 @@ public class Toxicology extends InvivoCharacterization implements Serializable
 	{
 		if(obj instanceof Toxicology) 
 		{
-			Toxicology c =(Toxicology)obj; 			 
-			if(getId() != null && getId().equals(c.getId()))
-				return true;
+			Toxicology c =(Toxicology)obj;
+            return getId() != null && getId().equals(c.getId());
 		}
 		return false;
 	}

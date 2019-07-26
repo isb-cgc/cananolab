@@ -198,9 +198,8 @@ public class ChemicalAssociation  implements Serializable
 	{
 		if(obj instanceof ChemicalAssociation) 
 		{
-			ChemicalAssociation c =(ChemicalAssociation)obj; 			 
-			if(getId() != null && getId().equals(c.getId()))
-				return true;
+			ChemicalAssociation c =(ChemicalAssociation)obj;
+            return getId() != null && getId().equals(c.getId());
 		}
 		return false;
 	}

@@ -178,9 +178,8 @@ public class NanomaterialEntity  implements Serializable
 	{
 		if(obj instanceof NanomaterialEntity) 
 		{
-			NanomaterialEntity c =(NanomaterialEntity)obj; 			 
-			if(getId() != null && getId().equals(c.getId()))
-				return true;
+			NanomaterialEntity c =(NanomaterialEntity)obj;
+            return getId() != null && getId().equals(c.getId());
 		}
 		return false;
 	}

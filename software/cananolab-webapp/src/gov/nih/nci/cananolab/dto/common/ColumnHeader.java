@@ -10,6 +10,7 @@ package gov.nih.nci.cananolab.dto.common;
 
 import gov.nih.nci.cananolab.domain.common.Condition;
 import gov.nih.nci.cananolab.domain.common.Datum;
+import gov.nih.nci.cananolab.domain.common.PurityDatum;
 import gov.nih.nci.cananolab.util.StringUtils;
 
 import java.util.Date;
@@ -51,6 +52,16 @@ public class ColumnHeader {
 		this.columnType = FindingBean.CONDITION_TYPE;
 		this.createdDate = condition.getCreatedDate();
 	}
+
+	public ColumnHeader(PurityDatum datum) {
+		this.columnName = datum.getName();
+		this.valueType = datum.getValueType();
+		this.valueUnit = datum.getValueUnit();
+		this.columnType = PurityBean.DATUM_TYPE;
+		this.createdDate = datum.getCreatedDate();
+//		this.operand = datum.getOperand();
+	}
+
 
 	public ColumnHeader() {
 
@@ -137,9 +148,8 @@ public class ColumnHeader {
 	public boolean equals(Object obj) {
 		if (obj instanceof ColumnHeader) {
 			ColumnHeader c = (ColumnHeader) obj;
-			if (getDisplayName().equals(c.getDisplayName())
-					&& this.getConstantValue().equals(c.getConstantValue()))
-				return true;
+            return getDisplayName().equals(c.getDisplayName())
+                    && this.getConstantValue().equals(c.getConstantValue());
 		}
 		return false;
 	}

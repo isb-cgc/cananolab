@@ -58,7 +58,7 @@ public class CharacterizationServiceHelper
 	{
 		if (!springSecurityAclService.currentUserHasReadPermission(Long.valueOf(characterizationId), SecureClassesEnum.CHAR.getClazz()) &&
 			!springSecurityAclService.currentUserHasWritePermission(Long.valueOf(characterizationId), SecureClassesEnum.CHAR.getClazz())) {
-			new NoAccessException("User has no access to the characterization " + characterizationId);
+			throw new NoAccessException("User has no access to the characterization " + characterizationId);
 		}
 		Protocol protocol = null;
 		CaNanoLabApplicationService appService = (CaNanoLabApplicationService) ApplicationServiceProvider.getApplicationService();
@@ -110,7 +110,7 @@ public class CharacterizationServiceHelper
 	{
 		if (!springSecurityAclService.currentUserHasReadPermission(Long.valueOf(charId), SecureClassesEnum.CHAR.getClazz()) &&
 			!springSecurityAclService.currentUserHasWritePermission(Long.valueOf(charId), SecureClassesEnum.CHAR.getClazz())) {
-			new NoAccessException("User has no access to the characterization " + charId);
+			throw new NoAccessException("User has no access to the characterization " + charId);
 		}
 		List<ExperimentConfig> configs = new ArrayList<ExperimentConfig>();
 		CaNanoLabApplicationService appService = (CaNanoLabApplicationService) ApplicationServiceProvider.getApplicationService();
@@ -134,7 +134,7 @@ public class CharacterizationServiceHelper
 	{
 		if (!springSecurityAclService.currentUserHasReadPermission(Long.valueOf(sampleId), SecureClassesEnum.SAMPLE.getClazz()) &&
 			!springSecurityAclService.currentUserHasWritePermission(Long.valueOf(sampleId), SecureClassesEnum.SAMPLE.getClazz())) {
-			new NoAccessException("User has no access to the experiment config " + id);
+			throw new NoAccessException("User has no access to the experiment config " + id);
 		}
 		ExperimentConfig config = null;
 
@@ -193,7 +193,7 @@ public class CharacterizationServiceHelper
 	{
 		if (!springSecurityAclService.currentUserHasReadPermission(Long.valueOf(charId), SecureClassesEnum.CHAR.getClazz()) &&
 			!springSecurityAclService.currentUserHasWritePermission(Long.valueOf(charId), SecureClassesEnum.CHAR.getClazz())) {
-			new NoAccessException("User has no access to the characterization " + charId);
+			throw new NoAccessException("User has no access to the characterization " + charId);
 		}
 		Characterization achar = null;
 		CaNanoLabApplicationService appService = (CaNanoLabApplicationService) ApplicationServiceProvider.getApplicationService();
@@ -239,7 +239,7 @@ public class CharacterizationServiceHelper
 	{
 		if (!springSecurityAclService.currentUserHasReadPermission(Long.valueOf(findingId), SecureClassesEnum.FINDING.getClazz()) &&
 			!springSecurityAclService.currentUserHasWritePermission(Long.valueOf(findingId), SecureClassesEnum.FINDING.getClazz())) {
-			new NoAccessException("User has no access to the finding " + findingId);
+			throw new NoAccessException("User has no access to the finding " + findingId);
 		}
 		CaNanoLabApplicationService appService = (CaNanoLabApplicationService) ApplicationServiceProvider.getApplicationService();
 		DetachedCriteria crit = DetachedCriteria.forClass(Finding.class).add(Property.forName("id").eq(new Long(findingId)));
@@ -276,8 +276,7 @@ public class CharacterizationServiceHelper
 	public int getNumberOfPublicCharacterizationsForJob(List<String> characterizationClassNames) throws Exception
 	{
 		List<Long> publicData = aclDao.getCountOfPublicCharacterization(SecureClassesEnum.CHAR.getClazz().getName(), CaNanoRoleEnum.ROLE_ANONYMOUS.toString(), characterizationClassNames);
-		int cnt = (publicData != null) ? publicData.size() : 0;
-		return cnt;
+        return (publicData != null) ? publicData.size() : 0;
 	}
 
 	private void removeUnaccessibleFiles(Collection<File> files) throws Exception

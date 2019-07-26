@@ -8,21 +8,6 @@
 
 package gov.nih.nci.cananolab.service.curation.impl;
 
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.List;
-
-import javax.annotation.PostConstruct;
-import javax.sql.DataSource;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.core.simple.ParameterizedRowMapper;
-import org.springframework.jdbc.core.support.JdbcDaoSupport;
-import org.springframework.stereotype.Component;
-import org.springframework.transaction.annotation.Propagation;
-import org.springframework.transaction.annotation.Transactional;
-
 import gov.nih.nci.cananolab.dto.common.DataReviewStatusBean;
 import gov.nih.nci.cananolab.exception.CurationException;
 import gov.nih.nci.cananolab.exception.NoAccessException;
@@ -30,6 +15,15 @@ import gov.nih.nci.cananolab.security.enums.SecureClassesEnum;
 import gov.nih.nci.cananolab.security.service.SpringSecurityAclService;
 import gov.nih.nci.cananolab.security.utils.SpringSecurityUtil;
 import gov.nih.nci.cananolab.service.curation.CurationService;
+import java.sql.SQLException;
+import java.util.List;
+import javax.annotation.PostConstruct;
+import javax.sql.DataSource;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.simple.ParameterizedRowMapper;
+import org.springframework.jdbc.core.support.JdbcDaoSupport;
+import org.springframework.stereotype.Component;
 
 //@Transactional(readOnly=false, propagation=Propagation.REQUIRED)
 @Component("curationServiceDAO")
@@ -69,24 +63,21 @@ public class CurationServiceJDBCImpl extends JdbcDaoSupport implements CurationS
 
 	public ParameterizedRowMapper<DataReviewStatusBean> getDataReviewStatusRowMapper()
 			throws SQLException {
-		dataReviewStatusRowMapper = new ParameterizedRowMapper<DataReviewStatusBean>() {
-			public DataReviewStatusBean mapRow(ResultSet rs, int rowNum)
-					throws SQLException {
-				DataReviewStatusBean dataStatusBean = new DataReviewStatusBean();
-				dataStatusBean.setDataId(rs
-						.getString(REVIEW_STATUS_TABLE_DATA_ID_COL));
-				dataStatusBean.setDataName(rs
-						.getString(REVIEW_STATUS_TABLE_DATA_NAME_COL));
-				dataStatusBean.setDataType(rs
-						.getString(REVIEW_STATUS_TABLE_DATA_TYPE_COL));
-				dataStatusBean.setReviewStatus(rs
-						.getString(REVIEW_STATUS_TABLE_STATUS_COL));
-				dataStatusBean.setSubmittedBy(rs
-						.getString(REVIEW_STATUS_TABLE_SUBMITTED_BY_COL));
-				dataStatusBean.setSubmittedDate(rs
-						.getDate(REVIEW_STATUS_TABLE_SUBMITTED_DATE_COL));
-				return dataStatusBean;
-			}
+		dataReviewStatusRowMapper = (rs, rowNum) -> {
+			DataReviewStatusBean dataStatusBean = new DataReviewStatusBean();
+			dataStatusBean.setDataId(rs
+					.getString(REVIEW_STATUS_TABLE_DATA_ID_COL));
+			dataStatusBean.setDataName(rs
+					.getString(REVIEW_STATUS_TABLE_DATA_NAME_COL));
+			dataStatusBean.setDataType(rs
+					.getString(REVIEW_STATUS_TABLE_DATA_TYPE_COL));
+			dataStatusBean.setReviewStatus(rs
+					.getString(REVIEW_STATUS_TABLE_STATUS_COL));
+			dataStatusBean.setSubmittedBy(rs
+					.getString(REVIEW_STATUS_TABLE_SUBMITTED_BY_COL));
+			dataStatusBean.setSubmittedDate(rs
+					.getDate(REVIEW_STATUS_TABLE_SUBMITTED_DATE_COL));
+			return dataStatusBean;
 		};
 		return dataReviewStatusRowMapper;
 	}
@@ -144,8 +135,7 @@ public class CurationServiceJDBCImpl extends JdbcDaoSupport implements CurationS
 				dataReviewStatusBean.getReviewStatus(),
 				dataReviewStatusBean.getSubmittedBy(),
 				dataReviewStatusBean.getSubmittedDate() };
-		int status = this.getJdbcTemplate().update(sql, args);
-		return status;
+        return this.getJdbcTemplate().update(sql, args);
 	}
 
 	private int updateDataReviewStatusBean(
@@ -158,8 +148,7 @@ public class CurationServiceJDBCImpl extends JdbcDaoSupport implements CurationS
 		Object[] args = { dataReviewStatusBean.getDataName(),
 				dataReviewStatusBean.getReviewStatus(),
 				dataReviewStatusBean.getDataId() };
-		int status = this.getJdbcTemplate().update(sql, args);
-		return status;
+        return this.getJdbcTemplate().update(sql, args);
 	}
 
 	public void submitDataForReview(DataReviewStatusBean dataReviewStatusBean) throws CurationException, NoAccessException

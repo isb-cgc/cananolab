@@ -1,24 +1,29 @@
 package gov.nih.nci.cananolab.dto.particle.synthesis;
 
+import gov.nih.nci.cananolab.domain.common.PointOfContact;
+import gov.nih.nci.cananolab.domain.particle.SynthesisFunctionalization;
+import gov.nih.nci.cananolab.domain.particle.SynthesisMaterialElement;
+import gov.nih.nci.cananolab.dto.particle.composition.BaseCompositionEntityBean;
 import java.util.ArrayList;
 import java.util.List;
 
+
 public class SynthesisFunctionalizationBean  extends BaseCompositionEntityBean {
 
-    List<SynthesisFuncPurificationBean> purificationBeans = new ArrayList<SynthesisFuncPurificationBean>();
+    private List<SynthesisPurificationBean> purificationBeans = new ArrayList<SynthesisPurificationBean>();
 
-    public List<SynthesisFuncPurificationBean> getMethods(){
+    public List<SynthesisPurificationBean> getMethods(){
 return purificationBeans;
     }
 
     private PointOfContact source = new PointOfContact();
-    private List<SynthesisMaterialElement> synthesisMaterialElementList = new List<SynthesisMaterialElement>();
+    private List<SynthesisMaterialElement> synthesisMaterialElementList = new ArrayList<SynthesisMaterialElement>();
 
-    public List<SynthesisFuncPurificationBean> getPurificationBeans() {
+    public List<SynthesisPurificationBean> getPurificationBeans() {
         return purificationBeans;
     }
 
-    public void setPurificationBeans(List<SynthesisFuncPurificationBean> purificationBeans) {
+    public void setPurificationBeans(List<SynthesisPurificationBean> purificationBeans) {
         this.purificationBeans = purificationBeans;
     }
 
@@ -60,7 +65,7 @@ return purificationBeans;
 
     public SynthesisFunctionalizationBean (){}
 
-    public SynthesisFunctionalizationBean(SynthesisFunctionalization){
+    public SynthesisFunctionalizationBean(SynthesisFunctionalization functionalization){
         //TODO write
          }
 }

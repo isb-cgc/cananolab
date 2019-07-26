@@ -76,7 +76,7 @@ public class SearchPublicationBO extends BaseAnnotationBO
 		// pass in page and size
 		List<PublicationBean> pubBeansPerPage = getPublicationsPerPage(
 				publicationBeans, displayPage,
-				Constants.DISPLAY_TAG_TABLE_SIZE, request);
+                request);
 		if (pubBeansPerPage.isEmpty()) {
 			messages.add(PropertyUtil.getProperty("publication", "message.searchPublication.noresult"));
 			return messages;
@@ -91,8 +91,7 @@ public class SearchPublicationBO extends BaseAnnotationBO
 		//set in sessionScope so user can go back to the result from the sample summary page
 		request.getSession().setAttribute("resultSize", new Integer(publicationBeans.size()));
 	//	return mapping.findForward("success");
-		List<SimpleSearchPublicationBean> simplePubBeans = transfertoSimplePubBeans(pubBeansPerPage);
-		return simplePubBeans;
+        return transfertoSimplePubBeans(pubBeansPerPage);
 	}
 
 	protected List<SimpleSearchPublicationBean> transfertoSimplePubBeans(
@@ -123,12 +122,12 @@ public class SearchPublicationBO extends BaseAnnotationBO
 	}
 
 	private List<PublicationBean> getPublicationsPerPage(
-			List<PublicationBean> publicationBeans, int page, int pageSize,
-			HttpServletRequest request) throws Exception
+            List<PublicationBean> publicationBeans, int page,
+            HttpServletRequest request) throws Exception
 	{
 		List<PublicationBean> loadedPublicationBeans = new ArrayList<PublicationBean>();
 		
-		for (int i = page * pageSize; i < (page + 1) * pageSize; i++) {
+		for (int i = page * Constants.DISPLAY_TAG_TABLE_SIZE; i < (page + 1) * Constants.DISPLAY_TAG_TABLE_SIZE; i++) {
 			if (i < publicationBeans.size()) {
 				String publicationId = publicationBeans.get(i).getDomainFile().getId().toString();
 				PublicationBean pubBean = publicationService.findPublicationById(publicationId, false);

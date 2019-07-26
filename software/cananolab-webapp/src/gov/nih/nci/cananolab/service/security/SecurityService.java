@@ -90,7 +90,7 @@ public class SecurityService {
 				// if user is not in Public group, add the user
 				if (!this.userBean.getGroupNames().contains(
 						AccessibilityBean.CSM_PUBLIC_GROUP)) {
-					this.assignUserToGroup(AccessibilityBean.CSM_PUBLIC_GROUP);
+					this.assignUserToGroup();
 					this.userBean.getGroupNames().add(
 							AccessibilityBean.CSM_PUBLIC_GROUP);
 				}
@@ -121,10 +121,10 @@ public class SecurityService {
 				UserBean userBean = new UserBean(user);
 				userBean.setPassword(password);
 				if (isAdmin(user.getLoginName())) {
-					userBean.setAdmin(true);
+					userBean.setAdmin();
 				}
 				if (isCurator(user.getLoginName())) {
-					userBean.setCurator(true);
+					userBean.setCurator();
 				}
 				SortedSet<String> groupNames = this.getUserGroupNames(user
 						.getUserId().toString());
@@ -137,45 +137,31 @@ public class SecurityService {
 			String error = "User logging in first time, Password should be changed";
 			logger.error(e);
 			throw new SecurityException(error, e);
-		}catch (CSConfigurationException e) {
-			String error = "Error in logging";
-			logger.error(e);
-			throw new SecurityException(error, e);
-		} catch (CSLoginException e) {
-			String error = "Error in logging";
-			logger.error(e);
-			throw new SecurityException(error, e);
-		} catch (CSInputException e) {
-			String error = "Error in logging";
-			logger.error(e);
-			throw new SecurityException(error, e);
-		} catch (CSException e) {
-			String error = "Error in logging";
-			logger.error(e);
-			throw new SecurityException(error, e);	
-		} catch (Exception e) {
+		}catch (CSConfigurationException | CSInputException | CSLoginException e) {
 			String error = "Error in logging";
 			logger.error(e);
 			throw new SecurityException(error, e);
 		}
-	}
+        catch (Exception e) {
+            String error = "Error in logging";
+            logger.error(e);
+            throw new SecurityException(error, e);
+        }
+    }
 
 	/**
 	 * Check whether the given userBean is the admin of the application.
 	 *
-	 * @param userBean
 	 * @return
 	 */
 	public boolean isAdmin(String loginName) {
-		boolean adminStatus = this.authorizationManager.checkOwnership(
+		return this.authorizationManager.checkOwnership(
 				loginName, this.applicationName);
-		return adminStatus;
 	}
 
 	/**
 	 * Check whether the given userBean is the admin of the application.
 	 *
-	 * @param userBean
 	 * @return
 	 */
 	public boolean isCurator(String loginName) {
@@ -234,7 +220,7 @@ public class SecurityService {
 		return groupNames;
 	}
 
-	private void assignUserToGroup(String groupName) throws SecurityException {
+	private void assignUserToGroup() throws SecurityException {
 		try {
 			Group group = this.getGroup(AccessibilityBean.CSM_PUBLIC_GROUP);
 			this.authorizationManager.addUsersToGroup(group.getGroupId()
@@ -248,7 +234,6 @@ public class SecurityService {
 	/**
 	 * Set a new password for the given userBean login name
 	 *
-	 * @param loginName
 	 * @param newPassword
 	 * @throws SecurityException
 	 */
@@ -363,6 +348,7 @@ public class SecurityService {
 		SearchCriteria sc = new GroupSearchCriteria(group);
 		List results = this.authorizationManager.getObjects(sc);
 		Group doGroup = null;
+		//TODO Why is this a for loop?  It never loops
 		for (int i = 0; i < results.size(); i++) {
 			doGroup = (Group) results.get(i);
 			break;
@@ -382,6 +368,7 @@ public class SecurityService {
 		SearchCriteria sc = new RoleSearchCriteria(role);
 		List results = this.authorizationManager.getObjects(sc);
 		Role doRole = null;
+		//TODO Why is this a for loop?  It never loops
 		for (int i = 0; i < results.size(); i++) {
 			doRole = (Role) results.get(i);
 			break;
@@ -405,6 +392,7 @@ public class SecurityService {
 			SearchCriteria sc = new ProtectionElementSearchCriteria(pe);
 			List results = this.authorizationManager.getObjects(sc);
 			ProtectionElement doPE = null;
+			//TODO Why is this a for loop?  It never loops
 			for (int i = 0; i < results.size(); i++) {
 				doPE = (ProtectionElement) results.get(i);
 				break;
@@ -437,6 +425,7 @@ public class SecurityService {
 			SearchCriteria sc = new ProtectionGroupSearchCriteria(pg);
 			List results = this.authorizationManager.getObjects(sc);
 			ProtectionGroup doPG = null;
+			//TODO Why is this a for loop?  It never loops
 			for (int i = 0; i < results.size(); i++) {
 				doPG = (ProtectionGroup) results.get(i);
 				break;
@@ -499,11 +488,7 @@ public class SecurityService {
 			String[] columns = new String[] { "protection_group_name" };
 			Object[] columnTypes = new Object[] { Hibernate.STRING };
 			List results = appService.directSQL(query, columns, columnTypes);
-			if (results.isEmpty()) {
-				return false;
-			} else {
-				return true;
-			}
+			return !results.isEmpty();
 		} catch (Exception e) {
 			String err = "Could not execute direct sql query to check whether data is public.";
 			logger.error(err);
@@ -829,11 +814,8 @@ public class SecurityService {
 		Group group = this.getGroup(groupName);
 		if (group == null) {
 			return false;
-		} else if (checkReadPermission(AccessibilityBean.CSM_COLLABORATION_GROUP_PREFIX
-				+ group.getGroupId())) {
-			return true;
-		}
-		return false;
+		} else return checkReadPermission(AccessibilityBean.CSM_COLLABORATION_GROUP_PREFIX
+                + group.getGroupId());
 	}
 
 	public Boolean isUserInGroup(String userLoginName, String groupName)
@@ -841,20 +823,12 @@ public class SecurityService {
 		User user = authorizationManager.getUser(userLoginName);
 		SortedSet<String> groupNames = this.getUserGroupNames(user.getUserId()
 				.toString());
-		if (groupNames.contains(groupName)) {
-			return true;
-		} else {
-			return false;
-		}
+		return groupNames.contains(groupName);
 	}
 
 	public Boolean isUserValid(String userLoginName) throws Exception {
 		User user = authorizationManager.getUser(userLoginName);
-		if (user == null) {
-			return false;
-		} else {
-			return true;
-		}
+		return user != null;
 	}
 
 	public static void main(String[] args) {

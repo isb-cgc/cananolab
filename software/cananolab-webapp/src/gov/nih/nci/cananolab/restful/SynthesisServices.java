@@ -2,17 +2,24 @@ package gov.nih.nci.cananolab.restful;
 
 import gov.nih.nci.cananolab.restful.synthesis.SynthesisBO;
 import gov.nih.nci.cananolab.restful.util.CommonUtil;
-import org.apache.log4j.Logger;
-
+import gov.nih.nci.cananolab.restful.view.SimpleSynthesisBean;
+import gov.nih.nci.cananolab.security.utils.SpringSecurityUtil;
+import java.util.List;
+import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
-import javax.ws.rs.*;
+import javax.ws.rs.DefaultValue;
+import javax.ws.rs.GET;
+import javax.ws.rs.Path;
+import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.Response;
-import java.util.Map;
+import org.apache.log4j.Logger;
 
 @Path("/synthesis")
 public class SynthesisServices {
     private static final Logger logger = Logger.getLogger(NanomaterialEntityServices.class);
+
 
     @GET
     @Path("/setup")
@@ -45,9 +52,9 @@ public class SynthesisServices {
 
             SimpleSynthesisBean synth = synthesisBO.setupUpdate(sampleId, dataId, httpRequest);
 
-            List<String> errors = nano.getErrors();
+            List<String> errors = synth.getErrors();
             return (errors == null || errors.size() == 0) ?
-                    Response.ok(nano).build() :
+                    Response.ok(synth).build() :
                     Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(errors).build();
 
         } catch (Exception e) {

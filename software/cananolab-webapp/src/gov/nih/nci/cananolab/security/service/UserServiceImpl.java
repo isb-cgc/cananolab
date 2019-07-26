@@ -1,20 +1,17 @@
 package gov.nih.nci.cananolab.security.service;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
-
-import org.apache.log4j.Logger;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.stereotype.Component;
-
 import gov.nih.nci.cananolab.security.CananoUserDetails;
 import gov.nih.nci.cananolab.security.dao.UserDao;
 import gov.nih.nci.cananolab.security.enums.CaNanoRoleEnum;
 import gov.nih.nci.cananolab.security.utils.SpringSecurityUtil;
 import gov.nih.nci.cananolab.util.StringUtils;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.stereotype.Component;
 
 //@Transactional(readOnly=false, propagation=Propagation.REQUIRED)
 @Component("userService")
@@ -40,11 +37,7 @@ public class UserServiceImpl implements UserService
 				userDetails.setRoles(userDao.getUserRoles(userDetails.getUsername()));
 			}
 		}
-		Collections.sort(userList, new Comparator<CananoUserDetails>() {
-			public int compare(CananoUserDetails u1, CananoUserDetails u2) {
-				return u1.compareTo(u2);
-			}
-		});
+		Collections.sort(userList, CananoUserDetails::compareTo);
 		return userList;
 	}
 	

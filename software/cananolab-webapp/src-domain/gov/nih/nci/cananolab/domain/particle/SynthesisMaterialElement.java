@@ -23,7 +23,7 @@ public class SynthesisMaterialElement implements java.io.Serializable {
 	private String valueUnit;
 	private String pubChemDatasourceName;
 	private Long pubChemId;
-	private Set smeInherentFuntions = new HashSet(0);
+	private Set SmeInherentFunction = new HashSet(0);
 	private Set files = new HashSet(0);
 
 	public SynthesisMaterialElement() {
@@ -40,7 +40,7 @@ public class SynthesisMaterialElement implements java.io.Serializable {
 	public SynthesisMaterialElement(long synthesisMaterialElementPkId, SynthesisMaterials synthesisMaterials,
 			String molecularFormula, String molecularFormulaType, String description, String createdBy,
 			Date createdDate, String chemicalName, Float value, String valueUnit, String pubChemDatasourceName,
-			Long pubChemId, Set smeInherentFuntions, Set files) {
+			Long pubChemId, Set SmeInherentFunction, Set files) {
 		this.synthesisMaterialElementPkId = synthesisMaterialElementPkId;
 		this.synthesisMaterials = synthesisMaterials;
 		this.molecularFormula = molecularFormula;
@@ -53,7 +53,7 @@ public class SynthesisMaterialElement implements java.io.Serializable {
 		this.valueUnit = valueUnit;
 		this.pubChemDatasourceName = pubChemDatasourceName;
 		this.pubChemId = pubChemId;
-		this.smeInherentFuntions = smeInherentFuntions;
+		this.SmeInherentFunction = SmeInherentFunction;
 		this.files = files;
 	}
 
@@ -154,11 +154,11 @@ public class SynthesisMaterialElement implements java.io.Serializable {
 	}
 
 	public Set getSmeInherentFuntions() {
-		return this.smeInherentFuntions;
+		return this.SmeInherentFunction;
 	}
 
-	public void setSmeInherentFuntions(Set smeInherentFuntions) {
-		this.smeInherentFuntions = smeInherentFuntions;
+	public void setSmeInherentFuntions(Set SmeInherentFunction) {
+		this.SmeInherentFunction = SmeInherentFunction;
 	}
 
 	public Set getFiles() {

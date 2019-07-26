@@ -67,7 +67,7 @@ CREATE TABLE `acl_entry` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `unique_acl_entry` (`acl_object_identity`,`ace_order`),
   KEY `fk_acl_entry_acl` (`sid`),
-  CONSTRAINT `fk_acl_entry_acl` FOREIGN KEY (`sid`) REFERENCES `acl_sid` (`id`),
+  CONSTRAINT `fk_acl_entry_acl` FOREIGN KEY (`sid`) REFERENCES `acl_sid` (`id`) ON DELETE CASCADE,
   CONSTRAINT `fk_acl_entry_object` FOREIGN KEY (`acl_object_identity`) REFERENCES `acl_object_identity` (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=189281 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -4143,12 +4143,12 @@ ALTER TABLE `canano`.`synthesis_functionalization`
                      `synthesis_funtionalization_pk_id` -- synthesis_funtionalization_pk_id
             );
 
--- synthesis_func_purification
-DROP TABLE IF EXISTS `synthesis_func_purification`;
+-- synthesis_purification
+DROP TABLE IF EXISTS `synthesis_purification`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `canano`.`synthesis_func_purification` (
-                                                        `synthesis_func_purification_pk_id` BIGINT(20)   NOT NULL COMMENT 'synthesis_func_purification_pk_id', -- synthesis_func_purification_pk_id
+CREATE TABLE `canano`.`synthesis_purification` (
+                                                        `synthesis_purification_pk_id` BIGINT(20)   NOT NULL COMMENT 'synthesis_purification_pk_id', -- synthesis_purification_pk_id
                                                         `synthesis_funtionalization_pk_id`  BIGINT(20)   NOT NULL COMMENT 'synthesis_funtionalization_pk_id', -- synthesis_funtionalization_pk_id
                                                         `protocol_pk_id`                    BIGINT(20)   NOT NULL COMMENT 'protocol_pk_id', -- protocol_pk_id
                                                         `type`                              VARCHAR(200) NULL     COMMENT 'type', -- type
@@ -4158,13 +4158,13 @@ CREATE TABLE `canano`.`synthesis_func_purification` (
                                                         `created_date`                      DATETIME     NOT NULL COMMENT 'created_date' -- created_date
                                                         `yield`                             INTEGER      NOT NULL COMMENT 'yield'
 )
-    COMMENT 'synthesis_func_purification';
+    COMMENT 'synthesis_purification';
 
--- synthesis_func_purification
-ALTER TABLE `canano`.`synthesis_func_purification`
-    ADD CONSTRAINT `PK_synthesis_func_purification` -- synthesis_func_purification Primary key
+-- synthesis_purification
+ALTER TABLE `canano`.`synthesis_purification`
+    ADD CONSTRAINT `PK_synthesis_purification` -- synthesis_purification Primary key
         PRIMARY KEY (
-                     `synthesis_func_purification_pk_id` -- synthesis_func_purification_pk_id
+                     `synthesis_purification_pk_id` -- synthesis_purification_pk_id
             );
 
 -- synthesis_material_element
@@ -4237,7 +4237,7 @@ DROP TABLE IF EXISTS `purity`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `canano`.`purity` (
                                    `purity_pk_id`                      BIGINT(200)  NOT NULL COMMENT 'purity_pk_id', -- purity_pk_id
-                                   `synthesis_func_purification_pk_id` BIGINT(20)   NOT NULL COMMENT 'synthesis_func_purification_pk_id', -- synthesis_func_purification_pk_id
+                                   `synthesis_purification_pk_id` BIGINT(20)   NOT NULL COMMENT 'synthesis_purification_pk_id', -- synthesis_purification_pk_id
                                    `created_by`                        VARCHAR(200) NOT NULL COMMENT 'created_by', -- created_by
                                    `created_date`                      DATETIME     NOT NULL COMMENT 'created_date' -- created_date
 )
@@ -4274,7 +4274,7 @@ DROP TABLE IF EXISTS `purification_config`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `canano`.`purification_config` (
                                                 `purification_config_pk_id`         BIGINT(20)   NOT NULL COMMENT 'purification_config_pk_id', -- purification_config_pk_id
-                                                `synthesis_func_purification_pk_id` BIGINT(20)   NULL     COMMENT 'synthesis_func_purification_pk_id', -- synthesis_func_purification_pk_id
+                                                `synthesis_purification_pk_id` BIGINT(20)   NULL     COMMENT 'synthesis_purification_pk_id', -- synthesis_purification_pk_id
                                                 `technique_pk_id`                   BIGINT(20)   NULL     COMMENT 'technique_pk_id', -- technique_pk_id
                                                 `description`                       TEXT         NULL     COMMENT 'description', -- description
                                                 `created_by`                        VARCHAR(200) NOT NULL COMMENT 'created_by', -- created_by
@@ -4430,9 +4430,9 @@ ALTER TABLE `canano`.`synthesis_functionalization`
                                              `synthesis_pk_id` -- synthesis_pk_id
                 );
 
--- synthesis_func_purification
-ALTER TABLE `canano`.`synthesis_func_purification`
-    ADD CONSTRAINT `FK_synthesis_functionalization_TO_synthesis_func_purification` -- synthesis_functionalization -> synthesis_func_purification
+-- synthesis_purification
+ALTER TABLE `canano`.`synthesis_purification`
+    ADD CONSTRAINT `FK_synthesis_functionalization_TO_synthesis_purification` -- synthesis_functionalization -> synthesis_purification
         FOREIGN KEY (
                      `synthesis_funtionalization_pk_id` -- synthesis_funtionalization_pk_id
             )
@@ -4440,9 +4440,9 @@ ALTER TABLE `canano`.`synthesis_func_purification`
                                                                `synthesis_funtionalization_pk_id` -- synthesis_funtionalization_pk_id
                 );
 
--- synthesis_func_purification
-ALTER TABLE `canano`.`synthesis_func_purification`
-    ADD CONSTRAINT `FK_protocol_TO_synthesis_func_purification` -- protocol -> synthesis_func_purification
+-- synthesis_purification
+ALTER TABLE `canano`.`synthesis_purification`
+    ADD CONSTRAINT `FK_protocol_TO_synthesis_purification` -- protocol -> synthesis_purification
         FOREIGN KEY (
                      `protocol_pk_id` -- protocol_pk_id
             )
@@ -4492,12 +4492,12 @@ ALTER TABLE `canano`.`synthesis_material_element_file`
 
 -- purity
 ALTER TABLE `canano`.`purity`
-    ADD CONSTRAINT `FK_synthesis_func_purification_TO_purity` -- synthesis_func_purification -> purity
+    ADD CONSTRAINT `FK_synthesis_purification_TO_purity` -- synthesis_purification -> purity
         FOREIGN KEY (
-                     `synthesis_func_purification_pk_id` -- synthesis_func_purification_pk_id
+                     `synthesis_purification_pk_id` -- synthesis_purification_pk_id
             )
-            REFERENCES `canano`.`synthesis_func_purification` ( -- synthesis_func_purification
-                                                               `synthesis_func_purification_pk_id` -- synthesis_func_purification_pk_id
+            REFERENCES `canano`.`synthesis_purification` ( -- synthesis_purification
+                                                               `synthesis_purification_pk_id` -- synthesis_purification_pk_id
                 );
 
 -- purity_file
@@ -4522,12 +4522,12 @@ ALTER TABLE `canano`.`purity_file`
 
 -- purification_config
 ALTER TABLE `canano`.`purification_config`
-    ADD CONSTRAINT `FK_synthesis_func_purification_TO_purification_config` -- synthesis_func_purification -> purification_config
+    ADD CONSTRAINT `FK_synthesis_purification_TO_purification_config` -- synthesis_purification -> purification_config
         FOREIGN KEY (
-                     `synthesis_func_purification_pk_id` -- synthesis_func_purification_pk_id
+                     `synthesis_purification_pk_id` -- synthesis_purification_pk_id
             )
-            REFERENCES `canano`.`synthesis_func_purification` ( -- synthesis_func_purification
-                                                               `synthesis_func_purification_pk_id` -- synthesis_func_purification_pk_id
+            REFERENCES `canano`.`synthesis_purification` ( -- synthesis_purification
+                                                               `synthesis_purification_pk_id` -- synthesis_purification_pk_id
                 );
 
 -- purification_config

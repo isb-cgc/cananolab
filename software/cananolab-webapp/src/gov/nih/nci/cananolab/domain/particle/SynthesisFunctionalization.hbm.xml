@@ -15,13 +15,13 @@
             </column>
         </many-to-one>
         <set fetch="select" inverse="true" lazy="true"
-             name="synthesisFuncPurifications" sort="unsorted" table="synthesis_func_purification">
+             name="SynthesisPurifications" sort="unsorted" table="synthesis_purification">
             <key>
                 <column name="synthesis_funtionalization_pk_id" not-null="true">
                     <comment>synthesis_funtionalization_pk_id</comment>
                 </column>
             </key>
-            <one-to-many class="gov.nih.nci.cananolab.domain.common.SynthesisFuncPurification"/>
+            <one-to-many class="gov.nih.nci.cananolab.domain.common.SynthesisPurification"/>
         </set>
     </class>
 </hibernate-mapping>

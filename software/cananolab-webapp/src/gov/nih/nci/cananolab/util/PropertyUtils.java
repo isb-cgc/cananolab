@@ -61,7 +61,6 @@ public class PropertyUtils {
 	 * This doesn't work for the properties in a war file
 	 * 
 	 * @param propertyFileName
-	 * @param propertyName
 	 * @return property value
 	 */
 	public static boolean setProperty(String propertyFileName, String name,
@@ -90,7 +89,7 @@ public class PropertyUtils {
 				try {
 					out.flush();
 					out.close();
-				} catch (Exception e) {
+				} catch (Exception e) {//TODO report error
 				}
 			}
 		}
@@ -103,8 +102,7 @@ public class PropertyUtils {
 	 * in classpath.
 	 * 
 	 * @param propertyFileName
-	 * @param reload
-	 */
+     */
 	protected static void loadProperty(String propertyFileName) {
 		InputStream istream = null;
 		properties = new Properties();
@@ -118,7 +116,7 @@ public class PropertyUtils {
 			if (istream != null) {
 				try {
 					istream.close();
-				} catch (Exception e) {
+				} catch (Exception e) {//TODO report error
 				}
 			}
 		}
@@ -138,7 +136,7 @@ public class PropertyUtils {
 			if (istream != null) {
 				try {
 					istream.close();
-				} catch (Exception e) {
+				} catch (Exception e) {//TODO report error
 				}
 			}
 		}
@@ -151,9 +149,8 @@ public class PropertyUtils {
 	 * @return file name of caNanolab property file.
 	 */
 	private static String getPropertyFileName(String propertyFileName) {
-		String fileName = Thread.currentThread().getContextClassLoader()
-				.getResource(propertyFileName).getPath();
 
-		return fileName;
+        return Thread.currentThread().getContextClassLoader()
+                .getResource(propertyFileName).getPath();
 	}
 }

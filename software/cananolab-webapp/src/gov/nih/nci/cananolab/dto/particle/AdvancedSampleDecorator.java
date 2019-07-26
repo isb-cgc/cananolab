@@ -32,8 +32,7 @@ public class AdvancedSampleDecorator extends TableDecorator {
 		sb.append(sampleName).append("</a>");
 		String link = sb.toString();
 
-		SortableName sortableLink = new SortableName(sampleName, link);
-		return sortableLink;
+        return new SortableName(sampleName, link);
 	}
 
 	public SortableName getViewSampleURL() {
@@ -46,7 +45,6 @@ public class AdvancedSampleDecorator extends TableDecorator {
 		sb.append(sampleName).append("</a>");
 		String link = sb.toString();
 
-		SortableName sortableLink = new SortableName(sampleName, link);
-		return sortableLink;
+        return new SortableName(sampleName, link);
 	}
 }

@@ -36,8 +36,7 @@ public class PublicationDecorator extends TableDecorator {
 		if (!StringUtils.isEmpty(category)) {
 			publicationType = publication.getCategory();
 		}
-		SortableName sortableLink = new SortableName(publicationType);
-		return sortableLink;
+        return new SortableName(publicationType);
 	}
 
 	public SortableName getResearchArea() throws UnsupportedEncodingException {
@@ -47,9 +46,8 @@ public class PublicationDecorator extends TableDecorator {
 		if (!StringUtils.isEmpty(researchArea)) {
 			researchArea = researchArea.replaceAll(";", "\r\n");
 		}
-		SortableName sortableLink = new SortableName(StringUtils
-				.escapeXmlButPreserveLineBreaks(researchArea));
-		return sortableLink;
+        return new SortableName(StringUtils
+                .escapeXmlButPreserveLineBreaks(researchArea));
 	}
 
 	public String getDetailURL() {

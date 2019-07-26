@@ -178,9 +178,8 @@ public class Author  implements Serializable
 	{
 		if(obj instanceof Author) 
 		{
-			Author c =(Author)obj; 			 
-			if(getId() != null && getId().equals(c.getId()))
-				return true;
+			Author c =(Author)obj;
+			return getId() != null && getId().equals(c.getId());
 		}
 		return false;
 	}

@@ -12,8 +12,7 @@ import gov.nih.nci.cananolab.domain.particle.Sample;
 import gov.nih.nci.cananolab.dto.common.AccessibilityBean;
 import gov.nih.nci.cananolab.system.applicationservice.CaNanoLabApplicationService;
 import gov.nih.nci.cananolab.system.dao.CaNanoLabORMDAO;
-import gov.nih.nci.system.applicationservice.ApplicationException;
-import gov.nih.nci.system.applicationservice.impl.WritableApplicationServiceImpl;
+import gov.nih.nci.cananolab.system.applicationservice.ApplicationException;
 import gov.nih.nci.system.util.ClassCache;
 
 //import org.hibernate.type.StandardBasicTypes;
@@ -25,7 +24,6 @@ import java.util.List;
 import org.apache.log4j.Logger;
 import org.hibernate.Hibernate;
 import org.springframework.aop.framework.Advised;
-import org.springframework.stereotype.Component;
 
 /**
  * Customized to contain more CRUD operations.
@@ -152,8 +150,7 @@ public class CaNanoLabApplicationServiceImpl extends WritableApplicationServiceI
 			Field field = interceptor.getClass().getDeclaredField("advised");
 			field.setAccessible(true);
 			Advised advised = (Advised) field.get(interceptor);
-			Object realObject = advised.getTargetSource().getTarget();
-			return realObject;
+            return advised.getTargetSource().getTarget();
 		} catch (Exception e) {
 			return proxy;
 		}

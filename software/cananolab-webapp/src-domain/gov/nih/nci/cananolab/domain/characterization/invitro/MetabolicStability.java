@@ -23,9 +23,8 @@ public class MetabolicStability extends InvitroCharacterization implements Seria
 	{
 		if(obj instanceof MetabolicStability) 
 		{
-			MetabolicStability c =(MetabolicStability)obj; 			 
-			if(getId() != null && getId().equals(c.getId()))
-				return true;
+			MetabolicStability c =(MetabolicStability)obj;
+            return getId() != null && getId().equals(c.getId());
 		}
 		return false;
 	}

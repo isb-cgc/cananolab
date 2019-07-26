@@ -23,9 +23,8 @@ public class ImmuneCellFunction extends InvitroCharacterization implements Seria
 	{
 		if(obj instanceof ImmuneCellFunction) 
 		{
-			ImmuneCellFunction c =(ImmuneCellFunction)obj; 			 
-			if(getId() != null && getId().equals(c.getId()))
-				return true;
+			ImmuneCellFunction c =(ImmuneCellFunction)obj;
+            return getId() != null && getId().equals(c.getId());
 		}
 		return false;
 	}

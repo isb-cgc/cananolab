@@ -127,7 +127,7 @@ public class CharacterizationBean {
 				findings.add(new FindingBean(finding));
 			}
 		}
-		Collections.sort(findings, new Comparators.FindingBeanDateComparator());
+		findings.sort(new Comparators.FindingBeanDateComparator());
 		if (chara.getProtocol() != null) {
 			protocolBean = new ProtocolBean(chara.getProtocol());
 		}

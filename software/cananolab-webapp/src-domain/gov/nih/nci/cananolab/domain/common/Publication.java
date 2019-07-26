@@ -267,9 +267,8 @@ public class Publication extends File implements Serializable
 	{
 		if(obj instanceof Publication) 
 		{
-			Publication c =(Publication)obj; 			 
-			if(getId() != null && getId().equals(c.getId()))
-				return true;
+			Publication c =(Publication)obj;
+            return getId() != null && getId().equals(c.getId());
 		}
 		return false;
 	}

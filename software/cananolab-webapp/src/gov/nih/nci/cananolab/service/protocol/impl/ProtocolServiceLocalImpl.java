@@ -11,13 +11,11 @@ package gov.nih.nci.cananolab.service.protocol.impl;
 import gov.nih.nci.cananolab.domain.common.Protocol;
 import gov.nih.nci.cananolab.domain.particle.Characterization;
 import gov.nih.nci.cananolab.dto.common.ProtocolBean;
-import gov.nih.nci.cananolab.dto.common.SecuredDataBean;
 import gov.nih.nci.cananolab.exception.NoAccessException;
 import gov.nih.nci.cananolab.exception.ProtocolException;
 import gov.nih.nci.cananolab.security.AccessControlInfo;
 import gov.nih.nci.cananolab.security.CananoUserDetails;
 import gov.nih.nci.cananolab.security.dao.AclDao;
-import gov.nih.nci.cananolab.security.enums.AccessTypeEnum;
 import gov.nih.nci.cananolab.security.enums.CaNanoRoleEnum;
 import gov.nih.nci.cananolab.security.enums.SecureClassesEnum;
 import gov.nih.nci.cananolab.security.service.SpringSecurityAclService;
@@ -29,22 +27,17 @@ import gov.nih.nci.cananolab.system.applicationservice.CaNanoLabApplicationServi
 import gov.nih.nci.cananolab.util.Comparators;
 import gov.nih.nci.cananolab.util.Constants;
 import gov.nih.nci.system.client.ApplicationServiceProvider;
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
-
 import javax.servlet.http.HttpServletRequest;
-
 import org.apache.log4j.Logger;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Property;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import org.springframework.transaction.annotation.Propagation;
-import org.springframework.transaction.annotation.Transactional;
 
 /**
  * Local implementation of ProtocolService
@@ -199,8 +192,7 @@ public class ProtocolServiceLocalImpl extends BaseServiceLocalImpl implements Pr
 		try {
 			Protocol protocol = protocolServiceHelper.findProtocolBy(protocolType, protocolName, protocolVersion);
 			if (protocol != null) {
-				ProtocolBean protocolBean = loadProtocolBean(protocol);
-				return protocolBean;
+                return loadProtocolBean(protocol);
 			} else {
 				return null;
 			}
@@ -235,8 +227,7 @@ public class ProtocolServiceLocalImpl extends BaseServiceLocalImpl implements Pr
 
 	public int getNumberOfPublicProtocols() throws ProtocolException {
 		try {
-			int count = protocolServiceHelper.getNumberOfPublicProtocols();
-			return count;
+            return protocolServiceHelper.getNumberOfPublicProtocols();
 		} catch (Exception e) {
 			String err = "Error finding counts of public protocols.";
 			logger.error(err, e);
@@ -246,8 +237,7 @@ public class ProtocolServiceLocalImpl extends BaseServiceLocalImpl implements Pr
 
 	public int getNumberOfPublicProtocolsForJob() throws ProtocolException {
 		try {
-			int count = protocolServiceHelper.getNumberOfPublicProtocolsForJob();
-			return count;
+            return protocolServiceHelper.getNumberOfPublicProtocolsForJob();
 		} catch (Exception e) {
 			String err = "Error finding counts of public protocols.";
 			logger.error(err, e);

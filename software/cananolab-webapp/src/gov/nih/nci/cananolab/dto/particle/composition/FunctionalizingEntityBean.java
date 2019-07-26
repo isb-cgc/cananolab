@@ -352,7 +352,7 @@ public class FunctionalizingEntityBean extends BaseCompositionEntityBean {
 		if (displayNames.isEmpty()) {
 			return null;
 		}
-		return displayNames.toArray(new String[displayNames.size()]);
+		return displayNames.toArray(new String[0]);
 	}
 
 	public boolean isWithProperties() {
