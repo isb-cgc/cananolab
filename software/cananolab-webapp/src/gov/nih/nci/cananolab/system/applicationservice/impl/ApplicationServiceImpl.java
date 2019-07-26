@@ -1,10 +1,9 @@
-package system.applicationservice.impl;
+package gov.nih.nci.cananolab.system.applicationservice.impl;
 
 //import gov.nih.nci.cagrid.sdkquery4.processor.ParameterizedHqlQuery;
 
 
 import gov.nih.nci.system.dao.DAO;
-import gov.nih.nci.system.dao.DAOException;
 import gov.nih.nci.system.dao.QueryException;
 import gov.nih.nci.system.dao.Request;
 import gov.nih.nci.system.dao.Response;
@@ -18,14 +17,14 @@ import java.util.StringTokenizer;
 import org.apache.log4j.Logger;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.impl.CriteriaImpl;
-import system.applicationservice.ApplicationException;
-import system.applicationservice.ApplicationService;
-import system.applicationservice.client.proxy.ListProxy;
-import system.dao.orm.ORMDAOImpl;
+import gov.nih.nci.cananolab.system.applicationservice.ApplicationException;
+import gov.nih.nci.cananolab.system.applicationservice.ApplicationService;
+import gov.nih.nci.cananolab.system.applicationservice.client.proxy.ListProxy;
+import gov.nih.nci.cananolab.system.dao.orm.ORMDAOImpl;
 
-//import gov.nih.nci.system.dao.orm.translator.gridCQL.CQL2ParameterizedHQL;
-//import gov.nih.nci.system.dao.orm.translator.gridCQL.RoleNameResolver;
-//import gov.nih.nci.system.query.cql.CQLQuery;
+//import gov.nih.nci.cananolab.system.dao.orm.translator.gridCQL.CQL2ParameterizedHQL;
+//import gov.nih.nci.cananolab.system.dao.orm.translator.gridCQL.RoleNameResolver;
+//import gov.nih.nci.cananolab.system.query.cql.CQLQuery;
 
 /**
  * Implementation for the methods in the service layer
@@ -97,14 +96,14 @@ public class ApplicationServiceImpl implements ApplicationService {
 	}
 
 //	/**
-//	 * @see gov.nih.nci.system.applicationservice.ApplicationService#query(gov.nih.nci.system.query.cql.CQLQuery, java.lang.String)
+//	 * @see gov.nih.nci.gov.nih.nci.cananolab.system.applicationservice.ApplicationService#query(gov.nih.nci.gov.nih.nci.cananolab.system.query.cql.CQLQuery, java.lang.String)
 //	 */
 //	public <E> List<E> query(CQLQuery cqlQuery, String targetClassName) throws ApplicationException {
 //		return query(cqlQuery);
 //	}
 
 //	/**
-//	 * @see gov.nih.nci.system.applicationservice.ApplicationService#query(gov.nih.nci.system.query.cql.CQLQuery)
+//	 * @see gov.nih.nci.gov.nih.nci.cananolab.system.applicationservice.ApplicationService#query(gov.nih.nci.gov.nih.nci.cananolab.system.query.cql.CQLQuery)
 //	 */
 //	public <E> List<E> query(CQLQuery cqlQuery) throws ApplicationException {
 //		return privateQuery(cqlQuery, cqlQuery.getTarget().getName());
@@ -224,9 +223,9 @@ public class ApplicationServiceImpl implements ApplicationService {
 	}
 	
 	/**
-	 * Prepares the gov.nih.nci.system.dao.Request object and uses {@link #query(Request)} to retrieve results
+	 * Prepares the gov.nih.nci.gov.nih.nci.cananolab.system.dao.Request object and uses {@link #query(Request)} to retrieve results
 	 * from the data source. The results are converted in the list which is only partially loaded upto the maximum number 
-	 * of record that the system can support at a time. 
+	 * of record that the gov.nih.nci.cananolab.system can support at a time.
 	 * 
 	 * @param criteria
 	 * @param targetClassName
@@ -272,7 +271,7 @@ public class ApplicationServiceImpl implements ApplicationService {
 	
 	/**
 	 * Sends the request to the DAO. The DAO is determined by the object that the query specifies to be queried. 
-	 * DAO returns the result which is in the form of a gov.nih.nci.system.dao.Response object.
+	 * DAO returns the result which is in the form of a gov.nih.nci.gov.nih.nci.cananolab.system.dao.Response object.
 	 * 
 	 * @param request
 	 * @return

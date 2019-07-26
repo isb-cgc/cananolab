@@ -1,4 +1,4 @@
-package system.dao.orm;
+package gov.nih.nci.cananolab.system.dao.orm;
 
 import gov.nih.nci.system.dao.DAOException;
 import gov.nih.nci.system.dao.Request;
@@ -17,7 +17,7 @@ import org.hibernate.HibernateException;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.springframework.orm.hibernate3.HibernateCallback;
-import system.dao.WritableDAO;
+import gov.nih.nci.cananolab.system.dao.WritableDAO;
 
 public class WritableORMDAOImpl extends ORMDAOImpl implements WritableDAO
 {

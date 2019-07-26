@@ -1,7 +1,7 @@
-package system.applicationservice.client.proxy;
+package gov.nih.nci.cananolab.system.applicationservice.client.proxy;
 
-import system.applicationservice.ApplicationService;
-//import gov.nih.nci.system.applicationservice.ApplicationServiceProvider;
+import gov.nih.nci.cananolab.system.applicationservice.ApplicationService;
+//import gov.nih.nci.gov.nih.nci.cananolab.system.applicationservice.ApplicationServiceProvider;
 
 import java.util.ArrayList;
 import java.util.Collection;
