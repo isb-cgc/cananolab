@@ -156,9 +156,8 @@ public class Technique  implements Serializable
 	{
 		if(obj instanceof Technique) 
 		{
-			Technique c =(Technique)obj; 			 
-			if(getId() != null && getId().equals(c.getId()))
-				return true;
+			Technique c =(Technique)obj;
+            return getId() != null && getId().equals(c.getId());
 		}
 		return false;
 	}

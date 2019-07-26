@@ -22,7 +22,7 @@ public enum SecureClassesEnum
 	
 	private Class clazz;
 	
-	private SecureClassesEnum(Class clazz) {
+	SecureClassesEnum(Class clazz) {
 		this.clazz = clazz;
 	}
 	

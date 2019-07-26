@@ -8,13 +8,6 @@
 
 package gov.nih.nci.cananolab.service;
 
-import java.util.List;
-
-import org.apache.log4j.Logger;
-import org.quartz.JobExecutionContext;
-import org.quartz.JobExecutionException;
-import org.springframework.scheduling.quartz.QuartzJobBean;
-
 import gov.nih.nci.cananolab.dto.common.PublicDataCountBean;
 import gov.nih.nci.cananolab.security.enums.CharacterizationEnum;
 import gov.nih.nci.cananolab.service.protocol.ProtocolService;
@@ -22,6 +15,10 @@ import gov.nih.nci.cananolab.service.publication.PublicationService;
 import gov.nih.nci.cananolab.service.sample.CharacterizationService;
 import gov.nih.nci.cananolab.service.sample.SampleService;
 import gov.nih.nci.cananolab.util.DateUtils;
+import org.apache.log4j.Logger;
+import org.quartz.JobExecutionContext;
+import org.quartz.JobExecutionException;
+import org.springframework.scheduling.quartz.QuartzJobBean;
 
 /**
  * A Scheduler job for pulling public data counts from the database
@@ -50,7 +47,7 @@ public class PublicDataCountJob extends QuartzJobBean
 		try {
 			queryPublicDataCounts();
 		} catch (Exception e) {
-			new JobExecutionException(e);
+			throw new JobExecutionException(e);
 		}
 		
 	}

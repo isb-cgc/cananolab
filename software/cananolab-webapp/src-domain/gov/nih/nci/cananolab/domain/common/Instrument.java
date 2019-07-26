@@ -178,9 +178,8 @@ public class Instrument  implements Serializable
 	{
 		if(obj instanceof Instrument) 
 		{
-			Instrument c =(Instrument)obj; 			 
-			if(getId() != null && getId().equals(c.getId()))
-				return true;
+			Instrument c =(Instrument)obj;
+            return getId() != null && getId().equals(c.getId());
 		}
 		return false;
 	}

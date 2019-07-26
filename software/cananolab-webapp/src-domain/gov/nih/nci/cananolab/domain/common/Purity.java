@@ -1,7 +1,7 @@
 package gov.nih.nci.cananolab.domain.common;
 // Generated Apr 3, 2019, 8:32:55 PM by Hibernate Tools 5.4.2.Final
 
-import gov.nih.nci.cananolab.domain.particle.SynthesisFuncPurification;
+import gov.nih.nci.cananolab.domain.particle.SynthesisPurification;
 
 import java.util.Date;
 import java.util.HashSet;
@@ -12,48 +12,48 @@ import java.util.Set;
  */
 public class Purity implements java.io.Serializable {
 
-	private long purityPkId;
-	private SynthesisFuncPurification synthesisFuncPurification;
+	private Long purityPkId;
+	private SynthesisPurification synthesisPurification;
 	private String createdBy;
 	private Date createdDate;
-	private Set files = new HashSet(0);
-	private Set purityDatums = new HashSet(0);
+	private Set<File> files = new HashSet<File>(0);
+	private Set<PurityDatum> purityDatums = new HashSet<PurityDatum>(0);
 
 	public Purity() {
 	}
 
-	public Purity(long purityPkId, SynthesisFuncPurification synthesisFuncPurification, String createdBy,
+	public Purity(Long purityPkId, SynthesisPurification SynthesisPurification, String createdBy,
 			Date createdDate) {
 		this.purityPkId = purityPkId;
-		this.synthesisFuncPurification = synthesisFuncPurification;
+		this.synthesisPurification = SynthesisPurification;
 		this.createdBy = createdBy;
 		this.createdDate = createdDate;
 	}
 
-	public Purity(long purityPkId, SynthesisFuncPurification synthesisFuncPurification, String createdBy,
+	public Purity(long purityPkId, SynthesisPurification SynthesisPurification, String createdBy,
 			Date createdDate, Set files, Set purityDatums) {
 		this.purityPkId = purityPkId;
-		this.synthesisFuncPurification = synthesisFuncPurification;
+		this.synthesisPurification = SynthesisPurification;
 		this.createdBy = createdBy;
 		this.createdDate = createdDate;
 		this.files = files;
 		this.purityDatums = purityDatums;
 	}
 
-	public long getId() {
+	public Long getId() {
 		return this.purityPkId;
 	}
 
-	public void setId(long purityPkId) {
+	public void setId(Long purityPkId) {
 		this.purityPkId = purityPkId;
 	}
 
-	public SynthesisFuncPurification getSynthesisFuncPurification() {
-		return this.synthesisFuncPurification;
+	public SynthesisPurification getSynthesisPurification() {
+		return this.synthesisPurification;
 	}
 
-	public void setSynthesisFuncPurification(SynthesisFuncPurification synthesisFuncPurification) {
-		this.synthesisFuncPurification = synthesisFuncPurification;
+	public void setSynthesisPurification(SynthesisPurification SynthesisPurification) {
+		this.synthesisPurification = SynthesisPurification;
 	}
 
 	public String getCreatedBy() {
@@ -72,19 +72,19 @@ public class Purity implements java.io.Serializable {
 		this.createdDate = createdDate;
 	}
 
-	public Set getFiles() {
+	public Set<File> getFiles() {
 		return this.files;
 	}
 
-	public void setFiles(Set files) {
+	public void setFiles(Set<File> files) {
 		this.files = files;
 	}
 
-	public Set getPurityDatumCollection() {
+	public Set<PurityDatum> getPurityDatumCollection() {
 		return this.purityDatums;
 	}
 
-	public void setPurityDatumCollection(Set purityDatums) {
+	public void setPurityDatumCollection(Set<PurityDatum> purityDatums) {
 		this.purityDatums = purityDatums;
 	}
 

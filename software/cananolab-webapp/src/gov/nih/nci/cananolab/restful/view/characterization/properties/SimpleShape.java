@@ -41,7 +41,7 @@ public class SimpleShape extends SimpleCharacterizationProperty {
 		
 		if (options != null)
 			shapeTypeOptions.addAll(options);
-		
+		//TODO this isn't returning the actual list with "other" added.
 		CommonUtil.addOtherToList(shapeTypeOptions);
 		
 	}
@@ -98,12 +98,12 @@ public class SimpleShape extends SimpleCharacterizationProperty {
 			vals.add("");
 		
 		if (this.minDimension != null)
-			vals.add(String.valueOf(this.minDimension) + "  " + this.minDimensionUnit);
+			vals.add(this.minDimension + "  " + this.minDimensionUnit);
 		else
 			vals.add("");
 
 		if (this.maxDimension != null)
-			vals.add(String.valueOf(this.maxDimension) + "  " + this.maxDimensionUnit);
+			vals.add(this.maxDimension + "  " + this.maxDimensionUnit);
 		else
 			vals.add("");
 

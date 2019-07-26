@@ -111,9 +111,8 @@ public class CommonLookup  implements Serializable
 	{
 		if(obj instanceof CommonLookup) 
 		{
-			CommonLookup c =(CommonLookup)obj; 			 
-			if(getId() != null && getId().equals(c.getId()))
-				return true;
+			CommonLookup c =(CommonLookup)obj;
+            return getId() != null && getId().equals(c.getId());
 		}
 		return false;
 	}

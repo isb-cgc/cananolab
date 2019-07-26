@@ -24,7 +24,7 @@ import gov.nih.nci.cananolab.dto.common.ExperimentConfigBean;
 import gov.nih.nci.cananolab.dto.common.FileBean;
 import gov.nih.nci.cananolab.dto.common.FindingBean;
 import gov.nih.nci.cananolab.dto.common.Row;
-import gov.nih.nci.cananolab.dto.common.TableCell;
+import gov.nih.nci.cananolab.dto.common.table.TableCell;
 import gov.nih.nci.cananolab.dto.particle.characterization.CharacterizationBean;
 import gov.nih.nci.cananolab.dto.particle.characterization.CharacterizationSummaryViewBean;
 import gov.nih.nci.cananolab.util.Constants;
@@ -377,7 +377,6 @@ public class CharacterizationExporter {
 	/**
 	 * Output Datums in Characterization Results for work sheet.
 	 *
-	 * @param charBean
 	 * @param sheet
 	 * @param headerStyle
 	 * @param rowIndex
@@ -461,7 +460,6 @@ public class CharacterizationExporter {
 	 * Output Files Results for report (=> bodyFindingView.jsp).
 	 *
 	 * @param findingBean
-	 * @param request
 	 * @param wb
 	 * @param sheet
 	 * @param headerStyle

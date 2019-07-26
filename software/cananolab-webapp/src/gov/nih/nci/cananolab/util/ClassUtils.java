@@ -111,9 +111,9 @@ public class ClassUtils {
 			//wildfly deployment path is different from jboss 5.1, so retrieved the jar file first
 			File file = new File(jarPath);
 			File[] children = file.listFiles();
-			JarFile jarFile = null;;
-			
-			for(int i = 0; i < children.length; i++){
+			JarFile jarFile = null;
+
+            for(int i = 0; i < children.length; i++){
 				if(!(children[i].isDirectory()))
 				jarFile = new JarFile(children[i].getPath());
 			}
@@ -133,10 +133,14 @@ public class ClassUtils {
 		}
 		return list;
 	}
-/*
- * Wildfly deployment path returns a fake path with getResource, so added this function to get realPath.
- */
-	
+
+
+	/**
+	 * Wildfly deployment path returns a fake path with getResource, so added this function to get realPath.
+     *
+	 * @param url
+	 * @return
+	 */
 	private static String getRealPath(URL url) {
 		org.jboss.vfs.VirtualFile vFile = null;
 		try {
@@ -207,13 +211,7 @@ public class ClassUtils {
 		return strs[strs.length - 1];
 	}
 
-	/**
-	 * check if a class has children classes
-	 * 
-	 * @param parent
-	 *            class name
-	 * @return
-	 */
+
 	public static boolean hasChildrenClasses(String parentClassName)
 			throws Exception {
 		boolean hasChildernFlag = false;
@@ -222,14 +220,17 @@ public class ClassUtils {
 		}
 		List<String> subclassList = ClassUtils
 				.getChildClassNames(parentClassName);
-		if (subclassList == null || subclassList.size() == 0)
-			hasChildernFlag = false;
-		else
-			hasChildernFlag = true;
+        hasChildernFlag = subclassList != null && subclassList.size() != 0;
 
 		return hasChildernFlag;
 	}
 
+	/**
+	 *
+	 * @param shortClassName
+	 * @return
+	 * @throws Exception
+	 */
 	public static Class getFullClass(String shortClassName) throws Exception {
 		if (shortClassName == null || shortClassName.length() == 0) {
 			return null;
@@ -255,15 +256,16 @@ public class ClassUtils {
 	 * copy(...) re-throw the exception.
 	 * 
 	 * A later version of this class includes some minor optimizations.
-	 */
-	/**
+	 *
 	 * Returns a copy of the object, or null if the object cannot be serialized.
-	 */
-
-	/**
+	 *
 	 * NOTE: when updating the cloned object, the cloned associated collection
 	 * in particular, Before persist using Hibernate, need to create a new
 	 * collection using the cloned collection otherwise Hibernate complains.
+     *
+	 *
+	 * @param orig
+	 * @return
 	 */
 	public static Object deepCopy(Object orig) {
 		Object obj = null;
@@ -280,10 +282,8 @@ public class ClassUtils {
 			ObjectInputStream in = new ObjectInputStream(
 					new ByteArrayInputStream(bos.toByteArray()));
 			obj = in.readObject();
-		} catch (IOException e) {
+		} catch (IOException | ClassNotFoundException e) {
 			e.printStackTrace();
-		} catch (ClassNotFoundException cnfe) {
-			cnfe.printStackTrace();
 		}
 		return obj;
 	}
@@ -300,7 +300,7 @@ public class ClassUtils {
 	 * sense to have copy(...) re-throw the exception.
 	 */
 
-	/*
+	/**
 	 * Flag object used internally to indicate that deserialization failed.
 	 */
 	private static final Object ERROR = new Object();
@@ -335,6 +335,12 @@ public class ClassUtils {
 		return obj;
 	}
 
+	/**
+	 *
+	 * @param aTargetClazz
+	 * @param inputObject
+	 * @return
+	 */
 	public static Object mapObjects(Class aTargetClazz, Object inputObject) {
 		List objList = new ArrayList();
 		objList.add(inputObject);
@@ -351,6 +357,11 @@ public class ClassUtils {
 	 * one parameter types, method.getParameterTypes().length==1 - setter method
 	 * returns void type - The return type of getter method matches the
 	 * parameter type of the setter method
+	 *
+	 *
+	 * @param aTargetClazz
+	 * @param inputObjects
+	 * @return
 	 */
 	public static List mapObjects(Class aTargetClazz, List inputObjects) {
 		List resultObjs = new ArrayList();
@@ -445,26 +456,32 @@ public class ClassUtils {
 		 */
 		private PipedInputStream in = null;
 
+		/**
+		 *
+		 * @param pin
+		 * @throws IOException
+		 */
 		public Deserializer(PipedInputStream pin) throws IOException {
 			lock = new Object();
 			this.in = pin;
 			start();
 		}
 
+		/**
+		 *
+		 */
 		public void run() {
 			Object o = null;
 			try {
 				ObjectInputStream oin = new ObjectInputStream(in);
 				o = oin.readObject();
-			} catch (IOException e) {
+			} catch (IOException | ClassNotFoundException e) {
 				// This should never happen. If it does we make sure
 				// that a the object is set to a flag that indicates
 				// deserialization was not possible.
 				e.printStackTrace();
-			} catch (ClassNotFoundException cnfe) {
-				// Same here...
-				cnfe.printStackTrace();
-			}
+			} // Same here...
+
 
 			synchronized (lock) {
 				if (o == null)
@@ -515,6 +532,11 @@ public class ClassUtils {
 		}
 	}
 
+	/**
+	 *
+	 * @param shortClassName
+	 * @return
+	 */
 	public static String getDisplayName(String shortClassName) {
 		String displayName = shortClassName.replaceAll("([A-Z])", " $1").trim()
 				.toLowerCase();
@@ -526,6 +548,11 @@ public class ClassUtils {
 		return displayName;
 	}
 
+	/**
+	 *
+	 * @param displayName
+	 * @return
+	 */
 	public static String getShortClassNameFromDisplayName(String displayName) {
 		// replace physico-chemical with physico chemical, in vivo with invivo,
 		// In vitro with invitro
@@ -540,10 +567,13 @@ public class ClassUtils {
 					+ word.substring(1);
 			newWords.add(newWord);
 		}
-		String shortClassName = StringUtils.join(newWords, "");
-		return shortClassName;
+		return StringUtils.join(newWords, "");
 	}
 
+	/**
+	 *
+	 * @param args
+	 */
 	public static void main(String[] args) {
 		try {
 			List<String> names = ClassUtils

@@ -1,30 +1,25 @@
 package gov.nih.nci.cananolab.restful;
 
-import static com.jayway.restassured.RestAssured.given;
-import static org.hamcrest.Matchers.hasItems;
-import static org.hamcrest.Matchers.equalToIgnoringCase;
-import static org.junit.Assert.*;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import javax.ws.rs.client.Client;
-import javax.ws.rs.client.ClientBuilder;
-import javax.ws.rs.client.Entity;
-import javax.ws.rs.client.WebTarget;
-
 import gov.nih.nci.cananolab.restful.util.RestTestLoginUtil;
 import gov.nih.nci.cananolab.restful.view.edit.SimpleComposingElementBean;
 import gov.nih.nci.cananolab.restful.view.edit.SimpleFileBean;
 import gov.nih.nci.cananolab.restful.view.edit.SimpleNanomaterialEntityBean;
-import gov.nih.nci.cananolab.restful.view.edit.SimpleSubmitPublicationBean;
-
-import org.apache.commons.collections.map.HashedMap;
+import io.restassured.response.Response;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import javax.ws.rs.client.Client;
+import javax.ws.rs.client.ClientBuilder;
+import javax.ws.rs.client.Entity;
+import javax.ws.rs.client.WebTarget;
 import org.junit.Test;
 
-import com.jayway.restassured.response.Response;
+import static io.restassured.RestAssured.given;
+import static org.hamcrest.Matchers.equalToIgnoringCase;
+import static org.hamcrest.Matchers.hasItems;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 public class NanomaterialEntityServiceTest {
 
@@ -33,7 +28,7 @@ public class NanomaterialEntityServiceTest {
 
 		Response res =
 				given().contentType("application/json")
-				.parameter("sampleId", "20917510").expect()
+				.param("sampleId", "20917510").expect()
 				.body("nanomaterialEntityTypes", hasItems("biopolymer", "carbon", "carbon black", "carbon nanotube", "dendrimer", "emulsion", "fullerene", "liposome", "metal oxide", "metal particle", "metalloid", "nanohorn", "nanorod", "nanoshell", "polymer", "quantum dot", "silica"))
 						.when().get("http://localhost:8080/caNanoLab/rest/nanomaterialEntity/setup");
 
@@ -51,7 +46,7 @@ public class NanomaterialEntityServiceTest {
 		parameters.put("dataId", "60260353");
 		Response res =
 				given().contentType("application/json").cookie("JSESSIONID=" + jsessionId)
-				.parameters(parameters).expect()
+				.params(parameters).expect()
 				.body("description", equalToIgnoringCase("Test Nano Entity"))
 						.when().get("http://localhost:8080/caNanoLab/rest/nanomaterialEntity/edit");
 

@@ -1,24 +1,5 @@
 package gov.nih.nci.cananolab.restful.sample;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Date;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-
-import javax.servlet.ServletContext;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
-
-import org.apache.log4j.Logger;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.stereotype.Component;
-import org.springframework.transaction.annotation.Propagation;
-import org.springframework.transaction.annotation.Transactional;
-
 import gov.nih.nci.cananolab.domain.common.File;
 import gov.nih.nci.cananolab.domain.common.Keyword;
 import gov.nih.nci.cananolab.domain.function.ImagingFunction;
@@ -54,11 +35,26 @@ import gov.nih.nci.cananolab.security.utils.SpringSecurityUtil;
 import gov.nih.nci.cananolab.service.curation.CurationService;
 import gov.nih.nci.cananolab.service.sample.CompositionService;
 import gov.nih.nci.cananolab.service.sample.SampleService;
-import gov.nih.nci.cananolab.service.sample.helper.SampleServiceHelper;
 import gov.nih.nci.cananolab.ui.form.CompositionForm;
 import gov.nih.nci.cananolab.util.Constants;
 import gov.nih.nci.cananolab.util.DateUtils;
 import gov.nih.nci.cananolab.util.StringUtils;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Date;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import javax.servlet.ServletContext;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 @Transactional(readOnly=false, propagation=Propagation.REQUIRED)
 @Component("nanomaterialEntityBO")
@@ -80,14 +76,12 @@ public class NanomaterialEntityBO extends BaseAnnotationBO
 	
 	@Autowired
 	private UserDetailsService userDetailsService;
-	
+
 	/**
-	 * Add or update the data to database
-	 * 
-	 * @param mapping
-	 * @param form
+	 *  Add or update the data to database
+	 *
+	 * @param nanoBean
 	 * @param request
-	 * @param response
 	 * @return
 	 * @throws Exception
 	 */
@@ -304,10 +298,7 @@ public class NanomaterialEntityBO extends BaseAnnotationBO
 	/**
 	 * Set up the input form for adding new nanomaterial entity
 	 * 
-	 * @param mapping
-	 * @param form
 	 * @param request
-	 * @param response
 	 * @return
 	 * @throws Exception
 	 */

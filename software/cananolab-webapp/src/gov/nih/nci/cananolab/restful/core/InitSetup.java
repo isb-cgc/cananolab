@@ -147,7 +147,6 @@ public class InitSetup {
 	 * @param request
 	 * @param sessionAttribute
 	 * @param lookupName
-	 * @param lookupAttribute
 	 * @param otherTypeAttribute
 	 * @aparam updateSession
 	 * @return
@@ -174,7 +173,6 @@ public class InitSetup {
 	 *
 	 * @param appContext
 	 * @param contextAttribute
-	 * @param lookupName
 	 * @param fullParentClassName
 	 * @return
 	 * @throws Exception
@@ -271,12 +269,9 @@ public class InitSetup {
 			if (defaultLookupTable.get(lookupName) != null) {
 				otherValues = defaultLookupTable.get(lookupName).get(otherAttribute);
 			}
-			if (otherValues != null && otherValues.contains(value)) {
-				return true;
-			}
+            return otherValues != null && otherValues.contains(value);
 		}
-		return false;
-	}
+    }
 
 	public void persistLookup(HttpServletRequest request, String lookupName,
 			String attribute, String otherAttribute, String value)

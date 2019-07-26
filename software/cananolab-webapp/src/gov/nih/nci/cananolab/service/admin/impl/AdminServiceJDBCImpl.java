@@ -130,7 +130,7 @@ public class AdminServiceJDBCImpl extends JdbcDaoSupport implements AdminService
 	 * @throws Exception
 	 */
 	public SitePreferenceBean getSitePreference() throws Exception {
-		SitePreferenceBean result = null;
+		SitePreferenceBean result;
 		JdbcTemplate selectSite = this.getJdbcTemplate();
 		result = (SitePreferenceBean) selectSite.queryForObject(
 				SELECT_SITE_PREFERENCE, SITE_MAPPER);
@@ -165,7 +165,7 @@ public class AdminServiceJDBCImpl extends JdbcDaoSupport implements AdminService
 	 * @throws Exception
 	 */
 	public VisitorCountBean getVisitorCount() throws Exception {
-		VisitorCountBean result = null;
+		VisitorCountBean result;
 		JdbcTemplate selectSite = this.getJdbcTemplate();
 		result = (VisitorCountBean) selectSite.queryForObject(
 				SELECT_VISITOR_COUNT, COUNTE_MAPPER);

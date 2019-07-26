@@ -28,7 +28,6 @@ import gov.nih.nci.cananolab.service.sample.SampleService;
 import gov.nih.nci.cananolab.service.sample.helper.CharacterizationServiceHelper;
 import gov.nih.nci.cananolab.service.sample.helper.SampleServiceHelper;
 import gov.nih.nci.cananolab.util.ClassUtils;
-
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -39,10 +38,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.SortedSet;
-
 import javax.annotation.PostConstruct;
 import javax.sql.DataSource;
-
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.BatchPreparedStatementSetter;
@@ -50,8 +47,6 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.support.JdbcDaoSupport;
 import org.springframework.stereotype.Component;
-import org.springframework.transaction.annotation.Propagation;
-import org.springframework.transaction.annotation.Transactional;
 
 /**
  * Service methods for data availability
@@ -160,13 +155,12 @@ public class DataAvailabilityServiceJDBCImpl extends JdbcDaoSupport implements D
 
 	private SampleBean loadSample(String sampleId) throws SampleException, NoAccessException
 	{
-		SampleBean sampleBean = sampleService.findSampleById(sampleId, false);
 
-		return sampleBean;
+        return sampleService.findSampleById(sampleId, false);
 	}
 
 	public void deleteBatchDataAvailability() throws Exception
-	{
+	{  //TODO This will delete the entire data_availability table -- which seems bad
 		CananoUserDetails userDetails = SpringSecurityUtil.getPrincipal();
 		if (!userDetails.isCurator()) {
 			throw new Exception("No permission to process the request");
@@ -302,8 +296,7 @@ public class DataAvailabilityServiceJDBCImpl extends JdbcDaoSupport implements D
 			bean.setCreatedBy(SpringSecurityUtil.getLoggedInUserName());
 			dataAvailability.add(bean);
 		}
-		List<DataAvailabilityBean> list = new ArrayList<DataAvailabilityBean>();
-		list.addAll(dataAvailability);
+        List<DataAvailabilityBean> list = new ArrayList<DataAvailabilityBean>(dataAvailability);
 		insertBatch(list);
 
 		return dataAvailability;
@@ -347,14 +340,12 @@ public class DataAvailabilityServiceJDBCImpl extends JdbcDaoSupport implements D
 			bean.setUpdatedDate(new Date());
 		}
 		// update the currentDataAvailability
-		List<DataAvailabilityBean> currentList = new ArrayList<DataAvailabilityBean>();
-		currentList.addAll(currentDataAvailability);
+        List<DataAvailabilityBean> currentList = new ArrayList<DataAvailabilityBean>(currentDataAvailability);
 
 		updateBatch(currentList);
 
 		// insert the newDataAvailability
-		List<DataAvailabilityBean> newList = new ArrayList<DataAvailabilityBean>();
-		newList.addAll(newDataAvailability);
+        List<DataAvailabilityBean> newList = new ArrayList<DataAvailabilityBean>(newDataAvailability);
 
 		if (newList.size() > 0) {
 			insertBatchOnUpdate(newList);
@@ -448,7 +439,6 @@ public class DataAvailabilityServiceJDBCImpl extends JdbcDaoSupport implements D
 	 * delete data availability from database table in case these data
 	 * availability are removed from currently persisted data.
 	 *
-	 * @param data
 	 */
 	private void deleteBatch(final List<String> entity, final Long sampleId) {
 

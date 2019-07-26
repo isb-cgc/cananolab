@@ -55,18 +55,22 @@ public class PropertyUtil {
 	
 	protected static Properties getPropertiesByType(String type) {
 		type = type.toLowerCase();
-		if (type.equals("sample"))
-			return (sample_properties == null) ? loadProperty("sample.properties") : sample_properties;
-		else if (type.equals("application"))
-			return (application_properties == null) ? loadProperty("application.properties") : application_properties;
-		else if	(type.equals("protocol")) 
-			return (protocol_properties == null) ? loadProperty("protocol.properties") : protocol_properties;
-		else if (type.equals("publication"))
-			return (publication_properties == null) ? loadProperty("publication.properties") : publication_properties;
-		else if (type.equals("community"))
-			return (community_properties == null) ? loadProperty("community.properties") : community_properties;
-		else
-			return new Properties();			
+        switch (type) {
+            case "sample":
+                return (sample_properties == null) ? loadProperty("sample.properties") : sample_properties;
+            case "application":
+                return (application_properties == null) ? loadProperty("application.properties") :
+                        application_properties;
+            case "protocol":
+                return (protocol_properties == null) ? loadProperty("protocol.properties") : protocol_properties;
+            case "publication":
+                return (publication_properties == null) ? loadProperty("publication.properties") :
+                        publication_properties;
+            case "community":
+                return (community_properties == null) ? loadProperty("community.properties") : community_properties;
+            default:
+                return new Properties();
+        }
 			
 	}
 	
@@ -91,7 +95,7 @@ public class PropertyUtil {
 			if (istream != null) {
 				try {
 					istream.close();
-				} catch (Exception e) {
+				} catch (Exception e) {//TODO report error
 				}
 			}
 		}

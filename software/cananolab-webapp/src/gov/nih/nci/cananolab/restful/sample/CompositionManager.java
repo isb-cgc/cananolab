@@ -36,8 +36,7 @@ public class CompositionManager
 		try {
 			WebContext wctx = WebContextFactory.get();
 			String includePage = InitCompositionSetup.getInstance().getDetailPage(entityType, parent);
-			String content = wctx.forwardToString(includePage);
-			return content;
+            return wctx.forwardToString(includePage);
 		} catch (Exception e) {
 			return "";
 		}
@@ -132,8 +131,7 @@ public class CompositionManager
 		String sampleId = (String) request.getSession().getAttribute("sampleId");
 		
 		NanomaterialEntityBean entityBean = compositionService.findNanomaterialEntityById(sampleId, id);
-		List<ComposingElementBean> composingElements = entityBean.getComposingElements();
-		return composingElements;
+        return entityBean.getComposingElements();
 	}
 	
 	public String getDisplayNameForFunctionalizingEntityId(String id, HttpServletRequest request) throws Exception
@@ -144,8 +142,7 @@ public class CompositionManager
 		String sampleId = (String) request.getSession().getAttribute("sampleId");
 		
 		FunctionalizingEntityBean entityBean = compositionService.findFunctionalizingEntityById(sampleId, id);
-		String displayName = entityBean.getDisplayName();
-		return displayName;
+        return entityBean.getDisplayName();
 	}
 	
 }

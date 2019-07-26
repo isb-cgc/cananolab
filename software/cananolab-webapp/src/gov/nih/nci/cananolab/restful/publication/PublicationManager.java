@@ -221,7 +221,7 @@ public class PublicationManager
 		{
 			List<String> sampleNames = sampleServiceHelper.findSampleNamesBy(searchStr);
 			Collections.sort(sampleNames, new Comparators.SortableNameComparator());
-			return sampleNames.toArray(new String[sampleNames.size()]);
+			return sampleNames.toArray(new String[0]);
 		} catch (Exception e) {
 			logger.error("Problem getting all sample names for publication submission \n", e);
 			return new String[] { "" };

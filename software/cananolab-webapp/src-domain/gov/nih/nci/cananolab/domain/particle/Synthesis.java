@@ -53,7 +53,7 @@ public class Synthesis implements java.io.Serializable {
 		return this.synthesisMaterials;
 	}
 
-	public void setSynthesisMaterials(Set synthesisMaterialses) {
+	public void setSynthesisMaterials(Set synthesisMaterials) {
 		this.synthesisMaterials = synthesisMaterials;
 	}
 

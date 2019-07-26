@@ -156,9 +156,8 @@ public class ExperimentConfig  implements Serializable
 	{
 		if(obj instanceof ExperimentConfig) 
 		{
-			ExperimentConfig c =(ExperimentConfig)obj; 			 
-			if(getId() != null && getId().equals(c.getId()))
-				return true;
+			ExperimentConfig c =(ExperimentConfig)obj;
+            return getId() != null && getId().equals(c.getId());
 		}
 		return false;
 	}

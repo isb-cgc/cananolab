@@ -1,32 +1,27 @@
 package gov.nih.nci.cananolab.restful;
 
-import static com.jayway.restassured.RestAssured.given;
-import static org.hamcrest.Matchers.equalToIgnoringCase;
-import static org.hamcrest.Matchers.containsString;
-import static org.hamcrest.Matchers.hasItems;
-import static org.junit.Assert.*;
-import gov.nih.nci.cananolab.dto.particle.composition.AssociatedElementBean;
 import gov.nih.nci.cananolab.restful.util.RestTestLoginUtil;
 import gov.nih.nci.cananolab.restful.view.edit.SimpleAssociatedElement;
 import gov.nih.nci.cananolab.restful.view.edit.SimpleChemicalAssociationBean;
 import gov.nih.nci.cananolab.restful.view.edit.SimpleFileBean;
-import gov.nih.nci.cananolab.restful.view.edit.SimpleFunctionBean;
-import gov.nih.nci.cananolab.restful.view.edit.SimpleFunctionalizingEntityBean;
-
+import io.restassured.response.Response;
+import io.restassured.response.ValidatableResponse;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.client.Entity;
 import javax.ws.rs.client.WebTarget;
-
 import org.junit.Test;
 
-import com.jayway.restassured.response.Response;
-import com.jayway.restassured.response.ValidatableResponse;
+import static io.restassured.RestAssured.given;
+import static org.hamcrest.Matchers.containsString;
+import static org.hamcrest.Matchers.equalToIgnoringCase;
+import static org.hamcrest.Matchers.hasItems;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 public class ChemicalAssociationServicesTest {
 
@@ -35,7 +30,7 @@ public class ChemicalAssociationServicesTest {
 
 		Response res =
 				given().contentType("application/json")
-				.parameter("sampleId", "20917508").expect()
+				.param("sampleId", "20917508").expect()
 				.body("chemicalAssociationTypes", hasItems("Association","attachment","encapsulation","entrapment","intercalation"))
 						.when().get("http://localhost:8080/caNanoLab/rest/chemicalAssociation/setup");
 
@@ -52,7 +47,7 @@ public class ChemicalAssociationServicesTest {
 		parameters.put("dataId", "59670528");
 		Response res =
 				given().contentType("application/json").cookie("JSESSIONID=" + jsessionId)
-				.parameters(parameters).expect()
+				.params(parameters).expect()
 				.body("type", equalToIgnoringCase("attachment"))
 						.when().get("http://localhost:8080/caNanoLab/rest/chemicalAssociation/edit");
 

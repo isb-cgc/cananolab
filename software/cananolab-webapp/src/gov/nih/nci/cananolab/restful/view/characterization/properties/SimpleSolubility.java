@@ -32,6 +32,7 @@ public class SimpleSolubility extends SimpleCharacterizationProperty {
 		
 		if (options != null)
 			solventOptions.addAll(options);
+		//TODO this isn't returning the actual list with "other" added.
 		CommonUtil.addOtherToList(solventOptions);
 		
 		options = InitSetup.getInstance().getDefaultAndOtherTypesByLookup(request,
@@ -40,6 +41,7 @@ public class SimpleSolubility extends SimpleCharacterizationProperty {
 		
 		if (options != null)
 			concentrationUnitOptions.addAll(options);
+		//TODO this isn't returning the actual list with "other" added.
 		CommonUtil.addOtherToList(concentrationUnitOptions);
 		
 		isSolubleOptions.add("yes");

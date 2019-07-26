@@ -90,9 +90,8 @@ public class Fullerene extends NanomaterialEntity implements Serializable
 	{
 		if(obj instanceof Fullerene) 
 		{
-			Fullerene c =(Fullerene)obj; 			 
-			if(getId() != null && getId().equals(c.getId()))
-				return true;
+			Fullerene c =(Fullerene)obj;
+            return getId() != null && getId().equals(c.getId());
 		}
 		return false;
 	}

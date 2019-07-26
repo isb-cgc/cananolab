@@ -3,19 +3,19 @@
         "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
 <!-- Generated Apr 3, 2019, 8:32:55 PM by Hibernate Tools 5.4.2.Final -->
 <hibernate-mapping package="gov.nih.nci.cananolab.domain.particle">
-    <class catalog="canano" name="SynthesisFuncPurification" table="synthesis_func_purification">
-        <id column="synthesis_func_purification_pk_id" name="id" type="long">
-            <column name="synthesis_func_purification_pk_id"/>
+    <class catalog="canano" name="SynthesisPurification" table="synthesis_purification">
+        <id column="synthesis_purification_pk_id" name="id" type="long">
+            <column name="synthesis_purification_pk_id"/>
             <generator class="hilo"/>
         </id>
-        <many-to-one class="gov.nih.nci.cananolab.domain.Protocol"
+        <many-to-one class="gov.nih.nci.cananolab.domain.common.Protocol"
                      fetch="select" name="protocol">
             <column name="protocol_pk_id" not-null="true">
                 <comment>protocol_pk_id</comment>
             </column>
         </many-to-one>
         <many-to-one
-                class="gov.nih.nci.cananolab.domain.SynthesisFunctionalization"
+                class="gov.nih.nci.cananolab.domain.particle.SynthesisFunctionalization"
                 fetch="select" name="synthesisFunctionalization">
             <column name="synthesis_funtionalization_pk_id" not-null="true">
                 <comment>synthesis_funtionalization_pk_id</comment>
@@ -50,8 +50,8 @@
         <set fetch="select" inverse="true" lazy="true" name="purities"
              sort="unsorted" table="purity">
             <key>
-                <column name="synthesis_func_purification_pk_id" not-null="true">
-                    <comment>synthesis_func_purification_pk_id</comment>
+                <column name="synthesis_purification_pk_id" not-null="true">
+                    <comment>synthesis_purification_pk_id</comment>
                 </column>
             </key>
             <one-to-many class="gov.nih.nci.cananolab.domain.common.Purity"/>
@@ -59,8 +59,8 @@
         <set fetch="select" inverse="true" lazy="true"
              name="purificationConfigs" sort="unsorted" table="purification_config">
             <key>
-                <column name="synthesis_func_purification_pk_id">
-                    <comment>synthesis_func_purification_pk_id</comment>
+                <column name="synthesis_purification_pk_id">
+                    <comment>synthesis_purification_pk_id</comment>
                 </column>
             </key>
             <one-to-many class="gov.nih.nci.cananolab.domain.common.PurificationConfig"/>

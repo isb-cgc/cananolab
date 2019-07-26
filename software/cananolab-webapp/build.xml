@@ -89,7 +89,7 @@ L-->
 		</filterset>
 	</target>
 
-	<target name="compile" depends="init">
+	<target name="compile" depends="jar:beano">
 		<echo message="*****************************************************" />
 		<echo message="**   Compiling Java Classes ...          		  **" />
 		<echo message="*****************************************************" />

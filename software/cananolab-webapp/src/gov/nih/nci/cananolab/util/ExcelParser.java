@@ -73,6 +73,7 @@ public class ExcelParser {
 				try {
 					inputStream.close();
 				} catch (Exception e) {
+					//TODO report error
 				}
 			}
 		}
@@ -126,6 +127,7 @@ public class ExcelParser {
 				try {
 					inputStream.close();
 				} catch (Exception e) {
+					//TODO report error
 				}
 			}
 		}
@@ -201,7 +203,9 @@ public class ExcelParser {
 			if (inputStream != null) {
 				try {
 					inputStream.close();
-				} catch (Exception e) {}
+				} catch (Exception e) {
+					//TODO report error
+				}
 			}
 			//this.print2ndMatrix(dataMatrix);
 		}
@@ -276,6 +280,7 @@ public class ExcelParser {
 			try {
 				ExcelParser parser = new ExcelParser();
 				parser.twoWayParse(inputFileName);
+				//TODO This doesn't actually do anything.  It parses, but doesn't return anything
 				/**
 				SortedMap<String, SortedMap<String, Double>> matrix1 = 
 					parser.verticalParse(inputFileName);

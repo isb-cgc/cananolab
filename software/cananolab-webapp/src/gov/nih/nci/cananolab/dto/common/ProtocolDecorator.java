@@ -39,8 +39,7 @@ public class ProtocolDecorator extends TableDecorator {
 	public SortableName getViewName() {
 		ProtocolBean protocol = (ProtocolBean) getCurrentRowObject();
 		String protocolName = protocol.getDomain().getName();
-		SortableName sortableLink = new SortableName(protocolName);
-		return sortableLink;
+        return new SortableName(protocolName);
 	}
 
 	// per app scan, to filter out special characters

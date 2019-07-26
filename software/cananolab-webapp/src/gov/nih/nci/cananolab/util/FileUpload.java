@@ -4,25 +4,18 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.nio.charset.Charset;
-import java.util.Enumeration;
-
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
 import org.apache.commons.fileupload.FileItemIterator;
 import org.apache.commons.fileupload.FileItemStream;
-import org.apache.commons.fileupload.FileUploadBase;
-import org.apache.commons.fileupload.servlet.ServletFileUpload;
-
-//import org.apache.commons.fileupload.FileItemIterator;
-//import org.apache.commons.fileupload.FileItemStream;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.io.IOUtils;
-import org.apache.commons.fileupload.FileItemHeaders;
+
+//import org.apache.commons.fileupload.FileItemIterator;
+//import org.apache.commons.fileupload.FileItemStream;
 
 public class FileUpload extends HttpServlet {
 	private static final long serialVersionUID = -8244073279641189889L;
@@ -153,7 +146,7 @@ public class FileUpload extends HttpServlet {
 		} finally {
 			try {
 				reader.close();
-			} catch (IOException e) {
+			} catch (IOException e) {//TODO report error
 			}
 		}
 		return sb.toString();
@@ -161,8 +154,7 @@ public class FileUpload extends HttpServlet {
 	
 	protected byte[] readBytes(InputStream stream) {
 		try {
-			byte[] fileData = IOUtils.toByteArray(stream);
-			return fileData;
+            return IOUtils.toByteArray(stream);
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

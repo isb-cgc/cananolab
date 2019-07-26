@@ -14,5 +14,5 @@ import gov.nih.nci.cananolab.exception.NoAccessException;
 
 public interface BaseService
 {
-	public FileBean findFileById(String id) throws FileException, NoAccessException;
+	FileBean findFileById(String id) throws FileException, NoAccessException;
 }

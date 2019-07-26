@@ -135,9 +135,8 @@ public class Finding  implements Serializable
 	{
 		if(obj instanceof Finding) 
 		{
-			Finding c =(Finding)obj; 			 
-			if(getId() != null && getId().equals(c.getId()))
-				return true;
+			Finding c =(Finding)obj;
+            return getId() != null && getId().equals(c.getId());
 		}
 		return false;
 	}

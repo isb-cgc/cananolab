@@ -1,9 +1,10 @@
-package gov.nih.nci.system.dao.orm;
+package system.dao.orm;
 
 import gov.nih.nci.system.dao.DAO;
 import gov.nih.nci.system.dao.DAOException;
 import gov.nih.nci.system.dao.Request;
 import gov.nih.nci.system.dao.Response;
+import gov.nih.nci.system.dao.orm.FilterableHibernateTemplate;
 import gov.nih.nci.system.dao.orm.translator.CQL2HQL;
 import gov.nih.nci.system.dao.orm.translator.NestedCriteria2HQL;
 import gov.nih.nci.system.dao.orm.translator.Path2NestedCriteria;
@@ -12,13 +13,11 @@ import gov.nih.nci.system.query.hibernate.HQLCriteria;
 import gov.nih.nci.system.query.nestedcriteria.NestedCriteria;
 import gov.nih.nci.system.query.nestedcriteria.NestedCriteriaPath;
 import gov.nih.nci.system.security.helper.SecurityInitializationHelper;
-
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-
 import org.apache.log4j.Logger;
 import org.hibernate.Criteria;
 import org.hibernate.HibernateException;
@@ -76,7 +75,7 @@ public class ORMDAOImpl extends HibernateDaoSupport implements DAO
 		} catch (JDBCException ex){
 			log.error("JDBC Exception in ORMDAOImpl ", ex);
 			throw new DAOException("JDBC Exception in ORMDAOImpl ", ex);
-		} catch(org.hibernate.HibernateException hbmEx)	{
+		} catch(HibernateException hbmEx)	{
 			log.error(hbmEx.getMessage());
 			throw new DAOException("Hibernate problem ", hbmEx);
 		} catch(Exception e) {
@@ -169,51 +168,48 @@ public class ORMDAOImpl extends HibernateDaoSupport implements DAO
 	
 	protected HibernateCallback getExecuteFindQueryHibernateCallback(final String hql, final List params, final int firstResult, final int maxResult)
 	{   log.info("Hibernate Callback Find Query :"+hql);
-		HibernateCallback callBack = new HibernateCallback(){
-			
-			public Object doInHibernate(Session session) throws HibernateException, SQLException {
-				Query query = session.createQuery(hql);
-				query.setFirstResult(firstResult);				    		
-				query.setMaxResults(maxResult);
-				
-				int count = 0;
-				if(params!=null)
-					for(Object param:params)
-						query.setParameter(count++, param);
-				return query.list();
-			}
-		};
-		return callBack;
+        return new HibernateCallback(){
+
+            public Object doInHibernate(Session session) throws HibernateException, SQLException {
+                Query query = session.createQuery(hql);
+                query.setFirstResult(firstResult);
+                query.setMaxResults(maxResult);
+
+                int count = 0;
+                if(params!=null)
+                    for(Object param:params)
+                        query.setParameter(count++, param);
+                return query.list();
+            }
+        };
 	}
 
 	protected HibernateCallback getExecuteCountQueryHibernateCallback(final String hql, final List params)
 	{log.info("Hibernate Callback Count Query :"+hql);
-		HibernateCallback callBack = new HibernateCallback(){
-			
-			public Object doInHibernate(Session session) throws HibernateException, SQLException {
-				Query query = session.createQuery(hql);
-				query.setMaxResults(1);
-				
-				int count = 0;
-				if(params!=null)
-					for(Object param:params)
-						query.setParameter(count++, param);
-				return query.uniqueResult();
-			}
-		};
-		return callBack;
+        return new HibernateCallback(){
+
+            public Object doInHibernate(Session session) throws HibernateException, SQLException {
+                Query query = session.createQuery(hql);
+                query.setMaxResults(1);
+
+                int count = 0;
+                if(params!=null)
+                    for(Object param:params)
+                        query.setParameter(count++, param);
+                return query.uniqueResult();
+            }
+        };
 	}	
 
 	protected HibernateCallback getExecuteCountCriteriaHibernateCallback(final DetachedCriteria criteria)
 	{
-		HibernateCallback callBack = new HibernateCallback(){
+        return new HibernateCallback(){
 
-			public Object doInHibernate(Session session) throws HibernateException, SQLException {
-				Criteria exeCriteria = criteria.getExecutableCriteria(session);
-				return exeCriteria.setProjection(Projections.rowCount()).uniqueResult();
-			}
-		};
-		return callBack;
+            public Object doInHibernate(Session session) throws HibernateException, SQLException {
+                Criteria exeCriteria = criteria.getExecutableCriteria(session);
+                return exeCriteria.setProjection(Projections.rowCount()).uniqueResult();
+            }
+        };
 	}	
 	
 	private String getCountQuery(String hql)

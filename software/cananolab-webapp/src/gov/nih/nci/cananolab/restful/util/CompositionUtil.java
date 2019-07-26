@@ -176,5 +176,11 @@ public class CompositionUtil {
 			typeMap.put("fileTypes", new ArrayList<String>(types));
 		return typeMap;
 	}
+
+	public static Map<String, Object> reformatLocalSearchDropdownsInSessionForSynthesis(HttpSession session){
+        //TODO write
+		return new HashMap<String, Object>();
+
+	}
 	}
 

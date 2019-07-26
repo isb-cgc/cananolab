@@ -254,12 +254,12 @@ public class UserBean {
 		return groupNames;
 	}
 
-	void setAdmin(boolean admin) {
-		this.admin = admin;
+	void setAdmin() {
+		this.admin = true;
 	}
 
-	void setCurator(boolean curator) {
-		this.curator = curator;
+	void setCurator() {
+		this.curator = true;
 	}
 
 	void setGroupNames(SortedSet<String> groupNames) {

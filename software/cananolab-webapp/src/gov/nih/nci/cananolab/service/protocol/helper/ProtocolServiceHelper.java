@@ -15,18 +15,15 @@ import gov.nih.nci.cananolab.security.dao.AclDao;
 import gov.nih.nci.cananolab.security.enums.CaNanoRoleEnum;
 import gov.nih.nci.cananolab.security.enums.SecureClassesEnum;
 import gov.nih.nci.cananolab.security.service.SpringSecurityAclService;
-import gov.nih.nci.cananolab.security.utils.SpringSecurityUtil;
 import gov.nih.nci.cananolab.system.applicationservice.CaNanoLabApplicationService;
 import gov.nih.nci.cananolab.util.StringUtils;
 import gov.nih.nci.cananolab.util.TextMatchMode;
 import gov.nih.nci.system.client.ApplicationServiceProvider;
 import gov.nih.nci.system.query.hibernate.HQLCriteria;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.SortedSet;
 import java.util.TreeSet;
-
 import org.apache.log4j.Logger;
 import org.hibernate.FetchMode;
 import org.hibernate.criterion.CriteriaSpecification;
@@ -138,7 +135,7 @@ public class ProtocolServiceHelper
 	{
 		if (!springSecurityAclService.currentUserHasReadPermission(Long.valueOf(protocolId), SecureClassesEnum.PROTOCOL.getClazz()) &&
 			!springSecurityAclService.currentUserHasWritePermission(Long.valueOf(protocolId), SecureClassesEnum.PROTOCOL.getClazz())) {
-			new NoAccessException("User has no access to the protocol " + protocolId);
+			throw new NoAccessException("User has no access to the protocol " + protocolId);
 		}
 		CaNanoLabApplicationService appService = (CaNanoLabApplicationService) ApplicationServiceProvider.getApplicationService();
 		HQLCriteria crit = new HQLCriteria("select aProtocol.file from gov.nih.nci.cananolab.domain.common.Protocol aProtocol where aProtocol.id = "
@@ -166,14 +163,13 @@ public class ProtocolServiceHelper
 
 	public int getNumberOfPublicProtocolsForJob() throws Exception {
 		List<Long> publicData = aclDao.getIdsOfClassForSid(SecureClassesEnum.PROTOCOL.getClazz().getName(), CaNanoRoleEnum.ROLE_ANONYMOUS.toString());
-		int cnt = (publicData != null) ? publicData.size() : 0;
-		return cnt;
+        return (publicData != null) ? publicData.size() : 0;
 	}
 
 	public Protocol findProtocolById(String protocolId) throws Exception {
 		if (!springSecurityAclService.currentUserHasReadPermission(Long.valueOf(protocolId), SecureClassesEnum.PROTOCOL.getClazz()) &&
 			!springSecurityAclService.currentUserHasWritePermission(Long.valueOf(protocolId), SecureClassesEnum.PROTOCOL.getClazz())) {
-			new NoAccessException("User has no access to the protocol " + protocolId);
+			throw new NoAccessException("User has no access to the protocol " + protocolId);
 		}
 		Protocol protocol = null;
 

@@ -9,19 +9,16 @@
 package gov.nih.nci.cananolab.restful.sample;
 
 import gov.nih.nci.cananolab.domain.common.File;
-import gov.nih.nci.cananolab.domain.common.Keyword;
 import gov.nih.nci.cananolab.dto.common.ColumnHeader;
 import gov.nih.nci.cananolab.dto.common.ExperimentConfigBean;
 import gov.nih.nci.cananolab.dto.common.FileBean;
 import gov.nih.nci.cananolab.dto.common.FindingBean;
-import gov.nih.nci.cananolab.dto.common.ProtocolBean;
 import gov.nih.nci.cananolab.dto.common.Row;
-import gov.nih.nci.cananolab.dto.common.TableCell;
+import gov.nih.nci.cananolab.dto.common.table.TableCell;
 import gov.nih.nci.cananolab.dto.particle.SampleBean;
 import gov.nih.nci.cananolab.dto.particle.characterization.CharacterizationBean;
 import gov.nih.nci.cananolab.dto.particle.characterization.CharacterizationSummaryViewBean;
 import gov.nih.nci.cananolab.restful.core.BaseAnnotationBO;
-import gov.nih.nci.cananolab.restful.protocol.InitProtocolSetup;
 import gov.nih.nci.cananolab.restful.util.PropertyUtil;
 import gov.nih.nci.cananolab.restful.view.SimpleCharacterizationSummaryViewBean;
 import gov.nih.nci.cananolab.restful.view.SimpleCharacterizationUnitBean;
@@ -45,16 +42,12 @@ import gov.nih.nci.cananolab.util.Constants;
 import gov.nih.nci.cananolab.util.DateUtils;
 import gov.nih.nci.cananolab.util.ExportUtils;
 import gov.nih.nci.cananolab.util.StringUtils;
-
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Set;
-
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
-
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -155,10 +148,7 @@ public class CharacterizationBO extends BaseAnnotationBO {
 	/**
 	 * Set up the input form for adding new characterization
 	 * 
-	 * @param mapping
-	 * @param form
 	 * @param request
-	 * @param response
 	 * @return
 	 * @throws Exception
 	 */
@@ -192,7 +182,6 @@ public class CharacterizationBO extends BaseAnnotationBO {
 	 * Set up drop-downs need for the input form
 	 * 
 	 * @param request
-	 * @param theForm
 	 * @throws Exception
 	 */
 	private void setupInputForm(HttpServletRequest request, String sampleId, String charType) throws Exception
@@ -213,10 +202,7 @@ public class CharacterizationBO extends BaseAnnotationBO {
 	/**
 	 * Set up the input form for editing existing characterization
 	 * 
-	 * @param mapping
-	 * @param form
 	 * @param request
-	 * @param response
 	 * @return
 	 * @throws Exception
 	 */
@@ -237,8 +223,8 @@ public class CharacterizationBO extends BaseAnnotationBO {
 		//SY: new
 		request.getSession().setAttribute("sampleId", sampleId);
 		request.getSession().setAttribute("theChar", charBean);
-		logger.debug("Setting theChar in session: " + request.getSession().getId());;
-		
+		logger.debug("Setting theChar in session: " + request.getSession().getId());
+
 		SimpleCharacterizationEditBean editBean = new SimpleCharacterizationEditBean();
 		editBean.transferFromCharacterizationBean(request, charBean, sampleId, sampleService, characterizationService, protocolService, springSecurityAclService);
 		request.getSession().setAttribute("theEditChar", editBean);
@@ -254,7 +240,6 @@ public class CharacterizationBO extends BaseAnnotationBO {
 	 * Setup, prepare and save characterization.
 	 * 
 	 * @param request
-	 * @param theForm
 	 * @param charBean
 	 * @throws Exception
 	 */
@@ -333,10 +318,7 @@ public class CharacterizationBO extends BaseAnnotationBO {
 	/**
 	 * summaryEdit() handles Edit request for Characterization Summary view.
 	 * 
-	 * @param mapping
-	 * @param form
 	 * @param request
-	 * @param response
 	 * @return ActionForward
 	 * @throws Exception
 	 */
@@ -356,10 +338,7 @@ public class CharacterizationBO extends BaseAnnotationBO {
 	/**
 	 * summaryView() handles View request for Characterization Summary report.
 	 * 
-	 * @param mapping
-	 * @param form
 	 * @param request
-	 * @param response
 	 * @return ActionForward
 	 * @throws Exception
 	 *             if error occurred.
@@ -396,10 +375,7 @@ public class CharacterizationBO extends BaseAnnotationBO {
 	 * Shared function for summaryView(), summaryPrint() and summaryEdit().
 	 * Prepare CharacterizationBean based on Sample Id.
 	 * 
-	 * @param mapping
-	 * @param form
 	 * @param request
-	 * @param response
 	 * @return ActionForward
 	 * @throws Exception
 	 */
@@ -427,10 +403,7 @@ public class CharacterizationBO extends BaseAnnotationBO {
 	 * characterization types in the correct display order. Should be called
 	 * after calling prepareSummary(), to avoid session timeout issue.
 	 * 
-	 * @param mapping
-	 * @param form
 	 * @param request
-	 * @param response
 	 * @return ActionForward
 	 * @throws Exception
 	 */
@@ -464,8 +437,6 @@ public class CharacterizationBO extends BaseAnnotationBO {
 	/**
 	 * summaryPrint() handles Print request for Characterization Summary report.
 	 * 
-	 * @param mapping
-	 * @param form
 	 * @param request
 	 * @param response
 	 * @return ActionForward
@@ -498,8 +469,6 @@ public class CharacterizationBO extends BaseAnnotationBO {
 	/**
 	 * Export Characterization Summary report.
 	 * 
-	 * @param mapping
-	 * @param form
 	 * @param request
 	 * @param response
 	 * @return ActionForward
@@ -1162,8 +1131,7 @@ public class CharacterizationBO extends BaseAnnotationBO {
 	 * unselected types when user selected one type for print/export.
 	 * 
 	 * @param request
-	 * @param compBean
-	 */
+     */
 	private List<String> filterType(HttpServletRequest request, String type,
 			List<String> charTypes) {
 		//String type = request.getParameter("type");
@@ -1253,10 +1221,7 @@ public class CharacterizationBO extends BaseAnnotationBO {
 
 	private Boolean validateInputs(HttpServletRequest request,
 			CharacterizationBean achar, List<String> errors) {
-		if (!validateCharacterization(request, achar, errors)) {
-			return false;
-		}
-		return true;
+		return validateCharacterization(request, achar, errors);
 	}
 
 	private boolean validateEmptyFinding(HttpServletRequest request,
@@ -1313,10 +1278,7 @@ public class CharacterizationBO extends BaseAnnotationBO {
 	/**
 	 * Set up the input form for editing existing characterization
 	 * 
-	 * @param mapping
-	 * @param form
 	 * @param request
-	 * @param response
 	 * @return
 	 * @throws Exception
 	 */
@@ -1328,9 +1290,8 @@ public class CharacterizationBO extends BaseAnnotationBO {
 		CharacterizationBean charBean = characterizationService.findCharacterizationById(charId);
 		
 		SimpleCharacterizationSummaryViewBean viewHelper = new SimpleCharacterizationSummaryViewBean();
-		List<SimpleCharacterizationUnitBean> aBeanUnitList = viewHelper.tranferCharacterizationBeanData(request, charBean);
-		
-		return aBeanUnitList;
+
+		return viewHelper.tranferCharacterizationBeanData(request, charBean);
 	}
 
 	@Override

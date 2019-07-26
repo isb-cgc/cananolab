@@ -1,14 +1,11 @@
 package gov.nih.nci.cananolab.restful.view.edit;
 
-import edu.emory.mathcs.backport.java.util.Arrays;
 import gov.nih.nci.cananolab.dto.particle.SampleBean;
-import gov.nih.nci.cananolab.restful.util.SampleUtil;
-
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.SortedSet;
-
 import javax.servlet.http.HttpServletRequest;
 
 public class SimpleDataAvailabilityBean {

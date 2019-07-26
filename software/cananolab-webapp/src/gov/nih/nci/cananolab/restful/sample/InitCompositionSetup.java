@@ -237,13 +237,12 @@ public class InitCompositionSetup {
 
 	public List<String> getEmulsionComposingElementTypes(
 			HttpServletRequest request) throws BaseException {
-		List<String> allTypes = new ArrayList<String>();
-		SortedSet<String> emulsionCETypes = InitSetup.getInstance()
+        SortedSet<String> emulsionCETypes = InitSetup.getInstance()
 				.getDefaultAndOtherTypesByLookup(request,
 						"emulsionComposingElementTypes", "emulsion",
 						"composingElementType", "otherComposingElementType",
 						true);
-		allTypes.addAll(emulsionCETypes);
+        List<String> allTypes = new ArrayList<String>(emulsionCETypes);
 		SortedSet<String> ceTypes = InitSetup.getInstance()
 				.getDefaultAndOtherTypesByLookup(request,
 						"composingElementTypes", "composing element", "type",
@@ -256,9 +255,8 @@ public class InitCompositionSetup {
 
 	public String getDetailPage(String entityType, String parentPath)
 			throws Exception {
-		String page = "/caNanoLab/views/sample/composition/" + parentPath +"/"  
-				+ ClassUtils.getShortClassNameFromDisplayName(entityType)
-				+ "Info.html";
-		return page;
+        return "/caNanoLab/views/sample/composition/" + parentPath +"/"
+                + ClassUtils.getShortClassNameFromDisplayName(entityType)
+                + "Info.html";
 	}
 }

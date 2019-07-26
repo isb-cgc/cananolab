@@ -34,8 +34,7 @@ public class UserAccountBO
 	public CananoUserDetails createUserAccount(CananoUserDetails userDetails) throws NoAccessException
 	{
 		userService.createUserAccount(userDetails);
-		CananoUserDetails newUserDetails = (CananoUserDetails) userDetailsService.loadUserByUsername(userDetails.getUsername());
-		return newUserDetails;
+        return (CananoUserDetails) userDetailsService.loadUserByUsername(userDetails.getUsername());
 	}
 	
 	public void resetUserAccountPassword(String oldPassword, String newPassword, String userName) throws Exception
@@ -46,14 +45,12 @@ public class UserAccountBO
 	public CananoUserDetails updateUserAccount(CananoUserDetails userDetails) throws NoAccessException
 	{
 		userService.updateUserAccount(userDetails);
-		CananoUserDetails newUserDetails = (CananoUserDetails) userDetailsService.loadUserByUsername(userDetails.getUsername());
-		return newUserDetails;
+        return (CananoUserDetails) userDetailsService.loadUserByUsername(userDetails.getUsername());
 	}
 	
 	public List<CananoUserDetails> searchByUsername(String searchStr) throws NoAccessException
 	{
-		List<CananoUserDetails> userList = userService.loadUsers(searchStr);
-		return userList;
+        return userService.loadUsers(searchStr);
 	}
 	
 }

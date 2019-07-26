@@ -50,8 +50,7 @@ public class AccessControlInfo
 	
 	public boolean isPrincipal()
 	{
-		boolean principalFlag = (AccessTypeEnum.USER.getAccessType().equals(this.accessType)) ? true : false;
-		return principalFlag;
+		return AccessTypeEnum.USER.getAccessType().equals(this.accessType);
 	}
 	
 	/*public List<String> getPerms() {

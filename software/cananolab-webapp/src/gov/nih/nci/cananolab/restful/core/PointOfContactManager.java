@@ -65,8 +65,7 @@ public class PointOfContactManager
 
 	public Organization getOrganizationByName(HttpServletRequest request, String name) throws Exception {
 		System.out.println("Getting data for org: " + name);
-		Organization org = sampleServiceHelper.findOrganizationByName(name);
-		return org;
+        return sampleServiceHelper.findOrganizationByName(name);
 	}
 
 	public PointOfContactBean getPointOfContactByNameAndOrg(HttpServletRequest request, String firstName,

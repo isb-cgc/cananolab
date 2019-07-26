@@ -1,4 +1,4 @@
-package gov.nih.nci.system.applicationservice;
+package gov.nih.nci.cananolab.system.applicationservice;
 
 /**
  * This exception is thrown by all the methods of the {@link ApplicationService}
@@ -21,7 +21,7 @@ public class ApplicationException extends Exception
 		super();
 	}
 	/**
-	 * Constructs the {@link ApplicationException} object with the passed message 
+	 * Constructs the {@link ApplicationException} object with the passed message
 	 * @param message The message which is describes the exception caused
 	 */
 	public ApplicationException(String message)
@@ -39,7 +39,7 @@ public class ApplicationException extends Exception
 		super(message, cause);
 	}
 	/**
-	 * Constructs the {@link ApplicationException} object storing the actual 
+	 * Constructs the {@link ApplicationException} object storing the actual
 	 * exception that occured 
 	 * @param cause The actual exception that occured
 	 */

@@ -22,7 +22,7 @@ public interface AdminService {
 	 * 
 	 * @throws Exception
 	 */
-	public SitePreferenceBean getSitePreference() throws Exception;
+    SitePreferenceBean getSitePreference() throws Exception;
 
 	/**
 	 * Save Site Preference, including site name and logo file name. 
@@ -32,8 +32,8 @@ public interface AdminService {
 	 * @return number of rows updated
 	 * @throws Exception
 	 */
-	public int updateSitePreference(SitePreferenceBean sitePreference,
-			UserBean user) throws Exception;
+    int updateSitePreference(SitePreferenceBean sitePreference,
+                             UserBean user) throws Exception;
 
 	/**
 	 * Increase Visitor Count
@@ -41,14 +41,14 @@ public interface AdminService {
 	 * @return number of rows updated
 	 * @throws Exception
 	 */
-	public int increaseVisitorCount() throws Exception;
+    int increaseVisitorCount() throws Exception;
 
 	/**
 	 * Get Visitor Count
 	 * 
 	 * @throws Exception
 	 */
-	public VisitorCountBean getVisitorCount() throws Exception;
+    VisitorCountBean getVisitorCount() throws Exception;
 
 	/**
 	 * Update Visitor Count
@@ -58,5 +58,5 @@ public interface AdminService {
 	 * @return number of rows updated
 	 * @throws Exception
 	 */
-	public int updatedVisitorCount(VisitorCountBean newCount, UserBean user) throws Exception;
+    int updatedVisitorCount(VisitorCountBean newCount, UserBean user) throws Exception;
 }

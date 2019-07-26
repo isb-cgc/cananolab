@@ -46,9 +46,8 @@ public class OtherNanomaterialEntity extends NanomaterialEntity implements Seria
 	{
 		if(obj instanceof OtherNanomaterialEntity) 
 		{
-			OtherNanomaterialEntity c =(OtherNanomaterialEntity)obj; 			 
-			if(getId() != null && getId().equals(c.getId()))
-				return true;
+			OtherNanomaterialEntity c =(OtherNanomaterialEntity)obj;
+            return getId() != null && getId().equals(c.getId());
 		}
 		return false;
 	}

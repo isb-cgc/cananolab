@@ -43,8 +43,7 @@ public class SampleUtil {
 		if (theSet == null)
 			return null;
 
-		List<String> newList = new ArrayList<String>();
-		newList.addAll(theSet);
+        List<String> newList = new ArrayList<String>(theSet);
 		String[] strArr = new String[newList.size()];
 
 		strArr = newList.toArray(strArr);

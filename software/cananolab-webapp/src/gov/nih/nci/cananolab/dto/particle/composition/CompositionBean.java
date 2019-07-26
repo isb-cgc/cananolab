@@ -212,6 +212,7 @@ public class CompositionBean {
 		this.theFile = theFile;
 	}
 
+	//TODO Does this need to return anything?  The return is not used
 	public SampleComposition resetDomainCopy(String createdBy,
 			SampleComposition copy) {
 		copy.setId(null);

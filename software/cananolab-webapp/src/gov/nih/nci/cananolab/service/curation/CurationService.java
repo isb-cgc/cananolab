@@ -16,9 +16,9 @@ import java.util.List;
 
 public interface CurationService
 {
-	public void submitDataForReview(DataReviewStatusBean dataReviewStatusBean) throws CurationException, NoAccessException;
+	void submitDataForReview(DataReviewStatusBean dataReviewStatusBean) throws CurationException, NoAccessException;
 
-	public List<DataReviewStatusBean> findDataPendingReview() throws CurationException, NoAccessException;
+	List<DataReviewStatusBean> findDataPendingReview() throws CurationException, NoAccessException;
 
-	public DataReviewStatusBean findDataReviewStatusBeanByDataId(String dataId) throws CurationException, NoAccessException;
+	DataReviewStatusBean findDataReviewStatusBeanByDataId(String dataId) throws CurationException, NoAccessException;
 }

@@ -1,9 +1,8 @@
-package gov.nih.nci.system.dao.orm;
+package system.dao.orm;
 
 import gov.nih.nci.system.dao.DAOException;
 import gov.nih.nci.system.dao.Request;
 import gov.nih.nci.system.dao.Response;
-import gov.nih.nci.system.dao.WritableDAO;
 import gov.nih.nci.system.query.SDKQuery;
 import gov.nih.nci.system.query.SDKQueryResult;
 import gov.nih.nci.system.query.example.DeleteExampleQuery;
@@ -12,16 +11,15 @@ import gov.nih.nci.system.query.example.UpdateExampleQuery;
 import gov.nih.nci.system.query.hql.DeleteHQLQuery;
 import gov.nih.nci.system.query.hql.InsertHQLQuery;
 import gov.nih.nci.system.query.hql.UpdateHQLQuery;
-
 import java.sql.SQLException;
 import java.util.List;
-
 import org.hibernate.HibernateException;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.springframework.orm.hibernate3.HibernateCallback;
+import system.dao.WritableDAO;
 
-public class WritableORMDAOImpl extends ORMDAOImpl implements WritableDAO 
+public class WritableORMDAOImpl extends ORMDAOImpl implements WritableDAO
 {
 	@Override
 	@SuppressWarnings("unchecked")
@@ -111,18 +109,16 @@ public class WritableORMDAOImpl extends ORMDAOImpl implements WritableDAO
 	
 	protected HibernateCallback getExecuteUpdateHibernateCallback(final String hql, final List<Object> paramList)
 	{
-		HibernateCallback callBack = new HibernateCallback(){
+        return new HibernateCallback(){
 
-			public Object doInHibernate(Session session) throws HibernateException, SQLException {
-				Query q = session.createQuery(hql);
-				int count = 0;
-				if(paramList!=null)
-					for(Object obj:paramList)
-						q.setParameter(count++,obj);
-				int result = q.executeUpdate();
-				return result;
-			}
-		};
-		return callBack;
+            public Object doInHibernate(Session session) throws HibernateException, SQLException {
+                Query q = session.createQuery(hql);
+                int count = 0;
+                if(paramList!=null)
+                    for(Object obj:paramList)
+                        q.setParameter(count++,obj);
+                return q.executeUpdate();
+            }
+        };
 	}
 }

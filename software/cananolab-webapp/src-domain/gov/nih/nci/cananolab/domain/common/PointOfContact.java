@@ -244,9 +244,8 @@ public class PointOfContact  implements Serializable
 	{
 		if(obj instanceof PointOfContact) 
 		{
-			PointOfContact c =(PointOfContact)obj; 			 
-			if(getId() != null && getId().equals(c.getId()))
-				return true;
+			PointOfContact c =(PointOfContact)obj;
+            return getId() != null && getId().equals(c.getId());
 		}
 		return false;
 	}

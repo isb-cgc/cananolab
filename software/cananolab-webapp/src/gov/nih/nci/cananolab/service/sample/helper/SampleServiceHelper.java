@@ -35,11 +35,8 @@ import gov.nih.nci.cananolab.util.Comparators;
 import gov.nih.nci.cananolab.util.Constants;
 import gov.nih.nci.cananolab.util.StringUtils;
 import gov.nih.nci.cananolab.util.TextMatchMode;
-import gov.nih.nci.security.authorization.domainobjects.User;
 import gov.nih.nci.system.client.ApplicationServiceProvider;
 import gov.nih.nci.system.query.hibernate.HQLCriteria;
-import gov.nih.nci.system.web.struts.action.Criteria;
-
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -49,7 +46,6 @@ import java.util.List;
 import java.util.Set;
 import java.util.SortedSet;
 import java.util.TreeSet;
-
 import org.apache.log4j.Logger;
 import org.hibernate.FetchMode;
 import org.hibernate.criterion.CriteriaSpecification;
@@ -62,9 +58,10 @@ import org.hibernate.criterion.ProjectionList;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Property;
 import org.hibernate.criterion.Restrictions;
-import org.hibernate.transform.Transformers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+
+//import gov.nih.nci.system.web.struts.action.Criteria;
 
 /**
  * Helper class providing implementations of search methods needed for both
@@ -123,10 +120,10 @@ public class SampleServiceHelper
 					CriteriaSpecification.LEFT_JOIN);
 			crit.createAlias("otherPoc.organization", "otherOrg",
 					CriteriaSpecification.LEFT_JOIN);
-			String critStrs[] = { "pointOfContact.lastName",
-					"pointOfContact.firstName", "pointOfContact.role",
-					"organization.name", "otherPoc.lastName",
-					"otherPoc.firstName", "otherOrg.name" };
+            String[] critStrs = {"pointOfContact.lastName",
+                    "pointOfContact.firstName", "pointOfContact.role",
+                    "organization.name", "otherPoc.lastName",
+                    "otherPoc.firstName", "otherOrg.name"};
 			for (String critStr : critStrs) {
 				Criterion pocCrit = Restrictions.ilike(critStr,
 						pocMatchMode.getUpdatedText(),
@@ -643,9 +640,7 @@ public class SampleServiceHelper
 			Sample sample = (Sample) results.get(i);
 			Collection<PointOfContact> otherPOCs = sample
 					.getOtherPointOfContactCollection();
-			for (PointOfContact poc : otherPOCs) {
-				pointOfContacts.add(poc);
-			}
+            pointOfContacts.addAll(otherPOCs);
 		}
 		return pointOfContacts;
 	}
@@ -721,8 +716,7 @@ public class SampleServiceHelper
 	public int getNumberOfPublicSamplesForJob() throws Exception
 	{
 		List<Long> publicData = aclDao.getIdsOfClassForSid(SecureClassesEnum.SAMPLE.getClazz().getName(), CaNanoRoleEnum.ROLE_ANONYMOUS.toString());
-		int cnt = (publicData != null) ? publicData.size() : 0;
-		return cnt;
+        return (publicData != null) ? publicData.size() : 0;
 	}
 
 	public int getNumberOfPublicSampleSources() throws Exception
@@ -748,14 +742,12 @@ public class SampleServiceHelper
 	public int getNumberOfPublicSampleSourcesForJob() throws Exception
 	{
 		List<Long> publicData = aclDao.getIdsOfClassForSid(SecureClassesEnum.ORG.getClazz().getName(), CaNanoRoleEnum.ROLE_ANONYMOUS.toString());
-		int cnt = (publicData != null) ? publicData.size() : 0;
-		return cnt;
+        return (publicData != null) ? publicData.size() : 0;
 	}
 	
 	public List<Long> getSampleAccessibleToACollabGrp(String groupName)
 	{
-		List<Long> collabGroupSamples = aclDao.getIdsOfClassForSid(SecureClassesEnum.SAMPLE.getClazz().getName(), groupName);
-		return collabGroupSamples;
+        return aclDao.getIdsOfClassForSid(SecureClassesEnum.SAMPLE.getClazz().getName(), groupName);
 	}
 
 	public String[] getSampleViewStrs(Sample sample) {
@@ -1031,10 +1023,10 @@ public class SampleServiceHelper
 					CriteriaSpecification.LEFT_JOIN);
 			crit.createAlias("otherPoc.organization", "otherOrg",
 					CriteriaSpecification.LEFT_JOIN);
-			String critStrs[] = { "pointOfContact.lastName",
-					"pointOfContact.firstName", "pointOfContact.role",
-					"organization.name", "otherPoc.lastName",
-					"otherPoc.firstName", "otherOrg.name" };
+            String[] critStrs = {"pointOfContact.lastName",
+                    "pointOfContact.firstName", "pointOfContact.role",
+                    "organization.name", "otherPoc.lastName",
+                    "otherPoc.firstName", "otherOrg.name"};
 			for (String critStr : critStrs) {
 				Criterion pocCrit = Restrictions.ilike(critStr,
 						pocMatchMode.getUpdatedText(),

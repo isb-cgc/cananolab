@@ -9,8 +9,6 @@
 package gov.nih.nci.cananolab.system.dao;
 
 import gov.nih.nci.system.dao.DAOException;
-import gov.nih.nci.system.dao.WritableDAO;
-
 import java.io.Serializable;
 import java.util.List;
 
@@ -22,21 +20,21 @@ import java.util.List;
  */
 public interface CaNanoLabORMDAO extends WritableDAO {
 
-	public void saveOrUpdate(Object object);
+	void saveOrUpdate(Object object);
 
-	public Object load(Class domainClass, Serializable id);
+	Object load(Class domainClass, Serializable id);
 
-	public Object get(Class domainClass, Serializable id);
+	Object get(Class domainClass, Serializable id);
 
-	public void delete(Object object);
+	void delete(Object object);
 
-	public void deleteById(Class domainClass, Serializable id);
+	void deleteById(Class domainClass, Serializable id);
 
-	public List getAll(Class domainClass);
+	List getAll(Class domainClass);
 
-	public Object getObject(Class domainClass, String uniqueKeyName,
-			Object uniqueKeyValue);
+	Object getObject(Class domainClass, String uniqueKeyName,
+                     Object uniqueKeyValue);
 
-	public List directSQL(String directSQL, String[] columns,
-			Object[] columnTypes) throws DAOException;
+	List directSQL(String directSQL, String[] columns,
+                   Object[] columnTypes) throws DAOException;
 }

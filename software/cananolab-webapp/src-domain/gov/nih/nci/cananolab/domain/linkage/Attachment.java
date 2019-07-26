@@ -46,9 +46,8 @@ public class Attachment extends ChemicalAssociation implements Serializable
 	{
 		if(obj instanceof Attachment) 
 		{
-			Attachment c =(Attachment)obj; 			 
-			if(getId() != null && getId().equals(c.getId()))
-				return true;
+			Attachment c =(Attachment)obj;
+			return getId() != null && getId().equals(c.getId());
 		}
 		return false;
 	}

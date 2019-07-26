@@ -1,6 +1,7 @@
 package gov.nih.nci.cananolab.restful;
 
 import java.io.*;
+import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.Map;
 
@@ -1007,7 +1008,7 @@ public class SampleServices {
             transformer.setOutputProperty( OutputKeys.ENCODING, "UTF-8");
             transformer.setOutputProperty(OutputKeys.INDENT, "yes");
             transformer.transform(source, result);
-            return xmlFormat( writer.toString(), 4);
+            return xmlFormat( writer.toString());
         }
         catch (Exception e)
         {
@@ -1056,15 +1057,14 @@ public class SampleServices {
      * Format (indent etc.)
      *
      * @param xml
-     * @param indent  number of spaces per indent.
      * @return formatted xml
      */
-    private String xmlFormat( String xml, int indent ) {
+    private String xmlFormat(String xml) {
         try {
             // Turn xml string into a document
             Document document = DocumentBuilderFactory.newInstance()
                     .newDocumentBuilder()
-                    .parse(new InputSource(new ByteArrayInputStream(xml.getBytes("utf-8"))));
+                    .parse(new InputSource(new ByteArrayInputStream(xml.getBytes(StandardCharsets.UTF_8))));
 
             // Remove whitespaces outside tags
             document.normalize();
@@ -1080,7 +1080,7 @@ public class SampleServices {
 
             // Setup transformer options
             TransformerFactory transformerFactory = TransformerFactory.newInstance();
-            transformerFactory.setAttribute("indent-number", indent);
+            transformerFactory.setAttribute("indent-number", 4);
             Transformer transformer = transformerFactory.newTransformer();
             transformer.setOutputProperty(OutputKeys.ENCODING, "UTF-8");
             transformer.setOutputProperty(OutputKeys.OMIT_XML_DECLARATION, "yes");

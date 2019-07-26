@@ -36,12 +36,12 @@ public abstract class AbstractDispatchBO
 		if (dispatch == null) {
 			throw new BaseException("The dispatch parameter can not be null");
 		}
-		if (dispatch != null && !dispatch.matches(Constants.STRING_PATTERN)) {
+		if (!dispatch.matches(Constants.STRING_PATTERN)) {
 			throw new BaseException("Invalid value for the dispatch parameter");
 		}
 		// private dispatch and session expired
 		boolean privateDispatch = checkDispatch(dispatch, Constants.PRIVATE_DISPATCHES, "startsWith");
-		if (session.isNew() && (dispatch == null || privateDispatch)) {
+		if (session.isNew() && privateDispatch) {
 			throw new InvalidSessionException();
 		}
 		// if dispatched methods require validation but page=0 throw error
@@ -77,7 +77,6 @@ public abstract class AbstractDispatchBO
 	 * Check whether the current user can execute the action with the specified
 	 * dispatch
 	 * 
-	 * @param user
 	 * @return
 	 * @throws SecurityException
 	 */
@@ -87,7 +86,7 @@ public abstract class AbstractDispatchBO
 		boolean privateDispatch = checkDispatch(dispatch, Constants.PRIVATE_DISPATCHES, "startsWith");
 		if (!privateDispatch) {
 			return true;
-		} else if (!SpringSecurityUtil.isUserLoggedIn() && privateDispatch) {
+		} else if (!SpringSecurityUtil.isUserLoggedIn()) {
 			return false;
 		} else {
 			return canUserExecutePrivateDispatch(request, protectedData);
@@ -96,10 +95,7 @@ public abstract class AbstractDispatchBO
 
 	public Boolean canUserExecutePrivateDispatch(HttpServletRequest request, String protectedData) throws Exception
 	{
-		if (!SpringSecurityUtil.isUserLoggedIn()) {
-			return false;
-		}
-		return true;
+		return SpringSecurityUtil.isUserLoggedIn();
 	}
 
 	private boolean checkDispatch(String dispatch, String[] dispatchGroup, String compareString)
@@ -150,8 +146,7 @@ public abstract class AbstractDispatchBO
 		if (dispatch != null && request.getAttribute("javax.servlet.forward.query_string") != null) {
 			String browserQueryString = request.getAttribute("javax.servlet.forward.query_string").toString();
 			if (!StringUtils.isEmpty(browserQueryString)) {
-				String browserDispatch = browserQueryString.replaceAll("dispatch=(.+)&(.+)", "$1");
-				return browserDispatch;
+				return browserQueryString.replaceAll("dispatch=(.+)&(.+)", "$1");
 			}
 		}
 		return "";

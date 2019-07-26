@@ -14,6 +14,7 @@ import gov.nih.nci.cananolab.domain.common.File;
 import gov.nih.nci.cananolab.domain.common.Instrument;
 import gov.nih.nci.cananolab.domain.common.Protocol;
 import gov.nih.nci.cananolab.domain.common.Publication;
+import gov.nih.nci.cananolab.domain.common.PurityDatum;
 import gov.nih.nci.cananolab.domain.particle.Characterization;
 import gov.nih.nci.cananolab.domain.particle.Sample;
 import gov.nih.nci.cananolab.dto.common.ColumnHeader;
@@ -21,7 +22,7 @@ import gov.nih.nci.cananolab.dto.common.ExperimentConfigBean;
 import gov.nih.nci.cananolab.dto.common.FileBean;
 import gov.nih.nci.cananolab.dto.common.FindingBean;
 import gov.nih.nci.cananolab.dto.common.PointOfContactBean;
-import gov.nih.nci.cananolab.dto.common.TableCell;
+import gov.nih.nci.cananolab.dto.common.table.TableCell;
 import gov.nih.nci.cananolab.dto.particle.characterization.CharacterizationBean;
 import gov.nih.nci.cananolab.dto.particle.composition.ChemicalAssociationBean;
 import gov.nih.nci.cananolab.dto.particle.composition.ComposingElementBean;
@@ -254,6 +255,10 @@ public class Comparators {
 		public int compare(Datum datum1, Datum datum2) {
 			return datum1.getCreatedDate().compareTo(datum2.getCreatedDate());
 		}
+	}
+
+	public static class PurityDatumDateComparator implements Comparator<PurityDatum>{
+		public int compare(PurityDatum datum1, PurityDatum datum2) { return datum1.getCreatedDate().compareTo(datum2.getCreatedDate());}
 	}
 
 	public static class ConditionDateComparator implements

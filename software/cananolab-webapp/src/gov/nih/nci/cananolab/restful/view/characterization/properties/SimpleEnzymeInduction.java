@@ -28,6 +28,7 @@ public class SimpleEnzymeInduction extends SimpleCharacterizationProperty{
 		
 		if (types != null)
 			enzymeNameOptions.addAll(types);
+		//TODO this isn't returning the actual list with "other" added.
 		CommonUtil.addOtherToList(enzymeNameOptions);
 		
 	}

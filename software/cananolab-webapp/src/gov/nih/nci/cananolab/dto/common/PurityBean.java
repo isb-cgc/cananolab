@@ -7,15 +7,15 @@
  */
 
 package gov.nih.nci.cananolab.dto.common;
-
+import gov.nih.nci.cananolab.domain.common.Condition;
+import gov.nih.nci.cananolab.domain.common.File;
 import gov.nih.nci.cananolab.domain.common.Purity;
 import gov.nih.nci.cananolab.domain.common.PurityDatum;
-import gov.nih.nci.cananolab.domain.common.File;
+import gov.nih.nci.cananolab.dto.common.table.TableCell;
 import gov.nih.nci.cananolab.util.Comparators;
 import gov.nih.nci.cananolab.util.Constants;
 import gov.nih.nci.cananolab.util.DateUtils;
 import gov.nih.nci.cananolab.util.StringUtils;
-
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collection;
@@ -26,13 +26,13 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * View bean for Datum
+ * View bean for Datum and PurityDatum
  *
  * @author pansu, tanq
  */
 public class PurityBean
 {
-    public static final String DATUM_TYPE = "datum";
+    public static final String DATUM_TYPE = "purity datum";
     public static final String CONDITION_TYPE = "condition";
     private List<Row> rows = new ArrayList<Row>();
     private List<FileBean> files = new ArrayList<FileBean>();
@@ -51,17 +51,17 @@ public class PurityBean
     {
         //TODO rewrite?
         domain = purity;
-        List<Datum> data = null;
-        if( purity.getDatumCollection() != null )
+        List<PurityDatum> data = null;
+        if( purity.getPurityDatumCollection() != null )
         {
-            data = new ArrayList<PurityDatum>( purity.getDatumCollection() );
-            Collections.sort( data, new Comparators.DatumDateComparator() );
+            data = new ArrayList<PurityDatum>( purity.getPurityDatumCollection() );
+            Collections.sort( data, new Comparators.PurityDatumDateComparator() );
         }
 
-        if( purity.getFileCollection() != null
-                && ! purity.getFileCollection().isEmpty() )
+        if( purity.getFiles() != null
+                && ! purity.getFiles().isEmpty() )
         {
-            for( File file : purity.getFileCollection() )
+            for( File file : purity.getFiles() )
             {
                 files.add( new FileBean( file ) );
             }
@@ -73,12 +73,12 @@ public class PurityBean
         {
             // get data matrix column headers and generate a map based
             // on headers.
-            Map<ColumnHeader, List<Datum>> datumMap = new HashMap<ColumnHeader, List<Datum>>();
+            Map<ColumnHeader, List<PurityDatum>> datumMap = new HashMap<ColumnHeader, List<PurityDatum>>();
             Map<ColumnHeader, List<Condition>> conditionMap = new HashMap<ColumnHeader, List<Condition>>();
 
-            List<Datum> datumList = new ArrayList<Datum>();
+            List<PurityDatum> datumList = new ArrayList<PurityDatum>();
             List<Condition> conditionList = new ArrayList<Condition>();
-            for( Datum datum : data )
+            for( PurityDatum datum : data )
             {
                 // add datum column
                 ColumnHeader datumColumn = new ColumnHeader( datum );
@@ -92,7 +92,7 @@ public class PurityBean
                 }
                 else
                 {
-                    datumList = new ArrayList<Datum>();
+                    datumList = new ArrayList<PurityDatum>();
                     datumMap.put( datumColumn, datumList );
                 }
                 datumList.add( datum );
@@ -157,7 +157,7 @@ public class PurityBean
             int numRows = - 1;
             // iterate through all datum columns and find the biggest list size
             // as the number of rows
-            for( Map.Entry<ColumnHeader, List<Datum>> entry : datumMap
+            for( Map.Entry<ColumnHeader, List<PurityDatum>> entry : datumMap
                     .entrySet() )
             {
                 int numData = entry.getValue().size();
@@ -189,7 +189,7 @@ public class PurityBean
                     if( theHeader.getColumnType()
                             .equals( PurityBean.DATUM_TYPE ) )
                     {
-                        Datum datum = new Datum();
+                        PurityDatum datum = new PurityDatum();
                         if( datumMap.get( theHeader ) != null
                                 && datumMap.get( theHeader ).size() > i )
                         {
@@ -361,27 +361,27 @@ public class PurityBean
         {
             domain.setCreatedBy( createdBy );
         }
-        if( domain.getDatumCollection() != null )
+        if( domain.getPurityDatumCollection() != null )
         {
-            domain.getDatumCollection().clear();
+            domain.getPurityDatumCollection().clear();
         }
         else
         {
-            domain.setDatumCollection( new HashSet<Datum>() );
+            domain.setPurityDatumCollection( new HashSet<PurityDatum>() );
         }
-        if( domain.getFileCollection() != null )
+        if( domain.getFiles() != null )
         {
-            domain.getFileCollection().clear();
+            domain.getFiles().clear();
         }
         else
         {
-            domain.setFileCollection( new HashSet<File>() );
+            domain.setFiles( new HashSet<File>() );
         }
 
         for( FileBean fileBean : files )
         {
             fileBean.setupDomainFile( internalFileUriPath, createdBy );
-            domain.getFileCollection().add( fileBean.getDomainFile() );
+            domain.getFiles().add( fileBean.getDomainFile() );
         }
 
 
@@ -425,14 +425,14 @@ public class PurityBean
         {
             int cInd = 0;
             List<Condition> rowConditions = new ArrayList<Condition>();
-            List<Datum> rowData = new ArrayList<Datum>();
+            List<PurityDatum> rowData = new ArrayList<PurityDatum>();
             for( TableCell cell : row.getCells() )
             {
                 ColumnHeader columnHeader = columnHeaders.get( cInd );
 
                 if( PurityBean.DATUM_TYPE.equals( columnHeader.getColumnType() ) )
                 {
-                    Datum datum = cell.getDatum();
+                    PurityDatum datum = cell.getPurityDatum();
                     // set bogus empty cell
                     if( StringUtils.isEmpty( cell.getValue() ) )
                     {
@@ -543,7 +543,7 @@ public class PurityBean
                 cInd++;
             }
             // associate conditions to each datum on each row
-            for( Datum datum : rowData )
+            for( PurityDatum datum : rowData )
             {
                 if( datum.getConditionCollection() == null )
                 {
@@ -557,7 +557,7 @@ public class PurityBean
                 {
                     datum.getConditionCollection().add( condition );
                 }
-                domain.getDatumCollection().add( datum );
+                domain.getPurityDatumCollection().add( datum );
                 datum.setPurity( domain );
                 rInd++;
             }
@@ -575,11 +575,8 @@ public class PurityBean
         if( obj instanceof PurityBean )
         {
             PurityBean purityBean = (PurityBean) obj;
-            if( domain.getId() != null
-                    && domain.getId().equals( purityBean.getDomain().getId() ) )
-            {
-                return true;
-            }
+            return domain.getId() != null
+                    && domain.getId().equals(purityBean.getDomain().getId());
         }
         return false;
     }
@@ -659,19 +656,19 @@ public class PurityBean
         // copy data and condition
         if( ! copyData )
         {
-            copy.setDatumCollection( null );
+            copy.setPurityDatumCollection( null );
         }
         else
         {
-            Collection<Datum> oldDatums = copy.getDatumCollection();
+            Collection<PurityDatum> oldDatums = copy.getPurityDatumCollection();
             if( oldDatums == null || oldDatums.isEmpty() )
             {
-                copy.setDatumCollection( null );
+                copy.setPurityDatumCollection( null );
             }
             else
             {
-                copy.setDatumCollection( new HashSet<Datum>( oldDatums ) );
-                for( Datum datum : copy.getDatumCollection() )
+                copy.setPurityDatumCollection( new HashSet<PurityDatum>( oldDatums ) );
+                for( PurityDatum datum : copy.getPurityDatumCollection() )
                 {
                     String originalDatumId = datum.getId().toString();
                     datum.setId( null );
@@ -738,15 +735,15 @@ public class PurityBean
         }
 
         // copy file
-        Collection<File> oldFiles = copy.getFileCollection();
+        Collection<File> oldFiles = copy.getFiles();
         if( oldFiles == null || oldFiles.isEmpty() )
         {
-            copy.setFileCollection( null );
+            copy.setFiles( null );
         }
         else
         {
-            copy.setFileCollection( new HashSet<File>( oldFiles ) );
-            for( File file : copy.getFileCollection() )
+            copy.setFiles( new HashSet<File>( oldFiles ) );
+            for( File file : copy.getFiles() )
             {
                 FileBean fileBean = new FileBean( file );
                 fileBean.resetDomainCopy( createdBy, file );
@@ -800,7 +797,7 @@ public class PurityBean
                     if( PurityBean.DATUM_TYPE.equals( columnHeader
                             .getColumnType() ) )
                     {
-                        Datum datum = cell.getDatum();
+                        PurityDatum datum = cell.getPurityDatum();
                         datum.setCreatedDate( DateUtils
                                 .addSecondsToCurrentDate( rInd * 100 + cInd ) );
                     }

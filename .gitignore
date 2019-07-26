@@ -21,3 +21,11 @@ node_modules/
 \.settings/
 
 software/common/lib/globus/
+
+\.idea/
+
+vpproject/
+
+software/cananolab-webapp/cananolab-web\.iml
+
+software/common/lib/sdk/caNanoLab-beans\.jar

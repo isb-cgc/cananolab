@@ -136,7 +136,7 @@ public class ComposingElementBean {
 		if (displayNames.isEmpty()) {
 			return null;
 		}
-		return displayNames.toArray(new String[displayNames.size()]);
+		return displayNames.toArray(new String[0]);
 	}
 
 	// for dwr ajax in bodySubmitChemicalAssociation.jsp

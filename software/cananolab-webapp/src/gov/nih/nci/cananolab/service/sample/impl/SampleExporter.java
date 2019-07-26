@@ -117,8 +117,6 @@ public class SampleExporter {
 	/**
 	 * Output headers for work sheet.
 	 *
-	 * @param compType
-	 * @param entityType
 	 * @param sheet
 	 * @param headerStyle
 	 * @param rowIndex
@@ -148,10 +146,7 @@ public class SampleExporter {
 	/**
 	 * Output one table row for work sheet.
 	 *
-	 * @param compType
-	 * @param entityType
 	 * @param sheet
-	 * @param headerStyle
 	 * @param rowIndex
 	 */
 	public static int outputRow(AdvancedSampleBean sampleBean,

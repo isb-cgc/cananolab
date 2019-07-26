@@ -1,16 +1,21 @@
 package gov.nih.nci.cananolab.restful.synthesis;
 
 import gov.nih.nci.cananolab.dto.particle.synthesis.SynthesisBean;
-import gov.nih.nci.cananolab.dto.particle.synthesis.SynthesisFuncPurificationBean;
 import gov.nih.nci.cananolab.dto.particle.synthesis.SynthesisFunctionalizationBean;
+import gov.nih.nci.cananolab.dto.particle.synthesis.SynthesisPurificationBean;
 import gov.nih.nci.cananolab.restful.core.BaseAnnotationBO;
 import gov.nih.nci.cananolab.restful.core.InitSetup;
 import gov.nih.nci.cananolab.restful.sample.InitCompositionSetup;
 import gov.nih.nci.cananolab.restful.sample.InitSampleSetup;
+import gov.nih.nci.cananolab.restful.sample.InitSynthesisSetup;
+import gov.nih.nci.cananolab.restful.util.CompositionUtil;
+import gov.nih.nci.cananolab.restful.view.SimpleSynthesisBean;
 import gov.nih.nci.cananolab.security.service.SpringSecurityAclService;
 import gov.nih.nci.cananolab.service.curation.CurationService;
 import gov.nih.nci.cananolab.service.sample.CompositionService;
 import gov.nih.nci.cananolab.service.sample.SampleService;
+import gov.nih.nci.cananolab.service.sample.SynthesisService;
+import gov.nih.nci.cananolab.ui.form.SynthesisForm;
 import gov.nih.nci.cananolab.util.StringUtils;
 import java.util.ArrayList;
 import java.util.List;
@@ -20,8 +25,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetailsService;
-
-import static gov.nih.nci.cananolab.restful.util.CompositionUtil.reformatLocalSerachDropdownsInSessionForSynthesis;
 
 public class SynthesisBO extends BaseAnnotationBO {
 
@@ -36,6 +39,9 @@ public class SynthesisBO extends BaseAnnotationBO {
 
     @Autowired
     private SpringSecurityAclService springSecurityAclService;
+
+    @Autowired
+    private SynthesisService synthesisService;
 
     @Autowired
     private UserDetailsService userDetailsService;
@@ -62,7 +68,7 @@ public class SynthesisBO extends BaseAnnotationBO {
         InitSampleSetup.getInstance().getOtherSampleNames(request, sampleId, sampleService);
         this.setLookups(request);
         this.checkOpenForms(synthesisBean, request);
-        return reformatLocalSerachDropdownsInSessionForSynthesis(request.getSession());
+        return CompositionUtil.reformatLocalSearchDropdownsInSessionForSynthesis(request.getSession());
     }
 
     public void setLookups(HttpServletRequest request) throws Exception{
@@ -80,7 +86,7 @@ public class SynthesisBO extends BaseAnnotationBO {
         HttpSession session = request.getSession();
 
 
-        InitCompositionSetup.getInstance().persistSynthesisDropdowns(
+        InitSynthesisSetup.getInstance().persistSynthesisDropdowns(
                 request, synthesisBean);
 
         // Synthesis Type
@@ -88,8 +94,8 @@ public class SynthesisBO extends BaseAnnotationBO {
         setOtherValueOption(request, entityType, "synthesisTypes");
         // function type
         List<String> purificationTypes=new ArrayList<String>();
-        for(SynthesisFunctionalizationBean sfBean :synthesisBean.getPurificationTypes()){
-            for(SynthesisFuncPurificationBean sfPurityBean: sfBean.getMethods()){
+        for(SynthesisFunctionalizationBean sfBean :synthesisBean.getSynthesisFunctionalizationBeanList()){
+            for(SynthesisPurificationBean sfPurityBean: sfBean.getMethods()){
                     setOtherValueOption(request, sfPurityBean.getType(), "purificationTypes");
             }
         }
@@ -103,5 +109,22 @@ public class SynthesisBO extends BaseAnnotationBO {
             }
             request.setAttribute("synthesisDetailPage", detailPage);
 //        }
+    }
+
+    public SimpleSynthesisBean setupUpdate(String sampleId, String dataId, HttpServletRequest httpRequest) throws Exception{
+        SynthesisForm form = new SynthesisForm();
+        // set up other particles with the same primary point of contact
+//        InitSampleSetup.getInstance().getOtherSampleNames(httpRequest, sampleId, sampleService);
+
+        SynthesisBean synBean = synthesisService.findSynthesisById(sampleId, dataId);
+//        form.setNanomaterialEntity(entityBean);
+//        form.setOtherSamples(new String[0]);
+//        this.checkOpenForms(entityBean, request);
+//        request.getSession().setAttribute("sampleId", sampleId);
+//        SimpleNanomaterialEntityBean nano = new SimpleNanomaterialEntityBean();
+//        nano.transferNanoMaterialEntityBeanToSimple(entityBean, request, springSecurityAclService);
+//        return nano;
+        return null;
+        //TODO write
     }
 }

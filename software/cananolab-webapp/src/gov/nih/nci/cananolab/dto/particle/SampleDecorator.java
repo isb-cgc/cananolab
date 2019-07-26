@@ -44,8 +44,7 @@ public class SampleDecorator extends TableDecorator {
 		sb.append(sampleId).append("'");
 		sb.append(" title='summary for sample ").append(sampleName).append("'>");
 		sb.append(linkLabel).append("</a>");
-		String link = sb.toString();
-		return link;
+        return sb.toString();
 	}
 
 	public SortableName getSampleName() {

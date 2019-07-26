@@ -22,7 +22,6 @@ import org.hibernate.Session;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Property;
 import org.hibernate.type.NullableType;
-import org.springframework.stereotype.Component;
 
 /**
  * Modified the original ORMDAOImpl to contain generic CRUD operations. Removed
@@ -85,8 +84,7 @@ public class CaNanoLabORMDAOImpl extends WritableORMDAOImpl implements CaNanoLab
 			for (int i = 0; i < columns.length; i++) {
 				query.addScalar(columns[i], (NullableType) columnTypes[i]);
 			}
-			List results = query.list();
-			return results;
+            return query.list();
 		} catch (JDBCException ex) {
 			log.error("JDBC Exception in CustomORMDAOImpl ", ex);
 			throw new DAOException("JDBC Exception in CustomORMDAOImpl ", ex);

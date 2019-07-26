@@ -68,9 +68,8 @@ public class Liposome extends NanomaterialEntity implements Serializable
 	{
 		if(obj instanceof Liposome) 
 		{
-			Liposome c =(Liposome)obj; 			 
-			if(getId() != null && getId().equals(c.getId()))
-				return true;
+			Liposome c =(Liposome)obj;
+            return getId() != null && getId().equals(c.getId());
 		}
 		return false;
 	}

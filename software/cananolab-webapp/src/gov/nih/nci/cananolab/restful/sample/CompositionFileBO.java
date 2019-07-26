@@ -186,7 +186,6 @@ public class CompositionFileBO extends BaseAnnotationBO
 	 * Handle input request, when validation failed this handler will be called
 	 * too.
 	 *
-	 * @param mapping
 	 * @param form
 	 * @param request
 	 * @param response

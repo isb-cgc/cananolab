@@ -40,7 +40,7 @@ public class LongRunningProcess implements Runnable {
 				//
 				// don't return until the new thread is running.
 				//
-				while (false == this.isRunning()) {
+				while (!this.isRunning()) {
 					logger
 							.info("Trying to start a new thread for the long running process");
 				}

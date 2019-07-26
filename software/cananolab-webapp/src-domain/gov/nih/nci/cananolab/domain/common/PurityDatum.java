@@ -11,7 +11,7 @@ import java.util.Set;
  */
 public class PurityDatum implements java.io.Serializable {
 
-	private long datumPkId;
+	private Long datumPkId;
 	private File file;
 	private Purity purity;
 	private String name;
@@ -20,8 +20,8 @@ public class PurityDatum implements java.io.Serializable {
 	private String valueUnit;
 	private String createdBy;
 	private Date createdDate;
-	private String numberMod;
-	private Set experimentConditions = new HashSet(0);
+	private String operand;
+	private Set<Condition> experimentConditions = new HashSet<Condition>(0);
 
 	public PurityDatum() {
 	}
@@ -35,7 +35,7 @@ public class PurityDatum implements java.io.Serializable {
 	}
 
 	public PurityDatum(long datumPkId, File file, Purity purity, String name, Float value, String valueType,
-			String valueUnit, String createdBy, Date createdDate, String numberMod, Set experimentConditions) {
+			String valueUnit, String createdBy, Date createdDate, String operand, Set<Condition> experimentConditions) {
 		this.datumPkId = datumPkId;
 		this.file = file;
 		this.purity = purity;
@@ -45,15 +45,15 @@ public class PurityDatum implements java.io.Serializable {
 		this.valueUnit = valueUnit;
 		this.createdBy = createdBy;
 		this.createdDate = createdDate;
-		this.numberMod = numberMod;
+		this.operand = operand;
 		this.experimentConditions = experimentConditions;
 	}
 
-	public long getId() {
+	public Long getId() {
 		return this.datumPkId;
 	}
 
-	public void setId(long datumPkId) {
+	public void setId(Long datumPkId) {
 		this.datumPkId = datumPkId;
 	}
 
@@ -121,19 +121,19 @@ public class PurityDatum implements java.io.Serializable {
 		this.createdDate = createdDate;
 	}
 
-	public String getNumberMod() {
-		return this.numberMod;
+	public String getOperand() {
+		return this.operand;
 	}
 
-	public void setNumberMod(String numberMod) {
-		this.numberMod = numberMod;
+	public void setOperand(String operand) {
+		this.operand = operand;
 	}
 
-	public Set getConditionCollection() {
+	public Set<Condition> getConditionCollection() {
 		return this.experimentConditions;
 	}
 
-	public void setConditionCollection(Set experimentConditions) {
+	public void setConditionCollection(Set<Condition> experimentConditions) {
 		this.experimentConditions = experimentConditions;
 	}
 

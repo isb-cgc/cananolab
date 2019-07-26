@@ -29,9 +29,8 @@ public class SpringSecurityUtil
 	
 	public static Authentication getAuthentication()
 	{
-		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-		
-		return auth;
+
+        return SecurityContextHolder.getContext().getAuthentication();
 	}
 	
 	public static CananoUserDetails getPrincipal()

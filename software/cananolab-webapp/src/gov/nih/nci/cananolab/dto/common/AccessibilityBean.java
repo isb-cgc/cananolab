@@ -93,9 +93,9 @@ public class AccessibilityBean {
 		if (roleName == null) {
 			return null;
 		} else if (roleName.equals(CSM_CURD_ROLE)) {
-			roleDisplayName = this.CURD_ROLE_DISPLAY_NAME;
+			roleDisplayName = CURD_ROLE_DISPLAY_NAME;
 		} else if (roleName.equals(CSM_READ_ROLE)) {
-			roleDisplayName = this.R_ROLE_DISPLAY_NAME;
+			roleDisplayName = R_ROLE_DISPLAY_NAME;
 		}
 		return roleDisplayName;
 	}
@@ -110,11 +110,9 @@ public class AccessibilityBean {
 					return true;
 				}
 			} else {
-				if (access.getUserBean().getLoginName().equals(
+				return access.getUserBean().getLoginName().equals(
 						getUserBean().getLoginName())
-						&& access.getRoleName().equals(getRoleName())) {
-					return true;
-				}
+						&& access.getRoleName().equals(getRoleName());
 			}
 		}
 		return false;

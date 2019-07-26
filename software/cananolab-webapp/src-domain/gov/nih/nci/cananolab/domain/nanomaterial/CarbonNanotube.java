@@ -156,9 +156,8 @@ public class CarbonNanotube extends NanomaterialEntity implements Serializable
 	{
 		if(obj instanceof CarbonNanotube) 
 		{
-			CarbonNanotube c =(CarbonNanotube)obj; 			 
-			if(getId() != null && getId().equals(c.getId()))
-				return true;
+			CarbonNanotube c =(CarbonNanotube)obj;
+            return getId() != null && getId().equals(c.getId());
 		}
 		return false;
 	}

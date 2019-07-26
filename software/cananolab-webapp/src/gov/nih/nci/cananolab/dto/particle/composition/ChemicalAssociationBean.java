@@ -16,9 +16,7 @@ import gov.nih.nci.cananolab.dto.common.FileBean;
 import gov.nih.nci.cananolab.util.ClassUtils;
 import gov.nih.nci.cananolab.util.Comparators;
 import gov.nih.nci.cananolab.util.Constants;
-
 import java.util.Collection;
-import java.util.Collections;
 import java.util.Date;
 import java.util.HashSet;
 
@@ -46,7 +44,7 @@ public class ChemicalAssociationBean extends BaseCompositionEntityBean {
 			for (File file : chemicalAssociation.getFileCollection()) {
 				files.add(new FileBean(file));
 			}
-			Collections.sort(files, new Comparators.FileBeanDateComparator());
+			files.sort(new Comparators.FileBeanDateComparator());
 		}
 		associatedElementA = new AssociatedElementBean(chemicalAssociation
 				.getAssociatedElementA());

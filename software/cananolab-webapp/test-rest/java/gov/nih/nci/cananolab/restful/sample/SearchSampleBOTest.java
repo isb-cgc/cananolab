@@ -63,7 +63,7 @@ public class SearchSampleBOTest {
 			Map<String, List<String>> map = searchbo.setup(request);
 			
 			assertNotNull(map);
-		} catch (Exception e) {
+		} catch (Exception e) {//TODO report error
 			
 		}
 	}

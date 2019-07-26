@@ -24,9 +24,8 @@ public class Entrapment extends ChemicalAssociation implements Serializable
 	{
 		if(obj instanceof Entrapment) 
 		{
-			Entrapment c =(Entrapment)obj; 			 
-			if(getId() != null && getId().equals(c.getId()))
-				return true;
+			Entrapment c =(Entrapment)obj;
+            return getId() != null && getId().equals(c.getId());
 		}
 		return false;
 	}

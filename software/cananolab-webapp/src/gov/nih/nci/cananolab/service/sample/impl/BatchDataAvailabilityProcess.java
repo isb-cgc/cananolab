@@ -37,9 +37,7 @@ public class BatchDataAvailabilityProcess extends LongRunningProcess {
 	 * Find the sampleIds to process
 	 *
 	 * @param dataAvailabilityService
-	 * @param securityService
 	 * @param batchOption
-	 * @param user
 	 * @throws Exception
 	 */
 	public BatchDataAvailabilityProcess(SampleService sampleService, DataAvailabilityService dataAvailabilityService, String batchOption) throws Exception
@@ -68,7 +66,6 @@ public class BatchDataAvailabilityProcess extends LongRunningProcess {
 	 * @param dataAvailabilityService
 	 * @param sampleIds
 	 * @param batchOption
-	 * @param user
 	 * @throws Exception
 	 */
 	public BatchDataAvailabilityProcess(DataAvailabilityService dataAvailabilityService, List<String> sampleIds,
@@ -86,15 +83,17 @@ public class BatchDataAvailabilityProcess extends LongRunningProcess {
 	 */
 	public void run() {
 		String optionMessage = "";
-		if (batchOption.equals(BatchDataAvailabilityProcess.BATCH_OPTION1)) {
-			optionMessage = "Generate data availability for all samples";
-		} else if (batchOption
-				.equals(BatchDataAvailabilityProcess.BATCH_OPTION2)) {
-			optionMessage = "Regenerate data availability for samples with existing data availability";
-		} else if (batchOption
-				.equals(BatchDataAvailabilityProcess.BATCH_OPTION3)) {
-			optionMessage = "Delete existing data availability";
-		}
+        switch (batchOption) {
+            case BatchDataAvailabilityProcess.BATCH_OPTION1:
+                optionMessage = "Generate data availability for all samples";
+                break;
+            case BatchDataAvailabilityProcess.BATCH_OPTION2:
+                optionMessage = "Regenerate data availability for samples with existing data availability";
+                break;
+            case BatchDataAvailabilityProcess.BATCH_OPTION3:
+                optionMessage = "Delete existing data availability";
+                break;
+        }
 		this.statusMessage = "Running the option \"" + optionMessage + ".\"";
 		logger.info("Running batch data availability process with option "
 				+ batchOption);

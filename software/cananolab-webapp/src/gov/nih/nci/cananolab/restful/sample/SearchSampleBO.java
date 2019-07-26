@@ -21,7 +21,6 @@ import gov.nih.nci.cananolab.restful.core.AbstractDispatchBO;
 import gov.nih.nci.cananolab.restful.util.PropertyUtil;
 import gov.nih.nci.cananolab.restful.util.SampleUtil;
 import gov.nih.nci.cananolab.restful.view.SimpleSearchSampleBean;
-import gov.nih.nci.cananolab.security.CananoUserDetails;
 import gov.nih.nci.cananolab.security.Group;
 import gov.nih.nci.cananolab.security.service.GroupService;
 import gov.nih.nci.cananolab.security.utils.SpringSecurityUtil;
@@ -99,7 +98,7 @@ public class SearchSampleBO extends AbstractDispatchBO {
 		// load sampleBean details 25 at a time for displaying
 		// pass in page and size
 		List<SampleBean> sampleBeansPerPage = getSamplesPerPage(sampleBeans,
-				displayPage, Constants.DISPLAY_TAG_TABLE_SIZE, request);
+				displayPage, request);
 		// in case any samples has been filtered during loading of sample
 		// information. e.g. POC is missing
 		
@@ -122,9 +121,8 @@ public class SearchSampleBO extends AbstractDispatchBO {
 		
 		//return mapping.findForward("success");
 		//UserBean user = (UserBean) (request.getSession().getAttribute("user"));
-		List<SimpleSearchSampleBean> simpleBeans = transfertoSimpleSampleBeans(sampleBeansPerPage);
-		
-		return simpleBeans;
+
+        return transfertoSimpleSampleBeans(sampleBeansPerPage);
 	}
 	
 	public List<SimpleSearchSampleBean> getSamplesByCollaborationGroup(HttpServletRequest request, Long groupId) throws Exception
@@ -325,13 +323,13 @@ public class SearchSampleBO extends AbstractDispatchBO {
 		return sampleBeans;
 	}
 
-	private List<SampleBean> getSamplesPerPage(List<SampleBean> sampleBeans, int page, int pageSize, HttpServletRequest request)
+	private List<SampleBean> getSamplesPerPage(List<SampleBean> sampleBeans, int page, HttpServletRequest request)
 			throws Exception
 	{
 		List<SampleBean> loadedSampleBeans = new ArrayList<SampleBean>();
 		// Map<String, Set<DataAvailabilityBean>> dataAvailabilityMapPerPage =
 		// new HashMap<String, Set<DataAvailabilityBean>>();
-		for (int i = page * pageSize; i < (page + 1) * pageSize; i++) {
+		for (int i = page * Constants.DISPLAY_TAG_TABLE_SIZE; i < (page + 1) * Constants.DISPLAY_TAG_TABLE_SIZE; i++) {
 			if (i < sampleBeans.size()) {
 				String sampleId = sampleBeans.get(i).getDomain().getId().toString();
 
