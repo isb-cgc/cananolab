@@ -17,12 +17,7 @@ import gov.nih.nci.cananolab.util.Constants;
 import gov.nih.nci.cananolab.util.DateUtils;
 import gov.nih.nci.cananolab.util.StringUtils;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.HashSet;
-import java.util.List;
+import java.util.*;
 
 /**
  * Publication view bean
@@ -450,4 +445,21 @@ public class PublicationBean extends FileBean {
 	public void setFromSamplePage(Boolean fromSamplePage) {
 		this.fromSamplePage = fromSamplePage;
 	}
+
+    @Override
+    public String toString()
+    {
+        return "{\"PublicationBean\":"
+                + super.toString()
+                + ",                         \"sampleNames\":" + Arrays.toString( sampleNames )
+                + ",                         \"researchAreas\":" + Arrays.toString( researchAreas )
+                + ",                         \"authors\":" + authors
+                + ",                         \"theAuthor\":" + theAuthor
+                + ",                         \"sampleNamesStr\":\"" + sampleNamesStr + "\""
+                + ",                         \"fromSamplePage\":\"" + fromSamplePage + "\""
+                + ",                         \"displayName\":\"" + displayName + "\""
+                + ",                         \"domainFile\":" + domainFile
+                + ",                         \"createdBy\":\"" + createdBy + "\""
+                + "}";
+    }
 }

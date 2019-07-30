@@ -4,15 +4,18 @@
        <th scope="col" align="left">
          Search Results
        </th>
-            <td align="right" width="30%">
-                <a class="helpText" href="javascript:openHelpWindow('https://wiki.nci.nih.gov/x/NIKAEQ')">Help</a>       
-             </td>       
+       <td align="right" width="30%">
+           <a class="helpText" ng-href="/caNanoLab/rest/sample/fullSampleExportJsonAll?sampleIds={{utilsService.sampleIdListStrings(keywordData)}}">Export<span class="small-link-text"> (JSON)</span></a>&nbsp;
+           <a class="helpText" ng-href="/caNanoLab/rest/sample/fullSampleExportXmlAll?sampleIds={{utilsService.sampleIdListStrings(keywordData)}}">Export<span class="small-link-text"> (XML)</span></a>&nbsp;&nbsp;
+           <a class="helpText" href="javascript:openHelpWindow('https://wiki.nci.nih.gov/x/NIKAEQ')">Help</a>
+       </td>
       </tr>
     </table>
-<br /><div ng-if="keywordData.length>0" ng-init="p=tableParams.$params;
-				length=keywordData.length;
+<br />
+    <div ng-if="keywordData.length>0" ng-init="p=tableParams.$params;
+	    length=keywordData.length;
 				">{{utilsService.resultCount(tableParams.$params,length,tableParams.data.length)}}
-	</div>
+</div>
 <div ng-if="keywordData.length==0&&keyword_search_text==''">No Search Criteria</div>
 <div ng-if="keywordData.length==0&&keyword_search_text!=''">No Search Results</div>
 <span ng-if="keywordData.length>0"><br />
@@ -24,8 +27,8 @@
 				<div><a ng-init="searchType='simple'" target="{{getLink(row)[1].target}}" href="{{getLink(row)[1].link}}">{{getLink(row)[1].actionType}}</a></div>				
 			</div>
 
-            <a ng-if="!row.favoriteAdded&&loggedInUser.name!=''" id="href{{row.id}}" href="" ng-click="addToFavorites(row)"><i class="fa fa-plus fa-1"></i>&nbsp;Add to Favorites</a>  
-            <span ng-if="row.favoriteAdded" style="color:#2276ff;font-weight:bold;">Added to Favorites</span>  
+            <a ng-if="!row.favoriteAdded&&loggedInUser.name!=''" id="href{{row.id}}" href="" ng-click="addToFavorites(row)"><i class="fa fa-plus fa-1"></i>&nbsp;Add to Favorites</a>
+            <span ng-if="row.favoriteAdded" style="color:#2276ff;font-weight:bold;">Added to Favorites</span>
                 
 		</td>
 		<td data-title="'Type'" sortable="'type'">

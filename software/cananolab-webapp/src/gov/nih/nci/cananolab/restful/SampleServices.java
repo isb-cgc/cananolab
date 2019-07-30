@@ -1,65 +1,62 @@
 package gov.nih.nci.cananolab.restful;
 
-import java.io.*;
-import java.util.List;
-import java.util.Map;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.ws.rs.DefaultValue;
-import javax.ws.rs.GET;
-import javax.ws.rs.POST;
-import javax.ws.rs.Path;
-import javax.ws.rs.Produces;
-import javax.ws.rs.QueryParam;
-import javax.ws.rs.core.Context;
-import javax.ws.rs.core.Response;
-import javax.xml.transform.OutputKeys;
-import javax.xml.transform.Transformer;
-import javax.xml.transform.TransformerFactory;
-import javax.xml.transform.stream.StreamResult;
-import javax.xml.transform.stream.StreamSource;
-
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import gov.nih.nci.cananolab.dto.common.PublicationSummaryViewBean;
-import gov.nih.nci.cananolab.dto.particle.composition.CompositionBean;
-import gov.nih.nci.cananolab.restful.publication.PublicationBO;
-import gov.nih.nci.cananolab.restful.sample.*;
-import gov.nih.nci.cananolab.restful.view.*;
-import gov.nih.nci.cananolab.ui.form.CompositionForm;
-import org.apache.log4j.Logger;
-
+import com.google.gson.JsonParser;
+import com.google.gson.JsonSyntaxException;
 import gov.nih.nci.cananolab.dto.common.DataReviewStatusBean;
+import gov.nih.nci.cananolab.dto.common.PublicationBean;
+import gov.nih.nci.cananolab.dto.common.PublicationSummaryViewBean;
 import gov.nih.nci.cananolab.dto.particle.AdvancedSampleSearchBean;
 import gov.nih.nci.cananolab.dto.particle.characterization.CharacterizationSummaryViewBean;
+import gov.nih.nci.cananolab.dto.particle.composition.CompositionBean;
 import gov.nih.nci.cananolab.restful.bean.LabelValueBean;
+import gov.nih.nci.cananolab.restful.publication.PublicationBO;
+import gov.nih.nci.cananolab.restful.publication.PublicationManager;
+import gov.nih.nci.cananolab.restful.sample.*;
 import gov.nih.nci.cananolab.restful.util.CommonUtil;
+import gov.nih.nci.cananolab.restful.view.*;
 import gov.nih.nci.cananolab.restful.view.edit.SampleEditGeneralBean;
 import gov.nih.nci.cananolab.restful.view.edit.SimplePointOfContactBean;
 import gov.nih.nci.cananolab.security.utils.SpringSecurityUtil;
+import gov.nih.nci.cananolab.ui.form.CompositionForm;
+import gov.nih.nci.cananolab.ui.form.PublicationForm;
 import gov.nih.nci.cananolab.ui.form.SearchSampleForm;
 import gov.nih.nci.cananolab.util.Constants;
+import org.apache.log4j.Logger;
 import org.json.JSONObject;
 import org.json.XML;
-
-
-import javax.xml.parsers.*;
-import javax.xml.transform.dom.DOMSource;
-import javax.xml.xpath.XPath;
-import javax.xml.xpath.XPathConstants;
-import javax.xml.xpath.XPathFactory;
-
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.InputSource;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.ws.rs.*;
+import javax.ws.rs.core.Context;
+import javax.ws.rs.core.Response;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.transform.OutputKeys;
+import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.dom.DOMSource;
+import javax.xml.transform.stream.StreamResult;
+import javax.xml.transform.stream.StreamSource;
+import javax.xml.xpath.XPath;
+import javax.xml.xpath.XPathConstants;
+import javax.xml.xpath.XPathFactory;
+import java.io.*;
+import java.nio.charset.StandardCharsets;
+import java.util.List;
+import java.util.Map;
+
 
 @Path("/sample")
 public class SampleServices {
-	private static final Logger logger = Logger.getLogger(SampleServices.class);
-	
+    private static final Logger logger = Logger.getLogger(SampleServices.class);
+    private String spc = "                                                                                                                                            ";
+
 	@GET
 	@Path("/setup")
 	@Produces ("application/json")
@@ -844,12 +841,83 @@ public class SampleServices {
 		}
 	}
 
+    /**
+     * Export list of results as JSON.
+     *
+     * @param httpRequest
+     * @param httpResponse
+     * @param sampleIds
+     */
+    @GET
+    @Path("/fullSampleExportJsonAll")
+    public void fullSampleExportJsonAll(@Context HttpServletRequest httpRequest, @Context HttpServletResponse httpResponse,
+                                        @DefaultValue("") @QueryParam("sampleIds") String sampleIds)
+    {
+        String[] idlist = sampleIds.split( "\\s*,\\s*" );
+        String jsonData = buildAllJson(httpRequest, httpResponse, idlist);
+
+        // Send to user
+        try
+        {
+            PrintWriter out = httpResponse.getWriter();
+            httpResponse.setContentType("application/force-download");
+            httpResponse.setContentLength(jsonData.length() );
+            httpResponse.setHeader("Content-Disposition","attachment; filename=\"caNanoLabSampleData"  + ".json\"");
+            out.print( jsonData);
+            out.close();
+        }
+        catch( Exception e )
+        {
+            System.err.println( "Error sending JSON to client: " + e.getMessage() );
+        }
+    }
+
+    /**
+     * Export list of results as XML
+     *
+     * @param httpRequest
+     * @param httpResponse
+     * @param sampleIds  Comma separated list of Sample IDs
+     */
+    @GET
+    @Path("/fullSampleExportXmlAll")
+    public void fullSampleExportXmlAll(@Context HttpServletRequest httpRequest, @Context HttpServletResponse httpResponse,
+                                        @DefaultValue("") @QueryParam("sampleIds") String sampleIds)
+    {
+        String[] idlist = sampleIds.split( "\\s*,\\s*" );
+        String jsonData =  "{\n \"csNanoLabData\": " + buildAllJson(httpRequest, httpResponse, idlist) +"\n}\n";
+        String xmlData = jsonToXml( jsonData );
+
+        // Send to user
+        try
+        {
+            PrintWriter out = httpResponse.getWriter();
+            httpResponse.setContentType("application/force-download");
+            httpResponse.setContentLength(xmlData.length() );
+            httpResponse.setHeader("Content-Disposition","attachment; filename=\"caNanoLabSampleData"  + ".xml\"");
+            out.print( xmlData);
+            out.close();
+        }
+        catch( Exception e )
+        {
+            System.err.println( "Error sending XML to client: " + e.getMessage() );
+        }
+    }
+
+
+    /**
+     * Export one Sample as JSON
+     *
+     * @param httpRequest
+     * @param httpResponse
+     * @param sampleId
+     */
     @GET
     @Path("/fullSampleExportJson")
     public void fullSampleExportJson(@Context HttpServletRequest httpRequest, @Context HttpServletResponse httpResponse,
-                                     @DefaultValue("") @QueryParam("sampleId") String sampleId, @DefaultValue("") @QueryParam("type") String type)
+                                     @DefaultValue("") @QueryParam("sampleId") String sampleId)
     {
-        String jsonData = buildJson( httpRequest, httpResponse, sampleId);
+        String jsonData = buildSampleJson( httpRequest, httpResponse, sampleId, 0);
 
         // Send to user
         try
@@ -867,15 +935,22 @@ public class SampleServices {
         }
     }
 
+    /**
+     * Export one Sample as XML
+     *
+     * @param httpRequest
+     * @param httpResponse
+     * @param sampleId
+     */
     @GET
     @Path("/fullSampleExportXml")
     public void fullSampleExportXml(@Context HttpServletRequest httpRequest, @Context HttpServletResponse httpResponse,
-                                     @DefaultValue("") @QueryParam("sampleId") String sampleId, @DefaultValue("") @QueryParam("type") String type)
+                                     @DefaultValue("") @QueryParam("sampleId") String sampleId)
     {
         String xmlData = null;
 
         // Get data as JSON
-        String jsonData =  buildJson( httpRequest, httpResponse, sampleId);
+        String jsonData =  buildSampleJson( httpRequest, httpResponse, sampleId, 0);
 
         // Build XML from JSON
         try
@@ -904,11 +979,109 @@ public class SampleServices {
         }
     }
 
+    /**
+     * Build JSON from a list of IDs.
+     *
+     * @param httpRequest
+     * @param httpResponse
+     * @param idlist These are Sample IDs, or pubmedId with the suffix _pubmed
+     * @return
+     */
+    private String buildAllJson( HttpServletRequest httpRequest, HttpServletResponse httpResponse, String[] idlist ){
+       StringBuilder jsonData = new StringBuilder( "[\n" );
+        boolean first = true;
+
+        for( String id : idlist )
+        {
+              if( first ){
+                    first = false;
+                }
+                else{
+                    jsonData.append("\n,");
+                }
+            if( id.endsWith( "_pubmed" ))
+            {
+                jsonData.append( buildPubJson( httpRequest, id.replaceAll( "_pubmed$", ""), 2 ) );
+            }
+            else
+            {
+                jsonData.append( buildSampleJson( httpRequest, httpResponse, id , 2) );
+            }
+        }
+       jsonData.append("\n]");
+
+        try{
+            new JsonParser().parse(jsonData.toString());
+        }
+        catch( JsonSyntaxException jse){
+            logger.error("Not a valid Json String:" + jse.getMessage());
+        }
+
+        return jsonData.toString();
+    }
 
 
-    private String buildJson( HttpServletRequest httpRequest, HttpServletResponse httpResponse, String sampleId ){
-        // Opening brace of results
-        StringBuilder jasonData = new StringBuilder( "{");
+    /**
+     * Build one Pbublication string as JSON
+     *
+     * @param httpRequest
+     * @param publicationId
+     * @param indent
+     * @return
+     */
+    private String buildPubJson( HttpServletRequest httpRequest, String publicationId, int indent )
+    {
+        StringBuilder jasonData = new StringBuilder( "{\n    \"publication\":\n    ");
+
+    try {
+        PublicationManager pubManager = (PublicationManager) SpringApplicationContext.getBean(httpRequest, "publicationManager");
+        Gson gson = new GsonBuilder().setPrettyPrinting().create();
+
+        PublicationForm form = new PublicationForm();
+        PublicationBean pubBean = new PublicationBean();
+        form.setPublicationBean(pubBean);
+        pubManager.retrievePubMedInfo(publicationId, form, httpRequest);
+
+        jasonData.append( doIndent( gson.toJson(pubBean), indent * 4 ) );
+        jasonData.append( "\n}\n" );
+
+        return jasonData.toString();
+    } catch (Exception e) {
+        e.printStackTrace();
+        return e.getMessage();
+    }
+}
+
+    /**
+     * Used to cleanup formatting when combining multiple JSON samples into one.
+     *
+     * @param str
+     * @param n
+     * @return
+     */
+    private String doIndent( String str, int n){
+        // str = str.replaceAll( "^", sp.substring( 0,n )  );
+        return str.replaceAll( "[\n\r]", "\n" + spc.substring( 0, n )  );
+    }
+
+
+    /**
+     * Build one JSON  Sample record.
+     *
+     * @param httpRequest
+     * @param httpResponse
+     * @param sampleId
+     * @return One JSON record.
+     */
+    private String buildSampleJson( HttpServletRequest httpRequest, HttpServletResponse httpResponse, String sampleId , int indent){
+
+       // Opening brace of results
+        StringBuilder jasonData = new StringBuilder( spc.substring( 0,indent ));
+        jasonData.append( "{\n");
+        jasonData.append( spc, 0, indent * 2 );
+        jasonData.append( "\"sample\": {\n");
+        jasonData.append( spc, 0, indent * 3 );
+
         Gson gson = new GsonBuilder().setPrettyPrinting().create();
 
         // General Info
@@ -917,6 +1090,7 @@ public class SampleServices {
         try
         {
             sampleBeanData = sampleBO.summaryExport( sampleId, "all", httpRequest, httpResponse );
+            sampleBeanData = doIndent(sampleBeanData, indent * 4);
         }
         catch( Exception e )
         {
@@ -925,6 +1099,7 @@ public class SampleServices {
         jasonData.append( "\"GeneralInfo\":" );
         jasonData.append(  sampleBeanData );
         jasonData.append(  "\n" );
+
 
         // Composition
         CompositionForm form;
@@ -937,6 +1112,7 @@ public class SampleServices {
             form.setSampleId(sampleId);
             compositionBO = (CompositionBO) SpringApplicationContext.getBean( httpRequest, "compositionBO" );
             compBean = compositionBO.summaryView( form, httpRequest );
+
             view = new SimpleCompositionBean();
             view.transferCompositionBeanForSummaryView( compBean );
         }
@@ -944,8 +1120,9 @@ public class SampleServices {
         {
             e.printStackTrace();
         }
-        jasonData.append( ",\"Composition\":" );
-        jasonData.append(  gson.toJson(view) );
+        jasonData.append( ",\"Composition\": " );
+        jasonData.append( doIndent( gson.toJson(view), indent * 4 ) );
+
 
         // Characterization
         CharacterizationSummaryViewBean charView = null;
@@ -963,8 +1140,8 @@ public class SampleServices {
             e.printStackTrace();
         }
 
-        jasonData.append( ",\"characterization\":"  );
-        jasonData.append(  gson.toJson( finalBean ) );
+        jasonData.append( ",\"characterization\": "  );
+        jasonData.append( doIndent( gson.toJson(finalBean), indent * 4 ) );
 
         // Publication
         PublicationBO publicationBO = null;
@@ -975,26 +1152,25 @@ public class SampleServices {
             pubBean = publicationBO.summaryView( sampleId, httpRequest );
             publicationView = new SimplePublicationSummaryViewBean();
             publicationView.transferPublicationBeanForSummaryView( pubBean );
-
         }
         catch( Exception e )
         {
             e.printStackTrace();
         }
-        jasonData.append( ",\"Publication\":" );
-        jasonData.append( gson.toJson( publicationView ) );
+        jasonData.append( ",\"Publication\": " );
+        jasonData.append( doIndent( gson.toJson(publicationView), indent * 4 ) );
 
         // Closing brace
-        jasonData.append( "}" );
+        jasonData.append( "    }\n        }\n" );
        return jasonData.toString();
     }
 
 
     /**
-     *  Convert (formatted) JSON to XML
+     * Convert (formatted) JSON to XML
      *
-     * @param jsonText Formatted JSON String
-     * @return XML String
+     * @param jsonText
+     * @return
      */
     private String jsonToXml( String jsonText ) {
         try {
@@ -1020,6 +1196,7 @@ public class SampleServices {
 
     /**
      * Some JSON elements do not translate cleanly to XML
+     *
      * @param json
      * @return modified JSON String
      */
@@ -1053,7 +1230,7 @@ public class SampleServices {
 
 
     /**
-     * Format (indent etc.)
+     * Format (indent etc.) XML
      *
      * @param xml
      * @param indent  number of spaces per indent.
@@ -1064,7 +1241,7 @@ public class SampleServices {
             // Turn xml string into a document
             Document document = DocumentBuilderFactory.newInstance()
                     .newDocumentBuilder()
-                    .parse(new InputSource(new ByteArrayInputStream(xml.getBytes("utf-8"))));
+                    .parse(new InputSource(new ByteArrayInputStream(xml.getBytes( StandardCharsets.UTF_8 ))));
 
             // Remove whitespaces outside tags
             document.normalize();
@@ -1096,5 +1273,4 @@ public class SampleServices {
             throw new RuntimeException(e);
         }
     }
-
 }

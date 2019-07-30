@@ -76,8 +76,21 @@ app.factory("utilsService", function(){
 				html += ((params.page-1)*params.count+1)+pageLength-1;
 				return html;
 			}
-		}
+		},
 
+		sampleIdListStrings( data ){
+            let ids = '';
+            for (let i = 0; i < data.length; i++) {
+                if( i > 0){
+                    ids += ',';
+                }
+                if( data[i].type === 'sample' ){
+                    ids += data[i].id ;
+                }else if( data[i].type === 'publication'){
+                    ids += data[i].pubmedId.trim() + '_pubmed';
+                }
+            }
+            return ids;
+        }
 	}
-
 });
