@@ -5,10 +5,11 @@
          <h1>Sample Search Results</h1>
        </td>
         <td align="right" width="30%">
-        <button class="btn back btn-xs" ng-click="goBack()">Back</button>            
-          <a class="helpText" href=
-          "javascript:openHelpWindow('https://wiki.nci.nih.gov/display/caNanoLab/Managing+Samples+in+caNanoLab#ManagingSamplesincaNanoLab-SearchSample')">Help</a>   <a class=
-          "helpText" href="javascript:openHelpWindow('https://wiki.nci.nih.gov/display/caNanoLab/caNanoLab+Glossary')">Glossary</a>  
+        <button class="btn back btn-xs" ng-click="goBack()">Back</button>
+            <a class="helpText" ng-href="/caNanoLab/rest/sample/fullSampleExportJsonAll?sampleIds={{utilsService.sampleIdListStrings(sampleData)}}">Export<span class="small-link-text"> (JSON)</span></a>&nbsp;
+            <a class="helpText" ng-href="/caNanoLab/rest/sample/fullSampleExportXmlAll?sampleIds={{utilsService.sampleIdListStrings(sampleData)}}">Export<span class="small-link-text"> (XML)</span></a>&nbsp;
+          <a class="helpText" href= "javascript:openHelpWindow('https://wiki.nci.nih.gov/display/caNanoLab/Managing+Samples+in+caNanoLab#ManagingSamplesincaNanoLab-SearchSample')">Help</a>
+                <a class= "helpText" href="javascript:openHelpWindow('https://wiki.nci.nih.gov/display/caNanoLab/caNanoLab+Glossary')">Glossary</a>
         </td>
       </tr>
     </table>

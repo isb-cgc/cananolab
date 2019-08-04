@@ -1199,6 +1199,8 @@ public class SampleServices {
      *
      * @param json
      * @return modified JSON String
+     *
+     * @TODO Character reference "&#x2" is an invalid XML character.
      */
     private String cleanJson( String json){
 	    StringBuilder cleanData = new StringBuilder(  );
