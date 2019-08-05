@@ -1,6 +1,6 @@
 /*L
- *  Copyright SAIC
- *  Copyright SAIC-Frederick
+ *  Copyright Leidos
+ *  Copyright Leidos Biomedical
  *
  *  Distributed under the OSI-approved BSD 3-Clause License.
  *  See http://ncip.github.com/cananolab/LICENSE.txt for details.
@@ -9,7 +9,6 @@
 package gov.nih.nci.cananolab.service.sample;
 
 import gov.nih.nci.cananolab.domain.particle.Sample;
-import gov.nih.nci.cananolab.dto.common.AccessibilityBean;
 import gov.nih.nci.cananolab.dto.common.PointOfContactBean;
 import gov.nih.nci.cananolab.dto.particle.AdvancedSampleBean;
 import gov.nih.nci.cananolab.dto.particle.AdvancedSampleSearchBean;
@@ -23,7 +22,6 @@ import gov.nih.nci.cananolab.exception.SampleException;
 import gov.nih.nci.cananolab.security.AccessControlInfo;
 import gov.nih.nci.cananolab.security.CananoUserDetails;
 import gov.nih.nci.cananolab.service.BaseService;
-
 import java.util.List;
 import java.util.Map;
 import java.util.SortedSet;

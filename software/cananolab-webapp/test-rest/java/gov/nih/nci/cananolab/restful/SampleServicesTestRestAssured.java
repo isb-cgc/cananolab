@@ -1,14 +1,13 @@
 package gov.nih.nci.cananolab.restful;
 
-import static com.jayway.restassured.RestAssured.*;
-import static org.hamcrest.Matchers.hasItems;
-import static org.hamcrest.Matchers.hasToString;
 import gov.nih.nci.cananolab.restful.util.RestTestLoginUtil;
 import gov.nih.nci.cananolab.ui.form.SearchSampleForm;
-
+import io.restassured.response.Response;
 import org.junit.Test;
 
-import com.jayway.restassured.response.Response;
+import static io.restassured.RestAssured.given;
+import static org.hamcrest.Matchers.hasItems;
+import static org.hamcrest.Matchers.hasToString;
 
 public class SampleServicesTestRestAssured {
 

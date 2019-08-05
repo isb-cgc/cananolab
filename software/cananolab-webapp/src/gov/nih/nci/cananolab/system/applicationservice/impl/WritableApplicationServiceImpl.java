@@ -1,16 +1,16 @@
 package gov.nih.nci.cananolab.system.applicationservice.impl;
 
-import gov.nih.nci.system.dao.DAO;
-import gov.nih.nci.system.dao.Request;
-import gov.nih.nci.system.dao.Response;
+import gov.nih.nci.cananolab.system.dao.DAO;
+import gov.nih.nci.cananolab.system.dao.Request;
+import gov.nih.nci.cananolab.system.dao.Response;
 import gov.nih.nci.system.query.SDKQuery;
 import gov.nih.nci.system.query.SDKQueryResult;
 import gov.nih.nci.system.query.example.ExampleQuery;
 import gov.nih.nci.system.query.example.SearchExampleQuery;
-import gov.nih.nci.system.query.hibernate.HQLCriteria;
+import gov.nih.nci.cananolab.system.query.hibernate.HQLCriteria;
 import gov.nih.nci.system.query.hql.SearchHQLQuery;
-import gov.nih.nci.system.query.nestedcriteria.NestedCriteriaPath;
-import gov.nih.nci.system.util.ClassCache;
+import gov.nih.nci.cananolab.system.query.nestedcriteria.NestedCriteriaPath;
+import gov.nih.nci.cananolab.system.util.ClassCache;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;

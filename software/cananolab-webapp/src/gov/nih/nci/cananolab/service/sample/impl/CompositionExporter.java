@@ -1,6 +1,6 @@
 /*L
- *  Copyright SAIC
- *  Copyright SAIC-Frederick
+ *  Copyright Leidos
+ *  Copyright Leidos Biomedical
  *
  *  Distributed under the OSI-approved BSD 3-Clause License.
  *  See http://ncip.github.com/cananolab/LICENSE.txt for details.
@@ -310,7 +310,7 @@ public class CompositionExporter {
 				 */
 				StringBuilder sb = new StringBuilder(downloadURL);
 				sb.append(file.getId());
-				if (file.getUriExternal().booleanValue()) {
+				if (file.getUriExternal()) {
 					ExportUtils.createCell(row, 1, hlinkStyle, file.getUri(),
 							sb.toString());
 				} else if (fileBean.isImage()) {

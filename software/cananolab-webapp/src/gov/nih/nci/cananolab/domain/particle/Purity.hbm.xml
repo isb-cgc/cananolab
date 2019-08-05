@@ -2,10 +2,9 @@
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
         "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
 <!-- Generated Apr 3, 2019, 8:32:55 PM by Hibernate Tools 5.4.2.Final -->
-<hibernate-mapping package="gov.nih.nci.cananolab.domain.common">
-    <class catalog="canano" name="Purity" table="purity">
+<hibernate-mapping package="gov.nih.nci.cananolab.domain.particle">
+    <class  name="Purity" table="purity">
         <id column="purity_pk_id" name="id" type="long">
-            <column name="purity_pk_id"/>
             <generator class="hilo"/>
         </id>
         <property generated="never" lazy="false" name="createdDate" type="timestamp">
@@ -19,8 +18,8 @@
             </column>
         </property>
         <many-to-one
-                class="gov.nih.nci.cananolab.domain.particle.SynthesisPurification"
-                fetch="select" name="synthesisFuncPurification">
+                class="SynthesisPurification"
+                fetch="select" name="synthesisPurification">
             <column name="synthesis_purification_pk_id" not-null="true">
                 <comment>synthesis_purification_pk_id</comment>
             </column>

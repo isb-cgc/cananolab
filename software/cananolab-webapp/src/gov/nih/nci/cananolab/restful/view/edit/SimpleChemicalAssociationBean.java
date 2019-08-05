@@ -2,13 +2,10 @@ package gov.nih.nci.cananolab.restful.view.edit;
 
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
-import gov.nih.nci.cananolab.domain.particle.Function;
 import gov.nih.nci.cananolab.dto.common.FileBean;
 import gov.nih.nci.cananolab.dto.particle.composition.ChemicalAssociationBean;
 import gov.nih.nci.cananolab.security.enums.SecureClassesEnum;

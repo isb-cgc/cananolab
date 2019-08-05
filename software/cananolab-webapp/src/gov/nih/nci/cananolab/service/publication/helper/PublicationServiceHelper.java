@@ -12,8 +12,8 @@ import gov.nih.nci.cananolab.util.Comparators;
 import gov.nih.nci.cananolab.util.Constants;
 import gov.nih.nci.cananolab.util.StringUtils;
 import gov.nih.nci.cananolab.util.TextMatchMode;
-import gov.nih.nci.system.client.ApplicationServiceProvider;
-import gov.nih.nci.system.query.hibernate.HQLCriteria;
+import gov.nih.nci.cananolab.system.applicationservice.client.ApplicationServiceProvider;
+import gov.nih.nci.cananolab.system.query.hibernate.HQLCriteria;
 
 import java.util.ArrayList;
 import java.util.Collections;

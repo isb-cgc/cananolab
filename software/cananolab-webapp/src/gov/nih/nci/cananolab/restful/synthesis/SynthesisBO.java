@@ -1,8 +1,8 @@
 package gov.nih.nci.cananolab.restful.synthesis;
 
+import gov.nih.nci.cananolab.dto.particle.SampleBean;
 import gov.nih.nci.cananolab.dto.particle.synthesis.SynthesisBean;
 import gov.nih.nci.cananolab.dto.particle.synthesis.SynthesisFunctionalizationBean;
-import gov.nih.nci.cananolab.dto.particle.synthesis.SynthesisPurificationBean;
 import gov.nih.nci.cananolab.restful.core.BaseAnnotationBO;
 import gov.nih.nci.cananolab.restful.core.InitSetup;
 import gov.nih.nci.cananolab.restful.sample.InitCompositionSetup;
@@ -95,9 +95,7 @@ public class SynthesisBO extends BaseAnnotationBO {
         // function type
         List<String> purificationTypes=new ArrayList<String>();
         for(SynthesisFunctionalizationBean sfBean :synthesisBean.getSynthesisFunctionalizationBeanList()){
-            for(SynthesisPurificationBean sfPurityBean: sfBean.getMethods()){
-                    setOtherValueOption(request, sfPurityBean.getType(), "purificationTypes");
-            }
+
         }
 
 
@@ -126,5 +124,60 @@ public class SynthesisBO extends BaseAnnotationBO {
 //        return nano;
         return null;
         //TODO write
+    }
+
+    public SynthesisBean summaryView(SynthesisForm form,
+                                       HttpServletRequest request)
+            throws Exception {
+        // Call shared function to prepare CompositionBean for viewing.
+        this.prepareSummary(form, request);
+
+        SynthesisBean synthesisBean = (SynthesisBean) request.getSession()
+                .getAttribute("synthesisBean");
+        setSummaryTab(request, synthesisBean.getSynthesisSections().size());
+        //return mapping.findForward("summaryView");
+        return synthesisBean;
+    }
+
+    private SynthesisBean prepareSummary(SynthesisForm form,
+                                           HttpServletRequest request)
+            throws Exception {
+        // Remove previous result from session.
+        HttpSession session = request.getSession();
+        session.removeAttribute(SynthesisBean.MATERIALS_SELECTION);
+        session.removeAttribute(SynthesisBean.FILE_SELECTION);
+        session.removeAttribute(SynthesisBean.FUNCTIONALIZATION_SELECTION);
+        session.removeAttribute(SynthesisBean.PURIFICATION_SELECTION);
+        session.removeAttribute("theSample");
+
+        //	DynaValidatorForm theForm = (DynaValidatorForm) form;
+        if(form==null) {
+            throw new Exception("SynthesisForm is null");
+        }
+        String sampleId = form.getSampleId();  //Sting(SampleConstants.SAMPLE_ID);
+
+        SampleBean sampleBean = setupSampleById(sampleId, request);
+
+        SynthesisBean synthesisBean = synthesisService.findSynthesisById(sampleId);
+        form.setSynthesisBean(synthesisBean);
+
+        // Save result bean in session for later use - export/print.
+        session.setAttribute("synthesisBean", synthesisBean);
+        session.setAttribute("theSample", sampleBean); // for showing title.
+        if (synthesisBean != null) {
+            session.setAttribute(SynthesisBean.MATERIALS_SELECTION, synthesisBean.getSynthesisMaterialsBeanList());
+            session.setAttribute(SynthesisBean.FILE_SELECTION, synthesisBean.getFiles());
+            session.setAttribute(SynthesisBean.FUNCTIONALIZATION_SELECTION,
+                    synthesisBean.getSynthesisFunctionalizationBeanList());
+            session.setAttribute(SynthesisBean.PURIFICATION_SELECTION,
+                    synthesisBean.getSynthesisFunctionalizationBeanList());
+        }
+
+        // retain action messages from send redirects
+        //	ActionMessages msgs = (ActionMessages) session
+        //			.getAttribute(ActionMessages.GLOBAL_MESSAGE);
+        //	saveMessages(request, msgs);
+        //	session.removeAttribute(ActionMessages.GLOBAL_MESSAGE);
+        return synthesisBean;
     }
 }

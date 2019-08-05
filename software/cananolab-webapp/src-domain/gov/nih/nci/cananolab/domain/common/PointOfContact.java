@@ -1,8 +1,5 @@
 package gov.nih.nci.cananolab.domain.common;
 
-import gov.nih.nci.cananolab.domain.particle.Characterization;
-import gov.nih.nci.cananolab.domain.particle.Sample;
-
 import java.io.Serializable;
 /**
 	* 

@@ -1,18 +1,15 @@
 package gov.nih.nci.cananolab.system.dao.orm;
 
-import gov.nih.nci.system.dao.DAO;
-import gov.nih.nci.system.dao.DAOException;
-import gov.nih.nci.system.dao.Request;
-import gov.nih.nci.system.dao.Response;
-import gov.nih.nci.system.dao.orm.FilterableHibernateTemplate;
-import gov.nih.nci.system.dao.orm.translator.CQL2HQL;
-import gov.nih.nci.system.dao.orm.translator.NestedCriteria2HQL;
-import gov.nih.nci.system.dao.orm.translator.Path2NestedCriteria;
-import gov.nih.nci.system.query.cql.CQLQuery;
-import gov.nih.nci.system.query.hibernate.HQLCriteria;
-import gov.nih.nci.system.query.nestedcriteria.NestedCriteria;
-import gov.nih.nci.system.query.nestedcriteria.NestedCriteriaPath;
-import gov.nih.nci.system.security.helper.SecurityInitializationHelper;
+import gov.nih.nci.cananolab.security.helper.SecurityInitializationHelper;
+import gov.nih.nci.cananolab.system.dao.DAO;
+import gov.nih.nci.cananolab.system.dao.DAOException;
+import gov.nih.nci.cananolab.system.dao.Request;
+import gov.nih.nci.cananolab.system.dao.Response;
+import gov.nih.nci.cananolab.system.dao.orm.translator.NestedCriteria2HQL;
+import gov.nih.nci.cananolab.system.dao.orm.translator.Path2NestedCriteria;
+import gov.nih.nci.cananolab.system.query.hibernate.HQLCriteria;
+import gov.nih.nci.cananolab.system.query.nestedcriteria.NestedCriteria;
+import gov.nih.nci.cananolab.system.query.nestedcriteria.NestedCriteriaPath;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -31,6 +28,11 @@ import org.hibernate.criterion.Projections;
 import org.springframework.orm.hibernate3.HibernateCallback;
 import org.springframework.orm.hibernate3.HibernateTemplate;
 import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
+
+//import gov.nih.nci.system.dao.orm.translator.CQL2HQL;
+//import gov.nih.nci.system.query.cql.CQLQuery;
+
+//import gov.nih.nci.system.query.cql.CQLQuery;
 
 /**
  * @author Satish Patel, Dan Dumitru
@@ -68,8 +70,8 @@ public class ORMDAOImpl extends HibernateDaoSupport implements DAO
 				return query(request, (NestedCriteriaPath) obj); 	
 			else if (obj instanceof HQLCriteria)
 				return query(request, (HQLCriteria) obj);
-			else if (obj instanceof CQLQuery)
-				return query(request, (CQLQuery) obj);
+//			else if (obj instanceof CQLQuery)
+//				return query(request, (CQLQuery) obj);
 			else
 				throw new DAOException("Can not determine type of the query");
 		} catch (JDBCException ex){
@@ -130,13 +132,13 @@ public class ORMDAOImpl extends HibernateDaoSupport implements DAO
 	}
 	
 	//if (obj instanceof CQLQuery)
-	protected Response query(Request request, CQLQuery obj) throws Exception	
-	{
-		log.info("CQL Query :"+obj.toString());
-		CQL2HQL converter = new CQL2HQL(request.getClassCache());
-		HQLCriteria hqlCriteria = converter.translate((CQLQuery)obj, false, caseSensitive);
-		return query(request, hqlCriteria);		
-	}
+//	protected Response query(Request request, CQLQuery obj) throws Exception
+//	{
+//		log.info("CQL Query :"+obj.toString());
+//		CQL2HQL converter = new CQL2HQL(request.getClassCache());
+//		HQLCriteria hqlCriteria = converter.translate((CQLQuery)obj, false, caseSensitive);
+//		return query(request, hqlCriteria);
+//	}
 
 	//if (obj instanceof HQLCriteria)
 	protected Response query(Request request, HQLCriteria hqlCriteria) throws Exception

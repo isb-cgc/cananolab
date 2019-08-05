@@ -9,5 +9,5 @@ public interface SynthesisService extends BaseService {
     SynthesisBean findSynthesisById(String sampleId, String dataId)throws SynthesisException, NoAccessException;
 
 
-
+    SynthesisBean findSynthesisById(String sampleId);
 }

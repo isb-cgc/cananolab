@@ -34,6 +34,7 @@ public class Sample implements java.io.Serializable {
 	private Set<Publication> publicationCollection = new HashSet<Publication>(0);
 	private Set<PointOfContact> otherPointOfContactCollection = new HashSet<PointOfContact>(0);
 	private Set<Keyword> keywordCollection = new HashSet<Keyword>(0);
+	private Set<Synthesis> synthesisCollection = new HashSet<Synthesis>();
 
 	public Sample() {
 	}
@@ -134,4 +135,9 @@ public class Sample implements java.io.Serializable {
 		this.keywordCollection = keywordCollection;
 	}
 
+	public Set<Synthesis> getSynthesisCollection(){return this.synthesisCollection;}
+
+	public void setSynthesisCollection(Set<Synthesis> synthesisCollection){
+		this.synthesisCollection=synthesisCollection;
+	}
 }

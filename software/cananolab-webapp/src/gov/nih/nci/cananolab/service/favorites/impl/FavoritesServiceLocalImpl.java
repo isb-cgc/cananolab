@@ -19,7 +19,7 @@ import gov.nih.nci.cananolab.service.BaseServiceLocalImpl;
 import gov.nih.nci.cananolab.service.favorites.FavoritesService;
 import gov.nih.nci.cananolab.service.favorites.helper.FavoritesServiceHelper;
 import gov.nih.nci.cananolab.system.applicationservice.CaNanoLabApplicationService;
-import gov.nih.nci.system.client.ApplicationServiceProvider;
+import gov.nih.nci.cananolab.system.applicationservice.client.ApplicationServiceProvider;
 
 @Component("favoritesService")
 public class FavoritesServiceLocalImpl extends BaseServiceLocalImpl implements FavoritesService

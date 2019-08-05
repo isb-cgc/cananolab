@@ -1,29 +1,21 @@
 package gov.nih.nci.cananolab.restful;
 
-import static com.jayway.restassured.RestAssured.given;
-import static org.hamcrest.Matchers.containsString;
-import static org.hamcrest.Matchers.equalToIgnoringCase;
-import static org.hamcrest.Matchers.hasItems;
-import static org.junit.Assert.*;
 import gov.nih.nci.cananolab.restful.util.RestTestLoginUtil;
-import gov.nih.nci.cananolab.restful.view.edit.SimpleComposingElementBean;
 import gov.nih.nci.cananolab.restful.view.edit.SimpleFileBean;
-import gov.nih.nci.cananolab.restful.view.edit.SimpleNanomaterialEntityBean;
-
-import java.util.ArrayList;
+import io.restassured.response.Response;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
-
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.client.Entity;
 import javax.ws.rs.client.WebTarget;
-
 import org.junit.Test;
 
-import com.jayway.restassured.response.Response;
-import com.jayway.restassured.response.ValidatableResponse;
+import static io.restassured.RestAssured.given;
+import static org.hamcrest.Matchers.equalToIgnoringCase;
+import static org.hamcrest.Matchers.hasItems;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 public class CompositionFileServicesTest {
 	@Test
@@ -48,7 +40,7 @@ public class CompositionFileServicesTest {
 		parameters.put("dataId", "73433125");
 		Response res =
 				given().contentType("application/json").cookie("JSESSIONID=" + jsessionId)
-				.parameters(parameters).expect()
+				.params(parameters).expect()
 				.body("type", equalToIgnoringCase("graph"))
 						.when().get("http://localhost:8080/caNanoLab/rest/compositionFile/edit");
 

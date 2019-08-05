@@ -1,14 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
-
 <!--L
-   Copyright SAIC
-   Copyright SAIC-Frederick
+   Copyright Leidos
+   Copyright Leidos Biomedical
 
    Distributed under the OSI-approved BSD 3-Clause License.
    See http://ncip.github.com/cananolab/LICENSE.txt for details.
 L-->
-
-<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
 <hibernate-mapping package="gov.nih.nci.cananolab.domain.function" auto-import="false">
 	<class name="Target" table="target" lazy="true" polymorphism="explicit">
 		<cache usage="read-write" />
@@ -25,21 +23,21 @@ L-->
 		<property name="description" type="string" column="description"/>
 		<property name="name" type="string" column="name"/>
 		<!-- Associations mapping for the Target class -->
-		<many-to-one name="targetingFunction" class="gov.nih.nci.cananolab.domain.function.TargetingFunction" column="targeting_function_pk_id" lazy="proxy" />
-		<subclass name="gov.nih.nci.cananolab.domain.function.Antigen" discriminator-value="Antigen">
+		<many-to-one name="targetingFunction" class="TargetingFunction" column="targeting_function_pk_id" lazy="proxy" />
+		<subclass name="Antigen" discriminator-value="Antigen">
 			<!-- Attributes mapping for the Antigen class -->
 			<property name="species" type="string" column="antigen_species"/>
 
 		</subclass>
-		<subclass name="gov.nih.nci.cananolab.domain.function.OtherTarget" discriminator-value="OtherTarget">
+		<subclass name="OtherTarget" discriminator-value="OtherTarget">
 			<!-- Attributes mapping for the OtherTarget class -->
 			<property name="type" type="string" column="other_target_type"/>
 
 		</subclass>
-		<subclass name="gov.nih.nci.cananolab.domain.function.Receptor" discriminator-value="Receptor">
+		<subclass name="Receptor" discriminator-value="Receptor">
 
 		</subclass>
-		<subclass name="gov.nih.nci.cananolab.domain.function.Gene" discriminator-value="Gene">
+		<subclass name="Gene" discriminator-value="Gene">
 
 		</subclass>
 	</class>

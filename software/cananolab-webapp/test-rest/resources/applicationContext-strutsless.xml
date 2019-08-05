@@ -17,17 +17,17 @@
     <tx:annotation-driven proxy-target-class="true"/>
     -->
     
-    <bean id="loginBO"
-		class="gov.nih.nci.cananolab.restful.security.LoginBO">
-	</bean>
-	
-	<bean id="logoutBO"
-		class="gov.nih.nci.cananolab.restful.security.LogoutBO">
-	</bean>
-	
-	<bean id="registerUserBO"
-		class="gov.nih.nci.cananolab.restful.security.RegisterUserBO">
-	</bean>
+<!--    <bean id="loginBO"-->
+<!--		class="gov.nih.nci.cananolab.restful.security.LoginBO">-->
+<!--	</bean>-->
+<!--	-->
+<!--	<bean id="logoutBO"-->
+<!--		class="gov.nih.nci.cananolab.restful.security.LogoutBO">-->
+<!--	</bean>-->
+<!--	-->
+<!--	<bean id="registerUserBO"-->
+<!--		class="gov.nih.nci.cananolab.restful.security.RegisterUserBO">-->
+<!--	</bean>-->
 	
 	<bean id="tabGenerationBO"
 		class="gov.nih.nci.cananolab.restful.core.TabGenerationBO">

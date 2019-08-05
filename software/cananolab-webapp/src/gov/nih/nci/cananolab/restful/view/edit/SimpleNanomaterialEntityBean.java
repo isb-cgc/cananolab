@@ -1,27 +1,13 @@
 package gov.nih.nci.cananolab.restful.view.edit;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 
-import gov.nih.nci.cananolab.domain.common.File;
-import gov.nih.nci.cananolab.domain.function.ImagingFunction;
-import gov.nih.nci.cananolab.domain.nanomaterial.Biopolymer;
-import gov.nih.nci.cananolab.domain.nanomaterial.CarbonNanotube;
-import gov.nih.nci.cananolab.domain.nanomaterial.Dendrimer;
-import gov.nih.nci.cananolab.domain.nanomaterial.Emulsion;
-import gov.nih.nci.cananolab.domain.nanomaterial.Fullerene;
-import gov.nih.nci.cananolab.domain.nanomaterial.Liposome;
-import gov.nih.nci.cananolab.domain.nanomaterial.Polymer;
-import gov.nih.nci.cananolab.domain.particle.ComposingElement;
-import gov.nih.nci.cananolab.domain.particle.Function;
 import gov.nih.nci.cananolab.domain.particle.NanomaterialEntity;
 import gov.nih.nci.cananolab.domain.particle.SampleComposition;
-import gov.nih.nci.cananolab.dto.common.AccessibilityBean;
 import gov.nih.nci.cananolab.dto.common.FileBean;
 import gov.nih.nci.cananolab.dto.particle.composition.ComposingElementBean;
 import gov.nih.nci.cananolab.dto.particle.composition.FunctionBean;

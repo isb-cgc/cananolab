@@ -57,6 +57,7 @@ public class AESEncryption {
 			throw e;			
 		} 
 		return Base64.encodeBase64String(ciphertext);
+
 	}
 
 	public String decrypt(String encryptedString) throws Exception
