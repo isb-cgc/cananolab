@@ -28,6 +28,10 @@ vpproject/
 
 software/cananolab-webapp/cananolab-web.iml
 
-software/cananolab-webapp/cananolab-webapp.iml
 
-software/cananolab-webapp/lib/caNanoLab-beans.jar
+software/common/lib/sdk/
+
+software/common/lib/caNanoLab-beans\.jar
+
+software/cananolab-webapp/ijbuild/
+
