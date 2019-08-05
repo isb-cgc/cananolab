@@ -1,8 +1,8 @@
 package gov.nih.nci.cananolab.system.dao.orm;
 
-import gov.nih.nci.system.dao.DAOException;
-import gov.nih.nci.system.dao.Request;
-import gov.nih.nci.system.dao.Response;
+import gov.nih.nci.cananolab.system.dao.DAOException;
+import gov.nih.nci.cananolab.system.dao.Request;
+import gov.nih.nci.cananolab.system.dao.Response;
 import gov.nih.nci.system.query.SDKQuery;
 import gov.nih.nci.system.query.SDKQueryResult;
 import gov.nih.nci.system.query.example.DeleteExampleQuery;

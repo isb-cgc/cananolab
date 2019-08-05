@@ -3,25 +3,32 @@
         "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
 <!-- Generated Apr 3, 2019, 8:32:55 PM by Hibernate Tools 5.4.2.Final -->
 <hibernate-mapping package="gov.nih.nci.cananolab.domain.particle">
-    <class catalog="canano" name="SynthesisFunctionalization" table="synthesis_functionalization">
-        <id column="synthesis_funtionalization_pk_id" name="id" type="long">
-            <column name="synthesis_funtionalization_pk_id"/>
+    <class name="SynthesisFunctionalization" table="synthesis_functionalization">
+        <id column="synthesis_functionalization_pk_id" name="id" type="long">
             <generator class="hilo"/>
         </id>
-        <many-to-one class="gov.nih.nci.cananolab.domain.common.Synthesis"
-                     fetch="select" name="synthesis">
-            <column name="synthesis_pk_id">
-                <comment>synthesis_pk_id</comment>
-            </column>
+        <!--        <property name="synthesisPkId" column="synthesis_pk_id"/>-->
+        <!--        <property name="protocolPkId" column="protocol_pk_id"/>-->
+        <property name="description" column="description" type="string"/>
+        <property name="createdDate" column="created_date" type="java.util.Date"/>
+        <property name="createdBy" column="created_by" type="string"/>
+        <property name="type" column="type" type="string"/>
+        <many-to-one name="synthesis" class="Synthesis">
+            <column name="synthesis_pk_id" not-null="true"/>
         </many-to-one>
-        <set fetch="select" inverse="true" lazy="true"
-             name="SynthesisPurifications" sort="unsorted" table="synthesis_purification">
+        <many-to-one name="protocol" class="gov.nih.nci.cananolab.domain.common.Protocol">
+            <column name="protocol_pk_id" not-null="true"/>
+        </many-to-one>
+        <set name="synthesisFunctionalizationElements" inverse="true">
             <key>
-                <column name="synthesis_funtionalization_pk_id" not-null="true">
-                    <comment>synthesis_funtionalization_pk_id</comment>
-                </column>
+                <column name="synthesis_functionalization_pk_id"/>
             </key>
-            <one-to-many class="gov.nih.nci.cananolab.domain.common.SynthesisPurification"/>
+            <one-to-many not-found="ignore" class="SynthesisFunctionalizationElement"/>
+        </set>
+        <set name="files" table="synthesis_functionalization_file" lazy="false" inverse="false" cascade="all-delete-orphan">
+            <cache usage="read-write" />
+            <key column="synthesis_functionalization_pk_id" />
+            <many-to-many class="gov.nih.nci.cananolab.domain.common.File" column="file_pk_id" />
         </set>
     </class>
 </hibernate-mapping>

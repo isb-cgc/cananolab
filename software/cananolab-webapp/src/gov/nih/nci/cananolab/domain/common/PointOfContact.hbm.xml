@@ -1,14 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
-
 <!--L
-   Copyright SAIC
-   Copyright SAIC-Frederick
+   Copyright Leidos
+   Copyright Leidos Biomedical
 
    Distributed under the OSI-approved BSD 3-Clause License.
    See http://ncip.github.com/cananolab/LICENSE.txt for details.
 L-->
-
-<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
 <hibernate-mapping package="gov.nih.nci.cananolab.domain.common" auto-import="false">
 	<class name="PointOfContact" table="point_of_contact" lazy="true" polymorphism="explicit">
 		<cache usage="read-write" />
@@ -28,6 +26,6 @@ L-->
 		<property name="phone" type="string" column="phone"/>
 		<property name="role" type="string" column="role"/>
 		<!-- Associations mapping for the PointOfContact class -->
-		<many-to-one name="organization" class="gov.nih.nci.cananolab.domain.common.Organization" column="organization_pk_id" lazy="proxy" cascade="save-update"/>
+		<many-to-one name="organization" class="Organization" column="organization_pk_id" lazy="proxy" cascade="save-update"/>
 	</class>
 </hibernate-mapping>

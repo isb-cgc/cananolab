@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <!--L
-   Copyright SAIC
-   Copyright SAIC-Frederick
+   Copyright Leidos
+   Copyright Leidos Biomedical
 
    Distributed under the OSI-approved BSD 3-Clause License.
    See http://ncip.github.com/cananolab/LICENSE.txt for details.
@@ -39,9 +39,9 @@ L-->
 	<bean name="ORMDAO" class="gov.nih.nci.cananolab.system.dao.orm.CaNanoLabORMDAOImpl">
 		<property name="caseSensitive" value="false" />
 		<property name="resultCountPerQuery" value="10000" />
-		<property name="securityHelper">
-			<ref bean="SecurityInitializationHelper" />
-		</property>
+<!--		<property name="securityHelper">-->
+<!--			<ref bean="SecurityInitializationHelper" />-->
+<!--		</property>-->
 		<property name="sessionFactory" ref="SessionFactory" />
 		<property name="config">
 			<bean factory-bean="HibernateConfigHolder" factory-method="getConfiguration" />
@@ -53,7 +53,7 @@ L-->
 	<bean name="SessionFactory" class="gov.nih.nci.system.dao.orm.SessionFactoryBean">
 		<property name="configLocation" value="classpath:hibernate.cfg.xml" />
 		<property name="configHolder" ref="HibernateConfigHolder" />
-		<property name="securityHelper" ref="SecurityInitializationHelper"/>
+<!--		<property name="securityHelper" ref="SecurityInitializationHelper"/>-->
 		<property name="entityInterceptor">
 			<bean class="gov.nih.nci.security.authorization.attributeLevel.GenericSecurityInterceptor">
 				<constructor-arg>

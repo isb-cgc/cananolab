@@ -1,6 +1,6 @@
 /*L
- *  Copyright SAIC
- *  Copyright SAIC-Frederick
+ *  Copyright Leidos
+ *  Copyright Leidos Biomedical
  *
  *  Distributed under the OSI-approved BSD 3-Clause License.
  *  See http://ncip.github.com/cananolab/LICENSE.txt for details.
@@ -10,24 +10,15 @@ package gov.nih.nci.cananolab.dto.common;
 
 import gov.nih.nci.cananolab.domain.common.File;
 import gov.nih.nci.cananolab.domain.common.Keyword;
-import gov.nih.nci.cananolab.exception.FileException;
-import gov.nih.nci.cananolab.restful.util.PropertyUtil;
 import gov.nih.nci.cananolab.util.Constants;
 import gov.nih.nci.cananolab.util.DateUtils;
 import gov.nih.nci.cananolab.util.StringUtils;
-
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.InputStream;
 import java.util.Calendar;
 import java.util.Collection;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.SortedSet;
 import java.util.TreeSet;
-
-import javax.servlet.http.HttpServletRequest;
 
 /**
  * This class represents attributes of a lab file to be viewed in a view page.
@@ -54,7 +45,7 @@ public class FileBean extends SecuredDataBean {
 	}
 
 	public FileBean() {
-		domainFile.setUriExternal(false);
+		domainFile.setUriExternal(Boolean.FALSE);
 	}
 
 	public FileBean(File file) {
@@ -67,7 +58,7 @@ public class FileBean extends SecuredDataBean {
 				}
 			}
 			keywordsStr = StringUtils.join(keywordStrs, "\r\n");
-			if (file.getUriExternal() != null && file.getUriExternal()) {
+			if (file.getUri() != null && file.getUriExternal()) {
 				externalUrl = file.getUri();
 			}
 		}
@@ -111,7 +102,7 @@ public class FileBean extends SecuredDataBean {
 	}
 
 	public String getUrlTarget() {
-		if (domainFile.getUriExternal() != null && domainFile.getUriExternal()) {
+		if (domainFile.getUri()!=null && domainFile.getUriExternal()) {
 			return "pop";
 		}
 		return "_self";

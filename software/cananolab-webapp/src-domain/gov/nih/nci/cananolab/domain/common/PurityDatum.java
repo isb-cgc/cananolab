@@ -2,6 +2,7 @@ package gov.nih.nci.cananolab.domain.common;
 // Generated Apr 3, 2019, 8:32:55 PM by Hibernate Tools 5.4.2.Final
 
 
+import gov.nih.nci.cananolab.domain.particle.Purity;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;

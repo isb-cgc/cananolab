@@ -1,0 +1,38 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE hibernate-mapping PUBLIC
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+    "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping package="gov.nih.nci.cananolab.domain.particle">
+
+    <class name="SynthesisFunctionalizationElement"
+           table="synthesis_functionalization_element" >
+        <id name="id" column="synthesis_functionalization_element_pk_id" type="long"/>
+<!--        <property name="id" column="synthesis_functionalization_pk_id" type="string"/>-->
+        <property name="molecularFormula" column="molecular_formula" type="string"/>
+        <property name="molecularFormulaType" column="molecular_formula_type" type="string"/>
+        <property name="description" column="description" type="string"/>
+        <property name="createdBy" column="created_by" type="string"/>
+        <property name="createdDate" column="created_date" type="java.util.Date"/>
+        <property name="chemicalName" column="chemical_name" type="string"/>
+        <property name="value" column="value" type="float"/>
+        <property name="valueUnit" column="value_unit" type="string"/>
+        <property name="pubChemDatasourceName" column="pub_chem_datasource_name" type="string"/>
+        <property name="pubChemId" column="pub_chem_id" type="long"/>
+        <many-to-one name="synthesisFunctionalization"
+                     class="SynthesisFunctionalization">
+            <column name="synthesis_functionalization_pk_id"/>
+        </many-to-one>
+
+<!--        <set name="sfeInherentFunction" lazy="true" cascade="all-delete-orphan">-->
+<!--            <cache usage="read-write" />-->
+<!--            <key column="synthesis_functionalization_element_pk_id" />-->
+<!--            <one-to-many class="SfeInherentFunction"/>-->
+<!--        </set>-->
+
+        <set name="files" table="synthesis_functionalization_element_file" lazy="false" inverse="false" cascade="all-delete-orphan">
+            <cache usage="read-write" />
+            <key column="synthesis_functionalization_element_pk_id" />
+            <many-to-many class="gov.nih.nci.cananolab.domain.common.File" column="file_pk_id" />
+        </set>
+    </class>
+</hibernate-mapping>

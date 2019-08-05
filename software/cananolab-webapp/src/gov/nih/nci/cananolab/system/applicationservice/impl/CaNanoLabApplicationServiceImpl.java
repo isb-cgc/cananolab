@@ -1,6 +1,6 @@
 /*L
- *  Copyright SAIC
- *  Copyright SAIC-Frederick
+ *  Copyright Leidos
+ *  Copyright Leidos Biomedical
  *
  *  Distributed under the OSI-approved BSD 3-Clause License.
  *  See http://ncip.github.com/cananolab/LICENSE.txt for details.
@@ -13,7 +13,7 @@ import gov.nih.nci.cananolab.dto.common.AccessibilityBean;
 import gov.nih.nci.cananolab.system.applicationservice.CaNanoLabApplicationService;
 import gov.nih.nci.cananolab.system.dao.CaNanoLabORMDAO;
 import gov.nih.nci.cananolab.system.applicationservice.ApplicationException;
-import gov.nih.nci.system.util.ClassCache;
+import gov.nih.nci.cananolab.system.util.ClassCache;
 
 //import org.hibernate.type.StandardBasicTypes;
 import java.io.Serializable;

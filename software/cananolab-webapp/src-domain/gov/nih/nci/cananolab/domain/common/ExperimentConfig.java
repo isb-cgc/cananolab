@@ -1,175 +1,163 @@
 package gov.nih.nci.cananolab.domain.common;
 
-import gov.nih.nci.cananolab.domain.particle.Characterization;
+import java.io.Serializable;
 import java.util.Collection;
 
-import java.io.Serializable;
 /**
-	* 
-	**/
+ *
+ **/
 
-public class ExperimentConfig  implements Serializable
-{
-	/**
-	* An attribute to allow serialization of the domain objects
-	*/
-	private static final long serialVersionUID = 1234567890L;
+public class ExperimentConfig implements Serializable {
+    /**
+     * An attribute to allow serialization of the domain objects
+     */
+    private static final long serialVersionUID = 1234567890L;
+    private String createdBy;
+    private java.util.Date createdDate;
+    private String description;
 
-	
-	/**
-	* 
-	**/
-	
-	private String createdBy;
-	/**
-	* Retrieves the value of the createdBy attribute
-	* @return createdBy
-	**/
 
-	public String getCreatedBy(){
-		return createdBy;
-	}
+    private Long id;
+    /**
+     * An associated gov.nih.nci.cananolab.domain.common.Instrument object's collection
+     **/
 
-	/**
-	* Sets the value of createdBy attribute
-	**/
+    private Collection<Instrument> instrumentCollection;
+    /**
+     * An associated gov.nih.nci.cananolab.domain.common.Technique object
+     **/
 
-	public void setCreatedBy(String createdBy){
-		this.createdBy = createdBy;
-	}
-	
-	/**
-	* 
-	**/
-	
-	private java.util.Date createdDate;
-	/**
-	* Retrieves the value of the createdDate attribute
-	* @return createdDate
-	**/
+    private Technique technique;
 
-	public java.util.Date getCreatedDate(){
-		return createdDate;
-	}
+    /**
+     * Retrieves the value of the createdBy attribute
+     *
+     * @return createdBy
+     **/
 
-	/**
-	* Sets the value of createdDate attribute
-	**/
+    public String getCreatedBy() {
+        return createdBy;
+    }
 
-	public void setCreatedDate(java.util.Date createdDate){
-		this.createdDate = createdDate;
-	}
-	
-	/**
-	* 
-	**/
-	
-	private String description;
-	/**
-	* Retrieves the value of the description attribute
-	* @return description
-	**/
+    /**
+     * Sets the value of createdBy attribute
+     **/
 
-	public String getDescription(){
-		return description;
-	}
+    public void setCreatedBy(String createdBy) {
+        this.createdBy = createdBy;
+    }
 
-	/**
-	* Sets the value of description attribute
-	**/
+    /**
+     * Retrieves the value of the createdDate attribute
+     *
+     * @return createdDate
+     **/
 
-	public void setDescription(String description){
-		this.description = description;
-	}
-	
-	/**
-	* 
-	**/
-	
-	private Long id;
-	/**
-	* Retrieves the value of the id attribute
-	* @return id
-	**/
+    public java.util.Date getCreatedDate() {
+        return createdDate;
+    }
 
-	public Long getId(){
-		return id;
-	}
+    /**
+     * Sets the value of createdDate attribute
+     **/
 
-	/**
-	* Sets the value of id attribute
-	**/
+    public void setCreatedDate(java.util.Date createdDate) {
+        this.createdDate = createdDate;
+    }
 
-	public void setId(Long id){
-		this.id = id;
-	}
-	
-	/**
-	* An associated gov.nih.nci.cananolab.domain.common.Instrument object's collection 
-	**/
-			
-	private Collection<Instrument> instrumentCollection;
-	/**
-	* Retrieves the value of the instrumentCollection attribute
-	* @return instrumentCollection
-	**/
+    /**
+     * Retrieves the value of the description attribute
+     *
+     * @return description
+     **/
 
-	public Collection<Instrument> getInstrumentCollection(){
-		return instrumentCollection;
-	}
+    public String getDescription() {
+        return description;
+    }
 
-	/**
-	* Sets the value of instrumentCollection attribute
-	**/
+    /**
+     * Sets the value of description attribute
+     **/
 
-	public void setInstrumentCollection(Collection<Instrument> instrumentCollection){
-		this.instrumentCollection = instrumentCollection;
-	}
-		
-	/**
-	* An associated gov.nih.nci.cananolab.domain.common.Technique object
-	**/
-			
-	private Technique technique;
-	/**
-	* Retrieves the value of the technique attribute
-	* @return technique
-	**/
-	
-	public Technique getTechnique(){
-		return technique;
-	}
-	/**
-	* Sets the value of technique attribute
-	**/
+    public void setDescription(String description) {
+        this.description = description;
+    }
 
-	public void setTechnique(Technique technique){
-		this.technique = technique;
-	}
-			
-	/**
-	* Compares <code>obj</code> to it self and returns true if they both are same
-	*
-	* @param obj
-	**/
-	public boolean equals(Object obj)
-	{
-		if(obj instanceof ExperimentConfig) 
-		{
-			ExperimentConfig c =(ExperimentConfig)obj;
+    /**
+     * Retrieves the value of the id attribute
+     *
+     * @return id
+     **/
+
+    public Long getId() {
+        return id;
+    }
+
+    /**
+     * Sets the value of id attribute
+     **/
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    /**
+     * Retrieves the value of the instrumentCollection attribute
+     *
+     * @return instrumentCollection
+     **/
+
+    public Collection<Instrument> getInstrumentCollection() {
+        return instrumentCollection;
+    }
+
+    /**
+     * Sets the value of instrumentCollection attribute
+     **/
+
+    public void setInstrumentCollection(Collection<Instrument> instrumentCollection) {
+        this.instrumentCollection = instrumentCollection;
+    }
+
+    /**
+     * Retrieves the value of the technique attribute
+     *
+     * @return technique
+     **/
+
+    public Technique getTechnique() {
+        return technique;
+    }
+
+    /**
+     * Sets the value of technique attribute
+     **/
+
+    public void setTechnique(Technique technique) {
+        this.technique = technique;
+    }
+
+    /**
+     * Compares <code>obj</code> to it self and returns true if they both are same
+     *
+     * @param obj
+     **/
+    public boolean equals(Object obj) {
+        if (obj instanceof ExperimentConfig) {
+            ExperimentConfig c = (ExperimentConfig) obj;
             return getId() != null && getId().equals(c.getId());
-		}
-		return false;
-	}
-		
-	/**
-	* Returns hash code for the primary key of the object
-	**/
-	public int hashCode()
-	{
-		if(getId() != null)
+        }
+        return false;
+    }
+
+    /**
+     * Returns hash code for the primary key of the object
+     **/
+    public int hashCode() {
+		if (getId() != null) {
 			return getId().hashCode();
-		return 0;
-	}
-	
+		}
+        return 0;
+    }
+
 }

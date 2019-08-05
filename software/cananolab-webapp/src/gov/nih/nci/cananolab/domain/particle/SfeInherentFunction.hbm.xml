@@ -1,0 +1,21 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE hibernate-mapping PUBLIC
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+    "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping package="gov.nih.nci.cananolab.domain.particle">
+    <class name="SfeInherentFunction" table="sfe_inherent_function">
+        <id column="sfe_inherent_function_pk_id" name="id" type="long">
+            <generator class="hilo">
+                <param name="table">hibernate_unique_key</param>
+                <param name="column">next_hi</param>
+            </generator>
+        </id>
+        <property name="type" column="type" type="string"/>
+        <property name="description" column="description" type="string"/>
+        <many-to-one name="synthesisFunctionalizationElement"
+                     fetch="select" class="SynthesisFunctionalizationElement">
+            <column name="synthesis_functionalization_element_pk_id" not-null="true"/>
+        </many-to-one>
+
+    </class>
+</hibernate-mapping>

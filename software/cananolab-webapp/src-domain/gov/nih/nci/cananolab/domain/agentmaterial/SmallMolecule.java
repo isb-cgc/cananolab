@@ -4,7 +4,6 @@ package gov.nih.nci.cananolab.domain.agentmaterial;
 import gov.nih.nci.cananolab.domain.particle.ActivationMethod;
 import gov.nih.nci.cananolab.domain.particle.SampleComposition;
 import java.util.Date;
-import java.util.Collection;
 import java.util.HashSet;
 
 /**

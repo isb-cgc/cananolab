@@ -1,197 +1,203 @@
 package gov.nih.nci.cananolab.domain.particle;
 
 import gov.nih.nci.cananolab.domain.common.File;
+import java.io.Serializable;
 import java.util.Collection;
 
-import java.io.Serializable;
 /**
-	* The component of a sample that is a nanoparticle.
-	**/
+ * The component of a sample that is a nanoparticle.
+ **/
 
-public class NanomaterialEntity  implements Serializable
-{
-	/**
-	* An attribute to allow serialization of the domain objects
-	*/
-	private static final long serialVersionUID = 1234567890L;
+public class NanomaterialEntity implements Serializable {
+    /**
+     * An attribute to allow serialization of the domain objects
+     */
+    private static final long serialVersionUID = 1234567890L;
 
-	
-	/**
-	* Indicates the person or authoritative body who brought the item into existence.
-	**/
-	
-	private String createdBy;
-	/**
-	* Retrieves the value of the createdBy attribute
-	* @return createdBy
-	**/
 
-	public String getCreatedBy(){
-		return createdBy;
-	}
+    /**
+     * Indicates the person or authoritative body who brought the item into existence.
+     **/
 
-	/**
-	* Sets the value of createdBy attribute
-	**/
+    private String createdBy;
+    /**
+     * The date of the process by which something is brought into existence; having been brought into existence.
+     **/
 
-	public void setCreatedBy(String createdBy){
-		this.createdBy = createdBy;
-	}
-	
-	/**
-	* The date of the process by which something is brought into existence; having been brought into existence.
-	**/
-	
-	private java.util.Date createdDate;
-	/**
-	* Retrieves the value of the createdDate attribute
-	* @return createdDate
-	**/
+    private java.util.Date createdDate;
+    /**
+     * A written or verbal account, representation, statement, or explanation of something.
+     **/
 
-	public java.util.Date getCreatedDate(){
-		return createdDate;
-	}
+    private String description;
+    /**
+     * One or more characters used to identify, name, or characterize the nature, properties, or contents of a thing.
+     **/
 
-	/**
-	* Sets the value of createdDate attribute
-	**/
+    private Long id;
+    /**
+     * An associated gov.nih.nci.cananolab.domain.particle.ComposingElement object's collection
+     **/
 
-	public void setCreatedDate(java.util.Date createdDate){
-		this.createdDate = createdDate;
-	}
-	
-	/**
-	* A written or verbal account, representation, statement, or explanation of something.
-	**/
-	
-	private String description;
-	/**
-	* Retrieves the value of the description attribute
-	* @return description
-	**/
+    private Collection<ComposingElement> composingElementCollection;
+    /**
+     * An associated gov.nih.nci.cananolab.domain.common.File object's collection
+     **/
 
-	public String getDescription(){
-		return description;
-	}
+    private Collection<File> fileCollection;
+    /**
+     * An associated gov.nih.nci.cananolab.domain.particle.SampleComposition object
+     **/
 
-	/**
-	* Sets the value of description attribute
-	**/
+    private SampleComposition sampleComposition;
 
-	public void setDescription(String description){
-		this.description = description;
-	}
-	
-	/**
-	* One or more characters used to identify, name, or characterize the nature, properties, or contents of a thing.
-	**/
-	
-	private Long id;
-	/**
-	* Retrieves the value of the id attribute
-	* @return id
-	**/
+    /**
+     * Retrieves the value of the createdBy attribute
+     *
+     * @return createdBy
+     **/
 
-	public Long getId(){
-		return id;
-	}
+    public String getCreatedBy() {
+        return createdBy;
+    }
 
-	/**
-	* Sets the value of id attribute
-	**/
+    /**
+     * Sets the value of createdBy attribute
+     **/
 
-	public void setId(Long id){
-		this.id = id;
-	}
-	
-	/**
-	* An associated gov.nih.nci.cananolab.domain.particle.ComposingElement object's collection 
-	**/
-			
-	private Collection<ComposingElement> composingElementCollection;
-	/**
-	* Retrieves the value of the composingElementCollection attribute
-	* @return composingElementCollection
-	**/
+    public void setCreatedBy(String createdBy) {
+        this.createdBy = createdBy;
+    }
 
-	public Collection<ComposingElement> getComposingElementCollection(){
-		return composingElementCollection;
-	}
+    /**
+     * Retrieves the value of the createdDate attribute
+     *
+     * @return createdDate
+     **/
 
-	/**
-	* Sets the value of composingElementCollection attribute
-	**/
+    public java.util.Date getCreatedDate() {
+        return createdDate;
+    }
 
-	public void setComposingElementCollection(Collection<ComposingElement> composingElementCollection){
-		this.composingElementCollection = composingElementCollection;
-	}
-		
-	/**
-	* An associated gov.nih.nci.cananolab.domain.common.File object's collection 
-	**/
-			
-	private Collection<File> fileCollection;
-	/**
-	* Retrieves the value of the fileCollection attribute
-	* @return fileCollection
-	**/
+    /**
+     * Sets the value of createdDate attribute
+     **/
 
-	public Collection<File> getFileCollection(){
-		return fileCollection;
-	}
+    public void setCreatedDate(java.util.Date createdDate) {
+        this.createdDate = createdDate;
+    }
 
-	/**
-	* Sets the value of fileCollection attribute
-	**/
+    /**
+     * Retrieves the value of the description attribute
+     *
+     * @return description
+     **/
 
-	public void setFileCollection(Collection<File> fileCollection){
-		this.fileCollection = fileCollection;
-	}
-		
-	/**
-	* An associated gov.nih.nci.cananolab.domain.particle.SampleComposition object
-	**/
-			
-	private SampleComposition sampleComposition;
-	/**
-	* Retrieves the value of the sampleComposition attribute
-	* @return sampleComposition
-	**/
-	
-	public SampleComposition getSampleComposition(){
-		return sampleComposition;
-	}
-	/**
-	* Sets the value of sampleComposition attribute
-	**/
+    public String getDescription() {
+        return description;
+    }
 
-	public void setSampleComposition(SampleComposition sampleComposition){
-		this.sampleComposition = sampleComposition;
-	}
-			
-	/**
-	* Compares <code>obj</code> to it self and returns true if they both are same
-	*
-	* @param obj
-	**/
-	public boolean equals(Object obj)
-	{
-		if(obj instanceof NanomaterialEntity) 
-		{
-			NanomaterialEntity c =(NanomaterialEntity)obj;
+    /**
+     * Sets the value of description attribute
+     **/
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    /**
+     * Retrieves the value of the id attribute
+     *
+     * @return id
+     **/
+
+    public Long getId() {
+        return id;
+    }
+
+    /**
+     * Sets the value of id attribute
+     **/
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    /**
+     * Retrieves the value of the composingElementCollection attribute
+     *
+     * @return composingElementCollection
+     **/
+
+    public Collection<ComposingElement> getComposingElementCollection() {
+        return composingElementCollection;
+    }
+
+    /**
+     * Sets the value of composingElementCollection attribute
+     **/
+
+    public void setComposingElementCollection(Collection<ComposingElement> composingElementCollection) {
+        this.composingElementCollection = composingElementCollection;
+    }
+
+    /**
+     * Retrieves the value of the fileCollection attribute
+     *
+     * @return fileCollection
+     **/
+
+    public Collection<File> getFileCollection() {
+        return fileCollection;
+    }
+
+    /**
+     * Sets the value of fileCollection attribute
+     **/
+
+    public void setFileCollection(Collection<File> fileCollection) {
+        this.fileCollection = fileCollection;
+    }
+
+    /**
+     * Retrieves the value of the sampleComposition attribute
+     *
+     * @return sampleComposition
+     **/
+
+    public SampleComposition getSampleComposition() {
+        return sampleComposition;
+    }
+
+    /**
+     * Sets the value of sampleComposition attribute
+     **/
+
+    public void setSampleComposition(SampleComposition sampleComposition) {
+        this.sampleComposition = sampleComposition;
+    }
+
+    /**
+     * Compares <code>obj</code> to it self and returns true if they both are same
+     *
+     * @param obj
+     **/
+    public boolean equals(Object obj) {
+        if (obj instanceof NanomaterialEntity) {
+            NanomaterialEntity c = (NanomaterialEntity) obj;
             return getId() != null && getId().equals(c.getId());
-		}
-		return false;
-	}
-		
-	/**
-	* Returns hash code for the primary key of the object
-	**/
-	public int hashCode()
-	{
-		if(getId() != null)
-			return getId().hashCode();
-		return 0;
-	}
-	
+        }
+        return false;
+    }
+
+    /**
+     * Returns hash code for the primary key of the object
+     **/
+    public int hashCode() {
+        if (getId() != null) {
+            return getId().hashCode();
+        }
+        return 0;
+    }
+
 }

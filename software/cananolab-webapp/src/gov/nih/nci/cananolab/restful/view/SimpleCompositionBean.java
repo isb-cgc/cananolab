@@ -256,8 +256,7 @@ public class SimpleCompositionBean {
 
 							files.put("fileId", file.getDomainFile().getId());
 							files.put("isImage", file.isImage());
-							files.put("ExternalURI", file.getDomainFile()
-									.getUriExternal().toString());
+							files.put("ExternalURI", new Boolean(file.getDomainFile().getUriExternal()).toString());
 							files.put("Title", file.getDomainFile().getTitle());
 
 							files.put("URI", file.getDomainFile().getUri());
@@ -401,8 +400,7 @@ public class SimpleCompositionBean {
 								files.put("fileId", file.getDomainFile()
 										.getId());
 								files.put("isImage", file.isImage());
-								files.put("ExternalURI", file.getDomainFile()
-										.getUriExternal().toString());
+								files.put("ExternalURI", new Boolean(file.getDomainFile().getUriExternal()).toString());
 								files.put("Title", file.getDomainFile()
 										.getTitle());
 
@@ -504,8 +502,7 @@ public class SimpleCompositionBean {
 								files.put("fileId", file.getDomainFile()
 										.getId());
 								files.put("isImage", file.isImage());
-								files.put("ExternalURI", file.getDomainFile()
-										.getUriExternal().toString());
+								files.put("ExternalURI", new Boolean(file.getDomainFile().getUriExternal()).toString());
 								files.put("Title", file.getDomainFile()
 										.getTitle());
 
@@ -543,8 +540,7 @@ public class SimpleCompositionBean {
 						comFile.put("dataId", file.getDomainFile().getId());
 						comFile.put("fileId", file.getDomainFile().getId());
 						comFile.put("isImage", file.isImage());
-						comFile.put("ExternalURI", file.getDomainFile()
-								.getUriExternal().toString());
+						files.put("ExternalURI", new Boolean(file.getDomainFile().getUriExternal()).toString());
 						comFile.put("Title", file.getDomainFile().getTitle());
 
 						comFile.put("URI", file.getDomainFile().getUri());

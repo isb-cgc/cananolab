@@ -13,13 +13,13 @@ public class SynthesisPurificationBean {
         return this.type;
     }
 
-    private SynthesisPurification purification;
+    private SynthesisPurification domainEntity;
     private PointOfContactBean pocBean = new PointOfContactBean();
     private String description;
     private Instrument theInstrument = new Instrument();
 
-    public SynthesisPurification getPurification() {
-        return purification;
+    public SynthesisPurification getDomainEntity() {
+        return domainEntity;
     }
 
     public SynthesisPurificationBean getDomainCopy(String createdBy, boolean copyData) {
@@ -32,5 +32,10 @@ public class SynthesisPurificationBean {
     public void resetDomainCopy(String createdBy, SynthesisPurificationBean copy,
                                 boolean copyData) {
         //TODO write
+    }
+
+    public SynthesisPurificationBean(SynthesisPurification purification){
+        //TODO write
+        this.domainEntity=purification;
     }
 }

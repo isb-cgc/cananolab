@@ -1,6 +1,6 @@
 package gov.nih.nci.cananolab.system.applicationservice;
 
-import gov.nih.nci.system.query.hibernate.HQLCriteria;
+import gov.nih.nci.cananolab.system.query.hibernate.HQLCriteria;
 import java.util.List;
 import org.hibernate.criterion.DetachedCriteria;
 

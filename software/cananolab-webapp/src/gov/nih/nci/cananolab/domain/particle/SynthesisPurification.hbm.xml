@@ -3,9 +3,8 @@
         "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
 <!-- Generated Apr 3, 2019, 8:32:55 PM by Hibernate Tools 5.4.2.Final -->
 <hibernate-mapping package="gov.nih.nci.cananolab.domain.particle">
-    <class catalog="canano" name="SynthesisPurification" table="synthesis_purification">
+    <class name="SynthesisPurification" table="synthesis_purification">
         <id column="synthesis_purification_pk_id" name="id" type="long">
-            <column name="synthesis_purification_pk_id"/>
             <generator class="hilo"/>
         </id>
         <many-to-one class="gov.nih.nci.cananolab.domain.common.Protocol"
@@ -14,50 +13,50 @@
                 <comment>protocol_pk_id</comment>
             </column>
         </many-to-one>
-        <many-to-one
-                class="gov.nih.nci.cananolab.domain.particle.SynthesisFunctionalization"
-                fetch="select" name="synthesisFunctionalization">
-            <column name="synthesis_funtionalization_pk_id" not-null="true">
-                <comment>synthesis_funtionalization_pk_id</comment>
-            </column>
-        </many-to-one>
-        <property generated="never" lazy="false" name="type" type="string">
+<!--        <many-to-one-->
+<!--                class="SynthesisFunctionalization"-->
+<!--                fetch="select" name="synthesisFunctionalization">-->
+<!--            <column name="synthesis_funtionalization_pk_id" not-null="true">-->
+<!--                <comment>synthesis_funtionalization_pk_id</comment>-->
+<!--            </column>-->
+<!--        </many-to-one>-->
+        <property name="type" type="string">
             <column length="200" name="type">
                 <comment>type</comment>
             </column>
         </property>
-        <property generated="never" lazy="false" name="methodName" type="string">
+        <property name="methodName" type="string">
             <column length="200" name="method_name">
                 <comment>method_name</comment>
             </column>
         </property>
-        <property generated="never" lazy="false"
-                  name="designMethodDescription" type="string">
+        <property
+                name="designMethodDescription" type="string">
             <column length="65535" name="design_method_description">
                 <comment>design_method_description</comment>
             </column>
         </property>
-        <property generated="never" lazy="false" name="createdBy" type="string">
+        <property name="createdBy" type="string">
             <column length="200" name="created_by" not-null="true">
                 <comment>created_by</comment>
             </column>
         </property>
-        <property generated="never" lazy="false" name="createdDate" type="timestamp">
+        <property name="createdDate" type="timestamp">
             <column length="19" name="created_date" not-null="true">
                 <comment>created_date</comment>
             </column>
         </property>
         <set fetch="select" inverse="true" lazy="true" name="purities"
-             sort="unsorted" table="purity">
+             table="purity">
             <key>
                 <column name="synthesis_purification_pk_id" not-null="true">
                     <comment>synthesis_purification_pk_id</comment>
                 </column>
             </key>
-            <one-to-many class="gov.nih.nci.cananolab.domain.common.Purity"/>
+            <one-to-many class="Purity"/>
         </set>
         <set fetch="select" inverse="true" lazy="true"
-             name="purificationConfigs" sort="unsorted" table="purification_config">
+             name="purificationConfigs" table="purification_config">
             <key>
                 <column name="synthesis_purification_pk_id">
                     <comment>synthesis_purification_pk_id</comment>

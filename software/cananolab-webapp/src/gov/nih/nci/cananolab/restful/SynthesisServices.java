@@ -1,9 +1,11 @@
 package gov.nih.nci.cananolab.restful;
 
+import gov.nih.nci.cananolab.dto.particle.synthesis.SynthesisBean;
 import gov.nih.nci.cananolab.restful.synthesis.SynthesisBO;
 import gov.nih.nci.cananolab.restful.util.CommonUtil;
 import gov.nih.nci.cananolab.restful.view.SimpleSynthesisBean;
 import gov.nih.nci.cananolab.security.utils.SpringSecurityUtil;
+import gov.nih.nci.cananolab.ui.form.SynthesisForm;
 import java.util.List;
 import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
@@ -20,6 +22,28 @@ import org.apache.log4j.Logger;
 public class SynthesisServices {
     private static final Logger logger = Logger.getLogger(NanomaterialEntityServices.class);
 
+
+    @GET
+    @Path("/summaryView")
+    @Produces ("application/json")
+    public Response view(@Context HttpServletRequest httpRequest, @DefaultValue("") @QueryParam("sampleId") String sampleId)
+    {
+        try {
+            SynthesisForm form = new SynthesisForm();
+            form.setSampleId(sampleId);
+
+            SynthesisBO synthesisBO = (SynthesisBO) SpringApplicationContext.getBean(httpRequest, "synthesisBO");
+
+            SynthesisBean synthesisBean = synthesisBO.summaryView(form, httpRequest);
+            SimpleSynthesisBean view = new SimpleSynthesisBean();
+            view.transferSynthesisForSummaryView(synthesisBean);
+
+            return Response.ok(view).build();
+
+        } catch (Exception e) {
+            return Response.ok("Error while viewing the composition results" +e).build();
+        }
+    }
 
     @GET
     @Path("/setup")

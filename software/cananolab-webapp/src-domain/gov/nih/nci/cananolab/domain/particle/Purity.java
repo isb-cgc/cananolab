@@ -1,8 +1,8 @@
-package gov.nih.nci.cananolab.domain.common;
+package gov.nih.nci.cananolab.domain.particle;
 // Generated Apr 3, 2019, 8:32:55 PM by Hibernate Tools 5.4.2.Final
 
-import gov.nih.nci.cananolab.domain.particle.SynthesisPurification;
-
+import gov.nih.nci.cananolab.domain.common.File;
+import gov.nih.nci.cananolab.domain.common.PurityDatum;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;

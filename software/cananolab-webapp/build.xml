@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8" ?>
 
 <!--L
-   Copyright SAIC
-   Copyright SAIC-Frederick
+   Copyright Leidos
+   Copyright Leidos Biomedical
 
    Distributed under the OSI-approved BSD 3-Clause License.
    See http://ncip.github.com/cananolab/LICENSE.txt for details.
@@ -22,26 +22,28 @@ L-->
 	<property name="build.dir" location="${basedir}/build" />
 	<property name="domainbuild.dir" location="${basedir}/domainbuild" />
 	<property name="common.dir" location="${basedir}/../common" />
+	<property name="commonlib.dir" location="${basedir}/lib" />
 	<property name="dist.dir" location="${basedir}/target/dist" />
 	<property name="common.dist.dir" location="${dist.dir}/common" />
 	<property name="classes.dir" location="${basedir}/build/WEB-INF/classes" />
 	<property name="lib.dir" location="${basedir}/build/WEB-INF/lib" />
 	<property name="globus.dir" location="../cananolab-client/lib/globus" />
 	<property name="db.dir" location="../cananolab-db/lib" />
-	
+
 	<property name="test.dir"     value="test-rest"/>
 	<property name="test.src.dir"     value="${test.dir}/java"/>
 	<property name="report.dir" location="${test.dir}/junitreport" />
+	<property name="logLevel" value="info" />
 
 	<!-- antcontrib task-->
 	<path id="common.classpath">
-		<fileset dir="${common.dir}">
+		<fileset dir="${commonlib.dir}">
 			<include name="**/*.jar" />
 			<exclude name="**/cglib-2.1.3.jar" />
 			<exclude name="**/spring.jar" />
 		</fileset>
 	</path>
-	
+
 	 <path id="test.classpath">
 			<fileset dir="${lib.dir}" includes="**/*.jar"/>
 			<fileset dir="${test.dir}/lib" includes="**/*.jar"/>
@@ -54,7 +56,7 @@ L-->
 			<pathelement location="${ant.contrib.location}" />
 		</classpath>
 	</taskdef>
-	
+
 	<taskdef resource="net/sf/antcontrib/antcontrib.properties" classpathref="common.classpath" />
 
 	<!-- maven ant task -->
@@ -73,7 +75,7 @@ L-->
 		<delete dir="${domainbuild.dir}" />
 	</target>
 
-	<target name="init">
+	<target name="init" depends="clean">
 		<!-- create the necessary folders -->
 		<mkdir dir="${dist.dir}" />
 		<mkdir dir="${domainbuild.dir}" />
@@ -95,8 +97,10 @@ L-->
 		<echo message="*****************************************************" />
 		<path id="classpath">
 			<fileset refid="compiletime.dependency.fileset" />
-			<fileset dir="${common.dir}/lib">
+<!--			<fileset dir="${common.dir}/lib">-->
+			<fileset dir="${commonlib.dir}">
 				<include name="**/sdk/*.jar" />
+				<include name="caNanoLab-beans.jar"/>
 				<include name="**/globus/*.jar" />
 				<exclude name="**/maven-ant-tasks-*.jar" />
 				<exclude name="**/ant-contrib-*.jar" />
@@ -106,7 +110,7 @@ L-->
 			<classpath refid="classpath" />
 		</javac>
 	</target>
-	
+
 
 	<target name="compile-beans" depends="init">
 		<echo message="*****************************************************" />
@@ -114,7 +118,8 @@ L-->
 		<echo message="*****************************************************" />
 		<path id="classpath">
 			<fileset refid="compiletime.dependency.fileset" />
-			<fileset dir="${common.dir}/lib">
+			<!--			<fileset dir="${common.dir}/lib">-->
+			<fileset dir="${commonlib.dir}">
 				<include name="**/sdk/*.jar" />
 				<include name="**/globus/*.jar" />
 				<exclude name="**/maven-ant-tasks-*.jar" />
@@ -136,12 +141,12 @@ L-->
 				<exclude name="caNanoLab.properties" />
 			</fileset>
 		</copy>
-	
+
 		<copy overwrite="true" tofile="${build.dir}/WEB-INF/classes/caNanoLab.properties" file="${src.dir}/caNanoLab.properties.template">
 			<!-- replace tokens with values from build properties -->
 			<filterset refid="properties.filterset" />
 		</copy>
-		
+
 		<copy todir="${build.dir}/WEB-INF/classes">
 			<fileset dir="${src.dir}/gov/nih/nci/cananolab/resources">
 				<include name="**/*.properties" />
@@ -162,9 +167,9 @@ L-->
 				<include name="**/*.xml" />
 			</fileset>
 		</copy>
-		
+
 		<!-- modify ehcache directory -->
-		<replace file="${build.dir}/WEB-INF/classes/ehcache.xml" token="java.io.tmpdir" value="${ehcache.path}" />			
+		<replace file="${build.dir}/WEB-INF/classes/ehcache.xml" token="java.io.tmpdir" value="${ehcache.path}" />
 
 		<!-- copy dependency jars to WEB-INF/lib files  -->
 		<copy todir="${build.dir}/WEB-INF/lib">
@@ -174,10 +179,15 @@ L-->
 
 		<!-- copy jars from common/lib -->
 		<copy todir="${build.dir}/WEB-INF/lib">
-			<fileset dir="${common.dir}/lib/sdk">
+			<!--			<fileset dir="${common.dir}/lib">-->
+			<fileset dir="${commonlib.dir}">
 				<include name="**/*.jar" />
 				<exclude name="**/cglib-2.1.3.jar" />
 				<exclude name="**/spring.jar" />
+			</fileset>
+			<!--			<fileset dir="${common.dir}/lib">-->
+			<fileset dir="${commonlib.dir}">
+				<include name="cananolab-beans.jar"/>
 			</fileset>
 		</copy>
 
@@ -201,8 +211,8 @@ L-->
 			</restrict>
 			<mapper classpathref="maven-ant-tasks.classpath" type="flatten" />
 		</copy>
-		
-	
+
+
 		<!--copy mysql-ds.xml and replace database connection info-->
 		<copy overwrite="true" tofile="${common.dist.dir}/mysql-ds.xml" file="${common.dir}/resources/jboss-conf/mysql-ds.xml">
 			<!-- replace tokens with values from build properties -->
@@ -235,47 +245,47 @@ L-->
 		</if>
 		<!-- the following is UPT specific -->
 		<!-- copy UPT required config files -->
-		<copy overwrite="true" tofile="${common.dist.dir}/ApplicationSecurityConfig.xml" file="${common.dir}/resources/jboss-conf/ApplicationSecurityConfig.xml">
-			<!-- replace tokens with values from build properties -->
-			<filterset>
-				<filter token="jboss.server.dir" value="${jboss.server.dir}" />
-			</filterset>
-		</copy>
-		<copy overwrite="true" tofile="${common.dist.dir}/properties-service.xml" file="${common.dir}/resources/jboss-conf/properties-service.xml">
-			<!-- replace tokens with values from build properties -->
-			<filterset>
-				<filter token="jboss.server.dir" value="${jboss.server.dir}" />
-			</filterset>
-		</copy>
-		<copy overwrite="true" tofile="${common.dist.dir}/csmupt.csm.new.hibernate.cfg.xml" file="${common.dir}/resources/jboss-conf/csmupt.csm.new.hibernate.cfg.xml" />
-		<copy overwrite="true" tofile="${common.dist.dir}/csmupt423.csm.new.hibernate.cfg.xml" file="${common.dir}/resources/jboss-conf/csmupt423.csm.new.hibernate.cfg.xml" />
+<!--		<copy overwrite="true" tofile="${common.dist.dir}/ApplicationSecurityConfig.xml" file="${common.dir}/resources/jboss-conf/ApplicationSecurityConfig.xml">-->
+<!--			&lt;!&ndash; replace tokens with values from build properties &ndash;&gt;-->
+<!--			<filterset>-->
+<!--				<filter token="jboss.server.dir" value="${jboss.server.dir}" />-->
+<!--			</filterset>-->
+<!--		</copy>-->
+<!--		<copy overwrite="true" tofile="${common.dist.dir}/properties-service.xml" file="${common.dir}/resources/jboss-conf/properties-service.xml">-->
+<!--			&lt;!&ndash; replace tokens with values from build properties &ndash;&gt;-->
+<!--			<filterset>-->
+<!--				<filter token="jboss.server.dir" value="${jboss.server.dir}" />-->
+<!--			</filterset>-->
+<!--		</copy>-->
+<!--		<copy overwrite="true" tofile="${common.dist.dir}/csmupt.csm.new.hibernate.cfg.xml" file="${common.dir}/resources/jboss-conf/csmupt.csm.new.hibernate.cfg.xml" />-->
+<!--		<copy overwrite="true" tofile="${common.dist.dir}/csmupt423.csm.new.hibernate.cfg.xml" file="${common.dir}/resources/jboss-conf/csmupt423.csm.new.hibernate.cfg.xml" />-->
 
 		<!--copy upt-ds.xml and replace database connection info-->
-		<copy overwrite="true" tofile="${common.dist.dir}/upt-ds.xml" file="${common.dir}/resources/jboss-conf/upt-ds.xml">
-			<!-- replace tokens with values from build properties -->
-			<filterset id="db.filterset">
-				<filter token="database.url" value="${database.url}" />
-				<filter token="database.user" value="${database.user}" />
-				<filter token="database.password" value="${database.password}" />
-			</filterset>
-		</copy>
+<!--		<copy overwrite="true" tofile="${common.dist.dir}/upt-ds.xml" file="${common.dir}/resources/jboss-conf/upt-ds.xml">-->
+<!--			&lt;!&ndash; replace tokens with values from build properties &ndash;&gt;-->
+<!--			<filterset id="db.filterset">-->
+<!--				<filter token="database.url" value="${database.url}" />-->
+<!--				<filter token="database.user" value="${database.user}" />-->
+<!--				<filter token="database.password" value="${database.password}" />-->
+<!--			</filterset>-->
+<!--		</copy>-->
 
 		<!--copy uptEAR.ear -->
 		<!--copy overwrite="true" todir="${common.dist.dir}" file="${common.dir}/resources/security/uptEAR.ear" /-->
-		
+
 		<!--copy csmapi-5.2.jar -->
-		<copy overwrite="true" todir="${common.dist.dir}" file="${common.dir}/lib/sdk/csmapi-5.2.jar" />
-		
+<!--		<copy overwrite="true" todir="${common.dist.dir}" file="${common.dir}/lib/sdk/csmapi-5.2.jar" />-->
+
 		<!--copy bcprov-jdk15on-1.47.jar -->
 		<copy overwrite="true" todir="${common.dist.dir}" file="${common.dir}/lib/sdk/bcprov-jdk15on-1.47.jar" />
-		
+
 		<copy overwrite="true" todir="${common.dist.dir}" file="${common.dir}/resources/help/wikihelp.properties" />
-		
+
 		<!--copy images -->
 		<copy overwrite="true" todir="${common.dist.dir}" file="${image.dir}/canano_logo_mini.jpg" />
-				
+
 		<copy overwrite="true" todir="${common.dist.dir}" file="${image.dir}/doi-transparent.png" />
-		
+
 		<!--copy caNanoLab_setup.cli and replace database connection info-->
 				<copy overwrite="true" tofile="${common.dist.dir}/caNanoLab_setup.cli" file="${basedir}/caNanoLab_setup.cli">
 					<!-- replace tokens with values from build properties -->
@@ -286,40 +296,40 @@ L-->
 						<filter token="logLevel" value="${logLevel}" />
 					</filterset>
 				</copy>
-		
+
 			<copy overwrite="true" tofile="${common.dist.dir}/caNanoLab_modules.cli" file="${basedir}/caNanoLab_modules.cli"> </copy>
 			<copy overwrite="true" tofile="${common.dist.dir}/caNanoLab_deploy.cli" file="${basedir}/caNanoLab_deploy.cli"> </copy>
-				
+
 	</target>
 
 	<target name="deploy" depends="dist">
 		<!-- deploy WAR and xml to JBOSS deploy location-->
 		<copy todir="${jboss.deploy.dir}" overwrite="true">
 			<fileset dir="${common.dist.dir}">
-				<include name="upt-ds.xml" />
+<!--				<include name="upt-ds.xml" />-->
 				<include name="${database.type}-ds.xml" />
 				<include name="properties-service.xml"/>
 			</fileset>
 			<fileset dir="${dist.dir}">
-				<include name="caNanoLab.war" />				
+				<include name="caNanoLab.war" />
 			</fileset>
 		</copy>
 		<copy todir="${jboss.conf.dir}" overwrite="true" file="${common.dist.dir}/login-config.xml" />
-		<copy todir="${jboss.conf.dir}/csmconfig" overwrite="true" file="${common.dist.dir}/ApplicationSecurityConfig.xml"/>
-		<copy todir="${jboss.conf.dir}/csmconfig" overwrite="true" file="${common.dist.dir}/csmupt.csm.new.hibernate.cfg.xml"/>
-		<copy todir="${jboss.conf.dir}/csmconfig" overwrite="true" file="${common.dist.dir}/csmupt423.csm.new.hibernate.cfg.xml"/>
-			
+<!--		<copy todir="${jboss.conf.dir}/csmconfig" overwrite="true" file="${common.dist.dir}/ApplicationSecurityConfig.xml"/>-->
+<!--		<copy todir="${jboss.conf.dir}/csmconfig" overwrite="true" file="${common.dist.dir}/csmupt.csm.new.hibernate.cfg.xml"/>-->
+<!--		<copy todir="${jboss.conf.dir}/csmconfig" overwrite="true" file="${common.dist.dir}/csmupt423.csm.new.hibernate.cfg.xml"/>-->
+
 		<copy todir="${jboss.lib.dir}" overwrite="true">
 			<fileset dir="${common.dist.dir}">
 				<include name="mysql-connector-java*.jar" />
 			</fileset>
 		</copy>
-		
+
 	</target>
-	
+
 	<target name="deploy_local" depends="dist">
 		<copy file="${dist.dir}/caNanoLab.war" todir="${jboss.deploy.dir}" overwrite="true" />
-	</target>	
+	</target>
 
 	<target name="jar:helpers" depends="compile">
 		<!-- caNanoLab.properties -->
@@ -335,11 +345,11 @@ L-->
 		<!-- package jar file -->
 		<jar destfile="${dist.dir}/caNanoLabSDK-orm.jar" basedir="${src.dir}" includes="**/*hbm.xml, ehcache.xml, hibernate.cfg.xml" />
 	</target>
-	
+
 	<target name="jar:beano" depends="clean, compile-beans">
-		<jar destfile="${common.dir}/lib/sdk/caNanoLab-beans.jar" basedir="${domainbuild.dir}"></jar>
+		<jar destfile="${commonlib.dir}/caNanoLab-beans.jar" basedir="${domainbuild.dir}"></jar>
 	</target>
-	
+
 	<target name="jar:endNote" depends="clean, compile">
 		<copy todir="${build.dir}/WEB-INF/classes">
 			<fileset dir="${src.dir}">
@@ -355,7 +365,7 @@ L-->
 				<exclude name="hibernate.cfg.xml" />
 			</fileset>
 		</copy>
-		
+
 		<!-- copy dependency jars to WEB-INF/lib files  -->
 		<copy todir="${build.dir}/WEB-INF/lib">
 			<fileset refid="runtime.dependency.fileset" />
@@ -363,12 +373,12 @@ L-->
 		</copy>
 
 		<!-- copy jars from common/lib -->
-		<copy todir="${build.dir}/WEB-INF/lib">
-			<fileset dir="${common.dir}/lib/sdk">
-				<include name="**/*.jar" />
-			</fileset>
-		</copy>		
-		
+<!--		<copy todir="${build.dir}/WEB-INF/lib">-->
+<!--			<fileset dir="${common.dir}/lib/sdk">-->
+<!--				<include name="**/*.jar" />-->
+<!--			</fileset>-->
+<!--		</copy>-->
+
 		<copy todir="${build.dir}/WEB-INF/lib">
 			<fileset dir="${globus.dir}">
 				<include name="**/log4*.jar" />
@@ -389,14 +399,15 @@ L-->
 			<zipgroupfileset dir="${lib.dir}" includes="**/*.jar"/>
 			</jar>
 	</target>
-	
+
 	<target name="compile-test" depends="clean, init">
 			<echo message="*****************************************************" />
 			<echo message="**   Compiling Junit Java Classes ...          		  **" />
 			<echo message="*****************************************************" />
 			<path id="classpath">
 				<fileset refid="compiletime.dependency.fileset" />
-				<fileset dir="${common.dir}/lib">
+				<!--			<fileset dir="${common.dir}/lib">-->
+				<fileset dir="${commonlib.dir">
 					<include name="**/sdk/*.jar" />
 					<exclude name="**/maven-ant-tasks-*.jar" />
 					<exclude name="**/ant-contrib-*.jar" />
@@ -409,13 +420,13 @@ L-->
 				 <src path="${test.src.dir}" />
 			</javac>
 		</target>
-	
+
 	<target name="junit" depends="compile-test">
 		 <delete dir="${report.dir}" failonerror="true"/>
 		 <mkdir dir="${report.dir}"/>
-		 	
-		 	
-		 	<junit printsummary="true" failureproperty="junit.failure" haltonfailure='false'> 
+
+
+		 	<junit printsummary="true" failureproperty="junit.failure" haltonfailure='false'>
 		 	     <classpath>
 		 	     	<path refid="test.classpath"/>
 		 	     	<path refid="classpath"/>
@@ -425,23 +436,23 @@ L-->
 		 	     	<pathelement path="${basedir}/WebContent/WEB-INF"/>
 		 	     	<pathelement path="${resources.dir}"/> -->
 		 	     	<pathelement path="${test.dir}/resources" />
-		 	     	
+
 		 		</classpath>
-		 	     
+
 		 		<batchtest fork="yes" todir="${report.dir}">
-		 			 <fileset dir="${test.src.dir}" includes="**/*Test.java" 
-		 			 	excludes="**/PropertyUtilTest.java, **/RestValidatorTest.java, 
+		 			 <fileset dir="${test.src.dir}" includes="**/*Test.java"
+		 			 	excludes="**/PropertyUtilTest.java, **/RestValidatorTest.java,
 		 			 	**/SimplePublicationWithSamplesBeanTest.java, **/SearchSampleBOTest.java" />
 		 		</batchtest>
-		 		<formatter type="xml"/> 
+		 		<formatter type="xml"/>
 		 	 </junit>
-		  </target>	
-		
+		  </target>
+
 		 <target name="junitreport" depends="junit">
 		        <junitreport todir="${report.dir}">
 		            <fileset dir="${report.dir}" includes="TEST-*.xml"/>
 		            <report todir="${report.dir}"/>
 		        </junitreport>
 		    </target>
-		
+
 </project>

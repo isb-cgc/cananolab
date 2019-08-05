@@ -12,7 +12,7 @@ import java.util.Set;
  */
 public class SynthesisPurification implements java.io.Serializable {
 
-	private long synthesisFuncPurificationPkId;
+	private Long synthesisPurificationPkId;
 	private Protocol protocol;
 	private SynthesisFunctionalization synthesisFunctionalization;
 	private String type;
@@ -27,19 +27,19 @@ public class SynthesisPurification implements java.io.Serializable {
 	public SynthesisPurification() {
 	}
 
-	public SynthesisPurification(long synthesisFuncPurificationPkId, Protocol protocol,
-			SynthesisFunctionalization synthesisFunctionalization, String createdBy, Date createdDate) {
-		this.synthesisFuncPurificationPkId = synthesisFuncPurificationPkId;
+	public SynthesisPurification(Long synthesisPurificationPkId, Protocol protocol,
+								 SynthesisFunctionalization synthesisFunctionalization, String createdBy, Date createdDate) {
+		this.synthesisPurificationPkId = synthesisPurificationPkId;
 		this.protocol = protocol;
 		this.synthesisFunctionalization = synthesisFunctionalization;
 		this.createdBy = createdBy;
 		this.createdDate = createdDate;
 	}
 
-	public SynthesisPurification(long synthesisFuncPurificationPkId, Protocol protocol,
-			SynthesisFunctionalization synthesisFunctionalization, String type, String methodName,
-			String designMethodDescription, String createdBy, Date createdDate, Set purities, Set purificationConfigs, Integer yield) {
-		this.synthesisFuncPurificationPkId = synthesisFuncPurificationPkId;
+	public SynthesisPurification(Long synthesisPurificationPkId, Protocol protocol,
+								 SynthesisFunctionalization synthesisFunctionalization, String type, String methodName,
+								 String designMethodDescription, String createdBy, Date createdDate, Set purities, Set purificationConfigs, Integer yield) {
+		this.synthesisPurificationPkId = synthesisPurificationPkId;
 		this.protocol = protocol;
 		this.synthesisFunctionalization = synthesisFunctionalization;
 		this.type = type;
@@ -52,12 +52,12 @@ public class SynthesisPurification implements java.io.Serializable {
 		this.yield = yield;
 	}
 
-	public long getId() {
-		return this.synthesisFuncPurificationPkId;
+	public Long getId() {
+		return this.synthesisPurificationPkId;
 	}
 
-	public void setId(long synthesisFuncPurificationPkId) {
-		this.synthesisFuncPurificationPkId = synthesisFuncPurificationPkId;
+	public void setId(Long synthesisFuncPurificationPkId) {
+		this.synthesisPurificationPkId = synthesisFuncPurificationPkId;
 	}
 
 	public Protocol getProtocol() {

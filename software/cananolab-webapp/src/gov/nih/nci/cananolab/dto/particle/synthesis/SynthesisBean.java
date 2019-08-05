@@ -1,8 +1,14 @@
 package gov.nih.nci.cananolab.dto.particle.synthesis;
 
+import gov.nih.nci.cananolab.domain.particle.Synthesis;
+import gov.nih.nci.cananolab.domain.particle.SynthesisFunctionalization;
+import gov.nih.nci.cananolab.domain.particle.SynthesisMaterial;
+import gov.nih.nci.cananolab.domain.particle.SynthesisPurification;
 import gov.nih.nci.cananolab.dto.common.FileBean;
 import gov.nih.nci.cananolab.dto.particle.composition.BaseCompositionEntityBean;
+import gov.nih.nci.cananolab.util.Comparators;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.SortedSet;
@@ -13,11 +19,43 @@ public class SynthesisBean extends BaseCompositionEntityBean {
     private List<SynthesisPurificationBean> synthesisFuncPurificationBeanList = new ArrayList<SynthesisPurificationBean>();
     private List<FileBean> files = new ArrayList<FileBean>();
     private gov.nih.nci.cananolab.domain.particle.Synthesis domain;
-    private List<String> compositionSections = new ArrayList<String>();
+    private List<String> synthesisSections = new ArrayList<String>();
     protected FileBean theFile = new FileBean();
     private java.util.Map<String, java.util.SortedSet<SynthesisFunctionalizationBean>> type2FuncEntities = new java.util.HashMap<String, java.util.SortedSet<SynthesisFunctionalizationBean>>();
     private java.util.Map<String, java.util.SortedSet<SynthesisMaterialsBean>> type2MatsEntities = new java.util.HashMap<String, java.util.SortedSet<SynthesisMaterialsBean>>();
     private java.util.Map<String, java.util.SortedSet<SynthesisPurificationBean>> type2PurEntities = new java.util.HashMap<String, java.util.SortedSet<SynthesisPurificationBean>>();
+
+    public SynthesisBean(){
+
+    }
+
+    public SynthesisBean(Synthesis synthesis){
+        domain = synthesis;
+        if(synthesis.getSynthesisMaterials()!=null){
+            for(SynthesisMaterial materials:synthesis.getSynthesisMaterials()){
+                synthesisMaterialsBeanList.add(new SynthesisMaterialsBean(materials));
+            }
+        }
+        Collections.sort(synthesisMaterialsBeanList,new Comparators.SynthesisMaterialsBeanTypeDataComparator());
+
+        if(synthesis.getSynthesisFunctionalizations()!=null){
+            for(SynthesisFunctionalization functionalization:synthesis.getSynthesisFunctionalizations()){
+                synthesisFunctionalizationBeanList.add(new SynthesisFunctionalizationBean(functionalization));
+            }
+        }
+        //TODO add sort
+
+        if(synthesis.getSynthesisPurifications()!=null){
+            for(SynthesisPurification purification:synthesis.getSynthesisPurifications()){
+                synthesisFuncPurificationBeanList.add(new SynthesisPurificationBean(purification));
+            }
+        }
+        //TODO add sort
+
+
+
+
+    }
 
     public List<SynthesisFunctionalizationBean> getSynthesisFunctionalizationBeanList() {
         return synthesisFunctionalizationBeanList;
@@ -51,12 +89,12 @@ public class SynthesisBean extends BaseCompositionEntityBean {
         this.domain = domain;
     }
 
-    public List<String> getCompositionSections() {
-        return compositionSections;
+    public List<String> getSynthesisSections() {
+        return synthesisSections;
     }
 
-    public void setCompositionSections(List<String> compositionSections) {
-        this.compositionSections = compositionSections;
+    public void setSynthesisSections(List<String> synthesisSections) {
+        this.synthesisSections = synthesisSections;
     }
 
     public FileBean getTheFile() {
