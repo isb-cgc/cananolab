@@ -76,8 +76,45 @@ app.factory("utilsService", function(){
 				html += ((params.page-1)*params.count+1)+pageLength-1;
 				return html;
 			}
-		}
+		},
 
+        /**
+         * Builds the parameter String used when export JSON or XML is called from views/keywordSearch/keywordSearchResults.html
+         *
+         * @param data
+         * @returns {string}
+         */
+        keyWordSampleIdListStrings( data ){
+            let ids = '';
+            for (let i = 0; i < data.length; i++) {
+                if( i > 0){
+                    ids += ',';
+                }
+                if( data[i].type === 'sample' ){
+                    ids += data[i].id ;
+                }else if( data[i].type === 'publication'){
+                    ids += data[i].pubmedId.trim() + '_pubmed';
+                }
+            }
+            return ids;
+        },
+
+
+        /**
+         * Builds the parameter String used when export JSON or XML is called from  views/sample/view/sampleResults.html
+         *
+         * @param data
+         * @returns {string|string}
+         */
+		sampleIdListStrings( data ){
+            let ids = '';
+            for (let i = 0; i < data.data.length; i++) {
+                if( i > 0){
+                    ids += ',';
+                }
+                ids += data.data[i].sampleId ;
+            }
+            return ids;
+        }
 	}
-
 });
