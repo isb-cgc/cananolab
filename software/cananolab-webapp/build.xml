@@ -49,7 +49,7 @@ L-->
 		<fileset dir="${test.dir}/lib" includes="**/*.jar"/>
 	</path>
 
-	<property name="ant.contrib.location" value="${common.dir}/lib/ant-contrib-1.0b3.jar"/>
+	<property name="ant.contrib.location" value="${commonlib.dir}/ant-contrib-1.0b3.jar"/>
 	<!-- using ant contrib for contidionals, looping , and runtarget -->
 	<taskdef resource="net/sf/antcontrib/antlib.xml">
 		<classpath>
