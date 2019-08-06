@@ -91,9 +91,13 @@ app.factory("utilsService", function(){
                     ids += ',';
                 }
                 if( data[i].type === 'sample' ){
-                    ids += data[i].id ;
+                    if(! ids.includes(',' + data.data[i].id)) {
+                        ids += data[i].id;
+                    }
                 }else if( data[i].type === 'publication'){
-                    ids += data[i].pubmedId.trim() + '_pubmed';
+                    if(! ids.includes(',' + data[i].pubmedId.trim() + '_pubmed')) {
+                        ids += data[i].pubmedId.trim() + '_pubmed';
+                    }
                 }
             }
             return ids;
@@ -109,10 +113,12 @@ app.factory("utilsService", function(){
 		sampleIdListStrings( data ){
             let ids = '';
             for (let i = 0; i < data.data.length; i++) {
-                if( i > 0){
-                    ids += ',';
+                if(! ids.includes(',' + data.data[i].sampleId)){
+                    if( i > 0){
+                        ids += ',';
+                    }
+                    ids += data.data[i].sampleId ;
                 }
-                ids += data.data[i].sampleId ;
             }
             return ids;
         }
