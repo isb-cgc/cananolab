@@ -91,7 +91,7 @@ app.factory("utilsService", function(){
                     ids += ',';
                 }
                 if( data[i].type === 'sample' ){
-                    if(! ids.includes(',' + data.data[i].id)) {
+                    if(! ids.includes(',' + data[i].id)) {
                         ids += data[i].id;
                     }
                 }else if( data[i].type === 'publication'){
