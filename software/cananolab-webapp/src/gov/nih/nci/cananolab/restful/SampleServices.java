@@ -1195,6 +1195,7 @@ public class SampleServices {
      */
     private String jsonToXml( String jsonText ) {
         try {
+            jsonText = jsonText.replaceAll( "\\\\u00[0-1][1-9a-fA-F]", " " );
             JSONObject jso = new JSONObject( cleanJson(jsonText) );
             String xml = XML.toString(jso, "caNanoLabXml");
             StreamSource source = new StreamSource(new StringReader(xml));
@@ -1240,6 +1241,7 @@ public class SampleServices {
                     temp = temp.replaceAll( pattern, "$1" + data.replaceAll( " ", "_" ));
                     line = temp  + ": [";
                 }
+
                 cleanData.append( line );
                 cleanData.append( "\n" );
             }
@@ -1263,7 +1265,7 @@ public class SampleServices {
             // Turn xml string into a document
             Document document = DocumentBuilderFactory.newInstance()
                     .newDocumentBuilder()
-                    .parse(new InputSource(new ByteArrayInputStream(xml.getBytes( StandardCharsets.UTF_8 ))));
+                    .parse(new InputSource(new ByteArrayInputStream(xml.getBytes( StandardCharsets.US_ASCII ))));
 
             // Remove whitespaces outside tags
             document.normalize();
