@@ -177,10 +177,6 @@ public class CompositionUtil {
 		return typeMap;
 	}
 
-	public static Map<String, Object> reformatLocalSearchDropdownsInSessionForSynthesis(HttpSession session){
-        //TODO write
-		return new HashMap<String, Object>();
 
-	}
 	}
 

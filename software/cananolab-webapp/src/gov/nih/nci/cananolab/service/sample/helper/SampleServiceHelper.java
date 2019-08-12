@@ -547,6 +547,8 @@ public class SampleServiceHelper
 		return storedChars;
 	}
 
+
+	//TODO add Synthesis to all of the sample returns
 	public Sample findSampleByName(String sampleName) throws Exception {
 		Sample sample = null;
 		CaNanoLabApplicationService appService = (CaNanoLabApplicationService) ApplicationServiceProvider

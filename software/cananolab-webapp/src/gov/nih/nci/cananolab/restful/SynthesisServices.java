@@ -2,13 +2,10 @@ package gov.nih.nci.cananolab.restful;
 
 import gov.nih.nci.cananolab.dto.particle.synthesis.SynthesisBean;
 import gov.nih.nci.cananolab.restful.synthesis.SynthesisBO;
-import gov.nih.nci.cananolab.restful.util.CommonUtil;
 import gov.nih.nci.cananolab.restful.view.SimpleSynthesisBean;
-import gov.nih.nci.cananolab.security.utils.SpringSecurityUtil;
 import gov.nih.nci.cananolab.ui.form.SynthesisForm;
-import java.util.List;
-import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.ws.rs.DefaultValue;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
@@ -46,44 +43,40 @@ public class SynthesisServices {
     }
 
     @GET
-    @Path("/setup")
-    @Produces("application/json")
-    public Response setup(@Context HttpServletRequest httpRequest, @DefaultValue("") @QueryParam("sampleId") String sampleId) {
-
+    @Path("/summaryPrint")
+    @Produces ("application/json")
+    public Response summaryPrint(@Context HttpServletRequest httpRequest, @DefaultValue("") @QueryParam("sampleId") String sampleId)
+    {
         try {
-            SynthesisBO synthesisBO =
-                    (SynthesisBO) SpringApplicationContext.getBean(httpRequest, "synthesisBO");
-            Map<String, Object> dropdownMap = synthesisBO.setupNew(sampleId, httpRequest);
-            return Response.ok(dropdownMap).header("Access-Control-Allow-Credentials", "true").header("Access-Control-Allow-Origin", "*").header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS").header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization").build();
-
-        } catch (Exception e) {
-            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(CommonUtil.wrapErrorMessageInList("Error while setting up drop down lists" + e.getMessage())).build();
-
+        SynthesisForm form = new SynthesisForm();
+        form.setSampleId(sampleId);
+        SynthesisBO synthesisBO = (SynthesisBO) SpringApplicationContext.getBean(httpRequest, "synthesisBO");
+        SynthesisBean synthesisBean = synthesisBO.summaryPrint(form, httpRequest);
+        SimpleSynthesisBean view = new SimpleSynthesisBean();
+        view.transferSynthesisForSummaryView(synthesisBean);
+        return Response.ok(view).build();
+        } catch (Exception e){
+            return Response.ok("Error while printing the file").build();
         }
     }
 
     @GET
-    @Path("/edit")
-    @Produces ("application/json")
-    public Response edit(@Context HttpServletRequest httpRequest, @DefaultValue("") @QueryParam("sampleId") String sampleId, @DefaultValue("") @QueryParam("dataId") String dataId) {
-
+    @Path("/summaryExport")
+    @Produces ("application/vnd.ms-excel")
+    public Response summaryExport(@Context HttpServletRequest httpRequest, @Context HttpServletResponse httpResponse,
+                                  @DefaultValue("") @QueryParam("sampleId") String sampleId, @DefaultValue("") @QueryParam("type") String type)
+    {
         try {
-            SynthesisBO synthesisBO =
-                    (SynthesisBO) SpringApplicationContext.getBean(httpRequest, "synthesisBO");
-            if (!SpringSecurityUtil.isUserLoggedIn())
-                return Response.status(Response.Status.UNAUTHORIZED)
-                        .entity("Session expired").build();
+            SynthesisForm form = new SynthesisForm();
+            form.setSampleId(sampleId);
 
-            SimpleSynthesisBean synth = synthesisBO.setupUpdate(sampleId, dataId, httpRequest);
+            SynthesisBO synthesisBO = (SynthesisBO) SpringApplicationContext.getBean(httpRequest, "synthesisBO");
 
-            List<String> errors = synth.getErrors();
-            return (errors == null || errors.size() == 0) ?
-                    Response.ok(synth).build() :
-                    Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(errors).build();
+            String result = SynthesisBO.summaryExport(form, type, httpRequest, httpResponse);
 
+            return Response.ok("").build();
         } catch (Exception e) {
-            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(CommonUtil.wrapErrorMessageInList("Error while viewing the Synthesis Entity" + e.getMessage())).build();
-
+            return Response.ok("Error while exporting the file").build();
         }
     }
 }

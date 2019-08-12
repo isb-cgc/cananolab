@@ -38,4 +38,7 @@ public class SynthesisPurificationBean {
         //TODO write
         this.domainEntity=purification;
     }
+
+    public void resetDomainCopy(String createdBy, SynthesisPurification synthesisPurification) {
+    }
 }

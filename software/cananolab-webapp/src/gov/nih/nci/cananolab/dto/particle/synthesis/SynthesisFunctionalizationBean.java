@@ -20,6 +20,9 @@ public class SynthesisFunctionalizationBean  extends BaseCompositionEntityBean {
         return source;
     }
 
+    public void resetDomainCopy(String createdBy, SynthesisFunctionalization synthesisFunctionalization) {
+    }
+
     public void setSource(PointOfContact source) {
         this.source = source;
     }

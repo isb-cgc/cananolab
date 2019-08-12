@@ -854,7 +854,7 @@ public class CompositionServiceLocalImpl extends BaseServiceLocalImpl implements
 	 * "Error in assigning chemical association accessibility"; throw new
 	 * CompositionException(error, e); } }
 	 */
-
+//TODO assign and remove don't appear to do anything anymore.  Can be removed?
 	public void assignAccesses(SampleComposition comp, File file) throws CompositionException, NoAccessException {
 		try {
 			if (!springSecurityAclService.isOwnerOfObject(comp.getSample().getId(),
