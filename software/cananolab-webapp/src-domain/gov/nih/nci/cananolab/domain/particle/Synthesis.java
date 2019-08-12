@@ -16,6 +16,7 @@ public class Synthesis implements Serializable {
 	private Set<SynthesisFunctionalization> synthesisFunctionalizations;
 	private Set<SynthesisPurification> synthesisPurifications;
 
+
 	public Set<SynthesisPurification> getSynthesisPurifications() {
 		return synthesisPurifications;
 	}

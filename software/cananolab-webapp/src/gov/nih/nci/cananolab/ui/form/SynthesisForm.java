@@ -2,13 +2,13 @@ package gov.nih.nci.cananolab.ui.form;
 
 import gov.nih.nci.cananolab.dto.particle.synthesis.SynthesisBean;
 import gov.nih.nci.cananolab.dto.particle.synthesis.SynthesisFunctionalizationBean;
-import gov.nih.nci.cananolab.dto.particle.synthesis.SynthesisMaterialsBean;
+import gov.nih.nci.cananolab.dto.particle.synthesis.SynthesisMaterialBean;
 import gov.nih.nci.cananolab.dto.particle.synthesis.SynthesisPurificationBean;
 
 public class SynthesisForm {
 
     SynthesisBean synthesisBean;
-    SynthesisMaterialsBean synthesisMaterialsBean;
+    SynthesisMaterialBean synthesisMaterialBean;
     SynthesisFunctionalizationBean synthesisFunctionalizationBean;
     SynthesisPurificationBean synthesisPurificationBean;
 
@@ -22,12 +22,12 @@ public class SynthesisForm {
         this.synthesisBean = synthesisBean;
     }
 
-    public SynthesisMaterialsBean getSynthesisMaterialsBean() {
-        return synthesisMaterialsBean;
+    public SynthesisMaterialBean getSynthesisMaterialBean() {
+        return synthesisMaterialBean;
     }
 
-    public void setSynthesisMaterialsBean(SynthesisMaterialsBean synthesisMaterialsBean) {
-        this.synthesisMaterialsBean = synthesisMaterialsBean;
+    public void setSynthesisMaterialBean(SynthesisMaterialBean synthesisMaterialBean) {
+        this.synthesisMaterialBean = synthesisMaterialBean;
     }
 
     public SynthesisFunctionalizationBean getSynthesisFunctionalizationBean() {

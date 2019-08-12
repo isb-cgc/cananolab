@@ -31,7 +31,7 @@ import gov.nih.nci.cananolab.dto.particle.composition.FunctionalizingEntityBean;
 import gov.nih.nci.cananolab.dto.particle.composition.NanomaterialEntityBean;
 import gov.nih.nci.cananolab.dto.particle.composition.TargetBean;
 import gov.nih.nci.cananolab.dto.particle.synthesis.SynthesisFunctionalizationBean;
-import gov.nih.nci.cananolab.dto.particle.synthesis.SynthesisMaterialsBean;
+import gov.nih.nci.cananolab.dto.particle.synthesis.SynthesisMaterialBean;
 import gov.nih.nci.cananolab.dto.particle.synthesis.SynthesisPurificationBean;
 import gov.nih.nci.cananolab.restful.view.SimpleSearchSampleBean;
 import java.util.Comparator;
@@ -193,8 +193,8 @@ public class Comparators {
 		}
 	}
 
-	public static class SynthesisMaterialsBeanTypeDataComparator implements Comparator<SynthesisMaterialsBean>{
-    	public int compare(SynthesisMaterialsBean entity1, SynthesisMaterialsBean entity2){
+	public static class SynthesisMaterialBeanTypeDataComparator implements Comparator<SynthesisMaterialBean>{
+    	public int compare(SynthesisMaterialBean entity1, SynthesisMaterialBean entity2){
 			if (entity1
 					.getDomainEntity()
 					.getClass()
