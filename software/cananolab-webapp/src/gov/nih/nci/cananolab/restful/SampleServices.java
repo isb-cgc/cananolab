@@ -850,25 +850,19 @@ public class SampleServices {
      */
     @GET
     @Path("/fullSampleExportJsonAll")
-    public void fullSampleExportJsonAll(@Context HttpServletRequest httpRequest, @Context HttpServletResponse httpResponse,
+    @Produces ("application/json")
+    public Response fullSampleExportJsonAll(@Context HttpServletRequest httpRequest, @Context HttpServletResponse httpResponse,
                                         @DefaultValue("") @QueryParam("sampleIds") String sampleIds)
     {
-        String[] idlist = sampleIds.split( "\\s*,\\s*" );
-        String jsonData = buildAllJson(httpRequest, httpResponse, idlist);
-
-        // Send to user
         try
         {
-            PrintWriter out = httpResponse.getWriter();
-            httpResponse.setContentType("application/force-download");
-            httpResponse.setContentLength(jsonData.length() );
-            httpResponse.setHeader("Content-Disposition","attachment; filename=\"caNanoLabSampleData"  + ".json\"");
-            out.print( jsonData);
-            out.close();
+            String[] idlist = sampleIds.split( "\\s*,\\s*" );
+            String jsonData = buildAllJson(httpRequest, httpResponse, idlist);
+            return Response.ok(jsonData).build();
         }
         catch( Exception e )
         {
-            System.err.println( "Error sending JSON to client: " + e.getMessage() );
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(CommonUtil.wrapErrorMessageInList("Error sending JSON to client: " + e.getMessage())).build();
         }
     }
 
@@ -881,26 +875,20 @@ public class SampleServices {
      */
     @GET
     @Path("/fullSampleExportXmlAll")
-    public void fullSampleExportXmlAll(@Context HttpServletRequest httpRequest, @Context HttpServletResponse httpResponse,
+    @Produces ("application/xml")
+    public Response fullSampleExportXmlAll(@Context HttpServletRequest httpRequest, @Context HttpServletResponse httpResponse,
                                         @DefaultValue("") @QueryParam("sampleIds") String sampleIds)
     {
-        String[] idlist = sampleIds.split( "\\s*,\\s*" );
-        String jsonData =  "{\n \"csNanoLabData\": " + buildAllJson(httpRequest, httpResponse, idlist) +"\n}\n";
-        String xmlData = jsonToXml( jsonData );
-
-        // Send to user
         try
         {
-            PrintWriter out = httpResponse.getWriter();
-            httpResponse.setContentType("application/force-download");
-            httpResponse.setContentLength(xmlData.length() );
-            httpResponse.setHeader("Content-Disposition","attachment; filename=\"caNanoLabSampleData"  + ".xml\"");
-            out.print( xmlData);
-            out.close();
+            String[] idlist = sampleIds.split( "\\s*,\\s*" );
+            String jsonData =  "{\n \"csNanoLabData\": " + buildAllJson(httpRequest, httpResponse, idlist) +"\n}\n";
+            String xmlData = jsonToXml( jsonData );
+            return Response.ok(xmlData).build();
         }
         catch( Exception e )
         {
-            System.err.println( "Error sending XML to client: " + e.getMessage() );
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(CommonUtil.wrapErrorMessageInList("Error sending JSON to client: " + e.getMessage())).build();
         }
     }
 
@@ -1170,7 +1158,7 @@ public class SampleServices {
      * Convert (formatted) JSON to XML
      *
      * @param jsonText
-     * @return
+     * @return  Formatted XML
      */
     private String jsonToXml( String jsonText ) {
         try {
@@ -1220,7 +1208,6 @@ public class SampleServices {
                     temp = temp.replaceAll( pattern, "$1" + data.replaceAll( " ", "_" ));
                     line = temp  + ": [";
                 }
-
                 cleanData.append( line );
                 cleanData.append( "\n" );
             }
@@ -1245,7 +1232,7 @@ public class SampleServices {
             // Turn xml string into a document
             Document document = DocumentBuilderFactory.newInstance()
                     .newDocumentBuilder()
-                    .parse(new InputSource(new ByteArrayInputStream(xml.getBytes( StandardCharsets.US_ASCII ))));
+                    .parse(new InputSource(new ByteArrayInputStream(xml.getBytes( StandardCharsets.UTF_8 ))));
 
             // Remove whitespaces outside tags
             document.normalize();
