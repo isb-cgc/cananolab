@@ -40,6 +40,11 @@
 		<intercept-url pattern="/rest/sample/setup" access="permitAll" />
 		<intercept-url pattern="/rest/sample/setupAdvancedSearch" access="permitAll" />
 
+		<intercept-url pattern="/rest/sample/fullSampleExportXmlAll" access="permitAll" />
+		<intercept-url pattern="/rest/sample/fullSampleExportJsonAll" access="permitAll" />
+		<intercept-url pattern="/rest/sample/fullSampleExportJson" access="permitAll" />
+		<intercept-url pattern="/rest/sample/fullSampleExportXml" access="permitAll" />
+
 		<intercept-url pattern="/rest/composition/summaryView" access="permitAll" />
 
 		<intercept-url pattern="/rest/publication/summaryView" access="permitAll" />
