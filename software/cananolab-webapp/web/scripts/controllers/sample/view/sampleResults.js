@@ -21,6 +21,31 @@ var app = angular.module('angularApp')
       };
 
     };
+    $scope.exportJsonAll = function() {
+      $scope.loader = true;
+      
+      // /caNanoLab/rest/sample/fullSampleExportJsonAll?sampleIds={{utilsService.sampleIdListStrings(sampleData)}}
+      $http({method: 'GET', url: '/caNanoLab/rest/sample/fullSampleExportJsonAll',params: {"sampleIds":utilsService.sampleIdListStrings($scope.sampleData)}}).
+      success(function(data) {
+        console.log("SUCCESS")
+        var jsonData = JSON.stringify(data)
+        var blob = new Blob([jsonData], {type: "application/json"});
+        var url = window.URL.createObjectURL(blob);
+        
+        var a = document.createElement("a");
+        a.style = "display: none";
+        a.href = url;
+        a.download = 'download.json';
+        a.click();
+        window.URL.revokeObjectURL(url);
+        $scope.loader = false;
+        // window.data = data;
+      }).
+      error(function(data) {
+        $scope.loader = false;
+        $scope.message = data;
+      });   
+    }
 
     $scope.openDataAvailability = function(sampleId) {
           $http({method: 'GET', url: '/caNanoLab/rest/sample/viewDataAvailability',params: {"sampleId":sampleId}}).
