@@ -26,9 +26,9 @@ public class SynthesisHelper
     public SynthesisHelper() {
     }
 
-    public Synthesis findSynthesisBySampleId(String sampleId) throws Exception {
-        if (!springSecurityAclService.currentUserHasReadPermission(Long.valueOf(sampleId), SecureClassesEnum.SAMPLE.getClazz()) &&
-                !springSecurityAclService.currentUserHasWritePermission(Long.valueOf(sampleId), SecureClassesEnum.SAMPLE.getClazz())) {
+    public Synthesis findSynthesisBySampleId(Long sampleId) throws Exception {
+        if (!springSecurityAclService.currentUserHasReadPermission(sampleId, SecureClassesEnum.SAMPLE.getClazz()) &&
+                !springSecurityAclService.currentUserHasWritePermission(sampleId, SecureClassesEnum.SAMPLE.getClazz())) {
             throw new NoAccessException("User has no access to the sample " + sampleId);
         }
 
@@ -36,7 +36,7 @@ public class SynthesisHelper
         CaNanoLabApplicationService appService = (CaNanoLabApplicationService) ApplicationServiceProvider.getApplicationService();
         DetachedCriteria crit = DetachedCriteria.forClass(Synthesis.class);
         crit.createAlias("sample", "sample");
-        crit.add(Property.forName("sample.id").eq(new Long(sampleId)));
+        crit.add(Property.forName("sample.id").eq(sampleId));
         crit.setFetchMode("synthesisMaterials", FetchMode.JOIN);
         crit.setFetchMode("synthesisMaterials.files", FetchMode.JOIN);
         crit.setFetchMode("synthesisMaterials.files.keywordCollection", FetchMode.JOIN);

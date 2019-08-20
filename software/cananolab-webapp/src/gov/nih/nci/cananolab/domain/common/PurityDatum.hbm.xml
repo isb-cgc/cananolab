@@ -40,8 +40,8 @@
                 <column name="condition_pk_id" not-null="true"/>
             </many-to-many>
         </set>
-        <many-to-one class="gov.nih.nci.cananolab.domain.particle.Purity"
-                     fetch="select" name="purity">
+        <many-to-one class="gov.nih.nci.cananolab.domain.particle.SynthesisPurity"
+                     fetch="select" name="synthesisPurity">
             <column name="purity_pk_id"/>
         </many-to-one>
         <many-to-one class="File"

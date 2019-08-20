@@ -3,6 +3,7 @@ package gov.nih.nci.cananolab.domain.particle;
 
 import gov.nih.nci.cananolab.domain.common.Protocol;
 
+import gov.nih.nci.cananolab.domain.common.PurificationConfig;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
@@ -14,34 +15,31 @@ public class SynthesisPurification implements java.io.Serializable {
 
 	private Long synthesisPurificationPkId;
 	private Protocol protocol;
-	private SynthesisFunctionalization synthesisFunctionalization;
 	private String type;
 	private String methodName;
 	private String designMethodDescription;
 	private String createdBy;
 	private Date createdDate;
 	private Integer yield;
-	private Set purities = new HashSet(0);
-	private Set purificationConfigs = new HashSet(0);
+	private Set<SynthesisPurity> purities = new HashSet<SynthesisPurity>(0);
+	private Set<PurificationConfig> purificationConfigs = new HashSet<PurificationConfig>(0);
 
 	public SynthesisPurification() {
 	}
 
 	public SynthesisPurification(Long synthesisPurificationPkId, Protocol protocol,
-								 SynthesisFunctionalization synthesisFunctionalization, String createdBy, Date createdDate) {
+								  String createdBy, Date createdDate) {
 		this.synthesisPurificationPkId = synthesisPurificationPkId;
 		this.protocol = protocol;
-		this.synthesisFunctionalization = synthesisFunctionalization;
 		this.createdBy = createdBy;
 		this.createdDate = createdDate;
 	}
 
 	public SynthesisPurification(Long synthesisPurificationPkId, Protocol protocol,
-								 SynthesisFunctionalization synthesisFunctionalization, String type, String methodName,
-								 String designMethodDescription, String createdBy, Date createdDate, Set purities, Set purificationConfigs, Integer yield) {
+								  String type, String methodName, String designMethodDescription, String createdBy,
+								 Date createdDate, Set<SynthesisPurity> purities, Set<PurificationConfig> purificationConfigs, Integer yield) {
 		this.synthesisPurificationPkId = synthesisPurificationPkId;
 		this.protocol = protocol;
-		this.synthesisFunctionalization = synthesisFunctionalization;
 		this.type = type;
 		this.methodName = methodName;
 		this.designMethodDescription = designMethodDescription;
@@ -66,14 +64,6 @@ public class SynthesisPurification implements java.io.Serializable {
 
 	public void setProtocol(Protocol protocol) {
 		this.protocol = protocol;
-	}
-
-	public SynthesisFunctionalization getSynthesisFunctionalization() {
-		return this.synthesisFunctionalization;
-	}
-
-	public void setSynthesisFunctionalization(SynthesisFunctionalization synthesisFunctionalization) {
-		this.synthesisFunctionalization = synthesisFunctionalization;
 	}
 
 	public String getType() {
@@ -116,19 +106,19 @@ public class SynthesisPurification implements java.io.Serializable {
 		this.createdDate = createdDate;
 	}
 
-	public Set getPurities() {
+	public Set<SynthesisPurity> getPurities() {
 		return this.purities;
 	}
 
-	public void setPurities(Set purities) {
+	public void setPurities(Set<SynthesisPurity> purities) {
 		this.purities = purities;
 	}
 
-	public Set getPurificationConfigs() {
+	public Set<PurificationConfig> getPurificationConfigs() {
 		return this.purificationConfigs;
 	}
 
-	public void setPurificationConfigs(Set purificationConfigs) {
+	public void setPurificationConfigs(Set<PurificationConfig> purificationConfigs) {
 		this.purificationConfigs = purificationConfigs;
 	}
 

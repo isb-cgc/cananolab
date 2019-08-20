@@ -123,8 +123,9 @@ public class SynthesisBean extends BaseCompositionEntityBean {
 
     }
 
-    public void resetDomainCopy(String createdBy, Synthesis copy){
+    public void resetDomainCopy(String createdBy, Synthesis copy, Boolean copyData){
         copy.setId(null);
+        //TODO finish writing
         Collection<SynthesisMaterial> oldMaterials = copy.getSynthesisMaterials();
         //checking for null first so that isEmpty doesn't throw NPE
         if(oldMaterials==null || oldMaterials.isEmpty()){
@@ -211,6 +212,12 @@ public class SynthesisBean extends BaseCompositionEntityBean {
 
     public void setSynthesisMaterialBeanList(List<SynthesisMaterialBean> synthesisMaterialBeanList) {
         this.synthesisMaterialBeanList = synthesisMaterialBeanList;
+    }
+
+    public List<SynthesisPurificationBean> getSynthesisPurificationBeanList() {return synthesisPurificationBeanList;}
+
+    public void setSynthesisPurificationBeanList(List<SynthesisPurificationBean> synthesisPurificationBeanList){
+        this.synthesisPurificationBeanList = synthesisPurificationBeanList;
     }
 
     public List<String> getSynthesisSections() {

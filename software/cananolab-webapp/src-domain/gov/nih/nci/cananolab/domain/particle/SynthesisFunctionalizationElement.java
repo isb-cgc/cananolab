@@ -3,7 +3,7 @@ package gov.nih.nci.cananolab.domain.particle;
 import gov.nih.nci.cananolab.domain.common.File;
 import java.math.BigDecimal;
 import java.sql.Timestamp;
-import java.util.Collection;
+import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 
@@ -23,8 +23,18 @@ public class SynthesisFunctionalizationElement {
 
     private Set<File> files;
 
+    private Set<SfeInherentFunction> sfeInherentFunctions = new HashSet<SfeInherentFunction>();
     private SynthesisFunctionalization synthesisFunctionalization;
-    private Collection<SynthesisFunctionalizationElementFile> Files;
+
+
+    public Set<SfeInherentFunction> getSfeInherentFunctions(){
+        return sfeInherentFunctions;
+    }
+
+    public void setSfeInherentFunctions(Set<SfeInherentFunction> functions){
+        this.sfeInherentFunctions= functions;
+    }
+
 
     public Long getId() {
         return synthesisFunctionalizationElementPkId;

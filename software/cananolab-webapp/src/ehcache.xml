@@ -790,7 +790,7 @@ L-->
 		   timeToLiveSeconds="100000"
 		   overflowToDisk="true"/>
 
-	<cache name="gov.nih.nci.cananolab.domain.particle.Purity"
+	<cache name="gov.nih.nci.cananolab.domain.particle.SynthesisPurity"
 		   maxElementsInMemory="500"
 		   eternal="false"
 		   timeToIdleSeconds="1800"

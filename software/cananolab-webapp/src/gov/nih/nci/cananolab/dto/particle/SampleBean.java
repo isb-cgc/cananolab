@@ -13,16 +13,17 @@ import gov.nih.nci.cananolab.domain.common.PointOfContact;
 import gov.nih.nci.cananolab.domain.common.Publication;
 import gov.nih.nci.cananolab.domain.particle.Characterization;
 import gov.nih.nci.cananolab.domain.particle.Sample;
+import gov.nih.nci.cananolab.domain.particle.Synthesis;
 import gov.nih.nci.cananolab.dto.common.PointOfContactBean;
 import gov.nih.nci.cananolab.dto.common.PublicationBean;
 import gov.nih.nci.cananolab.dto.common.SecuredDataBean;
 import gov.nih.nci.cananolab.dto.particle.characterization.CharacterizationBean;
 import gov.nih.nci.cananolab.dto.particle.composition.CompositionBean;
+import gov.nih.nci.cananolab.dto.particle.synthesis.SynthesisBean;
 import gov.nih.nci.cananolab.util.ClassUtils;
 import gov.nih.nci.cananolab.util.Comparators;
 import gov.nih.nci.cananolab.util.Constants;
 import gov.nih.nci.cananolab.util.StringUtils;
-
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -67,6 +68,8 @@ public class SampleBean extends SecuredDataBean {
 	private Boolean hasCharacterizations = false;
 
 	private Boolean hasPublications = false;
+
+	private Boolean hasSynthesis = false;
 
 	private Boolean hasDataAvailability = false;
 
@@ -122,6 +125,10 @@ public class SampleBean extends SecuredDataBean {
 		if (sample.getPublicationCollection() != null
 				&& !sample.getPublicationCollection().isEmpty()) {
 			hasPublications = true;
+		}
+
+		if (sample.getSynthesisCollection() != null && !sample.getSynthesisCollection().isEmpty()){
+			hasSynthesis = true;
 		}
 	}
 
@@ -274,6 +281,14 @@ public class SampleBean extends SecuredDataBean {
 		this.hasPublications = hasPublications;
 	}
 
+	public Boolean getHasSynthesis(){
+		return hasSynthesis;
+	}
+
+	public void setHasSynthesis(Boolean hasSynthesis){
+		this.hasSynthesis = hasSynthesis;
+	}
+
 	public Boolean getHasDataAvailability() {
 		return hasDataAvailability;
 	}
@@ -385,6 +400,17 @@ public class SampleBean extends SecuredDataBean {
 			copy.getSampleComposition().setSample(copy);
 			CompositionBean compBean = new CompositionBean(copy.getSampleComposition());
 			compBean.resetDomainCopy(createdBy, copy.getSampleComposition());
+		}
+
+		//copy synthesis
+		Set<Synthesis> oldSynthesis = copy.getSynthesisCollection();
+		if(oldSynthesis!=null || !oldSynthesis.isEmpty()){
+			//todo write
+			copy.setSynthesisCollection(new HashSet<Synthesis>(oldSynthesis));
+			for(Synthesis synthesis: copy.getSynthesisCollection()){
+				SynthesisBean synthesisBean = new SynthesisBean(synthesis);
+				synthesisBean.resetDomainCopy(createdBy, synthesis, true);
+			}
 		}
 
 		// copy keyword

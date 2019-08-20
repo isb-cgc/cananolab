@@ -6,7 +6,7 @@
  *  See http://ncip.github.com/cananolab/LICENSE.txt for details.
  */
 
-package gov.nih.nci.cananolab.service.sample.impl;
+package gov.nih.nci.cananolab.service.sample.exporter;
 
 import gov.nih.nci.cananolab.domain.characterization.invitro.Cytotoxicity;
 import gov.nih.nci.cananolab.domain.characterization.invitro.Transfection;

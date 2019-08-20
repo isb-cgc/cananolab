@@ -2,12 +2,20 @@ package gov.nih.nci.cananolab.restful.synthesis;
 
 import gov.nih.nci.cananolab.dto.particle.SampleBean;
 import gov.nih.nci.cananolab.dto.particle.synthesis.SynthesisBean;
+import gov.nih.nci.cananolab.dto.particle.synthesis.SynthesisFunctionalizationBean;
+import gov.nih.nci.cananolab.dto.particle.synthesis.SynthesisMaterialBean;
+import gov.nih.nci.cananolab.dto.particle.synthesis.SynthesisPurificationBean;
 import gov.nih.nci.cananolab.restful.core.BaseAnnotationBO;
 import gov.nih.nci.cananolab.security.service.SpringSecurityAclService;
 import gov.nih.nci.cananolab.service.curation.CurationService;
 import gov.nih.nci.cananolab.service.sample.SampleService;
 import gov.nih.nci.cananolab.service.sample.SynthesisService;
+import gov.nih.nci.cananolab.service.sample.exporter.SynthesisExporter;
 import gov.nih.nci.cananolab.ui.form.SynthesisForm;
+import gov.nih.nci.cananolab.util.ExportUtils;
+import gov.nih.nci.cananolab.util.StringUtils;
+import java.util.Collections;
+import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -53,12 +61,87 @@ public class SynthesisBO extends BaseAnnotationBO {
         return this.userDetailsService;
     }
 
-    public static String summaryExport(SynthesisForm form, String type, HttpServletRequest httpRequest, HttpServletResponse httpResponse) {
-        //TODO write
-        return null;
+    public String summaryExport(SynthesisForm form, String type, HttpServletRequest httpRequest, HttpServletResponse httpResponse) throws Exception{
+        // Retrieve compBean from session to avoid re-querying.
+        SynthesisBean synthesisBean = (SynthesisBean) httpRequest.getSession()
+                .getAttribute("compBean");
+        SampleBean sampleBean = (SampleBean) httpRequest.getSession().getAttribute(
+                "theSample");
+        if (synthesisBean == null || sampleBean == null) {
+            // Call shared function to prepare CompositionBean for viewing.
+            this.prepareSummary( form, httpRequest);
+            synthesisBean = (SynthesisBean) httpRequest.getSession().getAttribute(
+                    "synthesisBean");
+            sampleBean = (SampleBean) httpRequest.getSession().getAttribute(
+                    "theSample");
+        }
+
+        // Export only the selected type.
+        this.filterType(httpRequest, synthesisBean);
+
+        // Get sample name for constructing file name.
+        //	String type = request.getParameter("type");
+
+        //per app scan
+        if (!StringUtils.xssValidate(type)) {
+            type="";
+        }
+        String fileName = ExportUtils.getExportFileName(sampleBean.getDomain()
+                .getName(), "SynthesisSummaryView", type);
+        ExportUtils.prepareReponseForExcel(httpResponse, fileName);
+
+        StringBuilder sb = getDownloadUrl(httpRequest);
+        SynthesisExporter.exportSummary(synthesisBean, sb.toString(), httpResponse
+                .getOutputStream());
+
+        return new String("Export successful");
     }
 
-    public SynthesisBean summaryPrint(SynthesisForm form, HttpServletRequest httpRequest) {
+    public SynthesisBean summaryPrint(SynthesisForm form, HttpServletRequest httpRequest) throws Exception {
+        SynthesisBean synthesisBean = (SynthesisBean) httpRequest.getSession();
+        SampleBean sampleBean = (SampleBean) httpRequest.getSession().getAttribute(
+                "theSample");
+        if (synthesisBean == null || sampleBean == null)
+        {
+            this.prepareSummary(form, httpRequest);
+            synthesisBean = (SynthesisBean) httpRequest.getSession().getAttribute(
+                    "synthesisBean");
+            sampleBean = (SampleBean) httpRequest.getSession().getAttribute(
+                    "theSample");
+        }
+        httpRequest.setAttribute("printView", Boolean.TRUE);
+        this.filterType(httpRequest,synthesisBean);
+        return synthesisBean;
+    }
+
+    private void filterType(HttpServletRequest request, SynthesisBean synthesisBean) {
+        // 1. Restore all data first.
+        HttpSession session = request.getSession();
+        List<SynthesisMaterialBean> synBeans = (List<SynthesisMaterialBean>) session
+                .getAttribute(SynthesisBean.MATERIALS_SELECTION);
+        synthesisBean.setSynthesisMaterialBeanList(synBeans);
+        List<SynthesisFunctionalizationBean> funcBeans = (List<SynthesisFunctionalizationBean>) session
+                .getAttribute(SynthesisBean.FUNCTIONALIZATION_SELECTION);
+        synthesisBean.setSynthesisFunctionalizationBeanList(funcBeans);
+        List<SynthesisPurificationBean> purBeans = (List<SynthesisPurificationBean>) session
+                .getAttribute(SynthesisBean.PURIFICATION_SELECTION);
+        synthesisBean.setSynthesisPurificationBeanList(purBeans);
+
+        // 2. Filter out unselected type.
+        String type = request.getParameter("type");
+        if (!StringUtils.isEmpty(type)) {
+            if( !type.equals("all") ) {
+                if (!type.equals(SynthesisBean.MATERIALS_SELECTION)) {
+                    synthesisBean.setSynthesisMaterialBeanList(Collections.EMPTY_LIST);
+                }
+                if (!type.equals(SynthesisBean.FUNCTIONALIZATION_SELECTION)) {
+                    synthesisBean.setSynthesisFunctionalizationBeanList(Collections.EMPTY_LIST);
+                }
+                if (!type.equals(SynthesisBean.PURIFICATION_SELECTION)) {
+                     synthesisBean.setSynthesisPurificationBeanList(Collections.EMPTY_LIST);
+                }
+            }
+        }
     }
 
 
@@ -93,7 +176,7 @@ public class SynthesisBO extends BaseAnnotationBO {
 
         SampleBean sampleBean = setupSampleById(sampleId, request);
 
-        SynthesisBean synthesisBean = synthesisService.findSynthesisBySampleId(sampleId);
+        SynthesisBean synthesisBean = synthesisService.findSynthesisBySampleId(new Long(sampleId));
         form.setSynthesisBean(synthesisBean);
 
         // Save result bean in session for later use - export/print.

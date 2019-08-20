@@ -59,7 +59,7 @@ L-->
         <mapping resource="gov/nih/nci/cananolab/domain/particle/SynthesisPurification.hbm.xml"/>
         <mapping resource="gov/nih/nci/cananolab/domain/common/Supplier.hbm.xml"/>
 		<mapping resource="gov/nih/nci/cananolab/domain/common/PurityDatum.hbm.xml"/>
-		<mapping resource="gov/nih/nci/cananolab/domain/particle/Purity.hbm.xml"/>
+		<mapping resource="gov/nih/nci/cananolab/domain/particle/SynthesisPurity.hbm.xml"/>
     </session-factory>
 </hibernate-configuration>
 

@@ -227,7 +227,7 @@ public class ComposingElementBean {
 	public String getPubChemLink() {
 		if ((domain.getPubChemId() != null)
 				&& !StringUtils.isEmpty(domain.getPubChemDataSourceName())) {
-			pubChemLink = CompositionBean.getPubChemURL(domain
+			pubChemLink = StringUtils.getPubChemURL(domain
 					.getPubChemDataSourceName(), domain.getPubChemId());
 		}
 		return pubChemLink;

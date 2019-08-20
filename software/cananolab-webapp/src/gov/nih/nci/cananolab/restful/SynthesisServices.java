@@ -72,7 +72,7 @@ public class SynthesisServices {
 
             SynthesisBO synthesisBO = (SynthesisBO) SpringApplicationContext.getBean(httpRequest, "synthesisBO");
 
-            String result = SynthesisBO.summaryExport(form, type, httpRequest, httpResponse);
+            String result = synthesisBO.summaryExport(form, type, httpRequest, httpResponse);
 
             return Response.ok("").build();
         } catch (Exception e) {

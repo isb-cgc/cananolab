@@ -123,6 +123,15 @@ public class NanomaterialEntityBean extends BaseCompositionEntityBean {
 		updateType();
 	}
 
+	public ComposingElementBean getComposingElementById(String composingElementId) {
+		for(ComposingElementBean elementBean:composingElements){
+			if (elementBean.getDomainId().equals(composingElementId)){
+				return elementBean;
+			}
+		}
+		return null;
+	}
+
 	public NanomaterialEntity getDomainCopy(String createdBy) {
 		NanomaterialEntity copy = (NanomaterialEntity) ClassUtils.deepCopy(this
 				.getDomainEntity());

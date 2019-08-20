@@ -118,7 +118,7 @@ public class SimpleComposingElementBean {
 	public void setSampleId(String sampleId) {
 		this.sampleId = sampleId;
 	}
-	public void trasferSimpleComposingElementBean(ComposingElementBean sBean) {
+	public void transferSimpleComposingElementBean(ComposingElementBean sBean) {
 
 		
 		this.setDescription(sBean.getDescription());

@@ -39,6 +39,7 @@ public class Sample implements java.io.Serializable {
 	public Sample() {
 	}
 
+	@Deprecated
 	public Sample(String createdBy, Date createdDate, String name, PointOfContact primaryPointOfContact,
 			Set characterizationCollection, SampleComposition sampleComposition, Set publicationCollection,
 			Set otherPointOfContactCollection, Set keywordCollection) {
@@ -51,6 +52,21 @@ public class Sample implements java.io.Serializable {
 		this.publicationCollection = publicationCollection;
 		this.otherPointOfContactCollection = otherPointOfContactCollection;
 		this.keywordCollection = keywordCollection;
+	}
+
+	public Sample(String createdBy, Date createdDate, String name, PointOfContact primaryPointOfContact,
+				  Set characterizationCollection, SampleComposition sampleComposition, Set publicationCollection,
+				  Set otherPointOfContactCollection, Set keywordCollection, Set synthesisCollection) {
+		this.createdBy = createdBy;
+		this.createdDate = createdDate;
+		this.name = name;
+		this.primaryPointOfContact = primaryPointOfContact;
+		this.characterizationCollection = characterizationCollection;
+		this.sampleComposition = sampleComposition;
+		this.publicationCollection = publicationCollection;
+		this.otherPointOfContactCollection = otherPointOfContactCollection;
+		this.keywordCollection = keywordCollection;
+		this.synthesisCollection = synthesisCollection;
 	}
 
 	public Long getId() {

@@ -41,7 +41,7 @@ import gov.nih.nci.cananolab.restful.view.SimpleAdvancedSearchSampleBean;
 import gov.nih.nci.cananolab.security.service.SpringSecurityAclService;
 import gov.nih.nci.cananolab.service.curation.CurationService;
 import gov.nih.nci.cananolab.service.sample.SampleService;
-import gov.nih.nci.cananolab.service.sample.impl.SampleExporter;
+import gov.nih.nci.cananolab.service.sample.exporter.SampleExporter;
 import gov.nih.nci.cananolab.util.DateUtils;
 import gov.nih.nci.cananolab.util.ExportUtils;
 
@@ -242,7 +242,7 @@ public class AdvancedSampleSearchBO extends BaseAnnotationBO
 //			AdvancedSampleBean sampleBean = new AdvancedSampleBean(id);
 //			sampleBean.setSampleName(name);
 //			
-//			//TODO: Need to get access
+//
 //			service.loadAccessesForSampleBean(sampleBean);
 //			
 //			sampleBeans.add(sampleBean);
@@ -268,7 +268,7 @@ public class AdvancedSampleSearchBO extends BaseAnnotationBO
 //			if (i < sampleBeans.size()) {
 //				String sampleId = sampleBeans.get(i).getSampleId();
 //				
-//				//TODO: check on the query. Don't need much
+//
 //				
 //				AdvancedSampleBean loadedAdvancedSample = service
 //						.findAdvancedSampleByAdvancedSearch(sampleId,
