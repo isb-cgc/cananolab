@@ -2,6 +2,7 @@ package gov.nih.nci.cananolab.restful.synthesis;
 
 import gov.nih.nci.cananolab.dto.particle.SampleBean;
 import gov.nih.nci.cananolab.dto.particle.synthesis.SynthesisMaterialBean;
+import gov.nih.nci.cananolab.dto.particle.synthesis.SynthesisMaterialElementBean;
 import gov.nih.nci.cananolab.restful.core.BaseAnnotationBO;
 import gov.nih.nci.cananolab.restful.sample.InitCompositionSetup;
 import gov.nih.nci.cananolab.restful.sample.InitSampleSetup;
@@ -9,16 +10,20 @@ import gov.nih.nci.cananolab.restful.sample.InitSynthesisSetup;
 import gov.nih.nci.cananolab.restful.util.SynthesisUtil;
 import gov.nih.nci.cananolab.restful.view.edit.SimpleSynthesisMaterialBean;
 import gov.nih.nci.cananolab.security.service.SpringSecurityAclService;
+import gov.nih.nci.cananolab.security.utils.SpringSecurityUtil;
 import gov.nih.nci.cananolab.service.curation.CurationService;
 import gov.nih.nci.cananolab.service.sample.SampleService;
 import gov.nih.nci.cananolab.service.sample.SynthesisService;
 import gov.nih.nci.cananolab.ui.form.SynthesisForm;
 import gov.nih.nci.cananolab.util.StringUtils;
+import java.util.ArrayList;
+import java.util.IllegalFormatConversionException;
 import java.util.List;
 import java.util.Map;
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Component;
@@ -28,6 +33,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional(readOnly=false, propagation= Propagation.REQUIRED)
 @Component("synthesisMaterialEntityBO")
 public class SynthesisMaterialBO extends BaseAnnotationBO {
+    Logger logger = Logger.getLogger(SynthesisMaterialBO.class);
 
     @Autowired
     private CurationService curationServiceDAO;
@@ -52,7 +58,7 @@ public class SynthesisMaterialBO extends BaseAnnotationBO {
             throws Exception {
         List<String> msgs;
         String sampleId = synMatBean.getSampleId();
-        SynthesisMaterialBean entityBean = transferSynthesisMateriaBean(synMatBean, request);
+        SynthesisMaterialBean entityBean = transferSynthesisMaterialBean(synMatBean, request);
         SampleBean sampleBean = setupSampleById(sampleId, request);
         List<String> otherSampleNames = synMatBean.getOtherSampleNames();
         msgs = validateInputs(request, entityBean);
@@ -80,7 +86,24 @@ public class SynthesisMaterialBO extends BaseAnnotationBO {
         return null;
     }
 
-    private SynthesisMaterialBean transferSynthesisMateriaBean(SimpleSynthesisMaterialBean synMatBean,
+    public SimpleSynthesisMaterialBean removeMaterialElement(SimpleSynthesisMaterialBean simpleSynthesisMaterialBean, String materialElementId, HttpServletRequest httpRequest)throws Exception {
+        List<String> msgs = new ArrayList<String>();
+        SynthesisMaterialBean entity = transferSynthesisMaterialBean(simpleSynthesisMaterialBean, httpRequest);
+        SynthesisMaterialElementBean materialElementBean = entity.getSynthesisMaterialElementById(materialElementId);
+        entity.removeMaterialElement(materialElementBean);
+        msgs = validateInputs(httpRequest, entity);
+        //If an error, return blank class
+        if(msgs.size()>0){
+            SimpleSynthesisMaterialBean nullBean = new SimpleSynthesisMaterialBean();
+            nullBean.setErrors(msgs);
+            return nullBean;
+        }
+        this.saveEntity(httpRequest, simpleSynthesisMaterialBean.getSampleId(), entity);
+        this.checkOpenForms(entity, httpRequest);
+        return setupUpdate(simpleSynthesisMaterialBean.getSampleId(), entity.getDomainEntity().getId().toString(), httpRequest);
+    }
+
+    private SynthesisMaterialBean transferSynthesisMaterialBean(SimpleSynthesisMaterialBean synMatBean,
                                                                HttpServletRequest request) {
         //Transfer from the simple front-end bean to a full bean
         //TODO write
@@ -141,21 +164,21 @@ public class SynthesisMaterialBO extends BaseAnnotationBO {
         InitSynthesisSetup.getInstance().persistSynthesisMaterialDropdowns(
                 request, synthesisMaterialBean);
 
-        // Synthesis Type
+        // Synthesis Material Type
         String entityType = synthesisMaterialBean.getType();
         setOtherValueOption(request, entityType, "synthesisMaterialTypes");
-        // function type
-        List<String> purificationTypes = SynthesisMaterialBean.getSynthesisMaterialElementPurificationTypes();
+
+       //TODO Check SynthesisMaterialElement?
 
 
         String detailPage = null;
-//        if (synthesisBean.isWithProperties()) {
+
         if (!StringUtils.isEmpty(synthesisMaterialBean.getType())) {
             detailPage = InitCompositionSetup.getInstance().getDetailPage(
                     synthesisMaterialBean.getType(), "synthesisMaterial");
         }
         request.setAttribute("synthesisDetailPage", detailPage);
-//        }
+
     }
 
     public SimpleSynthesisMaterialBean setupUpdate(String sampleId, String dataId, HttpServletRequest httpRequest) throws Exception {
@@ -163,12 +186,46 @@ public class SynthesisMaterialBO extends BaseAnnotationBO {
         // set up other particles with the same primary point of contact
 //        InitSampleSetup.getInstance().getOtherSampleNames(httpRequest, sampleId, sampleService);
 
-        SynthesisMaterialBean synBean = synthesisService.findSynthesisMaterialById(sampleId, dataId);
-        form.setSynthesisMaterialBean(synBean);
-        this.checkOpenForms(synBean, httpRequest);
-        httpRequest.getSession().setAttribute("sampleId", sampleId);
-        SimpleSynthesisMaterialBean simpleSynthesisMaterialBean = new SimpleSynthesisMaterialBean();
-        simpleSynthesisMaterialBean.transferSynthesisMaterialBeanToSimple(synBean, httpRequest, springSecurityAclService);
-        return simpleSynthesisMaterialBean;
+        try {
+            SynthesisMaterialBean synBean = synthesisService.findSynthesisMaterialById(new Long(sampleId), new Long(dataId));
+
+            form.setSynthesisMaterialBean(synBean);
+            this.checkOpenForms(synBean, httpRequest);
+            httpRequest.getSession().setAttribute("sampleId", sampleId);
+            SimpleSynthesisMaterialBean simpleSynthesisMaterialBean = new SimpleSynthesisMaterialBean();
+            simpleSynthesisMaterialBean.transferSynthesisMaterialBeanToSimple(synBean, httpRequest, springSecurityAclService);
+            return simpleSynthesisMaterialBean;
+        } catch (IllegalFormatConversionException e){
+            logger.error("Either sample id or data id is not an appropriate identifier",e);
+            throw e;
+        }
     }
+
+    public SimpleSynthesisMaterialBean saveMaterialElement(SimpleSynthesisMaterialBean simpleSynthesisMaterialBean, HttpServletRequest httpServletRequest)throws Exception{
+        SynthesisMaterialBean entity = null;
+        String sampleId = simpleSynthesisMaterialBean.getSampleId();
+        try{
+            entity = transferSynthesisMaterialBean(simpleSynthesisMaterialBean, httpServletRequest);
+            List<String> msgs = new ArrayList<String>();
+            List<SynthesisMaterialElementBean> synthesisMaterialElementBeans = entity.getSynthesisMaterialElements();
+            for(SynthesisMaterialElementBean synthesisMaterialElementBean: synthesisMaterialElementBeans){
+                synthesisMaterialElementBean.setUpDomain(SpringSecurityUtil.getLoggedInUserName());
+            }
+            msgs = validateInputs(httpServletRequest, entity);
+            if(msgs.size()>0){
+                SimpleSynthesisMaterialBean simpleSynthesisMaterialBean_error = new SimpleSynthesisMaterialBean();
+                simpleSynthesisMaterialBean_error.setErrors(msgs);
+                return simpleSynthesisMaterialBean_error;
+            }
+            msgs = this.saveEntity(httpServletRequest,sampleId,entity);
+            httpServletRequest.setAttribute("dataId", entity.getDomainEntity().getId().toString());
+
+
+        } catch (Exception e){
+            logger.error("Error while saving Synthesis Material Element ",e);
+        }
+        return setupUpdate(sampleId, entity.getDomainEntity().getId().toString(), httpServletRequest);
+    }
+
+
 }

@@ -503,4 +503,20 @@ public class StringUtils {
 		list.remove(stringToRemove);
 		return list.toArray(new String[0]);
 	}
+
+	public static String getPubChemURL(String pubChemDS, Long pubChemId) {
+		StringBuffer sb = new StringBuffer(SampleConstants.PUBCHEM_URL);
+
+		if (SampleConstants.BIOASSAY.equals(pubChemDS)) {
+			sb.append(SampleConstants.BIOASSAY_ID);
+		} else if (SampleConstants.COMPOUND.equals(pubChemDS)) {
+			sb.append(SampleConstants.COMPOUND_ID);
+		} else if (SampleConstants.SUBSTANCE.equals(pubChemDS)) {
+			sb.append(SampleConstants.SUBSTANCE_ID);
+		}
+
+		sb.append('=').append(pubChemId);
+
+		return sb.toString();
+	}
 }

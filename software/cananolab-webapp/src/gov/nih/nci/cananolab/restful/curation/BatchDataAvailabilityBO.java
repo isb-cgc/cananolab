@@ -17,7 +17,7 @@ import gov.nih.nci.cananolab.restful.util.PropertyUtil;
 import gov.nih.nci.cananolab.service.common.LongRunningProcess;
 import gov.nih.nci.cananolab.service.sample.DataAvailabilityService;
 import gov.nih.nci.cananolab.service.sample.SampleService;
-import gov.nih.nci.cananolab.service.sample.impl.BatchDataAvailabilityProcess;
+import gov.nih.nci.cananolab.service.sample.BatchDataAvailabilityProcess;
 import gov.nih.nci.cananolab.ui.form.GenerateBatchDataAvailabilityForm;
 
 @Transactional(readOnly=false, propagation=Propagation.REQUIRED)

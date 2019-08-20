@@ -65,16 +65,40 @@ public class MaterialsServices {
     @Path("/saveSynthesisMaterialElement")
     @Produces ("application/json")
     public Response saveSynthesisMaterialElement(@Context HttpServletRequest httpRequest, SimpleSynthesisMaterialBean simpleSynthesisMaterialBean) {
-        //TODO write
-        return null;
+
+        try{
+            SynthesisMaterialBO synthesisMaterialBO = (SynthesisMaterialBO) SpringApplicationContext.getBean(httpRequest, "synthesisMaterialElementBO");
+            if(!SpringSecurityUtil.isUserLoggedIn())
+                return Response.status(Response.Status.UNAUTHORIZED).entity("Session expired").build();
+
+            SimpleSynthesisMaterialBean synthesisMaterialBean = synthesisMaterialBO.saveMaterialElement(simpleSynthesisMaterialBean, httpRequest);
+
+            List<String> errors = synthesisMaterialBean.getErrors();
+            return(errors ==null || errors.size()==0)?
+                    Response.ok(synthesisMaterialBean).build(): Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(errors).build();
+
+        } catch(Exception e){
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity((CommonUtil.wrapErrorMessageInList("Error while saving Synthesis Material Element "+ e.getStackTrace()))).build();
+        }
     }
 
     @POST
     @Path("/removeSynthesisMaterialElement")
     @Produces ("application/json")
-    public Response removeSynthesisMaterialElement(@Context HttpServletRequest httpRequest, SimpleSynthesisMaterialBean simpleSynthesisMaterialBean) {
-        //TODO write
-        return null;
+    public Response removeSynthesisMaterialElement(@Context HttpServletRequest httpRequest, SimpleSynthesisMaterialBean simpleSynthesisMaterialBean, String materialElementId) {
+        try{
+            SynthesisMaterialBO synthesisMaterialBO = (SynthesisMaterialBO) SpringApplicationContext.getBean(httpRequest, "synthesisMaterialBO");
+            if(!SpringSecurityUtil.isUserLoggedIn()){
+                return Response.status(Response.Status.UNAUTHORIZED).entity("Session expired").build();
+            }
+            SimpleSynthesisMaterialBean synthesisMaterialBean= synthesisMaterialBO.removeMaterialElement(simpleSynthesisMaterialBean,materialElementId,httpRequest);
+            List<String> errors = synthesisMaterialBean.getErrors();
+            return (errors==null || errors.size()==0)? Response.ok(synthesisMaterialBean).build() :
+                    Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(errors).build();
+
+        }catch(Exception e){
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(CommonUtil.wrapErrorMessageInList("Error while removing Material Element "+ e.getMessage())).build();
+        }
     }
 
     @POST

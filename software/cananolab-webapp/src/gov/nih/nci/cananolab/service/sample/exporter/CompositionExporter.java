@@ -6,7 +6,7 @@
  *  See http://ncip.github.com/cananolab/LICENSE.txt for details.
  */
 
-package gov.nih.nci.cananolab.service.sample.impl;
+package gov.nih.nci.cananolab.service.sample.exporter;
 
 import gov.nih.nci.cananolab.domain.agentmaterial.Antibody;
 import gov.nih.nci.cananolab.domain.agentmaterial.SmallMolecule;
@@ -516,7 +516,7 @@ public class CompositionExporter {
 						sb.append(pubChemId).append(' ');
 						sb.append('(').append(pubChemDs).append(')');
 						ExportUtils.createCell(row, 1, hlinkStyle, sb
-								.toString(), CompositionBean
+								.toString(), StringUtils
 								.getPubChemURL(pubChemDs, pubChemId));
 					}
 
@@ -804,7 +804,7 @@ public class CompositionExporter {
 								sb.append(pubChemId).append(' ');
 								sb.append('(').append(pubChemDs).append(')');
 								ExportUtils.createCell(row, 1, hlinkStyle, sb
-										.toString(), CompositionBean
+										.toString(), StringUtils
 										.getPubChemURL(pubChemDs, pubChemId));
 							}
 

@@ -2,7 +2,7 @@ package gov.nih.nci.cananolab.domain.common;
 // Generated Apr 3, 2019, 8:32:55 PM by Hibernate Tools 5.4.2.Final
 
 
-import gov.nih.nci.cananolab.domain.particle.Purity;
+import gov.nih.nci.cananolab.domain.particle.SynthesisPurity;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
@@ -14,7 +14,7 @@ public class PurityDatum implements java.io.Serializable {
 
 	private Long datumPkId;
 	private File file;
-	private Purity purity;
+	private SynthesisPurity synthesisPurity;
 	private String name;
 	private Float value;
 	private String valueType;
@@ -35,11 +35,11 @@ public class PurityDatum implements java.io.Serializable {
 		this.createdDate = createdDate;
 	}
 
-	public PurityDatum(long datumPkId, File file, Purity purity, String name, Float value, String valueType,
-			String valueUnit, String createdBy, Date createdDate, String operand, Set<Condition> experimentConditions) {
+	public PurityDatum(long datumPkId, File file, SynthesisPurity synthesisPurity, String name, Float value, String valueType,
+					   String valueUnit, String createdBy, Date createdDate, String operand, Set<Condition> experimentConditions) {
 		this.datumPkId = datumPkId;
 		this.file = file;
-		this.purity = purity;
+		this.synthesisPurity = synthesisPurity;
 		this.name = name;
 		this.value = value;
 		this.valueType = valueType;
@@ -66,12 +66,12 @@ public class PurityDatum implements java.io.Serializable {
 		this.file = file;
 	}
 
-	public Purity getPurity() {
-		return this.purity;
+	public SynthesisPurity getSynthesisPurity() {
+		return this.synthesisPurity;
 	}
 
-	public void setPurity(Purity purity) {
-		this.purity = purity;
+	public void setSynthesisPurity(SynthesisPurity synthesisPurity) {
+		this.synthesisPurity = synthesisPurity;
 	}
 
 	public String getName() {

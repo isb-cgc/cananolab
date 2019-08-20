@@ -15,28 +15,47 @@ import gov.nih.nci.cananolab.service.BaseService;
 import gov.nih.nci.cananolab.service.sample.helper.SynthesisHelper;
 
 public interface SynthesisService extends BaseService {
-    SynthesisBean findSynthesisById(String sampleId, String dataId)throws SynthesisException, NoAccessException;
+    void copyAndSaveSynthesisFunctionalization(SynthesisFunctionalizationBean entityBean, SampleBean oldSampleBean,
+                                               SampleBean[] newSampleBeans) throws SynthesisException,
+            NoAccessException;
 //TODO write
+
+    void copyAndSaveSynthesisMaterial(SynthesisMaterialBean entityBean, SampleBean oldSampleBean,
+                                      SampleBean[] newSampleBeans) throws SynthesisException, NoAccessException;
+
+    void copyAndSaveSynthesisPurification(SynthesisPurificationBean entityBean, SampleBean oldSampleBean,
+                                          SampleBean[] newSampleBeans) throws SynthesisException, NoAccessException;
+
+    void deleteSynthesis(Synthesis synthesis) throws SynthesisException, NoAccessException;
+
+    void deleteSynthesisFunctionalization(SynthesisFunctionalization synthesisFunctionalization) throws SynthesisException, NoAccessException;
+
+    void deleteSynthesisMaterial(SynthesisMaterial synthesisMaterial) throws SynthesisException, NoAccessException;
+
+    void deleteSynthesisPurification(SynthesisPurification synthesisPurification) throws SynthesisException,
+            NoAccessException;
+
+    SynthesisBean findSynthesisById(Long sampleId, Long dataId) throws SynthesisException, NoAccessException;
+
+    SynthesisBean findSynthesisBySampleId(Long sampleId) throws SynthesisException, NoAccessException;
+
+
+    SynthesisFunctionalizationBean findSynthesisFunctionalizationById(Long sampleId, Long dataId) throws SynthesisException, NoAccessException;
+
+    SynthesisMaterialBean findSynthesisMaterialById(Long sampleId, Long dataId) throws SynthesisException,
+            NoAccessException;
+
+    SynthesisPurificationBean findSynthesisPurificationById(Long sampleId, Long dataId) throws SynthesisException
+            , NoAccessException;
 
     SynthesisHelper getHelper();
 
-    SynthesisBean findSynthesisBySampleId(String sampleId)throws SynthesisException, NoAccessException;
-    SynthesisMaterialBean findSynthesisMaterialById(String sampleId, String dataId)throws SynthesisException, NoAccessException;
-    SynthesisFunctionalizationBean findSynthesisFunctionalizationById(String sampleId, String dataId)throws SynthesisException, NoAccessException;
-    SynthesisPurificationBean findSynthesisPurificationById(String sampleId, String dataId)throws SynthesisException, NoAccessException;
+    void saveSynthesisFunctionalization(SampleBean sampleBean,
+                                        SynthesisFunctionalizationBean synthesisFunctionalizationBean) throws SynthesisException, NoAccessException;
 
-    void copyAndSaveSynthesisMaterial(SynthesisMaterialBean entityBean, SampleBean oldSampleBean, SampleBean[] newSampleBeans) throws SynthesisException, NoAccessException;
-    void copyAndSaveSynthesisFunctionalization(SynthesisFunctionalizationBean entityBean, SampleBean oldSampleBean, SampleBean[] newSampleBeans) throws SynthesisException, NoAccessException;
-    void copyAndSaveSynthesisPurification(SynthesisPurificationBean entityBean, SampleBean oldSampleBean, SampleBean[] newSampleBeans)throws SynthesisException, NoAccessException;
+    void saveSynthesisMaterial(SampleBean sampleBean, SynthesisMaterialBean synthesisMaterialBean) throws SynthesisException, NoAccessException;
 
-    void deleteSynthesis(Synthesis synthesis) throws SynthesisException, NoAccessException;
-    void deleteSynthesisMaterial(SynthesisMaterial synthesisMaterial) throws SynthesisException, NoAccessException;
-    void deleteSynthesisFunctionalization(SynthesisFunctionalization synthesisFunctionalization) throws SynthesisException, NoAccessException;
-    void deleteSynthesisPurification(SynthesisPurification synthesisPurification) throws SynthesisException, NoAccessException;
-
-    void saveSynthesisMaterial(SampleBean sampleBean, SynthesisMaterialBean synthesisMaterialBean)throws SynthesisException, NoAccessException;
-    void saveSynthesisFunctionalization(SampleBean sampleBean, SynthesisFunctionalizationBean synthesisFunctionalizationBean)throws SynthesisException, NoAccessException;
-    void saveSynthesisPurification(SampleBean sampleBean, SynthesisPurificationBean synthesisPurificationBean)throws SynthesisException, NoAccessException;
+    void saveSynthesisPurification(SampleBean sampleBean, SynthesisPurificationBean synthesisPurificationBean) throws SynthesisException, NoAccessException;
 
 
 }

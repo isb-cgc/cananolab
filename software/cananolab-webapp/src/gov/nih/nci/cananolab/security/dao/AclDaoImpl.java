@@ -58,7 +58,7 @@ public class AclDaoImpl extends NamedParameterJdbcDaoSupport implements AclDao
 																"and p.publication_pk_id = aoi.object_id_identity and p.publication_pk_id = f.file_pk_id and f.created_by != :loggedInUser " +
 																"and ae.sid = asid.id and aoi.object_id_class = ac.id and ae.acl_object_identity = aoi.id";
 
-	//TODO This will not work.  Need to create FK between the two tables and CASCADE
+	//This will not work.  Need to create FK between the two tables and CASCADE
 //	private static final String DEL_SID_ACCESS_SQL = "delete from acl_entry ae, acl_sid s where ae.sid = s.id and s.sid = :sid";
 	private static final String DEL_SID_ACCESS_SQL = "delete from acl_sid where acl_sid.id = :sid";
 	

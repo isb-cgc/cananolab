@@ -19,7 +19,7 @@ import gov.nih.nci.cananolab.security.service.SpringSecurityAclService;
 import gov.nih.nci.cananolab.service.curation.CurationService;
 import gov.nih.nci.cananolab.service.sample.CompositionService;
 import gov.nih.nci.cananolab.service.sample.SampleService;
-import gov.nih.nci.cananolab.service.sample.impl.CompositionExporter;
+import gov.nih.nci.cananolab.service.sample.exporter.CompositionExporter;
 import gov.nih.nci.cananolab.ui.form.CompositionForm;
 import gov.nih.nci.cananolab.util.ExportUtils;
 import gov.nih.nci.cananolab.util.StringUtils;

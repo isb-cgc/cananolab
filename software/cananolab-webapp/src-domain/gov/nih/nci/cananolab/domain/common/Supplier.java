@@ -1,7 +1,6 @@
 package gov.nih.nci.cananolab.domain.common;
 // Generated Apr 3, 2019, 8:32:55 PM by Hibernate Tools 5.4.2.Final
 
-import gov.nih.nci.cananolab.domain.particle.SynthesisMaterialElement;
 import java.io.Serializable;
 
 /**
@@ -10,15 +9,6 @@ import java.io.Serializable;
 public class Supplier implements Serializable {
 
 	private long supplierPkId;
-	private SynthesisMaterialElement synthesisMaterialElement;
-
-	public SynthesisMaterialElement getSynthesisMaterialElement() {
-		return synthesisMaterialElement;
-	}
-
-	public void setSynthesisMaterialElement(SynthesisMaterialElement synthesisMaterialElement) {
-		this.synthesisMaterialElement = synthesisMaterialElement;
-	}
 
 	private String supplierName;
 	private String lot;
@@ -26,13 +16,11 @@ public class Supplier implements Serializable {
 	public Supplier() {
 	}
 
-	public Supplier(SynthesisMaterialElement synthesisMaterialElement, String supplierName) {
-		this.synthesisMaterialElement = synthesisMaterialElement;
+	public Supplier(String supplierName) {
 		this.supplierName = supplierName;
 	}
 
-	public Supplier(SynthesisMaterialElement functionalizingEntity, String supplierName, String lot) {
-		this.synthesisMaterialElement = functionalizingEntity;
+	public Supplier(String supplierName, String lot) {
 		this.supplierName = supplierName;
 		this.lot = lot;
 	}

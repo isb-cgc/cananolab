@@ -6,11 +6,9 @@
  *  See http://ncip.github.com/cananolab/LICENSE.txt for details.
  */
 
-package gov.nih.nci.cananolab.service.sample.impl;
+package gov.nih.nci.cananolab.service.sample;
 
 import gov.nih.nci.cananolab.service.common.LongRunningProcess;
-import gov.nih.nci.cananolab.service.sample.DataAvailabilityService;
-import gov.nih.nci.cananolab.service.sample.SampleService;
 import gov.nih.nci.cananolab.util.ClassUtils;
 
 import java.util.List;

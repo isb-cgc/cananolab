@@ -65,23 +65,17 @@
                 <comment>synthesis_material_pk_id</comment>
             </column>
         </many-to-one>
-
-<!--        <set fetch="select" lazy="true" name="files" sort="unsorted" table="synthesis_material_element_file">-->
-<!--            <key>-->
-<!--                <column name="synthesis_material_element_pk_id" not-null="true">-->
-<!--                    <comment>synthesis_material_element_pk_id</comment>-->
-<!--                </column>-->
-<!--            </key>-->
-<!--            <many-to-many entity-name="File" unique="false">-->
-<!--                <column name="file_pk_id" not-null="true">-->
-<!--                    <comment>file_pk_id</comment>-->
-<!--                </column>-->
-<!--            </many-to-many>-->
-<!--        </set>-->
         <set name="files" table="synthesis_material_element_file" lazy="false" inverse="false" cascade="all-delete-orphan">
             <cache usage="read-write" />
             <key column="synthesis_material_element_pk_id" />
             <many-to-many class="gov.nih.nci.cananolab.domain.common.File" column="file_pk_id" />
+        </set>
+
+        <set name="smeInherentFunctions" inverse="true">
+            <key>
+                <column name="synthesis_material_element_pk_id"/>
+            </key>
+            <one-to-many not-found="ignore" class="SmeInherentFunction"/>
         </set>
     </class>
 </hibernate-mapping>

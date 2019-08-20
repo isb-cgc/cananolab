@@ -78,7 +78,7 @@ public class SearchSampleBO extends AbstractDispatchBO {
 		HttpSession session = request.getSession();
 		// get the page number from request
 		
-		//TODO
+
 		int displayPage = form.getPage(); ///getDisplayPage(request);
 		List<SampleBean> sampleBeans = new ArrayList<SampleBean>();
 		// retrieve from session if it's not null and not first page

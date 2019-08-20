@@ -472,7 +472,7 @@ public class FunctionalizingEntityBean extends BaseCompositionEntityBean {
 	public String getPubChemLink() {
 		if (!StringUtils.isEmpty(pubChemId)
 				&& !StringUtils.isEmpty(pubChemDataSourceName)) {
-			pubChemLink = CompositionBean.getPubChemURL(pubChemDataSourceName,
+			pubChemLink = StringUtils.getPubChemURL(pubChemDataSourceName,
 					new Long(pubChemId));
 		}
 		return pubChemLink;

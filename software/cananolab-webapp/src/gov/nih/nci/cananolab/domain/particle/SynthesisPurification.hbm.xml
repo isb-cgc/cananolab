@@ -47,13 +47,13 @@
             </column>
         </property>
         <set fetch="select" inverse="true" lazy="true" name="purities"
-             table="purity">
+             table="synthesisPurity">
             <key>
                 <column name="synthesis_purification_pk_id" not-null="true">
                     <comment>synthesis_purification_pk_id</comment>
                 </column>
             </key>
-            <one-to-many class="Purity"/>
+            <one-to-many class="gov.nih.nci.cananolab.domain.particle.SynthesisPurity"/>
         </set>
         <set fetch="select" inverse="true" lazy="true"
              name="purificationConfigs" table="purification_config">

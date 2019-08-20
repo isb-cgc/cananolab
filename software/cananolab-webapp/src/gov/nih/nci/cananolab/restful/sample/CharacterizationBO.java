@@ -37,7 +37,7 @@ import gov.nih.nci.cananolab.service.curation.CurationService;
 import gov.nih.nci.cananolab.service.protocol.ProtocolService;
 import gov.nih.nci.cananolab.service.sample.CharacterizationService;
 import gov.nih.nci.cananolab.service.sample.SampleService;
-import gov.nih.nci.cananolab.service.sample.impl.CharacterizationExporter;
+import gov.nih.nci.cananolab.service.sample.exporter.CharacterizationExporter;
 import gov.nih.nci.cananolab.util.Constants;
 import gov.nih.nci.cananolab.util.DateUtils;
 import gov.nih.nci.cananolab.util.ExportUtils;
@@ -214,7 +214,7 @@ public class CharacterizationBO extends BaseAnnotationBO {
 		CharacterizationBean charBean = characterizationService.findCharacterizationById(charId);
 		
 //
-//		// TODO: Find out usage of "charNameDatumNames", not used in any JSPs.
+//		// Find out usage of "charNameDatumNames", not used in any JSPs.
 //		InitCharacterizationSetup.getInstance().getDatumNamesByCharName(
 //				request, charBean.getCharacterizationType(),
 //				charBean.getCharacterizationName(), charBean.getAssayType());
@@ -360,7 +360,7 @@ public class CharacterizationBO extends BaseAnnotationBO {
 //			HttpServletRequest request, HttpServletResponse response)
 //			throws Exception {
 		
-		//TODO
+
 //		DynaValidatorForm theForm = (DynaValidatorForm) form;
 //		CharacterizationService service = this.setServicesInSession(request);
 //		String charId = super.validateId(request, "charId");
@@ -454,7 +454,7 @@ public class CharacterizationBO extends BaseAnnotationBO {
 					.getSession().getAttribute("characterizationSummaryView");
 		}
 		
-		//TODO: w
+
 		List<String> charTypes = prepareCharacterizationTypes(request);
 		
 		this.filterType(request, "all", charTypes); // Filter out un-selected types.
@@ -552,7 +552,7 @@ public class CharacterizationBO extends BaseAnnotationBO {
 		logger.debug("Save char complete");
 		characterizationService.assignAccesses(achar.getDomainChar(), configBean.getDomain());
 		
-		//TODO:
+
 		//this.checkOpenForms(achar, theForm, request);
 		InitCharacterizationSetup.getInstance().persistCharacterizationDropdowns(request, achar);
 		

@@ -37,14 +37,15 @@ public class SynthesisServiceLocalImpl extends BaseServiceLocalImpl implements S
         return synthesisHelper;
     }
 
-    public SynthesisBean findSynthesisById(String sampleId, String dataId) throws SynthesisException, NoAccessException {
+    public SynthesisBean findSynthesisById(Long sampleId, Long dataId) throws SynthesisException, NoAccessException {
+        //TODO write
         return null;
     }
 
 
 
 
-    public SynthesisBean findSynthesisBySampleId(String sampleId) throws SynthesisException {
+    public SynthesisBean findSynthesisBySampleId(Long sampleId) throws SynthesisException {
         SynthesisBean synthesisBean = null;
         try{
             Synthesis synthesis = synthesisHelper.findSynthesisBySampleId(sampleId);
@@ -59,73 +60,79 @@ public class SynthesisServiceLocalImpl extends BaseServiceLocalImpl implements S
     }
 
 
-    public SynthesisMaterialBean findSynthesisMaterialById(String sampleId, String dataId) {
+
+    public SynthesisMaterialBean findSynthesisMaterialById(Long sampleId, Long dataId) {
+        //TODO write
         return null;
     }
 
 
-    public SynthesisFunctionalizationBean findSynthesisFunctionalizationById(String sampleId, String dataId) {
+    public SynthesisFunctionalizationBean findSynthesisFunctionalizationById(Long sampleId, Long dataId) {
+        //TODO write
         return null;
     }
 
 
-    public SynthesisPurificationBean findSynthesisPurificationById(String sampleId, String dataId) {
+    public SynthesisPurificationBean findSynthesisPurificationById(Long sampleId, Long dataId) {
+        //TODO write
         return null;
     }
 
 
     public void copyAndSaveSynthesisMaterial(SynthesisMaterialBean entityBean, SampleBean oldSampleBean, SampleBean[] newSampleBeans) throws SynthesisException, NoAccessException {
+        //TODO write
 
     }
 
 
     public void copyAndSaveSynthesisFunctionalization(SynthesisFunctionalizationBean entityBean, SampleBean oldSampleBean, SampleBean[] newSampleBeans) throws SynthesisException, NoAccessException {
-
+//TODO write
     }
 
 
     public void copyAndSaveSynthesisPurification(SynthesisPurificationBean entityBean, SampleBean oldSampleBean, SampleBean[] newSampleBeans) throws SynthesisException, NoAccessException {
-
+//TODO write
     }
 
 
     public void deleteSynthesis(Synthesis synthesis) throws SynthesisException, NoAccessException {
-
+//TODO write
     }
 
 
     public void deleteSynthesisMaterial(SynthesisMaterial synthesisMaterial) throws SynthesisException, NoAccessException {
-
+//TODO write
     }
 
 
     public void deleteSynthesisFunctionalization(SynthesisFunctionalization synthesisFunctionalization) throws SynthesisException, NoAccessException {
-
+//TODO write
     }
 
 
     public void deleteSynthesisPurification(SynthesisPurification synthesisPurification) throws SynthesisException,
             NoAccessException {
-
+//TODO write
     }
 
 
     public void saveSynthesisMaterial(SampleBean sampleBean, SynthesisMaterialBean synthesisMaterialBean) throws SynthesisException, NoAccessException {
-
+//TODO write
     }
 
 
     public void saveSynthesisFunctionalization(SampleBean sampleBean, SynthesisFunctionalizationBean synthesisFunctionalizationBean) throws SynthesisException, NoAccessException {
-
+//TODO write
     }
 
 
     public void saveSynthesisPurification(SampleBean sampleBean, SynthesisPurificationBean synthesisPurificationBean) throws SynthesisException, NoAccessException {
-
+//TODO write
     }
 
 
-    public SynthesisBean findSynthesisById(String sampleId) {
+    public SynthesisBean findSynthesisById(Long sampleId) {
+        //TODO write
         return null;
     }
 }

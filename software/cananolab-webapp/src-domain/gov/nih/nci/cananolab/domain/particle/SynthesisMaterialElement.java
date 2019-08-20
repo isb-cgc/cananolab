@@ -14,7 +14,7 @@ import java.util.Set;
  */
 public class SynthesisMaterialElement implements Serializable {
 
-	private long synthesisMaterialElementPkId;
+	private Long synthesisMaterialElementPkId;
 	private SynthesisMaterial synthesisMaterial;
 
 	public SynthesisMaterial getSynthesisMaterial() {
@@ -35,22 +35,16 @@ public class SynthesisMaterialElement implements Serializable {
 	private String valueUnit;
 	private String pubChemDatasourceName;
 	private Long pubChemId;
-	private Set<SmeInherentFunction> SmeInherentFunction = new HashSet<SmeInherentFunction>(0);
+	private Set<SmeInherentFunction> smeInherentFunctions = new HashSet<SmeInherentFunction>(0);
 	private Set<File> files = new HashSet<File>(0);
 	private Supplier supplier;
 
-	public Supplier getSupplier() {
-		return supplier;
-	}
 
-	public void setSupplier(Supplier supplier) {
-		this.supplier = supplier;
-	}
 
 	public SynthesisMaterialElement() {
 	}
 
-	public SynthesisMaterialElement(long synthesisMaterialElementPkId, SynthesisMaterial synthesisMaterial,
+	public SynthesisMaterialElement(Long synthesisMaterialElementPkId, SynthesisMaterial synthesisMaterial,
 			String createdBy, Date createdDate) {
 		this.synthesisMaterialElementPkId = synthesisMaterialElementPkId;
 		this.synthesisMaterial = synthesisMaterial;
@@ -58,10 +52,10 @@ public class SynthesisMaterialElement implements Serializable {
 		this.createdDate = createdDate;
 	}
 
-	public SynthesisMaterialElement(long synthesisMaterialElementPkId, SynthesisMaterial synthesisMaterial,
+	public SynthesisMaterialElement(Long synthesisMaterialElementPkId, SynthesisMaterial synthesisMaterial,
 			String molecularFormula, String molecularFormulaType, String description, String createdBy,
 			Date createdDate, String chemicalName, Float value, String valueUnit, String pubChemDatasourceName,
-			Long pubChemId, Set<SmeInherentFunction> SmeInherentFunction, Set<File> files) {
+			Long pubChemId, Set<SmeInherentFunction> smeInherentFunctions, Set<File> files, Supplier supplier) {
 		this.synthesisMaterialElementPkId = synthesisMaterialElementPkId;
 		this.synthesisMaterial = synthesisMaterial;
 		this.molecularFormula = molecularFormula;
@@ -74,15 +68,16 @@ public class SynthesisMaterialElement implements Serializable {
 		this.valueUnit = valueUnit;
 		this.pubChemDatasourceName = pubChemDatasourceName;
 		this.pubChemId = pubChemId;
-		this.SmeInherentFunction = SmeInherentFunction;
+		this.smeInherentFunctions = smeInherentFunctions;
 		this.files = files;
+		this.supplier = supplier;
 	}
 
-	public long getId() {
+	public Long getId() {
 		return this.synthesisMaterialElementPkId;
 	}
 
-	public void setId(long synthesisMaterialElementPkId) {
+	public void setId(Long synthesisMaterialElementPkId) {
 		this.synthesisMaterialElementPkId = synthesisMaterialElementPkId;
 	}
 
@@ -167,12 +162,20 @@ public class SynthesisMaterialElement implements Serializable {
 		this.pubChemId = pubChemId;
 	}
 
-	public Set getSmeInherentFunctions() {
-		return this.SmeInherentFunction;
+	public Set<SmeInherentFunction> getSmeInherentFunctions() {
+		return this.smeInherentFunctions;
 	}
 
-	public void setSmeInherentFunctions(Set SmeInherentFunction) {
-		this.SmeInherentFunction = SmeInherentFunction;
+	public void setSmeInherentFunctions(Set<SmeInherentFunction> smeInherentFunctions) {
+		this.smeInherentFunctions = smeInherentFunctions;
+	}
+
+	public Supplier getSupplier() {
+		return supplier;
+	}
+
+	public void setSupplier(Supplier supplier) {
+		this.supplier = supplier;
 	}
 
 	public Set<File> getFiles() {

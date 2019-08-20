@@ -1,6 +1,6 @@
 package gov.nih.nci.cananolab.restful;
 
-import gov.nih.nci.cananolab.service.sample.impl.BatchDataAvailabilityProcess;
+import gov.nih.nci.cananolab.service.sample.BatchDataAvailabilityProcess;
 import gov.nih.nci.cananolab.ui.form.GenerateBatchDataAvailabilityForm;
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;

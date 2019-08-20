@@ -3,7 +3,7 @@
         "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
 <!-- Generated Apr 3, 2019, 8:32:55 PM by Hibernate Tools 5.4.2.Final -->
 <hibernate-mapping package="gov.nih.nci.cananolab.domain.particle">
-    <class  name="Purity" table="purity">
+    <class name="gov.nih.nci.cananolab.domain.particle.SynthesisPurity" table="synthesis_purity">
         <id column="purity_pk_id" name="id" type="long">
             <generator class="hilo"/>
         </id>

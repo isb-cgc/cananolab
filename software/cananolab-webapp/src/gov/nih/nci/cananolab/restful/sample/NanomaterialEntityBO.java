@@ -365,7 +365,9 @@ public class NanomaterialEntityBO extends BaseAnnotationBO
 				return nano;
 			}
 			msgs = this.saveEntity(request, sampleId, entity);
-			
+
+
+
 			compositionService.assignAccesses(composingElement.getDomain());
 
 			// return to setupUpdate to retrieve the correct entity from database
@@ -784,6 +786,34 @@ public class NanomaterialEntityBO extends BaseAnnotationBO
 		entity.removeComposingElement(composingElement);
 		msgs = validateInputs(request, entity);
 		if (msgs.size()>0) {
+			nano.setErrors(msgs);
+			return nano;
+		}
+		this.saveEntity(request, nanoBean.getSampleId(), entity);
+		compositionService.removeAccesses(entity.getDomainEntity(), composingElement.getDomain());
+		this.checkOpenForms(entity, request);
+		return setupUpdate(nanoBean.getSampleId(), entity.getDomainEntity().getId().toString(), request);
+	}
+
+	public SimpleNanomaterialEntityBean removeComposingElement(SimpleNanomaterialEntityBean nanoBean, String composingElementId,HttpServletRequest request) throws Exception {
+		List<String> msgs = new ArrayList<String>();
+		NanomaterialEntityBean entity = transferNanoMateriaEntityBean(nanoBean, request);
+		ComposingElementBean composingElement = entity.getComposingElementById(composingElementId);
+//		ComposingElementBean composingElement = entity.getTheComposingElement();
+//		ComposingElementBean composingElement = entity.getComposingElements().get(0);
+		//TODO  EH. what?  So it doesn't even check what composing element to remove?  I don't even....
+
+		// check if composing element is associated with an association
+
+		if (!compositionService.checkChemicalAssociationBeforeDelete(entity
+				.getDomainEntity().getSampleComposition(), composingElement.getDomain())) {
+			throw new ChemicalAssociationViolationException(
+					"The composing element is used in a chemical association.  Please delete the chemcial association first before deleting the nanomaterial entity.");
+		}
+		entity.removeComposingElement(composingElement);
+		msgs = validateInputs(request, entity);
+		if (msgs.size()>0) {
+			SimpleNanomaterialEntityBean nano = new SimpleNanomaterialEntityBean();
 			nano.setErrors(msgs);
 			return nano;
 		}

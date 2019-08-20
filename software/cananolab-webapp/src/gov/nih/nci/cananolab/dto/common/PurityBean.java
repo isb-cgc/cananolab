@@ -9,7 +9,7 @@
 package gov.nih.nci.cananolab.dto.common;
 import gov.nih.nci.cananolab.domain.common.Condition;
 import gov.nih.nci.cananolab.domain.common.File;
-import gov.nih.nci.cananolab.domain.particle.Purity;
+import gov.nih.nci.cananolab.domain.particle.SynthesisPurity;
 import gov.nih.nci.cananolab.domain.common.PurityDatum;
 import gov.nih.nci.cananolab.dto.common.table.TableCell;
 import gov.nih.nci.cananolab.util.Comparators;
@@ -41,27 +41,27 @@ public class PurityBean
     private int numberOfRows;
     private FileBean theFile = new FileBean();
     private int theFileIndex;
-    private Purity domain = new Purity();
+    private SynthesisPurity domain = new SynthesisPurity();
     public PurityBean()
     {
     }
 
 
-    public PurityBean( Purity purity )
+    public PurityBean( SynthesisPurity synthesisPurity)
     {
         //TODO rewrite?
-        domain = purity;
+        domain = synthesisPurity;
         List<PurityDatum> data = null;
-        if( purity.getPurityDatumCollection() != null )
+        if( synthesisPurity.getPurityDatumCollection() != null )
         {
-            data = new ArrayList<PurityDatum>( purity.getPurityDatumCollection() );
+            data = new ArrayList<PurityDatum>( synthesisPurity.getPurityDatumCollection() );
             Collections.sort( data, new Comparators.PurityDatumDateComparator() );
         }
 
-        if( purity.getFiles() != null
-                && ! purity.getFiles().isEmpty() )
+        if( synthesisPurity.getFiles() != null
+                && ! synthesisPurity.getFiles().isEmpty() )
         {
-            for( File file : purity.getFiles() )
+            for( File file : synthesisPurity.getFiles() )
             {
                 files.add( new FileBean( file ) );
             }
@@ -558,7 +558,7 @@ public class PurityBean
                     datum.getConditionCollection().add( condition );
                 }
                 domain.getPurityDatumCollection().add( datum );
-                datum.setPurity( domain );
+                datum.setSynthesisPurity( domain );
                 rInd++;
             }
         }
@@ -613,7 +613,7 @@ public class PurityBean
         this.files = files;
     }
 
-    public Purity getDomain()
+    public SynthesisPurity getDomain()
     {
         return domain;
     }
@@ -647,7 +647,7 @@ public class PurityBean
         this.theFileIndex = theFileIndex;
     }
 
-    public void resetDomainCopy( String createdBy, Purity copy, Boolean copyData )
+    public void resetDomainCopy(String createdBy, SynthesisPurity copy, Boolean copyData )
     {
         copy.setCreatedBy( createdBy + ":"
                 + Constants.AUTO_COPY_ANNOTATION_PREFIX + ":" + copy.getId() );
