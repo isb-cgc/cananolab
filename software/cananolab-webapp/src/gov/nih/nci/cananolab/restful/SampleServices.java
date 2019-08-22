@@ -140,25 +140,26 @@ public class SampleServices {
 		}
 	}
 
-	@GET
+
+    @GET
 	@Path("/view")
 	@Produces ("application/json")
-	 public Response view(@Context HttpServletRequest httpRequest, 
+	 public Response view(@Context HttpServletRequest httpRequest,
 	    		@DefaultValue("") @QueryParam("sampleId") String sampleId)
-	{	
+	{
 		try
-		{ 
+		{
 			SampleBO sampleBO = (SampleBO) SpringApplicationContext.getBean(httpRequest, "sampleBO");
 
 			SimpleSampleBean sampleBean = sampleBO.summaryView(sampleId,httpRequest);
-			
+
 			return (sampleBean.getErrors().size() == 0) ?
 					Response.ok(sampleBean).header("Access-Control-Allow-Credentials", "true")
-					.header("Access-Control-Allow-Origin", "*")
-					.header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS")
+                        .header("Access-Control-Allow-Origin", "*")
+                        .header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS")
 					.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization").build()
 					:Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(sampleBean.getErrors()).build();
-			
+
 		} catch (Exception e) {
 			//return Response.ok("Error while viewing the search results").build();
 			return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
@@ -879,7 +880,11 @@ public class SampleServices {
         {
             String[] idlist = sampleIds.split( "\\s*,\\s*" );
             String jsonData = buildAllJson(httpRequest, httpResponse, idlist);
-            return Response.ok(jsonData).build();
+            return Response.ok(jsonData).header("Access-Control-Allow-Credentials", "true")
+                    .header("Access-Control-Allow-Origin", "*")
+                    .header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS")
+                    .header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization").build();
+
         }
         catch( Exception e )
         {
@@ -905,7 +910,11 @@ public class SampleServices {
             String[] idlist = sampleIds.split( "\\s*,\\s*" );
             String jsonData =  "{\n \"csNanoLabData\": " + buildAllJson(httpRequest, httpResponse, idlist) +"\n}\n";
             String xmlData = jsonToXml( jsonData );
-            return Response.ok(xmlData).build();
+
+            return Response.ok(xmlData).header("Access-Control-Allow-Credentials", "true")
+                    .header("Access-Control-Allow-Origin", "*")
+                    .header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS")
+                    .header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization").build();
         }
         catch( Exception e )
         {

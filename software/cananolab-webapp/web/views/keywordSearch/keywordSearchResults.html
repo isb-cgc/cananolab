@@ -1,12 +1,12 @@
-<div class="spacer">
+<div class="spacer" ng-class="{formFocus:loader}">
     <table border="0" class="contentTitle" summary="layout" width="100%">
       <tr>
        <th scope="col" align="left">
          Search Results
        </th>
        <td align="right" width="30%">
-           <span class="helpText" ng-href="/caNanoLab/rest/sample/fullSampleExportJsonAll?sampleIds={{utilsService.keyWordSampleIdListStrings(keywordData)}}">Export<span class="small-link-text"> (JSON)</span></span>&nbsp;
-           <a class="helpText" ng-href="/caNanoLab/rest/sample/fullSampleExportXmlAll?sampleIds={{utilsService.keyWordSampleIdListStrings(keywordData)}}">Export<span class="small-link-text"> (XML)</span></a>&nbsp;&nbsp;
+           <a class="helpText" ng-click="exportKeywordJsonAll()" href="">Export<span class="small-link-text"> (JSON)</span></a>&nbsp;
+           <a class="helpText" ng-click="exportKeywordXmlAll()" href="">Export<span class="small-link-text"> (XML)</span></a>&nbsp;
            <a class="helpText" href="javascript:openHelpWindow('https://wiki.nci.nih.gov/x/NIKAEQ')">Help</a>
        </td>
       </tr>
@@ -47,4 +47,11 @@
 	</tr>
 </table> 
 </span>
+</div>
+
+<div id="loader" ng-show="loader">
+    <div id="loaderText">
+        Exporting
+    </div>
+    <div id="loaderGraphic"></div>
 </div>
