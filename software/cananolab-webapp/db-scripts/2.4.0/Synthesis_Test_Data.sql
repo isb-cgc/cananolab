@@ -1,70 +1,18 @@
-/* update password to canano_curator */
+/* OPTIONAL update password to canano_curator
 UPDATE `canano`.`users`
 SET
     `password` = '$2a$10$mdeGI13IlA6V9p6BtIiKw.kciBTLCY37Y58GFzkWK7TN3BWEYGuDe'
 WHERE `username` = 'canano_curator';
+*/
 
-
-INSERT INTO `canano`.`organization`
-(`organization_pk_id`,
- `name`,
- `streetAddress1`,
- `streetAddress2`,
- `city`,
- `state`,
- `postal_code`,
- `country`,
- `created_date`,
- `created_by`)
+/* Important - replace <sample_pk_id> with a valid sample id */
+INSERT INTO `canano`.`synthesis`
+(`synthesis_pk_id`,
+ `sample_pk_id`)
 VALUES
 (1000,
-    'caNanoTest User',
-    '9609 Medical Center Drive',
-    'Suite 300',
-    'Rockville',
-    'MD',
-    '20851',
-    'USA',
-    '2019-08-28 00:00:00',
-    'canano_curator');
-SELECT * FROM canano.organization;
+    <sample_pk_id>);
 
-INSERT INTO `canano`.`point_of_contact`
-(`poc_pk_id`,
- `role`,
- `first_name`,
- `last_name`,
- `middle_initial`,
- `phone`,
- `email`,
- `created_date`,
- `created_by`,
- `organization_pk_id`)
-VALUES
-('1000',
-    'investigator',
-    'Canano',
-    'Curator',
-    'P',
-    '240-123-4567',
-    'curator@somewhere.gov',
-    '2019-08-28 00:00:00',
-    'canano_curator',
-    '1000');
-
-
-INSERT INTO `canano`.`sample`
-(`sample_pk_id`,
- `sample_name`,
- `created_date`,
- `created_by`,
- `primary_contact_pk_id`)
-VALUES
-('1000',
-    'Synthesis Test 1',
-    '2019-08-28 00:00:00',
-    'canano_curator',
-    '1000');
 
 INSERT INTO `canano`.`file`
 (`file_pk_id`,
@@ -111,12 +59,6 @@ VALUES
     1000);
 
 
-INSERT INTO `canano`.`synthesis`
-(`synthesis_pk_id`,
- `sample_pk_id`)
-VALUES
-(1000,
-    1000);
 
 /* Synthesis Material */
 
