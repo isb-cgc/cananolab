@@ -84,19 +84,25 @@ app.factory("utilsService", function(){
          * @param data
          * @returns {string}
          */
-        keyWordSampleIdListStrings( data ){
+        keyWordSampleIdListStrings: function (data) {
             let ids = '';
             for (let i = 0; i < data.length; i++) {
-                if( i > 0){
-                    ids += ',';
-                }
-                if( data[i].type === 'sample' ){
-                    if(! ids.includes(',' + data[i].id)) {
-                        ids += data[i].id;
+                if (data[i] !== undefined && data[i] !== null) {
+                    if (i > 0) {
+                        ids += ',';
                     }
-                }else if( data[i].type === 'publication'){
-                    if(! ids.includes(',' + data[i].pubmedId.trim() + '_pubmed')) {
-                        ids += data[i].pubmedId.trim() + '_pubmed';
+                    if (data[i].type === 'sample') {
+                        if (data[i].id !== undefined && data[i].id !== null) {
+                            if (!ids.includes(',' + data[i].id)) {
+                                ids += data[i].id;
+                            }
+                        } else if (data[i].type === 'publication') {
+                            if (data[i].pubmedId !== undefined && data[i].pubmedId !== null) {
+                                if (!ids.includes(',' + data[i].pubmedId.trim() + '_pubmed')) {
+                                    ids += data[i].pubmedId.trim() + '_pubmed';
+                                }
+                            }
+                        }
                     }
                 }
             }
@@ -113,11 +119,13 @@ app.factory("utilsService", function(){
 		sampleIdListStrings( data ){
             let ids = '';
             for (let i = 0; i < data.data.length; i++) {
-                if(! ids.includes(',' + data.data[i].sampleId)){
-                    if( i > 0){
-                        ids += ',';
+                if (data.data[i] !== undefined && data.data[i] !== null) {
+                    if (!ids.includes(',' + data.data[i].sampleId)) {
+                        if (i > 0) {
+                            ids += ',';
+                        }
+                        ids += data.data[i].sampleId;
                     }
-                    ids += data.data[i].sampleId ;
                 }
             }
             return ids;

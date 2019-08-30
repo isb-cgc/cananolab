@@ -889,6 +889,9 @@ public class SampleServices {
             String[] idlist = sampleIds.split( "\\s*,\\s*" );
             String jsonData =  "{\n \"csNanoLabData\": " + buildAllJson(httpRequest, httpResponse, idlist) +"\n}\n";
             String xmlData = jsonToXml( jsonData );
+            if( xmlData == null){
+                return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity( "Error creating valid XML" ) .build();
+            }
 
             return Response.ok(xmlData).header("Access-Control-Allow-Credentials", "true")
                     .header("Access-Control-Allow-Origin", "*")
@@ -897,7 +900,7 @@ public class SampleServices {
         }
         catch( Exception e )
         {
-            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(CommonUtil.wrapErrorMessageInList("Error sending JSON to client: " + e.getMessage())).build();
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(CommonUtil.wrapErrorMessageInList("Error sending XML to client: " + e.getMessage())).build();
         }
     }
 
