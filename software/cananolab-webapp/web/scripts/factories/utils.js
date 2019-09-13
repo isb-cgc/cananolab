@@ -88,24 +88,36 @@ app.factory("utilsService", function(){
             let ids = '';
             for (let i = 0; i < data.length; i++) {
                 if (data[i] !== undefined && data[i] !== null) {
-                    if (i > 0) {
-                        ids += ',';
-                    }
-                    if (data[i].type === 'sample') {
-                        if (data[i].id !== undefined && data[i].id !== null) {
-                            if (!ids.includes(',' + data[i].id)) {
-                                ids += data[i].id;
+
+                    // Make sure we can get an ID, other wise there is nothing we can do with this record.
+                    if(
+                        ( data[i].type !== 'publication' && data[i].id !== undefined && data[i].id !== null) ||
+                        (data[i].pubmedId !== undefined && data[i].pubmedId !== null)) {
+
+                        if (data[i].type === 'sample') {
+                            if (data[i].id !== undefined && data[i].id !== null) {
+                                if (!ids.includes(',' + data[i].id)) {
+                                    ids += data[i].id +',';
+                                }
                             }
                         } else if (data[i].type === 'publication') {
                             if (data[i].pubmedId !== undefined && data[i].pubmedId !== null) {
                                 if (!ids.includes(',' + data[i].pubmedId.trim() + '_pubmed')) {
-                                    ids += data[i].pubmedId.trim() + '_pubmed';
+                                    ids += data[i].pubmedId.trim() + '_pubmed,';
+                                }
+                            }
+                        } else if (data[i].type === 'protocol') {
+                            if (data[i].id !== undefined && data[i].id !== null) {
+                                if (!ids.includes(',' + data[i].id.trim() + '_protocol')) {
+                                    ids += data[i].id.trim() + '_protocol,';
                                 }
                             }
                         }
                     }
                 }
             }
+            // Pull off the trailing ','
+            ids = ids.slice(0, -1);
             return ids;
         },
 
