@@ -20,7 +20,6 @@ public class SynthesisFunctionalization implements Serializable {
 	private String description;
 	private Date createdDate;
 	private String createdBy;
-	private String type;
 	private Set<SynthesisFunctionalizationElement> synthesisFunctionalizationElements = new HashSet<SynthesisFunctionalizationElement>();
 	private Set<File> files = new HashSet<File>();
 
@@ -88,13 +87,6 @@ public class SynthesisFunctionalization implements Serializable {
 		this.createdBy = createdBy;
 	}
 
-	public String getType() {
-		return type;
-	}
-
-	public void setType(String type) {
-		this.type = type;
-	}
 
 	public Set<SynthesisFunctionalizationElement> getSynthesisFunctionalizationElements() {
 		return synthesisFunctionalizationElements;

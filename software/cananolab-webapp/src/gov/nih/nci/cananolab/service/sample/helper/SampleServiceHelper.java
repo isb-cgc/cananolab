@@ -24,6 +24,7 @@ import gov.nih.nci.cananolab.domain.particle.FunctionalizingEntity;
 import gov.nih.nci.cananolab.domain.particle.NanomaterialEntity;
 import gov.nih.nci.cananolab.domain.particle.Sample;
 import gov.nih.nci.cananolab.domain.particle.SampleComposition;
+import gov.nih.nci.cananolab.domain.particle.Synthesis;
 import gov.nih.nci.cananolab.exception.NoAccessException;
 import gov.nih.nci.cananolab.security.dao.AclDao;
 import gov.nih.nci.cananolab.security.enums.CaNanoRoleEnum;
@@ -534,6 +535,16 @@ public class SampleServiceHelper
 		return storedChars;
 	}
 
+	public SortedSet<String> getStoredSynthesisClassNames(Sample sample){
+		SortedSet<String> storedSynthesis = new TreeSet<String>();
+		if(sample.getSynthesisCollection() !=null){
+			for (Synthesis synthesis: sample.getSynthesisCollection()){
+				storedSynthesis.add(ClassUtils.getShortClassName(synthesis.getClass().getCanonicalName()));
+			}
+		}
+		return storedSynthesis;
+	}
+
 
 	//TODO add Synthesis to all of the sample returns
 	public Sample findSampleByName(String sampleName) throws Exception {
@@ -567,6 +578,10 @@ public class SampleServiceHelper
 				"sampleComposition.functionalizingEntityCollection.functionCollection",
 				FetchMode.JOIN);
 		crit.setFetchMode("publicationCollection", FetchMode.JOIN);
+		crit.setFetchMode("synthesisCollection", FetchMode.JOIN);
+		crit.setFetchMode("synthesisCollection.synthesisMaterials", FetchMode.JOIN);
+		crit.setFetchMode("synthesisCollection.synthesisFunctionalizations", FetchMode.JOIN);
+		crit.setFetchMode("synthesisCollection.synthesisPurifications",FetchMode.JOIN);
 		crit.setResultTransformer(CriteriaSpecification.DISTINCT_ROOT_ENTITY);
 
 		List result = appService.query(crit);
@@ -684,6 +699,10 @@ public class SampleServiceHelper
 				"sampleComposition.functionalizingEntityCollection.functionCollection",
 				FetchMode.JOIN);
 		crit.setFetchMode("publicationCollection", FetchMode.JOIN);
+		crit.setFetchMode("synthesisCollection", FetchMode.JOIN);
+		crit.setFetchMode("synthesisCollection.synthesisMaterials", FetchMode.JOIN);
+		crit.setFetchMode("synthesisCollection.synthesisFunctionalizations", FetchMode.JOIN);
+		crit.setFetchMode("synthesisCollection.synthesisPurifications",FetchMode.JOIN);
 		crit.setResultTransformer(CriteriaSpecification.DISTINCT_ROOT_ENTITY);
 		
 		List result = appService.query(crit);
@@ -781,6 +800,7 @@ public class SampleServiceHelper
 		columns.add(StringUtils.join(
 				getStoredCharacterizationClassNames(sample),
 				Constants.VIEW_CLASSNAME_DELIMITER));
+		columns.add(StringUtils.join(getStoredSynthesisClassNames(sample), Constants.VIEW_CLASSNAME_DELIMITER));
 		return columns.toArray(new String[0]);
 	}
 
