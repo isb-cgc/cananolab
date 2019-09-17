@@ -1,0 +1,42 @@
+version: '2'
+services:
+  canano-wildfly:
+    container_name: canano-wildfly
+    build: .
+    ports:
+     - "8080:8080"
+    volumes:
+     - "/Users/einolfs/development/cananolabvolume:/usr/local/cananolab"
+    environment:
+     nano_db: 172.18.240.10
+     nano_user: root
+     nano_password: root     
+    networks:
+      app_net:
+        ipv4_address: 172.18.240.11
+    depends_on:
+      - "canano-db"
+
+  canano-db:
+    container_name: canano-db
+    image: mariadb
+    ports:
+     - "3306:3306"
+    environment:
+      MYSQL_USER: mysql
+      MYSQL_PASSWORD: mysql
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: canano      
+    networks:
+      app_net:
+        ipv4_address: 172.18.240.10
+
+
+networks:
+  app_net:
+    driver: bridge
+    ipam:
+      driver: default
+      config:
+      -
+        subnet: 172.18.240.0/24 
