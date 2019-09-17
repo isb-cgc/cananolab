@@ -11,7 +11,7 @@ import java.util.Set;
 public class Synthesis implements Serializable {
 
 	private Long synthesisPkId;
-	private Sample sampleBySamplePkId;
+	private Sample sample;
 	private Set<SynthesisMaterial> synthesisMaterials;
 	private Set<SynthesisFunctionalization> synthesisFunctionalizations;
 	private Set<SynthesisPurification> synthesisPurifications;
@@ -41,12 +41,12 @@ public class Synthesis implements Serializable {
 		this.synthesisMaterials = synthesisMaterialsBySynthesisPkId;
 	}
 
-	public Sample getSampleBySamplePkId() {
-		return sampleBySamplePkId;
+	public Sample getSample() {
+		return sample;
 	}
 
-	public void setSampleBySamplePkId(Sample sampleBySamplePkId) {
-		this.sampleBySamplePkId = sampleBySamplePkId;
+	public void setSample(Sample sampleBySamplePkId) {
+		this.sample = sampleBySamplePkId;
 	}
 
 

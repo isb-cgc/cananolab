@@ -21,7 +21,9 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.stereotype.Component;
 
+@Component("synthesisBO")
 public class SynthesisBO extends BaseAnnotationBO {
 
 

@@ -55,7 +55,7 @@ public class SynthesisExporter {
                             , headerStyle, rowIndex);
 
                     //output Synthesis Material description at (4,0)
-                    String description = synthesisMaterialBean.getDomainEntity().getType();
+                    String description = synthesisMaterialBean.getDomainEntity().getDescription();
                     if (!StringUtils.isEmpty(description)) {
                         HSSFRow row = sheet.createRow(rowIndex++);
                         ExportUtils.createCell(row, 0, headerStyle, "Description");

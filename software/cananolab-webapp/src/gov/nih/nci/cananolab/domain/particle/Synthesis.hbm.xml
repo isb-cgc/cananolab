@@ -9,7 +9,7 @@
             <param name="table">hibernate_unique_key</param>
             <param name="column">next_hi</param>
         </generator></id>
-        <many-to-one name="sampleBySamplePkId" class="Sample">
+        <many-to-one name="sample" class="Sample">
             <column name="sample_pk_id"/>
         </many-to-one>
         <set name="synthesisFunctionalizations" inverse="true">

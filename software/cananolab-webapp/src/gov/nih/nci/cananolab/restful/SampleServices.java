@@ -32,12 +32,26 @@ import gov.nih.nci.cananolab.dto.common.PublicationSummaryViewBean;
 import gov.nih.nci.cananolab.dto.particle.AdvancedSampleSearchBean;
 import gov.nih.nci.cananolab.dto.particle.characterization.CharacterizationSummaryViewBean;
 import gov.nih.nci.cananolab.dto.particle.composition.CompositionBean;
+import gov.nih.nci.cananolab.dto.particle.synthesis.SynthesisBean;
 import gov.nih.nci.cananolab.restful.bean.LabelValueBean;
 import gov.nih.nci.cananolab.restful.publication.PublicationBO;
 import gov.nih.nci.cananolab.restful.publication.PublicationManager;
-import gov.nih.nci.cananolab.restful.sample.*;
+import gov.nih.nci.cananolab.restful.sample.AdvancedSampleSearchBO;
+import gov.nih.nci.cananolab.restful.sample.CharacterizationBO;
+import gov.nih.nci.cananolab.restful.sample.CharacterizationManager;
+import gov.nih.nci.cananolab.restful.sample.CharacterizationResultManager;
+import gov.nih.nci.cananolab.restful.sample.CompositionBO;
+import gov.nih.nci.cananolab.restful.sample.SampleBO;
+import gov.nih.nci.cananolab.restful.sample.SearchSampleBO;
+import gov.nih.nci.cananolab.restful.synthesis.SynthesisBO;
 import gov.nih.nci.cananolab.restful.util.CommonUtil;
-import gov.nih.nci.cananolab.restful.view.*;
+import gov.nih.nci.cananolab.restful.view.SimpleAdvancedSearchResultView;
+import gov.nih.nci.cananolab.restful.view.SimpleCharacterizationSummaryViewBean;
+import gov.nih.nci.cananolab.restful.view.SimpleCharacterizationsByTypeBean;
+import gov.nih.nci.cananolab.restful.view.SimpleCompositionBean;
+import gov.nih.nci.cananolab.restful.view.SimplePublicationSummaryViewBean;
+import gov.nih.nci.cananolab.restful.view.SimpleSampleBean;
+import gov.nih.nci.cananolab.restful.view.SimpleSynthesisBean;
 import gov.nih.nci.cananolab.restful.view.edit.SampleEditGeneralBean;
 import gov.nih.nci.cananolab.restful.view.edit.SimplePointOfContactBean;
 import gov.nih.nci.cananolab.security.utils.SpringSecurityUtil;
@@ -46,6 +60,7 @@ import gov.nih.nci.cananolab.service.protocol.impl.ProtocolServiceLocalImpl;
 import gov.nih.nci.cananolab.ui.form.CompositionForm;
 import gov.nih.nci.cananolab.ui.form.PublicationForm;
 import gov.nih.nci.cananolab.ui.form.SearchSampleForm;
+import gov.nih.nci.cananolab.ui.form.SynthesisForm;
 import gov.nih.nci.cananolab.util.Constants;
 import org.apache.log4j.Logger;
 import org.json.JSONObject;
@@ -1193,11 +1208,31 @@ public class SampleServices {
         }
         catch( Exception e )
         {
-            e.printStackTrace();
+            logger.error("Error exporting characterization", e);
         }
 
         jasonData.append( ",\"characterization\": "  );
         jasonData.append( doIndent( gson.toJson(finalBean), indent * 4 ) );
+
+        //Synthesis
+		SynthesisBO synthesisBO;
+		SynthesisBean synthesisBean;
+		SimpleSynthesisBean simpleSynthesisBean=null;
+		SynthesisForm synthesisForm;
+		try{
+			synthesisForm = new SynthesisForm();
+			synthesisForm.setSampleId(sampleId);
+			synthesisBO = (SynthesisBO) SpringApplicationContext.getBean(httpRequest, "synthesisBO");
+			synthesisBean = synthesisBO.summaryView(synthesisForm, httpRequest);
+			simpleSynthesisBean = new SimpleSynthesisBean();
+			simpleSynthesisBean.transferSynthesisForSummaryView(synthesisBean);
+		} catch(Exception e){
+			logger.error("Error exporting synthesis", e);
+		}
+
+		jasonData.append(",\"synthesis\": ");
+		jasonData.append(doIndent(gson.toJson(simpleSynthesisBean), indent *4));
+
 
         // Publication
         PublicationBO publicationBO = null;
@@ -1213,6 +1248,7 @@ public class SampleServices {
         {
             e.printStackTrace();
         }
+
         jasonData.append( ",\"Publication\": " );
         jasonData.append( doIndent( gson.toJson(publicationView), indent * 4 ) );
 

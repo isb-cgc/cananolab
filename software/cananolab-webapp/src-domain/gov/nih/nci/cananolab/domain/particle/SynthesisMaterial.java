@@ -20,7 +20,6 @@ public class SynthesisMaterial implements Serializable {
 	private String description;
 	private Date createdDate;
 	private String createdBy;
-	private String type;
 	private Set<SynthesisMaterialElement> synthesisMaterialElements = new HashSet<SynthesisMaterialElement>(0);
     private Set<File> fileCollection;
 
@@ -43,14 +42,13 @@ public class SynthesisMaterial implements Serializable {
 	}
 
 	public SynthesisMaterial(Long synthesisMaterialsPkId, Protocol protocol, Synthesis synthesis, String description,
-							 Date createdDate, String createdBy, String type, Set<SynthesisMaterialElement> synthesisMaterialElements, Set<File> fileCollection) {
+							 Date createdDate, String createdBy, Set<SynthesisMaterialElement> synthesisMaterialElements, Set<File> fileCollection) {
 		this.synthesisMaterialsPkId = synthesisMaterialsPkId;
 		this.protocol = protocol;
 		this.synthesis = synthesis;
 		this.description = description;
 		this.createdDate = createdDate;
 		this.createdBy = createdBy;
-		this.type = type;
 		this.synthesisMaterialElements = synthesisMaterialElements;
 		this.fileCollection=fileCollection;
 	}
@@ -101,14 +99,6 @@ public class SynthesisMaterial implements Serializable {
 
 	public void setCreatedBy(String createdBy) {
 		this.createdBy = createdBy;
-	}
-
-	public String getType() {
-		return this.type;
-	}
-
-	public void setType(String type) {
-		this.type = type;
 	}
 
 	public Set<SynthesisMaterialElement> getSynthesisMaterialElements() {

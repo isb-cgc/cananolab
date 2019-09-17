@@ -59,6 +59,8 @@ public class SampleBean extends SecuredDataBean {
 
 	private String[] characterizationClassNames = new String[0];
 
+	private String[] synthesisClassNames = new String[0];
+
 	private PointOfContactBean primaryPOCBean = new PointOfContactBean();
 
 	private List<PointOfContactBean> otherPOCBeans = new ArrayList<PointOfContactBean>();
@@ -142,6 +144,14 @@ public class SampleBean extends SecuredDataBean {
 
 	public Sample getDomain() {
 		return domain;
+	}
+
+	public void setSynthesisClassNames(String[] synthesisClassNames) {
+		this.synthesisClassNames = synthesisClassNames;
+	}
+
+	public String[] getSynthesisClassNames(){
+		return this.synthesisClassNames;
 	}
 
 	public void setupDomain(String createdBy) {

@@ -22,7 +22,10 @@ import org.springframework.stereotype.Component;
 @Component("synthesisService")
 public class SynthesisServiceLocalImpl extends BaseServiceLocalImpl implements SynthesisService {
     private static Logger logger = org.apache.log4j.Logger.getLogger(SynthesisServiceLocalImpl.class);
+
+    @Autowired
     private SynthesisHelper synthesisHelper;
+
     @Autowired
     private SpringSecurityAclService springSecurityAclService;
 
