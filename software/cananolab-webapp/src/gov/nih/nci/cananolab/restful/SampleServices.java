@@ -6,6 +6,7 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.JsonParser;
 import com.google.gson.JsonSyntaxException;
 import gov.nih.nci.cananolab.dto.common.DataReviewStatusBean;
+import gov.nih.nci.cananolab.dto.common.ProtocolBean;
 import gov.nih.nci.cananolab.dto.common.PublicationBean;
 import gov.nih.nci.cananolab.dto.common.PublicationSummaryViewBean;
 import gov.nih.nci.cananolab.dto.particle.AdvancedSampleSearchBean;
@@ -34,20 +35,22 @@ import gov.nih.nci.cananolab.restful.view.SimpleSynthesisBean;
 import gov.nih.nci.cananolab.restful.view.edit.SampleEditGeneralBean;
 import gov.nih.nci.cananolab.restful.view.edit.SimplePointOfContactBean;
 import gov.nih.nci.cananolab.security.utils.SpringSecurityUtil;
+import gov.nih.nci.cananolab.service.protocol.ProtocolService;
+import gov.nih.nci.cananolab.service.protocol.impl.ProtocolServiceLocalImpl;
 import gov.nih.nci.cananolab.ui.form.CompositionForm;
 import gov.nih.nci.cananolab.ui.form.PublicationForm;
 import gov.nih.nci.cananolab.ui.form.SearchSampleForm;
 import gov.nih.nci.cananolab.ui.form.SynthesisForm;
 import gov.nih.nci.cananolab.util.Constants;
-import java.io.BufferedReader;
-import java.io.ByteArrayInputStream;
-import java.io.IOException;
-import java.io.PrintWriter;
-import java.io.StringReader;
-import java.io.StringWriter;
-import java.nio.charset.StandardCharsets;
-import java.util.List;
-import java.util.Map;
+import org.apache.log4j.Logger;
+import org.json.JSONObject;
+import org.json.XML;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.w3c.dom.Document;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
+import org.xml.sax.InputSource;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.ws.rs.DefaultValue;
@@ -82,7 +85,10 @@ public class SampleServices {
     private static final Logger logger = Logger.getLogger(SampleServices.class);
     private String spc = "                                                                                                                                            ";
 
-	@GET
+    @Autowired
+    private ProtocolService protocolService;
+
+    @GET
 	@Path("/setup")
 	@Produces ("application/json")
     public Response setup(@Context HttpServletRequest httpRequest)
@@ -121,7 +127,7 @@ public class SampleServices {
 	@Path("/searchSample")
 	@Produces ("application/json")
 	public Response searchSample(@Context HttpServletRequest httpRequest, SearchSampleForm searchForm )
-	{	
+	{
 		try
 		{
 			SearchSampleBO searchSampleBO = (SearchSampleBO) SpringApplicationContext.getBean(httpRequest, "searchSampleBO");
@@ -888,7 +894,6 @@ public class SampleServices {
                     .header("Access-Control-Allow-Origin", "*")
                     .header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS")
                     .header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization").build();
-
         }
         catch( Exception e )
         {
@@ -914,6 +919,9 @@ public class SampleServices {
             String[] idlist = sampleIds.split( "\\s*,\\s*" );
             String jsonData =  "{\n \"csNanoLabData\": " + buildAllJson(httpRequest, httpResponse, idlist) +"\n}\n";
             String xmlData = jsonToXml( jsonData );
+            if( xmlData == null){
+                return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity( "Error creating valid XML" ) .build();
+            }
 
             return Response.ok(xmlData).header("Access-Control-Allow-Credentials", "true")
                     .header("Access-Control-Allow-Origin", "*")
@@ -922,7 +930,7 @@ public class SampleServices {
         }
         catch( Exception e )
         {
-            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(CommonUtil.wrapErrorMessageInList("Error sending JSON to client: " + e.getMessage())).build();
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(CommonUtil.wrapErrorMessageInList("Error sending XML to client: " + e.getMessage())).build();
         }
     }
 
@@ -1011,24 +1019,27 @@ public class SampleServices {
      */
     private String buildAllJson( HttpServletRequest httpRequest, HttpServletResponse httpResponse, String[] idlist ){
        StringBuilder jsonData = new StringBuilder( "[\n" );
-        boolean first = true;
 
         for( String id : idlist )
         {
-              if( first ){
-                    first = false;
-                }
-                else{
-                    jsonData.append("\n,");
-                }
             if( id.endsWith( "_pubmed" ))
             {
-                jsonData.append( buildPubJson( httpRequest, id.replaceAll( "_pubmed$", ""), 2 ) );
+                jsonData.append( buildPubJson( httpRequest, id.replaceAll( "_pubmed$", ""), 2 ) + "\n," );
+            }
+
+            else if( id.endsWith( "_protocol" ))
+            {
+                // jsonData.append( buildProtocolJson( httpRequest, id.replaceAll( "_protocol$", ""), 2 ) + "\n," );
             }
             else
             {
-                jsonData.append( buildSampleJson( httpRequest, httpResponse, id , 2) );
+                jsonData.append( buildSampleJson( httpRequest, httpResponse, id , 2) + "\n," );
             }
+
+        }
+        // Remove trailing ","
+        if (jsonData.length() > 0) {
+            jsonData.setLength(jsonData.length() - 1);
         }
        jsonData.append("\n]");
 
@@ -1053,26 +1064,48 @@ public class SampleServices {
      */
     private String buildPubJson( HttpServletRequest httpRequest, String publicationId, int indent )
     {
-        StringBuilder jasonData = new StringBuilder( "{\n    \"publication\":\n    ");
+        StringBuilder jasonData = new StringBuilder( "{\n    \"publication\":\n    " );
+        try
+        {
+            PublicationManager pubManager = (PublicationManager) SpringApplicationContext.getBean( httpRequest, "publicationManager" );
+            Gson gson = new GsonBuilder().setPrettyPrinting().create();
 
-    try {
-        PublicationManager pubManager = (PublicationManager) SpringApplicationContext.getBean(httpRequest, "publicationManager");
+            PublicationForm form = new PublicationForm();
+            PublicationBean pubBean = new PublicationBean();
+            form.setPublicationBean( pubBean );
+            pubManager.retrievePubMedInfo( publicationId, form, httpRequest );
+
+            jasonData.append( doIndent( gson.toJson( pubBean ), indent * 4 ) );
+            jasonData.append( "\n}\n" );
+            return jasonData.toString();
+        }
+        catch( Exception e )
+        {
+            e.printStackTrace();
+            return e.getMessage();
+        }
+    }
+
+
+    // This does not work, the Autowired protocolService is null
+    private String buildProtocolJson( HttpServletRequest httpRequest, String protocolId, int indent )
+    {
+        StringBuilder jasonData = new StringBuilder( "{\n    \"protocol\":\n    " );
         Gson gson = new GsonBuilder().setPrettyPrinting().create();
 
-        PublicationForm form = new PublicationForm();
-        PublicationBean pubBean = new PublicationBean();
-        form.setPublicationBean(pubBean);
-        pubManager.retrievePubMedInfo(publicationId, form, httpRequest);
-
-        jasonData.append( doIndent( gson.toJson(pubBean), indent * 4 ) );
-        jasonData.append( "\n}\n" );
-
-        return jasonData.toString();
-    } catch (Exception e) {
-        e.printStackTrace();
-        return e.getMessage();
+        try
+        {
+            ProtocolBean protocolBean = protocolService.findProtocolById( protocolId );
+            jasonData.append( doIndent( gson.toJson( protocolBean ), indent * 4 ) );
+            jasonData.append( "\n}\n" );
+            return jasonData.toString();
+        }
+        catch( Exception e )
+        {
+            e.printStackTrace();
+            return e.getMessage();
+        }
     }
-}
 
     /**
      * Used to cleanup formatting when combining multiple JSON samples into one.
@@ -1096,7 +1129,6 @@ public class SampleServices {
      * @return One JSON record.
      */
     private String buildSampleJson( HttpServletRequest httpRequest, HttpServletResponse httpResponse, String sampleId , int indent){
-
        // Opening brace of results
         StringBuilder jasonData = new StringBuilder( spc.substring( 0,indent ));
         jasonData.append( "{\n");
@@ -1231,8 +1263,8 @@ public class SampleServices {
         }
         catch (Exception e)
         {
-            System.err.println( "Error converting JSON to XML: " + e.getMessage() );
-            e.printStackTrace();
+            System.err.println( "Error converting JSON to XML: " + cleanJson(jsonText) );
+            // e.printStackTrace();
             return null;
         }
     }

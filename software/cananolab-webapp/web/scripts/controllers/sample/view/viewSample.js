@@ -37,10 +37,52 @@ var app = angular.module('angularApp')
 
     if ($routeParams.sampleId) {
       $scope.sampleId.data = $routeParams.sampleId;
-    }; 
-      
+    };
 
-    $scope.returnUserReadableBoolean = function(val) {
+
+      $scope.exportJson = function() {
+          $scope.loader = true;
+          $http({method: 'GET', url: '/caNanoLab/rest/sample/fullSampleExportJsonAll',params: {"sampleIds": $scope.sampleId.data }}).
+          success(function(res) {
+              let a = (window).document.createElement( 'a' );
+              a.href = (window).URL.createObjectURL( new Blob( [ JSON.stringify(res)], { type: 'application/json' } ) );
+              a.download = 'caNanoLab_sample_data_' + $scope.sampleId.data + '.json';
+              window.document.body.appendChild( a );
+              a.click();
+              (window).document.body.removeChild( a );
+              $scope.loader = false;
+          }).
+          error(function(res) {
+              window.alert('ERROR: ' + res);
+              $scope.loader = false;
+              $scope.message = data;
+          });
+      };
+
+
+      $scope.exportXml = function() {
+          $scope.loader = true;
+          $http({method: 'GET', url: '/caNanoLab/rest/sample/fullSampleExportXmlAll',params: {"sampleIds": $scope.sampleId.data }}).
+          success(function(res) {
+              let a = (window).document.createElement( 'a' );
+              a.href = (window).URL.createObjectURL( new Blob( [ JSON.stringify(res)], { type: 'application/json' } ) );
+              a.download = 'caNanoLab_sample_data_' + $scope.sampleId.data + '.xml';
+              window.document.body.appendChild( a );
+              a.click();
+              (window).document.body.removeChild( a );
+              $scope.loader = false;
+          }).
+          error(function(res) {
+              window.alert('ERROR: ' + res);
+              $scope.loader = false;
+              $scope.message = data;
+          });
+      };
+
+
+
+
+      $scope.returnUserReadableBoolean = function(val) {
       if (val=='true') {
         return "Yes";
       }

@@ -24,36 +24,30 @@ var app = angular.module('angularApp')
 
 
     $scope.exportJsonAll = function() {
-      $scope.loader = true;
-      $http({method: 'GET', url: '/caNanoLab/rest/sample/fullSampleExportJsonAll',params: {"sampleIds":utilsService.sampleIdListStrings($scope.sampleData)}}).
-      success(function(res) {
-        console.log('SUCCESS: ', res);
-          let jsonData = new Blob( [ JSON.stringify(res)], { type: 'application/json' } );
-          let objectUrl = (window).URL.createObjectURL( jsonData );
-          let a = (window).document.createElement( 'a' );
-          a.href = objectUrl;
-          // Use epoch for unique file name
-          a.download = 'caNanoLab_sample_data_' + new Date().getTime() + '.json';
-          window.document.body.appendChild( a );
-          a.click();
-          (window).document.body.removeChild( a );
-          $scope.loader = false;
-      }).
-      error(function(res) {
-        $scope.loader = false;
-        $scope.message = data;
-      });
+        $scope.loader = true;
+        $http({method: 'GET', url: '/caNanoLab/rest/sample/fullSampleExportJsonAll',params: {"sampleIds":utilsService.sampleIdListStrings($scope.sampleData)}}).
+        success(function(res) {
+            let a = (window).document.createElement( 'a' );
+            a.href = (window).URL.createObjectURL( new Blob( [ JSON.stringify(res)], { type: 'application/json' } ) );
+            // Use epoch for unique file name
+            a.download = 'caNanoLab_sample_data_' + new Date().getTime() + '.json';
+            window.document.body.appendChild( a );
+            a.click();
+            (window).document.body.removeChild( a );
+            $scope.loader = false;
+        }).
+        error(function(res) {
+            $scope.loader = false;
+            $scope.message = data;
+        });
     };
 
     $scope.exportXmlAll = function() {
         $scope.loader = true;
         $http({method: 'GET', url: '/caNanoLab/rest/sample/fullSampleExportXmlAll',params: {"sampleIds":utilsService.sampleIdListStrings($scope.sampleData)}}).
         success(function(res) {
-            console.log('SUCCESS: ', res);
-              let jsonData = new Blob( [res], { type: 'application/xml' } );
-              let objectUrl = (window).URL.createObjectURL( jsonData );
               let a = (window).document.createElement( 'a' );
-              a.href = objectUrl;
+              a.href =  (window).URL.createObjectURL( new Blob( [res], { type: 'application/xml' } ) );
               // Use epoch for unique file name
               a.download = 'caNanoLab_sample_data_' + new Date().getTime() + '.xml';
               window.document.body.appendChild( a );

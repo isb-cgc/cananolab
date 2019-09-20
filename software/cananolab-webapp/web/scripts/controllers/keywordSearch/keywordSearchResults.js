@@ -184,11 +184,8 @@ var app = angular.module('angularApp')
         $scope.loader = true;
         $http({method: 'GET', url: '/caNanoLab/rest/sample/fullSampleExportJsonAll',params: {"sampleIds":utilsService.keyWordSampleIdListStrings($scope.keywordData)}}).
         success(function(res) {
-            console.log('SUCCESS: ', res);
-            let jsonData = new Blob( [ JSON.stringify(res)], { type: 'application/json' } );
-            let objectUrl = (window).URL.createObjectURL( jsonData );
             let a = (window).document.createElement( 'a' );
-            a.href = objectUrl;
+            a.href = (window).URL.createObjectURL(  new Blob( [ JSON.stringify(res)], { type: 'application/json' } ) );
             // Use epoch for unique file name
             a.download = 'caNanoLab_sample_data_' + new Date().getTime() + '.json';
             window.document.body.appendChild( a );
@@ -197,6 +194,7 @@ var app = angular.module('angularApp')
             $scope.loader = false;
         }).
         error(function(res) {
+            window.alert('ERROR: ' + res);
             $scope.loader = false;
             $scope.message = data;
         });
@@ -206,11 +204,8 @@ var app = angular.module('angularApp')
         $scope.loader = true;
         $http({method: 'GET', url: '/caNanoLab/rest/sample/fullSampleExportXmlAll',params: {"sampleIds":utilsService.keyWordSampleIdListStrings($scope.keywordData)}}).
         success(function(res) {
-            console.log('SUCCESS: ', res);
-            let jsonData = new Blob( [ JSON.stringify(res)], { type: 'application/xml' } );
-            let objectUrl = (window).URL.createObjectURL( jsonData );
             let a = (window).document.createElement( 'a' );
-            a.href = objectUrl;
+            a.href = (window).URL.createObjectURL( new Blob( [ JSON.stringify(res)], { type: 'application/xml' } ) );
             // Use epoch for unique file name
             a.download = 'caNanoLab_sample_data_' + new Date().getTime() + '.xml';
             window.document.body.appendChild( a );
@@ -219,6 +214,7 @@ var app = angular.module('angularApp')
             $scope.loader = false;
         }).
         error(function(res) {
+            window.alert('ERROR: ' + res);
             $scope.loader = false;
             $scope.message = data;
         });

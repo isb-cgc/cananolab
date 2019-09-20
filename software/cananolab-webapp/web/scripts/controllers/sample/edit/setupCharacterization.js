@@ -795,7 +795,7 @@ var app = angular.module('angularApp')
 
 
     /**
-     * Clean up Unicode type quotes and UTF-8 chars
+     * Clean up Unicode type quotes and some UTF-8 chars
      *
      * @param input
      * @returns {string}
