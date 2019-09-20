@@ -26,7 +26,6 @@ drop table if exists synthesis_func_purification;
 drop table if exists purity_file;
 drop table if exists purity_datum_condition;
 drop table if exists purity_datum;
-drop table if exists supplier;
 drop table if exists synthesis_file;
 drop table if exists synthesis_material_file;
 drop table if exists synthesis_functionalization_file;
@@ -45,7 +44,7 @@ drop table if exists synthesis_functionalization_element_file;
 drop table IF exists synthesis_functionalization_element;
 drop table if exists synthesis_functionalization;
 drop table if exists synthesis;
-
+drop table if exists supplier;
 
 
 
