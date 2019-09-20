@@ -226,7 +226,8 @@ CREATE TABLE `canano`.`synthesis_functionalization_element` (
                                                        `value`                            DECIMAL(22,3) NULL     COMMENT 'value', -- value
                                                        `value_unit`                       VARCHAR(200)  NULL     COMMENT 'value_unit', -- value_unit
                                                        `pub_chem_datasource_name`         VARCHAR(200)  NULL     COMMENT 'pub_chem_datasource_name', -- pub_chem_datasource_name
-                                                       `pub_chem_id`                      BIGINT(20)    NULL     COMMENT 'pub_chem_id' -- pub_chem_id
+                                                       `pub_chem_id`                      BIGINT(20)    NULL     COMMENT 'pub_chem_id', -- pub_chem_id
+                                                       `type`                             VARCHAR(200)  NULL     COMMENT 'type'
 )
     COMMENT 'synthesis_functionalization_element';
 
