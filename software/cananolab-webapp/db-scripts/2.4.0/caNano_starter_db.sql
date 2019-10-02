@@ -3836,6 +3836,29 @@ CREATE TABLE `polymer` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Table structure for table `protocol`
+--
+DROP TABLE IF EXISTS `protocol`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `protocol` (
+                            `protocol_pk_id` bigint(20) NOT NULL,
+                            `protocol_name` varchar(2000) DEFAULT NULL,
+                            `protocol_type` varchar(2000) DEFAULT NULL,
+                            `created_by` varchar(200) NOT NULL,
+                            `created_date` datetime NOT NULL,
+                            `protocol_abbreviation` varchar(200) DEFAULT NULL,
+                            `protocol_version` varchar(200) DEFAULT NULL,
+                            `file_pk_id` bigint(20) DEFAULT NULL,
+                            PRIMARY KEY (`protocol_pk_id`),
+                            UNIQUE KEY `protocol_pk_id` (`protocol_pk_id`),
+                            KEY `FK_protocol_file` (`file_pk_id`),
+                            CONSTRAINT `FK_protocol_file` FOREIGN KEY (`file_pk_id`) REFERENCES `file` (`file_pk_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+
+
+--
 -- Table structure for table `publication`
 --
 
