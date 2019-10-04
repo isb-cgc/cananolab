@@ -1,26 +1,22 @@
 package gov.nih.nci.cananolab.security.dao;
 
+import gov.nih.nci.cananolab.security.enums.SecureClassesEnum;
+import gov.nih.nci.cananolab.util.StringUtils;
 import java.util.ArrayList;
 import java.util.List;
-
 import javax.annotation.PostConstruct;
 import javax.sql.DataSource;
-
 import org.apache.log4j.Logger;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcDaoSupport;
 import org.springframework.stereotype.Component;
-
-import gov.nih.nci.cananolab.security.enums.SecureClassesEnum;
-import gov.nih.nci.cananolab.util.StringUtils;
 
 @Component("aclDao")
 public class AclDaoImpl extends NamedParameterJdbcDaoSupport implements AclDao
 {
 	protected Logger logger = Logger.getLogger(AclDaoImpl.class);
 	
-	@Autowired
+
 	private DataSource dataSource;
 	
 	@PostConstruct
