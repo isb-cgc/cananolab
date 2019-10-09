@@ -19,7 +19,7 @@ public class UserDaoImpl extends JdbcDaoSupport implements UserDao
 {
 	protected Logger logger = Logger.getLogger(UserDaoImpl.class);
 	
-
+	@Autowired
 	private DataSource dataSource;
 	
 	@PostConstruct
