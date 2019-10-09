@@ -16,7 +16,7 @@ public class AclDaoImpl extends NamedParameterJdbcDaoSupport implements AclDao
 {
 	protected Logger logger = Logger.getLogger(AclDaoImpl.class);
 	
-
+	@Autowired
 	private DataSource dataSource;
 	
 	@PostConstruct
