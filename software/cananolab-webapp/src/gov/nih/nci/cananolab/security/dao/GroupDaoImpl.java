@@ -9,6 +9,7 @@ import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.sql.DataSource;
 import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.support.JdbcDaoSupport;
 import org.springframework.stereotype.Component;
@@ -18,7 +19,7 @@ public class GroupDaoImpl extends JdbcDaoSupport implements GroupDao
 {
 	protected Logger logger = Logger.getLogger(GroupDaoImpl.class);
 	
-
+	@Autowired
 	private DataSource dataSource;
 	
 	private static final String FETCH_GROUP_BY_NAME_SQL = "SELECT g.id, g.group_name, g.group_description, g.created_by FROM `groups` g where g.group_name = ?";
