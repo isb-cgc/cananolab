@@ -5,8 +5,6 @@ services:
     build: .
     ports:
      - "8080:8080"
-    volumes:
-     - "/Users/einolfs/development/cananolabvolume:/usr/local/cananolab"
     environment:
      nano_db: $nano_db
      nano_user: $nano_user
