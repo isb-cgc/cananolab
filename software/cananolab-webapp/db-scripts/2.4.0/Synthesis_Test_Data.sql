@@ -79,7 +79,7 @@ INSERT INTO `canano`.`synthesis_material`
  `description`,
  `created_date`,
  `created_by`,
- `poc_pk_id`)
+ `type`)
 VALUES
 (1000,
     1000,
@@ -87,7 +87,7 @@ VALUES
     'Synthesis test sample 1',
     '2019-08-28 00:00:00',
     'canano_curator',
-    1000);
+    'reagent');
 
 INSERT INTO `canano`.`synthesis_material_element`
 (`synthesis_material_element_pk_id`,
@@ -102,8 +102,7 @@ INSERT INTO `canano`.`synthesis_material_element`
  `value_unit`,
  `pub_chem_datasource_name`,
  `pub_chem_id`,
- `supplier_pk_id`,
- `type`)
+ `supplier_pk_id`)
 VALUES
 (1000,
     1000,
@@ -117,8 +116,7 @@ VALUES
     'mg',
     null,
     null,
-    1000,
-    'reagent');
+    1000);
 
 INSERT INTO `canano`.`sme_inherent_function`
 (`sme_inherent_function_pk_id`,
@@ -128,7 +126,7 @@ INSERT INTO `canano`.`sme_inherent_function`
 VALUES
 (1000,
     1000,
-    'targetting function',
+    'targeting function',
     'should this pull from same drop down as regular inherent function?');
 
 /* Synthesis Functionalization */
@@ -140,9 +138,7 @@ INSERT INTO `canano`.`synthesis_functionalization`
  `description`,
  `created_date`,
  `created_by`,
- `poc_pk_id`,
- `activation_method`,
- `activation_effect`)
+ `type`)
 VALUES
 (1000,
     1000,
@@ -150,9 +146,7 @@ VALUES
     'Synthesis Functionalization Test 1',
     '2019-08-29 00:00:00',
     'canano_curator',
-    1000,
-    'Method 1',
-    'Description of Activation Effect');
+    'material');
 
 
 INSERT INTO `canano`.`synthesis_functionalization_element`
@@ -294,14 +288,12 @@ INSERT INTO `canano`.`synthesis_purity`
 (`purity_pk_id`,
  `synthesis_purification_pk_id`,
  `created_by`,
- `created_date`,
- `file_pk_id`)
+ `created_date`)
 VALUES
 (1000,
     1000,
     'canano_curator',
-    '2019-08-28 00:00:00',
-    1000);
+    '2019-08-28 00:00:00');
 
 INSERT INTO `canano`.`purity_datum`
 (`purity_datum_pk_id`,
@@ -312,7 +304,8 @@ INSERT INTO `canano`.`purity_datum`
  `created_by`,
  `created_date`,
  `numberMod`,
- `purity_pk_id`)
+ `purity_pk_id`,
+ `file_pk_id`)
 VALUES
 (1000,
     'Purity datum 1',
@@ -322,6 +315,7 @@ VALUES
     'canano_curator',
     '2019-08-28 00:00:00',
     '=',
+    1000,
     1000);
 
 
