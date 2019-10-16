@@ -9,9 +9,8 @@
             <param name="table">hibernate_unique_key</param>
             <param name="column">next_hi</param>
         </generator></id>
-        <many-to-one name="sample" class="Sample">
-            <column name="sample_pk_id"/>
-        </many-to-one>
+        <many-to-one name="sample" class="Sample" column="sample_pk_id" unique="true" lazy="proxy" not-null="true"/>
+
         <set name="synthesisFunctionalizations" inverse="true">
             <key>
                 <column name="synthesis_pk_id" not-null="true"/>

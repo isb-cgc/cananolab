@@ -129,8 +129,12 @@ public class SampleBean extends SecuredDataBean {
 			hasPublications = true;
 		}
 
-		if (sample.getSynthesisCollection() != null && !sample.getSynthesisCollection().isEmpty()){
-			hasSynthesis = true;
+//		if (sample.getSynthesisCollection() != null && !sample.getSynthesisCollection().isEmpty()){
+//			hasSynthesis = true;
+//		}
+
+		if(sample.getSynthesis()!=null){
+			hasSynthesis=true;
 		}
 	}
 
@@ -413,14 +417,17 @@ public class SampleBean extends SecuredDataBean {
 		}
 
 		//copy synthesis
-		Set<Synthesis> oldSynthesis = copy.getSynthesisCollection();
-		if(oldSynthesis!=null || !oldSynthesis.isEmpty()){
+//		Set<Synthesis> oldSynthesis = copy.getSynthesisCollection();
+		Synthesis oldSynthesis = copy.getSynthesis();
+		if(oldSynthesis!=null ){
 			//todo write
-			copy.setSynthesisCollection(new HashSet<Synthesis>(oldSynthesis));
-			for(Synthesis synthesis: copy.getSynthesisCollection()){
-				SynthesisBean synthesisBean = new SynthesisBean(synthesis);
-				synthesisBean.resetDomainCopy(createdBy, synthesis, true);
-			}
+//			copy.setSynthesisCollection(new HashSet<Synthesis>(oldSynthesis));
+//			for(Synthesis synthesis: copy.getSynthesisCollection()){
+//				SynthesisBean synthesisBean = new SynthesisBean(synthesis);
+//				synthesisBean.resetDomainCopy(createdBy, synthesis, true);
+//			}
+			SynthesisBean synthesisBean = new SynthesisBean(oldSynthesis);
+			synthesisBean.resetDomainCopy(createdBy, oldSynthesis, true);
 		}
 
 		// copy keyword

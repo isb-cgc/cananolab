@@ -1,6 +1,9 @@
 package gov.nih.nci.cananolab.service.sample.helper;
 
 import gov.nih.nci.cananolab.domain.particle.Synthesis;
+import gov.nih.nci.cananolab.domain.particle.SynthesisFunctionalization;
+import gov.nih.nci.cananolab.domain.particle.SynthesisMaterial;
+import gov.nih.nci.cananolab.domain.particle.SynthesisPurification;
 import gov.nih.nci.cananolab.exception.NoAccessException;
 import gov.nih.nci.cananolab.security.enums.SecureClassesEnum;
 import gov.nih.nci.cananolab.security.service.SpringSecurityAclService;
@@ -56,5 +59,20 @@ public class SynthesisHelper
             synthesis = (Synthesis)result.get(0);
         }
         return synthesis;
+    }
+
+    public SynthesisFunctionalization findSynthesisFunctionalizationzationById(Long sampleId, Long dataId) {
+        //TODO write
+        return null;
+    }
+
+    public SynthesisMaterial findSynthesisMaterialById(Long sampleId, Long dataId) {
+        //TODO write
+        return null;
+    }
+
+    public SynthesisPurification findSynthesisPurificationById(Long sampleId, Long dataId) {
+        //TODO write
+        return null;
     }
 }

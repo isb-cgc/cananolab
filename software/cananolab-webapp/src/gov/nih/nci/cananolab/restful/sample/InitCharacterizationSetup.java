@@ -298,6 +298,7 @@ public class InitCharacterizationSetup {
 	}
 
 	public String getDetailPage(String charType, String charName) {
+		//TODO does this work?  I can find no *Info.jsp in project
 		String charClassName = ClassUtils
 				.getShortClassNameFromDisplayName(charName);
 		String includePage = null;

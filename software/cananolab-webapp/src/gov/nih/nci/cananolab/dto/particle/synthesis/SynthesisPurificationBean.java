@@ -35,14 +35,14 @@ public class SynthesisPurificationBean extends BaseSynthesisEntityBean {
         this.domainChar = domainChar;
     }
 
-    public SynthesisPurificationBean getDomainCopy(String createdBy, boolean copyData) {
-        SynthesisPurificationBean copy = (SynthesisPurificationBean) ClassUtils
+    public SynthesisPurification getDomainCopy(String createdBy, boolean copyData) {
+        SynthesisPurification copy = (SynthesisPurification) ClassUtils
                 .deepCopy(domainChar);
         resetDomainCopy(createdBy, copy, copyData);
         return copy;
     }
 
-    public void resetDomainCopy(String createdBy, SynthesisPurificationBean copy,
+    public void resetDomainCopy(String createdBy, SynthesisPurification copy,
                                 boolean copyData) {
         //TODO write
     }

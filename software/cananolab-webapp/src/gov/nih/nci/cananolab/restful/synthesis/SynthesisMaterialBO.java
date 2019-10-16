@@ -4,7 +4,6 @@ import gov.nih.nci.cananolab.dto.particle.SampleBean;
 import gov.nih.nci.cananolab.dto.particle.synthesis.SynthesisMaterialBean;
 import gov.nih.nci.cananolab.dto.particle.synthesis.SynthesisMaterialElementBean;
 import gov.nih.nci.cananolab.restful.core.BaseAnnotationBO;
-import gov.nih.nci.cananolab.restful.sample.InitCompositionSetup;
 import gov.nih.nci.cananolab.restful.sample.InitSampleSetup;
 import gov.nih.nci.cananolab.restful.sample.InitSynthesisSetup;
 import gov.nih.nci.cananolab.restful.util.SynthesisUtil;
@@ -31,7 +30,7 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 @Transactional(readOnly=false, propagation= Propagation.REQUIRED)
-@Component("synthesisMaterialEntityBO")
+@Component("synthesisMaterialBO")
 public class SynthesisMaterialBO extends BaseAnnotationBO {
     Logger logger = Logger.getLogger(SynthesisMaterialBO.class);
 
@@ -150,7 +149,7 @@ public class SynthesisMaterialBO extends BaseAnnotationBO {
 
     public void setLookups(HttpServletRequest request) throws Exception {
         ServletContext appContext = request.getSession().getServletContext();
-        InitCompositionSetup.getInstance().setNanomaterialEntityDropdowns(request);
+        InitSynthesisSetup.getInstance().setSynthesisMaterialDropdowns(request);
 //        InitSetup.getInstance().getDefaultTypesByLookup(appContext,
 //                "wallTypes", "carbon nanotube", "wallType");
     }
@@ -174,7 +173,7 @@ public class SynthesisMaterialBO extends BaseAnnotationBO {
         String detailPage = null;
 
         if (!StringUtils.isEmpty(synthesisMaterialBean.getType())) {
-            detailPage = InitCompositionSetup.getInstance().getDetailPage(
+            detailPage = InitSynthesisSetup.getInstance().getDetailPage(
                     synthesisMaterialBean.getType(), "synthesisMaterial");
         }
         request.setAttribute("synthesisDetailPage", detailPage);

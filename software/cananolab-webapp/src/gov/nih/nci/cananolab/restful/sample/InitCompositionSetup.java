@@ -259,4 +259,6 @@ public class InitCompositionSetup {
                 + ClassUtils.getShortClassNameFromDisplayName(entityType)
                 + "Info.html";
 	}
+
+
 }
