@@ -1,6 +1,7 @@
 package gov.nih.nci.cananolab.dto.particle.synthesis;
 
 import gov.nih.nci.cananolab.domain.particle.SynthesisMaterial;
+import gov.nih.nci.cananolab.util.ClassUtils;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -26,6 +27,13 @@ public class SynthesisMaterialBean extends BaseSynthesisEntityBean {
         return domainEntity;
     }
 
+  public SynthesisMaterial getDomainCopy(String createdBy){
+      SynthesisMaterial copy = (SynthesisMaterial) ClassUtils.deepCopy(this
+              .getDomainEntity());
+      resetDomainCopy(createdBy, copy);
+      return copy;
+  }
+
     public String getType() {
         return null;
     }
@@ -35,6 +43,7 @@ public class SynthesisMaterialBean extends BaseSynthesisEntityBean {
     }
 
     public void resetDomainCopy(String createdBy, SynthesisMaterial synthesisMaterial) {
+        //TODO write
     }
 
     public List<SynthesisMaterialElementBean> getSynthesisMaterialElements() {

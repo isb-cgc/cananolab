@@ -29,7 +29,7 @@ if (outcome != success) of /subsystem=datasources/jdbc-driver=mysql:read-resourc
 	) {allow-resource-service-restart=true}
 end-if
 
-#caNanoLab, csmupt datasource configuration
+#caNanoLab datasource configuration
 if (outcome != success) of /subsystem=datasources/data-source=caNanoLab:read-resource
 data-source add \
     --name=caNanoLab \
@@ -44,6 +44,7 @@ data-source add \
 #data-source enable --name=caNanoLab
 end-if
 
+#csmupt datasource configuration
 if (outcome != success) of /subsystem=datasources/data-source=csmupt:read-resource
 data-source add \
     --name=csmupt \

@@ -25,9 +25,9 @@ public class MaterialsServices {
     public Response setup(@Context HttpServletRequest httpRequest, @DefaultValue("") @QueryParam("sampleId") String sampleId) {
 
         try {
-            SynthesisMaterialBO synthesisBO =
-                    (SynthesisMaterialBO) SpringApplicationContext.getBean(httpRequest, "synthesisBO");
-            Map<String, Object> dropdownMap = synthesisBO.setupNew(sampleId, httpRequest);
+            SynthesisMaterialBO synthesisMaterialBO =
+                    (SynthesisMaterialBO) SpringApplicationContext.getBean(httpRequest, "synthesisMaterialBO");
+            Map<String, Object> dropdownMap = synthesisMaterialBO.setupNew(sampleId, httpRequest);
             return Response.ok(dropdownMap).header("Access-Control-Allow-Credentials", "true").header("Access-Control-Allow-Origin", "*").header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS").header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization").build();
 
         } catch (Exception e) {
@@ -65,7 +65,7 @@ public class MaterialsServices {
     @Path("/saveSynthesisMaterialElement")
     @Produces ("application/json")
     public Response saveSynthesisMaterialElement(@Context HttpServletRequest httpRequest, SimpleSynthesisMaterialBean simpleSynthesisMaterialBean) {
-
+//TODO - not sure any of this is right.  Why am I using SynthesisMaterialBO?
         try{
             SynthesisMaterialBO synthesisMaterialBO = (SynthesisMaterialBO) SpringApplicationContext.getBean(httpRequest, "synthesisMaterialElementBO");
             if(!SpringSecurityUtil.isUserLoggedIn())

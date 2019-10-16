@@ -45,6 +45,9 @@ public class SynthesisBO extends BaseAnnotationBO {
     public SynthesisBO() {
     }
 
+//    public String download(String fileId, HttpServletRequest httpRequest, HttpServletResponse httpResponse) {
+//        return null;
+//    }
 
 
     public CurationService getCurationServiceDAO() {

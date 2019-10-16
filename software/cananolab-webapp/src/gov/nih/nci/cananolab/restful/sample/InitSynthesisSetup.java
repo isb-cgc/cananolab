@@ -13,6 +13,11 @@ public class InitSynthesisSetup {
         return new InitSynthesisSetup();
     }
 
+    public String getDetailPage(String type, String synthesisMaterial) {
+        //TODO write
+        return null;
+    }
+
 //TODO write
 
 
@@ -24,9 +29,12 @@ public class InitSynthesisSetup {
                 "gov.nih.nci.cananolab.domain.synthesis.OtherSynthesisMaterial",true);
 
 
+
     }
 
-    public void persistSynthesisMaterialDropdowns(HttpServletRequest request, SynthesisMaterialBean synthesisMaterialBean){}
+    public void persistSynthesisMaterialDropdowns(HttpServletRequest request, SynthesisMaterialBean synthesisMaterialBean){
+//        InitSetup.getInstance().persistLookup(request);
+    }
 
 
     public void setSynthesisFunctionalizationDropdowns(HttpServletRequest request) throws Exception {

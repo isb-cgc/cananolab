@@ -79,4 +79,21 @@ public class SynthesisServices {
             return Response.ok("Error while exporting the file").build();
         }
     }
+
+//    @GET
+//    @Path("/download")
+//    @Produces({"image/png", "application/json"})
+//    public Response download(@Context HttpServletRequest httpRequest, @Context HttpServletResponse httpResponse,
+//                             @DefaultValue("") @QueryParam("fileId") String fileId)
+//    {
+//        try {
+//            SynthesisBO synthesisBO = (SynthesisBO) SpringApplicationContext.getBean(httpRequest, "synthesisBO");
+//
+//            String result = synthesisBO.download(fileId, httpRequest, httpResponse);
+//            return Response.ok(result).build();
+//        }
+//        catch (Exception e) {
+//            return Response.ok(e.getMessage()).build();
+//        }
+//    }
 }

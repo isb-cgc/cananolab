@@ -35,6 +35,7 @@ public class Sample implements java.io.Serializable {
 	private Set<PointOfContact> otherPointOfContactCollection = new HashSet<PointOfContact>(0);
 	private Set<Keyword> keywordCollection = new HashSet<Keyword>(0);
 	private Set<Synthesis> synthesisCollection = new HashSet<Synthesis>();
+	private Synthesis synthesis;
 
 	public Sample() {
 	}
@@ -56,7 +57,7 @@ public class Sample implements java.io.Serializable {
 
 	public Sample(String createdBy, Date createdDate, String name, PointOfContact primaryPointOfContact,
 				  Set characterizationCollection, SampleComposition sampleComposition, Set publicationCollection,
-				  Set otherPointOfContactCollection, Set keywordCollection, Set synthesisCollection) {
+				  Set otherPointOfContactCollection, Set keywordCollection, Synthesis synthesis) {
 		this.createdBy = createdBy;
 		this.createdDate = createdDate;
 		this.name = name;
@@ -66,7 +67,7 @@ public class Sample implements java.io.Serializable {
 		this.publicationCollection = publicationCollection;
 		this.otherPointOfContactCollection = otherPointOfContactCollection;
 		this.keywordCollection = keywordCollection;
-		this.synthesisCollection = synthesisCollection;
+		this.synthesis = synthesis;
 	}
 
 	public Long getId() {
@@ -152,8 +153,16 @@ public class Sample implements java.io.Serializable {
 	}
 
 	public Set<Synthesis> getSynthesisCollection(){return this.synthesisCollection;}
+//
+//	public void setSynthesisCollection(Set<Synthesis> synthesisCollection){
+//		this.synthesisCollection=synthesisCollection;
+//	}
 
-	public void setSynthesisCollection(Set<Synthesis> synthesisCollection){
-		this.synthesisCollection=synthesisCollection;
+	public Synthesis getSynthesis() {
+		return synthesis;
+	}
+
+	public void setSynthesis(Synthesis synthesis) {
+		this.synthesis = synthesis;
 	}
 }
