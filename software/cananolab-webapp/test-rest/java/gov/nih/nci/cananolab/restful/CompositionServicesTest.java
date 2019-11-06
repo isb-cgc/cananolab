@@ -1,12 +1,14 @@
 package gov.nih.nci.cananolab.restful;
 
-import static org.junit.Assert.*;
+
 
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
 
 import org.junit.Before;
 import org.junit.Test;
+
+import static org.junit.Assert.assertNotNull;
 
 public class CompositionServicesTest {
 
@@ -17,6 +19,7 @@ public class CompositionServicesTest {
 	public void setUp() throws Exception {
 		client = ClientBuilder.newClient();
 	}
+
 	@Test
 	public void testSummaryView() {
 		String jsonString = client.target(urlbase)

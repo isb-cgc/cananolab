@@ -27,7 +27,8 @@ public class SynthesisFunctionalizationBean  extends BaseSynthesisEntityBean {
 
     public SynthesisFunctionalization getDomainCopy(String loggedInUserName) {
         //TODO write.  We want to return a copy, not the original
-        return this.domainEntity;
+
+        return domainEntity;
     }
 
     public SynthesisFunctionalization getDomainEntity() {

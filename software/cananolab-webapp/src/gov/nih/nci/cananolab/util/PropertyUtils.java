@@ -89,7 +89,8 @@ public class PropertyUtils {
 				try {
 					out.flush();
 					out.close();
-				} catch (Exception e) {//TODO report error
+				} catch (Exception e) {
+					logger.error("Error setting property " + e);
 				}
 			}
 		}
@@ -116,7 +117,8 @@ public class PropertyUtils {
 			if (istream != null) {
 				try {
 					istream.close();
-				} catch (Exception e) {//TODO report error
+				} catch (Exception e) {
+					logger.error("Error loading property "+ e);
 				}
 			}
 		}
@@ -124,7 +126,8 @@ public class PropertyUtils {
 	
 	protected static void loadPropertyCached(String propertyFileName) {
 		InputStream istream = null;
-		if (properties == null)
+		//Load properties if not already loaded
+		if (properties == null) {
 			properties = new Properties();
 		try {
 			istream = Thread.currentThread().getContextClassLoader()
@@ -136,10 +139,11 @@ public class PropertyUtils {
 			if (istream != null) {
 				try {
 					istream.close();
-				} catch (Exception e) {//TODO report error
+				} catch (Exception e) {
+					logger.error("Error loading cached property "+ e);
 				}
 			}
-		}
+		} }
 	}
 
 	/**
