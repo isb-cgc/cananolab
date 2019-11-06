@@ -32,11 +32,13 @@ public class AccessibilityManager
 		try {
 			List<CananoUserDetails> matchedUsers = userService.loadUsers(searchStr);
 			Map<String, String> userMap = new HashMap<String, String>();
-			// add only if not logged in user and not owner of the entity and not curator
+			// add only if not logged in user and not owner of the entity
 			for (CananoUserDetails currUser: matchedUsers)
 			{
 				if (!currUser.getUsername().equals(SpringSecurityUtil.getLoggedInUserName()) &&
-					!currUser.getUsername().equalsIgnoreCase(dataOwner) && !currUser.isCurator())
+					!currUser.getUsername().equalsIgnoreCase(dataOwner) )
+				// Allow Curators   JIRA CANANOLAB-620
+				//	!currUser.getUsername().equalsIgnoreCase(dataOwner) && !currUser.isCurator())
 				{
 					userMap.put(currUser.getUsername(), currUser.getLastName() + " " + currUser.getFirstName());
 				}

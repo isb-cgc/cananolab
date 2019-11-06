@@ -71,12 +71,17 @@ public class CollaborationGroupManager
 			throw new Exception("!!invalid user");
 			//return bogusGroup;
 		}
+
+
 		// if the user is already a curator, don't add the user
+        /* Commenting this out for JIRA CANANOLAB-620
 		else if (userDetail.isCurator()) {
 			bogusGroup.setName("!!user is a curator");
 			throw new Exception("!!user is a curator");
 			//return bogusGroup;
 		}
+        */
+
 		group.addUserAccess(userAccess);
 		return group;
 	}

@@ -135,7 +135,11 @@ L-->
 		</javac>
 	</target>
 
-	<target name="war" depends="clean, compile">
+<<<<<<< HEAD
+	<target name="war" depends="clean, compile, jar:beano">
+=======
+    <target name="war" depends="clean, compile, jar:beano">
+>>>>>>> 2.3.8_build_fix
 		<!--copy properties files -->
 		<copy todir="${build.dir}/WEB-INF/classes">
 			<fileset dir="${src.dir}">
