@@ -96,6 +96,7 @@ public class PropertyUtil {
 				try {
 					istream.close();
 				} catch (Exception e) {//TODO report error
+					logger.error("Error reading properties files "+ e);
 				}
 			}
 		}

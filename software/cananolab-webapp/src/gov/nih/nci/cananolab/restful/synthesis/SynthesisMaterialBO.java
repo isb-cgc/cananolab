@@ -85,6 +85,11 @@ public class SynthesisMaterialBO extends BaseAnnotationBO {
         return null;
     }
 
+    public SimpleSynthesisMaterialBean removeFile(SimpleSynthesisMaterialBean simpleSynthesisMaterialBean, HttpServletRequest httpRequest) {
+        //TODO write
+        return null;
+    }
+
     public SimpleSynthesisMaterialBean removeMaterialElement(SimpleSynthesisMaterialBean simpleSynthesisMaterialBean, String materialElementId, HttpServletRequest httpRequest)throws Exception {
         List<String> msgs = new ArrayList<String>();
         SynthesisMaterialBean entity = transferSynthesisMaterialBean(simpleSynthesisMaterialBean, httpRequest);
@@ -100,6 +105,11 @@ public class SynthesisMaterialBO extends BaseAnnotationBO {
         this.saveEntity(httpRequest, simpleSynthesisMaterialBean.getSampleId(), entity);
         this.checkOpenForms(entity, httpRequest);
         return setupUpdate(simpleSynthesisMaterialBean.getSampleId(), entity.getDomainEntity().getId().toString(), httpRequest);
+    }
+
+    public SimpleSynthesisMaterialBean saveFile(SimpleSynthesisMaterialBean simpleSynthesisMaterialBean, HttpServletRequest httpRequest) {
+        //TODO write
+        return null;
     }
 
     private SynthesisMaterialBean transferSynthesisMaterialBean(SimpleSynthesisMaterialBean synMatBean,

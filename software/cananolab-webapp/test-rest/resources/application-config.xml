@@ -12,11 +12,11 @@ L-->
 <beans default-lazy-init="false" default-dependency-check="none" default-autowire="no">
 
 	<bean name="ApplicationServiceImpl" class="gov.nih.nci.cananolab.system.applicationservice.impl.CaNanoLabApplicationServiceImpl" singleton="true">
-		<constructor-arg ref="ClassCache" index="0"></constructor-arg>
+		<constructor-arg ref="ClassCache" index="0"/>
 	</bean>
 
 	<!-- Bean Definitions -->
-	<bean name="ClassCache" class="gov.nih.nci.system.util.ClassCache" singleton="true">
+	<bean name="ClassCache" class="gov.nih.nci.cananolab.system.util.ClassCache" singleton="true">
 		<property name="daoList">
 			<list>
 				<!--  Add any DAO's here -->

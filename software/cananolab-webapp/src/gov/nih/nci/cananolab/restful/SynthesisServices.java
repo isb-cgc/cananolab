@@ -17,7 +17,7 @@ import org.apache.log4j.Logger;
 
 @Path("/synthesis")
 public class SynthesisServices {
-    private static final Logger logger = Logger.getLogger(NanomaterialEntityServices.class);
+    private static final Logger logger = Logger.getLogger(SynthesisServices.class);
 
 
     @GET
@@ -96,4 +96,5 @@ public class SynthesisServices {
 //            return Response.ok(e.getMessage()).build();
 //        }
 //    }
+
 }
