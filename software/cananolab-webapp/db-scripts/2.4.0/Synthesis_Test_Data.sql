@@ -7,11 +7,9 @@ WHERE `username` = 'canano_curator';
 
 /* Important - replace <sample_pk_id> with a valid sample id */
 INSERT INTO `canano`.`synthesis`
-(`synthesis_pk_id`,
- `sample_pk_id`)
+(`synthesis_pk_id`)
 VALUES
-(1000,
-    <sample_pk_id>);
+(<sample_pk_id>);
 
 
 INSERT INTO `canano`.`file`
