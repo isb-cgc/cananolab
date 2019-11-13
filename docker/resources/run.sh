@@ -2,13 +2,15 @@
 rm -rf /local/content/caNanoLab/artifacts/*
 rm -rf /local/content/caNanoLab/config/*
 rm -rf /usr/local/cananolab/software/cananolab-webapp/target/dist
+rm -rf $JBOSS_HOME/modules/com/mysql
+
 cd /usr/local/cananolab/software/cananolab-webapp/
 ant dist
 cd /usr/local/cananolab/software/cananolab-webapp/target/dist/
 
 cp caNanoLab.war /local/content/caNanoLab/artifacts
 cd /usr/local/cananolab/software/cananolab-webapp/target/dist/common
-cp bcprov-jdk15on-1.47.jar mysql-connector-java-5.1.26.jar caNanoLab_modules.cli caNanoLab_setup.cli caNanoLab_deploy.cli /local/content/caNanoLab/artifacts
+cp bcprov-jdk15on-1.47.jar csmapi-5.2.jar mysql-connector-java-5.1.26.jar caNanoLab_modules.cli caNanoLab_setup.cli caNanoLab_deploy.cli /local/content/caNanoLab/artifacts
 
 cp wikihelp.properties /local/content/caNanoLab/config
 
