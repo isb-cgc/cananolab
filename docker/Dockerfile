@@ -7,16 +7,18 @@ RUN wget http://download.jboss.org/wildfly/8.2.1.Final/wildfly-8.2.1.Final.tar.g
     && tar xvfz wildfly-8.2.1.Final.tar.gz \
     && mv wildfly-8.2.1.Final /opt
 
-RUN wget https://archive.apache.org/dist/maven/maven-3/3.5.4/binaries/apache-maven-3.5.4-bin.tar.gz \
-    && tar xvfz apache-maven-3.5.4-bin.tar.gz \
-    && mv apache-maven-3.5.4 /opt \
-    && ln -s /opt/apache-maven-3.5.4 /opt/apache-maven
+RUN wget https://archive.apache.org/dist/maven/maven-3/3.5.3/binaries/apache-maven-3.5.3-bin.tar.gz \
+    && tar xvfz apache-maven-3.5.3-bin.tar.gz \
+    && mv apache-maven-3.5.3 /opt \
+    && ln -s /opt/apache-maven-3.5.3 /opt/apache-maven
 
 RUN wget http://archive.apache.org/dist/ant/binaries/apache-ant-1.9.9-bin.tar.gz \
     && tar xvfz apache-ant-1.9.9-bin.tar.gz \
     && mv apache-ant-1.9.9 /opt
 
 RUN git clone https://github.com/CBIIT/cananolab
+WORKDIR /tmp/cananolab
+RUN git checkout synthesis
 
 ENV PATH=/opt/apache-maven/bin:/opt/apache-ant-1.9.9/bin:$PATH
 ENV JAVA_HOME=/usr/lib/jvm/java-1.8.0-openjdk
