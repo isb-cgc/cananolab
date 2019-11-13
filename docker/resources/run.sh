@@ -2,7 +2,7 @@
 rm -rf /local/content/caNanoLab/artifacts/*
 rm -rf /local/content/caNanoLab/config/*
 rm -rf /usr/local/cananolab/software/cananolab-webapp/target/dist
-rm -rf $JBOSS_HOME/modules/com/mysql
+rm -rf /opt/wildfly-8.2.1.Final/modules/com/mysql
 
 cd /usr/local/cananolab/software/cananolab-webapp/
 ant dist
