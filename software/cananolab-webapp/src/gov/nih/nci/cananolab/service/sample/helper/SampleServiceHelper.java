@@ -40,15 +40,7 @@ import gov.nih.nci.system.client.ApplicationServiceProvider;
 import gov.nih.nci.system.query.hibernate.HQLCriteria;
 import gov.nih.nci.system.web.struts.action.Criteria;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Date;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-import java.util.SortedSet;
-import java.util.TreeSet;
+import java.util.*;
 
 import org.apache.log4j.Logger;
 import org.hibernate.FetchMode;
@@ -69,22 +61,22 @@ import org.springframework.stereotype.Component;
 /**
  * Helper class providing implementations of search methods needed for both
  * local implementation of SampleService and grid service *
- * 
+ *
  * @author pansu, tanq
- * 
+ *
  */
 @Component("sampleServiceHelper")
 public class SampleServiceHelper
 {
 	private static Logger logger = Logger.getLogger(SampleServiceHelper.class);
-	
+
 	@Autowired
 	private AclDao aclDao;
-	
+
 	@Autowired
 	private SpringSecurityAclService springSecurityAclService;
-	
-	
+
+
 	public List<String> findSampleIdsBy(String sampleName,
 			String samplePointOfContact, String[] nanomaterialEntityClassNames,
 			String[] otherNanomaterialEntityTypes,
@@ -95,7 +87,7 @@ public class SampleServiceHelper
 			String[] otherCharacterizationTypes, String[] wordList)
 			throws Exception {
 		List<String> sampleIds = new ArrayList<String>();
-		
+
 		//logger.error("Processing: " + sampleName);
 
 		// can't query for the entire Sample object due to
@@ -341,28 +333,41 @@ public class SampleServiceHelper
 		}
 
 		CaNanoLabApplicationService appService = (CaNanoLabApplicationService) ApplicationServiceProvider.getApplicationService();
-		
+
 		List results = appService.query(crit);
-		
+
 		int resSize = results.size();
 		/*
 		 * We will look only though the maximum amount of allowed records to avoid Exceptions
 		 */
 		int maxCount = appService.getMaxRecordsCount();
 		Set<Sample> samples = new HashSet<Sample>();
+		long idTrailer = -1;
 		for(int i = 0; (i < resSize) && (i < maxCount); i++){
 			try {
-				/*
+                boolean haveIt = false;
+
+                /*
 				 * There is a bug when searching with keyword "tes", where the following line
 				 * whould trigger a ClassCastException. Reason unknow but suspected to be reaching
-				 * the last row of a dataset. 
+				 * the last row of a dataset.
 				 */
 //				Object[] row = (Object[]) obj;
 				Object[] row = (Object[]) results.get(i);
 
 				Long sampleId = (Long) row[0];
-				if (springSecurityAclService.currentUserHasReadPermission(sampleId, SecureClassesEnum.SAMPLE.getClazz()) ||
-					springSecurityAclService.currentUserHasWritePermission(sampleId, SecureClassesEnum.SAMPLE.getClazz()))  {
+                if( sampleId == idTrailer){
+                    haveIt = true;
+                }
+                // Duplicate IDs are grouped together, so this works
+                idTrailer = sampleId;
+
+                if(
+                    ( ! haveIt ) &&
+                    ((springSecurityAclService.currentUserHasReadPermission(sampleId, SecureClassesEnum.SAMPLE.getClazz()) ||
+					 springSecurityAclService.currentUserHasWritePermission(sampleId, SecureClassesEnum.SAMPLE.getClazz())))
+                )
+                {
 					Sample sample = new Sample();
 					sample.setId(sampleId);
 					sample.setName((String) row[1]);
@@ -377,7 +382,7 @@ public class SampleServiceHelper
 				break;
 			}
 		}
-		
+
 		List<Sample> orderedSamples = new ArrayList<Sample>(samples);
 		// Collections.sort(orderedSamples,
 		// Collections.reverseOrder(new Comparators.SampleDateComparator()));
@@ -390,12 +395,12 @@ public class SampleServiceHelper
 
 		return sampleIds;
 	}
-	
+
 
 	/**
 	 * Return all stored functionalizing entity class names. In case of
 	 * OtherFunctionalizingEntity, store the OtherFunctionalizingEntity type
-	 * 
+	 *
 	 * @param sample
 	 * @return
 	 */
@@ -419,7 +424,7 @@ public class SampleServiceHelper
 	/**
 	 * Return all stored function class names. In case of OtherFunction, store
 	 * the otherFunction type
-	 * 
+	 *
 	 * @param sample
 	 * @return
 	 */
@@ -478,7 +483,7 @@ public class SampleServiceHelper
 	/**
 	 * Return all stored nanomaterial entity class names. In case of
 	 * OtherNanomaterialEntity, store the otherNanomaterialEntity type
-	 * 
+	 *
 	 * @param sample
 	 * @return
 	 */
@@ -584,7 +589,7 @@ public class SampleServiceHelper
 	public List<Keyword> findKeywordsBySampleId(String sampleId) throws Exception
 	{
 		// check whether user has access to the sample
-		
+
 		if (!springSecurityAclService.currentUserHasReadPermission(Long.valueOf(sampleId), SecureClassesEnum.SAMPLE.getClazz()) &&
 			!springSecurityAclService.currentUserHasWritePermission(Long.valueOf(sampleId), SecureClassesEnum.SAMPLE.getClazz())) {
 			throw new NoAccessException("User doesn't have access to the sample : " + sampleId);
@@ -656,7 +661,7 @@ public class SampleServiceHelper
 			!springSecurityAclService.currentUserHasWritePermission(Long.valueOf(sampleId), SecureClassesEnum.SAMPLE.getClazz())) {
 			throw new NoAccessException("User has no access to the sample " + sampleId);
 		}
-		
+
 		logger.debug("===============Finding a sample by id: " + System.currentTimeMillis());
 		Sample sample = null;
 		CaNanoLabApplicationService appService = (CaNanoLabApplicationService) ApplicationServiceProvider.getApplicationService();
@@ -688,15 +693,15 @@ public class SampleServiceHelper
 				FetchMode.JOIN);
 		crit.setFetchMode("publicationCollection", FetchMode.JOIN);
 		crit.setResultTransformer(CriteriaSpecification.DISTINCT_ROOT_ENTITY);
-		
+
 		List result = appService.query(crit);
 		if (!result.isEmpty() || result.size() > 0) {
 			sample = (Sample) result.get(0);
 		}
 		return sample;
 	}
-	
-	
+
+
 	public Sample findSampleBasicById(String sampleId) throws Exception {
 		if (!springSecurityAclService.currentUserHasReadPermission(Long.valueOf(sampleId), SecureClassesEnum.SAMPLE.getClazz()) &&
 			!springSecurityAclService.currentUserHasWritePermission(Long.valueOf(sampleId), SecureClassesEnum.SAMPLE.getClazz())) {
@@ -705,19 +710,19 @@ public class SampleServiceHelper
 		Sample sample = null;
 		CaNanoLabApplicationService appService = (CaNanoLabApplicationService) ApplicationServiceProvider
 				.getApplicationService();
-		
+
 		DetachedCriteria crit = DetachedCriteria.forClass(Sample.class).add(
 				Property.forName("id").eq(new Long(sampleId)));
-	
+
 		crit.setResultTransformer(CriteriaSpecification.DISTINCT_ROOT_ENTITY);
-	
+
 		List result = appService.query(crit);
 		if (!result.isEmpty()) {
 			sample = (Sample) result.get(0);
 		}
 		return sample;
 	}
-	
+
 	public int getNumberOfPublicSamplesForJob() throws Exception
 	{
 		List<Long> publicData = aclDao.getIdsOfClassForSid(SecureClassesEnum.SAMPLE.getClazz().getName(), CaNanoRoleEnum.ROLE_ANONYMOUS.toString());
@@ -728,9 +733,9 @@ public class SampleServiceHelper
 	public int getNumberOfPublicSampleSources() throws Exception
 	{
 		CaNanoLabApplicationService appService = (CaNanoLabApplicationService) ApplicationServiceProvider.getApplicationService();
-		
+
 		Set<Organization> publicOrgs = new HashSet<Organization>();
-		
+
 		DetachedCriteria crit = DetachedCriteria.forClass(PointOfContact.class);
 		crit.setFetchMode("organization", FetchMode.JOIN);
 		List results = appService.query(crit);
@@ -751,7 +756,7 @@ public class SampleServiceHelper
 		int cnt = (publicData != null) ? publicData.size() : 0;
 		return cnt;
 	}
-	
+
 	public List<Long> getSampleAccessibleToACollabGrp(String groupName)
 	{
 		List<Long> collabGroupSamples = aclDao.getIdsOfClassForSid(SecureClassesEnum.SAMPLE.getClazz().getName(), groupName);
@@ -861,7 +866,7 @@ public class SampleServiceHelper
 	/**
 	 * search sampleNames based on sample name str. The str can contain just a
 	 * partial sample name or multiple partial names one per line
-	 * 
+	 *
 	 * @param nameStr
 	 * @return
 	 * @throws Exception
@@ -979,7 +984,7 @@ public class SampleServiceHelper
 		}
 		return sampleIds;
 	}
-	
+
 	public List<String> getAllSamples() throws Exception {
 		CaNanoLabApplicationService appService = (CaNanoLabApplicationService) ApplicationServiceProvider
 				.getApplicationService();
@@ -989,7 +994,7 @@ public class SampleServiceHelper
 		List<String> publicIds = new ArrayList<String>();
 		for(int i = 0; i< results.size(); i++){
 			String id = (String) results.get(i).toString();
-			publicIds.add(id);	
+			publicIds.add(id);
 		}
 		return publicIds;
 	}
@@ -1003,7 +1008,7 @@ public class SampleServiceHelper
 			String[] otherCharacterizationTypes, String[] wordList)
 			throws Exception {
 		List<String> sampleIds = new ArrayList<String>();
-		
+
 		//logger.error("Processing: " + sampleName);
 
 		// can't query for the entire Sample object due to
@@ -1250,12 +1255,12 @@ public class SampleServiceHelper
 
 		CaNanoLabApplicationService appService = (CaNanoLabApplicationService) ApplicationServiceProvider
 				.getApplicationService();
-		
+
 		List results = appService.query(crit);
 		List<Sample> samples = new ArrayList<Sample>();
 //		List<String> accessibleData = getAccessibleData();
 		for(int i = 0; i < results.size(); i++){
-			
+
 			try {
 				Sample sample = (Sample) results.get(i);
 				System.out.println("sample ID test === "+sample.getId());
@@ -1265,7 +1270,7 @@ public class SampleServiceHelper
 				break;
 			}
 		}
-		
+
 		List<Sample> orderedSamples = new ArrayList<Sample>(samples);
 		// Collections.sort(orderedSamples,
 		// Collections.reverseOrder(new Comparators.SampleDateComparator()));
@@ -1276,7 +1281,7 @@ public class SampleServiceHelper
 		for (Sample sample : orderedSamples) {
 			sampleIds.add(sample.getId().toString());
 		}
-		
+
 
 		return samples;
 	}
