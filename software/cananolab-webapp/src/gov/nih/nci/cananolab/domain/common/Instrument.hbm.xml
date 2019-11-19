@@ -28,13 +28,13 @@ L-->
 			<key column="instrument_pk_id" />
 			<many-to-many class="ExperimentConfig" column="experiment_config_pk_id" />
 		</set>
-		<set name="purificationConfigCollection" inverse="true" table="purification_config_instrument" lazy="true">
-			<cache usage="read-write"/>
-			<key>
-				<column name="instrument_pk_id"/>
-			</key>
-			<many-to-many class="PurificationConfig" column="purification_config_pk_id"/>
-		</set>
+<!--		<set name="purificationConfigCollection" inverse="true" table="purification_config_instrument" lazy="true">-->
+<!--			<cache usage="read-write"/>-->
+<!--			<key>-->
+<!--				<column name="instrument_pk_id"/>-->
+<!--			</key>-->
+<!--			<many-to-many class="PurificationConfig" column="purification_config_pk_id"/>-->
+<!--		</set>-->
 
 	</class>
 </hibernate-mapping>

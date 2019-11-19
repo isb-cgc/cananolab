@@ -352,6 +352,7 @@ public class NanomaterialEntityBO extends BaseAnnotationBO
 		try {
 			entity = transferNanoMateriaEntityBean(nanoBean, request);
 			List<String> msgs =new ArrayList<String>();
+			//TODO This is evil. Burn it with fire
 			ComposingElementBean composingElement = entity.getTheComposingElement();
 //			ComposingElementBean composingElement = entity.getComposingElements().get(0);
 			composingElement.setupDomain(SpringSecurityUtil.getLoggedInUserName());

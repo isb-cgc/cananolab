@@ -60,7 +60,7 @@ public class NanomaterialEntityBean extends BaseCompositionEntityBean {
 
 	private boolean withProperties = false;
 
-	private ComposingElementBean theComposingElement = new ComposingElementBean();
+
 
 	private String isPolymerized;
 
@@ -350,13 +350,6 @@ public class NanomaterialEntityBean extends BaseCompositionEntityBean {
 		return withProperties;
 	}
 
-	public ComposingElementBean getTheComposingElement() {
-		return theComposingElement;
-	}
-
-	public void setTheComposingElement(ComposingElementBean theComposingElement) {
-		this.theComposingElement = theComposingElement;
-	}
 
 	// used for DWR ajax in bodySubmitChemicalAssociation.jsp
 	public String getDomainId() {
@@ -447,4 +440,18 @@ public class NanomaterialEntityBean extends BaseCompositionEntityBean {
 			}
 		}
 	}
+
+
+	//TODO This is evil and should be eliminated
+	private ComposingElementBean theComposingElement = new ComposingElementBean();
+
+
+	public ComposingElementBean getTheComposingElement() {
+		return theComposingElement;
+	}
+
+	public void setTheComposingElement(ComposingElementBean theComposingElement) {
+		this.theComposingElement = theComposingElement;
+	}
+
 }

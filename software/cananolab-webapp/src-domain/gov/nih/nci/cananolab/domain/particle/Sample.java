@@ -30,11 +30,11 @@ public class Sample implements java.io.Serializable {
 	private String name;
 	private PointOfContact primaryPointOfContact;
 	private Set<Characterization> characterizationCollection = new HashSet<Characterization>(0);
+//	private Set<SampleComposition> sampleCompositionCollection;
 	private SampleComposition sampleComposition;
 	private Set<Publication> publicationCollection = new HashSet<Publication>(0);
 	private Set<PointOfContact> otherPointOfContactCollection = new HashSet<PointOfContact>(0);
 	private Set<Keyword> keywordCollection = new HashSet<Keyword>(0);
-	private Set<Synthesis> synthesisCollection = new HashSet<Synthesis>();
 	private Synthesis synthesis;
 
 	public Sample() {
@@ -119,12 +119,23 @@ public class Sample implements java.io.Serializable {
 	}
 
 	public SampleComposition getSampleComposition() {
+		//due to legacy code, the sample composition is a set.  It should be one-to-one
 		return this.sampleComposition;
 	}
 
 	public void setSampleComposition(SampleComposition sampleComposition) {
+		//sample composition should have only on element ever
 		this.sampleComposition = sampleComposition;
 	}
+
+
+//	public Set<SampleComposition> getSampleCompositionCollection() {
+//		return this.sampleCompositionCollection;
+//	}
+//
+//	public void setSampleCompositionCollection(Set<SampleComposition> sampleCompositionCollection) {
+//		 this.sampleCompositionCollection = sampleCompositionCollection;
+//	}
 
 	public Set<Publication> getPublicationCollection() {
 		return this.publicationCollection;
@@ -152,7 +163,7 @@ public class Sample implements java.io.Serializable {
 		this.keywordCollection = keywordCollection;
 	}
 
-	public Set<Synthesis> getSynthesisCollection(){return this.synthesisCollection;}
+//	public Set<Synthesis> getSynthesisCollection(){return this.synthesisCollection;}
 //
 //	public void setSynthesisCollection(Set<Synthesis> synthesisCollection){
 //		this.synthesisCollection=synthesisCollection;

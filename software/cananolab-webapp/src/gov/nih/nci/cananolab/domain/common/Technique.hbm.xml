@@ -27,10 +27,10 @@ L-->
 			<key column="technique_pk_id" />
 			<one-to-many class="ExperimentConfig"/>
 		</set>
-		<set name="purificationConfigCollection" inverse="true">
-			<cache usage="read-write" />
-			<key column="technique_pk_id" not-null="true"/>
-			<one-to-many not-found="ignore" class="PurificationConfig"/>
-		</set>
+<!--		<set name="purificationConfigCollection" inverse="true">-->
+<!--			<cache usage="read-write" />-->
+<!--			<key column="technique_pk_id" not-null="true"/>-->
+<!--			<one-to-many not-found="ignore" class="PurificationConfig"/>-->
+<!--		</set>-->
 	</class>
 </hibernate-mapping>

@@ -15,7 +15,7 @@ public class SynthesisFunctionalizationElement {
     private String createdBy;
     private Timestamp createdDate;
     private String chemicalName;
-    private BigDecimal value;
+    private Float value;
     private String valueUnit;
     private String pubChemDatasourceName;
     private Long pubChemId;
@@ -92,11 +92,11 @@ public class SynthesisFunctionalizationElement {
         this.chemicalName = chemicalName;
     }
 
-    public BigDecimal getValue() {
+    public Float getValue() {
         return value;
     }
 
-    public void setValue(BigDecimal value) {
+    public void setValue(Float value) {
         this.value = value;
     }
 

@@ -104,7 +104,7 @@ public class SynthesisExporter {
                                 "Description");
                         for (SynthesisMaterialElementBean synMatElementBean : synthesisMaterialElements) {
                             row = sheet.createRow(rowIndex++);
-                            SynthesisMaterialElement synthesisMaterialElement = synMatElementBean.getDomain();
+                            SynthesisMaterialElement synthesisMaterialElement = synMatElementBean.getDomainEntity();
 
                             //output type
                             ExportUtils.createCell(row, 0, synthesisMaterialElement.getMolecularFormulaType());

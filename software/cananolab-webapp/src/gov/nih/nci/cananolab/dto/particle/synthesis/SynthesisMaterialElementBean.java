@@ -1,5 +1,6 @@
 package gov.nih.nci.cananolab.dto.particle.synthesis;
 
+import gov.nih.nci.cananolab.domain.particle.Characterization;
 import gov.nih.nci.cananolab.domain.particle.SmeInherentFunction;
 import gov.nih.nci.cananolab.domain.particle.SynthesisMaterialElement;
 import gov.nih.nci.cananolab.util.Constants;
@@ -15,6 +16,7 @@ public class SynthesisMaterialElementBean extends BaseSynthesisEntityBean {
     private SynthesisMaterialElement domain;
     private List<SmeInherentFunctionBean> functions = new ArrayList<SmeInherentFunctionBean>();
 String description;
+
 
     public List<SmeInherentFunctionBean> getFunctions() {
         return functions;
@@ -35,7 +37,7 @@ String description;
 
     }
 
-    public SynthesisMaterialElement getDomain() {
+    public SynthesisMaterialElement getDomainEntity() {
         return domain;
     }
 
@@ -47,8 +49,8 @@ String description;
 
     public String getMolecularFormulaDisplayName() {
         StringBuilder buffer = new StringBuilder();
-        if (!StringUtils.isEmpty(getDomain().getMolecularFormula())) {
-            buffer.append(getDomain().getMolecularFormula());
+        if (!StringUtils.isEmpty(getDomainEntity().getMolecularFormula())) {
+            buffer.append(getDomainEntity().getMolecularFormula());
             if (!StringUtils.isEmpty(domain.getMolecularFormulaType())) {
                 buffer.append(" (");
                 buffer.append(domain.getMolecularFormulaType());

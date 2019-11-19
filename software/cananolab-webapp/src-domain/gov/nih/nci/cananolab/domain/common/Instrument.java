@@ -36,7 +36,7 @@ public class Instrument implements Serializable {
 
 
     private Collection<ExperimentConfig> experimentConfigCollection;
-    private Collection<PurificationConfig> purificationConfigCollection;
+//    private Collection<PurificationConfig> purificationConfigCollection;
 
 
     /**
@@ -161,14 +161,14 @@ public class Instrument implements Serializable {
     public void setExperimentConfigCollection(Collection<ExperimentConfig> experimentConfigCollection) {
         this.experimentConfigCollection = experimentConfigCollection;
     }
-
-    public Collection<PurificationConfig> getPurificationConfigCollection() {
-        return this.purificationConfigCollection;
-    }
-
-    public void setPurificationConfigCollection(Collection<PurificationConfig> purificationConfigCollection) {
-        this.purificationConfigCollection = purificationConfigCollection;
-    }
+//
+//    public Collection<PurificationConfig> getPurificationConfigCollection() {
+//        return this.purificationConfigCollection;
+//    }
+//
+//    public void setPurificationConfigCollection(Collection<PurificationConfig> purificationConfigCollection) {
+//        this.purificationConfigCollection = purificationConfigCollection;
+//    }
 
     /**
      * Compares <code>obj</code> to it self and returns true if they both are same

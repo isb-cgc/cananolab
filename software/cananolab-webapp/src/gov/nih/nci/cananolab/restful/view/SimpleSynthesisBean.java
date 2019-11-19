@@ -63,7 +63,7 @@ public class SimpleSynthesisBean {
         Map<String, Object> files;
 
         List<Map<String, Object>> fileList;
-        synthesisSections = synBean.getSynthesisSections();
+        setSynthesisSections(synBean.getSynthesisSections());
 
         //Add SynthesisMaterials
         synthesisMaterials = new MultiValueMap();
@@ -85,8 +85,8 @@ public class SimpleSynthesisBean {
                             materialElement.put("Description", elementBean.getDescription());
                             materialElement.put("DisplayName", elementBean.getDisplayName());
                             materialElement.put("Function", elementBean.getFunctionDisplayNames());
-                            materialElement.put("PubChemDataSourceName", elementBean.getDomain().getPubChemDatasourceName());
-                            materialElement.put("PubChemId", elementBean.getDomain().getPubChemId());
+                            materialElement.put("PubChemDataSourceName", elementBean.getDomainEntity().getPubChemDatasourceName());
+                            materialElement.put("PubChemId", elementBean.getDomainEntity().getPubChemId());
                             materialElement.put("PubChemLink", elementBean.getPubChemLink());
                             materialElements.add(materialElement);
                         }

@@ -47,7 +47,7 @@
             </column>
         </property>
         <set fetch="select" inverse="true" lazy="true" name="purities"
-             table="synthesisPurity">
+             table="synthesis_purity">
             <key>
                 <column name="synthesis_purification_pk_id" not-null="true">
                     <comment>synthesis_purification_pk_id</comment>

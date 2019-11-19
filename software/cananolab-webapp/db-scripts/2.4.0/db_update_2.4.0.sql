@@ -48,6 +48,22 @@ drop table if exists supplier;
 
 
 
+alter table `canano`.`chemical_association`
+    add constraint `fk_ca_entry_comp`
+        foreign key (`composition_pk_id`)
+            references `canano`.`composition` (`composition_pk_id`) on delete cascade;
+
+#Pending due to mismatched data
+# alter table `canano`.`nanomaterial_entity`
+#     add constraint `fk_ne_entry_comp`
+#         foreign key (`composition_pk_id`)
+#             references `canano`.`composition` (`composition_pk_id`) on delete cascade;
+#
+# alter table `canano`.`functionalizing_entity`
+#     add constraint `fk_fe_entry_comp`
+#         foreign key (`composition_pk_id`)
+#             references `canano`.`composition` (`composition_pk_id`) on delete cascade;
+
 
 
 

@@ -17,6 +17,7 @@ import gov.nih.nci.cananolab.domain.common.Publication;
 import gov.nih.nci.cananolab.domain.common.PurityDatum;
 import gov.nih.nci.cananolab.domain.particle.Characterization;
 import gov.nih.nci.cananolab.domain.particle.Sample;
+import gov.nih.nci.cananolab.domain.particle.SynthesisMaterialElement;
 import gov.nih.nci.cananolab.dto.common.ColumnHeader;
 import gov.nih.nci.cananolab.dto.common.ExperimentConfigBean;
 import gov.nih.nci.cananolab.dto.common.FileBean;
@@ -32,6 +33,7 @@ import gov.nih.nci.cananolab.dto.particle.composition.NanomaterialEntityBean;
 import gov.nih.nci.cananolab.dto.particle.composition.TargetBean;
 import gov.nih.nci.cananolab.dto.particle.synthesis.SynthesisFunctionalizationBean;
 import gov.nih.nci.cananolab.dto.particle.synthesis.SynthesisMaterialBean;
+import gov.nih.nci.cananolab.dto.particle.synthesis.SynthesisMaterialElementBean;
 import gov.nih.nci.cananolab.dto.particle.synthesis.SynthesisPurificationBean;
 import gov.nih.nci.cananolab.restful.view.SimpleSearchSampleBean;
 import java.util.Comparator;
@@ -195,6 +197,42 @@ public class Comparators {
 
 	public static class SynthesisMaterialBeanTypeDataComparator implements Comparator<SynthesisMaterialBean>{
     	public int compare(SynthesisMaterialBean entity1, SynthesisMaterialBean entity2){
+			if (entity1
+					.getDomainEntity()
+					.getClass()
+					.getCanonicalName()
+					.equals(entity2.getDomainEntity().getClass()
+							.getCanonicalName())) {
+				if (entity1.getDomainEntity().getCreatedDate()
+						.compareTo(entity2.getDomainEntity().getCreatedDate()) == 0) {
+					return entity1.getDomainEntity().getId()
+							.compareTo(entity2.getDomainEntity().getId());
+				} else {
+					return entity1
+							.getDomainEntity()
+							.getCreatedDate()
+							.compareTo(
+									entity2.getDomainEntity().getCreatedDate());
+				}
+			} else {
+				return entity1
+						.getDomainEntity()
+						.getClass()
+						.getCanonicalName()
+						.compareTo(
+								entity2.getDomainEntity().getClass()
+										.getCanonicalName());
+			}
+		}
+
+//        @Override
+//        public Comparator<SynthesisMaterialBean> reversed() {
+//            return null;
+//        }
+    }
+
+    public static class SynthesisMaterialElementTypeDataComparator implements Comparator<SynthesisMaterialElementBean>{
+    	public int compare(SynthesisMaterialElementBean entity1, SynthesisMaterialElementBean entity2){
 			if (entity1
 					.getDomainEntity()
 					.getClass()
