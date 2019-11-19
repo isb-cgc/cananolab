@@ -63,7 +63,6 @@ L-->
 				class="gov.nih.nci.cananolab.domain.common.Keyword"
 				column="keyword_pk_id" />
 		</set>
-		<one-to-one name="synthesis"
-					class="Synthesis"/>
+		<one-to-one name="synthesis" cascade="all" class="Synthesis" />
 	</class>
 </hibernate-mapping>

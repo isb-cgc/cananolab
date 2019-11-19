@@ -550,13 +550,15 @@ public class SampleServiceHelper
 
 	public SortedSet<String> getStoredSynthesisClassNames(Sample sample){
 		SortedSet<String> storedSynthesis = new TreeSet<String>();
-		if(sample.getSynthesisCollection() !=null){
-			for (Synthesis synthesis: sample.getSynthesisCollection()){
-				storedSynthesis.add(ClassUtils.getShortClassName(synthesis.getClass().getCanonicalName()));
-			}
+		if(sample.getSynthesis() !=null){
+			//This should only have one element
+//			for (Synthesis synthesis: sample.getSynthesisCollection()){
+				storedSynthesis.add(ClassUtils.getShortClassName(sample.getSynthesis().getClass().getCanonicalName()));
+//			}
 		}
 		return storedSynthesis;
 	}
+
 
 
 	//TODO add Synthesis to all of the sample returns

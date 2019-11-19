@@ -28,11 +28,13 @@ L-->
 			<key column="nanomaterial_entity_pk_id" />
 			<many-to-many class="gov.nih.nci.cananolab.domain.common.File" column="file_pk_id" />
 		</set>
-<!--		<set name="composingElementCollection" lazy="true" cascade="all-delete-orphan">-->
-<!--			<cache usage="read-write" />-->
-<!--			<key column="nanomaterial_entity_pk_id" />-->
-<!--			<one-to-many class="ComposingElement" />-->
-<!--		</set>-->
+		<set name="composingElementCollection" table="composing_element" lazy="true" cascade="all-delete-orphan">
+			<cache usage="read-write" />
+			<key column="nanomaterial_entity_pk_id" />
+			<one-to-many class="ComposingElement" />
+		</set>
+
+
 		<subclass name="gov.nih.nci.cananolab.domain.nanomaterial.OtherNanomaterialEntity" discriminator-value="OtherNanomaterialEntity">
 			<join table="other_nanomaterial_entity">
 				<key column="other_nanomaterial_entity_pk_id" />

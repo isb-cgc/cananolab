@@ -37,8 +37,11 @@ public class SynthesisServices {
 
             return Response.ok(view).build();
 
-        } catch (Exception e) {
-            return Response.ok("Error while viewing the composition results" +e).build();
+        }catch (NullPointerException e){
+            return Response.noContent().build();
+        }
+        catch (Exception e) {
+            return Response.ok("Error while viewing the synthesis results " +e).build();
         }
     }
 

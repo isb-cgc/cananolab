@@ -17,7 +17,7 @@ public class Technique implements Serializable {
 
 
     private String abbreviation;
-    private Set<PurificationConfig> purificationConfigCollection;
+//    private Set<PurificationConfig> purificationConfigCollection;
     private String createdBy;
     private Date createdDate;
     private Long id;
@@ -27,13 +27,13 @@ public class Technique implements Serializable {
      **/
     private Collection<ExperimentConfig> experimentConfigCollection;
 
-    public Set<PurificationConfig> getPurificationConfigCollection() {
-        return purificationConfigCollection;
-    }
+//    public Set<PurificationConfig> getPurificationConfigCollection() {
+//        return purificationConfigCollection;
+//    }
 
-    public void setPurificationConfigCollection(Set<PurificationConfig> purificationConfigCollection) {
-        this.purificationConfigCollection = purificationConfigCollection;
-    }
+//    public void setPurificationConfigCollection(Set<PurificationConfig> purificationConfigCollection) {
+//        this.purificationConfigCollection = purificationConfigCollection;
+//    }
 
     /**
      * Retrieves the value of the abbreviation attribute
