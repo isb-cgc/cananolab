@@ -12,6 +12,7 @@
         <property name="description" column="description" type="string"/>
         <property name="createdDate" column="created_date" type="java.util.Date"/>
         <property name="createdBy" column="created_by" type="string"/>
+        <property name="type" column="type" type="string" not-null="true"/>
         <many-to-one name="synthesis" class="Synthesis">
             <column name="synthesis_pk_id" not-null="true"/>
         </many-to-one>

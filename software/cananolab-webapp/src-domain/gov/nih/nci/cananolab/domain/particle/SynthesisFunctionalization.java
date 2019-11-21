@@ -22,7 +22,7 @@ public class SynthesisFunctionalization implements Serializable {
 	private String createdBy;
 	private Set<SynthesisFunctionalizationElement> synthesisFunctionalizationElements = new HashSet<SynthesisFunctionalizationElement>();
 	private Set<File> files = new HashSet<File>();
-
+	private String type;
 
 
 	public SynthesisFunctionalization() {
@@ -43,7 +43,15 @@ public class SynthesisFunctionalization implements Serializable {
 		return this.synthesisFunctionalizationPkId;
 	}
 
-	public void setId(Long synthesisFuntionalizationPkId) {
+    public String getType() {
+		return this.type;
+    }
+
+    public void setType(String type){
+		this.type=type;
+	}
+
+    public void setId(Long synthesisFuntionalizationPkId) {
 		this.synthesisFunctionalizationPkId = synthesisFuntionalizationPkId;
 	}
 

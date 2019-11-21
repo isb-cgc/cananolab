@@ -32,6 +32,7 @@ import gov.nih.nci.cananolab.dto.particle.composition.FunctionalizingEntityBean;
 import gov.nih.nci.cananolab.dto.particle.composition.NanomaterialEntityBean;
 import gov.nih.nci.cananolab.dto.particle.composition.TargetBean;
 import gov.nih.nci.cananolab.dto.particle.synthesis.SynthesisFunctionalizationBean;
+import gov.nih.nci.cananolab.dto.particle.synthesis.SynthesisFunctionalizationElementBean;
 import gov.nih.nci.cananolab.dto.particle.synthesis.SynthesisMaterialBean;
 import gov.nih.nci.cananolab.dto.particle.synthesis.SynthesisMaterialElementBean;
 import gov.nih.nci.cananolab.dto.particle.synthesis.SynthesisPurificationBean;
@@ -323,6 +324,38 @@ public class Comparators {
 			}
 		}
 	}
+
+	public static class SFEBeanTypeComparator implements Comparator<SynthesisFunctionalizationElementBean>{
+		public int compare(SynthesisFunctionalizationElementBean entity1, SynthesisFunctionalizationElementBean entity2){
+			if (entity1
+					.getDomain()
+					.getClass()
+					.getCanonicalName()
+					.equals(entity2.getDomain().getClass()
+							.getCanonicalName())) {
+				if (entity1.getDomain().getCreatedDate()
+						.compareTo(entity2.getDomain().getCreatedDate()) == 0) {
+					return entity1.getDomain().getId()
+							.compareTo(entity2.getDomain().getId());
+				} else {
+					return entity1
+							.getDomain()
+							.getCreatedDate()
+							.compareTo(
+									entity2.getDomain().getCreatedDate());
+				}
+			} else {
+				return entity1
+						.getDomain()
+						.getClass()
+						.getCanonicalName()
+						.compareTo(
+								entity2.getDomain().getClass()
+										.getCanonicalName());
+			}
+		}
+	}
+
 
 	public static class FunctionalizingEntityBeanTypeDateComparator implements
 			Comparator<FunctionalizingEntityBean> {
@@ -656,4 +689,6 @@ public class Comparators {
 			}
 		}
 	}
+
+
 }

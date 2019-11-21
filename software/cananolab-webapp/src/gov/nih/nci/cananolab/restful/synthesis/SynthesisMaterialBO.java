@@ -174,7 +174,7 @@ public class SynthesisMaterialBO extends BaseAnnotationBO {
                 request, synthesisMaterialBean);
 
         // Synthesis Material Type
-        String entityType = synthesisMaterialBean.getType();
+        String entityType = synthesisMaterialBean.getDomainEntity().getType();
         setOtherValueOption(request, entityType, "synthesisMaterialTypes");
 
        //TODO Check SynthesisMaterialElement?
@@ -182,9 +182,9 @@ public class SynthesisMaterialBO extends BaseAnnotationBO {
 
         String detailPage = null;
 
-        if (!StringUtils.isEmpty(synthesisMaterialBean.getType())) {
+        if (!StringUtils.isEmpty(synthesisMaterialBean.getDomainEntity().getType())) {
             detailPage = InitSynthesisSetup.getInstance().getDetailPage(
-                    synthesisMaterialBean.getType(), "synthesisMaterial");
+                    synthesisMaterialBean.getDomainEntity().getType(), "synthesisMaterial");
         }
         request.setAttribute("synthesisDetailPage", detailPage);
 

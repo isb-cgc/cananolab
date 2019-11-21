@@ -8,11 +8,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class SynthesisPurificationBean extends BaseSynthesisEntityBean {
-    private String type;
+//    private String type;
     private SynthesisPurification domainChar = new SynthesisPurification();
     private SynthesisPurification domainEntity;
-    private PointOfContactBean source = new PointOfContactBean();
-    private String description;
+//    private PointOfContactBean source = new PointOfContactBean();
     private Instrument theInstrument = new Instrument();
     private List<SynthesisPurityBean> purityBeans = new ArrayList<SynthesisPurityBean>();
 
@@ -21,11 +20,18 @@ public class SynthesisPurificationBean extends BaseSynthesisEntityBean {
         this.domainEntity=purification;
     }
 
+//
+//    public String getType(){
+//        return this.type;
+//    }
 
-    public String getType(){
-        return this.type;
+    public String getDescription(){
+        return domainEntity.getDesignMethodDescription();
     }
 
+    public String getSource(){
+        return domainEntity.getCreatedBy();
+    }
 
     public SynthesisPurification getDomainChar() {
         return domainChar;
@@ -63,13 +69,13 @@ public class SynthesisPurificationBean extends BaseSynthesisEntityBean {
         this.purityBeans = purityBeans;
     }
 
-    public PointOfContactBean getSource() {
-        return source;
-    }
-
-    public void setSource(PointOfContactBean source) {
-        this.source = source;
-    }
+//    public PointOfContactBean getSource() {
+//        return source;
+//    }
+//
+//    public void setSource(PointOfContactBean source) {
+//        this.source = source;
+//    }
 
     public Instrument getTheInstrument() {
         return theInstrument;

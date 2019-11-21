@@ -15,7 +15,7 @@ public class SynthesisMaterialElementBean extends BaseSynthesisEntityBean {
     Logger logger = Logger.getLogger("SynthesisMaterialElementBean.class");
     private SynthesisMaterialElement domain;
     private List<SmeInherentFunctionBean> functions = new ArrayList<SmeInherentFunctionBean>();
-String description;
+String description="";
 
 
     public List<SmeInherentFunctionBean> getFunctions() {
@@ -31,7 +31,7 @@ String description;
         description = domain.getDescription();
         if(domain.getSmeInherentFunctions() !=null){
             for(SmeInherentFunction smeInherentFunction: domain.getSmeInherentFunctions()){
-                //TODO write
+                functions.add(new SmeInherentFunctionBean(smeInherentFunction));
             }
         }
 
@@ -46,6 +46,9 @@ String description;
     }
 
 
+    public String getDisplayName(){
+        return this.domain.getChemicalName();
+    }
 
     public String getMolecularFormulaDisplayName() {
         StringBuilder buffer = new StringBuilder();

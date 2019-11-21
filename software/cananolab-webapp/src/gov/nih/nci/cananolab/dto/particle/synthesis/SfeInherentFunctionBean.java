@@ -5,18 +5,20 @@ import gov.nih.nci.cananolab.util.StringUtils;
 
 public class SfeInherentFunctionBean {
     public String getType() {
-        return type;
+        return domain.getType();
     }
 
     public void setType(String type) {
+        //TODO write a proper transfer to domain
         this.type = type;
     }
 
     public String getDescription() {
-        return description;
+        return domain.getDescription();
     }
 
     public void setDescription(String description) {
+        //TODO write a proper transfer to domain
         this.description = description;
     }
 
@@ -26,6 +28,7 @@ public class SfeInherentFunctionBean {
 
     public void setDomain(SfeInherentFunction domain) {
         this.domain = domain;
+//TODO write a proper transfer to domain
     }
 
     //todo write
@@ -43,11 +46,11 @@ public class SfeInherentFunctionBean {
 
     public String getDisplayName() {
         StringBuffer buffer = new StringBuffer();
-        if (!StringUtils.isEmpty(type)) {
-            buffer.append(type);
+        if (!StringUtils.isEmpty(getType())) {
+            buffer.append(getType());
         }
         if (!StringUtils.isEmpty(getDescription())) {
-            buffer.append(": " + description);
+            buffer.append(": " + getDescription());
         }
 
         return buffer.toString();

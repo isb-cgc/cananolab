@@ -18,7 +18,7 @@ public class SynthesisMaterialBean extends BaseSynthesisEntityBean {
 
     private List<SynthesisMaterialElementBean> synthesisMaterialElements = new ArrayList<SynthesisMaterialElementBean>();
 
-    private String type;
+//    private String type;
 
     public SynthesisMaterialBean(){
 
@@ -49,13 +49,13 @@ public class SynthesisMaterialBean extends BaseSynthesisEntityBean {
       return copy;
   }
 
-  public void setType(String type){
-        this.type=type;
-  }
-
-    public String getType() {
-        return type;
-    }
+//  public void setType(String type){
+//        this.type=type;
+//  }
+//
+//    public String getType() {
+//        return type;
+//    }
 
     public void removeMaterialElement(SynthesisMaterialElementBean materialElementBean) {
         synthesisMaterialElements.remove(materialElementBean);
