@@ -20,7 +20,7 @@ public class SynthesisPurification implements java.io.Serializable {
 	private String designMethodDescription;
 	private String createdBy;
 	private Date createdDate;
-	private Integer yield;
+	private Float yield;
 	private Set<SynthesisPurity> purities = new HashSet<SynthesisPurity>(0);
 	private Set<PurificationConfig> purificationConfigs = new HashSet<PurificationConfig>(0);
 
@@ -37,7 +37,7 @@ public class SynthesisPurification implements java.io.Serializable {
 
 	public SynthesisPurification(Long synthesisPurificationPkId, Protocol protocol,
 								  String type, String methodName, String designMethodDescription, String createdBy,
-								 Date createdDate, Set<SynthesisPurity> purities, Set<PurificationConfig> purificationConfigs, Integer yield) {
+								 Date createdDate, Set<SynthesisPurity> purities, Set<PurificationConfig> purificationConfigs, Float yield) {
 		this.synthesisPurificationPkId = synthesisPurificationPkId;
 		this.protocol = protocol;
 		this.type = type;
@@ -122,8 +122,8 @@ public class SynthesisPurification implements java.io.Serializable {
 		this.purificationConfigs = purificationConfigs;
 	}
 
-	public void setYield(Integer yield) {this.yield = yield;}
+	public void setYield(Float yield) {this.yield = yield;}
 
-	public Integer getYield(){return yield;}
+	public Float getYield(){return yield;}
 
 }

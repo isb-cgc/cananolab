@@ -82,7 +82,7 @@ public class SynthesisBean extends BaseCompositionEntityBean {
 
         SortedSet<SynthesisMaterialBean> typeSynMaterials;
         for(SynthesisMaterialBean synthesisMaterialBean:synthesisMaterialBeanList){
-            String type=synthesisMaterialBean.getType();
+            String type=synthesisMaterialBean.getDomainEntity().getType();
             if(type2MatsEntities.get(type)!=null){
                 typeSynMaterials=type2MatsEntities.get(type);
             } else {
@@ -95,7 +95,7 @@ public class SynthesisBean extends BaseCompositionEntityBean {
 
         SortedSet<SynthesisFunctionalizationBean> typeSynFunctionalization;
         for(SynthesisFunctionalizationBean synthesisFunctionalizationBean:synthesisFunctionalizationBeanList){
-            String type=synthesisFunctionalizationBean.getType();
+            String type=synthesisFunctionalizationBean.getDomainEntity().getType();
             if(type2FuncEntities.get(type)!=null){
                 typeSynFunctionalization = type2FuncEntities.get(type);
             }else {
@@ -109,7 +109,7 @@ public class SynthesisBean extends BaseCompositionEntityBean {
 
         SortedSet<SynthesisPurificationBean> typeSynPurification;
          for(SynthesisPurificationBean synthesisPurificationBean:synthesisPurificationBeanList){
-             String type = synthesisPurificationBean.getType();
+             String type = synthesisPurificationBean.getDomainEntity().getType();
              if(type2PurEntities.get(type)!=null){
                  typeSynPurification=type2PurEntities.get(type);
              }else {

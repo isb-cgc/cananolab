@@ -46,6 +46,9 @@
                 <comment>created_date</comment>
             </column>
         </property>
+        <property name="yield" type="float">
+            <column name="yield" not-null="true"/>
+        </property>
         <set fetch="select" inverse="true" lazy="true" name="purities"
              table="synthesis_purity">
             <key>

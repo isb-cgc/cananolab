@@ -74,7 +74,7 @@ public class SimpleSynthesisBean {
             for (String matType : synBean.getSynMatTypes()) {
                 matEntity = new HashMap<String, Object>();
                 for (SynthesisMaterialBean material : synBean.getType2MatsEntities().get(matType)) {
-                    matEntity.put("Description", material.getDescriptionDisplayName());
+                    matEntity.put("Description", material.getDomainEntity().getDescription());
                     matEntity.put("dataId", material.getDomainEntity().getId());
 
                     //Add SynthesisMaterialElements
@@ -82,7 +82,7 @@ public class SimpleSynthesisBean {
                     if (material.getSynthesisMaterialElements() != null) {
                         for (SynthesisMaterialElementBean elementBean : material.getSynthesisMaterialElements()) {
                             materialElement = new HashMap<String, Object>();
-                            materialElement.put("Description", elementBean.getDescription());
+                            materialElement.put("Description", elementBean.getDomainEntity().getDescription());
                             materialElement.put("DisplayName", elementBean.getDisplayName());
                             materialElement.put("Function", elementBean.getFunctionDisplayNames());
                             materialElement.put("PubChemDataSourceName", elementBean.getDomainEntity().getPubChemDatasourceName());
@@ -111,17 +111,20 @@ public class SimpleSynthesisBean {
         /* TODO write */
         synthesisFunctionalization = new MultiValueMap();
         if(synBean.getSynthesisFunctionalizationBeanList() !=null){
-
-            Map<String,Object> functionalization;
+            Map<String,Object> funcEntity;
+//            Map<String,Object> functionalization;
             Map<String,Object> functionalizationElement;
             List<Map<String,Object>> functionalizationElements;
             for(String entityType:synBean.getSynFuncTypes()){
-
+                funcEntity = new HashMap<String, Object>();
                 for(SynthesisFunctionalizationBean functionalizationBean: synBean.getType2FuncEntities().get(entityType)){
-                    functionalization = new HashMap<String, Object>();
-                    functionalization.put("dataId", functionalizationBean.getDomainEntity().getId());
-                    functionalization.put("Description", functionalizationBean.getDescription());
-                    functionalization.put("Source", functionalizationBean.getSource());
+                    funcEntity.put("Description", functionalizationBean.getDomainEntity().getDescription());
+                    funcEntity.put("dataId", functionalizationBean.getDomainEntity().getId());
+                    funcEntity.put("source", functionalizationBean.getDomainEntity().getCreatedBy());
+//                    functionalization = new HashMap<String, Object>();
+//                    functionalization.put("dataId", functionalizationBean.getDomainEntity().getId());
+//                    functionalization.put("Description", functionalizationBean.getDescription());
+//                    functionalization.put("Source", functionalizationBean.getSource());
                     functionalizationElements = new ArrayList<Map<String, Object>>();
                     for (SynthesisFunctionalizationElementBean sfeBean: functionalizationBean.getSynthesisFunctionalizationElements()) {
                         functionalizationElement = new HashMap<String, Object>();
@@ -130,33 +133,44 @@ public class SimpleSynthesisBean {
                         functionalizationElement.put("pubChemID", sfeBean.getDomain().getPubChemId());
                         functionalizationElement.put("pubChemLink", sfeBean.getPubChemLink());
                         functionalizationElement.put("pubChemDataSourceName", sfeBean.getDomain().getPubChemDatasourceName());
+                        functionalizationElements.add(functionalizationElement);
+                    }
+                    funcEntity.put("FunctionalizationElements", functionalizationElements);
+                    if (functionalizationBean.getFiles()!=null){
+                        fileList=addFiles(functionalizationBean.getFiles());
+                        funcEntity.put("Files", fileList);
                     }
                 }
+                synthesisFunctionalization.put(entityType, funcEntity);
             }
         }
         //Add SynthesisPurification
         /* TODO write */
+        synthesisPurification = new MultiValueMap();
         if(synBean.getSynthesisPurificationBeanList()!=null){
-
             Map<String,Object> purification;
             Map<String,Object> purificationPurity;
             List<Map<String,Object>> purificationPurityElements;
             for(String entityType:synBean.getSynPureTypes()){
+                purification = new HashMap<String, Object>();
                 for(SynthesisPurificationBean purificationBean: synBean.getType2PurEntities().get(entityType)){
-                    purification = new HashMap<String, Object>();
+
                     purification.put("dataId", purificationBean.getDomainEntity().getId());
                     purification.put("Description", purificationBean.getDescription());
                     purification.put("Source", purificationBean.getSource());
                     purification.put("Yield", purificationBean.getDomainEntity().getYield());
-                    purification.put("Protocol", purificationBean.getDomainEntity().getProtocol());
+                    purification.put("Protocol", purificationBean.getDomainEntity().getProtocol().toString());//TODO
+                    purificationPurityElements = new ArrayList<Map<String,Object>>();
                     for(SynthesisPurityBean purityBean : purificationBean.getPurityBeans()){
                         purificationPurity = new HashMap<String, Object>();
+                        purificationPurity.put("purity", purityBean.toString());
                         //TODO write
                         //loop through datum?
-
-
+                        purificationPurityElements.add(purificationPurity);
                     }
+                    purification.put("purificationElements", purificationPurityElements);
                 }
+                synthesisPurification.put(entityType, purification);
             }
         }
     }

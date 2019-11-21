@@ -18,7 +18,7 @@ public class SynthesisFunctionalizationElementBean extends BaseSynthesisEntityBe
     public SynthesisFunctionalizationElementBean(SynthesisFunctionalizationElement domain){
         this.domain=domain;
         for(SfeInherentFunction function:domain.getSfeInherentFunctions()){
-            //TODO write
+            this.functions.add(new SfeInherentFunctionBean(function));
         }
     }
 

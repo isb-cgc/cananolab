@@ -13,25 +13,28 @@ public class SmeInherentFunctionBean {
 
     public SmeInherentFunctionBean(SmeInherentFunction domain){
         this.domain = domain;
+        this.type = domain.getType();
+        this.description=domain.getDescription();
     }
 
     public String getDisplayName() {
         StringBuffer buffer = new StringBuffer();
-        if (!StringUtils.isEmpty(type)) {
-            buffer.append(type);
+        if (!StringUtils.isEmpty(getType())) {
+            buffer.append(getType());
         }
         if (!StringUtils.isEmpty(getDescription())) {
-            buffer.append(": " + description);
+            buffer.append(": " + getDescription());
         }
 
         return buffer.toString();
     }
 
     public String getDescription() {
-        return description;
+        return domain.getDescription();
     }
 
     public void setDescription(String description) {
+        //TODO write a proper transfer to domain
         this.description = description;
     }
 
@@ -40,14 +43,16 @@ public class SmeInherentFunctionBean {
     }
 
     public void setDomain(SmeInherentFunction domain) {
+        //TODO write a proper transfer to domain
         this.domain = domain;
     }
 
     public String getType() {
-        return type;
+        return domain.getType();
     }
 
     public void setType(String type) {
+        //TODO write a proper transfer to domain
         this.type = type;
     }
 

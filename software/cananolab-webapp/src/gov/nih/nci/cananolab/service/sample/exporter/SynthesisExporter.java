@@ -41,17 +41,17 @@ public class SynthesisExporter {
         if (synthesisMaterialBeans != null && !synthesisMaterialBeans.isEmpty()) {
             StringBuilder stringBuilder = new StringBuilder();
             for (SynthesisMaterialBean synthesisMaterialBean : synthesisMaterialBeans) {
-                if (!StringUtils.isEmpty(synthesisMaterialBean.getType())) {
+                if (!StringUtils.isEmpty(synthesisMaterialBean.getDomainEntity().getType())) {
                     int rowIndex = 0;
                     stringBuilder.setLength(0);
-                    stringBuilder.append(entityCount++).append('.').append(synthesisMaterialBean.getType());
+                    stringBuilder.append(entityCount++).append('.').append(synthesisMaterialBean.getDomainEntity().getType());
 
                     //Create one worksheet for each Synthesis Material
                     HSSFSheet sheet = wb.createSheet(stringBuilder.toString());
                     HSSFPatriarch patriarch = sheet.createDrawingPatriarch();
 
                     //output header
-                    rowIndex = outputHeader(SynthesisBean.MATERIALS_SELECTION, synthesisMaterialBean.getType(), sheet
+                    rowIndex = outputHeader(SynthesisBean.MATERIALS_SELECTION, synthesisMaterialBean.getDomainEntity().getType(), sheet
                             , headerStyle, rowIndex);
 
                     //output Synthesis Material description at (4,0)
