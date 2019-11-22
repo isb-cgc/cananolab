@@ -9,7 +9,7 @@
         </id>
         <many-to-one class="gov.nih.nci.cananolab.domain.common.Protocol"
                      fetch="select" name="protocol">
-            <column name="protocol_pk_id" not-null="true">
+            <column name="protocol_pk_id" >
                 <comment>protocol_pk_id</comment>
             </column>
         </many-to-one>
@@ -47,7 +47,7 @@
             </column>
         </property>
         <property name="yield" type="float">
-            <column name="yield" not-null="true"/>
+            <column name="yield" />
         </property>
         <set fetch="select" inverse="true" lazy="true" name="purities"
              table="synthesis_purity">

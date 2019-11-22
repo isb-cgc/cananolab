@@ -38,6 +38,7 @@ public class SynthesisMaterialElement implements Serializable {
 	private Set<SmeInherentFunction> smeInherentFunctions = new HashSet<SmeInherentFunction>(0);
 	private Set<File> files = new HashSet<File>(0);
 	private Supplier supplier;
+	private String type;
 
 
 
@@ -55,7 +56,7 @@ public class SynthesisMaterialElement implements Serializable {
 	public SynthesisMaterialElement(Long synthesisMaterialElementPkId, SynthesisMaterial synthesisMaterial,
 			String molecularFormula, String molecularFormulaType, String description, String createdBy,
 			Date createdDate, String chemicalName, Float value, String valueUnit, String pubChemDatasourceName,
-			Long pubChemId, Set<SmeInherentFunction> smeInherentFunctions, Set<File> files, Supplier supplier) {
+			Long pubChemId, Set<SmeInherentFunction> smeInherentFunctions, Set<File> files, Supplier supplier, String type) {
 		this.synthesisMaterialElementPkId = synthesisMaterialElementPkId;
 		this.synthesisMaterial = synthesisMaterial;
 		this.molecularFormula = molecularFormula;
@@ -71,6 +72,7 @@ public class SynthesisMaterialElement implements Serializable {
 		this.smeInherentFunctions = smeInherentFunctions;
 		this.files = files;
 		this.supplier = supplier;
+		this.type = type;
 	}
 
 	public Long getId() {
@@ -186,4 +188,11 @@ public class SynthesisMaterialElement implements Serializable {
 		this.files = files;
 	}
 
+	public String getType(){
+		return type;
+	}
+
+	public void setType(String type){
+		this.type = type;
+	}
 }
