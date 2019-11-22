@@ -14,21 +14,24 @@ import java.util.List;
 import java.util.Map;
 import org.apache.commons.collections.MultiMap;
 import org.apache.commons.collections.map.MultiValueMap;
+import org.apache.james.mime4j.field.address.MailboxList;
 
 public class SimpleSynthesisBean {
     Long id;
     List<String> synthesisSections = new ArrayList<String>();
-    MultiMap synthesisFunctionalization;
+    List synthesisFunctionalization;
     MultiMap synthesisPurification;
-    MultiMap synthesisMaterials;
+//    MultiMap synthesisMaterials;
+    List synthesisMaterials;
 
     List<String> errors;
 
-    public MultiMap getSynthesisMaterials() {
-        return synthesisMaterials;
-    }
+//    public MultiMap getSynthesisMaterials() {
+//        return synthesisMaterials;
+//    }
+    public List getSynthesisMaterials() { return synthesisMaterials;}
 
-    public MultiMap getSynthesisFunctionalization() {
+    public List getSynthesisFunctionalization() {
         return synthesisFunctionalization;
     }
 
@@ -40,11 +43,13 @@ public class SimpleSynthesisBean {
         return errors;
     }
 
-    public void setSynthesisMaterials(MultiMap synthesisMaterials) {
-        this.synthesisMaterials = synthesisMaterials;
-    }
+//    public void setSynthesisMaterials(MultiMap synthesisMaterials) {
+//        this.synthesisMaterials = synthesisMaterials;
+//    }
 
-    public void setSynthesisFunctionalization(MultiMap synthesisFunctionalization) {
+    public void setSynthesisMaterials(List synthesisMaterials) { this.synthesisMaterials = synthesisMaterials;}
+
+    public void setSynthesisFunctionalization(List synthesisFunctionalization) {
         this.synthesisFunctionalization = synthesisFunctionalization;
     }
 
@@ -66,14 +71,17 @@ public class SimpleSynthesisBean {
         setSynthesisSections(synBean.getSynthesisSections());
 
         //Add SynthesisMaterials
-        synthesisMaterials = new MultiValueMap();
+//        synthesisMaterials = new MultiValueMap();
+        synthesisMaterials = new ArrayList<Map<String,Object>>();
         if (synBean.getSynthesisMaterialBeanList() != null) {
             HashMap<String, Object> matEntity;
             HashMap<String, Object> materialElement;
             List<Map<String, Object>> materialElements;
-            for (String matType : synBean.getSynMatTypes()) {
+//            for (String matType : synBean.getSynMatTypes()) {
+//                matEntity = new HashMap<String, Object>();
+//                for (SynthesisMaterialBean material : synBean.getType2MatsEntities().get(matType)) {
+            for(SynthesisMaterialBean material : synBean.getSynthesisMaterialBeanList()){
                 matEntity = new HashMap<String, Object>();
-                for (SynthesisMaterialBean material : synBean.getType2MatsEntities().get(matType)) {
                     matEntity.put("Description", material.getDomainEntity().getDescription());
                     matEntity.put("dataId", material.getDomainEntity().getId());
 
@@ -85,6 +93,7 @@ public class SimpleSynthesisBean {
                             materialElement.put("Description", elementBean.getDomainEntity().getDescription());
                             materialElement.put("DisplayName", elementBean.getDisplayName());
                             materialElement.put("Function", elementBean.getFunctionDisplayNames());
+                            materialElement.put("Type", elementBean.getDomainEntity().getType());
                             materialElement.put("PubChemDataSourceName", elementBean.getDomainEntity().getPubChemDatasourceName());
                             materialElement.put("PubChemId", elementBean.getDomainEntity().getPubChemId());
                             materialElement.put("PubChemLink", elementBean.getPubChemLink());
@@ -99,8 +108,9 @@ public class SimpleSynthesisBean {
                         fileList=addFiles(material.getFiles());
                         matEntity.put("Files", fileList);
                     }
-                }
-                synthesisMaterials.put(matType, matEntity);
+//                }
+//                synthesisMaterials.put(matType, matEntity);
+                    synthesisMaterials.add(matEntity);
             }
 
 
@@ -109,15 +119,17 @@ public class SimpleSynthesisBean {
 
         //Add SynthesisFunctionalization
         /* TODO write */
-        synthesisFunctionalization = new MultiValueMap();
+        synthesisFunctionalization = new ArrayList<Map<String,Object>>();
         if(synBean.getSynthesisFunctionalizationBeanList() !=null){
             Map<String,Object> funcEntity;
 //            Map<String,Object> functionalization;
             Map<String,Object> functionalizationElement;
             List<Map<String,Object>> functionalizationElements;
-            for(String entityType:synBean.getSynFuncTypes()){
-                funcEntity = new HashMap<String, Object>();
-                for(SynthesisFunctionalizationBean functionalizationBean: synBean.getType2FuncEntities().get(entityType)){
+//            for(String entityType:synBean.getSynFuncTypes()){
+
+//                for(SynthesisFunctionalizationBean functionalizationBean: synBean.getType2FuncEntities().get(entityType)){
+                    for(SynthesisFunctionalizationBean functionalizationBean: synBean.getSynthesisFunctionalizationBeanList()){
+                        funcEntity = new HashMap<String, Object>();
                     funcEntity.put("Description", functionalizationBean.getDomainEntity().getDescription());
                     funcEntity.put("dataId", functionalizationBean.getDomainEntity().getId());
                     funcEntity.put("source", functionalizationBean.getDomainEntity().getCreatedBy());
@@ -140,8 +152,9 @@ public class SimpleSynthesisBean {
                         fileList=addFiles(functionalizationBean.getFiles());
                         funcEntity.put("Files", fileList);
                     }
-                }
-                synthesisFunctionalization.put(entityType, funcEntity);
+//                }
+//                synthesisFunctionalization.put(entityType, funcEntity);
+                    synthesisFunctionalization.add(funcEntity);
             }
         }
         //Add SynthesisPurification
@@ -159,7 +172,7 @@ public class SimpleSynthesisBean {
                     purification.put("Description", purificationBean.getDescription());
                     purification.put("Source", purificationBean.getSource());
                     purification.put("Yield", purificationBean.getDomainEntity().getYield());
-                    purification.put("Protocol", purificationBean.getDomainEntity().getProtocol().toString());//TODO
+//                    purification.put("Protocol", purificationBean.getDomainEntity().getProtocol().toString());//TODO
                     purificationPurityElements = new ArrayList<Map<String,Object>>();
                     for(SynthesisPurityBean purityBean : purificationBean.getPurityBeans()){
                         purificationPurity = new HashMap<String, Object>();

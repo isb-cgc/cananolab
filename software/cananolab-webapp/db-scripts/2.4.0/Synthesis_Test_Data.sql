@@ -76,16 +76,14 @@ INSERT INTO `canano`.`synthesis_material`
  `protocol_pk_id`,
  `description`,
  `created_date`,
- `created_by`,
- `type`)
+ `created_by`)
 VALUES
 (1000,
     1000,
     1000,
     'Synthesis test sample 1',
     '2019-08-28 00:00:00',
-    'canano_curator',
-    'reagent');
+    'canano_curator');
 
 INSERT INTO `canano`.`synthesis_material_element`
 (`synthesis_material_element_pk_id`,
@@ -100,7 +98,8 @@ INSERT INTO `canano`.`synthesis_material_element`
  `value_unit`,
  `pub_chem_datasource_name`,
  `pub_chem_id`,
- `supplier_pk_id`)
+ `supplier_pk_id`,
+ `type`)
 VALUES
 (1000,
     1000,
@@ -114,7 +113,8 @@ VALUES
     'mg',
     null,
     null,
-    1000);
+    1000,
+    'reagent');
 
 INSERT INTO `canano`.`sme_inherent_function`
 (`sme_inherent_function_pk_id`,

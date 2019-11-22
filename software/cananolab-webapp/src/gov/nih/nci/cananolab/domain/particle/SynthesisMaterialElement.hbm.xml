@@ -53,6 +53,9 @@
                 <comment>pub_chem_id</comment>
             </column>
         </property>
+        <property name="type" type="string">
+            <column name="type" not-null="true"/>
+        </property>
         <property generated="never" lazy="false" name="pubChemDatasourceName" type="string">
             <column length="200" name="pub_chem_datasource_name">
                 <comment>pub_chem_datasource_name</comment>

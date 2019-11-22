@@ -16,9 +16,6 @@
         <property generated="never" lazy="false" name="description" type="string">
             <column length="65535" name="description"/>
         </property>
-        <property name="type" type="string">
-            <column name="type" not-null="true"/>
-        </property>
         <many-to-one class="gov.nih.nci.cananolab.domain.common.Protocol"
                      fetch="select" name="protocol">
             <column name="protocol_pk_id"/>

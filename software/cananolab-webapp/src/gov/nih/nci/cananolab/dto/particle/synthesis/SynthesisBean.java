@@ -36,7 +36,7 @@ public class SynthesisBean extends BaseCompositionEntityBean {
     private java.util.Map<String, java.util.SortedSet<SynthesisPurificationBean>> type2PurEntities = new java.util.HashMap<String, java.util.SortedSet<SynthesisPurificationBean>>();
 
     private java.util.SortedSet<String> synFuncTypes = new java.util.TreeSet<String>();
-    private java.util.SortedSet<String> synMatTypes = new java.util.TreeSet<String>();
+//    private java.util.SortedSet<String> synMatTypes = new java.util.TreeSet<String>();
     private java.util.SortedSet<String> synPureTypes = new java.util.TreeSet<String>();
 
 
@@ -80,31 +80,31 @@ public class SynthesisBean extends BaseCompositionEntityBean {
         }
 
 
-        SortedSet<SynthesisMaterialBean> typeSynMaterials;
-        for(SynthesisMaterialBean synthesisMaterialBean:synthesisMaterialBeanList){
-            String type=synthesisMaterialBean.getDomainEntity().getType();
-            if(type2MatsEntities.get(type)!=null){
-                typeSynMaterials=type2MatsEntities.get(type);
-            } else {
-                typeSynMaterials=new TreeSet<SynthesisMaterialBean>(new Comparators.SynthesisMaterialBeanTypeDataComparator());
-                type2MatsEntities.put(type, typeSynMaterials);
-            }
-            typeSynMaterials.add(synthesisMaterialBean);
-            synMatTypes.add(type);
-        }
+//        SortedSet<SynthesisMaterialBean> typeSynMaterials;
+//        for(SynthesisMaterialBean synthesisMaterialBean:synthesisMaterialBeanList){
+//            String type=synthesisMaterialBean.getDomainEntity().getType();
+//            if(type2MatsEntities.get(type)!=null){
+//                typeSynMaterials=type2MatsEntities.get(type);
+//            } else {
+//                typeSynMaterials=new TreeSet<SynthesisMaterialBean>(new Comparators.SynthesisMaterialBeanTypeDataComparator());
+//                type2MatsEntities.put(type, typeSynMaterials);
+//            }
+//            typeSynMaterials.add(synthesisMaterialBean);
+//            synMatTypes.add(type);
+//        }
 
-        SortedSet<SynthesisFunctionalizationBean> typeSynFunctionalization;
-        for(SynthesisFunctionalizationBean synthesisFunctionalizationBean:synthesisFunctionalizationBeanList){
-            String type=synthesisFunctionalizationBean.getDomainEntity().getType();
-            if(type2FuncEntities.get(type)!=null){
-                typeSynFunctionalization = type2FuncEntities.get(type);
-            }else {
-                typeSynFunctionalization=new TreeSet<SynthesisFunctionalizationBean>(new Comparators.SynthesisFunctionalizationBeanTypeDataComparator());
-                type2FuncEntities.put(type, typeSynFunctionalization);
-            }
-            typeSynFunctionalization.add(synthesisFunctionalizationBean);
-            synFuncTypes.add(type);
-        }
+//        SortedSet<SynthesisFunctionalizationBean> typeSynFunctionalization;
+//        for(SynthesisFunctionalizationBean synthesisFunctionalizationBean:synthesisFunctionalizationBeanList){
+//            String type=synthesisFunctionalizationBean.getDomainEntity().getType();
+//            if(type2FuncEntities.get(type)!=null){
+//                typeSynFunctionalization = type2FuncEntities.get(type);
+//            }else {
+//                typeSynFunctionalization=new TreeSet<SynthesisFunctionalizationBean>(new Comparators.SynthesisFunctionalizationBeanTypeDataComparator());
+//                type2FuncEntities.put(type, typeSynFunctionalization);
+//            }
+//            typeSynFunctionalization.add(synthesisFunctionalizationBean);
+//            synFuncTypes.add(type);
+//        }
 
 
         SortedSet<SynthesisPurificationBean> typeSynPurification;
@@ -182,13 +182,13 @@ public class SynthesisBean extends BaseCompositionEntityBean {
         this.synFuncTypes = synFuncTypes;
     }
 
-    public java.util.SortedSet<String> getSynMatTypes() {
-        return synMatTypes;
-    }
-
-    public void setSynMatTypes(java.util.SortedSet<String> synMatTypes) {
-        this.synMatTypes = synMatTypes;
-    }
+//    public java.util.SortedSet<String> getSynMatTypes() {
+//        return synMatTypes;
+//    }
+//
+//    public void setSynMatTypes(java.util.SortedSet<String> synMatTypes) {
+//        this.synMatTypes = synMatTypes;
+//    }
 
     public java.util.SortedSet<String> getSynPureTypes() {
         return synPureTypes;

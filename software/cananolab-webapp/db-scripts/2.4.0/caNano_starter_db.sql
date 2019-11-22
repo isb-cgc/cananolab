@@ -5542,8 +5542,7 @@ CREATE TABLE `canano`.`synthesis_material`
     `protocol_pk_id`           BIGINT(20)   NULL COMMENT 'protocol_pk_id',               -- protocol_pk_id
     `description`              TEXT         NULL COMMENT 'description',                  -- description
     `created_date`             DATETIME     NOT NULL COMMENT 'created_date',             -- created_date
-    `created_by`               VARCHAR(200) NOT NULL COMMENT 'created_by',               -- created_by
-    `type`                     VARCHAR(200) NULL COMMENT 'type'   ,                       -- type
+    `created_by`               VARCHAR(200) NOT NULL COMMENT 'created_by'               -- created_by
     PRIMARY KEY (`synthesis_material_pk_id`),
     CONSTRAINT FOREIGN KEY  `FK_synthesis_TO_synthesis_material` (`synthesis_pk_id`) REFERENCES `synthesis` (`synthesis_pk_id`),
     CONSTRAINT FOREIGN KEY `FK_protocol_TO_synthesis_material` (`protocol_pk_id`) REFERENCES `protocol` (`protocol_pk_id`)
@@ -5642,6 +5641,7 @@ CREATE TABLE `canano`.`synthesis_material_element`
     `pub_chem_datasource_name`         VARCHAR(200)   NULL COMMENT 'pub_chem_datasource_name',             -- pub_chem_datasource_name
     `pub_chem_id`                      BIGINT(20)     NULL COMMENT 'pub_chem_id',                          -- pub_chem_id
     `supplier_pk_id`                   BIGINT(20)     NULL COMMENT 'supplier_pk_id',
+    `type`                             VARCHAR(200)   NOT NULL,
     PRIMARY KEY (`synthesis_material_element_pk_id`),
     CONSTRAINT FOREIGN KEY `FK_synthesis_material_TO_synthesis_material_element` (`synthesis_material_pk_id`) REFERENCES `synthesis_material` (`synthesis_material_pk_id`),
     CONSTRAINT FOREIGN KEY `FK_synthesis_material_element_TO_supplier` (`supplier_pk_id`) REFERENCES `supplier` (`supplier_pk_id`)
@@ -5756,7 +5756,7 @@ CREATE TABLE `canano`.`synthesis_purification`
 (
     `synthesis_purification_pk_id` BIGINT(20)      NOT NULL COMMENT 'synthesis_purification_pk_id', -- synthesis_purification_pk_id
     `synthesis_pk_id`              BIGINT(20)      NULL COMMENT 'synthesis_pk_id',                  -- synthesis_pk_id
-    `protocol_pk_id`               BIGINT(20)      NOT NULL COMMENT 'protocol_pk_id',               -- protocol_pk_id
+    `protocol_pk_id`               BIGINT(20)      NULL COMMENT 'protocol_pk_id',               -- protocol_pk_id
     `type`                         VARCHAR(200)    NULL COMMENT 'type',                             -- type
     `method_name`                  VARCHAR(200)    NULL COMMENT 'method_name',                      -- method_name
     `design_method_description`    TEXT            NULL COMMENT 'design_method_description',        -- design_method_description

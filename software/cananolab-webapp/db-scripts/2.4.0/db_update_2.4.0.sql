@@ -114,8 +114,7 @@ CREATE TABLE `canano`.`synthesis_material` (
                                                 `protocol_pk_id`            BIGINT(20)   NULL     COMMENT 'protocol_pk_id', -- protocol_pk_id
                                                 `description`               TEXT         NULL     COMMENT 'description', -- description
                                                 `created_date`              DATETIME     NOT NULL COMMENT 'created_date', -- created_date
-                                                `created_by`                VARCHAR(200) NOT NULL COMMENT 'created_by', -- created_by
-                                                `type`                      VARCHAR(200) NULL     COMMENT 'type' -- type
+                                                `created_by`                VARCHAR(200) NOT NULL COMMENT 'created_by' -- created_by
 )
     COMMENT 'synthesis_material';
 
@@ -182,7 +181,7 @@ ALTER TABLE `canano`.`synthesis_functionalization_file`
 CREATE TABLE `canano`.`synthesis_purification` (
                                                         `synthesis_purification_pk_id` BIGINT(20)   NOT NULL COMMENT 'synthesis_purification_pk_id', -- synthesis_purification_pk_id
                                                         `synthesis_pk_id`                  BIGINT(20) NULL     COMMENT 'synthesis_pk_id', -- synthesis_pk_id
-                                                        `protocol_pk_id`                    BIGINT(20)   NOT NULL COMMENT 'protocol_pk_id', -- protocol_pk_id
+                                                        `protocol_pk_id`                    BIGINT(20)   NULL COMMENT 'protocol_pk_id', -- protocol_pk_id
                                                         `type`                              VARCHAR(200) NULL     COMMENT 'type', -- type
                                                         `method_name`                       VARCHAR(200) NULL     COMMENT 'method_name', -- method_name
                                                         `design_method_description`         TEXT         NULL     COMMENT 'design_method_description', -- design_method_description
@@ -214,7 +213,8 @@ CREATE TABLE `canano`.`synthesis_material_element` (
                                                        `value_unit`                       VARCHAR(200)  NULL     COMMENT 'value_unit', -- value_unit
                                                        `pub_chem_datasource_name`         VARCHAR(200)  NULL     COMMENT 'pub_chem_datasource_name', -- pub_chem_datasource_name
                                                        `pub_chem_id`                      BIGINT(20)    NULL     COMMENT 'pub_chem_id', -- pub_chem_id
-                                                       `supplier_pk_id`                   BIGINT(20)    NULL     COMMENT  'supplier_pk_id'
+                                                       `supplier_pk_id`                   BIGINT(20)    NULL     COMMENT  'supplier_pk_id',
+                                                       `type`                             VARCHAR(200)  NOT NULL
 )
     COMMENT 'synthesis_material_element';
 

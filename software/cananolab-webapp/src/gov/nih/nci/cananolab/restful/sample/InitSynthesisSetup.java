@@ -13,7 +13,7 @@ public class InitSynthesisSetup {
         return new InitSynthesisSetup();
     }
 
-    public String getDetailPage(String type, String synthesisMaterial) {
+    public String getDetailPage(String synthesisMaterial) {
         //TODO write
         return null;
     }
