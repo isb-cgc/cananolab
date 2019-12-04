@@ -135,16 +135,14 @@ INSERT INTO `canano`.`synthesis_functionalization`
  `protocol_pk_id`,
  `description`,
  `created_date`,
- `created_by`,
- `type`)
+ `created_by`)
 VALUES
 (1000,
     1000,
     1000,
     'Synthesis Functionalization Test 1',
     '2019-08-29 00:00:00',
-    'canano_curator',
-    'material');
+    'canano_curator');
 
 
 INSERT INTO `canano`.`synthesis_functionalization_element`
