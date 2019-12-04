@@ -149,8 +149,8 @@ CREATE TABLE `canano`.`synthesis_functionalization` (
                                                         `protocol_pk_id`            BIGINT(20)   NULL     COMMENT 'protocol_pk_id', -- protocol_pk_id
                                                         `description`               TEXT         NULL     COMMENT 'description', -- description
                                                         `created_date`              DATETIME     NOT NULL COMMENT 'created_date', -- created_date
-                                                        `created_by`                VARCHAR(200) NOT NULL COMMENT 'created_by', -- created_by
-                                                        `type`                      VARCHAR(200) NULL     COMMENT 'type' -- type
+                                                        `created_by`                VARCHAR(200) NOT NULL COMMENT 'created_by' -- created_by
+
 )
     COMMENT 'synthesis_functionalization';
 
