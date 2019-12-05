@@ -99,11 +99,7 @@ package gov.nih.nci.cananolab.security;
 
 import java.security.Principal;
 
-import gov.nih.nci.security.exceptions.CSConfigurationException;
-import gov.nih.nci.security.exceptions.CSException;
-import gov.nih.nci.security.exceptions.CSInputException;
-import gov.nih.nci.security.exceptions.CSInsufficientAttributesException;
-import gov.nih.nci.security.exceptions.CSLoginException;
+
 
 import javax.security.auth.Subject;
 
@@ -171,7 +167,7 @@ public interface AuthenticationManager {
 	 * @throws CSConfigurationException is thrown if there is any error in the JAAS or the CSM API configurations
 	 * @throws CSFirstTimeLoginExceptionDel 
 	 */
-	public boolean login(String userName, String password) throws CSException, CSLoginException, CSInputException, CSConfigurationException;
+	public boolean login(String userName, String password) throws Exception;
 
 	/**
 	 * This method is primarily provided to be used by the <code>CSM - caGrid Integration Module</code> to authenticate the 
@@ -199,7 +195,7 @@ public interface AuthenticationManager {
 	 * 			should contain all the valid {@link Principal} for the grid component to be able to generate a <code>SAML</code> from it.
 	 * @throws CSFirstTimeLoginExceptionDel 
 	 */
-	public Subject authenticate(String userName, String password) throws CSException, CSLoginException, CSInputException, CSConfigurationException, CSInsufficientAttributesException;
+	public Subject authenticate(String userName, String password) throws Exception;
 
 	
 	/**
@@ -229,7 +225,7 @@ public interface AuthenticationManager {
 	 * 			should contain all the valid {@link Principal} for validating the certificate against the keystore.
 	 * @throws CSFirstTimeLoginExceptionDel 
 	 */
-	public boolean authenticate(Subject subject) throws CSException, CSLoginException, CSInputException, CSConfigurationException, CSInsufficientAttributesException;
+	public boolean authenticate(Subject subject) throws Exception;
 
 	
 	/**
@@ -285,8 +281,8 @@ public interface AuthenticationManager {
 	 * @param userName The name of the user whose login session needs to be terminated
 	 * @throws CSException Explains the error in logging the user out.
 	 */
-	public void logout(String userName) throws CSException;
+	public void logout(String userName) throws Exception;
 
-	public boolean changePassword(String userName, String password, String newPassword, String confirmPassword) throws CSException, CSLoginException, CSInputException, CSConfigurationException;
+	public boolean changePassword(String userName, String password, String newPassword, String confirmPassword) throws Exception;
 
 }
