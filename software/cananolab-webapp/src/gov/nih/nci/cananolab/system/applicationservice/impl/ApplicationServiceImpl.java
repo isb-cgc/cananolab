@@ -4,7 +4,7 @@ package gov.nih.nci.cananolab.system.applicationservice.impl;
 
 
 import gov.nih.nci.cananolab.system.dao.DAO;
-import gov.nih.nci.cananolab.system.dao.QueryException;
+
 import gov.nih.nci.cananolab.system.dao.Request;
 import gov.nih.nci.cananolab.system.dao.Response;
 import gov.nih.nci.cananolab.system.query.hibernate.HQLCriteria;
@@ -15,6 +15,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.StringTokenizer;
 import org.apache.log4j.Logger;
+import org.hibernate.QueryException;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.impl.CriteriaImpl;
 import gov.nih.nci.cananolab.system.applicationservice.ApplicationException;

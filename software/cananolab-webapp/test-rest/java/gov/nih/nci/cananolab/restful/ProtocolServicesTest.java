@@ -5,7 +5,7 @@ import gov.nih.nci.cananolab.dto.common.DataReviewStatusBean;
 import gov.nih.nci.cananolab.restful.view.edit.SimpleSubmitProtocolBean;
 import gov.nih.nci.cananolab.security.AccessControlInfo;
 import gov.nih.nci.cananolab.security.enums.AccessTypeEnum;
-import gov.nih.nci.cananolab.service.security.UserBean;
+import gov.nih.nci.cananolab.security.service.UserBean;
 import gov.nih.nci.cananolab.ui.form.SearchProtocolForm;
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;

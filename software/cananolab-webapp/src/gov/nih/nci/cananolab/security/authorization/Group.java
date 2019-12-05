@@ -1,4 +1,4 @@
-package gov.nih.nci.cananolab.security;
+package gov.nih.nci.cananolab.security.authorization;
 
 import java.io.Serializable;
 

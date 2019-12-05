@@ -21,7 +21,7 @@ import gov.nih.nci.cananolab.restful.core.AbstractDispatchBO;
 import gov.nih.nci.cananolab.restful.util.PropertyUtil;
 import gov.nih.nci.cananolab.restful.util.SampleUtil;
 import gov.nih.nci.cananolab.restful.view.SimpleSearchSampleBean;
-import gov.nih.nci.cananolab.security.Group;
+import gov.nih.nci.cananolab.security.authorization.Group;
 import gov.nih.nci.cananolab.security.service.GroupService;
 import gov.nih.nci.cananolab.security.utils.SpringSecurityUtil;
 import gov.nih.nci.cananolab.service.sample.CharacterizationService;

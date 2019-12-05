@@ -8,7 +8,7 @@
 
 package gov.nih.nci.cananolab.dto.common;
 
-import gov.nih.nci.cananolab.service.security.UserBean;
+import gov.nih.nci.cananolab.security.service.UserBean;
 
 
 public class AccessibilityBean {

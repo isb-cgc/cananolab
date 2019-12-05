@@ -26,7 +26,8 @@ L-->
 	
 	<bean id="Interceptor" class="gov.nih.nci.cananolab.system.applicationservice.client.proxy.ApplicationServiceProxy">
 <!--		<scope>prototype</scope>-->
-		<property name="proxyFactory">
+<!--		<property name="proxyFactory">-->
+		<property name="proxyHelper">
 			<bean class="gov.nih.nci.cananolab.system.applicationservice.client.proxy.ProxyHelperImpl">
 <!--				<scope>prototype</scope>-->
 			</bean>

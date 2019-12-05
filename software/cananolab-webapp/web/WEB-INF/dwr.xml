@@ -260,7 +260,7 @@ L-->
 			match="gov.nih.nci.cananolab.dto.particle.AdvancedSampleSearchBean"></convert>
 		<convert converter="bean"
 			match="gov.nih.nci.cananolab.dto.common.AccessibilityBean"></convert>
-		<convert converter="bean" match="gov.nih.nci.cananolab.service.security.UserBean">
+		<convert converter="bean" match="gov.nih.nci.cananolab.security.service.UserBean">
 			<param name="exclude" value="domain"/>
 		</convert>
 		<convert converter="bean"

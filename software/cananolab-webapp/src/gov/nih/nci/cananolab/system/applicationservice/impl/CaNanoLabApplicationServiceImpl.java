@@ -11,7 +11,7 @@ package gov.nih.nci.cananolab.system.applicationservice.impl;
 import gov.nih.nci.cananolab.domain.particle.Sample;
 import gov.nih.nci.cananolab.dto.common.AccessibilityBean;
 import gov.nih.nci.cananolab.system.applicationservice.CaNanoLabApplicationService;
-import gov.nih.nci.cananolab.system.dao.CaNanoLabORMDAO;
+import gov.nih.nci.cananolab.system.dao.orm.CaNanoLabORMDAO;
 import gov.nih.nci.cananolab.system.applicationservice.ApplicationException;
 import gov.nih.nci.cananolab.system.util.ClassCache;
 

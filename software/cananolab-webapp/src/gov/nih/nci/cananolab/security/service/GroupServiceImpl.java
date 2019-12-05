@@ -6,7 +6,7 @@ import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import gov.nih.nci.cananolab.security.Group;
+import gov.nih.nci.cananolab.security.authorization.Group;
 import gov.nih.nci.cananolab.security.dao.GroupDao;
 import gov.nih.nci.cananolab.util.StringUtils;
 

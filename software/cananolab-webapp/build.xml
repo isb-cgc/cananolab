@@ -27,7 +27,7 @@ L-->
 	<property name="common.dist.dir" location="${dist.dir}/common"/>
 	<property name="classes.dir" location="${basedir}/build/WEB-INF/classes"/>
 	<property name="lib.dir" location="${basedir}/build/WEB-INF/lib"/>
-	<property name="globus.dir" location="../cananolab-client/lib/globus"/>
+<!--	<property name="globus.dir" location="../cananolab-client/lib/globus"/>-->
 	<property name="db.dir" location="../cananolab-db/lib"/>
 
 	<property name="test.dir" value="test-rest"/>
@@ -103,9 +103,9 @@ L-->
 			<fileset refid="compiletime.dependency.fileset"/>
 			<!--			<fileset dir="${common.dir}/lib">-->
 			<fileset dir="${commonlib.dir}">
-				<include name="**/sdk/*.jar"/>
+				<exclude name="**/sdk/*.jar"/>
 				<include name="caNanoLab-beans.jar"/>
-				<include name="**/globus/*.jar"/>
+				<exclude name="**/globus/*.jar"/>
 				<exclude name="**/maven-ant-tasks-*.jar"/>
 				<exclude name="**/ant-contrib-*.jar"/>
 			</fileset>
@@ -124,8 +124,8 @@ L-->
 			<fileset refid="compiletime.dependency.fileset"/>
 			<!--			<fileset dir="${common.dir}/lib">-->
 			<fileset dir="${commonlib.dir}">
-				<include name="**/sdk/*.jar"/>
-				<include name="**/globus/*.jar"/>
+				<exclude name="**/sdk/*.jar"/>
+				<exclude name="**/globus/*.jar"/>
 				<exclude name="**/maven-ant-tasks-*.jar"/>
 				<exclude name="**/ant-contrib-*.jar"/>
 			</fileset>
@@ -186,6 +186,7 @@ L-->
 			<!--			<fileset dir="${common.dir}/lib">-->
 			<fileset dir="${commonlib.dir}">
 				<include name="**/*.jar"/>
+				<exclude name="**/sdk/*.jar"/>
 				<exclude name="**/cglib-2.1.3.jar"/>
 				<exclude name="**/spring.jar"/>
 			</fileset>
@@ -284,10 +285,10 @@ L-->
 		<!--copy overwrite="true" todir="${common.dist.dir}" file="${common.dir}/resources/security/uptEAR.ear" /-->
 
 		<!--copy csmapi-5.2.jar -->
-		<copy overwrite="true" todir="${common.dist.dir}" file="${commonlib.dir}/sdk/csmapi-5.2.jar" />
+<!--		<copy overwrite="true" todir="${common.dist.dir}" file="${commonlib.dir}/sdk/csmapi-5.2.jar" />-->
 
 		<!--copy bcprov-jdk15on-1.47.jar -->
-		<copy overwrite="true" todir="${common.dist.dir}" file="${commonlib.dir}/sdk/bcprov-jdk15on-1.47.jar"/>
+<!--		<copy overwrite="true" todir="${common.dist.dir}" file="${commonlib.dir}/sdk/bcprov-jdk15on-1.47.jar"/>-->
 
 		<copy overwrite="true" todir="${common.dist.dir}" file="${common.dir}/resources/help/wikihelp.properties"/>
 
@@ -395,11 +396,11 @@ L-->
 		<!--			</fileset>-->
 		<!--		</copy>-->
 
-		<copy todir="${build.dir}/WEB-INF/lib">
-			<fileset dir="${globus.dir}">
-				<include name="**/log4*.jar"/>
-			</fileset>
-		</copy>
+<!--		<copy todir="${build.dir}/WEB-INF/lib">-->
+<!--			<fileset dir="${globus.dir}">-->
+<!--				<include name="**/log4*.jar"/>-->
+<!--			</fileset>-->
+<!--		</copy>-->
 
 		<copy todir="${build.dir}/WEB-INF/lib">
 			<fileset dir="${db.dir}">
@@ -424,7 +425,7 @@ L-->
 			<fileset refid="compiletime.dependency.fileset"/>
 			<!--			<fileset dir="${common.dir}/lib">-->
 			<fileset dir="${commonlib.dir">
-				<include name="**/sdk/*.jar"/>
+				<exclude name="**/sdk/*.jar"/>
 				<exclude name="**/maven-ant-tasks-*.jar"/>
 				<exclude name="**/ant-contrib-*.jar"/>
 			</fileset>

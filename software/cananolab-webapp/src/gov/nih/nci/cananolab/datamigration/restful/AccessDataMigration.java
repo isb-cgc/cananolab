@@ -17,7 +17,7 @@ import org.apache.log4j.Logger;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import gov.nih.nci.cananolab.datamigration.service.MigrateDataService;
-import gov.nih.nci.cananolab.datamigration.util.AESEncryption;
+import gov.nih.nci.cananolab.security.utils.AESEncryption;
 import gov.nih.nci.cananolab.restful.SpringApplicationContext;
 import gov.nih.nci.cananolab.security.enums.SecureClassesEnum;
 

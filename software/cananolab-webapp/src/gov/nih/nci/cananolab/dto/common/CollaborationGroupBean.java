@@ -9,8 +9,10 @@
 package gov.nih.nci.cananolab.dto.common;
 
 import gov.nih.nci.cananolab.security.AccessControlInfo;
+import gov.nih.nci.cananolab.security.authorization.Group;
 import gov.nih.nci.cananolab.security.enums.AccessTypeEnum;
-import gov.nih.nci.security.authorization.domainobjects.Group;
+
+
 
 public class CollaborationGroupBean extends SecuredDataBean
 {
@@ -34,7 +36,7 @@ public class CollaborationGroupBean extends SecuredDataBean
 		this.name = group.getGroupName();
 		this.originalName = group.getGroupName();
 		this.description = group.getGroupDesc();
-		this.id = group.getGroupId().toString();
+		this.id = group.getId().toString();
 	}
 
 	public String getId() {

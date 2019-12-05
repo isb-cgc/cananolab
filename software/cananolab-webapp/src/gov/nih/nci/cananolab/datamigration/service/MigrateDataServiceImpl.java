@@ -19,7 +19,7 @@ import gov.nih.nci.cananolab.security.enums.CaNanoRoleEnum;
 import gov.nih.nci.cananolab.security.enums.SecureClassesEnum;
 import gov.nih.nci.cananolab.security.service.SpringSecurityAclService;
 import gov.nih.nci.cananolab.datamigration.dao.MigrateDataDAO;
-import gov.nih.nci.cananolab.datamigration.util.AESEncryption;
+import gov.nih.nci.cananolab.security.utils.AESEncryption;
 
 @Transactional(readOnly=false, propagation=Propagation.REQUIRED)
 @Component("migrateDataService")

@@ -48,14 +48,14 @@ L-->
 		</property>
 	</bean>
 
-	<bean name="HibernateConfigHolder" class="gov.nih.nci.system.dao.orm.HibernateConfigurationHolder" />
+	<bean name="HibernateConfigHolder" class="gov.nih.nci.cananolab.system.dao.orm.HibernateConfigurationHolder" />
 
-	<bean name="SessionFactory" class="gov.nih.nci.system.dao.orm.SessionFactoryBean">
+	<bean name="SessionFactory" class="gov.nih.nci.cananolab.system.dao.orm.SessionFactoryBean">
 		<property name="configLocation" value="classpath:hibernate.cfg.xml" />
 		<property name="configHolder" ref="HibernateConfigHolder" />
 <!--		<property name="securityHelper" ref="SecurityInitializationHelper"/>-->
 		<property name="entityInterceptor">
-			<bean class="gov.nih.nci.security.authorization.attributeLevel.GenericSecurityInterceptor">
+			<bean class="gov.nih.nci.cananolab.security.GenericSecurityInterceptor">
 				<constructor-arg>
 					<list>
 						<bean class="org.hibernate.EmptyInterceptor"/>
@@ -83,7 +83,7 @@ L-->
 		</property>
 	</bean>
 
-	<bean name="SecurityInitializationHelper" class="gov.nih.nci.system.security.helper.SecurityInitializationHelper">
+	<bean name="SecurityInitializationHelper" class="gov.nih.nci.cananolab.security.helper.SecurityInitializationHelper">
 		<property name="securityEnabled" value="false"/>
 		<property name="instanceLevelSecurityEnabled" value="false"/>
 		<property name="attributeLevelSecurityEnabled" value="false"/>
