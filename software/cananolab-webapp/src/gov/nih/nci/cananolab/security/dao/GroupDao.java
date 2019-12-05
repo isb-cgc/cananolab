@@ -2,7 +2,7 @@ package gov.nih.nci.cananolab.security.dao;
 
 import java.util.List;
 
-import gov.nih.nci.cananolab.security.Group;
+import gov.nih.nci.cananolab.security.authorization.Group;
 
 public interface GroupDao
 {

@@ -14,7 +14,6 @@ import gov.nih.nci.cananolab.exception.DataAvailabilityException;
 import gov.nih.nci.cananolab.exception.NoAccessException;
 import gov.nih.nci.cananolab.exception.SampleException;
 import gov.nih.nci.cananolab.exception.SecurityException;
-import gov.nih.nci.cananolab.service.security.SecurityService;
 
 import java.util.List;
 import java.util.Set;

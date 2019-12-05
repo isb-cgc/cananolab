@@ -1,4 +1,4 @@
-package gov.nih.nci.cananolab.datamigration.util;
+package gov.nih.nci.cananolab.security.utils;
 
 import java.security.AlgorithmParameters;
 import java.security.MessageDigest;
@@ -10,7 +10,7 @@ import javax.crypto.spec.SecretKeySpec;
 import org.apache.commons.codec.binary.Base64;
 import org.bouncycastle.jce.provider.BouncyCastleProvider;
 
-public class AESEncryption {
+public class AESEncryption implements Encryption{
 
 	private Cipher encryptCipher;
 	private Cipher decryptCipher;
@@ -39,6 +39,23 @@ public class AESEncryption {
 		catch (Exception e) {
 			e.printStackTrace();
 			throw e;
+		}
+	}
+
+	public AESEncryption(String passphrase, boolean isMD5Hash) throws Exception
+	{
+		try
+		{
+			this.provider = new BouncyCastleProvider();
+			SecretKeySpec skey = getSKeySpec(passphrase, isMD5Hash);
+			encryptCipher = Cipher.getInstance(AES_ENCRYPTION_SCHEME,provider);
+			decryptCipher = Cipher.getInstance(AES_ENCRYPTION_SCHEME,provider);
+			encryptCipher.init(Cipher.ENCRYPT_MODE, skey);
+			AlgorithmParameters ap = encryptCipher.getParameters();
+			decryptCipher.init(Cipher.DECRYPT_MODE, skey,ap);
+		}
+		catch (Exception e) {
+			throw new Exception(e);
 		}
 	}
 
@@ -102,6 +119,28 @@ public class AESEncryption {
 		return null;	
 	}
 
+	private SecretKeySpec getSKeySpec(String passphrase,boolean isMD5Hash) {
+		try
+		{
+			MessageDigest md = null;
+			if(true)
+				md = MessageDigest.getInstance(MD5_HASH,provider);
+			else
+				md = MessageDigest.getInstance(PASSWORD_HASH_ALGORITHM,provider);
+
+			md.update((passphrase + getSalt()).getBytes(UNICODE_FORMAT));
+			byte[] thedigest = md.digest();
+
+			SecretKeySpec skeySpec = new SecretKeySpec(thedigest,AES_ALGORITHM);
+			return skeySpec;
+		}
+		catch (Exception e)
+		{
+			e.printStackTrace();
+		}
+		return null;
+	}
+
 	public static String bytes2String(byte[] bytes) {
 		StringBuffer stringBuffer = new StringBuffer();
 		for (int i = 0; i < bytes.length; i++) {
@@ -109,5 +148,8 @@ public class AESEncryption {
 		}
 		return stringBuffer.toString();
 	}
-
+	private String getSalt()
+	{
+		return this.SALT;
+	}
 }

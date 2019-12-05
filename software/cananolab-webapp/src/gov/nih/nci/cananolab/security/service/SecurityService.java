@@ -6,36 +6,32 @@
  *  See http://ncip.github.com/cananolab/LICENSE.txt for details.
  */
 
-package gov.nih.nci.cananolab.service.security;
+package gov.nih.nci.cananolab.security.service;
 
 import gov.nih.nci.cananolab.dto.common.AccessibilityBean;
 //import org.hibernate.type.StandardBasicTypes;
 import gov.nih.nci.cananolab.exception.InvalidSessionException;
 import gov.nih.nci.cananolab.exception.NoAccessException;
 import gov.nih.nci.cananolab.exception.SecurityException;
+import gov.nih.nci.cananolab.security.authorization.Application;
+import gov.nih.nci.cananolab.security.authorization.Group;
+import gov.nih.nci.cananolab.security.authorization.Privilege;
+import gov.nih.nci.cananolab.security.authorization.ProtectionElement;
+import gov.nih.nci.cananolab.security.authorization.ProtectionGroup;
+import gov.nih.nci.cananolab.security.authorization.Role;
+import gov.nih.nci.cananolab.security.authorization.User;
 import gov.nih.nci.cananolab.system.applicationservice.CaNanoLabApplicationService;
-import gov.nih.nci.security.AuthenticationManager;
-import gov.nih.nci.security.AuthorizationManager;
-import gov.nih.nci.security.SecurityServiceProvider;
-import gov.nih.nci.security.authorization.ObjectPrivilegeMap;
-import gov.nih.nci.security.authorization.domainobjects.Application;
-import gov.nih.nci.security.authorization.domainobjects.Group;
-import gov.nih.nci.security.authorization.domainobjects.Privilege;
-import gov.nih.nci.security.authorization.domainobjects.ProtectionElement;
-import gov.nih.nci.security.authorization.domainobjects.ProtectionGroup;
-import gov.nih.nci.security.authorization.domainobjects.Role;
-import gov.nih.nci.security.authorization.domainobjects.User;
-import gov.nih.nci.security.dao.GroupSearchCriteria;
-import gov.nih.nci.security.dao.ProtectionElementSearchCriteria;
-import gov.nih.nci.security.dao.ProtectionGroupSearchCriteria;
-import gov.nih.nci.security.dao.RoleSearchCriteria;
-import gov.nih.nci.security.dao.SearchCriteria;
-import gov.nih.nci.security.exceptions.CSConfigurationException;
-import gov.nih.nci.security.exceptions.CSException;
-import gov.nih.nci.security.exceptions.CSFirstTimeLoginException;
-import gov.nih.nci.security.exceptions.CSInputException;
-import gov.nih.nci.security.exceptions.CSLoginException;
-import gov.nih.nci.system.applicationservice.ApplicationException;
+import gov.nih.nci.cananolab.security.AuthenticationManager;
+import gov.nih.nci.cananolab.security.AuthorizationManager;
+import gov.nih.nci.cananolab.security.SecurityServiceProvider;
+import gov.nih.nci.cananolab.security.authorization.ObjectPrivilegeMap;
+
+import gov.nih.nci.cananolab.security.dao.GroupSearchCriteria;
+import gov.nih.nci.cananolab.security.dao.ProtectionElementSearchCriteria;
+import gov.nih.nci.cananolab.security.dao.ProtectionGroupSearchCriteria;
+import gov.nih.nci.cananolab.security.dao.RoleSearchCriteria;
+import gov.nih.nci.cananolab.security.dao.SearchCriteria;
+import gov.nih.nci.cananolab.system.applicationservice.ApplicationException;
 import gov.nih.nci.cananolab.system.applicationservice.client.ApplicationServiceProvider;
 
 import java.util.ArrayList;
@@ -46,6 +42,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.SortedSet;
 import java.util.TreeSet;
+
 
 import org.apache.log4j.Logger;
 import org.hibernate.Hibernate;
@@ -133,14 +130,14 @@ public class SecurityService {
 			} else {
 				throw new SecurityException("Invalid Credentials");
 			}
-		} catch (CSFirstTimeLoginException e){
-			String error = "User logging in first time, Password should be changed";
-			logger.error(e);
-			throw new SecurityException(error, e);
-		}catch (CSConfigurationException | CSInputException | CSLoginException e) {
-			String error = "Error in logging";
-			logger.error(e);
-			throw new SecurityException(error, e);
+//		} catch (CSFirstTimeLoginException e){
+//			String error = "User logging in first time, Password should be changed";
+//			logger.error(e);
+//			throw new SecurityException(error, e);
+//		}catch (CSConfigurationException | CSInputException | CSLoginException e) {
+//			String error = "Error in logging";
+//			logger.error(e);
+//			throw new SecurityException(error, e);
 		}
         catch (Exception e) {
             String error = "Error in logging";
@@ -223,7 +220,7 @@ public class SecurityService {
 	private void assignUserToGroup() throws SecurityException {
 		try {
 			Group group = this.getGroup(AccessibilityBean.CSM_PUBLIC_GROUP);
-			this.authorizationManager.addUsersToGroup(group.getGroupId()
+			this.authorizationManager.addUsersToGroup(group.getId()
 					.toString(), new String[] { userBean.getUserId() });
 		} catch (Exception e) {
 			logger.error("Error in assigning user to group.", e);
@@ -797,7 +794,7 @@ public class SecurityService {
 		List<String> userNames = new ArrayList<String>();
 		try {
 			Group group = this.getGroup(groupName);
-			Set users = authorizationManager.getUsers(group.getGroupId()
+			Set users = authorizationManager.getUsers(group.getId()
 					.toString());
 			for (Object obj : users) {
 				User user = (User) obj;
@@ -815,7 +812,7 @@ public class SecurityService {
 		if (group == null) {
 			return false;
 		} else return checkReadPermission(AccessibilityBean.CSM_COLLABORATION_GROUP_PREFIX
-                + group.getGroupId());
+                + group.getId());
 	}
 
 	public Boolean isUserInGroup(String userLoginName, String groupName)

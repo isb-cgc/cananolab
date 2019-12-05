@@ -30,7 +30,7 @@ public class ProxyHelperImpl implements ProxyHelper
 	{
 		if(obj == null) return null;
 		
-		if(obj instanceof gov.nih.nci.system.client.proxy.ListProxy)
+		if(obj instanceof gov.nih.nci.cananolab.system.applicationservice.client.proxy.ListProxy)
 			return convertListProxyToProxy(as,(gov.nih.nci.cananolab.system.applicationservice.client.proxy.ListProxy)obj);
 		if(obj instanceof Collection)
 			return convertCollectionToProxy(as,(Collection)obj);
@@ -76,8 +76,8 @@ public class ProxyHelperImpl implements ProxyHelper
 				if (!(childObject == null || isPrimitiveObject(childObject) || childObject instanceof Class)
 						&& Hibernate.isInitialized(childObject)) {
 					
-					if (childObject instanceof gov.nih.nci.system.client.proxy.ListProxy) {
-						gov.nih.nci.system.client.proxy.ListProxy objectProxy = (gov.nih.nci.system.client.proxy.ListProxy) childObject;
+					if (childObject instanceof gov.nih.nci.cananolab.system.applicationservice.client.proxy.ListProxy) {
+						gov.nih.nci.cananolab.system.applicationservice.client.proxy.ListProxy objectProxy = (gov.nih.nci.cananolab.system.applicationservice.client.proxy.ListProxy) childObject;
 						int associationSize = objectProxy.size();
 						if (associationSize != objectProxy.getListChunk().size()) {
 							String associationName=null;
@@ -195,7 +195,7 @@ public class ProxyHelperImpl implements ProxyHelper
     		Object value = obj;
 
 
-    		if(obj instanceof gov.nih.nci.system.client.proxy.ListProxy)
+    		if(obj instanceof gov.nih.nci.cananolab.system.applicationservice.client.proxy.ListProxy)
     			((ListProxy)obj).setAppService(as);
     			
     		if(!field.getType().getName().equalsIgnoreCase("java.util.Collection"))

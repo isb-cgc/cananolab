@@ -1,8 +1,8 @@
 package gov.nih.nci.cananolab.security.helper;
 
-import gov.nih.nci.security.AuthorizationManager;
-import gov.nih.nci.security.authorization.attributeLevel.UserClassAttributeMapCache;
-import gov.nih.nci.security.authorization.instancelevel.InstanceLevelSecurityHelper;
+import gov.nih.nci.cananolab.security.AuthorizationManager;
+
+import gov.nih.nci.cananolab.security.authorization.UserClassAttributeMapCache;
 import gov.nih.nci.cananolab.security.providers.GroupNameAuthenticationToken;
 
 import org.acegisecurity.Authentication;
@@ -66,7 +66,7 @@ public class SecurityInitializationHelper
 			if(auth !=null && auth instanceof GroupNameAuthenticationToken)
 			{
 				GroupNameAuthenticationToken groupAuth = (GroupNameAuthenticationToken)auth;		
-				UserClassAttributeMapCache.setAttributeMapForGroup((String[])(groupAuth.getGroups().toArray()), sessionFactory, authorizationManager);	
+				UserClassAttributeMapCache.setAttributeMapForGroup((String[])(groupAuth.getGroups().toArray()), sessionFactory, authorizationManager);
 			}
 			else if (auth!=null)
 			{

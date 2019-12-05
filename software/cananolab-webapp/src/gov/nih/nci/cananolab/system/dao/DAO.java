@@ -13,7 +13,7 @@ public interface DAO {
 	 * @param request 
 	 *           
 	 * @return
-	 * @throws gov.nih.nci.system.dao.DAOException
+	 *
 	 */
 	public Response query(Request request) throws DAOException, Exception;
 	

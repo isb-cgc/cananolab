@@ -6,10 +6,11 @@
  *  See http://ncip.github.com/cananolab/LICENSE.txt for details.
  */
 
-package gov.nih.nci.cananolab.service.security;
+package gov.nih.nci.cananolab.security.service;
 
+import gov.nih.nci.cananolab.security.authorization.User;
 import gov.nih.nci.cananolab.util.StringUtils;
-import gov.nih.nci.security.authorization.domainobjects.User;
+
 
 import java.util.SortedSet;
 import java.util.TreeSet;

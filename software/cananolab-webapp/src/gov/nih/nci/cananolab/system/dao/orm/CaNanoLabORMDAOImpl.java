@@ -8,8 +8,9 @@
 
 package gov.nih.nci.cananolab.system.dao.orm;
 
-import gov.nih.nci.cananolab.system.dao.CaNanoLabORMDAO;
-import gov.nih.nci.system.dao.DAOException;
+
+
+import gov.nih.nci.cananolab.system.dao.DAOException;
 import java.io.Serializable;
 import java.util.List;
 import org.apache.log4j.Logger;
@@ -28,8 +29,7 @@ import org.hibernate.type.NullableType;
  *
  * @author Satish Patel, Dan Dumitru
  */
-public class CaNanoLabORMDAOImpl extends WritableORMDAOImpl implements CaNanoLabORMDAO
-{
+public class CaNanoLabORMDAOImpl extends WritableORMDAOImpl implements CaNanoLabORMDAO {
 	private static Logger log = Logger.getLogger(CaNanoLabORMDAOImpl.class.getName());
 
 

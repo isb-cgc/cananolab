@@ -55,9 +55,9 @@ L-->
 	<bean name="SessionFactory" class="gov.nih.nci.cananolab.system.dao.orm.SessionFactoryBean">
 		<property name="configLocation" value="classpath:hibernate.cfg.xml" />
 		<property name="configHolder" ref="HibernateConfigHolder" />
-<!--		<property name="securityHelper" ref="SecurityInitializationHelper"/>-->
+		<property name="securityHelper" ref="SecurityInitializationHelper"/>
 		<property name="entityInterceptor">
-			<bean class="gov.nih.nci.security.authorization.attributeLevel.GenericSecurityInterceptor">
+			<bean class="gov.nih.nci.cananolab.security.GenericSecurityInterceptor">
 				<constructor-arg>
 					<list>
 						<bean class="org.hibernate.EmptyInterceptor"/>

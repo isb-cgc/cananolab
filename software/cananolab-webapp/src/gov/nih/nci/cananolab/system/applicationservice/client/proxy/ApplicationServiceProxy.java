@@ -49,4 +49,7 @@ public class ApplicationServiceProxy implements MethodInterceptor
 		value = proxyHelper.convertToProxy(as, value);
 		return value;
 	}
+
+	public void setProxyHelper(ProxyHelperImpl proxyHelper) {
+	}
 }

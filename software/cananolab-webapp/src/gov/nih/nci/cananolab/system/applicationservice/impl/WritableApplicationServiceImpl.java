@@ -3,12 +3,13 @@ package gov.nih.nci.cananolab.system.applicationservice.impl;
 import gov.nih.nci.cananolab.system.dao.DAO;
 import gov.nih.nci.cananolab.system.dao.Request;
 import gov.nih.nci.cananolab.system.dao.Response;
-import gov.nih.nci.system.query.SDKQuery;
-import gov.nih.nci.system.query.SDKQueryResult;
-import gov.nih.nci.system.query.example.ExampleQuery;
-import gov.nih.nci.system.query.example.SearchExampleQuery;
+
+import gov.nih.nci.cananolab.system.query.SDKQuery;
+import gov.nih.nci.cananolab.system.query.SDKQueryResult;
+//import gov.nih.nci.system.query.example.ExampleQuery;
+//import gov.nih.nci.system.query.example.SearchExampleQuery;
 import gov.nih.nci.cananolab.system.query.hibernate.HQLCriteria;
-import gov.nih.nci.system.query.hql.SearchHQLQuery;
+//import gov.nih.nci.system.query.hql.SearchHQLQuery;
 import gov.nih.nci.cananolab.system.query.nestedcriteria.NestedCriteriaPath;
 import gov.nih.nci.cananolab.system.util.ClassCache;
 import java.util.ArrayList;
@@ -27,6 +28,7 @@ public class WritableApplicationServiceImpl extends ApplicationServiceImpl imple
 		super(classCache);
 	}
 
+
 	public SDKQueryResult executeQuery(SDKQuery query) throws ApplicationException {
 		String classname = getTargetClassName(query);
 		WritableDAO dao = getWritableDAO(classname);
@@ -43,7 +45,7 @@ public class WritableApplicationServiceImpl extends ApplicationServiceImpl imple
 	
 	public List<SDKQueryResult> executeBatchQuery(List<SDKQuery> batchQuery) throws ApplicationException {
 		List<SDKQueryResult> sdkQueryResults=new ArrayList<SDKQueryResult>();
-		
+
 		for (SDKQuery query : batchQuery) {
 			SDKQueryResult queryResult = executeQuery(query);
 			sdkQueryResults.add(queryResult);
@@ -71,18 +73,18 @@ public class WritableApplicationServiceImpl extends ApplicationServiceImpl imple
 		Object requestObject = query;
 		
 		//Needed to make sure the pagination and the count queries works.
-		if (query instanceof SearchExampleQuery)
-		{
-			Object obj = ((SearchExampleQuery)query).getExample();
-			List<Object> objList = new ArrayList<Object>();
-			objList.add(obj);
-            requestObject = new NestedCriteriaPath(obj.getClass().getName(), objList);
-		}
-		else if(query instanceof SearchHQLQuery)
-		{
-			HQLCriteria oldCriteria = (HQLCriteria)query;
-            requestObject = new HQLCriteria(oldCriteria.getHqlString(),oldCriteria.getParameters());
-		}
+//		if (query instanceof SearchExampleQuery)
+//		{
+//			Object obj = ((SearchExampleQuery)query).getExample();
+//			List<Object> objList = new ArrayList<Object>();
+//			objList.add(obj);
+//            requestObject = new NestedCriteriaPath(obj.getClass().getName(), objList);
+//		}
+//		else if(query instanceof SearchHQLQuery)
+//		{
+//			HQLCriteria oldCriteria = (HQLCriteria)query;
+//            requestObject = new HQLCriteria(oldCriteria.getHqlString(),oldCriteria.getParameters());
+//		}
 		
 		request.setRequest(requestObject);
 		
@@ -101,20 +103,20 @@ public class WritableApplicationServiceImpl extends ApplicationServiceImpl imple
 	protected String getTargetClassName(SDKQuery query)
 	{
 		String classname = null;
-		if(query instanceof ExampleQuery)
-		{
-			classname = ((ExampleQuery)query).getExample().getClass().getName();
-		}
-		else if (query instanceof HQLCriteria)
-		{
-			String hql = ((HQLCriteria)query).getHqlString();
-			
-			String upperHQL = hql.toUpperCase();
-			int index = upperHQL.indexOf(" FROM ");
-			
-			hql = hql.substring(index + " FROM ".length()).trim()+" ";
-			classname = hql.substring(0,hql.indexOf(' ')).trim();
-		}
+//		if(query instanceof ExampleQuery)
+//		{
+//			classname = ((ExampleQuery)query).getExample().getClass().getName();
+//		}
+//		else if (query instanceof HQLCriteria)
+//		{
+//			String hql = ((HQLCriteria)query).getHqlString();
+//
+//			String upperHQL = hql.toUpperCase();
+//			int index = upperHQL.indexOf(" FROM ");
+//
+//			hql = hql.substring(index + " FROM ".length()).trim()+" ";
+//			classname = hql.substring(0,hql.indexOf(' ')).trim();
+//		}
 		return classname;
 	}
 }

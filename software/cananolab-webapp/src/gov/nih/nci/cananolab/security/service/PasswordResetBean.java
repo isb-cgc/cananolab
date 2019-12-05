@@ -1,4 +1,4 @@
-package gov.nih.nci.cananolab.service.security;
+package gov.nih.nci.cananolab.security.service;
 
 public class PasswordResetBean {
 	

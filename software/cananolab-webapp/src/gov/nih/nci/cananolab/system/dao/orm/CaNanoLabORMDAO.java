@@ -6,9 +6,11 @@
  *  See http://ncip.github.com/cananolab/LICENSE.txt for details.
  */
 
-package gov.nih.nci.cananolab.system.dao;
+package gov.nih.nci.cananolab.system.dao.orm;
 
-import gov.nih.nci.system.dao.DAOException;
+
+import gov.nih.nci.cananolab.system.dao.DAOException;
+import gov.nih.nci.cananolab.system.dao.WritableDAO;
 import java.io.Serializable;
 import java.util.List;
 
