@@ -5,8 +5,10 @@ import gov.nih.nci.cananolab.security.AuthorizationManager;
 import gov.nih.nci.cananolab.security.authorization.UserClassAttributeMapCache;
 import gov.nih.nci.cananolab.security.providers.GroupNameAuthenticationToken;
 
-import org.acegisecurity.Authentication;
-import org.acegisecurity.context.SecurityContextHolder;
+//import org.acegisecurity.Authentication;
+//import org.acegisecurity.context.SecurityContextHolder;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.apache.log4j.Logger;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;

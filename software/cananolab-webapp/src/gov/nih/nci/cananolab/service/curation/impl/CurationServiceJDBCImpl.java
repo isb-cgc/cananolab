@@ -21,7 +21,8 @@ import javax.annotation.PostConstruct;
 import javax.sql.DataSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.core.simple.ParameterizedRowMapper;
+//import org.springframework.jdbc.core.simple.ParameterizedRowMapper;
+import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.support.JdbcDaoSupport;
 import org.springframework.stereotype.Component;
 
@@ -59,9 +60,12 @@ public class CurationServiceJDBCImpl extends JdbcDaoSupport implements CurationS
 			+ ", "
 			+ REVIEW_STATUS_TABLE_SUBMITTED_DATE_COL;
 
-	private ParameterizedRowMapper<DataReviewStatusBean> dataReviewStatusRowMapper;
+//	private ParameterizedRowMapper<DataReviewStatusBean> dataReviewStatusRowMapper;
+	private RowMapper<DataReviewStatusBean> dataReviewStatusRowMapper;
 
-	public ParameterizedRowMapper<DataReviewStatusBean> getDataReviewStatusRowMapper()
+//	public ParameterizedRowMapper<DataReviewStatusBean> getDataReviewStatusRowMapper()
+//			throws SQLException {
+		public RowMapper<DataReviewStatusBean> getDataReviewStatusRowMapper()
 			throws SQLException {
 		dataReviewStatusRowMapper = (rs, rowNum) -> {
 			DataReviewStatusBean dataStatusBean = new DataReviewStatusBean();

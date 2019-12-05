@@ -2,8 +2,11 @@ package gov.nih.nci.cananolab.security.providers;
 
 import java.util.Collection;
 
-import org.acegisecurity.Authentication;
-import org.acegisecurity.GrantedAuthority;
+//import org.acegisecurity.Authentication;
+//import org.acegisecurity.GrantedAuthority;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
+
 
 public class GroupNameAuthenticationToken implements Authentication {
 
@@ -25,7 +28,7 @@ public class GroupNameAuthenticationToken implements Authentication {
       this.authenticated=isAuthenticated;
    }
 
-	public GrantedAuthority[] getAuthorities() {
+	public Collection<? extends GrantedAuthority> getAuthorities() {
 		// TODO Auto-generated method stub
 		return null;
 	}
