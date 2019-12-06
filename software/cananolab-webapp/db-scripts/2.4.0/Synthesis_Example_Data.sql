@@ -5,55 +5,72 @@ SET
 WHERE `username` = 'canano_curator';
 */
 
+insert into `canano`.`organization`
+(`organization_pk_id`,`name`,`created_date`,`created_by`)
+VALUES
+('1005','Synthesis demo organization','2019-12-06 12:15:00','canano_curator');
+
+insert into `canano`.`point_of_contact`
+(`poc_pk_id`,`role`,`first_name`,`last_name`,`created_date`,`created_by`,`organization_pk_id`)
+VALUES
+('1005','investigator','canano','curator','2019-12-06 12:15:00','canano_curator','1005');
+
+insert into `canano`.`sample`
+(canano.sample.`sample_pk_id`,canano.sample.`sample_name`,canano.sample.`created_date`,canano.sample.`created_by`,canano.sample.`primary_contact_pk_id`)
+VALUES
+('1005','Synthesis Demo Sample','2019-12-06 12:15:00','canano_curator','1005');
+
+
+
 /* Important - replace <sample_pk_id> with a valid sample id */
 INSERT INTO `canano`.`synthesis`
     (`synthesis_pk_id`, `sample_pk_id`)
-VALUES (65601536, 65601536);
+VALUES (1005, 1005);
 
 #
-# INSERT INTO `canano`.`file`
-# (`file_pk_id`,
-#  `file_name`,
-#  `file_uri`,
-#  `file_extension`,
-#  `created_by`,
-#  `created_date`,
-#  `title`,
-#  `description`,
-#  `comments`,
-#  `file_type`,
-#  `is_uri_external`)
-# VALUES
-# ('1000',
-#     'NCIt_CTCAE_5.0',
-#     'https://evs.nci.nih.gov/ftp1/CTCAE/CTCAE_5.0/NCIt_CTCAE_5.0.xlsx',
-#     'xlsx',
-#     'canano_curator',
-#     '2019-08-28 00:00:00',
-#     'Synthesis File',
-#     'dummy row for testing of synthesis',
-#     null,
-#     'Excel',
-#     0);
+INSERT INTO `canano`.`file`
+(`file_pk_id`,
+ `file_name`,
+ `file_uri`,
+ `file_extension`,
+ `created_by`,
+ `created_date`,
+ `title`,
+ `description`,
+ `comments`,
+ `file_type`,
+ `is_uri_external`)
+VALUES
+('1005',
+    'NCIt_CTCAE_5.0',
+    'https://evs.nci.nih.gov/ftp1/CTCAE/CTCAE_5.0/NCIt_CTCAE_5.0.xlsx',
+    'xlsx',
+    'canano_curator',
+    '2019-08-28 00:00:00',
+    'Synthesis File',
+    'dummy row for testing of synthesis',
+    null,
+    'Excel',
+    0);
 #
-# INSERT INTO `canano`.`protocol`
-# (`protocol_pk_id`,
-#  `protocol_name`,
-#  `protocol_type`,
-#  `created_by`,
-#  `created_date`,
-#  `protocol_abbreviation`,
-#  `protocol_version`,
-#  `file_pk_id`)
-# VALUES
-# ('1000',
-#     'Synthesis test protocol',
-#     'synthesis',
-#     'canano_curator',
-#     '2019-08-28 00:00:00',
-#     'SYN',
-#     '1.0',
-#     1000);
+INSERT INTO `canano`.`protocol`
+(`protocol_pk_id`,
+ `protocol_name`,
+ `protocol_type`,
+ `created_by`,
+ `created_date`,
+ `protocol_abbreviation`,
+ `protocol_version`,
+ `file_pk_id`)
+VALUES
+('1005',
+    'Synthesis demo protocol',
+    'synthesis purification',
+    'canano_curator',
+    '2019-08-28 00:00:00',
+    'SYN',
+    '1.0',
+    1005);
 #
 #
 #
@@ -77,7 +94,7 @@ INSERT INTO `canano`.`synthesis_material`
  `created_date`,
  `created_by`)
 VALUES (1005,
-        65601536,
+        1005,
         null,
         'Chloroauric acid solution (200 ml of 0.01wt.%) was heated to a rolling boil and refluxed in a 500-ml-round-bottom flask using a temperature-controlled hot plate with continuous stirring [4]. A 4.5-ml aliquot of 1 wt.% sodium citrate solution was then added to the boiling chloroauric acid solution, and the heating was continued under reflux for 15 min to enable complete reaction. The solution was then allowed to cool to room temperature with continuous stirring yielding citrate-capped AuNPs.',
         '2019-08-28 00:00:00',
@@ -165,9 +182,9 @@ INSERT INTO `canano`.`synthesis_functionalization`
  `created_date`,
  `created_by`)
 VALUES (1005,
-        65601536,
+        1005,
         null,
-        'In order to produce PEG-capped AuNPs, various concentrations (3.6, 8.4, 16.8 and 25.2 μg per ml of as synthesized AuNP suspension) of 5,000 Mw PEG were added to the ‘as synthesized’ AuNP solutions at room temperature. After the required amount of PEG was added, the solution was stirred at room temperature for 2 h to allow for complete exchange of the citrate molecules with PEG.',
+        'In order to produce PEG-capped AuNPs, various concentrations (3.6, 8.4, 16.8 and 25.2 ug per ml of as synthesized AuNP suspension) of 5,000 Mw PEG were added to the ‘as synthesized’ AuNP solutions at room temperature. After the required amount of PEG was added, the solution was stirred at room temperature for 2 h to allow for complete exchange of the citrate molecules with PEG.',
         '2019-08-29 00:00:00',
         'canano_curator');
 
@@ -269,7 +286,7 @@ INSERT INTO `canano`.`synthesis_purification`
  `created_date`,
  `yield`)
 VALUES (1005,
-        65601536,
+        1005,
         1005,
         'Interim Purification',
         'Synthesis Purification Method 1',

@@ -5,11 +5,26 @@ SET
 WHERE `username` = 'canano_curator';
 */
 
+insert into `canano`.`organization`
+(`organization_pk_id`,`name`,`created_date`,`created_by`)
+VALUES
+('1000','Synthesis test organization','2019-12-06 12:15:00','canano_curator');
+
+insert into `canano`.`point_of_contact`
+(`poc_pk_id`,`role`,`first_name`,`last_name`,`created_date`,`created_by`,`organization_pk_id`)
+VALUES
+('1000','investigator','canano','curator','2019-12-06 12:15:00','canano_curator','1000');
+
+insert into `canano`.`sample`
+(canano.sample.`sample_pk_id`,canano.sample.`sample_name`,canano.sample.`created_date`,canano.sample.`created_by`,canano.sample.`primary_contact_pk_id`)
+VALUES
+('1000','Synthesis sample','2019-12-06 12:15:00','canano_curator','1000');
+
 /* Important - replace <sample_pk_id> with a valid sample id */
 INSERT INTO `canano`.`synthesis`
 (`synthesis_pk_id`, sample_pk_id)
 VALUES
-('1000', <sample_pk_id>);
+('1000', '1000');
 
 
 INSERT INTO `canano`.`file`
@@ -30,7 +45,7 @@ VALUES
     'https://evs.nci.nih.gov/ftp1/CTCAE/CTCAE_5.0/NCIt_CTCAE_5.0.xlsx',
     'xlsx',
     'canano_curator',
-    '2019-08-28 00:00:00',
+    '2019-12-06 12:15:00',
     'Synthesis File',
     'dummy row for testing of synthesis',
     null,
@@ -51,7 +66,7 @@ VALUES
     'Synthesis test protocol',
     'synthesis',
     'canano_curator',
-    '2019-08-28 00:00:00',
+    '2019-12-06 12:15:00',
     'SYN',
     '1.0',
     1000);
@@ -82,7 +97,7 @@ VALUES
     1000,
     1000,
     'Synthesis test sample 1',
-    '2019-08-28 00:00:00',
+    '2019-12-06 12:15:00',
     'canano_curator');
 
 INSERT INTO `canano`.`synthesis_material_element`
@@ -107,7 +122,7 @@ VALUES
     'Hill',
     'Synthesis Material Element 1',
     'canano_curator',
-    '2019-08-28 00:00:00',
+    '2019-12-06 12:15:00',
     'Synthesis Chemical 1',
     '12',
     'mg',
@@ -141,7 +156,7 @@ VALUES
     1000,
     1000,
     'Synthesis Functionalization Test 1',
-    '2019-08-29 00:00:00',
+    '2019-12-06 12:15:00',
     'canano_curator');
 
 
@@ -166,7 +181,7 @@ VALUES
     'Hill',
     'Synthesis Functionalization Material Element 1',
     'canano_curator',
-    '2019-08-28 00:00:00',
+    '2019-12-06 12:15:00',
     'SynFuncMat Element1',
     '84',
     'pg',
@@ -198,7 +213,7 @@ VALUES
 (1000,
     'Interim purification technique',
     'InP',
-    '2018-08-28 00:00:00',
+    '2019-12-06 12:15:00',
     'safrant');
 
 INSERT INTO `canano`.`instrument`
@@ -213,7 +228,7 @@ VALUES
     'scale',
     'Biome',
     'Test Scale',
-    '2019-08-28 00:00:00',
+    '2019-12-06 12:15:00',
     'canano_curator');
 
 INSERT INTO `canano`.`experiment_condition`
@@ -233,7 +248,7 @@ VALUES
     'g',
     'observed',
     'canano_user',
-    '2019-08-28 00:00:00');
+    '2019-12-06 12:15:00');
 
 
 INSERT INTO `canano`.`synthesis_purification`
@@ -254,7 +269,7 @@ VALUES
     'Synthesis Purification Method 1',
     'Test entry for synthesis purification',
     'canano_user',
-    '2019-08-28 00:00:00',
+    '2019-12-06 12:15:00',
     '84.7');
 
 
@@ -271,7 +286,7 @@ VALUES
     1000,
     'Configuration for synthesis purification',
     'canano_curator',
-    '2019-08-28 00:00:00');
+    '2019-12-06 12:15:00');
 
 INSERT INTO `canano`.`purification_config_instrument`
 (`purification_config_pk_id`,
@@ -289,7 +304,7 @@ VALUES
 (1000,
     1000,
     'canano_curator',
-    '2019-08-28 00:00:00');
+    '2019-12-06 12:15:00');
 
 INSERT INTO `canano`.`purity_datum`
 (`purity_datum_pk_id`,
@@ -309,7 +324,7 @@ VALUES
     'purity',
     '%',
     'canano_curator',
-    '2019-08-28 00:00:00',
+    '2019-12-06 12:15:00',
     '=',
     1000,
     1000);
