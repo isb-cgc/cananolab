@@ -20,7 +20,23 @@ insert into `canano`.`sample`
 VALUES
 ('1005','Synthesis Demo Sample','2019-12-06 12:15:00','canano_curator','1005');
 
+insert into `canano`.`acl_object_identity`
+(id, object_id_class, object_id_identity, parent_object, owner_sid, entries_inheriting)
+VALUES
+(4,1,1005, null,3,1),
+(5,16,1005,null,3,1),
+(6,17,1005,5,3,1);
 
+insert into `canano`.`acl_entry`
+(id,acl_object_identity, ace_order, sid, mask, granting, audit_success, audit_failure)
+VALUES
+(8,4,0,3,1,1,0,0),
+(9,4,1,3,2,1,0,0),
+(10,4,2,3,8,1,0,0),
+(11,4,3,13,1,1,0,0),
+(12,4,4,13,2,1, 0,0),
+(13,4,5,13,8,1,0,0),
+(14,4,6,14,1,1,0,0);
 
 /* Important - replace <sample_pk_id> with a valid sample id */
 INSERT INTO `canano`.`synthesis`
