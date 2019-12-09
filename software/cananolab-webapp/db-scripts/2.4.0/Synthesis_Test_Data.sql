@@ -16,9 +16,27 @@ VALUES
 ('1000','investigator','canano','curator','2019-12-06 12:15:00','canano_curator','1000');
 
 insert into `canano`.`sample`
-(canano.sample.`sample_pk_id`,canano.sample.`sample_name`,canano.sample.`created_date`,canano.sample.`created_by`,canano.sample.`primary_contact_pk_id`)
+(`sample_pk_id`,`sample_name`,`created_date`,`created_by`,`primary_contact_pk_id`)
 VALUES
 ('1000','Synthesis sample','2019-12-06 12:15:00','canano_curator','1000');
+
+insert into `canano`.`acl_object_identity`
+(id, object_id_class, object_id_identity, parent_object, owner_sid, entries_inheriting)
+VALUES
+(1,1,1000, null,3,1),
+(2,16,1000,null,3,1),
+(3,17,1000,2,3,1);
+
+insert into `canano`.`acl_entry`
+(id,acl_object_identity, ace_order, sid, mask, granting, audit_success, audit_failure)
+VALUES
+(1,1,0,3,1,1,0,0),
+(2,1,1,3,2,1,0,0),
+(3,1,2,3,8,1,0,0),
+(4,1,3,13,1,1,0,0),
+(5,1,4,13,2,1, 0,0),
+(6,1,5,13,8,1,0,0),
+(7,1,6,14,1,1,0,0);
 
 /* Important - replace <sample_pk_id> with a valid sample id */
 INSERT INTO `canano`.`synthesis`

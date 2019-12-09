@@ -112,22 +112,23 @@ LOCK TABLES `acl_class` WRITE;
 /*!40000 ALTER TABLE `acl_class`
     DISABLE KEYS */;
 INSERT INTO `acl_class`
-VALUES (13, 'Author'),
-       (9, 'ExperimentConfig'),
-       (10, 'Finding'),
-       (15, 'Organization'),
-       (16, 'PointOfContact'),
-       (8, 'Characterization'),
+VALUES
        (17, 'gov.nih.nci.cananolab.dto.common.CollaborationGroupBean'),
+       (16, 'gov.nih.nci.cananolab.domain.common.PointOfContact'),
+       (15, 'gov.nih.nci.cananolab.domain.common.Organization'),
        (14, 'gov.nih.nci.cananolab.dto.common.FileBean'),
-       (11, 'gov.nih.nci.cananolab.dto.common.ProtocolBean'),
+       (13, 'gov.nih.nci.cananolab.domain.common.Author'),
        (12, 'gov.nih.nci.cananolab.dto.common.PublicationBean'),
+       (11, 'gov.nih.nci.cananolab.dto.common.ProtocolBean'),
+       (10, 'gov.nih.nci.cananolab.domain.common.Finding'),
+       (9, 'gov.nih.nci.cananolab.domain.common.ExperimentConfig'),
+       (8, 'gov.nih.nci.cananolab.domain.particle.Characterization'),
        (7, 'gov.nih.nci.cananolab.dto.particle.composition.ChemicalAssociationBean'),
-       (4, 'gov.nih.nci.cananolab.dto.particle.composition.ComposingElementBean'),
-       (2, 'gov.nih.nci.cananolab.dto.particle.composition.CompositionBean'),
-       (5, 'gov.nih.nci.cananolab.dto.particle.composition.FunctionalizingEntityBean'),
        (6, 'gov.nih.nci.cananolab.dto.particle.composition.FunctionBean'),
+       (5, 'gov.nih.nci.cananolab.dto.particle.composition.FunctionalizingEntityBean'),
+       (4, 'gov.nih.nci.cananolab.dto.particle.composition.ComposingElementBean'),
        (3, 'gov.nih.nci.cananolab.dto.particle.composition.NanomaterialEntityBean'),
+       (2, 'gov.nih.nci.cananolab.dto.particle.composition.CompositionBean'),
        (1, 'gov.nih.nci.cananolab.dto.particle.SampleBean');
 /*!40000 ALTER TABLE `acl_class`
     ENABLE KEYS */;
