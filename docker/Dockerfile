@@ -1,7 +1,7 @@
 FROM cbiit/centos7_base
 MAINTAINER Shaun Einolf
 
-RUN yum -y update && yum -y install git java-1.8.0-openjdk-devel sudo util-linux wget
+RUN yum -y update && yum -y install git java-1.8.0-openjdk-devel mysql sudo util-linux wget
 WORKDIR /tmp
 RUN wget http://download.jboss.org/wildfly/8.2.1.Final/wildfly-8.2.1.Final.tar.gz \
     && tar xvfz wildfly-8.2.1.Final.tar.gz \
