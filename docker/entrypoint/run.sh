@@ -33,13 +33,13 @@ function wait_for_server() {
 
 #start server #
 echo "starting wildfly"
-$JBOSS_HOME/bin/$JBOSS_MODE.sh -b 0.0.0.0 -c $JBOSS_CONFIG &
-
+$JBOSS_HOME/bin/$JBOSS_MODE.sh -b 0.0.0.0 -bmanagement 0.0.0.0 -c $JBOSS_CONFIG &
 echo "=> Waiting for the server to boot"
 wait_for_server
 
 echo "=> deploying "
 /opt/wildfly-8.2.1.Final/bin/run.sh
+$JBOSS_HOME/bin/add-user.sh -u 'admin' -p 'password' -g 'admin'
 
 echo "=> Shutting down WildFly"
 if [ "$JBOSS_MODE" = "standalone" ]; then
@@ -48,7 +48,6 @@ fi
 
 
 echo "=> Restarting WildFly"
-$JBOSS_HOME/bin/$JBOSS_MODE.sh -b 0.0.0.0 -c $JBOSS_CONFIG
+$JBOSS_HOME/bin/$JBOSS_MODE.sh -b 0.0.0.0 -bmanagement 0.0.0.0 -c $JBOSS_CONFIG
 
-#$JBOSS_HOME/bin/standalone.sh -b 0.0.0.0 --server-config=standalone-full.xml
 
