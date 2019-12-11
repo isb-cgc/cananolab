@@ -36,30 +36,13 @@ VALUES
 (4,1,3,13,1,1,0,0),
 (5,1,4,13,2,1, 0,0),
 (6,1,5,13,8,1,0,0),
-(7,1,6,14,1,1,0,0);
+(7,1,6,14,1,1,0,0),
+(15,1,7,12,1,1,0,0);
 
-/*  If adding to existing dev database
-insert into `canano`.`acl_object_identity`
-(id, object_id_class, object_id_identity, parent_object, owner_sid, entries_inheriting)
-VALUES
-(1,1,1000, null,39,1),
-(2,16,1000,null,39,1),
-(3,17,1000,2,39,1);
 
-insert into `canano`.`acl_entry`
-(id,acl_object_identity, ace_order, sid, mask, granting, audit_success, audit_failure)
-VALUES
-(1,1,0,39,1,1,0,0),
-(2,1,1,39,2,1,0,0),
-(3,1,2,39,8,1,0,0),
-(4,1,3,3,1,1,0,0),
-(5,1,4,3,2,1, 0,0),
-(6,1,5,3,8,1,0,0),
-(7,1,6,4,1,1,0,0);
-
-*/
-
-/* Important - replace <sample_pk_id> with a valid sample id */
+/*
+If using an existing dev database, comment out all above and
+ replace <sample_pk_id> with a valid sample id */
 INSERT INTO `canano`.`synthesis`
 (`synthesis_pk_id`, sample_pk_id)
 VALUES
