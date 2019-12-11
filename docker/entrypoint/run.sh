@@ -39,6 +39,7 @@ wait_for_server
 
 echo "=> deploying "
 /opt/wildfly-8.2.1.Final/bin/run.sh
+echo "RUNNING ADD_USER HERE"
 $JBOSS_HOME/bin/add-user.sh -u 'admin' -p 'password' -g 'admin'
 
 echo "=> Shutting down WildFly"
