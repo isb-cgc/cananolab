@@ -5,18 +5,19 @@
 <hibernate-mapping package="gov.nih.nci.cananolab.domain.particle">
     <class name="Synthesis" table="synthesis">
         <id name="Id" column="synthesis_pk_id" type="long">
-<!--        <generator class="hilo">-->
-<!--            <param name="table">hibernate_unique_key</param>-->
-<!--            <param name="column">next_hi</param>-->
-<!--        </generator>-->
-        <generator class="foreign">
-            <param name="property">sample</param>
+        <generator class="hilo">
+            <param name="table">hibernate_unique_key</param>
+            <param name="column">next_hi</param>
         </generator>
+<!--        <generator class="foreign">-->
+<!--            <param name="property">sample</param>-->
+<!--        </generator>-->
 
 
         </id>
-        <!--the synthesis pk id is generated from the sample pk id -->
-        <one-to-one name="sample" class="Sample" constrained="true"/>
+        <!--the synthesis pk id is generated from the sample pk id
+        <one-to-one name="sample" class="Sample"  constrained="true"/>        -->
+        <many-to-one name="sample" class="Sample" column="sample_pk_id" unique="true" not-null="true" cascade="all"/>
 
         <set name="synthesisFunctionalizations" inverse="true">
             <key>
