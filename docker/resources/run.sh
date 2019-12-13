@@ -3,7 +3,7 @@ rm -rf /local/content/caNanoLab/artifacts/*
 rm -rf /local/content/caNanoLab/config/*
 rm -rf /usr/local/cananolab/software/cananolab-webapp/target/dist
 rm -rf /opt/wildfly-8.2.1.Final/modules/com/mysql
-
+rm -rf /opt/wildfly-8.2.1.Final/standalone/deployments/*
 cd /usr/local/cananolab/software/cananolab-webapp/
 ant dist
 cd /usr/local/cananolab/software/cananolab-webapp/target/dist/
@@ -16,5 +16,4 @@ cp wikihelp.properties /local/content/caNanoLab/config
 
 /opt/wildfly-8.2.1.Final/bin/jboss-cli.sh --file=/local/content/caNanoLab/artifacts/caNanoLab_modules.cli
 /opt/wildfly-8.2.1.Final/bin/jboss-cli.sh --file=/local/content/caNanoLab/artifacts/caNanoLab_setup.cli
-/opt/wildfly-8.2.1.Final/bin/jboss-cli.sh --file=/local/content/caNanoLab/artifacts/caNanoLab_deploy.cli
 echo "DEPLOYED"
