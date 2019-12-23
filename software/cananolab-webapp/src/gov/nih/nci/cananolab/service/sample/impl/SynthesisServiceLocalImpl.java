@@ -92,7 +92,7 @@ public class SynthesisServiceLocalImpl extends BaseServiceLocalImpl implements S
     public SynthesisFunctionalizationBean findSynthesisFunctionalizationById(Long sampleId, Long dataId) throws NoAccessException,SynthesisException{
         SynthesisFunctionalizationBean sfBean = null;
         try {
-            SynthesisFunctionalization synthesisFunctionalization = synthesisHelper.findSynthesisFunctionalizationzationById(sampleId, dataId);
+            SynthesisFunctionalization synthesisFunctionalization = synthesisHelper.findSynthesisFunctionalizationById(sampleId, dataId);
             if (synthesisFunctionalization != null) {
                 sfBean = new SynthesisFunctionalizationBean(synthesisFunctionalization);
             }

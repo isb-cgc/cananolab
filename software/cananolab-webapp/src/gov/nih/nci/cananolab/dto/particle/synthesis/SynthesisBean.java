@@ -125,7 +125,7 @@ public class SynthesisBean extends BaseCompositionEntityBean {
 
     public void resetDomainCopy(String createdBy, Synthesis copy, Boolean copyData){
         copy.setId(null);
-        //TODO finish writing
+
         Collection<SynthesisMaterial> oldMaterials = copy.getSynthesisMaterials();
         //checking for null first so that isEmpty doesn't throw NPE
         if(oldMaterials==null || oldMaterials.isEmpty()){

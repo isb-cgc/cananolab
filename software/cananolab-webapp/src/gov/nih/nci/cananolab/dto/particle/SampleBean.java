@@ -420,12 +420,7 @@ public class SampleBean extends SecuredDataBean {
 //		Set<Synthesis> oldSynthesis = copy.getSynthesisCollection();
 		Synthesis oldSynthesis = copy.getSynthesis();
 		if(oldSynthesis!=null ){
-			//todo write
-//			copy.setSynthesisCollection(new HashSet<Synthesis>(oldSynthesis));
-//			for(Synthesis synthesis: copy.getSynthesisCollection()){
-//				SynthesisBean synthesisBean = new SynthesisBean(synthesis);
-//				synthesisBean.resetDomainCopy(createdBy, synthesis, true);
-//			}
+
 			SynthesisBean synthesisBean = new SynthesisBean(oldSynthesis);
 			synthesisBean.resetDomainCopy(createdBy, oldSynthesis, true);
 		}

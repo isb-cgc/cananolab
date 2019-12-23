@@ -40,7 +40,7 @@ L-->
 
 		<one-to-one name="synthesis" cascade="all" class="Synthesis" />
 
-		<one-to-one name="sampleComposition" cascade="all" class="SampleComposition" />
+		<one-to-one name="sampleComposition" cascade="all" class="SampleComposition" property-ref="sample" />
 		<set name="publicationCollection" table="sample_publication" inverse="false"
 			lazy="true">
 			<cache usage="read-write" />

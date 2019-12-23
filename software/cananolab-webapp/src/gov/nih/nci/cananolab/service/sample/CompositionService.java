@@ -32,32 +32,54 @@ import gov.nih.nci.cananolab.service.sample.helper.CompositionServiceHelper;
  * Service methods involving composition.
  *
  * @author pansu
+ *
  */
 public interface CompositionService extends BaseService {
-    void assignAccesses(ComposingElement composingElement)
+
+    void saveNanomaterialEntity(SampleBean sampleBean,
+            NanomaterialEntityBean entityBean) throws CompositionException, NoAccessException;
+
+    NanomaterialEntityBean findNanomaterialEntityById(String sampleId, String entityId)
             throws CompositionException, NoAccessException;
 
-    void assignAccesses(SampleComposition comp, File file)
+    void saveFunctionalizingEntity(SampleBean sampleBean,
+            FunctionalizingEntityBean entityBean) throws CompositionException, NoAccessException;
+
+    void saveChemicalAssociation(SampleBean sampleBean,
+            ChemicalAssociationBean assocBean) throws CompositionException, NoAccessException;
+
+    void saveCompositionFile(SampleBean sampleBean, FileBean fileBean)
             throws CompositionException, NoAccessException;
 
-    void assignAccesses(Function function)
+    FunctionalizingEntityBean findFunctionalizingEntityById(String sampleId,
+            String entityId) throws CompositionException, NoAccessException;
+
+    ChemicalAssociationBean findChemicalAssociationById(String sampleId, String assocId)
             throws CompositionException, NoAccessException;
+
+    void deleteNanomaterialEntity(NanomaterialEntity entity)
+            throws CompositionException, ChemicalAssociationViolationException,
+            NoAccessException;
+
+    void deleteFunctionalizingEntity(FunctionalizingEntity entity)
+            throws CompositionException, ChemicalAssociationViolationException,
+            NoAccessException;
+
+    void deleteChemicalAssociation(ChemicalAssociation assoc)
+            throws CompositionException, ChemicalAssociationViolationException,
+            NoAccessException;
+
+    void deleteCompositionFile(SampleComposition comp, File file)
+            throws CompositionException, NoAccessException;
+
+    void deleteComposition(SampleComposition comp)
+            throws ChemicalAssociationViolationException, CompositionException,
+            NoAccessException;
 
     boolean checkChemicalAssociationBeforeDelete(SampleComposition comp, AssociatedElement assocElement);
 
-    /**
-     * Copy and save a functionalizing entity from one sample to other samples
-     *
-     * @param entityBean
-     * @param oldSampleBean
-     * @param newSampleBeans
-     * @throws CompositionException
-     * @throws NoAccessException
-     */
-    void copyAndSaveFunctionalizingEntity(
-            FunctionalizingEntityBean entityBean, SampleBean oldSampleBean,
-            SampleBean[] newSampleBeans) throws CompositionException,
-            NoAccessException;
+    CompositionBean findCompositionBySampleId(String sampleId)
+            throws CompositionException, NoAccessException;
 
     /**
      * Copy and save a nanomaterial entity from one sample to other samples
@@ -73,39 +95,30 @@ public interface CompositionService extends BaseService {
             SampleBean[] newSampleBeans) throws CompositionException,
             NoAccessException;
 
-    void deleteChemicalAssociation(ChemicalAssociation assoc)
-            throws CompositionException, ChemicalAssociationViolationException,
+    /**
+     * Copy and save a functionalizing entity from one sample to other samples
+     *
+     * @param entityBean
+     * @param oldSampleBean
+     * @param newSampleBeans
+     * @throws CompositionException
+     * @throws NoAccessException
+     */
+    void copyAndSaveFunctionalizingEntity(
+            FunctionalizingEntityBean entityBean, SampleBean oldSampleBean,
+            SampleBean[] newSampleBeans) throws CompositionException,
             NoAccessException;
-
-    void deleteComposition(SampleComposition comp)
-            throws ChemicalAssociationViolationException, CompositionException,
-            NoAccessException;
-
-    void deleteCompositionFile(SampleComposition comp, File file)
-            throws CompositionException, NoAccessException;
-
-    void deleteFunctionalizingEntity(FunctionalizingEntity entity)
-            throws CompositionException, ChemicalAssociationViolationException,
-            NoAccessException;
-
-    void deleteNanomaterialEntity(NanomaterialEntity entity)
-            throws CompositionException, ChemicalAssociationViolationException,
-            NoAccessException;
-
-    ChemicalAssociationBean findChemicalAssociationById(String sampleId, String assocId)
-            throws CompositionException, NoAccessException;
-
-    CompositionBean findCompositionBySampleId(String sampleId)
-            throws CompositionException, NoAccessException;
-
-    FunctionalizingEntityBean findFunctionalizingEntityById(String sampleId,
-                                                            String entityId) throws CompositionException,
-			NoAccessException;
-
-    NanomaterialEntityBean findNanomaterialEntityById(String sampleId, String entityId)
-            throws CompositionException, NoAccessException;
 
     CompositionServiceHelper getHelper();
+
+    void assignAccesses(ComposingElement composingElement)
+            throws CompositionException, NoAccessException;
+
+    void assignAccesses(SampleComposition comp, File file)
+            throws CompositionException, NoAccessException;
+
+    void assignAccesses(Function function)
+            throws CompositionException, NoAccessException;
 
     void removeAccesses(NanomaterialEntity entity, ComposingElement composingElement)
             throws CompositionException, NoAccessException;
@@ -125,19 +138,8 @@ public interface CompositionService extends BaseService {
     void removeAccesses(SampleComposition comp, File file)
             throws CompositionException, NoAccessException;
 
-    void saveChemicalAssociation(SampleBean sampleBean,
-                                 ChemicalAssociationBean assocBean) throws CompositionException,
-            NoAccessException;
 
-    void saveCompositionFile(SampleBean sampleBean, FileBean fileBean)
-            throws CompositionException, NoAccessException;
 
-    void saveFunctionalizingEntity(SampleBean sampleBean,
-                                   FunctionalizingEntityBean entityBean) throws CompositionException,
-            NoAccessException;
 
-    void saveNanomaterialEntity(SampleBean sampleBean,
-                                NanomaterialEntityBean entityBean) throws CompositionException,
-            NoAccessException;
 
 }
