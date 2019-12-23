@@ -38,7 +38,11 @@ VALUES
 (13,4,5,13,8,1,0,0),
 (14,4,6,14,1,1,0,0);
 
-/* Important - replace <sample_pk_id> with a valid sample id */
+
+
+/* Important - To add Synthesis to an existing sample from Dev dump, copy out all
+   above and replace <sample_pk_id> with a valid sample id
+   */
 INSERT INTO `canano`.`synthesis`
     (`synthesis_pk_id`, `sample_pk_id`)
 VALUES (1005, 1005);
@@ -87,19 +91,15 @@ VALUES
     'SYN',
     '1.0',
     1005);
-#
-#
-#
-# /* Synthesis Material */
-#
-# INSERT INTO `canano`.`supplier`
-# (`supplier_pk_id`,
-#  `supplier_name`,
-#  `lot`)
-# VALUES
-# (1000,
-#     'Synthesis supplier',
-#     'ABC123xyz');
+
+INSERT INTO `canano`.`supplier`
+(`supplier_pk_id`,
+ `supplier_name`,
+ `lot`)
+VALUES
+(1005,
+    'Synthesis supplier',
+    'ABC123xyz');
 
 
 INSERT INTO `canano`.`synthesis_material`
@@ -157,7 +157,7 @@ VALUES (1051,
         '%wt',
         'compound',
         '6224',
-        null,
+        1005,
         'reagent'),
        (1053,
         1005,

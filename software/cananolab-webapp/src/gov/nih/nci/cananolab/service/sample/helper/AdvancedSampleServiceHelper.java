@@ -969,6 +969,9 @@ public class AdvancedSampleServiceHelper
 					"datum.valueUnit", charQuery.getDatumValueUnit()));
 			switch (charQuery.getOperand()) {
 				case "=":
+					charCrit = Restrictions.and(charCrit, Expression.eq(
+							"datum.value", datumValue));
+					break;
 				case "is":
 					charCrit = Restrictions.and(charCrit, Expression.eq(
 							"datum.value", datumValue));

@@ -2,6 +2,7 @@ package gov.nih.nci.cananolab.restful;
 
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -11,6 +12,22 @@ import static org.junit.Assert.assertTrue;
 public class SynthesisServicesTest {
     String urlbase = "http://localhost:8080/caNanoLab/rest/";
     Client client;
+
+    @After
+    public void tearDown() throws Exception {
+    }
+
+    @Test
+    public void view() {
+    }
+
+    @Test
+    public void summaryPrint() {
+    }
+
+    @Test
+    public void summaryExport() {
+    }
 
 
     @Before

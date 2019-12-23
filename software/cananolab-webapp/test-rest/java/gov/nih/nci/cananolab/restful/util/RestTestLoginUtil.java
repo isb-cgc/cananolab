@@ -28,6 +28,7 @@ public class RestTestLoginUtil {
 		if (jsessionId == null) {
 			String username = RestTestLoginUtil.readUserNameProperty();
 			String pwd = RestTestLoginUtil.readPasswordProperty();
+			System.out.println("User " + username + " " + pwd);
 			
 			if (username == null || username.length() == 0 ||
 					pwd == null || pwd.length() == 0)
@@ -47,10 +48,10 @@ public class RestTestLoginUtil {
 	}
 	
 	public static String readUserNameProperty() {
-		return PropertyUtils.getPropertyCached("local.properties", "user.name");
+		return PropertyUtils.getPropertyCached("resources/local.properties", "user.name");
 	}
 
 	public static String readPasswordProperty() {
-		return PropertyUtils.getPropertyCached("local.properties", "password");
+		return PropertyUtils.getPropertyCached("resources/local.properties", "password");
 	}
 }

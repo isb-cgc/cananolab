@@ -1,7 +1,11 @@
 package gov.nih.nci.cananolab.dto.particle.synthesis;
 
+//import com.sun.xml.internal.ws.api.WSFeatureList;
+import gov.nih.nci.cananolab.domain.common.File;
+import gov.nih.nci.cananolab.domain.particle.SmeInherentFunction;
 import gov.nih.nci.cananolab.domain.particle.SynthesisMaterial;
 import gov.nih.nci.cananolab.domain.particle.SynthesisMaterialElement;
+import gov.nih.nci.cananolab.dto.common.FileBean;
 import gov.nih.nci.cananolab.util.ClassUtils;
 import gov.nih.nci.cananolab.util.Comparators;
 import gov.nih.nci.cananolab.util.Constants;
@@ -76,7 +80,26 @@ public class SynthesisMaterialBean extends BaseSynthesisEntityBean {
                         + Constants.AUTO_COPY_ANNOTATION_PREFIX + ":"
                         + sme.getId());
                 sme.setId(null);
-                //TODO
+                Collection<SmeInherentFunction> oldFunctions = sme.getSmeInherentFunctions();
+                if(oldFunctions==null | oldFunctions.isEmpty()){
+                    sme.setSmeInherentFunctions(null);
+                    } else {
+                    sme.setSmeInherentFunctions(new HashSet<SmeInherentFunction>(oldFunctions));
+                    for(SmeInherentFunction function: sme.getSmeInherentFunctions()){
+                        SmeInherentFunctionBean functionBean = new SmeInherentFunctionBean(function);
+                        functionBean.resetDomainCopy(createdBy, functionBean);
+                    }
+                }
+            }
+        }
+        Collection<File> oldFiles = synthesisMaterialCopy.getFiles();
+        if (oldFiles == null || oldFiles.isEmpty()) {
+            synthesisMaterialCopy.setFiles(null);
+        } else {
+            synthesisMaterialCopy.setFiles(new HashSet<File>(oldFiles));
+            for (File file : synthesisMaterialCopy.getFiles()) {
+                FileBean fileBean = new FileBean(file);
+                fileBean.resetDomainCopy(createdBy, file);
             }
         }
     }
