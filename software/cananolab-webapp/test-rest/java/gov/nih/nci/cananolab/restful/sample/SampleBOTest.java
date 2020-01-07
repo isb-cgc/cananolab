@@ -8,6 +8,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import org.junit.Test;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.mockito.Mockito.mock;
@@ -46,7 +47,7 @@ public class SampleBOTest {
 		
 	}
 	
-	//@Test
+	@Test
 	public void testCreateNewSample() {
 
 		HttpServletRequest request = mock(HttpServletRequest.class);
@@ -64,6 +65,22 @@ public class SampleBOTest {
 			editBean.setSampleName("SY-Monday2");
 			editBean.setNewSampleName("CloneFromSY-Monday2");
 		} catch (Exception e) {
+			System.out.println(e.getMessage());
+		}
+	}
+
+	@Test
+	public void testDeleteSample(){
+		HttpServletRequest request = mock(HttpServletRequest.class);
+		HttpSession session = mock(HttpSession.class);
+
+		when(request.getSession()).thenReturn(session);
+
+		try{
+			String result = sampleBO.delete("44695553", request);
+			assertEquals("deleted", result);
+
+		}catch (Exception e){
 			System.out.println(e.getMessage());
 		}
 	}

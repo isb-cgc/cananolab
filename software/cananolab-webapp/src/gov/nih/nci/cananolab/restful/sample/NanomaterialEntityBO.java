@@ -523,16 +523,15 @@ public class NanomaterialEntityBO extends BaseAnnotationBO
 			file.setTitle(fBean.getTitle());
 			file.setDescription(fBean.getDescription());
 			file.setUri(fBean.getUri());
+			file.setUriExternal(fBean.getUriExternal());
+			fileBean.setKeywordsStr(fBean.getKeywordsStr());
+			fileBean.setExternalUrl(fBean.getExternalUrl());
+			fileBean.setTheAccess(fBean.getTheAccess());
 			if(fBean.getId()!=null){
 				file.setId(fBean.getId());
 				file.setCreatedBy(fBean.getCreatedBy());
 				file.setCreatedDate(fBean.getCreatedDate());
 			}
-			file.setUriExternal(fBean.getUriExternal());
-			fileBean.setKeywordsStr(fBean.getKeywordsStr());
-			fileBean.setExternalUrl(fBean.getExternalUrl());
-			fileBean.setTheAccess(fBean.getTheAccess());
-
 			fileBean.setDomainFile(file);
 		}
 		bean.setTheFile(fileBean);
@@ -876,6 +875,28 @@ public class NanomaterialEntityBO extends BaseAnnotationBO
 		NanomaterialEntityBean entity = transferNanoMateriaEntityBean(nanoBean, request); 
 
 		FileBean theFile = entity.getTheFile();
+		entity.removeFile(theFile);
+		entity.setTheFile(new FileBean());
+		// save nanomaterial entity
+		List<String> msgs = validateInputs(request, entity);
+		if (msgs.size()>0) {
+			SimpleNanomaterialEntityBean nano = new SimpleNanomaterialEntityBean();
+			nano.setErrors(msgs);
+			return nano;
+		}
+		this.saveEntity(request, nanoBean.getSampleId(), entity);
+		compositionService.removeAccesses(entity.getDomainEntity().getSampleComposition(), theFile.getDomainFile());
+		request.setAttribute("anchor", "file");
+		this.checkOpenForms(entity, request);
+		return setupUpdate(nanoBean.getSampleId(), entity.getDomainEntity().getId().toString(), request);
+	}
+
+	public SimpleNanomaterialEntityBean removeFile(SimpleNanomaterialEntityBean nanoBean, String fileId,
+												   HttpServletRequest request)
+			throws Exception {
+		NanomaterialEntityBean entity = transferNanoMateriaEntityBean(nanoBean, request);
+
+		FileBean theFile = entity.getFile(fileId);
 		entity.removeFile(theFile);
 		entity.setTheFile(new FileBean());
 		// save nanomaterial entity
