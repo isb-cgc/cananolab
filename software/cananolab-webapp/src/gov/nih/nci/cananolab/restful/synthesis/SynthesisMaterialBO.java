@@ -1,5 +1,6 @@
 package gov.nih.nci.cananolab.restful.synthesis;
 
+import gov.nih.nci.cananolab.dto.common.FileBean;
 import gov.nih.nci.cananolab.dto.particle.SampleBean;
 import gov.nih.nci.cananolab.dto.particle.synthesis.SynthesisMaterialBean;
 import gov.nih.nci.cananolab.dto.particle.synthesis.SynthesisMaterialElementBean;
@@ -7,6 +8,7 @@ import gov.nih.nci.cananolab.restful.core.BaseAnnotationBO;
 import gov.nih.nci.cananolab.restful.sample.InitSampleSetup;
 import gov.nih.nci.cananolab.restful.sample.InitSynthesisSetup;
 import gov.nih.nci.cananolab.restful.util.SynthesisUtil;
+import gov.nih.nci.cananolab.restful.view.edit.SimpleNanomaterialEntityBean;
 import gov.nih.nci.cananolab.restful.view.edit.SimpleSynthesisMaterialBean;
 import gov.nih.nci.cananolab.security.service.SpringSecurityAclService;
 import gov.nih.nci.cananolab.security.utils.SpringSecurityUtil;
@@ -80,14 +82,36 @@ public class SynthesisMaterialBO extends BaseAnnotationBO {
         return msgs;
     }
 
-    public List<String> delete(SynthesisMaterialBean synthesisMaterialBean, HttpServletRequest request){
-        //todo write
-        return null;
+    public List<String> delete(SimpleSynthesisMaterialBean synthesisMaterialBean, HttpServletRequest request)throws Exception{
+
+        List<String> msgs = new ArrayList<String>();
+        SynthesisMaterialBean entityBean =  transferSynthesisMaterialBean(synthesisMaterialBean, request);
+        entityBean.setUpDomainEntity(SpringSecurityUtil.getLoggedInUserName());
+        synthesisService.deleteSynthesisMaterial(entityBean.getDomainEntity());
+
+        msgs.add("success");
+        return msgs;
     }
 
-    public SimpleSynthesisMaterialBean removeFile(SimpleSynthesisMaterialBean simpleSynthesisMaterialBean, HttpServletRequest httpRequest) {
+    public SimpleSynthesisMaterialBean removeFile(SimpleSynthesisMaterialBean simpleSynthesisMaterialBean,String fileId, HttpServletRequest request) throws Exception{
         //TODO write
-        return null;
+        SynthesisMaterialBean entityBean =  transferSynthesisMaterialBean(simpleSynthesisMaterialBean, request);
+//        FileBean theFile = entityBean.getTheFile();
+//        entityBean.removeFile(theFile);
+//        entityBean.setTheFile(new FileBean());
+        FileBean theFile = entityBean.getFile(fileId);
+        entityBean.removeFile(theFile);
+
+        List<String> msgs = validateInputs(request, entityBean);
+        if (msgs.size()>0) {
+            SimpleSynthesisMaterialBean synMat = new SimpleSynthesisMaterialBean();
+            synMat.setErrors(msgs);
+            return synMat;
+        }
+        this.saveEntity(request, simpleSynthesisMaterialBean.getSampleId(), entityBean);
+        request.setAttribute("anchor", "file");
+        this.checkOpenForms(entityBean, request);
+        return setupUpdate(simpleSynthesisMaterialBean.getSampleId(), entityBean.getDomainEntity().getId().toString(), request);
     }
 
     public SimpleSynthesisMaterialBean removeMaterialElement(SimpleSynthesisMaterialBean simpleSynthesisMaterialBean, String materialElementId, HttpServletRequest httpRequest)throws Exception {

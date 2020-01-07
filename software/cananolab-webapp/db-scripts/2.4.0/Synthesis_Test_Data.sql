@@ -4,7 +4,7 @@ SET
     `password` = '$2a$10$mdeGI13IlA6V9p6BtIiKw.kciBTLCY37Y58GFzkWK7TN3BWEYGuDe'
 WHERE `username` = 'canano_curator';
 */
-
+/*
 insert into `canano`.`organization`
 (`organization_pk_id`,`name`,`created_date`,`created_by`)
 VALUES
@@ -38,7 +38,7 @@ VALUES
 (6,1,5,13,8,1,0,0),
 (7,1,6,14,1,1,0,0),
 (15,1,7,12,1,1,0,0);
-
+*/
 
 /*
 If using an existing dev database, comment out all above and
@@ -46,7 +46,7 @@ If using an existing dev database, comment out all above and
 INSERT INTO `canano`.`synthesis`
 (`synthesis_pk_id`, sample_pk_id)
 VALUES
-('1000', '1000');
+('1000', <sample_pk_id>);
 
 
 INSERT INTO `canano`.`file`

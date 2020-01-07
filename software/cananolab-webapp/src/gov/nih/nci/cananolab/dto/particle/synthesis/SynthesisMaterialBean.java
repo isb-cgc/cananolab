@@ -14,6 +14,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 public class SynthesisMaterialBean extends BaseSynthesisEntityBean {
     //TODO write
@@ -119,6 +120,13 @@ public class SynthesisMaterialBean extends BaseSynthesisEntityBean {
 
     public void setSynthesisMaterialElements(List<SynthesisMaterialElementBean> synthesisMaterialElements) {
         this.synthesisMaterialElements = synthesisMaterialElements;
+    }
+
+
+    public void setUpDomainEntity(String loggedInUserName) {
+        logger.debug("In SynthesisMaterialBean.setupDomain");
+        //TODO - pattern after ComposingElementBean
+
     }
 
 

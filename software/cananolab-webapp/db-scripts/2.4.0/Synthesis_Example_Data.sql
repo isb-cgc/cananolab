@@ -4,7 +4,8 @@ SET
     `password` = '$2a$10$mdeGI13IlA6V9p6BtIiKw.kciBTLCY37Y58GFzkWK7TN3BWEYGuDe'
 WHERE `username` = 'canano_curator';
 */
-
+/*
+This does not work to add to an existing database
 insert into `canano`.`organization`
 (`organization_pk_id`,`name`,`created_date`,`created_by`)
 VALUES
@@ -37,7 +38,7 @@ VALUES
 (12,4,4,13,2,1, 0,0),
 (13,4,5,13,8,1,0,0),
 (14,4,6,14,1,1,0,0);
-
+*/
 
 
 /* Important - To add Synthesis to an existing sample from Dev dump, copy out all
@@ -45,7 +46,7 @@ VALUES
    */
 INSERT INTO `canano`.`synthesis`
     (`synthesis_pk_id`, `sample_pk_id`)
-VALUES (1005, 1005);
+VALUES (1005, <sample_pk_id>);
 
 #
 INSERT INTO `canano`.`file`
