@@ -7,7 +7,7 @@ rm -rf /opt/wildfly-8.2.1.Final/standalone/deployments/*
 cd /usr/local/cananolab/software/cananolab-webapp/
 ant dist
 cd /usr/local/cananolab/software/cananolab-webapp/target/dist/
-cp /usr/local/cananolab/docker/resources/standalone-full.xml /opt/wildfly-8.2.1-Final/standalone/configuration
+cp /usr/local/cananolab/docker/resources/standalone-full.xml /opt/wildfly-8.2.1.Final/standalone/configuration
 cp caNanoLab.war /local/content/caNanoLab/artifacts
 cd /usr/local/cananolab/software/cananolab-webapp/target/dist/common
 cp bcprov-jdk15on-1.47.jar csmapi-5.2.jar mysql-connector-java-5.1.26.jar caNanoLab_modules.cli caNanoLab_setup.cli caNanoLab_deploy.cli /local/content/caNanoLab/artifacts
