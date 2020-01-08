@@ -4,8 +4,6 @@ import gov.nih.nci.cananolab.domain.particle.SmeInherentFunction;
 import gov.nih.nci.cananolab.util.StringUtils;
 
 public class SmeInherentFunctionBean {
-    private String type;
-    private String description;
     private SmeInherentFunction domain;
 
     public SmeInherentFunctionBean() {
@@ -13,8 +11,6 @@ public class SmeInherentFunctionBean {
 
     public SmeInherentFunctionBean(SmeInherentFunction domain){
         this.domain = domain;
-        this.type = domain.getType();
-        this.description=domain.getDescription();
     }
 
     public String getDisplayName() {
@@ -33,9 +29,12 @@ public class SmeInherentFunctionBean {
         return domain.getDescription();
     }
 
+    public void resetDomainCopy(String createdBy, SmeInherentFunctionBean functionBean) {
+        //TODO write
+    }
+
     public void setDescription(String description) {
-        //TODO write a proper transfer to domain
-        this.description = description;
+        domain.setDescription(description);
     }
 
     public SmeInherentFunction getDomain() {
@@ -43,7 +42,6 @@ public class SmeInherentFunctionBean {
     }
 
     public void setDomain(SmeInherentFunction domain) {
-        //TODO write a proper transfer to domain
         this.domain = domain;
     }
 
@@ -52,8 +50,7 @@ public class SmeInherentFunctionBean {
     }
 
     public void setType(String type) {
-        //TODO write a proper transfer to domain
-        this.type = type;
+        domain.setType(type);
     }
 
 }

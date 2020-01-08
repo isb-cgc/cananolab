@@ -1,9 +1,11 @@
 package gov.nih.nci.cananolab.dto.particle.synthesis;
 
+import gov.nih.nci.cananolab.domain.common.File;
 import gov.nih.nci.cananolab.dto.common.FileBean;
 import gov.nih.nci.cananolab.util.StringUtils;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 import org.apache.log4j.Logger;
 
 public class BaseSynthesisEntityBean {
@@ -77,5 +79,15 @@ public class BaseSynthesisEntityBean {
 
     public void setFiles(List<FileBean> files) {
         this.files = files;
+    }
+
+    public FileBean getFile(String fileId){
+//        Set<File> files = domainEntity.getFiles();
+        for(FileBean file:files){
+            if (file.getDomainFile().getId().equals(fileId)){
+                return file;
+            }
+        }
+        return null;
     }
 }

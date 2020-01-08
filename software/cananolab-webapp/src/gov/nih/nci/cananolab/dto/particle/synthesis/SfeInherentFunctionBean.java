@@ -8,9 +8,13 @@ public class SfeInherentFunctionBean {
         return domain.getType();
     }
 
+    public void resetDomainCopy(String createdBy, SfeInherentFunction function) {
+        //TODO write
+    }
+
     public void setType(String type) {
-        //TODO write a proper transfer to domain
-        this.type = type;
+
+        domain.setType(type);
     }
 
     public String getDescription() {
@@ -18,8 +22,7 @@ public class SfeInherentFunctionBean {
     }
 
     public void setDescription(String description) {
-        //TODO write a proper transfer to domain
-        this.description = description;
+        domain.setDescription(description);
     }
 
     public SfeInherentFunction getDomain() {
@@ -28,12 +31,10 @@ public class SfeInherentFunctionBean {
 
     public void setDomain(SfeInherentFunction domain) {
         this.domain = domain;
-//TODO write a proper transfer to domain
     }
 
-    //todo write
-    private String type;
-    private String description;
+
+
     private SfeInherentFunction domain;
 
     public SfeInherentFunctionBean(){

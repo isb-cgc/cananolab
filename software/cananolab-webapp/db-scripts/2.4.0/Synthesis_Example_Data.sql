@@ -4,7 +4,8 @@ SET
     `password` = '$2a$10$mdeGI13IlA6V9p6BtIiKw.kciBTLCY37Y58GFzkWK7TN3BWEYGuDe'
 WHERE `username` = 'canano_curator';
 */
-
+/*
+This does not work to add to an existing database
 insert into `canano`.`organization`
 (`organization_pk_id`,`name`,`created_date`,`created_by`)
 VALUES
@@ -37,11 +38,15 @@ VALUES
 (12,4,4,13,2,1, 0,0),
 (13,4,5,13,8,1,0,0),
 (14,4,6,14,1,1,0,0);
+*/
 
-/* Important - replace <sample_pk_id> with a valid sample id */
+
+/* Important - To add Synthesis to an existing sample from Dev dump, copy out all
+   above and replace <sample_pk_id> with a valid sample id
+   */
 INSERT INTO `canano`.`synthesis`
     (`synthesis_pk_id`, `sample_pk_id`)
-VALUES (1005, 1005);
+VALUES (1005, <sample_pk_id>);
 
 #
 INSERT INTO `canano`.`file`
@@ -87,19 +92,15 @@ VALUES
     'SYN',
     '1.0',
     1005);
-#
-#
-#
-# /* Synthesis Material */
-#
-# INSERT INTO `canano`.`supplier`
-# (`supplier_pk_id`,
-#  `supplier_name`,
-#  `lot`)
-# VALUES
-# (1000,
-#     'Synthesis supplier',
-#     'ABC123xyz');
+
+INSERT INTO `canano`.`supplier`
+(`supplier_pk_id`,
+ `supplier_name`,
+ `lot`)
+VALUES
+(1005,
+    'Synthesis supplier',
+    'ABC123xyz');
 
 
 INSERT INTO `canano`.`synthesis_material`
@@ -157,7 +158,7 @@ VALUES (1051,
         '%wt',
         'compound',
         '6224',
-        null,
+        1005,
         'reagent'),
        (1053,
         1005,

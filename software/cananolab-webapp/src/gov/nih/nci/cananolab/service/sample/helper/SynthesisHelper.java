@@ -1,5 +1,6 @@
 package gov.nih.nci.cananolab.service.sample.helper;
 
+import gov.nih.nci.cananolab.domain.particle.NanomaterialEntity;
 import gov.nih.nci.cananolab.domain.particle.Synthesis;
 import gov.nih.nci.cananolab.domain.particle.SynthesisFunctionalization;
 import gov.nih.nci.cananolab.domain.particle.SynthesisMaterial;
@@ -69,18 +70,74 @@ public class SynthesisHelper
         return synthesis;
     }
 
-    public SynthesisFunctionalization findSynthesisFunctionalizationzationById(Long sampleId, Long dataId) {
-        //TODO write
-        return null;
+    public SynthesisFunctionalization findSynthesisFunctionalizationById(Long sampleId, Long entityId) throws Exception{
+
+        SynthesisFunctionalization entity = null;
+        if (!springSecurityAclService.currentUserHasReadPermission(Long.valueOf(sampleId), SecureClassesEnum.SAMPLE.getClazz()) &&
+                !springSecurityAclService.currentUserHasWritePermission(Long.valueOf(sampleId), SecureClassesEnum.SAMPLE.getClazz())) {
+            throw new NoAccessException("User has no access to the synthesis functionalization entity " + entityId);
+        }
+        CaNanoLabApplicationService appService = (CaNanoLabApplicationService) ApplicationServiceProvider.getApplicationService();
+        DetachedCriteria crit = DetachedCriteria.forClass(SynthesisFunctionalization.class).add(
+                Property.forName("id").eq(new Long(entityId)));
+        crit.setFetchMode("synthesisFunctionalization", FetchMode.JOIN);
+        crit.setFetchMode("synthesisFunctionalization.files", FetchMode.JOIN);
+        crit.setFetchMode("synthesisFunctionalization.files.keywordConnection", FetchMode.JOIN);
+        crit.setFetchMode("synthesisFunctionalization.synthesisFunctionalizationElements", FetchMode.JOIN);
+
+        crit.setResultTransformer(CriteriaSpecification.DISTINCT_ROOT_ENTITY);
+        List result = appService.query(crit);
+        if (!result.isEmpty()) {
+            entity = (SynthesisFunctionalization) result.get(0);
+        }
+        return entity;
     }
 
-    public SynthesisMaterial findSynthesisMaterialById(Long sampleId, Long dataId) {
-        //TODO write
-        return null;
+    public SynthesisMaterial findSynthesisMaterialById(Long sampleId, Long entityId) throws Exception{
+        SynthesisMaterial entity = null;
+        if (!springSecurityAclService.currentUserHasReadPermission(Long.valueOf(sampleId), SecureClassesEnum.SAMPLE.getClazz()) &&
+                !springSecurityAclService.currentUserHasWritePermission(Long.valueOf(sampleId), SecureClassesEnum.SAMPLE.getClazz())) {
+            throw new NoAccessException("User has no access to the synthesis material entity " + entityId);
+        }
+        CaNanoLabApplicationService appService = (CaNanoLabApplicationService) ApplicationServiceProvider.getApplicationService();
+        DetachedCriteria crit = DetachedCriteria.forClass(SynthesisMaterial.class).add(
+                Property.forName("id").eq(new Long(entityId)));
+        crit.setFetchMode("synthesisMaterial", FetchMode.JOIN);
+        crit.setFetchMode("synthesisMaterial.files", FetchMode.JOIN);
+        crit.setFetchMode("synthesisMaterial.files.keywordCollection", FetchMode.JOIN);
+        crit.setFetchMode("synthesisMaterial.synthesisMaterialElements", FetchMode.JOIN);
+        crit.setFetchMode("synthesisMaterial.synthesisMaterialElements.files", FetchMode.JOIN);
+        crit.setFetchMode("synthesisMaterial.synthesisMaterialElements.smeInherentFunctions", FetchMode.JOIN);
+        crit.setResultTransformer(CriteriaSpecification.DISTINCT_ROOT_ENTITY);
+        List result = appService.query(crit);
+        if (!result.isEmpty()) {
+            entity = (SynthesisMaterial) result.get(0);
+        }
+        return entity;
     }
 
-    public SynthesisPurification findSynthesisPurificationById(Long sampleId, Long dataId) {
-        //TODO write
-        return null;
+    public SynthesisPurification findSynthesisPurificationById(Long sampleId, Long entityId) throws Exception{
+        SynthesisPurification entity = null;
+        if (!springSecurityAclService.currentUserHasReadPermission(Long.valueOf(sampleId), SecureClassesEnum.SAMPLE.getClazz()) &&
+                !springSecurityAclService.currentUserHasWritePermission(Long.valueOf(sampleId), SecureClassesEnum.SAMPLE.getClazz())) {
+            throw new NoAccessException("User has no access to the synthesis purification entity " + entityId);
+        }
+        CaNanoLabApplicationService appService = (CaNanoLabApplicationService) ApplicationServiceProvider.getApplicationService();
+        DetachedCriteria crit = DetachedCriteria.forClass(SynthesisPurification.class).add(
+                Property.forName("id").eq(new Long(entityId)));
+        crit.setFetchMode("synthesisPurification", FetchMode.JOIN);
+        crit.setFetchMode("synthesisPurification.files", FetchMode.JOIN);
+        crit.setFetchMode("synthesisPurification.files.keywordCollection", FetchMode.JOIN);
+        crit.setFetchMode("synthesisPurification.purities", FetchMode.JOIN);
+        crit.setFetchMode("synthesisPurification.purities.purityDatums", FetchMode.JOIN);
+        crit.setFetchMode("synthesisPurification.purities.files", FetchMode.JOIN);
+        crit.setFetchMode("synthesisPurification.purificationConfigs", FetchMode.JOIN);
+        crit.setFetchMode("synthesisPurification.purificationConfigs.instruments", FetchMode.JOIN);
+        crit.setResultTransformer(CriteriaSpecification.DISTINCT_ROOT_ENTITY);
+        List result = appService.query(crit);
+        if (!result.isEmpty()) {
+            entity = (SynthesisPurification) result.get(0);
+        }
+        return entity;
     }
 }

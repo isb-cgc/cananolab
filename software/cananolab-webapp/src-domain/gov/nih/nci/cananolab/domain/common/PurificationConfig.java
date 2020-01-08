@@ -85,13 +85,13 @@ public class PurificationConfig {
         this.techniquePkId = techniquePkId;
     }
 
-    public SynthesisPurification getSynthesisPurificationBySynthesisPurificationPkId() {
-        return synthesisPurificationBySynthesisPurificationPkId;
-    }
-
-    public void setSynthesisPurificationBySynthesisPurificationPkId(SynthesisPurification synthesisPurificationBySynthesisPurificationPkId) {
-        this.synthesisPurificationBySynthesisPurificationPkId = synthesisPurificationBySynthesisPurificationPkId;
-    }
+//    public SynthesisPurification getSynthesisPurificationBySynthesisPurificationPkId() {
+//        return synthesisPurificationBySynthesisPurificationPkId;
+//    }
+//
+//    public void setSynthesisPurificationBySynthesisPurificationPkId(SynthesisPurification synthesisPurificationBySynthesisPurificationPkId) {
+//        this.synthesisPurificationBySynthesisPurificationPkId = synthesisPurificationBySynthesisPurificationPkId;
+//    }
 
     public Technique getTechnique() {
         return technique;

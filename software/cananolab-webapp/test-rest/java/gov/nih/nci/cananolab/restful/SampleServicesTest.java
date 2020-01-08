@@ -1,5 +1,6 @@
 package gov.nih.nci.cananolab.restful;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
@@ -178,7 +179,7 @@ public class SampleServicesTest {
 		
 		assertNotNull(postResponse);
 		System.out.println("Status: " + postResponse.getStatus());
-		assertTrue(postResponse.getStatus() == 401);
+		assertEquals(401, postResponse.getStatus());
 		
 		postResponse.bufferEntity();
 		String json = (String) postResponse.readEntity(String.class);
@@ -224,7 +225,7 @@ public class SampleServicesTest {
 		
 		assertNotNull(postResponse);
 		System.out.println("Status: " + postResponse.getStatus());
-		assertTrue(postResponse.getStatus() == 401);
+		assertEquals(401, postResponse.getStatus());
 		
 		postResponse.bufferEntity();
 		String json = (String) postResponse.readEntity(String.class);
@@ -250,7 +251,7 @@ public class SampleServicesTest {
 		
 		assertNotNull(postResponse);
 		System.out.println("Status: " + postResponse.getStatus());
-		assertTrue(postResponse.getStatus() == 401);
+		assertEquals(401, postResponse.getStatus());
 		
 		postResponse.bufferEntity();
 		String json = (String) postResponse.readEntity(String.class);
@@ -275,7 +276,7 @@ public class SampleServicesTest {
 		
 		assertNotNull(postResponse);
 		System.out.println("Status: " + postResponse.getStatus());
-		assertTrue(postResponse.getStatus() == 401);
+		assertEquals(401, postResponse.getStatus());
 		
 		postResponse.bufferEntity();
 		String json = (String) postResponse.readEntity(String.class);
