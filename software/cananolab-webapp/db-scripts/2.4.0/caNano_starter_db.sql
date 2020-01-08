@@ -33,7 +33,7 @@ DROP TABLE IF EXISTS `solubility`;
 DROP TABLE IF EXISTS `characterization`;
 DROP TABLE IF EXISTS `common_lookup`;
 DROP TABLE IF EXISTS `composition_file`;
-DROP TABLE IF EXISTS `composition`;
+
 DROP TABLE IF EXISTS `data_availability`;
 DROP TABLE IF EXISTS `data_review_status`;
 DROP TABLE IF EXISTS `databasechangelog`;
@@ -59,12 +59,11 @@ DROP TABLE IF EXISTS `liposome`;
 DROP TABLE IF EXISTS `other_nanomaterial_entity`;
 DROP TABLE IF EXISTS `polymer`;
 DROP TABLE IF EXISTS `nanomaterial_entity`;
+DROP TABLE IF EXISTS `composition`;
 DROP TABLE IF EXISTS `sample_publication`;
 DROP TABLE IF EXISTS `sample_other_poc`;
-drop table if exists `synthesis_func_purification`;
 drop table if exists `purity_file`;
 drop table if exists `purity_datum`;
-drop table if exists `synthesis_file`;
 drop table if exists `synthesis_material_file`;
 drop table if exists `synthesis_functionalization_file`;
 drop table if exists `purification_config`;
@@ -75,7 +74,6 @@ drop table if exists `synthesis_purification`;
 drop table if exists `synthesis_material_element`;
 DROP TABLE IF EXISTS `supplier`;
 drop table if exists `synthesis_material`;
-drop table if exists `synthesis_materials`;
 drop table if exists `sfe_inherent_function`;
 drop table if exists `synthesis_functionalization_element_file`;
 drop table IF exists `synthesis_functionalization_element`;
@@ -853,6 +851,103 @@ CREATE TABLE `keyword_file`
 
 
 --
+-- Table structure for table `organization`
+--
+
+
+/*!40101 SET @saved_cs_client = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `organization`
+(
+    `organization_pk_id` bigint(20)   NOT NULL,
+    `name`               varchar(200) NOT NULL,
+    `streetAddress1`     varchar(200) DEFAULT NULL,
+    `streetAddress2`     varchar(200) DEFAULT NULL,
+    `city`               varchar(100) DEFAULT NULL,
+    `state`              varchar(100) DEFAULT NULL,
+    `postal_code`        varchar(10)  DEFAULT NULL,
+    `country`            varchar(100) DEFAULT NULL,
+    `created_date`       datetime     NOT NULL,
+    `created_by`         varchar(200) NOT NULL,
+    PRIMARY KEY (`organization_pk_id`),
+    UNIQUE KEY `name` (`name`),
+    UNIQUE KEY `organization_pk_id` (`organization_pk_id`)
+) ENGINE = InnoDB
+  DEFAULT CHARSET = latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+
+--
+-- Table structure for table `point_of_contact`
+--
+
+
+/*!40101 SET @saved_cs_client = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `point_of_contact`
+(
+    `poc_pk_id`          bigint(20)   NOT NULL,
+    `role`               varchar(200) DEFAULT NULL,
+    `first_name`         varchar(200) DEFAULT NULL,
+    `last_name`          varchar(200) DEFAULT NULL,
+    `middle_initial`     varchar(50)  DEFAULT NULL,
+    `phone`              varchar(50)  DEFAULT NULL,
+    `email`              varchar(200) DEFAULT NULL,
+    `created_date`       datetime     NOT NULL,
+    `created_by`         varchar(200) NOT NULL,
+    `organization_pk_id` bigint(20)   DEFAULT NULL,
+    PRIMARY KEY (`poc_pk_id`),
+    KEY `organization_pk_id` (`organization_pk_id`),
+    CONSTRAINT `FK_point_of_contact_organization` FOREIGN KEY (`organization_pk_id`) REFERENCES `organization` (`organization_pk_id`)
+) ENGINE = InnoDB
+  DEFAULT CHARSET = latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `sample`
+--
+
+
+/*!40101 SET @saved_cs_client = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `sample`
+(
+    `sample_pk_id`          bigint(20)   NOT NULL,
+    `sample_name`           varchar(200) NOT NULL,
+    `created_date`          datetime     NOT NULL,
+    `created_by`            varchar(200) NOT NULL,
+    `primary_contact_pk_id` bigint(20) DEFAULT NULL,
+    PRIMARY KEY (`sample_pk_id`),
+    UNIQUE KEY `sample_name` (`sample_name`),
+    UNIQUE KEY `sample_pk_id` (`sample_pk_id`),
+    KEY `primary_contact_pk_id` (`primary_contact_pk_id`),
+    CONSTRAINT `FK_sample_point_of_contact` FOREIGN KEY (`primary_contact_pk_id`) REFERENCES `point_of_contact` (`poc_pk_id`)
+) ENGINE = InnoDB
+  DEFAULT CHARSET = latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+
+--
+-- Table structure for table `composition`
+--
+
+
+/*!40101 SET @saved_cs_client = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `composition`
+(
+    `composition_pk_id` bigint(20) NOT NULL,
+    `sample_pk_id`      bigint(20) DEFAULT NULL,
+    PRIMARY KEY (`composition_pk_id`),
+    UNIQUE KEY `composition_pk_id` (`composition_pk_id`),
+    KEY `particle_sample_pk_id` (`sample_pk_id`),
+    CONSTRAINT `FK_composition_sample` FOREIGN KEY (`sample_pk_id`) REFERENCES `sample` (`sample_pk_id`)
+) ENGINE = InnoDB
+  DEFAULT CHARSET = latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+
+--
 -- Table structure for table `nanomaterial_entity`
 --
 
@@ -1070,31 +1165,7 @@ CREATE TABLE `nanomaterial_entity_file`
   DEFAULT CHARSET = latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
---
--- Table structure for table `organization`
---
 
-
-/*!40101 SET @saved_cs_client = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `organization`
-(
-    `organization_pk_id` bigint(20)   NOT NULL,
-    `name`               varchar(200) NOT NULL,
-    `streetAddress1`     varchar(200) DEFAULT NULL,
-    `streetAddress2`     varchar(200) DEFAULT NULL,
-    `city`               varchar(100) DEFAULT NULL,
-    `state`              varchar(100) DEFAULT NULL,
-    `postal_code`        varchar(10)  DEFAULT NULL,
-    `country`            varchar(100) DEFAULT NULL,
-    `created_date`       datetime     NOT NULL,
-    `created_by`         varchar(200) NOT NULL,
-    PRIMARY KEY (`organization_pk_id`),
-    UNIQUE KEY `name` (`name`),
-    UNIQUE KEY `organization_pk_id` (`organization_pk_id`)
-) ENGINE = InnoDB
-  DEFAULT CHARSET = latin1;
-/*!40101 SET character_set_client = @saved_cs_client */;
 
 
 
@@ -1134,31 +1205,7 @@ CREATE TABLE `other_nanomaterial_entity`
   DEFAULT CHARSET = latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
---
--- Table structure for table `point_of_contact`
---
 
-
-/*!40101 SET @saved_cs_client = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `point_of_contact`
-(
-    `poc_pk_id`          bigint(20)   NOT NULL,
-    `role`               varchar(200) DEFAULT NULL,
-    `first_name`         varchar(200) DEFAULT NULL,
-    `last_name`          varchar(200) DEFAULT NULL,
-    `middle_initial`     varchar(50)  DEFAULT NULL,
-    `phone`              varchar(50)  DEFAULT NULL,
-    `email`              varchar(200) DEFAULT NULL,
-    `created_date`       datetime     NOT NULL,
-    `created_by`         varchar(200) NOT NULL,
-    `organization_pk_id` bigint(20)   DEFAULT NULL,
-    PRIMARY KEY (`poc_pk_id`),
-    KEY `organization_pk_id` (`organization_pk_id`),
-    CONSTRAINT `FK_point_of_contact_organization` FOREIGN KEY (`organization_pk_id`) REFERENCES `organization` (`organization_pk_id`)
-) ENGINE = InnoDB
-  DEFAULT CHARSET = latin1;
-/*!40101 SET character_set_client = @saved_cs_client */;
 
 
 --
@@ -1205,29 +1252,6 @@ CREATE TABLE `protocol`
   DEFAULT CHARSET = latin1;
 
 
-
---
--- Table structure for table `sample`
---
-
-
-/*!40101 SET @saved_cs_client = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `sample`
-(
-    `sample_pk_id`          bigint(20)   NOT NULL,
-    `sample_name`           varchar(200) NOT NULL,
-    `created_date`          datetime     NOT NULL,
-    `created_by`            varchar(200) NOT NULL,
-    `primary_contact_pk_id` bigint(20) DEFAULT NULL,
-    PRIMARY KEY (`sample_pk_id`),
-    UNIQUE KEY `sample_name` (`sample_name`),
-    UNIQUE KEY `sample_pk_id` (`sample_pk_id`),
-    KEY `primary_contact_pk_id` (`primary_contact_pk_id`),
-    CONSTRAINT `FK_sample_point_of_contact` FOREIGN KEY (`primary_contact_pk_id`) REFERENCES `point_of_contact` (`poc_pk_id`)
-) ENGINE = InnoDB
-  DEFAULT CHARSET = latin1;
-/*!40101 SET character_set_client = @saved_cs_client */;
 
 
 --
@@ -1397,24 +1421,6 @@ CREATE TABLE `keyword_sample`
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 
---
--- Table structure for table `composition`
---
-
-
-/*!40101 SET @saved_cs_client = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `composition`
-(
-    `composition_pk_id` bigint(20) NOT NULL,
-    `sample_pk_id`      bigint(20) DEFAULT NULL,
-    PRIMARY KEY (`composition_pk_id`),
-    UNIQUE KEY `composition_pk_id` (`composition_pk_id`),
-    KEY `particle_sample_pk_id` (`sample_pk_id`),
-    CONSTRAINT `FK_composition_sample` FOREIGN KEY (`sample_pk_id`) REFERENCES `sample` (`sample_pk_id`)
-) ENGINE = InnoDB
-  DEFAULT CHARSET = latin1;
-/*!40101 SET character_set_client = @saved_cs_client */;
 
 --
 -- Table structure for table `composition_file`
