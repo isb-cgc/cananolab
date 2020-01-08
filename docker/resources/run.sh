@@ -16,4 +16,5 @@ cp wikihelp.properties /local/content/caNanoLab/config
 
 /opt/wildfly-8.2.1.Final/bin/jboss-cli.sh --file=/local/content/caNanoLab/artifacts/caNanoLab_modules.cli
 /opt/wildfly-8.2.1.Final/bin/jboss-cli.sh --file=/local/content/caNanoLab/artifacts/caNanoLab_setup.cli
+cp /local/content/caNanoLab/artifacts/caNanoLab.war /opt/wildfly-8.2.1.Final/standalone/deployments
 echo "DEPLOYED"
