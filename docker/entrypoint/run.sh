@@ -18,7 +18,7 @@ cd software/cananolab-webapp/db-scripts
 latestDir=$(ls -da */ | tail -1)
 cd $latestDir
 mysql -hcanano-db -uroot -ppassword "canano" < "caNano_starter_db.sql" 
-mysql -hcanano-db -uroot -ppassword "canano" < "Synthesis_Test_Data.sql"
+mysql -hcanano-db -uroot -ppassword "canano" < "Synthesis_Example_Data.sql"
 
 JBOSS_HOME=/opt/wildfly-8.2.1.Final
 JBOSS_CLI=$JBOSS_HOME/bin/jboss-cli.sh
