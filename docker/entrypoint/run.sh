@@ -17,9 +17,9 @@ git pull
 cd software/cananolab-webapp/db-scripts
 latestDir=$(ls -da */ | tail -1)
 cd $latestDir
-mysql -hcanano-db -uroot -ppassword "canano" < "caNano_starter_db.sql" 
-mysql -hcanano-db -uroot -ppassword "canano" < "Synthesis_Example_Docker_Data.sql"
-
+#mysql -hcanano-db -uroot -ppassword "canano" < "caNano_starter_db.sql" 
+#mysql -hcanano-db -uroot -ppassword "canano" < "Synthesis_Example_Docker_Data.sql"
+mysql -hcanano-db -uroot -ppassword "canano" < "UnitTest.sql"
 JBOSS_HOME=/opt/wildfly-8.2.1.Final
 JBOSS_CLI=$JBOSS_HOME/bin/jboss-cli.sh
 JBOSS_MODE=${1:-"standalone"}
