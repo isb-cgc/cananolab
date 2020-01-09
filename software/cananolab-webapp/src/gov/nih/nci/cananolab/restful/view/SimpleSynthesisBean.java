@@ -1,6 +1,8 @@
 package gov.nih.nci.cananolab.restful.view;
 
+import gov.nih.nci.cananolab.domain.particle.SmeInherentFunction;
 import gov.nih.nci.cananolab.dto.common.FileBean;
+import gov.nih.nci.cananolab.dto.particle.synthesis.SmeInherentFunctionBean;
 import gov.nih.nci.cananolab.dto.particle.synthesis.SynthesisBean;
 import gov.nih.nci.cananolab.dto.particle.synthesis.SynthesisFunctionalizationBean;
 import gov.nih.nci.cananolab.dto.particle.synthesis.SynthesisFunctionalizationElementBean;
@@ -92,13 +94,30 @@ public class SimpleSynthesisBean {
                             materialElement = new HashMap<String, Object>();
                             materialElement.put("Description", elementBean.getDomainEntity().getDescription());
                             materialElement.put("DisplayName", elementBean.getDisplayName());
-                            materialElement.put("Function", elementBean.getFunctionDisplayNames());
                             materialElement.put("Type", elementBean.getDomainEntity().getType());
                             materialElement.put("PubChemDataSourceName", elementBean.getDomainEntity().getPubChemDatasourceName());
                             materialElement.put("PubChemId", elementBean.getDomainEntity().getPubChemId());
                             materialElement.put("PubChemLink", elementBean.getPubChemLink());
+                            materialElement.put("Amount", elementBean.getDomainEntity().getValue());
+                            materialElement.put("ValueUnit", elementBean.getDomainEntity().getValueUnit());
+                            materialElement.put("MolecularFormulaType", elementBean.getDomainEntity().getMolecularFormulaType());
+                            materialElement.put("MolecularFormula", elementBean.getDomainEntity().getMolecularFormula());
+                            materialElement.put("ChemicalName", elementBean.getDomainEntity().getChemicalName());
+                            materialElement.put("Supplier",  elementBean.getDomainEntity().getSupplier());
+                            List<Map<String, Object>> functions = new ArrayList<Map<String, Object>>();
+                            for(SmeInherentFunction sme: elementBean.getDomainEntity().getSmeInherentFunctions()){
+                                HashMap<String,Object> functionElement = new HashMap<String, Object>();
+                                SmeInherentFunctionBean smeBean = new SmeInherentFunctionBean(sme);
+                                functionElement.put("FunctionDescription", smeBean.getDescription());
+                                functionElement.put("FunctionType", smeBean.getType());
+                                functionElement.put("FunctionDisplayName", smeBean.getDisplayName());
+                                functionElement.put("FunctionId", smeBean.getDomain().getId());
+                                functions.add(functionElement);
+                            }
+                            materialElement.put("InherentFunctions", functions);
                             materialElements.add(materialElement);
                         }
+
                         matEntity.put("MaterialElements", materialElements);
                     }
 

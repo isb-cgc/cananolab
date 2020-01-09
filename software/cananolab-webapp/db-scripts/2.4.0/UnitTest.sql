@@ -2078,7 +2078,7 @@ CREATE TABLE `sme_inherent_function` (
 
 LOCK TABLES `sme_inherent_function` WRITE;
 /*!40000 ALTER TABLE `sme_inherent_function` DISABLE KEYS */;
-INSERT  IGNORE INTO `sme_inherent_function` (`sme_inherent_function_pk_id`, `synthesis_material_element_pk_id`, `type`, `description`) VALUES (1000,1000,'targeting function','should this pull from same drop down as regular inherent function?'),(1005,1053,'Function Type','SME Function description'),(1006,1053,'Function Type 2','SME Function description 2');
+INSERT  IGNORE INTO `sme_inherent_function` (`sme_inherent_function_pk_id`, `synthesis_material_element_pk_id`, `type`, `description`) VALUES (1000,1000,'targeting function','SME test function'),(1005,1053,'Function Type','SME Function description'),(1006,1053,'Function Type 2','SME Function description 2');
 /*!40000 ALTER TABLE `sme_inherent_function` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -2351,7 +2351,7 @@ CREATE TABLE `synthesis_material_element` (
 
 LOCK TABLES `synthesis_material_element` WRITE;
 /*!40000 ALTER TABLE `synthesis_material_element` DISABLE KEYS */;
-INSERT  IGNORE INTO `synthesis_material_element` (`synthesis_material_element_pk_id`, `synthesis_material_pk_id`, `molecular_formula`, `molecular_formula_type`, `description`, `created_by`, `created_date`, `chemical_name`, `value`, `value_unit`, `pub_chem_datasource_name`, `pub_chem_id`, `supplier_pk_id`, `type`) VALUES (1000,1000,'AA-2x-zZ','Hill','Synthesis Material Element 1','canano_curator','2019-12-06 12:15:00','Synthesis Chemical 1',12.000,'mg',NULL,NULL,1000,'reagent'),(1051,1005,'HAuCl4 . 3H2O','Hill','200 mL of 0.01 wt% gold precursor','canano_curator','2019-08-28 00:00:00','chloroauric acid',0.010,'%wt','compound',44134746,NULL,'composing element'),(1052,1005,'C6H5Na3O7','Hill','4.5 mL of 1 wt% sodium citrate solution','canano_curator','2019-08-28 00:00:00','sodium citrate',1.000,'%wt','compound',6224,1005,'reagent'),(1053,1005,'H2O','Hill','Solutions of chloroauric acid and sodium citrate were created with deionized water','canano_curator','2019-08-28 00:00:00','deionized water',204.500,'mL','substance',962,NULL,'solvent');
+INSERT  IGNORE INTO `synthesis_material_element` (`synthesis_material_element_pk_id`, `synthesis_material_pk_id`, `molecular_formula`, `molecular_formula_type`, `description`, `created_by`, `created_date`, `chemical_name`, `value`, `value_unit`, `pub_chem_datasource_name`, `pub_chem_id`, `supplier_pk_id`, `type`) VALUES (1000,1000,'AA-2x-zZ','Hill','Synthesis Material Element 1','canano_curator','2019-12-06 12:15:00','Synthesis Chemical 1',12.000,'mg','compound',6224,1000,'reagent'),(1051,1005,'HAuCl4 . 3H2O','Hill','200 mL of 0.01 wt% gold precursor','canano_curator','2019-08-28 00:00:00','chloroauric acid',0.010,'%wt','compound',44134746,NULL,'composing element'),(1052,1005,'C6H5Na3O7','Hill','4.5 mL of 1 wt% sodium citrate solution','canano_curator','2019-08-28 00:00:00','sodium citrate',1.000,'%wt','compound',6224,1005,'reagent'),(1053,1005,'H2O','Hill','Solutions of chloroauric acid and sodium citrate were created with deionized water','canano_curator','2019-08-28 00:00:00','deionized water',204.500,'mL','substance',962,NULL,'solvent');
 /*!40000 ALTER TABLE `synthesis_material_element` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -2571,4 +2571,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed
+-- Dump completed on 2020-01-09 12:15:24
