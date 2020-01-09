@@ -84,7 +84,7 @@ public class BaseSynthesisEntityBean {
     public FileBean getFile(String fileId){
 //        Set<File> files = domainEntity.getFiles();
         for(FileBean file:files){
-            if (file.getDomainFile().getId().equals(fileId)){
+            if (fileId.equals(file.getDomainFile().getId().toString())){
                 return file;
             }
         }
