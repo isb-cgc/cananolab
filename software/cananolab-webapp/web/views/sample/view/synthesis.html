@@ -1,9 +1,4 @@
-<tabset justified="true">
-    <tab heading="All" ng-click="select(-1)"></tab>
-    <tab heading="Materials" ng-click="select(0)"></tab>
-    <tab heading="Functionalization" ng-click="select(1)"></tab>
-    <tab heading="Purification" ng-click="select(2)"></tab>
-</tabset>
+
 
 <div class="spacer">
     <table border="0" class="contentTitle" summary="layout" width="100%">
@@ -17,28 +12,69 @@
             </td>
         </tr>
     </table>
-
+    <tabset justified="true">
+        <tab heading="All" ng-click="select(-1)"></tab>
+        <tab heading="Materials" ng-click="select(0)"></tab>
+        <tab heading="Functionalization" ng-click="select(1)"></tab>
+        <tab heading="Purification" ng-click="select(2)"></tab>
+    </tabset>
     <table ng-hide="show0" class="summaryViewNoTop" width="100%" summary="layout">
         <tr>
             <td>
-                Materials Stuff
+                <table width="100%" align="center" class="summaryViewNoGrid dataTable">
+                    <tbody>
+                        <tr>
+                            <th class="heading">
+                                Materials
+                            </th>
+                        </tr>
+                        <tr>
+                            <td>{{materials}}</td>
+                        </tr>
+                    </tbody>
+                </table>
             </td>
         </tr>
     </table>
+
     <table ng-hide="show1" class="summaryViewNoTop" width="100%" summary="layout">
         <tr>
             <td>
-                Functionalization Stuff
+                <table width="100%" align="center" class="summaryViewNoGrid dataTable">
+                    <tbody>
+                        <tr>
+                            <th class="heading">
+                                Functionalizations
+                            </th>
+                        </tr>
+                        <tr>
+                            <td>{{functionalizations}}</td>
+                        </tr>
+                    </tbody>
+                </table>
             </td>
         </tr>
     </table>
+
     <table ng-hide="show2" class="summaryViewNoTop" width="100%" summary="layout">
         <tr>
             <td>
-                Purification Stuff
+                <table width="100%" align="center" class="summaryViewNoGrid dataTable">
+                    <tbody>
+                        <tr>
+                            <th class="heading">
+                                Purifications
+                            </th>
+                        </tr>
+                        <tr>
+                            <td>{{purifications}}</td>
+                        </tr>
+                    </tbody>
+                </table>
             </td>
         </tr>
-    </table>            
+    </table>
+
 </div>
 
 <div id="loader" class="sample" ng-show="loader">
