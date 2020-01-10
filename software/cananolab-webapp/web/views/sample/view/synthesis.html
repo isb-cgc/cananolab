@@ -4,3 +4,44 @@
     <tab heading="Functionalization" ng-click="select(1)"></tab>
     <tab heading="Purification" ng-click="select(2)"></tab>
 </tabset>
+
+<div class="spacer">
+    <table border="0" class="contentTitle" summary="layout" width="100%">
+        <tr>
+            <th align="left" scope="col">Sample {{sampleName.name}} Synthesis</th>
+            <td align="right" width="30%">
+                <a ng-disabled="loader" class="helpText" ng-click="print()" href="" target="_blank">Print</a>   
+                <a ng-disabled="loader" class="helpText" ng-href="/caNanoLab/rest/composition/summaryExport?sampleId={{sampleId.data}}&type=all">Export</a>
+                <a class="helpText" href="javascript:openHelpWindow('https://wiki.nci.nih.gov/display/caNanoLab/Managing+Sample+Composition+Annotations#ManagingSampleCompositionAnnotations-Composition')">Help</a>
+                <a class="helpText" href="javascript:openHelpWindow('https://wiki.nci.nih.gov/display/caNanoLab/caNanoLab+Glossary')">Glossary</a>
+            </td>
+        </tr>
+    </table>
+
+    <table ng-hide="show0" class="summaryViewNoTop" width="100%" summary="layout">
+        <tr>
+            <td>
+                Materials Stuff
+            </td>
+        </tr>
+    </table>
+    <table ng-hide="show1" class="summaryViewNoTop" width="100%" summary="layout">
+        <tr>
+            <td>
+                Functionalization Stuff
+            </td>
+        </tr>
+    </table>
+    <table ng-hide="show2" class="summaryViewNoTop" width="100%" summary="layout">
+        <tr>
+            <td>
+                Purification Stuff
+            </td>
+        </tr>
+    </table>            
+</div>
+
+<div id="loader" class="sample" ng-show="loader">
+    <div id="loaderText">Loading</div>
+    <div id="loaderGraphic"></div>
+</div>

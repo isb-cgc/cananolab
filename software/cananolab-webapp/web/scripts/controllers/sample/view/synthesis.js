@@ -28,6 +28,25 @@ app.controller('SynthesisCtrl', function (sampleService,utilsService,navigationS
     if ($routeParams.sampleId) {
         $scope.sampleId.data = $routeParams.sampleId;
     };
+
+    $scope.select = function(tab) {
+        console.log("SOMETHING HERE")
+        var size = 3, key;
+        for (var x=0; x<size;x++) {
+            if (tab>=0) {
+                if (x==tab){
+                    $scope['show'+x]=false;                
+                }
+                else {
+                    $scope['show'+x]=true;
+                } 
+            }    
+            else {
+                $scope['show'+x]=false;
+            }      
+        }
+    }; 
+
     $scope.loader = true;
     $http({method: 'GET', url: '/caNanoLab/rest/synthesis/summaryView?sampleId=' + $scope.sampleId.data}).
     success(function(data, status, headers, config) {
