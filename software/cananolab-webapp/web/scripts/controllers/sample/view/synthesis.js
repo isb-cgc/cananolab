@@ -28,24 +28,46 @@ app.controller('SynthesisCtrl', function (sampleService,utilsService,navigationS
     if ($routeParams.sampleId) {
         $scope.sampleId.data = $routeParams.sampleId;
     };
+
+    $scope.select = function(tab) {
+        console.log("SOMETHING HERE")
+        var size = 3, key;
+        for (var x=0; x<size;x++) {
+            if (tab>=0) {
+                if (x==tab){
+                    $scope['show'+x]=false;                
+                }
+                else {
+                    $scope['show'+x]=true;
+                } 
+            }    
+            else {
+                $scope['show'+x]=false;
+            }      
+        }
+    }; 
+
     $scope.loader = true;
     $http({method: 'GET', url: '/caNanoLab/rest/synthesis/summaryView?sampleId=' + $scope.sampleId.data}).
     success(function(data, status, headers, config) {
         $scope.sampleName = sampleService.sampleName($scope.sampleId.data);
-        $scope.compositionSections = data.compositionSections;
-        $scope.nanomaterialentity = data.nanomaterialentity;
-        $scope.functionalizingentity = data.functionalizingentity;
-        $scope.chemicalassociation = data.chemicalassociation;
-        $scope.synthesisentity = data.synthesisentity;
-        $scope.compositionfile = data.compositionfile;
+        $scope.materials = data.synthesisMaterials;
+        $scope.functionalizations = data.synthesisFunctionalization;
+        $scope.purifications = data.synthesisPurification;
+
+        // $scope.nanomaterialentity = data.nanomaterialentity;
+        // $scope.functionalizingentity = data.functionalizingentity;
+        // $scope.chemicalassociation = data.chemicalassociation;
+        // $scope.synthesisentity = data.synthesisentity;
+        // $scope.compositionfile = data.compositionfile;
         $scope.sampleName = sampleService.sampleName($scope.sampleId.data);
         $scope.loader = false;
 
-        $scope.nanomaterialentityEmpty = utilsService.isHashEmpty(data.nanomaterialentity);
-        $scope.functionalizingentityEmpty = utilsService.isHashEmpty(data.functionalizingentity);
-        $scope.chemicalassociationEmpty = utilsService.isHashEmpty($scope.chemicalassociation);
-        $scope.compositionfileEmpty = utilsService.isHashEmpty(data.compositionfile);
-        $scope.synthesisEmpty = utilsService.isHashEmpty(data.synthesisentity);
+        // $scope.nanomaterialentityEmpty = utilsService.isHashEmpty(data.nanomaterialentity);
+        // $scope.functionalizingentityEmpty = utilsService.isHashEmpty(data.functionalizingentity);
+        // $scope.chemicalassociationEmpty = utilsService.isHashEmpty($scope.chemicalassociation);
+        // $scope.compositionfileEmpty = utilsService.isHashEmpty(data.compositionfile);
+        // $scope.synthesisEmpty = utilsService.isHashEmpty(data.synthesisentity);
     });
 
 });
