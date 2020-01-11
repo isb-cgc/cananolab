@@ -28,8 +28,30 @@
                                 Materials
                             </th>
                         </tr>
-                        <tr>
-                            <td>{{materials}}</td>
+                        <tr ng-repeat="m in materials">
+                            <td>
+                                <table summary="layout" width="100%" border="0" cellspacing="0" cellpadding="0">
+                                    <tbody>
+                                        <tr>
+                                            <td class="characterization">
+                                                {{m.Description}}
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <div class="table">
+                                                    <div class="left">
+                                                        Something
+                                                    </div>
+                                                    <div class="right">
+                                                        Something Value
+                                                    </div>
+                                                </div>                                                
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </td>
                         </tr>
                     </tbody>
                 </table>
