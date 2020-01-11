@@ -14,6 +14,7 @@ import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.client.Entity;
 import javax.ws.rs.client.WebTarget;
+import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.Response;
 
 import org.junit.Before;
@@ -30,7 +31,10 @@ public class SampleServicesTest {
 	public void setUp() throws Exception {
 	
 		client = ClientBuilder.newClient();
+
 	}
+
+
 
 	@Test
 	public void testSetup() {
@@ -102,6 +106,7 @@ public class SampleServicesTest {
 				.get(String.class);
 
 		assertNotNull(jsonString);
+		assertTrue(jsonString.contains("NCL-23-1"));
 	}
 	
 	@Test

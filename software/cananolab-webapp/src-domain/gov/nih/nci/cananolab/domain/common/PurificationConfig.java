@@ -10,9 +10,9 @@ public class PurificationConfig {
     private String description;
     private String createdBy;
     private Date createdDate;
-    private Long synthesisPurificationPkId;
-    private Long techniquePkId;
-    private SynthesisPurification synthesisPurificationBySynthesisPurificationPkId;
+//    private Long synthesisPurificationPkId;
+//    private Long techniquePkId;
+//    private SynthesisPurification synthesisPurificationBySynthesisPurificationPkId;
     private Technique technique;
     private Collection<Instrument> instrumentCollection;
 
@@ -23,14 +23,6 @@ public class PurificationConfig {
 
     public void setPurificationConfigPkId(Long purificationConfigPkId) {
         this.purificationConfigPkId = purificationConfigPkId;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
     }
 
     public String getCreatedBy() {
@@ -49,41 +41,33 @@ public class PurificationConfig {
         this.createdDate = createdDate;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (o == null || getClass() != o.getClass()) {
-            return false;
-        }
-        PurificationConfig that = (PurificationConfig) o;
-        return Objects.equals(purificationConfigPkId, that.purificationConfigPkId) &&
-                Objects.equals(description, that.description) &&
-                Objects.equals(createdBy, that.createdBy) &&
-                Objects.equals(createdDate, that.createdDate);
+    public String getDescription() {
+        return description;
     }
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(purificationConfigPkId, description, createdBy, createdDate);
+    public void setDescription(String description) {
+        this.description = description;
     }
 
-    public Long getSynthesisPurificationPkId() {
-        return synthesisPurificationPkId;
-    }
 
-    public void setSynthesisPurificationPkId(Long synthesisPurificationPkId) {
-        this.synthesisPurificationPkId = synthesisPurificationPkId;
-    }
 
-    public Long getTechniquePkId() {
-        return techniquePkId;
-    }
 
-    public void setTechniquePkId(Long techniquePkId) {
-        this.techniquePkId = techniquePkId;
-    }
+
+//    public Long getSynthesisPurificationPkId() {
+//        return synthesisPurificationPkId;
+//    }
+//
+//    public void setSynthesisPurificationPkId(Long synthesisPurificationPkId) {
+//        this.synthesisPurificationPkId = synthesisPurificationPkId;
+//    }
+//
+//    public Long getTechniquePkId() {
+//        return techniquePkId;
+//    }
+//
+//    public void setTechniquePkId(Long techniquePkId) {
+//        this.techniquePkId = techniquePkId;
+//    }
 
 //    public SynthesisPurification getSynthesisPurificationBySynthesisPurificationPkId() {
 //        return synthesisPurificationBySynthesisPurificationPkId;
@@ -107,5 +91,34 @@ public class PurificationConfig {
 
     public void setInstrumentCollection(Collection<Instrument> purificationConfigInstruments) {
         this.instrumentCollection = purificationConfigInstruments;
+    }
+
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        PurificationConfig that = (PurificationConfig) o;
+        return Objects.equals(purificationConfigPkId, that.purificationConfigPkId) &&
+                Objects.equals(description, that.description) &&
+                Objects.equals(createdBy, that.createdBy) &&
+                Objects.equals(createdDate, that.createdDate);
+    }
+
+//    public boolean equals(Object obj) {
+//        if (obj instanceof ExperimentConfig) {
+//            ExperimentConfig c = (ExperimentConfig) obj;
+//            return getId() != null && getId().equals(c.getId());
+//        }
+//        return false;
+//    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(purificationConfigPkId, description, createdBy, createdDate);
     }
 }

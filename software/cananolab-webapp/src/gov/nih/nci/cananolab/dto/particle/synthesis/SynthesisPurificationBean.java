@@ -1,49 +1,61 @@
 package gov.nih.nci.cananolab.dto.particle.synthesis;
 
 import gov.nih.nci.cananolab.domain.common.Instrument;
+import gov.nih.nci.cananolab.domain.common.PurificationConfig;
+import gov.nih.nci.cananolab.domain.common.Technique;
 import gov.nih.nci.cananolab.domain.particle.SynthesisPurification;
-import gov.nih.nci.cananolab.dto.common.PointOfContactBean;
+import gov.nih.nci.cananolab.domain.particle.SynthesisPurity;
+import gov.nih.nci.cananolab.dto.common.PurificationConfigBean;
 import gov.nih.nci.cananolab.util.ClassUtils;
 import java.util.ArrayList;
 import java.util.List;
+import org.springframework.security.access.method.P;
 
 public class SynthesisPurificationBean extends BaseSynthesisEntityBean {
-//    private String type;
-    private SynthesisPurification domainChar = new SynthesisPurification();
-    private SynthesisPurification domainEntity;
-//    private PointOfContactBean source = new PointOfContactBean();
-    private Instrument theInstrument = new Instrument();
+
+    /*From BaseSynthesisEntityBean
+        protected String description;
+        protected String type, displayName;
+        protected List<FileBean> files = new ArrayList<FileBean>();
+     */
+//purification_config
+   // Technique
+    //-- Instruments
+
+    private SynthesisPurification domain;
     private List<SynthesisPurityBean> purityBeans = new ArrayList<SynthesisPurityBean>();
+    private List<PurificationConfigBean> purificationConfigs = new ArrayList<>();
+
 
     public SynthesisPurificationBean(SynthesisPurification purification){
         //TODO write
-        this.domainEntity=purification;
-    }
+        this.domain=purification;
+        for(SynthesisPurity purity:purification.getPurities()){
+            SynthesisPurityBean purityBean = new SynthesisPurityBean(purity);
+            purityBeans.add(purityBean);
+        }
+        for(PurificationConfig config: purification.getPurificationConfigs()){
+            PurificationConfigBean pureBean = new PurificationConfigBean(config);
+            purificationConfigs.add(pureBean);
+        }
 
-//
-//    public String getType(){
-//        return this.type;
-//    }
-
-    public String getDescription(){
-        return domainEntity.getDesignMethodDescription();
     }
 
     public String getSource(){
-        return domainEntity.getCreatedBy();
+        return domain.getCreatedBy();
     }
 
-    public SynthesisPurification getDomainChar() {
-        return domainChar;
+    public SynthesisPurification getDomainEntity() {
+        return domain;
     }
 
-    public void setDomainChar(SynthesisPurification domainChar) {
-        this.domainChar = domainChar;
+    public void setDomainEntity(SynthesisPurification domain) {
+        this.domain = domain;
     }
 
     public SynthesisPurification getDomainCopy(String createdBy, boolean copyData) {
         SynthesisPurification copy = (SynthesisPurification) ClassUtils
-                .deepCopy(domainChar);
+                .deepCopy(domain);
         resetDomainCopy(createdBy, copy, copyData);
         return copy;
     }
@@ -53,12 +65,8 @@ public class SynthesisPurificationBean extends BaseSynthesisEntityBean {
         //TODO write
     }
 
-    public SynthesisPurification getDomainEntity() {
-        return domainEntity;
-    }
-
-    public void setDomainEntity(SynthesisPurification domainEntity) {
-        this.domainEntity = domainEntity;
+    public void resetDomainCopy(String createdBy, SynthesisPurification synthesisPurification) {
+        //todo write
     }
 
     public List<SynthesisPurityBean> getPurityBeans() {
@@ -69,23 +77,9 @@ public class SynthesisPurificationBean extends BaseSynthesisEntityBean {
         this.purityBeans = purityBeans;
     }
 
-//    public PointOfContactBean getSource() {
-//        return source;
-//    }
-//
-//    public void setSource(PointOfContactBean source) {
-//        this.source = source;
-//    }
+    public List<PurificationConfigBean> getPurificationConfigs(){return purificationConfigs;}
 
-    public Instrument getTheInstrument() {
-        return theInstrument;
-    }
+    public void setPurificationConfigs(List<PurificationConfigBean> purificationConfigs){this.purificationConfigs= purificationConfigs;}
 
-    public void setTheInstrument(Instrument theInstrument) {
-        this.theInstrument = theInstrument;
-    }
 
-    public void resetDomainCopy(String createdBy, SynthesisPurification synthesisPurification) {
-        //todo write
-    }
 }

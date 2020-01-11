@@ -41,11 +41,11 @@
             </many-to-many>
         </set>
         <many-to-one class="gov.nih.nci.cananolab.domain.particle.SynthesisPurity"
-                     fetch="select" name="synthesisPurity">
+                     fetch="select" name="synthesisPurity" lazy="proxy">
             <column name="purity_pk_id"/>
         </many-to-one>
         <many-to-one class="File"
-                     fetch="select" name="file">
+                     fetch="select" name="file" lazy="proxy">
             <column name="file_pk_id"/>
         </many-to-one>
     </class>

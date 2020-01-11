@@ -86,7 +86,13 @@ public class SimpleSynthesisBean {
                 matEntity = new HashMap<String, Object>();
                     matEntity.put("Description", material.getDomainEntity().getDescription());
                     matEntity.put("dataId", material.getDomainEntity().getId());
-
+//                    matEntity.put("Protocol", material.getDomainEntity().getProtocol().getName());
+                //Protocol
+                if (material.getProtocolBean().getDisplayName().length() > 0) {
+                    matEntity.put("Protocol", material.getProtocolBean().getDisplayName());
+                } else {
+                    matEntity.put("Protocol", "N/A");
+                }
                     //Add SynthesisMaterialElements
                     materialElements = new ArrayList<Map<String, Object>>();
                     if (material.getSynthesisMaterialElements() != null) {
@@ -190,12 +196,21 @@ public class SimpleSynthesisBean {
                     purification.put("dataId", purificationBean.getDomainEntity().getId());
                     purification.put("Description", purificationBean.getDescription());
                     purification.put("Source", purificationBean.getSource());
+                    purification.put("Date", purificationBean.getDomainEntity().getCreatedDate());
                     purification.put("Yield", purificationBean.getDomainEntity().getYield());
-//                    purification.put("Protocol", purificationBean.getDomainEntity().getProtocol().toString());//TODO
+                    purification.put("Protocol", purificationBean.getDomainEntity().getProtocol().getName());
+                    purification.put("Analysis", purificationBean.getDomainEntity().getAnalysis());
+                    //TODO loop through purification config
+                    purification.put("Technique", purificationBean.getDomainEntity().getPurificationConfigs());
                     purificationPurityElements = new ArrayList<Map<String,Object>>();
                     for(SynthesisPurityBean purityBean : purificationBean.getPurityBeans()){
                         purificationPurity = new HashMap<String, Object>();
                         purificationPurity.put("purity", purityBean.toString());
+                        if (purityBean.getFiles()!=null){
+                            fileList=addFiles(purityBean.getFiles());
+                            purificationPurity.put("Files", fileList);
+                        }
+
                         //TODO write
                         //loop through datum?
                         purificationPurityElements.add(purificationPurity);

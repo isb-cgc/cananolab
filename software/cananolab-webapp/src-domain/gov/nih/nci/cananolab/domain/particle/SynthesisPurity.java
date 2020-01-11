@@ -17,7 +17,7 @@ public class SynthesisPurity implements java.io.Serializable {
 	private String createdBy;
 	private Date createdDate;
 	private Set<File> files = new HashSet<File>(0);
-	private Set<PurityDatum> purityDatums = new HashSet<PurityDatum>(0);
+	private Set<PurityDatum> purityDatumCollection = new HashSet<PurityDatum>(0);
 
 	public SynthesisPurity() {
 	}
@@ -33,11 +33,11 @@ public class SynthesisPurity implements java.io.Serializable {
 	public SynthesisPurity(long purityPkId, SynthesisPurification SynthesisPurification, String createdBy,
 						   Date createdDate, Set files, Set purityDatums) {
 		this.purityPkId = purityPkId;
-		this.synthesisPurification = SynthesisPurification;
+//		this.synthesisPurification = SynthesisPurification;
 		this.createdBy = createdBy;
 		this.createdDate = createdDate;
 		this.files = files;
-		this.purityDatums = purityDatums;
+		this.purityDatumCollection = purityDatums;
 	}
 
 	public Long getId() {
@@ -48,13 +48,13 @@ public class SynthesisPurity implements java.io.Serializable {
 		this.purityPkId = purityPkId;
 	}
 
-	public SynthesisPurification getSynthesisPurification() {
-		return this.synthesisPurification;
-	}
-
-	public void setSynthesisPurification(SynthesisPurification SynthesisPurification) {
-		this.synthesisPurification = SynthesisPurification;
-	}
+//	public SynthesisPurification getSynthesisPurification() {
+//		return this.synthesisPurification;
+//	}
+//
+//	public void setSynthesisPurification(SynthesisPurification SynthesisPurification) {
+//		this.synthesisPurification = SynthesisPurification;
+//	}
 
 	public String getCreatedBy() {
 		return this.createdBy;
@@ -81,11 +81,11 @@ public class SynthesisPurity implements java.io.Serializable {
 	}
 
 	public Set<PurityDatum> getPurityDatumCollection() {
-		return this.purityDatums;
+		return this.purityDatumCollection;
 	}
 
 	public void setPurityDatumCollection(Set<PurityDatum> purityDatums) {
-		this.purityDatums = purityDatums;
+		this.purityDatumCollection = purityDatums;
 	}
 
 }

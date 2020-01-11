@@ -15,18 +15,8 @@ public class ExperimentConfig implements Serializable {
     private String createdBy;
     private java.util.Date createdDate;
     private String description;
-
-
     private Long id;
-    /**
-     * An associated gov.nih.nci.cananolab.domain.common.Instrument object's collection
-     **/
-
-    private Collection<Instrument> instrumentCollection;
-    /**
-     * An associated gov.nih.nci.cananolab.domain.common.Technique object
-     **/
-
+     private Collection<Instrument> instrumentCollection;
     private Technique technique;
 
     /**

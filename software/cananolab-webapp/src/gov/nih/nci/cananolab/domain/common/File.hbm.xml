@@ -34,22 +34,18 @@ L-->
 			<many-to-many class="Keyword"
 				column="keyword_pk_id" />
 		</set>
-		<set name="datumCollection" lazy="true">
-			<cache usage="read-write" />
-			<key column="file_pk_id" />
-			<one-to-many class="Datum" />
-		</set>
-
-		<!--
-		<one-to-one name="protocol" class="Protocol" property-ref="file"/>
-		-->
-		<set name="findingCollection" table="finding_file" lazy="true"
-			inverse="true">
-			<cache usage="read-write" />
-			<key column="file_pk_id" />
-			<many-to-many class="Finding"
-				column="finding_pk_id" />
-		</set>
+<!--		<set name="datumCollection" lazy="true">-->
+<!--			<cache usage="read-write" />-->
+<!--			<key column="file_pk_id" />-->
+<!--			<one-to-many class="Datum" />-->
+<!--		</set>-->
+<!--		<set name="findingCollection" table="finding_file" lazy="true"-->
+<!--			inverse="true">-->
+<!--			<cache usage="read-write" />-->
+<!--			<key column="file_pk_id" />-->
+<!--			<many-to-many class="Finding"-->
+<!--				column="finding_pk_id" />-->
+<!--		</set>-->
 		<joined-subclass name="Publication"
 			table="publication" lazy="true">
 			<key column="publication_pk_id" />
