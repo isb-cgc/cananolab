@@ -55,8 +55,6 @@ public class CharacterizationBean {
 
 	private String assayType;
 
-	private ExperimentConfigBean theExperimentConfig = new ExperimentConfigBean();
-
 	private FindingBean theFinding = new FindingBean();
 
 	private Instrument theInstrument = new Instrument();
@@ -330,13 +328,6 @@ public class CharacterizationBean {
 		return experimentConfigs;
 	}
 
-	public ExperimentConfigBean getTheExperimentConfig() {
-		return theExperimentConfig;
-	}
-
-	public void setTheExperimentConfig(ExperimentConfigBean theExperimentConfig) {
-		this.theExperimentConfig = theExperimentConfig;
-	}
 
 	public void addExperimentConfig(ExperimentConfigBean experimentConfigBean) {
 		// if an old one exists, remove it first
@@ -590,6 +581,16 @@ public class CharacterizationBean {
 	public void setProtocolBean(ProtocolBean protocolBean) {
 		this.protocolBean = protocolBean;
 	}
-	
-	
+
+
+	//TODO this is evil
+	private ExperimentConfigBean theExperimentConfig = new ExperimentConfigBean();
+
+	public ExperimentConfigBean getTheExperimentConfig() {
+		return theExperimentConfig;
+	}
+
+	public void setTheExperimentConfig(ExperimentConfigBean theExperimentConfig) {
+		this.theExperimentConfig = theExperimentConfig;
+	}
 }

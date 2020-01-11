@@ -17,7 +17,7 @@
             <column length="65535" name="description"/>
         </property>
         <many-to-one class="gov.nih.nci.cananolab.domain.common.Protocol"
-                     fetch="select" name="protocol">
+                     fetch="select" name="protocol"  lazy="proxy" >
             <column name="protocol_pk_id"/>
         </many-to-one>
         <many-to-one class="Synthesis"

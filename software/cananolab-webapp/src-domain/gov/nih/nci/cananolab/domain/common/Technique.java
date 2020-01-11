@@ -25,7 +25,7 @@ public class Technique implements Serializable {
     /**
      * An associated gov.nih.nci.cananolab.domain.common.ExperimentConfig object's collection
      **/
-    private Collection<ExperimentConfig> experimentConfigCollection;
+//    private Collection<ExperimentConfig> experimentConfigCollection;
 
 //    public Set<PurificationConfig> getPurificationConfigCollection() {
 //        return purificationConfigCollection;
@@ -131,17 +131,17 @@ public class Technique implements Serializable {
      * @return experimentConfigCollection
      **/
 
-    public Collection<ExperimentConfig> getExperimentConfigCollection() {
-        return experimentConfigCollection;
-    }
-
-    /**
-     * Sets the value of experimentConfigCollection attribute
-     **/
-
-    public void setExperimentConfigCollection(Collection<ExperimentConfig> experimentConfigCollection) {
-        this.experimentConfigCollection = experimentConfigCollection;
-    }
+//    public Collection<ExperimentConfig> getExperimentConfigCollection() {
+//        return experimentConfigCollection;
+//    }
+//
+//    /**
+//     * Sets the value of experimentConfigCollection attribute
+//     **/
+//
+//    public void setExperimentConfigCollection(Collection<ExperimentConfig> experimentConfigCollection) {
+//        this.experimentConfigCollection = experimentConfigCollection;
+//    }
 
     /**
      * Compares <code>obj</code> to it self and returns true if they both are same

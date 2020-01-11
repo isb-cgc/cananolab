@@ -6,11 +6,9 @@
    Distributed under the OSI-approved BSD 3-Clause License.
    See http://ncip.github.com/cananolab/LICENSE.txt for details.
 L-->
-<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
-        "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
-<!-- Generated Apr 3, 2019, 8:32:55 PM by Hibernate Tools 5.4.2.Final -->
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
 <hibernate-mapping package="gov.nih.nci.cananolab.domain.common" auto-import="false">
-    <class name="PurificationConfig" table="purification_config" lazy="true" >
+    <class name="PurificationConfig" table="purification_config" lazy="true" polymorphism="explicit" >
         <cache usage="read-write" />
         <id name="purificationConfigPkId" type="long" column="purification_config_pk_id">
             <generator class="hilo">
@@ -21,27 +19,12 @@ L-->
         <property name="createdBy" type="string" column="created_by"/>
         <property name="createdDate" type="java.util.Date" column="created_date"/>
         <property name="description" type="string" column="description"/>
-<!--        <many-to-one class="Technique"-->
-<!--                     fetch="select" name="technique" lazy="proxy" cascade="save-update">-->
-<!--            <column name="technique_pk_id">-->
-<!--                <comment>technique_pk_id</comment>-->
-<!--            </column>-->
-<!--        </many-to-one>-->
-        <many-to-one name="technique" class="Technique" column="technique_pk_id" lazy="proxy" cascade="save-update"/>
 
-        <!--        <set fetch="select" lazy="true" name="instrumentCollection" sort="unsorted" table="purification_config_instrument">-->
-<!--            <key>-->
-<!--                <column name="purification_config_pk_id" not-null="true"/>-->
-<!--            </key>-->
-<!--            <many-to-many-->
-<!--                    entity-name="Instrument" unique="false">-->
-<!--                <column name="instrument_pk_id" not-null="true"/>-->
-<!--            </many-to-many>-->
-<!--        </set>-->
         <set name="instrumentCollection" table="purification_config_instrument" lazy="true" inverse="false" cascade="save-update">
             <cache usage="read-write" />
             <key column="purification_config_pk_id" />
             <many-to-many class="Instrument" column="instrument_pk_id" />
         </set>
+        <many-to-one name="technique" class="Technique" column="technique_pk_id" lazy="proxy" cascade="save-update"/>
     </class>
 </hibernate-mapping>

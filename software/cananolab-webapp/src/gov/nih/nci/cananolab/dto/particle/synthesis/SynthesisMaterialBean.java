@@ -6,6 +6,7 @@ import gov.nih.nci.cananolab.domain.particle.SmeInherentFunction;
 import gov.nih.nci.cananolab.domain.particle.SynthesisMaterial;
 import gov.nih.nci.cananolab.domain.particle.SynthesisMaterialElement;
 import gov.nih.nci.cananolab.dto.common.FileBean;
+import gov.nih.nci.cananolab.dto.common.ProtocolBean;
 import gov.nih.nci.cananolab.util.ClassUtils;
 import gov.nih.nci.cananolab.util.Comparators;
 import gov.nih.nci.cananolab.util.Constants;
@@ -22,6 +23,11 @@ public class SynthesisMaterialBean extends BaseSynthesisEntityBean {
     private SynthesisMaterial domainEntity;
 
     private List<SynthesisMaterialElementBean> synthesisMaterialElements = new ArrayList<SynthesisMaterialElementBean>();
+    private ProtocolBean protocolBean = new ProtocolBean();
+
+
+
+
 
 //    private String type;
 
@@ -38,7 +44,9 @@ public class SynthesisMaterialBean extends BaseSynthesisEntityBean {
             }
         }
         Collections.sort(synthesisMaterialElements, new Comparators.SynthesisMaterialElementTypeDataComparator());
-
+        if (material.getProtocol() != null) {
+            protocolBean = new ProtocolBean(material.getProtocol());
+        }
     }
 
 
@@ -70,6 +78,7 @@ public class SynthesisMaterialBean extends BaseSynthesisEntityBean {
         //TODO write
         synthesisMaterialCopy.setId(null);
         synthesisMaterialCopy.setCreatedBy(createdBy+":"+ Constants.AUTO_COPY_ANNOTATION_PREFIX);
+        synthesisMaterialCopy.setProtocol(null);
         Collection<SynthesisMaterialElement> oldMaterialElements = synthesisMaterialCopy.getSynthesisMaterialElements();
         if (oldMaterialElements == null || oldMaterialElements.isEmpty()) {
             synthesisMaterialCopy.setSynthesisMaterialElements(null) ;
@@ -129,5 +138,13 @@ public class SynthesisMaterialBean extends BaseSynthesisEntityBean {
 
     }
 
+
+    public ProtocolBean getProtocolBean() {
+        return protocolBean;
+    }
+
+    public void setProtocolBean(ProtocolBean protocolBean) {
+        this.protocolBean = protocolBean;
+    }
 
 }

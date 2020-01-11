@@ -35,7 +35,7 @@ public class Instrument implements Serializable {
     private String type;
 
 
-    private Collection<ExperimentConfig> experimentConfigCollection;
+//    private Collection<ExperimentConfig> experimentConfigCollection;
 //    private Collection<PurificationConfig> purificationConfigCollection;
 
 
@@ -153,14 +153,14 @@ public class Instrument implements Serializable {
      * @return experimentConfigCollection
      **/
 
-    public Collection<ExperimentConfig> getExperimentConfigCollection() {
-        return experimentConfigCollection;
-    }
-
-
-    public void setExperimentConfigCollection(Collection<ExperimentConfig> experimentConfigCollection) {
-        this.experimentConfigCollection = experimentConfigCollection;
-    }
+//    public Collection<ExperimentConfig> getExperimentConfigCollection() {
+//        return experimentConfigCollection;
+//    }
+//
+//
+//    public void setExperimentConfigCollection(Collection<ExperimentConfig> experimentConfigCollection) {
+//        this.experimentConfigCollection = experimentConfigCollection;
+//    }
 //
 //    public Collection<PurificationConfig> getPurificationConfigCollection() {
 //        return this.purificationConfigCollection;

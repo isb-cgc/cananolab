@@ -42,7 +42,7 @@ public class FindingBean
     private List<ColumnHeader> columnHeaders = new ArrayList<ColumnHeader>();
     private int numberOfColumns;
     private int numberOfRows;
-    private FileBean theFile = new FileBean();
+
     private int theFileIndex;
 
     public FindingBean()
@@ -603,15 +603,6 @@ public class FindingBean
         return 0;
     }
 
-    public FileBean getTheFile()
-    {
-        return theFile;
-    }
-
-    public void setTheFile( FileBean theFile )
-    {
-        this.theFile = theFile;
-    }
 
     public List<FileBean> getFiles()
     {
@@ -825,4 +816,16 @@ public class FindingBean
         }
     }
 
+    //TODO This is evil
+    private FileBean theFile = new FileBean();
+
+    public FileBean getTheFile()
+    {
+        return theFile;
+    }
+
+    public void setTheFile( FileBean theFile )
+    {
+        this.theFile = theFile;
+    }
 }

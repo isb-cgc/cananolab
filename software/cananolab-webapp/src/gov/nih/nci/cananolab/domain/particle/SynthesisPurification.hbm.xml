@@ -49,6 +49,9 @@
         <property name="yield" type="float">
             <column name="yield" />
         </property>
+        <property name="analysis" type="string">
+            <column length="65535" name="analysis"/>
+        </property>
         <set fetch="select" inverse="true" lazy="true" name="purities"
              table="synthesis_purity">
             <key>

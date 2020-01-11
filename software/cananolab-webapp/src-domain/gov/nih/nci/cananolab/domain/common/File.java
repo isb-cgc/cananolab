@@ -31,15 +31,30 @@ public class File implements Serializable {
 	private String uri;
 	private boolean uriExternal=false;
 	private Set<Keyword> keywordCollection = new HashSet<Keyword>(0);
-	private Set<Datum> datumCollection = new HashSet<Datum>(0);
-	private Set<Finding> findingCollection = new HashSet<Finding>(0);
+//	private Set<Datum> datumCollection = new HashSet<Datum>(0);
+//	private Set<Finding> findingCollection = new HashSet<Finding>(0);
 
 
 	public File() {
 	}
 
+//	public File(String createdBy, Date createdDate, String description, String name, String title, String type,
+//				String uri, Boolean uriExternal, Set<Keyword> keywordCollection, Set<Datum> datumCollection, Set<Finding> findingCollection) {
+//		this.createdBy = createdBy;
+//		this.createdDate = createdDate;
+//		this.description = description;
+//		this.name = name;
+//		this.title = title;
+//		this.type = type;
+//		this.uri = uri;
+//		this.uriExternal = uriExternal;
+//		this.keywordCollection = keywordCollection;
+//		this.datumCollection = datumCollection;
+//		this.findingCollection = findingCollection;
+//	}
+
 	public File(String createdBy, Date createdDate, String description, String name, String title, String type,
-				String uri, Boolean uriExternal, Set<Keyword> keywordCollection, Set<Datum> datumCollection, Set<Finding> findingCollection) {
+				String uri, Boolean uriExternal, Set<Keyword> keywordCollection) {
 		this.createdBy = createdBy;
 		this.createdDate = createdDate;
 		this.description = description;
@@ -49,10 +64,7 @@ public class File implements Serializable {
 		this.uri = uri;
 		this.uriExternal = uriExternal;
 		this.keywordCollection = keywordCollection;
-		this.datumCollection = datumCollection;
-		this.findingCollection = findingCollection;
 	}
-
 
 	public Long getId() {
 		return this.id;
@@ -136,21 +148,21 @@ public class File implements Serializable {
 		this.keywordCollection = keywordCollection;
 	}
 
-	public Set<Datum> getDatumCollection() {
-		return this.datumCollection;
-	}
-
-	public void setDatumCollection(Set<Datum> datumCollection) {
-		this.datumCollection = datumCollection;
-	}
-
-	public Set<Finding> getFindingCollection() {
-		return this.findingCollection;
-	}
-
-	public void setFindingCollection(Set<Finding> findingCollection) {
-		this.findingCollection = findingCollection;
-	}
+//	public Set<Datum> getDatumCollection() {
+//		return this.datumCollection;
+//	}
+//
+//	public void setDatumCollection(Set<Datum> datumCollection) {
+//		this.datumCollection = datumCollection;
+//	}
+//
+//	public Set<Finding> getFindingCollection() {
+//		return this.findingCollection;
+//	}
+//
+//	public void setFindingCollection(Set<Finding> findingCollection) {
+//		this.findingCollection = findingCollection;
+//	}
 
 
 }

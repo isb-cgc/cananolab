@@ -31,21 +31,25 @@ public class SynthesisPurificationBO extends BaseAnnotationBO {
 
     @Override
     public CurationService getCurationServiceDAO() {
+        //TODO
         return null;
     }
 
     @Override
     public SampleService getSampleService() {
+        //TODO
         return null;
     }
 
     @Override
     public SpringSecurityAclService getSpringSecurityAclService() {
+        //TODO
         return null;
     }
 
     @Override
     public UserDetailsService getUserDetailsService() {
+        //TODO
         return null;
     }
 

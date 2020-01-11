@@ -6,6 +6,8 @@ WHERE `username` = 'canano_curator';
 */
 /*
 This does not work to add to an existing database
+*/
+/*
 insert into `canano`.`organization`
 (`organization_pk_id`,`name`,`created_date`,`created_by`)
 VALUES

@@ -38,4 +38,4 @@ software/cananolab-webapp/ijbuild/
 
 software/cananolab-webapp/lib/caNanoLab-beans\.jar
 
-software/cananolab-webapp/cananolab-webapp.iml
+*.iml

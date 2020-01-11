@@ -1,6 +1,8 @@
 package gov.nih.nci.cananolab.restful.util;
 
 import gov.nih.nci.cananolab.util.PropertyUtils;
+import io.restassured.RestAssured;
+import io.restassured.authentication.PreemptiveBasicAuthScheme;
 import io.restassured.response.Response;
 
 //import static com.jayway.restassured.RestAssureded.expect;
@@ -41,6 +43,16 @@ public class RestTestLoginUtil {
 		}
 		return jsessionId;
 	}
+
+	public static void RestAssuredLogin(){
+		String username = RestTestLoginUtil.readUserNameProperty();
+		String pwd = RestTestLoginUtil.readPasswordProperty();
+		System.out.println("User " + username + " " + pwd);
+		RestAssured.baseURI = System.getProperty("baseurl");
+		PreemptiveBasicAuthScheme authScheme = new PreemptiveBasicAuthScheme();
+		authScheme.setUserName(username);
+		authScheme.setPassword(pwd);
+		RestAssured.authentication = authScheme;}
 	
 	public static void logoutTest() {
 		expect().statusCode(200).when().get("http://localhost:8080/caNanoLab/rest/security/logout");
@@ -48,7 +60,9 @@ public class RestTestLoginUtil {
 	}
 	
 	public static String readUserNameProperty() {
-		return PropertyUtils.getPropertyCached("resources/local.properties", "user.name");
+//		return PropertyUtils.getPropertyCached("resources/local.properties", "user.name");
+
+		return PropertyUtils.getPropertyCached("local.properties", "user.name");
 	}
 
 	public static String readPasswordProperty() {
