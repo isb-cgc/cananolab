@@ -198,11 +198,12 @@ public class SimpleSynthesisBean {
             Map<String,Object> purification;
             Map<String,Object> purificationPurity;
             List<Map<String,Object>> purificationPurityElements;
-            for(String entityType:synBean.getSynPureTypes()){
-                purification = new HashMap<String, Object>();
+//            for(String entityType:synBean.getSynPureTypes()){
+            Integer integer = 1;
+            purification = new HashMap<String, Object>();
                 for(SynthesisPurificationBean purificationBean:synBean.getSynthesisPurificationBeanList()){
 //                for(SynthesisPurificationBean purificationBean: synBean.getType2PurEntities().get(entityType)){
-                    purification.put("DisplayName", purificationBean.getDomainEntity().getType());
+                    purification.put("DisplayName", "Purification "+ integer++);
                     purification.put("dataId", purificationBean.getDomainEntity().getId());
                     purification.put("Description", purificationBean.getDescription());
                     purification.put("Source", purificationBean.getSource());
@@ -216,20 +217,22 @@ public class SimpleSynthesisBean {
                     for(SynthesisPurityBean purityBean : purificationBean.getPurityBeans()){
                         purificationPurity = new HashMap<String, Object>();
                         purificationPurity.put("purity", purityBean.toString());
+                        //TODO write
+                        //loop through datum?
+
+
+
                         if (purityBean.getFiles()!=null){
                             fileList=addFiles(purityBean.getFiles());
                             purificationPurity.put("Files", fileList);
                         }
-
-                        //TODO write
-                        //loop through datum?
                         purificationPurityElements.add(purificationPurity);
                     }
                     purification.put("purificationElements", purificationPurityElements);
                 }
 //                synthesisPurification.put(entityType, purification);
                 synthesisPurification.add(purification);
-            }
+//            }
         }
     }
     private List<Map<String, Object>>  addFiles(List<FileBean> fileBeans){
