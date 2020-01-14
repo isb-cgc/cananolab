@@ -1,7 +1,15 @@
 package gov.nih.nci.cananolab.restful.view;
 
 import gov.nih.nci.cananolab.domain.particle.SmeInherentFunction;
+import gov.nih.nci.cananolab.dto.common.ColumnHeader;
 import gov.nih.nci.cananolab.dto.common.FileBean;
+import gov.nih.nci.cananolab.dto.common.FindingBean;
+import gov.nih.nci.cananolab.dto.common.PurityBean;
+import gov.nih.nci.cananolab.dto.common.PurityRow;
+import gov.nih.nci.cananolab.dto.common.Row;
+import gov.nih.nci.cananolab.dto.common.table.PurityTableCell;
+import gov.nih.nci.cananolab.dto.common.table.TableCell;
+import gov.nih.nci.cananolab.dto.particle.characterization.CharacterizationBean;
 import gov.nih.nci.cananolab.dto.particle.synthesis.SmeInherentFunctionBean;
 import gov.nih.nci.cananolab.dto.particle.synthesis.SynthesisBean;
 import gov.nih.nci.cananolab.dto.particle.synthesis.SynthesisFunctionalizationBean;
@@ -17,6 +25,7 @@ import java.util.Map;
 import org.apache.commons.collections.MultiMap;
 import org.apache.commons.collections.map.MultiValueMap;
 import org.apache.james.mime4j.field.address.MailboxList;
+import org.apache.log4j.Logger;
 
 public class SimpleSynthesisBean {
     Long id;
@@ -27,7 +36,7 @@ public class SimpleSynthesisBean {
     List synthesisMaterials;
 
     List<String> errors;
-
+    private Logger logger = Logger.getLogger(SimpleSynthesisBean.class);
 //    public MultiMap getSynthesisMaterials() {
 //        return synthesisMaterials;
 //    }
@@ -214,11 +223,24 @@ public class SimpleSynthesisBean {
                     //TODO loop through purification config
                     purification.put("Technique", purificationBean.getDomainEntity().getPurificationConfigs());
                     purificationPurityElements = new ArrayList<Map<String,Object>>();
-                    for(SynthesisPurityBean purityBean : purificationBean.getPurityBeans()){
+                    List<Object> testList = transferPurificationResults(purificationBean);
+                    for(PurityBean purityBean : purificationBean.getPurityBeans()){
                         purificationPurity = new HashMap<String, Object>();
                         purificationPurity.put("purity", purityBean.toString());
+
                         //TODO write
                         //loop through datum?
+                        Map<String, List<Object>> oneCharResult = new HashMap<String, List<Object>>();
+
+                        List<Object> dataCondition = transferPurityResultsDataAndCondition(purityBean);
+                        if (dataCondition != null && dataCondition.size() > 0){
+                            oneCharResult.put("Data and Conditions", dataCondition);
+
+                        purificationPurity.put("Data and Conditions",dataCondition);}
+
+//                        List<Object> files = transferPurityResultsFiles(purityBean);
+//                        if (files != null && files.size() > 0)
+//                            oneCharResult.put("Files", files);
 
 
 
@@ -258,5 +280,116 @@ public class SimpleSynthesisBean {
             fileList.add(files);
         }
         return fileList;
+    }
+
+    protected List<Object> transferPurificationResults( SynthesisPurificationBean purificationBean) {
+
+        List<Object> charResults = new ArrayList<Object>();
+
+        List<PurityBean> purities = purificationBean.getPurityBeans();
+
+
+        for (PurityBean purityBean  : purities) {
+
+            Map<String, List<Object>> oneCharResult = new HashMap<String, List<Object>>();
+
+            List<Object> dataCondition = transferPurityResultsDataAndCondition(purityBean);
+            if (dataCondition != null && dataCondition.size() > 0)
+                oneCharResult.put("Data and Conditions", dataCondition);
+
+            List<Object> files = transferPurityResultsFiles(purityBean);
+            if (files != null && files.size() > 0)
+                oneCharResult.put("Files", files);
+
+            charResults.add(oneCharResult);
+        }
+
+        return charResults;
+//        charBeanMap.put("Characterization Results", charResults);
+//        SimpleCharacterizationUnitBean aUnit = new SimpleCharacterizationUnitBean("Characterization Results", charResults);
+//        charBeanUnits.add(aUnit);
+    }
+
+    protected List transferPurityResultsDataAndCondition(PurityBean purityBean) {
+
+        logger.debug("Data and Conditions:");
+        List<SimpleCharacterizationUnitBean> rowsOfTable = new ArrayList<SimpleCharacterizationUnitBean>();
+
+        List<PurityRow> rows = purityBean.getRows();
+
+        if (rows == null || rows.size() == 0)
+            return rowsOfTable;
+
+        List<ColumnHeader>  colHeaders = purityBean.getColumnHeaders();
+        int colSize = colHeaders.size();
+
+        List<String> rowVals = new ArrayList<String>();
+        for (ColumnHeader colHeader : colHeaders) {
+            String colTitle = colHeader.getDisplayName();
+
+            logger.debug("==Header: " + colTitle);
+            rowVals.add(colTitle);
+        }
+
+        rowsOfTable.add(new SimpleCharacterizationUnitBean("colTitles", rowVals));
+
+        for (PurityRow aRow : rows) {
+            rowVals = new ArrayList<String>();
+            List<PurityTableCell> cells = aRow.getCells();
+            for (PurityTableCell cell : cells) {
+                rowVals.add(cell.getValue());
+            }
+
+            if (rowVals.size() == colSize)
+                rowsOfTable.add(new SimpleCharacterizationUnitBean("colValues", rowVals));
+            else
+                logger.error("Size of Data and Conditions column values doesn't match column header size.");
+        }
+
+        return rowsOfTable;
+    }
+
+    protected List<Object> transferPurityResultsFiles (PurityBean purityBean) {
+
+        List<Object> files = new ArrayList<Object>();
+        List<FileBean> fileBeans = purityBean.getFiles();
+
+        if (fileBeans == null || fileBeans.size() ==0)
+            return files;
+
+        logger.debug("Files: ");
+
+        for (FileBean fileBean : fileBeans) {
+
+            Map<String, Object> aFile = new HashMap<String, Object>();
+
+            aFile.put("fileId", fileBean.getDomainFile().getId());
+            if (fileBean.getDomainFile().getUriExternal()) {
+                logger.debug("uriExternal: " + fileBean.getDomainFile().getId());
+                //aFile.put("fileId", fileBean.getDomainFile().getId());
+                aFile.put("uri", fileBean.getDomainFile().getUri());
+            } else if (fileBean.isImage()){
+                logger.debug("Is image: " + fileBean.getDomainFile().getTitle());
+                aFile.put("imageTitle", fileBean.getDomainFile().getTitle());
+            } else {
+                logger.debug("Have download link here");
+                aFile.put("title", fileBean.getDomainFile().getTitle());
+            }
+
+            if (fileBean.getKeywordsStr() != null && fileBean.getKeywordsStr().length() > 0) {
+                logger.debug("keyword displayname: " + fileBean.getKeywordsDisplayName());
+                aFile.put("keywordsString", fileBean.getKeywordsDisplayName());
+            }
+
+
+            if (fileBean.getDomainFile().getDescription() != null && fileBean.getDomainFile().getDescription().length() > 0) {
+                logger.debug("File description: " + fileBean.getDescription());
+                aFile.put("description", fileBean.getDescription());
+            }
+
+            files.add(aFile);
+        }
+
+        return files;
     }
 }

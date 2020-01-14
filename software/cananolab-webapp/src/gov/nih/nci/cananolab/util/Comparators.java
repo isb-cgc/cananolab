@@ -15,6 +15,7 @@ import gov.nih.nci.cananolab.domain.common.Instrument;
 import gov.nih.nci.cananolab.domain.common.Protocol;
 import gov.nih.nci.cananolab.domain.common.Publication;
 import gov.nih.nci.cananolab.domain.common.PurityDatum;
+import gov.nih.nci.cananolab.domain.common.PurityDatumCondition;
 import gov.nih.nci.cananolab.domain.particle.Characterization;
 import gov.nih.nci.cananolab.domain.particle.Sample;
 import gov.nih.nci.cananolab.domain.particle.SynthesisMaterialElement;
@@ -23,6 +24,7 @@ import gov.nih.nci.cananolab.dto.common.ExperimentConfigBean;
 import gov.nih.nci.cananolab.dto.common.FileBean;
 import gov.nih.nci.cananolab.dto.common.FindingBean;
 import gov.nih.nci.cananolab.dto.common.PointOfContactBean;
+import gov.nih.nci.cananolab.dto.common.table.PurityTableCell;
 import gov.nih.nci.cananolab.dto.common.table.TableCell;
 import gov.nih.nci.cananolab.dto.particle.characterization.CharacterizationBean;
 import gov.nih.nci.cananolab.dto.particle.composition.ChemicalAssociationBean;
@@ -437,6 +439,14 @@ public class Comparators {
 		}
 	}
 
+	public static class PurityConditionDateComparator implements
+			Comparator<PurityDatumCondition> {
+		public int compare(PurityDatumCondition condition1, PurityDatumCondition condition2) {
+			return condition1.getCreatedDate().compareTo(
+					condition2.getCreatedDate());
+		}
+	}
+
 	public static class FileBeanDateComparator implements Comparator<FileBean> {
 		public int compare(FileBean file1, FileBean file2) {
 			return file1.getDomainFile().getCreatedDate()
@@ -687,6 +697,27 @@ public class Comparators {
 			} else {
 				return cell1.getCreatedDate().compareTo(cell2.getCreatedDate());
 			}
+		}
+
+        @Override
+        public Comparator<TableCell> reversed() {
+            return null;
+        }
+    }
+
+	public static class PurityTableCellComparator implements Comparator<PurityTableCell> {
+		public int compare(PurityTableCell cell1, PurityTableCell cell2) {
+			if (cell1.getColumnOrder() != null
+					&& cell2.getColumnOrder() != null) {
+				return cell1.getColumnOrder().compareTo(cell2.getColumnOrder());
+			} else {
+				return cell1.getCreatedDate().compareTo(cell2.getCreatedDate());
+			}
+		}
+
+		@Override
+		public Comparator<PurityTableCell> reversed() {
+			return null;
 		}
 	}
 

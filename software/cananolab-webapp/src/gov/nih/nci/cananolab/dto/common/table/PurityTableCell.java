@@ -8,13 +8,11 @@
 
 package gov.nih.nci.cananolab.dto.common.table;
 
-import gov.nih.nci.cananolab.domain.common.Condition;
-import gov.nih.nci.cananolab.domain.common.Datum;
 import gov.nih.nci.cananolab.domain.common.PurityDatum;
+import gov.nih.nci.cananolab.domain.common.PurityDatumCondition;
 import gov.nih.nci.cananolab.dto.common.FindingBean;
 import gov.nih.nci.cananolab.util.Constants;
 import gov.nih.nci.cananolab.util.StringUtils;
-
 import java.util.Date;
 
 /**
@@ -23,27 +21,28 @@ import java.util.Date;
  * @author pansu
  *
  */
-public class TableCell {
+public class PurityTableCell {
 	String value;
 	String operand = "=";
 	String datumOrCondition;
-	Datum datum = new Datum();
-	Condition condition = new Condition();
+	PurityDatumCondition condition = new PurityDatumCondition();
+	PurityDatum datum = new PurityDatum();
 
 	// FR# 26194, matrix column order.
 	Integer columnOrder;
 	Date createdDate;
 
-	public TableCell() {
+	public PurityTableCell() {
 	}
 
-	public TableCell(Datum datum) {
+
+	public PurityTableCell(PurityDatum datum) {
 		this.datumOrCondition = FindingBean.DATUM_TYPE;
 		// display bogus placeholder datum as emtpy string
 		if (datum.getValue() == null
 				|| datum.getValue() == -1
 				&& datum.getCreatedBy().contains(
-						Constants.PLACEHOLDER_DATUM_CONDITION_CREATED_BY)) {
+				Constants.PLACEHOLDER_DATUM_CONDITION_CREATED_BY)) {
 			this.value = "";
 		}
 		// remove .0 from boolean
@@ -64,7 +63,7 @@ public class TableCell {
 		this.createdDate = datum.getCreatedDate();
 	}
 
-	public TableCell(Condition condition) {
+	public PurityTableCell(PurityDatumCondition condition) {
 		this.datumOrCondition = "condition";
 		if (!StringUtils.isEmpty(condition.getValue()) && condition.getValue().contains(
 				Constants.PLACEHOLDER_DATUM_CONDITION_CREATED_BY)
@@ -102,21 +101,17 @@ public class TableCell {
 		this.value = value;
 	}
 
-	public Datum getDatum() {
-		return datum;
+	public PurityDatum getPurityDatum() {return datum;}
+
+	public void setPurityDatum(PurityDatum purityDatum){
+		this.datum = purityDatum;
 	}
 
-	public void setDatum(Datum datum) {
-		this.datum = datum;
-	}
-
-
-
-	public Condition getCondition() {
+	public PurityDatumCondition getCondition() {
 		return condition;
 	}
 
-	public void setCondition(Condition condition) {
+	public void setCondition(PurityDatumCondition condition) {
 		this.condition = condition;
 	}
 
