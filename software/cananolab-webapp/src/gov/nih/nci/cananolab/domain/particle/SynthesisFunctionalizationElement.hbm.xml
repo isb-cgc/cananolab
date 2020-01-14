@@ -18,6 +18,8 @@
         <property name="valueUnit" column="value_unit" type="string"/>
         <property name="pubChemDatasourceName" column="pub_chem_datasource_name" type="string"/>
         <property name="pubChemId" column="pub_chem_id" type="long"/>
+        <property name="activationMethod" column="activation_method" type="string"/>
+        <property name="activationEffect" column="activation_effect" type="string"/>
         <many-to-one name="synthesisFunctionalization"
                      class="SynthesisFunctionalization">
             <column name="synthesis_functionalization_pk_id"/>

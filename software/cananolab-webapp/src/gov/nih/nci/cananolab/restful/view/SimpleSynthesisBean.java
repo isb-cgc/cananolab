@@ -22,7 +22,7 @@ public class SimpleSynthesisBean {
     Long id;
     List<String> synthesisSections = new ArrayList<String>();
     List synthesisFunctionalization;
-    MultiMap synthesisPurification;
+    List synthesisPurification;
 //    MultiMap synthesisMaterials;
     List synthesisMaterials;
 
@@ -37,7 +37,7 @@ public class SimpleSynthesisBean {
         return synthesisFunctionalization;
     }
 
-    public MultiMap getSynthesisPurification() {
+    public List getSynthesisPurification() {
         return synthesisPurification;
     }
 
@@ -55,7 +55,7 @@ public class SimpleSynthesisBean {
         this.synthesisFunctionalization = synthesisFunctionalization;
     }
 
-    public void setSynthesisPurification(MultiMap synthesisPurification) {
+    public void setSynthesisPurification(List synthesisPurification) {
         this.synthesisPurification = synthesisPurification;
     }
 
@@ -82,8 +82,11 @@ public class SimpleSynthesisBean {
 //            for (String matType : synBean.getSynMatTypes()) {
 //                matEntity = new HashMap<String, Object>();
 //                for (SynthesisMaterialBean material : synBean.getType2MatsEntities().get(matType)) {
+            Integer integer = 1;
             for(SynthesisMaterialBean material : synBean.getSynthesisMaterialBeanList()){
+
                 matEntity = new HashMap<String, Object>();
+                    matEntity.put("DisplayName", "Material "+ integer++);
                     matEntity.put("Description", material.getDomainEntity().getDescription());
                     matEntity.put("dataId", material.getDomainEntity().getId());
 //                    matEntity.put("Protocol", material.getDomainEntity().getProtocol().getName());
@@ -151,25 +154,30 @@ public class SimpleSynthesisBean {
             Map<String,Object> functionalizationElement;
             List<Map<String,Object>> functionalizationElements;
 //            for(String entityType:synBean.getSynFuncTypes()){
-
+            Integer integer = 1;
 //                for(SynthesisFunctionalizationBean functionalizationBean: synBean.getType2FuncEntities().get(entityType)){
                     for(SynthesisFunctionalizationBean functionalizationBean: synBean.getSynthesisFunctionalizationBeanList()){
                         funcEntity = new HashMap<String, Object>();
+                        funcEntity.put("DisplayName", "Functionalization "+ integer++);
                     funcEntity.put("Description", functionalizationBean.getDomainEntity().getDescription());
                     funcEntity.put("dataId", functionalizationBean.getDomainEntity().getId());
                     funcEntity.put("source", functionalizationBean.getDomainEntity().getCreatedBy());
-//                    functionalization = new HashMap<String, Object>();
-//                    functionalization.put("dataId", functionalizationBean.getDomainEntity().getId());
-//                    functionalization.put("Description", functionalizationBean.getDescription());
-//                    functionalization.put("Source", functionalizationBean.getSource());
                     functionalizationElements = new ArrayList<Map<String, Object>>();
                     for (SynthesisFunctionalizationElementBean sfeBean: functionalizationBean.getSynthesisFunctionalizationElements()) {
                         functionalizationElement = new HashMap<String, Object>();
                         functionalizationElement.put("DisplayName", sfeBean.getDisplayName());
+                        functionalizationElement.put("ChemicalName", sfeBean.getDomain().getChemicalName());
+                        functionalizationElement.put("Description", sfeBean.getDescription());
+                        functionalizationElement.put("Amount", sfeBean.getDomain().getValue());
+                        functionalizationElement.put("AmountUnit", sfeBean.getDomain().getValueUnit());
+                        functionalizationElement.put("MolecularFormula",sfeBean.getDomain().getMolecularFormula());
+                        functionalizationElement.put("MolecularFormulaType", sfeBean.getDomain().getMolecularFormulaType());
                         functionalizationElement.put("Functions", sfeBean.getFunctionDisplayNames());
                         functionalizationElement.put("pubChemID", sfeBean.getDomain().getPubChemId());
                         functionalizationElement.put("pubChemLink", sfeBean.getPubChemLink());
                         functionalizationElement.put("pubChemDataSourceName", sfeBean.getDomain().getPubChemDatasourceName());
+                        functionalizationElement.put("ActivationMethod", sfeBean.getDomain().getActivationMethod());
+                        functionalizationElement.put("ActivationEffect", sfeBean.getDomain().getActivationEffect());
                         functionalizationElements.add(functionalizationElement);
                     }
                     funcEntity.put("FunctionalizationElements", functionalizationElements);
@@ -184,15 +192,17 @@ public class SimpleSynthesisBean {
         }
         //Add SynthesisPurification
         /* TODO write */
-        synthesisPurification = new MultiValueMap();
+//        synthesisPurification = new MultiValueMap();
+        synthesisPurification = new ArrayList<Map<String,Object>>();
         if(synBean.getSynthesisPurificationBeanList()!=null){
             Map<String,Object> purification;
             Map<String,Object> purificationPurity;
             List<Map<String,Object>> purificationPurityElements;
             for(String entityType:synBean.getSynPureTypes()){
                 purification = new HashMap<String, Object>();
-                for(SynthesisPurificationBean purificationBean: synBean.getType2PurEntities().get(entityType)){
-
+                for(SynthesisPurificationBean purificationBean:synBean.getSynthesisPurificationBeanList()){
+//                for(SynthesisPurificationBean purificationBean: synBean.getType2PurEntities().get(entityType)){
+                    purification.put("DisplayName", purificationBean.getDomainEntity().getType());
                     purification.put("dataId", purificationBean.getDomainEntity().getId());
                     purification.put("Description", purificationBean.getDescription());
                     purification.put("Source", purificationBean.getSource());
@@ -217,7 +227,8 @@ public class SimpleSynthesisBean {
                     }
                     purification.put("purificationElements", purificationPurityElements);
                 }
-                synthesisPurification.put(entityType, purification);
+//                synthesisPurification.put(entityType, purification);
+                synthesisPurification.add(purification);
             }
         }
     }
