@@ -20,6 +20,8 @@ public class SynthesisFunctionalizationElement {
     private String pubChemDatasourceName;
     private Long pubChemId;
     private Long synthesisFunctionalizationPkId;
+    private String activationMethod;
+    private String activationEffect;
 
     private Set<File> files;
 
@@ -171,5 +173,21 @@ public class SynthesisFunctionalizationElement {
     public Set<File> getFiles(){return this.files;}
     public void setFiles(Set<File> files){
         this.files = files;
+    }
+
+    public String getActivationMethod() {
+        return activationMethod;
+    }
+
+    public void setActivationMethod(String activationMethod) {
+        this.activationMethod = activationMethod;
+    }
+
+    public String getActivationEffect() {
+        return activationEffect;
+    }
+
+    public void setActivationEffect(String activationEffect) {
+        this.activationEffect = activationEffect;
     }
 }

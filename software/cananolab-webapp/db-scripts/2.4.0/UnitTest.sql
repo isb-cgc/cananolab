@@ -2191,7 +2191,7 @@ CREATE TABLE `synthesis_functionalization` (
 
 LOCK TABLES `synthesis_functionalization` WRITE;
 /*!40000 ALTER TABLE `synthesis_functionalization` DISABLE KEYS */;
-INSERT  IGNORE INTO `synthesis_functionalization` (`synthesis_functionalization_pk_id`, `synthesis_pk_id`, `protocol_pk_id`, `description`, `created_date`, `created_by`, `type`) VALUES (1000,1000,1000,'Synthesis Functionalization Test 1','2019-12-06 12:15:00','canano_curator',NULL),(1005,1005,NULL,'In order to produce PEG-capped AuNPs, various concentrations (3.6, 8.4, 16.8 and 25.2 ug per ml of as synthesized AuNP suspension) of 5,000 Mw PEG were added to the ‘as synthesized’ AuNP solutions at room temperature. After the required amount of PEG was added, the solution was stirred at room temperature for 2 h to allow for complete exchange of the citrate molecules with PEG.','2019-08-29 00:00:00','canano_curator',NULL);
+INSERT  IGNORE INTO `synthesis_functionalization` (`synthesis_functionalization_pk_id`, `synthesis_pk_id`, `protocol_pk_id`, `description`, `created_date`, `created_by`, `type`) VALUES (1000,1000,1000,'Synthesis Functionalization Test 1','2019-12-06 12:15:00','canano_curator',NULL),(1005,1005,1005,'In order to produce PEG-capped AuNPs, various concentrations (3.6, 8.4, 16.8 and 25.2 ug per ml of as synthesized AuNP suspension) of 5,000 Mw PEG were added to the ‘as synthesized’ AuNP solutions at room temperature. After the required amount of PEG was added, the solution was stirred at room temperature for 2 h to allow for complete exchange of the citrate molecules with PEG.','2019-08-29 00:00:00','canano_curator',NULL);
 /*!40000 ALTER TABLE `synthesis_functionalization` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -2216,6 +2216,8 @@ CREATE TABLE `synthesis_functionalization_element` (
   `pub_chem_datasource_name` varchar(200) DEFAULT NULL COMMENT 'pub_chem_datasource_name',
   `pub_chem_id` bigint(20) DEFAULT NULL COMMENT 'pub_chem_id',
   `type` varchar(200) DEFAULT NULL COMMENT 'type',
+  `activation_method` varchar(200) DEFAULT NULL,
+  `activation_effect` text,
   PRIMARY KEY (`synthesis_functionalization_element_pk_id`),
   KEY `FK_synthesis_material_TO_synthesis_functionalization_element` (`synthesis_functionalization_pk_id`),
   CONSTRAINT `FK_synthesis_material_TO_synthesis_functionalization_element` FOREIGN KEY (`synthesis_functionalization_pk_id`) REFERENCES `synthesis_functionalization` (`synthesis_functionalization_pk_id`)
@@ -2228,7 +2230,7 @@ CREATE TABLE `synthesis_functionalization_element` (
 
 LOCK TABLES `synthesis_functionalization_element` WRITE;
 /*!40000 ALTER TABLE `synthesis_functionalization_element` DISABLE KEYS */;
-INSERT  IGNORE INTO `synthesis_functionalization_element` (`synthesis_functionalization_element_pk_id`, `synthesis_functionalization_pk_id`, `molecular_formula`, `molecular_formula_type`, `description`, `created_by`, `created_date`, `chemical_name`, `value`, `value_unit`, `pub_chem_datasource_name`, `pub_chem_id`, `type`) VALUES (1000,1000,'kK-N12-C4-L','Hill','Synthesis Functionalization Material Element 1','canano_curator','2019-12-06 12:15:00','SynFuncMat Element1',84.000,'pg',NULL,NULL,'material'),(1005,1005,'CH3(OCH2CH2)nOH','Hill','Added to the as-synthesized AuNP solution to a concentration of 3.6 ug/mL','canano_curator','2019-08-28 00:00:00','polyethylene glycol, 5000 MW',3.600,'ug','compound',24887753,'material');
+INSERT  IGNORE INTO `synthesis_functionalization_element` (`synthesis_functionalization_element_pk_id`, `synthesis_functionalization_pk_id`, `molecular_formula`, `molecular_formula_type`, `description`, `created_by`, `created_date`, `chemical_name`, `value`, `value_unit`, `pub_chem_datasource_name`, `pub_chem_id`, `type`, `activation_method`, `activation_effect`) VALUES (1000,1000,'kK-N12-C4-L','Hill','Synthesis Functionalization Material Element 1','canano_curator','2019-12-06 12:15:00','SynFuncMat Element1',84.000,'pg',NULL,NULL,'material','Lightning','Animation'),(1005,1005,'CH3(OCH2CH2)nOH','Hill','Added to the as-synthesized AuNP solution to a concentration of 3.6 ug/mL','canano_curator','2019-08-28 00:00:00','polyethylene glycol, 5000 MW',3.600,'ug','compound',24887753,'material','Does not require activation',NULL);
 /*!40000 ALTER TABLE `synthesis_functionalization_element` ENABLE KEYS */;
 UNLOCK TABLES;
 
