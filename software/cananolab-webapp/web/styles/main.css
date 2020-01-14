@@ -1952,5 +1952,24 @@ h1 {
     -moz-margin-end: 0;
     font-weight: 700;
 }
+#synthesis .table{
+    padding:5px;
+    width:100%;
+    margin-bottom:10px;
+}
 
 
+#synthesis .table .left {
+    font-weight:bold;
+}
+
+#synthesis .table tr td.materialElements {
+    border:1px solid #ccc;
+}
+
+div.inherentFunctions {
+    border:1px solid #000;
+    margin-bottom:10px;
+    padding:4px;
+    width:100% !important;
+}
