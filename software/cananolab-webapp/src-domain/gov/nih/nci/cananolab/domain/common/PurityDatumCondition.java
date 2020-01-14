@@ -1,13 +1,15 @@
 package gov.nih.nci.cananolab.domain.common;
 
+import gov.nih.nci.cananolab.domain.particle.SynthesisPurity;
 import java.io.Serializable;
 import java.util.Collection;
+import java.util.Date;
 
 /**
  *
  **/
 
-public class Condition implements Serializable {
+public class PurityDatumCondition implements Serializable {
     /**
      * An attribute to allow serialization of the domain objects
      */
@@ -23,7 +25,7 @@ public class Condition implements Serializable {
      *
      **/
 
-    private java.util.Date createdDate;
+    private Date createdDate;
     /**
      *
      **/
@@ -58,7 +60,16 @@ public class Condition implements Serializable {
      * An associated gov.nih.nci.cananolab.domain.common.Datum object's collection
      **/
 
-    private Collection<Datum> datumCollection;
+
+    private PurityDatum purityDatum;
+
+    public PurityDatum getPurityDatum() {
+        return purityDatum;
+    }
+
+    public void setPurityDatum(PurityDatum purityDatum) {
+        this.purityDatum = purityDatum;
+    }
 
     /**
      * Retrieves the value of the createdBy attribute
@@ -84,7 +95,7 @@ public class Condition implements Serializable {
      * @return createdDate
      **/
 
-    public java.util.Date getCreatedDate() {
+    public Date getCreatedDate() {
         return createdDate;
     }
 
@@ -92,7 +103,7 @@ public class Condition implements Serializable {
      * Sets the value of createdDate attribute
      **/
 
-    public void setCreatedDate(java.util.Date createdDate) {
+    public void setCreatedDate(Date createdDate) {
         this.createdDate = createdDate;
     }
 
@@ -228,8 +239,8 @@ public class Condition implements Serializable {
      * @param obj
      **/
     public boolean equals(Object obj) {
-        if (obj instanceof Condition) {
-            Condition c = (Condition) obj;
+        if (obj instanceof PurityDatumCondition) {
+            PurityDatumCondition c = (PurityDatumCondition) obj;
             return getId() != null && getId().equals(c.getId());
         }
         return false;

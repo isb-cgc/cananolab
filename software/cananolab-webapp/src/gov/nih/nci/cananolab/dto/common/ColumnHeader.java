@@ -11,6 +11,7 @@ package gov.nih.nci.cananolab.dto.common;
 import gov.nih.nci.cananolab.domain.common.Condition;
 import gov.nih.nci.cananolab.domain.common.Datum;
 import gov.nih.nci.cananolab.domain.common.PurityDatum;
+import gov.nih.nci.cananolab.domain.common.PurityDatumCondition;
 import gov.nih.nci.cananolab.util.StringUtils;
 
 import java.util.Date;
@@ -62,6 +63,14 @@ public class ColumnHeader {
 //		this.operand = datum.getOperand();
 	}
 
+	public ColumnHeader(PurityDatumCondition condition) {
+		this.columnName = condition.getName();
+		this.conditionProperty = condition.getProperty();
+		this.valueType = condition.getValueType();
+		this.valueUnit = condition.getValueUnit();
+		this.columnType = FindingBean.CONDITION_TYPE;
+		this.createdDate = condition.getCreatedDate();
+	}
 
 	public ColumnHeader() {
 

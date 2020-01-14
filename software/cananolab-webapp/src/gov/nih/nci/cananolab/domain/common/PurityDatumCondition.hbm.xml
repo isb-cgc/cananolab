@@ -5,7 +5,7 @@
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
 <hibernate-mapping package="gov.nih.nci.cananolab.domain.common"
 	auto-import="false">
-	<class name="Condition" table="experiment_condition" lazy="true"
+	<class name="PurityDatumCondition" table="purity_datum_condition" lazy="true"
 		polymorphism="explicit">
 		<cache usage="read-write" />
 		<id name="id" type="long" column="condition_pk_id">
@@ -30,5 +30,9 @@
 <!--			<many-to-many class="Datum"-->
 <!--				column="datum_pk_id" />-->
 <!--		</set>-->
+		<many-to-one class="gov.nih.nci.cananolab.domain.common.PurityDatum"
+					 fetch="select" name="purityDatum" lazy="proxy">
+			<column name="datum_pk_id"/>
+		</many-to-one>
 	</class>
 </hibernate-mapping>

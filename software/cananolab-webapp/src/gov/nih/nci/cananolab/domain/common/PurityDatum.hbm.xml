@@ -30,15 +30,23 @@
                   name="operand" type="string">
             <column length="20" name="numberMod"/>
         </property>
-        <set fetch="select" lazy="true" name="conditionCollection"
-             sort="unsorted" table="purity_datum_condition">
-            <cache include="all" usage="read-write"/>
+<!--        <set fetch="select" lazy="true" name="conditionCollection"-->
+<!--             sort="unsorted" table="purity_datum_condition">-->
+<!--            <cache include="all" usage="read-write"/>-->
+<!--            <key>-->
+<!--                <column name="datum_pk_id" not-null="true"/>-->
+<!--            </key>-->
+<!--            <many-to-many class="Condition"-->
+<!--                          column="condition_pk_id" unique="false" />-->
+<!--        </set>-->
+        <set fetch="select"
+             name="conditionCollection" sort="unsorted" table="purity_datum_condition" cascade="all-delete-orphan">
             <key>
-                <column name="datum_pk_id" not-null="true"/>
+                <column name="datum_pk_id">
+                    <comment>purity_pk_id</comment>
+                </column>
             </key>
-            <many-to-many class="Condition" unique="false">
-                <column name="condition_pk_id" not-null="true"/>
-            </many-to-many>
+            <one-to-many class="gov.nih.nci.cananolab.domain.common.PurityDatumCondition"/>
         </set>
         <many-to-one class="gov.nih.nci.cananolab.domain.particle.SynthesisPurity"
                      fetch="select" name="synthesisPurity" lazy="proxy">

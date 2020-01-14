@@ -7,11 +7,12 @@
  */
 
 package gov.nih.nci.cananolab.dto.common;
-import gov.nih.nci.cananolab.domain.common.Condition;
+
 import gov.nih.nci.cananolab.domain.common.File;
+import gov.nih.nci.cananolab.domain.common.PurityDatumCondition;
 import gov.nih.nci.cananolab.domain.particle.SynthesisPurity;
 import gov.nih.nci.cananolab.domain.common.PurityDatum;
-import gov.nih.nci.cananolab.dto.common.table.TableCell;
+import gov.nih.nci.cananolab.dto.common.table.PurityTableCell;
 import gov.nih.nci.cananolab.util.Comparators;
 import gov.nih.nci.cananolab.util.Constants;
 import gov.nih.nci.cananolab.util.DateUtils;
@@ -34,7 +35,7 @@ public class PurityBean
 {
     public static final String DATUM_TYPE = "purity datum";
     public static final String CONDITION_TYPE = "condition";
-    private List<Row> rows = new ArrayList<Row>();
+    private List<PurityRow> rows = new ArrayList<PurityRow>();
     private List<FileBean> files = new ArrayList<FileBean>();
     private List<ColumnHeader> columnHeaders = new ArrayList<ColumnHeader>();
     private int numberOfColumns;
@@ -74,10 +75,10 @@ public class PurityBean
             // get data matrix column headers and generate a map based
             // on headers.
             Map<ColumnHeader, List<PurityDatum>> datumMap = new HashMap<ColumnHeader, List<PurityDatum>>();
-            Map<ColumnHeader, List<Condition>> conditionMap = new HashMap<ColumnHeader, List<Condition>>();
+            Map<ColumnHeader, List<PurityDatumCondition>> conditionMap = new HashMap<ColumnHeader, List<PurityDatumCondition>>();
 
             List<PurityDatum> datumList = new ArrayList<PurityDatum>();
-            List<Condition> conditionList = new ArrayList<Condition>();
+            List<PurityDatumCondition> conditionList = new ArrayList<PurityDatumCondition>();
             for( PurityDatum datum : data )
             {
                 // add datum column
@@ -99,11 +100,11 @@ public class PurityBean
                 // add condition columns
                 if( datum.getConditionCollection() != null )
                 {
-                    List<Condition> conditions = new ArrayList<Condition>( datum
+                    List<PurityDatumCondition> conditions = new ArrayList<PurityDatumCondition>( datum
                             .getConditionCollection() );
                     Collections.sort( conditions,
-                            new Comparators.ConditionDateComparator() );
-                    for( Condition condition : conditions )
+                            new Comparators.PurityConditionDateComparator() );
+                    for( PurityDatumCondition condition : conditions )
                     {
                         ColumnHeader conditionColumn = new ColumnHeader(
                                 condition );
@@ -117,7 +118,7 @@ public class PurityBean
                         }
                         else
                         {
-                            conditionList = new ArrayList<Condition>();
+                            conditionList = new ArrayList<PurityDatumCondition>();
                             conditionMap.put( conditionColumn, conditionList );
                         }
                         // in case of copied Finding, ids are all null before
@@ -134,7 +135,7 @@ public class PurityBean
                         else
                         {
                             boolean existed = false;
-                            for( Condition cond : conditionList )
+                            for( PurityDatumCondition cond : conditionList )
                             {
                                 if( cond.getCreatedBy().equals(
                                         condition.getCreatedBy() ) )
@@ -168,7 +169,7 @@ public class PurityBean
             }
             // iterate through all condition columns and find the biggest list
             // size as the number of rows
-            for( Map.Entry<ColumnHeader, List<Condition>> entry : conditionMap
+            for( Map.Entry<ColumnHeader, List<PurityDatumCondition>> entry : conditionMap
                     .entrySet() )
             {
                 int numConditions = entry.getValue().size();
@@ -182,7 +183,7 @@ public class PurityBean
 
             for( int i = 0; i < numberOfRows; i++ )
             {
-                Row row = new Row();
+                PurityRow row = new PurityRow();
                 for( int j = 0; j < numberOfColumns; j++ )
                 {
                     ColumnHeader theHeader = columnHeaders.get( j );
@@ -195,18 +196,18 @@ public class PurityBean
                         {
                             datum = datumMap.get( theHeader ).get( i );
                         }
-                        row.getCells().add( new TableCell( datum ) );
+                        row.getCells().add( new PurityTableCell( datum ) );
                     }
                     else if( theHeader.getColumnType().equals(
                             PurityBean.CONDITION_TYPE ) )
                     {
-                        Condition condition = new Condition();
+                        PurityDatumCondition condition = new PurityDatumCondition();
                         if( conditionMap.get( theHeader ) != null
                                 && conditionMap.get( theHeader ).size() > i )
                         {
                             condition = conditionMap.get( theHeader ).get( i );
                         }
-                        row.getCells().add( new TableCell( condition ) );
+                        row.getCells().add( new PurityTableCell( condition ) );
                     }
                 }
                 rows.add( row );
@@ -214,12 +215,12 @@ public class PurityBean
         }
     }
 
-    public List<Row> getRows()
+    public List<PurityRow> getRows()
     {
         return rows;
     }
 
-    public void setRows( List<Row> rows )
+    public void setRows( List<PurityRow> rows )
     {
         this.rows = rows;
     }
@@ -276,13 +277,13 @@ public class PurityBean
             }
         }
 
-        List<Row> newRows = new ArrayList<Row>();
+        List<PurityRow> newRows = new ArrayList<PurityRow>();
         if( rows.size() <= numberOfRows )
         {
             newRows.addAll( rows );
             for( int i = rows.size(); i < numberOfRows; i++ )
             {
-                newRows.add( new Row() );
+                newRows.add( new PurityRow() );
             }
         }
         // remove the rows from the end
@@ -295,15 +296,15 @@ public class PurityBean
         }
         for( int i = 0; i < numberOfRows; i++ )
         {
-            Row row = newRows.get( i );
-            List<TableCell> cells = row.getCells();
-            List<TableCell> newCells = new ArrayList<TableCell>();
+            PurityRow row = newRows.get( i );
+            List<PurityTableCell> cells = row.getCells();
+            List<PurityTableCell> newCells = new ArrayList<PurityTableCell>();
             if( cells.size() <= numberOfColumns )
             {
                 newCells.addAll( cells );
                 for( int j = cells.size(); j < numberOfColumns; j++ )
                 {
-                    newCells.add( new TableCell() );
+                    newCells.add( new PurityTableCell() );
                 }
             }
             // remove the columnHeaders from the end
@@ -317,7 +318,7 @@ public class PurityBean
             row.setCells( newCells );
         }
         columnHeaders = new ArrayList<ColumnHeader>( newColumns );
-        rows = new ArrayList<Row>();
+        rows = new ArrayList<PurityRow>();
         rows.addAll( newRows );
     }
 
@@ -326,7 +327,7 @@ public class PurityBean
         columnHeaders.remove( colIndex );
         for( int i = 0; i < rows.size(); i++ )
         {
-            List<TableCell> cells = rows.get( i ).getCells();
+            List<PurityTableCell> cells = rows.get( i ).getCells();
             cells.remove( colIndex );
         }
         numberOfColumns--;
@@ -388,10 +389,10 @@ public class PurityBean
         // Test each cell for valid value here, so we can give a complete error list.
         ArrayList<ArrayList<String>> errorDataArray = new ArrayList<>();
         boolean errorFlag = false;
-        for( Row row : rows )
+        for( PurityRow row : rows )
         {
             int cInd = 0;
-            for( TableCell cell : row.getCells() )
+            for( PurityTableCell cell : row.getCells() )
             {
                 ColumnHeader columnHeader = columnHeaders.get( cInd );
                 if( PurityBean.DATUM_TYPE.equals( columnHeader.getColumnType() ) )
@@ -421,12 +422,12 @@ public class PurityBean
         }
 
         int rInd = 0;
-        for( Row row : rows )
+        for( PurityRow row : rows )
         {
             int cInd = 0;
-            List<Condition> rowConditions = new ArrayList<Condition>();
+            List<PurityDatumCondition> rowConditions = new ArrayList<PurityDatumCondition>();
             List<PurityDatum> rowData = new ArrayList<PurityDatum>();
-            for( TableCell cell : row.getCells() )
+            for( PurityTableCell cell : row.getCells() )
             {
                 ColumnHeader columnHeader = columnHeaders.get( cInd );
 
@@ -493,7 +494,7 @@ public class PurityBean
                 else if( PurityBean.CONDITION_TYPE.equals( columnHeader
                         .getColumnType() ) )
                 {
-                    Condition condition = cell.getCondition();
+                    PurityDatumCondition condition = cell.getCondition();
                     if( StringUtils.isEmpty( cell.getValue() ) )
                     {
                         condition
@@ -547,13 +548,13 @@ public class PurityBean
             {
                 if( datum.getConditionCollection() == null )
                 {
-                    datum.setConditionCollection( new HashSet<Condition>() );
+                    datum.setConditionCollection( new HashSet<PurityDatumCondition>() );
                 }
                 else
                 {
                     datum.getConditionCollection().clear();
                 }
-                for( Condition condition : rowConditions )
+                for( PurityDatumCondition condition : rowConditions )
                 {
                     datum.getConditionCollection().add( condition );
                 }
@@ -685,7 +686,7 @@ public class PurityBean
                                 + originalDatumId );
                     }
                     // conditions
-                    Collection<Condition> oldConditions = datum
+                    Collection<PurityDatumCondition> oldConditions = datum
                             .getConditionCollection();
                     if( oldConditions == null || oldConditions.isEmpty() )
                     {
@@ -693,9 +694,9 @@ public class PurityBean
                     }
                     else
                     {
-                        datum.setConditionCollection( new HashSet<Condition>(
+                        datum.setConditionCollection( new HashSet<PurityDatumCondition>(
                                 oldConditions ) );
-                        for( Condition condition : datum
+                        for( PurityDatumCondition condition : datum
                                 .getConditionCollection() )
                         {
                             String originalCondId = null;
@@ -768,12 +769,12 @@ public class PurityBean
     {
         if( ! rows.isEmpty() )
         {
-            Comparators.TableCellComparator cellComparator = new Comparators.TableCellComparator();
+            Comparators.PurityTableCellComparator cellComparator = new Comparators.PurityTableCellComparator();
 
-            for( Row row : rows )
+            for( PurityRow row : rows )
             {
                 int cInd = 0;
-                for( TableCell cell : row.getCells() )
+                for( PurityTableCell cell : row.getCells() )
                 {
                     ColumnHeader columnHeader = columnHeaders.get( cInd++ );
                     cell.setColumnOrder( columnHeader.getColumnOrder() );
@@ -788,10 +789,10 @@ public class PurityBean
             // update the created date regardless whether created date already
             // existed
             int rInd = 0;
-            for( Row row : rows )
+            for( PurityRow row : rows )
             {
                 int cInd = 0;
-                for( TableCell cell : row.getCells() )
+                for( PurityTableCell cell : row.getCells() )
                 {
                     ColumnHeader columnHeader = columnHeaders.get( cInd );
                     if( PurityBean.DATUM_TYPE.equals( columnHeader
@@ -804,7 +805,7 @@ public class PurityBean
                     else if( PurityBean.CONDITION_TYPE.equals( columnHeader
                             .getColumnType() ) )
                     {
-                        Condition condition = cell.getCondition();
+                        PurityDatumCondition condition = cell.getCondition();
                         condition.setCreatedDate( DateUtils
                                 .addSecondsToCurrentDate( rInd * 100 + cInd ) );
                     }

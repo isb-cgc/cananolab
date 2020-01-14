@@ -22,7 +22,7 @@ public class PurityDatum implements java.io.Serializable {
 	private String createdBy;
 	private Date createdDate;
 	private String operand;
-	private Set<Condition> experimentConditions = new HashSet<Condition>(0);
+	private Set<PurityDatumCondition> conditionCollection = new HashSet<PurityDatumCondition>(0);
 
 	public PurityDatum() {
 	}
@@ -36,7 +36,7 @@ public class PurityDatum implements java.io.Serializable {
 	}
 
 	public PurityDatum(long datumPkId, File file, SynthesisPurity synthesisPurity, String name, Float value, String valueType,
-					   String valueUnit, String createdBy, Date createdDate, String operand, Set<Condition> experimentConditions) {
+					   String valueUnit, String createdBy, Date createdDate, String operand, Set<PurityDatumCondition> experimentConditions) {
 		this.datumPkId = datumPkId;
 		this.file = file;
 		this.synthesisPurity = synthesisPurity;
@@ -47,7 +47,7 @@ public class PurityDatum implements java.io.Serializable {
 		this.createdBy = createdBy;
 		this.createdDate = createdDate;
 		this.operand = operand;
-		this.experimentConditions = experimentConditions;
+		this.conditionCollection = experimentConditions;
 	}
 
 	public Long getId() {
@@ -130,12 +130,12 @@ public class PurityDatum implements java.io.Serializable {
 		this.operand = operand;
 	}
 
-	public Set<Condition> getConditionCollection() {
-		return this.experimentConditions;
+	public Set<PurityDatumCondition> getConditionCollection() {
+		return this.conditionCollection;
 	}
 
-	public void setConditionCollection(Set<Condition> experimentConditions) {
-		this.experimentConditions = experimentConditions;
+	public void setConditionCollection(Set<PurityDatumCondition> experimentConditions) {
+		this.conditionCollection = experimentConditions;
 	}
 
 }
