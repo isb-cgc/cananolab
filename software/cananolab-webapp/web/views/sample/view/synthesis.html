@@ -1,6 +1,6 @@
 
 
-<div class="spacer">
+<div class="spacer" id="synthesis">
     <table border="0" class="contentTitle" summary="layout" width="100%">
         <tr>
             <th align="left" scope="col">Sample {{sampleName.name}} Synthesis</th>
@@ -33,19 +33,104 @@
                                 <table summary="layout" width="100%" border="0" cellspacing="0" cellpadding="0">
                                     <tbody>
                                         <tr>
-                                            <td class="characterization">
-                                                Placeholder
-                                            </td>
+                                            <td class="characterization">{{m.DisplayName}}</td>
                                         </tr>
                                         <tr>
                                             <td>
                                                 <div class="table">
-                                                    <div class="left">
-                                                        Something
-                                                    </div>
-                                                    <div class="right">
-                                                        Something Value
-                                                    </div>
+                                                    <table>
+                                                        <tr>
+                                                            <td class="left">Description</td>
+                                                            <td class="right">{{m.Description}}</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td class="left">Protocol</td>
+                                                            <td class="right">{{m.Protocol}}</td>
+                                                        </tr>
+                                                        <tr ng-repeat="me in m.MaterialElements">
+                                                            <td colspan="2" class="materialElements">
+                                                                <table>
+                                                                    <tr>
+                                                                        <td class="left">Material Type</td>
+                                                                        <td class="right">{{me.Type}}</td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td class="left">Chemical Name</td>
+                                                                        <td class="right">{{me.ChemicalName}}</td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td class="left">PubChem Data Source</td>
+                                                                        <td class="right">{{me.PubChemDataSourceName}}</td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td class="left">Amount (and units)</td>
+                                                                        <td class="right">{{me.Amount}} ({{me.ValueUnit}})</td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td class="left">Molecular Formula</td>
+                                                                        <td class="right">{{me.MolecularFormula}}</td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td class="left">Material Description</td>
+                                                                        <td class="right">{{me.Description}}</td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td class="left">Supplier</td>
+                                                                        <td class="right">
+                                                                            <span ng-if="me.Supplier">{{me.Supplier.supplierName}}</span>
+                                                                            <span ng-if="!me.Supplier">N/A</span>
+                                                                        </td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td class="left">Lot or Batch Number</td>
+                                                                        <td class="right">
+                                                                            <span ng-if="me.Supplier">{{me.Supplier.lot}}</span>
+                                                                            <span ng-if="!me.Supplier">N/A</span>
+                                                                        </td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td class="left">Inherent Functions</td>
+                                                                        <td class="right">
+                                                                            <span ng-if="!me.InherentFunctions.length">N/A</span>
+                                                                            <div ng-if="me.InherentFunctions.length" ng-repeat="iFun in me.InherentFunctions" class="inherentFunctions">
+                                                                                <table>
+                                                                                    <tr>
+                                                                                        <td class="left">Name</td>
+                                                                                        <td>{{iFun.FunctionDisplayName}}</td>
+                                                                                    </tr>
+                                                                                    <tr>
+                                                                                        <td class="left">Type</td>
+                                                                                        <td>{{iFun.FunctionType}}</td>
+                                                                                    </tr>
+                                                                                    <tr>
+                                                                                        <td class="left">Description</td>
+                                                                                        <td>{{iFun.FunctionDescription}}</td>
+                                                                                    </tr>
+                                                                                </table>
+                                                                            </div>
+                                                                        </td>
+                                                                    </tr>
+
+
+<!-- 1. Material Type: [other] composing element
+Chemical Name: chloroauric acid
+PubChem Data Source? compound PubChem ID: 44134746
+Amount (and units)? 0.01 (%wt)
+Molecular Formula? What type is it? HAuCl4 . 3H2O
+(Choose an item. If other, type new Type here.)
+Material Description: 200 mL of 0.01 wt% gold precursor
+Supplier: n/a
+Lot or Batch Number: n/a
+Inherent Function? n/a
+Function Type? Choose an item.
+If imaging, choose your Imaging Modality Type: Choose an item.
+Describe your Inherent Function here: Description.
+Please feel free to add relevant files in your caNanoLab entry. -->
+
+                                                                </table><br />
+                                                            </td>
+                                                        </tr>
+                                                    </table>
                                                 </div>                                                
                                             </td>
                                         </tr>
