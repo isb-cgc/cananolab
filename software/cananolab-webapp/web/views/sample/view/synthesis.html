@@ -19,6 +19,7 @@
         <tab heading="Functionalization" ng-click="select(1)"></tab>
         <tab heading="Purification" ng-click="select(2)"></tab>
     </tabset>
+    <!-- Materials -->
     <table ng-hide="show0" class="summaryViewNoTop" width="100%" summary="layout">
         <tr>
             <td class="heading">Materials</td>
@@ -77,9 +78,10 @@
                                             </tr>
                                             <tr>
                                                 <td width="10%" class="label">Inherent Functions</td>
-                                                <td  width="90%" class="inherentFunctions">
+                                                <td width="90%" class="inherentFunctions">
                                                     <span ng-if="!me.InherentFunctions.length">N/A</span>
-                                                    <div ng-repeat="iFun in me.InherentFunctions" class="inherentFunctions">
+                                                    <div ng-repeat="iFun in me.InherentFunctions"
+                                                        class="inherentFunctions">
                                                         <table cellpadding="0" cellspacing="0">
                                                             <tr>
                                                                 <td width="15%">Name</td>
@@ -107,6 +109,198 @@
             </td>
         </tr>
     </table>
+    <!-- End Materials -->
+
+    <!-- Functionalization -->
+    <table ng-hide="show1" class="summaryViewNoTop" width="100%" summary="layout">
+        <tr>
+            <td class="heading">Functionalization</td>
+        </tr>
+        <tr ng-repeat="m in materials">
+            <td>
+                <table cellspacing="0" cellpadding="0" width="100%">
+                    <tr>
+                        <td class="subHeading">{{m.DisplayName}}</td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <table cellspacing="0" cellpadding="0" width="100%" class="topLevel">
+                                <tr>
+                                    <td width="10%" class="label">Description</td>
+                                    <td width="90%">{{m.Description}}</td>
+                                </tr>
+                                <tr>
+                                    <td width="10%" class="label">Protocol</td>
+                                    <td width="90%">{{m.Protocol}}</td>
+                                </tr>
+                                <tr ng-repeat="me in m.MaterialElements">
+                                    <td colspan="2" class="materials">
+                                        <table cellspacing="0" cellpadding="0">
+                                            <tr>
+                                                <td width="10%" class="label">Material Type</td>
+                                                <td width="90%">{{me.Type}}</td>
+                                            </tr>
+                                            <tr>
+                                                <td width="10%" class="label">Chemical Name</td>
+                                                <td width="90%">{{me.ChemicalName}}</td>
+                                            </tr>
+                                            <tr>
+                                                <td width="10%" class="label">PubChem Data Source</td>
+                                                <td width="90%">{{me.PubChemDataSourceName}}</td>
+                                            </tr>
+                                            <tr>
+                                                <td width="10%" class="label">Amount (and units)</td>
+                                                <td width="90%">{{me.Amount}} ({{me.ValueUnit}})</td>
+                                            </tr>
+                                            <tr>
+                                                <td width="10%" class="label">Molecular Formula</td>
+                                                <td width="90%">{{me.MolecularFormula}}</td>
+                                            </tr>
+                                            <tr>
+                                                <td width="10%" class="label">Material Description</td>
+                                                <td width="90%">{{me.Description}}</td>
+                                            </tr>
+                                            <tr>
+                                                <td width="10%" class="label">Supplier</td>
+                                                <td width="90%">{{getValueOfField(me.Supplier.supplierName)}}</td>
+                                            </tr>
+                                            <tr>
+                                                <td width="10%" class="label">Lot or Batch Number</td>
+                                                <td width="90%">{{getValueOfField(me.Supplier.lot)}}</td>
+                                            </tr>
+                                            <tr>
+                                                <td width="10%" class="label">Inherent Functions</td>
+                                                <td width="90%" class="inherentFunctions">
+                                                    <span ng-if="!me.InherentFunctions.length">N/A</span>
+                                                    <div ng-repeat="iFun in me.InherentFunctions"
+                                                        class="inherentFunctions">
+                                                        <table cellpadding="0" cellspacing="0">
+                                                            <tr>
+                                                                <td width="15%">Name</td>
+                                                                <td width="85%">{{iFun.FunctionDisplayName}}</td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td width="15%">Type</td>
+                                                                <td width="85%">{{iFun.FunctionType}}</td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td width="15%">Description</td>
+                                                                <td width="85%">{{iFun.FunctionDescription}}</td>
+                                                            </tr>
+                                                        </table>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </td>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+    </table>
+    <!-- End Functionalization -->
+
+    <!-- Purification -->
+    <table ng-hide="show2" class="summaryViewNoTop" width="100%" summary="layout">
+        <tr>
+            <td class="heading">Purification</td>
+        </tr>
+        <tr ng-repeat="p in purifications">
+            <td>
+                <table cellspacing="0" cellpadding="0" width="100%">
+                    <tr>
+                        <td class="subHeading">{{p.DisplayName}}</td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <table cellspacing="0" cellpadding="0" width="100%" class="topLevel">
+                                <tr>
+                                    <td width="10%" class="label">Protocol Name</td>
+                                    <td width="90%">{{p.Protocol}}</td>
+                                </tr>
+                                <tr>
+                                    <td width="10%" class="label">Characterization Source/Date</td>
+                                    <td width="90%">{{p.Source}}/{{p.Date}}</td>
+                                </tr>
+                                <tr>
+                                    <td width="10%" class="label">Description</td>
+                                    <td width="90%">{{p.Description}}</td>
+                                </tr>
+
+                                <tr ng-repeat="t in p.Technique">
+                                    <td colspan="2" class="materials">
+                                        <table cellspacing="0" cellpadding="0">
+                                            <tr>
+                                                <td width="10%" class="label">Technique</td>
+                                                <td width="90%">{{t.technique.type}}</td>
+                                            </tr>
+                                            <tr>
+                                                <td width="10%" class="label">Abbreviation</td>
+                                                <td width="90%">{{t.technique.abbreviation}}</td>
+                                            </tr>
+                                            <tr>
+                                                <td width="10%" class="label">Instruments</td>
+                                                <td width="90%">
+                                                    <table cellspacing="0" cellpadding="0" width="350px"
+                                                        class="instruments">
+                                                        <th>Manufacturer</th>
+                                                        <th>Model Name</th>
+                                                        <th>Type</th>
+                                                        <tr ng-repeat="i in t.instrumentCollection">
+                                                            <td>{{i.manufacturer}}</td>
+                                                            <td>{{i.modelName}}</td>
+                                                            <td>{{i.type}}</td>
+                                                        </tr>
+                                                    </table>
+                                                </td>
+                                            </tr>
+
+                                            <tr>
+                                                <td width="10%" class="label">Inherent Functions</td>
+                                                <td width="90%" class="inherentFunctions">
+                                                    <span ng-if="!me.InherentFunctions.length">N/A</span>
+                                                    <div ng-repeat="iFun in me.InherentFunctions"
+                                                        class="inherentFunctions">
+                                                        <table cellpadding="0" cellspacing="0">
+                                                            <tr>
+                                                                <td width="15%">Name</td>
+                                                                <td width="85%">{{iFun.FunctionDisplayName}}</td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td width="15%">Type</td>
+                                                                <td width="85%">{{iFun.FunctionType}}</td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td width="15%">Description</td>
+                                                                <td width="85%">{{iFun.FunctionDescription}}</td>
+                                                            </tr>
+                                                        </table>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td width="10%" class="label">Yield</td>
+                                    <td width="90%">{{p.Yield}}</td>
+                                </tr>
+                                <tr>
+                                    <td width="10%" class="label">Analysis</td>
+                                    <td width="90%">{{p.Analysis}}</td>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+    </table>
+    <!-- End Purification -->
+
 </div>
 
 <div id="loader" class="sample" ng-show="loader">

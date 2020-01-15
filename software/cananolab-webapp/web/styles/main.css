@@ -1986,10 +1986,14 @@ h1 {
   padding:5px 5px 5px 5px
 }
 
-.inherentFunctions {
+#synthesis .inherentFunctions {
     margin:0px 0px 10px 0px;
 }
 
-.inherentFunctions table td{
+#synthesis .inherentFunctions table td{
     padding:5px !important;
+}
+
+#synthesis .instruments td{
+  padding-left:6px !important;
 }
