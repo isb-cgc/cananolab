@@ -1936,24 +1936,60 @@ h1 {
     -moz-margin-end: 0;
     font-weight: 700;
 }
-#synthesis .table{
-    padding:5px;
-    width:100%;
-    margin-bottom:10px;
+
+#synthesis table .heading {
+  font-weight: bold;
+  color: #fff;
+  font-size: 100% !important;
+  background-color: #005518;
+  padding-left: 15px;
+  margin: 0px;
+  padding: 5px 0px 5px 15px;
 }
 
-
-#synthesis .table .left {
-    font-weight:bold;
+#synthesis table .subHeading {
+  background-color: #005d7e !important;
+  margin: 0px;
+  color: #fff;
+  font-weight: bold;
+  font-size: 100% !important;
+  padding: 5px 0px 5px 15px;
+}
+#synthesis table td {
+  padding: 0px;
 }
 
-#synthesis .table tr td.materialElements {
-    border:1px solid #ccc;
+#synthesis table td .topLevel {
+  padding: 10px 0px 0px 15px;
 }
 
-div.inherentFunctions {
-    border:1px solid #000;
-    margin-bottom:10px;
-    padding:4px;
-    width:100% !important;
+#synthesis table td td {
+  font-size: 100%;
+  padding-right: 10px;
+}
+
+#synthesis table td td .label {
+  font-weight: bold;
+}
+
+#synthesis table td .topLevel td {
+  padding-bottom: 10px;
+}
+
+#synthesis table td .materials td {
+  padding-bottom: 10px;
+}
+
+#synthesis table td .materials table{
+  border:1px solid #aaa;
+  width:100%;
+  padding:5px 5px 5px 5px
+}
+
+.inherentFunctions {
+    margin:0px 0px 10px 0px;
+}
+
+.inherentFunctions table td{
+    padding:5px !important;
 }
