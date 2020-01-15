@@ -47,6 +47,15 @@ app.controller('SynthesisCtrl', function (sampleService,utilsService,navigationS
         }
     }; 
 
+    $scope.getValueOfField = function(val) {
+        if (val) {
+            return val
+        }
+        else {
+            return 'N/A'
+        }
+    }
+
     $scope.loader = true;
     $http({method: 'GET', url: '/caNanoLab/rest/synthesis/summaryView?sampleId=' + $scope.sampleId.data}).
     success(function(data, status, headers, config) {
