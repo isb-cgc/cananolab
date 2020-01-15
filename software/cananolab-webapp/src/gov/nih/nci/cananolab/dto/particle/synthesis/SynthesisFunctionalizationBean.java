@@ -28,14 +28,21 @@ public class SynthesisFunctionalizationBean  extends BaseSynthesisEntityBean {
 
     public SynthesisFunctionalizationBean(SynthesisFunctionalization synthesisFunctionalization){
         this.domainEntity=synthesisFunctionalization;
+
         if(synthesisFunctionalization.getSynthesisFunctionalizationElements()!=null){
+ /*  @TODO  uncomment when synthesisFunctionalization.getSynthesisFunctionalizationElements() returns data
             for(SynthesisFunctionalizationElement synthesisFunctionalizationElement: synthesisFunctionalization.getSynthesisFunctionalizationElements()){
                 synthesisFunctionalizationElements.add(new SynthesisFunctionalizationElementBean(synthesisFunctionalizationElement));
             }
+*/
         }
         Collections.sort(synthesisFunctionalizationElements, new Comparators.SFEBeanTypeComparator());
+
     }
 
+    public SynthesisFunctionalizationBean() {
+
+    }
 
 
     public SynthesisFunctionalization getDomainCopy(String createdBy) {
