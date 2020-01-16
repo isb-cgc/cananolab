@@ -72,7 +72,7 @@ public class SynthesisPurificationBO extends BaseAnnotationBO {
             simpleSynthesisPurificationBean.transferSynthesisPurificationBeanToSimple(synBean, httpRequest, springSecurityAclService);
             return simpleSynthesisPurificationBean;
         } catch (IllegalFormatConversionException e){
-            logger.error("Either sample id or data id is not an appropriate identifier",e);
+            logger.error("Either sample id or data id is not an appropriate identifier. ",e);
             throw e;
         }
     }

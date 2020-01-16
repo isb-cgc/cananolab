@@ -7,6 +7,7 @@ import gov.nih.nci.cananolab.dto.particle.synthesis.SynthesisFunctionalizationBe
 import gov.nih.nci.cananolab.dto.particle.synthesis.SynthesisFunctionalizationElementBean;
 import gov.nih.nci.cananolab.security.service.SpringSecurityAclService;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import javax.servlet.http.HttpServletRequest;
@@ -17,10 +18,10 @@ public class SimpleSynthesisFunctionalizationBean {
     private String sampleId="";
     private String dataId="";
 //    private SimpleSynFuncElementBean funcElementBean;
-    List<SimpleSynFuncElementBean> funcElementBeans;
+    List<SimpleSynFuncElementBean> funcElementBeans = new ArrayList<SimpleSynFuncElementBean>() ;
 //    private SimpleFileBean fileBean;
-    List<SimpleFileBean> fileBeans;
-    private List<String> errors;
+    List<SimpleFileBean> fileBeans = new ArrayList<SimpleFileBean>();
+    private List<String> errors = new ArrayList<String>();
     private String description;
 //    private SynthesisFunctionalization domainEntity;
 //    private SynthesisFunctionalizationBean synthesisFunctionalizationBean;

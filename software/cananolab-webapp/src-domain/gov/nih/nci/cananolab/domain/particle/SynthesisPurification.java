@@ -13,7 +13,7 @@ import java.util.Set;
  */
 public class SynthesisPurification implements java.io.Serializable {
 
-	private Long synthesisPurificationPkId;
+	private Long id;
 	private Protocol protocol;
 	private String type;
 	private String methodName;
@@ -28,18 +28,18 @@ public class SynthesisPurification implements java.io.Serializable {
 	public SynthesisPurification() {
 	}
 
-	public SynthesisPurification(Long synthesisPurificationPkId, Protocol protocol,
-								  String createdBy, Date createdDate) {
-		this.synthesisPurificationPkId = synthesisPurificationPkId;
+	public SynthesisPurification(Long id, Protocol protocol,
+								 String createdBy, Date createdDate) {
+		this.id = id;
 		this.protocol = protocol;
 		this.createdBy = createdBy;
 		this.createdDate = createdDate;
 	}
 
-	public SynthesisPurification(Long synthesisPurificationPkId, Protocol protocol,
-								  String type, String methodName, String designMethodDescription, String createdBy,
+	public SynthesisPurification(Long id, Protocol protocol,
+								 String type, String methodName, String designMethodDescription, String createdBy,
 								 Date createdDate, Set<SynthesisPurity> purities, Set<PurificationConfig> purificationConfigs, Float yield, String analysis) {
-		this.synthesisPurificationPkId = synthesisPurificationPkId;
+		this.id = id;
 		this.protocol = protocol;
 		this.type = type;
 		this.methodName = methodName;
@@ -53,11 +53,11 @@ public class SynthesisPurification implements java.io.Serializable {
 	}
 
 	public Long getId() {
-		return this.synthesisPurificationPkId;
+		return this.id;
 	}
 
 	public void setId(Long synthesisFuncPurificationPkId) {
-		this.synthesisPurificationPkId = synthesisFuncPurificationPkId;
+		this.id = synthesisFuncPurificationPkId;
 	}
 
 	public Protocol getProtocol() {
