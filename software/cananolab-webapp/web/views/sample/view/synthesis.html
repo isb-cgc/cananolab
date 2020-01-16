@@ -35,7 +35,7 @@
                             <table cellspacing="0" cellpadding="0" width="100%" class="topLevel">
                                 <tr>
                                     <td width="10%" class="label">Description</td>
-                                    <td width="90%">{{m.Description}}</td>
+                                    <td width="90%">{{getValueOfField(m.Description)}}</td>
                                 </tr>
                                 <tr>
                                     <td width="10%" class="label">Protocol</td>
@@ -227,7 +227,7 @@
                                 </tr>
                                 <tr>
                                     <td width="10%" class="label">Description</td>
-                                    <td width="90%">{{p.Description}}</td>
+                                    <td width="90%">{{getValueOfField(p.Description)}}</td>
                                 </tr>
 
                                 <tr ng-repeat="t in p.Technique">
@@ -286,11 +286,11 @@
                                 </tr>
                                 <tr>
                                     <td width="10%" class="label">Yield</td>
-                                    <td width="90%">{{p.Yield}}</td>
+                                    <td width="90%">{{getValueOfField(p.Yield)}}</td>
                                 </tr>
                                 <tr>
                                     <td width="10%" class="label">Analysis</td>
-                                    <td width="90%">{{p.Analysis}}</td>
+                                    <td width="90%">{{getValueOfField(p.Analysis)}}</td>
                                 </tr>
                             </table>
                         </td>
