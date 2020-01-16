@@ -226,7 +226,7 @@ public class SimpleSynthesisBean {
                     List<Object> testList = transferPurificationResults(purificationBean);
                     for(PurityBean purityBean : purificationBean.getPurityBeans()){
                         purificationPurity = new HashMap<String, Object>();
-                        purificationPurity.put("purity", purityBean.toString());
+//                        purificationPurity.put("purity", purityBean.toString());
 
                         //TODO write
                         //loop through datum?
