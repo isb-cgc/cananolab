@@ -128,5 +128,24 @@ public class SimpleFileBean {
 		this.setIsPublic(simpleBean.getPublicStatus());
 	}
 
+	public SimpleFileBean(FileBean simpleBean, String sampleId)
+	{
+		this.setDescription(simpleBean.getDescription());
+		this.setId(simpleBean.getDomainFile().getId());
+		this.setKeywordsStr(simpleBean.getKeywordsStr());
+		this.setTitle(simpleBean.getDomainFile().getTitle());
+		this.setType(simpleBean.getDomainFile().getType());
+		this.setUri(simpleBean.getDomainFile().getUri());
+		this.setUriExternal(simpleBean.getDomainFile().getUriExternal());
+		this.setExternalUrl(simpleBean.getExternalUrl());
+		this.setSampleId(sampleId) ;
+		this.setCreatedBy(simpleBean.getDomainFile().getCreatedBy());
+		this.setCreatedDate(simpleBean.getDomainFile().getCreatedDate());
+		this.setTheAccess(simpleBean.getTheAccess());
+		this.setIsPublic(simpleBean.getPublicStatus());
+	}
+
+	public SimpleFileBean(){}
+
 }
 

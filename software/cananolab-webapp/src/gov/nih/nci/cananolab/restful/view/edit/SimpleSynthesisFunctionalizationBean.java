@@ -1,7 +1,10 @@
 package gov.nih.nci.cananolab.restful.view.edit;
 
 import gov.nih.nci.cananolab.domain.particle.SynthesisFunctionalization;
+import gov.nih.nci.cananolab.domain.particle.SynthesisFunctionalizationElement;
+import gov.nih.nci.cananolab.dto.common.FileBean;
 import gov.nih.nci.cananolab.dto.particle.synthesis.SynthesisFunctionalizationBean;
+import gov.nih.nci.cananolab.dto.particle.synthesis.SynthesisFunctionalizationElementBean;
 import gov.nih.nci.cananolab.security.service.SpringSecurityAclService;
 
 import java.util.Date;
@@ -13,12 +16,14 @@ public class SimpleSynthesisFunctionalizationBean {
     private Long id = 0L;
     private String sampleId="";
     private String dataId="";
-    private SimpleSynFuncElementBean funcElementBean;
-    private SimpleFileBean fileBean;
+//    private SimpleSynFuncElementBean funcElementBean;
+    List<SimpleSynFuncElementBean> funcElementBeans;
+//    private SimpleFileBean fileBean;
+    List<SimpleFileBean> fileBeans;
     private List<String> errors;
     private String description;
-    private SynthesisFunctionalization domainEntity;
-    private SynthesisFunctionalizationBean synthesisFunctionalizationBean;
+//    private SynthesisFunctionalization domainEntity;
+//    private SynthesisFunctionalizationBean synthesisFunctionalizationBean;
     private Date createdDate;
     private String createdBy="";
 
@@ -61,22 +66,22 @@ public class SimpleSynthesisFunctionalizationBean {
     public void setDataId(String dataId) {
         this.dataId = dataId;
     }
-
-    public SynthesisFunctionalization getDomainEntity() {
-        return domainEntity;
-    }
-
-    public void setDomainEntity(SynthesisFunctionalization domainEntity) {
-        this.domainEntity = domainEntity;
-    }
-
-    public SynthesisFunctionalizationBean getSynthesisFunctionalizationBean() {
-        return synthesisFunctionalizationBean;
-    }
-
-    public void setSynthesisFunctionalizationBean(SynthesisFunctionalizationBean synthesisFunctionalizationBean) {
-        this.synthesisFunctionalizationBean = synthesisFunctionalizationBean;
-    }
+//
+//    public SynthesisFunctionalization getDomainEntity() {
+//        return domainEntity;
+//    }
+//
+//    public void setDomainEntity(SynthesisFunctionalization domainEntity) {
+//        this.domainEntity = domainEntity;
+//    }
+//
+//    public SynthesisFunctionalizationBean getSynthesisFunctionalizationBean() {
+//        return synthesisFunctionalizationBean;
+//    }
+//
+//    public void setSynthesisFunctionalizationBean(SynthesisFunctionalizationBean synthesisFunctionalizationBean) {
+//        this.synthesisFunctionalizationBean = synthesisFunctionalizationBean;
+//    }
 
     public String getSampleId() {
         return sampleId;
@@ -86,12 +91,29 @@ public class SimpleSynthesisFunctionalizationBean {
         this.sampleId = sampleId;
     }
 
-    public SimpleFileBean getFileBean() {
-        return fileBean;
+//    public SimpleFileBean getFileBean() {
+//        return fileBean;
+//    }
+//
+//    public void setFileBean(SimpleFileBean fileBean) {
+//        this.fileBean = fileBean;
+//    }
+
+
+    public List<SimpleSynFuncElementBean> getFuncElementBeans() {
+        return funcElementBeans;
     }
 
-    public void setFileBean(SimpleFileBean fileBean) {
-        this.fileBean = fileBean;
+    public void setFuncElementBeans(List<SimpleSynFuncElementBean> funcElementBeans) {
+        this.funcElementBeans = funcElementBeans;
+    }
+
+    public List<SimpleFileBean> getFileBeans() {
+        return fileBeans;
+    }
+
+    public void setFileBeans(List<SimpleFileBean> fileBeans) {
+        this.fileBeans = fileBeans;
     }
 
     public List<String> getErrors() {
@@ -123,6 +145,17 @@ public class SimpleSynthesisFunctionalizationBean {
         setDataId(httpRequest.getParameter ("dataId"));
         setCreatedDate( synthesisFunctionalizationBean.getDomainEntity().getCreatedDate());
         setCreatedBy( synthesisFunctionalizationBean.getDomainEntity().getCreatedBy());
+
+        for(FileBean fileBean: synthesisFunctionalizationBean.getFiles()){
+            fileBeans.add(new SimpleFileBean(fileBean, (String) httpRequest.getSession().getAttribute("sampleId")));
+        }
+
+        for(SynthesisFunctionalizationElementBean sfeBean: synthesisFunctionalizationBean.getSynthesisFunctionalizationElements()){
+            SimpleSynFuncElementBean  simpleSFEBean = new SimpleSynFuncElementBean();
+            simpleSFEBean.transferSimpleFunctionalizingBean(sfeBean,httpRequest,springSecurityAclService);
+            funcElementBeans.add(simpleSFEBean);
+        }
+
 
   /*
   Things in a synthesisFunctionalizationBean.getDomainEntity()
