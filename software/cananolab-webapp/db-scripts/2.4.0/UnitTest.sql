@@ -1845,6 +1845,13 @@ DROP TABLE IF EXISTS `purity_datum_condition`;
 CREATE TABLE `purity_datum_condition` (
   `datum_pk_id` bigint(20) NOT NULL COMMENT 'purity_datum_pk_id',
   `condition_pk_id` bigint(20) NOT NULL COMMENT 'condition_pk_id',
+  `name` varchar(200) NOT NULL,
+  `property` varchar(200) DEFAULT NULL,
+  `value` varchar(200) NOT NULL,
+  `value_unit` varchar(200) DEFAULT NULL,
+  `value_type` varchar(200) DEFAULT NULL,
+  `created_by` varchar(200) NOT NULL,
+  `created_date` datetime NOT NULL,
   PRIMARY KEY (`datum_pk_id`,`condition_pk_id`),
   KEY `FK_experiment_condition_TO_purity_datum_condition` (`condition_pk_id`),
   CONSTRAINT `FK_experiment_condition_TO_purity_datum_condition` FOREIGN KEY (`condition_pk_id`) REFERENCES `experiment_condition` (`condition_pk_id`),
@@ -1858,7 +1865,7 @@ CREATE TABLE `purity_datum_condition` (
 
 LOCK TABLES `purity_datum_condition` WRITE;
 /*!40000 ALTER TABLE `purity_datum_condition` DISABLE KEYS */;
-INSERT  IGNORE INTO `purity_datum_condition` (`datum_pk_id`, `condition_pk_id`) VALUES (1000,1000);
+INSERT  IGNORE INTO `purity_datum_condition` (`datum_pk_id`, `condition_pk_id`,`name`,`property`,`value`,`value_unit`,`value_type`,`created_by`,`created_date`) VALUES (1000,1000,'Synthesis condition 1','','42','g','observed','canano_user','2019-12-06 12:15:00');
 /*!40000 ALTER TABLE `purity_datum_condition` ENABLE KEYS */;
 UNLOCK TABLES;
 
