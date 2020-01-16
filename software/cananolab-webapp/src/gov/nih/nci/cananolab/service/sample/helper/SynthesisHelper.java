@@ -86,10 +86,21 @@ public class SynthesisHelper
         CaNanoLabApplicationService appService = (CaNanoLabApplicationService) ApplicationServiceProvider.getApplicationService();
         DetachedCriteria crit = DetachedCriteria.forClass(SynthesisFunctionalization.class).add(
                 Property.forName("id").eq(new Long(entityId)));
-        crit.setFetchMode("synthesisFunctionalizations", FetchMode.JOIN);
-        crit.setFetchMode("synthesisFunctionalizations.files", FetchMode.JOIN);
-        crit.setFetchMode("synthesisFunctionalizations.files.keywordConnection", FetchMode.JOIN);
-        crit.setFetchMode("synthesisFunctionalizations.synthesisFunctionalizationElements", FetchMode.JOIN);
+        crit.setFetchMode("files", FetchMode.JOIN);
+        crit.setFetchMode("files.keywordConnection", FetchMode.JOIN);
+        crit.setFetchMode("synthesisFunctionalizationElements", FetchMode.JOIN);
+        crit.setFetchMode("synthesisFunctionalizationElements.sfeInherentFunctions", FetchMode.JOIN);
+        crit.setFetchMode("synthesisFunctionalizationElements.files", FetchMode.JOIN);
+        crit.setFetchMode("synthesisFunctionalizationElements.files.keywordCollection", FetchMode.JOIN);
+
+
+//        crit.setFetchMode("synthesisFunctionalizations", FetchMode.JOIN);
+//        crit.setFetchMode("synthesisFunctionalizations.files", FetchMode.JOIN);
+//        crit.setFetchMode("synthesisFunctionalizations.files.keywordConnection", FetchMode.JOIN);
+//        crit.setFetchMode("synthesisFunctionalizations.synthesisFunctionalizationElements", FetchMode.JOIN);
+//        crit.setFetchMode("synthesisFunctionalizations.synthesisFunctionalizationElements.sfeInherentFunctions", FetchMode.JOIN);
+//        crit.setFetchMode("synthesisFunctionalizations.synthesisFunctionalizationElements.files", FetchMode.JOIN);
+//        crit.setFetchMode("synthesisFunctionalizations.synthesisFunctionalizationElements.files.keywordCollection", FetchMode.JOIN);
 
         crit.setResultTransformer(CriteriaSpecification.DISTINCT_ROOT_ENTITY);
         List result = appService.query(crit);
@@ -108,12 +119,25 @@ public class SynthesisHelper
         CaNanoLabApplicationService appService = (CaNanoLabApplicationService) ApplicationServiceProvider.getApplicationService();
         DetachedCriteria crit = DetachedCriteria.forClass(SynthesisMaterial.class).add(
                 Property.forName("id").eq(new Long(entityId)));
-        crit.setFetchMode("synthesisMaterials", FetchMode.JOIN);
-        crit.setFetchMode("synthesisMaterials.files", FetchMode.JOIN);
-        crit.setFetchMode("synthesisMaterials.files.keywordCollection", FetchMode.JOIN);
-        crit.setFetchMode("synthesisMaterials.synthesisMaterialElements", FetchMode.JOIN);
-        crit.setFetchMode("synthesisMaterials.synthesisMaterialElements.files", FetchMode.JOIN);
-        crit.setFetchMode("synthesisMaterials.synthesisMaterialElements.smeInherentFunctions", FetchMode.JOIN);
+
+        crit.setFetchMode("files", FetchMode.JOIN);
+        crit.setFetchMode("files.keywordCollection", FetchMode.JOIN);
+        crit.setFetchMode("protocol", FetchMode.JOIN);
+        crit.setFetchMode("protocol.file", FetchMode.JOIN);
+        crit.setFetchMode("protocol.file.keywordCollection", FetchMode.JOIN);
+        crit.setFetchMode("synthesisMaterialElements", FetchMode.JOIN);
+        crit.setFetchMode("synthesisMaterialElements.files", FetchMode.JOIN);
+        crit.setFetchMode("synthesisMaterialElements.smeInherentFunctions", FetchMode.JOIN);
+
+//        crit.setFetchMode("synthesisMaterials", FetchMode.JOIN);
+//        crit.setFetchMode("synthesisMaterials.files", FetchMode.JOIN);
+//        crit.setFetchMode("synthesisMaterials.files.keywordCollection", FetchMode.JOIN);
+//        crit.setFetchMode("synthesisMaterials,protocol", FetchMode.JOIN);
+//        crit.setFetchMode("synthesisMaterials.protocol.file", FetchMode.JOIN);
+//        crit.setFetchMode("synthesisMaterials.protocol.file.keywordCollection", FetchMode.JOIN);
+//        crit.setFetchMode("synthesisMaterials.synthesisMaterialElements", FetchMode.JOIN);
+//        crit.setFetchMode("synthesisMaterials.synthesisMaterialElements.files", FetchMode.JOIN);
+//        crit.setFetchMode("synthesisMaterials.synthesisMaterialElements.smeInherentFunctions", FetchMode.JOIN);
         crit.setResultTransformer(CriteriaSpecification.DISTINCT_ROOT_ENTITY);
         List result = appService.query(crit);
         if (!result.isEmpty()) {
@@ -128,17 +152,37 @@ public class SynthesisHelper
                 !springSecurityAclService.currentUserHasWritePermission(Long.valueOf(sampleId), SecureClassesEnum.SAMPLE.getClazz())) {
             throw new NoAccessException("User has no access to the synthesis purification entity " + entityId);
         }
+
         CaNanoLabApplicationService appService = (CaNanoLabApplicationService) ApplicationServiceProvider.getApplicationService();
+//        DetachedCriteria crit = DetachedCriteria.forClass(SynthesisPurification.class).add(
+//                Property.forName("id").eq(new Long(entityId)));
         DetachedCriteria crit = DetachedCriteria.forClass(SynthesisPurification.class).add(
                 Property.forName("id").eq(new Long(entityId)));
-        crit.setFetchMode("synthesisPurifications", FetchMode.JOIN);
-        crit.setFetchMode("synthesisPurifications.files", FetchMode.JOIN);
-        crit.setFetchMode("synthesisPurifications.files.keywordCollection", FetchMode.JOIN);
-        crit.setFetchMode("synthesisPurifications.purities", FetchMode.JOIN);
-        crit.setFetchMode("synthesisPurifications.purities.purityDatums", FetchMode.JOIN);
-        crit.setFetchMode("synthesisPurifications.purities.files", FetchMode.JOIN);
-        crit.setFetchMode("synthesisPurifications.purificationConfigs", FetchMode.JOIN);
-        crit.setFetchMode("synthesisPurifications.purificationConfigs.instruments", FetchMode.JOIN);
+        crit.setFetchMode("files", FetchMode.JOIN);
+        crit.setFetchMode("files.keywordCollection", FetchMode.JOIN);
+        crit.setFetchMode("purities", FetchMode.JOIN);
+        crit.setFetchMode("purities.purityDatumCollection", FetchMode.JOIN);
+        crit.setFetchMode("purities.purityDatumCollection.conditionCollection", FetchMode.JOIN);
+        crit.setFetchMode("purities.files", FetchMode.JOIN);
+        crit.setFetchMode("purities.files.keywordCollection", FetchMode.JOIN);
+        crit.setFetchMode("purificationConfigs", FetchMode.JOIN);
+        crit.setFetchMode("purificationConfigs.technique", FetchMode.JOIN);
+        crit.setFetchMode("purificationConfigs.instrumentCollection", FetchMode.JOIN);
+        crit.setFetchMode("protocol", FetchMode.JOIN);
+        crit.setFetchMode("protocol.file", FetchMode.JOIN);
+        crit.setFetchMode("protocol.file.keywordCollection", FetchMode.JOIN);
+
+//        crit.setFetchMode("synthesisPurifications", FetchMode.JOIN);
+//        crit.setFetchMode("synthesisPurifications.files", FetchMode.JOIN);
+//        crit.setFetchMode("synthesisPurifications.files.keywordCollection", FetchMode.JOIN);
+//        crit.setFetchMode("synthesisPurifications.purities", FetchMode.JOIN);
+//        crit.setFetchMode("synthesisPurifications.purities.purityDatumCollection", FetchMode.JOIN);
+//        crit.setFetchMode("synthesisPurifications.purities.purityDatumCollection.conditionCollection", FetchMode.JOIN);
+//        crit.setFetchMode("synthesisPurifications.purities.files", FetchMode.JOIN);
+//        crit.setFetchMode("synthesisPurifications.purities.files.keywordCollection", FetchMode.JOIN);
+//        crit.setFetchMode("synthesisPurifications.purificationConfigs", FetchMode.JOIN);
+//        crit.setFetchMode("synthesisPurifications.purificationConfigs.technique", FetchMode.JOIN);
+//        crit.setFetchMode("synthesisPurifications.purificationConfigs.instrumentCollection", FetchMode.JOIN);
         crit.setResultTransformer(CriteriaSpecification.DISTINCT_ROOT_ENTITY);
         List result = appService.query(crit);
         if (!result.isEmpty()) {

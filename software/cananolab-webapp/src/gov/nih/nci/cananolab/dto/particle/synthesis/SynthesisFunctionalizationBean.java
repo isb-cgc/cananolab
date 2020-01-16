@@ -30,11 +30,11 @@ public class SynthesisFunctionalizationBean  extends BaseSynthesisEntityBean {
         this.domainEntity=synthesisFunctionalization;
 
         if(synthesisFunctionalization.getSynthesisFunctionalizationElements()!=null){
- /*  @TODO  uncomment when synthesisFunctionalization.getSynthesisFunctionalizationElements() returns data
+ /*  @TODO  uncomment when synthesisFunctionalization.getSynthesisFunctionalizationElements() returns data  */
             for(SynthesisFunctionalizationElement synthesisFunctionalizationElement: synthesisFunctionalization.getSynthesisFunctionalizationElements()){
                 synthesisFunctionalizationElements.add(new SynthesisFunctionalizationElementBean(synthesisFunctionalizationElement));
             }
-*/
+
         }
         Collections.sort(synthesisFunctionalizationElements, new Comparators.SFEBeanTypeComparator());
 

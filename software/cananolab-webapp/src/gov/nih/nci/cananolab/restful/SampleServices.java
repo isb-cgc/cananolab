@@ -558,7 +558,7 @@ public class SampleServices {
 	@Path("/deletePOC")
 	@Produces("application/json")
 	 public Response deletePOC(@Context HttpServletRequest httpRequest, SimplePointOfContactBean simplePOCBean){
-		logger.debug("In deleteSample");
+		logger.debug("In deletePOC");
 		try {
 			SampleBO sampleBO = 
 					(SampleBO) SpringApplicationContext.getBean(httpRequest, "sampleBO");
@@ -612,7 +612,7 @@ public class SampleServices {
 	@Path("/submissionSetup")
 	@Produces("application/json")
 	 public Response submissionSetup(@Context HttpServletRequest httpRequest){
-		logger.debug("In edit Sample");
+		logger.debug("In submissionSetup");
 		
 		if (!SpringSecurityUtil.isUserLoggedIn()) {
 			logger.info("User not logged in");
@@ -640,7 +640,7 @@ public class SampleServices {
 	@Path("/getSampleNames")
 	@Produces("application/json")
 	 public Response getSampleNames(@Context HttpServletRequest httpRequest){
-		logger.debug("In getSortedSampleNames");
+		logger.debug("In getSampleNames");
 		try {
 
 			SampleBO sampleBO = (SampleBO) SpringApplicationContext.getBean(httpRequest, "sampleBO");
