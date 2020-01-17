@@ -1997,7 +1997,7 @@ h1 {
 }
 
 #synthesis table td .materials table{
-  border:1px solid #aaa;
+  border:1px solid #ccc;
   width:100%;
   padding:5px 5px 5px 5px
 }
@@ -2012,4 +2012,29 @@ h1 {
 
 #synthesis .instruments td{
   padding-left:6px !important;
+}
+
+.purifications div{
+    border:1px solid #ccc !important;
+    padding-bottom:10px !important;
+}
+.purifications table {
+    border:1px solid #ccc;   
+    padding:10px !important; 
+    margin:10px;
+    width:90%
+}
+.purifications table table{
+    border:1px solid #ccc;   
+    padding:10px !important; 
+    width:70%;
+}
+
+.purifications .techniqueTable {
+    border:1px solid #ccc;
+    background-color:#ccc;
+    color:#000;
+    font-size:100%;
+    font-weight:bold;
+    padding:5px;
 }
