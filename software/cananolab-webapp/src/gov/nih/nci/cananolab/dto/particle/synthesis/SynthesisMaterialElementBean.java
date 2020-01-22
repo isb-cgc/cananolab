@@ -1,8 +1,10 @@
 package gov.nih.nci.cananolab.dto.particle.synthesis;
 
+import gov.nih.nci.cananolab.domain.common.File;
 import gov.nih.nci.cananolab.domain.particle.Characterization;
 import gov.nih.nci.cananolab.domain.particle.SmeInherentFunction;
 import gov.nih.nci.cananolab.domain.particle.SynthesisMaterialElement;
+import gov.nih.nci.cananolab.dto.common.FileBean;
 import gov.nih.nci.cananolab.util.Constants;
 import gov.nih.nci.cananolab.util.StringUtils;
 import java.util.ArrayList;
@@ -15,6 +17,7 @@ public class SynthesisMaterialElementBean extends BaseSynthesisEntityBean {
     Logger logger = Logger.getLogger("SynthesisMaterialElementBean.class");
     private SynthesisMaterialElement domain;
     private List<SmeInherentFunctionBean> functions = new ArrayList<SmeInherentFunctionBean>();
+//    private List<FileBean> files = new ArrayList<FileBean>();
 String description="";
 
 
@@ -32,6 +35,11 @@ String description="";
         if(domain.getSmeInherentFunctions() !=null){
             for(SmeInherentFunction smeInherentFunction: domain.getSmeInherentFunctions()){
                 functions.add(new SmeInherentFunctionBean(smeInherentFunction));
+            }
+        }
+        if (domain.getFiles()!=null){
+            for(File file : domain.getFiles()){
+                files.add(new FileBean(file));
             }
         }
 

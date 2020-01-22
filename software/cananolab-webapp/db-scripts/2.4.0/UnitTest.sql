@@ -121,7 +121,7 @@ CREATE TABLE `acl_sid` (
   `sid` varchar(100) NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `unique_acl_sid` (`sid`,`principal`)
-) ENGINE=InnoDB AUTO_INCREMENT=50 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -1194,7 +1194,7 @@ CREATE TABLE `group_members` (
   KEY `fk_group_members_username_idx` (`username`),
   CONSTRAINT `fk_group_members_group` FOREIGN KEY (`group_id`) REFERENCES `groups` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `fk_group_members_username` FOREIGN KEY (`username`) REFERENCES `users` (`username`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -1220,7 +1220,7 @@ CREATE TABLE `groups` (
   `created_by` varchar(100) NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `group_name_UNIQUE` (`group_name`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -1250,7 +1250,7 @@ CREATE TABLE `hibernate_unique_key` (
 
 LOCK TABLES `hibernate_unique_key` WRITE;
 /*!40000 ALTER TABLE `hibernate_unique_key` DISABLE KEYS */;
-INSERT  IGNORE INTO `hibernate_unique_key` (`next_hi`) VALUES (2039);
+INSERT  IGNORE INTO `hibernate_unique_key` (`next_hi`) VALUES (2041);
 /*!40000 ALTER TABLE `hibernate_unique_key` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -1768,7 +1768,7 @@ CREATE TABLE `purification_config` (
 
 LOCK TABLES `purification_config` WRITE;
 /*!40000 ALTER TABLE `purification_config` DISABLE KEYS */;
-INSERT  IGNORE INTO `purification_config` (`purification_config_pk_id`, `synthesis_purification_pk_id`, `technique_pk_id`, `description`, `created_by`, `created_date`) VALUES (1000,1000,1000,'Configuration for synthesis purification','canano_curator','2019-12-06 12:15:00'),(1005,1005,1005,NULL,'canano_curator','2019-08-28 00:00:00');
+INSERT  IGNORE INTO `purification_config` (`purification_config_pk_id`, `synthesis_purification_pk_id`, `technique_pk_id`, `description`, `created_by`, `created_date`) VALUES (1000,1000,1000,'Configuration for synthesis purification','canano_curator','2019-12-06 12:15:00'),(1001,1000,1000,'Configuration for purification 2','canano_curator','2019-12-06 12:15:00'),(1002,1001,65896448,'Coulter configuration','canano_curator','2019-12-06 12:15:00'),(1005,1005,1005,NULL,'canano_curator','2019-08-28 00:00:00');
 /*!40000 ALTER TABLE `purification_config` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -1795,7 +1795,7 @@ CREATE TABLE `purification_config_instrument` (
 
 LOCK TABLES `purification_config_instrument` WRITE;
 /*!40000 ALTER TABLE `purification_config_instrument` DISABLE KEYS */;
-INSERT  IGNORE INTO `purification_config_instrument` (`purification_config_pk_id`, `instrument_pk_id`) VALUES (1000,1000),(1005,1005);
+INSERT  IGNORE INTO `purification_config_instrument` (`purification_config_pk_id`, `instrument_pk_id`) VALUES (1000,1000),(1005,1005),(1002,28475412),(1001,44793856),(1001,62914561);
 /*!40000 ALTER TABLE `purification_config_instrument` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -1865,7 +1865,7 @@ CREATE TABLE `purity_datum_condition` (
 
 LOCK TABLES `purity_datum_condition` WRITE;
 /*!40000 ALTER TABLE `purity_datum_condition` DISABLE KEYS */;
-INSERT  IGNORE INTO `purity_datum_condition` (`datum_pk_id`, `condition_pk_id`,`name`,`property`,`value`,`value_unit`,`value_type`,`created_by`,`created_date`) VALUES (1000,1000,'Synthesis condition 1','','42','g','observed','canano_user','2019-12-06 12:15:00');
+INSERT  IGNORE INTO `purity_datum_condition` (`datum_pk_id`, `condition_pk_id`, `name`, `property`, `value`, `value_unit`, `value_type`, `created_by`, `created_date`) VALUES (1000,1000,'Synthesis condition 1','','42','g','observed','canano_user','2019-12-06 12:15:00');
 /*!40000 ALTER TABLE `purity_datum_condition` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -1892,6 +1892,7 @@ CREATE TABLE `purity_file` (
 
 LOCK TABLES `purity_file` WRITE;
 /*!40000 ALTER TABLE `purity_file` DISABLE KEYS */;
+INSERT  IGNORE INTO `purity_file` (`purity_pk_id`, `file_pk_id`) VALUES (1002,1000);
 /*!40000 ALTER TABLE `purity_file` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -2003,7 +2004,7 @@ CREATE TABLE `sfe_inherent_function` (
 
 LOCK TABLES `sfe_inherent_function` WRITE;
 /*!40000 ALTER TABLE `sfe_inherent_function` DISABLE KEYS */;
-INSERT  IGNORE INTO `sfe_inherent_function` (`sfe_inherent_function_pk_id`, `synthesis_functionalization_element_pk_id`, `type`, `description`) VALUES (1000,1000,'biocompatibility','Synthesis Functionalization Material Inherent Function 1'),(1005,1005,'biocompatibility','');
+INSERT  IGNORE INTO `sfe_inherent_function` (`sfe_inherent_function_pk_id`, `synthesis_functionalization_element_pk_id`, `type`, `description`) VALUES (1000,1000,'biocompatibility','Synthesis Functionalization Material Inherent Function 1'),(1001,1000,'activation','Inherent Function 2'),(1005,1005,'biocompatibility','');
 /*!40000 ALTER TABLE `sfe_inherent_function` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -2086,7 +2087,7 @@ CREATE TABLE `sme_inherent_function` (
 
 LOCK TABLES `sme_inherent_function` WRITE;
 /*!40000 ALTER TABLE `sme_inherent_function` DISABLE KEYS */;
-INSERT  IGNORE INTO `sme_inherent_function` (`sme_inherent_function_pk_id`, `synthesis_material_element_pk_id`, `type`, `description`) VALUES (1000,1000,'targeting function','SME test function'),(1005,1053,'Function Type','SME Function description'),(1006,1053,'Function Type 2','SME Function description 2');
+INSERT  IGNORE INTO `sme_inherent_function` (`sme_inherent_function_pk_id`, `synthesis_material_element_pk_id`, `type`, `description`) VALUES (1000,1000,'targeting function','SME test function'),(1001,1000,'Function Type','SME test function 2'),(1005,1053,'Function Type','SME Function description'),(1006,1053,'Function Type 2','SME Function description 2');
 /*!40000 ALTER TABLE `sme_inherent_function` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -2237,7 +2238,7 @@ CREATE TABLE `synthesis_functionalization_element` (
 
 LOCK TABLES `synthesis_functionalization_element` WRITE;
 /*!40000 ALTER TABLE `synthesis_functionalization_element` DISABLE KEYS */;
-INSERT  IGNORE INTO `synthesis_functionalization_element` (`synthesis_functionalization_element_pk_id`, `synthesis_functionalization_pk_id`, `molecular_formula`, `molecular_formula_type`, `description`, `created_by`, `created_date`, `chemical_name`, `value`, `value_unit`, `pub_chem_datasource_name`, `pub_chem_id`, `type`, `activation_method`, `activation_effect`) VALUES (1000,1000,'kK-N12-C4-L','Hill','Synthesis Functionalization Material Element 1','canano_curator','2019-12-06 12:15:00','SynFuncMat Element1',84.000,'pg',NULL,NULL,'material','Lightning','Animation'),(1005,1005,'CH3(OCH2CH2)nOH','Hill','Added to the as-synthesized AuNP solution to a concentration of 3.6 ug/mL','canano_curator','2019-08-28 00:00:00','polyethylene glycol, 5000 MW',3.600,'ug','compound',24887753,'material','Does not require activation',NULL);
+INSERT  IGNORE INTO `synthesis_functionalization_element` (`synthesis_functionalization_element_pk_id`, `synthesis_functionalization_pk_id`, `molecular_formula`, `molecular_formula_type`, `description`, `created_by`, `created_date`, `chemical_name`, `value`, `value_unit`, `pub_chem_datasource_name`, `pub_chem_id`, `type`, `activation_method`, `activation_effect`) VALUES (1000,1000,'kK-N12-C4-L','Hill','Synthesis Functionalization Material Element 1','canano_curator','2019-12-06 12:15:00','SynFuncMat Element1',84.000,'pg',NULL,NULL,'material','Lightning','Animation'),(1001,1000,'AbCdEfG','Hill','Synthesis Functionalization Material Element 2','canano_curator','2019-12-06 12:15:00','McNuggets',10.000,'piece',NULL,NULL,'material','Does not require activation',NULL),(1005,1005,'CH3(OCH2CH2)nOH','Hill','Added to the as-synthesized AuNP solution to a concentration of 3.6 ug/mL','canano_curator','2019-08-28 00:00:00','polyethylene glycol, 5000 MW',3.600,'ug','compound',24887753,'material','Does not require activation',NULL);
 /*!40000 ALTER TABLE `synthesis_functionalization_element` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -2264,6 +2265,7 @@ CREATE TABLE `synthesis_functionalization_element_file` (
 
 LOCK TABLES `synthesis_functionalization_element_file` WRITE;
 /*!40000 ALTER TABLE `synthesis_functionalization_element_file` DISABLE KEYS */;
+INSERT  IGNORE INTO `synthesis_functionalization_element_file` (`synthesis_functionalization_element_pk_id`, `file_pk_id`) VALUES (1005,1005);
 /*!40000 ALTER TABLE `synthesis_functionalization_element_file` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -2388,6 +2390,7 @@ CREATE TABLE `synthesis_material_element_file` (
 
 LOCK TABLES `synthesis_material_element_file` WRITE;
 /*!40000 ALTER TABLE `synthesis_material_element_file` DISABLE KEYS */;
+INSERT  IGNORE INTO `synthesis_material_element_file` (`synthesis_material_element_pk_id`, `file_pk_id`) VALUES (1000,1000);
 /*!40000 ALTER TABLE `synthesis_material_element_file` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -2433,7 +2436,7 @@ CREATE TABLE `synthesis_purification` (
   `design_method_description` text COMMENT 'design_method_description',
   `created_by` varchar(200) NOT NULL COMMENT 'created_by',
   `created_date` datetime NOT NULL COMMENT 'created_date',
-  `yield` decimal(30,10) DEFAULT NULL COMMENT 'yield',
+  `yield` decimal(30,3) DEFAULT NULL COMMENT 'yield',
   `analysis` text,
   PRIMARY KEY (`synthesis_purification_pk_id`),
   KEY `FK_synthesis_TO_synthesis_purification` (`synthesis_pk_id`),
@@ -2449,7 +2452,7 @@ CREATE TABLE `synthesis_purification` (
 
 LOCK TABLES `synthesis_purification` WRITE;
 /*!40000 ALTER TABLE `synthesis_purification` DISABLE KEYS */;
-INSERT  IGNORE INTO `synthesis_purification` (`synthesis_purification_pk_id`, `synthesis_pk_id`, `protocol_pk_id`, `type`, `method_name`, `design_method_description`, `created_by`, `created_date`, `yield`, `analysis`) VALUES (1000,1000,1000,'Interim Purification','Synthesis Purification Method 1','Test entry for synthesis purification','canano_user','2019-12-06 12:15:00',84.7000000000,NULL),(1005,1005,1005,'Interim Purification','Synthesis Purification Method 1','The AuNP solutions were then centrifuged using a Contifuge 17RS, Heraeus SEPATECH at 10,000 rpm for 90 min in 10 ml batches [28]. Of the supernatant, 9.9 ml was then decanted, leaving the AuNP pellet at the bottom of the centrifuge tube. The volume was then made back up to 10 ml by adding 9.9 ml of DI water and agitated. This centrifugal washing process was repeated again to remove any unattached PEG or other reactants.','canano_user','2019-08-28 00:00:00',NULL,NULL);
+INSERT  IGNORE INTO `synthesis_purification` (`synthesis_purification_pk_id`, `synthesis_pk_id`, `protocol_pk_id`, `type`, `method_name`, `design_method_description`, `created_by`, `created_date`, `yield`, `analysis`) VALUES (1000,1000,1000,'Interim Purification','Synthesis Purification Method 1','Test entry for synthesis purification','canano_user','2019-12-06 12:15:00',84.700,'Analysis for synth 1'),(1001,1000,1000,'Final Purification','Synthesis Purification Method 2','Test entry for final purification','canano_user','2019-12-06 12:15:00',99.540,'Analysis for final purification'),(1005,1005,1005,'Interim Purification','Synthesis Purification Method 1','The AuNP solutions were then centrifuged using a Contifuge 17RS, Heraeus SEPATECH at 10,000 rpm for 90 min in 10 ml batches [28]. Of the supernatant, 9.9 ml was then decanted, leaving the AuNP pellet at the bottom of the centrifuge tube. The volume was then made back up to 10 ml by adding 9.9 ml of DI water and agitated. This centrifugal washing process was repeated again to remove any unattached PEG or other reactants.','canano_user','2019-08-28 00:00:00',NULL,NULL);
 /*!40000 ALTER TABLE `synthesis_purification` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -2477,7 +2480,7 @@ CREATE TABLE `synthesis_purity` (
 
 LOCK TABLES `synthesis_purity` WRITE;
 /*!40000 ALTER TABLE `synthesis_purity` DISABLE KEYS */;
-INSERT  IGNORE INTO `synthesis_purity` (`purity_pk_id`, `synthesis_purification_pk_id`, `created_by`, `created_date`) VALUES (1000,1000,'canano_curator','2019-12-06 12:15:00'),(1005,1005,'canano_curator','2019-08-28 00:00:00');
+INSERT  IGNORE INTO `synthesis_purity` (`purity_pk_id`, `synthesis_purification_pk_id`, `created_by`, `created_date`) VALUES (1000,1000,'canano_curator','2019-12-06 12:15:00'),(1002,1000,'canano_curator','2019-08-28 00:00:00'),(1005,1005,'canano_curator','2019-08-28 00:00:00');
 /*!40000 ALTER TABLE `synthesis_purity` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -2582,4 +2585,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2020-01-10 22:17:20
+-- Dump completed on 2020-01-22 12:01:39
