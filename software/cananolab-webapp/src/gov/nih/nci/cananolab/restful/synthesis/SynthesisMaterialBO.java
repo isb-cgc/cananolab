@@ -136,6 +136,11 @@ public class SynthesisMaterialBO extends BaseAnnotationBO {
         return null;
     }
 
+    public SynthesisMaterialBean setupSynMaterialForAdvSearch(String sampleId, Long id, HttpServletRequest httpRequest) {
+        //TODO write
+        return null;
+    }
+
     private SynthesisMaterialBean transferSynthesisMaterialBean(SimpleSynthesisMaterialBean synMatBean,
                                                                HttpServletRequest request) {
         //Transfer from the simple front-end bean to a full bean

@@ -32,6 +32,10 @@ public class SynthesisPurificationBean extends BaseSynthesisEntityBean {
     public SynthesisPurificationBean(SynthesisPurification purification){
         //TODO write
         this.domain=purification;
+        this.displayName = purification.getMethodName();
+        this.type = purification.getType();
+        this.description = purification.getDesignMethodDescription();
+
         for(SynthesisPurity purity:purification.getPurities()){
 //            SynthesisPurityBean purityBean = new SynthesisPurityBean(purity);
             PurityBean purityBean = new PurityBean(purity);

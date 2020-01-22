@@ -18,7 +18,6 @@ public interface SynthesisService extends BaseService {
     void copyAndSaveSynthesisFunctionalization(SynthesisFunctionalizationBean entityBean, SampleBean oldSampleBean,
                                                SampleBean[] newSampleBeans) throws SynthesisException,
             NoAccessException;
-//TODO write
 
     void copyAndSaveSynthesisMaterial(SynthesisMaterialBean entityBean, SampleBean oldSampleBean,
                                       SampleBean[] newSampleBeans) throws SynthesisException, NoAccessException;

@@ -46,13 +46,6 @@ public class SynthesisServiceLocalImpl extends BaseServiceLocalImpl implements S
         return synthesisHelper;
     }
 
-//    public SynthesisBean findSynthesisById(Long sampleId, Long dataId) throws SynthesisException, NoAccessException {
-//        //TODO write
-//        return null;
-//    }
-
-
-
 
     public SynthesisBean findSynthesisBySampleId(Long sampleId) throws SynthesisException {
         SynthesisBean synthesisBean = null;
@@ -77,9 +70,9 @@ public class SynthesisServiceLocalImpl extends BaseServiceLocalImpl implements S
             if (synthesisMaterial!=null){
                 smBean = new SynthesisMaterialBean(synthesisMaterial);
             }
-            //TODO have method throw NoAccessException
-//        } catch (NoAccessException e){
-//            throw e;
+
+        } catch (NoAccessException e){
+            throw e;
         } catch(Exception e){
             String err = "Problem finding the synthesis material entity by id: " + dataId;
             logger.error(err, e);
@@ -96,9 +89,9 @@ public class SynthesisServiceLocalImpl extends BaseServiceLocalImpl implements S
             if (synthesisFunctionalization != null) {
                 sfBean = new SynthesisFunctionalizationBean(synthesisFunctionalization);
             }
-            //TODO have method throw NoAccessException
-//        } catch (NoAccessException e){
-//            throw e;
+
+        } catch (NoAccessException e){
+            throw e;
         } catch (Exception e) {
             String err = "Problem finding the synthesis functionalization entity by id: " + dataId;
             logger.error(err, e);
@@ -115,9 +108,9 @@ public class SynthesisServiceLocalImpl extends BaseServiceLocalImpl implements S
             if (synthesisPurification != null) {
                 spBean = new SynthesisPurificationBean(synthesisPurification);
             }
-            //TODO have method throw NoAccessException
-//        } catch (NoAccessException e){
-//            throw e;
+
+        } catch (NoAccessException e){
+            throw e;
         } catch (Exception e) {
             String err = "Problem finding the synthesis functionalization entity by id: " + dataId;
             logger.error(err, e);

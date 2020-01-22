@@ -1,9 +1,14 @@
 package gov.nih.nci.cananolab.restful.view;
 
+import com.sun.xml.bind.v2.model.core.MaybeElement;
+import gov.nih.nci.cananolab.domain.common.Instrument;
+import gov.nih.nci.cananolab.domain.common.Technique;
 import gov.nih.nci.cananolab.domain.particle.SmeInherentFunction;
 import gov.nih.nci.cananolab.dto.common.ColumnHeader;
+import gov.nih.nci.cananolab.dto.common.ExperimentConfigBean;
 import gov.nih.nci.cananolab.dto.common.FileBean;
 import gov.nih.nci.cananolab.dto.common.FindingBean;
+import gov.nih.nci.cananolab.dto.common.PurificationConfigBean;
 import gov.nih.nci.cananolab.dto.common.PurityBean;
 import gov.nih.nci.cananolab.dto.common.PurityRow;
 import gov.nih.nci.cananolab.dto.common.Row;
@@ -18,6 +23,7 @@ import gov.nih.nci.cananolab.dto.particle.synthesis.SynthesisMaterialBean;
 import gov.nih.nci.cananolab.dto.particle.synthesis.SynthesisMaterialElementBean;
 import gov.nih.nci.cananolab.dto.particle.synthesis.SynthesisPurificationBean;
 import gov.nih.nci.cananolab.dto.particle.synthesis.SynthesisPurityBean;
+import gov.nih.nci.cananolab.restful.view.edit.SimpleTechniqueAndInstrument;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -26,6 +32,7 @@ import org.apache.commons.collections.MultiMap;
 import org.apache.commons.collections.map.MultiValueMap;
 import org.apache.james.mime4j.field.address.MailboxList;
 import org.apache.log4j.Logger;
+import org.springframework.context.annotation.Description;
 
 public class SimpleSynthesisBean {
     Long id;
@@ -122,6 +129,12 @@ public class SimpleSynthesisBean {
                             materialElement.put("MolecularFormula", elementBean.getDomainEntity().getMolecularFormula());
                             materialElement.put("ChemicalName", elementBean.getDomainEntity().getChemicalName());
                             materialElement.put("Supplier",  elementBean.getDomainEntity().getSupplier());
+                            List<Map<String, Object>> meFileList;
+                            if (elementBean.getFiles() !=null){
+                                List<FileBean> fileBeans = elementBean.getFiles();
+                                meFileList = addFiles(fileBeans);
+                                materialElement.put("Files", meFileList);
+                            }
                             List<Map<String, Object>> functions = new ArrayList<Map<String, Object>>();
                             for(SmeInherentFunction sme: elementBean.getDomainEntity().getSmeInherentFunctions()){
                                 HashMap<String,Object> functionElement = new HashMap<String, Object>();
@@ -209,40 +222,36 @@ public class SimpleSynthesisBean {
             List<Map<String,Object>> purificationPurityElements;
 //            for(String entityType:synBean.getSynPureTypes()){
             Integer integer = 1;
-            purification = new HashMap<String, Object>();
+
                 for(SynthesisPurificationBean purificationBean:synBean.getSynthesisPurificationBeanList()){
+                    purification = new HashMap<String, Object>();
 //                for(SynthesisPurificationBean purificationBean: synBean.getType2PurEntities().get(entityType)){
-                    purification.put("DisplayName", "Purification "+ integer++);
+                    purification.put("DisplayName", purificationBean.getDisplayName());
                     purification.put("dataId", purificationBean.getDomainEntity().getId());
+                    purification.put("Type", purificationBean.getType());
                     purification.put("Description", purificationBean.getDescription());
                     purification.put("Source", purificationBean.getSource());
                     purification.put("Date", purificationBean.getDomainEntity().getCreatedDate());
                     purification.put("Yield", purificationBean.getDomainEntity().getYield());
                     purification.put("Protocol", purificationBean.getDomainEntity().getProtocol().getName());
                     purification.put("Analysis", purificationBean.getDomainEntity().getAnalysis());
-                    //TODO loop through purification config
-                    purification.put("Technique", purificationBean.getDomainEntity().getPurificationConfigs());
+                    if(purificationBean.getDomainEntity().getPurificationConfigs() != null){
+                        List<Map<String, Object>> techniques = transferPurificationConfigurations(purificationBean);
+                        purification.put("Techniques", techniques);
+                    }
+//                    purification.put("Technique", purificationBean.getDomainEntity().getPurificationConfigs());
                     purificationPurityElements = new ArrayList<Map<String,Object>>();
                     List<Object> testList = transferPurificationResults(purificationBean);
                     for(PurityBean purityBean : purificationBean.getPurityBeans()){
                         purificationPurity = new HashMap<String, Object>();
-//                        purificationPurity.put("purity", purityBean.toString());
 
-                        //TODO write
-                        //loop through datum?
-                        Map<String, List<Object>> oneCharResult = new HashMap<String, List<Object>>();
+//                        Map<String, List<Object>> oneCharResult = new HashMap<String, List<Object>>();
 
                         List<Object> dataCondition = transferPurityResultsDataAndCondition(purityBean);
                         if (dataCondition != null && dataCondition.size() > 0){
-                            oneCharResult.put("Data and Conditions", dataCondition);
+//                            oneCharResult.put("Data and Conditions", dataCondition);
 
-                        purificationPurity.put("Data and Conditions",dataCondition);}
-
-//                        List<Object> files = transferPurityResultsFiles(purityBean);
-//                        if (files != null && files.size() > 0)
-//                            oneCharResult.put("Files", files);
-
-
+                            purificationPurity.put("Data and Conditions",dataCondition);}
 
                         if (purityBean.getFiles()!=null){
                             fileList=addFiles(purityBean.getFiles());
@@ -251,12 +260,14 @@ public class SimpleSynthesisBean {
                         purificationPurityElements.add(purificationPurity);
                     }
                     purification.put("purificationElements", purificationPurityElements);
-                }
+
 //                synthesisPurification.put(entityType, purification);
                 synthesisPurification.add(purification);
-//            }
+            }
         }
     }
+
+
     private List<Map<String, Object>>  addFiles(List<FileBean> fileBeans){
         Map<String,Object> files = new HashMap<String, Object>();
         List<Map<String, Object>> fileList = new ArrayList<Map<String, Object>>();
@@ -391,5 +402,36 @@ public class SimpleSynthesisBean {
         }
 
         return files;
+    }
+
+    protected List<Map<String, Object>> transferPurificationConfigurations( SynthesisPurificationBean pureBean) {
+//TODO reorganize.  Is not connecting various elements of techique and instrument
+//        Technique has a description and an array of instruments
+//        Instruments have a name, type and manufacturer
+
+
+
+
+        logger.debug("Experiment Configurations size: " + pureBean.getPurificationConfigs().size());
+        List<PurificationConfigBean> expConfigBeans = pureBean.getPurificationConfigs();
+        List<Map<String,Object>> techiqueList = new ArrayList<Map<String, Object>>();
+        for (PurificationConfigBean configBean: expConfigBeans) {
+            Map<String, Object> techiqueMap = new HashMap<String, Object>();
+            //put technique name
+            String techDisplayName = (configBean.getTechniqueDisplayName() == null) ? "" : configBean.getTechniqueDisplayName();
+            techiqueMap.put("Technique", techDisplayName);
+            //put config description
+            String desc = (configBean.getDomain().getDescription() == null) ? "" : configBean.getDomain().getDescription();
+            techiqueMap.put("Description", desc);
+            //put array of instruments
+            List<String> instrumentNames = new ArrayList<String>();
+            for (String instrumentDisplayName : configBean.getInstrumentDisplayNames()) {
+                instrumentNames.add(instrumentDisplayName);
+            }
+            techiqueMap.put("Instruments", instrumentNames);
+            techiqueList.add(techiqueMap);
+        }
+        return techiqueList;
+
     }
 }
