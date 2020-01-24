@@ -1,11 +1,10 @@
 package gov.nih.nci.cananolab.domain.particle;
 
 import gov.nih.nci.cananolab.domain.common.File;
+
 import java.math.BigDecimal;
 import java.sql.Timestamp;
-import java.util.HashSet;
-import java.util.Objects;
-import java.util.Set;
+import java.util.*;
 
 public class SynthesisFunctionalizationElement {
     private Long synthesisFunctionalizationElementPkId;
@@ -28,6 +27,39 @@ public class SynthesisFunctionalizationElement {
     private Set<SfeInherentFunction> sfeInherentFunctions = new HashSet<SfeInherentFunction>();
     private SynthesisFunctionalization synthesisFunctionalization;
 
+
+    public SynthesisFunctionalizationElement() {
+    }
+
+    public SynthesisFunctionalizationElement(SynthesisFunctionalizationElement sfe) {
+        this.synthesisFunctionalizationElementPkId = sfe.getSynthesisFunctionalizationElementPkId();
+        this.molecularFormula = sfe.getMolecularFormula();
+        this.molecularFormulaType = sfe.getMolecularFormulaType();
+        this.description = sfe.getDescription();
+        this.createdBy = sfe.getCreatedBy();
+        this.createdDate = sfe.getCreatedDate();
+        this.chemicalName = sfe.getChemicalName();
+        this.value = sfe.getValue();
+        this.valueUnit = sfe.getValueUnit();
+        this.pubChemDatasourceName = sfe.getPubChemDatasourceName();
+        this.pubChemId = sfe.getPubChemId();
+        this.synthesisFunctionalizationPkId = sfe.getSynthesisFunctionalizationPkId();
+        this.activationMethod = sfe.getActivationMethod();
+        this.activationEffect = sfe.getActivationEffect();
+        this.files = sfe.getFiles();
+
+        for(SfeInherentFunction sfeInherentFunction: sfe.getSfeInherentFunctions()){
+            sfeInherentFunctions.add( new SfeInherentFunction(sfeInherentFunction.getId(), sfeInherentFunction.getType(), sfeInherentFunction.getDescription()  ) );
+        }
+    }
+
+    public Long getSynthesisFunctionalizationElementPkId() {
+        return synthesisFunctionalizationElementPkId;
+    }
+
+    public void setSynthesisFunctionalizationElementPkId(Long synthesisFunctionalizationElementPkId) {
+        this.synthesisFunctionalizationElementPkId = synthesisFunctionalizationElementPkId;
+    }
 
     public Set<SfeInherentFunction> getSfeInherentFunctions(){
         return sfeInherentFunctions;
@@ -190,4 +222,7 @@ public class SynthesisFunctionalizationElement {
     public void setActivationEffect(String activationEffect) {
         this.activationEffect = activationEffect;
     }
+
+
+
 }

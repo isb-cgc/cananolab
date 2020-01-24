@@ -22,7 +22,6 @@ public class SimpleSynthesisFunctionalizationBean {
 //    private SimpleFileBean fileBean;
     List<SimpleFileBean> fileBeans = new ArrayList<SimpleFileBean>();
     private List<String> errors = new ArrayList<String>();
-    private String description;
 //    private SynthesisFunctionalization domainEntity;
 //    private SynthesisFunctionalizationBean synthesisFunctionalizationBean;
     private Date createdDate;
@@ -50,14 +49,6 @@ public class SimpleSynthesisFunctionalizationBean {
 
     public void setCreatedDate(Date createdDate) {
         this.createdDate = createdDate;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
     }
 
     public String getDataId() {
@@ -126,22 +117,6 @@ public class SimpleSynthesisFunctionalizationBean {
     }
 
     public void transferSynthesisFunctionalizationToSimple(SynthesisFunctionalizationBean synthesisFunctionalizationBean, HttpServletRequest httpRequest, SpringSecurityAclService springSecurityAclService){
-
-        System.out.println( "getDomainEntity: " + synthesisFunctionalizationBean.getDomainEntity().getClass().getName());
-        System.out.println( "getDomainEntity: " + synthesisFunctionalizationBean.getDomainEntity().getDescription());
-        System.out.println( "getDescription: " + synthesisFunctionalizationBean.getDescription());
-        System.out.println( "getSource: " + synthesisFunctionalizationBean.getSource());
-
-        System.out.println( " synthesisFunctionalizationBean.getSynthesisFunctionalizationElements().size(): " + synthesisFunctionalizationBean.getSynthesisFunctionalizationElements().size());
-        System.out.println( " synthesisFunctionalizationBean.isWithProperties(): " + synthesisFunctionalizationBean.isWithProperties());
-
-        System.out.println( "getType: " + synthesisFunctionalizationBean.getType());
-        System.out.println( "getDescriptionDisplayName: " + synthesisFunctionalizationBean.getDescriptionDisplayName());
-        System.out.println( "httpRequest getQueryString: " + httpRequest.getQueryString());
-        System.out.println( "httpRequest getParameter(\"sampleId\"): " + httpRequest.getParameter ("sampleId"));
-        System.out.println( "httpRequest getParameter(\"dataId\"): " + httpRequest.getParameter ("dataId"));
-
-        setDescription( synthesisFunctionalizationBean.getDescription());
         setSampleId( httpRequest.getParameter ("sampleId"));
         setDataId(httpRequest.getParameter ("dataId"));
         setCreatedDate( synthesisFunctionalizationBean.getDomainEntity().getCreatedDate());
@@ -157,18 +132,6 @@ public class SimpleSynthesisFunctionalizationBean {
             funcElementBeans.add(simpleSFEBean);
         }
 
-
-  /*
-  Things in a synthesisFunctionalizationBean.getDomainEntity()
-    private Long synthesisFunctionalizationPkId;
-	private Synthesis synthesis;
-	private Protocol protocol;
-	private String description;
-	private Date createdDate;
-	private String createdBy;
-	private Set<SynthesisFunctionalizationElement> synthesisFunctionalizationElements = new HashSet<SynthesisFunctionalizationElement>();
-	private Set<File> files = new HashSet<File>();
- */
     }
 
 }
