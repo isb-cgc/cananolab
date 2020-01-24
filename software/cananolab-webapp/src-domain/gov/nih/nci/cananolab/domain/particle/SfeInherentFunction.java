@@ -23,6 +23,12 @@ public class SfeInherentFunction {
         this.description=description;
     }
 
+    public SfeInherentFunction(Long sfeInherentFunctionPkId, String type, String description){
+        this.sfeInherentFunctionPkId=sfeInherentFunctionPkId;
+        this.type=type;
+        this.description=description;
+    }
+
     public Long getId() {
         return sfeInherentFunctionPkId;
     }

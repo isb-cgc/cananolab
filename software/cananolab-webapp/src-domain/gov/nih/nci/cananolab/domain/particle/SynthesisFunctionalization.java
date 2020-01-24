@@ -28,6 +28,19 @@ public class SynthesisFunctionalization implements Serializable {
 	public SynthesisFunctionalization() {
 	}
 
+
+	public SynthesisFunctionalization(Long synthesisFuntionalizationPkId, SynthesisFunctionalization sf) {
+		this.synthesisFunctionalizationPkId = synthesisFuntionalizationPkId ;
+		this.synthesis = sf.getSynthesis() ;
+		this.protocol = sf.getProtocol() ;
+		this.description = sf.getDescription() ;
+		this.createdDate = sf.getCreatedDate() ;
+		this.createdBy = sf.getCreatedBy() ;
+		this.synthesisFunctionalizationElements = sf.getSynthesisFunctionalizationElements() ;
+		this.files = sf.getFiles() ;
+	}
+
+
 	public SynthesisFunctionalization(Long synthesisFuntionalizationPkId) {
 		this.synthesisFunctionalizationPkId = synthesisFuntionalizationPkId;
 	}
