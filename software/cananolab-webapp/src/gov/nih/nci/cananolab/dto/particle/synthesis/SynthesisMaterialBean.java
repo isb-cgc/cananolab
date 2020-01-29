@@ -55,6 +55,10 @@ public class SynthesisMaterialBean extends BaseSynthesisEntityBean {
         return domainEntity;
     }
 
+    public void setDomainEntity (SynthesisMaterial domainEntity){
+        this.domainEntity = domainEntity;
+    }
+
   public SynthesisMaterial getDomainCopy(String createdBy){
       SynthesisMaterial copy = (SynthesisMaterial) ClassUtils.deepCopy(this
               .getDomainEntity());

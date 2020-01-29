@@ -183,7 +183,7 @@ public class SynthesisMaterialServices {
     public Response viewDetails(@Context HttpServletRequest httpRequest, SimpleSynthesisMaterialBean simpleSynthesisMaterialBean) {
         try{
             SynthesisMaterialBO synthesisMaterialBO = (SynthesisMaterialBO) SpringApplicationContext.getBean(httpRequest, "synthesisMaterialBO");
-            SynthesisMaterialBean synthesisMaterialBean = synthesisMaterialBO.setupSynMaterialForAdvSearch(simpleSynthesisMaterialBean.getSampleId(), simpleSynthesisMaterialBean.getId(), httpRequest);
+            SynthesisMaterialBean synthesisMaterialBean = synthesisMaterialBO.setupSynMaterialForAdvSearch(simpleSynthesisMaterialBean.getSampleId().toString(), simpleSynthesisMaterialBean.getId(), httpRequest);
             SimpleAdvancedSearchSynthesisBean searchSynthesisBean = new SimpleAdvancedSearchSynthesisBean();
             searchSynthesisBean.transferMaterialForAdvancedSearch(simpleSynthesisMaterialBean, httpRequest);
             return Response.ok(searchSynthesisBean).header("Access-Control-Allow-Credentials", "true").header("Access-Control-Allow-Origin", "*")
