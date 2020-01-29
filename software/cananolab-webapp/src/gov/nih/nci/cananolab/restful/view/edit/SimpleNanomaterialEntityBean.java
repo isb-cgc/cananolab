@@ -282,7 +282,7 @@ public class SimpleNanomaterialEntityBean {
 }
 
 	private void setDomainEntityInfo(NanomaterialEntityBean bean) {
-		// TODO Auto-generated method stub
+
 		NanomaterialEntity nanoEntity = bean.getDomainEntity();
 		SampleComposition sampleComp =  new SampleComposition();
 				

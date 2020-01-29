@@ -6,6 +6,7 @@ import gov.nih.nci.cananolab.domain.particle.SynthesisFunctionalization;
 import gov.nih.nci.cananolab.domain.particle.SynthesisMaterial;
 import gov.nih.nci.cananolab.domain.particle.SynthesisPurification;
 import gov.nih.nci.cananolab.exception.NoAccessException;
+import gov.nih.nci.cananolab.exception.SynthesisException;
 import gov.nih.nci.cananolab.security.enums.SecureClassesEnum;
 import gov.nih.nci.cananolab.security.service.SpringSecurityAclService;
 import gov.nih.nci.cananolab.system.applicationservice.CaNanoLabApplicationService;
@@ -28,6 +29,17 @@ public class SynthesisHelper
     private SpringSecurityAclService springSecurityAclService;
 
     public SynthesisHelper() {
+    }
+
+    public Synthesis findSynthesisBySampleId(String sampleId) throws SynthesisException {
+        try{
+            Long id = new Long(sampleId);
+            return findSynthesisBySampleId(id);
+        }
+        catch (Exception e) {
+            logger.error("Sample id is not integer "+ sampleId);
+            throw new SynthesisException("Sample id is not integer", e);
+        }
     }
 
     public Synthesis findSynthesisBySampleId(Long sampleId) throws Exception {
