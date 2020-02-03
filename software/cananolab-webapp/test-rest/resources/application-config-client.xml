@@ -25,9 +25,9 @@ L-->
 		</constructor-arg>
 	</bean>
 	
-	<bean id="Interceptor" class="gov.nih.nci.system.client.proxy.ApplicationServiceProxy" singleton="false">
+	<bean id="Interceptor" class="gov.nih.nci.cananolab.system.applicationservice.client.proxy.ApplicationServiceProxy" singleton="false">
 		<property name="proxyFactory">
-			<bean class="gov.nih.nci.system.client.proxy.ProxyHelperImpl" singleton="false"/>
+			<bean class="gov.nih.nci.cananolab.system.applicationservice.client.proxy.ProxyHelperImpl" singleton="false"/>
 		</property>
 	</bean>
 
