@@ -122,16 +122,36 @@ public class SynthesisMaterialServices {
         }
     }
 
+//    @POST
+//    @Path("/removeFile")
+//    @Produces ("application/json")
+//    public Response removeFile(@Context HttpServletRequest httpRequest,String fileId, SimpleSynthesisMaterialBean simpleSynthesisMaterialBean) {
+//        try{
+//            SynthesisMaterialBO synthesisMaterialBO = (SynthesisMaterialBO) SpringApplicationContext.getBean(httpRequest,"synthesisMaterialBO");
+//            if (!SpringSecurityUtil.isUserLoggedIn())
+//                return Response.status(Response.Status.UNAUTHORIZED)
+//                        .entity(Constants.MSG_SESSION_INVALID).build();
+//            SimpleSynthesisMaterialBean synthesisMaterialBean = synthesisMaterialBO.removeFile(simpleSynthesisMaterialBean,fileId, httpRequest);
+//            List<String> errors = synthesisMaterialBean.getErrors();
+//            return (errors == null || errors.size() == 0) ?
+//                    Response.ok(synthesisMaterialBean).build() :
+//                    Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(errors).build();
+//        }catch (Exception e){
+//            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(CommonUtil.wrapErrorMessageInList("Error while removing the File" + e.getMessage())).build();
+//
+//        }
+//    }
+
     @POST
     @Path("/removeFile")
     @Produces ("application/json")
-    public Response removeFile(@Context HttpServletRequest httpRequest,String fileId, SimpleSynthesisMaterialBean simpleSynthesisMaterialBean) {
+    public Response removeFile(@Context HttpServletRequest httpRequest,SimpleSynthesisMaterialBean simpleSynthesisMaterialBean) {
         try{
             SynthesisMaterialBO synthesisMaterialBO = (SynthesisMaterialBO) SpringApplicationContext.getBean(httpRequest,"synthesisMaterialBO");
             if (!SpringSecurityUtil.isUserLoggedIn())
                 return Response.status(Response.Status.UNAUTHORIZED)
                         .entity(Constants.MSG_SESSION_INVALID).build();
-            SimpleSynthesisMaterialBean synthesisMaterialBean = synthesisMaterialBO.removeFile(simpleSynthesisMaterialBean,fileId, httpRequest);
+            SimpleSynthesisMaterialBean synthesisMaterialBean = synthesisMaterialBO.removeFile(simpleSynthesisMaterialBean, httpRequest);
             List<String> errors = synthesisMaterialBean.getErrors();
             return (errors == null || errors.size() == 0) ?
                     Response.ok(synthesisMaterialBean).build() :

@@ -36,8 +36,12 @@ public class RestTestLoginUtil {
 					pwd == null || pwd.length() == 0)
 				return null;
 			
+//			Response response = with().params("username", username, "password", pwd)
+//					.expect().statusCode(200).when().get("http://localhost:8080/caNanoLab/rest/security/login");
+
 			Response response = with().params("username", username, "password", pwd)
-					.expect().statusCode(200).when().get("http://localhost:8080/caNanoLab/rest/security/login");
+					.expect().statusCode(200).when().get("http://localhost:8080/caNanoLab/login");
+
 
 			jsessionId = response.getCookie("JSESSIONID");
 		}

@@ -102,6 +102,8 @@ public class SynthesisMaterialBO extends BaseAnnotationBO {
         return msgs;
     }
 
+
+
     private SynthesisMaterialBean transferSynthesisMaterialBean(SimpleSynthesisMaterialBean synMatBean,
                                                                 HttpServletRequest request){
         //Transfer from the simple front-end bean to a full bean
@@ -246,6 +248,30 @@ public class SynthesisMaterialBO extends BaseAnnotationBO {
     @Override
     public UserDetailsService getUserDetailsService() {
         return this.userDetailsService;
+    }
+
+    public SimpleSynthesisMaterialBean removeFile(SimpleSynthesisMaterialBean simpleSynthesisMaterialBean, HttpServletRequest httpRequest) throws Exception {
+        //Assumption is they have ONE file submitted attached to the object.  That is the file to be removed
+        SynthesisMaterialBean entityBean = transferSynthesisMaterialBean(simpleSynthesisMaterialBean, httpRequest);
+
+        List<FileBean> files = entityBean.getFiles();
+        if(files.size()>1){
+            //TODO return error.  Should only be one file
+        }
+        FileBean theFile = files.get(0);
+        entityBean.removeFile(theFile);
+
+        List<String> msgs = validateInputs(httpRequest, entityBean);
+        if (msgs.size() > 0) {
+            SimpleSynthesisMaterialBean synMat = new SimpleSynthesisMaterialBean();
+            synMat.setErrors(msgs);
+            return synMat;
+        }
+        this.saveEntity(httpRequest, simpleSynthesisMaterialBean.getSampleId(), entityBean);
+        httpRequest.setAttribute("anchor", "file");
+        this.checkOpenForms(entityBean, httpRequest);
+        return setupUpdate(simpleSynthesisMaterialBean.getSampleId(), entityBean.getDomainEntity().getId().toString()
+                , httpRequest);
     }
 
     public SimpleSynthesisMaterialBean removeFile(SimpleSynthesisMaterialBean simpleSynthesisMaterialBean,
