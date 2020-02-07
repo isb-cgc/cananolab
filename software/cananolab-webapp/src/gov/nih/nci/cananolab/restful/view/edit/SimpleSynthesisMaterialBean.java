@@ -173,6 +173,12 @@ public class SimpleSynthesisMaterialBean {
             simpleProtocol = new SimpleProtocol();
             simpleProtocol.transferFromProtocolBean(synBean.getProtocolBean());
         }
+
+        setDomainEntityInfo(synBean);
+    }
+
+    private void setDomainEntityInfo(SynthesisMaterialBean synBean) {
+        //possibly not needed
     }
 
 

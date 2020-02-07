@@ -83,7 +83,7 @@ String description="";
     }
 
     public void setUpDomain(String loggedInUserName) throws Exception{
-        //TODO wriite
+        //TODO write
 
         if(domain == null){
             domain = new SynthesisMaterialElement();
