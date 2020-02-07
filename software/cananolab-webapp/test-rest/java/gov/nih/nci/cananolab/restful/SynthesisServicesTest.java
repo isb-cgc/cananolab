@@ -41,7 +41,7 @@ public class SynthesisServicesTest {
 
     @Before
     public void setUp() {
-        RestAssured.authentication = basic("rhqadmin","rhqadmin");
+        RestAssured.authentication = basic("canano_curator","canano_curator");
         client = ClientBuilder.newClient();
     }
 

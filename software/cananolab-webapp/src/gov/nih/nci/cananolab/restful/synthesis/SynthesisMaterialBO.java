@@ -109,13 +109,22 @@ public class SynthesisMaterialBO extends BaseAnnotationBO {
         //Transfer from the simple front-end bean to a full bean
         //TODO write
         SynthesisMaterialBean bean = new SynthesisMaterialBean();
-        SynthesisMaterial material = null;
+        SynthesisMaterial material = new SynthesisMaterial();
 
 
         //set up domain and bean
-        material.setId(synMatBean.getId());
-        material.setCreatedBy(synMatBean.getCreatedBy());
-        material.setCreatedDate(synMatBean.getDate());
+//        material.setId(synMatBean.getId());
+
+        if((synMatBean.getId()!=null)&&(synMatBean.getId()>0)){
+            material.setId(synMatBean.getId());
+            material.setCreatedBy(synMatBean.getCreatedBy());
+            material.setCreatedDate(synMatBean.getDate());
+        }  else {
+            //TODO see if there is a way to grab user directly
+            material.setCreatedBy(synMatBean.getCreatedBy());
+            material.setCreatedDate(synMatBean.getDate());
+        }
+
         material.setDescription(synMatBean.getDescription());
         bean.setDescription(synMatBean.getDescription());
         bean.setType(synMatBean.getType());
@@ -256,7 +265,7 @@ public class SynthesisMaterialBO extends BaseAnnotationBO {
 
         List<FileBean> files = entityBean.getFiles();
         if(files.size()>1){
-            //TODO return error.  Should only be one file
+            throw new SynthesisException("Can only remove one file at a time from SynthesisMaterial");
         }
         FileBean theFile = files.get(0);
         entityBean.removeFile(theFile);
@@ -277,9 +286,7 @@ public class SynthesisMaterialBO extends BaseAnnotationBO {
     public SimpleSynthesisMaterialBean removeFile(SimpleSynthesisMaterialBean simpleSynthesisMaterialBean,
                                                   String fileId, HttpServletRequest request) throws Exception {
         SynthesisMaterialBean entityBean = transferSynthesisMaterialBean(simpleSynthesisMaterialBean, request);
-//        FileBean theFile = entityBean.getTheFile();
-//        entityBean.removeFile(theFile);
-//        entityBean.setTheFile(new FileBean());
+
         FileBean theFile = entityBean.getFile(fileId);
         entityBean.removeFile(theFile);
 
@@ -322,14 +329,14 @@ public class SynthesisMaterialBO extends BaseAnnotationBO {
 
     }
 
-    public SimpleSynthesisMaterialBean setupUpdate(String sampleId, String dataId, HttpServletRequest httpRequest) throws Exception {
+    public SimpleSynthesisMaterialBean setupUpdate(String sampleId, String synMatId, HttpServletRequest httpRequest) throws Exception {
         SynthesisForm form = new SynthesisForm();
         // set up other particles with the same primary point of contact
 //        InitSampleSetup.getInstance().getOtherSampleNames(httpRequest, sampleId, sampleService);
 
         try {
             SynthesisMaterialBean synBean = synthesisService.findSynthesisMaterialById(new Long(sampleId),
-                    new Long(dataId));
+                    new Long(synMatId));
 
             form.setSynthesisMaterialBean(synBean);
             this.checkOpenForms(synBean, httpRequest);
@@ -401,7 +408,7 @@ public class SynthesisMaterialBO extends BaseAnnotationBO {
 
     public Map<String, Object> setupNew(String sampleId, HttpServletRequest request) throws Exception {
         SynthesisMaterialBean synthesisMaterialBean = new SynthesisMaterialBean();
-        InitSampleSetup.getInstance().getOtherSampleNames(request, sampleId, sampleService);
+        List<String> otherNames = InitSampleSetup.getInstance().getOtherSampleNames(request, sampleId, sampleService);
         this.setLookups(request);
         this.checkOpenForms(synthesisMaterialBean, request);
         return SynthesisUtil.reformatLocalSearchDropdownsInSessionForSynthesisMaterial(request.getSession());

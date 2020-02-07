@@ -25,7 +25,7 @@ public class SynthesisMaterialServices {
     @GET
     @Path("/setup")
     @Produces("application/json")
-    public Response setup(@Context HttpServletRequest httpRequest, @DefaultValue("") @QueryParam("sampleId") String sampleId) {
+    public Response setup(@Context HttpServletRequest httpRequest, @QueryParam("sampleId") String sampleId) {
 
         try {
             SynthesisMaterialBO synthesisMaterialBO =
@@ -42,7 +42,7 @@ public class SynthesisMaterialServices {
     @GET
     @Path("/edit")
     @Produces ("application/json")
-    public Response edit(@Context HttpServletRequest httpRequest, @DefaultValue("") @QueryParam("sampleId") String sampleId, @DefaultValue("") @QueryParam("dataId") String dataId) {
+    public Response edit(@Context HttpServletRequest httpRequest, @QueryParam("sampleId") String sampleId, @QueryParam("synMaterialId") String synMaterialId) {
 
         try {
             SynthesisMaterialBO synthesisMaterialBO =
@@ -51,7 +51,7 @@ public class SynthesisMaterialServices {
                 return Response.status(Response.Status.UNAUTHORIZED)
                         .entity("Session expired").build();
 
-            SimpleSynthesisMaterialBean synth = synthesisMaterialBO.setupUpdate(sampleId, dataId, httpRequest);
+            SimpleSynthesisMaterialBean synth = synthesisMaterialBO.setupUpdate(sampleId, synMaterialId, httpRequest);
 
             List<String> errors = synth.getErrors();
             return (errors == null || errors.size() == 0) ?
@@ -123,9 +123,9 @@ public class SynthesisMaterialServices {
     }
 
 //    @POST
-//    @Path("/removeFile")
+//    @Path("/removeFileByFileId")
 //    @Produces ("application/json")
-//    public Response removeFile(@Context HttpServletRequest httpRequest,String fileId, SimpleSynthesisMaterialBean simpleSynthesisMaterialBean) {
+//    public Response removeFileByFileId(@Context HttpServletRequest httpRequest,@QueryParam("fileId") String fileId, SimpleSynthesisMaterialBean simpleSynthesisMaterialBean) {
 //        try{
 //            SynthesisMaterialBO synthesisMaterialBO = (SynthesisMaterialBO) SpringApplicationContext.getBean(httpRequest,"synthesisMaterialBO");
 //            if (!SpringSecurityUtil.isUserLoggedIn())

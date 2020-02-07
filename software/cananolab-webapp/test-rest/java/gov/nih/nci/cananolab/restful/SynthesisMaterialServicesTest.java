@@ -1,51 +1,164 @@
 package gov.nih.nci.cananolab.restful;
 
+import gov.nih.nci.cananolab.domain.common.Supplier;
 import gov.nih.nci.cananolab.domain.particle.SynthesisMaterialElement;
 import gov.nih.nci.cananolab.restful.util.RestTestLoginUtil;
 import gov.nih.nci.cananolab.restful.view.edit.SimpleFileBean;
 import gov.nih.nci.cananolab.restful.view.edit.SimpleSynthesisMaterialBean;
+import gov.nih.nci.cananolab.restful.view.edit.SimpleSynthesisMaterialElementBean;
+import io.restassured.builder.RequestSpecBuilder;
+import io.restassured.filter.log.RequestLoggingFilter;
+import io.restassured.filter.log.ResponseLoggingFilter;
+import io.restassured.http.ContentType;
+import io.restassured.response.Response;
+import io.restassured.response.ValidatableResponse;
+import io.restassured.specification.RequestSpecification;
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
-import javax.ws.rs.client.Client;
-import javax.ws.rs.client.ClientBuilder;
-import javax.ws.rs.client.Entity;
-import javax.ws.rs.client.WebTarget;
-import javax.ws.rs.core.MultivaluedHashMap;
-import javax.ws.rs.core.MultivaluedMap;
-import org.apache.commons.collections.map.MultiValueMap;
+import java.util.Map;
+
+import org.codehaus.jackson.map.ObjectMapper;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import static org.junit.Assert.*;
+
+import static io.restassured.RestAssured.given;
+
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 public class SynthesisMaterialServicesTest {
-
+private static RequestSpecification specification;
     @Before
-    public void setUp() throws Exception {
+    public void setUp() {
+        //Get login session
+        String jsessionId = RestTestLoginUtil.testLogin();
+
+        //Create spec for all test logins in this class
+        specification = new RequestSpecBuilder()
+                .setContentType(ContentType.JSON)
+                .setBaseUri("http://localhost:8080/caNanoLab/rest/")
+                .addFilter(new ResponseLoggingFilter())
+                .addFilter(new RequestLoggingFilter())
+                .setSessionId(jsessionId)
+                .build();
+
+    }
+
+
+
+    @Test
+    public void testSetup() {
+
+
+        try {
+            Response response = given().spec(specification).queryParam("sampleId", "1000")
+                    .when().get("synthesisMaterial/setup")
+                    .then().statusCode(200).extract().response();
+
+            assertNotNull(response);
+            String materialType = response.asString();
+
+            assertTrue(materialType.contains("coat"));
+            ArrayList<String> materialTypes = response.path("materialTypes");
+            assertTrue(materialTypes.contains("coat"));
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+        }
+
     }
 
     @Test
-    public void setup() {
+    public void testEdit() {
+        try {
+            Response locationHeader = given().spec(specification)
+                    .queryParam("sampleId", "1000")
+                    .queryParam("synMaterialId","1000")
+                    .when().get("synthesisMaterial/edit")
+                    .then().statusCode(200).extract().response();
+
+            assertNotNull(locationHeader);
+
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     @Test
-    public void edit() {
+    public void testSaveSynthesisMaterialElement() {
+        SimpleSynthesisMaterialBean materialBean = new SimpleSynthesisMaterialBean();
+        materialBean.setSampleId("1000");
+        materialBean.setId(new Long(1000));
+        SimpleSynthesisMaterialElementBean elementBean = new SimpleSynthesisMaterialElementBean();
+        elementBean.setDescription("New Description");
+        elementBean.setMolecularFormulaType("Hill");
+        elementBean.setMolecularFormula("C1B2A3");
+        elementBean.setChemicalName("New Chemical");
+        elementBean.setType("Reflexivity");
+        elementBean.setValue(new Float(22.4));
+        elementBean.setValueUnit("g");
+        Map<String, Object> supplierMap = new HashMap<String, Object>();
+        supplierMap.put("Lot","AB#$");
+        supplierMap.put("SupplierName","New Supplier");
+        supplierMap.put("id","1000");
+        elementBean.setSupplier(supplierMap);
+        List<SimpleSynthesisMaterialElementBean> elementBeans = new ArrayList<SimpleSynthesisMaterialElementBean>();
+        elementBeans.add(elementBean);
+        materialBean.setMaterialElements(elementBeans);
+
+        try {
+            Response locationHeader = given().spec(specification)
+                    .body(materialBean).when().post("synthesisMaterial/saveSynthesisMaterialElement")
+                    .then().statusCode(200).extract().response();
+
+            assertNotNull(locationHeader);
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     @Test
-    public void saveSynthesisMaterialElement() {
+    public void testRemoveSynthesisMaterialElement() {
+        SimpleSynthesisMaterialBean materialBean = new SimpleSynthesisMaterialBean();
+        materialBean.setSampleId("1000");
+        materialBean.setId(new Long(1000));
+        SimpleSynthesisMaterialElementBean elementBean = new SimpleSynthesisMaterialElementBean();
+        elementBean.setDescription("New Description");
+        elementBean.setMolecularFormulaType("Hill");
+        elementBean.setMolecularFormula("C1B2A3");
+        elementBean.setChemicalName("New Chemical");
+        elementBean.setType("Reflexivity");
+        elementBean.setValue(new Float(22.4));
+        elementBean.setValueUnit("g");
+        Map<String, Object> supplierMap = new HashMap<String, Object>();
+        supplierMap.put("Lot","AB#$");
+        supplierMap.put("SupplierName","New Supplier");
+        supplierMap.put("id","1000");
+        elementBean.setSupplier(supplierMap);
+        List<SimpleSynthesisMaterialElementBean> elementBeans = new ArrayList<SimpleSynthesisMaterialElementBean>();
+        elementBeans.add(elementBean);
+        materialBean.setMaterialElements(elementBeans);
+
+        try {
+            Response locationHeader = given().spec(specification)
+                    .body(materialBean).when().post("synthesisMaterial/removeSynthesisMaterialElement")
+                    .then().statusCode(200).extract().response();
+
+            assertNotNull(locationHeader);
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     @Test
-    public void removeSynthesisMaterialElement() {
-    }
-
-    @Test
-    public void saveFile() {
-    }
-
-    @Test
-    public void removeFile() {
+    public void testSaveFile() {
         SimpleSynthesisMaterialBean materialBean = new SimpleSynthesisMaterialBean();
         materialBean.setSampleId("1000");
         materialBean.setId(new Long(1000));
@@ -59,40 +172,123 @@ public class SynthesisMaterialServicesTest {
         fileBeans.add(fileBean);
         materialBean.setFileElements(fileBeans);
 
-//        String jsessionId = RestTestLoginUtil.loginTest();
+        try {
+            Response locationHeader = given().spec(specification).queryParam("fileId", "1000")
+                    .body(materialBean).when().post("synthesisMaterial/saveFile")
+                    .then().statusCode(200).extract().response();
 
-        final Client aClient = ClientBuilder.newBuilder()
-                .register(ObjectMapperProvider.class)
-                .build();
-
-        WebTarget webTarget = aClient.target("http://localhost:8080/caNanoLab/rest");
-        webTarget.register(SynthesisMaterialServices.class);
-
-        WebTarget submitWebTarget = webTarget.path("synthesisMaterial").path("removeFile");
-        javax.ws.rs.core.Response postResponse =
-                submitWebTarget.request("application/json")
-                        .post(Entity.json(materialBean));
-
-        assertNotNull(postResponse);
-        assertTrue(postResponse.getStatus() == 302);
-//        assertTrue(postResponse.getStatus() == 401);
-
-        postResponse.bufferEntity();
-        String json = (String) postResponse.readEntity(String.class);
-
-        assertTrue(json.contains("Session expired"));
-        RestTestLoginUtil.logoutTest();
+            assertNotNull(locationHeader);
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     @Test
-    public void submit() {
+    public void testRemoveFile() {
+        SimpleSynthesisMaterialBean materialBean = new SimpleSynthesisMaterialBean();
+        materialBean.setSampleId("1000");
+        materialBean.setId(new Long(1000));
+        SimpleFileBean fileBean = new SimpleFileBean();
+        fileBean.setType("TestType");
+        fileBean.setTitle("TestTitle");
+        fileBean.setUriExternal(true);
+        fileBean.setExternalUrl("https:///somewhere.com");
+        fileBean.setSampleId("1000");
+        List<SimpleFileBean> fileBeans = new ArrayList<SimpleFileBean>();
+        fileBeans.add(fileBean);
+        materialBean.setFileElements(fileBeans);
+
+        try {
+            Response locationHeader = given().spec(specification).
+                    body(materialBean).when().post("synthesisMaterial/removeFile")
+                    .then().statusCode(200).extract().response();
+
+
+            assertNotNull(locationHeader);
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+
+
+    @Test
+    public void testSubmit() {
+        SimpleSynthesisMaterialBean materialBean = new SimpleSynthesisMaterialBean();
+        materialBean.setSampleId("1000");
+        SimpleSynthesisMaterialElementBean elementBean = new SimpleSynthesisMaterialElementBean();
+        elementBean.setChemicalName("TestChem");
+        elementBean.setMolecularFormula("CHO2Si");
+        elementBean.setMolecularFormulaType("Hill");
+        elementBean.setDescription("Test material element");
+        elementBean.setCreatedBy("");
+        List<SimpleSynthesisMaterialElementBean> elementBeans = new ArrayList<SimpleSynthesisMaterialElementBean>();
+        elementBeans.add(elementBean);
+        materialBean.setMaterialElements(elementBeans);
+
+
+        try {
+            Response locationHeader = given().spec(specification).
+                    body(materialBean).when().post("synthesisMaterial/submit")
+                    .then().statusCode(200).extract().response();
+
+            assertNotNull(locationHeader);
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     @Test
-    public void delete() {
+    public void testDelete() {
+        SimpleSynthesisMaterialBean materialBean = new SimpleSynthesisMaterialBean();
+        materialBean.setSampleId("1000");
+        materialBean.setId(new Long(1000));
+
+        try {
+            Response locationHeader = given().spec(specification).
+                    body(materialBean).when().post("synthesisMaterial/delete")
+                    .then().statusCode(200).extract().response();
+
+            assertNotNull(locationHeader);
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     @Test
-    public void viewDetails() {
+    public void testViewDetails() {
+        SimpleSynthesisMaterialBean materialBean = new SimpleSynthesisMaterialBean();
+        materialBean.setSampleId("1000");
+        materialBean.setId(new Long(1000));
+
+        try {
+            Response locationHeader = given().spec(specification).
+                    body(materialBean).when().post("synthesisMaterial/viewDetails")
+                    .then().statusCode(200).extract().response();
+
+            assertNotNull(locationHeader);
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    private String toJson(Object o){
+    ObjectMapper Obj = new ObjectMapper();
+
+        try {
+
+        String jsonStr = Obj.writeValueAsString(o);
+        return jsonStr;
+
+    }        catch (Exception e) {
+
+        e.printStackTrace();
+    }
+        return null;
     }
 }

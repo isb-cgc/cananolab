@@ -4,6 +4,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
+import gov.nih.nci.cananolab.restful.util.RestTestLoginUtil;
 import gov.nih.nci.cananolab.restful.view.edit.SampleEditGeneralBean;
 import gov.nih.nci.cananolab.restful.view.edit.SimplePointOfContactBean;
 
@@ -31,7 +32,7 @@ public class SampleServicesTest {
 	public void setUp() throws Exception {
 	
 		client = ClientBuilder.newClient();
-
+		RestTestLoginUtil.testLogin();
 	}
 
 
@@ -55,7 +56,7 @@ public class SampleServicesTest {
 		String jsonString = client.target(urlbase)
 				.register(SampleServices.class)
 				.path("sample/getCharacterizationByType")
-				.queryParam("type", "ex vivo")
+				.queryParam("type", "toxicity")
 				.request("application/json")
 				.header("some-header", "true")
 				.get(String.class);
