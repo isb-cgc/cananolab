@@ -33,7 +33,7 @@ public class CompositionFileServicesTest {
 	@Test
 	public void testEdit() {
 		
-		String jsessionId = RestTestLoginUtil.loginTest();
+		String jsessionId = RestTestLoginUtil.testLogin();
 		
 		Map<String, String> parameters = new HashMap<String, String>();
 		parameters.put("sampleId", "57835522");
@@ -52,7 +52,7 @@ public class CompositionFileServicesTest {
 //	@Test
 //	public void testSubmit() {
 //		
-//		String jsessionId = RestTestLoginUtil.loginTest();
+//		String jsessionId = RestTestLoginUtil.testLogin();
 //		
 //		SimpleFileBean file = new SimpleFileBean();
 //		file.setType("movie");
@@ -80,7 +80,7 @@ public class CompositionFileServicesTest {
 		file.setExternalUrl("http://www.cancer.gov");
 		file.setSampleId("20917510");
 		
-		String jsessionId = RestTestLoginUtil.loginTest();
+		String jsessionId = RestTestLoginUtil.testLogin();
 		
 		final Client aClient = ClientBuilder.newBuilder()
 		        .register(ObjectMapperProvider.class)
@@ -115,7 +115,7 @@ public class CompositionFileServicesTest {
 		file.setExternalUrl("http://www.cancer.gov");
 		file.setSampleId("20917510");
 		
-		String jsessionId = RestTestLoginUtil.loginTest();
+		String jsessionId = RestTestLoginUtil.testLogin();
 		
 		final Client aClient = ClientBuilder.newBuilder()
 		        .register(ObjectMapperProvider.class)

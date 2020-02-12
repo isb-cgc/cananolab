@@ -33,7 +33,7 @@ public class CharacterizationServicesTest {
 
 	//@Test
 	public void testSetupEdit() {
-		String jsessionId = RestTestLoginUtil.loginTest();
+		String jsessionId = RestTestLoginUtil.testLogin();
 
 		Response res =
 				given().contentType("application/json").cookie("JSESSIONID=" + jsessionId)
@@ -50,7 +50,7 @@ public class CharacterizationServicesTest {
 
 	@Test
 	public void testSetupAdd() {
-		String jsessionId = RestTestLoginUtil.loginTest();
+		String jsessionId = RestTestLoginUtil.testLogin();
 		
 		Map<String, String> params = new HashMap<String, String>();
 		params.put("sampleId", "69500928");
@@ -72,7 +72,7 @@ public class CharacterizationServicesTest {
 
 	@Test
 	public void testSetupUpdate() {
-String jsessionId = RestTestLoginUtil.loginTest();
+String jsessionId = RestTestLoginUtil.testLogin();
 		
 // http://localhost:8080/caNanoLab/characterization.do?dispatch=setupUpdate&sampleId=69500928&charId=69599238&charClassName=MolecularWeight&charType=physico-chemical%20characterization
 		Map<String, String> params = new HashMap<String, String>();
@@ -97,7 +97,7 @@ String jsessionId = RestTestLoginUtil.loginTest();
 	
 	@Test
 	public void testGetCharNamesByCharType() {
-		String jsessionId = RestTestLoginUtil.loginTest();
+		String jsessionId = RestTestLoginUtil.testLogin();
 
 
 		Response res =
@@ -115,7 +115,7 @@ String jsessionId = RestTestLoginUtil.loginTest();
 	
 	@Test
 	public void testGetAssayTypesByCharName() {
-		String jsessionId = RestTestLoginUtil.loginTest();
+		String jsessionId = RestTestLoginUtil.testLogin();
 
 
 		Response res =
@@ -133,7 +133,7 @@ String jsessionId = RestTestLoginUtil.loginTest();
 	//@Test
 	public void testSaveExperimentConfigAdd() {
 		
-		String jsessionId = RestTestLoginUtil.loginTest();
+		String jsessionId = RestTestLoginUtil.testLogin();
 		Map<String, String> params = new HashMap<String, String>();
 		params.put("sampleId", "69500928");
 		params.put("charId", "69599238");
@@ -176,7 +176,7 @@ String jsessionId = RestTestLoginUtil.loginTest();
 	//@Test
 	public void testRemoveExperimentConfig() {
 		
-		String jsessionId = RestTestLoginUtil.loginTest();
+		String jsessionId = RestTestLoginUtil.testLogin();
 		Map<String, String> params = new HashMap<String, String>();
 		params.put("sampleId", "69500928");
 		params.put("charId", "69599238");
@@ -258,7 +258,7 @@ String jsessionId = RestTestLoginUtil.loginTest();
 	@Test
 	public void testGetColumnNameOptionsDatum() {
 		
-		//String jsessionId = RestTestLoginUtil.loginTest();
+		//String jsessionId = RestTestLoginUtil.testLogin();
 		Map<String, String> params = new HashMap<String, String>();
 		params.put("columnType", "datum");
 		params.put("charType", "physico-chemical characterization");
@@ -279,7 +279,7 @@ String jsessionId = RestTestLoginUtil.loginTest();
 	@Test
 	public void testGetColumnNameOptionsCondition() {
 		
-		//String jsessionId = RestTestLoginUtil.loginTest();
+		//String jsessionId = RestTestLoginUtil.testLogin();
 		Map<String, String> params = new HashMap<String, String>();
 		params.put("columnType", "condition");
 		params.put("charType", "physico-chemical characterization");
@@ -340,7 +340,7 @@ String jsessionId = RestTestLoginUtil.loginTest();
 	//@Test
 	public void testRemoveFinding() {
 		
-		String jsessionId = RestTestLoginUtil.loginTest();
+		String jsessionId = RestTestLoginUtil.testLogin();
 		Map<String, String> params = new HashMap<String, String>();
 		params.put("sampleId", "69500928");
 		params.put("charId", "69599238");
@@ -391,7 +391,7 @@ String jsessionId = RestTestLoginUtil.loginTest();
 	//@Test
 	public void testDelete() {
 		
-		String jsessionId = RestTestLoginUtil.loginTest();
+		String jsessionId = RestTestLoginUtil.testLogin();
 		Map<String, String> params = new HashMap<String, String>();
 		params.put("sampleId", "73367552");
 		params.put("charId", "77234176");

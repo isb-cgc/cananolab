@@ -68,7 +68,7 @@ public class SimpleAdvacedSampleCompositionBean {
 				String detailPage = gov.nih.nci.cananolab.restful.sample.InitCompositionSetup
 						.getInstance().getDetailPage(entityType,
 								"nanomaterialEntity");
-				System.out.println("**** Deatils Page *****"
+				System.out.println("**** Details Page *****"
 						+ detailPage);
 				nanoentitiy.put("detailsPage", detailPage);
 				if (detailPage.contains("Dendrimer")) {

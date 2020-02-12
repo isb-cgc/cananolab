@@ -29,28 +29,28 @@ public class RestTestLoginUtil {
 	 * 
 	 * @return
 	 */
-	public static String loginTest() {
-
-		if (jsessionId == null) {
-			String username = RestTestLoginUtil.readUserNameProperty();
-			String pwd = RestTestLoginUtil.readPasswordProperty();
-			System.out.println("User " + username + " " + pwd);
-			
-			if (username == null || username.length() == 0 ||
-					pwd == null || pwd.length() == 0)
-				return null;
-			
+//	public static String loginTest() {
+//
+//		if (jsessionId == null) {
+//			String username = RestTestLoginUtil.readUserNameProperty();
+//			String pwd = RestTestLoginUtil.readPasswordProperty();
+//			System.out.println("User " + username + " " + pwd);
+//
+//			if (username == null || username.length() == 0 ||
+//					pwd == null || pwd.length() == 0)
+//				return null;
+//
+////			Response response = with().params("username", username, "password", pwd)
+////					.expect().statusCode(200).when().get("http://localhost:8080/caNanoLab/rest/security/login");
+//
 //			Response response = with().params("username", username, "password", pwd)
-//					.expect().statusCode(200).when().get("http://localhost:8080/caNanoLab/rest/security/login");
-
-			Response response = with().params("username", username, "password", pwd)
-					.expect().statusCode(200).when().get("http://localhost:8080/caNanoLab/login");
-
-
-			jsessionId = response.getCookie("JSESSIONID");
-		}
-		return jsessionId;
-	}
+//					.expect().statusCode(200).when().get("http://localhost:8080/caNanoLab/login");
+//
+//
+//			jsessionId = response.getCookie("JSESSIONID");
+//		}
+//		return jsessionId;
+//	}
 
 	public static String testLogin(){
 		if (jsessionId ==null){
@@ -82,15 +82,15 @@ public class RestTestLoginUtil {
 //		}, data: $scope.bean}).
 	}
 
-	public static void RestAssuredLogin(){
-		String username = RestTestLoginUtil.readUserNameProperty();
-		String pwd = RestTestLoginUtil.readPasswordProperty();
-		System.out.println("User " + username + " " + pwd);
-		RestAssured.baseURI = System.getProperty("baseurl");
-		PreemptiveBasicAuthScheme authScheme = new PreemptiveBasicAuthScheme();
-		authScheme.setUserName(username);
-		authScheme.setPassword(pwd);
-		RestAssured.authentication = authScheme;}
+//	public static void RestAssuredLogin(){
+//		String username = RestTestLoginUtil.readUserNameProperty();
+//		String pwd = RestTestLoginUtil.readPasswordProperty();
+//		System.out.println("User " + username + " " + pwd);
+//		RestAssured.baseURI = System.getProperty("baseurl");
+//		PreemptiveBasicAuthScheme authScheme = new PreemptiveBasicAuthScheme();
+//		authScheme.setUserName(username);
+//		authScheme.setPassword(pwd);
+//		RestAssured.authentication = authScheme;}
 	
 	public static void logoutTest() {
 		expect().statusCode(200).when().get("http://localhost:8080/caNanoLab/rest/security/logout");

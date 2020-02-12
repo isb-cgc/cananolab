@@ -15,10 +15,25 @@ public class SimpleSynthesisMaterialElementBean {
     String molecularFormulaType;
     String pubChemDataSource;
     Long pubChemId;
-    Map<String,Object> supplierMap;
+    Map<String,String> supplierMap;
     String type;
     Float value;
     String valueUnit;
+
+    public void setFunctionList(List<Map<String, Object>> functionList) {
+        this.functionList = functionList;
+    }
+
+
+    public List<SimpleFileBean> getFiles() {
+        return files;
+    }
+
+    public void setFiles(List<SimpleFileBean> files) {
+        this.files = files;
+    }
+
+    List<SimpleFileBean> files;
 
     public String getMolecularFormulaType() {
         return molecularFormulaType;
@@ -44,7 +59,7 @@ public class SimpleSynthesisMaterialElementBean {
         return id;
     }
 
-    public List<Map<String, Object>> getFunctionList() {
+    public List<Map<String, Object>> getInherentFunctionList() {
         return functionList;
     }
 
@@ -60,7 +75,7 @@ public class SimpleSynthesisMaterialElementBean {
         return pubChemId;
     }
 
-    public Map<String, Object> getSupplierMap() {
+    public Map<String, String> getSupplierMap() {
         return supplierMap;
     }
 
@@ -100,7 +115,7 @@ public class SimpleSynthesisMaterialElementBean {
         this.id = id;
     }
 
-    public void setInherentFunction(List<Map<String, Object>> functionList) {
+    public void setInherentFunctionList(List<Map<String, Object>> functionList) {
         this.functionList = functionList;
     }
 
@@ -116,7 +131,7 @@ public class SimpleSynthesisMaterialElementBean {
         this.pubChemId = pubChemId;
     }
 
-    public void setSupplier(Map<String, Object> supplierMap) {
+    public void setSupplier(Map<String, String> supplierMap) {
         this.supplierMap = supplierMap;
     }
 

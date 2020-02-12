@@ -1,6 +1,7 @@
 package gov.nih.nci.cananolab.dto.particle.synthesis;
 
 import gov.nih.nci.cananolab.domain.common.File;
+import gov.nih.nci.cananolab.domain.common.Supplier;
 import gov.nih.nci.cananolab.domain.particle.Characterization;
 import gov.nih.nci.cananolab.domain.particle.SmeInherentFunction;
 import gov.nih.nci.cananolab.domain.particle.SynthesisMaterialElement;
@@ -18,7 +19,7 @@ public class SynthesisMaterialElementBean extends BaseSynthesisEntityBean {
     private SynthesisMaterialElement domain;
     private List<SmeInherentFunctionBean> functions = new ArrayList<SmeInherentFunctionBean>();
 //    private List<FileBean> files = new ArrayList<FileBean>();
-String description="";
+
 
 
     public List<SmeInherentFunctionBean> getFunctions() {
@@ -31,7 +32,10 @@ String description="";
 
     public SynthesisMaterialElementBean(SynthesisMaterialElement domain){
         this.domain = domain;
-        description = domain.getDescription();
+        this.setDescription(domain.getDescription());
+        this.setType(domain.getType());
+        this.setDisplayName(domain.getChemicalName());
+
         if(domain.getSmeInherentFunctions() !=null){
             for(SmeInherentFunction smeInherentFunction: domain.getSmeInherentFunctions()){
                 functions.add(new SmeInherentFunctionBean(smeInherentFunction));
@@ -101,6 +105,14 @@ String description="";
 
         domain.setDescription(description);
 
+        }
+
+        public void setSuppler(Supplier supplier){
+        this.domain.setSupplier(supplier);
+        }
+
+        public Supplier getSupplier(){
+        return this.domain.getSupplier();
         }
 
 

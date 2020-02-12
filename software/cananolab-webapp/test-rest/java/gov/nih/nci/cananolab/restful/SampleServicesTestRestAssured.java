@@ -16,7 +16,7 @@ public class SampleServicesTestRestAssured {
 
 		//http://www.hascode.com/2011/10/testing-restful-web-services-made-easy-using-the-rest-assured-framework/
 
-		String jsessionId = RestTestLoginUtil.loginTest();
+		String jsessionId = RestTestLoginUtil.testLogin();
 
 		Response res =
 				given().contentType("application/json").cookie("JSESSIONID=" + jsessionId).expect()
@@ -36,7 +36,7 @@ public class SampleServicesTestRestAssured {
 		//Because "contains" operand is not set, exact name is needed;
 		form.setSampleName("SY-NCL-23-1");
 		
-		String jsessionId = RestTestLoginUtil.loginTest();
+		String jsessionId = RestTestLoginUtil.testLogin();
 		
 		Response res = //with().parameters("sampleName", "SY-NCL-23-1")
 		given().contentType("application/json").cookie("JSESSIONID=" + jsessionId).body(form)

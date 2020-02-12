@@ -39,7 +39,7 @@ public class NanomaterialEntityServiceTest {
 	@Test
 	public void testEdit() {
 		
-		String jsessionId = RestTestLoginUtil.loginTest();
+		String jsessionId = RestTestLoginUtil.testLogin();
 		
 		Map<String, String> parameters = new HashMap<String, String>();
 		parameters.put("sampleId", "20917506");
@@ -57,7 +57,7 @@ public class NanomaterialEntityServiceTest {
 //	@Test
 //	public void testSaveComposingElement() {
 //		
-//		String jsessionId = RestTestLoginUtil.loginTest();
+//		String jsessionId = RestTestLoginUtil.testLogin();
 //		SimpleNanomaterialEntityBean simpleNano = new SimpleNanomaterialEntityBean();
 //		simpleNano.setSampleId("20917510");
 //		simpleNano.setType("carbon");
@@ -96,7 +96,7 @@ public class NanomaterialEntityServiceTest {
 		simpleNano.setSimpleCompBean(comp);
 		simpleNano.setComposingElements(compList);
 		
-		String jsessionId = RestTestLoginUtil.loginTest();
+		String jsessionId = RestTestLoginUtil.testLogin();
 
 		final Client aClient = ClientBuilder.newBuilder()
 		        .register(ObjectMapperProvider.class)
@@ -137,7 +137,7 @@ public class NanomaterialEntityServiceTest {
 		simpleNano.setSimpleCompBean(comp);
 		simpleNano.setComposingElements(compList);
 		
-		String jsessionId = RestTestLoginUtil.loginTest();
+		String jsessionId = RestTestLoginUtil.testLogin();
 
 		final Client aClient = ClientBuilder.newBuilder()
 		        .register(ObjectMapperProvider.class)
@@ -178,7 +178,7 @@ public class NanomaterialEntityServiceTest {
 		simpleNano.setFileBean(file);
 		simpleNano.setComposingElements(compList);
 		
-		String jsessionId = RestTestLoginUtil.loginTest();
+		String jsessionId = RestTestLoginUtil.testLogin();
 		
 		final Client aClient = ClientBuilder.newBuilder()
 		        .register(ObjectMapperProvider.class)
@@ -219,7 +219,7 @@ public class NanomaterialEntityServiceTest {
 		simpleNano.setFileBean(file);
 		simpleNano.setComposingElements(compList);
 		
-		String jsessionId = RestTestLoginUtil.loginTest();
+		String jsessionId = RestTestLoginUtil.testLogin();
 		
 		final Client aClient = ClientBuilder.newBuilder()
 		        .register(ObjectMapperProvider.class)
@@ -273,7 +273,7 @@ public class NanomaterialEntityServiceTest {
 //		{"simpleCompBean":null,"sampleComposition":null,"fileBean":null,"type":"biopolymer","id":0,"description":"Test biopolymer","sampleId":"66912256","userDeletable":false,"userUpdatable":false,"createdBy":"canano_curator","createdDate":1580788621000,"domainEntity":{"sequence":"BioTest","createdDate":1580788621000,"createdBy":"canano_curator","name":"BioTest","id":66945024,"type":"peptide","sampleComposition":{"id":null,"nanomaterialEntityCollection":[],"functionalizingEntityCollection":[],"chemicalAssociationCollection":[],"fileCollection":[],"sample":null}},"composingElements":[{"type":"modifier","name":"ModTest","pubChemDataSourceName":"","pubChemId":null,"value":33,"valueUnit":"M","molecularFormulaType":"Hill","molecularFormula":"C1B2H3","description":"Test add nano","id":67010560,"sampleId":"","modality":"","createdBy":"canano_curator","createdDate":1580779853000,"inherentFunction":null}],"files":[],"withProperties":true,"isPolymerized":null,"isCrossLinked":null,"errors":null,"otherSampleNames":[]}
 
 		
-//		String jsessionId = RestTestLoginUtil.loginTest();
+//		String jsessionId = RestTestLoginUtil.testLogin();
 		String jsessionId = RestTestLoginUtil.testLogin();
 		
 		final Client aClient = ClientBuilder.newBuilder()
@@ -324,7 +324,7 @@ public class NanomaterialEntityServiceTest {
 		simpleNano.setComposingElements(compList);
 		simpleNano.setFiles(fileList);
 		
-		String jsessionId = RestTestLoginUtil.loginTest();
+		String jsessionId = RestTestLoginUtil.testLogin();
 		
 		final Client aClient = ClientBuilder.newBuilder()
 		        .register(ObjectMapperProvider.class)
