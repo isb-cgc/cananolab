@@ -169,7 +169,7 @@ public class PublicationServicesTest {
 //			}
 
 			
-			String jsessionId = RestTestLoginUtil.loginTest();
+			String jsessionId = RestTestLoginUtil.testLogin();
 			
 			Map<String, String> parameters = new HashMap<String, String>();
 			parameters.put("publicationId", "44990464");
@@ -187,7 +187,7 @@ public class PublicationServicesTest {
 	@Test
 	public void testGetSamples() {
 		try{
-			String jsessionId = RestTestLoginUtil.loginTest();
+			String jsessionId = RestTestLoginUtil.testLogin();
 			Map<String, String> parameters = new HashMap<String, String>();
 			parameters.put("searchStr", "ncl-24-1");
 			

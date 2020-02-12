@@ -102,6 +102,7 @@ public class SimpleSynthesisMaterialBean {
 
         SynthesisMaterial synthesisMaterial = synBean.getDomainEntity();
         setSampleId((String) httpRequest.getSession().getAttribute("sampleId"));
+        setId(synBean.getDomainEntity().getId());
         setType(synBean.getType());
         setDescription(synBean.getDescription());
         setCreatedBy(synthesisMaterial.getCreatedBy());
@@ -123,14 +124,16 @@ public class SimpleSynthesisMaterialBean {
                 sSynMatElementBean.setCreatedBy(synthesisMaterialElement.getCreatedBy());
                 sSynMatElementBean.setPubChemId(synthesisMaterialElement.getPubChemId());
                 sSynMatElementBean.setPubChemDataSource(synthesisMaterialElement.getPubChemDatasourceName());
+                //Transfer supplier
                 Supplier supplier = synthesisMaterialElement.getSupplier();
                 if(supplier != null){
-                    Map<String, Object> supplierMap = new HashMap<String, Object>();
+                    Map<String, String> supplierMap = new HashMap<String, String>();
                     supplierMap.put("Lot",supplier.getLot());
                     supplierMap.put("SupplierName",supplier.getSupplierName());
-                    supplierMap.put("id",supplier.getId());
+                    supplierMap.put("id",supplier.getId().toString());
                     sSynMatElementBean.setSupplier(supplierMap);
                 }
+                //Transfer inherent function
                 if (synthesisMaterialElement.getSmeInherentFunctions().size()>0){
                     List<Map<String,Object>> functionList = new ArrayList<Map<String, Object>>();
                     for(SmeInherentFunction smeInherentFunction: synthesisMaterialElement.getSmeInherentFunctions()){
@@ -140,10 +143,34 @@ public class SimpleSynthesisMaterialBean {
                         function.put("description",smeInherentFunction.getDescription());
                         functionList.add(function);
                     }
-                    sSynMatElementBean.setInherentFunction(functionList);
+                    sSynMatElementBean.setInherentFunctionList(functionList);
                 }
-                
+                //Transfer files
+                if(synthesisMaterialElement.getFiles()!=null){
+                    List<SimpleFileBean> sfeFiles = new ArrayList<SimpleFileBean>();
+                    for(FileBean file : elementBean.getFiles()){
+                        SimpleFileBean simpleFileBean = new SimpleFileBean(file,this.getSampleId());
+//                        SimpleFileBean fBean = new SimpleFileBean();
+//                        fBean.setDescription(file.getDescription());
+//                        fBean.setType(file.getDomainFile().getType());
+//                        fBean.setTitle(file.getDomainFile().getTitle());
+//                        fBean.setUri(file.getDomainFile().getUri());
+//                        fBean.setUriExternal(file.getDomainFile().getUriExternal());
+//                        fBean.setExternalUrl(file.getExternalUrl());
+//                        fBean.setKeywordsStr(file.getKeywordsStr());
+//                        fBean.setId(file.getDomainFile().getId());
+//                        fBean.setCreatedBy(file.getDomainFile().getCreatedBy());
+//                        fBean.setCreatedDate(file.getDomainFile().getCreatedDate());
+//                        fBean.setTheAccess(file.getTheAccess());
+//                        boolean isPublic = springSecurityAclService.checkObjectPublic(Long.valueOf(getSampleId()), SecureClassesEnum.SAMPLE.getClazz());
+//                        fBean.setIsPublic(isPublic);
+                        sfeFiles.add(simpleFileBean);
+                    }
+                sSynMatElementBean.setFiles(sfeFiles);
+                }
+                materialElements.add(sSynMatElementBean);
             }
+            setMaterialElements(materialElements);
         }
 
         if(synBean.getFiles()!=null){

@@ -38,7 +38,7 @@ public class FunctionalizingEntityServicesTest {
 	@Test
 	public void testEdit() {
 		
-		String jsessionId = RestTestLoginUtil.loginTest();
+		String jsessionId = RestTestLoginUtil.testLogin();
 		
 		Map<String, String> parameters = new HashMap<String, String>();
 		parameters.put("sampleId", "20917508");
@@ -64,7 +64,7 @@ public class FunctionalizingEntityServicesTest {
 		funcBean.setType("endosomolysis");
 		simpleFunc.setSimpleFunctionBean(funcBean);
 		
-		String jsessionId = RestTestLoginUtil.loginTest();
+		String jsessionId = RestTestLoginUtil.testLogin();
 
 		final Client aClient = ClientBuilder.newBuilder()
 		        .register(ObjectMapperProvider.class)
@@ -100,7 +100,7 @@ public class FunctionalizingEntityServicesTest {
 		funcBean.setType("endosomolysis");
 		simpleFunc.setSimpleFunctionBean(funcBean);
 		
-		String jsessionId = RestTestLoginUtil.loginTest();
+		String jsessionId = RestTestLoginUtil.testLogin();
 
 		final Client aClient = ClientBuilder.newBuilder()
 		        .register(ObjectMapperProvider.class)
@@ -140,7 +140,7 @@ public class FunctionalizingEntityServicesTest {
 		file.setSampleId("20917510");
 		simpleFunc.setFileBean(file);
 		
-		String jsessionId = RestTestLoginUtil.loginTest();
+		String jsessionId = RestTestLoginUtil.testLogin();
 
 		final Client aClient = ClientBuilder.newBuilder()
 		        .register(ObjectMapperProvider.class)
@@ -183,7 +183,7 @@ public class FunctionalizingEntityServicesTest {
 		simpleFunc.setFileBean(file);
 		simpleFunc.setFileList(fileList);
 		
-		String jsessionId = RestTestLoginUtil.loginTest();
+		String jsessionId = RestTestLoginUtil.testLogin();
 
 		final Client aClient = ClientBuilder.newBuilder()
 		        .register(ObjectMapperProvider.class)
@@ -232,7 +232,7 @@ public class FunctionalizingEntityServicesTest {
 		simpleFunc.setFunctionList(compList);
 		simpleFunc.setFileList(fileList);
 		
-		String jsessionId = RestTestLoginUtil.loginTest();
+		String jsessionId = RestTestLoginUtil.testLogin();
 
 		final Client aClient = ClientBuilder.newBuilder()
 		        .register(ObjectMapperProvider.class)
@@ -281,7 +281,7 @@ public class FunctionalizingEntityServicesTest {
 		simpleFunc.setFunctionList(compList);
 		simpleFunc.setFileList(fileList);
 				
-		String jsessionId = RestTestLoginUtil.loginTest();
+		String jsessionId = RestTestLoginUtil.testLogin();
 
 		final Client aClient = ClientBuilder.newBuilder()
 		        .register(ObjectMapperProvider.class)

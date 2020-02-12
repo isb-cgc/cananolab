@@ -48,23 +48,28 @@ private static RequestSpecification specification;
 
     }
 
+    @After
+    public void tearDown(){
+//        RestTestLoginUtil.logoutTest();
+    }
+
 
 
     @Test
     public void testSetup() {
-
-
+//Test the initial setup of a synthesis material item - including the pass through of drop-down values
         try {
             Response response = given().spec(specification).queryParam("sampleId", "1000")
                     .when().get("synthesisMaterial/setup")
                     .then().statusCode(200).extract().response();
 
             assertNotNull(response);
-            String materialType = response.asString();
 
-            assertTrue(materialType.contains("coat"));
+
             ArrayList<String> materialTypes = response.path("materialTypes");
             assertTrue(materialTypes.contains("coat"));
+            ArrayList<String> pubChemTypes = response.path("pubChemDataSources");
+            assertTrue(pubChemTypes.contains("Substance"));
         }
         catch (Exception e) {
             e.printStackTrace();
@@ -74,16 +79,20 @@ private static RequestSpecification specification;
 
     @Test
     public void testEdit() {
+        //Test the edit form retrieval of an existing material element
         try {
-            Response locationHeader = given().spec(specification)
+            Response response = given().spec(specification)
                     .queryParam("sampleId", "1000")
                     .queryParam("synMaterialId","1000")
                     .when().get("synthesisMaterial/edit")
                     .then().statusCode(200).extract().response();
 
-            assertNotNull(locationHeader);
-
-        }
+            assertNotNull(response);
+            String id = response.path("id").toString();
+            assertTrue(id.equals("1000"));
+            ArrayList<SimpleSynthesisMaterialElementBean> materialElements = response.path("materialElements");
+            assertTrue(materialElements.size()>0);
+       }
         catch (Exception e) {
             e.printStackTrace();
         }
@@ -102,7 +111,7 @@ private static RequestSpecification specification;
         elementBean.setType("Reflexivity");
         elementBean.setValue(new Float(22.4));
         elementBean.setValueUnit("g");
-        Map<String, Object> supplierMap = new HashMap<String, Object>();
+        Map<String, String> supplierMap = new HashMap<String, String>();
         supplierMap.put("Lot","AB#$");
         supplierMap.put("SupplierName","New Supplier");
         supplierMap.put("id","1000");
@@ -112,11 +121,14 @@ private static RequestSpecification specification;
         materialBean.setMaterialElements(elementBeans);
 
         try {
-            Response locationHeader = given().spec(specification)
+            Response response = given().spec(specification)
                     .body(materialBean).when().post("synthesisMaterial/saveSynthesisMaterialElement")
                     .then().statusCode(200).extract().response();
 
-            assertNotNull(locationHeader);
+            assertNotNull(response);
+            String debug = response.asString();
+            System.out.println(debug);
+
         }
         catch (Exception e) {
             e.printStackTrace();
@@ -136,7 +148,7 @@ private static RequestSpecification specification;
         elementBean.setType("Reflexivity");
         elementBean.setValue(new Float(22.4));
         elementBean.setValueUnit("g");
-        Map<String, Object> supplierMap = new HashMap<String, Object>();
+        Map<String, String> supplierMap = new HashMap<String, String>();
         supplierMap.put("Lot","AB#$");
         supplierMap.put("SupplierName","New Supplier");
         supplierMap.put("id","1000");
@@ -146,11 +158,11 @@ private static RequestSpecification specification;
         materialBean.setMaterialElements(elementBeans);
 
         try {
-            Response locationHeader = given().spec(specification)
+            Response response = given().spec(specification)
                     .body(materialBean).when().post("synthesisMaterial/removeSynthesisMaterialElement")
                     .then().statusCode(200).extract().response();
 
-            assertNotNull(locationHeader);
+            assertNotNull(response);
         }
         catch (Exception e) {
             e.printStackTrace();
@@ -173,11 +185,11 @@ private static RequestSpecification specification;
         materialBean.setFileElements(fileBeans);
 
         try {
-            Response locationHeader = given().spec(specification).queryParam("fileId", "1000")
+            Response response = given().spec(specification).queryParam("fileId", "1000")
                     .body(materialBean).when().post("synthesisMaterial/saveFile")
                     .then().statusCode(200).extract().response();
 
-            assertNotNull(locationHeader);
+            assertNotNull(response);
         }
         catch (Exception e) {
             e.printStackTrace();
@@ -200,12 +212,12 @@ private static RequestSpecification specification;
         materialBean.setFileElements(fileBeans);
 
         try {
-            Response locationHeader = given().spec(specification).
+            Response response = given().spec(specification).
                     body(materialBean).when().post("synthesisMaterial/removeFile")
                     .then().statusCode(200).extract().response();
 
 
-            assertNotNull(locationHeader);
+            assertNotNull(response);
         }
         catch (Exception e) {
             e.printStackTrace();
@@ -230,11 +242,13 @@ private static RequestSpecification specification;
 
 
         try {
-            Response locationHeader = given().spec(specification).
+            Response response = given().spec(specification).
                     body(materialBean).when().post("synthesisMaterial/submit")
                     .then().statusCode(200).extract().response();
 
-            assertNotNull(locationHeader);
+            assertNotNull(response);
+            String debug = response.asString();
+            System.out.println(debug);
         }
         catch (Exception e) {
             e.printStackTrace();
@@ -248,11 +262,11 @@ private static RequestSpecification specification;
         materialBean.setId(new Long(1000));
 
         try {
-            Response locationHeader = given().spec(specification).
+            Response response = given().spec(specification).
                     body(materialBean).when().post("synthesisMaterial/delete")
                     .then().statusCode(200).extract().response();
 
-            assertNotNull(locationHeader);
+            assertNotNull(response);
         }
         catch (Exception e) {
             e.printStackTrace();
@@ -266,11 +280,13 @@ private static RequestSpecification specification;
         materialBean.setId(new Long(1000));
 
         try {
-            Response locationHeader = given().spec(specification).
+            Response response = given().spec(specification).
                     body(materialBean).when().post("synthesisMaterial/viewDetails")
                     .then().statusCode(200).extract().response();
 
-            assertNotNull(locationHeader);
+            assertNotNull(response);
+            String debug = response.asString();
+            System.out.println(debug);
         }
         catch (Exception e) {
             e.printStackTrace();

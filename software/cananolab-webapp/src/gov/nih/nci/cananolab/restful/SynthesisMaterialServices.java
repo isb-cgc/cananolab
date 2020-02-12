@@ -69,7 +69,7 @@ public class SynthesisMaterialServices {
     @Produces ("application/json")
     public Response saveSynthesisMaterialElement(@Context HttpServletRequest httpRequest, SimpleSynthesisMaterialBean simpleSynthesisMaterialBean) {
         try{
-            SynthesisMaterialBO synthesisMaterialBO = (SynthesisMaterialBO) SpringApplicationContext.getBean(httpRequest, "synthesisMaterialElementBO");
+            SynthesisMaterialBO synthesisMaterialBO = (SynthesisMaterialBO) SpringApplicationContext.getBean(httpRequest, "synthesisMaterialBO");
             if(!SpringSecurityUtil.isUserLoggedIn())
                 return Response.status(Response.Status.UNAUTHORIZED).entity("Session expired").build();
 
@@ -205,7 +205,7 @@ public class SynthesisMaterialServices {
             SynthesisMaterialBO synthesisMaterialBO = (SynthesisMaterialBO) SpringApplicationContext.getBean(httpRequest, "synthesisMaterialBO");
             SynthesisMaterialBean synthesisMaterialBean = synthesisMaterialBO.setupSynMaterialForAdvSearch(simpleSynthesisMaterialBean.getSampleId().toString(), simpleSynthesisMaterialBean.getId(), httpRequest);
             SimpleAdvancedSearchSynthesisBean searchSynthesisBean = new SimpleAdvancedSearchSynthesisBean();
-            searchSynthesisBean.transferMaterialForAdvancedSearch(simpleSynthesisMaterialBean, httpRequest);
+            searchSynthesisBean.transferMaterialForAdvancedSearch(synthesisMaterialBean, httpRequest);
             return Response.ok(searchSynthesisBean).header("Access-Control-Allow-Credentials", "true").header("Access-Control-Allow-Origin", "*")
                     .header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS").header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization").build();
 

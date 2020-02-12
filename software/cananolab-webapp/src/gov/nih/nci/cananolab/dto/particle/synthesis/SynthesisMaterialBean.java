@@ -47,9 +47,15 @@ public class SynthesisMaterialBean extends BaseSynthesisEntityBean {
         if (material.getProtocol() != null) {
             protocolBean = new ProtocolBean(material.getProtocol());
         }
+        this.setType("Synthesis");
+        this.setDescription(material.getDescription());
+
     }
 
 
+    public void setSynthesis(SynthesisBean synthesisBean){
+        this.domainEntity.setSynthesis(synthesisBean.getDomain());
+    }
 
     public SynthesisMaterial getDomainEntity(){
         return domainEntity;

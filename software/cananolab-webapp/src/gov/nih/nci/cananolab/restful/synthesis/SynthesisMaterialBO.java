@@ -3,6 +3,7 @@ package gov.nih.nci.cananolab.restful.synthesis;
 import gov.nih.nci.cananolab.domain.common.File;
 import gov.nih.nci.cananolab.domain.common.Keyword;
 import gov.nih.nci.cananolab.domain.common.Protocol;
+import gov.nih.nci.cananolab.domain.common.Supplier;
 import gov.nih.nci.cananolab.domain.particle.SmeInherentFunction;
 import gov.nih.nci.cananolab.domain.particle.Synthesis;
 import gov.nih.nci.cananolab.domain.particle.SynthesisMaterial;
@@ -11,6 +12,7 @@ import gov.nih.nci.cananolab.dto.common.FileBean;
 import gov.nih.nci.cananolab.dto.common.ProtocolBean;
 import gov.nih.nci.cananolab.dto.particle.SampleBean;
 import gov.nih.nci.cananolab.dto.particle.synthesis.SmeInherentFunctionBean;
+import gov.nih.nci.cananolab.dto.particle.synthesis.SynthesisBean;
 import gov.nih.nci.cananolab.dto.particle.synthesis.SynthesisMaterialBean;
 import gov.nih.nci.cananolab.dto.particle.synthesis.SynthesisMaterialElementBean;
 import gov.nih.nci.cananolab.exception.NoAccessException;
@@ -19,11 +21,14 @@ import gov.nih.nci.cananolab.exception.SynthesisException;
 import gov.nih.nci.cananolab.restful.core.BaseAnnotationBO;
 import gov.nih.nci.cananolab.restful.sample.InitSampleSetup;
 import gov.nih.nci.cananolab.restful.sample.InitSynthesisSetup;
+import gov.nih.nci.cananolab.restful.util.PropertyUtil;
 import gov.nih.nci.cananolab.restful.util.SynthesisUtil;
 import gov.nih.nci.cananolab.restful.view.edit.SimpleFileBean;
 import gov.nih.nci.cananolab.restful.view.edit.SimpleProtocol;
 import gov.nih.nci.cananolab.restful.view.edit.SimpleSynthesisMaterialBean;
 import gov.nih.nci.cananolab.restful.view.edit.SimpleSynthesisMaterialElementBean;
+import gov.nih.nci.cananolab.security.CananoUserDetails;
+import gov.nih.nci.cananolab.security.enums.SecureClassesEnum;
 import gov.nih.nci.cananolab.security.service.SpringSecurityAclService;
 import gov.nih.nci.cananolab.security.utils.SpringSecurityUtil;
 import gov.nih.nci.cananolab.service.curation.CurationService;
@@ -38,6 +43,7 @@ import java.util.IllegalFormatConversionException;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import javax.enterprise.inject.New;
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -47,6 +53,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
+import sun.text.resources.ro.JavaTimeSupplementary_ro;
 
 @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
 @Component("synthesisMaterialBO")
@@ -149,44 +156,47 @@ public class SynthesisMaterialBO extends BaseAnnotationBO {
         File file;
         List<FileBean> fileBeanList = new ArrayList<FileBean>();
         Set<File> fileList = new HashSet<File>();
-        for(SimpleFileBean sFileBean: synMatBean.getFileElements()){
-            file = new File();
-            fileBean = new FileBean();
-            file.setCreatedBy(sFileBean.getCreatedBy());
-            fileBean.setCreatedBy(sFileBean.getCreatedBy());
-            file.setCreatedDate(sFileBean.getCreatedDate());
-            file.setTitle(sFileBean.getTitle());
-            file.setDescription(sFileBean.getDescription());
- //TODO figure out what name is supposed to do.  Eliminate if "nothing"  file.setName(sFileBean.get);
-            file.setType(sFileBean.getType());
-            file.setUri(sFileBean.getUri());
-            file.setUriExternal(sFileBean.getUriExternal());
-            fileBean.setExternalUrl(sFileBean.getExternalUrl());
-            if(!StringUtils.isEmpty(sFileBean.getKeywordsStr())){
-                String[] strs = sFileBean.getKeywordsStr().split("\r\n");
-                for (String str : strs) {
-                    // change to upper case
-                    Keyword keyword = new Keyword();
-                    keyword.setName(str.toUpperCase());
-                    file.getKeywordCollection().add(keyword);
+        if(synMatBean.getFileElements()!=null) {
+            for (SimpleFileBean sFileBean : synMatBean.getFileElements()) {
+                file = new File();
+                fileBean = new FileBean();
+                file.setCreatedBy(sFileBean.getCreatedBy());
+                fileBean.setCreatedBy(sFileBean.getCreatedBy());
+                file.setCreatedDate(sFileBean.getCreatedDate());
+                file.setTitle(sFileBean.getTitle());
+                file.setDescription(sFileBean.getDescription());
+                //TODO figure out what name is supposed to do.  Eliminate if "nothing"  file.setName(sFileBean.get);
+                file.setType(sFileBean.getType());
+                file.setUri(sFileBean.getUri());
+                file.setUriExternal(sFileBean.getUriExternal());
+                fileBean.setExternalUrl(sFileBean.getExternalUrl());
+                if (!StringUtils.isEmpty(sFileBean.getKeywordsStr())) {
+                    String[] strs = sFileBean.getKeywordsStr().split("\r\n");
+                    for (String str : strs) {
+                        // change to upper case
+                        Keyword keyword = new Keyword();
+                        keyword.setName(str.toUpperCase());
+                        file.getKeywordCollection().add(keyword);
+                    }
                 }
+                fileBean.setTheAccess(sFileBean.getTheAccess());
+                fileBean.setDomainFile(file);
+                fileBeanList.add(fileBean);
+                fileList.add(file);
             }
-            fileBean.setTheAccess(sFileBean.getTheAccess());
-            fileBean.setDomainFile(file);
-            fileBeanList.add(fileBean);
-            fileList.add(file);
+            bean.setFiles(fileBeanList);
+            material.setFiles(fileList);
         }
-        bean.setFiles(fileBeanList);
-        material.setFiles(fileList);
-
 
         //Set protocol for domain and bean
         try {
             SimpleProtocol sProtocol = synMatBean.getSimpleProtocol();
-            ProtocolBean protocolBean = protocolService.findProtocolById(sProtocol.getDomainId().toString());
-            Protocol protocol = protocolBean.getDomain();
-            bean.setProtocolBean(protocolBean);
-            material.setProtocol(protocol);
+            if (sProtocol != null) {
+                ProtocolBean protocolBean = protocolService.findProtocolById(sProtocol.getDomainId().toString());
+                Protocol protocol = protocolBean.getDomain();
+                bean.setProtocolBean(protocolBean);
+                material.setProtocol(protocol);
+            }
         }
         catch (ProtocolException e) {
             e.printStackTrace();
@@ -204,15 +214,69 @@ public class SynthesisMaterialBO extends BaseAnnotationBO {
         SynthesisMaterialElement sme = new SynthesisMaterialElement();
         SmeInherentFunctionBean smeIfBean = new SmeInherentFunctionBean();
         Set<SmeInherentFunction> smeInherentFunctions = new HashSet<SmeInherentFunction>();
-
+        List<SynthesisMaterialElementBean> smeBeans = new ArrayList<SynthesisMaterialElementBean>();
         List<SimpleSynthesisMaterialElementBean> sSMEbeans = synMatBean.getMaterialElements();
+
         if(sSMEbeans !=null){
             //Loop through simple beans, creating new material elements from each
             for(SimpleSynthesisMaterialElementBean sSMEBean: sSMEbeans){
+                SynthesisMaterialElement synthesisMaterialElement = new SynthesisMaterialElement();
 
+                synthesisMaterialElement.setDescription(sSMEBean.getDescription());
+                synthesisMaterialElement.setChemicalName(sSMEBean.getChemicalName());
+                synthesisMaterialElement.setMolecularFormula(sSMEBean.getMolecularFormula());
+                synthesisMaterialElement.setMolecularFormulaType(sSMEBean.getMolecularFormulaType());
+                synthesisMaterialElement.setPubChemId(sSMEBean.getPubChemId());
+                synthesisMaterialElement.setPubChemDatasourceName(sSMEBean.getPubChemDataSource());
+                synthesisMaterialElement.setValue(sSMEBean.getValue());
+                synthesisMaterialElement.setValueUnit(sSMEBean.getValueUnit());
+
+                //check supplier
+                //TODO this is clumsy.  Should probably be a simple bean
+                Map<String, String> supplierMap = sSMEBean.getSupplierMap();
+                Supplier supplier = new Supplier();
+                supplier.setSupplierName(supplierMap.get("SupplierName"));
+                supplier.setLot(supplierMap.get("Lot"));
+                supplier.setId(new Long(supplierMap.get("id")));
+                synthesisMaterialElement.setSupplier(supplier);
+
+
+                //check for Files
+                List<SimpleFileBean> sfileBeans = sSMEBean.getFiles();
+                Set<File> files = new HashSet<File>();
+                for(SimpleFileBean simpleFileBean: sfileBeans){
+
+                    File file1 = new File();
+                    file1.setUriExternal(simpleFileBean.getUriExternal());
+                    file1.setUri(simpleFileBean.getUri());
+                    file1.setType(simpleFileBean.getType());
+                    file1.setDescription(simpleFileBean.getDescription());
+                    file1.setTitle(simpleFileBean.getTitle());
+                    file1.setCreatedDate(simpleFileBean.getCreatedDate());
+                    file1.setCreatedBy(simpleFileBean.getCreatedBy());
+                    files.add(file1);
+                }
+                synthesisMaterialElement.setFiles(files);
 
                 //Loop through functions
+                List<Map<String,Object>> functions = sSMEBean.getInherentFunctionList();
+                Set<SmeInherentFunction> smeInherentFunctionSet = new HashSet<SmeInherentFunction>();
+                for(Map<String, Object> function: functions){
+                    //id, type, description
+                    SmeInherentFunction smeInherentFunction = new SmeInherentFunction();
+
+                    smeInherentFunction.setType(function.get("type").toString());
+                    smeInherentFunction.setDescription(function.get("description").toString());
+                    smeInherentFunction.setId((Long) function.get("id"));
+                    //TODO this is circular.  Rework this
+                    smeInherentFunction.setSynthesisMaterialElement(synthesisMaterialElement);
+                    smeInherentFunctionSet.add(smeInherentFunction);
+                }
+                synthesisMaterialElement.setSmeInherentFunctions(smeInherentFunctionSet);
+                SynthesisMaterialElementBean materialElementBean = new SynthesisMaterialElementBean(synthesisMaterialElement);
+                smeBeans.add(materialElementBean);
             }
+            bean.setSynthesisMaterialElements(smeBeans);
         }
 
         return bean;
@@ -224,8 +288,32 @@ public class SynthesisMaterialBO extends BaseAnnotationBO {
     }
 
     private List<String> saveEntity(HttpServletRequest request, String sampleId, SynthesisMaterialBean entityBean) throws Exception {
-        //todo write
-        return null;
+
+        List<String> msgs = new ArrayList<String>();
+        SampleBean sampleBean = setupSampleById(sampleId, request);
+        CananoUserDetails userDetails = SpringSecurityUtil.getPrincipal();
+
+        Boolean newEntity = true;
+
+        try {
+            entityBean.setUpDomainEntity(userDetails.getUsername());
+            if (entityBean.getDomainEntity().getId() != null) {
+                newEntity = false;
+            }
+        } catch (ClassCastException ex) {
+
+            entityBean.setType(null);
+        }
+        synthesisService.saveSynthesisMaterial(sampleBean, entityBean);
+        // retract from public if updating an existing public record and not curator
+        if (!newEntity && !userDetails.isCurator() &&
+                springSecurityAclService.checkObjectPublic(sampleBean.getDomain().getId(), SecureClassesEnum.SAMPLE.getClazz())) {
+            retractFromPublic(request, sampleBean.getDomain().getId(), sampleBean.getDomain().getName(), "sample", SecureClassesEnum.SAMPLE.getClazz());
+            msgs.add(PropertyUtil.getProperty("sample", "message.updateSample.retractFromPublic"));
+            return msgs;
+        }
+        return msgs;
+
     }
 
     public List<String> delete(SimpleSynthesisMaterialBean synthesisMaterialBean, HttpServletRequest request) throws Exception {
@@ -335,14 +423,16 @@ public class SynthesisMaterialBO extends BaseAnnotationBO {
 //        InitSampleSetup.getInstance().getOtherSampleNames(httpRequest, sampleId, sampleService);
 
         try {
-            SynthesisMaterialBean synBean = synthesisService.findSynthesisMaterialById(new Long(sampleId),
+            SynthesisMaterialBean synthesisMaterialBean = synthesisService.findSynthesisMaterialById(new Long(sampleId),
                     new Long(synMatId));
 
-            form.setSynthesisMaterialBean(synBean);
-            this.checkOpenForms(synBean, httpRequest);
+            SynthesisBean synthesisBean = synthesisService.findSynthesisBySampleId(new Long(sampleId));
+            synthesisMaterialBean.setSynthesis(synthesisBean);
+            form.setSynthesisMaterialBean(synthesisMaterialBean);
+            this.checkOpenForms(synthesisMaterialBean, httpRequest);
             httpRequest.getSession().setAttribute("sampleId", sampleId);
             SimpleSynthesisMaterialBean simpleSynthesisMaterialBean = new SimpleSynthesisMaterialBean();
-            simpleSynthesisMaterialBean.transferSynthesisMaterialBeanToSimple(synBean, httpRequest,
+            simpleSynthesisMaterialBean.transferSynthesisMaterialBeanToSimple(synthesisMaterialBean, httpRequest,
                     springSecurityAclService);
             return simpleSynthesisMaterialBean;
         }
@@ -375,6 +465,8 @@ public class SynthesisMaterialBO extends BaseAnnotationBO {
     public SimpleSynthesisMaterialBean saveFile(SimpleSynthesisMaterialBean simpleSynthesisMaterialBean,
                                                 HttpServletRequest httpRequest) {
         //TODO write
+        SynthesisMaterialBean bean = transferSynthesisMaterialBean(simpleSynthesisMaterialBean, httpRequest);
+
         return null;
     }
 

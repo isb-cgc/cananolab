@@ -40,7 +40,7 @@ public class ChemicalAssociationServicesTest {
 	@Test
 	public void testEdit() {
 		
-		String jsessionId = RestTestLoginUtil.loginTest();
+		String jsessionId = RestTestLoginUtil.testLogin();
 		
 		Map<String, String> parameters = new HashMap<String, String>();
 		parameters.put("sampleId", "20917508");
@@ -58,7 +58,7 @@ public class ChemicalAssociationServicesTest {
 	@Test
 	public void testGetAssociatedElementOptions() {
 		
-		String jsessionId = RestTestLoginUtil.loginTest();
+		String jsessionId = RestTestLoginUtil.testLogin();
 		Map<String, String> parameters = new HashMap<String, String>();
 		parameters.put("compositionType", "nanomaterial entity");
 		this.testSetup();
@@ -75,7 +75,7 @@ public class ChemicalAssociationServicesTest {
 	@Test
 	public void testGetComposingElementsByNanomaterialEntityId() {
 		
-		String jsessionId = RestTestLoginUtil.loginTest();
+		String jsessionId = RestTestLoginUtil.testLogin();
 		Map<String, String> parameters = new HashMap<String, String>();
 		parameters.put("id", "21867783");
 		ValidatableResponse res =
@@ -113,7 +113,7 @@ public void testsaveFile() {
 	beanB.setEntityId("85196800");
 	bean.setAssociatedElementA(beanB);
 	
-	String jsessionId = RestTestLoginUtil.loginTest();
+	String jsessionId = RestTestLoginUtil.testLogin();
 
 	final Client aClient = ClientBuilder.newBuilder()
 	        .register(ObjectMapperProvider.class)
@@ -166,7 +166,7 @@ public void testRemoveFile() {
 	bean.setAssociatedElementA(beanB);
 	bean.setFiles(list);
 	
-	String jsessionId = RestTestLoginUtil.loginTest();
+	String jsessionId = RestTestLoginUtil.testLogin();
 
 	final Client aClient = ClientBuilder.newBuilder()
 	        .register(ObjectMapperProvider.class)
@@ -218,7 +218,7 @@ public void testSubmit() {
 	bean.setAssociatedElementA(beanB);
 	bean.setFiles(list);
 	
-	String jsessionId = RestTestLoginUtil.loginTest();
+	String jsessionId = RestTestLoginUtil.testLogin();
 
 	final Client aClient = ClientBuilder.newBuilder()
 	        .register(ObjectMapperProvider.class)
@@ -271,7 +271,7 @@ public void testDelete() {
 	bean.setFiles(list);
 	
 			
-	String jsessionId = RestTestLoginUtil.loginTest();
+	String jsessionId = RestTestLoginUtil.testLogin();
 
 	final Client aClient = ClientBuilder.newBuilder()
 	        .register(ObjectMapperProvider.class)

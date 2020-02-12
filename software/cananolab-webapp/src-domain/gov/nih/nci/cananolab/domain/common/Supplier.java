@@ -8,7 +8,7 @@ import java.io.Serializable;
  */
 public class Supplier implements Serializable {
 
-	private long supplierPkId;
+	private Long supplierPkId;
 
 	private String supplierName;
 	private String lot;
@@ -25,11 +25,11 @@ public class Supplier implements Serializable {
 		this.lot = lot;
 	}
 
-	public long getId() {
+	public Long getId() {
 		return this.supplierPkId;
 	}
 
-	public void setId(long supplierPkId) {
+	public void setId(Long supplierPkId) {
 		this.supplierPkId = supplierPkId;
 	}
 
