@@ -134,4 +134,18 @@ public class SimpleSynthesisFunctionalizationBean {
 
     }
 
+    @Override
+    public String toString()
+    {
+        return "{\"SimpleSynthesisFunctionalizationBean\":{"
+                + "                        \"id\":\"" + id + "\""
+                + ",                         \"sampleId\":\"" + sampleId + "\""
+                + ",                         \"dataId\":\"" + dataId + "\""
+                + ",                         \"funcElementBeans\":" + funcElementBeans
+                + ",                         \"fileBeans\":" + fileBeans
+                + ",                         \"errors\":" + errors
+                + ",                         \"createdDate\":" + createdDate
+                + ",                         \"createdBy\":\"" + createdBy + "\""
+                + "}}";
+    }
 }
