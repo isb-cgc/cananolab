@@ -4,6 +4,7 @@ import gov.nih.nci.cananolab.domain.common.Supplier;
 import gov.nih.nci.cananolab.domain.particle.SynthesisMaterialElement;
 import gov.nih.nci.cananolab.restful.util.RestTestLoginUtil;
 import gov.nih.nci.cananolab.restful.view.edit.SimpleFileBean;
+import gov.nih.nci.cananolab.restful.view.edit.SimpleSynthesisFunctionalizationBean;
 import gov.nih.nci.cananolab.restful.view.edit.SimpleSynthesisMaterialBean;
 import gov.nih.nci.cananolab.restful.view.edit.SimpleSynthesisMaterialElementBean;
 import io.restassured.builder.RequestSpecBuilder;

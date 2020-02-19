@@ -352,9 +352,8 @@ public class NanomaterialEntityBO extends BaseAnnotationBO
 		try {
 			entity = transferNanoMateriaEntityBean(nanoBean, request);
 			List<String> msgs =new ArrayList<String>();
-			//TODO This is evil. Burn it with fire
+			//Trusting form set theComposingElement to element being edited
 			ComposingElementBean composingElement = entity.getTheComposingElement();
-//			ComposingElementBean composingElement = entity.getComposingElements().get(0);
 			composingElement.setupDomain(SpringSecurityUtil.getLoggedInUserName());
 //			entity.addComposingElement(composingElement);
 			
@@ -772,9 +771,9 @@ public class NanomaterialEntityBO extends BaseAnnotationBO
 	public SimpleNanomaterialEntityBean removeComposingElement(SimpleNanomaterialEntityBean nanoBean, HttpServletRequest request) throws Exception {
 		List<String> msgs = new ArrayList<String>();
 		NanomaterialEntityBean entity = transferNanoMateriaEntityBean(nanoBean, request);
+		//Trusting that form sets theComposingElement as the element being edited.
 		ComposingElementBean composingElement = entity.getTheComposingElement();
-//		ComposingElementBean composingElement = entity.getComposingElements().get(0);
-		//TODO  EH. what?  So it doesn't even check what composing element to remove?  I don't even....
+
 		
 		// check if composing element is associated with an association
 		SimpleNanomaterialEntityBean nano = new SimpleNanomaterialEntityBean();

@@ -11,6 +11,7 @@ import gov.nih.nci.cananolab.domain.particle.SynthesisMaterialElement;
 import gov.nih.nci.cananolab.dto.common.FileBean;
 import gov.nih.nci.cananolab.dto.common.ProtocolBean;
 import gov.nih.nci.cananolab.dto.particle.SampleBean;
+import gov.nih.nci.cananolab.dto.particle.composition.NanomaterialEntityBean;
 import gov.nih.nci.cananolab.dto.particle.synthesis.SmeInherentFunctionBean;
 import gov.nih.nci.cananolab.dto.particle.synthesis.SynthesisBean;
 import gov.nih.nci.cananolab.dto.particle.synthesis.SynthesisMaterialBean;
@@ -24,6 +25,7 @@ import gov.nih.nci.cananolab.restful.sample.InitSynthesisSetup;
 import gov.nih.nci.cananolab.restful.util.PropertyUtil;
 import gov.nih.nci.cananolab.restful.util.SynthesisUtil;
 import gov.nih.nci.cananolab.restful.view.edit.SimpleFileBean;
+import gov.nih.nci.cananolab.restful.view.edit.SimpleNanomaterialEntityBean;
 import gov.nih.nci.cananolab.restful.view.edit.SimpleProtocol;
 import gov.nih.nci.cananolab.restful.view.edit.SimpleSynthesisMaterialBean;
 import gov.nih.nci.cananolab.restful.view.edit.SimpleSynthesisMaterialElementBean;
@@ -36,8 +38,12 @@ import gov.nih.nci.cananolab.service.protocol.ProtocolService;
 import gov.nih.nci.cananolab.service.sample.SampleService;
 import gov.nih.nci.cananolab.service.sample.SynthesisService;
 import gov.nih.nci.cananolab.ui.form.SynthesisForm;
+import gov.nih.nci.cananolab.util.Constants;
+import gov.nih.nci.cananolab.util.DateUtils;
 import gov.nih.nci.cananolab.util.StringUtils;
+import java.nio.file.Files;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.IllegalFormatConversionException;
 import java.util.List;
@@ -134,7 +140,12 @@ public class SynthesisMaterialBO extends BaseAnnotationBO {
 
         material.setDescription(synMatBean.getDescription());
         bean.setDescription(synMatBean.getDescription());
-        bean.setType(synMatBean.getType());
+        if(synMatBean.getType()!=null) {
+            bean.setType(synMatBean.getType());
+        } else
+        {
+            bean.setType("Synthesis");
+        }
 
         //Add parent object to domain
         Synthesis synthesis = null;
@@ -183,6 +194,10 @@ public class SynthesisMaterialBO extends BaseAnnotationBO {
                 fileBean.setDomainFile(file);
                 fileBeanList.add(fileBean);
                 fileList.add(file);
+
+                //TODO check if this can replace all of the above
+                FileBean testFileBean = new FileBean(sFileBean);
+                File testFile = testFileBean.getDomainFile();
             }
             bean.setFiles(fileBeanList);
             material.setFiles(fileList);
@@ -277,14 +292,49 @@ public class SynthesisMaterialBO extends BaseAnnotationBO {
                 smeBeans.add(materialElementBean);
             }
             bean.setSynthesisMaterialElements(smeBeans);
-        }
 
+        }
+        bean.setDomainEntity(material);
         return bean;
     }
 
     private List<String> validateInputs(HttpServletRequest request, SynthesisMaterialBean entityBean) {
         //todo write
-        return null;
+
+        List<String> msgs = new ArrayList<String>();
+        msgs = validateEntity(request, msgs, entityBean);
+        msgs = validateMaterialElements(request, msgs, entityBean);
+        msgs = validateFile(request, msgs, entityBean);
+
+        String debugString = "Debug";
+        msgs.add(debugString);
+        return msgs;
+        //TODO this is all debug text.  Replace with real results
+
+    }
+
+    private List<String> validateFile(HttpServletRequest request, List<String> msgs,
+                                            SynthesisMaterialBean entityBean) {
+        //ActionMessages msgs = new ActionMessages();
+        for (FileBean filebean : entityBean.getFiles()) {
+            msgs = validateFileBean(request, msgs, filebean);
+            if (msgs.size()>0) {
+                return msgs;
+            }
+        }
+        return msgs;
+    }
+
+    private List<String> validateEntity(HttpServletRequest httpRequest, List<String> msgs, SynthesisMaterialBean synthesisMaterialBean){
+        //TODO write
+
+        return msgs;
+    }
+
+    private List<String> validateMaterialElements(HttpServletRequest httpRequest, List<String> msgs, SynthesisMaterialBean synthesisMaterialBean){
+        //TODO write
+
+        return msgs;
     }
 
     private List<String> saveEntity(HttpServletRequest request, String sampleId, SynthesisMaterialBean entityBean) throws Exception {
@@ -321,7 +371,8 @@ public class SynthesisMaterialBO extends BaseAnnotationBO {
         List<String> msgs = new ArrayList<String>();
         SynthesisMaterialBean entityBean = transferSynthesisMaterialBean(synthesisMaterialBean, request);
         entityBean.setUpDomainEntity(SpringSecurityUtil.getLoggedInUserName());
-        synthesisService.deleteSynthesisMaterial(entityBean.getDomainEntity());
+        String sampleId = synthesisMaterialBean.getSampleId();
+        synthesisService.deleteSynthesisMaterial(new Long(sampleId),entityBean.getDomainEntity());
 
         msgs.add("success");
         return msgs;
@@ -351,11 +402,14 @@ public class SynthesisMaterialBO extends BaseAnnotationBO {
         //Assumption is they have ONE file submitted attached to the object.  That is the file to be removed
         SynthesisMaterialBean entityBean = transferSynthesisMaterialBean(simpleSynthesisMaterialBean, httpRequest);
 
-        List<FileBean> files = entityBean.getFiles();
-        if(files.size()>1){
-            throw new SynthesisException("Can only remove one file at a time from SynthesisMaterial");
-        }
-        FileBean theFile = files.get(0);
+//        List<FileBean> files = entityBean.getFiles();
+//        if(files.size()>1){
+//            throw new SynthesisException("Can only remove one file at a time from SynthesisMaterial");
+//        }
+//        FileBean theFile = files.get(0);
+//        entityBean.removeFile(theFile);
+
+        FileBean theFile = new FileBean(simpleSynthesisMaterialBean.getFileBeingEdited());
         entityBean.removeFile(theFile);
 
         List<String> msgs = validateInputs(httpRequest, entityBean);
@@ -371,25 +425,7 @@ public class SynthesisMaterialBO extends BaseAnnotationBO {
                 , httpRequest);
     }
 
-    public SimpleSynthesisMaterialBean removeFile(SimpleSynthesisMaterialBean simpleSynthesisMaterialBean,
-                                                  String fileId, HttpServletRequest request) throws Exception {
-        SynthesisMaterialBean entityBean = transferSynthesisMaterialBean(simpleSynthesisMaterialBean, request);
 
-        FileBean theFile = entityBean.getFile(fileId);
-        entityBean.removeFile(theFile);
-
-        List<String> msgs = validateInputs(request, entityBean);
-        if (msgs.size() > 0) {
-            SimpleSynthesisMaterialBean synMat = new SimpleSynthesisMaterialBean();
-            synMat.setErrors(msgs);
-            return synMat;
-        }
-        this.saveEntity(request, simpleSynthesisMaterialBean.getSampleId(), entityBean);
-        request.setAttribute("anchor", "file");
-        this.checkOpenForms(entityBean, request);
-        return setupUpdate(simpleSynthesisMaterialBean.getSampleId(), entityBean.getDomainEntity().getId().toString()
-                , request);
-    }
 
     private void checkOpenForms(SynthesisMaterialBean synthesisMaterialBean, HttpServletRequest request) throws Exception {
         String dispatch = request.getParameter("dispatch");
@@ -407,10 +443,7 @@ public class SynthesisMaterialBO extends BaseAnnotationBO {
         //TODO Check SynthesisMaterialElement?
 
 
-        String detailPage = null;
-
-
-        detailPage = InitSynthesisSetup.getInstance().getDetailPage(
+        String detailPage = InitSynthesisSetup.getInstance().getDetailPage(
                 "synthesisMaterial");
 
         request.setAttribute("synthesisDetailPage", detailPage);
@@ -443,11 +476,11 @@ public class SynthesisMaterialBO extends BaseAnnotationBO {
     }
 
     public SimpleSynthesisMaterialBean removeMaterialElement(SimpleSynthesisMaterialBean simpleSynthesisMaterialBean,
-                                                             String materialElementId,
                                                              HttpServletRequest httpRequest) throws Exception {
         List<String> msgs = new ArrayList<String>();
         SynthesisMaterialBean entity = transferSynthesisMaterialBean(simpleSynthesisMaterialBean, httpRequest);
-        SynthesisMaterialElementBean materialElementBean = entity.getSynthesisMaterialElementById(materialElementId);
+        SimpleSynthesisMaterialElementBean elementBeingEdited = simpleSynthesisMaterialBean.getMaterialElementBeingEdited();
+        SynthesisMaterialElementBean materialElementBean = entity.getSynthesisMaterialElementById(elementBeingEdited.getId());
         entity.removeMaterialElement(materialElementBean);
         msgs = validateInputs(httpRequest, entity);
         //If an error, return blank class
@@ -463,11 +496,56 @@ public class SynthesisMaterialBO extends BaseAnnotationBO {
     }
 
     public SimpleSynthesisMaterialBean saveFile(SimpleSynthesisMaterialBean simpleSynthesisMaterialBean,
-                                                HttpServletRequest httpRequest) {
-        //TODO write
-        SynthesisMaterialBean bean = transferSynthesisMaterialBean(simpleSynthesisMaterialBean, httpRequest);
+                                                HttpServletRequest httpRequest) throws Exception{
 
-        return null;
+        SynthesisMaterialBean synthesisMaterialBean = transferSynthesisMaterialBean(simpleSynthesisMaterialBean, httpRequest);
+        List<FileBean> fileList = synthesisMaterialBean.getFiles();
+
+
+        String timestamp = DateUtils.convertDateToString(new Date(), "yyyyMMdd_HH-mm-ss-SSS");
+
+        FileBean theNewFile = new FileBean(simpleSynthesisMaterialBean.getFileBeingEdited());
+
+
+        SampleBean sampleBean = setupSampleById(simpleSynthesisMaterialBean.getSampleId(), httpRequest);
+        //Determine the directory for saving the file
+        String internalUriPath = Constants.FOLDER_PARTICLE+'/'+sampleBean.getDomain().getName()+'/'+"synthesisMaterial";
+        theNewFile.setupDomainFile(internalUriPath,SpringSecurityUtil.getLoggedInUserName());
+
+
+        byte[] newFileData = (byte[]) httpRequest.getSession().getAttribute("newFileData");
+        if(!theNewFile.getDomainFile().getUriExternal()){
+            if(newFileData!=null){
+                theNewFile.setNewFileData((byte[]) httpRequest.getSession().getAttribute("newFileData"));
+                theNewFile.getDomainFile().setUri(Constants.FOLDER_PARTICLE + '/'
+                        + sampleBean.getDomain().getName() + '/' + "nanomaterialEntity"+ "/" + timestamp + "_"
+                        + theNewFile.getDomainFile().getName());
+            }else if(theNewFile.getDomainFile().getId()!=null){
+                theNewFile.getDomainFile().setUri(theNewFile.getDomainFile().getName());
+            }else{
+                theNewFile.getDomainFile().setUri(null);
+            }
+        }
+        synthesisMaterialBean.addFile(theNewFile);
+
+//
+//        // save entity to save file because inverse="false"
+        List<String> msgs = validateInputs(httpRequest, synthesisMaterialBean);
+        if (msgs.size()>0) {
+            SimpleSynthesisMaterialBean simpleSynMatBean = new SimpleSynthesisMaterialBean();
+            simpleSynMatBean.setErrors(msgs);
+            return simpleSynMatBean;
+        }
+        this.saveEntity(httpRequest,simpleSynthesisMaterialBean.getSampleId(), synthesisMaterialBean);
+//        compositionService.assignAccesses(entity.getDomainEntity().getSampleComposition(), theFile.getDomainFile());
+
+        httpRequest.setAttribute("anchor", "file");
+        httpRequest.setAttribute("dataId", synthesisMaterialBean.getDomainEntity().getId().toString());
+        httpRequest.getSession().removeAttribute("newFileData");
+
+        return setupUpdate(simpleSynthesisMaterialBean.getSampleId(), synthesisMaterialBean.getDomainEntity().getId().toString(), httpRequest);
+
+
     }
 
     public SimpleSynthesisMaterialBean saveMaterialElement(SimpleSynthesisMaterialBean simpleSynthesisMaterialBean,
@@ -477,6 +555,11 @@ public class SynthesisMaterialBO extends BaseAnnotationBO {
         try {
             entity = transferSynthesisMaterialBean(simpleSynthesisMaterialBean, httpServletRequest);
             List<String> msgs = new ArrayList<String>();
+            SimpleSynthesisMaterialElementBean elementBeingEdited = simpleSynthesisMaterialBean.getMaterialElementBeingEdited();
+
+
+
+
             List<SynthesisMaterialElementBean> synthesisMaterialElementBeans = entity.getSynthesisMaterialElements();
             for (SynthesisMaterialElementBean synthesisMaterialElementBean : synthesisMaterialElementBeans) {
                 synthesisMaterialElementBean.setUpDomain(SpringSecurityUtil.getLoggedInUserName());

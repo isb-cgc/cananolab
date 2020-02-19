@@ -1,5 +1,6 @@
 package gov.nih.nci.cananolab.service.sample.helper;
 
+import gov.nih.nci.cananolab.domain.common.File;
 import gov.nih.nci.cananolab.domain.particle.NanomaterialEntity;
 import gov.nih.nci.cananolab.domain.particle.Synthesis;
 import gov.nih.nci.cananolab.domain.particle.SynthesisFunctionalization;
@@ -11,6 +12,9 @@ import gov.nih.nci.cananolab.security.enums.SecureClassesEnum;
 import gov.nih.nci.cananolab.security.service.SpringSecurityAclService;
 import gov.nih.nci.cananolab.system.applicationservice.CaNanoLabApplicationService;
 import gov.nih.nci.cananolab.system.applicationservice.client.ApplicationServiceProvider;
+import gov.nih.nci.cananolab.system.query.hibernate.HQLCriteria;
+import gov.nih.nci.cananolab.util.ClassUtils;
+import java.util.ArrayList;
 import java.util.List;
 import org.apache.log4j.Logger;
 import org.hibernate.FetchMode;
@@ -25,11 +29,15 @@ public class SynthesisHelper
 {
     private static Logger logger = Logger.getLogger(SynthesisHelper.class);
 
+
     @Autowired
     private SpringSecurityAclService springSecurityAclService;
 
     public SynthesisHelper() {
     }
+
+
+
 
     public Synthesis findSynthesisBySampleId(String sampleId) throws SynthesisException {
         try{
@@ -201,5 +209,60 @@ public class SynthesisHelper
             entity = (SynthesisPurification) result.get(0);
         }
         return entity;
+    }
+
+    public List<File> findFilesByMaterialId(Long sampleId, Long synMatId, String className) throws Exception {
+        if (!springSecurityAclService.currentUserHasReadPermission(Long.valueOf(sampleId), SecureClassesEnum.SAMPLE.getClazz()) &&
+                !springSecurityAclService.currentUserHasWritePermission(Long.valueOf(sampleId), SecureClassesEnum.SAMPLE.getClazz())) {
+            throw new NoAccessException("User has no access to the synthesis entity " + sampleId);
+        }
+        List<File> fileCollection = new ArrayList<File>();
+        String fullClassName = null;
+        if (ClassUtils.getFullClass(className) != null) {
+            fullClassName = ClassUtils.getFullClass(className).getName();
+        } else {
+            return null;
+        }
+        CaNanoLabApplicationService appService = (CaNanoLabApplicationService) ApplicationServiceProvider.getApplicationService();
+        String hql = "select anEntity.fileCollection from " + fullClassName + " anEntity where anEntity.id = " + synMatId;
+
+        HQLCriteria crit = new HQLCriteria(hql);
+        List results = appService.query(crit);
+        for (int i = 0; i < results.size(); i++) {
+            File file = (File) results.get(i);
+            if (springSecurityAclService.currentUserHasReadPermission(sampleId, SecureClassesEnum.SAMPLE.getClazz()) ||
+                    springSecurityAclService.currentUserHasWritePermission(sampleId, SecureClassesEnum.SAMPLE.getClazz())) {
+                fileCollection.add(file);
+            } else {
+                logger.debug("User doesn't have access to file of id:" + file.getId());
+            }
+        }
+        return fileCollection;
+    }
+
+    public List<File> findFilesBySynMatElement(Long sampleId, Long elementId, String className) throws Exception {
+        List<File> fileCollection = new ArrayList<File>();
+        String fullClassName = null;
+        if (ClassUtils.getFullClass(className) != null) {
+            fullClassName = ClassUtils.getFullClass(className).getName();
+        } else {
+            return null;
+        }
+
+        CaNanoLabApplicationService appService = (CaNanoLabApplicationService) ApplicationServiceProvider.getApplicationService();
+        String hql = "select anEntity.fileCollection from " + fullClassName + " anEntity where anEntity.id = " + elementId;
+        HQLCriteria crit = new HQLCriteria(hql);
+        List results = appService.query(crit);
+        for (int i = 0; i < results.size(); i++) {
+            File file = (File) results.get(i);
+            if (springSecurityAclService.currentUserHasReadPermission(sampleId, SecureClassesEnum.SAMPLE.getClazz()) ||
+                    springSecurityAclService.currentUserHasWritePermission(sampleId, SecureClassesEnum.SAMPLE.getClazz())) {
+                fileCollection.add(file);
+            } else {
+                logger.debug("User doesn't have access to file of id:" + file.getId());
+            }
+        }
+        return fileCollection;
+
     }
 }
