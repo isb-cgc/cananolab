@@ -1,7 +1,9 @@
 package gov.nih.nci.cananolab.restful.synthesis;
 
+import gov.nih.nci.cananolab.dto.common.PurityBean;
 import gov.nih.nci.cananolab.dto.particle.synthesis.SynthesisPurificationBean;
 import gov.nih.nci.cananolab.restful.core.BaseAnnotationBO;
+import gov.nih.nci.cananolab.restful.view.edit.SimplePurityBean;
 import gov.nih.nci.cananolab.restful.view.edit.SimpleSynthesisPurificationBean;
 import gov.nih.nci.cananolab.security.service.SpringSecurityAclService;
 import gov.nih.nci.cananolab.service.curation.CurationService;
@@ -78,5 +80,50 @@ public class SynthesisPurificationBO extends BaseAnnotationBO {
     }
 
     private void checkOpenForms(SynthesisPurificationBean synBean, HttpServletRequest httpRequest) {
+    }
+
+    private void create(){
+        //TODO write
+    }
+
+    private void delete(){
+        //TODO write
+    }
+
+    private void createPurity(){
+        //TODO write
+    }
+
+    private void deletePurity(){
+        //TODO write
+    }
+
+    private void saveFile(){
+        //TODO write
+    }
+
+    private void deleteFile(){
+        //TODO write
+    }
+
+    private void setupView(){
+        //TODO write
+    }
+
+    private void saveExperiment(){
+        //TODO write
+    }
+
+    private void deleteExperiment(){
+        //TODO write
+    }
+
+    PurityBean transferSimplePurity(SimplePurityBean simplePurityBean, PurityBean purityBean){
+        //TODO write all the transfer stuff
+        return purityBean;
+    }
+
+    private void validateCharacterization(){
+        //TODO write
     }
 }
