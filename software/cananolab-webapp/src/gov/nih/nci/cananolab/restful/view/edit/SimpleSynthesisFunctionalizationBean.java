@@ -17,15 +17,19 @@ public class SimpleSynthesisFunctionalizationBean {
     private Long id = 0L;
     private String sampleId="";
     private String dataId="";
-//    private SimpleSynFuncElementBean funcElementBean;
     List<SimpleSynFuncElementBean> funcElementBeans = new ArrayList<SimpleSynFuncElementBean>() ;
-//    private SimpleFileBean fileBean;
-    List<SimpleFileBean> fileBeans = new ArrayList<SimpleFileBean>();
+    List<SimpleFileBean> fileElements;
     private List<String> errors = new ArrayList<String>();
-//    private SynthesisFunctionalization domainEntity;
-//    private SynthesisFunctionalizationBean synthesisFunctionalizationBean;
     private Date createdDate;
     private String createdBy="";
+
+    public List<SimpleFileBean> getFileElements() {
+        return fileElements;
+    }
+
+    public void setFileElements(List<SimpleFileBean> fileElements) {
+        this.fileElements = fileElements;
+    }
 
     public Long getId() {
         return id;
@@ -58,22 +62,6 @@ public class SimpleSynthesisFunctionalizationBean {
     public void setDataId(String dataId) {
         this.dataId = dataId;
     }
-//
-//    public SynthesisFunctionalization getDomainEntity() {
-//        return domainEntity;
-//    }
-//
-//    public void setDomainEntity(SynthesisFunctionalization domainEntity) {
-//        this.domainEntity = domainEntity;
-//    }
-//
-//    public SynthesisFunctionalizationBean getSynthesisFunctionalizationBean() {
-//        return synthesisFunctionalizationBean;
-//    }
-//
-//    public void setSynthesisFunctionalizationBean(SynthesisFunctionalizationBean synthesisFunctionalizationBean) {
-//        this.synthesisFunctionalizationBean = synthesisFunctionalizationBean;
-//    }
 
     public String getSampleId() {
         return sampleId;
@@ -83,14 +71,6 @@ public class SimpleSynthesisFunctionalizationBean {
         this.sampleId = sampleId;
     }
 
-//    public SimpleFileBean getFileBean() {
-//        return fileBean;
-//    }
-//
-//    public void setFileBean(SimpleFileBean fileBean) {
-//        this.fileBean = fileBean;
-//    }
-
 
     public List<SimpleSynFuncElementBean> getFuncElementBeans() {
         return funcElementBeans;
@@ -98,14 +78,6 @@ public class SimpleSynthesisFunctionalizationBean {
 
     public void setFuncElementBeans(List<SimpleSynFuncElementBean> funcElementBeans) {
         this.funcElementBeans = funcElementBeans;
-    }
-
-    public List<SimpleFileBean> getFileBeans() {
-        return fileBeans;
-    }
-
-    public void setFileBeans(List<SimpleFileBean> fileBeans) {
-        this.fileBeans = fileBeans;
     }
 
     public List<String> getErrors() {
@@ -123,7 +95,7 @@ public class SimpleSynthesisFunctionalizationBean {
         setCreatedBy( synthesisFunctionalizationBean.getDomainEntity().getCreatedBy());
 
         for(FileBean fileBean: synthesisFunctionalizationBean.getFiles()){
-            fileBeans.add(new SimpleFileBean(fileBean, (String) httpRequest.getSession().getAttribute("sampleId")));
+            fileElements.add(new SimpleFileBean(fileBean, (String) httpRequest.getSession().getAttribute("sampleId")));
         }
 
         for(SynthesisFunctionalizationElementBean sfeBean: synthesisFunctionalizationBean.getSynthesisFunctionalizationElements()){
@@ -142,10 +114,11 @@ public class SimpleSynthesisFunctionalizationBean {
                 + ",                         \"sampleId\":\"" + sampleId + "\""
                 + ",                         \"dataId\":\"" + dataId + "\""
                 + ",                         \"funcElementBeans\":" + funcElementBeans
-                + ",                         \"fileBeans\":" + fileBeans
+                + ",                         \"fileElements\":" + fileElements
                 + ",                         \"errors\":" + errors
                 + ",                         \"createdDate\":" + createdDate
                 + ",                         \"createdBy\":\"" + createdBy + "\""
                 + "}}";
     }
+
 }
