@@ -1,5 +1,6 @@
 package gov.nih.nci.cananolab.restful;
 
+import gov.nih.nci.cananolab.restful.util.RestTestLoginUtil;
 import gov.nih.nci.cananolab.service.sample.BatchDataAvailabilityProcess;
 import gov.nih.nci.cananolab.ui.form.GenerateBatchDataAvailabilityForm;
 import javax.ws.rs.client.Client;
@@ -17,7 +18,7 @@ import static org.junit.Assert.assertTrue;
 
 public class CurationServicesTest {
 
-	String urlbase = "http://192.168.1.16:8090/caNanoLab/rest/";
+	String urlbase = RestTestLoginUtil.readTestUrlProperty() +  "caNanoLab/rest/";
 	Client client; 
 
 	
@@ -52,7 +53,7 @@ public class CurationServicesTest {
 		        .register(ObjectMapperProvider.class)
 		        .build();
 		
-		WebTarget webTarget = aClient.target("http://192.168.1.16:8090/caNanoLab/rest");
+		WebTarget webTarget = aClient.target(RestTestLoginUtil.readTestUrlProperty() +  "caNanoLab/rest");
 		webTarget.register(CurationServices.class);
 		
 		WebTarget submitPublicationWebTarget = webTarget.path("curation").path("generateBatchDataAvailability");

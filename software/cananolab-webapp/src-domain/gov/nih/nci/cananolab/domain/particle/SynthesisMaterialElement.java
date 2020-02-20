@@ -172,6 +172,10 @@ public class SynthesisMaterialElement implements Serializable {
 		this.smeInherentFunctions = smeInherentFunctions;
 	}
 
+	public void addSmeInherentFunction(SmeInherentFunction function){
+		this.smeInherentFunctions.add(function);
+	}
+
 	public Supplier getSupplier() {
 		return supplier;
 	}

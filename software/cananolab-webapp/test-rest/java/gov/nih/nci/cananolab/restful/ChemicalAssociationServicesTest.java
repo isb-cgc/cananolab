@@ -32,7 +32,7 @@ public class ChemicalAssociationServicesTest {
 				given().contentType("application/json")
 				.param("sampleId", "20917508").expect()
 				.body("chemicalAssociationTypes", hasItems("Association","attachment","encapsulation","entrapment","intercalation"))
-						.when().get("http://192.168.1.16:8090/caNanoLab/rest/chemicalAssociation/setup");
+						.when().get(RestTestLoginUtil.readTestUrlProperty() +  "caNanoLab/rest/chemicalAssociation/setup");
 
 		System.out.println(res.getBody().asString());
 		
@@ -49,7 +49,7 @@ public class ChemicalAssociationServicesTest {
 				given().contentType("application/json").cookie("JSESSIONID=" + jsessionId)
 				.params(parameters).expect()
 				.body("type", equalToIgnoringCase("attachment"))
-						.when().get("http://192.168.1.16:8090/caNanoLab/rest/chemicalAssociation/edit");
+						.when().get(RestTestLoginUtil.readTestUrlProperty() +  "caNanoLab/rest/chemicalAssociation/edit");
 
 		System.out.println(res.getBody().asString());
 		RestTestLoginUtil.logoutTest();
@@ -65,7 +65,7 @@ public class ChemicalAssociationServicesTest {
 		ValidatableResponse res =
 				given().contentType("application/json").cookie("JSESSIONID=" + jsessionId)
 				.param("compositionType", "nanomaterial entity")
-						.when().post("http://192.168.1.16:8090/caNanoLab/rest/chemicalAssociation/getAssociatedElementOptions")
+						.when().post(RestTestLoginUtil.readTestUrlProperty() +  "caNanoLab/rest/chemicalAssociation/getAssociatedElementOptions")
 						.then().body(containsString("[]"));
 
 		RestTestLoginUtil.logoutTest();
@@ -81,7 +81,7 @@ public class ChemicalAssociationServicesTest {
 		ValidatableResponse res =
 				given().contentType("application/json").cookie("JSESSIONID=" + jsessionId)
 				.queryParam("id", "21867783")
-						.when().post("http://192.168.1.16:8090/caNanoLab/rest/chemicalAssociation/getComposingElementsByNanomaterialEntityId")
+						.when().post(RestTestLoginUtil.readTestUrlProperty() +  "caNanoLab/rest/chemicalAssociation/getComposingElementsByNanomaterialEntityId")
 		.then().body(containsString("RNA"));
 		RestTestLoginUtil.logoutTest();
 		
@@ -119,7 +119,7 @@ public void testsaveFile() {
 	        .register(ObjectMapperProvider.class)
 	        .build();
 	
-	WebTarget webTarget = aClient.target("http://192.168.1.16:8090/caNanoLab/rest");
+	WebTarget webTarget = aClient.target(RestTestLoginUtil.readTestUrlProperty() +  "caNanoLab/rest");
 	webTarget.register(ChemicalAssociationServices.class);
 	
 	WebTarget submitWebTarget = webTarget.path("chemicalAssociation").path("saveFile");
@@ -172,7 +172,7 @@ public void testRemoveFile() {
 	        .register(ObjectMapperProvider.class)
 	        .build();
 	
-	WebTarget webTarget = aClient.target("http://192.168.1.16:8090/caNanoLab/rest");
+	WebTarget webTarget = aClient.target(RestTestLoginUtil.readTestUrlProperty() +  "caNanoLab/rest");
 	webTarget.register(ChemicalAssociationServices.class);
 	
 	WebTarget submitWebTarget = webTarget.path("chemicalAssociation").path("removeFile");
@@ -224,7 +224,7 @@ public void testSubmit() {
 	        .register(ObjectMapperProvider.class)
 	        .build();
 	
-	WebTarget webTarget = aClient.target("http://192.168.1.16:8090/caNanoLab/rest");
+	WebTarget webTarget = aClient.target(RestTestLoginUtil.readTestUrlProperty() +  "caNanoLab/rest");
 	webTarget.register(ChemicalAssociationServices.class);
 	
 	WebTarget submitWebTarget = webTarget.path("chemicalAssociation").path("submit");
@@ -277,7 +277,7 @@ public void testDelete() {
 	        .register(ObjectMapperProvider.class)
 	        .build();
 	
-	WebTarget webTarget = aClient.target("http://192.168.1.16:8090/caNanoLab/rest");
+	WebTarget webTarget = aClient.target(RestTestLoginUtil.readTestUrlProperty() +  "caNanoLab/rest");
 	webTarget.register(ChemicalAssociationServices.class);
 	
 	WebTarget submitWebTarget = webTarget.path("chemicalAssociation").path("delete");

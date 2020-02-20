@@ -30,7 +30,7 @@ public class NanomaterialEntityServiceTest {
 				given().contentType("application/json")
 				.param("sampleId", "20917510").expect()
 				.body("nanomaterialEntityTypes", hasItems("biopolymer", "carbon", "carbon black", "carbon nanotube", "dendrimer", "emulsion", "fullerene", "liposome", "metal oxide", "metal particle", "metalloid", "nanohorn", "nanorod", "nanoshell", "polymer", "quantum dot", "silica"))
-						.when().get("http://192.168.1.16:8090/caNanoLab/rest/nanomaterialEntity/setup");
+						.when().get(RestTestLoginUtil.readTestUrlProperty() +  "caNanoLab/rest/nanomaterialEntity/setup");
 
 		System.out.println(res.getBody().asString());
 		
@@ -48,7 +48,7 @@ public class NanomaterialEntityServiceTest {
 				given().contentType("application/json").cookie("JSESSIONID=" + jsessionId)
 				.params(parameters).expect()
 				.body("description", equalToIgnoringCase("Test Nano Entity"))
-						.when().get("http://192.168.1.16:8090/caNanoLab/rest/nanomaterialEntity/edit");
+						.when().get(RestTestLoginUtil.readTestUrlProperty() +  "caNanoLab/rest/nanomaterialEntity/edit");
 
 		System.out.println(res.getBody().asString());
 		RestTestLoginUtil.logoutTest();
@@ -74,7 +74,7 @@ public class NanomaterialEntityServiceTest {
 //				given().contentType("application/json").cookie("JSESSIONID=" + jsessionId)
 //				.body(simpleNano).expect()
 //				.body("Type", equalToIgnoringCase("monomer"))
-//						.when().post("http://192.168.1.16:8090/caNanoLab/rest/nanomaterialEntity/saveComposingElement");
+//						.when().post(RestTestLoginUtil.readTestUrlProperty() +  "caNanoLab/rest/nanomaterialEntity/saveComposingElement");
 //
 //		System.out.println(res.getBody().asString());
 //		RestTestLoginUtil.logoutTest();
@@ -102,7 +102,7 @@ public class NanomaterialEntityServiceTest {
 		        .register(ObjectMapperProvider.class)
 		        .build();
 		
-		WebTarget webTarget = aClient.target("http://192.168.1.16:8090/caNanoLab/rest");
+		WebTarget webTarget = aClient.target(RestTestLoginUtil.readTestUrlProperty() +  "caNanoLab/rest");
 		webTarget.register(NanomaterialEntityServices.class);
 		
 		WebTarget submitWebTarget = webTarget.path("nanomaterialEntity").path("saveComposingElement");
@@ -143,7 +143,7 @@ public class NanomaterialEntityServiceTest {
 		        .register(ObjectMapperProvider.class)
 		        .build();
 		
-		WebTarget webTarget = aClient.target("http://192.168.1.16:8090/caNanoLab/rest");
+		WebTarget webTarget = aClient.target(RestTestLoginUtil.readTestUrlProperty() +  "caNanoLab/rest");
 		webTarget.register(NanomaterialEntityServices.class);
 		
 		WebTarget submitWebTarget = webTarget.path("nanomaterialEntity").path("removeComposingElement");
@@ -184,7 +184,7 @@ public class NanomaterialEntityServiceTest {
 		        .register(ObjectMapperProvider.class)
 		        .build();
 		
-		WebTarget webTarget = aClient.target("http://192.168.1.16:8090/caNanoLab/rest");
+		WebTarget webTarget = aClient.target(RestTestLoginUtil.readTestUrlProperty() +  "caNanoLab/rest");
 		webTarget.register(NanomaterialEntityServices.class);
 		
 		WebTarget submitWebTarget = webTarget.path("nanomaterialEntity").path("saveFile");
@@ -225,7 +225,7 @@ public class NanomaterialEntityServiceTest {
 		        .register(ObjectMapperProvider.class)
 		        .build();
 		
-		WebTarget webTarget = aClient.target("http://192.168.1.16:8090/caNanoLab/rest");
+		WebTarget webTarget = aClient.target(RestTestLoginUtil.readTestUrlProperty() +  "caNanoLab/rest");
 		webTarget.register(NanomaterialEntityServices.class);
 		
 		WebTarget submitWebTarget = webTarget.path("nanomaterialEntity").path("removeFile");
@@ -280,7 +280,7 @@ public class NanomaterialEntityServiceTest {
 		        .register(ObjectMapperProvider.class)
 		        .build();
 		
-		WebTarget webTarget = aClient.target("http://192.168.1.16:8090/caNanoLab/rest");
+		WebTarget webTarget = aClient.target(RestTestLoginUtil.readTestUrlProperty() +  "caNanoLab/rest");
 		webTarget.register(NanomaterialEntityServices.class);
 		
 		WebTarget submitWebTarget = webTarget.path("nanomaterialEntity").path("submit");
@@ -330,7 +330,7 @@ public class NanomaterialEntityServiceTest {
 		        .register(ObjectMapperProvider.class)
 		        .build();
 		
-		WebTarget webTarget = aClient.target("http://192.168.1.16:8090/caNanoLab/rest");
+		WebTarget webTarget = aClient.target(RestTestLoginUtil.readTestUrlProperty() +  "caNanoLab/rest");
 		webTarget.register(NanomaterialEntityServices.class);
 		
 		WebTarget submitWebTarget = webTarget.path("nanomaterialEntity").path("delete");

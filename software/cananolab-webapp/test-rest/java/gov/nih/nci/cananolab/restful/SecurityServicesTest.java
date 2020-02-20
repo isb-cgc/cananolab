@@ -2,6 +2,8 @@ package gov.nih.nci.cananolab.restful;
 
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
+
+import gov.nih.nci.cananolab.restful.util.RestTestLoginUtil;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -10,7 +12,7 @@ import static org.junit.Assert.assertTrue;
 
 public class SecurityServicesTest {
 	
-	String urlbase = "http://192.168.1.16:8090/caNanoLab/rest/";
+	String urlbase = RestTestLoginUtil.readTestUrlProperty() +  "caNanoLab/rest/";
 	Client client; 
 
 	@Before

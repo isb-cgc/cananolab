@@ -19,7 +19,12 @@ import org.apache.log4j.Logger;
 public class SynthesisServices {
     private static final Logger logger = Logger.getLogger(SynthesisServices.class);
 
-
+    /**
+     *
+     * @param httpRequest
+     * @param sampleId - id of sample you wish to view
+     * @return SimpleSynthesisBean
+     */
     @GET
     @Path("/summaryView")
     @Produces ("application/json")
@@ -45,6 +50,12 @@ public class SynthesisServices {
         }
     }
 
+    /**
+     *
+     * @param httpRequest
+     * @param sampleId  - id of sample you wish to print
+     * @return SimpleSynthesisBean
+     */
     @GET
     @Path("/summaryPrint")
     @Produces ("application/json")
@@ -63,6 +74,14 @@ public class SynthesisServices {
         }
     }
 
+    /**
+     *
+     * @param httpRequest
+     * @param httpResponse
+     * @param sampleId  -  id of sample you wish to export
+     * @param type  -  type of synthesis subClass (all, synthesis material, synthesis functionalization, synthesis purification)
+     * @return String structured for export
+     */
     @GET
     @Path("/summaryExport")
     @Produces ("application/vnd.ms-excel")

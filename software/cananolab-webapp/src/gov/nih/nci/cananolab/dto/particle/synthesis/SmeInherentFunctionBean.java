@@ -33,6 +33,10 @@ public class SmeInherentFunctionBean {
         //TODO write
     }
 
+    public void setupDomain(int i){
+        //TODO write
+    }
+
     public void setDescription(String description) {
         domain.setDescription(description);
     }

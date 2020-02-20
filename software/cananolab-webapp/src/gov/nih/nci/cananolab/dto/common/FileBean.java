@@ -10,6 +10,7 @@ package gov.nih.nci.cananolab.dto.common;
 
 import gov.nih.nci.cananolab.domain.common.File;
 import gov.nih.nci.cananolab.domain.common.Keyword;
+import gov.nih.nci.cananolab.restful.view.edit.SimpleFileBean;
 import gov.nih.nci.cananolab.util.Constants;
 import gov.nih.nci.cananolab.util.DateUtils;
 import gov.nih.nci.cananolab.util.StringUtils;
@@ -220,5 +221,31 @@ public class FileBean extends SecuredDataBean {
 			copy.setKeywordCollection(new HashSet<Keyword>(oldKeywords));
 			// don't need to set keyword IDs because keywords are shared
 		}
+	}
+
+	 public FileBean(SimpleFileBean sFileBean){
+		File file = new File();
+		FileBean fileBean = new FileBean();
+		file.setCreatedBy(sFileBean.getCreatedBy());
+		fileBean.setCreatedBy(sFileBean.getCreatedBy());
+		file.setCreatedDate(sFileBean.getCreatedDate());
+		file.setTitle(sFileBean.getTitle());
+		file.setDescription(sFileBean.getDescription());
+		//TODO figure out what name is supposed to do.  Eliminate if "nothing"  file.setName(sFileBean.get);
+		file.setType(sFileBean.getType());
+		file.setUri(sFileBean.getUri());
+		file.setUriExternal(sFileBean.getUriExternal());
+		fileBean.setExternalUrl(sFileBean.getExternalUrl());
+		if (!StringUtils.isEmpty(sFileBean.getKeywordsStr())) {
+			String[] strs = sFileBean.getKeywordsStr().split("\r\n");
+			for (String str : strs) {
+				// change to upper case
+				Keyword keyword = new Keyword();
+				keyword.setName(str.toUpperCase());
+				file.getKeywordCollection().add(keyword);
+			}
+		}
+		fileBean.setTheAccess(sFileBean.getTheAccess());
+		fileBean.setDomainFile(file);
 	}
 }

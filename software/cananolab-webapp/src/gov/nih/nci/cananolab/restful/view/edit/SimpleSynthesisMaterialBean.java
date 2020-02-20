@@ -28,6 +28,10 @@ public class SimpleSynthesisMaterialBean {
     private String createdBy;
     private Date date;
 
+    //Passed in from front end when a file is being manipulated
+    SimpleFileBean fileBeingEdited;
+    SimpleSynthesisMaterialElementBean materialElementBeingEdited;
+
     public SimpleProtocol getSimpleProtocol() {
         return simpleProtocol;
     }
@@ -42,6 +46,14 @@ public class SimpleSynthesisMaterialBean {
 
     public void setFileElements(List<SimpleFileBean> fileElements) {
         this.fileElements = fileElements;
+    }
+
+    public SimpleFileBean getFileBeingEdited() {
+        return fileBeingEdited;
+    }
+
+    public SimpleSynthesisMaterialElementBean getMaterialElementBeingEdited(){
+        return materialElementBeingEdited;
     }
 
     public String getType() {

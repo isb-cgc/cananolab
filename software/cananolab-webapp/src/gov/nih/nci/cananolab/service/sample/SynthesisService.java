@@ -29,7 +29,7 @@ public interface SynthesisService extends BaseService {
 
     void deleteSynthesisFunctionalization(SynthesisFunctionalization synthesisFunctionalization) throws SynthesisException, NoAccessException;
 
-    void deleteSynthesisMaterial(SynthesisMaterial synthesisMaterial) throws SynthesisException, NoAccessException;
+    void deleteSynthesisMaterial(Long sampleId, SynthesisMaterial synthesisMaterial) throws SynthesisException, NoAccessException;
 
     void deleteSynthesisPurification(SynthesisPurification synthesisPurification) throws SynthesisException,
             NoAccessException;

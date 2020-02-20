@@ -33,7 +33,7 @@ import static org.junit.Assert.assertTrue;
 
 public class CoreServicesTest {
 	
-	String urlbase = "http://192.168.1.16:8090/caNanoLab/rest/";
+	String urlbase = RestTestLoginUtil.readTestUrlProperty() +  "caNanoLab/rest/";
 	Client client;
 	String jsessionId;
 	private static RequestSpecification specification;
@@ -46,7 +46,7 @@ public class CoreServicesTest {
 		//Create spec for all test logins in this class
 		specification = new RequestSpecBuilder()
 				.setContentType(ContentType.JSON)
-				.setBaseUri("http://192.168.1.16:8090/caNanoLab/rest/core/")
+				.setBaseUri(RestTestLoginUtil.readTestUrlProperty() +  "caNanoLab/rest/core/")
 				.addFilter(new ResponseLoggingFilter())
 				.addFilter(new RequestLoggingFilter())
 				.setSessionId(jsessionId)
@@ -103,7 +103,7 @@ public class CoreServicesTest {
 
 //		Response res =
 //				given().contentType("application/json").cookie("JSESSIONID=" + jsessionId)
-//						.when().get("http://192.168.1.16:8090/caNanoLab/rest/core/getFavorites");
+//						.when().get(RestTestLoginUtil.readTestUrlProperty() +  "caNanoLab/rest/core/getFavorites");
 
 		Response res = given().spec(specification).when().get("getFavorites").then().statusCode(200).extract().response();
 
@@ -135,7 +135,7 @@ public class CoreServicesTest {
 //		Response res =
 //				given() .contentType("application/json").cookie("JSESSIONID=" + jsessionId).body(form)
 //				.expect().statusCode(200)
-//				.when().post("http://192.168.1.16:8090/caNanoLab/rest/core/addFavorite");
+//				.when().post(RestTestLoginUtil.readTestUrlProperty() +  "caNanoLab/rest/core/addFavorite");
 
 		Response res = given().spec(specification).body(form).when().post("addFavorite").then().statusCode(200).extract().response();
 				
