@@ -25,7 +25,7 @@ import org.junit.Test;
 
 public class SampleServicesTest {
 	
-	String urlbase = "http://localhost:8080/caNanoLab/rest/";
+	String urlbase = RestTestLoginUtil.readTestUrlProperty() +  "caNanoLab/rest/";
 	Client client; 
 
 	@Before
@@ -119,7 +119,7 @@ public class SampleServicesTest {
 		//Because "contains" operand is not set, exact name is needed;
 		form.setSampleName("SY-NCL-23-1");
 		
-		WebTarget webTarget = client.target("http://localhost:8080/caNanoLab/rest");
+		WebTarget webTarget = client.target(RestTestLoginUtil.readTestUrlProperty() +  "caNanoLab/rest");
 		webTarget.register(SampleServices.class);
 		
 		WebTarget searchSampleWebTarget = webTarget.path("sample").path("searchSample");
@@ -143,7 +143,7 @@ public class SampleServicesTest {
 	
 	@Test
 	public void testUpdateSample() {
-		WebTarget webTarget = client.target("http://localhost:8080/caNanoLab/rest");
+		WebTarget webTarget = client.target(RestTestLoginUtil.readTestUrlProperty() +  "caNanoLab/rest");
 		webTarget.register(SampleServices.class);
 		
 		WebTarget searchSampleWebTarget = webTarget.path("sample").path("updateSample");
@@ -169,7 +169,7 @@ public class SampleServicesTest {
 	@Test
 	public void testCopySample() {
 
-		WebTarget webTarget = client.target("http://localhost:8080/caNanoLab/rest");
+		WebTarget webTarget = client.target(RestTestLoginUtil.readTestUrlProperty() +  "caNanoLab/rest");
 		webTarget.register(SampleServices.class);
 		
 		WebTarget searchSampleWebTarget = webTarget.path("sample").path("copySample");
@@ -217,7 +217,7 @@ public class SampleServicesTest {
 	@Test
 	public void testDeletePOC() {
 
-		WebTarget webTarget = client.target("http://localhost:8080/caNanoLab/rest");
+		WebTarget webTarget = client.target(RestTestLoginUtil.readTestUrlProperty() +  "caNanoLab/rest");
 		webTarget.register(SampleServices.class);
 		
 		WebTarget searchSampleWebTarget = webTarget.path("sample").path("deletePOC");
@@ -241,7 +241,7 @@ public class SampleServicesTest {
 	@Test
 	public void testDeleteAccess() {
 
-		WebTarget webTarget = client.target("http://localhost:8080/caNanoLab/rest");
+		WebTarget webTarget = client.target(RestTestLoginUtil.readTestUrlProperty() +  "caNanoLab/rest");
 		webTarget.register(SampleServices.class);
 		
 		WebTarget searchSampleWebTarget = webTarget.path("sample").path("deleteAccess");
@@ -266,7 +266,7 @@ public class SampleServicesTest {
 	@Test
 	public void testDeleteDataAvailability() {
 
-		WebTarget webTarget = client.target("http://localhost:8080/caNanoLab/rest");
+		WebTarget webTarget = client.target(RestTestLoginUtil.readTestUrlProperty() +  "caNanoLab/rest");
 		webTarget.register(SampleServices.class);
 		
 		WebTarget searchSampleWebTarget = webTarget.path("sample").path("deleteDataAvailability");
