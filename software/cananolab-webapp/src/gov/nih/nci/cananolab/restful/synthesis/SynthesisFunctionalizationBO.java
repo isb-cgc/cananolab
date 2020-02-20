@@ -7,11 +7,13 @@ import gov.nih.nci.cananolab.domain.particle.SynthesisFunctionalization;
 import gov.nih.nci.cananolab.dto.common.FileBean;
 import gov.nih.nci.cananolab.dto.particle.SampleBean;
 import gov.nih.nci.cananolab.dto.particle.synthesis.SynthesisFunctionalizationBean;
+import gov.nih.nci.cananolab.dto.particle.synthesis.SynthesisMaterialBean;
 import gov.nih.nci.cananolab.exception.SynthesisException;
 import gov.nih.nci.cananolab.restful.core.BaseAnnotationBO;
 import gov.nih.nci.cananolab.restful.util.PropertyUtil;
 import gov.nih.nci.cananolab.restful.view.edit.SimpleFileBean;
 import gov.nih.nci.cananolab.restful.view.edit.SimpleSynthesisFunctionalizationBean;
+import gov.nih.nci.cananolab.restful.view.edit.SimpleSynthesisMaterialBean;
 import gov.nih.nci.cananolab.security.CananoUserDetails;
 import gov.nih.nci.cananolab.security.enums.SecureClassesEnum;
 import gov.nih.nci.cananolab.security.service.SpringSecurityAclService;
@@ -69,6 +71,13 @@ public class SynthesisFunctionalizationBO extends BaseAnnotationBO {
     }
 
 
+//    public Map<String, Object> setupNew(String sampleId, HttpServletRequest request) throws Exception {
+//        SynthesisMaterialBean synthesisMaterialBean = new SynthesisMaterialBean();
+//        InitSampleSetup.getInstance().getOtherSampleNames(request, sampleId, sampleService);
+//        this.setLookups(request);
+//        this.checkOpenForms(synthesisMaterialBean, request);
+//        return SynthesisUtil.reformatLocalSearchDropdownsInSessionForSynthesisMaterial(request.getSession());
+//    }
 
     private SynthesisFunctionalizationBean transferSynthesisFunctionalizationBean(SimpleSynthesisFunctionalizationBean synFuncBean,
                                                                                   HttpServletRequest request) {
@@ -100,7 +109,7 @@ public class SynthesisFunctionalizationBO extends BaseAnnotationBO {
         File file;
         List<FileBean> fileBeanList = new ArrayList<FileBean>();
         Set<File> fileList = new HashSet<File>();
-        for(SimpleFileBean sFileBean: synFuncBean.getFileBeans()){
+        for(SimpleFileBean sFileBean: synFuncBean.getFileElements()){
             file = new File();
             fileBean = new FileBean();
             file.setCreatedBy(sFileBean.getCreatedBy());
@@ -135,13 +144,23 @@ public class SynthesisFunctionalizationBO extends BaseAnnotationBO {
         return bean;
     }
 
+    public SimpleSynthesisFunctionalizationBean saveFile(SimpleSynthesisFunctionalizationBean simpleSynthesisFunctionalizationBean,
+                                                HttpServletRequest httpRequest) {
+        //TODO write
+        SynthesisFunctionalizationBean bean = transferSynthesisFunctionalizationBean(simpleSynthesisFunctionalizationBean, httpRequest);
+
+        return null;
+    }
+
+
+
     public SimpleSynthesisFunctionalizationBean removeFile( SimpleSynthesisFunctionalizationBean simpleSynthesisFunctionalizationBean, HttpServletRequest httpRequest) throws Exception {
         //Assumption is they have ONE file submitted attached to the object.  That is the file to be removed
         SynthesisFunctionalizationBean entityBean = transferSynthesisFunctionalizationBean(simpleSynthesisFunctionalizationBean, httpRequest);
 
         List<FileBean> files = entityBean.getFiles();
         if(files.size()>1){
-            throw new SynthesisException("Can only remove one file at a time from SynthesisFunctionalization");
+            throw new SynthesisException("Can only remove one file at a time from SynthesisMaterial");
         }
         FileBean theFile = files.get(0);
         entityBean.removeFile(theFile);
@@ -179,7 +198,7 @@ public class SynthesisFunctionalizationBO extends BaseAnnotationBO {
 
             entityBean.setType(null);
         }
-        synthesisService.saveSynthesisFunctionalization(sampleBean, entityBean);
+        synthesisService.saveSynthesisMaterial(sampleBean, entityBean);
         // retract from public if updating an existing public record and not curator
         if (!newEntity && !userDetails.isCurator() &&
                 springSecurityAclService.checkObjectPublic(sampleBean.getDomain().getId(), SecureClassesEnum.SAMPLE.getClazz())) {
@@ -192,6 +211,29 @@ public class SynthesisFunctionalizationBO extends BaseAnnotationBO {
 
     }
 
+
+    public SimpleSynthesisFunctionalizationBean removeFileX(SimpleSynthesisFunctionalizationBean simpleSynthesisFunctionalizationBean,
+                                                           String fileId,
+                                                           HttpServletRequest request) throws Exception {
+        SynthesisFunctionalizationBean entityBean = transferSynthesisFunctionalizationBean(simpleSynthesisFunctionalizationBean, request);
+//        FileBean theFile = entityBean.getTheFile();
+//        entityBean.removeFile(theFile);
+//        entityBean.setTheFile(new FileBean());
+        FileBean theFile = entityBean.getFile(fileId);
+        entityBean.removeFile(theFile);
+
+        List<String> msgs = validateInputs(request, entityBean);
+        if (msgs.size() > 0) {
+            SimpleSynthesisFunctionalizationBean synFunc = new SimpleSynthesisFunctionalizationBean();
+            synFunc.setErrors(msgs);
+            return synFunc;
+        }
+        // this.saveEntity(request, simpleSynthesisFunctionalizationBean.getSampleId(), entityBean);
+        request.setAttribute("anchor", "file");
+        this.checkOpenForms(entityBean, request);
+        return setupUpdate(simpleSynthesisFunctionalizationBean.getSampleId(), entityBean.getDomainEntity().getId().toString()
+                , request);
+    }
 
     private List<String> validateInputs(HttpServletRequest request, SynthesisFunctionalizationBean entityBean) {
         // TODO

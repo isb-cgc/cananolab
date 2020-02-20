@@ -10,7 +10,7 @@ import org.junit.Test;
 
 public class CustomSearchServicesTest {
 
-	String urlbase = "http://localhost:8080/caNanoLab/rest/";
+	String urlbase = "http://192.168.1.16:8090/caNanoLab/rest/";
 	Client client; 
 
 	

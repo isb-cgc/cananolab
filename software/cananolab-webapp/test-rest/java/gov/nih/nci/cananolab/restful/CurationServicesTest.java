@@ -17,7 +17,7 @@ import static org.junit.Assert.assertTrue;
 
 public class CurationServicesTest {
 
-	String urlbase = "http://localhost:8080/caNanoLab/rest/";
+	String urlbase = "http://192.168.1.16:8090/caNanoLab/rest/";
 	Client client; 
 
 	
@@ -52,7 +52,7 @@ public class CurationServicesTest {
 		        .register(ObjectMapperProvider.class)
 		        .build();
 		
-		WebTarget webTarget = aClient.target("http://localhost:8080/caNanoLab/rest");
+		WebTarget webTarget = aClient.target("http://192.168.1.16:8090/caNanoLab/rest");
 		webTarget.register(CurationServices.class);
 		
 		WebTarget submitPublicationWebTarget = webTarget.path("curation").path("generateBatchDataAvailability");

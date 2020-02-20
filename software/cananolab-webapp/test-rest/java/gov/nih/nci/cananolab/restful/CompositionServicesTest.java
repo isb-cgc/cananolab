@@ -12,7 +12,7 @@ import static org.junit.Assert.assertNotNull;
 
 public class CompositionServicesTest {
 
-	String urlbase = "http://localhost:8080/caNanoLab/rest/";
+	String urlbase = "http://192.168.1.16:8090/caNanoLab/rest/";
 	Client client; 
 
 	@Before

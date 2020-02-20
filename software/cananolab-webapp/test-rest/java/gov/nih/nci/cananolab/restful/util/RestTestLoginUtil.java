@@ -41,10 +41,10 @@ public class RestTestLoginUtil {
 //				return null;
 //
 ////			Response response = with().params("username", username, "password", pwd)
-////					.expect().statusCode(200).when().get("http://localhost:8080/caNanoLab/rest/security/login");
+////					.expect().statusCode(200).when().get("http://192.168.1.16:8090/caNanoLab/rest/security/login");
 //
 //			Response response = with().params("username", username, "password", pwd)
-//					.expect().statusCode(200).when().get("http://localhost:8080/caNanoLab/login");
+//					.expect().statusCode(200).when().get("http://192.168.1.16:8090/caNanoLab/login");
 //
 //
 //			jsessionId = response.getCookie("JSESSIONID");
@@ -66,7 +66,7 @@ public class RestTestLoginUtil {
 			parameters.put("username", username);
 			parameters.put("password", pwd);
 
-			Response response = given().contentType("application/x-www-form-urlencoded").params(parameters).when().post("http://localhost:8080/caNanoLab/login");
+			Response response = given().contentType("application/x-www-form-urlencoded").params(parameters).when().post("http://192.168.1.16:8090/caNanoLab/login");
 			jsessionId = response.getCookie("JSESSIONID");
 		}
 		return jsessionId;
@@ -93,14 +93,14 @@ public class RestTestLoginUtil {
 //		RestAssured.authentication = authScheme;}
 	
 	public static void logoutTest() {
-		expect().statusCode(200).when().get("http://localhost:8080/caNanoLab/rest/security/logout");
+		expect().statusCode(200).when().get("http://192.168.1.16:8090/caNanoLab/rest/security/logout");
 		jsessionId = null;
 	}
 	
 	public static String readUserNameProperty() {
-//		return PropertyUtils.getPropertyCached("resources/local.properties", "user.name");
+		return PropertyUtils.getPropertyCached("resources/local.properties", "user.name");
 
-		return PropertyUtils.getPropertyCached("local.properties", "user.name");
+//		return PropertyUtils.getPropertyCached("local.properties", "user.name");
 	}
 
 	public static String readPasswordProperty() {
