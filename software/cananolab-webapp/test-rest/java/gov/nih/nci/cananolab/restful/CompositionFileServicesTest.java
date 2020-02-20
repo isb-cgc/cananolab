@@ -25,7 +25,7 @@ public class CompositionFileServicesTest {
 				given().contentType("application/json")
 				.expect()
 				.body("fileTypes", hasItems("document","graph","image","movie","spread sheet","txt"))
-						.when().get("http://localhost:8080/caNanoLab/rest/compositionFile/setup");
+						.when().get(RestTestLoginUtil.readTestUrlProperty() +  "caNanoLab/rest/compositionFile/setup");
 
 		System.out.println(res.getBody().asString());
 		
@@ -42,7 +42,7 @@ public class CompositionFileServicesTest {
 				given().contentType("application/json").cookie("JSESSIONID=" + jsessionId)
 				.params(parameters).expect()
 				.body("type", equalToIgnoringCase("graph"))
-						.when().get("http://localhost:8080/caNanoLab/rest/compositionFile/edit");
+						.when().get(RestTestLoginUtil.readTestUrlProperty() +  "caNanoLab/rest/compositionFile/edit");
 
 		System.out.println(res.getBody().asString());
 		RestTestLoginUtil.logoutTest();
@@ -63,7 +63,7 @@ public class CompositionFileServicesTest {
 //		Response res = 
 //				given() .contentType("application/json").cookie("JSESSIONID=" + jsessionId).body(file)				
 //				.expect().body("type", equalToIgnoringCase("movie"))
-//				.when().post("http://localhost:8080/caNanoLab/rest/compositionFile/submit");
+//				.when().post(RestTestLoginUtil.readTestUrlProperty() +  "caNanoLab/rest/compositionFile/submit");
 //		System.out.println(res.getBody().asString());
 //
 //		RestTestLoginUtil.logoutTest();
@@ -86,7 +86,7 @@ public class CompositionFileServicesTest {
 		        .register(ObjectMapperProvider.class)
 		        .build();
 		
-		WebTarget webTarget = aClient.target("http://localhost:8080/caNanoLab/rest");
+		WebTarget webTarget = aClient.target(RestTestLoginUtil.readTestUrlProperty() +  "caNanoLab/rest");
 		webTarget.register(CompositionFileServices.class);
 		
 		WebTarget submitWebTarget = webTarget.path("compositionFile").path("submit");
@@ -121,7 +121,7 @@ public class CompositionFileServicesTest {
 		        .register(ObjectMapperProvider.class)
 		        .build();
 		
-		WebTarget webTarget = aClient.target("http://localhost:8080/caNanoLab/rest");
+		WebTarget webTarget = aClient.target(RestTestLoginUtil.readTestUrlProperty() +  "caNanoLab/rest");
 		webTarget.register(CompositionFileServices.class);
 		
 		WebTarget submitWebTarget = webTarget.path("compositionFile").path("delete");
