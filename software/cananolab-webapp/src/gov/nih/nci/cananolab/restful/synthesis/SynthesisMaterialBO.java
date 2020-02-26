@@ -504,10 +504,11 @@ public class SynthesisMaterialBO extends BaseAnnotationBO {
 
         String timestamp = DateUtils.convertDateToString(new Date(), "yyyyMMdd_HH-mm-ss-SSS");
 
+        SampleBean sampleBean = setupSampleById(simpleSynthesisMaterialBean.getSampleId(), httpRequest);
         FileBean theNewFile = new FileBean(simpleSynthesisMaterialBean.getFileBeingEdited());
 
 
-        SampleBean sampleBean = setupSampleById(simpleSynthesisMaterialBean.getSampleId(), httpRequest);
+
         //Determine the directory for saving the file
         String internalUriPath = Constants.FOLDER_PARTICLE+'/'+sampleBean.getDomain().getName()+'/'+"synthesisMaterial";
         theNewFile.setupDomainFile(internalUriPath,SpringSecurityUtil.getLoggedInUserName());

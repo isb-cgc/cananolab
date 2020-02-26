@@ -189,11 +189,14 @@ private static RequestSpecification specification;
         fileBean.setType("TestType");
         fileBean.setTitle("TestTitle");
         fileBean.setUriExternal(true);
-        fileBean.setExternalUrl("https:///somewhere.com");
+        fileBean.setExternalUrl("https://evs.nci.nih.gov/ftp1/GAIA/GAIA-NCIt_Terminology.txt");
         fileBean.setSampleId("1000");
+        fileBean.setUri("https://evs.nci.nih.gov/ftp1/GAIA/GAIA-NCIt_Terminology.txt");
+        materialBean.setFileBeingEdited(fileBean);
         List<SimpleFileBean> fileBeans = new ArrayList<SimpleFileBean>();
-        fileBeans.add(fileBean);
+//        fileBeans.add(fileBean);
         materialBean.setFileElements(fileBeans);
+
 
         try {
             Response response = given().spec(specification).queryParam("fileId", "1000")
@@ -201,6 +204,9 @@ private static RequestSpecification specification;
                     .then().statusCode(200).extract().response();
 
             assertNotNull(response);
+
+            //Get material Bean and query to see if the file is there
+
         }
         catch (Exception e) {
             e.printStackTrace();
