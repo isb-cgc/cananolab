@@ -52,6 +52,10 @@ public class SimpleSynthesisMaterialBean {
         return fileBeingEdited;
     }
 
+    public void setFileBeingEdited(SimpleFileBean fileBeingEdited){
+        this.fileBeingEdited = fileBeingEdited;
+    }
+
     public SimpleSynthesisMaterialElementBean getMaterialElementBeingEdited(){
         return materialElementBeingEdited;
     }
