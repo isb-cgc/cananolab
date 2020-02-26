@@ -225,9 +225,8 @@ public class FileBean extends SecuredDataBean {
 
 	 public FileBean(SimpleFileBean sFileBean){
 		File file = new File();
-		FileBean fileBean = new FileBean();
 		file.setCreatedBy(sFileBean.getCreatedBy());
-		fileBean.setCreatedBy(sFileBean.getCreatedBy());
+		setCreatedBy(sFileBean.getCreatedBy());
 		file.setCreatedDate(sFileBean.getCreatedDate());
 		file.setTitle(sFileBean.getTitle());
 		file.setDescription(sFileBean.getDescription());
@@ -235,7 +234,7 @@ public class FileBean extends SecuredDataBean {
 		file.setType(sFileBean.getType());
 		file.setUri(sFileBean.getUri());
 		file.setUriExternal(sFileBean.getUriExternal());
-		fileBean.setExternalUrl(sFileBean.getExternalUrl());
+		setExternalUrl(sFileBean.getExternalUrl());
 		if (!StringUtils.isEmpty(sFileBean.getKeywordsStr())) {
 			String[] strs = sFileBean.getKeywordsStr().split("\r\n");
 			for (String str : strs) {
@@ -245,7 +244,7 @@ public class FileBean extends SecuredDataBean {
 				file.getKeywordCollection().add(keyword);
 			}
 		}
-		fileBean.setTheAccess(sFileBean.getTheAccess());
-		fileBean.setDomainFile(file);
+		setTheAccess(sFileBean.getTheAccess());
+		setDomainFile(file);
 	}
 }
