@@ -15,6 +15,7 @@ import gov.nih.nci.cananolab.dto.particle.synthesis.SynthesisMaterialBean;
 import gov.nih.nci.cananolab.dto.particle.synthesis.SynthesisPurificationBean;
 import gov.nih.nci.cananolab.exception.CompositionException;
 import gov.nih.nci.cananolab.exception.NoAccessException;
+import gov.nih.nci.cananolab.exception.SampleException;
 import gov.nih.nci.cananolab.exception.SynthesisException;
 import gov.nih.nci.cananolab.security.enums.SecureClassesEnum;
 import gov.nih.nci.cananolab.security.service.SpringSecurityAclService;
@@ -22,13 +23,19 @@ import gov.nih.nci.cananolab.security.utils.SpringSecurityUtil;
 import gov.nih.nci.cananolab.service.BaseServiceLocalImpl;
 import gov.nih.nci.cananolab.service.sample.SynthesisService;
 import gov.nih.nci.cananolab.service.sample.helper.SynthesisHelper;
+import gov.nih.nci.cananolab.system.applicationservice.ApplicationException;
 import gov.nih.nci.cananolab.system.applicationservice.CaNanoLabApplicationService;
 import gov.nih.nci.cananolab.system.applicationservice.client.ApplicationServiceProvider;
 import java.util.HashSet;
 import java.util.List;
+import net.sf.ehcache.management.sampled.SampledEhcacheMBeans;
+import net.sf.ehcache.management.sampled.SampledMBeanRegistrationProvider;
 import org.apache.log4j.Logger;
+import org.bouncycastle.util.test.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.method.P;
 import org.springframework.stereotype.Component;
+import sun.tools.tree.ThisExpression;
 
 @Component("synthesisService")
 public class SynthesisServiceLocalImpl extends BaseServiceLocalImpl implements SynthesisService {
@@ -387,22 +394,51 @@ public class SynthesisServiceLocalImpl extends BaseServiceLocalImpl implements S
             SynthesisMaterial synthesisMaterial = synthesisMaterialBean.getDomainEntity();
             Boolean newEntity=true;
             Boolean newSynthesis= true;
+            //Check if this is a new material or an update of an existing
             if (synthesisMaterial.getId() != null) {
                 newEntity = false;
             }
             //Make doubly sure that the entity hasn't been left cached in memory but already removed from database
             try {
-                synthesisMaterial = (SynthesisMaterial) appService
-                        .load(SynthesisMaterial.class, synthesisMaterial.getId());
+                appService
+                        .load(SynthesisMaterial.class, synthesisMaterialBean.getDomainEntity().getId());
             }catch (Exception e) {
                 String err = "Object doesn't exist in the database anymore.  Please log in again.";
                 logger.error(err);
                 throw new SynthesisException(err, e);
             }
-            if (sample.getSynthesis()!=null){
-//TODO  FINISH this method
+
+            Synthesis synthesis;
+            if(sample.getSynthesis()==null){
+                //This is a new synthesis.  We need to create it, as well as the material
+                synthesis = createSynthesis(sampleBean);
+            } else {
+                synthesis = sample.getSynthesis();
             }
 
+            if(!newEntity){
+                //Get the material by id from database
+                Long test1 = synthesisMaterial.getSynthesis().getId();
+                Long test2 = synthesis.getId();
+                if(!synthesisMaterial.getSynthesis().getId().equals(synthesis.getId())){
+                    //something has gone wrong and the material does not attach to the correct synthesis
+                    throw new SynthesisException("material does not match synthesis", new Exception());
+                }
+
+            }
+                //We'll be adding or updating the material in Synthesis
+
+                    //add material to synthesis
+                    synthesisMaterial.setSynthesis(synthesis);
+                    for(FileBean fileBean:synthesisMaterialBean.getFiles()){
+                        fileUtils.prepareSaveFile(fileBean.getDomainFile());
+                    }
+                    //save
+                    appService.saveOrUpdate(synthesisMaterial);
+
+                    for (FileBean fileBean : synthesisMaterialBean.getFiles()) {
+                        fileUtils.writeFile(fileBean);
+                    }
 
         }catch (NoAccessException e){
             throw e;
@@ -423,5 +459,32 @@ public class SynthesisServiceLocalImpl extends BaseServiceLocalImpl implements S
 //TODO write
     }
 
+    private Synthesis createSynthesis(SampleBean sampleBean) throws SynthesisException, NoAccessException {
+
+        try {
+            Synthesis synthesis = new Synthesis();
+            synthesis.setSample(sampleBean.getDomain());
+
+            CaNanoLabApplicationService appService = (CaNanoLabApplicationService) ApplicationServiceProvider.getApplicationService();
+
+            appService.saveOrUpdate(synthesis);
+            // save default access
+            springSecurityAclService.saveDefaultAccessForNewObject(synthesis.getId(), SecureClassesEnum.SYNTHESIS.getClazz());
+
+            return synthesis;
+        }
+        catch (ApplicationException e) {
+            logger.error("Error in saving the synthesis. ", e);
+            throw new SynthesisException("Error in saving the synthesis. ", e);
+        }
+        catch (NoAccessException e) {
+            logger.error("User does not have access to edit synthesis ", e);
+            throw e;
+        }
+        catch (Exception e) {
+            logger.error("Error in saving the synthesis. ", e);
+            throw new SynthesisException("Error in saving the synthesis. ", e);
+        }
+    }
 
 }
