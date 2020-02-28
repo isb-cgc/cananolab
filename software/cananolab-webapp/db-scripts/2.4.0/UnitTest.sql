@@ -1,8 +1,7 @@
--- MySQL dump 10.13  Distrib 8.0.16, for macos10.14 (x86_64)
+-- This script is for building a new database populated with data
+--     for use in Unit and other testing
 --
--- Host: 127.0.0.1    Database: canano
--- ------------------------------------------------------
--- Server version	5.7.26
+
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT = @@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS = @@CHARACTER_SET_RESULTS */;
@@ -1359,7 +1358,7 @@ VALUES (1, 'asymmetrical flow field-flow fractionation with multi-angle laser li
        (1047, 'material', 'value_unit','mmol/L'),
        (1048, 'material', 'value_unit','mol'),
        (1049, 'material', 'value_unit','mol%'),
-       (1030, 'material', 'value_unit','mole%'),
+       (1050, 'material', 'value_unit','mole%'),
        (1051, 'material', 'value_unit','ng'),
        (1052, 'material', 'value_unit','nM'),
        (1053, 'material', 'value_unit','nmol'),
@@ -6196,9 +6195,7 @@ CREATE TABLE `purity_datum_condition`
     `value_type`      varchar(200) DEFAULT NULL,
     `created_by`      varchar(200) NOT NULL,
     `created_date`    datetime     NOT NULL,
-    PRIMARY KEY (`datum_pk_id`, `condition_pk_id`),
-    KEY `FK_experiment_condition_TO_purity_datum_condition` (`condition_pk_id`),
-    CONSTRAINT `FK_experiment_condition_TO_purity_datum_condition` FOREIGN KEY (`condition_pk_id`) REFERENCES `experiment_condition` (`condition_pk_id`),
+    PRIMARY KEY (`condition_pk_id`),
     CONSTRAINT `FK_purity_datum_TO_purity_datum_condition` FOREIGN KEY (`datum_pk_id`) REFERENCES `purity_datum` (`purity_datum_pk_id`)
 ) ENGINE = InnoDB
   DEFAULT CHARSET = latin1;
@@ -6213,7 +6210,7 @@ LOCK TABLES `purity_datum_condition` WRITE;
     DISABLE KEYS */;
 INSERT IGNORE INTO `purity_datum_condition` (`datum_pk_id`, `condition_pk_id`, `name`, `property`, `value`,
                                              `value_unit`, `value_type`, `created_by`, `created_date`)
-VALUES (1000, 1000, 'Synthesis condition 1', '', '42', 'g', 'observed', 'canano_user', '2019-12-06 12:15:00');
+VALUES (1000, 1000, 'Synthesis condition 1', null, '42', 'g', 'observed', 'canano_user', '2019-12-06 12:15:00');
 /*!40000 ALTER TABLE `purity_datum_condition`
     ENABLE KEYS */;
 UNLOCK TABLES;
