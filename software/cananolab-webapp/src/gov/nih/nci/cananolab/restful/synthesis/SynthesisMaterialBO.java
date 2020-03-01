@@ -259,6 +259,7 @@ public class SynthesisMaterialBO extends BaseAnnotationBO {
                 //check for Files
                 List<SimpleFileBean> sfileBeans = sSMEBean.getFiles();
                 Set<File> files = new HashSet<File>();
+                if(sfileBeans!=null){
                 for(SimpleFileBean simpleFileBean: sfileBeans){
 
                     File file1 = new File();
@@ -270,12 +271,13 @@ public class SynthesisMaterialBO extends BaseAnnotationBO {
                     file1.setCreatedDate(simpleFileBean.getCreatedDate());
                     file1.setCreatedBy(simpleFileBean.getCreatedBy());
                     files.add(file1);
-                }
+                }}
                 synthesisMaterialElement.setFiles(files);
 
                 //Loop through functions
                 List<Map<String,Object>> functions = sSMEBean.getInherentFunctionList();
                 Set<SmeInherentFunction> smeInherentFunctionSet = new HashSet<SmeInherentFunction>();
+                if (functions != null) {
                 for(Map<String, Object> function: functions){
                     //id, type, description
                     SmeInherentFunction smeInherentFunction = new SmeInherentFunction();
@@ -286,7 +288,7 @@ public class SynthesisMaterialBO extends BaseAnnotationBO {
                     //TODO this is circular.  Rework this
                     smeInherentFunction.setSynthesisMaterialElement(synthesisMaterialElement);
                     smeInherentFunctionSet.add(smeInherentFunction);
-                }
+                }}
                 synthesisMaterialElement.setSmeInherentFunctions(smeInherentFunctionSet);
                 SynthesisMaterialElementBean materialElementBean = new SynthesisMaterialElementBean(synthesisMaterialElement);
                 smeBeans.add(materialElementBean);
@@ -306,10 +308,10 @@ public class SynthesisMaterialBO extends BaseAnnotationBO {
         msgs = validateMaterialElements(request, msgs, entityBean);
         msgs = validateFile(request, msgs, entityBean);
 
-        String debugString = "Debug";
-        msgs.add(debugString);
+//        String debugString = "Debug";
+//        msgs.add(debugString);
         return msgs;
-        //TODO this is all debug text.  Replace with real results
+
 
     }
 

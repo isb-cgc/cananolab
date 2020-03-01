@@ -7,6 +7,7 @@ import gov.nih.nci.cananolab.dto.particle.synthesis.SynthesisMaterialBean;
 import gov.nih.nci.cananolab.dto.particle.synthesis.SynthesisPurificationBean;
 import gov.nih.nci.cananolab.restful.core.BaseAnnotationBO;
 import gov.nih.nci.cananolab.security.service.SpringSecurityAclService;
+import gov.nih.nci.cananolab.security.utils.SpringSecurityUtil;
 import gov.nih.nci.cananolab.service.curation.CurationService;
 import gov.nih.nci.cananolab.service.sample.SampleService;
 import gov.nih.nci.cananolab.service.sample.SynthesisService;
@@ -202,4 +203,5 @@ public class SynthesisBO extends BaseAnnotationBO {
         //	session.removeAttribute(ActionMessages.GLOBAL_MESSAGE);
         return synthesisBean;
     }
+
 }

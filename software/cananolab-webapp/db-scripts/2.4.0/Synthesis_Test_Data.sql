@@ -1,52 +1,12 @@
-/* OPTIONAL update password to canano_curator
-UPDATE `canano`.`users`
-SET
-    `password` = '$2a$10$mdeGI13IlA6V9p6BtIiKw.kciBTLCY37Y58GFzkWK7TN3BWEYGuDe'
-WHERE `username` = 'canano_curator';
-*/
 /*
-insert into `canano`.`organization`
-(`organization_pk_id`,`name`,`created_date`,`created_by`)
-VALUES
-('1000','Synthesis test organization','2019-12-06 12:15:00','canano_curator');
-
-insert into `canano`.`point_of_contact`
-(`poc_pk_id`,`role`,`first_name`,`last_name`,`created_date`,`created_by`,`organization_pk_id`)
-VALUES
-('1000','investigator','canano','curator','2019-12-06 12:15:00','canano_curator','1000');
-
-insert into `canano`.`sample`
-(`sample_pk_id`,`sample_name`,`created_date`,`created_by`,`primary_contact_pk_id`)
-VALUES
-('1000','Synthesis sample','2019-12-06 12:15:00','canano_curator','1000');
-
-insert into `canano`.`acl_object_identity`
-(id, object_id_class, object_id_identity, parent_object, owner_sid, entries_inheriting)
-VALUES
-(1,1,1000, null,3,1),
-(2,16,1000,null,3,1),
-(3,17,1000,2,3,1);
-
-insert into `canano`.`acl_entry`
-(id,acl_object_identity, ace_order, sid, mask, granting, audit_success, audit_failure)
-VALUES
-(1,1,0,3,1,1,0,0),
-(2,1,1,3,2,1,0,0),
-(3,1,2,3,8,1,0,0),
-(4,1,3,13,1,1,0,0),
-(5,1,4,13,2,1, 0,0),
-(6,1,5,13,8,1,0,0),
-(7,1,6,14,1,1,0,0),
-(15,1,7,12,1,1,0,0);
-*/
-
-/*
-If using an existing dev database, comment out all above and
- replace <sample_pk_id> with a valid sample id */
+This script is for adding Synthesis data to existing samples.
+You will need to pick two samples and grab the sample Id for each
+Then replace the <sample_pk_id1> and <sample_pk_id2> with those ids*/
 INSERT INTO `canano`.`synthesis`
-(`synthesis_pk_id`, sample_pk_id)
+(`synthesis_pk_id`, `sample_pk_id`)
 VALUES
-('1000', <sample_pk_id>);
+(1111, <sample_pk_id1>),
+(1222, <sample_pk_id2>);
 
 
 INSERT INTO `canano`.`file`
@@ -62,7 +22,7 @@ INSERT INTO `canano`.`file`
  `file_type`,
  `is_uri_external`)
 VALUES
-('1000',
+('1111',
  'NCIt_CTCAE_5.0',
  'https://evs.nci.nih.gov/ftp1/CTCAE/CTCAE_5.0/NCIt_CTCAE_5.0.xlsx',
  'xlsx',
@@ -70,6 +30,17 @@ VALUES
  '2019-12-06 12:15:00',
  'Synthesis File',
  'dummy row for testing of synthesis',
+ null,
+ 'Excel',
+ 0),
+('1222',
+ 'NCIt_CTCAE_5.0',
+ 'https://evs.nci.nih.gov/ftp1/CTCAE/CTCAE_5.0/NCIt_CTCAE_5.0.xlsx',
+ 'xlsx',
+ 'canano_curator',
+ '2019-08-28 00:00:00',
+ 'Synthesis File',
+ 'Sample 2 test file',
  null,
  'Excel',
  0);
@@ -84,14 +55,22 @@ INSERT INTO `canano`.`protocol`
  `protocol_version`,
  `file_pk_id`)
 VALUES
-('1000',
+('1111',
  'Synthesis test protocol',
  'synthesis',
  'canano_curator',
  '2019-12-06 12:15:00',
  'SYN',
  '1.0',
- 1000);
+ 1111),
+('1222',
+ 'Synthesis demo protocol',
+ 'synthesis purification',
+ 'canano_curator',
+ '2019-08-28 00:00:00',
+ 'SYN',
+ '1.0',
+ 1222);
 
 
 
@@ -102,7 +81,7 @@ INSERT INTO `canano`.`supplier`
  `supplier_name`,
  `lot`)
 VALUES
-(1000,
+(1111,
  'Synthesis supplier',
  'ABC123xyz');
 
@@ -115,11 +94,17 @@ INSERT INTO `canano`.`synthesis_material`
  `created_date`,
  `created_by`)
 VALUES
-(1000,
- 1000,
- 1000,
+(1111,
+ 1111,
+ 1111,
  'Synthesis test sample 1',
  '2019-12-06 12:15:00',
+ 'canano_curator'),
+(1222,
+ 1222,
+ null,
+ 'Chloroauric acid solution (200 ml of 0.01wt.%) was heated to a rolling boil and refluxed in a 500-ml-round-bottom flask using a temperature-controlled hot plate with continuous stirring [4]. A 4.5-ml aliquot of 1 wt.% sodium citrate solution was then added to the boiling chloroauric acid solution, and the heating was continued under reflux for 15 min to enable complete reaction. The solution was then allowed to cool to room temperature with continuous stirring yielding citrate-capped AuNPs.',
+ '2019-08-28 00:00:00',
  'canano_curator');
 
 INSERT INTO `canano`.`synthesis_material_element`
@@ -138,8 +123,8 @@ INSERT INTO `canano`.`synthesis_material_element`
  `supplier_pk_id`,
  `type`)
 VALUES
-(1000,
- 1000,
+(1111,
+ 1111,
  'AA-2x-zZ',
  'Hill',
  'Synthesis Material Element 1',
@@ -150,8 +135,50 @@ VALUES
  'mg',
  null,
  null,
- 1000,
- 'reagent');
+ 1111,
+ 'reagent'),
+(1051,
+ 1222,
+ 'HAuCl4 . 3H2O',
+ 'Hill',
+ '200 mL of 0.01 wt% gold precursor',
+ 'canano_curator',
+ '2019-08-28 00:00:00',
+ 'chloroauric acid',
+ '0.01',
+ '%wt',
+ 'compound',
+ '44134746',
+ null,
+ 'composing element'),
+(1052,
+ 1222,
+ 'C6H5Na3O7',
+ 'Hill',
+ '4.5 mL of 1 wt% sodium citrate solution',
+ 'canano_curator',
+ '2019-08-28 00:00:00',
+ 'sodium citrate',
+ '1',
+ '%wt',
+ 'compound',
+ '6224',
+ 1111,
+ 'reagent'),
+(1053,
+ 1222,
+ 'H2O',
+ 'Hill',
+ 'Solutions of chloroauric acid and sodium citrate were created with deionized water',
+ 'canano_curator',
+ '2019-08-28 00:00:00',
+ 'deionized water',
+ '204.5',
+ 'mL',
+ 'substance',
+ '962',
+ null,
+ 'solvent');
 
 INSERT INTO `canano`.`sme_inherent_function`
 (`sme_inherent_function_pk_id`,
@@ -159,10 +186,18 @@ INSERT INTO `canano`.`sme_inherent_function`
  `type`,
  `description`)
 VALUES
-(1000,
- 1000,
+(1111,
+ 1111,
  'targeting function',
- 'should this pull from same drop down as regular inherent function?');
+ 'should this pull from same drop down as regular inherent function?'),
+(1222,
+ 1053,
+ 'Function Type',
+ 'SME Function description'),
+(1006,
+ 1053,
+ 'Function Type 2',
+ 'SME Function description 2');
 
 /* Synthesis Functionalization */
 
@@ -174,11 +209,17 @@ INSERT INTO `canano`.`synthesis_functionalization`
  `created_date`,
  `created_by`)
 VALUES
-(1000,
- 1000,
- 1000,
+(1111,
+ 1111,
+ 1111,
  'Synthesis Functionalization Test 1',
  '2019-12-06 12:15:00',
+ 'canano_curator'),
+(1222,
+ 1222,
+ null,
+ 'In order to produce PEG-capped AuNPs, various concentrations (3.6, 8.4, 16.8 and 25.2 ug per ml of as synthesized AuNP suspension) of 5,000 Mw PEG were added to the ‘as synthesized’ AuNP solutions at room temperature. After the required amount of PEG was added, the solution was stirred at room temperature for 2 h to allow for complete exchange of the citrate molecules with PEG.',
+ '2019-08-29 00:00:00',
  'canano_curator');
 
 
@@ -197,8 +238,8 @@ INSERT INTO `canano`.`synthesis_functionalization_element`
  `pub_chem_id`,
  `type`)
 VALUES
-(1000,
- 1000,
+(1111,
+ 1111,
  'kK-N12-C4-L',
  'Hill',
  'Synthesis Functionalization Material Element 1',
@@ -209,6 +250,19 @@ VALUES
  'pg',
  null,
  null,
+ 'material'),
+(1222,
+ 1222,
+ 'CH3(OCH2CH2)nOH',
+ 'Hill',
+ 'Added to the as-synthesized AuNP solution to a concentration of 3.6 ug/mL',
+ 'canano_curator',
+ '2019-08-28 00:00:00',
+ 'polyethylene glycol, 5000 MW',
+ '3.6',
+ 'ug',
+ 'compound',
+ '24887753',
  'material');
 
 
@@ -218,10 +272,14 @@ INSERT INTO `canano`.`sfe_inherent_function`
  `type`,
  `description`)
 VALUES
-(1000,
- 1000,
+(1111,
+ 1111,
  'biocompatibility',
- 'Synthesis Functionalization Material Inherent Function 1');
+ 'Synthesis Functionalization Material Inherent Function 1'),
+(1222,
+ 1222,
+ 'biocompatibility',
+ '');
 
 /* Synthesis Purity */
 
@@ -232,11 +290,16 @@ INSERT INTO `canano`.`technique`
  `created_date`,
  `created_by`)
 VALUES
-(1000,
+(1111,
  'Interim purification technique',
  'InP',
  '2019-12-06 12:15:00',
- 'safrant');
+ 'canano_curator'),
+(1222,
+ 'centrifugal filtration',
+ null,
+ '2018-08-28 00:00:00',
+ 'canano_curator');
 
 INSERT INTO `canano`.`instrument`
 (`instrument_pk_id`,
@@ -246,11 +309,17 @@ INSERT INTO `canano`.`instrument`
  `created_date`,
  `created_by`)
 VALUES
-(1000,
+(1111,
  'scale',
  'Biome',
  'Test Scale',
  '2019-12-06 12:15:00',
+ 'canano_curator'),
+(1222,
+ 'centrifuge',
+ 'Heraeus',
+ 'Contifuge 17RS',
+ '2019-08-28 00:00:00',
  'canano_curator');
 
 INSERT INTO `canano`.`experiment_condition`
@@ -263,7 +332,7 @@ INSERT INTO `canano`.`experiment_condition`
  `created_by`,
  `created_date`)
 VALUES
-(1000,
+(1111,
  'Synthesis condition 1',
  '',
  '42',
@@ -284,15 +353,24 @@ INSERT INTO `canano`.`synthesis_purification`
  `created_date`,
  `yield`)
 VALUES
-(1000,
- 1000,
- 1000,
+(1111,
+ 1111,
+ 1111,
  'Interim Purification',
  'Synthesis Purification Method 1',
  'Test entry for synthesis purification',
  'canano_user',
  '2019-12-06 12:15:00',
- '84.7');
+ '84.7'),
+(1222,
+ 1222,
+ 1222,
+ 'Interim Purification',
+ 'Synthesis Purification Method 1',
+ 'The AuNP solutions were then centrifuged using a Contifuge 17RS, Heraeus SEPATECH at 10,000 rpm for 90 min in 10 ml batches [28]. Of the supernatant, 9.9 ml was then decanted, leaving the AuNP pellet at the bottom of the centrifuge tube. The volume was then made back up to 10 ml by adding 9.9 ml of DI water and agitated. This centrifugal washing process was repeated again to remove any unattached PEG or other reactants.',
+ 'canano_user',
+ '2019-08-28 00:00:00',
+ null);
 
 
 INSERT INTO `canano`.`purification_config`
@@ -303,19 +381,27 @@ INSERT INTO `canano`.`purification_config`
  `created_by`,
  `created_date`)
 VALUES
-(1000,
- 1000,
- 1000,
+(1111,
+ 1111,
+ 1111,
  'Configuration for synthesis purification',
  'canano_curator',
- '2019-12-06 12:15:00');
+ '2019-12-06 12:15:00'),
+(1222,
+ 1222,
+ 1222,
+ null,
+ 'canano_curator',
+ '2019-08-28 00:00:00');
 
 INSERT INTO `canano`.`purification_config_instrument`
 (`purification_config_pk_id`,
  `instrument_pk_id`)
 VALUES
-(1000,
- 1000);
+(1111,
+ 1111),
+(1222,
+ 1222);
 
 INSERT INTO `canano`.`synthesis_purity`
 (`purity_pk_id`,
@@ -323,10 +409,14 @@ INSERT INTO `canano`.`synthesis_purity`
  `created_by`,
  `created_date`)
 VALUES
-(1000,
- 1000,
+(1111,
+ 1111,
  'canano_curator',
- '2019-12-06 12:15:00');
+ '2019-12-06 12:15:00'),
+(1222,
+ 1222,
+ 'canano_curator',
+ '2019-08-28 00:00:00');
 
 INSERT INTO `canano`.`purity_datum`
 (`purity_datum_pk_id`,
@@ -340,7 +430,7 @@ INSERT INTO `canano`.`purity_datum`
  `purity_pk_id`,
  `file_pk_id`)
 VALUES
-(1000,
+(1111,
  'Purity datum 1',
  '55',
  'purity',
@@ -348,13 +438,27 @@ VALUES
  'canano_curator',
  '2019-12-06 12:15:00',
  '=',
- 1000,
- 1000);
+ 1111,
+ 1111);
 
 
 INSERT INTO `canano`.`purity_datum_condition`
 (`datum_pk_id`,
- `condition_pk_id`)
+ `condition_pk_id`,
+ `name`,
+ `property`,
+  `value`,
+  `value_unit`,
+  `value_type`,
+  `created_by`,
+  `created_date`)
 VALUES
-(1000,
- 1000);
+(1111,
+ 1111,
+ 'datum_test',
+  null,
+  '84',
+  'mg',
+  'observed',
+  'canano_curator',
+ '2019-12-06 12:15:00');
