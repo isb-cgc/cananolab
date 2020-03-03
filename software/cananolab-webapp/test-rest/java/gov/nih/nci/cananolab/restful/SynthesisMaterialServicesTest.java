@@ -146,6 +146,8 @@ private static RequestSpecification specification;
             assertNotNull(response);
             String debug = response.asString();
             System.out.println(debug);
+            //TODO - get the ID and possibly use for all of the other tests.
+            //This will also ensure it was actually saved to database
 
         }
         catch (Exception e) {
@@ -155,25 +157,27 @@ private static RequestSpecification specification;
 
     @Test
     public void testRemoveSynthesisMaterialElement() {
-        SimpleSynthesisMaterialBean materialBean = new SimpleSynthesisMaterialBean();
-        materialBean.setSampleId("1000");
-        materialBean.setId(new Long(1000));
-        SimpleSynthesisMaterialElementBean elementBean = new SimpleSynthesisMaterialElementBean();
-        elementBean.setDescription("New Description");
-        elementBean.setMolecularFormulaType("Hill");
-        elementBean.setMolecularFormula("C1B2A3");
-        elementBean.setChemicalName("New Chemical");
-        elementBean.setType("Reflexivity");
-        elementBean.setValue(new Float(22.4));
-        elementBean.setValueUnit("g");
-        Map<String, String> supplierMap = new HashMap<String, String>();
-        supplierMap.put("Lot","AB#$");
-        supplierMap.put("SupplierName","New Supplier");
-        supplierMap.put("id","1000");
-        elementBean.setSupplier(supplierMap);
-        List<SimpleSynthesisMaterialElementBean> elementBeans = new ArrayList<SimpleSynthesisMaterialElementBean>();
-        elementBeans.add(elementBean);
-        materialBean.setMaterialElements(elementBeans);
+        SimpleSynthesisMaterialBean materialBean = getSimpleSynthesisMaterialBean("1000", "1000");
+        List<SimpleSynthesisMaterialElementBean> elements = materialBean.getMaterialElements();
+        SimpleSynthesisMaterialElementBean elementBean = elements.get(0);
+        materialBean.setMaterialElementBeingEdited(elementBean);
+
+//        SimpleSynthesisMaterialElementBean elementBean = new SimpleSynthesisMaterialElementBean();
+//        elementBean.setDescription("New Description");
+//        elementBean.setMolecularFormulaType("Hill");
+//        elementBean.setMolecularFormula("C1B2A3");
+//        elementBean.setChemicalName("New Chemical");
+//        elementBean.setType("Reflexivity");
+//        elementBean.setValue(new Float(22.4));
+//        elementBean.setValueUnit("g");
+//        Map<String, String> supplierMap = new HashMap<String, String>();
+//        supplierMap.put("Lot","AB#$");
+//        supplierMap.put("SupplierName","New Supplier");
+//        supplierMap.put("id","1000");
+//        elementBean.setSupplier(supplierMap);
+//        List<SimpleSynthesisMaterialElementBean> elementBeans = new ArrayList<SimpleSynthesisMaterialElementBean>();
+//        elementBeans.add(elementBean);
+//        materialBean.setMaterialElements(elementBeans);
 
         try {
             Response response = given().spec(specification)
@@ -224,18 +228,20 @@ private static RequestSpecification specification;
 
     @Test
     public void testRemoveFile() {
-        SimpleSynthesisMaterialBean materialBean = new SimpleSynthesisMaterialBean();
-        materialBean.setSampleId("1000");
-        materialBean.setId(new Long(1000));
-        SimpleFileBean fileBean = new SimpleFileBean();
-        fileBean.setType("TestType");
-        fileBean.setTitle("TestTitle");
-        fileBean.setUriExternal(true);
-        fileBean.setExternalUrl("https:///somewhere.com");
-        fileBean.setSampleId("1000");
-        List<SimpleFileBean> fileBeans = new ArrayList<SimpleFileBean>();
-        fileBeans.add(fileBean);
-        materialBean.setFileElements(fileBeans);
+        SimpleSynthesisMaterialBean materialBean = getSimpleSynthesisMaterialBean("1000","1000");
+        List<SimpleFileBean> fileBeans = materialBean.getFileElements();
+        SimpleFileBean fileBean = fileBeans.get(0);
+
+        materialBean.setFileBeingEdited(fileBean);
+//        SimpleFileBean fileBean = new SimpleFileBean();
+//        fileBean.setType("TestType");
+//        fileBean.setTitle("TestTitle");
+//        fileBean.setUriExternal(true);
+//        fileBean.setExternalUrl("https:///somewhere.com");
+//        fileBean.setSampleId("1000");
+//        List<SimpleFileBean> fileBeans = new ArrayList<SimpleFileBean>();
+//        fileBeans.add(fileBean);
+//        materialBean.setFileElements(fileBeans);
 
         try {
             Response response = given().spec(specification).
@@ -256,8 +262,8 @@ private static RequestSpecification specification;
 
     @Test
     public void testSubmit() {
-        SimpleSynthesisMaterialBean materialBean = new SimpleSynthesisMaterialBean();
-        materialBean.setSampleId("1000");
+        SimpleSynthesisMaterialBean materialBean = getSimpleSynthesisMaterialBean("1000","1000");
+
         SimpleSynthesisMaterialElementBean elementBean = new SimpleSynthesisMaterialElementBean();
         elementBean.setChemicalName("TestChem");
         elementBean.setMolecularFormula("CHO2Si");
@@ -285,9 +291,7 @@ private static RequestSpecification specification;
 
     @Test
     public void testDelete() {
-        SimpleSynthesisMaterialBean materialBean = new SimpleSynthesisMaterialBean();
-        materialBean.setSampleId("1000");
-        materialBean.setId(new Long(1000));
+        SimpleSynthesisMaterialBean materialBean = getSimpleSynthesisMaterialBean("1000","1000");
 
         try {
             Response response = given().spec(specification).
@@ -303,9 +307,8 @@ private static RequestSpecification specification;
 
     @Test
     public void testViewDetails() {
-        SimpleSynthesisMaterialBean materialBean = new SimpleSynthesisMaterialBean();
-        materialBean.setSampleId("1000");
-        materialBean.setId(new Long(1000));
+        SimpleSynthesisMaterialBean materialBean = getSimpleSynthesisMaterialBean("1000","1000");
+
 
         try {
             Response response = given().spec(specification).
