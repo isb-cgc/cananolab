@@ -252,7 +252,8 @@ public class SynthesisMaterialBO extends BaseAnnotationBO {
                 Supplier supplier = new Supplier();
                 supplier.setSupplierName(supplierMap.get("SupplierName"));
                 supplier.setLot(supplierMap.get("Lot"));
-                supplier.setId(new Long(supplierMap.get("id")));
+                supplier.setId(Long.valueOf(supplierMap.get("id")));
+//                supplier.setId(new Long(supplierMap.get("id")));
                 synthesisMaterialElement.setSupplier(supplier);
 
 
@@ -275,16 +276,18 @@ public class SynthesisMaterialBO extends BaseAnnotationBO {
                 synthesisMaterialElement.setFiles(files);
 
                 //Loop through functions
-                List<Map<String,Object>> functions = sSMEBean.getInherentFunctionList();
+                List<Map<String,String>> functions = sSMEBean.getInherentFunctionList();
                 Set<SmeInherentFunction> smeInherentFunctionSet = new HashSet<SmeInherentFunction>();
                 if (functions != null) {
-                for(Map<String, Object> function: functions){
+                for(Map<String, String> function: functions){
                     //id, type, description
                     SmeInherentFunction smeInherentFunction = new SmeInherentFunction();
 
                     smeInherentFunction.setType(function.get("type").toString());
                     smeInherentFunction.setDescription(function.get("description").toString());
-                    smeInherentFunction.setId((Long) function.get("id"));
+//                    smeInherentFunction.setId((Long) function.get("id"));
+                    smeInherentFunction.setId(Long.valueOf(function.get("id")));
+//                    smeInherentFunction.setId(function.get("id"));
                     //TODO this is circular.  Rework this
                     smeInherentFunction.setSynthesisMaterialElement(synthesisMaterialElement);
                     smeInherentFunctionSet.add(smeInherentFunction);
@@ -565,7 +568,7 @@ public class SynthesisMaterialBO extends BaseAnnotationBO {
 
             List<SynthesisMaterialElementBean> synthesisMaterialElementBeans = entity.getSynthesisMaterialElements();
             for (SynthesisMaterialElementBean synthesisMaterialElementBean : synthesisMaterialElementBeans) {
-                synthesisMaterialElementBean.setUpDomain(SpringSecurityUtil.getLoggedInUserName());
+                synthesisMaterialElementBean.setupDomain(SpringSecurityUtil.getLoggedInUserName());
             }
             msgs = validateInputs(httpServletRequest, entity);
             if (msgs.size() > 0) {

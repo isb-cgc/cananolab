@@ -22,6 +22,11 @@ public class SynthesisMaterial implements Serializable {
 	private String createdBy;
 	private Set<SynthesisMaterialElement> synthesisMaterialElements = new HashSet<SynthesisMaterialElement>(0);
     private Set<File> fileCollection;
+    private Long synthesisId;
+
+    public void addSynthesisMaterialElement(SynthesisMaterialElement domainEntity) {
+    	synthesisMaterialElements.add(domainEntity);
+    }
 
     public Set<File> getFiles() {
         return fileCollection;
@@ -41,11 +46,30 @@ public class SynthesisMaterial implements Serializable {
 		this.createdBy = createdBy;
 	}
 
+	public SynthesisMaterial(Long synthesisMaterialsPkId, Long synthesisId, Date createdDate, String createdBy) {
+		this.synthesisMaterialsPkId = synthesisMaterialsPkId;
+		this.synthesisId = synthesisId;
+		this.createdDate = createdDate;
+		this.createdBy = createdBy;
+	}
+
 	public SynthesisMaterial(Long synthesisMaterialsPkId, Protocol protocol, Synthesis synthesis, String description,
 							 Date createdDate, String createdBy, Set<SynthesisMaterialElement> synthesisMaterialElements, Set<File> fileCollection) {
 		this.synthesisMaterialsPkId = synthesisMaterialsPkId;
 		this.protocol = protocol;
 		this.synthesis = synthesis;
+		this.description = description;
+		this.createdDate = createdDate;
+		this.createdBy = createdBy;
+		this.synthesisMaterialElements = synthesisMaterialElements;
+		this.fileCollection=fileCollection;
+	}
+
+	public SynthesisMaterial(Long synthesisMaterialsPkId, Protocol protocol, Long synthesisId, String description,
+							 Date createdDate, String createdBy, Set<SynthesisMaterialElement> synthesisMaterialElements, Set<File> fileCollection) {
+		this.synthesisMaterialsPkId = synthesisMaterialsPkId;
+		this.protocol = protocol;
+		this.synthesisId = synthesisId;
 		this.description = description;
 		this.createdDate = createdDate;
 		this.createdBy = createdBy;
@@ -75,6 +99,12 @@ public class SynthesisMaterial implements Serializable {
 
 	public void setSynthesis(Synthesis synthesis) {
 		this.synthesis = synthesis;
+	}
+
+	public Long getSynthesisId(){return this.synthesisId;};
+
+    public void setSynthesisId(Long synthesisId){
+    	this.synthesisId = synthesisId;
 	}
 
 	public String getDescription() {

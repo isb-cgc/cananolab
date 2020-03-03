@@ -151,10 +151,10 @@ public class SimpleSynthesisMaterialBean {
                 }
                 //Transfer inherent function
                 if (synthesisMaterialElement.getSmeInherentFunctions().size()>0){
-                    List<Map<String,Object>> functionList = new ArrayList<Map<String, Object>>();
+                    List<Map<String,String>> functionList = new ArrayList<Map<String, String>>();
                     for(SmeInherentFunction smeInherentFunction: synthesisMaterialElement.getSmeInherentFunctions()){
-                        Map<String,Object> function = new HashMap<String, Object>();
-                        function.put("id",smeInherentFunction.getId());
+                        Map<String,String> function = new HashMap<String, String>();
+                        function.put("id",smeInherentFunction.getId().toString());
                         function.put("type",smeInherentFunction.getType());
                         function.put("description",smeInherentFunction.getDescription());
                         functionList.add(function);
@@ -221,7 +221,7 @@ public class SimpleSynthesisMaterialBean {
     }
 
     private void setDomainEntityInfo(SynthesisMaterialBean synBean) {
-        //possibly not needed
+        //TODO possibly not needed
     }
 
 

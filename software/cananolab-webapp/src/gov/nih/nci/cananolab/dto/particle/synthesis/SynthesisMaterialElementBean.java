@@ -106,7 +106,7 @@ public class SynthesisMaterialElementBean extends BaseSynthesisEntityBean {
         return displayNames.toArray(new String[0]);
     }
 
-    public void setUpDomain(String loggedInUserName) throws Exception{
+    public void setupDomain(String loggedInUserName) throws Exception{
         //TODO write - this will set up empty domain for new Element
 
         if(domain == null){
@@ -128,13 +128,12 @@ public class SynthesisMaterialElementBean extends BaseSynthesisEntityBean {
         } else {
             domain.setSmeInherentFunctions(new HashSet<SmeInherentFunction>());
         }
-        int i = 0;
+
         for (SmeInherentFunctionBean functionBean : functions) {
             logger.debug("call setupDomainFunction "+ loggedInUserName);
-            functionBean.setupDomain(i);
+            functionBean.setupDomain();
 
             domain.addSmeInherentFunction  (functionBean.getDomain());
-            i++;
             }
 
         }
@@ -190,15 +189,15 @@ public class SynthesisMaterialElementBean extends BaseSynthesisEntityBean {
             this.setFiles(fileBeans);
 
             //Loop through functions
-            List<Map<String,Object>> functions = sSMEBean.getInherentFunctionList();
+            List<Map<String,String>> functions = sSMEBean.getInherentFunctionList();
             Set<SmeInherentFunction> smeInherentFunctionSet = new HashSet<SmeInherentFunction>();
-            for(Map<String, Object> function: functions){
+            for(Map<String, String> function: functions){
                 //id, type, description
                 SmeInherentFunction smeInherentFunction = new SmeInherentFunction();
 
                 smeInherentFunction.setType(function.get("type").toString());
                 smeInherentFunction.setDescription(function.get("description").toString());
-                smeInherentFunction.setId((Long) function.get("id"));
+                smeInherentFunction.setId(Long.valueOf(function.get("id")));
                 //TODO this is circular.  Rework this
                 smeInherentFunction.setSynthesisMaterialElement(synthesisMaterialElement);
                 smeInherentFunctionSet.add(smeInherentFunction);
@@ -209,7 +208,7 @@ public class SynthesisMaterialElementBean extends BaseSynthesisEntityBean {
 
         }
 
-    }
+}
 
 
 

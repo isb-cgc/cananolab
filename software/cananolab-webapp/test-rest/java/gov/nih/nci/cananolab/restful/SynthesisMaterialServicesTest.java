@@ -7,7 +7,7 @@ import gov.nih.nci.cananolab.restful.view.edit.SimpleFileBean;
 import gov.nih.nci.cananolab.restful.view.edit.SimpleSynthesisFunctionalizationBean;
 import gov.nih.nci.cananolab.restful.view.edit.SimpleSynthesisMaterialBean;
 import gov.nih.nci.cananolab.restful.view.edit.SimpleSynthesisMaterialElementBean;
-import io.restassured.authentication.PreemptiveBasicAuthScheme;
+import gov.nih.nci.cananolab.security.service.AclOperationService;
 import io.restassured.builder.RequestSpecBuilder;
 import io.restassured.filter.log.RequestLoggingFilter;
 import io.restassured.filter.log.ResponseLoggingFilter;
@@ -21,10 +21,13 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import net.sf.ehcache.search.parser.MValue;
 import org.codehaus.jackson.map.ObjectMapper;
+import org.json.JSONObject;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import org.springframework.security.acls.model.AclService;
 
 
 import static io.restassured.RestAssured.given;
@@ -65,7 +68,6 @@ private static RequestSpecification specification;
     }
 
 
-
     @Test
     public void testSetup() {
 //Test the initial setup of a synthesis material item - including the pass through of drop-down values
@@ -103,6 +105,11 @@ private static RequestSpecification specification;
             assertTrue(id.equals("1000"));
             ArrayList<SimpleSynthesisMaterialElementBean> materialElements = response.path("materialElements");
             assertTrue(materialElements.size()>0);
+            JSONObject jResponse = new JSONObject(response.body().asString());
+            ObjectMapper mapper = new ObjectMapper();
+            SimpleSynthesisMaterialBean synthesisMaterialBean = mapper.readValue(jResponse.toString(), SimpleSynthesisMaterialBean.class);
+            assertTrue(synthesisMaterialBean.getType().equalsIgnoreCase("Synthesis"));
+
        }
         catch (Exception e) {
             e.printStackTrace();
@@ -182,9 +189,9 @@ private static RequestSpecification specification;
 
     @Test
     public void testSaveFile() {
-        SimpleSynthesisMaterialBean materialBean = new SimpleSynthesisMaterialBean();
-        materialBean.setSampleId("1000");
-        materialBean.setId(new Long(1000));
+        SimpleSynthesisMaterialBean materialBean = getSimpleSynthesisMaterialBean("1000", "1000");
+//        materialBean.setSampleId("1000");
+//        materialBean.setId(new Long(1000));
         SimpleFileBean fileBean = new SimpleFileBean();
         fileBean.setType("TestType");
         fileBean.setTitle("TestTitle");
@@ -193,17 +200,19 @@ private static RequestSpecification specification;
         fileBean.setSampleId("1000");
         fileBean.setUri("https://evs.nci.nih.gov/ftp1/GAIA/GAIA-NCIt_Terminology.txt");
         materialBean.setFileBeingEdited(fileBean);
-        List<SimpleFileBean> fileBeans = new ArrayList<SimpleFileBean>();
+//        List<SimpleFileBean> fileBeans = new ArrayList<SimpleFileBean>();
 //        fileBeans.add(fileBean);
-        materialBean.setFileElements(fileBeans);
+//        materialBean.setFileElements(fileBeans);
 
 
         try {
-            Response response = given().spec(specification).queryParam("fileId", "1000")
+            Response response = given().spec(specification)
                     .body(materialBean).when().post("synthesisMaterial/saveFile")
                     .then().statusCode(200).extract().response();
 
             assertNotNull(response);
+            String debug = response.asString();
+            System.out.println(debug);
 
             //TODO Get material Bean and query to see if the file is there
 
@@ -235,6 +244,8 @@ private static RequestSpecification specification;
 
 
             assertNotNull(response);
+            String debug = response.asString();
+            System.out.println(debug);
         }
         catch (Exception e) {
             e.printStackTrace();
@@ -308,6 +319,26 @@ private static RequestSpecification specification;
         catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    private SimpleSynthesisMaterialBean getSimpleSynthesisMaterialBean(String sampleId, String materialId){
+        try {
+            Response response = given().spec(specification)
+                    .queryParam("sampleId", sampleId)
+                    .queryParam("synMaterialId",materialId)
+                    .when().get("synthesisMaterial/edit")
+                    .then().statusCode(200).extract().response();
+
+
+            JSONObject jResponse = new JSONObject(response.body().asString());
+            ObjectMapper mapper = new ObjectMapper();
+            return mapper.readValue(jResponse.toString(), SimpleSynthesisMaterialBean.class);
+
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 
     private String toJson(Object o){

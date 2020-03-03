@@ -119,7 +119,7 @@ public class FunctionalizingEntityServices {
 						Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(errors).build();
 			
 		} catch (Exception e) {
-			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(CommonUtil.wrapErrorMessageInList("Error while saving the File" + e.getMessage())).build();
+			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(CommonUtil.wrapErrorMessageInList("Error while saving the FE File. " + e.getMessage())).build();
 
 		}
 	}
