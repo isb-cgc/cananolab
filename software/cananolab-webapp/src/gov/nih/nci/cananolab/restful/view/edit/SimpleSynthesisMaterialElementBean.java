@@ -10,7 +10,7 @@ public class SimpleSynthesisMaterialElementBean {
     Date createdDate;
     String description;
     Long id;
-    List<Map<String,Object>> functionList;
+    List<Map<String,String>> functionList;
     String molecularFormula;
     String molecularFormulaType;
     String pubChemDataSource;
@@ -19,10 +19,6 @@ public class SimpleSynthesisMaterialElementBean {
     String type;
     Float value;
     String valueUnit;
-
-    public void setFunctionList(List<Map<String, Object>> functionList) {
-        this.functionList = functionList;
-    }
 
 
     public List<SimpleFileBean> getFiles() {
@@ -59,7 +55,7 @@ public class SimpleSynthesisMaterialElementBean {
         return id;
     }
 
-    public List<Map<String, Object>> getInherentFunctionList() {
+    public List<Map<String, String>> getInherentFunctionList() {
         return functionList;
     }
 
@@ -115,7 +111,7 @@ public class SimpleSynthesisMaterialElementBean {
         this.id = id;
     }
 
-    public void setInherentFunctionList(List<Map<String, Object>> functionList) {
+    public void setInherentFunctionList(List<Map<String, String>> functionList) {
         this.functionList = functionList;
     }
 

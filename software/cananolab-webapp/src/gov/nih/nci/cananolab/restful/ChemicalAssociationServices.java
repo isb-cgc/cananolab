@@ -160,7 +160,7 @@ public class ChemicalAssociationServices
 			return (errors == null || errors.size() == 0) ?
 					Response.ok(bean).build() : Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(errors).build();
 		} catch (Exception e) {
-			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(CommonUtil.wrapErrorMessageInList("Error while saving the File" + e.getMessage())).build();
+			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(CommonUtil.wrapErrorMessageInList("Error while saving the ChemAssoc File. " + e.getMessage())).build();
 		}
 	}
 
