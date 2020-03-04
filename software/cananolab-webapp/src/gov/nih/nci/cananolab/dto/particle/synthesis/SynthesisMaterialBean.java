@@ -11,6 +11,7 @@ import gov.nih.nci.cananolab.util.ClassUtils;
 import gov.nih.nci.cananolab.util.Comparators;
 import gov.nih.nci.cananolab.util.Constants;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
@@ -146,10 +147,44 @@ public class SynthesisMaterialBean extends BaseSynthesisEntityBean {
     }
 
 
-    public void setUpDomainEntity(String loggedInUserName) {
+    public void setUpDomainEntity(String loggedInUserName) throws Exception {
         logger.debug("In SynthesisMaterialBean.setupDomain");
-        //TODO - pattern after ComposingElementBean
 
+        //forms defaults Ids to 0, so need to check both null and 0
+        if(domainEntity.getId() !=null && domainEntity.getId()==0){
+            domainEntity.setId(null);
+        }
+
+        if(domainEntity.getId()==null){
+            logger.debug("call domain.setCreatedBy "+ loggedInUserName);
+            domainEntity.setCreatedBy(loggedInUserName);
+            domainEntity.setCreatedDate(Calendar.getInstance().getTime());
+        } else {
+            // updated created_by if created_by contains copy, but keep the original
+            // created_date
+            if(domainEntity.getCreatedBy()!=null&&domainEntity.getCreatedBy().contains(
+                    Constants.AUTO_COPY_ANNOTATION_PREFIX)){
+                domainEntity.setCreatedBy(loggedInUserName);
+            }
+        }
+
+        // clear the old domain material elements in the domain
+        if(domainEntity.getSynthesisMaterialElements() != null){
+            domainEntity.getSynthesisMaterialElements().clear();
+        } else {
+            domainEntity.setSynthesisMaterialElements(new HashSet<SynthesisMaterialElement>());
+        }
+
+        //reset the domain material elements to what is in the bean
+        for(SynthesisMaterialElementBean synthesisMaterialElement:synthesisMaterialElements){
+            synthesisMaterialElement.setupDomain(loggedInUserName);
+            domainEntity.addSynthesisMaterialElement(synthesisMaterialElement.getDomainEntity());
+        }
+
+        //TODO see if we need to clear these
+        domainEntity.getProtocol();
+        domainEntity.getFiles();
+        domainEntity.getDescription();
     }
 
 

@@ -149,7 +149,7 @@ public class SynthesisMaterialServices {
                     Response.ok(synthesisMaterialBean).build() :
                     Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(errors).build();
         } catch (Exception e){
-            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(CommonUtil.wrapErrorMessageInList("Error while saving the File" + e.getMessage())).build();
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(CommonUtil.wrapErrorMessageInList("Error while saving the Syn Mat File. " + e.getMessage())).build();
         }
     }
 
@@ -260,7 +260,8 @@ public class SynthesisMaterialServices {
             SynthesisMaterialBO synthesisMaterialBO = (SynthesisMaterialBO) SpringApplicationContext.getBean(httpRequest, "synthesisMaterialBO");
             SynthesisMaterialBean synthesisMaterialBean = synthesisMaterialBO.setupSynMaterialForAdvSearch(simpleSynthesisMaterialBean.getSampleId().toString(), simpleSynthesisMaterialBean.getId(), httpRequest);
             SimpleAdvancedSearchSynthesisBean searchSynthesisBean = new SimpleAdvancedSearchSynthesisBean();
-            searchSynthesisBean.transferMaterialForAdvancedSearch(synthesisMaterialBean, httpRequest);
+            //TODO work up advanced search
+//            searchSynthesisBean.transferMaterialForAdvancedSearch(synthesisMaterialBean, httpRequest);
             return Response.ok(searchSynthesisBean).header("Access-Control-Allow-Credentials", "true").header("Access-Control-Allow-Origin", "*")
                     .header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS").header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization").build();
 
