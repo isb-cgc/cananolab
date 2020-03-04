@@ -60,6 +60,10 @@ public class SimpleSynthesisMaterialBean {
         return materialElementBeingEdited;
     }
 
+    public void setMaterialElementBeingEdited(SimpleSynthesisMaterialElementBean materialElementBeingEdited) {
+         this.materialElementBeingEdited = materialElementBeingEdited;
+    }
+
     public String getType() {
         return type;
     }
