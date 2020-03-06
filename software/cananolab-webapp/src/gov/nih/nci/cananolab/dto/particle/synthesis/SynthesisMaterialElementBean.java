@@ -156,6 +156,10 @@ public class SynthesisMaterialElementBean extends BaseSynthesisEntityBean {
             synthesisMaterialElement.setPubChemDatasourceName(sSMEBean.getPubChemDataSource());
             synthesisMaterialElement.setValue(sSMEBean.getValue());
             synthesisMaterialElement.setValueUnit(sSMEBean.getValueUnit());
+            synthesisMaterialElement.setId(sSMEBean.getId());
+            synthesisMaterialElement.setCreatedBy(sSMEBean.getCreatedBy());
+            synthesisMaterialElement.setCreatedDate(sSMEBean.getCreatedDate());
+
 
             //check supplier
             //TODO this is clumsy.  Should probably be a simple bean
@@ -171,7 +175,8 @@ public class SynthesisMaterialElementBean extends BaseSynthesisEntityBean {
             List<SimpleFileBean> sfileBeans = sSMEBean.getFiles();
 //            Set<File> files = new HashSet<File>();
             List<FileBean> fileBeans = new ArrayList<FileBean>();
-            for(SimpleFileBean simpleFileBean: sfileBeans){
+            if(sfileBeans!=null ) {
+                for (SimpleFileBean simpleFileBean : sfileBeans) {
 
 //                File file1 = new File();
 //                file1.setUriExternal(simpleFileBean.getUriExternal());
@@ -183,26 +188,29 @@ public class SynthesisMaterialElementBean extends BaseSynthesisEntityBean {
 //                file1.setCreatedBy(simpleFileBean.getCreatedBy());
 //                files.add(file1);
 
-                FileBean fileBean = new FileBean(simpleFileBean);
-                fileBeans.add(fileBean);
+                    FileBean fileBean = new FileBean(simpleFileBean);
+                    fileBeans.add(fileBean);
+                }
+                this.setFiles(fileBeans);
             }
-            this.setFiles(fileBeans);
 
             //Loop through functions
             List<Map<String,String>> functions = sSMEBean.getInherentFunctionList();
             Set<SmeInherentFunction> smeInherentFunctionSet = new HashSet<SmeInherentFunction>();
-            for(Map<String, String> function: functions){
-                //id, type, description
-                SmeInherentFunction smeInherentFunction = new SmeInherentFunction();
+            if(functions!=null) {
+                for (Map<String, String> function : functions) {
+                    //id, type, description
+                    SmeInherentFunction smeInherentFunction = new SmeInherentFunction();
 
-                smeInherentFunction.setType(function.get("type").toString());
-                smeInherentFunction.setDescription(function.get("description").toString());
-                smeInherentFunction.setId(Long.valueOf(function.get("id")));
-                //TODO this is circular.  Rework this
-                smeInherentFunction.setSynthesisMaterialElement(synthesisMaterialElement);
-                smeInherentFunctionSet.add(smeInherentFunction);
+                    smeInherentFunction.setType(function.get("type").toString());
+                    smeInherentFunction.setDescription(function.get("description").toString());
+                    smeInherentFunction.setId(Long.valueOf(function.get("id")));
+                    //TODO this is circular.  Rework this
+                    smeInherentFunction.setSynthesisMaterialElement(synthesisMaterialElement);
+                    smeInherentFunctionSet.add(smeInherentFunction);
+                }
+                synthesisMaterialElement.setSmeInherentFunctions(smeInherentFunctionSet);
             }
-            synthesisMaterialElement.setSmeInherentFunctions(smeInherentFunctionSet);
 
             this.setDomain(synthesisMaterialElement);
 

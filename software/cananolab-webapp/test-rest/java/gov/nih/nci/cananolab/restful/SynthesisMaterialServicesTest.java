@@ -118,9 +118,10 @@ private static RequestSpecification specification;
 
     @Test
     public void testSaveSynthesisMaterialElement() {
-        SimpleSynthesisMaterialBean materialBean = new SimpleSynthesisMaterialBean();
-        materialBean.setSampleId("1000");
-        materialBean.setId(new Long(1000));
+        SimpleSynthesisMaterialBean materialBean = getSimpleSynthesisMaterialBean("1000", "1000");
+//
+//        materialBean.setSampleId("1000");
+//        materialBean.setId(new Long(1000));
         SimpleSynthesisMaterialElementBean elementBean = new SimpleSynthesisMaterialElementBean();
         elementBean.setDescription("New Description");
         elementBean.setMolecularFormulaType("Hill");
@@ -134,9 +135,10 @@ private static RequestSpecification specification;
         supplierMap.put("SupplierName","New Supplier");
         supplierMap.put("id","1000");
         elementBean.setSupplier(supplierMap);
-        List<SimpleSynthesisMaterialElementBean> elementBeans = new ArrayList<SimpleSynthesisMaterialElementBean>();
-        elementBeans.add(elementBean);
-        materialBean.setMaterialElements(elementBeans);
+//        List<SimpleSynthesisMaterialElementBean> elementBeans = new ArrayList<SimpleSynthesisMaterialElementBean>();
+//        elementBeans.add(elementBean);
+//        materialBean.setMaterialElements(elementBeans);
+        materialBean.setMaterialElementBeingEdited(elementBean);
 
         try {
             Response response = given().spec(specification)
@@ -233,15 +235,7 @@ private static RequestSpecification specification;
         SimpleFileBean fileBean = fileBeans.get(0);
 
         materialBean.setFileBeingEdited(fileBean);
-//        SimpleFileBean fileBean = new SimpleFileBean();
-//        fileBean.setType("TestType");
-//        fileBean.setTitle("TestTitle");
-//        fileBean.setUriExternal(true);
-//        fileBean.setExternalUrl("https:///somewhere.com");
-//        fileBean.setSampleId("1000");
-//        List<SimpleFileBean> fileBeans = new ArrayList<SimpleFileBean>();
-//        fileBeans.add(fileBean);
-//        materialBean.setFileElements(fileBeans);
+
 
         try {
             Response response = given().spec(specification).
