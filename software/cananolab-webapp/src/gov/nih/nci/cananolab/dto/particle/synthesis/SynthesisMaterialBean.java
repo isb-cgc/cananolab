@@ -50,6 +50,11 @@ public class SynthesisMaterialBean extends BaseSynthesisEntityBean {
         }
         this.setType("Synthesis");
         this.setDescription(material.getDescription());
+        if(material.getFiles()!=null && material.getFiles().size()>0){
+            for(File file:material.getFiles()){
+                files.add(new FileBean(file));
+            }
+        }
 
     }
 
@@ -181,10 +186,25 @@ public class SynthesisMaterialBean extends BaseSynthesisEntityBean {
             domainEntity.addSynthesisMaterialElement(synthesisMaterialElement.getDomainEntity());
         }
 
-        //TODO see if we need to clear these
-        domainEntity.getProtocol();
+
+        if (protocolBean != null && protocolBean.getDomain().getId() != null
+                && protocolBean.getDomain().getId().longValue() != 0) {
+            domainEntity.setProtocol(protocolBean.getDomain());
+        } else {
+            domainEntity.setProtocol(null);
+        }
         domainEntity.getFiles();
-        domainEntity.getDescription();
+        if (files.isEmpty()) {
+            domainEntity.setFiles(null);
+        } else if (domainEntity.getFiles() != null) {
+            domainEntity.getFiles().clear();
+        } else {
+            domainEntity.setFiles(new HashSet<File>());
+        }
+        for (FileBean file : files) {
+            domainEntity.getFiles().add(file.getDomainFile());
+        }
+        domainEntity.setDescription(description);
     }
 
 
