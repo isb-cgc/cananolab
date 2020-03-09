@@ -2,6 +2,8 @@ package gov.nih.nci.cananolab.domain.particle;
 // Generated Apr 3, 2019, 8:32:55 PM by Hibernate Tools 5.4.2.Final
 
 
+import com.sun.org.apache.bcel.internal.generic.ARETURN;
+import com.sun.org.apache.bcel.internal.generic.DRETURN;
 import gov.nih.nci.cananolab.domain.common.File;
 import gov.nih.nci.cananolab.domain.common.Supplier;
 import java.io.Serializable;
@@ -15,6 +17,7 @@ import java.util.Set;
 public class SynthesisMaterialElement implements Serializable {
 
 	private Long synthesisMaterialElementPkId;
+	private Long synthesisMaterialId;
 	private SynthesisMaterial synthesisMaterial;
 
 	public SynthesisMaterial getSynthesisMaterial() {
@@ -25,6 +28,10 @@ public class SynthesisMaterialElement implements Serializable {
 		this.synthesisMaterial = synthesisMaterial;
 	}
 
+	public Long getSynthesisMaterialId(){return synthesisMaterialId;}
+	public void setSynthesisMaterialId(Long materialId){
+		synthesisMaterialId = materialId;
+	}
 	private String molecularFormula;
 	private String molecularFormulaType;
 	private String description;
@@ -45,20 +52,50 @@ public class SynthesisMaterialElement implements Serializable {
 	public SynthesisMaterialElement() {
 	}
 
-	public SynthesisMaterialElement(Long synthesisMaterialElementPkId, SynthesisMaterial synthesisMaterial,
-			String createdBy, Date createdDate) {
+//	public SynthesisMaterialElement(Long synthesisMaterialElementPkId, SynthesisMaterial synthesisMaterial,
+//			String createdBy, Date createdDate) {
+//		this.synthesisMaterialElementPkId = synthesisMaterialElementPkId;
+//		this.synthesisMaterial = synthesisMaterial;
+//		this.createdBy = createdBy;
+//		this.createdDate = createdDate;
+//	}
+
+	public SynthesisMaterialElement(Long synthesisMaterialElementPkId, Long synthesisMaterial,
+									String createdBy, Date createdDate) {
 		this.synthesisMaterialElementPkId = synthesisMaterialElementPkId;
-		this.synthesisMaterial = synthesisMaterial;
+		this.synthesisMaterialId = synthesisMaterial;
 		this.createdBy = createdBy;
 		this.createdDate = createdDate;
 	}
 
-	public SynthesisMaterialElement(Long synthesisMaterialElementPkId, SynthesisMaterial synthesisMaterial,
-			String molecularFormula, String molecularFormulaType, String description, String createdBy,
-			Date createdDate, String chemicalName, Float value, String valueUnit, String pubChemDatasourceName,
-			Long pubChemId, Set<SmeInherentFunction> smeInherentFunctions, Set<File> files, Supplier supplier, String type) {
+//	public SynthesisMaterialElement(Long synthesisMaterialElementPkId, SynthesisMaterial synthesisMaterial,
+//			String molecularFormula, String molecularFormulaType, String description, String createdBy,
+//			Date createdDate, String chemicalName, Float value, String valueUnit, String pubChemDatasourceName,
+//			Long pubChemId, Set<SmeInherentFunction> smeInherentFunctions, Set<File> files, Supplier supplier, String type) {
+//		this.synthesisMaterialElementPkId = synthesisMaterialElementPkId;
+//		this.synthesisMaterial = synthesisMaterial;
+//		this.molecularFormula = molecularFormula;
+//		this.molecularFormulaType = molecularFormulaType;
+//		this.description = description;
+//		this.createdBy = createdBy;
+//		this.createdDate = createdDate;
+//		this.chemicalName = chemicalName;
+//		this.value = value;
+//		this.valueUnit = valueUnit;
+//		this.pubChemDatasourceName = pubChemDatasourceName;
+//		this.pubChemId = pubChemId;
+//		this.smeInherentFunctions = smeInherentFunctions;
+//		this.files = files;
+//		this.supplier = supplier;
+//		this.type = type;
+//	}
+
+	public SynthesisMaterialElement(Long synthesisMaterialElementPkId, Long synthesisMaterial,
+									String molecularFormula, String molecularFormulaType, String description, String createdBy,
+									Date createdDate, String chemicalName, Float value, String valueUnit, String pubChemDatasourceName,
+									Long pubChemId, Set<SmeInherentFunction> smeInherentFunctions, Set<File> files, Supplier supplier, String type) {
 		this.synthesisMaterialElementPkId = synthesisMaterialElementPkId;
-		this.synthesisMaterial = synthesisMaterial;
+		this.synthesisMaterialId = synthesisMaterial;
 		this.molecularFormula = molecularFormula;
 		this.molecularFormulaType = molecularFormulaType;
 		this.description = description;

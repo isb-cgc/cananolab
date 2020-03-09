@@ -226,6 +226,9 @@ public class FileBean extends SecuredDataBean {
 
 	 public FileBean(SimpleFileBean sFileBean){
 		File file = new File();
+		if(sFileBean.getId()!=null){
+			file.setId(sFileBean.getId());
+		}
 		if(sFileBean.getCreatedBy()!=null&&sFileBean.getCreatedBy().length()>0) {
 			file.setCreatedBy(sFileBean.getCreatedBy());
 			setCreatedBy(sFileBean.getCreatedBy());

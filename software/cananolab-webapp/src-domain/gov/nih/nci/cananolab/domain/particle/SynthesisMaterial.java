@@ -44,6 +44,7 @@ public class SynthesisMaterial implements Serializable {
 		this.synthesis = synthesis;
 		this.createdDate = createdDate;
 		this.createdBy = createdBy;
+		synthesisId = synthesis.getId();
 	}
 
 	public SynthesisMaterial(Long synthesisMaterialsPkId, Long synthesisId, Date createdDate, String createdBy) {
@@ -63,6 +64,8 @@ public class SynthesisMaterial implements Serializable {
 		this.createdBy = createdBy;
 		this.synthesisMaterialElements = synthesisMaterialElements;
 		this.fileCollection=fileCollection;
+
+		synthesisId = synthesis.getId();
 	}
 
 	public SynthesisMaterial(Long synthesisMaterialsPkId, Protocol protocol, Long synthesisId, String description,

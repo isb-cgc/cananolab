@@ -184,6 +184,8 @@ public class SimpleSynthesisMaterialBean {
 //                        fBean.setTheAccess(file.getTheAccess());
 //                        boolean isPublic = springSecurityAclService.checkObjectPublic(Long.valueOf(getSampleId()), SecureClassesEnum.SAMPLE.getClazz());
 //                        fBean.setIsPublic(isPublic);
+                        boolean isPublic = springSecurityAclService.checkObjectPublic(Long.valueOf(getSampleId()), SecureClassesEnum.SAMPLE.getClazz());
+                        simpleFileBean.setIsPublic(isPublic);
                         sfeFiles.add(simpleFileBean);
                     }
                 sSynMatElementBean.setFiles(sfeFiles);
@@ -196,21 +198,22 @@ public class SimpleSynthesisMaterialBean {
         if(synBean.getFiles()!=null){
             fileElements = new ArrayList<SimpleFileBean>();
             for(FileBean file : synBean.getFiles()){
-                SimpleFileBean fBean = new SimpleFileBean();
-                fBean.setDescription(file.getDescription());
-                fBean.setType(file.getDomainFile().getType());
-                fBean.setTitle(file.getDomainFile().getTitle());
-                fBean.setUri(file.getDomainFile().getUri());
-                fBean.setUriExternal(file.getDomainFile().getUriExternal());
-                fBean.setExternalUrl(file.getExternalUrl());
-                fBean.setKeywordsStr(file.getKeywordsStr());
-                fBean.setId(file.getDomainFile().getId());
-                fBean.setCreatedBy(file.getDomainFile().getCreatedBy());
-                fBean.setCreatedDate(file.getDomainFile().getCreatedDate());
-                fBean.setTheAccess(file.getTheAccess());
+                SimpleFileBean simpleFileBean = new SimpleFileBean(file,this.getSampleId());
+//                SimpleFileBean fBean = new SimpleFileBean();
+//                fBean.setDescription(file.getDescription());
+//                fBean.setType(file.getDomainFile().getType());
+//                fBean.setTitle(file.getDomainFile().getTitle());
+//                fBean.setUri(file.getDomainFile().getUri());
+//                fBean.setUriExternal(file.getDomainFile().getUriExternal());
+//                fBean.setExternalUrl(file.getExternalUrl());
+//                fBean.setKeywordsStr(file.getKeywordsStr());
+//                fBean.setId(file.getDomainFile().getId());
+//                fBean.setCreatedBy(file.getDomainFile().getCreatedBy());
+//                fBean.setCreatedDate(file.getDomainFile().getCreatedDate());
+//                fBean.setTheAccess(file.getTheAccess());
                 boolean isPublic = springSecurityAclService.checkObjectPublic(Long.valueOf(getSampleId()), SecureClassesEnum.SAMPLE.getClazz());
-                fBean.setIsPublic(isPublic);
-                fileElements.add(fBean);
+                simpleFileBean.setIsPublic(isPublic);
+                fileElements.add(simpleFileBean);
             }
             setFiles(fileElements);
 

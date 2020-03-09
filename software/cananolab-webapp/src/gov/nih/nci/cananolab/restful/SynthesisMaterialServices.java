@@ -194,7 +194,7 @@ public class SynthesisMaterialServices {
                     Response.ok(synthesisMaterialBean).build() :
                     Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(errors).build();
         }catch (Exception e){
-            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(CommonUtil.wrapErrorMessageInList("Error while removing the File" + e.getMessage())).build();
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(CommonUtil.wrapErrorMessageInList("Error while removing the File " + e.getMessage())).build();
 
         }
     }
