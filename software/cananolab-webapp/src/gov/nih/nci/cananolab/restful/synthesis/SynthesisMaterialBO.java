@@ -226,10 +226,6 @@ public class SynthesisMaterialBO extends BaseAnnotationBO {
 
         //Add synthesisMaterialElements to bean and domain
         Set<SynthesisMaterialElement> smes = new HashSet<SynthesisMaterialElement>();
-        SynthesisMaterialElementBean smeBean = new SynthesisMaterialElementBean();
-        SynthesisMaterialElement sme = new SynthesisMaterialElement();
-        SmeInherentFunctionBean smeIfBean = new SmeInherentFunctionBean();
-        Set<SmeInherentFunction> smeInherentFunctions = new HashSet<SmeInherentFunction>();
         List<SynthesisMaterialElementBean> smeBeans = new ArrayList<SynthesisMaterialElementBean>();
         List<SimpleSynthesisMaterialElementBean> sSMEbeans = synMatBean.getMaterialElements();
 
@@ -248,18 +244,23 @@ public class SynthesisMaterialBO extends BaseAnnotationBO {
                 synthesisMaterialElement.setValueUnit(sSMEBean.getValueUnit());
                 synthesisMaterialElement.setCreatedBy(sSMEBean.getCreatedBy());
                 synthesisMaterialElement.setCreatedDate(sSMEBean.getCreatedDate());
+                synthesisMaterialElement.setSynthesisMaterialId(material.getId());
+                synthesisMaterialElement.setSynthesisMaterial(material);
+                synthesisMaterialElement.setId(sSMEBean.getId());
+                synthesisMaterialElement.setType(sSMEBean.getType());
 
 
                 //check supplier
                 //TODO this is clumsy.  Should probably be a simple bean
                 Map<String, String> supplierMap = sSMEBean.getSupplierMap();
-                Supplier supplier = new Supplier();
-                supplier.setSupplierName(supplierMap.get("SupplierName"));
-                supplier.setLot(supplierMap.get("Lot"));
-                supplier.setId(Long.valueOf(supplierMap.get("id")));
+                if(supplierMap!=null) {
+                    Supplier supplier = new Supplier();
+                    supplier.setSupplierName(supplierMap.get("SupplierName"));
+                    supplier.setLot(supplierMap.get("Lot"));
+                    supplier.setId(Long.valueOf(supplierMap.get("id")));
 //                supplier.setId(new Long(supplierMap.get("id")));
-                synthesisMaterialElement.setSupplier(supplier);
-
+                    synthesisMaterialElement.setSupplier(supplier);
+                }
 
                 //check for Files
                 List<SimpleFileBean> sfileBeans = sSMEBean.getFiles();
@@ -299,8 +300,10 @@ public class SynthesisMaterialBO extends BaseAnnotationBO {
                 synthesisMaterialElement.setSmeInherentFunctions(smeInherentFunctionSet);
                 SynthesisMaterialElementBean materialElementBean = new SynthesisMaterialElementBean(synthesisMaterialElement);
                 smeBeans.add(materialElementBean);
+                smes.add(synthesisMaterialElement);
             }
             bean.setSynthesisMaterialElements(smeBeans);
+            material.setSynthesisMaterialElements(smes);
 
         }
         bean.setDomainEntity(material);
@@ -570,6 +573,8 @@ public class SynthesisMaterialBO extends BaseAnnotationBO {
 
             SimpleSynthesisMaterialElementBean elementBeingEdited = simpleSynthesisMaterialBean.getMaterialElementBeingEdited();
             SynthesisMaterialElementBean newElementBean = new SynthesisMaterialElementBean(elementBeingEdited);
+            newElementBean.getDomainEntity().setSynthesisMaterial(entity.getDomainEntity());
+
 
 
 
@@ -577,6 +582,7 @@ public class SynthesisMaterialBO extends BaseAnnotationBO {
             synthesisMaterialElementBeans.add(newElementBean);
             for (SynthesisMaterialElementBean synthesisMaterialElementBean : synthesisMaterialElementBeans) {
                 synthesisMaterialElementBean.setupDomain(SpringSecurityUtil.getLoggedInUserName());
+
             }
             List<String> msgs,msgs2 = new ArrayList<String>();
             msgs = validateInputs(httpServletRequest, entity);

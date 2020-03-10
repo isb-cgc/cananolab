@@ -22,7 +22,16 @@ public class SynthesisMaterial implements Serializable {
 	private String createdBy;
 	private Set<SynthesisMaterialElement> synthesisMaterialElements = new HashSet<SynthesisMaterialElement>(0);
     private Set<File> fileCollection;
-    private Long synthesisId;
+
+	public Set<File> getFileCollection() {
+		return fileCollection;
+	}
+
+	public void setFileCollection(Set<File> fileCollection) {
+		this.fileCollection = fileCollection;
+	}
+
+	private Long synthesisId;
 
     public void addSynthesisMaterialElement(SynthesisMaterialElement domainEntity) {
     	synthesisMaterialElements.add(domainEntity);
