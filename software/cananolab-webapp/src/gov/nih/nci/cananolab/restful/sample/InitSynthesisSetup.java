@@ -24,7 +24,7 @@ public class InitSynthesisSetup {
         return "/caNanoLab/views/sample/composition/functionalizingEntity/SynthesisInfo.html";
     }
 
-//TODO write
+
 
 
 

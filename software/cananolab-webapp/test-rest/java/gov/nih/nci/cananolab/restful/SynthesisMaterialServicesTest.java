@@ -113,6 +113,7 @@ private static RequestSpecification specification;
 //
 //        materialBean.setSampleId("1000");
 //        materialBean.setId(new Long(1000));
+        int initialNumberOfElements = materialBean.getMaterialElements().size();
         SimpleSynthesisMaterialElementBean elementBean = new SimpleSynthesisMaterialElementBean();
         elementBean.setDescription("New Description");
         elementBean.setMolecularFormulaType("Hill");
@@ -121,6 +122,7 @@ private static RequestSpecification specification;
         elementBean.setType("Reflexivity");
         elementBean.setValue(new Float(22.4));
         elementBean.setValueUnit("g");
+        elementBean.setType("reagent");
         Map<String, String> supplierMap = new HashMap<String, String>();
         supplierMap.put("Lot","AB#$");
         supplierMap.put("SupplierName","New Supplier");
@@ -137,6 +139,8 @@ private static RequestSpecification specification;
                     .then().statusCode(200).extract().response();
 
             assertNotNull(response);
+            materialBean = getSimpleSynthesisMaterialBean("1000", "1000");
+            assertTrue(materialBean.getMaterialElements().size()>initialNumberOfElements);
             String debug = response.asString();
             System.out.println(debug);
             //TODO - get the ID and possibly use for all of the other tests.
@@ -255,6 +259,7 @@ private static RequestSpecification specification;
         elementBean.setMolecularFormulaType("Hill");
         elementBean.setDescription("Test material element");
         elementBean.setCreatedBy("");
+        elementBean.setType("reagent");
         List<SimpleSynthesisMaterialElementBean> elementBeans = new ArrayList<SimpleSynthesisMaterialElementBean>();
         elementBeans.add(elementBean);
         materialBean.setMaterialElements(elementBeans);

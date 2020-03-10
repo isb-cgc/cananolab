@@ -20,18 +20,8 @@ public class SynthesisMaterialElement implements Serializable {
 	private Long synthesisMaterialId;
 	private SynthesisMaterial synthesisMaterial;
 
-	public SynthesisMaterial getSynthesisMaterial() {
-		return synthesisMaterial;
-	}
 
-	public void setSynthesisMaterial(SynthesisMaterial synthesisMaterial) {
-		this.synthesisMaterial = synthesisMaterial;
-	}
 
-	public Long getSynthesisMaterialId(){return synthesisMaterialId;}
-	public void setSynthesisMaterialId(Long materialId){
-		synthesisMaterialId = materialId;
-	}
 	private String molecularFormula;
 	private String molecularFormulaType;
 	private String description;
@@ -66,6 +56,19 @@ public class SynthesisMaterialElement implements Serializable {
 		this.synthesisMaterialId = synthesisMaterial;
 		this.createdBy = createdBy;
 		this.createdDate = createdDate;
+	}
+
+	public SynthesisMaterial getSynthesisMaterial() {
+		return synthesisMaterial;
+	}
+
+	public void setSynthesisMaterial(SynthesisMaterial synthesisMaterial) {
+		this.synthesisMaterial = synthesisMaterial;
+	}
+
+	public Long getSynthesisMaterialId(){return synthesisMaterialId;}
+	public void setSynthesisMaterialId(Long materialId){
+		synthesisMaterialId = materialId;
 	}
 
 //	public SynthesisMaterialElement(Long synthesisMaterialElementPkId, SynthesisMaterial synthesisMaterial,

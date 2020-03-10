@@ -2,6 +2,7 @@ package gov.nih.nci.cananolab.service.sample.impl;
 
 import gov.nih.nci.cananolab.domain.common.File;
 import gov.nih.nci.cananolab.domain.particle.Sample;
+import gov.nih.nci.cananolab.domain.particle.SmeInherentFunction;
 import gov.nih.nci.cananolab.domain.particle.Synthesis;
 import gov.nih.nci.cananolab.domain.particle.SynthesisFunctionalization;
 import gov.nih.nci.cananolab.domain.particle.SynthesisMaterial;
@@ -12,6 +13,7 @@ import gov.nih.nci.cananolab.dto.particle.SampleBean;
 import gov.nih.nci.cananolab.dto.particle.synthesis.SynthesisBean;
 import gov.nih.nci.cananolab.dto.particle.synthesis.SynthesisFunctionalizationBean;
 import gov.nih.nci.cananolab.dto.particle.synthesis.SynthesisMaterialBean;
+import gov.nih.nci.cananolab.dto.particle.synthesis.SynthesisMaterialElementBean;
 import gov.nih.nci.cananolab.dto.particle.synthesis.SynthesisPurificationBean;
 import gov.nih.nci.cananolab.exception.CompositionException;
 import gov.nih.nci.cananolab.exception.NoAccessException;
@@ -306,6 +308,11 @@ public class SynthesisServiceLocalImpl extends BaseServiceLocalImpl implements S
                     deleteSynthesisMaterialElementFile(sampleId,element,file);
                 }
             }
+            if(element.getSmeInherentFunctions()!=null){
+                for(SmeInherentFunction function: element.getSmeInherentFunctions()){
+                    deleteSmeInherentFunction(sampleId, element, function);
+                }
+            }
             appService.delete(element);
         }catch (Exception e){
             String err = "Error deleting synthesis material element " + element.getId();
@@ -314,9 +321,30 @@ public class SynthesisServiceLocalImpl extends BaseServiceLocalImpl implements S
         }
     }
 
+    private void deleteSmeInherentFunction(Long sampleId, SynthesisMaterialElement element, SmeInherentFunction function)throws SynthesisException {
+        try {
+            CaNanoLabApplicationService appService = (CaNanoLabApplicationService) ApplicationServiceProvider
+                    .getApplicationService();
+            List<SmeInherentFunction> functionList = synthesisHelper.findSmeFunctionByElementId(sampleId, element.getId(),"SynthesisMaterialElement");
+            element.setSmeInherentFunctions(new HashSet<SmeInherentFunction>(functionList));
+            element.getSmeInherentFunctions().remove(function);
+            appService.saveOrUpdate(element);
+
+        }catch (Exception e){
+            String err = "Error deleting SME Inherent Function " + element.getId();
+            logger.error(err, e);
+            throw new SynthesisException(err, e);
+        }
+    }
+
     private void deleteSynthesisMaterialElementFile(Long sampleId, SynthesisMaterialElement element, File file) throws SynthesisException {
         try{
+            CaNanoLabApplicationService appService = (CaNanoLabApplicationService) ApplicationServiceProvider
+                    .getApplicationService();
             List<File> fileList = synthesisHelper.findFilesBySynMatElement(sampleId, element.getId(),"SynthesisMaterialElement");
+            element.setFiles(new HashSet<File>(fileList));
+            element.getFiles().remove(file);
+            appService.saveOrUpdate(element);
         } catch (Exception e){
             String err = "Error deleting synthesis material element file " + element.getId();
             logger.error(err, e);
@@ -434,6 +462,10 @@ public class SynthesisServiceLocalImpl extends BaseServiceLocalImpl implements S
                         fileUtils.prepareSaveFile(fileBean.getDomainFile());
                     }
                     //save
+
+            for(SynthesisMaterialElementBean synthesisMaterialElementBean: synthesisMaterialBean.getSynthesisMaterialElements()){
+                this.saveSynthesisMaterialElement(synthesisMaterial,synthesisMaterialElementBean);
+            }
                     appService.saveOrUpdate(synthesisMaterial);
 
                     for (FileBean fileBean : synthesisMaterialBean.getFiles()) {
@@ -443,7 +475,55 @@ public class SynthesisServiceLocalImpl extends BaseServiceLocalImpl implements S
         }catch (NoAccessException e){
             throw e;
         } catch (Exception e){
-            String err = "Problem saving Synthesis Material";
+            String err = "Problem saving Synthesis Material ";
+            logger.error(err, e);
+            throw new SynthesisException(err, e);
+        }
+    }
+
+    public void saveSynthesisMaterialElement(SynthesisMaterial material, SynthesisMaterialElementBean synthesisMaterialElementBean) throws SynthesisException {
+        //TODO write
+        try {
+            CaNanoLabApplicationService appService = (CaNanoLabApplicationService) ApplicationServiceProvider
+                    .getApplicationService();
+            SynthesisMaterialElement synthesisMaterialElement = synthesisMaterialElementBean.getDomainEntity();
+            Boolean newEntity=true;
+            if(synthesisMaterialElement.getId()!=null){
+                newEntity=false;
+            }
+
+            if(!newEntity){
+                //Get the material by id from database
+                Long test1 = synthesisMaterialElement.getSynthesisMaterial().getId();
+                Long test2 = material.getId();
+                if(!test1.equals(test2)){
+                    //something has gone wrong and the material does not attach to the correct synthesis
+                    throw new SynthesisException("element does not match material", new Exception());
+                }
+
+
+
+            try {
+                appService
+                        .load(SynthesisMaterialElement.class, synthesisMaterialElementBean.getDomainEntity().getId());
+            }catch (Exception e) {
+                String err = "Object doesn't exist in the database anymore.  Please log in again.";
+                logger.error(err);
+                throw new SynthesisException(err, e);
+            }}
+
+            for(FileBean fileBean:synthesisMaterialElementBean.getFiles()){
+                fileUtils.prepareSaveFile(fileBean.getDomainFile());
+            }
+            //TODO what will this do if there is no change
+            appService.saveOrUpdate(synthesisMaterialElement);
+
+            for (FileBean fileBean : synthesisMaterialElementBean.getFiles()) {
+                fileUtils.writeFile(fileBean);
+            }
+        }
+        catch (Exception e) {
+            String err = "Problem saving Synthesis Material Element ";
             logger.error(err, e);
             throw new SynthesisException(err, e);
         }
