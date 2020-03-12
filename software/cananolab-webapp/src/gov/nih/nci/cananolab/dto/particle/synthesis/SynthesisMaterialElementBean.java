@@ -75,6 +75,7 @@ public class SynthesisMaterialElementBean extends BaseSynthesisEntityBean {
                 files.add(new FileBean(file));
             }
         }
+
     }
 
 
@@ -133,7 +134,7 @@ public class SynthesisMaterialElementBean extends BaseSynthesisEntityBean {
             logger.debug("call setupDomainFunction "+ loggedInUserName);
             functionBean.setupDomain();
 
-            domain.addSmeInherentFunction  (functionBean.getDomain());
+            domain.addSmeInherentFunction(functionBean.getDomain());
             }
 
         }
@@ -159,7 +160,7 @@ public class SynthesisMaterialElementBean extends BaseSynthesisEntityBean {
             synthesisMaterialElement.setId(sSMEBean.getId());
             synthesisMaterialElement.setCreatedBy(sSMEBean.getCreatedBy());
             synthesisMaterialElement.setCreatedDate(sSMEBean.getCreatedDate());
-
+            synthesisMaterialElement.setType(sSMEBean.getType());
 
             //check supplier
             //TODO this is clumsy.  Should probably be a simple bean

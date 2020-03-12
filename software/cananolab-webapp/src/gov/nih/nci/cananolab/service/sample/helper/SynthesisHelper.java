@@ -2,9 +2,11 @@ package gov.nih.nci.cananolab.service.sample.helper;
 
 import gov.nih.nci.cananolab.domain.common.File;
 import gov.nih.nci.cananolab.domain.particle.NanomaterialEntity;
+import gov.nih.nci.cananolab.domain.particle.SmeInherentFunction;
 import gov.nih.nci.cananolab.domain.particle.Synthesis;
 import gov.nih.nci.cananolab.domain.particle.SynthesisFunctionalization;
 import gov.nih.nci.cananolab.domain.particle.SynthesisMaterial;
+import gov.nih.nci.cananolab.domain.particle.SynthesisMaterialElement;
 import gov.nih.nci.cananolab.domain.particle.SynthesisPurification;
 import gov.nih.nci.cananolab.exception.NoAccessException;
 import gov.nih.nci.cananolab.exception.SynthesisException;
@@ -15,6 +17,7 @@ import gov.nih.nci.cananolab.system.applicationservice.client.ApplicationService
 import gov.nih.nci.cananolab.system.query.hibernate.HQLCriteria;
 import gov.nih.nci.cananolab.util.ClassUtils;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import org.apache.log4j.Logger;
 import org.hibernate.FetchMode;
@@ -36,7 +39,27 @@ public class SynthesisHelper
     public SynthesisHelper() {
     }
 
-
+    public List<SmeInherentFunction> findSmeFunctionByElementId(Long sampleId, Long id, String fullClassName) throws Exception{
+        if (!springSecurityAclService.currentUserHasReadPermission(sampleId, SecureClassesEnum.SAMPLE.getClazz()) &&
+                !springSecurityAclService.currentUserHasWritePermission(sampleId, SecureClassesEnum.SAMPLE.getClazz())) {
+            throw new NoAccessException("User has no access to the sample " + sampleId);
+        }
+        List<SmeInherentFunction> functionList = new ArrayList<SmeInherentFunction>();
+        CaNanoLabApplicationService appService = (CaNanoLabApplicationService) ApplicationServiceProvider.getApplicationService();
+        String hql = "select anEntity.smeInherentFunctions from " + fullClassName + " anEntity where anEntity.id = " + id;
+        HQLCriteria crit = new HQLCriteria(hql);
+        List results = appService.query(crit);
+        for (int i = 0; i < results.size(); i++) {
+            SmeInherentFunction function = (SmeInherentFunction) results.get(i);
+            if (springSecurityAclService.currentUserHasReadPermission(sampleId, SecureClassesEnum.SAMPLE.getClazz()) ||
+                    springSecurityAclService.currentUserHasWritePermission(sampleId, SecureClassesEnum.SAMPLE.getClazz())) {
+                functionList.add(function);
+            } else {
+                logger.debug("User doesn't have access to file of id:" + function.getId());
+            }
+        }
+        return functionList;
+    }
 
 
     public Synthesis findSynthesisBySampleId(String sampleId) throws SynthesisException {
@@ -250,7 +273,7 @@ public class SynthesisHelper
         }
 
         CaNanoLabApplicationService appService = (CaNanoLabApplicationService) ApplicationServiceProvider.getApplicationService();
-        String hql = "select anEntity.fileCollection from " + fullClassName + " anEntity where anEntity.id = " + elementId;
+        String hql = "select anEntity.files from " + fullClassName + " anEntity where anEntity.id = " + elementId;
         HQLCriteria crit = new HQLCriteria(hql);
         List results = appService.query(crit);
         for (int i = 0; i < results.size(); i++) {
