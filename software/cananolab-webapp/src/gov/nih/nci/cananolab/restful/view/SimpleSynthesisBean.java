@@ -117,6 +117,7 @@ public class SimpleSynthesisBean {
                     if (material.getSynthesisMaterialElements() != null) {
                         for (SynthesisMaterialElementBean elementBean : material.getSynthesisMaterialElements()) {
                             materialElement = new HashMap<String, Object>();
+                            materialElement.put("dataId", elementBean.getDomainEntity().getId());
                             materialElement.put("Description", elementBean.getDomainEntity().getDescription());
                             materialElement.put("DisplayName", elementBean.getDisplayName());
                             materialElement.put("Type", elementBean.getDomainEntity().getType());
@@ -187,6 +188,7 @@ public class SimpleSynthesisBean {
                     functionalizationElements = new ArrayList<Map<String, Object>>();
                     for (SynthesisFunctionalizationElementBean sfeBean: functionalizationBean.getSynthesisFunctionalizationElements()) {
                         functionalizationElement = new HashMap<String, Object>();
+                        functionalizationElement.put("dataId", sfeBean.getDomain().getId());
                         functionalizationElement.put("DisplayName", sfeBean.getDisplayName());
                         functionalizationElement.put("ChemicalName", sfeBean.getDomain().getChemicalName());
                         functionalizationElement.put("Description", sfeBean.getDescription());
@@ -246,7 +248,7 @@ public class SimpleSynthesisBean {
                         purificationPurity = new HashMap<String, Object>();
 
 //                        Map<String, List<Object>> oneCharResult = new HashMap<String, List<Object>>();
-
+                        purificationPurity.put("dataId", purityBean.getDomain().getId());
                         List<Object> dataCondition = transferPurityResultsDataAndCondition(purityBean);
                         if (dataCondition != null && dataCondition.size() > 0){
 //                            oneCharResult.put("Data and Conditions", dataCondition);
@@ -416,20 +418,21 @@ public class SimpleSynthesisBean {
         List<PurificationConfigBean> expConfigBeans = pureBean.getPurificationConfigs();
         List<Map<String,Object>> techiqueList = new ArrayList<Map<String, Object>>();
         for (PurificationConfigBean configBean: expConfigBeans) {
-            Map<String, Object> techiqueMap = new HashMap<String, Object>();
+            Map<String, Object> techniqueMap = new HashMap<String, Object>();
             //put technique name
             String techDisplayName = (configBean.getTechniqueDisplayName() == null) ? "" : configBean.getTechniqueDisplayName();
-            techiqueMap.put("Technique", techDisplayName);
+            techniqueMap.put("Technique", techDisplayName);
+            techniqueMap.put("dataId", configBean.getDomain().getPurificationConfigPkId());
             //put config description
             String desc = (configBean.getDomain().getDescription() == null) ? "" : configBean.getDomain().getDescription();
-            techiqueMap.put("Description", desc);
+            techniqueMap.put("Description", desc);
             //put array of instruments
             List<String> instrumentNames = new ArrayList<String>();
             for (String instrumentDisplayName : configBean.getInstrumentDisplayNames()) {
                 instrumentNames.add(instrumentDisplayName);
             }
-            techiqueMap.put("Instruments", instrumentNames);
-            techiqueList.add(techiqueMap);
+            techniqueMap.put("Instruments", instrumentNames);
+            techiqueList.add(techniqueMap);
         }
         return techiqueList;
 

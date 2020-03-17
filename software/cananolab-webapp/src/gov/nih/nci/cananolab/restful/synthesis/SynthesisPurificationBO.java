@@ -1,8 +1,12 @@
 package gov.nih.nci.cananolab.restful.synthesis;
 
+import gov.nih.nci.cananolab.domain.characterization.physical.Purity;
+import gov.nih.nci.cananolab.domain.common.File;
 import gov.nih.nci.cananolab.dto.common.PurityBean;
 import gov.nih.nci.cananolab.dto.particle.synthesis.SynthesisPurificationBean;
 import gov.nih.nci.cananolab.restful.core.BaseAnnotationBO;
+import gov.nih.nci.cananolab.restful.sample.InitSampleSetup;
+import gov.nih.nci.cananolab.restful.sample.InitSynthesisSetup;
 import gov.nih.nci.cananolab.restful.view.edit.SimplePurityBean;
 import gov.nih.nci.cananolab.restful.view.edit.SimpleSynthesisPurificationBean;
 import gov.nih.nci.cananolab.security.service.SpringSecurityAclService;
@@ -10,8 +14,11 @@ import gov.nih.nci.cananolab.service.curation.CurationService;
 import gov.nih.nci.cananolab.service.sample.SampleService;
 import gov.nih.nci.cananolab.service.sample.SynthesisService;
 import gov.nih.nci.cananolab.ui.form.SynthesisForm;
+import java.util.ArrayList;
 import java.util.IllegalFormatConversionException;
+import java.util.List;
 import java.util.Map;
+import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,34 +38,78 @@ public class SynthesisPurificationBO extends BaseAnnotationBO {
     @Autowired
     private SpringSecurityAclService springSecurityAclService;
 
+    @Autowired
+    private CurationService curationServiceDAO;
+
+    @Autowired
+    private SampleService sampleService;
+
+    @Autowired
+    private UserDetailsService userDetailsService;
+
+
     @Override
     public CurationService getCurationServiceDAO() {
-        //TODO
-        return null;
+        return this.curationServiceDAO;
     }
 
     @Override
     public SampleService getSampleService() {
-        //TODO
-        return null;
+        return this.sampleService;
     }
 
     @Override
     public SpringSecurityAclService getSpringSecurityAclService() {
-        //TODO
-        return null;
+        return this.springSecurityAclService;
     }
 
     @Override
     public UserDetailsService getUserDetailsService() {
-        //TODO
+        return this.userDetailsService;
+    }
+
+    public List<String> savePurification(SimpleSynthesisPurificationBean editBean, HttpServletRequest httpRequest) {
+        //TODO write
         return null;
     }
 
-    public Map<String, Object> setupNew(String sampleId, HttpServletRequest httpRequest) {
+    /**
+     * Returns dropdown and other information for creating a new Purification object
+     *
+     * @param sampleId
+     * @param httpRequest
+     * @return
+     * @throws Exception
+     */
+    public Map<String, Object> setupNew(String sampleId, HttpServletRequest httpRequest) throws Exception {
+        SynthesisPurificationBean synthesisPurificationBean = new SynthesisPurificationBean();
+        List<String> otherNames = InitSampleSetup.getInstance().getOtherSampleNames(httpRequest, sampleId, sampleService);
+        this.setLookups(httpRequest, synthesisPurificationBean);
+        this.checkOpenForms(synthesisPurificationBean, httpRequest);
+        //TODO write
         return null;
     }
 
+    /**
+     * Crafts the lookups for the purification web form
+     *
+     * @param httpRequest
+     * @param elementBean
+     * @throws Exception
+     */
+    private void setLookups(HttpServletRequest httpRequest, SynthesisPurificationBean elementBean) throws Exception {
+        ServletContext appContext = httpRequest.getSession().getServletContext();
+        InitSynthesisSetup.getInstance().setSynthesisPurificationDropdowns(httpRequest, elementBean);
+    }
+
+    /**
+     * Returns current purifcation information and fields for editing that purification
+     * @param sampleId
+     * @param dataId
+     * @param httpRequest
+     * @return
+     * @throws Exception
+     */
     public SimpleSynthesisPurificationBean setupUpdate(String sampleId, String dataId, HttpServletRequest httpRequest) throws Exception {
         SynthesisForm form = new SynthesisForm();
         // set up other particles with the same primary point of contact
@@ -79,51 +130,202 @@ public class SynthesisPurificationBO extends BaseAnnotationBO {
         }
     }
 
+
+    /**
+     * Create a new purification
+     *
+     * @param purificationBean
+     * @param httpRequest
+     * @return
+     */
+    public List<String> create(SimpleSynthesisPurificationBean purificationBean, HttpServletRequest httpRequest){
+        //TODO write
+        List<String> msgs = new ArrayList<String>();
+        SynthesisPurificationBean synthesisPurificationBean = transferSimplePurification(purificationBean, httpRequest);
+        msgs = validatePurification(httpRequest,synthesisPurificationBean);
+
+        if (msgs.size() > 0) {
+            return msgs;
+        }
+
+        this.saveEntity( synthesisPurificationBean,httpRequest);
+        InitSynthesisSetup.getInstance().persistPurificationDropdowns(
+                httpRequest, synthesisPurificationBean);
+        msgs.add("success");
+        httpRequest.getSession().setAttribute("tab", "1");
+        return msgs;
+
+    }
+
+    /**
+     * Save changes to an existing purification
+     *
+     * @param synthesisPurificationBean
+     * @param httpRequest
+     */
+    private void saveEntity(SynthesisPurificationBean synthesisPurificationBean, HttpServletRequest httpRequest) {
+    }
+
+    /** delete an existing purification
+     *
+     * @param editBean
+     * @param httpRequest
+     * @return
+     */
+    public List<String> delete(SimpleSynthesisPurificationBean editBean, HttpServletRequest httpRequest){
+        //TODO write
+        return null;
+    }
+
+    /**
+     * Add a new purity to an existing purification
+     * @param editBean
+     * @param httpRequest
+     * @return
+     */
+    public List<String> createPurity(SimpleSynthesisPurificationBean editBean, HttpServletRequest httpRequest){
+        //TODO write
+        return null;
+    }
+
+    /**
+     * Delete and existing purity from a purification
+     * @param editBean
+     * @param httpRequest
+     * @return
+     */
+    public List<String> deletePurity(SimpleSynthesisPurificationBean editBean, HttpServletRequest httpRequest){
+        //TODO write
+        return null;
+    }
+
+    /**
+     * add or edit a file on and existing purification
+     * @param editBean
+     * @param httpRequest
+     * @return
+     */
+    public List<String> saveFile(SimpleSynthesisPurificationBean editBean, HttpServletRequest httpRequest){
+        //TODO write
+        return null;
+    }
+
+    /**
+     * Delete a file from an existing purification
+     *
+     * @param editBean
+     * @param httpRequest
+     * @return
+     */
+    public List<String> deleteFile(SimpleSynthesisPurificationBean editBean, HttpServletRequest httpRequest){
+        //TODO write
+        return null;
+    }
+
+    public void setupView(){
+        //TODO write
+    }
+
+    /**
+     * Add or edit a technique and instrument to a purification
+     * @param editBean
+     * @param httpRequest
+     * @return
+     */
+    public List<String> saveExperiment(SimpleSynthesisPurificationBean editBean, HttpServletRequest httpRequest){
+        //TODO write
+        return null;
+    }
+
+    /**
+     * Remove a technique and instrument from a purification
+     *
+     * @param editBean
+     * @param httpRequest
+     * @return
+     */
+    public List<String> deleteExperiment(SimpleSynthesisPurificationBean editBean, HttpServletRequest httpRequest){
+        //TODO write
+        return null;
+    }
+
+    /**
+     *
+     * @param synBean
+     * @param httpRequest
+     */
     private void checkOpenForms(SynthesisPurificationBean synBean, HttpServletRequest httpRequest) {
-    }
-
-    private void create(){
         //TODO write
     }
 
-    private void delete(){
+    /**
+     *
+     * @param httpRequest
+     * @param synthesisPurificationBean
+     * @return
+     */
+    private List<String> validatePurification(HttpServletRequest httpRequest, SynthesisPurificationBean synthesisPurificationBean){
         //TODO write
+        return null;
     }
 
-    private void createPurity(){
-        //TODO write
-    }
-
-    private void deletePurity(){
-        //TODO write
-    }
-
-    private void saveFile(){
-        //TODO write
-    }
-
-    private void deleteFile(){
-        //TODO write
-    }
-
-    private void setupView(){
-        //TODO write
-    }
-
-    private void saveExperiment(){
-        //TODO write
-    }
-
-    private void deleteExperiment(){
-        //TODO write
-    }
-
-    PurityBean transferSimplePurity(SimplePurityBean simplePurityBean, PurityBean purityBean){
+    /**
+     * Transfer from SimplePurityBean to PurityBean
+     * @param simplePurityBean
+     * @param httpRequest
+     * @return
+     */
+    private PurityBean transferSimplePurity(SimplePurityBean simplePurityBean, HttpServletRequest httpRequest){
         //TODO write all the transfer stuff
-        return purityBean;
+        PurityBean purityBean = new PurityBean();
+        Purity purity = new Purity();
+
+        //id
+        if((simplePurityBean.getId()!=null)&&(simplePurityBean.getId()>0)){
+            purity.setId(simplePurityBean.getId());
+            purity.setCreatedBy(simplePurityBean.getCreatedBy());
+            purity.setCreatedDate(simplePurityBean.getCreatedDate());
+        }else {
+            purity.setCreatedBy(simplePurityBean.getCreatedBy());
+            purity.setCreatedDate(simplePurityBean.getCreatedDate());
+        }
+
+        //Columns
+        purityBean.setColumnHeaders(simplePurityBean.getColumnHeaders());
+
+
+        //Column type (datum or condition)
+        //column name
+        //condition column properties
+        //value type
+        //value unit
+        //value
+
+        //File being edited (if any)
+        //Files
+        return null;
     }
 
-    private void validateCharacterization(){
-        //TODO write
+    /**
+     * Transfer from SimpleSynthesisPurificationBean to SynthesisPurificationBean
+     * @param simpleSynthesisPurificationBean
+     * @param httpRequest
+     * @return
+     */
+    private SynthesisPurificationBean transferSimplePurification(SimpleSynthesisPurificationBean simpleSynthesisPurificationBean, HttpServletRequest httpRequest){
+        //TODO write;
+        //id
+
+        //Name
+        //Protocol Name
+        //source and date
+        //design and methods description
+        //Technique and instrument
+        //yield
+        //Analysis and conclusions
+        //Purity
+
+        return null;
     }
+
 }
