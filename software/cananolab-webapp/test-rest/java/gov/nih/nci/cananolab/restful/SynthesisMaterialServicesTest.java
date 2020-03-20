@@ -247,7 +247,15 @@ private static RequestSpecification specification;
         }
     }
 
+    @Test
+    public void testCreateMaterial(){
+        //TODO write
+    }
 
+    @Test
+    public void testCreateMaterialAndSynthesis(){
+        //TODO write
+    }
 
     @Test
     public void testSubmit() {

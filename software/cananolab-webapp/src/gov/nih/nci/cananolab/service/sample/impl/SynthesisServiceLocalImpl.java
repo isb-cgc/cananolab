@@ -328,7 +328,7 @@ public class SynthesisServiceLocalImpl extends BaseServiceLocalImpl implements S
             List<SmeInherentFunction> functionList = synthesisHelper.findSmeFunctionByElementId(sampleId, element.getId(),"SynthesisMaterialElement");
             element.setSmeInherentFunctions(new HashSet<SmeInherentFunction>(functionList));
             element.getSmeInherentFunctions().remove(function);
-            appService.saveOrUpdate(element);
+            appService.delete(function);
 
         }catch (Exception e){
             String err = "Error deleting SME Inherent Function " + element.getId();
