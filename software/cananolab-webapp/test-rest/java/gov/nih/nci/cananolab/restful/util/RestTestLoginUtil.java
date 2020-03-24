@@ -72,6 +72,11 @@ public class RestTestLoginUtil {
 		return jsessionId;
 	}
 
+	public static void testLogout(){
+		Response response = given().contentType("application/x-www-form-urlencoded").when().post(RestTestLoginUtil.readTestUrlProperty() +  "caNanoLab/logout");
+
+	}
+
 	public static void appServiceLogin(){
 //		$http({method: 'POST', url: 'login', headers: {'Content-Type': 'application/x-www-form-urlencoded'},
 //		transformRequest: function(obj) {

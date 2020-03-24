@@ -50,8 +50,8 @@ public class SynthesisMaterialBean extends BaseSynthesisEntityBean {
         }
         this.setType("Synthesis");
         this.setDescription(material.getDescription());
-        if(material.getFiles()!=null && material.getFiles().size()>0){
-            for(File file:material.getFiles()){
+        if(material.getFileCollection()!=null && material.getFileCollection().size()>0){
+            for(File file:material.getFileCollection()){
                 files.add(new FileBean(file));
             }
         }
@@ -118,12 +118,12 @@ public class SynthesisMaterialBean extends BaseSynthesisEntityBean {
                 }
             }
         }
-        Collection<File> oldFiles = synthesisMaterialCopy.getFiles();
+        Collection<File> oldFiles = synthesisMaterialCopy.getFileCollection();
         if (oldFiles == null || oldFiles.isEmpty()) {
-            synthesisMaterialCopy.setFiles(null);
+            synthesisMaterialCopy.setFileCollection(null);
         } else {
-            synthesisMaterialCopy.setFiles(new HashSet<File>(oldFiles));
-            for (File file : synthesisMaterialCopy.getFiles()) {
+            synthesisMaterialCopy.setFileCollection(new HashSet<File>(oldFiles));
+            for (File file : synthesisMaterialCopy.getFileCollection()) {
                 FileBean fileBean = new FileBean(file);
                 fileBean.resetDomainCopy(createdBy, file);
             }
@@ -193,16 +193,16 @@ public class SynthesisMaterialBean extends BaseSynthesisEntityBean {
         } else {
             domainEntity.setProtocol(null);
         }
-        domainEntity.getFiles();
+        domainEntity.getFileCollection();
         if (files.isEmpty()) {
-            domainEntity.setFiles(null);
-        } else if (domainEntity.getFiles() != null) {
-            domainEntity.getFiles().clear();
+            domainEntity.setFileCollection(null);
+        } else if (domainEntity.getFileCollection() != null) {
+            domainEntity.getFileCollection().clear();
         } else {
-            domainEntity.setFiles(new HashSet<File>());
+            domainEntity.setFileCollection(new HashSet<File>());
         }
         for (FileBean file : files) {
-            domainEntity.getFiles().add(file.getDomainFile());
+            domainEntity.getFileCollection().add(file.getDomainFile());
         }
         domainEntity.setDescription(description);
     }

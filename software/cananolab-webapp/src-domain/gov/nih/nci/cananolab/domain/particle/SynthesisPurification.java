@@ -14,6 +14,7 @@ import java.util.Set;
 public class SynthesisPurification implements java.io.Serializable {
 
 	private Long id;
+	private Long synthesisId;
 	private Protocol protocol;
 	private String type;
 	private String methodName;
@@ -28,18 +29,20 @@ public class SynthesisPurification implements java.io.Serializable {
 	public SynthesisPurification() {
 	}
 
-	public SynthesisPurification(Long id, Protocol protocol,
+	public SynthesisPurification(Long id, Long synthesisId, Protocol protocol,
 								 String createdBy, Date createdDate) {
 		this.id = id;
+		this.synthesisId = synthesisId;
 		this.protocol = protocol;
 		this.createdBy = createdBy;
 		this.createdDate = createdDate;
 	}
 
-	public SynthesisPurification(Long id, Protocol protocol,
+	public SynthesisPurification(Long id, Long synthesisId, Protocol protocol,
 								 String type, String methodName, String designMethodDescription, String createdBy,
 								 Date createdDate, Set<SynthesisPurity> purities, Set<PurificationConfig> purificationConfigs, Float yield, String analysis) {
 		this.id = id;
+		this.synthesisId = synthesisId;
 		this.protocol = protocol;
 		this.type = type;
 		this.methodName = methodName;
@@ -58,6 +61,14 @@ public class SynthesisPurification implements java.io.Serializable {
 
 	public void setId(Long synthesisFuncPurificationPkId) {
 		this.id = synthesisFuncPurificationPkId;
+	}
+
+	public Long getSynthesisId() {
+		return this.synthesisId;
+	}
+
+	public void setSynthesisId(Long synthesisId) {
+		this.synthesisId = synthesisId;
 	}
 
 	public Protocol getProtocol() {

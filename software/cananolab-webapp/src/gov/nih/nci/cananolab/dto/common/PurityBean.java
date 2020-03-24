@@ -27,9 +27,9 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * View bean for Datum and PurityDatum
+ * View bean for PurityDatum
  *
- * @author pansu, tanq
+ *
  */
 public class PurityBean
 {

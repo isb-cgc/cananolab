@@ -1,12 +1,11 @@
 package gov.nih.nci.cananolab.restful.synthesis;
 
 import gov.nih.nci.cananolab.domain.characterization.physical.Purity;
-import gov.nih.nci.cananolab.domain.common.File;
 import gov.nih.nci.cananolab.dto.common.PurityBean;
 import gov.nih.nci.cananolab.dto.particle.synthesis.SynthesisPurificationBean;
 import gov.nih.nci.cananolab.restful.core.BaseAnnotationBO;
 import gov.nih.nci.cananolab.restful.sample.InitSampleSetup;
-import gov.nih.nci.cananolab.restful.sample.InitSynthesisSetup;
+import gov.nih.nci.cananolab.restful.util.SynthesisUtil;
 import gov.nih.nci.cananolab.restful.view.edit.SimplePurityBean;
 import gov.nih.nci.cananolab.restful.view.edit.SimpleSynthesisPurificationBean;
 import gov.nih.nci.cananolab.security.service.SpringSecurityAclService;
@@ -14,6 +13,7 @@ import gov.nih.nci.cananolab.service.curation.CurationService;
 import gov.nih.nci.cananolab.service.sample.SampleService;
 import gov.nih.nci.cananolab.service.sample.SynthesisService;
 import gov.nih.nci.cananolab.ui.form.SynthesisForm;
+import gov.nih.nci.cananolab.util.StringUtils;
 import java.util.ArrayList;
 import java.util.IllegalFormatConversionException;
 import java.util.List;
@@ -87,7 +87,8 @@ public class SynthesisPurificationBO extends BaseAnnotationBO {
         this.setLookups(httpRequest, synthesisPurificationBean);
         this.checkOpenForms(synthesisPurificationBean, httpRequest);
         //TODO write
-        return null;
+        return SynthesisUtil.reformatLocalSearchDropdownsInSessionForSynthesisPurification(httpRequest.getSession());
+
     }
 
     /**
@@ -99,7 +100,7 @@ public class SynthesisPurificationBO extends BaseAnnotationBO {
      */
     private void setLookups(HttpServletRequest httpRequest, SynthesisPurificationBean elementBean) throws Exception {
         ServletContext appContext = httpRequest.getSession().getServletContext();
-        InitSynthesisSetup.getInstance().setSynthesisPurificationDropdowns(httpRequest, elementBean);
+        InitSynthesisSetup.getInstance().setSynthesisPurificationDropdowns(httpRequest);
     }
 
     /**
