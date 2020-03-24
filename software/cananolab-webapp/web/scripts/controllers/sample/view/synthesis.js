@@ -79,4 +79,7 @@ app.controller('SynthesisCtrl', function (sampleService,utilsService,navigationS
         // $scope.synthesisEmpty = utilsService.isHashEmpty(data.synthesisentity);
     });
 
+    $scope.editSynthesisMaterials = function() {
+        
+    }
 });

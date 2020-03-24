@@ -191,7 +191,7 @@ app.config(function ($routeProvider, $httpProvider) {
        })   
        .when('/editSynthesisMaterials', {
         templateUrl: 'views/sample/edit/synthesis/editSynthesisMaterials.html',
-        controller: 'EditSynthesisMaterialsCtrl'
+         controller: 'EditSynthesisMaterialsCtrl'
        })   
        .when('/editSynthesisFunctionalization', {
         templateUrl: 'views/sample/edit/synthesis/editSynthesisFunctionalization.html',
