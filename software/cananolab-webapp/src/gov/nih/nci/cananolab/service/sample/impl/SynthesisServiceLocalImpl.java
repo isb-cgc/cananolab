@@ -8,15 +8,19 @@ import gov.nih.nci.cananolab.domain.particle.SynthesisFunctionalization;
 import gov.nih.nci.cananolab.domain.particle.SynthesisMaterial;
 import gov.nih.nci.cananolab.domain.particle.SynthesisMaterialElement;
 import gov.nih.nci.cananolab.domain.particle.SynthesisPurification;
+import gov.nih.nci.cananolab.domain.particle.SynthesisPurity;
 import gov.nih.nci.cananolab.dto.common.FileBean;
+import gov.nih.nci.cananolab.dto.common.PurityBean;
 import gov.nih.nci.cananolab.dto.particle.SampleBean;
 import gov.nih.nci.cananolab.dto.particle.synthesis.SynthesisBean;
 import gov.nih.nci.cananolab.dto.particle.synthesis.SynthesisFunctionalizationBean;
 import gov.nih.nci.cananolab.dto.particle.synthesis.SynthesisMaterialBean;
 import gov.nih.nci.cananolab.dto.particle.synthesis.SynthesisMaterialElementBean;
 import gov.nih.nci.cananolab.dto.particle.synthesis.SynthesisPurificationBean;
+
 import gov.nih.nci.cananolab.exception.CompositionException;
 import gov.nih.nci.cananolab.exception.NoAccessException;
+import gov.nih.nci.cananolab.exception.PointOfContactException;
 import gov.nih.nci.cananolab.exception.SampleException;
 import gov.nih.nci.cananolab.exception.SynthesisException;
 import gov.nih.nci.cananolab.security.enums.SecureClassesEnum;
@@ -28,8 +32,13 @@ import gov.nih.nci.cananolab.service.sample.helper.SynthesisHelper;
 import gov.nih.nci.cananolab.system.applicationservice.ApplicationException;
 import gov.nih.nci.cananolab.system.applicationservice.CaNanoLabApplicationService;
 import gov.nih.nci.cananolab.system.applicationservice.client.ApplicationServiceProvider;
+import gov.nih.nci.cananolab.system.query.hibernate.HQLCriteria;
+import gov.nih.nci.cananolab.util.Comparators;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
+import java.util.SortedSet;
+import java.util.TreeSet;
 import net.sf.ehcache.management.sampled.SampledEhcacheMBeans;
 import net.sf.ehcache.management.sampled.SampledMBeanRegistrationProvider;
 import org.apache.log4j.Logger;
@@ -37,6 +46,7 @@ import org.bouncycastle.util.test.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.method.P;
 import org.springframework.stereotype.Component;
+import sun.tools.jconsole.inspector.XObject;
 import sun.tools.tree.ThisExpression;
 
 @Component("synthesisService")
@@ -272,8 +282,8 @@ public class SynthesisServiceLocalImpl extends BaseServiceLocalImpl implements S
         }
         try {
             //Delete attached files
-            if(synthesisMaterial.getFiles()!= null){
-                for(File file:synthesisMaterial.getFiles()){
+            if(synthesisMaterial.getFileCollection()!= null){
+                for(File file:synthesisMaterial.getFileCollection()){
                     deleteSynthesisMaterialFile(synthesisMaterial,file);
                 }
             }
@@ -361,8 +371,8 @@ public class SynthesisServiceLocalImpl extends BaseServiceLocalImpl implements S
                     .getApplicationService();
 //            // load files first
             List<File> fileList = synthesisHelper.findFilesByMaterialId(synthesisMaterial.getSynthesis().getSample().getId(),synthesisMaterial.getId(),"SynthesisMaterial");
-            synthesisMaterial.setFiles(new HashSet<File>(fileList));
-            synthesisMaterial.getFiles().remove(file);
+            synthesisMaterial.setFileCollection(new HashSet<File>(fileList));
+            synthesisMaterial.getFileCollection().remove(file);
             appService.saveOrUpdate(synthesisMaterial);
 
 
@@ -408,6 +418,7 @@ public class SynthesisServiceLocalImpl extends BaseServiceLocalImpl implements S
 
 
     public void saveSynthesisMaterial(SampleBean sampleBean, SynthesisMaterialBean synthesisMaterialBean) throws SynthesisException, NoAccessException {
+        //TODO reduce dependence on synthesis opbject, rely on synthesisId instead
         if (SpringSecurityUtil.getPrincipal() == null) {
             throw new NoAccessException();
         }
@@ -443,7 +454,7 @@ public class SynthesisServiceLocalImpl extends BaseServiceLocalImpl implements S
             } else {
                 synthesis = sample.getSynthesis();
             }
-
+            synthesisMaterial.setSynthesis(synthesis);
             if(!newEntity){
                 //Get the material by id from database
                 Long test1 = synthesisMaterial.getSynthesis().getId();
@@ -457,7 +468,7 @@ public class SynthesisServiceLocalImpl extends BaseServiceLocalImpl implements S
                 //We'll be adding or updating the material in Synthesis
 
                     //add material to synthesis
-                    synthesisMaterial.setSynthesis(synthesis);
+
                     for(FileBean fileBean:synthesisMaterialBean.getFiles()){
                         fileUtils.prepareSaveFile(fileBean.getDomainFile());
                     }
@@ -482,7 +493,7 @@ public class SynthesisServiceLocalImpl extends BaseServiceLocalImpl implements S
     }
 
     public void saveSynthesisMaterialElement(SynthesisMaterial material, SynthesisMaterialElementBean synthesisMaterialElementBean) throws SynthesisException {
-        //TODO write
+//TODO reduce dependence on synthesisMaterial opbject, rely on synthesisMaterialId instead
         try {
             CaNanoLabApplicationService appService = (CaNanoLabApplicationService) ApplicationServiceProvider
                     .getApplicationService();
@@ -500,8 +511,6 @@ public class SynthesisServiceLocalImpl extends BaseServiceLocalImpl implements S
                     //something has gone wrong and the material does not attach to the correct synthesis
                     throw new SynthesisException("element does not match material", new Exception());
                 }
-
-
 
             try {
                 appService
@@ -537,6 +546,118 @@ public class SynthesisServiceLocalImpl extends BaseServiceLocalImpl implements S
 
     public void saveSynthesisPurification(SampleBean sampleBean, SynthesisPurificationBean synthesisPurificationBean) throws SynthesisException, NoAccessException {
 //TODO write
+        try{
+            CaNanoLabApplicationService appService = (CaNanoLabApplicationService) ApplicationServiceProvider
+                    .getApplicationService();
+            SynthesisPurification synthesisPurification = synthesisPurificationBean.getDomainEntity();
+            Boolean newEntity=true;
+            Boolean newSynthesis= true;
+            if(synthesisPurification.getId()!=null){
+                newEntity=false;
+            }
+            Sample sample = sampleBean.getDomain();
+            if (!springSecurityAclService.currentUserHasWritePermission(sample.getId(),
+                    SecureClassesEnum.SAMPLE.getClazz())) {
+                throw new NoAccessException();
+            }
+            try {
+                appService
+                        .load(SynthesisPurification.class, synthesisPurificationBean.getDomainEntity().getId());
+            }catch (Exception e) {
+                String err = "Object doesn't exist in the database anymore.  Please log in again.";
+                logger.error(err);
+                throw new SynthesisException(err, e);
+            }
+
+            Synthesis synthesis;
+            if(sample.getSynthesis()==null){
+                //This is a new synthesis.  We need to create it, as well as the material
+                synthesis = createSynthesis(sampleBean);
+            } else {
+                synthesis = sample.getSynthesis();
+            }
+
+            if(!newEntity){
+                //Get the material by id from database
+                Long test1 = synthesisPurification.getId();
+                Long test2 = synthesis.getId();
+                if(!synthesisPurification.getSynthesisId().equals(synthesis.getId())){
+                    //something has gone wrong and the material does not attach to the correct synthesis
+                    throw new SynthesisException("material does not match synthesis", new Exception());
+                }
+
+            } else {
+                synthesisPurification.setSynthesisId(synthesis.getId());
+            }
+
+            for(FileBean fileBean:synthesisPurificationBean.getFiles()){
+                fileUtils.prepareSaveFile(fileBean.getDomainFile());
+            }
+
+            for(PurityBean synthesisPurityBean: synthesisPurificationBean.getPurityBeans()){
+                this.saveSynthesisPurity(synthesisPurityBean,synthesisPurificationBean);
+            }
+
+            appService.saveOrUpdate(synthesisPurification);
+
+            for (FileBean fileBean : synthesisPurificationBean.getFiles()) {
+                fileUtils.writeFile(fileBean);
+            }
+
+        } catch(ApplicationException e){
+            logger.error("Problem saving synthesis purification ", e);
+            throw new SynthesisException("Error in saving synthesis purification ", e );
+        }
+        catch (Exception e) {
+            logger.error("Problem saving synthesis purification ", e);
+            throw new SynthesisException("Error in saving synthesis purification ",e );
+        }
+    }
+
+    public void saveSynthesisPurity(PurityBean synthesisPurityBean, SynthesisPurificationBean synthesisPurificationBean) throws SynthesisException {
+
+        try {
+            CaNanoLabApplicationService appService = (CaNanoLabApplicationService) ApplicationServiceProvider
+                    .getApplicationService();
+            SynthesisPurity synthesisPurity = synthesisPurityBean.getDomain();
+            Boolean newEntity=true;
+            if(synthesisPurity.getId()!=null){
+                newEntity=false;
+            }
+
+            if(!newEntity){
+                //Get the material by id from database
+                Long test1 = synthesisPurity.getSynthesisPurificationId();
+                Long test2 = synthesisPurificationBean.getDomainEntity().getId();
+                if(!test1.equals(test2)){
+                    //something has gone wrong and the material does not attach to the correct synthesis
+                    throw new SynthesisException("element does not match material", new Exception());
+                }
+
+                try {
+                    appService
+                            .load(SynthesisMaterialElement.class, synthesisPurificationBean.getDomainEntity().getId());
+                }catch (Exception e) {
+                    String err = "Object doesn't exist in the database anymore.  Please log in again.";
+                    logger.error(err);
+                    throw new SynthesisException(err, e);
+                }}
+
+            for(FileBean fileBean:synthesisPurityBean.getFiles()){
+                fileUtils.prepareSaveFile(fileBean.getDomainFile());
+            }
+            //TODO what will this do if there is no change
+            appService.saveOrUpdate(synthesisPurity);
+
+            for (FileBean fileBean : synthesisPurityBean.getFiles()) {
+                fileUtils.writeFile(fileBean);
+            }
+        }
+        catch (Exception e) {
+            String err = "Problem saving Synthesis Material Element ";
+            logger.error(err, e);
+            throw new SynthesisException(err, e);
+        }
     }
 
     private Synthesis createSynthesis(SampleBean sampleBean) throws SynthesisException, NoAccessException {
@@ -564,6 +685,39 @@ public class SynthesisServiceLocalImpl extends BaseServiceLocalImpl implements S
         catch (Exception e) {
             logger.error("Error in saving the synthesis. ", e);
             throw new SynthesisException("Error in saving the synthesis. ", e);
+        }
+    }
+
+    public int getNumberOfSuppliers() throws Exception {
+        CaNanoLabApplicationService appService = (CaNanoLabApplicationService) ApplicationServiceProvider.getApplicationService();
+        HQLCriteria crit = new HQLCriteria("select id from gov.nih.nci.cananolab.domain.common.Supplier");
+        List results = appService.query(crit);
+        int cnt = 0;
+        for (int i = 0; i< results.size();i++){
+            cnt++;
+        }
+        return cnt;
+    }
+
+
+    public SortedSet<String> getSupplierNames() throws Exception
+    {
+        try {
+            SortedSet<String> names = new TreeSet<String>(new Comparators.SortableNameComparator());
+            CaNanoLabApplicationService appService = (CaNanoLabApplicationService) ApplicationServiceProvider.getApplicationService();
+            HQLCriteria crit = new HQLCriteria("select org.name from gov.nih.nci.cananolab.domain.common.Organization org");
+            List results = appService.query(crit);
+
+            logger.debug("Completed select org.name from gov.nih.nci.cananolab.domain.common.Organization org");
+            for (int i = 0; i < results.size(); i++){
+                String name = ((String) results.get(i)).trim();
+                names.add(name);
+            }
+            return names;
+        } catch (Exception e) {
+            String err = "Error finding suppliers for " + SpringSecurityUtil.getLoggedInUserName();
+            logger.error(err, e);
+            throw new SynthesisException(err, e);
         }
     }
 

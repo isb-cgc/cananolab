@@ -1403,6 +1403,7 @@ VALUES (1, 'asymmetrical flow field-flow fractionation with multi-angle laser li
        (1091, 'functionalization', 'type', 'antibody'),
        (1092, 'functionalization', 'type', 'biopolymer'),
        (1093, 'functionalization', 'type', 'small molecule'),
+       (1094, 'synthesis', 'otherMaterialType', 'reagent'),
        (13959168, 'technique', 'otherType', 'gel electrophoresis'),
        (13959169, 'gel electrophoresis', 'otherInstrument', 'fluorescence excitation device'),
        (13959170, 'gel electrophoresis', 'otherInstrument', 'cooled digital camera'),

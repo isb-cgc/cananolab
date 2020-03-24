@@ -407,6 +407,14 @@ public class ProtocolServiceLocalImpl extends BaseServiceLocalImpl implements Pr
 		return protocols;
 	}
 
+	public List<ProtocolBean> getSynthesisProtocols(HttpServletRequest request) throws Exception {
+		String protocolType = "synthesis";
+
+		List<ProtocolBean> protocols = findProtocolsBy(protocolType, null, null, null);
+		request.getSession().setAttribute("synthesisProtocols", protocols);
+		return protocols;
+	}
+
 	@Override
 	public ProtocolServiceHelper getHelper() {
 		return protocolServiceHelper;

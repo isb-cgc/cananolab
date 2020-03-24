@@ -22,7 +22,6 @@ import gov.nih.nci.cananolab.dto.particle.synthesis.SynthesisFunctionalizationEl
 import gov.nih.nci.cananolab.dto.particle.synthesis.SynthesisMaterialBean;
 import gov.nih.nci.cananolab.dto.particle.synthesis.SynthesisMaterialElementBean;
 import gov.nih.nci.cananolab.dto.particle.synthesis.SynthesisPurificationBean;
-import gov.nih.nci.cananolab.dto.particle.synthesis.SynthesisPurityBean;
 import gov.nih.nci.cananolab.restful.view.edit.SimpleTechniqueAndInstrument;
 import java.util.ArrayList;
 import java.util.HashMap;

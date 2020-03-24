@@ -86,7 +86,7 @@ public class CharacterizationBO extends BaseAnnotationBO {
 
 	/**
 	 * Add or update a characterization to database
-	 * 
+	 * protocolService.getProtocolsByChar(request, "synthesis")
 	 * Upon success, go back to characterizaiton summary edit page
 	 * 
 	 * @param request

@@ -17,6 +17,7 @@ public class SynthesisMaterial implements Serializable {
 	private Long synthesisMaterialsPkId;
 	private Protocol protocol;
 	private Synthesis synthesis;
+	private Long synthesisId;
 	private String description;
 	private Date createdDate;
 	private String createdBy;
@@ -31,30 +32,20 @@ public class SynthesisMaterial implements Serializable {
 		this.fileCollection = fileCollection;
 	}
 
-	private Long synthesisId;
-
     public void addSynthesisMaterialElement(SynthesisMaterialElement domainEntity) {
     	synthesisMaterialElements.add(domainEntity);
-    }
-
-    public Set<File> getFiles() {
-        return fileCollection;
-    }
-
-    public void setFiles(Set<File> fileCollection) {
-        this.fileCollection = fileCollection;
     }
 
     public SynthesisMaterial() {
 	}
 
-	public SynthesisMaterial(Long synthesisMaterialsPkId, Synthesis synthesis, Date createdDate, String createdBy) {
-		this.synthesisMaterialsPkId = synthesisMaterialsPkId;
-		this.synthesis = synthesis;
-		this.createdDate = createdDate;
-		this.createdBy = createdBy;
-		synthesisId = synthesis.getId();
-	}
+//	public SynthesisMaterial(Long synthesisMaterialsPkId, Synthesis synthesis, Date createdDate, String createdBy) {
+//		this.synthesisMaterialsPkId = synthesisMaterialsPkId;
+//		this.synthesis = synthesis;
+//		this.createdDate = createdDate;
+//		this.createdBy = createdBy;
+//		synthesisId = synthesis.getId();
+//	}
 
 	public SynthesisMaterial(Long synthesisMaterialsPkId, Long synthesisId, Date createdDate, String createdBy) {
 		this.synthesisMaterialsPkId = synthesisMaterialsPkId;
@@ -63,19 +54,19 @@ public class SynthesisMaterial implements Serializable {
 		this.createdBy = createdBy;
 	}
 
-	public SynthesisMaterial(Long synthesisMaterialsPkId, Protocol protocol, Synthesis synthesis, String description,
-							 Date createdDate, String createdBy, Set<SynthesisMaterialElement> synthesisMaterialElements, Set<File> fileCollection) {
-		this.synthesisMaterialsPkId = synthesisMaterialsPkId;
-		this.protocol = protocol;
-		this.synthesis = synthesis;
-		this.description = description;
-		this.createdDate = createdDate;
-		this.createdBy = createdBy;
-		this.synthesisMaterialElements = synthesisMaterialElements;
-		this.fileCollection=fileCollection;
-
-		synthesisId = synthesis.getId();
-	}
+//	public SynthesisMaterial(Long synthesisMaterialsPkId, Protocol protocol, Synthesis synthesis, String description,
+//							 Date createdDate, String createdBy, Set<SynthesisMaterialElement> synthesisMaterialElements, Set<File> fileCollection) {
+//		this.synthesisMaterialsPkId = synthesisMaterialsPkId;
+//		this.protocol = protocol;
+//		this.synthesis = synthesis;
+//		this.description = description;
+//		this.createdDate = createdDate;
+//		this.createdBy = createdBy;
+//		this.synthesisMaterialElements = synthesisMaterialElements;
+//		this.fileCollection=fileCollection;
+//
+//		synthesisId = synthesis.getId();
+//	}
 
 	public SynthesisMaterial(Long synthesisMaterialsPkId, Protocol protocol, Long synthesisId, String description,
 							 Date createdDate, String createdBy, Set<SynthesisMaterialElement> synthesisMaterialElements, Set<File> fileCollection) {

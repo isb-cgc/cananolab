@@ -81,11 +81,20 @@ public class BaseSynthesisEntityBean {
         this.files = files;
     }
 
-    public FileBean getFile(String fileId){
-//        Set<File> files = domainEntity.getFiles();
-        for(FileBean file:files){
-            if (fileId.equals(file.getDomainFile().getId().toString())){
-                return file;
+//    public FileBean getFile(String fileId){
+////        Set<File> files = domainEntity.getFiles();
+//        for(FileBean file:files){
+//            if (fileId.equals(file.getDomainFile().getId().toString())){
+//                return file;
+//            }
+//        }
+//        return null;
+//    }
+
+    public FileBean getFile(Long fileId){
+        for(FileBean fileBean:files){
+            if(fileId.equals(fileBean.getDomainFile().getId())){
+                return fileBean;
             }
         }
         return null;

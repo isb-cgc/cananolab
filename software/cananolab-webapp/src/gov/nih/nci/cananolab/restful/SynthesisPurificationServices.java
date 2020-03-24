@@ -28,8 +28,6 @@ import org.apache.log4j.Logger;
 
 @Path("/synthesisPurification")
 public class SynthesisPurificationServices {
-    private static final Logger logger = Logger.getLogger(SynthesisPurificationServices.class);
-
 
     /**
      *
@@ -42,8 +40,6 @@ public class SynthesisPurificationServices {
     @Produces("application/json")
     public Response setup(@Context HttpServletRequest httpRequest, @DefaultValue("") @QueryParam("sampleId") String sampleId)
     {
-        if (!SpringSecurityUtil.isUserLoggedIn())
-            return Response.status(Response.Status.UNAUTHORIZED).entity(Constants.MSG_SESSION_INVALID).build();
         try{
             SynthesisPurificationBO synthesisPurificationBO = (SynthesisPurificationBO) SpringApplicationContext.getBean(httpRequest, "synthesisPurificationBO");
             Map<String, Object> dropdownMap = synthesisPurificationBO.setupNew(sampleId, httpRequest);
@@ -58,19 +54,19 @@ public class SynthesisPurificationServices {
      *
      * @param httpRequest
      * @param sampleId
-     * @param dataId - id of purification element to be edited
+     * @param purificationId - id of purification element to be edited
      * @return SimpleSynthesisPurificationBean
      */
     @GET
     @Path("/setupEdit")
     @Produces ("application/json")
-    public Response setupEdit(@Context HttpServletRequest httpRequest, @DefaultValue("") @QueryParam("sampleId") String sampleId, @DefaultValue("") @QueryParam("dataId") String dataId) {
+    public Response setupEdit(@Context HttpServletRequest httpRequest, @DefaultValue("") @QueryParam("sampleId") String sampleId, @DefaultValue("") @QueryParam("purificationId") String purificationId) {
         if (!SpringSecurityUtil.isUserLoggedIn())
             return Response.status(Response.Status.UNAUTHORIZED)
                     .entity("Session expired").build();
         try{
             SynthesisPurificationBO synthesisPurificationBO = (SynthesisPurificationBO) SpringApplicationContext.getBean(httpRequest, "synthesisPurificationBO");
-            SimpleSynthesisPurificationBean synthesisPurificationBean = synthesisPurificationBO.setupUpdate(sampleId, dataId, httpRequest);
+            SimpleSynthesisPurificationBean synthesisPurificationBean = synthesisPurificationBO.setupUpdate(sampleId, purificationId, httpRequest);
             List<String> errors = synthesisPurificationBean.getErrors();
             return (errors == null || errors.size() == 0) ?
                     Response.ok(synthesisPurificationBean).build() :
@@ -92,11 +88,11 @@ public class SynthesisPurificationServices {
     @Produces ("application/json")
     public Response getAssayTypes(@Context HttpServletRequest httpRequest,@DefaultValue("") @QueryParam("purfName") String purfName){
         //TODO write
-        logger.debug("In getAssayNames");
+
         try{
             SynthesisManager synthesisMgr = (SynthesisManager) SpringApplicationContext.getBean(httpRequest, "synthesisManager");
             List<String> assayTypes = synthesisMgr.getAssayTypes(httpRequest, purfName);
-            logger.debug("retrieved assayTypes");
+
             if(!assayTypes.contains("other")){
                 assayTypes.add("other");
             }
