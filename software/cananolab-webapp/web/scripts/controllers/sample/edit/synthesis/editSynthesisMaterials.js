@@ -6,7 +6,8 @@ var app = angular.module('angularApp')
   $scope.sampleName = '';
   $scope.sampleId = $location.search()['sampleId'];  
   $scope.synMaterialId = $location.search()['synMaterialId'];
-  $scope.showForm = false;
+  $scope.showMaterialElementForm = false;
+  $scope.showInherentFunctionForm = false;
   $scope.materialEditUrl = `/caNanoLab/rest/synthesisMaterial/edit?sampleId=${$scope.sampleId}&synMaterialId=${$scope.synMaterialId}`
   $scope.dropdowns = {};
 
@@ -14,6 +15,12 @@ var app = angular.module('angularApp')
   $scope.file = {}; // current file being edited //
   $scope.inherentFunction = {}; // current inherent function being edited //
 
+
+  $scope.openInherentFunction = function(id) {
+    if ($scope.showInherentFunctionForm == false) {
+      $scope.showInherentFunctionForm = true;
+    };
+  }
   // opens material edit form //
   $scope.openMaterialEditForm = function(id,type) {
     if (id) {
@@ -26,8 +33,8 @@ var app = angular.module('angularApp')
     else {
       console.log('this is an add. Create empty object')
     };
-    if ($scope.showForm==false) {
-      $scope.showForm = true;
+    if ($scope.showMaterialElementForm==false) {
+      $scope.showMaterialElementForm = true;
     };
   };
 
