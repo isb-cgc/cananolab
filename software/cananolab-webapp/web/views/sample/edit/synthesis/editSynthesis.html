@@ -1,47 +1,357 @@
-<div class="spacer">
-    <div ng-class="{formFocus:loader}">
-    <tabset justified="true">
-    <tab heading="All" ng-click="select(-1)"></tab>
-    <tab heading="Materials" ng-click="select(0)"></tab>
-    <tab heading="Functionalization" ng-click="select(1)"></tab>
-    <tab heading="Purification" ng-click="select(2)"></tab>
-</tabset>
-
-<table id="summarySection{{index}}" width="100%" align="center"
-       class="summaryViewNoGrid dataTable">
-       <tr>
-            <th align="left"  class="heading" style="padding: 0.5em;">
-                Materials
-                &nbsp;&nbsp; 
-                <a href="/caNanoLab/#/editSynthesisMaterials?sampleId={{sampleId.data}}&&type={{type}}&&sampleName={{sampleName.name}}" class="btn btn-primary btn-xs" style="color:white;text-decoration: none;">
-                    Add
-                </a>
-            </th>
+<div class="spacer" id="synthesis">
+    <table border="0" class="contentTitle" summary="layout" width="100%">
+        <tr>
+            <th align="left" scope="col">Sample {{sampleName.name}} Synthesis</th>
+            <td align="right" width="30%">
+                <a ng-disabled="loader" class="helpText" ng-click="print()" href="" target="_blank">Print</a>
+                <a ng-disabled="loader" class="helpText"
+                    ng-href="/caNanoLab/rest/composition/summaryExport?sampleId={{sampleId.data}}&type=all">Export</a>
+                <a class="helpText"
+                    href="javascript:openHelpWindow('https://wiki.nci.nih.gov/display/caNanoLab/Managing+Sample+Composition+Annotations#ManagingSampleCompositionAnnotations-Composition')">Help</a>
+                <a class="helpText"
+                    href="javascript:openHelpWindow('https://wiki.nci.nih.gov/display/caNanoLab/caNanoLab+Glossary')">Glossary</a>
+            </td>
         </tr>
+    </table>
+    <tabset justified="true">
+        <tab heading="All" ng-click="select(-1)"></tab>
+        <tab heading="Materials" ng-click="select(0)"></tab>
+        <tab heading="Functionalization" ng-click="select(1)"></tab>
+        <tab heading="Purification" ng-click="select(2)"></tab>
+    </tabset>
+    <!-- Materials -->
+    <table ng-hide="show0" class="summaryViewNoTop" width="100%" summary="layout">
         <tr>
-                <td class="break">&nbsp;</td>
-        </tr>         
+            <td class="heading">Materials</td>
+        </tr>
+        <tr ng-repeat="m in materials">
+            <td>
+                <table cellspacing="0" cellpadding="0" width="100%">
+                    <tr>
+                        <td class="subHeading">{{m.DisplayName}}</td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <table cellspacing="0" cellpadding="0" width="100%" class="topLevel">
+                                <tr>
+                                    <td colspan="2">
+                                        <div style="margin-left:auto; margin-right:auto;text-align:right;width:99%; margin-top: 10px;">
+                                            <a href="#/editSynthesisMaterials?sampleId=1000&synMaterialId={{m.dataId}}" class="btn btn-primary btn-xs" style="color:white;text-decoration: none;">
+                                                Edit
+                                            </a>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td width="10%" class="label">Description</td>
+                                    <td width="90%">{{getValueOfField(m.Description)}}</td>
+                                </tr>
+                                <tr>
+                                    <td width="10%" class="label">Protocol</td>
+                                    <td width="90%">{{m.Protocol}}</td>
+                                </tr>
+                                <tr ng-repeat="me in m.MaterialElements">
+                                    <td colspan="2" class="materials">
+                                        <table cellspacing="0" cellpadding="0">
+                                            <tr>
+                                                <td width="10%" class="label">Material Type</td>
+                                                <td width="90%">{{me.Type}}</td>
+                                            </tr>
+                                            <tr>
+                                                <td width="10%" class="label">Chemical Name</td>
+                                                <td width="90%">{{me.ChemicalName}}</td>
+                                            </tr>
+                                            <tr>
+                                                <td width="10%" class="label">PubChem Data Source</td>
+                                                <td width="90%">{{me.PubChemDataSourceName}}</td>
+                                            </tr>
+                                            <tr>
+                                                <td width="10%" class="label">Amount (and units)</td>
+                                                <td width="90%">{{me.Amount}} ({{me.ValueUnit}})</td>
+                                            </tr>
+                                            <tr>
+                                                <td width="10%" class="label">Molecular Formula</td>
+                                                <td width="90%">{{me.MolecularFormula}}</td>
+                                            </tr>
+                                            <tr>
+                                                <td width="10%" class="label">Material Description</td>
+                                                <td width="90%">{{me.Description}}</td>
+                                            </tr>
+                                            <tr>
+                                                <td width="10%" class="label">Supplier</td>
+                                                <td width="90%">{{getValueOfField(me.Supplier.supplierName)}}</td>
+                                            </tr>
+                                            <tr>
+                                                <td width="10%" class="label">Lot or Batch Number</td>
+                                                <td width="90%">{{getValueOfField(me.Supplier.lot)}}</td>
+                                            </tr>
+                                            <tr>
+                                                <td width="10%" class="label">Inherent Functions</td>
+                                                <td width="90%" class="inherentFunctions">
+                                                    <span ng-if="!me.InherentFunctions.length">N/A</span>
+                                                    <div ng-repeat="iFun in me.InherentFunctions"
+                                                        class="inherentFunctions">
+                                                        <table cellpadding="0" cellspacing="0">
+                                                            <tr>
+                                                                <td width="15%" class="label">Name</td>
+                                                                <td width="85%">{{iFun.FunctionDisplayName}}</td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td width="15%" class="label">Type</td>
+                                                                <td width="85%">{{iFun.FunctionType}}</td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td width="15%" class="label">Description</td>
+                                                                <td width="85%">{{iFun.FunctionDescription}}</td>
+                                                            </tr>
+                                                        </table>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </td>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+    </table>
+    <!-- End Materials -->
+
+    <!-- Functionalization -->
+    <table ng-hide="show1" class="summaryViewNoTop" width="100%" summary="layout">
         <tr>
-                <th align="left"  class="heading" style="padding: 0.5em;">
-                    Functionalization
-                    &nbsp;&nbsp; 
-                    <a href="/caNanoLab/#/editSynthesisFunctionalization?sampleId={{sampleId.data}}&&type={{type}}&&sampleName={{sampleName.name}}" class="btn btn-primary btn-xs" style="color:white;text-decoration: none;">
-                        Add
-                    </a>
-                </th>
-            </tr>
-            <tr>
-                    <td class="break">&nbsp;</td>
-            </tr> 
-            <tr>
-                    <th align="left"  class="heading" style="padding: 0.5em;">
-                        Purification
-                        &nbsp;&nbsp; 
-                        <a href="/caNanoLab/#/editSynthesisPurification?sampleId={{sampleId.data}}&&type={{type}}&&sampleName={{sampleName.name}}" class="btn btn-primary btn-xs" style="color:white;text-decoration: none;">
-                            Add
-                        </a>
-                    </th>
-                </tr>                    
-</table>
+            <td class="heading">Functionalization</td>
+        </tr>
+        <tr ng-repeat="f in functionalizations">
+            <td>
+                <table cellspacing="0" cellpadding="0" width="100%">
+                    <tr>
+                        <td class="subHeading">{{f.DisplayName}}</td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <table cellspacing="0" cellpadding="0" width="100%" class="topLevel">
+                                <tr>
+                                    <td colspan="2">
+                                        <div style="margin-left:auto; margin-right:auto;text-align:right;width:99%; margin-top: 10px;">
+                                            <a href="" class="btn btn-primary btn-xs" style="color:white;text-decoration: none;">
+                                                Edit
+                                            </a>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td width="10%" class="label">Description</td>
+                                    <td width="90%">{{f.Description}}</td>
+                                </tr>
+                                <tr>
+                                    <td width="10%" class="label">Source</td>
+                                    <td width="90%">{{f.source}}</td>
+                                </tr>
+                                <tr ng-repeat="fe in f.FunctionalizationElements">
+                                    <td colspan="2" class="materials">
+                                        <table cellspacing="0" cellpadding="0">
+                                            <tr>
+                                                <td width="10%" class="label">Chemical Name</td>
+                                                <td width="90%">{{fe.ChemicalName}}</td>
+                                            </tr>
+                                            <tr>
+                                                <td width="10%" class="label">Type</td>
+                                                <td width="90%">{{getValueOfField(fe.Type)}}</td>
+                                            </tr>
+                                            <tr>
+                                                <td width="10%" class="label">PubChem Data Source</td>
+                                                <td width="90%">{{getValueOfField(fe.pubChemDataSourceName)}}</td>
+                                            </tr>
+                                            <tr>
+                                                <td width="10%" class="label">PubChem Id</td>
+                                                <td width="90%">{{getValueOfField(fe.pubChemID)}}</td>
+                                            </tr>
+                                            <tr>
+                                                <td width="10%" class="label">Amount (and units)</td>
+                                                <td width="90%">{{getValueOfField(fe.Amount)}}
+                                                    ({{getValueOfField(fe.AmountUnit)}})</td>
+                                            </tr>
+                                            <tr>
+                                                <td width="10%" class="label">Molecular Formula</td>
+                                                <td width="90%">{{getValueOfField(fe.MolecularFormula)}}</td>
+                                            </tr>
+                                            <tr>
+                                                <td width="10%" class="label">Molecular Formula Type</td>
+                                                <td width="90%">{{getValueOfField(fe.MolecularFormulaType)}}</td>
+                                            </tr>
+                                            <tr>
+                                                <td width="10%" class="label">Activation Method</td>
+                                                <td width="90%">{{getValueOfField(fe.ActivationMethod)}}</td>
+                                            </tr>
+                                            <tr>
+                                                <td width="10%" class="label">Activation Effect</td>
+                                                <td width="90%">{{getValueOfField(fe.ActivationEffect)}}</td>
+                                            </tr>
+                                            <tr>
+                                                <td width="10%" class="label">Inherent Functions</td>
+                                                <td width="90%" class="inherentFunctions">
+                                                    <span ng-if="!fe.Functions.length">N/A</span>
+                                                    <div ng-repeat="iFun in fe.Functions" class="inherentFunctions">
+                                                        {{iFun}}
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </td>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+    </table>
+    <!-- End Functionalization -->
+
+    <!-- Purification -->
+    <table ng-hide="show2" class="summaryViewNoTop" width="100%" summary="layout">
+        <tr>
+            <td class="heading">Purification</td>
+        </tr>
+        <tr ng-repeat="p in purifications">
+            <td>
+                <table cellspacing="0" cellpadding="0" width="100%">
+                    <tr>
+                        <td class="subHeading">{{p.DisplayName}}</td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <table cellspacing="0" cellpadding="0" width="100%" class="topLevel">
+                                <tr>
+                                    <td colspan="2">
+                                        <div style="margin-left:auto; margin-right:auto;text-align:right;width:99%; margin-top: 10px;">
+                                            <a href="" class="btn btn-primary btn-xs" style="color:white;text-decoration: none;">
+                                                Edit
+                                            </a>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td width="10%" class="label">Protocol Name</td>
+                                    <td width="90%">{{p.Protocol}}</td>
+                                </tr>
+                                <tr>
+                                    <td width="10%" class="label">Characterization Source/Date</td>
+                                    <td width="90%">{{p.Source}}/{{p.Date}}</td>
+                                </tr>
+                                <tr>
+                                    <td width="10%" class="label">Description</td>
+                                    <td width="90%">{{getValueOfField(p.Description)}}</td>
+                                </tr>
+                                <tr ng-if="p.purificationElements.length">
+                                    <td colspan="2" class="purifications">
+                                        <div class="techniqueTable">Purification Elements</div>
+                                        <div ng-repeat="pe in p.purificationElements">
+                                            <table cellspacing="0" cellpadding="0">
+                                                <tr>
+                                                    <td width="10%" class="label">Data and Conditions</td>
+                                                    <td width="90%">
+                                                        <table ng-if="pe['Data and Conditions']" cellspacing="0"
+                                                            cellpadding="0">
+                                                            <tr ng-repeat="row in pe['Data and Conditions']">
+                                                                <th ng-if="row.name=='colTitles'"
+                                                                    ng-repeat="col in row.value track by $index"
+                                                                    ng-bind-html="col | newlines"></th>
+                                                                <td ng-if="row.name=='colValues'"
+                                                                    ng-repeat="col in row.value track by $index"
+                                                                    ng-bind-html="col | newlines"></td>
+                                                            </tr>
+                                                        </table>
+                                                    </td>
+                                                </tr>
+                                            </table>
+                                        </div>
+                                    </td>
+                                </tr>
+
+
+                                <tr ng-if="p.Technique.length">
+                                    <td colspan="2" class="purifications">
+                                        <div class="techniqueTable">Technique and Instruments</div>
+                                        <div ng-repeat="t in p.Technique">
+                                            <table cellspacing="0" cellpadding="0">
+                                                <tr>
+                                                    <td width="10%" class="label">Technique</td>
+                                                    <td width="90%">{{t.technique.type}}</td>
+                                                </tr>
+                                                <tr>
+                                                    <td width="10%" class="label">Abbreviation</td>
+                                                    <td width="90%">{{t.technique.abbreviation}}</td>
+                                                </tr>
+                                                <tr>
+                                                    <td width="10%" class="label">Instruments</td>
+                                                    <td width="90%">
+                                                        <table cellspacing="0" cellpadding="0" width="350px"
+                                                            class="instruments">
+                                                            <th>Manufacturer</th>
+                                                            <th>Model Name</th>
+                                                            <th>Type</th>
+                                                            <tr ng-repeat="i in t.instrumentCollection">
+                                                                <td>{{i.manufacturer}}</td>
+                                                                <td>{{i.modelName}}</td>
+                                                                <td>{{i.type}}</td>
+                                                            </tr>
+                                                        </table>
+                                                    </td>
+                                                </tr>
+
+                                                <tr>
+                                                    <td width="10%" class="label">Inherent Functions</td>
+                                                    <td width="90%" class="inherentFunctions">
+                                                        <span ng-if="!me.InherentFunctions.length">N/A</span>
+                                                        <div ng-repeat="iFun in me.InherentFunctions"
+                                                            class="inherentFunctions">
+                                                            <table cellpadding="0" cellspacing="0">
+                                                                <tr>
+                                                                    <td width="15%">Name</td>
+                                                                    <td width="85%">{{iFun.FunctionDisplayName}}</td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td width="15%">Type</td>
+                                                                    <td width="85%">{{iFun.FunctionType}}</td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td width="15%">Description</td>
+                                                                    <td width="85%">{{iFun.FunctionDescription}}</td>
+                                                                </tr>
+                                                            </table>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                            </table>
+                                        </div>
+                                    </td>
+                                </tr>
+
+                                <tr>
+                                    <td width="10%" class="label">Yield</td>
+                                    <td width="90%">{{getValueOfField(p.Yield)}}</td>
+                                </tr>
+                                <tr>
+                                    <td width="10%" class="label">Analysis</td>
+                                    <td width="90%">{{getValueOfField(p.Analysis)}}</td>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+    </table>
+    <!-- End Purification -->
+
 </div>
+
+<div id="loader" class="sample" ng-show="loader">
+    <div id="loaderText">Loading</div>
+    <div id="loaderGraphic"></div>
 </div>
