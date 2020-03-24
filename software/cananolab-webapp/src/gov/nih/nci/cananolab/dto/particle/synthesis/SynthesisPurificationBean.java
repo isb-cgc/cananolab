@@ -48,6 +48,10 @@ public class SynthesisPurificationBean extends BaseSynthesisEntityBean {
 
     }
 
+    public SynthesisPurificationBean() {
+
+    }
+
     public String getSource(){
         return domain.getCreatedBy();
     }

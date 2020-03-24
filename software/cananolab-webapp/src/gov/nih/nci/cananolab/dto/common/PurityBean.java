@@ -43,6 +43,8 @@ public class PurityBean
     private FileBean theFile = new FileBean();
     private int theFileIndex;
     private SynthesisPurity domain = new SynthesisPurity();
+    Long id;
+
     public PurityBean()
     {
     }
@@ -52,6 +54,7 @@ public class PurityBean
     {
         //TODO rewrite?
         domain = synthesisPurity;
+        id = synthesisPurity.getId();
         List<PurityDatum> data = null;
         if( synthesisPurity.getPurityDatumCollection() != null )
         {

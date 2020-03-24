@@ -28,6 +28,10 @@ public class SimpleSynthesisMaterialBean {
     private String createdBy;
     private Date date;
 
+    //Passed in from front end when a file is being manipulated
+    SimpleFileBean fileBeingEdited;
+    SimpleSynthesisMaterialElementBean materialElementBeingEdited;
+
     public SimpleProtocol getSimpleProtocol() {
         return simpleProtocol;
     }
@@ -42,6 +46,22 @@ public class SimpleSynthesisMaterialBean {
 
     public void setFileElements(List<SimpleFileBean> fileElements) {
         this.fileElements = fileElements;
+    }
+
+    public SimpleFileBean getFileBeingEdited() {
+        return fileBeingEdited;
+    }
+
+    public void setFileBeingEdited(SimpleFileBean fileBeingEdited){
+        this.fileBeingEdited = fileBeingEdited;
+    }
+
+    public SimpleSynthesisMaterialElementBean getMaterialElementBeingEdited(){
+        return materialElementBeingEdited;
+    }
+
+    public void setMaterialElementBeingEdited(SimpleSynthesisMaterialElementBean materialElementBeingEdited) {
+         this.materialElementBeingEdited = materialElementBeingEdited;
     }
 
     public String getType() {
@@ -135,10 +155,10 @@ public class SimpleSynthesisMaterialBean {
                 }
                 //Transfer inherent function
                 if (synthesisMaterialElement.getSmeInherentFunctions().size()>0){
-                    List<Map<String,Object>> functionList = new ArrayList<Map<String, Object>>();
+                    List<Map<String,String>> functionList = new ArrayList<Map<String, String>>();
                     for(SmeInherentFunction smeInherentFunction: synthesisMaterialElement.getSmeInherentFunctions()){
-                        Map<String,Object> function = new HashMap<String, Object>();
-                        function.put("id",smeInherentFunction.getId());
+                        Map<String,String> function = new HashMap<String, String>();
+                        function.put("id",smeInherentFunction.getId().toString());
                         function.put("type",smeInherentFunction.getType());
                         function.put("description",smeInherentFunction.getDescription());
                         functionList.add(function);
@@ -164,6 +184,8 @@ public class SimpleSynthesisMaterialBean {
 //                        fBean.setTheAccess(file.getTheAccess());
 //                        boolean isPublic = springSecurityAclService.checkObjectPublic(Long.valueOf(getSampleId()), SecureClassesEnum.SAMPLE.getClazz());
 //                        fBean.setIsPublic(isPublic);
+                        boolean isPublic = springSecurityAclService.checkObjectPublic(Long.valueOf(getSampleId()), SecureClassesEnum.SAMPLE.getClazz());
+                        simpleFileBean.setIsPublic(isPublic);
                         sfeFiles.add(simpleFileBean);
                     }
                 sSynMatElementBean.setFiles(sfeFiles);
@@ -176,21 +198,22 @@ public class SimpleSynthesisMaterialBean {
         if(synBean.getFiles()!=null){
             fileElements = new ArrayList<SimpleFileBean>();
             for(FileBean file : synBean.getFiles()){
-                SimpleFileBean fBean = new SimpleFileBean();
-                fBean.setDescription(file.getDescription());
-                fBean.setType(file.getDomainFile().getType());
-                fBean.setTitle(file.getDomainFile().getTitle());
-                fBean.setUri(file.getDomainFile().getUri());
-                fBean.setUriExternal(file.getDomainFile().getUriExternal());
-                fBean.setExternalUrl(file.getExternalUrl());
-                fBean.setKeywordsStr(file.getKeywordsStr());
-                fBean.setId(file.getDomainFile().getId());
-                fBean.setCreatedBy(file.getDomainFile().getCreatedBy());
-                fBean.setCreatedDate(file.getDomainFile().getCreatedDate());
-                fBean.setTheAccess(file.getTheAccess());
+                SimpleFileBean simpleFileBean = new SimpleFileBean(file,this.getSampleId());
+//                SimpleFileBean fBean = new SimpleFileBean();
+//                fBean.setDescription(file.getDescription());
+//                fBean.setType(file.getDomainFile().getType());
+//                fBean.setTitle(file.getDomainFile().getTitle());
+//                fBean.setUri(file.getDomainFile().getUri());
+//                fBean.setUriExternal(file.getDomainFile().getUriExternal());
+//                fBean.setExternalUrl(file.getExternalUrl());
+//                fBean.setKeywordsStr(file.getKeywordsStr());
+//                fBean.setId(file.getDomainFile().getId());
+//                fBean.setCreatedBy(file.getDomainFile().getCreatedBy());
+//                fBean.setCreatedDate(file.getDomainFile().getCreatedDate());
+//                fBean.setTheAccess(file.getTheAccess());
                 boolean isPublic = springSecurityAclService.checkObjectPublic(Long.valueOf(getSampleId()), SecureClassesEnum.SAMPLE.getClazz());
-                fBean.setIsPublic(isPublic);
-                fileElements.add(fBean);
+                simpleFileBean.setIsPublic(isPublic);
+                fileElements.add(simpleFileBean);
             }
             setFiles(fileElements);
 
@@ -205,7 +228,7 @@ public class SimpleSynthesisMaterialBean {
     }
 
     private void setDomainEntityInfo(SynthesisMaterialBean synBean) {
-        //possibly not needed
+        //TODO possibly not needed
     }
 
 

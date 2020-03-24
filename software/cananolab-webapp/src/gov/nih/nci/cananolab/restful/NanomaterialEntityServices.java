@@ -119,29 +119,30 @@ public class NanomaterialEntityServices {
 		}
 	}
 
-	@POST
-	@Path("/removeComposingElementById")
-	@Produces ("application/json")
-	public Response removeComposingElementById(@Context HttpServletRequest httpRequest, SimpleNanomaterialEntityBean nanoBean, String composingElementId) {
+//	@POST
+//	@Path("/removeComposingElementById")
+//	@Produces ("application/json")
+//	public Response removeComposingElementById(@Context HttpServletRequest httpRequest, SimpleNanomaterialEntityBean nanoBean, String composingElementId) {
+//
+//		try {
+//			NanomaterialEntityBO nanomaterialEntityBO =
+//					(NanomaterialEntityBO) SpringApplicationContext.getBean(httpRequest, "nanomaterialEntityBO");
+//			if (!SpringSecurityUtil.isUserLoggedIn())
+//				return Response.status(Response.Status.UNAUTHORIZED)
+//						.entity("Session expired").build();
+//
+//			SimpleNanomaterialEntityBean nano = nanomaterialEntityBO.removeComposingElement(nanoBean, composingElementId,httpRequest);
+//			List<String> errors = nano.getErrors();
+//			return (errors == null || errors.size() == 0) ?
+//					Response.ok(nano).build() :
+//					Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(errors).build();
+//		} catch (Exception e) {
+//			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(CommonUtil.wrapErrorMessageInList("Error while removing the composing element" + e.getMessage())).build();
+//
+//		}
+//	}
 
-		try {
-			NanomaterialEntityBO nanomaterialEntityBO =
-					(NanomaterialEntityBO) SpringApplicationContext.getBean(httpRequest, "nanomaterialEntityBO");
-			if (!SpringSecurityUtil.isUserLoggedIn())
-				return Response.status(Response.Status.UNAUTHORIZED)
-						.entity("Session expired").build();
 
-			SimpleNanomaterialEntityBean nano = nanomaterialEntityBO.removeComposingElement(nanoBean, composingElementId,httpRequest);
-			List<String> errors = nano.getErrors();
-			return (errors == null || errors.size() == 0) ?
-					Response.ok(nano).build() :
-					Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(errors).build();
-		} catch (Exception e) {
-			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(CommonUtil.wrapErrorMessageInList("Error while removing the composing element" + e.getMessage())).build();
-
-		}
-	}
-	
 	@POST
 	@Path("/saveFile")
 	@Produces ("application/json")
@@ -164,11 +165,12 @@ public class NanomaterialEntityServices {
 						Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(errors).build();
 					
 		} catch (Exception e) {
-			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(CommonUtil.wrapErrorMessageInList("Error while saving the file" + e.getMessage())).build();
+			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(CommonUtil.wrapErrorMessageInList("Error while saving the NanoEntity file. " + e.getMessage())).build();
 
 		}
 	}
-	
+
+
 	@POST
 	@Path("/removeFile")
 	@Produces ("application/json")

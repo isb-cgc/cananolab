@@ -21,7 +21,7 @@ SET NAMES utf8;
 
 DROP TABLE IF EXISTS `acl_class`;
 /*!40101 SET @saved_cs_client = @@character_set_client */;
-SET character_set_client = utf8;
+SET character_set_client = utf8mb4;
 CREATE TABLE `acl_class`
 (
     `id`    bigint(20) unsigned NOT NULL AUTO_INCREMENT,
@@ -68,7 +68,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `acl_entry`;
 /*!40101 SET @saved_cs_client = @@character_set_client */;
-SET character_set_client = utf8;
+SET character_set_client = utf8mb4;
 CREATE TABLE `acl_entry`
 (
     `id`                  bigint(20) unsigned NOT NULL AUTO_INCREMENT,
@@ -168,7 +168,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `acl_object_identity`;
 /*!40101 SET @saved_cs_client = @@character_set_client */;
-SET character_set_client = utf8;
+SET character_set_client = utf8mb4;
 CREATE TABLE `acl_object_identity`
 (
     `id`                 bigint(20) unsigned NOT NULL AUTO_INCREMENT,
@@ -225,7 +225,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `acl_sid`;
 /*!40101 SET @saved_cs_client = @@character_set_client */;
-SET character_set_client = utf8;
+SET character_set_client = utf8mb4;
 CREATE TABLE `acl_sid`
 (
     `id`        bigint(20) unsigned NOT NULL AUTO_INCREMENT,
@@ -271,7 +271,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `activation_method`;
 /*!40101 SET @saved_cs_client = @@character_set_client */;
-SET character_set_client = utf8;
+SET character_set_client = utf8mb4;
 CREATE TABLE `activation_method`
 (
     `activation_method_pk_id` bigint(20)   NOT NULL,
@@ -301,7 +301,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `administration`;
 /*!40101 SET @saved_cs_client = @@character_set_client */;
-SET character_set_client = utf8;
+SET character_set_client = utf8mb4;
 CREATE TABLE `administration`
 (
     `administration_id`  bigint(20)   NOT NULL,
@@ -338,7 +338,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `antibody`;
 /*!40101 SET @saved_cs_client = @@character_set_client */;
-SET character_set_client = utf8;
+SET character_set_client = utf8mb4;
 CREATE TABLE `antibody`
 (
     `antibody_pk_id` bigint(20) NOT NULL,
@@ -370,7 +370,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `associated_element`;
 /*!40101 SET @saved_cs_client = @@character_set_client */;
-SET character_set_client = utf8;
+SET character_set_client = utf8mb4;
 CREATE TABLE `associated_element`
 (
     `associated_element_pk_id` bigint(20)   NOT NULL,
@@ -418,7 +418,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `author`;
 /*!40101 SET @saved_cs_client = @@character_set_client */;
-SET character_set_client = utf8;
+SET character_set_client = utf8mb4;
 CREATE TABLE `author`
 (
     `author_pk_id` bigint(20)   NOT NULL,
@@ -450,7 +450,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `author_publication`;
 /*!40101 SET @saved_cs_client = @@character_set_client */;
-SET character_set_client = utf8;
+SET character_set_client = utf8mb4;
 CREATE TABLE `author_publication`
 (
     `author_pk_id`      bigint(20) NOT NULL,
@@ -481,7 +481,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `authorities`;
 /*!40101 SET @saved_cs_client = @@character_set_client */;
-SET character_set_client = utf8;
+SET character_set_client = utf8mb4;
 CREATE TABLE `authorities`
 (
     `username`  varchar(100) NOT NULL,
@@ -520,7 +520,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `biopolymer_f`;
 /*!40101 SET @saved_cs_client = @@character_set_client */;
-SET character_set_client = utf8;
+SET character_set_client = utf8mb4;
 CREATE TABLE `biopolymer_f`
 (
     `biopolymer_pk_id` bigint(20)  NOT NULL,
@@ -553,7 +553,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `biopolymer_p`;
 /*!40101 SET @saved_cs_client = @@character_set_client */;
-SET character_set_client = utf8;
+SET character_set_client = utf8mb4;
 CREATE TABLE `biopolymer_p`
 (
     `biopolymer_pk_id` bigint(20)  NOT NULL,
@@ -586,7 +586,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `carbon_nanotube`;
 /*!40101 SET @saved_cs_client = @@character_set_client */;
-SET character_set_client = utf8;
+SET character_set_client = utf8mb4;
 CREATE TABLE `carbon_nanotube`
 (
     `carbon_nanotube_pk_id` bigint(20) NOT NULL,
@@ -620,7 +620,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `characterization`;
 /*!40101 SET @saved_cs_client = @@character_set_client */;
-SET character_set_client = utf8;
+SET character_set_client = utf8mb4;
 CREATE TABLE `characterization`
 (
     `characterization_pk_id`    bigint(20)   NOT NULL,
@@ -679,7 +679,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `chemical_association`;
 /*!40101 SET @saved_cs_client = @@character_set_client */;
-SET character_set_client = utf8;
+SET character_set_client = utf8mb4;
 CREATE TABLE `chemical_association`
 (
     `chemical_association_pk_id`      bigint(20)   NOT NULL,
@@ -725,7 +725,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `chemical_association_file`;
 /*!40101 SET @saved_cs_client = @@character_set_client */;
-SET character_set_client = utf8;
+SET character_set_client = utf8mb4;
 CREATE TABLE `chemical_association_file`
 (
     `chemical_association_pk_id` bigint(20) NOT NULL,
@@ -756,7 +756,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `common_lookup`;
 /*!40101 SET @saved_cs_client = @@character_set_client */;
-SET character_set_client = utf8;
+SET character_set_client = utf8mb4;
 CREATE TABLE `common_lookup`
 (
     `common_lookup_pk_id` bigint(20)   NOT NULL,
@@ -1336,44 +1336,44 @@ VALUES (1, 'asymmetrical flow field-flow fractionation with multi-angle laser li
        (1024, 'synthesis', 'materialType', 'RNA'),
        (1025, 'synthesis', 'materialType', 'shell'),
        (1026, 'synthesis', 'materialType', 'terminal group'),
-       (1027, 'material', 'value_unit','%'),
-       (1028, 'material', 'value_unit','%mol'),
-       (1029, 'material', 'value_unit','%mole'),
-       (1030, 'material', 'value_unit','%wt'),
-       (1031, 'material', 'value_unit','%wt/vol'),
-       (1032, 'material', 'value_unit','%wt/wt'),
-       (1033, 'material', 'value_unit','g'),
-       (1034, 'material', 'value_unit','g/cm3'),
-       (1035, 'material', 'value_unit','g/mL'),
-       (1036, 'material', 'value_unit','Gy'),
-       (1037, 'material', 'value_unit','L'),
-       (1038, 'material', 'value_unit','M'),
-       (1039, 'material', 'value_unit','mCi'),
-       (1040, 'material', 'value_unit','mg'),
-       (1041, 'material', 'value_unit','mg/mL'),
-       (1042, 'material', 'value_unit','microCi'),
-       (1043, 'material', 'value_unit','microCi/mg'),
-       (1044, 'material', 'value_unit','mL'),
-       (1045, 'material', 'value_unit','mM'),
-       (1046, 'material', 'value_unit','mmol'),
-       (1047, 'material', 'value_unit','mmol/L'),
-       (1048, 'material', 'value_unit','mol'),
-       (1049, 'material', 'value_unit','mol%'),
-       (1030, 'material', 'value_unit','mole%'),
-       (1051, 'material', 'value_unit','ng'),
-       (1052, 'material', 'value_unit','nM'),
-       (1053, 'material', 'value_unit','nmol'),
-       (1054, 'material', 'value_unit','pmol'),
-       (1055, 'material', 'value_unit','uCi/mg'),
-       (1056, 'material', 'value_unit','ug'),
-       (1057, 'material', 'value_unit','ug/mL'),
-       (1058, 'material', 'value_unit','ug/uL'),
-       (1059, 'material', 'value_unit','uL'),
-       (1060, 'material', 'value_unit','uL/mL'),
-       (1061, 'material', 'value_unit','uM'),
-       (1062, 'material', 'value_unit','umol'),
-       (1063, 'material', 'value_unit','wt%'),
-       (1064, 'material', 'value_unit','wt/wt'),
+       (1027, 'material', 'value_unit', '%'),
+       (1028, 'material', 'value_unit', '%mol'),
+       (1029, 'material', 'value_unit', '%mole'),
+       (1030, 'material', 'value_unit', '%wt'),
+       (1031, 'material', 'value_unit', '%wt/vol'),
+       (1032, 'material', 'value_unit', '%wt/wt'),
+       (1033, 'material', 'value_unit', 'g'),
+       (1034, 'material', 'value_unit', 'g/cm3'),
+       (1035, 'material', 'value_unit', 'g/mL'),
+       (1036, 'material', 'value_unit', 'Gy'),
+       (1037, 'material', 'value_unit', 'L'),
+       (1038, 'material', 'value_unit', 'M'),
+       (1039, 'material', 'value_unit', 'mCi'),
+       (1040, 'material', 'value_unit', 'mg'),
+       (1041, 'material', 'value_unit', 'mg/mL'),
+       (1042, 'material', 'value_unit', 'microCi'),
+       (1043, 'material', 'value_unit', 'microCi/mg'),
+       (1044, 'material', 'value_unit', 'mL'),
+       (1045, 'material', 'value_unit', 'mM'),
+       (1046, 'material', 'value_unit', 'mmol'),
+       (1047, 'material', 'value_unit', 'mmol/L'),
+       (1048, 'material', 'value_unit', 'mol'),
+       (1049, 'material', 'value_unit', 'mol%'),
+       (1050, 'material', 'value_unit', 'mole%'),
+       (1051, 'material', 'value_unit', 'ng'),
+       (1052, 'material', 'value_unit', 'nM'),
+       (1053, 'material', 'value_unit', 'nmol'),
+       (1054, 'material', 'value_unit', 'pmol'),
+       (1055, 'material', 'value_unit', 'uCi/mg'),
+       (1056, 'material', 'value_unit', 'ug'),
+       (1057, 'material', 'value_unit', 'ug/mL'),
+       (1058, 'material', 'value_unit', 'ug/uL'),
+       (1059, 'material', 'value_unit', 'uL'),
+       (1060, 'material', 'value_unit', 'uL/mL'),
+       (1061, 'material', 'value_unit', 'uM'),
+       (1062, 'material', 'value_unit', 'umol'),
+       (1063, 'material', 'value_unit', 'wt%'),
+       (1064, 'material', 'value_unit', 'wt/wt'),
        (1065, 'function', 'type', 'transfection'),
        (1066, 'function', 'type', 'therapeutic function'),
        (1067, 'function', 'type', 'therapeutic'),
@@ -3534,6 +3534,7 @@ VALUES (1, 'asymmetrical flow field-flow fractionation with multi-angle laser li
        (66224130, 'synthesis protocol type', 'otherVersion', '1.0'),
        (66551808, 'in vivo assay protocol type', 'otherName', 'Test Characterization Protocol'),
        (66551809, 'in vitro assay protocol type', 'otherName', 'Test In Vitro Characterization Protocol'),
+       (66879488, 'synthesis', 'otherType', 'Synthesis'),
        (73367556, 'other_pc', 'otherDatumName', 'dose fraction per gram tissue'),
        (73367557, 'other_vv', 'otherDatumName', 'dose fraction per gram tissue'),
        (73367558, 'pharmacokinetics', 'otherDatumName', 'dose fraction per gram tissue'),
@@ -3548,7 +3549,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `composing_element`;
 /*!40101 SET @saved_cs_client = @@character_set_client */;
-SET character_set_client = utf8;
+SET character_set_client = utf8mb4;
 CREATE TABLE `composing_element`
 (
     `composing_element_pk_id`   bigint(20)   NOT NULL,
@@ -3587,7 +3588,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `composition`;
 /*!40101 SET @saved_cs_client = @@character_set_client */;
-SET character_set_client = utf8;
+SET character_set_client = utf8mb4;
 CREATE TABLE `composition`
 (
     `composition_pk_id` bigint(20) NOT NULL,
@@ -3623,7 +3624,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `composition_file`;
 /*!40101 SET @saved_cs_client = @@character_set_client */;
-SET character_set_client = utf8;
+SET character_set_client = utf8mb4;
 CREATE TABLE `composition_file`
 (
     `composition_pk_id` bigint(20) NOT NULL,
@@ -3654,7 +3655,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `data_availability`;
 /*!40101 SET @saved_cs_client = @@character_set_client */;
-SET character_set_client = utf8;
+SET character_set_client = utf8mb4;
 CREATE TABLE `data_availability`
 (
     `sample_id`             bigint(20)   NOT NULL,
@@ -3685,7 +3686,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `data_review_status`;
 /*!40101 SET @saved_cs_client = @@character_set_client */;
-SET character_set_client = utf8;
+SET character_set_client = utf8mb4;
 CREATE TABLE `data_review_status`
 (
     `data_id`        bigint(20)   NOT NULL,
@@ -3716,7 +3717,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `databasechangelog`;
 /*!40101 SET @saved_cs_client = @@character_set_client */;
-SET character_set_client = utf8;
+SET character_set_client = utf8mb4;
 CREATE TABLE `databasechangelog`
 (
     `ID`           varchar(63)  NOT NULL,
@@ -3750,7 +3751,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `databasechangeloglock`;
 /*!40101 SET @saved_cs_client = @@character_set_client */;
-SET character_set_client = utf8;
+SET character_set_client = utf8mb4;
 CREATE TABLE `databasechangeloglock`
 (
     `ID`          int(11)    NOT NULL,
@@ -3781,7 +3782,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `datum`;
 /*!40101 SET @saved_cs_client = @@character_set_client */;
-SET character_set_client = utf8;
+SET character_set_client = utf8mb4;
 CREATE TABLE `datum`
 (
     `datum_pk_id`   bigint(20)      NOT NULL,
@@ -3834,7 +3835,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `datum_condition`;
 /*!40101 SET @saved_cs_client = @@character_set_client */;
-SET character_set_client = utf8;
+SET character_set_client = utf8mb4;
 CREATE TABLE `datum_condition`
 (
     `datum_pk_id`     bigint(20) NOT NULL,
@@ -3875,7 +3876,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `dendrimer`;
 /*!40101 SET @saved_cs_client = @@character_set_client */;
-SET character_set_client = utf8;
+SET character_set_client = utf8mb4;
 CREATE TABLE `dendrimer`
 (
     `dendrimer_pk_id` bigint(20) NOT NULL,
@@ -3905,7 +3906,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `emulsion`;
 /*!40101 SET @saved_cs_client = @@character_set_client */;
-SET character_set_client = utf8;
+SET character_set_client = utf8mb4;
 CREATE TABLE `emulsion`
 (
     `emulsion_pk_id` bigint(20) NOT NULL,
@@ -3935,7 +3936,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `experiment_condition`;
 /*!40101 SET @saved_cs_client = @@character_set_client */;
-SET character_set_client = utf8;
+SET character_set_client = utf8mb4;
 CREATE TABLE `experiment_condition`
 (
     `condition_pk_id` bigint(20)   NOT NULL,
@@ -3961,6 +3962,7 @@ LOCK TABLES `experiment_condition` WRITE;
 INSERT IGNORE INTO `experiment_condition` (`condition_pk_id`, `name`, `property`, `value`, `value_unit`, `value_type`,
                                            `created_by`, `created_date`)
 VALUES (1000, 'Synthesis condition 1', '', '42', 'g', 'observed', 'canano_user', '2019-12-06 12:15:00'),
+       (1111, 'Synthesis condition 1', '', '42', 'g', 'observed', 'canano_user', '2019-12-06 12:15:00'),
        (66060288, 'dilution factor', 'other', '0.9', 'num', 'observed', 'canano_curator', '2020-01-08 19:19:47'),
        (66060289, 'dilution factor', 'other', '0.8', 'num', 'observed', 'canano_curator', '2020-01-08 19:21:27'),
        (66060290, 'dilution factor', 'other', '0.5', 'num', 'observed', 'canano_curator', '2020-01-08 19:23:07'),
@@ -3983,7 +3985,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `experiment_config`;
 /*!40101 SET @saved_cs_client = @@character_set_client */;
-SET character_set_client = utf8;
+SET character_set_client = utf8mb4;
 CREATE TABLE `experiment_config`
 (
     `experiment_config_pk_id` bigint(20)   NOT NULL,
@@ -4023,7 +4025,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `experiment_config_instrument`;
 /*!40101 SET @saved_cs_client = @@character_set_client */;
-SET character_set_client = utf8;
+SET character_set_client = utf8mb4;
 CREATE TABLE `experiment_config_instrument`
 (
     `experiment_config_pk_id` bigint(20) NOT NULL,
@@ -4059,7 +4061,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `favorite_data`;
 /*!40101 SET @saved_cs_client = @@character_set_client */;
-SET character_set_client = utf8;
+SET character_set_client = utf8mb4;
 CREATE TABLE `favorite_data`
 (
     `favorite_data_id`    bigint(20)   DEFAULT NULL,
@@ -4093,7 +4095,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `file`;
 /*!40101 SET @saved_cs_client = @@character_set_client */;
-SET character_set_client = utf8;
+SET character_set_client = utf8mb4;
 CREATE TABLE `file`
 (
     `file_pk_id`      bigint(20)   NOT NULL,
@@ -4127,6 +4129,11 @@ VALUES (1000, 'NCIt_CTCAE_5.0', 'https://evs.nci.nih.gov/ftp1/CTCAE/CTCAE_5.0/NC
        (1005, 'NCIt_CTCAE_5.0', 'https://evs.nci.nih.gov/ftp1/CTCAE/CTCAE_5.0/NCIt_CTCAE_5.0.xlsx', 'xlsx',
         'canano_curator', '2019-08-28 00:00:00', 'Synthesis File', 'dummy row for testing of synthesis', NULL, 'Excel',
         0),
+       (1111, 'NCIt_CTCAE_5.0', 'https://evs.nci.nih.gov/ftp1/CTCAE/CTCAE_5.0/NCIt_CTCAE_5.0.xlsx', 'xlsx',
+        'canano_curator', '2019-12-06 12:15:00', 'Synthesis File', 'dummy row for testing of synthesis', NULL, 'Excel',
+        0),
+       (1222, 'NCIt_CTCAE_5.0', 'https://evs.nci.nih.gov/ftp1/CTCAE/CTCAE_5.0/NCIt_CTCAE_5.0.xlsx', 'xlsx',
+        'canano_curator', '2019-08-28 00:00:00', 'Synthesis File', 'Sample 2 test file', NULL, 'Excel', 0),
        (66289664, '2020 Holiday & Pay Calendar.pdf', 'protocols/20200110_12-52-36-363_2020 Holiday & Pay Calendar.pdf',
         NULL, 'canano_curator', '2020-01-10 12:52:34', 'Synthesis Test Protocol and Holiday Calendar',
         'Uploaded pdf of holiday calendar as a stand-in file for a protocol', NULL, NULL, 0),
@@ -4143,7 +4150,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `finding`;
 /*!40101 SET @saved_cs_client = @@character_set_client */;
-SET character_set_client = utf8;
+SET character_set_client = utf8mb4;
 CREATE TABLE `finding`
 (
     `finding_pk_id`          bigint(20)   NOT NULL,
@@ -4177,7 +4184,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `finding_file`;
 /*!40101 SET @saved_cs_client = @@character_set_client */;
-SET character_set_client = utf8;
+SET character_set_client = utf8mb4;
 CREATE TABLE `finding_file`
 (
     `finding_pk_id` bigint(20) NOT NULL,
@@ -4210,7 +4217,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `fullerene`;
 /*!40101 SET @saved_cs_client = @@character_set_client */;
-SET character_set_client = utf8;
+SET character_set_client = utf8mb4;
 CREATE TABLE `fullerene`
 (
     `fullerene_pk_id`       bigint(20) NOT NULL,
@@ -4243,7 +4250,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `functionalizing_entity`;
 /*!40101 SET @saved_cs_client = @@character_set_client */;
-SET character_set_client = utf8;
+SET character_set_client = utf8mb4;
 CREATE TABLE `functionalizing_entity`
 (
     `functionalizing_entity_pk_id` bigint(20) NOT NULL,
@@ -4279,7 +4286,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `functionalizing_entity_file`;
 /*!40101 SET @saved_cs_client = @@character_set_client */;
-SET character_set_client = utf8;
+SET character_set_client = utf8mb4;
 CREATE TABLE `functionalizing_entity_file`
 (
     `functionalizing_entity_pk_id` bigint(20) NOT NULL,
@@ -4310,7 +4317,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `group_authorities`;
 /*!40101 SET @saved_cs_client = @@character_set_client */;
-SET character_set_client = utf8;
+SET character_set_client = utf8mb4;
 CREATE TABLE `group_authorities`
 (
     `group_id`  int(11)     NOT NULL,
@@ -4338,7 +4345,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `group_members`;
 /*!40101 SET @saved_cs_client = @@character_set_client */;
-SET character_set_client = utf8;
+SET character_set_client = utf8mb4;
 CREATE TABLE `group_members`
 (
     `id`       int(11)      NOT NULL AUTO_INCREMENT,
@@ -4370,7 +4377,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `groups`;
 /*!40101 SET @saved_cs_client = @@character_set_client */;
-SET character_set_client = utf8;
+SET character_set_client = utf8mb4;
 CREATE TABLE `groups`
 (
     `id`                int(11)      NOT NULL AUTO_INCREMENT,
@@ -4400,7 +4407,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `hibernate_unique_key`;
 /*!40101 SET @saved_cs_client = @@character_set_client */;
-SET character_set_client = utf8;
+SET character_set_client = utf8mb4;
 CREATE TABLE `hibernate_unique_key`
 (
     `next_hi` bigint(20) NOT NULL
@@ -4416,7 +4423,7 @@ LOCK TABLES `hibernate_unique_key` WRITE;
 /*!40000 ALTER TABLE `hibernate_unique_key`
     DISABLE KEYS */;
 INSERT IGNORE INTO `hibernate_unique_key` (`next_hi`)
-VALUES (2041);
+VALUES (2042);
 /*!40000 ALTER TABLE `hibernate_unique_key`
     ENABLE KEYS */;
 UNLOCK TABLES;
@@ -4427,7 +4434,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `instrument`;
 /*!40101 SET @saved_cs_client = @@character_set_client */;
-SET character_set_client = utf8;
+SET character_set_client = utf8mb4;
 CREATE TABLE `instrument`
 (
     `instrument_pk_id` bigint(20)   NOT NULL,
@@ -4452,6 +4459,8 @@ INSERT IGNORE INTO `instrument` (`instrument_pk_id`, `type`, `manufacturer`, `mo
 VALUES (6, 'flow cytometer', 'Becton Dickinson', 'FACS Calibur', '2009-10-14 09:17:05', 'canano_admin'),
        (1000, 'scale', 'Biome', 'Test Scale', '2019-12-06 12:15:00', 'canano_curator'),
        (1005, 'centrifuge', 'Heraeus', 'Contifuge 17RS', '2019-08-28 00:00:00', 'canano_curator'),
+       (1111, 'scale', 'Biome', 'Test Scale', '2019-12-06 12:15:00', 'canano_curator'),
+       (1222, 'centrifuge', 'Heraeus', 'Contifuge 17RS', '2019-08-28 00:00:00', 'canano_curator'),
        (8552448, 'zeta potential analyzer', 'Malvern', 'Zetasizer 1000', '2009-10-14 09:17:05', 'canano_admin'),
        (9502721, 'zeta potential analyzer', 'Malvern', 'Zetasizer Nano ZS', '2009-10-14 09:17:05', 'canano_admin'),
        (13795328, 'dynamic light scattering instrument', 'Malvern', 'Zetasizer Nano ZS', '2009-10-14 13:44:14',
@@ -5253,7 +5262,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `instrument_to_review`;
 /*!40101 SET @saved_cs_client = @@character_set_client */;
-SET character_set_client = utf8;
+SET character_set_client = utf8mb4;
 CREATE TABLE `instrument_to_review`
 (
     `instrument_pk_id`        bigint(20) NOT NULL,
@@ -5282,7 +5291,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `keyword`;
 /*!40101 SET @saved_cs_client = @@character_set_client */;
-SET character_set_client = utf8;
+SET character_set_client = utf8mb4;
 CREATE TABLE `keyword`
 (
     `keyword_pk_id` bigint(20)   NOT NULL,
@@ -5309,7 +5318,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `keyword_file`;
 /*!40101 SET @saved_cs_client = @@character_set_client */;
-SET character_set_client = utf8;
+SET character_set_client = utf8mb4;
 CREATE TABLE `keyword_file`
 (
     `keyword_pk_id` bigint(20) NOT NULL,
@@ -5340,7 +5349,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `keyword_sample`;
 /*!40101 SET @saved_cs_client = @@character_set_client */;
-SET character_set_client = utf8;
+SET character_set_client = utf8mb4;
 CREATE TABLE `keyword_sample`
 (
     `keyword_pk_id` bigint(20) NOT NULL,
@@ -5371,7 +5380,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `liposome`;
 /*!40101 SET @saved_cs_client = @@character_set_client */;
-SET character_set_client = utf8;
+SET character_set_client = utf8mb4;
 CREATE TABLE `liposome`
 (
     `liposome_pk_id` bigint(20) NOT NULL,
@@ -5403,7 +5412,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `nano_function`;
 /*!40101 SET @saved_cs_client = @@character_set_client */;
-SET character_set_client = utf8;
+SET character_set_client = utf8mb4;
 CREATE TABLE `nano_function`
 (
     `function_pk_id`               bigint(20)   NOT NULL,
@@ -5450,7 +5459,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `nanomaterial_entity`;
 /*!40101 SET @saved_cs_client = @@character_set_client */;
-SET character_set_client = utf8;
+SET character_set_client = utf8mb4;
 CREATE TABLE `nanomaterial_entity`
 (
     `nanomaterial_entity_pk_id` bigint(20)   NOT NULL,
@@ -5490,7 +5499,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `nanomaterial_entity_file`;
 /*!40101 SET @saved_cs_client = @@character_set_client */;
-SET character_set_client = utf8;
+SET character_set_client = utf8mb4;
 CREATE TABLE `nanomaterial_entity_file`
 (
     `nanomaterial_entity_pk_id` bigint(20) NOT NULL,
@@ -5521,7 +5530,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `organization`;
 /*!40101 SET @saved_cs_client = @@character_set_client */;
-SET character_set_client = utf8;
+SET character_set_client = utf8mb4;
 CREATE TABLE `organization`
 (
     `organization_pk_id` bigint(20)   NOT NULL,
@@ -5818,7 +5827,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `other_functionalizing_entity`;
 /*!40101 SET @saved_cs_client = @@character_set_client */;
-SET character_set_client = utf8;
+SET character_set_client = utf8mb4;
 CREATE TABLE `other_functionalizing_entity`
 (
     `other_func_entity_pk_id` bigint(20)   NOT NULL,
@@ -5847,7 +5856,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `other_nanomaterial_entity`;
 /*!40101 SET @saved_cs_client = @@character_set_client */;
-SET character_set_client = utf8;
+SET character_set_client = utf8mb4;
 CREATE TABLE `other_nanomaterial_entity`
 (
     `other_nanomaterial_entity_pk_id` bigint(20)   NOT NULL,
@@ -5879,7 +5888,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `physical_state`;
 /*!40101 SET @saved_cs_client = @@character_set_client */;
-SET character_set_client = utf8;
+SET character_set_client = utf8mb4;
 CREATE TABLE `physical_state`
 (
     `physical_state_pk_id` bigint(20)   NOT NULL,
@@ -5908,7 +5917,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `point_of_contact`;
 /*!40101 SET @saved_cs_client = @@character_set_client */;
-SET character_set_client = utf8;
+SET character_set_client = utf8mb4;
 CREATE TABLE `point_of_contact`
 (
     `poc_pk_id`          bigint(20)   NOT NULL,
@@ -5950,7 +5959,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `polymer`;
 /*!40101 SET @saved_cs_client = @@character_set_client */;
-SET character_set_client = utf8;
+SET character_set_client = utf8mb4;
 CREATE TABLE `polymer`
 (
     `polymer_pk_id`     bigint(20) NOT NULL,
@@ -5981,7 +5990,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `protocol`;
 /*!40101 SET @saved_cs_client = @@character_set_client */;
-SET character_set_client = utf8;
+SET character_set_client = utf8mb4;
 CREATE TABLE `protocol`
 (
     `protocol_pk_id`        bigint(20)   NOT NULL,
@@ -6009,10 +6018,7 @@ LOCK TABLES `protocol` WRITE;
     DISABLE KEYS */;
 INSERT IGNORE INTO `protocol` (`protocol_pk_id`, `protocol_name`, `protocol_type`, `created_by`, `created_date`,
                                `protocol_abbreviation`, `protocol_version`, `file_pk_id`)
-VALUES (1000, 'Synthesis test protocol', 'synthesis', 'canano_curator', '2019-12-06 12:15:00', 'SYN', '1.0', 1000),
-       (1005, 'Synthesis demo protocol', 'synthesis purification', 'canano_curator', '2019-08-28 00:00:00', 'SYN',
-        '1.0', 1005),
-       (66256896, 'Synthesis Test Protocol', 'synthesis', 'canano_curator', '2020-01-10 12:52:34', 'STP', '1.0',
+VALUES (66256896, 'Synthesis Test Protocol', 'synthesis', 'canano_curator', '2020-01-10 12:52:34', 'STP', '1.0',
         66289664),
        (66584576, 'Test Characterization Protocol', 'in vivo assay', 'canano_curator', '2020-01-10 20:03:01', 'TCP',
         '1', NULL),
@@ -6028,7 +6034,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `publication`;
 /*!40101 SET @saved_cs_client = @@character_set_client */;
-SET character_set_client = utf8;
+SET character_set_client = utf8mb4;
 CREATE TABLE `publication`
 (
     `publication_pk_id`  bigint(20)   NOT NULL,
@@ -6065,7 +6071,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `purification_config`;
 /*!40101 SET @saved_cs_client = @@character_set_client */;
-SET character_set_client = utf8;
+SET character_set_client = utf8mb4;
 CREATE TABLE `purification_config`
 (
     `purification_config_pk_id`    bigint(20)   NOT NULL COMMENT 'purification_config_pk_id',
@@ -6095,7 +6101,9 @@ INSERT IGNORE INTO `purification_config` (`purification_config_pk_id`, `synthesi
 VALUES (1000, 1000, 1000, 'Configuration for synthesis purification', 'canano_curator', '2019-12-06 12:15:00'),
        (1001, 1000, 1000, 'Configuration for purification 2', 'canano_curator', '2019-12-06 12:15:00'),
        (1002, 1001, 65896448, 'Coulter configuration', 'canano_curator', '2019-12-06 12:15:00'),
-       (1005, 1005, 1005, NULL, 'canano_curator', '2019-08-28 00:00:00');
+       (1005, 1005, 1005, NULL, 'canano_curator', '2019-08-28 00:00:00'),
+       (1111, 1111, 1111, 'Configuration for synthesis purification', 'canano_curator', '2019-12-06 12:15:00'),
+       (1222, 1222, 1222, NULL, 'canano_curator', '2019-08-28 00:00:00');
 /*!40000 ALTER TABLE `purification_config`
     ENABLE KEYS */;
 UNLOCK TABLES;
@@ -6106,7 +6114,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `purification_config_instrument`;
 /*!40101 SET @saved_cs_client = @@character_set_client */;
-SET character_set_client = utf8;
+SET character_set_client = utf8mb4;
 CREATE TABLE `purification_config_instrument`
 (
     `purification_config_pk_id` bigint(20) NOT NULL COMMENT 'purification_config_pk_id',
@@ -6129,6 +6137,8 @@ LOCK TABLES `purification_config_instrument` WRITE;
 INSERT IGNORE INTO `purification_config_instrument` (`purification_config_pk_id`, `instrument_pk_id`)
 VALUES (1000, 1000),
        (1005, 1005),
+       (1111, 1111),
+       (1222, 1222),
        (1002, 28475412),
        (1001, 44793856),
        (1001, 62914561);
@@ -6142,7 +6152,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `purity_datum`;
 /*!40101 SET @saved_cs_client = @@character_set_client */;
-SET character_set_client = utf8;
+SET character_set_client = utf8mb4;
 CREATE TABLE `purity_datum`
 (
     `purity_datum_pk_id` bigint(20)      NOT NULL,
@@ -6173,7 +6183,8 @@ LOCK TABLES `purity_datum` WRITE;
     DISABLE KEYS */;
 INSERT IGNORE INTO `purity_datum` (`purity_datum_pk_id`, `name`, `value`, `value_type`, `value_unit`, `created_by`,
                                    `created_date`, `numberMod`, `purity_pk_id`, `file_pk_id`)
-VALUES (1000, 'Purity datum 1', 55.0000000000, 'purity', '%', 'canano_curator', '2019-12-06 12:15:00', '=', 1000, 1000);
+VALUES (1000, 'Purity datum 1', 55.0000000000, 'purity', '%', 'canano_curator', '2019-12-06 12:15:00', '=', 1000, 1000),
+       (1111, 'Purity datum 1', 55.0000000000, 'purity', '%', 'canano_curator', '2019-12-06 12:15:00', '=', 1111, 1111);
 /*!40000 ALTER TABLE `purity_datum`
     ENABLE KEYS */;
 UNLOCK TABLES;
@@ -6184,7 +6195,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `purity_datum_condition`;
 /*!40101 SET @saved_cs_client = @@character_set_client */;
-SET character_set_client = utf8;
+SET character_set_client = utf8mb4;
 CREATE TABLE `purity_datum_condition`
 (
     `datum_pk_id`     bigint(20)   NOT NULL COMMENT 'purity_datum_pk_id',
@@ -6213,7 +6224,8 @@ LOCK TABLES `purity_datum_condition` WRITE;
     DISABLE KEYS */;
 INSERT IGNORE INTO `purity_datum_condition` (`datum_pk_id`, `condition_pk_id`, `name`, `property`, `value`,
                                              `value_unit`, `value_type`, `created_by`, `created_date`)
-VALUES (1000, 1000, 'Synthesis condition 1', '', '42', 'g', 'observed', 'canano_user', '2019-12-06 12:15:00');
+VALUES (1000, 1000, 'Synthesis condition 1', '', '42', 'g', 'observed', 'canano_user', '2019-12-06 12:15:00'),
+       (1111, 1111, 'datum_test', NULL, '84', 'mg', 'observed', 'canano_curator', '2019-12-06 12:15:00');
 /*!40000 ALTER TABLE `purity_datum_condition`
     ENABLE KEYS */;
 UNLOCK TABLES;
@@ -6224,7 +6236,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `purity_file`;
 /*!40101 SET @saved_cs_client = @@character_set_client */;
-SET character_set_client = utf8;
+SET character_set_client = utf8mb4;
 CREATE TABLE `purity_file`
 (
     `purity_pk_id` bigint(200) NOT NULL COMMENT 'purity_pk_id',
@@ -6256,7 +6268,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `sample`;
 /*!40101 SET @saved_cs_client = @@character_set_client */;
-SET character_set_client = utf8;
+SET character_set_client = utf8mb4;
 CREATE TABLE `sample`
 (
     `sample_pk_id`          bigint(20)   NOT NULL,
@@ -6296,7 +6308,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `sample_other_poc`;
 /*!40101 SET @saved_cs_client = @@character_set_client */;
-SET character_set_client = utf8;
+SET character_set_client = utf8mb4;
 CREATE TABLE `sample_other_poc`
 (
     `sample_pk_id` bigint(20) NOT NULL,
@@ -6327,7 +6339,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `sample_publication`;
 /*!40101 SET @saved_cs_client = @@character_set_client */;
-SET character_set_client = utf8;
+SET character_set_client = utf8mb4;
 CREATE TABLE `sample_publication`
 (
     `sample_pk_id`      bigint(20) NOT NULL,
@@ -6357,7 +6369,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `sfe_inherent_function`;
 /*!40101 SET @saved_cs_client = @@character_set_client */;
-SET character_set_client = utf8;
+SET character_set_client = utf8mb4;
 CREATE TABLE `sfe_inherent_function`
 (
     `sfe_inherent_function_pk_id`               bigint(20) NOT NULL COMMENT 'sfe_inherent_function_pk_id',
@@ -6382,7 +6394,9 @@ INSERT IGNORE INTO `sfe_inherent_function` (`sfe_inherent_function_pk_id`, `synt
                                             `type`, `description`)
 VALUES (1000, 1000, 'biocompatibility', 'Synthesis Functionalization Material Inherent Function 1'),
        (1001, 1000, 'activation', 'Inherent Function 2'),
-       (1005, 1005, 'biocompatibility', '');
+       (1005, 1005, 'biocompatibility', ''),
+       (1111, 1111, 'biocompatibility', 'Synthesis Functionalization Material Inherent Function 1'),
+       (1222, 1222, 'biocompatibility', '');
 /*!40000 ALTER TABLE `sfe_inherent_function`
     ENABLE KEYS */;
 UNLOCK TABLES;
@@ -6393,7 +6407,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `shape`;
 /*!40101 SET @saved_cs_client = @@character_set_client */;
-SET character_set_client = utf8;
+SET character_set_client = utf8mb4;
 CREATE TABLE `shape`
 (
     `shape_pk_id`        bigint(20)   NOT NULL,
@@ -6427,7 +6441,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `small_molecule`;
 /*!40101 SET @saved_cs_client = @@character_set_client */;
-SET character_set_client = utf8;
+SET character_set_client = utf8mb4;
 CREATE TABLE `small_molecule`
 (
     `small_molecule_pk_id` bigint(20) NOT NULL,
@@ -6456,7 +6470,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `sme_inherent_function`;
 /*!40101 SET @saved_cs_client = @@character_set_client */;
-SET character_set_client = utf8;
+SET character_set_client = utf8mb4;
 CREATE TABLE `sme_inherent_function`
 (
     `sme_inherent_function_pk_id`      bigint(20) NOT NULL COMMENT 'sme_inherent_function_pk_id',
@@ -6493,7 +6507,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `solubility`;
 /*!40101 SET @saved_cs_client = @@character_set_client */;
-SET character_set_client = utf8;
+SET character_set_client = utf8mb4;
 CREATE TABLE `solubility`
 (
     `solubility_pk_id`            bigint(20) NOT NULL,
@@ -6525,7 +6539,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `supplier`;
 /*!40101 SET @saved_cs_client = @@character_set_client */;
-SET character_set_client = utf8;
+SET character_set_client = utf8mb4;
 CREATE TABLE `supplier`
 (
     `supplier_pk_id` bigint(20)   NOT NULL COMMENT 'supplier_pk_id',
@@ -6545,7 +6559,8 @@ LOCK TABLES `supplier` WRITE;
     DISABLE KEYS */;
 INSERT IGNORE INTO `supplier` (`supplier_pk_id`, `supplier_name`, `lot`)
 VALUES (1000, 'Synthesis supplier', 'ABC123xyz'),
-       (1005, 'Synthesis supplier', 'ABC123xyz');
+       (1005, 'Synthesis supplier', 'ABC123xyz'),
+       (1111, 'Synthesis supplier', 'ABC123xyz');
 /*!40000 ALTER TABLE `supplier`
     ENABLE KEYS */;
 UNLOCK TABLES;
@@ -6556,7 +6571,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `synthesis`;
 /*!40101 SET @saved_cs_client = @@character_set_client */;
-SET character_set_client = utf8;
+SET character_set_client = utf8mb4;
 CREATE TABLE `synthesis`
 (
     `synthesis_pk_id` bigint(20) NOT NULL COMMENT 'synthesis_pk_id',
@@ -6577,7 +6592,9 @@ LOCK TABLES `synthesis` WRITE;
     DISABLE KEYS */;
 INSERT IGNORE INTO `synthesis` (`synthesis_pk_id`, `sample_pk_id`)
 VALUES (1000, 1000),
-       (1005, 1005);
+       (1005, 1005),
+       (1111, 65634304),
+       (1222, 65634306);
 /*!40000 ALTER TABLE `synthesis`
     ENABLE KEYS */;
 UNLOCK TABLES;
@@ -6588,7 +6605,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `synthesis_functionalization`;
 /*!40101 SET @saved_cs_client = @@character_set_client */;
-SET character_set_client = utf8;
+SET character_set_client = utf8mb4;
 CREATE TABLE `synthesis_functionalization`
 (
     `synthesis_functionalization_pk_id` bigint(20)   NOT NULL COMMENT 'synthesis_functionalization_pk_id',
@@ -6616,8 +6633,12 @@ LOCK TABLES `synthesis_functionalization` WRITE;
     DISABLE KEYS */;
 INSERT IGNORE INTO `synthesis_functionalization` (`synthesis_functionalization_pk_id`, `synthesis_pk_id`,
                                                   `protocol_pk_id`, `description`, `created_date`, `created_by`, `type`)
-VALUES (1000, 1000, 1000, 'Synthesis Functionalization Test 1', '2019-12-06 12:15:00', 'canano_curator', NULL),
-       (1005, 1005, 1005,
+VALUES (1000, 1000, 66256896, 'Synthesis Functionalization Test 1', '2019-12-06 12:15:00', 'canano_curator', NULL),
+       (1005, 1005, 66256896,
+        'In order to produce PEG-capped AuNPs, various concentrations (3.6, 8.4, 16.8 and 25.2 ug per ml of as synthesized AuNP suspension) of 5,000 Mw PEG were added to the ‘as synthesized’ AuNP solutions at room temperature. After the required amount of PEG was added, the solution was stirred at room temperature for 2 h to allow for complete exchange of the citrate molecules with PEG.',
+        '2019-08-29 00:00:00', 'canano_curator', NULL),
+       (1111, 1111, 66256896, 'Synthesis Functionalization Test 1', '2019-12-06 12:15:00', 'canano_curator', NULL),
+       (1222, 1222, NULL,
         'In order to produce PEG-capped AuNPs, various concentrations (3.6, 8.4, 16.8 and 25.2 ug per ml of as synthesized AuNP suspension) of 5,000 Mw PEG were added to the ‘as synthesized’ AuNP solutions at room temperature. After the required amount of PEG was added, the solution was stirred at room temperature for 2 h to allow for complete exchange of the citrate molecules with PEG.',
         '2019-08-29 00:00:00', 'canano_curator', NULL);
 /*!40000 ALTER TABLE `synthesis_functionalization`
@@ -6630,7 +6651,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `synthesis_functionalization_element`;
 /*!40101 SET @saved_cs_client = @@character_set_client */;
-SET character_set_client = utf8;
+SET character_set_client = utf8mb4;
 CREATE TABLE `synthesis_functionalization_element`
 (
     `synthesis_functionalization_element_pk_id` bigint(20)   NOT NULL COMMENT 'synthesis_functionalization_element_pk_id',
@@ -6676,7 +6697,13 @@ VALUES (1000, 1000, 'kK-N12-C4-L', 'Hill', 'Synthesis Functionalization Material
        (1005, 1005, 'CH3(OCH2CH2)nOH', 'Hill',
         'Added to the as-synthesized AuNP solution to a concentration of 3.6 ug/mL', 'canano_curator',
         '2019-08-28 00:00:00', 'polyethylene glycol, 5000 MW', 3.600, 'ug', 'compound', 24887753, 'material',
-        'Does not require activation', NULL);
+        'Does not require activation', NULL),
+       (1111, 1111, 'kK-N12-C4-L', 'Hill', 'Synthesis Functionalization Material Element 1', 'canano_curator',
+        '2019-12-06 12:15:00', 'SynFuncMat Element1', 84.000, 'pg', NULL, NULL, 'material', NULL, NULL),
+       (1222, 1222, 'CH3(OCH2CH2)nOH', 'Hill',
+        'Added to the as-synthesized AuNP solution to a concentration of 3.6 ug/mL', 'canano_curator',
+        '2019-08-28 00:00:00', 'polyethylene glycol, 5000 MW', 3.600, 'ug', 'compound', 24887753, 'material', NULL,
+        NULL);
 /*!40000 ALTER TABLE `synthesis_functionalization_element`
     ENABLE KEYS */;
 UNLOCK TABLES;
@@ -6687,7 +6714,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `synthesis_functionalization_element_file`;
 /*!40101 SET @saved_cs_client = @@character_set_client */;
-SET character_set_client = utf8;
+SET character_set_client = utf8mb4;
 CREATE TABLE `synthesis_functionalization_element_file`
 (
     `synthesis_functionalization_element_pk_id` bigint(20) NOT NULL COMMENT 'synthesis_functionalization_element_file',
@@ -6719,7 +6746,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `synthesis_functionalization_file`;
 /*!40101 SET @saved_cs_client = @@character_set_client */;
-SET character_set_client = utf8;
+SET character_set_client = utf8mb4;
 CREATE TABLE `synthesis_functionalization_file`
 (
     `synthesis_functionalization_pk_id` bigint(20) NOT NULL COMMENT 'synthesis_material_pk_id',
@@ -6749,7 +6776,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `synthesis_material`;
 /*!40101 SET @saved_cs_client = @@character_set_client */;
-SET character_set_client = utf8;
+SET character_set_client = utf8mb4;
 CREATE TABLE `synthesis_material`
 (
     `synthesis_material_pk_id` bigint(20)   NOT NULL COMMENT 'synthesis_material_pk_id',
@@ -6776,8 +6803,12 @@ LOCK TABLES `synthesis_material` WRITE;
     DISABLE KEYS */;
 INSERT IGNORE INTO `synthesis_material` (`synthesis_material_pk_id`, `synthesis_pk_id`, `protocol_pk_id`, `description`,
                                          `created_date`, `created_by`)
-VALUES (1000, 1000, 1000, 'Synthesis test sample 1', '2019-12-06 12:15:00', 'canano_curator'),
+VALUES (1000, 1000, 66256896, 'Synthesis test sample 1', '2019-12-06 12:15:00', 'canano_curator'),
        (1005, 1005, NULL,
+        'Chloroauric acid solution (200 ml of 0.01wt.%) was heated to a rolling boil and refluxed in a 500-ml-round-bottom flask using a temperature-controlled hot plate with continuous stirring [4]. A 4.5-ml aliquot of 1 wt.% sodium citrate solution was then added to the boiling chloroauric acid solution, and the heating was continued under reflux for 15 min to enable complete reaction. The solution was then allowed to cool to room temperature with continuous stirring yielding citrate-capped AuNPs.',
+        '2019-08-28 00:00:00', 'canano_curator'),
+       (1111, 1111, 66256896, 'Synthesis test sample 1', '2019-12-06 12:15:00', 'canano_curator'),
+       (1222, 1222, NULL,
         'Chloroauric acid solution (200 ml of 0.01wt.%) was heated to a rolling boil and refluxed in a 500-ml-round-bottom flask using a temperature-controlled hot plate with continuous stirring [4]. A 4.5-ml aliquot of 1 wt.% sodium citrate solution was then added to the boiling chloroauric acid solution, and the heating was continued under reflux for 15 min to enable complete reaction. The solution was then allowed to cool to room temperature with continuous stirring yielding citrate-capped AuNPs.',
         '2019-08-28 00:00:00', 'canano_curator');
 /*!40000 ALTER TABLE `synthesis_material`
@@ -6790,7 +6821,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `synthesis_material_element`;
 /*!40101 SET @saved_cs_client = @@character_set_client */;
-SET character_set_client = utf8;
+SET character_set_client = utf8mb4;
 CREATE TABLE `synthesis_material_element`
 (
     `synthesis_material_element_pk_id` bigint(20)   NOT NULL COMMENT 'synthesis_material_element_pk_id',
@@ -6831,9 +6862,9 @@ VALUES (1000, 1000, 'AA-2x-zZ', 'Hill', 'Synthesis Material Element 1', 'canano_
         'Synthesis Chemical 1', 12.000, 'mg', 'compound', 6224, 1000, 'reagent'),
        (1051, 1005, 'HAuCl4 . 3H2O', 'Hill', '200 mL of 0.01 wt% gold precursor', 'canano_curator',
         '2019-08-28 00:00:00', 'chloroauric acid', 0.010, '%wt', 'compound', 44134746, NULL, 'composing element'),
-       (1052, 1005, 'C6H5Na3O7', 'Hill', '4.5 mL of 1 wt% sodium citrate solution', 'canano_curator',
+       (1052, 1222, 'C6H5Na3O7', 'Hill', '4.5 mL of 1 wt% sodium citrate solution', 'canano_curator',
         '2019-08-28 00:00:00', 'sodium citrate', 1.000, '%wt', 'compound', 6224, 1005, 'reagent'),
-       (1053, 1005, 'H2O', 'Hill', 'Solutions of chloroauric acid and sodium citrate were created with deionized water',
+       (1053, 1222, 'H2O', 'Hill', 'Solutions of chloroauric acid and sodium citrate were created with deionized water',
         'canano_curator', '2019-08-28 00:00:00', 'deionized water', 204.500, 'mL', 'substance', 962, NULL, 'solvent');
 /*!40000 ALTER TABLE `synthesis_material_element`
     ENABLE KEYS */;
@@ -6845,7 +6876,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `synthesis_material_element_file`;
 /*!40101 SET @saved_cs_client = @@character_set_client */;
-SET character_set_client = utf8;
+SET character_set_client = utf8mb4;
 CREATE TABLE `synthesis_material_element_file`
 (
     `synthesis_material_element_pk_id` bigint(20) NOT NULL COMMENT 'synthesis_material_element_pk_id',
@@ -6877,7 +6908,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `synthesis_material_file`;
 /*!40101 SET @saved_cs_client = @@character_set_client */;
-SET character_set_client = utf8;
+SET character_set_client = utf8mb4;
 CREATE TABLE `synthesis_material_file`
 (
     `synthesis_material_pk_id` bigint(20) NOT NULL COMMENT 'synthesis_material_pk_id',
@@ -6907,7 +6938,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `synthesis_purification`;
 /*!40101 SET @saved_cs_client = @@character_set_client */;
-SET character_set_client = utf8;
+SET character_set_client = utf8mb4;
 CREATE TABLE `synthesis_purification`
 (
     `synthesis_purification_pk_id` bigint(20)   NOT NULL COMMENT 'synthesis_purification_pk_id',
@@ -6939,11 +6970,17 @@ LOCK TABLES `synthesis_purification` WRITE;
 INSERT IGNORE INTO `synthesis_purification` (`synthesis_purification_pk_id`, `synthesis_pk_id`, `protocol_pk_id`,
                                              `type`, `method_name`, `design_method_description`, `created_by`,
                                              `created_date`, `yield`, `analysis`)
-VALUES (1000, 1000, 1000, 'Interim Purification', 'Synthesis Purification Method 1',
+VALUES (1000, 1000, 66256896, 'Interim Purification', 'Synthesis Purification Method 1',
         'Test entry for synthesis purification', 'canano_user', '2019-12-06 12:15:00', 84.700, 'Analysis for synth 1'),
-       (1001, 1000, 1000, 'Final Purification', 'Synthesis Purification Method 2', 'Test entry for final purification',
-        'canano_user', '2019-12-06 12:15:00', 99.540, 'Analysis for final purification'),
-       (1005, 1005, 1005, 'Interim Purification', 'Synthesis Purification Method 1',
+       (1001, 1000, 66256896, 'Final Purification', 'Synthesis Purification Method 2',
+        'Test entry for final purification', 'canano_user', '2019-12-06 12:15:00', 99.540,
+        'Analysis for final purification'),
+       (1005, 1005, 66256896, 'Interim Purification', 'Synthesis Purification Method 1',
+        'The AuNP solutions were then centrifuged using a Contifuge 17RS, Heraeus SEPATECH at 10,000 rpm for 90 min in 10 ml batches [28]. Of the supernatant, 9.9 ml was then decanted, leaving the AuNP pellet at the bottom of the centrifuge tube. The volume was then made back up to 10 ml by adding 9.9 ml of DI water and agitated. This centrifugal washing process was repeated again to remove any unattached PEG or other reactants.',
+        'canano_user', '2019-08-28 00:00:00', NULL, NULL),
+       (1111, 1111, 66256896, 'Interim Purification', 'Synthesis Purification Method 1',
+        'Test entry for synthesis purification', 'canano_user', '2019-12-06 12:15:00', 84.700, NULL),
+       (1222, 1222, 66256896, 'Interim Purification', 'Synthesis Purification Method 1',
         'The AuNP solutions were then centrifuged using a Contifuge 17RS, Heraeus SEPATECH at 10,000 rpm for 90 min in 10 ml batches [28]. Of the supernatant, 9.9 ml was then decanted, leaving the AuNP pellet at the bottom of the centrifuge tube. The volume was then made back up to 10 ml by adding 9.9 ml of DI water and agitated. This centrifugal washing process was repeated again to remove any unattached PEG or other reactants.',
         'canano_user', '2019-08-28 00:00:00', NULL, NULL);
 /*!40000 ALTER TABLE `synthesis_purification`
@@ -6956,7 +6993,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `synthesis_purity`;
 /*!40101 SET @saved_cs_client = @@character_set_client */;
-SET character_set_client = utf8;
+SET character_set_client = utf8mb4;
 CREATE TABLE `synthesis_purity`
 (
     `purity_pk_id`                 bigint(200)  NOT NULL COMMENT 'purity_pk_id',
@@ -6980,7 +7017,9 @@ LOCK TABLES `synthesis_purity` WRITE;
 INSERT IGNORE INTO `synthesis_purity` (`purity_pk_id`, `synthesis_purification_pk_id`, `created_by`, `created_date`)
 VALUES (1000, 1000, 'canano_curator', '2019-12-06 12:15:00'),
        (1002, 1000, 'canano_curator', '2019-08-28 00:00:00'),
-       (1005, 1005, 'canano_curator', '2019-08-28 00:00:00');
+       (1005, 1005, 'canano_curator', '2019-08-28 00:00:00'),
+       (1111, 1111, 'canano_curator', '2019-12-06 12:15:00'),
+       (1222, 1222, 'canano_curator', '2019-08-28 00:00:00');
 /*!40000 ALTER TABLE `synthesis_purity`
     ENABLE KEYS */;
 UNLOCK TABLES;
@@ -6991,7 +7030,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `target`;
 /*!40101 SET @saved_cs_client = @@character_set_client */;
-SET character_set_client = utf8;
+SET character_set_client = utf8mb4;
 CREATE TABLE `target`
 (
     `target_pk_id`             bigint(20)   NOT NULL,
@@ -7027,7 +7066,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `technique`;
 /*!40101 SET @saved_cs_client = @@character_set_client */;
-SET character_set_client = utf8;
+SET character_set_client = utf8mb4;
 CREATE TABLE `technique`
 (
     `technique_pk_id` bigint(20)   NOT NULL,
@@ -7050,6 +7089,8 @@ LOCK TABLES `technique` WRITE;
 INSERT IGNORE INTO `technique` (`technique_pk_id`, `type`, `abbreviation`, `created_date`, `created_by`)
 VALUES (1000, 'Interim purification technique', 'InP', '2019-12-06 12:15:00', 'safrant'),
        (1005, 'centrifugal filtration', NULL, '2018-08-28 00:00:00', 'safrant'),
+       (1111, 'Interim purification technique', 'InP', '2019-12-06 12:15:00', 'canano_curator'),
+       (1222, 'centrifugal filtration', NULL, '2018-08-28 00:00:00', 'canano_curator'),
        (65896448, 'polymerase chain reaction', 'PCR', '2020-01-08 19:18:01', 'canano_curator'),
        (66158592, 'colony counting', 'cc', '2020-01-09 23:03:07', 'canano_curator'),
        (66355200, 'coulter principle', 'coulter', '2020-01-10 13:26:14', 'canano_curator');
@@ -7063,7 +7104,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `users`;
 /*!40101 SET @saved_cs_client = @@character_set_client */;
-SET character_set_client = utf8;
+SET character_set_client = utf8mb4;
 CREATE TABLE `users`
 (
     `username`     varchar(100) NOT NULL,
@@ -7124,4 +7165,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION = @OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES = @OLD_SQL_NOTES */;
 
--- Dump completed on 2020-01-22 12:01:39
+-- Dump completed on 2020-03-03 16:57:46

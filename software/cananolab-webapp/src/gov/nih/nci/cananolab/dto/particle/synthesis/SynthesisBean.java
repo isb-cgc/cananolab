@@ -10,6 +10,7 @@ import gov.nih.nci.cananolab.util.Comparators;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -18,8 +19,8 @@ import java.util.TreeSet;
 
 public class SynthesisBean extends BaseCompositionEntityBean {
     public static final String FUNCTIONALIZATION_SELECTION = "synthesis functionalization";
-    public static final String MATERIALS_SELECTION = "synthesis materials";
-    public static final String PURIFICATION_SELECTION = "synthesis func purification";
+    public static final String MATERIALS_SELECTION = "synthesis material";
+    public static final String PURIFICATION_SELECTION = "synthesis purification";
 
     public static final String[] ALL_SYNTHESIS_SECTIONS = new String[] {
             FUNCTIONALIZATION_SELECTION, MATERIALS_SELECTION,
