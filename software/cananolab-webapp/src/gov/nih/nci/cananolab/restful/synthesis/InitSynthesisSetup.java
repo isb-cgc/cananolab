@@ -1,21 +1,21 @@
-package gov.nih.nci.cananolab.restful.sample;
+package gov.nih.nci.cananolab.restful.synthesis;
 
 import gov.nih.nci.cananolab.domain.common.Instrument;
 import gov.nih.nci.cananolab.dto.common.ExperimentConfigBean;
-import gov.nih.nci.cananolab.dto.common.PointOfContactBean;
 import gov.nih.nci.cananolab.dto.particle.synthesis.SynthesisBean;
 import gov.nih.nci.cananolab.dto.particle.synthesis.SynthesisFunctionalizationBean;
 import gov.nih.nci.cananolab.dto.particle.synthesis.SynthesisMaterialBean;
 import gov.nih.nci.cananolab.dto.particle.synthesis.SynthesisMaterialElementBean;
 import gov.nih.nci.cananolab.dto.particle.synthesis.SynthesisPurificationBean;
 import gov.nih.nci.cananolab.restful.core.InitSetup;
+import gov.nih.nci.cananolab.restful.protocol.InitProtocolSetup;
+import gov.nih.nci.cananolab.restful.sample.InitSampleSetup;
 import gov.nih.nci.cananolab.service.common.LookupService;
-import gov.nih.nci.cananolab.service.sample.SampleService;
-import gov.nih.nci.cananolab.util.ClassUtils;
 import gov.nih.nci.cananolab.util.StringUtils;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.SortedSet;
+import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 
 public class InitSynthesisSetup {
@@ -30,26 +30,44 @@ public class InitSynthesisSetup {
     }
 
 
-
-
-
+    /**
+     *
+     * @param request
+     * @throws Exception
+     */
     public void setSynthesisMaterialDropdowns(HttpServletRequest request) throws Exception {
         InitSampleSetup.getInstance().setSharedDropdowns(request);
 
+        ServletContext appContext = request.getSession().getServletContext();
         InitSetup.getInstance().getDefaultAndOtherTypesByLookup(request,
                 "materialTypes", "synthesis", "materialType",
-                "otherType", true);
+                "otherMaterialType", true);
 
         InitSetup.getInstance().getDefaultAndOtherTypesByLookup(request,
                 "pubchemDataSource", "pubchem", "data source",
                 "otherDataSource", true);
 
+        InitSetup.getInstance().getDefaultAndOtherTypesByLookup(request,"amountUnits", "material", "value_unit", "otherValueUnit", true);
 
-        SortedSet<String> materialTypes = LookupService.getDefaultAndOtherLookupTypes("synthesis","materialType","otherType");
-        List<String> sortedFormatted = new ArrayList<String>(materialTypes);
+        InitSetup.getInstance().getDefaultAndOtherTypesByLookup(request,"formulaTypes", "molecular formula", "type", "otherType", true);
+
+        InitSetup.getInstance().getDefaultAndOtherTypesByLookup(request,"inherentFunctionTypes", "function", "type", "otherType", true);
+
+        InitSetup.getInstance().getDefaultAndOtherTypesByLookup(request,"fileTypes", "file", "type", "otherType", true);
+
+
+
+//        SortedSet<String> materialTypes = LookupService.getDefaultAndOtherLookupTypes("synthesis","materialType","otherType");
+//        List<String> sortedFormatted = new ArrayList<String>(materialTypes);
 
     }
 
+    /**
+     *
+     * @param request
+     * @param synthesisMaterialBean
+     * @throws Exception
+     */
     public void persistSynthesisMaterialDropdowns(HttpServletRequest request, SynthesisMaterialBean synthesisMaterialBean) throws Exception{
 //        InitSetup.getInstance().persistLookup(request);
         InitSetup.getInstance().persistLookup(request, "synthesis", "materialType",
@@ -102,16 +120,19 @@ public class InitSynthesisSetup {
 
     }
 
-    public void setSynthesisPurificationDropdowns(HttpServletRequest request, SynthesisPurificationBean elementBean) throws Exception {
-        InitSetup.getInstance().persistLookup(request,
-                "purity type", "purityType",
-                "otherType", elementBean.getDomainEntity().getType());
+    public void setSynthesisPurificationDropdowns(HttpServletRequest request) throws Exception {
+
+        InitSetup.getInstance().getDefaultAndOtherTypesByLookup(request,
+                "purityTypes", "synthesis", "purityType",
+                "otherPurityType", true);
 
         InitSetup.getInstance().getDefaultAndOtherTypesByLookup(request,
                 "datumConditionValueTypes", "datum and condition", "valueType",
                 "otherValueType", true);
 
         setExperimentConfigDropDowns(request);
+
+
     }
 
     public void setExperimentConfigDropDowns(HttpServletRequest request)

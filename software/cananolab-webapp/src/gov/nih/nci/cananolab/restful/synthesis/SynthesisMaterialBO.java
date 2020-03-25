@@ -11,21 +11,15 @@ import gov.nih.nci.cananolab.domain.particle.SynthesisMaterialElement;
 import gov.nih.nci.cananolab.dto.common.FileBean;
 import gov.nih.nci.cananolab.dto.common.ProtocolBean;
 import gov.nih.nci.cananolab.dto.particle.SampleBean;
-import gov.nih.nci.cananolab.dto.particle.composition.NanomaterialEntityBean;
-import gov.nih.nci.cananolab.dto.particle.synthesis.SmeInherentFunctionBean;
 import gov.nih.nci.cananolab.dto.particle.synthesis.SynthesisBean;
 import gov.nih.nci.cananolab.dto.particle.synthesis.SynthesisMaterialBean;
 import gov.nih.nci.cananolab.dto.particle.synthesis.SynthesisMaterialElementBean;
-import gov.nih.nci.cananolab.exception.NoAccessException;
-import gov.nih.nci.cananolab.exception.ProtocolException;
 import gov.nih.nci.cananolab.exception.SynthesisException;
 import gov.nih.nci.cananolab.restful.core.BaseAnnotationBO;
 import gov.nih.nci.cananolab.restful.sample.InitSampleSetup;
-import gov.nih.nci.cananolab.restful.sample.InitSynthesisSetup;
 import gov.nih.nci.cananolab.restful.util.PropertyUtil;
 import gov.nih.nci.cananolab.restful.util.SynthesisUtil;
 import gov.nih.nci.cananolab.restful.view.edit.SimpleFileBean;
-import gov.nih.nci.cananolab.restful.view.edit.SimpleNanomaterialEntityBean;
 import gov.nih.nci.cananolab.restful.view.edit.SimpleProtocol;
 import gov.nih.nci.cananolab.restful.view.edit.SimpleSynthesisMaterialBean;
 import gov.nih.nci.cananolab.restful.view.edit.SimpleSynthesisMaterialElementBean;
@@ -41,15 +35,14 @@ import gov.nih.nci.cananolab.ui.form.SynthesisForm;
 import gov.nih.nci.cananolab.util.Constants;
 import gov.nih.nci.cananolab.util.DateUtils;
 import gov.nih.nci.cananolab.util.StringUtils;
-import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.IllegalFormatConversionException;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import javax.enterprise.inject.New;
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -59,7 +52,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
-import sun.text.resources.ro.JavaTimeSupplementary_ro;
+
 
 @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
 @Component("synthesisMaterialBO")
@@ -93,7 +86,7 @@ public class SynthesisMaterialBO extends BaseAnnotationBO {
         List<String> msgs;
         String sampleId = synMatBean.getSampleId();
         SynthesisMaterialBean entityBean = transferSynthesisMaterialBean(synMatBean, request);
-        SampleBean sampleBean = setupSampleById(sampleId, request);
+//        SampleBean sampleBean = setupSampleById(sampleId, request);
 //        List<String> otherSampleNames = synMatBean.getOtherSampleNames();
         msgs = validateInputs(request, entityBean);
         if (msgs.size() > 0) {
@@ -130,13 +123,9 @@ public class SynthesisMaterialBO extends BaseAnnotationBO {
 
         if((synMatBean.getId()!=null)&&(synMatBean.getId()>0)){
             material.setId(synMatBean.getId());
-            material.setCreatedBy(synMatBean.getCreatedBy());
-            material.setCreatedDate(synMatBean.getDate());
-        }  else {
-            //TODO see if there is a way to grab user directly
-            material.setCreatedBy(synMatBean.getCreatedBy());
-            material.setCreatedDate(synMatBean.getDate());
         }
+        material.setCreatedBy(synMatBean.getCreatedBy());
+        material.setCreatedDate(synMatBean.getDate());
 
         material.setDescription(synMatBean.getDescription());
         bean.setDescription(synMatBean.getDescription());
@@ -148,14 +137,10 @@ public class SynthesisMaterialBO extends BaseAnnotationBO {
         }
 
         //Add parent object to domain
-        Synthesis synthesis = null;
+        Synthesis synthesis;
         try{
             synthesis = synthesisService.getHelper().findSynthesisBySampleId(synMatBean.getSampleId());
             material.setSynthesis(synthesis);
-        }
-        catch (SynthesisException e) {
-            e.printStackTrace();
-            logger.error(e);
         }
         catch (Exception e) {
             e.printStackTrace();
@@ -201,7 +186,7 @@ public class SynthesisMaterialBO extends BaseAnnotationBO {
                 File testFile = testFileBean.getDomainFile();
             }
             bean.setFiles(fileBeanList);
-            material.setFiles(fileList);
+            material.setFileCollection(fileList);
         }
 
         //Set protocol for domain and bean
@@ -214,14 +199,11 @@ public class SynthesisMaterialBO extends BaseAnnotationBO {
                 material.setProtocol(protocol);
             }
         }
-        catch (ProtocolException e) {
+        catch (Exception e) {
             e.printStackTrace();
             logger.error(e);
         }
-        catch (NoAccessException e) {
-            e.printStackTrace();
-            logger.error(e);
-        }
+
 
 
         //Add synthesisMaterialElements to bean and domain
@@ -318,8 +300,6 @@ public class SynthesisMaterialBO extends BaseAnnotationBO {
         msgs = validateMaterialElements(request, msgs, entityBean);
         msgs = validateFile(request, msgs, entityBean);
 
-//        String debugString = "Debug";
-//        msgs.add(debugString);
         return msgs;
 
 
@@ -355,7 +335,7 @@ public class SynthesisMaterialBO extends BaseAnnotationBO {
         SampleBean sampleBean = setupSampleById(sampleId, request);
         CananoUserDetails userDetails = SpringSecurityUtil.getPrincipal();
 
-        Boolean newEntity = true;
+        boolean newEntity = true;
 
         try {
             entityBean.setUpDomainEntity(userDetails.getUsername());
@@ -423,8 +403,8 @@ public class SynthesisMaterialBO extends BaseAnnotationBO {
 
 //        FileBean theFile = new FileBean(simpleSynthesisMaterialBean.getFileBeingEdited());
         //TODO needs a better match
-        SimpleFileBean simpleFileBean = simpleSynthesisMaterialBean.getFileBeingEdited();
-        FileBean theFile = entityBean.getFile(simpleSynthesisMaterialBean.getFileBeingEdited().getId().toString());
+
+        FileBean theFile = entityBean.getFile(simpleSynthesisMaterialBean.getFileBeingEdited().getId());
         entityBean.removeFile(theFile);
 
         List<String> msgs = validateInputs(httpRequest, entityBean);
@@ -482,6 +462,7 @@ public class SynthesisMaterialBO extends BaseAnnotationBO {
             SimpleSynthesisMaterialBean simpleSynthesisMaterialBean = new SimpleSynthesisMaterialBean();
             simpleSynthesisMaterialBean.transferSynthesisMaterialBeanToSimple(synthesisMaterialBean, httpRequest,
                     springSecurityAclService);
+            simpleSynthesisMaterialBean.setProtocolLookup(httpRequest, protocolService);
             return simpleSynthesisMaterialBean;
         }
         catch (IllegalFormatConversionException e) {
@@ -588,9 +569,7 @@ public class SynthesisMaterialBO extends BaseAnnotationBO {
             msgs = validateInputs(httpServletRequest, entity);
             msgs2 = this.saveEntity(httpServletRequest, sampleId, entity);
             if(msgs2.size()>0){
-                for(String msg:msgs2){
-                    msgs.add(msg);
-                }
+                msgs.addAll(msgs2);
             }
             if (msgs.size() > 0) {
                 SimpleSynthesisMaterialBean simpleSynthesisMaterialBean_error = new SimpleSynthesisMaterialBean();
@@ -614,12 +593,19 @@ public class SynthesisMaterialBO extends BaseAnnotationBO {
         List<String> otherNames = InitSampleSetup.getInstance().getOtherSampleNames(request, sampleId, sampleService);
         this.setLookups(request);
         this.checkOpenForms(synthesisMaterialBean, request);
-        return SynthesisUtil.reformatLocalSearchDropdownsInSessionForSynthesisMaterial(request.getSession());
+        Map<String,Object> testLookup = new HashMap<String, Object>();
+        testLookup.put("protocolLookup", this.setProtocolLookup(request));
+        testLookup.putAll(SynthesisUtil.reformatLocalSearchDropdownsInSessionForSynthesisMaterial(request.getSession()));
+        return testLookup;
     }
 
     public void setLookups(HttpServletRequest request) throws Exception {
         ServletContext appContext = request.getSession().getServletContext();
+
+
+//        List<ProtocolBean> protocols = protocolService.getSynthesisProtocols(request);
         InitSynthesisSetup.getInstance().setSynthesisMaterialDropdowns(request);
+
 //        InitSetup.getInstance().getDefaultTypesByLookup(appContext,
 //                "wallTypes", "carbon nanotube", "wallType");
     }
@@ -628,6 +614,22 @@ public class SynthesisMaterialBO extends BaseAnnotationBO {
                                                               HttpServletRequest httpRequest) {
         //TODO write
         return null;
+    }
+
+    public List<SimpleProtocol> setProtocolLookup(HttpServletRequest request)
+            throws Exception {
+        List<SimpleProtocol> protocolLookup = new ArrayList<SimpleProtocol>();
+        List<ProtocolBean> protoBeans = protocolService.getSynthesisProtocols(request);
+
+        if (protoBeans == null)
+            return protocolLookup;
+
+        for (ProtocolBean protoBean : protoBeans) {
+            SimpleProtocol simpleProto = new SimpleProtocol();
+            simpleProto.transferFromProtocolBean(protoBean);
+            protocolLookup.add(simpleProto);
+        }
+        return protocolLookup;
     }
 
 

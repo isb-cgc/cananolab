@@ -72,4 +72,6 @@ public interface ProtocolService extends BaseService {
 	
 	List<ProtocolBean> getProtocolsByChar(HttpServletRequest request,
                                           String characterizationType) throws Exception;
+
+	List<ProtocolBean> getSynthesisProtocols(HttpServletRequest request) throws Exception;
 }

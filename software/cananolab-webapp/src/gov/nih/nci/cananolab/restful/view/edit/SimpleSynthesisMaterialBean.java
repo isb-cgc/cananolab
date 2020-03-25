@@ -5,10 +5,12 @@ import gov.nih.nci.cananolab.domain.particle.SmeInherentFunction;
 import gov.nih.nci.cananolab.domain.particle.SynthesisMaterial;
 import gov.nih.nci.cananolab.domain.particle.SynthesisMaterialElement;
 import gov.nih.nci.cananolab.dto.common.FileBean;
+import gov.nih.nci.cananolab.dto.common.ProtocolBean;
 import gov.nih.nci.cananolab.dto.particle.synthesis.SynthesisMaterialBean;
 import gov.nih.nci.cananolab.dto.particle.synthesis.SynthesisMaterialElementBean;
 import gov.nih.nci.cananolab.security.enums.SecureClassesEnum;
 import gov.nih.nci.cananolab.security.service.SpringSecurityAclService;
+import gov.nih.nci.cananolab.service.protocol.ProtocolService;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -22,6 +24,7 @@ public class SimpleSynthesisMaterialBean {
     String sampleId="";
     List<SimpleSynthesisMaterialElementBean> materialElements;
     List<SimpleFileBean> fileElements;
+    ArrayList<SimpleProtocol> protocolLookup;
     SimpleProtocol simpleProtocol;
     private String type;
     private String description;
@@ -250,5 +253,20 @@ public class SimpleSynthesisMaterialBean {
     
     private void setCreatedDate(Date date){
         this.date = date;
+    }
+
+    public void setProtocolLookup(HttpServletRequest request, ProtocolService protocolService)
+            throws Exception {
+        protocolLookup = new ArrayList<SimpleProtocol>();
+        List<ProtocolBean> protoBeans = protocolService.getSynthesisProtocols(request);
+
+        if (protoBeans == null)
+            return;
+
+        for (ProtocolBean protoBean : protoBeans) {
+            SimpleProtocol simpleProto = new SimpleProtocol();
+            simpleProto.transferFromProtocolBean(protoBean);
+            protocolLookup.add(simpleProto);
+        }
     }
 }

@@ -35,16 +35,22 @@ import javax.servlet.http.HttpServletRequest;
  *
  */
 public class InitSetup {
-
+	/**
+	 *
+	 */
 	private InitSetup() {
 	}
 
+	/**
+	 *
+	 * @return
+	 */
 	public static InitSetup getInstance() {
 		return new InitSetup();
 	}
 
 	/**
-	 * Queries and common_lookup table and creates a map in application context
+	 * Queries the common_lookup table and creates a map in application context
 	 *
 	 * @param appContext
 	 * @return
@@ -61,6 +67,7 @@ public class InitSetup {
 		}
 		return defaultLookupTable;
 	}
+
 
 	/**
 	 * Retrieve lookup Map from lookup table and store in the application
@@ -252,7 +259,16 @@ public class InitSetup {
 		return types;
 	}
 
-	// check whether the value is already stored in context
+	/**
+	 * check whether the value is already stored in context
+	 * @param request
+	 * @param lookupName
+	 * @param attribute
+	 * @param otherAttribute
+	 * @param value
+	 * @return
+	 * @throws BaseException
+	 */
 	private Boolean isLookupInContext(HttpServletRequest request,
 			String lookupName, String attribute, String otherAttribute,
 			String value) throws BaseException {
@@ -273,6 +289,15 @@ public class InitSetup {
 		}
     }
 
+	/**
+	 *
+	 * @param request
+	 * @param lookupName
+	 * @param attribute
+	 * @param otherAttribute
+	 * @param value
+	 * @throws BaseException
+	 */
 	public void persistLookup(HttpServletRequest request, String lookupName,
 			String attribute, String otherAttribute, String value)
 			throws BaseException {
@@ -291,6 +316,14 @@ public class InitSetup {
 		}
 	}
 
+	/**
+	 *
+	 * @param lookupName
+	 * @param lookupAttribute
+	 * @param otherTypeAttribute
+	 * @return
+	 * @throws Exception
+	 */
 	public List<LabelValueBean> getDefaultAndOtherTypesByLookupAsOptions(
 			String lookupName, String lookupAttribute, String otherTypeAttribute)
 			throws Exception {
@@ -332,6 +365,10 @@ public class InitSetup {
 		return lvBeans;
 	}
 
+	/**
+	 *
+	 * @param appContext
+	 */
 	public void setStaticOptions(ServletContext appContext) {
 		LabelValueBean[] booleanOptions = new LabelValueBean[] {
 				new LabelValueBean("true", "1"),
@@ -358,7 +395,11 @@ public class InitSetup {
 				new LabelValueBean("Ms.", "Ms.") };
 		appContext.setAttribute("titleOperands", titleOperands);
 	}
-	
+
+	/**
+	 *
+	 * @param appContext
+	 */
 	public void setPublicCountInContext(ServletContext appContext) {
 		PublicDataCountJob job=new PublicDataCountJob();
 		//job.queryPublicDataCounts();
