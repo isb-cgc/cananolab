@@ -1,22 +1,11 @@
 package gov.nih.nci.cananolab.service.sample.impl;
 
 import gov.nih.nci.cananolab.domain.common.File;
-import gov.nih.nci.cananolab.domain.particle.Sample;
-import gov.nih.nci.cananolab.domain.particle.SmeInherentFunction;
-import gov.nih.nci.cananolab.domain.particle.Synthesis;
-import gov.nih.nci.cananolab.domain.particle.SynthesisFunctionalization;
-import gov.nih.nci.cananolab.domain.particle.SynthesisMaterial;
-import gov.nih.nci.cananolab.domain.particle.SynthesisMaterialElement;
-import gov.nih.nci.cananolab.domain.particle.SynthesisPurification;
-import gov.nih.nci.cananolab.domain.particle.SynthesisPurity;
+import gov.nih.nci.cananolab.domain.particle.*;
 import gov.nih.nci.cananolab.dto.common.FileBean;
 import gov.nih.nci.cananolab.dto.common.PurityBean;
 import gov.nih.nci.cananolab.dto.particle.SampleBean;
-import gov.nih.nci.cananolab.dto.particle.synthesis.SynthesisBean;
-import gov.nih.nci.cananolab.dto.particle.synthesis.SynthesisFunctionalizationBean;
-import gov.nih.nci.cananolab.dto.particle.synthesis.SynthesisMaterialBean;
-import gov.nih.nci.cananolab.dto.particle.synthesis.SynthesisMaterialElementBean;
-import gov.nih.nci.cananolab.dto.particle.synthesis.SynthesisPurificationBean;
+import gov.nih.nci.cananolab.dto.particle.synthesis.*;
 
 import gov.nih.nci.cananolab.exception.CompositionException;
 import gov.nih.nci.cananolab.exception.NoAccessException;
@@ -46,7 +35,6 @@ import org.bouncycastle.util.test.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.method.P;
 import org.springframework.stereotype.Component;
-import sun.tools.jconsole.inspector.XObject;
 import sun.tools.tree.ThisExpression;
 
 @Component("synthesisService")
@@ -538,9 +526,252 @@ public class SynthesisServiceLocalImpl extends BaseServiceLocalImpl implements S
         }
     }
 
-
     public void saveSynthesisFunctionalization(SampleBean sampleBean, SynthesisFunctionalizationBean synthesisFunctionalizationBean) throws SynthesisException, NoAccessException {
-//TODO write
+        //TODO reduce dependence on synthesis opbject, rely on synthesisId instead
+        if (SpringSecurityUtil.getPrincipal() == null) {
+            throw new NoAccessException();
+        }
+        try{
+            Sample sample = sampleBean.getDomain();
+            if (!springSecurityAclService.currentUserHasWritePermission(sample.getId(),
+                    SecureClassesEnum.SAMPLE.getClazz())) {
+                throw new NoAccessException();
+            }
+            CaNanoLabApplicationService appService = (CaNanoLabApplicationService) ApplicationServiceProvider
+                    .getApplicationService();
+            SynthesisFunctionalization synthesisFunctionalization = synthesisFunctionalizationBean.getDomainEntity();
+            Boolean newEntity=true;
+            Boolean newSynthesis= true;
+            //Check if this is a new functionalization or an update of an existing
+            if (synthesisFunctionalization.getId() != null) {
+                newEntity = false;
+            }
+            //Make doubly sure that the entity hasn't been left cached in memory but already removed from database
+            try {
+                appService
+                        .load(SynthesisFunctionalization.class, synthesisFunctionalizationBean.getDomainEntity().getId());
+            }catch (Exception e) {
+                String err = "Object doesn't exist in the database anymore.  Please log in again.";
+                logger.error(err);
+                throw new SynthesisException(err, e);
+            }
+
+            Synthesis synthesis;
+            if(sample.getSynthesis()==null){
+                //This is a new synthesis.  We need to create it, as well as the functionalization
+                synthesis = createSynthesis(sampleBean);
+            } else {
+                synthesis = sample.getSynthesis();
+            }
+            synthesisFunctionalization.setSynthesis(synthesis);
+            System.out.println("MHL BEFORE synthesisFunctionalization.getSynthesis().getId()" );
+
+            if(!newEntity){
+                System.out.println("MHL synthesisFunctionalization.getSynthesis().getId(): " + synthesisFunctionalization.getSynthesis().getId() );
+                //Get the functionalization by id from database
+                Long test1 = synthesisFunctionalization.getSynthesis().getId();
+                Long test2 = synthesis.getId();
+                if(!synthesisFunctionalization.getSynthesis().getId().equals(synthesis.getId())){
+                    //something has gone wrong and the functionalization does not attach to the correct synthesis
+                    throw new SynthesisException("functionalization does not match synthesis", new Exception());
+                }
+
+            }
+                //We'll be adding or updating the functionalization in Synthesis
+
+                    //add functionalization to synthesis
+
+                    for(FileBean fileBean:synthesisFunctionalizationBean.getFiles()){
+                        fileUtils.prepareSaveFile(fileBean.getDomainFile());
+                    }
+                    //save
+
+            for(SynthesisFunctionalizationElementBean synthesisFunctionalizationElementBean: synthesisFunctionalizationBean.getSynthesisFunctionalizationElements()){
+                this.saveSynthesisFunctionalizationElement(synthesisFunctionalization,synthesisFunctionalizationElementBean);
+            }
+                    appService.saveOrUpdate(synthesisFunctionalization);
+
+                    for (FileBean fileBean : synthesisFunctionalizationBean.getFiles()) {
+                        fileUtils.writeFile(fileBean);
+                    }
+
+        }catch (NoAccessException e){
+            throw e;
+        } catch (Exception e){
+            String err = "Problem saving Synthesis Functionalization ";
+            logger.error(err, e);
+            throw new SynthesisException(err, e);
+        }
+    }
+
+    public void saveSynthesisFunctionalizationElement(SynthesisFunctionalization functionalization, SynthesisFunctionalizationElementBean synthesisFunctionalizationElementBean) throws SynthesisException {
+        try {
+            CaNanoLabApplicationService appService = (CaNanoLabApplicationService) ApplicationServiceProvider
+                    .getApplicationService();
+            SynthesisFunctionalizationElement synthesisFunctionalizationElement = synthesisFunctionalizationElementBean.getDomainEntity();
+            Boolean newEntity=true;
+            if(synthesisFunctionalizationElement.getId()!=null){
+                newEntity=false;
+            }
+
+            if(!newEntity){
+                //Get the functionalization by id from database
+                Long test1 = synthesisFunctionalizationElement.getSynthesisFunctionalization().getId();
+                Long test2 = functionalization.getId();
+                if(!test1.equals(test2)){
+                    //something has gone wrong and the functionalization does not attach to the correct synthesis
+                    throw new SynthesisException("element does not match functionalization", new Exception());
+                }
+
+            try {
+                appService
+                        .load(SynthesisFunctionalizationElement.class, synthesisFunctionalizationElementBean.getDomainEntity().getId());
+            }catch (Exception e) {
+                String err = "Object doesn't exist in the database anymore.  Please log in again.";
+                logger.error(err);
+                throw new SynthesisException(err, e);
+            }}
+
+            for(FileBean fileBean:synthesisFunctionalizationElementBean.getFiles()){
+                fileUtils.prepareSaveFile(fileBean.getDomainFile());
+            }
+            //TODO what will this do if there is no change
+            appService.saveOrUpdate(synthesisFunctionalizationElement);
+
+            for (FileBean fileBean : synthesisFunctionalizationElementBean.getFiles()) {
+                fileUtils.writeFile(fileBean);
+            }
+        }
+        catch (Exception e) {
+            String err = "Problem saving Synthesis Functionalization Element ";
+            logger.error(err, e);
+            throw new SynthesisException(err, e);
+        }
+    }
+
+
+    public void saveSynthesisFunctionalization00(SampleBean sampleBean, SynthesisFunctionalizationBean synthesisFunctionalizationBean) throws SynthesisException, NoAccessException {
+        if (SpringSecurityUtil.getPrincipal() == null) {
+            throw new NoAccessException();
+        }
+        try {
+            Sample sample = sampleBean.getDomain();
+            if (!springSecurityAclService.currentUserHasWritePermission(sample.getId(),
+                    SecureClassesEnum.SAMPLE.getClazz())) {
+                throw new NoAccessException();
+            }
+            CaNanoLabApplicationService appService = (CaNanoLabApplicationService) ApplicationServiceProvider
+                    .getApplicationService();
+            SynthesisFunctionalization synthesisFunctionalization = synthesisFunctionalizationBean.getDomainEntity();
+            Boolean newEntity = true;
+            Boolean newSynthesis = true;
+            //Check if this is a new functionalization or an update of an existing
+            if (synthesisFunctionalization.getId() != null) {
+                newEntity = false;
+            }
+            //Make doubly sure that the entity hasn't been left cached in memory but already removed from database
+            try {
+                appService
+                        .load(SynthesisFunctionalization.class, synthesisFunctionalizationBean.getDomainEntity().getId());
+            } catch (Exception e) {
+                String err = "Object doesn't exist in the database anymore.  Please log in again.";
+                logger.error(err);
+                throw new SynthesisException(err, e);
+            }
+
+            Synthesis synthesis;
+            if (sample.getSynthesis() == null) {
+                //This is a new synthesis.  We need to create it, as well as the functionalization
+                synthesis = createSynthesis(sampleBean);
+            } else {
+                synthesis = sample.getSynthesis();
+            }
+
+            if (!newEntity) {
+                //Get the functionalization by id from database
+                Long test1 = synthesisFunctionalization.getSynthesis().getId();
+                Long test2 = synthesis.getId();
+                if (!synthesisFunctionalization.getSynthesis().getId().equals(synthesis.getId())) {
+                    //something has gone wrong and the functionalization does not attach to the correct synthesis
+                    throw new SynthesisException("functionalization does not match synthesis", new Exception());
+                }
+
+            }
+            //We'll be adding or updating the functionalization in Synthesis
+
+            //add functionalization to synthesisF
+            synthesisFunctionalization.setSynthesis(synthesis);
+            for (FileBean fileBean : synthesisFunctionalizationBean.getFiles()) {
+                fileUtils.prepareSaveFile(fileBean.getDomainFile());
+            }
+
+            //save
+            for(SynthesisFunctionalizationElementBean synthesisFunctionalizationElementBean: synthesisFunctionalizationBean.getSynthesisFunctionalizationElements()){
+                this.saveSynthesisFunctionalizationElement(synthesisFunctionalization,synthesisFunctionalizationElementBean);
+            }
+
+            appService.saveOrUpdate(synthesisFunctionalization);
+
+            for (FileBean fileBean : synthesisFunctionalizationBean.getFiles()) {
+                fileUtils.writeFile(fileBean);
+            }
+
+        } catch (NoAccessException e) {
+            throw e;
+        } catch (Exception e) {
+            String err = "Problem saving Synthesis Functionalization";
+            logger.error(err, e);
+            throw new SynthesisException(err, e);
+
+        }
+
+    }
+
+    public void saveSynthesisFunctionalizationElement00(SynthesisFunctionalization functionalization, SynthesisFunctionalizationElementBean synthesisFunctionalizationElementBean) throws SynthesisException {
+        try {
+            CaNanoLabApplicationService appService = (CaNanoLabApplicationService) ApplicationServiceProvider
+                    .getApplicationService();
+            SynthesisFunctionalizationElement synthesisFunctionalizationElement = synthesisFunctionalizationElementBean.getDomainEntity();
+            Boolean newEntity=true;
+            if(synthesisFunctionalizationElement.getId()!=null){
+                newEntity=false;
+            }
+
+            if(!newEntity){
+                //Get the functionalization by id from database
+                Long test1 = synthesisFunctionalizationElement.getSynthesisFunctionalization().getId();
+                Long test2 = functionalization.getId();
+                if(!test1.equals(test2)){
+                    //something has gone wrong and the functionalization does not attach to the correct synthesis
+                    throw new SynthesisException("element does not match functionalization", new Exception());
+                }
+
+
+
+                try {
+                    appService
+                            .load(SynthesisFunctionalizationElement.class, synthesisFunctionalizationElementBean.getDomainEntity().getId());
+                }catch (Exception e) {
+                    String err = "Object doesn't exist in the database anymore.  Please log in again.";
+                    logger.error(err);
+                    throw new SynthesisException(err, e);
+                }}
+
+            for(FileBean fileBean:synthesisFunctionalizationElementBean.getFiles()){
+                fileUtils.prepareSaveFile(fileBean.getDomainFile());
+            }
+            //TODO what will this do if there is no change
+            appService.saveOrUpdate(synthesisFunctionalizationElement);
+
+            for (FileBean fileBean : synthesisFunctionalizationElementBean.getFiles()) {
+                fileUtils.writeFile(fileBean);
+            }
+        }
+        catch (Exception e) {
+            String err = "Problem saving Synthesis Functionalization Element ";
+            logger.error(err, e);
+            throw new SynthesisException(err, e);
+        }
     }
 
 
