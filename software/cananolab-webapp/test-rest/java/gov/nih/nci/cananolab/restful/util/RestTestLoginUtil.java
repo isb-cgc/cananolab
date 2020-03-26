@@ -103,7 +103,7 @@ public class RestTestLoginUtil {
 	}
 	
 	public static String readUserNameProperty() {
-		return PropertyUtils.getPropertyCached("local.properties", "user.name");
+		return PropertyUtils.getPropertyCached("resources/local.properties", "user.name");
 //		return PropertyUtils.getPropertyCached("local.properties", "user.name");
 	}
 

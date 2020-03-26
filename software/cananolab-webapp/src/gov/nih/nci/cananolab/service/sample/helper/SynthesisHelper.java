@@ -64,11 +64,13 @@ public class SynthesisHelper
 
     public Synthesis findSynthesisBySampleId(String sampleId) throws SynthesisException {
         try{
+            System.out.println("MHL 000 findSynthesisBySampleId: [" + sampleId + "]");
             Long id = new Long(sampleId);
             return findSynthesisBySampleId(id);
         }
         catch (Exception e) {
             logger.error("Sample id is not integer "+ sampleId);
+            logger.error("Exception: " + e.getMessage());
             throw new SynthesisException("Sample id is not integer", e);
         }
     }
@@ -78,6 +80,7 @@ public class SynthesisHelper
                 !springSecurityAclService.currentUserHasWritePermission(sampleId, SecureClassesEnum.SAMPLE.getClazz())) {
             throw new NoAccessException("User has no access to the sample " + sampleId);
         }
+
 
         Synthesis synthesis =null;
         CaNanoLabApplicationService appService = (CaNanoLabApplicationService) ApplicationServiceProvider.getApplicationService();
@@ -135,6 +138,9 @@ public class SynthesisHelper
         crit.setFetchMode("synthesisFunctionalizationElements.sfeInherentFunctions", FetchMode.JOIN);
         crit.setFetchMode("synthesisFunctionalizationElements.files", FetchMode.JOIN);
         crit.setFetchMode("synthesisFunctionalizationElements.files.keywordCollection", FetchMode.JOIN);
+
+        crit.setFetchMode("synthesisFunctionalizationElements.activationMethod", FetchMode.JOIN);
+        crit.setFetchMode("synthesisFunctionalizationElements.activationEffect", FetchMode.JOIN);
 
 
 //        crit.setFetchMode("synthesisFunctionalizations", FetchMode.JOIN);

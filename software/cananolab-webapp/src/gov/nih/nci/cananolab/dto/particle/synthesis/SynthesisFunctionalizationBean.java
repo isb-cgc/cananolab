@@ -2,19 +2,15 @@ package gov.nih.nci.cananolab.dto.particle.synthesis;
 
 import gov.nih.nci.cananolab.domain.common.File;
 import gov.nih.nci.cananolab.domain.common.PointOfContact;
-import gov.nih.nci.cananolab.domain.particle.Function;
-import gov.nih.nci.cananolab.domain.particle.SfeInherentFunction;
-import gov.nih.nci.cananolab.domain.particle.SynthesisFunctionalization;
-import gov.nih.nci.cananolab.domain.particle.SynthesisFunctionalizationElement;
+import gov.nih.nci.cananolab.domain.particle.*;
 import gov.nih.nci.cananolab.dto.common.FileBean;
+import gov.nih.nci.cananolab.dto.common.ProtocolBean;
 import gov.nih.nci.cananolab.util.ClassUtils;
 import gov.nih.nci.cananolab.util.Comparators;
 import gov.nih.nci.cananolab.util.Constants;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.List;
+
+import java.util.*;
+
 import org.apache.log4j.Logger;
 
 
@@ -22,6 +18,8 @@ public class SynthesisFunctionalizationBean  extends BaseSynthesisEntityBean {
     Logger logger = Logger.getLogger("SynthesisFunctionalizationBean.class");
     private SynthesisFunctionalization domainEntity;
     private boolean withProperties = false;
+    private ProtocolBean protocolBean = new ProtocolBean();
+
 //    private PointOfContact source = new PointOfContact();
 
     List<SynthesisFunctionalizationElementBean> synthesisFunctionalizationElements = new ArrayList<SynthesisFunctionalizationElementBean>();
@@ -30,7 +28,6 @@ public class SynthesisFunctionalizationBean  extends BaseSynthesisEntityBean {
         this.domainEntity=synthesisFunctionalization;
 
         if(synthesisFunctionalization.getSynthesisFunctionalizationElements()!=null){
- /*  @TODO  uncomment when synthesisFunctionalization.getSynthesisFunctionalizationElements() returns data  */
             for(SynthesisFunctionalizationElement synthesisFunctionalizationElement: synthesisFunctionalization.getSynthesisFunctionalizationElements()){
                 synthesisFunctionalizationElements.add(new SynthesisFunctionalizationElementBean(synthesisFunctionalizationElement));
             }
@@ -54,6 +51,64 @@ public class SynthesisFunctionalizationBean  extends BaseSynthesisEntityBean {
 
     }
 
+
+    public void setUpDomainEntity(String loggedInUserName)  throws Exception {
+        logger.debug("In SynthesisFunctionalizationBean.setupDomain");
+
+        //forms defaults Ids to 0, so need to check both null and 0
+        if(domainEntity.getId() !=null && domainEntity.getId()==0){
+            domainEntity.setId(null);
+        }
+
+        if(domainEntity.getId()==null){
+            logger.debug("call domain.setCreatedBy "+ loggedInUserName);
+            domainEntity.setCreatedBy(loggedInUserName);
+            domainEntity.setCreatedDate(Calendar.getInstance().getTime());
+        } else {
+            // updated created_by if created_by contains copy, but keep the original
+            // created_date
+            if(domainEntity.getCreatedBy()!=null&&domainEntity.getCreatedBy().contains(
+                    Constants.AUTO_COPY_ANNOTATION_PREFIX)){
+                domainEntity.setCreatedBy(loggedInUserName);
+            }
+        }
+
+        // clear the old domain functionalization elements in the domain
+        if(domainEntity.getSynthesisFunctionalizationElements() != null){
+            domainEntity.getSynthesisFunctionalizationElements().clear();
+        } else {
+            domainEntity.setSynthesisFunctionalizationElements(new HashSet<SynthesisFunctionalizationElement>());
+        }
+
+        //reset the domain functionalization elements to what is in the bean
+        for(SynthesisFunctionalizationElementBean synthesisFunctionalizationElement:synthesisFunctionalizationElements){
+            synthesisFunctionalizationElement.setupDomain(loggedInUserName);
+            domainEntity.addSynthesisFunctionalizationElement(synthesisFunctionalizationElement.getDomainEntity());
+        }
+
+
+        if (protocolBean != null && protocolBean.getDomain().getId() != null
+                && protocolBean.getDomain().getId().longValue() != 0) {
+            domainEntity.setProtocol(protocolBean.getDomain());
+        } else {
+            domainEntity.setProtocol(null);
+        }
+        domainEntity.getFiles();
+        if (files.isEmpty()) {
+            domainEntity.setFiles(null);
+        } else if (domainEntity.getFiles() != null) {
+            domainEntity.getFiles().clear();
+        } else {
+            domainEntity.setFiles(new HashSet<File>());
+        }
+        for (FileBean file : files) {
+            domainEntity.getFiles().add(file.getDomainFile());
+        }
+        domainEntity.setDescription(description);
+
+    }
+
+
     public SynthesisFunctionalization getDomainEntity() {
         return domainEntity;
     }
@@ -61,6 +116,11 @@ public class SynthesisFunctionalizationBean  extends BaseSynthesisEntityBean {
     public void setDomainEntity(SynthesisFunctionalization domainEntity) {
         this.domainEntity = domainEntity;
     }
+
+    public void setSynthesis(SynthesisBean synthesisBean){
+        this.domainEntity.setSynthesis(synthesisBean.getDomain());
+    }
+
 
 //    public PointOfContact getSource() {
 //        return source;
@@ -142,5 +202,21 @@ public class SynthesisFunctionalizationBean  extends BaseSynthesisEntityBean {
 
     public void setSynthesisFunctionalizationElements(List<SynthesisFunctionalizationElementBean> synthesisFunctionalizationElements) {
         this.synthesisFunctionalizationElements = synthesisFunctionalizationElements;
+    }
+
+    public Logger getLogger() {
+        return logger;
+    }
+
+    public void setLogger(Logger logger) {
+        this.logger = logger;
+    }
+
+    public ProtocolBean getProtocolBean() {
+        return protocolBean;
+    }
+
+    public void setProtocolBean(ProtocolBean protocolBean) {
+        this.protocolBean = protocolBean;
     }
 }
