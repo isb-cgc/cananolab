@@ -143,6 +143,8 @@ public class SimpleSynthesisBean {
                                 functionElement.put("FunctionType", smeBean.getType());
                                 functionElement.put("FunctionDisplayName", smeBean.getDisplayName());
                                 functionElement.put("FunctionId", smeBean.getDomain().getId());
+
+
                                 functions.add(functionElement);
                             }
                             materialElement.put("InherentFunctions", functions);
@@ -168,7 +170,7 @@ public class SimpleSynthesisBean {
         }
 
         //Add SynthesisFunctionalization
-        /* TODO write */
+        /* TODO write  */
         synthesisFunctionalization = new ArrayList<Map<String,Object>>();
         if(synBean.getSynthesisFunctionalizationBeanList() !=null){
             Map<String,Object> funcEntity;
@@ -199,8 +201,9 @@ public class SimpleSynthesisBean {
                         functionalizationElement.put("pubChemID", sfeBean.getDomain().getPubChemId());
                         functionalizationElement.put("pubChemLink", sfeBean.getPubChemLink());
                         functionalizationElement.put("pubChemDataSourceName", sfeBean.getDomain().getPubChemDatasourceName());
-                        functionalizationElement.put("ActivationMethod", sfeBean.getDomain().getActivationMethod());
-                        functionalizationElement.put("ActivationEffect", sfeBean.getDomain().getActivationEffect());
+                        functionalizationElement.put("activationEffect", sfeBean.getDomain().getActivationEffect());
+                        functionalizationElement.put("activationMethod", sfeBean.getDomain().getActivationMethod());
+
                         functionalizationElements.add(functionalizationElement);
                     }
                     funcEntity.put("FunctionalizationElements", functionalizationElements);

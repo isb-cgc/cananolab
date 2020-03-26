@@ -4,7 +4,7 @@ import gov.nih.nci.cananolab.domain.particle.SmeInherentFunction;
 import gov.nih.nci.cananolab.util.StringUtils;
 import java.util.Calendar;
 
-public class SmeInherentFunctionBean {
+public class  SmeInherentFunctionBean {
     private SmeInherentFunction domain;
 
     public SmeInherentFunctionBean() {

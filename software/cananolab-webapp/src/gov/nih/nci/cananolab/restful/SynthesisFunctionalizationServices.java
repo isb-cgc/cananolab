@@ -14,6 +14,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.*;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.Response;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
@@ -61,6 +62,7 @@ public class SynthesisFunctionalizationServices {
     @Path("/saveFile")
     @Produces ("application/json")
     public Response saveFile(@Context HttpServletRequest httpRequest, SimpleSynthesisFunctionalizationBean simpleSynthesisFunctionalizationBean) {
+
         try {
             SynthesisFunctionalizationBO synthesisFunctionalizationBO = (SynthesisFunctionalizationBO) SpringApplicationContext.getBean(httpRequest,"synthesisFunctionalizationBO");
             if (!SpringSecurityUtil.isUserLoggedIn())
@@ -72,8 +74,36 @@ public class SynthesisFunctionalizationServices {
                     Response.ok(synthesisFunctionalizationBean).build() :
                     Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(errors).build();
         } catch (Exception e){
-            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(CommonUtil.wrapErrorMessageInList("Error while saving the File" + e.getMessage())).build();
+            if( e.getMessage() == null){
+                System.out.println("MHL Exception getMessage is null");
+            }
+            e.printStackTrace();
+            System.err.println("MHL Exception: " + e.getLocalizedMessage());
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(CommonUtil.wrapErrorMessageInList("MHL 0002 Error while saving the File " + e.getMessage())).build();
         }
+    }
+
+    @POST
+    @Path("/saveSynthesisFunctionalizationElement")
+    @Produces ("application/json")
+    public Response saveSynthesisunctionalizationElement(@Context HttpServletRequest httpRequest, SimpleSynthesisFunctionalizationBean simpleSynthesisFunctionalizationBean) {
+       // return Response.status(Response.Status.OK).entity("ALL GOOD TEST").build();
+
+        try{
+            SynthesisFunctionalizationBO synthesisFunctionalizationBO = (SynthesisFunctionalizationBO) SpringApplicationContext.getBean(httpRequest, "synthesisFunctionalizationBO");
+            if(!SpringSecurityUtil.isUserLoggedIn())
+                return Response.status(Response.Status.UNAUTHORIZED).entity("Session expired").build();
+
+            SimpleSynthesisFunctionalizationBean synthesisFunctionalizationBean = synthesisFunctionalizationBO.saveFunctionalizationElement(simpleSynthesisFunctionalizationBean, httpRequest);
+
+            List<String> errors = synthesisFunctionalizationBean.getErrors();
+            return(errors ==null || errors.size()==0)?
+                    Response.ok(synthesisFunctionalizationBean).build(): Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(errors).build();
+
+        } catch(Exception e){
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity((CommonUtil.wrapErrorMessageInList("Error while saving Synthesis Material Element "+ e.getStackTrace()))).build();
+        }
+
     }
 
 
@@ -92,7 +122,7 @@ public class SynthesisFunctionalizationServices {
                     Response.ok(synthesisFunctionalizationBean).build() :
                     Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(errors).build();
         }catch (Exception e){
-            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(CommonUtil.wrapErrorMessageInList("Error while removing the File" + e.getMessage())).build();
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(CommonUtil.wrapErrorMessageInList("MHL Error while removing the File " + e.getMessage())).build();
 
         }
 
@@ -122,9 +152,62 @@ public class SynthesisFunctionalizationServices {
 
 
     @GET
+    @Path("/edit0")
+    @Produces ("application/json")
+    public Response edit0(@Context HttpServletRequest httpRequest, @DefaultValue("") @QueryParam("sampleId") String sampleId, @DefaultValue("") @QueryParam("dataId") String dataId) {
+
+        try {
+            SynthesisFunctionalizationBO simpleSynthesisFunctionalizationBO =
+                    (SynthesisFunctionalizationBO) SpringApplicationContext.getBean(httpRequest, "synthesisFunctionalizationBO");
+
+            if (!SpringSecurityUtil.isUserLoggedIn()) {
+                return Response.status(Response.Status.UNAUTHORIZED).entity(Constants.MSG_SESSION_INVALID).build();
+            }
+
+            SimpleSynthesisFunctionalizationBean bean = simpleSynthesisFunctionalizationBO.setupUpdate(sampleId, dataId, httpRequest);
+
+            List<String> errors = bean.getErrors();
+            return (errors == null || errors.size() == 0) ?
+                    Response.ok(bean).build() :
+                    Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(errors).build();
+
+        } catch (Exception e) {
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(CommonUtil.wrapErrorMessageInList("Error while viewing the synthesisFunctionalizationBO Entity" + e.getMessage())).build();
+        }
+    }
+
+    @GET
     @Path("/edit")
     @Produces ("application/json")
-    public Response edit(@Context HttpServletRequest httpRequest, @DefaultValue("") @QueryParam("sampleId") String sampleId, @DefaultValue("") @QueryParam("dataId") String dataId) {
+    public Response  edit(@Context HttpServletRequest httpRequest, @QueryParam("sampleId") String sampleId, @QueryParam("dataId") String dataId) {
+System.out.println("MHL IN edit ****************************");
+        try {
+            SynthesisFunctionalizationBO synthesisFunctionalizationBO =
+                    (SynthesisFunctionalizationBO) SpringApplicationContext.getBean(httpRequest, "synthesisFunctionalizationBO");
+            if (!SpringSecurityUtil.isUserLoggedIn())
+                return Response.status(Response.Status.UNAUTHORIZED)
+                        .entity("Session expired").build();
+
+            System.out.println("MHL 0001");
+            SimpleSynthesisFunctionalizationBean synth = synthesisFunctionalizationBO.setupUpdate(sampleId, dataId, httpRequest);
+
+            List<String> errors = synth.getErrors();
+            return (errors == null || errors.size() == 0) ?
+                    Response.ok(synth).build() :
+                    Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(errors).build();
+
+        } catch (Exception e) {
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(CommonUtil.wrapErrorMessageInList("Error while viewing the Synthesis Entity" + e.getMessage())).build();
+
+        }
+    }
+
+
+
+    @GET
+    @Path("/viewDetails")
+    @Produces ("application/json")
+    public Response viewDetails(@Context HttpServletRequest httpRequest, @DefaultValue("") @QueryParam("sampleId") String sampleId, @DefaultValue("") @QueryParam("dataId") String dataId) {
 
         try {
             SynthesisFunctionalizationBO simpleSynthesisFunctionalizationBO =
@@ -147,11 +230,6 @@ public class SynthesisFunctionalizationServices {
     }
 
 
-    @Path("/saveSynthesisFunctionalizationElement")
-    @Produces ("application/json")
-    public Response saveSynthesisunctionalizationElement(@Context HttpServletRequest httpRequest, SimpleSynthesisFunctionalizationBean simpleSynthesisFunctionalizationBean) {
-        return null;
-    }
 
 
 
@@ -174,12 +252,5 @@ public class SynthesisFunctionalizationServices {
     public Response delete(@Context HttpServletRequest httpRequest, SimpleSynthesisFunctionalizationBean simpleSynthesisFunctionalizationBean) {
         return null;
     }
-
-    @Path("/viewDetails")
-    @Produces ("application/json")
-    public Response viewDetails(@Context HttpServletRequest httpRequest, SimpleSynthesisFunctionalizationBean simpleSynthesisFunctionalizationBean) {
-        return null;
-    }
-
 
 }
