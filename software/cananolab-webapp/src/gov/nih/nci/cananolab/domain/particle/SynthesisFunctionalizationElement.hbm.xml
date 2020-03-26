@@ -6,8 +6,14 @@
 
     <class name="SynthesisFunctionalizationElement"
            table="synthesis_functionalization_element" >
-        <id name="id" column="synthesis_functionalization_element_pk_id" type="long"/>
-<!--        <property name="id" column="synthesis_functionalization_pk_id" type="string"/>-->
+
+        <id column="synthesis_functionalization_element_pk_id" name="id" type="long">
+            <generator class="hilo"/>
+        </id>
+
+        <!--        <property name="id" column="synthesis_functionalization_pk_id" type="string"/>-->
+
+
         <property name="molecularFormula" column="molecular_formula" type="string"/>
         <property name="molecularFormulaType" column="molecular_formula_type" type="string"/>
         <property name="description" column="description" type="string"/>
@@ -18,8 +24,10 @@
         <property name="valueUnit" column="value_unit" type="string"/>
         <property name="pubChemDatasourceName" column="pub_chem_datasource_name" type="string"/>
         <property name="pubChemId" column="pub_chem_id" type="long"/>
+
         <property name="activationMethod" column="activation_method" type="string"/>
         <property name="activationEffect" column="activation_effect" type="string"/>
+
         <many-to-one name="synthesisFunctionalization"
                      class="SynthesisFunctionalization">
             <column name="synthesis_functionalization_pk_id"/>
