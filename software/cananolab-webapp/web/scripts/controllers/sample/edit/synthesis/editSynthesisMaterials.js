@@ -7,7 +7,8 @@ var app = angular.module('angularApp')
   $scope.sampleId = $location.search()['sampleId'];  
   $scope.synMaterialId = $location.search()['synMaterialId'];
   $scope.showMaterialElementForm = false;
-  $scope.showInherentFunctionForm = false;
+  $scope.materialElementFormId = 0;
+  $scope.inherentFunctionFormId = 0;
   $scope.materialEditUrl = `/caNanoLab/rest/synthesisMaterial/edit?sampleId=${$scope.sampleId}&synMaterialId=${$scope.synMaterialId}`
   $scope.dropdowns = {};
 
@@ -15,11 +16,18 @@ var app = angular.module('angularApp')
   $scope.file = {}; // current file being edited //
   $scope.inherentFunction = {}; // current inherent function being edited //
 
+  $scope.showInherentFunctionForm = function(id) {
+    if ($scope.inherentFunctionId == id) {
+      return true;
+    }
+    else {
+      return false;
+    };
+  };
 
   $scope.openInherentFunction = function(id) {
-    if ($scope.showInherentFunctionForm == false) {
-      $scope.showInherentFunctionForm = true;
-    };
+      $scope.inherentFunction = {};
+      $scope.inherentFunctionFormId = id;
   }
   // opens material edit form //
   $scope.openMaterialEditForm = function(id,type) {
@@ -27,6 +35,8 @@ var app = angular.module('angularApp')
       for (var x=0; x<$scope.material.materialElements.length; x++) {
         if ($scope.material.materialElements[x]['id']==id) {
           $scope.materialElement = $scope.material.materialElements[x];
+          $scope.materialElementFormId = parseInt(id);
+          console.log(id, $scope.materialElementFormId);
         };
       };
     }

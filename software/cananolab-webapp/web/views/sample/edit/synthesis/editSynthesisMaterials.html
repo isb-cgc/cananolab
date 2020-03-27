@@ -1,3 +1,8 @@
+<!-- Current Material - {{material}}<br /><br />
+Current Material Element - {{materialElement}}<br /><br />
+Current Inherent function - {{inherentFunction}}<br /><br />
+Current File - {{file}}<br /> -->
+
 <div class="spacer">
     <form novalidate="" class="ng-pristine ng-valid">
         <table class="contentTitle" width="100%" border="0" summary="layout">
@@ -68,14 +73,14 @@
                         <td colspan="2">
                             <table class="editTableWithGrid" align="center" width="95%">
                                 <tbody>
-                                    <tr ng-repeat="me in material.materialElements">
+                                    <tr ng-repeat-start="me in material.materialElements">
                                         <td width="10%"><label>Material Type</label></td>
                                         <td width="80%">{{me.type}}</td>
                                         <td width="10%">
                                             <button type="button" class="btn btn-primary btn-xs ng-click-active" ng-click="openMaterialEditForm(me.id)">Edit</button>
-                                        </td>
                                     </tr>
-                                    <tr ng-repeat-end ng-show="showMaterialElementForm"> <!-- add index here and add index to show form. only show current index form. close all first -->
+                                    <tr ng-repeat-end ng-show="materialElementFormId===me.id">
+                                        <!-- add index here and add index to show form. only show current index form. close all first -->
                                         <td colspan="3">
                                             <table class="editTableWithGrid" align="center" width="95%">
                                                 <tr>
@@ -83,8 +88,7 @@
                                                         <label>Material Type</label>
                                                     </td>
                                                     <td>
-                                                        <select>
-                                                            <option>{{materialElement.type}}</option>
+                                                        <select ng-model="materialElement.type" ng-options="o as o for o in dropdowns.materialTypes">
                                                         </select>
                                                     </td>
                                                 </tr>
@@ -111,7 +115,7 @@
                                                 <tr>
                                                     <td width="10%"><label>Amount Unit</label></td>
                                                     <td width="90%" colspan="2">
-                                                        <select>
+                                                        <select ng-model="materialElement.valueUnit" ng-options="o as o for o in dropdowns.amountUnits">
                                                             <option>mg</option>
                                                         </select>
                                                     </td>
@@ -119,7 +123,7 @@
                                                 <tr>
                                                     <td width="10%"><label>Molecular Formula Type</label></td>
                                                     <td width="90%" colspan="2">
-                                                        <select>
+                                                        <select ng-model="materialElement.molecularFormulaType" ng-options="o as o for o in dropdowns.formulaTypes">
                                                             <option>Hill</option>
                                                         </select>
                                                     </td>
@@ -161,20 +165,24 @@
                                                             <table class="editTableWithGrid" align="center" width="95%">
                                                                 <tr>
                                                                     <td width="15%"><label>Type</label></td>
-                                                                    <td width="75%">{{i.type}}</td>
+                                                                    <td width="75%">
+                                                                        {{i.type}}
+                                                                    </td>
                                                                     <td width="10%"><button type="button" class="btn btn-primary btn-xs ng-click-active" ng-click="openInherentFunction(i.id)">Edit</button></td>
                                                                 </tr>
                                                                 <tr>
                                                                     <td width="15%"><label>Description</label></td>
                                                                     <td width="85%" colspan="2">{{i.description}}</td>
                                                                 </tr>
-                                                                <tr ng-show="showInherentFunctionForm">
+                                                                <tr ng-show="inherentFunctionFormId==i.id">
                                                                     <td colspan="3">
                                                                         <table class="editTableWithGrid" align="center" width="95%">
                                                                             <tr>
                                                                                 <td width="15%"><label>Type</label></td>
                                                                                 <td width="85%">
-                                                                                    <input type="text" data-ng-model="i.type" value="i.type">
+                                                                                    <select ng-model="i.type" ng-options="o as o for o in dropdowns.inherentFunctionTypes">
+                                                                                    
+                                                                                    </select>
                                                                                 </td>
                                                                             </tr>
                                                                             <tr>
