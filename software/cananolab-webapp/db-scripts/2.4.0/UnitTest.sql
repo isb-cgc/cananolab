@@ -6671,8 +6671,8 @@ CREATE TABLE `synthesis_functionalization_element`
     `activation_method`                         varchar(200)   DEFAULT NULL,
     `activation_effect`                         text,
     PRIMARY KEY (`synthesis_functionalization_element_pk_id`),
-    KEY `FK_synthesis_material_TO_synthesis_functionalization_element` (`synthesis_functionalization_pk_id`),
-    CONSTRAINT `FK_synthesis_material_TO_synthesis_functionalization_element` FOREIGN KEY (`synthesis_functionalization_pk_id`) REFERENCES `synthesis_functionalization` (`synthesis_functionalization_pk_id`)
+    CONSTRAINT  `FK_synthesis_funct_TO_synthesis_functionalization_element` FOREIGN KEY (`synthesis_functionalization_pk_id`)
+        REFERENCES `synthesis_functionalization` (`synthesis_functionalization_pk_id`)
 ) ENGINE = InnoDB
   DEFAULT CHARSET = latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -6697,13 +6697,13 @@ VALUES (1000, 1000, 'kK-N12-C4-L', 'Hill', 'Synthesis Functionalization Material
         NULL),
        (1005, 1005, 'CH3(OCH2CH2)nOH', 'Hill',
         'Added to the as-synthesized AuNP solution to a concentration of 3.6 ug/mL', 'canano_curator',
-        '2019-08-28 00:00:00', 'polyethylene glycol, 5000 MW', 3.600, 'ug', 'compound', 24887753, 'material',
+        '2019-08-28 00:00:00', 'polyethylene glycol, 5000 MW', 3.600, 'ug', 'Compound', 24887753, 'material',
         'Does not require activation', NULL),
        (1111, 1111, 'kK-N12-C4-L', 'Hill', 'Synthesis Functionalization Material Element 1', 'canano_curator',
         '2019-12-06 12:15:00', 'SynFuncMat Element1', 84.000, 'pg', NULL, NULL, 'material', NULL, NULL),
        (1222, 1222, 'CH3(OCH2CH2)nOH', 'Hill',
         'Added to the as-synthesized AuNP solution to a concentration of 3.6 ug/mL', 'canano_curator',
-        '2019-08-28 00:00:00', 'polyethylene glycol, 5000 MW', 3.600, 'ug', 'compound', 24887753, 'material', NULL,
+        '2019-08-28 00:00:00', 'polyethylene glycol, 5000 MW', 3.600, 'ug', 'Compound', 24887753, 'material', NULL,
         NULL);
 /*!40000 ALTER TABLE `synthesis_functionalization_element`
     ENABLE KEYS */;
@@ -6860,11 +6860,11 @@ INSERT IGNORE INTO `synthesis_material_element` (`synthesis_material_element_pk_
                                                  `created_by`, `created_date`, `chemical_name`, `value`, `value_unit`,
                                                  `pub_chem_datasource_name`, `pub_chem_id`, `supplier_pk_id`, `type`)
 VALUES (1000, 1000, 'AA-2x-zZ', 'Hill', 'Synthesis Material Element 1', 'canano_curator', '2019-12-06 12:15:00',
-        'Synthesis Chemical 1', 12.000, 'mg', 'compound', 6224, 1000, 'reagent'),
+        'Synthesis Chemical 1', 12.000, 'mg', 'Compound', 6224, 1000, 'reagent'),
        (1051, 1005, 'HAuCl4 . 3H2O', 'Hill', '200 mL of 0.01 wt% gold precursor', 'canano_curator',
-        '2019-08-28 00:00:00', 'chloroauric acid', 0.010, '%wt', 'compound', 44134746, NULL, 'composing element'),
+        '2019-08-28 00:00:00', 'chloroauric acid', 0.010, '%wt', 'Compound', 44134746, NULL, 'composing element'),
        (1052, 1222, 'C6H5Na3O7', 'Hill', '4.5 mL of 1 wt% sodium citrate solution', 'canano_curator',
-        '2019-08-28 00:00:00', 'sodium citrate', 1.000, '%wt', 'compound', 6224, 1005, 'reagent'),
+        '2019-08-28 00:00:00', 'sodium citrate', 1.000, '%wt', 'Compound', 6224, 1005, 'reagent'),
        (1053, 1222, 'H2O', 'Hill', 'Solutions of chloroauric acid and sodium citrate were created with deionized water',
         'canano_curator', '2019-08-28 00:00:00', 'deionized water', 204.500, 'mL', 'substance', 962, NULL, 'solvent');
 /*!40000 ALTER TABLE `synthesis_material_element`
@@ -6929,9 +6929,13 @@ CREATE TABLE `synthesis_material_file`
 LOCK TABLES `synthesis_material_file` WRITE;
 /*!40000 ALTER TABLE `synthesis_material_file`
     DISABLE KEYS */;
+INSERT IGNORE INTO `synthesis_material_file` (`synthesis_material_pk_id`, `file_pk_id`)
+VALUES (1000, 1000),
+       (1005,1005);
 /*!40000 ALTER TABLE `synthesis_material_file`
     ENABLE KEYS */;
 UNLOCK TABLES;
+
 
 --
 -- Table structure for table `synthesis_purification`
