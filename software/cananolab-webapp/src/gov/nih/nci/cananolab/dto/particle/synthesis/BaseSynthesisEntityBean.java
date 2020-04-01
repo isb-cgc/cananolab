@@ -14,8 +14,7 @@ public class BaseSynthesisEntityBean {
     protected String description;
     protected String type, displayName;
     protected List<FileBean> files = new ArrayList<FileBean>();
-    protected String activationMethod;
-    protected String activationEffect;
+
 
     public String getDescription() {
         return description;
@@ -43,21 +42,7 @@ public class BaseSynthesisEntityBean {
         this.description = description;
     }
 
-    public String getActivationMethod() {
-        return activationMethod;
-    }
 
-    public void setActivationMethod(String activationMethod) {
-        this.activationMethod = activationMethod;
-    }
-
-    public String getActivationEffect() {
-        return activationEffect;
-    }
-
-    public void setActivationEffect(String activationEffect) {
-        this.activationEffect = activationEffect;
-    }
 
     public String getType() {
         return type;

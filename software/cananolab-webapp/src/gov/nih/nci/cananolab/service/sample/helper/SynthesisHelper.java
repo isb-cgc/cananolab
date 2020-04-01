@@ -139,8 +139,8 @@ public class SynthesisHelper
         crit.setFetchMode("synthesisFunctionalizationElements.files", FetchMode.JOIN);
         crit.setFetchMode("synthesisFunctionalizationElements.files.keywordCollection", FetchMode.JOIN);
 
-        crit.setFetchMode("synthesisFunctionalizationElements.activationMethod", FetchMode.JOIN);
-        crit.setFetchMode("synthesisFunctionalizationElements.activationEffect", FetchMode.JOIN);
+//        crit.setFetchMode("synthesisFunctionalizationElements.activationMethod", FetchMode.JOIN);
+//        crit.setFetchMode("synthesisFunctionalizationElements.activationEffect", FetchMode.JOIN);
 
 
 //        crit.setFetchMode("synthesisFunctionalizations", FetchMode.JOIN);
@@ -294,4 +294,20 @@ public class SynthesisHelper
         return fileCollection;
 
     }
+
+    //TODO retrieve list of Supplier names
+    public List<String> getAllSupplierNames() throws Exception {
+        CaNanoLabApplicationService appService = (CaNanoLabApplicationService) ApplicationServiceProvider.getApplicationService();
+        HQLCriteria crit = new HQLCriteria("select distinct supplierName from gov.nih.nci.cananolab.domain.common.Supplier");
+        List results = appService.query(crit);
+        List<String> supplierNames = new ArrayList<String>();
+        for(int i = 0; i< results.size();i++){
+            String supplier_name = (String) results.get(i).toString();
+            supplierNames.add(supplier_name);
+        }
+        return supplierNames;
+    }
+
+
+
 }

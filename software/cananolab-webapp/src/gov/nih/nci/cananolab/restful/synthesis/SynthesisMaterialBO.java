@@ -95,6 +95,8 @@ public class SynthesisMaterialBO extends BaseAnnotationBO {
         this.saveEntity(request, sampleId, entityBean);
         InitSynthesisSetup.getInstance().persistSynthesisMaterialDropdowns(
                 request, entityBean);
+
+        //TODO check if this is a new supplier?
 //        SampleBean[] otherSampleBeans = null;
 //        if (otherSampleNames != null) {
 //            otherSampleBeans = prepareCopy(request, otherSampleNames, sampleBean);
@@ -596,6 +598,8 @@ public class SynthesisMaterialBO extends BaseAnnotationBO {
         Map<String,Object> testLookup = new HashMap<String, Object>();
         testLookup.put("protocolLookup", this.setProtocolLookup(request));
         testLookup.putAll(SynthesisUtil.reformatLocalSearchDropdownsInSessionForSynthesisMaterial(request.getSession()));
+        List<String> supplierNames = synthesisService.getSupplierNames();
+        testLookup.put("supplierNames",supplierNames);
         return testLookup;
     }
 
@@ -631,6 +635,8 @@ public class SynthesisMaterialBO extends BaseAnnotationBO {
         }
         return protocolLookup;
     }
+
+
 
 
 }
