@@ -11,6 +11,7 @@ import gov.nih.nci.cananolab.restful.core.InitSetup;
 import gov.nih.nci.cananolab.restful.protocol.InitProtocolSetup;
 import gov.nih.nci.cananolab.restful.sample.InitSampleSetup;
 import gov.nih.nci.cananolab.service.common.LookupService;
+import gov.nih.nci.cananolab.service.sample.SynthesisService;
 import gov.nih.nci.cananolab.util.StringUtils;
 import java.util.ArrayList;
 import java.util.List;
@@ -197,7 +198,6 @@ public class InitSynthesisSetup {
         request.getSession().setAttribute("charDatumNames", allDatumNames);
         return allDatumNames;
     }
-
 
 
 }

@@ -14,6 +14,7 @@ import gov.nih.nci.cananolab.exception.NoAccessException;
 import gov.nih.nci.cananolab.exception.SynthesisException;
 import gov.nih.nci.cananolab.service.BaseService;
 import gov.nih.nci.cananolab.service.sample.helper.SynthesisHelper;
+import java.util.List;
 
 public interface SynthesisService extends BaseService {
     void copyAndSaveSynthesisFunctionalization(SynthesisFunctionalizationBean entityBean, SampleBean oldSampleBean,
@@ -57,4 +58,6 @@ public interface SynthesisService extends BaseService {
     void saveSynthesisPurification(SampleBean sampleBean, SynthesisPurificationBean synthesisPurificationBean) throws SynthesisException, NoAccessException;
 
     void saveSynthesisPurity(PurityBean synthesisPurityBean, SynthesisPurificationBean synthesisPurificationBean) throws SynthesisException;
+
+    List<String> getSupplierNames() throws SynthesisException;
 }

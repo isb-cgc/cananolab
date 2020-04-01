@@ -41,7 +41,8 @@ public class SynthesisUtil {
         if (types != null)
             typeMap.put("fileTypes", new ArrayList<String>(types));
 
-        //TODO Supplier Name - currently free form text
+        //TODO Supplier Name - currently free form text. include [other]
+
 
 
 

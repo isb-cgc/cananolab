@@ -931,22 +931,33 @@ public class SynthesisServiceLocalImpl extends BaseServiceLocalImpl implements S
     }
 
 
-    public SortedSet<String> getSupplierNames() throws Exception
-    {
-        try {
-            SortedSet<String> names = new TreeSet<String>(new Comparators.SortableNameComparator());
-            CaNanoLabApplicationService appService = (CaNanoLabApplicationService) ApplicationServiceProvider.getApplicationService();
-            HQLCriteria crit = new HQLCriteria("select org.name from gov.nih.nci.cananolab.domain.common.Organization org");
-            List results = appService.query(crit);
+//    public SortedSet<String> getSupplierNames() throws Exception
+//    {
+//        try {
+//            SortedSet<String> names = new TreeSet<String>(new Comparators.SortableNameComparator());
+//            CaNanoLabApplicationService appService = (CaNanoLabApplicationService) ApplicationServiceProvider.getApplicationService();
+//            HQLCriteria crit = new HQLCriteria("select org.name from gov.nih.nci.cananolab.domain.common.Organization org");
+//            List results = appService.query(crit);
+//
+//            logger.debug("Completed select org.name from gov.nih.nci.cananolab.domain.common.Organization org");
+//            for (int i = 0; i < results.size(); i++){
+//                String name = ((String) results.get(i)).trim();
+//                names.add(name);
+//            }
+//            return names;
+//        } catch (Exception e) {
+//            String err = "Error finding suppliers for " + SpringSecurityUtil.getLoggedInUserName();
+//            logger.error(err, e);
+//            throw new SynthesisException(err, e);
+//        }
+//    }
 
-            logger.debug("Completed select org.name from gov.nih.nci.cananolab.domain.common.Organization org");
-            for (int i = 0; i < results.size(); i++){
-                String name = ((String) results.get(i)).trim();
-                names.add(name);
-            }
-            return names;
-        } catch (Exception e) {
-            String err = "Error finding suppliers for " + SpringSecurityUtil.getLoggedInUserName();
+    public List<String> getSupplierNames() throws SynthesisException {
+        try {
+            return synthesisHelper.getAllSupplierNames();
+        }
+        catch (Exception e) {
+            String err = "Error finding suppliers ";
             logger.error(err, e);
             throw new SynthesisException(err, e);
         }

@@ -1,20 +1,20 @@
 <?xml version='1.0' encoding='utf-8'?>
 <!DOCTYPE hibernate-mapping PUBLIC
-    "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
-    "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
 <hibernate-mapping package="gov.nih.nci.cananolab.domain.particle">
     <class name="SmeInherentFunction" table="sme_inherent_function">
         <id name="id" column="sme_inherent_function_pk_id" type="long">
             <generator class="hilo">
-            <param name="table">hibernate_unique_key</param>
-         <param name="column">next_hi</param>
-        </generator>
-    </id>
+                <param name="table">hibernate_unique_key</param>
+                <param name="column">next_hi</param>
+            </generator>
+        </id>
         <property name="type" column="type" type="string"/>
         <property name="description" column="description" type="string"/>
         <many-to-one name="synthesisMaterialElement"
-                     fetch="select"  class="SynthesisMaterialElement">
-            <column name="synthesis_material_element_pk_id"  not-null="true"/>
+                     fetch="select" class="SynthesisMaterialElement">
+            <column name="synthesis_material_element_pk_id" not-null="true"/>
         </many-to-one>
     </class>
 </hibernate-mapping>
