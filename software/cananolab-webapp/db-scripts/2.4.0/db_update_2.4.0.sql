@@ -218,7 +218,7 @@ CREATE TABLE `canano`.`synthesis_functionalization_element`
     `activation_method`                         VARCHAR(200) DEFAULT NULL,
     `activation_effect`                         TEXT,
     PRIMARY KEY (`synthesis_functionalization_element_pk_id`),
-    CONSTRAINT  `FK_synthesis_material_TO_synthesis_functionalization_element` FOREIGN KEY (`synthesis_functionalization_pk_id`)
+    CONSTRAINT  `FK_synthesis_funct_TO_synthesis_functionalization_element` FOREIGN KEY (`synthesis_functionalization_pk_id`)
         REFERENCES `synthesis_functionalization` (`synthesis_functionalization_pk_id`)
 );
 
@@ -246,7 +246,7 @@ CREATE TABLE `canano`.`sfe_inherent_function`
     `type`                                      VARCHAR(200) NULL COMMENT 'type',
     `description`                               TEXT         NULL COMMENT 'description',
     PRIMARY KEY (`sfe_inherent_function_pk_id`),
-    CONSTRAINT FOREIGN KEY `FK_synthesis_material_element_TO_sfe_inherent_function` (`synthesis_functionalization_element_pk_id`)
+    CONSTRAINT FOREIGN KEY `FK_synthesis_functionalization_element_TO_sfe_inherent_function` (`synthesis_functionalization_element_pk_id`)
         REFERENCES `synthesis_functionalization_element` (`synthesis_functionalization_element_pk_id`)
 );
 
@@ -438,7 +438,6 @@ VALUES (1010, 'pubchem', 'dataSource', 'Compound'),
        (1077, 'function', 'type', 'Drug nanocarrier'),
        (1078, 'function', 'type', 'Drug carrier'),
        (1079, 'function', 'type', 'Adjuvant'),
-       (1080, 'functionalization', 'type', 'Polymer'),
        (1081, 'functionalization', 'type', 'Quantum Dot'),
        (1082, 'functionalization', 'type', 'Magnetic Particle'),
        (1083, 'functionalization', 'type', 'radioisotope'),

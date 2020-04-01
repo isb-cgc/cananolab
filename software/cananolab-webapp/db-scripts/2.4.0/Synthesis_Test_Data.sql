@@ -147,7 +147,7 @@ VALUES
  'chloroauric acid',
  '0.01',
  '%wt',
- 'compound',
+ 'Compound',
  '44134746',
  null,
  'composing element'),
@@ -161,7 +161,7 @@ VALUES
  'sodium citrate',
  '1',
  '%wt',
- 'compound',
+ 'Compound',
  '6224',
  1111,
  'reagent'),
@@ -261,7 +261,7 @@ VALUES
  'polyethylene glycol, 5000 MW',
  '3.6',
  'ug',
- 'compound',
+ 'Compound',
  '24887753',
  'material');
 

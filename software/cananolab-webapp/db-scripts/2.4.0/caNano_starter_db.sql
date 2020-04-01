@@ -1799,7 +1799,7 @@ CREATE TABLE `canano`.`synthesis_functionalization_element`
     `activation_method`                         VARCHAR(200) DEFAULT NULL,
     `activation_effect`                         TEXT,
     PRIMARY KEY (`synthesis_functionalization_element_pk_id`),
-    CONSTRAINT  `FK_synthesis_material_TO_synthesis_functionalization_element` FOREIGN KEY (`synthesis_functionalization_pk_id`)
+    CONSTRAINT  `FK_synthesis_func_TO_synthesis_functionalization_element` FOREIGN KEY (`synthesis_functionalization_pk_id`)
         REFERENCES `synthesis_functionalization` (`synthesis_functionalization_pk_id`)
 );
 
