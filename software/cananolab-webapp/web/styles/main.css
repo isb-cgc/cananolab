@@ -2022,3 +2022,8 @@ h1 {
     font-weight:bold;
     padding:5px;
 }
+
+.saveSynthesis button {
+    float:right;
+    margin-left:10px;
+}
