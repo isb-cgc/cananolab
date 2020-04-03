@@ -80,37 +80,36 @@
                                         <td colspan="3">
                                             <table class="editTableWithGrid" align="center" width="95%">
                                                 <tr>
-                                                    <td>
-                                                        <label>Material Type</label>
+                                                    <td width="10%">
+                                                        <label>Material Type*</label>
                                                     </td>
-                                                    <td>
+                                                    <td width="40%">
                                                         <select ng-model="materialElement.type" ng-options="o as o for o in dropdowns.materialTypes">
                                                         </select>
                                                     </td>
-                                                </tr>
-                                                <tr>
-                                                    <td width="10%"><label>Chemical Name</label</td> <td width="90%" colspan="2">
-                                                        <input type="text" value="{{materialElement.chemicalName}}" data-ng-model="materialElement.chemicalName">
+                                                    <td width="10%">
+                                                        <label>Chemical Name*</label>
+                                                    </td> 
+                                                    <td width="40%">
+                                                        <input type="text" size="35" value="{{materialElement.chemicalName}}" data-ng-model="materialElement.chemicalName">
                                                     </td>
                                                 </tr>
                                                 <tr>
-                                                    <td width="10%"><label>PubChem Data Source</label></td>
-                                                    <td width="90%" colspan="2">
+                                                    <td width="10%">
+                                                        <label>PubChem Data Source</label>
+                                                    </td>
+                                                    <td width="90%" colspan="3">
                                                         <select ng-model="materialElement.pubChemDataSource" ng-options="o as o for o in dropdowns.pubChemDataSources">
-                                                            
                                                         </select>
-
                                                     </td>
                                                 </tr>
                                                 <tr>
                                                     <td width="10%"><label>Amount</label></td>
-                                                    <td width="90%" colspan="2">
+                                                    <td width="40%">
                                                         <input type="text" value="12" data-ng-model="materialElement.value">
                                                     </td>
-                                                </tr>
-                                                <tr>
                                                     <td width="10%"><label>Amount Unit</label></td>
-                                                    <td width="90%" colspan="2">
+                                                    <td width="40%">
                                                         <select ng-model="materialElement.valueUnit" ng-options="o as o for o in dropdowns.amountUnits">
                                                             <option>mg</option>
                                                         </select>
@@ -118,34 +117,30 @@
                                                 </tr>
                                                 <tr>
                                                     <td width="10%"><label>Molecular Formula Type</label></td>
-                                                    <td width="90%" colspan="2">
+                                                    <td width="40%">
                                                         <select ng-model="materialElement.molecularFormulaType" ng-options="o as o for o in dropdowns.formulaTypes">
                                                             <option>Hill</option>
                                                         </select>
                                                     </td>
-                                                </tr>
-                                                <tr>
                                                     <td width="10%"><label>Molecular Formula</label></td>
-                                                    <td width="90%" colspan="2">
+                                                    <td width="40%">
                                                         <input type="text" value="{{materialElement.molecularFormula}}" data-ng-model="materialElement.molecularFormula">
                                                     </td>
                                                 </tr>
                                                 <tr>
                                                     <td width="10%"><label>Supplier Name</label></td>
-                                                    <td width="90%" colspan="2">
+                                                    <td width="40%">
                                                         <select ng-model="materialElement.supplierMap.SupplierName" ng-options="o as o for o in dropdowns.supplierNames">
                                                         </select>
                                                     </td>
-                                                </tr>
-                                                <tr>
                                                     <td width="10%"><label>Lot</label></td>
-                                                    <td width="90%" colspan="2">
+                                                    <td width="40%">
                                                         <input type="text" value="{{materialElement.supplierMap.Lot}}" data-ng-model="materialElement.supplierMap.Lot">
                                                     </td>
                                                 </tr>
                                                 <tr>
                                                     <td width="10%"><label>Material Description</label></td>
-                                                    <td width="90%" colspan="2">
+                                                    <td width="90%" colspan="3">
                                                         <textarea rows="5" cols="70" data-ng-model="materialElement.description">
                                                             {{materialElement.description}}
                                                         </textarea>
@@ -154,10 +149,10 @@
 
                                                 <tr>
                                                     <td width="10%"><label>Inherent Functions</label></td>
-                                                    <td width="90%"><button type="button" class="btn btn-primary btn-xs ng-click-active" ng-click="openMaterialEditForm()">Add</button></td>
+                                                    <td width="90%" colspan="3"><button type="button" class="btn btn-primary btn-xs ng-click-active" ng-click="openMaterialEditForm()">Add</button></td>
                                                 </tr>
                                                 <tr>
-                                                    <td width="90%" colspan="2">
+                                                    <td width="90%" colspan="4">
                                                         <div class="inherentFunctions" ng-repeat="i in materialElement.inherentFunctionList">
                                                             <table class="editTableWithGrid" align="center" width="95%">
                                                                 <tr>
@@ -210,7 +205,7 @@
                                                     </td>
                                                 </tr>
                                                 <tr>
-                                                    <td colspan="2" class="saveSynthesis">
+                                                    <td colspan="4" class="saveSynthesis">
                                                         <button class="btn btn-default btn-xs" ng-click="cancelMaterialElement($index,materialElement)">Cancel</button>
                                                         <button class="btn btn-primary btn-xs" ng-click="saveMaterialElement($index,materialElement)">Save Material Element</button>
                                                     </td>
