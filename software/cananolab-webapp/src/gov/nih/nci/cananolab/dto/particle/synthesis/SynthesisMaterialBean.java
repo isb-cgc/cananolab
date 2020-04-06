@@ -16,7 +16,6 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 public class SynthesisMaterialBean extends BaseSynthesisEntityBean {
     //TODO write
@@ -37,7 +36,7 @@ public class SynthesisMaterialBean extends BaseSynthesisEntityBean {
     }
 
     public SynthesisMaterialBean(SynthesisMaterial material){
-        //TODO write
+
         domainEntity = material;
         if (material.getSynthesisMaterialElements() != null) {
             for(SynthesisMaterialElement synthesisMaterialElement : material.getSynthesisMaterialElements()){
@@ -58,10 +57,15 @@ public class SynthesisMaterialBean extends BaseSynthesisEntityBean {
 
     }
 
+    public Long getId(){
+        return this.domainEntity.getId();
+    }
 
     public void setSynthesis(SynthesisBean synthesisBean){
         this.domainEntity.setSynthesis(synthesisBean.getDomain());
     }
+
+//    public void setSynthesisId(Long id) {this.domainEntity.setSynthesisId(id);}
 
     public SynthesisMaterial getDomainEntity(){
         return domainEntity;

@@ -79,7 +79,7 @@ public class SynthesisUtil {
     }
 
     public static Map<String, Object> reformatLocalSearchDropdownsInSessionForSynthesisPurification(HttpSession session) {
-        //TODO write
+
         Map<String, Object> typeMap = new HashMap<String, Object>();
         SortedSet<String> types = (SortedSet<String>) session.getAttribute("purityTypes");
         if (types != null)

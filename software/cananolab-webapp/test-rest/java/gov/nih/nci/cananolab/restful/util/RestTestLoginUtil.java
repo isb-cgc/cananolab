@@ -103,14 +103,14 @@ public class RestTestLoginUtil {
 	}
 	
 	public static String readUserNameProperty() {
-		return PropertyUtils.getPropertyCached("resources/local.properties", "user.name");
+		return PropertyUtils.getPropertyCached("local.properties", "user.name");
 //		return PropertyUtils.getPropertyCached("local.properties", "user.name");
 	}
 
 	public static String readPasswordProperty() {
-		return PropertyUtils.getPropertyCached("resources/local.properties", "password");
+		return PropertyUtils.getPropertyCached("local.properties", "password");
 	}
 	public static String readTestUrlProperty() {
-		return PropertyUtils.getPropertyCached("resources/local.properties", "test.url");
+		return PropertyUtils.getPropertyCached("local.properties", "test.url");
 	}
 }

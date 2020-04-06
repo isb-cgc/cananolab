@@ -40,6 +40,7 @@ public interface SynthesisService extends BaseService {
 
     SynthesisBean findSynthesisBySampleId(Long sampleId) throws SynthesisException, NoAccessException;
 
+    Long findSynthesisIdBySampleId(Long sampleId) throws SynthesisException, NoAccessException;
 
     SynthesisFunctionalizationBean findSynthesisFunctionalizationById(Long sampleId, Long dataId) throws SynthesisException, NoAccessException;
 

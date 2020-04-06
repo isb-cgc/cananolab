@@ -25,7 +25,7 @@
             <column name="synthesis_pk_id" not-null="true"/>
         </many-to-one>
         <set fetch="select" inverse="true" lazy="true"
-             name="synthesisMaterialElements" sort="unsorted" table="synthesis_material_element">
+             name="synthesisMaterialElements" sort="unsorted" table="synthesis_material_element" cascade="all-delete-orphan">
             <key>
                 <column name="synthesis_material_pk_id" not-null="true"/>
             </key>

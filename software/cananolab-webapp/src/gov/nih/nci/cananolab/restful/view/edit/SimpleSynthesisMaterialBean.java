@@ -235,23 +235,23 @@ public class SimpleSynthesisMaterialBean {
     }
 
 
-    private void setFiles(List<SimpleFileBean> fileElements) {
+    public void setFiles(List<SimpleFileBean> fileElements) {
         this.fileElements = fileElements;
     }
 
-    private void setCreatedBy(String createdBy) {
+    public void setCreatedBy(String createdBy) {
         this.createdBy = createdBy;
     }
 
-    private void setDescription(String description) {
+    public void setDescription(String description) {
         this.description = description;
     }
 
-    private void setType(String type) {
+    public void setType(String type) {
         this.type = type;
     }
     
-    private void setCreatedDate(Date date){
+    public void setCreatedDate(Date date){
         this.date = date;
     }
 
