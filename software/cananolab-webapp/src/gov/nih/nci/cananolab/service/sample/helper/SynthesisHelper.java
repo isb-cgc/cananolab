@@ -240,11 +240,11 @@ public class SynthesisHelper
         return entity;
     }
 
-    public List<File> findFilesByMaterialId(Long sampleId, Long synMatId, String className) throws Exception {
-        if (!springSecurityAclService.currentUserHasReadPermission(Long.valueOf(sampleId), SecureClassesEnum.SAMPLE.getClazz()) &&
-                !springSecurityAclService.currentUserHasWritePermission(Long.valueOf(sampleId), SecureClassesEnum.SAMPLE.getClazz())) {
-            throw new NoAccessException("User has no access to the synthesis entity " + sampleId);
-        }
+    public List<File> findFilesByMaterialId(Long synthesisId, Long synMatId, String className) throws Exception {
+//        if (!springSecurityAclService.currentUserHasReadPermission(Long.valueOf(sampleId), SecureClassesEnum.SAMPLE.getClazz()) &&
+//                !springSecurityAclService.currentUserHasWritePermission(Long.valueOf(sampleId), SecureClassesEnum.SAMPLE.getClazz())) {
+//            throw new NoAccessException("User has no access to the synthesis entity " + sampleId);
+//        }
         List<File> fileCollection = new ArrayList<File>();
         String fullClassName = null;
         if (ClassUtils.getFullClass(className) != null) {
@@ -259,8 +259,9 @@ public class SynthesisHelper
         List results = appService.query(crit);
         for (int i = 0; i < results.size(); i++) {
             File file = (File) results.get(i);
-            if (springSecurityAclService.currentUserHasReadPermission(sampleId, SecureClassesEnum.SAMPLE.getClazz()) ||
-                    springSecurityAclService.currentUserHasWritePermission(sampleId, SecureClassesEnum.SAMPLE.getClazz())) {
+            //TODO work out security for synthesis material
+            if (springSecurityAclService.currentUserHasReadPermission(synthesisId, SecureClassesEnum.SYNTHESIS.getClazz()) ||
+                    springSecurityAclService.currentUserHasWritePermission(synthesisId, SecureClassesEnum.SYNTHESIS.getClazz())) {
                 fileCollection.add(file);
             } else {
                 logger.debug("User doesn't have access to file of id:" + file.getId());

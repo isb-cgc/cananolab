@@ -17,7 +17,7 @@ import java.util.Map;
 import java.util.SortedSet;
 import java.util.TreeSet;
 
-public class SynthesisBean extends BaseCompositionEntityBean {
+public class SynthesisBean extends BaseSynthesisEntityBean {
     public static final String FUNCTIONALIZATION_SELECTION = "synthesis functionalization";
     public static final String MATERIALS_SELECTION = "synthesis material";
     public static final String PURIFICATION_SELECTION = "synthesis purification";
@@ -229,13 +229,13 @@ public class SynthesisBean extends BaseCompositionEntityBean {
         this.synthesisSections = synthesisSections;
     }
 
-    public FileBean getTheFile() {
-        return theFile;
-    }
-
-    public void setTheFile(FileBean theFile) {
-        this.theFile = theFile;
-    }
+//    public FileBean getTheFile() {
+//        return theFile;
+//    }
+//
+//    public void setTheFile(FileBean theFile) {
+//        this.theFile = theFile;
+//    }
 
 
 

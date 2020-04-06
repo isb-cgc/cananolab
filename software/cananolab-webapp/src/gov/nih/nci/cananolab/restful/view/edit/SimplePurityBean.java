@@ -8,7 +8,7 @@ import java.util.List;
 
 public class SimplePurityBean {
     List<ColumnHeader> columnHeaders = new ArrayList<ColumnHeader>();
-    List<File> files = new ArrayList<File>();
+    List<SimpleFileBean> files = new ArrayList<SimpleFileBean>();
     File fileBeingEdited;
     Long id;
     String createdBy;
@@ -47,20 +47,20 @@ public class SimplePurityBean {
         return this.columnHeaders;
     }
 
-    public void setFiles(List<File> files) {
+    public void setFiles(List<SimpleFileBean> files) {
         this.files = files;
     }
 
-    public List<File> getFiles() {
+    public List<SimpleFileBean> getFiles() {
         return files;
     }
 
-    public List<File> addFile(File file){
+    public List<SimpleFileBean> addFile(SimpleFileBean file){
         files.add(file);
         return files;
     }
 
-    public List<File> removeFile(File file){
+    public List<SimpleFileBean> removeFile(SimpleFileBean file){
         //TODO make this more robust
         files.remove(file);
         return files;

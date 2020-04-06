@@ -1,20 +1,24 @@
 package gov.nih.nci.cananolab.restful.synthesis;
 
 import gov.nih.nci.cananolab.domain.characterization.physical.Purity;
+import gov.nih.nci.cananolab.dto.common.ProtocolBean;
 import gov.nih.nci.cananolab.dto.common.PurityBean;
 import gov.nih.nci.cananolab.dto.particle.synthesis.SynthesisPurificationBean;
 import gov.nih.nci.cananolab.restful.core.BaseAnnotationBO;
 import gov.nih.nci.cananolab.restful.sample.InitSampleSetup;
 import gov.nih.nci.cananolab.restful.util.SynthesisUtil;
+import gov.nih.nci.cananolab.restful.view.edit.SimpleProtocol;
 import gov.nih.nci.cananolab.restful.view.edit.SimplePurityBean;
 import gov.nih.nci.cananolab.restful.view.edit.SimpleSynthesisPurificationBean;
 import gov.nih.nci.cananolab.security.service.SpringSecurityAclService;
 import gov.nih.nci.cananolab.service.curation.CurationService;
+import gov.nih.nci.cananolab.service.protocol.ProtocolService;
 import gov.nih.nci.cananolab.service.sample.SampleService;
 import gov.nih.nci.cananolab.service.sample.SynthesisService;
 import gov.nih.nci.cananolab.ui.form.SynthesisForm;
 import gov.nih.nci.cananolab.util.StringUtils;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.IllegalFormatConversionException;
 import java.util.List;
 import java.util.Map;
@@ -46,6 +50,9 @@ public class SynthesisPurificationBO extends BaseAnnotationBO {
 
     @Autowired
     private UserDetailsService userDetailsService;
+
+    @Autowired
+    private ProtocolService protocolService;
 
 
     @Override
@@ -87,8 +94,27 @@ public class SynthesisPurificationBO extends BaseAnnotationBO {
         this.setLookups(httpRequest, synthesisPurificationBean);
         this.checkOpenForms(synthesisPurificationBean, httpRequest);
         //TODO write
-        return SynthesisUtil.reformatLocalSearchDropdownsInSessionForSynthesisPurification(httpRequest.getSession());
+        Map<String,Object> testLookup = new HashMap<String, Object>();
+        testLookup.put("protocolLookup", this.setProtocolLookup(httpRequest));
+        testLookup.putAll(SynthesisUtil.reformatLocalSearchDropdownsInSessionForSynthesisPurification(httpRequest.getSession()));
+        return testLookup;
 
+    }
+
+    public List<SimpleProtocol> setProtocolLookup(HttpServletRequest request)
+            throws Exception {
+        List<SimpleProtocol> protocolLookup = new ArrayList<SimpleProtocol>();
+        List<ProtocolBean> protoBeans = protocolService.getPurificationProtocols(request);
+
+        if (protoBeans == null)
+            return protocolLookup;
+
+        for (ProtocolBean protoBean : protoBeans) {
+            SimpleProtocol simpleProto = new SimpleProtocol();
+            simpleProto.transferFromProtocolBean(protoBean);
+            protocolLookup.add(simpleProto);
+        }
+        return protocolLookup;
     }
 
     /**

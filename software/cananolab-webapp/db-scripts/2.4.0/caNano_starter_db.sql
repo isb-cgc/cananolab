@@ -1670,7 +1670,7 @@ CREATE TABLE `canano`.`synthesis_material`
     `synthesis_material_pk_id` BIGINT(20)   NOT NULL COMMENT 'synthesis_material_pk_id', -- synthesis_material_pk_id
     `synthesis_pk_id`          BIGINT(20)   NOT NULL COMMENT 'synthesis_pk_id',          -- synthesis_pk_id
     `protocol_pk_id`           BIGINT(20)   NULL COMMENT 'protocol_pk_id',               -- protocol_pk_id
-    `description`              TEXT         NULL COMMENT 'description',                  -- description
+    `description`              TEXT         NOT NULL COMMENT 'description',                  -- description
     `created_date`             DATETIME     NOT NULL COMMENT 'created_date',             -- created_date
     `created_by`               VARCHAR(200) NOT NULL COMMENT 'created_by',               -- created_by
     PRIMARY KEY (`synthesis_material_pk_id`),
@@ -1712,7 +1712,7 @@ CREATE TABLE `canano`.`synthesis_material_element`
     `description`                      TEXT           NULL COMMENT 'description',                          -- description
     `created_by`                       VARCHAR(200)   NOT NULL COMMENT 'created_by',                       -- created_by
     `created_date`                     DATETIME       NOT NULL COMMENT 'created_date',                     -- created_date
-    `chemical_name`                    VARCHAR(200)   NULL COMMENT 'chemical_name',                        -- chemical_name
+    `chemical_name`                    VARCHAR(200)   NOT NULL COMMENT 'chemical_name',                        -- chemical_name
     `value`                            DECIMAL(22, 3) NULL COMMENT 'value',                                -- value
     `value_unit`                       VARCHAR(200)   NULL COMMENT 'value_unit',                           -- value_unit
     `pub_chem_datasource_name`         VARCHAR(200)   NULL COMMENT 'pub_chem_datasource_name',             -- pub_chem_datasource_name

@@ -64,6 +64,7 @@ public class SynthesisMaterialElement implements Serializable {
 
 	public void setSynthesisMaterial(SynthesisMaterial synthesisMaterial) {
 		this.synthesisMaterial = synthesisMaterial;
+		this.setSynthesisMaterialId(synthesisMaterial.getId());
 	}
 
 	public Long getSynthesisMaterialId(){return synthesisMaterialId;}

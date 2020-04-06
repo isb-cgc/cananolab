@@ -14,7 +14,7 @@ public class BaseSynthesisEntityBean {
     protected String description;
     protected String type, displayName;
     protected List<FileBean> files = new ArrayList<FileBean>();
-
+    protected Long domainId;
 
     public String getDescription() {
         return description;
@@ -101,5 +101,9 @@ public class BaseSynthesisEntityBean {
             }
         }
         return null;
+    }
+
+    public Long getDomainId() {
+        return domainId;
     }
 }

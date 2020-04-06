@@ -33,6 +33,7 @@ import net.sf.ehcache.management.sampled.SampledMBeanRegistrationProvider;
 import org.apache.log4j.Logger;
 import org.bouncycastle.util.test.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.security.access.method.P;
 import org.springframework.stereotype.Component;
 import sun.tools.tree.ThisExpression;
@@ -73,7 +74,18 @@ public class SynthesisServiceLocalImpl extends BaseServiceLocalImpl implements S
         return synthesisBean;
     }
 
-
+    public Long findSynthesisIdBySampleId(Long sampleId) throws SynthesisException{
+        try{
+            Synthesis synthesis = synthesisHelper.findSynthesisBySampleId(sampleId);
+            if(synthesis!=null){
+                return synthesis.getId();
+            }
+        } catch (Exception e){
+            String err = "Error finding synthesis by sample ID: " + sampleId;
+            throw new SynthesisException(err, e);
+        }
+        return null;
+    }
 
     public SynthesisMaterialBean findSynthesisMaterialById(Long sampleId, Long dataId) throws NoAccessException,SynthesisException{
         SynthesisMaterialBean smBean = null;
@@ -358,7 +370,7 @@ public class SynthesisServiceLocalImpl extends BaseServiceLocalImpl implements S
             CaNanoLabApplicationService appService = (CaNanoLabApplicationService) ApplicationServiceProvider
                     .getApplicationService();
 //            // load files first
-            List<File> fileList = synthesisHelper.findFilesByMaterialId(synthesisMaterial.getSynthesis().getSample().getId(),synthesisMaterial.getId(),"SynthesisMaterial");
+            List<File> fileList = synthesisHelper.findFilesByMaterialId(synthesisMaterial.getSynthesisId(),synthesisMaterial.getId(),"SynthesisMaterial");
             synthesisMaterial.setFileCollection(new HashSet<File>(fileList));
             synthesisMaterial.getFileCollection().remove(file);
             appService.saveOrUpdate(synthesisMaterial);
@@ -426,6 +438,7 @@ public class SynthesisServiceLocalImpl extends BaseServiceLocalImpl implements S
                 newEntity = false;
             }
             //Make doubly sure that the entity hasn't been left cached in memory but already removed from database
+            if(!newEntity){
             try {
                 appService
                         .load(SynthesisMaterial.class, synthesisMaterialBean.getDomainEntity().getId());
@@ -433,7 +446,8 @@ public class SynthesisServiceLocalImpl extends BaseServiceLocalImpl implements S
                 String err = "Object doesn't exist in the database anymore.  Please log in again.";
                 logger.error(err);
                 throw new SynthesisException(err, e);
-            }
+            }}
+
 
             Synthesis synthesis;
             if(sample.getSynthesis()==null){
@@ -442,12 +456,14 @@ public class SynthesisServiceLocalImpl extends BaseServiceLocalImpl implements S
             } else {
                 synthesis = sample.getSynthesis();
             }
-            synthesisMaterial.setSynthesis(synthesis);
+//            synthesisMaterial.setSynthesis(synthesis);
+            synthesisMaterial.setSynthesisId(synthesis.getId());
             if(!newEntity){
                 //Get the material by id from database
-                Long test1 = synthesisMaterial.getSynthesis().getId();
+//                Long test1 = synthesisMaterial.getSynthesis().getId();
+                Long test1 = synthesisMaterial.getSynthesisId();
                 Long test2 = synthesis.getId();
-                if(!synthesisMaterial.getSynthesis().getId().equals(synthesis.getId())){
+                if(!synthesisMaterial.getSynthesisId().equals(synthesis.getId())){
                     //something has gone wrong and the material does not attach to the correct synthesis
                     throw new SynthesisException("material does not match synthesis", new Exception());
                 }
@@ -462,19 +478,27 @@ public class SynthesisServiceLocalImpl extends BaseServiceLocalImpl implements S
                     }
                     //save
 
+
+                    appService.saveOrUpdate(synthesisMaterial);
+
             for(SynthesisMaterialElementBean synthesisMaterialElementBean: synthesisMaterialBean.getSynthesisMaterialElements()){
                 this.saveSynthesisMaterialElement(synthesisMaterial,synthesisMaterialElementBean);
             }
-                    appService.saveOrUpdate(synthesisMaterial);
-
                     for (FileBean fileBean : synthesisMaterialBean.getFiles()) {
                         fileUtils.writeFile(fileBean);
                     }
 
-        }catch (NoAccessException e){
-            throw e;
+        }catch (NoAccessException e) {
+            String err="Error writing file when saving Synthesis Material. ";
+            logger.error(err, e);
+            throw new SynthesisException(err, e);
+
+        }catch ( DataIntegrityViolationException e) {
+            String err="Database Integrity violation when saving Synthesis Material. ";
+            logger.error(err, e);
+            throw new SynthesisException(err, e);
         } catch (Exception e){
-            String err = "Problem saving Synthesis Material ";
+            String err = "Problem saving Synthesis Material :";
             logger.error(err, e);
             throw new SynthesisException(err, e);
         }
@@ -493,7 +517,7 @@ public class SynthesisServiceLocalImpl extends BaseServiceLocalImpl implements S
 
             if(!newEntity){
                 //Get the material by id from database
-                Long test1 = synthesisMaterialElement.getSynthesisMaterial().getId();
+                Long test1 = synthesisMaterialElement.getSynthesisMaterialId();
                 Long test2 = material.getId();
                 if(!test1.equals(test2)){
                     //something has gone wrong and the material does not attach to the correct synthesis

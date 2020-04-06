@@ -17,6 +17,7 @@ import io.restassured.response.ValidatableResponse;
 import io.restassured.specification.RequestSpecification;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -249,12 +250,31 @@ private static RequestSpecification specification;
 
     @Test
     public void testCreateMaterial(){
-        //TODO write
+        SimpleSynthesisMaterialBean synthesisMaterialBean = new SimpleSynthesisMaterialBean();
+        synthesisMaterialBean.setSampleId("1000");
+        synthesisMaterialBean.setDescription("Test description");
+        try {
+            Response response = given().spec(specification).
+                    body(synthesisMaterialBean).when().post("synthesisMaterial/submit")
+                    .then().statusCode(200).extract().response();
+        } catch (Exception e){
+            e.printStackTrace();
+        }
     }
 
     @Test
     public void testCreateMaterialAndSynthesis(){
         //TODO write
+        SimpleSynthesisMaterialBean synthesisMaterialBean = new SimpleSynthesisMaterialBean();
+        synthesisMaterialBean.setSampleId("65634305");
+        synthesisMaterialBean.setDescription("Test new synthesis");
+        try {
+            Response response = given().spec(specification).
+                    body(synthesisMaterialBean).when().post("synthesisMaterial/submit")
+                    .then().statusCode(200).extract().response();
+        } catch (Exception e){
+            e.printStackTrace();
+        }
     }
 
     @Test

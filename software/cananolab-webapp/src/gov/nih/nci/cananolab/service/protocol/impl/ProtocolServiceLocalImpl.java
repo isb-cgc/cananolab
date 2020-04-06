@@ -415,6 +415,14 @@ public class ProtocolServiceLocalImpl extends BaseServiceLocalImpl implements Pr
 		return protocols;
 	}
 
+	public List<ProtocolBean> getPurificationProtocols(HttpServletRequest request) throws Exception {
+		String protocolType = "purification";
+
+		List<ProtocolBean> protocols = findProtocolsBy(protocolType, null, null, null);
+		request.getSession().setAttribute("purificationProtocols", protocols);
+		return protocols;
+	}
+
 	@Override
 	public ProtocolServiceHelper getHelper() {
 		return protocolServiceHelper;

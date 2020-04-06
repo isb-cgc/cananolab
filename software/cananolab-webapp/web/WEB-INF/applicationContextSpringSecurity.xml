@@ -59,6 +59,8 @@
 		
 		<intercept-url pattern="/rest/synthesis/summaryView" access="permitAll()"/>
 		<intercept-url pattern="/rest/synthesisMaterial/setup" access="permitAll()"/>
+		<intercept-url pattern="/rest/synthesisPurification/setup" access="permitAll()"/>
+		<intercept-url pattern="/rest/synthesisFunctionalization/setup" access="permitAll()"/>
 		
 		<intercept-url pattern="/rest/curation/reviewData" access="hasRole('ROLE_CURATOR')" />
 		<intercept-url pattern="/rest/curation/generateBatchDataAvailability" access="hasRole('ROLE_CURATOR')" />

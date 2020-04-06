@@ -143,6 +143,7 @@ public class SynthesisMaterialBO extends BaseAnnotationBO {
         try{
             synthesis = synthesisService.getHelper().findSynthesisBySampleId(synMatBean.getSampleId());
             material.setSynthesis(synthesis);
+
         }
         catch (Exception e) {
             e.printStackTrace();
@@ -228,7 +229,6 @@ public class SynthesisMaterialBO extends BaseAnnotationBO {
                 synthesisMaterialElement.setValueUnit(sSMEBean.getValueUnit());
                 synthesisMaterialElement.setCreatedBy(sSMEBean.getCreatedBy());
                 synthesisMaterialElement.setCreatedDate(sSMEBean.getCreatedDate());
-                synthesisMaterialElement.setSynthesisMaterialId(material.getId());
                 synthesisMaterialElement.setSynthesisMaterial(material);
                 synthesisMaterialElement.setId(sSMEBean.getId());
                 synthesisMaterialElement.setType(sSMEBean.getType());
@@ -458,6 +458,7 @@ public class SynthesisMaterialBO extends BaseAnnotationBO {
 
             SynthesisBean synthesisBean = synthesisService.findSynthesisBySampleId(new Long(sampleId));
             synthesisMaterialBean.setSynthesis(synthesisBean);
+//            synthesisMaterialBean.setSynthesisId(synthesisBean.getDomainId());
             form.setSynthesisMaterialBean(synthesisMaterialBean);
             this.checkOpenForms(synthesisMaterialBean, httpRequest);
             httpRequest.getSession().setAttribute("sampleId", sampleId);
@@ -556,7 +557,8 @@ public class SynthesisMaterialBO extends BaseAnnotationBO {
 
             SimpleSynthesisMaterialElementBean elementBeingEdited = simpleSynthesisMaterialBean.getMaterialElementBeingEdited();
             SynthesisMaterialElementBean newElementBean = new SynthesisMaterialElementBean(elementBeingEdited);
-            newElementBean.getDomainEntity().setSynthesisMaterial(entity.getDomainEntity());
+            newElementBean.getDomainEntity().setSynthesisMaterialId(entity.getId());
+//            newElementBean.getDomainEntity().setSynthesisMaterial(entity.getDomainEntity());
 
 
 

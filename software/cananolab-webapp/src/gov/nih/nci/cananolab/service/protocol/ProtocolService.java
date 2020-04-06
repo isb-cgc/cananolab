@@ -32,6 +32,8 @@ public interface ProtocolService extends BaseService {
 	ProtocolBean findProtocolById(String protocolId)
 			throws ProtocolException, NoAccessException;
 
+
+
 	/**
 	 * Persist a new protocol or update an existing protocol
 	 *
@@ -74,4 +76,6 @@ public interface ProtocolService extends BaseService {
                                           String characterizationType) throws Exception;
 
 	List<ProtocolBean> getSynthesisProtocols(HttpServletRequest request) throws Exception;
+
+	List<ProtocolBean> getPurificationProtocols(HttpServletRequest request) throws Exception;
 }
