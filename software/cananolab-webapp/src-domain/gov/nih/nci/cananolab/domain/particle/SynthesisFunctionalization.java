@@ -26,13 +26,11 @@ public class SynthesisFunctionalization implements Serializable {
 
 
 	public SynthesisFunctionalization() {
-	   // System.out.println("MHL 000 SynthesisFunctionalization. Forcing this.synthesisFunctionalizationPkId = 1000L");
 		// this.synthesisFunctionalizationPkId = 1000L; //FIXME TESTING ONLY!!!!!!
 	}
 
 
 	public SynthesisFunctionalization(Long synthesisFuntionalizationPkId, SynthesisFunctionalization sf) {
-        System.out.println("MHL 001 SynthesisFunctionalization");
 		this.synthesisFunctionalizationPkId = synthesisFuntionalizationPkId ;
 		this.synthesis = sf.getSynthesis() ;
 		this.protocol = sf.getProtocol() ;
@@ -45,13 +43,11 @@ public class SynthesisFunctionalization implements Serializable {
 
 
 	public SynthesisFunctionalization(Long synthesisFuntionalizationPkId) {
-        System.out.println("MHL 002 SynthesisFunctionalization");
 		this.synthesisFunctionalizationPkId = synthesisFuntionalizationPkId;
 	}
 
 	public SynthesisFunctionalization(Long synthesisFuntionalizationPkId, Synthesis synthesis,
 			Set synthesisFuncPurifications) {
-        System.out.println("MHL 003 SynthesisFunctionalization");
 		this.synthesisFunctionalizationPkId = synthesisFuntionalizationPkId;
 		this.synthesis = synthesis;
 

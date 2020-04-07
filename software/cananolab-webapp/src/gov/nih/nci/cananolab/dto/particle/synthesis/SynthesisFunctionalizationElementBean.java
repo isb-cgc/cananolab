@@ -17,25 +17,6 @@ public class SynthesisFunctionalizationElementBean extends BaseSynthesisEntityBe
     Logger logger = Logger.getLogger("SynthesisFunctionalizationElementBean.class");
     private SynthesisFunctionalizationElement domain;  // TODO Update SynthesisFunctionalizationElement  NEXT
     private List<SfeInherentFunctionBean> functions = new ArrayList<SfeInherentFunctionBean>();
-    protected String activationMethod;
-    protected String activationEffect;
-
-
-    public String getActivationMethod() {
-        return activationMethod;
-    }
-
-    public void setActivationMethod(String activationMethod) {
-        this.activationMethod = activationMethod;
-    }
-
-    public String getActivationEffect() {
-        return activationEffect;
-    }
-
-    public void setActivationEffect(String activationEffect) {
-        this.activationEffect = activationEffect;
-    }
 //    private List<FileBean> files = new ArrayList<FileBean>();
 
 
@@ -80,8 +61,6 @@ public class SynthesisFunctionalizationElementBean extends BaseSynthesisEntityBe
         this.setDescription(domain.getDescription());
         this.setType(domain.getType());
         this.setDisplayName(domain.getChemicalName());
-        this.setActivationMethod(domain.getActivationMethod());
-        this.setActivationEffect(domain.getActivationEffect());
 
         if(domain.getSfeInherentFunctions() !=null){
             for(SfeInherentFunction sfeInherentFunction: domain.getSfeInherentFunctions()){
@@ -155,13 +134,15 @@ public class SynthesisFunctionalizationElementBean extends BaseSynthesisEntityBe
 
     }
 
-//    public void setSuppler(Supplier supplier){
-//        this.domain.setSupplier(supplier);
-//    }
-//
-//    public Supplier getSupplier(){
-//        return this.domain.getSupplier();
-//    }
+/*
+    public void setSuppler(Supplier supplier){
+        this.domain.setSupplier(supplier);
+    }
+
+    public Supplier getSupplier(){
+        return this.domain.getSupplier();
+    }
+*/
 
     public SynthesisFunctionalizationElementBean(SimpleSynthesisFunctionalizationElementBean sSFEBean){
         SynthesisFunctionalizationElement synthesisFunctionalizationElement = new SynthesisFunctionalizationElement();
