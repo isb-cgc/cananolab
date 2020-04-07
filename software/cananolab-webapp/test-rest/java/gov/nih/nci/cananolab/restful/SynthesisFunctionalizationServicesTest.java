@@ -176,7 +176,7 @@ public class SynthesisFunctionalizationServicesTest {
     public void testSaveFile() {
         SimpleSynthesisFunctionalizationBean functionalizationBean = getSimpleSynthesisFunctionalizationBean("1000", "1000");
         SimpleFileBean fileBean = new SimpleFileBean();
-        fileBean.setType("TestType");
+        fileBean.setType("file");
         fileBean.setTitle("TestTitle");
         fileBean.setUriExternal(true);
         fileBean.setExternalUrl("http://192.168.1.25:8080/test_file.txt");
@@ -193,8 +193,6 @@ public class SynthesisFunctionalizationServicesTest {
             assertNotNull(response);
             String debug = response.asString();
             System.out.println(debug);
-
-            //TODO Get functionalization Bean and query to see if the file is there
 
         }
         catch (Exception e) {
@@ -253,7 +251,33 @@ public class SynthesisFunctionalizationServicesTest {
 
 
     @Test
-    public void submit() {
+    public void testSubmit() {
+        SimpleSynthesisFunctionalizationBean functionalizationBean = getSimpleSynthesisFunctionalizationBean("1000","1000");
+        SimpleSynthesisFunctionalizationElementBean elementBean = new SimpleSynthesisFunctionalizationElementBean();
+        elementBean.setChemicalName("TestChem");
+        elementBean.setMolecularFormula("CHO2Si");
+        elementBean.setMolecularFormulaType("Hill");
+        elementBean.setDescription("Test functionalization element");
+        elementBean.setCreatedBy("");
+        elementBean.setType("reagent");
+        elementBean.setActivationMethod("Heat");
+        elementBean.setActivationEffect("turns green");
+        List<SimpleSynthesisFunctionalizationElementBean> elementBeans = new ArrayList<SimpleSynthesisFunctionalizationElementBean>();
+        elementBeans.add(elementBean);
+        functionalizationBean.setFunctionalizationElements(elementBeans);
+
+        try {
+            Response response = given().spec(specification).
+                    body(functionalizationBean).when().post("synthesisFunctionalization/submit")
+                    .then().statusCode(200).extract().response();
+
+            assertNotNull(response);
+            String debug = response.asString();
+            System.out.println(debug);
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     @Test
