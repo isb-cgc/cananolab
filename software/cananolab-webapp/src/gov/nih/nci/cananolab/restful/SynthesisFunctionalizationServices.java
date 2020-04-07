@@ -197,20 +197,6 @@ public class SynthesisFunctionalizationServices {
         }
     }
 
-
-
-    @POST
-    @Path("/tester")
-    @Produces ("application/json")
-    public Response tester(@Context HttpServletRequest httpRequest, SimpleSynthesisFunctionalizationBean simpleSynthesisFunctionalizationBean) {
-        try{
-            return Response.status(Response.Status.OK).entity("ALL GOOD TEST").build();
-        }catch(Exception e){
-            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(CommonUtil.wrapErrorMessageInList("Error while removing Functionalization Element "+ e.getMessage())).build();
-        }
-    }
-
-
     @POST
     @Path("/removeSynthesisFunctionalizationElement")
     @Produces ("application/json")
@@ -232,16 +218,58 @@ public class SynthesisFunctionalizationServices {
 
 
 
-    @Path("/submit")
+
+    @POST
+    @Path("/tester")
     @Produces ("application/json")
-    public Response submit(@Context HttpServletRequest httpRequest, SimpleSynthesisFunctionalizationBean simpleSynthesisFunctionalizationBean) {
-        return null;
+    public Response tester(@Context HttpServletRequest httpRequest, SimpleSynthesisFunctionalizationBean simpleSynthesisFunctionalizationBean) {
+        try{
+            return Response.status(Response.Status.OK).entity("ALL GOOD TEST").build();
+        }catch(Exception e){
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(CommonUtil.wrapErrorMessageInList("Error while removing Functionalization Element "+ e.getMessage())).build();
+        }
     }
 
+
+    @POST
+    @Path("/submit")
+    @Produces("application/json")
+    public Response submit(@Context HttpServletRequest httpRequest, SimpleSynthesisFunctionalizationBean simpleSynthesisFunctionalizationBean) {
+        try {
+            SynthesisFunctionalizationBO synthesisFunctionalizationBO = (SynthesisFunctionalizationBO) SpringApplicationContext.getBean(httpRequest, "synthesisFunctionalizationBO");
+            if (!SpringSecurityUtil.isUserLoggedIn())
+                return Response.status(Response.Status.UNAUTHORIZED)
+                        .entity(Constants.MSG_SESSION_INVALID).build();
+            List<String> msgs = synthesisFunctionalizationBO.create(simpleSynthesisFunctionalizationBean, httpRequest);
+            return Response.ok(msgs).header("Access-Control-Allow-Credentials", "true").header("Access-Control-Allow-Origin", "*").header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS").header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization").build();
+
+        } catch (Exception e) {
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(CommonUtil.wrapErrorMessageInList("Error while saving the synthesis functionalization :" + e.getMessage())).build();
+        }
+    }
+
+    /**
+     *
+     * @param httpRequest
+     * @param simpleSynthesisFunctionalizationBean
+     * @return  List of messages confirming deletion
+     */
+    @POST
     @Path("/delete")
     @Produces ("application/json")
     public Response delete(@Context HttpServletRequest httpRequest, SimpleSynthesisFunctionalizationBean simpleSynthesisFunctionalizationBean) {
-        return null;
+        try{
+            SynthesisFunctionalizationBO synthesisFunctionalizationBO = (SynthesisFunctionalizationBO) SpringApplicationContext.getBean(httpRequest,"synthesisFunctionalizationBO");
+            if (!SpringSecurityUtil.isUserLoggedIn())
+                return Response.status(Response.Status.UNAUTHORIZED)
+                        .entity(Constants.MSG_SESSION_INVALID).build();
+            List<String> msgs = synthesisFunctionalizationBO.delete(simpleSynthesisFunctionalizationBean, httpRequest);
+            return Response.ok(msgs).header("Access-Control-Allow-Credentials", "true").header("Access-Control-Allow-Origin", "*").header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS").header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization").build();
+
+        }catch (Exception e){
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(CommonUtil.wrapErrorMessageInList("Error while deleting the synthesis functionalization " + e.getMessage())).build();
+        }
     }
+
 
 }
