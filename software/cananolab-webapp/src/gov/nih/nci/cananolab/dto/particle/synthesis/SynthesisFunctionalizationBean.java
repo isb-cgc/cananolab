@@ -51,6 +51,24 @@ public class SynthesisFunctionalizationBean  extends BaseSynthesisEntityBean {
 
     }
 
+    public  SynthesisFunctionalizationElementBean getSynthesisFunctionalizationElementById(Long id){
+        return getSynthesisFunctionalizationElementById(id.toString());
+    }
+
+
+    public SynthesisFunctionalizationElementBean getSynthesisFunctionalizationElementById(String id){
+        for(SynthesisFunctionalizationElementBean element:synthesisFunctionalizationElements){
+            if(element.getDomainEntity().getId().equals(id)){
+                return element;
+            }
+        }
+        return null;
+    }
+    
+    public void removeFunctionalizationElement(SynthesisFunctionalizationElementBean functionalizationElementBean) {
+        synthesisFunctionalizationElements.remove(functionalizationElementBean);
+    }
+
 
     public void setUpDomainEntity(String loggedInUserName)  throws Exception {
         logger.debug("In SynthesisFunctionalizationBean.setupDomain");

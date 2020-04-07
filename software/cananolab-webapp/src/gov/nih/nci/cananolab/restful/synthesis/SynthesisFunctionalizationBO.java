@@ -272,6 +272,7 @@ public class SynthesisFunctionalizationBO extends BaseAnnotationBO {
 
     public SimpleSynthesisFunctionalizationBean saveFile(SimpleSynthesisFunctionalizationBean simpleSynthesisFunctionalizationBean,
                                                 HttpServletRequest httpRequest)  throws Exception{
+        System.out.println("MHL SynthesisFunctionalizationBO.saveFile");
         SynthesisFunctionalizationBean synthesisFunctionalizationBean = transferSynthesisFunctionalizationBean(simpleSynthesisFunctionalizationBean, httpRequest);
         List<FileBean> fileList = synthesisFunctionalizationBean.getFiles();
         String timestamp = DateUtils.convertDateToString(new Date(), "yyyyMMdd_HH-mm-ss-SSS");
@@ -387,6 +388,26 @@ public class SynthesisFunctionalizationBO extends BaseAnnotationBO {
                 , httpRequest);
     }
 
+    public SimpleSynthesisFunctionalizationBean removeFunctionalizationElement(SimpleSynthesisFunctionalizationBean simpleSynthesisFunctionalizationBean,
+                                                             HttpServletRequest httpRequest) throws Exception {
+        List<String> msgs;
+        SynthesisFunctionalizationBean entity = transferSynthesisFunctionalizationBean(simpleSynthesisFunctionalizationBean, httpRequest);
+        SimpleSynthesisFunctionalizationElementBean elementBeingEdited = simpleSynthesisFunctionalizationBean.getFunctionalizationElementBeingEdited();
+        SynthesisFunctionalizationElementBean functionalizationElementBean = entity.getSynthesisFunctionalizationElementById( elementBeingEdited.getId() );
+        entity.removeFunctionalizationElement(functionalizationElementBean);
+        msgs = validateInputs(httpRequest, entity);
+        //If an error, return blank class
+        if (msgs.size() > 0) {
+            SimpleSynthesisFunctionalizationBean nullBean = new SimpleSynthesisFunctionalizationBean();
+            nullBean.setErrors(msgs);
+            return nullBean;
+        }
+        this.saveEntity(httpRequest, simpleSynthesisFunctionalizationBean.getSampleId(), entity);
+        this.checkOpenForms(entity, httpRequest);
+        return setupUpdate(simpleSynthesisFunctionalizationBean.getSampleId(), entity.getDomainEntity().getId().toString(),
+                httpRequest);
+    }
+
 
     private List<String> saveEntity(HttpServletRequest request, String sampleId, SynthesisFunctionalizationBean entityBean) throws Exception {
 
@@ -451,7 +472,6 @@ public class SynthesisFunctionalizationBO extends BaseAnnotationBO {
 
 
     public SimpleSynthesisFunctionalizationBean setupUpdate0(String sampleId, String dataId, HttpServletRequest httpRequest) throws Exception {
-System.out.println("MHL 0000");
         try {
             SynthesisFunctionalizationBean synBean = synthesisService.findSynthesisFunctionalizationById(new Long(sampleId), new Long(dataId));
 

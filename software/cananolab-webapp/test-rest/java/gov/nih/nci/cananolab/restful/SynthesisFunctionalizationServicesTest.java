@@ -64,7 +64,70 @@ public class SynthesisFunctionalizationServicesTest {
     }
 
     @Test
-    public void edit() {
+    public void testEdit() {
+        //Test the edit form retrieval of an existing functionalization element
+        try {
+            Response response = given().spec(specification)
+                    .queryParam("sampleId", "1000")
+                    .queryParam("dataId","1000")
+                    .when().get("synthesisFunctionalization/edit")
+                    .then().statusCode(200).extract().response();
+
+            assertNotNull(response);
+            String id = response.path("id").toString();
+            assertTrue(id.equals("1000"));
+            ArrayList<SimpleSynthesisFunctionalizationElementBean> functionalizationElements = response.path("functionalizationElements");
+            assertTrue(functionalizationElements.size()>0);
+            JSONObject jResponse = new JSONObject(response.body().asString());
+            ObjectMapper mapper = new ObjectMapper();
+            SimpleSynthesisFunctionalizationBean synthesisFunctionalizationBean = mapper.readValue(jResponse.toString(), SimpleSynthesisFunctionalizationBean.class);
+            assertTrue(synthesisFunctionalizationBean.getType().equalsIgnoreCase("Synthesis"));
+
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+        }
+
+    }
+
+
+
+    @Test
+    public void testTester(){
+        SimpleSynthesisFunctionalizationBean functionalizationBean = getSimpleSynthesisFunctionalizationBean("1000", "1000");
+        System.out.println("MHL Calling synthesisFunctionalization/tester");
+        List<SimpleSynthesisFunctionalizationElementBean> elements = functionalizationBean.getFunctionalizationElements();
+        SimpleSynthesisFunctionalizationElementBean elementBean = elements.get(0);
+        functionalizationBean.setFunctionalizationElementBeingEdited(elementBean);
+        try {
+            Response response = given().spec(specification)
+                    .body(functionalizationBean).when().post("synthesisFunctionalization/tester")
+                    .then().statusCode(200).extract().response();
+
+            assertNotNull(response);
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+
+    @Test
+    public void removeFunctionalizationElement() {
+        SimpleSynthesisFunctionalizationBean functionalizationBean = getSimpleSynthesisFunctionalizationBean("1000", "1000");
+        List<SimpleSynthesisFunctionalizationElementBean> elements = functionalizationBean.getFunctionalizationElements();
+        SimpleSynthesisFunctionalizationElementBean elementBean = elements.get(0);
+        functionalizationBean.setFunctionalizationElementBeingEdited(elementBean);
+        try {
+            Response response = given().spec(specification)
+                    .body(functionalizationBean).when().post("synthesisFunctionalization/removeSynthesisFunctionalizationElement")
+                    .then().statusCode(200).extract().response();
+
+            assertNotNull(response);
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     @Test
@@ -81,8 +144,8 @@ public class SynthesisFunctionalizationServicesTest {
         elementBean.setValue(new Float(22.4));
         elementBean.setValueUnit("g");
         elementBean.setType("reagent");
-        elementBean.setActivationMethod("Light");
-        elementBean.setActivationEffect("Grows");
+        elementBean.setActivationMethod("Dim Light");
+        elementBean.setActivationEffect("Shrinks");
 
         functionalizationBean.setFunctionalizationElementBeingEdited(elementBean);
 
@@ -138,11 +201,6 @@ public class SynthesisFunctionalizationServicesTest {
             e.printStackTrace();
         }
     }
-
-    @Test
-    public void removeFunctionalizationElement() {
-    }
-
     private SimpleSynthesisFunctionalizationBean getSimpleSynthesisFunctionalizationBean(String sampleId, String dataId){
         try {
             Response response = given().spec(specification)
@@ -151,8 +209,6 @@ public class SynthesisFunctionalizationServicesTest {
                     .when().get("synthesisFunctionalization/edit")
                     .then().statusCode(200).extract().response();
 
-            System.out.println("MHL response.body().asString(): " + response.body().asString());
-// TODO Need to fill in the rest of the response values!
             JSONObject jResponse = new JSONObject(response.body().asString());
             ObjectMapper mapper = new ObjectMapper();
             return mapper.readValue(jResponse.toString(), SimpleSynthesisFunctionalizationBean.class);
@@ -206,18 +262,6 @@ public class SynthesisFunctionalizationServicesTest {
 
     @Test
     public void testViewDetails() {
-        SimpleSynthesisFunctionalizationBean functionalizationBean = new SimpleSynthesisFunctionalizationBean();
-        functionalizationBean.setSampleId("1000");
-        functionalizationBean.setId(new Long(1000));
-        SimpleFileBean fileBean = new SimpleFileBean();
-        fileBean.setType("TestType");
-        fileBean.setTitle("TestTitle");
-        fileBean.setUriExternal(true);
-        fileBean.setExternalUrl("https:///somewhere.com");
-        fileBean.setSampleId("1000");
-        List<SimpleFileBean> fileBeans = new ArrayList<SimpleFileBean>();
-        fileBeans.add(fileBean);
-        functionalizationBean.setFileElements(fileBeans);
 
         try {
             Response response = given().spec(specification).get("synthesisFunctionalization/viewDetails?sampleId=1000&dataId=1000")
@@ -227,8 +271,8 @@ public class SynthesisFunctionalizationServicesTest {
             assertEquals("canano_curator", createdBy);
             assertNotNull(response);
 
-            ArrayList<String> funcElementBeans = response.path("funcElementBeans");
-            assertNotNull(funcElementBeans);
+            ArrayList<String> funcElementBeans = response.path("functionalizationElements");
+           assertNotNull(funcElementBeans);
         }
         catch (Exception e) {
             e.printStackTrace();
