@@ -94,6 +94,40 @@ public class SynthesisFunctionalizationBO extends BaseAnnotationBO {
 //        this.checkOpenForms(synthesisMaterialBean, request);
 //        return SynthesisUtil.reformatLocalSearchDropdownsInSessionForSynthesisMaterial(request.getSession());
 //    }
+    
+
+    public List<String> create(SimpleSynthesisFunctionalizationBean synMatBean,
+                               HttpServletRequest request)
+            throws Exception {
+        List<String> msgs;
+        String sampleId = synMatBean.getSampleId();
+        SynthesisFunctionalizationBean entityBean = transferSynthesisFunctionalizationBean(synMatBean, request);
+//        SampleBean sampleBean = setupSampleById(sampleId, request);
+//        List<String> otherSampleNames = synMatBean.getOtherSampleNames();
+        msgs = validateInputs(request, entityBean);
+        if (msgs.size() > 0) {
+            return msgs;
+        }
+        this.saveEntity(request, sampleId, entityBean);
+        InitSynthesisSetup.getInstance().persistSynthesisFunctionalizationDropdowns(
+                request, entityBean);
+
+        msgs.add("success");
+        request.getSession().setAttribute("tab", "1");
+        return msgs;
+    }
+
+    public List<String> delete(SimpleSynthesisFunctionalizationBean synthesisFunctionalizationBean, HttpServletRequest request) throws Exception {
+
+        List<String> msgs = new ArrayList<String>();
+        SynthesisFunctionalizationBean entityBean = transferSynthesisFunctionalizationBean(synthesisFunctionalizationBean, request);
+        entityBean.setUpDomainEntity(SpringSecurityUtil.getLoggedInUserName());
+        String sampleId = synthesisFunctionalizationBean.getSampleId();
+        synthesisService.deleteSynthesisFunctionalization(new Long(sampleId),entityBean.getDomainEntity());
+
+        msgs.add("success");
+        return msgs;
+    }
 
     private SynthesisFunctionalizationBean transferSynthesisFunctionalizationBean(SimpleSynthesisFunctionalizationBean synFuncBean,
                                                                                   HttpServletRequest request) {
@@ -272,6 +306,7 @@ public class SynthesisFunctionalizationBO extends BaseAnnotationBO {
 
     public SimpleSynthesisFunctionalizationBean saveFile(SimpleSynthesisFunctionalizationBean simpleSynthesisFunctionalizationBean,
                                                 HttpServletRequest httpRequest)  throws Exception{
+        System.out.println("MHL SynthesisFunctionalizationBO.saveFile");
         SynthesisFunctionalizationBean synthesisFunctionalizationBean = transferSynthesisFunctionalizationBean(simpleSynthesisFunctionalizationBean, httpRequest);
         List<FileBean> fileList = synthesisFunctionalizationBean.getFiles();
         String timestamp = DateUtils.convertDateToString(new Date(), "yyyyMMdd_HH-mm-ss-SSS");
@@ -368,7 +403,7 @@ public class SynthesisFunctionalizationBO extends BaseAnnotationBO {
 
         List<FileBean> files = entityBean.getFiles();
         if(files.size()>1){
-            throw new SynthesisException("Can only remove one file at a time from SynthesisMaterial");
+            throw new SynthesisException("Can only remove one file at a time from SynthesisFunctionalization");
         }
         FileBean theFile = files.get(0);
         entityBean.removeFile(theFile);
@@ -385,6 +420,26 @@ public class SynthesisFunctionalizationBO extends BaseAnnotationBO {
         this.checkOpenForms(entityBean, httpRequest);
         return setupUpdate(simpleSynthesisFunctionalizationBean.getSampleId(), entityBean.getDomainEntity().getId().toString()
                 , httpRequest);
+    }
+
+    public SimpleSynthesisFunctionalizationBean removeFunctionalizationElement(SimpleSynthesisFunctionalizationBean simpleSynthesisFunctionalizationBean,
+                                                             HttpServletRequest httpRequest) throws Exception {
+        List<String> msgs;
+        SynthesisFunctionalizationBean entity = transferSynthesisFunctionalizationBean(simpleSynthesisFunctionalizationBean, httpRequest);
+        SimpleSynthesisFunctionalizationElementBean elementBeingEdited = simpleSynthesisFunctionalizationBean.getFunctionalizationElementBeingEdited();
+        SynthesisFunctionalizationElementBean functionalizationElementBean = entity.getSynthesisFunctionalizationElementById( elementBeingEdited.getId() );
+        entity.removeFunctionalizationElement(functionalizationElementBean);
+        msgs = validateInputs(httpRequest, entity);
+        //If an error, return blank class
+        if (msgs.size() > 0) {
+            SimpleSynthesisFunctionalizationBean nullBean = new SimpleSynthesisFunctionalizationBean();
+            nullBean.setErrors(msgs);
+            return nullBean;
+        }
+        this.saveEntity(httpRequest, simpleSynthesisFunctionalizationBean.getSampleId(), entity);
+        this.checkOpenForms(entity, httpRequest);
+        return setupUpdate(simpleSynthesisFunctionalizationBean.getSampleId(), entity.getDomainEntity().getId().toString(),
+                httpRequest);
     }
 
 
@@ -451,7 +506,6 @@ public class SynthesisFunctionalizationBO extends BaseAnnotationBO {
 
 
     public SimpleSynthesisFunctionalizationBean setupUpdate0(String sampleId, String dataId, HttpServletRequest httpRequest) throws Exception {
-System.out.println("MHL 0000");
         try {
             SynthesisFunctionalizationBean synBean = synthesisService.findSynthesisFunctionalizationById(new Long(sampleId), new Long(dataId));
 

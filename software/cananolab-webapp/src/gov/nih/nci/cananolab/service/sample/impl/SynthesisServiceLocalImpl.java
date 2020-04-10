@@ -252,7 +252,7 @@ public class SynthesisServiceLocalImpl extends BaseServiceLocalImpl implements S
 
         if(synthesis.getSynthesisFunctionalizations()!=null){
             for(SynthesisFunctionalization functionalization:synthesis.getSynthesisFunctionalizations()){
-                deleteSynthesisFunctionalization(functionalization);
+                deleteSynthesisFunctionalization(sampleId,functionalization);
             }
         }
         synthesis.setSynthesisFunctionalizations(null);
@@ -384,23 +384,44 @@ public class SynthesisServiceLocalImpl extends BaseServiceLocalImpl implements S
     }
 
 
-    public void deleteSynthesisFunctionalization(SynthesisFunctionalization synthesisFunctionalization) throws SynthesisException, NoAccessException {
-        if (SpringSecurityUtil.getPrincipal() == null) {
-            throw new NoAccessException();
-        }
-        try {
-            CaNanoLabApplicationService appService = (CaNanoLabApplicationService) ApplicationServiceProvider
-                    .getApplicationService();
-            appService.delete(synthesisFunctionalization);
-        } catch (Exception e) {
-            String err = "Error deleting synthesis material " + synthesisFunctionalization.getId();
-            logger.error(err, e);
-            throw new SynthesisException(err, e);
-        }
-    }
+    // TODO
+        public void deleteSynthesisFunctionalization(Long sampleId, SynthesisFunctionalization synthesisFunctionalization) throws SynthesisException, NoAccessException {
+/*
+
+            if (SpringSecurityUtil.getPrincipal() == null) {
+                throw new NoAccessException();
+            }
+            try {
+                //Delete attached files
+                if(synthesisFunctionalization.getFileCollection()!= null){
+                    for(File file:synthesisFunctionalization.getFileCollection()){
+                        deleteSynthesisFunctionalizationFile(synthesisFunctionalization,file);
+                    }
+                }
+
+                //Delete attached functionalization elements
+                if(synthesisFunctionalization.getSynthesisFunctionalizationElements() !=null){
+                    for(SynthesisFunctionalizationElement element: synthesisFunctionalization.getSynthesisFunctionalizationElements()){
+                        deleteSynthesisFunctionalizationElement(sampleId, synthesisFunctionalization,element);
+                    }
+                }
 
 
-    public void deleteSynthesisPurification(SynthesisPurification synthesisPurification) throws SynthesisException,
+                CaNanoLabApplicationService appService = (CaNanoLabApplicationService) ApplicationServiceProvider
+                        .getApplicationService();
+                appService.delete(synthesisFunctionalization);
+            } catch (Exception e) {
+                String err = "Error deleting synthesis functionalization " + synthesisFunctionalization.getId();
+                logger.error(err, e);
+                throw new SynthesisException(err, e);
+            }
+
+*/
+        }
+
+
+
+        public void deleteSynthesisPurification(SynthesisPurification synthesisPurification) throws SynthesisException,
             NoAccessException {
         if (SpringSecurityUtil.getPrincipal() == null) {
             throw new NoAccessException();
@@ -588,10 +609,8 @@ public class SynthesisServiceLocalImpl extends BaseServiceLocalImpl implements S
                 synthesis = sample.getSynthesis();
             }
             synthesisFunctionalization.setSynthesis(synthesis);
-            System.out.println("MHL BEFORE synthesisFunctionalization.getSynthesis().getId()" );
 
             if(!newEntity){
-                System.out.println("MHL synthesisFunctionalization.getSynthesis().getId(): " + synthesisFunctionalization.getSynthesis().getId() );
                 //Get the functionalization by id from database
                 Long test1 = synthesisFunctionalization.getSynthesis().getId();
                 Long test2 = synthesis.getId();
