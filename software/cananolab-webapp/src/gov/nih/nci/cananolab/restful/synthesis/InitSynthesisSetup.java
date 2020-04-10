@@ -63,6 +63,17 @@ public class InitSynthesisSetup {
 
     }
 
+    public void setSynthesisFunctionalizationDropDowns(HttpServletRequest request) throws Exception {
+        InitSampleSetup.getInstance().setSharedDropdowns(request);
+        InitSetup.getInstance().getDefaultAndOtherTypesByLookup(request,"amountUnits", "material", "value_unit", "otherValueUnit", true);
+        InitSetup.getInstance().getDefaultAndOtherTypesByLookup(request,"fileTypes", "file", "type", "otherType", true);
+        InitSetup.getInstance().getDefaultAndOtherTypesByLookup(request,"formulaTypes", "molecular formula", "type", "otherType", true);
+        //TODO Activation method
+        //TODO Inherent function type
+
+        //TODO more?
+    }
+
     /**
      *
      * @param request
