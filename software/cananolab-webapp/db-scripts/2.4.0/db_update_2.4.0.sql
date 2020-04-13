@@ -451,5 +451,5 @@ VALUES (1010, 'pubchem', 'dataSource', 'Compound'),
        (1091, 'functionalization', 'type', 'antibody'),
        (1092, 'functionalization', 'type', 'biopolymer'),
        (1093, 'functionalization', 'type', 'small molecule'),
-       (1094, 'synthesis', 'otherMaterialType', 'reagent');
+       (1094, 'synthesis', 'materialType', 'reagent');
 

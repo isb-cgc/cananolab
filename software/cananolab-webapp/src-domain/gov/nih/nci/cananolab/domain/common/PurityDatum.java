@@ -15,6 +15,7 @@ public class PurityDatum implements java.io.Serializable {
 	private Long datumPkId;
 	private File file;
 	private SynthesisPurity synthesisPurity;
+	private Long synthesisPurityId;
 	private String name;
 	private Float value;
 	private String valueType;
@@ -40,6 +41,7 @@ public class PurityDatum implements java.io.Serializable {
 		this.datumPkId = datumPkId;
 		this.file = file;
 		this.synthesisPurity = synthesisPurity;
+		this.synthesisPurityId = synthesisPurity.getId();
 		this.name = name;
 		this.value = value;
 		this.valueType = valueType;
@@ -72,6 +74,15 @@ public class PurityDatum implements java.io.Serializable {
 
 	public void setSynthesisPurity(SynthesisPurity synthesisPurity) {
 		this.synthesisPurity = synthesisPurity;
+		this.synthesisPurityId = synthesisPurity.getId();
+	}
+
+	public Long getSynthesisPurityId() {
+		return synthesisPurityId;
+	}
+
+	public void setSynthesisPurityId(Long id){
+		this.synthesisPurityId = id;
 	}
 
 	public String getName() {
@@ -137,5 +148,9 @@ public class PurityDatum implements java.io.Serializable {
 	public void setConditionCollection(Set<PurityDatumCondition> experimentConditions) {
 		this.conditionCollection = experimentConditions;
 	}
+
+
+
+
 
 }

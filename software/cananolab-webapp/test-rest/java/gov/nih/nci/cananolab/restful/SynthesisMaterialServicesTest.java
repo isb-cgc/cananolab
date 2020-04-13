@@ -190,12 +190,12 @@ private static RequestSpecification specification;
     }
 
     @Test
-    public void testSaveFile() {
+    public void testSaveExternalFile() {
         SimpleSynthesisMaterialBean materialBean = getSimpleSynthesisMaterialBean("1000", "1000");
 //        materialBean.setSampleId("1000");
 //        materialBean.setId(new Long(1000));
         SimpleFileBean fileBean = new SimpleFileBean();
-        fileBean.setType("TestType");
+        fileBean.setType("document");
         fileBean.setTitle("TestTitle");
         fileBean.setUriExternal(true);
         fileBean.setExternalUrl("https://evs.nci.nih.gov/ftp1/GAIA/GAIA-NCIt_Terminology.txt");
@@ -208,6 +208,42 @@ private static RequestSpecification specification;
 
 
         try {
+            Response response = given().spec(specification)
+                    .body(materialBean).when().post("synthesisMaterial/saveFile")
+                    .then().statusCode(200).extract().response();
+
+            assertNotNull(response);
+            String debug = response.asString();
+            System.out.println(debug);
+
+            //TODO Get material Bean and query to see if the file is there
+
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Test
+    public void testSaveLocalFile() {
+        SimpleSynthesisMaterialBean materialBean = getSimpleSynthesisMaterialBean("1005", "1005");
+//        materialBean.setSampleId("1000");
+//        materialBean.setId(new Long(1000));
+        SimpleFileBean fileBean = new SimpleFileBean();
+        fileBean.setType("document");
+        fileBean.setTitle("TestTitle");
+        fileBean.setUriExternal(false);
+        fileBean.setSampleId("1000");
+        materialBean.setFileBeingEdited(fileBean);
+//        List<SimpleFileBean> fileBeans = new ArrayList<SimpleFileBean>();
+//        fileBeans.add(fileBean);
+//        materialBean.setFileElements(fileBeans);
+
+
+        try {
+            //TODO call upload file
+            //http://127.0.0.1:8080/caNanoLab/rest/core/uploadFile
+
             Response response = given().spec(specification)
                     .body(materialBean).when().post("synthesisMaterial/saveFile")
                     .then().statusCode(200).extract().response();

@@ -193,9 +193,10 @@ public class SynthesisMaterialBO extends BaseAnnotationBO {
         }
 
         //Set protocol for domain and bean
+        //TODO why is this not null?
         try {
             SimpleProtocol sProtocol = synMatBean.getSimpleProtocol();
-            if (sProtocol != null) {
+            if (sProtocol != null && sProtocol.getDomainId() !=null) {
                 ProtocolBean protocolBean = protocolService.findProtocolById(sProtocol.getDomainId().toString());
                 Protocol protocol = protocolBean.getDomain();
                 bean.setProtocolBean(protocolBean);

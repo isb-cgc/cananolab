@@ -1,13 +1,22 @@
 package gov.nih.nci.cananolab.restful.synthesis;
 
 import gov.nih.nci.cananolab.domain.characterization.physical.Purity;
+import gov.nih.nci.cananolab.domain.common.File;
+import gov.nih.nci.cananolab.domain.common.Protocol;
+import gov.nih.nci.cananolab.domain.common.PurificationConfig;
+import gov.nih.nci.cananolab.domain.particle.Synthesis;
+import gov.nih.nci.cananolab.domain.particle.SynthesisPurification;
+import gov.nih.nci.cananolab.domain.particle.SynthesisPurity;
 import gov.nih.nci.cananolab.dto.common.ProtocolBean;
-import gov.nih.nci.cananolab.dto.common.PurityBean;
 import gov.nih.nci.cananolab.dto.particle.synthesis.SynthesisPurificationBean;
+import gov.nih.nci.cananolab.dto.particle.synthesis.SynthesisPurityBean;
 import gov.nih.nci.cananolab.restful.core.BaseAnnotationBO;
 import gov.nih.nci.cananolab.restful.sample.InitSampleSetup;
 import gov.nih.nci.cananolab.restful.util.SynthesisUtil;
+import gov.nih.nci.cananolab.restful.view.edit.SimpleExperimentBean;
+import gov.nih.nci.cananolab.restful.view.edit.SimpleFileBean;
 import gov.nih.nci.cananolab.restful.view.edit.SimpleProtocol;
+import gov.nih.nci.cananolab.restful.view.edit.SimplePurificationConfigBean;
 import gov.nih.nci.cananolab.restful.view.edit.SimplePurityBean;
 import gov.nih.nci.cananolab.restful.view.edit.SimpleSynthesisPurificationBean;
 import gov.nih.nci.cananolab.security.service.SpringSecurityAclService;
@@ -19,9 +28,11 @@ import gov.nih.nci.cananolab.ui.form.SynthesisForm;
 import gov.nih.nci.cananolab.util.StringUtils;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.IllegalFormatConversionException;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import org.apache.log4j.Logger;
@@ -190,7 +201,9 @@ public class SynthesisPurificationBO extends BaseAnnotationBO {
      * @param synthesisPurificationBean
      * @param httpRequest
      */
-    private void saveEntity(SynthesisPurificationBean synthesisPurificationBean, HttpServletRequest httpRequest) {
+    private List<String> saveEntity(SynthesisPurificationBean synthesisPurificationBean, HttpServletRequest httpRequest) {
+        //TODO write
+        return null;
     }
 
     /** delete an existing purification
@@ -259,7 +272,7 @@ public class SynthesisPurificationBO extends BaseAnnotationBO {
      * @param httpRequest
      * @return
      */
-    public List<String> saveExperiment(SimpleSynthesisPurificationBean editBean, HttpServletRequest httpRequest){
+    public List<String> saveTechniqueAndEquipment(SimpleSynthesisPurificationBean editBean, HttpServletRequest httpRequest){
         //TODO write
         return null;
     }
@@ -271,7 +284,7 @@ public class SynthesisPurificationBO extends BaseAnnotationBO {
      * @param httpRequest
      * @return
      */
-    public List<String> deleteExperiment(SimpleSynthesisPurificationBean editBean, HttpServletRequest httpRequest){
+    public List<String> deleteTechniqueAndEquipment(SimpleSynthesisPurificationBean editBean, HttpServletRequest httpRequest){
         //TODO write
         return null;
     }
@@ -297,14 +310,14 @@ public class SynthesisPurificationBO extends BaseAnnotationBO {
     }
 
     /**
-     * Transfer from SimplePurityBean to PurityBean
+     * Transfer from SimplePurityBean to SynthesisPurityBean
      * @param simplePurityBean
      * @param httpRequest
      * @return
      */
-    private PurityBean transferSimplePurity(SimplePurityBean simplePurityBean, HttpServletRequest httpRequest){
+    private SynthesisPurityBean transferSimplePurity(SimplePurityBean simplePurityBean, HttpServletRequest httpRequest){
         //TODO write all the transfer stuff
-        PurityBean purityBean = new PurityBean();
+        SynthesisPurityBean purityBean = new SynthesisPurityBean();
         Purity purity = new Purity();
 
         //id
@@ -321,6 +334,9 @@ public class SynthesisPurificationBO extends BaseAnnotationBO {
         purityBean.setColumnHeaders(simplePurityBean.getColumnHeaders());
 
 
+
+
+
         //Column type (datum or condition)
         //column name
         //condition column properties
@@ -330,29 +346,110 @@ public class SynthesisPurificationBO extends BaseAnnotationBO {
 
         //File being edited (if any)
         //Files
-        return null;
+
+        return purityBean;
     }
 
     /**
      * Transfer from SimpleSynthesisPurificationBean to SynthesisPurificationBean
-     * @param simpleSynthesisPurificationBean
+     * @param sSynPurificationBean
      * @param httpRequest
      * @return
      */
-    private SynthesisPurificationBean transferSimplePurification(SimpleSynthesisPurificationBean simpleSynthesisPurificationBean, HttpServletRequest httpRequest){
+    private SynthesisPurificationBean transferSimplePurification(SimpleSynthesisPurificationBean sSynPurificationBean, HttpServletRequest httpRequest){
         //TODO write;
         //id
 
-        //Name
-        //Protocol Name
-        //source and date
-        //design and methods description
-        //Technique and instrument
-        //yield
-        //Analysis and conclusions
-        //Purity
+        SynthesisPurification purification = new SynthesisPurification();
 
-        return null;
+        if((sSynPurificationBean.getId()!=null)&& (sSynPurificationBean.getId()>0)){
+            purification.setId(sSynPurificationBean.getId());
+        }
+        //Name
+        purification.setMethodName(sSynPurificationBean.getMethodName());
+
+        //Set protocol
+        try {
+            SimpleProtocol sProtocol = sSynPurificationBean.getSimpleProtocol();
+            if (sProtocol != null) {
+                ProtocolBean protocolBean = protocolService.findProtocolById(sProtocol.getDomainId().toString());
+                Protocol protocol = protocolBean.getDomain();
+                purification.setProtocol(protocol);
+            }
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+            logger.error(e);
+        }
+
+        //type
+        purification.setType(sSynPurificationBean.getType());
+        //source and date
+        purification.setCreatedBy(sSynPurificationBean.getCreatedBy());
+        purification.setCreatedDate(sSynPurificationBean.getcreatedDate());
+        //design and methods description
+        purification.setDesignMethodDescription(sSynPurificationBean.getDesignMethodDescription());
+        //Technique and instrument
+        //TODO
+        //yield
+        purification.setYield(sSynPurificationBean.getYield());
+        //Analysis and conclusions
+        purification.setAnalysis(sSynPurificationBean.getAnalysis());
+        //Purity
+        //TODO
+        Set<SynthesisPurity> purities = new HashSet<SynthesisPurity>();
+        List<SimplePurityBean> simplePurityBeans = sSynPurificationBean.getPurityBeans();
+        if(simplePurityBeans != null){
+            for(SimplePurityBean sPurityBean: simplePurityBeans){
+                SynthesisPurity purity = new SynthesisPurity();
+                purity.setId(sPurityBean.getId());
+                purity.setCreatedBy(sPurityBean.getCreatedBy());
+                purity.setCreatedDate(sPurityBean.getCreatedDate());
+                purity.setSynthesisPurificationId(sSynPurificationBean.getId());
+                //TODO files
+                sPurityBean.getFiles();
+                //check for Files
+                List<SimpleFileBean> sfileBeans = sPurityBean.getFiles();
+                Set<File> files = new HashSet<File>();
+                if(sfileBeans!=null){
+                    for(SimpleFileBean simpleFileBean: sfileBeans){
+
+                        File file1 = new File();
+                        file1.setUriExternal(simpleFileBean.getUriExternal());
+                        file1.setUri(simpleFileBean.getUri());
+                        file1.setType(simpleFileBean.getType());
+                        file1.setDescription(simpleFileBean.getDescription());
+                        file1.setTitle(simpleFileBean.getTitle());
+                        file1.setCreatedDate(simpleFileBean.getCreatedDate());
+                        file1.setCreatedBy(simpleFileBean.getCreatedBy());
+                        files.add(file1);
+                    }}
+                purity.setFiles(files);
+
+                //TODO datum
+                sPurityBean.getColumnHeaders();
+
+                purities.add(purity);
+            }
+        }
+        purification.setPurities(purities);
+
+        List<SimplePurificationConfigBean> simpleExperimentBeans = sSynPurificationBean.getSimpleExperimentBeans();
+        if(simpleExperimentBeans!=null){
+            for (SimplePurificationConfigBean sExperimentBean: simpleExperimentBeans) {
+                PurificationConfig config = new PurificationConfig();
+                config.setPurificationConfigPkId(sExperimentBean.getId());
+                config.setDescription(sExperimentBean.getDescription());
+                //TODO create by and date
+                //Technique
+
+//                config.setTechnique();
+//                config.setInstrumentCollection();
+            }
+        }
+
+        SynthesisPurificationBean synthesisPurificationBean = new SynthesisPurificationBean(purification);
+        return synthesisPurificationBean;
     }
 
 }

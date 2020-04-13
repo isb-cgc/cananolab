@@ -107,6 +107,7 @@ public class RestTestLoginUtil {
 //		return PropertyUtils.getPropertyCached("local.properties", "user.name");
 	}
 
+
 	public static String readPasswordProperty() {
 		return PropertyUtils.getPropertyCached("local.properties", "password");
 	}

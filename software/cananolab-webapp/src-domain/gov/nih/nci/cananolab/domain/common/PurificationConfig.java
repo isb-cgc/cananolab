@@ -10,9 +10,7 @@ public class PurificationConfig {
     private String description;
     private String createdBy;
     private Date createdDate;
-//    private Long synthesisPurificationPkId;
-//    private Long techniquePkId;
-//    private SynthesisPurification synthesisPurificationBySynthesisPurificationPkId;
+
     private Technique technique;
     private Collection<Instrument> instrumentCollection;
 

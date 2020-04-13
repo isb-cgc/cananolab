@@ -3,10 +3,17 @@ package gov.nih.nci.cananolab.service.sample.impl;
 import gov.nih.nci.cananolab.domain.common.File;
 import gov.nih.nci.cananolab.domain.particle.*;
 import gov.nih.nci.cananolab.dto.common.FileBean;
-import gov.nih.nci.cananolab.dto.common.PurityBean;
-import gov.nih.nci.cananolab.dto.particle.SampleBean;
-import gov.nih.nci.cananolab.dto.particle.synthesis.*;
 
+import gov.nih.nci.cananolab.dto.particle.SampleBean;
+
+
+import gov.nih.nci.cananolab.dto.particle.synthesis.SynthesisBean;
+import gov.nih.nci.cananolab.dto.particle.synthesis.SynthesisFunctionalizationBean;
+import gov.nih.nci.cananolab.dto.particle.synthesis.SynthesisFunctionalizationElementBean;
+import gov.nih.nci.cananolab.dto.particle.synthesis.SynthesisMaterialBean;
+import gov.nih.nci.cananolab.dto.particle.synthesis.SynthesisMaterialElementBean;
+import gov.nih.nci.cananolab.dto.particle.synthesis.SynthesisPurificationBean;
+import gov.nih.nci.cananolab.dto.particle.synthesis.SynthesisPurityBean;
 import gov.nih.nci.cananolab.exception.CompositionException;
 import gov.nih.nci.cananolab.exception.NoAccessException;
 import gov.nih.nci.cananolab.exception.PointOfContactException;
@@ -91,6 +98,17 @@ public class SynthesisServiceLocalImpl extends BaseServiceLocalImpl implements S
         SynthesisMaterialBean smBean = null;
         try{
             SynthesisMaterial synthesisMaterial = synthesisHelper.findSynthesisMaterialById(sampleId, dataId);
+            //Add parent object to domain
+            Synthesis synthesis;
+            try{
+                synthesis = getHelper().findSynthesisBySampleId(sampleId);
+                synthesisMaterial.setSynthesis(synthesis);
+
+            }
+            catch (Exception e) {
+                e.printStackTrace();
+                logger.error(e);
+            }
             if (synthesisMaterial!=null){
                 smBean = new SynthesisMaterialBean(synthesisMaterial);
             }
@@ -868,7 +886,7 @@ public class SynthesisServiceLocalImpl extends BaseServiceLocalImpl implements S
                 fileUtils.prepareSaveFile(fileBean.getDomainFile());
             }
 
-            for(PurityBean synthesisPurityBean: synthesisPurificationBean.getPurityBeans()){
+            for(SynthesisPurityBean synthesisPurityBean: synthesisPurificationBean.getPurityBeans()){
                 this.saveSynthesisPurity(synthesisPurityBean,synthesisPurificationBean);
             }
 
@@ -888,7 +906,7 @@ public class SynthesisServiceLocalImpl extends BaseServiceLocalImpl implements S
         }
     }
 
-    public void saveSynthesisPurity(PurityBean synthesisPurityBean, SynthesisPurificationBean synthesisPurificationBean) throws SynthesisException {
+    public void saveSynthesisPurity(SynthesisPurityBean synthesisPurityBean, SynthesisPurificationBean synthesisPurificationBean) throws SynthesisException {
 
         try {
             CaNanoLabApplicationService appService = (CaNanoLabApplicationService) ApplicationServiceProvider
