@@ -1,10 +1,13 @@
 package gov.nih.nci.cananolab.restful.view.edit;
 
+import gov.nih.nci.cananolab.domain.common.Instrument;
+import gov.nih.nci.cananolab.domain.common.PurificationConfig;
 import gov.nih.nci.cananolab.domain.particle.SynthesisPurification;
 import gov.nih.nci.cananolab.domain.particle.SynthesisPurity;
 import gov.nih.nci.cananolab.dto.common.FileBean;
-import gov.nih.nci.cananolab.dto.common.PurityBean;
+import gov.nih.nci.cananolab.dto.common.PurificationConfigBean;
 import gov.nih.nci.cananolab.dto.particle.synthesis.SynthesisPurificationBean;
+import gov.nih.nci.cananolab.dto.particle.synthesis.SynthesisPurityBean;
 import gov.nih.nci.cananolab.security.enums.SecureClassesEnum;
 import gov.nih.nci.cananolab.security.service.SpringSecurityAclService;
 import java.util.ArrayList;
@@ -13,7 +16,7 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 
 public class SimpleSynthesisPurificationBean {
-    //TODO write
+
     List<String> errors;
     String sampleId="";
     Long id;
@@ -26,6 +29,23 @@ public class SimpleSynthesisPurificationBean {
     private String analysis;
     private Float yield;
     List<SimplePurityBean> purityBeans;
+    List<SimplePurificationConfigBean> purificationConfigBeans;
+
+    public List<SimplePurificationConfigBean> getSimpleExperimentBeans(){
+        return this.purificationConfigBeans;
+    }
+
+    public void setSimpleExperimentBeans(List<SimplePurificationConfigBean> purificationConfigBeans){
+        this.purificationConfigBeans = purificationConfigBeans;
+    }
+
+    public List<SimplePurityBean> getPurityBeans() {
+        return purityBeans;
+    }
+
+    public void setPurityBeans(List<SimplePurityBean> purityBeans) {
+        this.purityBeans = purityBeans;
+    }
 
     public List<String> getErrors() {
         return errors;
@@ -124,7 +144,7 @@ public class SimpleSynthesisPurificationBean {
         setcreatedDate(synthesisPurification.getCreatedDate());
         if(synBean.getPurityBeans() !=null){
             purityBeans = new ArrayList<SimplePurityBean>();
-            for(PurityBean purityBean : synBean.getPurityBeans()){
+            for(SynthesisPurityBean purityBean : synBean.getPurityBeans()){
                 SimplePurityBean simplePurityBean = new SimplePurityBean();
                 SynthesisPurity purity = purityBean.getDomain();
                 simplePurityBean.setId(purity.getId());
@@ -147,7 +167,37 @@ public class SimpleSynthesisPurificationBean {
         if(synBean !=null){
             simpleProtocol = new SimpleProtocol();
             simpleProtocol.transferFromProtocolBean(synBean.getProtocolBean());
+
         }
+
+        //technique and instrument
+        List<SimplePurificationConfigBean> simpleExperimentBeans = new ArrayList<SimplePurificationConfigBean>();
+
+        List<PurificationConfigBean> purificationConfigs = synBean.getPurificationConfigs();
+        if(purificationConfigs!=null){
+            for(PurificationConfigBean purificationConfigBean: purificationConfigs){
+                SimplePurificationConfigBean simpleExperimentBean = new SimplePurificationConfigBean();
+                simpleExperimentBean.setTechniqueDisplayName(purificationConfigBean.getTechniqueDisplayName());
+                simpleExperimentBean.setDescription(purificationConfigBean.getDescription());
+                simpleExperimentBean.setTechniqueid(purificationConfigBean.getDomain().getPurificationConfigPkId());
+                simpleExperimentBean.setTechniqueType(purificationConfigBean.getDomain().getTechnique().getType());
+                simpleExperimentBean.setAbbreviation(purificationConfigBean.getDomain().getTechnique().getAbbreviation());
+                List<SimpleInstrumentBean> simpleInstrumentBeans = new ArrayList<SimpleInstrumentBean>();
+                if(purificationConfigBean.getInstruments()!=null){
+                    for(Instrument instrument:purificationConfigBean.getInstruments()){
+                        SimpleInstrumentBean simpleInstrumentBean = new SimpleInstrumentBean();
+                        simpleInstrumentBean.setManufacturer(instrument.getManufacturer());
+                        simpleInstrumentBean.setModelName(instrument.getModelName());
+                        simpleInstrumentBean.setType(instrument.getType());
+                        simpleInstrumentBean.setId(instrument.getId());
+                        simpleInstrumentBeans.add(simpleInstrumentBean);
+                    }
+                }
+                simpleExperimentBean.setInstruments(simpleInstrumentBeans);
+                simpleExperimentBeans.add(simpleExperimentBean);
+            }
+        }
+        setSimpleExperimentBeans(simpleExperimentBeans);
 
     }
 }

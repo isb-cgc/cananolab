@@ -5,6 +5,7 @@ public class SimpleInstrumentBean {
 	String manufacturer = "";
 	String modelName = "";
 	String type = "";
+	Long id;
 	
 	public String getManufacturer() {
 		return manufacturer;
@@ -27,7 +28,8 @@ public class SimpleInstrumentBean {
 		if (type != null)
 			this.type = type;
 	}
-	
+	public Long getId(){return this.id;}
+	public void setId(Long id){this.id = id;}
 	
 
 }

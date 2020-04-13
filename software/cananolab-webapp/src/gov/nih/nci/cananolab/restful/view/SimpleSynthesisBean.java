@@ -1,20 +1,11 @@
 package gov.nih.nci.cananolab.restful.view;
 
-import com.sun.xml.bind.v2.model.core.MaybeElement;
-import gov.nih.nci.cananolab.domain.common.Instrument;
-import gov.nih.nci.cananolab.domain.common.Technique;
 import gov.nih.nci.cananolab.domain.particle.SmeInherentFunction;
 import gov.nih.nci.cananolab.dto.common.ColumnHeader;
-import gov.nih.nci.cananolab.dto.common.ExperimentConfigBean;
 import gov.nih.nci.cananolab.dto.common.FileBean;
-import gov.nih.nci.cananolab.dto.common.FindingBean;
 import gov.nih.nci.cananolab.dto.common.PurificationConfigBean;
-import gov.nih.nci.cananolab.dto.common.PurityBean;
 import gov.nih.nci.cananolab.dto.common.PurityRow;
-import gov.nih.nci.cananolab.dto.common.Row;
 import gov.nih.nci.cananolab.dto.common.table.PurityTableCell;
-import gov.nih.nci.cananolab.dto.common.table.TableCell;
-import gov.nih.nci.cananolab.dto.particle.characterization.CharacterizationBean;
 import gov.nih.nci.cananolab.dto.particle.synthesis.SmeInherentFunctionBean;
 import gov.nih.nci.cananolab.dto.particle.synthesis.SynthesisBean;
 import gov.nih.nci.cananolab.dto.particle.synthesis.SynthesisFunctionalizationBean;
@@ -22,16 +13,12 @@ import gov.nih.nci.cananolab.dto.particle.synthesis.SynthesisFunctionalizationEl
 import gov.nih.nci.cananolab.dto.particle.synthesis.SynthesisMaterialBean;
 import gov.nih.nci.cananolab.dto.particle.synthesis.SynthesisMaterialElementBean;
 import gov.nih.nci.cananolab.dto.particle.synthesis.SynthesisPurificationBean;
-import gov.nih.nci.cananolab.restful.view.edit.SimpleTechniqueAndInstrument;
+import gov.nih.nci.cananolab.dto.particle.synthesis.SynthesisPurityBean;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import org.apache.commons.collections.MultiMap;
-import org.apache.commons.collections.map.MultiValueMap;
-import org.apache.james.mime4j.field.address.MailboxList;
 import org.apache.log4j.Logger;
-import org.springframework.context.annotation.Description;
 
 public class SimpleSynthesisBean {
     Long id;
@@ -246,7 +233,7 @@ public class SimpleSynthesisBean {
 //                    purification.put("Technique", purificationBean.getDomainEntity().getPurificationConfigs());
                     purificationPurityElements = new ArrayList<Map<String,Object>>();
                     List<Object> testList = transferPurificationResults(purificationBean);
-                    for(PurityBean purityBean : purificationBean.getPurityBeans()){
+                    for(SynthesisPurityBean purityBean : purificationBean.getPurityBeans()){
                         purificationPurity = new HashMap<String, Object>();
 
 //                        Map<String, List<Object>> oneCharResult = new HashMap<String, List<Object>>();
@@ -301,10 +288,10 @@ public class SimpleSynthesisBean {
 
         List<Object> charResults = new ArrayList<Object>();
 
-        List<PurityBean> purities = purificationBean.getPurityBeans();
+        List<SynthesisPurityBean> purities = purificationBean.getPurityBeans();
 
 
-        for (PurityBean purityBean  : purities) {
+        for (SynthesisPurityBean purityBean  : purities) {
 
             Map<String, List<Object>> oneCharResult = new HashMap<String, List<Object>>();
 
@@ -325,7 +312,7 @@ public class SimpleSynthesisBean {
 //        charBeanUnits.add(aUnit);
     }
 
-    protected List transferPurityResultsDataAndCondition(PurityBean purityBean) {
+    protected List transferPurityResultsDataAndCondition(SynthesisPurityBean purityBean) {
 
         logger.debug("Data and Conditions:");
         List<SimpleCharacterizationUnitBean> rowsOfTable = new ArrayList<SimpleCharacterizationUnitBean>();
@@ -364,7 +351,7 @@ public class SimpleSynthesisBean {
         return rowsOfTable;
     }
 
-    protected List<Object> transferPurityResultsFiles (PurityBean purityBean) {
+    protected List<Object> transferPurityResultsFiles (SynthesisPurityBean purityBean) {
 
         List<Object> files = new ArrayList<Object>();
         List<FileBean> fileBeans = purityBean.getFiles();

@@ -33,6 +33,7 @@ public class PurificationConfigBean {
 	private List<Instrument> instruments = new ArrayList<Instrument>(20);
 	private String description;
 
+
 	public PurificationConfigBean() {
 		domain = new PurificationConfig();
 		domain.setTechnique(new Technique());
@@ -53,6 +54,14 @@ public class PurificationConfigBean {
 
 	public void setDomain(PurificationConfig domain) {
 		this.domain = domain;
+	}
+
+	public Technique getTechnique(){
+		return domain.getTechnique();
+	}
+
+	public void setTechnique(Technique technique){
+		domain.setTechnique(technique);
 	}
 
 	public String getTechniqueDisplayName() {
@@ -82,6 +91,7 @@ public class PurificationConfigBean {
 
 	public void removeInstrument(Instrument instrument) {
 		instruments.remove(instrument);
+		domain.setInstrumentCollection(instruments);
 	}
 
 	/**

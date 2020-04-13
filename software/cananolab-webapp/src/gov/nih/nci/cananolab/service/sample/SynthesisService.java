@@ -4,12 +4,13 @@ import gov.nih.nci.cananolab.domain.particle.Synthesis;
 import gov.nih.nci.cananolab.domain.particle.SynthesisFunctionalization;
 import gov.nih.nci.cananolab.domain.particle.SynthesisMaterial;
 import gov.nih.nci.cananolab.domain.particle.SynthesisPurification;
-import gov.nih.nci.cananolab.dto.common.PurityBean;
+
 import gov.nih.nci.cananolab.dto.particle.SampleBean;
 import gov.nih.nci.cananolab.dto.particle.synthesis.SynthesisBean;
 import gov.nih.nci.cananolab.dto.particle.synthesis.SynthesisFunctionalizationBean;
 import gov.nih.nci.cananolab.dto.particle.synthesis.SynthesisMaterialBean;
 import gov.nih.nci.cananolab.dto.particle.synthesis.SynthesisPurificationBean;
+import gov.nih.nci.cananolab.dto.particle.synthesis.SynthesisPurityBean;
 import gov.nih.nci.cananolab.exception.NoAccessException;
 import gov.nih.nci.cananolab.exception.SynthesisException;
 import gov.nih.nci.cananolab.service.BaseService;
@@ -58,7 +59,7 @@ public interface SynthesisService extends BaseService {
 
     void saveSynthesisPurification(SampleBean sampleBean, SynthesisPurificationBean synthesisPurificationBean) throws SynthesisException, NoAccessException;
 
-    void saveSynthesisPurity(PurityBean synthesisPurityBean, SynthesisPurificationBean synthesisPurificationBean) throws SynthesisException;
+    void saveSynthesisPurity(SynthesisPurityBean synthesisPurityBean, SynthesisPurificationBean synthesisPurificationBean) throws SynthesisException;
 
     List<String> getSupplierNames() throws SynthesisException;
 }

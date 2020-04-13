@@ -12,6 +12,7 @@ import gov.nih.nci.cananolab.domain.common.Condition;
 import gov.nih.nci.cananolab.domain.common.Datum;
 import gov.nih.nci.cananolab.domain.common.PurityDatum;
 import gov.nih.nci.cananolab.domain.common.PurityDatumCondition;
+import gov.nih.nci.cananolab.dto.particle.synthesis.SynthesisPurityBean;
 import gov.nih.nci.cananolab.util.StringUtils;
 
 import java.util.Date;
@@ -58,7 +59,7 @@ public class ColumnHeader {
 		this.columnName = datum.getName();
 		this.valueType = datum.getValueType();
 		this.valueUnit = datum.getValueUnit();
-		this.columnType = PurityBean.DATUM_TYPE;
+		this.columnType = SynthesisPurityBean.DATUM_TYPE;
 		this.createdDate = datum.getCreatedDate();
 //		this.operand = datum.getOperand();
 	}

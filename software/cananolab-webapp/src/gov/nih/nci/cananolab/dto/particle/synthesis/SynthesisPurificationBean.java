@@ -7,7 +7,7 @@ import gov.nih.nci.cananolab.domain.particle.SynthesisPurification;
 import gov.nih.nci.cananolab.domain.particle.SynthesisPurity;
 import gov.nih.nci.cananolab.dto.common.ProtocolBean;
 import gov.nih.nci.cananolab.dto.common.PurificationConfigBean;
-import gov.nih.nci.cananolab.dto.common.PurityBean;
+
 import gov.nih.nci.cananolab.util.ClassUtils;
 import java.util.ArrayList;
 import java.util.List;
@@ -26,7 +26,7 @@ public class SynthesisPurificationBean extends BaseSynthesisEntityBean {
 
     private SynthesisPurification domain;
 //    private List<SynthesisPurityBean> synthesisPurityBeans = new ArrayList<SynthesisPurityBean>();
-    private List<PurityBean> purityBeans = new ArrayList<PurityBean>();
+    private List<SynthesisPurityBean> purityBeans = new ArrayList<SynthesisPurityBean>();
     private List<PurificationConfigBean> purificationConfigs = new ArrayList<>();
     private ProtocolBean protocolBean = new ProtocolBean();
 
@@ -40,7 +40,7 @@ public class SynthesisPurificationBean extends BaseSynthesisEntityBean {
 
         for(SynthesisPurity purity:purification.getPurities()){
 //            SynthesisPurityBean purityBean = new SynthesisPurityBean(purity);
-            PurityBean purityBean = new PurityBean(purity);
+            SynthesisPurityBean purityBean = new SynthesisPurityBean(purity);
             purityBeans.add(purityBean);
         }
         for(PurificationConfig config: purification.getPurificationConfigs()){
@@ -90,11 +90,11 @@ public class SynthesisPurificationBean extends BaseSynthesisEntityBean {
         //todo write
     }
 
-    public List<PurityBean> getPurityBeans() {
+    public List<SynthesisPurityBean> getPurityBeans() {
         return purityBeans;
     }
 
-    public void setPurityBeans(List<PurityBean> purityBeans) {
+    public void setPurityBeans(List<SynthesisPurityBean> purityBeans) {
         this.purityBeans = purityBeans;
     }
 
