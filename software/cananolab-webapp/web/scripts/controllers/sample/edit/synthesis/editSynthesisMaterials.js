@@ -15,25 +15,32 @@ var app = angular.module('angularApp')
   $scope.materialElement = {}; // current material being edited //
   $scope.file = {}; // current file being edited //
   $scope.inherentFunction = {}; // current inherent function being edited //
-
-  // initial setup
+  
+  // initial setup for dropdowns //
   $http({ method: 'GET', url: `/caNanoLab/rest/synthesisMaterial/setup?sampleId=${$scope.sampleId}`}).
     success(function (data, status, headers, config) {
       $scope.dropdowns = data;
       $scope.loader = false;
     }).error(function (data, status, headers, config) {
       console.log("Error")
-    });
+  });
 
-  $http({ method: 'GET', url: `/caNanoLab/rest/synthesisMaterial/edit?sampleId=${$scope.sampleId}&synMaterialId=${$scope.synMaterialId}`}).
-    success(function (data, status, headers, config) {
-      $scope.sampleName = sampleService.sampleName($scope.sampleId);
-      $scope.material = data;
-      $scope.materialCopy = angular.copy($scope.material);
-      $scope.loader = false;
-    }).error(function (data, status, headers, config) {
-      console.log("Error")
-    });   
+  // function to return edit data for material //
+  if ($scope.synMaterialId==-1) {
+    $scope.material = { "errors": null, "sampleId": $scope.sampleId, "materialElements": [], "fileElements": [], "simpleProtocol": { "displayName": "" }, "type": "", "description": "" }
+  }
+  else {
+    $http({ method: 'GET', url: `/caNanoLab/rest/synthesisMaterial/edit?sampleId=${$scope.sampleId}&synMaterialId=${$scope.synMaterialId}` }).
+      success(function (data, status, headers, config) {
+        $scope.sampleName = sampleService.sampleName($scope.sampleId);
+        $scope.material = data;
+        $scope.materialCopy = angular.copy($scope.material);
+        $scope.loader = false;
+      }).error(function (data, status, headers, config) {
+        console.log("Error")
+      });  
+  };
+
 
 
 

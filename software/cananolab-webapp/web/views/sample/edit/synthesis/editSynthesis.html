@@ -22,7 +22,12 @@
     <!-- Materials -->
     <table ng-hide="show0" class="summaryViewNoTop" width="100%" summary="layout">
         <tr>
-            <td class="heading">Materials</td>
+            <td class="heading">Materials&nbsp;&nbsp;
+                <a href="#/editSynthesisMaterials?sampleId={{sampleId}}&synMaterialId=-1" class="btn btn-primary btn-xs"
+                    style="color:white;text-decoration: none;">
+                    Add
+                </a>
+            </td>
         </tr>
         <tr ng-repeat="m in materials">
             <td>
@@ -36,7 +41,7 @@
                                 <tr>
                                     <td colspan="2">
                                         <div style="margin-left:auto; margin-right:auto;text-align:right;width:99%; margin-top: 10px;">
-                                            <a href="#/editSynthesisMaterials?sampleId=1000&synMaterialId={{m.dataId}}" class="btn btn-primary btn-xs" style="color:white;text-decoration: none;">
+                                            <a href="#/editSynthesisMaterials?sampleId={{sampleId}}&synMaterialId={{m.dataId}}" class="btn btn-primary btn-xs" style="color:white;text-decoration: none;">
                                                 Edit
                                             </a>
                                         </div>
