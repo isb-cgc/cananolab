@@ -1,10 +1,12 @@
 
 
 <div class="spacer">
-    <!-- Current Material - {{material}}<br /><br />
+    Current Material - {{material}}<br /><br />
     Current Material Element - {{materialElement}}<br /><br />
     Current Inherent function - {{inherentFunction}}<br /><br />
-    Current File - {{file}}<br /> -->
+    Current File - {{file}}<br />
+
+    Current Material Element Index - {{materialElementFormIndex}}
     <form novalidate="" class="ng-pristine ng-valid">
         <table class="contentTitle" width="100%" border="0" summary="layout">
             <tbody>
@@ -218,7 +220,7 @@
                                                 <tr>
                                                     <td colspan="4" class="saveSynthesis">
                                                         <button class="btn btn-default btn-xs" ng-click="cancelMaterialElement($index,materialElement)">Cancel</button>
-                                                        <button ng-disabled="!material.simpleProtocol.displayName||!materialElement.type||!materialElement.chemicalName||inherentFunctionFormIndex!=null" class="btn btn-primary btn-xs" ng-click="saveMaterialElement($index,materialElement)">Save Material Element</button>
+                                                        <button ng-disabled="!material.simpleProtocol.displayName||!materialElement.type||!materialElement.chemicalName||inherentFunctionFormIndex!=null" class="btn btn-primary btn-xs" ng-click="saveMaterialElement(materialElement)">Save Material Element</button>
                                                     </td>
                                                 </tr>
                                             </table>
