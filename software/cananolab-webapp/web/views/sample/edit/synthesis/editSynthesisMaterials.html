@@ -1,12 +1,6 @@
 
 
 <div class="spacer">
-    Current Material - {{material}}<br /><br />
-    Current Material Element - {{materialElement}}<br /><br />
-    Current Inherent function - {{inherentFunction}}<br /><br />
-    Current File - {{file}}<br />
-
-    Current Material Element Index - {{materialElementFormIndex}}
     <form novalidate="" class="ng-pristine ng-valid">
         <table class="contentTitle" width="100%" border="0" summary="layout">
             <tbody>
@@ -14,7 +8,7 @@
                     <!-- ngIf: nanoEntityId!=null && nanoEntityId!='' -->
                     <td scope="col" align="left"
                         class="ng-scope">
-                        <h1 class="ng-binding"> Synthesis Sample sample Synthesis - Material 1
+                        <h1 class="ng-binding">{{setPageTitle()}}
                         </h1>
                     </td><!-- end ngIf: nanoEntityId!=null && nanoEntityId!='' -->
 
@@ -219,7 +213,7 @@
                                                 </tr>
                                                 <tr>
                                                     <td colspan="4" class="saveSynthesis">
-                                                        <button class="btn btn-default btn-xs" ng-click="cancelMaterialElement($index,materialElement)">Cancel</button>
+                                                        <button class="btn btn-default btn-xs" ng-click="cancelMaterialElement(materialElement)">Cancel</button>
                                                         <button ng-disabled="!material.simpleProtocol.displayName||!materialElement.type||!materialElement.chemicalName||inherentFunctionFormIndex!=null" class="btn btn-primary btn-xs" ng-click="saveMaterialElement(materialElement)">Save Material Element</button>
                                                     </td>
                                                 </tr>
