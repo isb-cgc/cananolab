@@ -20,6 +20,14 @@
         <tab heading="Purification" ng-click="select(2)"></tab>
     </tabset>
     <!-- Materials -->
+    <span style="font-family:Arial,Helvetica,sans-serif;font-size:16px;color:green;align-content: center;"
+        ng-if="message != null" class="ng-scope">
+        <ul>
+            <li class="ng-binding">
+                {{message}}
+            </li>
+        </ul>
+    </span>
     <table ng-hide="show0" class="summaryViewNoTop" width="100%" summary="layout">
         <tr>
             <td class="heading">Materials&nbsp;&nbsp;
@@ -68,19 +76,22 @@
                                             </tr>
                                             <tr>
                                                 <td width="10%" class="label">PubChem Data Source</td>
-                                                <td width="90%">{{me.PubChemDataSourceName}}</td>
+                                                <td width="90%">{{getValueOfField(me.PubChemDataSourceName)}}</td>
                                             </tr>
                                             <tr>
                                                 <td width="10%" class="label">Amount (and units)</td>
-                                                <td width="90%">{{me.Amount}} ({{me.ValueUnit}})</td>
+                                                <td width="90%">
+                                                    <span ng-if="!me.Amount && !me.ValueUnit">N/A</span>
+                                                    <span ng-if="me.Amount">{{me.Amount}} <span ng-if="me.ValueUnit">({{me.ValueUnit}})</span></span>
+                                                </td>
                                             </tr>
                                             <tr>
                                                 <td width="10%" class="label">Molecular Formula</td>
-                                                <td width="90%">{{me.MolecularFormula}}</td>
+                                                <td width="90%">{{getValueOfField(me.MolecularFormula)}}</td>
                                             </tr>
                                             <tr>
                                                 <td width="10%" class="label">Material Description</td>
-                                                <td width="90%">{{me.Description}}</td>
+                                                <td width="90%">{{getValueOfField(me.Description)}}</td>
                                             </tr>
                                             <tr>
                                                 <td width="10%" class="label">Supplier</td>
@@ -121,6 +132,9 @@
                     </tr>
                 </table>
             </td>
+        </tr>
+        <tr>
+            <td>&nbsp;</td>
         </tr>
     </table>
     <!-- End Materials -->
@@ -213,6 +227,9 @@
                     </tr>
                 </table>
             </td>
+        </tr>
+        <tr>
+            <td>&nbsp;</td>
         </tr>
     </table>
     <!-- End Functionalization -->
