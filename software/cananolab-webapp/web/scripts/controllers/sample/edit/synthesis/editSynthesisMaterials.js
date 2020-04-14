@@ -86,12 +86,13 @@ var app = angular.module('angularApp')
   };
   // save material element //
   // this will be rest service //
-  $scope.saveMaterialElement = function(index, me) {
+  $scope.saveMaterialElement = function(me) {
     if ($scope.materialElementFormIndex==-1) {
       $scope.material.materialElements.push($scope.materialElement)
     }
     else {
-      $scope.material['materialElements'][index] = me;
+      console.log($scope.materialElementFormIndex, 'thisis index')
+      $scope.material['materialElements'][$scope.materialElementFormIndex] = me;
     }
     $scope.materialElementFormIndex = null;
   };
@@ -114,6 +115,10 @@ var app = angular.module('angularApp')
   // this will be rest service //
   $scope.saveInherentFunction = function (i) {
     if ($scope.inherentFunctionFormIndex==-1) {
+      // inherent function list is null. Create array //
+      if (!$scope.materialElement.inherentFunctionList) {
+        $scope.materialElement['inherentFunctionList']=[];
+      };
       $scope.materialElement.inherentFunctionList.push($scope.inherentFunction)
     }
     else {
