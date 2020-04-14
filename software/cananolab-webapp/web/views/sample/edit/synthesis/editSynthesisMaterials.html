@@ -1,9 +1,10 @@
-Current Material - {{material}}<br /><br />
-Current Material Element - {{materialElement}}<br /><br />
-Current Inherent function - {{inherentFunction}}<br /><br />
-Current File - {{file}}<br />
+
 
 <div class="spacer">
+    <!-- Current Material - {{material}}<br /><br />
+    Current Material Element - {{materialElement}}<br /><br />
+    Current Inherent function - {{inherentFunction}}<br /><br />
+    Current File - {{file}}<br /> -->
     <form novalidate="" class="ng-pristine ng-valid">
         <table class="contentTitle" width="100%" border="0" summary="layout">
             <tbody>
@@ -41,7 +42,9 @@ Current File - {{file}}<br />
                     </td>
                     <td>
                         <div id="categoryPrompt">
-                            <input type="text" size="50" value="{{material.simpleProtocol.displayName}}" data-ng-model="material.simpleProtocol.displayName">
+                            <select ng-model="material.simpleProtocol" ng-options="o as o.displayName for o in dropdowns.protocolLookup track by o.domainId">
+                            </select>
+                            <!-- <input type="text" size="50" value="{{material.simpleProtocol.displayName}}" data-ng-model="material.simpleProtocol.displayName"> -->
                         </div>
                     </td>
                 </tr>
@@ -66,23 +69,31 @@ Current File - {{file}}<br />
                         </td>
                         <td>
                             <!-- <a style="display: block;" id="addFile" href="javascript:clearFile('nanomaterialEntity'); openSubmissionForm('File');"><img align="top" src="images/btn_add.gif" border="0" alt="add a nanomaterial entity file"></a> -->
-                            <button type="button" class="btn btn-primary btn-xs" id="addFile">Add</button>
+                            <button type="button" ng-click="openMaterialEditForm({},-1, 0)" class="btn btn-primary btn-xs" id="addFile">Add</button>
                         </td>
                     </tr>
-                    <tr>
+                    <tr ng-show="material.materialElements.length">
                         <td colspan="2">
                             <table class="editTableWithGrid" align="center" width="95%">
                                 <tbody>
-                                    <tr ng-repeat-start="me in material.materialElements">
+                                    <tr ng-repeat="me in material.materialElements">
                                         <td width="10%"><label>Material Type</label></td>
                                         <td width="80%">{{me.type}}</td>
                                         <td width="10%">
                                             <button type="button" class="btn btn-primary btn-xs ng-click-active" ng-click="openMaterialEditForm(me, $index, 1)">Edit</button>
                                     </tr>
-                                    <tr ng-repeat-end ng-show="materialElementFormIndex==$index">
+                                </tbody>
+                            </table>
+                        </td>
+                    </tr>
+                    <tr ng-show="materialElementFormIndex!=null">
+                        <td colspan="2">
+                            <table class="editForm" align="center" width="100%" cellspacing="0" cellpadding="0">
+                                <tbody>
+                                    <tr>
                                         <!-- add index here and add index to show form. only show current index form. close all first -->
                                         <td colspan="3">
-                                            <table class="editTableWithGrid" align="center" width="95%">
+                                            <table class="editTableWithGrid form" align="center" width="95.5%">
                                                 <tr>
                                                     <td width="10%">
                                                         <label>Material Type*</label>
@@ -153,10 +164,10 @@ Current File - {{file}}<br />
 
                                                 <tr>
                                                     <td width="10%"><label>Inherent Functions</label></td>
-                                                    <td width="90%" colspan="3"><button type="button" class="btn btn-primary btn-xs ng-click-active" ng-click="openMaterialEditForm()">Add</button></td>
+                                                    <td width="90%" colspan="3"><button type="button" class="btn btn-primary btn-xs ng-click-active" ng-click="openInherentFunctionForm(-1, $parent.$index)">Add</button></td>
                                                 </tr>
                                                 <tr>
-                                                    <td width="90%" colspan="4">
+                                                    <td width="90%" colspan="4">{{$parent.$index}}
                                                         <div class="inherentFunctions" ng-repeat="i in materialElement.inherentFunctionList">
                                                             <table class="editTableWithGrid" align="center" width="95%">
                                                                 <tr>
@@ -170,48 +181,44 @@ Current File - {{file}}<br />
                                                                     <td width="15%"><label>Description</label></td>
                                                                     <td width="85%" colspan="2">{{i.description}}</td>
                                                                 </tr>
-                                                                <tr ng-show="inherentFunctionFormIndex==$index">
-                                                                    <td colspan="3">
-                                                                        <table class="editTableWithGrid" align="center" width="95%">
-                                                                            <tr>
-                                                                                <td width="15%"><label>Type</label></td>
-                                                                                <td width="85%">
-                                                                                    <select ng-model="inherentFunction.type" ng-options="o as o for o in dropdowns.inherentFunctionTypes">
-                                                                                    
-                                                                                    </select>
-                                                                                </td>
-                                                                            </tr>
-                                                                            <tr>
-                                                                                <td width="15%"><label>Description</label></td>
-                                                                                <td width="85%">
-                                                                                    <textarea rows="5" cols="70" data-ng-model="inherentFunction.description">
-                                                                                        {{inherentFunction.description}}
-                                                                                    </textarea>
-                                                                                </td>
-                                                                            </tr>    
-                                                                            <tr>
-                                                                                <td colspan="2" class="saveSynthesis">
-                                                                                    <button class="btn btn-default btn-xs" ng-click="cancelInherentFunction($index,inherentFunction)">Cancel</button>
-                                                                                    <button class="btn btn-primary btn-xs" ng-click="saveInherentFunction($index,inherentFunction)">Save Inherent Function</button>
-                                                                                </td>
-                                                                            </tr>
-                                                                        </table>
-                                                                    </td>
-                                                                </tr>
-                                                                <tr ng-show="inherentFunctionFormId==i.id">
-                                                                    <td colspan="3" class=saveSynthesis>
-                                                                        <button class="btn btn-default btn-xs">Cancel</button>
-                                                                        <button class="btn btn-primary btn-xs">Save Inherent Function</button>
-                                                                    </td>
-                                                                </tr>
                                                             </table><br />
                                                         </div>
+                                                    </td>
+                                                </tr>
+                                                <tr ng-show="inherentFunctionFormIndex!=null">
+                                                    <td colspan="4">
+                                                        <table class="editTableWithGrid" align="center" width="95%">
+                                                            <tr>
+                                                                <td width="15%"><label>Type</label></td>
+                                                                <td width="85%">
+                                                                    <select ng-model="inherentFunction.type"
+                                                                        ng-options="o as o for o in dropdowns.inherentFunctionTypes">
+                                                
+                                                                    </select>
+                                                                </td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td width="15%"><label>Description</label></td>
+                                                                <td width="85%">
+                                                                    <textarea rows="5" cols="70" data-ng-model="inherentFunction.description">
+                                                                                                                                        {{inherentFunction.description}}
+                                                                                                                                    </textarea>
+                                                                </td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td colspan="2" class="saveSynthesis">
+                                                                    <button class="btn btn-default btn-xs"
+                                                                        ng-click="cancelInherentFunction($index,inherentFunction)">Cancel</button>
+                                                                    <button ng-disabled="!inherentFunction.type||!material.simpleProtocol.displayName||!materialElement.type||!materialElement.chemicalName" class="btn btn-primary btn-xs" ng-click="saveInherentFunction(inherentFunction)">Save Inherent Function</button>
+                                                                </td>
+                                                            </tr>
+                                                        </table>
                                                     </td>
                                                 </tr>
                                                 <tr>
                                                     <td colspan="4" class="saveSynthesis">
                                                         <button class="btn btn-default btn-xs" ng-click="cancelMaterialElement($index,materialElement)">Cancel</button>
-                                                        <button class="btn btn-primary btn-xs" ng-click="saveMaterialElement($index,materialElement)">Save Material Element</button>
+                                                        <button ng-disabled="!material.simpleProtocol.displayName||!materialElement.type||!materialElement.chemicalName||inherentFunctionFormIndex!=null" class="btn btn-primary btn-xs" ng-click="saveMaterialElement($index,materialElement)">Save Material Element</button>
                                                     </td>
                                                 </tr>
                                             </table>
@@ -262,14 +269,14 @@ Current File - {{file}}<br />
         <div class="form__actions">
             <div class="form__action form__action--left">
                 <!-- ngIf: nanoEntityId !== null --><button class="btn btn-danger ng-scope" type="button" value="Delete"
-                    ng-click="doDelete()" ng-if="nanoEntityId !== null">Delete</button>
+                    ng-click="doDelete()" ng-if="synMaterialId!=-1">Delete</button>
                 <!-- end ngIf: nanoEntityId !== null -->
             </div>
             <div class="form__action form__action--right">
                 <input type="hidden" ng-model="nanoEntityForm.createdBy" class="ng-pristine ng-valid">
                 <input type="hidden" ng-model="nanoEntityForm.createdDate" class="ng-pristine ng-valid">
                 <button class="btn btn-danger" type="reset" value="Reset" ng-click="resetForm()">Reset</button>
-                <button class="btn btn-primary ng-binding" type="submit" ng-click="doSubmit()"
+                <button ng-disabled="!material.simpleProtocol.displayName" class="btn btn-primary ng-binding" type="submit" ng-click="doSubmit()"
                     ng-show="!addNewComposingElement">
                     Update
                 </button>

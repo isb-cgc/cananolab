@@ -2027,3 +2027,7 @@ h1 {
     float:right;
     margin-left:10px;
 }
+
+.editTableWithGrid.form {
+    background-color:#D3E4DE;
+}
