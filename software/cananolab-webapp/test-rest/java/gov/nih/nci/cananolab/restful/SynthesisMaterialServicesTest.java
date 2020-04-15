@@ -344,6 +344,40 @@ private static RequestSpecification specification;
     }
 
     @Test
+    public void testSubmitWithSupplier() {
+        SimpleSynthesisMaterialBean materialBean = getSimpleSynthesisMaterialBean("1000","1000");
+
+        SimpleSynthesisMaterialElementBean elementBean = new SimpleSynthesisMaterialElementBean();
+        elementBean.setChemicalName("TestChem2");
+        elementBean.setMolecularFormula("CHO2SB");
+        elementBean.setMolecularFormulaType("Hill");
+        elementBean.setDescription("Test material element 2");
+        elementBean.setCreatedBy("");
+        elementBean.setType("reagent");
+        Map<String,String> supplierMap = new HashMap<String,String>();
+        supplierMap.put("SupplierName", "Supplier1");
+        supplierMap.put("Lot", "LOTABCD");
+        elementBean.setSupplier(supplierMap);
+        List<SimpleSynthesisMaterialElementBean> elementBeans = new ArrayList<SimpleSynthesisMaterialElementBean>();
+        elementBeans.add(elementBean);
+        materialBean.setMaterialElements(elementBeans);
+
+
+        try {
+            Response response = given().spec(specification).
+                    body(materialBean).when().post("synthesisMaterial/submit")
+                    .then().statusCode(200).extract().response();
+
+            assertNotNull(response);
+            String debug = response.asString();
+            System.out.println(debug);
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Test
     public void testDelete() {
         SimpleSynthesisMaterialBean materialBean = getSimpleSynthesisMaterialBean("1000","1000");
 

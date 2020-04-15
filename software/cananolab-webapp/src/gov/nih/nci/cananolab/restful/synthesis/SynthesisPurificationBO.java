@@ -8,10 +8,18 @@ import gov.nih.nci.cananolab.domain.particle.Synthesis;
 import gov.nih.nci.cananolab.domain.particle.SynthesisPurification;
 import gov.nih.nci.cananolab.domain.particle.SynthesisPurity;
 import gov.nih.nci.cananolab.dto.common.ProtocolBean;
+import gov.nih.nci.cananolab.dto.particle.SampleBean;
+import gov.nih.nci.cananolab.dto.particle.synthesis.SynthesisMaterialBean;
 import gov.nih.nci.cananolab.dto.particle.synthesis.SynthesisPurificationBean;
 import gov.nih.nci.cananolab.dto.particle.synthesis.SynthesisPurityBean;
+import gov.nih.nci.cananolab.exception.CurationException;
+import gov.nih.nci.cananolab.exception.NoAccessException;
+import gov.nih.nci.cananolab.exception.NotExistException;
+import gov.nih.nci.cananolab.exception.SampleException;
+import gov.nih.nci.cananolab.exception.SynthesisException;
 import gov.nih.nci.cananolab.restful.core.BaseAnnotationBO;
 import gov.nih.nci.cananolab.restful.sample.InitSampleSetup;
+import gov.nih.nci.cananolab.restful.util.PropertyUtil;
 import gov.nih.nci.cananolab.restful.util.SynthesisUtil;
 import gov.nih.nci.cananolab.restful.view.edit.SimpleExperimentBean;
 import gov.nih.nci.cananolab.restful.view.edit.SimpleFileBean;
@@ -19,7 +27,10 @@ import gov.nih.nci.cananolab.restful.view.edit.SimpleProtocol;
 import gov.nih.nci.cananolab.restful.view.edit.SimplePurificationConfigBean;
 import gov.nih.nci.cananolab.restful.view.edit.SimplePurityBean;
 import gov.nih.nci.cananolab.restful.view.edit.SimpleSynthesisPurificationBean;
+import gov.nih.nci.cananolab.security.CananoUserDetails;
+import gov.nih.nci.cananolab.security.enums.SecureClassesEnum;
 import gov.nih.nci.cananolab.security.service.SpringSecurityAclService;
+import gov.nih.nci.cananolab.security.utils.SpringSecurityUtil;
 import gov.nih.nci.cananolab.service.curation.CurationService;
 import gov.nih.nci.cananolab.service.protocol.ProtocolService;
 import gov.nih.nci.cananolab.service.sample.SampleService;
@@ -176,7 +187,7 @@ public class SynthesisPurificationBO extends BaseAnnotationBO {
      * @param httpRequest
      * @return
      */
-    public List<String> create(SimpleSynthesisPurificationBean purificationBean, HttpServletRequest httpRequest){
+    public List<String> create(SimpleSynthesisPurificationBean purificationBean, HttpServletRequest httpRequest) throws Exception {
         //TODO write
         List<String> msgs = new ArrayList<String>();
         SynthesisPurificationBean synthesisPurificationBean = transferSimplePurification(purificationBean, httpRequest);
@@ -186,7 +197,7 @@ public class SynthesisPurificationBO extends BaseAnnotationBO {
             return msgs;
         }
 
-        this.saveEntity( synthesisPurificationBean,httpRequest);
+        this.saveEntity( synthesisPurificationBean,purificationBean.getSampleId(),httpRequest);
         InitSynthesisSetup.getInstance().persistPurificationDropdowns(
                 httpRequest, synthesisPurificationBean);
         msgs.add("success");
@@ -201,9 +212,33 @@ public class SynthesisPurificationBO extends BaseAnnotationBO {
      * @param synthesisPurificationBean
      * @param httpRequest
      */
-    private List<String> saveEntity(SynthesisPurificationBean synthesisPurificationBean, HttpServletRequest httpRequest) {
-        //TODO write
-        return null;
+    private List<String> saveEntity(SynthesisPurificationBean synthesisPurificationBean,String sampleId,  HttpServletRequest httpRequest) throws Exception {
+
+        List<String> msgs = new ArrayList<String>();
+        SampleBean sampleBean = setupSampleById(sampleId, httpRequest);
+        CananoUserDetails userDetails = SpringSecurityUtil.getPrincipal();
+
+        boolean newEntity = true;
+
+        try {
+            synthesisPurificationBean.setUpDomainEntity(userDetails.getUsername());
+            if (synthesisPurificationBean.getDomainEntity().getId() != null) {
+                newEntity = false;
+            }
+        } catch (ClassCastException ex) {
+
+            synthesisPurificationBean.setType(null);
+        }
+
+        synthesisService.saveSynthesisPurification(sampleBean, synthesisPurificationBean);
+        if (!newEntity && !userDetails.isCurator() &&
+                springSecurityAclService.checkObjectPublic(sampleBean.getDomain().getId(), SecureClassesEnum.SAMPLE.getClazz())) {
+            retractFromPublic(httpRequest, sampleBean.getDomain().getId(), sampleBean.getDomain().getName(), "sample", SecureClassesEnum.SAMPLE.getClazz());
+            msgs.add(PropertyUtil.getProperty("sample", "message.updateSample.retractFromPublic"));
+            return msgs;
+        }
+        return msgs;
+
     }
 
     /** delete an existing purification
@@ -212,9 +247,17 @@ public class SynthesisPurificationBO extends BaseAnnotationBO {
      * @param httpRequest
      * @return
      */
-    public List<String> delete(SimpleSynthesisPurificationBean editBean, HttpServletRequest httpRequest){
-        //TODO write
-        return null;
+    public List<String> delete(SimpleSynthesisPurificationBean editBean, HttpServletRequest httpRequest) throws NoAccessException, SynthesisException {
+
+        List<String> msgs = new ArrayList<String>();
+        SynthesisPurificationBean entityBean = transferSimplePurification(editBean, httpRequest) ;
+        entityBean.setUpDomainEntity(SpringSecurityUtil.getLoggedInUserName());
+        String sampleId = editBean.getSampleId();
+        synthesisService.deleteSynthesisPurification(new Long(sampleId),entityBean.getDomainEntity());
+
+        msgs.add("success");
+        return msgs;
+
     }
 
     /**

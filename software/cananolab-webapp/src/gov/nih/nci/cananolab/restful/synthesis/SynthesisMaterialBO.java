@@ -242,8 +242,12 @@ public class SynthesisMaterialBO extends BaseAnnotationBO {
                     Supplier supplier = new Supplier();
                     supplier.setSupplierName(supplierMap.get("SupplierName"));
                     supplier.setLot(supplierMap.get("Lot"));
-                    supplier.setId(Long.valueOf(supplierMap.get("id")));
-//                supplier.setId(new Long(supplierMap.get("id")));
+                    if(supplierMap.get("id")!=null) {
+                        supplier.setId(Long.valueOf(supplierMap.get("id")));
+                    } else {
+                        //new supplier
+
+                    }
                     synthesisMaterialElement.setSupplier(supplier);
                 }
 
