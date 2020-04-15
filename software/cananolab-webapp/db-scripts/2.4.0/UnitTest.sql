@@ -6671,7 +6671,7 @@ CREATE TABLE `synthesis_functionalization_element`
     `activation_method`                         varchar(200)   DEFAULT NULL,
     `activation_effect`                         text,
     PRIMARY KEY (`synthesis_functionalization_element_pk_id`),
-    CONSTRAINT  `FK_synthesis_funct_TO_synthesis_functionalization_element` FOREIGN KEY (`synthesis_functionalization_pk_id`)
+    CONSTRAINT `FK_synthesis_funct_TO_synthesis_functionalization_element` FOREIGN KEY (`synthesis_functionalization_pk_id`)
         REFERENCES `synthesis_functionalization` (`synthesis_functionalization_pk_id`)
 ) ENGINE = InnoDB
   DEFAULT CHARSET = latin1;
@@ -6783,7 +6783,7 @@ CREATE TABLE `synthesis_material`
     `synthesis_material_pk_id` bigint(20)   NOT NULL COMMENT 'synthesis_material_pk_id',
     `synthesis_pk_id`          bigint(20)   NOT NULL COMMENT 'synthesis_pk_id',
     `protocol_pk_id`           bigint(20) DEFAULT NULL COMMENT 'protocol_pk_id',
-    `description`              text  NOT NULL COMMENT 'description',
+    `description`              text         NOT NULL COMMENT 'description',
     `created_date`             datetime     NOT NULL COMMENT 'created_date',
     `created_by`               varchar(200) NOT NULL COMMENT 'created_by',
     PRIMARY KEY (`synthesis_material_pk_id`),
@@ -6832,7 +6832,7 @@ CREATE TABLE `synthesis_material_element`
     `description`                      text COMMENT 'description',
     `created_by`                       varchar(200) NOT NULL COMMENT 'created_by',
     `created_date`                     datetime     NOT NULL COMMENT 'created_date',
-    `chemical_name`                    varchar(200)   NOT NULL COMMENT 'chemical_name',
+    `chemical_name`                    varchar(200) NOT NULL COMMENT 'chemical_name',
     `value`                            decimal(22, 3) DEFAULT NULL COMMENT 'value',
     `value_unit`                       varchar(200)   DEFAULT NULL COMMENT 'value_unit',
     `pub_chem_datasource_name`         varchar(200)   DEFAULT NULL COMMENT 'pub_chem_datasource_name',
@@ -6931,7 +6931,7 @@ LOCK TABLES `synthesis_material_file` WRITE;
     DISABLE KEYS */;
 INSERT IGNORE INTO `synthesis_material_file` (`synthesis_material_pk_id`, `file_pk_id`)
 VALUES (1000, 1000),
-       (1005,1005);
+       (1005, 1005);
 /*!40000 ALTER TABLE `synthesis_material_file`
     ENABLE KEYS */;
 UNLOCK TABLES;
