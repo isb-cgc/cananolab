@@ -34,7 +34,7 @@ public interface SynthesisService extends BaseService {
 
     void deleteSynthesisMaterial(Long sampleId, SynthesisMaterial synthesisMaterial) throws SynthesisException, NoAccessException;
 
-    void deleteSynthesisPurification(SynthesisPurification synthesisPurification) throws SynthesisException,
+    void deleteSynthesisPurification(Long sampleId, SynthesisPurification synthesisPurification) throws SynthesisException,
             NoAccessException;
 
 //    SynthesisBean findSynthesisById(Long sampleId, Long dataId) throws SynthesisException, NoAccessException;

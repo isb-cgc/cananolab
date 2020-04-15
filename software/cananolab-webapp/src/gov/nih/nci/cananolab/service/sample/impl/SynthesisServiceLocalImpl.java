@@ -1,6 +1,8 @@
 package gov.nih.nci.cananolab.service.sample.impl;
 
 import gov.nih.nci.cananolab.domain.common.File;
+import gov.nih.nci.cananolab.domain.common.PurityDatum;
+import gov.nih.nci.cananolab.domain.common.Supplier;
 import gov.nih.nci.cananolab.domain.particle.*;
 import gov.nih.nci.cananolab.dto.common.FileBean;
 
@@ -31,6 +33,7 @@ import gov.nih.nci.cananolab.system.applicationservice.client.ApplicationService
 import gov.nih.nci.cananolab.system.query.hibernate.HQLCriteria;
 import gov.nih.nci.cananolab.util.Comparators;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.SortedSet;
@@ -263,7 +266,7 @@ public class SynthesisServiceLocalImpl extends BaseServiceLocalImpl implements S
         Long sampleId = synthesis.getSample().getId();
         if(synthesis.getSynthesisPurifications() !=null){
             for(SynthesisPurification purification: synthesis.getSynthesisPurifications()){
-                deleteSynthesisPurification(purification);
+                deleteSynthesisPurification(sampleId, purification);
             }
         }
         synthesis.setSynthesisPurifications(null);
@@ -313,10 +316,12 @@ public class SynthesisServiceLocalImpl extends BaseServiceLocalImpl implements S
                 }
             }
 
-
+            //refresh the SynthesisMaterial object with the dependents removed
+            SynthesisMaterial tempMat = synthesisHelper.findSynthesisMaterialById(sampleId, synthesisMaterial.getId());
             CaNanoLabApplicationService appService = (CaNanoLabApplicationService) ApplicationServiceProvider
                     .getApplicationService();
-            appService.delete(synthesisMaterial);
+//            appService.delete(synthesisMaterial);
+            appService.delete(tempMat);
         } catch (Exception e) {
             String err = "Error deleting synthesis material " + synthesisMaterial.getId();
             logger.error(err, e);
@@ -439,12 +444,22 @@ public class SynthesisServiceLocalImpl extends BaseServiceLocalImpl implements S
 
 
 
-        public void deleteSynthesisPurification(SynthesisPurification synthesisPurification) throws SynthesisException,
+        public void deleteSynthesisPurification(Long sampleId, SynthesisPurification synthesisPurification) throws SynthesisException,
             NoAccessException {
         if (SpringSecurityUtil.getPrincipal() == null) {
             throw new NoAccessException();
         }
         try {
+
+
+            //Delete attached material elements
+            if(synthesisPurification.getPurities() !=null){
+                for(SynthesisPurity element: synthesisPurification.getPurities()){
+                    deleteSynthesisPurity(sampleId, synthesisPurification,element);
+                }
+            }
+
+
             CaNanoLabApplicationService appService = (CaNanoLabApplicationService) ApplicationServiceProvider
                     .getApplicationService();
             appService.delete(synthesisPurification);
@@ -453,6 +468,34 @@ public class SynthesisServiceLocalImpl extends BaseServiceLocalImpl implements S
             logger.error(err, e);
             throw new SynthesisException(err, e);
         }
+    }
+
+    private void deleteSynthesisPurity(Long sampleId, SynthesisPurification synthesisPurification, SynthesisPurity element) {
+        //TODO write
+        if (element.getFiles()!=null){
+            for(File file:element.getFiles()){
+                deleteSynthesisPurityFile(element,file);
+            }
+
+        }
+        if(element.getPurityDatumCollection()!=null){
+            //delete datum
+            for(PurityDatum purityDatum:element.getPurityDatumCollection()){
+                deletePurityDatum(sampleId, element, purityDatum);
+            }
+
+        }
+
+    }
+
+    private void deletePurityDatum(Long sampleId, SynthesisPurity element, PurityDatum purityDatum) {
+        //TODO write
+        
+    }
+
+    private void deleteSynthesisPurityFile(SynthesisPurity element, File file) {
+        //TODO write
+
     }
 
 
@@ -574,6 +617,12 @@ public class SynthesisServiceLocalImpl extends BaseServiceLocalImpl implements S
 
             for(FileBean fileBean:synthesisMaterialElementBean.getFiles()){
                 fileUtils.prepareSaveFile(fileBean.getDomainFile());
+            }
+
+            //check if this is a new supplier (has no id). Create if needed
+            if(synthesisMaterialElement.getSupplier().getId()==null){
+                Supplier supplier = createSupplierRecord(synthesisMaterialElement.getSupplier());
+                synthesisMaterialElement.setSupplier(supplier);
             }
             //TODO what will this do if there is no change
             appService.saveOrUpdate(synthesisMaterialElement);
@@ -991,6 +1040,25 @@ public class SynthesisServiceLocalImpl extends BaseServiceLocalImpl implements S
         return cnt;
     }
 
+    private Supplier createSupplierRecord(HashMap<String,String> supplierMap) throws SynthesisException {
+        Supplier supplier = new Supplier();
+        supplier.setLot(supplierMap.get("Lot"));
+        supplier.setSupplierName(supplierMap.get("supplierMap"));
+        return createSupplierRecord(supplier);
+    }
+
+    private Supplier createSupplierRecord(Supplier supplier) throws SynthesisException {
+        try {
+            CaNanoLabApplicationService appService = (CaNanoLabApplicationService) ApplicationServiceProvider.getApplicationService();
+            appService.saveOrUpdate(supplier);
+            return supplier;
+        }
+        catch (Exception e) {
+            String err = "Problem saving new Supplier ";
+            logger.error(err, e);
+            throw new SynthesisException(err, e);
+        }
+    }
 
 //    public SortedSet<String> getSupplierNames() throws Exception
 //    {
@@ -1023,5 +1091,7 @@ public class SynthesisServiceLocalImpl extends BaseServiceLocalImpl implements S
             throw new SynthesisException(err, e);
         }
     }
+
+
 
 }

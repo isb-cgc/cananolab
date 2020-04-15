@@ -103,4 +103,7 @@ public class SynthesisPurificationBean extends BaseSynthesisEntityBean {
     public void setPurificationConfigs(List<PurificationConfigBean> purificationConfigs){this.purificationConfigs= purificationConfigs;}
 
 
+    public void setUpDomainEntity(String username) {
+        //todo write
+    }
 }
