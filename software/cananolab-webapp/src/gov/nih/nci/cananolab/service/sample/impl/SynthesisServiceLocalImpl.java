@@ -620,7 +620,7 @@ public class SynthesisServiceLocalImpl extends BaseServiceLocalImpl implements S
             }
 
             //check if this is a new supplier (has no id). Create if needed
-            if(synthesisMaterialElement.getSupplier().getId()==null){
+            if(synthesisMaterialElement.getSupplier()!= null && synthesisMaterialElement.getSupplier().getId()==null){
                 Supplier supplier = createSupplierRecord(synthesisMaterialElement.getSupplier());
                 synthesisMaterialElement.setSupplier(supplier);
             }

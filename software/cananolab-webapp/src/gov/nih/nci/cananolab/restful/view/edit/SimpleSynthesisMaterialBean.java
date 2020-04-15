@@ -148,14 +148,17 @@ public class SimpleSynthesisMaterialBean {
                 sSynMatElementBean.setPubChemId(synthesisMaterialElement.getPubChemId());
                 sSynMatElementBean.setPubChemDataSource(synthesisMaterialElement.getPubChemDatasourceName());
                 //Transfer supplier
-                Supplier supplier = synthesisMaterialElement.getSupplier();
-                if(supplier != null){
-                    Map<String, String> supplierMap = new HashMap<String, String>();
-                    supplierMap.put("Lot",supplier.getLot());
-                    supplierMap.put("SupplierName",supplier.getSupplierName());
-                    supplierMap.put("id",supplier.getId().toString());
-                    sSynMatElementBean.setSupplier(supplierMap);
-                }
+
+                sSynMatElementBean.setSupplier(synthesisMaterialElement.getSupplier());
+//                Supplier supplier = synthesisMaterialElement.getSupplier();
+//
+//                if(supplier != null){
+//                    Map<String, String> supplierMap = new HashMap<String, String>();
+//                    supplierMap.put("Lot",supplier.getLot());
+//                    supplierMap.put("SupplierName",supplier.getSupplierName());
+//                    supplierMap.put("id",supplier.getId().toString());
+//                    sSynMatElementBean.setSupplier(supplierMap);
+//                }
                 //Transfer inherent function
                 if (synthesisMaterialElement.getSmeInherentFunctions().size()>0){
                     List<Map<String,String>> functionList = new ArrayList<Map<String, String>>();

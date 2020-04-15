@@ -1,5 +1,6 @@
 package gov.nih.nci.cananolab.restful.view.edit;
 
+import gov.nih.nci.cananolab.domain.common.Supplier;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -15,11 +16,15 @@ public class SimpleSynthesisMaterialElementBean {
     String molecularFormulaType;
     String pubChemDataSource;
     Long pubChemId;
-    Map<String,String> supplierMap;
+//    Map<String,String> supplierMap;
+    Supplier supplier;
     String type;
     Float value;
     String valueUnit;
 
+    public Supplier getSupplier(){return supplier;}
+
+    public void setSupplier(Supplier supplier){this.supplier = supplier;}
 
     public List<SimpleFileBean> getFiles() {
         return files;
@@ -71,9 +76,9 @@ public class SimpleSynthesisMaterialElementBean {
         return pubChemId;
     }
 
-    public Map<String, String> getSupplierMap() {
-        return supplierMap;
-    }
+//    public Map<String, String> getSupplierMap() {
+//        return supplierMap;
+//    }
 
     public String getType() {
         return type;
@@ -127,9 +132,9 @@ public class SimpleSynthesisMaterialElementBean {
         this.pubChemId = pubChemId;
     }
 
-    public void setSupplier(Map<String, String> supplierMap) {
-        this.supplierMap = supplierMap;
-    }
+//    public void setSupplier(Map<String, String> supplierMap) {
+//        this.supplierMap = supplierMap;
+//    }
 
     public void setType(String type) {
         this.type = type;

@@ -6,11 +6,12 @@
 
     <class name="Supplier" table="supplier">
         <id name="id" column="supplier_pk_id" type="long">
-        <generator class="hilo">
+       <generator class="hilo">
             <param name="table">hibernate_unique_key</param>
             <param name="column">next_hi</param>
         </generator>
         </id>
+
         <property name="supplierName" column="supplier_name" type="string"/>
         <property name="lot" column="lot" type="string"/>
     </class>

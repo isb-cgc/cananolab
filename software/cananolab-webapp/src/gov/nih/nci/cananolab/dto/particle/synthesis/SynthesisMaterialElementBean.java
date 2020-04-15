@@ -164,11 +164,12 @@ public class SynthesisMaterialElementBean extends BaseSynthesisEntityBean {
 
             //check supplier
             //TODO this is clumsy.  Should probably be a simple bean
-            Map<String, String> supplierMap = sSMEBean.getSupplierMap();
-            Supplier supplier = new Supplier();
-            supplier.setSupplierName(supplierMap.get("SupplierName"));
-            supplier.setLot(supplierMap.get("Lot"));
-            supplier.setId(new Long(supplierMap.get("id")));
+//            Map<String, String> supplierMap = sSMEBean.getSupplierMap();
+            Supplier supplier = sSMEBean.getSupplier();
+//            Supplier supplier = new Supplier();
+//            supplier.setSupplierName(supplierMap.get("SupplierName"));
+//            supplier.setLot(supplierMap.get("Lot"));
+//            supplier.setId(new Long(supplierMap.get("id")));
             synthesisMaterialElement.setSupplier(supplier);
 
 
