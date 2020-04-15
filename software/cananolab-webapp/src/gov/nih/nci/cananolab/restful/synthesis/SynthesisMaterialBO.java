@@ -237,19 +237,20 @@ public class SynthesisMaterialBO extends BaseAnnotationBO {
 
                 //check supplier
                 //TODO this is clumsy.  Should probably be a simple bean
-                Map<String, String> supplierMap = sSMEBean.getSupplierMap();
-                if(supplierMap!=null) {
-                    Supplier supplier = new Supplier();
-                    supplier.setSupplierName(supplierMap.get("SupplierName"));
-                    supplier.setLot(supplierMap.get("Lot"));
-                    if(supplierMap.get("id")!=null) {
-                        supplier.setId(Long.valueOf(supplierMap.get("id")));
-                    } else {
-                        //new supplier
-
-                    }
+//                Map<String, String> supplierMap = sSMEBean.getSupplierMap();
+                Supplier supplier = sSMEBean.getSupplier();
+//                if(supplierMap!=null) {
+//                    Supplier supplier = new Supplier();
+//                    supplier.setSupplierName(supplierMap.get("SupplierName"));
+//                    supplier.setLot(supplierMap.get("Lot"));
+//                    if(supplierMap.get("id")!=null) {
+//                        supplier.setId(Long.valueOf(supplierMap.get("id")));
+//                    } else {
+//                        //new supplier
+//
+//                    }
                     synthesisMaterialElement.setSupplier(supplier);
-                }
+//                }
 
                 //check for Files
                 List<SimpleFileBean> sfileBeans = sSMEBean.getFiles();

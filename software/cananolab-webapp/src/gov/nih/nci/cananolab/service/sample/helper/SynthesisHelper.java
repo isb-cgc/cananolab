@@ -95,6 +95,7 @@ public class SynthesisHelper
         crit.setFetchMode("synthesisMaterials.files.keywordCollection", FetchMode.JOIN);
         crit.setFetchMode("synthesisMaterials.synthesisMaterialElements", FetchMode.JOIN);
         crit.setFetchMode("synthesisMaterials.synthesisMaterialElements.files", FetchMode.JOIN);
+        crit.setFetchMode("synthesisMaterials.synthesisMaterialElements.supplier",FetchMode.JOIN);
         crit.setFetchMode("synthesisMaterials.synthesisMaterialElements.smeInherentFunctions", FetchMode.JOIN);
         crit.setFetchMode("synthesisFunctionalizations", FetchMode.JOIN);
         crit.setFetchMode("synthesisFunctionalizations.protocol", FetchMode.JOIN);

@@ -7,8 +7,8 @@
         <id column="synthesis_material_element_pk_id" name="id" type="long">
             <generator class="hilo"/>
         </id>
-        <one-to-one name="supplier" class="gov.nih.nci.cananolab.domain.common.Supplier"/>
-        <property generated="never" lazy="false" name="createdBy" type="string">
+        <many-to-one name="supplier"  class="gov.nih.nci.cananolab.domain.common.Supplier" column="supplier_pk_id" />
+        <property generated="never" lazy="false" name="createdBy" type="string" >
             <column length="200" name="created_by" not-null="true">
                 <comment>created_by</comment>
             </column>
