@@ -15,6 +15,8 @@ import io.restassured.http.ContentType;
 import io.restassured.response.Response;
 import io.restassured.response.ValidatableResponse;
 import io.restassured.specification.RequestSpecification;
+import java.awt.*;
+import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
@@ -22,6 +24,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.mail.Multipart;
+import javax.ws.rs.core.MediaType;
 import net.sf.ehcache.search.parser.MValue;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.json.JSONObject;
@@ -256,6 +260,7 @@ private static RequestSpecification specification;
         try {
             //TODO call upload file
             //http://127.0.0.1:8080/caNanoLab/rest/core/uploadFile
+            uploadFile();
 
             Response response = given().spec(specification)
                     .body(materialBean).when().post("synthesisMaterial/saveFile")
@@ -394,6 +399,49 @@ private static RequestSpecification specification;
     }
 
     @Test
+    public void testSubmitWithIF(){
+        SimpleSynthesisMaterialBean materialBean = getSimpleSynthesisMaterialBean("1000","1000");
+        SimpleSynthesisMaterialElementBean elementBean = new SimpleSynthesisMaterialElementBean();
+        elementBean.setChemicalName("TestChemIF");
+        elementBean.setMolecularFormula("ABXYZ10");
+        elementBean.setMolecularFormulaType("Hill");
+        elementBean.setDescription("Test ME with IF");
+        elementBean.setCreatedBy("");
+        elementBean.setType("core");
+        List<Map<String, String>> inherentFunctionList = new ArrayList<Map<String, String>>();
+        Map<String,String> newIF = new HashMap<String, String>();
+        newIF.put("description", "testDescription");
+        newIF.put("type", "Function Type");
+        inherentFunctionList.add(newIF);
+        elementBean.setInherentFunctionList(inherentFunctionList);
+        List<SimpleSynthesisMaterialElementBean> elementBeans = new ArrayList<SimpleSynthesisMaterialElementBean>();
+        elementBeans.add(elementBean);
+        materialBean.setMaterialElements(elementBeans);
+        try {
+            Response response = given().spec(specification).
+                    body(materialBean).when().post("synthesisMaterial/submit")
+                    .then().statusCode(200).extract().response();
+
+            assertNotNull(response);
+            String debug = response.asString();
+            System.out.println(debug);
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Test
+    public void addIFtoExisting(){
+        //TODO write
+    }
+
+    @Test
+    public void deleteIF(){
+        //TODO write
+    }
+
+    @Test
     public void testDelete() {
         SimpleSynthesisMaterialBean materialBean = getSimpleSynthesisMaterialBean("1000","1000");
 
@@ -446,6 +494,39 @@ private static RequestSpecification specification;
             e.printStackTrace();
         }
         return null;
+    }
+
+    @Test
+    public void uploadFile(){
+        String jsessionId = RestTestLoginUtil.testLogin();
+        RequestSpecification specificationMP = new RequestSpecBuilder()
+                .setBaseUri("http://localhost:8080/caNanoLab/rest/")
+                .addFilter(new ResponseLoggingFilter())
+                .addFilter(new RequestLoggingFilter())
+                .setSessionId(jsessionId)
+                .build();
+
+        given().spec(specificationMP)
+                .contentType("multipart/form-data")
+                .multiPart("file", new File("/local/content/TestUpload.txt"))
+                .when().post("core/uploadFile")
+                .then().statusCode(200).extract().response();;
+
+//        var uploadUrl = '/caNanoLab/rest/core/uploadFile';
+//        var fd = new FormData();
+//        fd.append('file', file);
+//        $http.post(uploadUrl, fd, {
+//                transformRequest: angular.identity,
+//                headers: {'Content-Type': undefined}
+//            })
+//                .success(function(){
+//        })
+//                .error(function(){
+//        });
+//    };
+
+
+
     }
 
     private String toJson(Object o){

@@ -280,8 +280,10 @@ public class SynthesisMaterialBO extends BaseAnnotationBO {
 
                     smeInherentFunction.setType(function.get("type").toString());
                     smeInherentFunction.setDescription(function.get("description").toString());
-//                    smeInherentFunction.setId((Long) function.get("id"));
-                    smeInherentFunction.setId(Long.valueOf(function.get("id")));
+//                   Is this a new function or does it have an ID
+                    if(function.get("id")!=null) {
+                        smeInherentFunction.setId(Long.valueOf(function.get("id")));
+                    }
 //                    smeInherentFunction.setId(function.get("id"));
                     //TODO this is circular.  Rework this
                     smeInherentFunction.setSynthesisMaterialElement(synthesisMaterialElement);
