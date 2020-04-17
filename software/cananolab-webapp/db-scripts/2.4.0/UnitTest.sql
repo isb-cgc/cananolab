@@ -6559,9 +6559,9 @@ LOCK TABLES `supplier` WRITE;
 /*!40000 ALTER TABLE `supplier`
     DISABLE KEYS */;
 INSERT IGNORE INTO `supplier` (`supplier_pk_id`, `supplier_name`, `lot`)
-VALUES (1000, 'Synthesis supplier', 'ABC123xyz'),
-       (1005, 'Synthesis supplier', 'ABC123xyz'),
-       (1111, 'Synthesis supplier', 'ABC123xyz');
+VALUES (1000, 'Synthesis supplier 1000', 'ABC123xyz'),
+       (1005, 'Synthesis supplier 1005', 'ABC456xyz'),
+       (1111, 'Synthesis supplier 1111', 'ABC789xyz');
 /*!40000 ALTER TABLE `supplier`
     ENABLE KEYS */;
 UNLOCK TABLES;
@@ -6862,9 +6862,9 @@ INSERT IGNORE INTO `synthesis_material_element` (`synthesis_material_element_pk_
 VALUES (1000, 1000, 'AA-2x-zZ', 'Hill', 'Synthesis Material Element 1', 'canano_curator', '2019-12-06 12:15:00',
         'Synthesis Chemical 1', 12.000, 'mg', 'Compound', 6224, 1000, 'reagent'),
        (1051, 1005, 'HAuCl4 . 3H2O', 'Hill', '200 mL of 0.01 wt% gold precursor', 'canano_curator',
-        '2019-08-28 00:00:00', 'chloroauric acid', 0.010, '%wt', 'Compound', 44134746, NULL, 'composing element'),
+        '2019-08-28 00:00:00', 'chloroauric acid', 0.010, '%wt', 'Compound', 44134746, 1005, 'composing element'),
        (1052, 1222, 'C6H5Na3O7', 'Hill', '4.5 mL of 1 wt% sodium citrate solution', 'canano_curator',
-        '2019-08-28 00:00:00', 'sodium citrate', 1.000, '%wt', 'Compound', 6224, 1005, 'reagent'),
+        '2019-08-28 00:00:00', 'sodium citrate', 1.000, '%wt', 'Compound', 6224, 1111, 'reagent'),
        (1053, 1222, 'H2O', 'Hill', 'Solutions of chloroauric acid and sodium citrate were created with deionized water',
         'canano_curator', '2019-08-28 00:00:00', 'deionized water', 204.500, 'mL', 'substance', 962, NULL, 'solvent');
 /*!40000 ALTER TABLE `synthesis_material_element`
