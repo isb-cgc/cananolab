@@ -565,6 +565,8 @@ public class SynthesisServiceLocalImpl extends BaseServiceLocalImpl implements S
                 if(synthesisMaterialElementBean.getSupplier()!= null && synthesisMaterialElementBean.getSupplier().getId()==null){
                     Supplier supplier = createSupplierRecord(synthesisMaterialElementBean.getSupplier());
                     synthesisMaterialElementBean.getDomainEntity().setSupplier(supplier);
+                } else if(synthesisMaterialElementBean.getSupplier()!=null){
+                    appService.saveOrUpdate(synthesisMaterialElementBean.getSupplier());
                 }
 
             }

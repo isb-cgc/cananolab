@@ -37,6 +37,7 @@ import org.springframework.security.acls.model.AclService;
 
 import static io.restassured.RestAssured.given;
 
+import static io.restassured.RestAssured.oauth;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
@@ -122,7 +123,7 @@ private static RequestSpecification specification;
     }
 
     @Test
-    public void testSaveSynthesisMaterialElement() {
+    public void testSaveNewSynthesisMaterialElement() {
         SimpleSynthesisMaterialBean materialBean = getSimpleSynthesisMaterialBean("1000", "1000");
 //
 //        materialBean.setSampleId("1000");
@@ -168,6 +169,48 @@ private static RequestSpecification specification;
         catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    @Test
+    public void testEditSynthesisMaterial(){
+//TODO write - edit fields within Material itself.
+    }
+
+    @Test
+    public void testEditSupplier(){
+
+        SimpleSynthesisMaterialBean materialBean = getSimpleSynthesisMaterialBean("1005", "1005");
+        List<SimpleSynthesisMaterialElementBean> elements = materialBean.getMaterialElements();
+        for(SimpleSynthesisMaterialElementBean elementBean: elements){
+            int i = 0;
+            if (elementBean.getSupplier()!=null){
+                elementBean.getSupplier().setLot("NewLotTest"+i);
+            }
+        }
+        try {
+            Response response = given().spec(specification)
+                    .body(materialBean).when().post("synthesisMaterial/submit")
+                    .then().statusCode(200).extract().response();
+
+            assertNotNull(response);
+            materialBean = getSimpleSynthesisMaterialBean("1005", "1005");
+            elements = materialBean.getMaterialElements();
+            for(SimpleSynthesisMaterialElementBean elementBean: elements){
+                assertTrue(elementBean.getSupplier().getLot().startsWith("NewLotTest"));
+            }
+            String debug = response.asString();
+            System.out.println(debug);
+
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    @Test
+    public void testEditSynthesisMaterialElement(){
+//TODO write
     }
 
     @Test
