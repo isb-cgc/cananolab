@@ -1,5 +1,6 @@
 package gov.nih.nci.cananolab.service.sample;
 
+import gov.nih.nci.cananolab.domain.common.Supplier;
 import gov.nih.nci.cananolab.domain.particle.Synthesis;
 import gov.nih.nci.cananolab.domain.particle.SynthesisFunctionalization;
 import gov.nih.nci.cananolab.domain.particle.SynthesisMaterial;
@@ -62,4 +63,6 @@ public interface SynthesisService extends BaseService {
     void saveSynthesisPurity(SynthesisPurityBean synthesisPurityBean, SynthesisPurificationBean synthesisPurificationBean) throws SynthesisException;
 
     List<String> getSupplierNames() throws SynthesisException;
+
+    Supplier createSupplierRecord(Supplier supplier) throws SynthesisException;
 }
