@@ -560,6 +560,14 @@ public class SynthesisServiceLocalImpl extends BaseServiceLocalImpl implements S
                     }
                     //save
 
+            for(SynthesisMaterialElementBean synthesisMaterialElementBean: synthesisMaterialBean.getSynthesisMaterialElements()){
+                //check the if there is a new Supplier
+                if(synthesisMaterialElementBean.getSupplier()!= null && synthesisMaterialElementBean.getSupplier().getId()==null){
+                    Supplier supplier = createSupplierRecord(synthesisMaterialElementBean.getSupplier());
+                    synthesisMaterialElementBean.getDomainEntity().setSupplier(supplier);
+                }
+
+            }
 
                     appService.saveOrUpdate(synthesisMaterial);
 
@@ -586,8 +594,9 @@ public class SynthesisServiceLocalImpl extends BaseServiceLocalImpl implements S
         }
     }
 
+
     public void saveSynthesisMaterialElement(SynthesisMaterial material, SynthesisMaterialElementBean synthesisMaterialElementBean) throws SynthesisException {
-//TODO reduce dependence on synthesisMaterial opbject, rely on synthesisMaterialId instead
+//TODO reduce dependence on synthesisMaterial object, rely on synthesisMaterialId instead
         try {
             CaNanoLabApplicationService appService = (CaNanoLabApplicationService) ApplicationServiceProvider
                     .getApplicationService();
@@ -1047,7 +1056,7 @@ public class SynthesisServiceLocalImpl extends BaseServiceLocalImpl implements S
         return createSupplierRecord(supplier);
     }
 
-    private Supplier createSupplierRecord(Supplier supplier) throws SynthesisException {
+    public Supplier createSupplierRecord(Supplier supplier) throws SynthesisException {
         try {
             CaNanoLabApplicationService appService = (CaNanoLabApplicationService) ApplicationServiceProvider.getApplicationService();
             appService.saveOrUpdate(supplier);

@@ -366,7 +366,7 @@ private static RequestSpecification specification;
         SimpleSynthesisMaterialBean materialBean = getSimpleSynthesisMaterialBean("1000","1000");
 
         SimpleSynthesisMaterialElementBean elementBean = new SimpleSynthesisMaterialElementBean();
-        elementBean.setChemicalName("TestChemSupplier");
+        elementBean.setChemicalName("TestChemSupplier2222");
         elementBean.setMolecularFormula("CHO2SB");
         elementBean.setMolecularFormulaType("Hill");
         elementBean.setDescription("Test material element 2");

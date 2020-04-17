@@ -230,9 +230,10 @@ public class SynthesisMaterialBO extends BaseAnnotationBO {
                 synthesisMaterialElement.setValueUnit(sSMEBean.getValueUnit());
                 synthesisMaterialElement.setCreatedBy(sSMEBean.getCreatedBy());
                 synthesisMaterialElement.setCreatedDate(sSMEBean.getCreatedDate());
-                synthesisMaterialElement.setSynthesisMaterial(material);
+//                synthesisMaterialElement.setSynthesisMaterial(material);
                 synthesisMaterialElement.setId(sSMEBean.getId());
                 synthesisMaterialElement.setType(sSMEBean.getType());
+                synthesisMaterialElement.setSynthesisMaterialId(synMatBean.getId());
 
 
                 //check supplier
@@ -290,12 +291,20 @@ public class SynthesisMaterialBO extends BaseAnnotationBO {
                     smeInherentFunctionSet.add(smeInherentFunction);
                 }}
                 synthesisMaterialElement.setSmeInherentFunctions(smeInherentFunctionSet);
-                SynthesisMaterialElementBean materialElementBean = new SynthesisMaterialElementBean(synthesisMaterialElement);
-                smeBeans.add(materialElementBean);
+
                 smes.add(synthesisMaterialElement);
             }
-            bean.setSynthesisMaterialElements(smeBeans);
+
             material.setSynthesisMaterialElements(smes);
+
+            //See if this can be avoided
+            for (SynthesisMaterialElement element:material.getSynthesisMaterialElements()){
+                element.setSynthesisMaterial(material);
+                SynthesisMaterialElementBean materialElementBean = new SynthesisMaterialElementBean(element);
+                smeBeans.add(materialElementBean);
+            }
+
+            bean.setSynthesisMaterialElements(smeBeans);
 
         }
         bean.setDomainEntity(material);
@@ -566,9 +575,15 @@ public class SynthesisMaterialBO extends BaseAnnotationBO {
             SimpleSynthesisMaterialElementBean elementBeingEdited = simpleSynthesisMaterialBean.getMaterialElementBeingEdited();
             SynthesisMaterialElementBean newElementBean = new SynthesisMaterialElementBean(elementBeingEdited);
             newElementBean.getDomainEntity().setSynthesisMaterialId(entity.getId());
+            newElementBean.getDomainEntity().setSynthesisMaterial(entity.getDomainEntity());
 //            newElementBean.getDomainEntity().setSynthesisMaterial(entity.getDomainEntity());
+            Supplier supplier = newElementBean.getSupplier();
 
-
+            if(supplier.getId()==null){
+                //new supplier
+                supplier = saveSupplier(supplier);
+            }
+            newElementBean.setSuppler(supplier);
 
 
             List<SynthesisMaterialElementBean> synthesisMaterialElementBeans = entity.getSynthesisMaterialElements();
@@ -598,6 +613,10 @@ public class SynthesisMaterialBO extends BaseAnnotationBO {
             throw new SynthesisException("Error while saving Synthesis Material Element ");
         }
         return setupUpdate(sampleId, entity.getDomainEntity().getId().toString(), httpServletRequest);
+    }
+
+    public Supplier saveSupplier(Supplier supplier) throws SynthesisException {
+       return synthesisService.createSupplierRecord(supplier);
     }
 
     public Map<String, Object> setupNew(String sampleId, HttpServletRequest request) throws Exception {
