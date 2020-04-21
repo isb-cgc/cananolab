@@ -36,35 +36,37 @@ var app = angular.module('angularApp')
       });  
   };
 
-
-
-
-  // opens material edit form //
-  $scope.openMaterialEditForm = function(me,index,type) {
-    if (index!=-1) {
-      $scope.materialElement = angular.copy(me);
-      $scope.materialElementFormIndex = index;
-    }
-    else {
-      $scope.materialElementFormIndex = -1;
-      $scope.materialElement = {};
-    };
+  // cancel inherent function //
+  $scope.cancelInherentFunction = function (index, i) {
+    console.log('dont do anything. Original Material stays as is');
+    $scope.inherentFunctionFormIndex = null;
   };
+
   // cancel material element edit //
   $scope.cancelMaterialElement = function (me) {
     $scope.materialElementFormIndex = null;
   };
 
-  // save material element //
-  // this will be rest service //
-  $scope.saveMaterialElement = function(me) {
-    if ($scope.materialElementFormIndex==-1) {
-      $scope.material.materialElements.push($scope.materialElement)
-    }
-    else {
-      $scope.material['materialElements'][$scope.materialElementFormIndex] = me;
-    }
-    $scope.materialElementFormIndex = null;
+  // delete for material //
+  $scope.deleteMaterial = function () {
+    if (confirm("Are you sure you want to delete?")) {
+      $http({ method: 'POST', url: '/caNanoLab/rest/synthesisMaterial/delete', data: $scope.material }).
+        success(function (data, status, headers, config) {
+          $location.search({ 'message': 'Synthesis Material successfully deleted.', 'sampleId': $scope.sampleId }).path('/editSynthesis').replace();
+        }).
+        error(function (data, status, headers, config) {
+        });
+    };
+  };
+
+  // deletes inherent function from material element //
+  $scope.deleteInherentFunction = function(index, parentIndex, inherentFunction) {
+    $scope.materialElement.inherentFunctionList.splice(index,1);
+  };
+
+  // delete material element //
+  $scope.deleteMaterialElement = function(me,index) {
+    $scope.material.materialElements.splice(index, 1)
   };
 
   // open the inherent function edit form //
@@ -81,30 +83,46 @@ var app = angular.module('angularApp')
       $scope.showInherentFunctionForm = true;
     };
   };
+
+  // opens material edit form //
+  $scope.openMaterialEditForm = function(me,index,type) {
+    if (index!=-1) {
+      $scope.materialElement = angular.copy(me);
+      $scope.materialElementFormIndex = index;
+    }
+    else {
+      $scope.materialElementFormIndex = -1;
+      $scope.materialElement = {};
+    };
+  };
+
   // save inherent function //
-  // this will be rest service //
   $scope.saveInherentFunction = function (i) {
-    if ($scope.inherentFunctionFormIndex==-1) {
-      // inherent function list is null. Create array //
+    if ($scope.inherentFunctionFormIndex == -1) {
       if (!$scope.materialElement.inherentFunctionList) {
-        $scope.materialElement['inherentFunctionList']=[];
+        $scope.materialElement['inherentFunctionList'] = [];
       };
       $scope.materialElement.inherentFunctionList.push($scope.inherentFunction)
     }
     else {
-      $scope.materialElement.inherentFunctionList[$scope.inherentFunctionFormIndex]=$scope.inherentFunction;
+      $scope.materialElement.inherentFunctionList[$scope.inherentFunctionFormIndex] = $scope.inherentFunction;
     }
-    // console.log($scope.inherentFunctionFormIndex,i)
-    $scope.inherentFunctionFormIndex = null;
-  };
-  // cancel inherent function //
-  $scope.cancelInherentFunction = function (index, i) {
-    console.log('dont do anything. Original Material stays as is');
     $scope.inherentFunctionFormIndex = null;
   };
 
+  // save material element //
+  $scope.saveMaterialElement = function(me) {
+    if ($scope.materialElementFormIndex==-1) {
+      $scope.material.materialElements.push($scope.materialElement)
+    }
+    else {
+      $scope.material['materialElements'][$scope.materialElementFormIndex] = me;
+    }
+    $scope.materialElementFormIndex = null;
+  };
+
   // submit the entire synthesis material //
-  $scope.doSubmit = function () {
+  $scope.saveMaterial = function () {
     $http({ method: 'POST', url: '/caNanoLab/rest/synthesisMaterial/submit', data: $scope.material }).
       success(function (data, status, headers, config) {
         $location.search({ 'message': 'Synthesis Material successfully saved.', 'sampleId': $scope.sampleId }).path('/editSynthesis').replace();
@@ -114,17 +132,5 @@ var app = angular.module('angularApp')
       });
   };
 
-  // delete for material //
-  $scope.doDelete = function() {
-    if (confirm("Are you sure you want to delete?")) {
-      $http({ method: 'POST', url: '/caNanoLab/rest/synthesisMaterial/delete', data: $scope.material }).
-        success(function (data, status, headers, config) {
-          $location.search({'message':'Synthesis Material successfully deleted.', 'sampleId':$scope.sampleId}).path('/editSynthesis').replace();
-        }).
-        error(function (data, status, headers, config) {
-        });
-    };
-  };
-
-  $scope.setPageTitle = () => $scope.synMaterialId == -1 ? `Add ${$scope.sampleName.name} Synthesis - Material` : `Edit ${$scope.sampleName.name} Synthesis - ${$scope.material.description}`;
+  $scope.setPageTitle = () => $scope.synMaterialId == -1 ? `Add ${$scope.sampleName.name} Synthesis - Material` : `Edit ${$scope.sampleName.name} Synthesis - Material`;
 });
