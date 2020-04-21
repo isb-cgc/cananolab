@@ -4,6 +4,7 @@ import gov.nih.nci.cananolab.domain.common.Supplier;
 import gov.nih.nci.cananolab.domain.particle.Synthesis;
 import gov.nih.nci.cananolab.domain.particle.SynthesisFunctionalization;
 import gov.nih.nci.cananolab.domain.particle.SynthesisMaterial;
+import gov.nih.nci.cananolab.domain.particle.SynthesisMaterialElement;
 import gov.nih.nci.cananolab.domain.particle.SynthesisPurification;
 
 import gov.nih.nci.cananolab.dto.particle.SampleBean;
@@ -65,4 +66,7 @@ public interface SynthesisService extends BaseService {
     List<String> getSupplierNames() throws SynthesisException;
 
     Supplier createSupplierRecord(Supplier supplier) throws SynthesisException;
-}
+
+    void deleteSynthesisMaterialElement(Long sampleId, SynthesisMaterial synthesisMaterial, SynthesisMaterialElement element) throws NoAccessException, SynthesisException;
+
+    }

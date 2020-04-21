@@ -329,7 +329,7 @@ public class SynthesisServiceLocalImpl extends BaseServiceLocalImpl implements S
         }
     }
 
-    private void deleteSynthesisMaterialElement(Long sampleId, SynthesisMaterial synthesisMaterial, SynthesisMaterialElement element) throws NoAccessException, SynthesisException {
+    public void deleteSynthesisMaterialElement(Long sampleId, SynthesisMaterial synthesisMaterial, SynthesisMaterialElement element) throws NoAccessException, SynthesisException {
         if (SpringSecurityUtil.getPrincipal() == null) {
             throw new NoAccessException();
         }

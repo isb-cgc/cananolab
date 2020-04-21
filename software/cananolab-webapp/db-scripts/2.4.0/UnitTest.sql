@@ -4135,6 +4135,15 @@ VALUES (1000, 'NCIt_CTCAE_5.0', 'https://evs.nci.nih.gov/ftp1/CTCAE/CTCAE_5.0/NC
         0),
        (1222, 'NCIt_CTCAE_5.0', 'https://evs.nci.nih.gov/ftp1/CTCAE/CTCAE_5.0/NCIt_CTCAE_5.0.xlsx', 'xlsx',
         'canano_curator', '2019-08-28 00:00:00', 'Synthesis File', 'Sample 2 test file', NULL, 'Excel', 0),
+       (1333, 'NCIt_CTCAE_5.0', 'https://evs.nci.nih.gov/ftp1/CTCAE/CTCAE_5.0/NCIt_CTCAE_5.0.xlsx', 'xlsx',
+        'canano_curator', '2019-12-06 12:15:00', 'Synthesis File', 'dummy row for testing of synthesis', NULL, 'Excel',
+        0),
+       (1444, 'NCIt_CTCAE_5.0', 'https://evs.nci.nih.gov/ftp1/CTCAE/CTCAE_5.0/NCIt_CTCAE_5.0.xlsx', 'xlsx',
+        'canano_curator', '2019-12-06 12:15:00', 'Synthesis File', 'dummy row for testing of synthesis', NULL, 'Excel',
+        0),
+       (1555, 'NCIt_CTCAE_5.0', 'https://evs.nci.nih.gov/ftp1/CTCAE/CTCAE_5.0/NCIt_CTCAE_5.0.xlsx', 'xlsx',
+        'canano_curator', '2019-12-06 12:15:00', 'Synthesis File', 'dummy row for testing of synthesis', NULL, 'Excel',
+        0),
        (66289664, '2020 Holiday & Pay Calendar.pdf', 'protocols/20200110_12-52-36-363_2020 Holiday & Pay Calendar.pdf',
         NULL, 'canano_curator', '2020-01-10 12:52:34', 'Synthesis Test Protocol and Holiday Calendar',
         'Uploaded pdf of holiday calendar as a stand-in file for a protocol', NULL, NULL, 0),
@@ -6184,7 +6193,7 @@ LOCK TABLES `purity_datum` WRITE;
     DISABLE KEYS */;
 INSERT IGNORE INTO `purity_datum` (`purity_datum_pk_id`, `name`, `value`, `value_type`, `value_unit`, `created_by`,
                                    `created_date`, `numberMod`, `purity_pk_id`, `file_pk_id`)
-VALUES (1000, 'Purity datum 1', 55.0000000000, 'purity', '%', 'canano_curator', '2019-12-06 12:15:00', '=', 1000, 1000),
+VALUES (1000, 'Purity datum 1', 55.0000000000, 'purity', '%', 'canano_curator', '2019-12-06 12:15:00', '=', 1000, 1444),
        (1111, 'Purity datum 1', 55.0000000000, 'purity', '%', 'canano_curator', '2019-12-06 12:15:00', '=', 1111, 1111);
 /*!40000 ALTER TABLE `purity_datum`
     ENABLE KEYS */;
@@ -6258,7 +6267,7 @@ LOCK TABLES `purity_file` WRITE;
 /*!40000 ALTER TABLE `purity_file`
     DISABLE KEYS */;
 INSERT IGNORE INTO `purity_file` (`purity_pk_id`, `file_pk_id`)
-VALUES (1002, 1000);
+VALUES (1002, 1333);
 /*!40000 ALTER TABLE `purity_file`
     ENABLE KEYS */;
 UNLOCK TABLES;
@@ -6898,7 +6907,7 @@ LOCK TABLES `synthesis_material_element_file` WRITE;
 /*!40000 ALTER TABLE `synthesis_material_element_file`
     DISABLE KEYS */;
 INSERT IGNORE INTO `synthesis_material_element_file` (`synthesis_material_element_pk_id`, `file_pk_id`)
-VALUES (1000, 1000);
+VALUES (1000, 1555);
 /*!40000 ALTER TABLE `synthesis_material_element_file`
     ENABLE KEYS */;
 UNLOCK TABLES;
