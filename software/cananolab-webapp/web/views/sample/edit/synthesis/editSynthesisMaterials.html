@@ -1,3 +1,6 @@
+<B>Material Copy</B> - {{materialCopy}} <br /><br />
+<B>Material</B> - {{material}} <br /><br />
+<B>Material Element</B> - {{materialElement}}<br /><br />
 
 
 <div class="spacer">
@@ -74,9 +77,14 @@
                                 <tbody>
                                     <tr ng-repeat="me in material.materialElements">
                                         <td width="10%"><label>Material Type</label></td>
-                                        <td width="80%">{{me.type}}</td>
+                                        <td width="70%">{{me.type}}</td>
                                         <td width="10%">
                                             <button type="button" class="btn btn-primary btn-xs ng-click-active" ng-click="openMaterialEditForm(me, $index, 1)">Edit</button>
+                                        </td>
+                                        <td width="10%">
+                                            <button type="button" class="btn btn-danger btn-xs ng-click-active"
+                                                ng-click="deleteMaterialElement(me, $index, 1)">Delete</button>
+                                        </td>
                                     </tr>
                                 </tbody>
                             </table>
@@ -141,12 +149,12 @@
                                                 <tr>
                                                     <td width="10%"><label>Supplier Name</label></td>
                                                     <td width="40%">
-                                                        <select ng-model="materialElement.supplierMap.SupplierName" ng-options="o as o for o in dropdowns.supplierNames">
+                                                        <select ng-model="materialElement.supplier.supplierName" ng-options="o as o for o in dropdowns.supplierNames">
                                                         </select>
                                                     </td>
                                                     <td width="10%"><label>Lot</label></td>
                                                     <td width="40%">
-                                                        <input type="text" value="{{materialElement.supplierMap.Lot}}" data-ng-model="materialElement.supplierMap.Lot">
+                                                        <input type="text" value="{{materialElement.supplier.lot}}" data-ng-model="materialElement.supplier.lot">
                                                     </td>
                                                 </tr>
                                                 <tr>
@@ -168,14 +176,19 @@
                                                             <table class="editTableWithGrid" align="center" width="95%">
                                                                 <tr>
                                                                     <td width="15%"><label>Type</label></td>
-                                                                    <td width="75%">
+                                                                    <td width="65%">
                                                                         {{i.type}}
                                                                     </td>
-                                                                    <td width="10%"><button type="button" class="btn btn-primary btn-xs ng-click-active" ng-click="openInherentFunctionForm($index, $parent.$index, i)">Edit</button></td>
+                                                                    <td width="10%">
+                                                                        <button type="button" class="btn btn-primary btn-xs ng-click-active" ng-click="openInherentFunctionForm($index, $parent.$index, i)">Edit</button>
+                                                                    </td>
+                                                                    <td width="10%">
+                                                                        <button type="button" class="btn btn-danger btn-xs ng-click-active" ng-click="deleteInherentFunction($index, $parent.$index, i)">Delete</button>
+                                                                    </td>
                                                                 </tr>
                                                                 <tr>
                                                                     <td width="15%"><label>Description</label></td>
-                                                                    <td width="85%" colspan="2">{{i.description}}</td>
+                                                                    <td width="85%" colspan="3">{{i.description}}</td>
                                                                 </tr>
                                                             </table><br />
                                                         </div>
@@ -265,14 +278,14 @@
         <div class="form__actions">
             <div class="form__action form__action--left">
                 <!-- ngIf: nanoEntityId !== null --><button class="btn btn-danger ng-scope" type="button" value="Delete"
-                    ng-click="doDelete()" ng-if="synMaterialId!=-1">Delete</button>
+                    ng-click="deleteMaterial()" ng-if="synMaterialId!=-1">Delete</button>
                 <!-- end ngIf: nanoEntityId !== null -->
             </div>
             <div class="form__action form__action--right">
                 <input type="hidden" ng-model="nanoEntityForm.createdBy" class="ng-pristine ng-valid">
                 <input type="hidden" ng-model="nanoEntityForm.createdDate" class="ng-pristine ng-valid">
                 <button class="btn btn-danger" type="reset" value="Reset" ng-click="resetForm()">Reset</button>
-                <button ng-disabled="!material.simpleProtocol.displayName" class="btn btn-primary ng-binding" type="submit" ng-click="doSubmit()"
+                <button ng-disabled="!material.simpleProtocol.displayName" class="btn btn-primary ng-binding" type="submit" ng-click="saveMaterial()"
                     ng-show="!addNewComposingElement">
                     Update
                 </button>
