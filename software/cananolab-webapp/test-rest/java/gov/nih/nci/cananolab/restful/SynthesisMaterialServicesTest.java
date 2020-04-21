@@ -220,22 +220,6 @@ private static RequestSpecification specification;
         SimpleSynthesisMaterialElementBean elementBean = elements.get(0);
         materialBean.setMaterialElementBeingEdited(elementBean);
 
-//        SimpleSynthesisMaterialElementBean elementBean = new SimpleSynthesisMaterialElementBean();
-//        elementBean.setDescription("New Description");
-//        elementBean.setMolecularFormulaType("Hill");
-//        elementBean.setMolecularFormula("C1B2A3");
-//        elementBean.setChemicalName("New Chemical");
-//        elementBean.setType("Reflexivity");
-//        elementBean.setValue(new Float(22.4));
-//        elementBean.setValueUnit("g");
-//        Map<String, String> supplierMap = new HashMap<String, String>();
-//        supplierMap.put("Lot","AB#$");
-//        supplierMap.put("SupplierName","New Supplier");
-//        supplierMap.put("id","1000");
-//        elementBean.setSupplier(supplierMap);
-//        List<SimpleSynthesisMaterialElementBean> elementBeans = new ArrayList<SimpleSynthesisMaterialElementBean>();
-//        elementBeans.add(elementBean);
-//        materialBean.setMaterialElements(elementBeans);
 
         try {
             Response response = given().spec(specification)
@@ -243,6 +227,28 @@ private static RequestSpecification specification;
                     .then().statusCode(200).extract().response();
 
             assertNotNull(response);
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Test
+    public void testImplicitRemoveSynthesisMaterialElement(){
+        SimpleSynthesisMaterialBean materialBean = getSimpleSynthesisMaterialBean("1000", "1000");
+        List<SimpleSynthesisMaterialElementBean> elementBeans = materialBean.getMaterialElements();
+        SimpleSynthesisMaterialElementBean elementBean = elementBeans.get(0);
+        elementBeans.remove(elementBean);
+        materialBean.setMaterialElements( elementBeans);
+
+        try {
+            Response response = given().spec(specification).
+                    body(materialBean).when().post("synthesisMaterial/submit")
+                    .then().statusCode(200).extract().response();
+
+            assertNotNull(response);
+            String debug = response.asString();
+            System.out.println(debug);
         }
         catch (Exception e) {
             e.printStackTrace();

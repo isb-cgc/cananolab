@@ -14,6 +14,7 @@ import gov.nih.nci.cananolab.dto.particle.SampleBean;
 import gov.nih.nci.cananolab.dto.particle.synthesis.SynthesisBean;
 import gov.nih.nci.cananolab.dto.particle.synthesis.SynthesisMaterialBean;
 import gov.nih.nci.cananolab.dto.particle.synthesis.SynthesisMaterialElementBean;
+import gov.nih.nci.cananolab.exception.NoAccessException;
 import gov.nih.nci.cananolab.exception.SynthesisException;
 import gov.nih.nci.cananolab.restful.core.BaseAnnotationBO;
 import gov.nih.nci.cananolab.restful.sample.InitSampleSetup;
@@ -96,14 +97,7 @@ public class SynthesisMaterialBO extends BaseAnnotationBO {
         InitSynthesisSetup.getInstance().persistSynthesisMaterialDropdowns(
                 request, entityBean);
 
-        //TODO check if this is a new supplier?
-//        SampleBean[] otherSampleBeans = null;
-//        if (otherSampleNames != null) {
-//            otherSampleBeans = prepareCopy(request, otherSampleNames, sampleBean);
-//        }
-//        if (otherSampleBeans != null) {
-//            synthesisService.copyAndSaveSynthesisMaterial(entityBean, sampleBean, otherSampleBeans);
-//        }
+
 
         msgs.add("success");
         request.getSession().setAttribute("tab", "1");
@@ -209,7 +203,8 @@ public class SynthesisMaterialBO extends BaseAnnotationBO {
         }
 
 
-
+//TODO check if any old material elements have been removed and delete from data
+        //TODO check if any new material elements have been added and create row in data
         //Add synthesisMaterialElements to bean and domain
         Set<SynthesisMaterialElement> smes = new HashSet<SynthesisMaterialElement>();
         List<SynthesisMaterialElementBean> smeBeans = new ArrayList<SynthesisMaterialElementBean>();
@@ -348,11 +343,12 @@ public class SynthesisMaterialBO extends BaseAnnotationBO {
         return msgs;
     }
 
-    private List<String> saveEntity(HttpServletRequest request, String sampleId, SynthesisMaterialBean entityBean) throws Exception {
+    private List<String> saveEntity(HttpServletRequest request, String sampleIdString, SynthesisMaterialBean entityBean) throws Exception {
 
         List<String> msgs = new ArrayList<String>();
-        SampleBean sampleBean = setupSampleById(sampleId, request);
+        SampleBean sampleBean = setupSampleById(sampleIdString, request);
         CananoUserDetails userDetails = SpringSecurityUtil.getPrincipal();
+        Long sampleId = new Long(sampleIdString);
 
         boolean newEntity = true;
 
@@ -365,6 +361,22 @@ public class SynthesisMaterialBO extends BaseAnnotationBO {
 
             entityBean.setType(null);
         }
+        if(!newEntity){
+            //detect removed elements
+            List<SynthesisMaterialElementBean> removedElements = detectRemovedElements(entityBean, sampleId);
+            if(removedElements!=null){
+                for(SynthesisMaterialElementBean removeElement:removedElements){
+                    synthesisService.deleteSynthesisMaterialElement(sampleId, entityBean.getDomainEntity(), removeElement.getDomainEntity());
+                }
+            }
+            //detect added elements
+            for(SynthesisMaterialElementBean elementBean: entityBean.getSynthesisMaterialElements()){
+                if(elementBean.getDomainId()==null){
+
+                }
+            }
+        }
+
         synthesisService.saveSynthesisMaterial(sampleBean, entityBean);
         // retract from public if updating an existing public record and not curator
         if (!newEntity && !userDetails.isCurator() &&
@@ -375,6 +387,38 @@ public class SynthesisMaterialBO extends BaseAnnotationBO {
         }
         return msgs;
 
+    }
+
+    private List<SynthesisMaterialElementBean> detectRemovedElements(SynthesisMaterialBean entityBean, Long sampleId) throws SynthesisException {
+        //Retrieve the old material
+        Long id = entityBean.getId();
+        List<SynthesisMaterialElementBean> removedElements = new ArrayList<SynthesisMaterialElementBean>();
+        try {
+            SynthesisMaterialBean originalSynMat = synthesisService.findSynthesisMaterialById(sampleId, id);
+            List<Long> codeMap = new ArrayList<Long>();
+            for(SynthesisMaterialElementBean elementBean: entityBean.getSynthesisMaterialElements()){
+                codeMap.add(elementBean.getDomainId());
+            }
+
+            //check if any elements have been removed
+            for (SynthesisMaterialElementBean element : originalSynMat.getSynthesisMaterialElements()){
+                if(!codeMap.contains(element.getDomainId())){
+                    logger.info("Material element removed: "+ element.getDomainId().toString());
+                    removedElements.add(element);
+
+                }
+            }
+
+
+
+        }
+        catch (NoAccessException e) {
+            logger.error("User does not have access to sample", e);
+            throw new SynthesisException("User does not have access to sample", e);
+
+        }
+
+        return removedElements;
     }
 
     public List<String> delete(SimpleSynthesisMaterialBean synthesisMaterialBean, HttpServletRequest request) throws Exception {
@@ -505,11 +549,14 @@ public class SynthesisMaterialBO extends BaseAnnotationBO {
             nullBean.setErrors(msgs);
             return nullBean;
         }
+        //TODO actually delete it
+//        synthesisService.deleteSynthesisMaterialElement();
         this.saveEntity(httpRequest, simpleSynthesisMaterialBean.getSampleId(), entity);
         this.checkOpenForms(entity, httpRequest);
         return setupUpdate(simpleSynthesisMaterialBean.getSampleId(), entity.getDomainEntity().getId().toString(),
                 httpRequest);
     }
+
 
     public SimpleSynthesisMaterialBean saveFile(SimpleSynthesisMaterialBean simpleSynthesisMaterialBean,
                                                 HttpServletRequest httpRequest) throws Exception{
@@ -614,6 +661,8 @@ public class SynthesisMaterialBO extends BaseAnnotationBO {
         }
         return setupUpdate(sampleId, entity.getDomainEntity().getId().toString(), httpServletRequest);
     }
+
+
 
     public Supplier saveSupplier(Supplier supplier) throws SynthesisException {
        return synthesisService.createSupplierRecord(supplier);

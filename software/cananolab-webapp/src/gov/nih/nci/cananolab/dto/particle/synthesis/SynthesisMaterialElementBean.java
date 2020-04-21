@@ -65,6 +65,7 @@ public class SynthesisMaterialElementBean extends BaseSynthesisEntityBean {
         this.setDescription(domain.getDescription());
         this.setType(domain.getType());
         this.setDisplayName(domain.getChemicalName());
+        this.domainId = domain.getId();
         if(domain.getSmeInherentFunctions() !=null){
             for(SmeInherentFunction smeInherentFunction: domain.getSmeInherentFunctions()){
                 functions.add(new SmeInherentFunctionBean(smeInherentFunction));
@@ -122,6 +123,7 @@ public class SynthesisMaterialElementBean extends BaseSynthesisEntityBean {
         if(domain.getId() != null || !StringUtils.isEmpty(domain.getCreatedBy())&& domain.getCreatedBy().contains(Constants.AUTO_COPY_ANNOTATION_PREFIX)){
             domain.setCreatedBy(loggedInUserName);
             domain.setCreatedDate(Calendar.getInstance().getTime());
+            domainId = domain.getId();
         }
         //TODO blank out the rest
         if(domain.getSmeInherentFunctions()!=null){
@@ -161,6 +163,7 @@ public class SynthesisMaterialElementBean extends BaseSynthesisEntityBean {
             synthesisMaterialElement.setCreatedBy(sSMEBean.getCreatedBy());
             synthesisMaterialElement.setCreatedDate(sSMEBean.getCreatedDate());
             synthesisMaterialElement.setType(sSMEBean.getType());
+
 
             //check supplier
             //TODO this is clumsy.  Should probably be a simple bean
