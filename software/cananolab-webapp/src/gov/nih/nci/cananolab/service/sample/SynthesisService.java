@@ -1,6 +1,7 @@
 package gov.nih.nci.cananolab.service.sample;
 
 import gov.nih.nci.cananolab.domain.common.Supplier;
+import gov.nih.nci.cananolab.domain.particle.SmeInherentFunction;
 import gov.nih.nci.cananolab.domain.particle.Synthesis;
 import gov.nih.nci.cananolab.domain.particle.SynthesisFunctionalization;
 import gov.nih.nci.cananolab.domain.particle.SynthesisMaterial;
@@ -68,5 +69,7 @@ public interface SynthesisService extends BaseService {
     Supplier createSupplierRecord(Supplier supplier) throws SynthesisException;
 
     void deleteSynthesisMaterialElement(Long sampleId, SynthesisMaterial synthesisMaterial, SynthesisMaterialElement element) throws NoAccessException, SynthesisException;
+
+    void deleteSmeInherentFunction(Long sampleId, SynthesisMaterialElement element, SmeInherentFunction function)throws SynthesisException;
 
     }

@@ -35,6 +35,7 @@ import org.junit.Test;
 import org.springframework.security.acls.model.AclService;
 
 
+import static io.restassured.RestAssured.get;
 import static io.restassured.RestAssured.given;
 
 import static io.restassured.RestAssured.oauth;
@@ -253,6 +254,30 @@ private static RequestSpecification specification;
         catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    @Test
+    public void testImplicitInherentFunctionRemoval(){
+        SimpleSynthesisMaterialBean materialBean = getSimpleSynthesisMaterialBean("1005", "1222");
+        List<SimpleSynthesisMaterialElementBean> elementBeans = materialBean.getMaterialElements();
+        for(SimpleSynthesisMaterialElementBean elementBean: elementBeans){
+            if(elementBean.getInherentFunctionList()!=null && elementBean.getInherentFunctionList().size()>0){
+                elementBean.getInherentFunctionList().remove(0);
+            }
+        }
+        try {
+            Response response = given().spec(specification).
+                    body(materialBean).when().post("synthesisMaterial/submit")
+                    .then().statusCode(200).extract().response();
+
+            assertNotNull(response);
+            String debug = response.asString();
+            System.out.println(debug);
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+        }
+
     }
 
     @Test
