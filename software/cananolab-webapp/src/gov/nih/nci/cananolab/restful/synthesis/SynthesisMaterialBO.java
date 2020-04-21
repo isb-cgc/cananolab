@@ -11,6 +11,7 @@ import gov.nih.nci.cananolab.domain.particle.SynthesisMaterialElement;
 import gov.nih.nci.cananolab.dto.common.FileBean;
 import gov.nih.nci.cananolab.dto.common.ProtocolBean;
 import gov.nih.nci.cananolab.dto.particle.SampleBean;
+import gov.nih.nci.cananolab.dto.particle.synthesis.SmeInherentFunctionBean;
 import gov.nih.nci.cananolab.dto.particle.synthesis.SynthesisBean;
 import gov.nih.nci.cananolab.dto.particle.synthesis.SynthesisMaterialBean;
 import gov.nih.nci.cananolab.dto.particle.synthesis.SynthesisMaterialElementBean;
@@ -363,18 +364,7 @@ public class SynthesisMaterialBO extends BaseAnnotationBO {
         }
         if(!newEntity){
             //detect removed elements
-            List<SynthesisMaterialElementBean> removedElements = detectRemovedElements(entityBean, sampleId);
-            if(removedElements!=null){
-                for(SynthesisMaterialElementBean removeElement:removedElements){
-                    synthesisService.deleteSynthesisMaterialElement(sampleId, entityBean.getDomainEntity(), removeElement.getDomainEntity());
-                }
-            }
-            //detect added elements
-            for(SynthesisMaterialElementBean elementBean: entityBean.getSynthesisMaterialElements()){
-                if(elementBean.getDomainId()==null){
-
-                }
-            }
+            detectRemovedElements(entityBean, sampleId);
         }
 
         synthesisService.saveSynthesisMaterial(sampleBean, entityBean);
@@ -389,7 +379,7 @@ public class SynthesisMaterialBO extends BaseAnnotationBO {
 
     }
 
-    private List<SynthesisMaterialElementBean> detectRemovedElements(SynthesisMaterialBean entityBean, Long sampleId) throws SynthesisException {
+    private void detectRemovedElements(SynthesisMaterialBean entityBean, Long sampleId) throws SynthesisException {
         //Retrieve the old material
         Long id = entityBean.getId();
         List<SynthesisMaterialElementBean> removedElements = new ArrayList<SynthesisMaterialElementBean>();
@@ -398,6 +388,7 @@ public class SynthesisMaterialBO extends BaseAnnotationBO {
             List<Long> codeMap = new ArrayList<Long>();
             for(SynthesisMaterialElementBean elementBean: entityBean.getSynthesisMaterialElements()){
                 codeMap.add(elementBean.getDomainId());
+
             }
 
             //check if any elements have been removed
@@ -405,7 +396,10 @@ public class SynthesisMaterialBO extends BaseAnnotationBO {
                 if(!codeMap.contains(element.getDomainId())){
                     logger.info("Material element removed: "+ element.getDomainId().toString());
                     removedElements.add(element);
+                    synthesisService.deleteSynthesisMaterialElement(sampleId, entityBean.getDomainEntity(), element.getDomainEntity());
 
+                } else {
+                    detectRemovedFunctions(element, entityBean.getSynthesisMaterialElementById(element.getDomainId()),sampleId);
                 }
             }
 
@@ -418,7 +412,29 @@ public class SynthesisMaterialBO extends BaseAnnotationBO {
 
         }
 
-        return removedElements;
+
+    }
+
+    private void detectRemovedFunctions(SynthesisMaterialElementBean originalElement, SynthesisMaterialElementBean currentElement,Long sampleId) throws SynthesisException {
+
+            List<SmeInherentFunctionBean> originalFunctionBeans = originalElement.getFunctions();
+            List<SmeInherentFunctionBean> currentFunctionBeans = currentElement.getFunctions();
+            List<SmeInherentFunctionBean> removedFunctions = new ArrayList<SmeInherentFunctionBean>();
+            List<Long> functionIds = new ArrayList<Long>();
+            for (SmeInherentFunctionBean function : currentFunctionBeans) {
+                functionIds.add(function.getDomain().getId());
+            }
+
+            for (SmeInherentFunctionBean functionBean : originalFunctionBeans) {
+                if (!functionIds.contains(functionBean.getDomain().getId())) {
+                    logger.info("Inherent function removed: " + functionBean.getDomain().toString());
+                    removedFunctions.add(functionBean);
+                    synthesisService.deleteSmeInherentFunction(sampleId, currentElement.getDomainEntity(), functionBean.getDomain());
+                }
+            }
+
+
+
     }
 
     public List<String> delete(SimpleSynthesisMaterialBean synthesisMaterialBean, HttpServletRequest request) throws Exception {

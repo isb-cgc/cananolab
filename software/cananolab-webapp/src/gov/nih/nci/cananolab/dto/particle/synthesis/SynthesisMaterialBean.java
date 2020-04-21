@@ -139,16 +139,23 @@ public class SynthesisMaterialBean extends BaseSynthesisEntityBean {
     }
 
     public SynthesisMaterialElementBean getSynthesisMaterialElementById(String id){
+//        for(SynthesisMaterialElementBean element:synthesisMaterialElements){
+//            if(element.getDomainEntity().getId().equals(id)){
+//                return element;
+//            }
+//        }
+//        return null;
+        return getSynthesisMaterialElementById(new Long(id));
+    }
+
+    public  SynthesisMaterialElementBean getSynthesisMaterialElementById(Long id){
+//        return getSynthesisMaterialElementById(id.toString());
         for(SynthesisMaterialElementBean element:synthesisMaterialElements){
             if(element.getDomainEntity().getId().equals(id)){
                 return element;
             }
         }
         return null;
-    }
-
-    public  SynthesisMaterialElementBean getSynthesisMaterialElementById(Long id){
-        return getSynthesisMaterialElementById(id.toString());
     }
 
     public void setSynthesisMaterialElements(List<SynthesisMaterialElementBean> synthesisMaterialElements) {
