@@ -41,10 +41,6 @@ public class SynthesisUtil {
         if (types != null)
             typeMap.put("fileTypes", new ArrayList<String>(types));
 
-        //TODO Supplier Name - currently free form text. include [other]
-
-
-
 
         Map<String,Object> newMap = reformatLocalSearchDropdownsInSessionForSynthesisMaterialElement(session);
         typeMap.putAll(newMap);
@@ -85,9 +81,34 @@ public class SynthesisUtil {
         if (types != null)
             typeMap.put("purificationTypes", new ArrayList<String>(types));
 
-        types = (SortedSet<String>) session.getAttribute("supplierNames");
-        if(types!=null)
-            typeMap.put("supplierNames", types);
+//        types = (SortedSet<String>) session.getAttribute("supplierNames");
+//        if(types!=null)
+//            typeMap.put("supplierNames", types);
+
+        //TODO technique
+        types = (SortedSet<String>) session.getAttribute("techniqueTypes");
+        if (types != null)
+            typeMap.put("techniques", new ArrayList<String>(types));
+
+        //Manufacturers just pulls back brand names, not instrument identifiers.
+        types = (SortedSet<String>) session.getAttribute("manufacturers");
+        if (types != null)
+            typeMap.put("manufacturers", new ArrayList<String>(types));
+
+        //TODO instrument type is dependent on technique
+
+        //TODO column type - datum or condition
+        types = (SortedSet<String>) session.getAttribute("datumConditionValueTypes");
+        if (types != null)
+            typeMap.put("datumAndCondition", new ArrayList<String>(types));
+        //TODO column name? - depends on type
+        //TODO condition column properties? - depends on name
+        //TODO column value type -
+        //TODO column value unit - depends on name
+
+
+
+
         return typeMap;
     }
 }

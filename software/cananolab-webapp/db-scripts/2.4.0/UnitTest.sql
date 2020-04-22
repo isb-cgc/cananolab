@@ -1404,6 +1404,7 @@ VALUES (1, 'asymmetrical flow field-flow fractionation with multi-angle laser li
        (1092, 'functionalization', 'type', 'biopolymer'),
        (1093, 'functionalization', 'type', 'small molecule'),
        (1094, 'synthesis', 'otherMaterialType', 'reagent'),
+       (1096, 'protocol', 'type', 'purification'),
        (13959168, 'technique', 'otherType', 'gel electrophoresis'),
        (13959169, 'gel electrophoresis', 'otherInstrument', 'fluorescence excitation device'),
        (13959170, 'gel electrophoresis', 'otherInstrument', 'cooled digital camera'),
@@ -6033,7 +6034,9 @@ VALUES (66256896, 'Synthesis Test Protocol', 'synthesis', 'canano_curator', '202
        (66584576, 'Test Characterization Protocol', 'in vivo assay', 'canano_curator', '2020-01-10 20:03:01', 'TCP',
         '1', NULL),
        (66584577, 'Test In Vitro Characterization Protocol', 'in vitro assay', 'canano_curator', '2020-01-10 20:04:41',
-        'TiVCP', '1.1', NULL);
+        'TiVCP', '1.1', NULL),
+       (66945024, 'Test Synthesis Purification Protocol', 'purification', 'canano_curator', '2020-04-21 16:02:41',
+        'Sypur', '1.0', NULL);
 /*!40000 ALTER TABLE `protocol`
     ENABLE KEYS */;
 UNLOCK TABLES;
