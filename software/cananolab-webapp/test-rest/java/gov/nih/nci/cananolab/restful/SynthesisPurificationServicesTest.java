@@ -6,6 +6,7 @@ import io.restassured.filter.log.RequestLoggingFilter;
 import io.restassured.filter.log.ResponseLoggingFilter;
 import io.restassured.http.ContentType;
 import io.restassured.response.Response;
+import io.restassured.response.ResponseBody;
 import io.restassured.specification.RequestSpecification;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -51,12 +52,14 @@ public class SynthesisPurificationServicesTest {
                     .then().statusCode(200).extract().response();
 
             assertNotNull(response);
-
+            ResponseBody body = response.body();
+            String result = body.prettyPrint();
+            System.out.println(result);
             //TODO make this specific for purification
-//            ArrayList<String> materialTypes = response.path("materialTypes");
-//            assertTrue(materialTypes.contains("coat"));
-//            ArrayList<String> pubChemTypes = response.path("pubChemDataSources");
-//            assertTrue(pubChemTypes.contains("Substance"));
+            ArrayList<String> purificationTypes = response.path("purificationTypes");
+            assertTrue(purificationTypes.size()>0);
+            ArrayList<String> protocols = response.path("protocolLookup");
+            assertTrue(protocols.size()>0);
         } catch (Exception e){
             e.printStackTrace();
         }
@@ -202,6 +205,7 @@ public class SynthesisPurificationServicesTest {
             e.printStackTrace();
         }
     }
+
 
     @Test
     public void testSaveFile() {
