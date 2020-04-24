@@ -307,6 +307,9 @@ public class SynthesisHelper
             String supplier_name = (String) results.get(i).toString();
             supplierNames.add(supplier_name);
         }
+        if(!supplierNames.contains("other")){
+            supplierNames.add("other");
+        }
         return supplierNames;
     }
 
