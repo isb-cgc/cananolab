@@ -60,7 +60,7 @@ public class SynthesisPurificationServices {
     @GET
     @Path("/setupEdit")
     @Produces ("application/json")
-    public Response setupEdit(@Context HttpServletRequest httpRequest, @DefaultValue("") @QueryParam("sampleId") String sampleId, @DefaultValue("") @QueryParam("purificationId") String purificationId) {
+    public Response setupEdit(@Context HttpServletRequest httpRequest, @QueryParam("sampleId") String sampleId,  @QueryParam("purificationId") String purificationId) {
         if (!SpringSecurityUtil.isUserLoggedIn())
             return Response.status(Response.Status.UNAUTHORIZED)
                     .entity("Session expired").build();

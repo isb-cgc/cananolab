@@ -26,8 +26,8 @@ public class SimplePurityBean {
         return this.createdDate;
     }
 
-    public void setCreatedDate(Date data){
-        this.createdDate = createdDate;
+    public void setCreatedDate(Date date){
+        this.createdDate = date;
     }
 
     public Long getId() {
