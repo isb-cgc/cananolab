@@ -151,6 +151,8 @@ public class SynthesisServiceLocalImpl extends BaseServiceLocalImpl implements S
         try {
             SynthesisPurification synthesisPurification = synthesisHelper.findSynthesisPurificationById(sampleId, dataId);
             if (synthesisPurification != null) {
+                Long synid = findSynthesisIdBySampleId(sampleId);
+                synthesisPurification.setSynthesisId(synid);
                 spBean = new SynthesisPurificationBean(synthesisPurification);
             }
 

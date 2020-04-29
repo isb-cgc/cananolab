@@ -68,7 +68,7 @@ public class SynthesisPurificationServicesTest {
     @Test
     public void testSetupEdit() {
         try {
-            Response response = given().spec(specification).queryParam("sampleId", "1000")
+            Response response = given().spec(specification).queryParam("sampleId", "1000").queryParam("purificationId", "1000")
                     .when().get("synthesisPurification/setupEdit")
                     .then().statusCode(200).extract().response();
 
@@ -79,6 +79,12 @@ public class SynthesisPurificationServicesTest {
 //            assertTrue(materialTypes.contains("coat"));
 //            ArrayList<String> pubChemTypes = response.path("pubChemDataSources");
 //            assertTrue(pubChemTypes.contains("Substance"));
+            String design = response.path("designMethodDescription");
+            assertTrue(design.equals("Test entry for synthesis purification"));
+            String type = response.path("type");
+            assertTrue(type.equals("Interim Purification"));
+            ArrayList<String> purityBeans = response.path("purityBeans");
+
         }catch (Exception e){
             e.printStackTrace();
         }
@@ -143,7 +149,7 @@ public class SynthesisPurificationServicesTest {
                     .then().statusCode(200).extract().response();
 
             assertNotNull(response);
-            //TODO check the results coming back.
+            //TODO check response
 
         }catch (Exception e){
             e.printStackTrace();

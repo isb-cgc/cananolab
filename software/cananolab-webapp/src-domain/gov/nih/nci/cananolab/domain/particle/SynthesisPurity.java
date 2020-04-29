@@ -81,4 +81,10 @@ public class SynthesisPurity implements java.io.Serializable {
 	public void setSynthesisPurificationId(Long synthesisPurificationId) {
 		this.synthesisPurificationId = synthesisPurificationId;
 	}
+
+	public void setSynthesisPurification(SynthesisPurification purification){
+		this.synthesisPurification = purification;
+		this.synthesisPurificationId = purification.getId();
+	}
+
 }

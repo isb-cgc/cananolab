@@ -154,7 +154,7 @@ public class SynthesisPurificationBO extends BaseAnnotationBO {
     /**
      * Returns current purifcation information and fields for editing that purification
      * @param sampleId
-     * @param dataId
+     * @param dataId - id of purification to view/edit
      * @param httpRequest
      * @return
      * @throws Exception
