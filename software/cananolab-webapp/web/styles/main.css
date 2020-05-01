@@ -2031,3 +2031,8 @@ h1 {
 .editTableWithGrid.form {
     background-color:#D3E4DE;
 }
+
+
+.synthesisFiles td {
+    padding-left:15px !important;
+}
