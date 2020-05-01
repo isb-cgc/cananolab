@@ -123,14 +123,53 @@ var app = angular.module('angularApp')
 
   // submit the entire synthesis material //
   $scope.saveMaterial = function () {
-    $http({ method: 'POST', url: '/caNanoLab/rest/synthesisMaterial/submit', data: $scope.material }).
+    $scope.fileMaterial = angular.copy($scope.material);
+    console.log($scope.somefile.name)
+    $scope.fileMaterial['fileBean'] = { "uri": $scope.somefile.name, "title": "test", "type": "document", "uriExternal": false };
+    console.log($scope.fileMaterial)
+    $http({ method: 'POST', url: '/caNanoLab/rest/synthesisMaterial/saveFile', data: $scope.fileMaterial }).
       success(function (data, status, headers, config) {
         $location.search({ 'message': 'Synthesis Material successfully saved.', 'sampleId': $scope.sampleId }).path('/editSynthesis').replace();
       }).
       error(function (data, status, headers, config) {
         console.log('fail')
       });
+
+    $http({ method: 'POST', url: '/caNanoLab/rest/synthesisMaterial/submit', data: $scope.material }).
+      success(function (data, status, headers, config) {
+        $location.search({ 'message': 'Synthesis Material successfully saved.', 'sampleId': $scope.sampleId }).path('/editSynthesis').replace();
+      }).
+      error(function (data, status, headers, config) {
+        console.log('fail')
+      });   
+
+
+
+
+
+
   };
 
   $scope.setPageTitle = () => $scope.synMaterialId == -1 ? `Add ${$scope.sampleName.name} Synthesis - Material` : `Edit ${$scope.sampleName.name} Synthesis - Material`;
+
+  $scope.uploadFile = function() {
+    console.log($scope.somefile);
+    var fd = new FormData();
+    fd.append('file', $scope.somefile);
+    $http.post('/caNanoLab/rest/core/uploadFile', fd, {
+      withCredentials: false,
+      headers: {
+        'Content-Type': undefined
+      },
+      transformRequest: angular.identity
+    }).
+      success(function (data, status, headers, config) {
+       console.log(data)
+      }).
+      error(function (data, status, headers, config) {
+        console.log('fail')
+      });    
+    
+    console.log(fd)
+  };
 });

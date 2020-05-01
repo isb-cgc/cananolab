@@ -1,6 +1,14 @@
+<div style="width:800px;">
+<B>Material Copy</B> - {{materialCopy}} <br /><br />
+<B>Material</B> - {{material}} <br /><br />
+<B>Material Element</B> - {{materialElement}}<br /><br />
+</div>
 
 <div class="spacer">
-    <form novalidate="" class="ng-pristine ng-valid">
+    <form novalidate="" class="ng-pristine ng-valid">{{somefile}}
+        <input type="file" file-model="somefile">
+        <button ng-click="uploadFile()" class="btn btn-primary btn-xs" >Upload File</button>
+        <br /><br />
         <table class="contentTitle" width="100%" border="0" summary="layout">
             <tbody>
                 <tr>
@@ -240,20 +248,51 @@
         <table width="100%" align="center" class="submissionView" summary="layout">
             <tbody>
                 <tr>
-                    <td class="cellLabel">
-                        File Type
-                    </td>
-                    <td class="cellLabel">
-                        Title and Download Link
-                    </td>
-                    <td class="cellLabel">
-                        Keywords
-                    </td>
-                    <td class="cellLabel">
-                        Description
+                    <td width="10%"><label>Files</label></td>
+                    <td width="90%">
+                        <button type="button" class="btn btn-primary btn-xs ng-click-active"
+                            ng-click="openInherentFunctionForm(-1, $parent.$index)">Add</button>
                     </td>
                 </tr>
-                <tr ng-repeat="file in material.files">
+                <tr>
+                    <td colspan="2" ng-show="material.fileElements.length">
+                        <table class="editTableWithGrid" align="center" width="95%">
+                            <tr>
+                                <td class="cellLabel">
+                                    File Type
+                                </td>
+                                <td class="cellLabel">
+                                    Title and Download Link
+                                </td>
+                                <td class="cellLabel">
+                                    Keywords
+                                </td>
+                                <td class="cellLabel" colspan="2">
+                                    Description
+                                </td>
+                            </tr>
+                            <tr class="synthesisFiles" ng-repeat="file in material.fileElements">
+                                <td width="10%">
+                                    {{file.type}}
+                                </td>
+                                <td width="20%">
+                                    <a href="#" target="_blank" ng-href="file.uri">{{file.uri}},{{file.title}}</a>
+                                </td>
+                                <td width="20%">
+                                    {{file.keywordsStr}}
+                                </td>
+                                <td width="40%">
+                                    {{file.description}}
+                                </td>
+                                <td width="10%">
+                                    <button type="button" class="btn btn-primary btn-xs ng-click-active"
+                                        ng-click="openMaterialEditForm()">Edit</button>
+                                </td>
+                            </tr>                            
+                        </table>
+                    </td>
+                </tr>
+                <!-- <tr ng-repeat="file in material.files">
                     <td>
                         {{file.type}}
                     </td>
@@ -267,6 +306,15 @@
                         {{file.description}}
                     </td>
                 </tr>
+                <tr ng-show="fileFormIndex!=null">
+                    <td colspan="4">
+                        <table class="editTableWithGrid" align="center" width="95%">
+                            <tr>
+                                <td>some file</td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr> -->
             </tbody>
         </table>
 
