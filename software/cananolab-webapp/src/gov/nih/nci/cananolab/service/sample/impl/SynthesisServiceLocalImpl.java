@@ -899,7 +899,7 @@ public class SynthesisServiceLocalImpl extends BaseServiceLocalImpl implements S
 
 
     public void saveSynthesisPurification(SampleBean sampleBean, SynthesisPurificationBean synthesisPurificationBean) throws SynthesisException, NoAccessException {
-//TODO write
+
         try{
             CaNanoLabApplicationService appService = (CaNanoLabApplicationService) ApplicationServiceProvider
                     .getApplicationService();
@@ -988,9 +988,10 @@ public class SynthesisServiceLocalImpl extends BaseServiceLocalImpl implements S
                     throw new SynthesisException("element does not match material", new Exception());
                 }
 
+
                 try {
                     appService
-                            .load(SynthesisMaterialElement.class, synthesisPurificationBean.getDomainEntity().getId());
+                            .load(SynthesisPurity.class, synthesisPurityBean.getDomain().getId());
                 }catch (Exception e) {
                     String err = "Object doesn't exist in the database anymore.  Please log in again.";
                     logger.error(err);
@@ -1000,8 +1001,14 @@ public class SynthesisServiceLocalImpl extends BaseServiceLocalImpl implements S
             for(FileBean fileBean:synthesisPurityBean.getFiles()){
                 fileUtils.prepareSaveFile(fileBean.getDomainFile());
             }
+
+
+
+
+            synthesisPurity.setSynthesisPurification(synthesisPurificationBean.getDomainEntity());
             //TODO what will this do if there is no change
             appService.saveOrUpdate(synthesisPurity);
+
 
             for (FileBean fileBean : synthesisPurityBean.getFiles()) {
                 fileUtils.writeFile(fileBean);

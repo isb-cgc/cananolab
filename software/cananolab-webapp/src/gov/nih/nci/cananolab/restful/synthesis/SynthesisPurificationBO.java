@@ -349,7 +349,7 @@ public class SynthesisPurificationBO extends BaseAnnotationBO {
      */
     private List<String> validatePurification(HttpServletRequest httpRequest, SynthesisPurificationBean synthesisPurificationBean){
         //TODO write
-        return null;
+        return new ArrayList<String>();
     }
 
     /**
@@ -399,7 +399,7 @@ public class SynthesisPurificationBO extends BaseAnnotationBO {
      * @param httpRequest
      * @return
      */
-    private SynthesisPurificationBean transferSimplePurification(SimpleSynthesisPurificationBean sSynPurificationBean, HttpServletRequest httpRequest){
+    private SynthesisPurificationBean transferSimplePurification(SimpleSynthesisPurificationBean sSynPurificationBean, HttpServletRequest httpRequest) throws SynthesisException {
         //TODO write;
         //id
 
@@ -411,10 +411,22 @@ public class SynthesisPurificationBO extends BaseAnnotationBO {
         //Name
         purification.setMethodName(sSynPurificationBean.getMethodName());
 
+        //Add parent object to domain
+        Synthesis synthesis;
+        try{
+            synthesis = synthesisService.getHelper().findSynthesisBySampleId(sSynPurificationBean.getSampleId());
+            purification.setSynthesisId(synthesis.getId());
+
+        }
+        catch (SynthesisException e) {
+            String err = "Unable to retrieve Synthesis attached to this Purification. ";
+            throw new SynthesisException(err, e);
+        }
+
         //Set protocol
         try {
             SimpleProtocol sProtocol = sSynPurificationBean.getSimpleProtocol();
-            if (sProtocol != null) {
+            if (sProtocol != null && sProtocol.getDomainId()!=null) {
                 ProtocolBean protocolBean = protocolService.findProtocolById(sProtocol.getDomainId().toString());
                 Protocol protocol = protocolBean.getDomain();
                 purification.setProtocol(protocol);
@@ -433,13 +445,13 @@ public class SynthesisPurificationBO extends BaseAnnotationBO {
         //design and methods description
         purification.setDesignMethodDescription(sSynPurificationBean.getDesignMethodDescription());
         //Technique and instrument
-        //TODO
+
         //yield
         purification.setYield(sSynPurificationBean.getYield());
         //Analysis and conclusions
         purification.setAnalysis(sSynPurificationBean.getAnalysis());
         //Purity
-        //TODO
+
         Set<SynthesisPurity> purities = new HashSet<SynthesisPurity>();
         List<SimplePurityBean> simplePurityBeans = sSynPurificationBean.getPurityBeans();
         if(simplePurityBeans != null){
@@ -449,8 +461,8 @@ public class SynthesisPurificationBO extends BaseAnnotationBO {
                 purity.setCreatedBy(sPurityBean.getCreatedBy());
                 purity.setCreatedDate(sPurityBean.getCreatedDate());
                 purity.setSynthesisPurificationId(sSynPurificationBean.getId());
-                //TODO files
-                sPurityBean.getFiles();
+
+
                 //check for Files
                 List<SimpleFileBean> sfileBeans = sPurityBean.getFiles();
                 Set<File> files = new HashSet<File>();
@@ -458,6 +470,7 @@ public class SynthesisPurificationBO extends BaseAnnotationBO {
                     for(SimpleFileBean simpleFileBean: sfileBeans){
 
                         File file1 = new File();
+                        file1.setId(simpleFileBean.getId());
                         file1.setUriExternal(simpleFileBean.getUriExternal());
                         file1.setUri(simpleFileBean.getUri());
                         file1.setType(simpleFileBean.getType());
