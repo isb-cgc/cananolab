@@ -41,6 +41,7 @@ public class SynthesisPurificationBean extends BaseSynthesisEntityBean {
         for(SynthesisPurity purity:purification.getPurities()){
 //            SynthesisPurityBean purityBean = new SynthesisPurityBean(purity);
             SynthesisPurityBean purityBean = new SynthesisPurityBean(purity);
+            purityBean.getDomain().setSynthesisPurification(purification);
             purityBeans.add(purityBean);
         }
         for(PurificationConfig config: purification.getPurificationConfigs()){

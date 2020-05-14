@@ -76,7 +76,7 @@ public class SynthesisPurityBean
     private List<ColumnHeader> columnHeaders = new ArrayList<ColumnHeader>();
     private int numberOfColumns;
     private int numberOfRows;
-    private FileBean theFile = new FileBean();
+    private FileBean fileBeingEdited;
     private int theFileIndex;
     private SynthesisPurity domain = new SynthesisPurity();
     Long id;
@@ -633,14 +633,14 @@ public class SynthesisPurityBean
         return 0;
     }
 
-    public FileBean getTheFile()
+    public FileBean getFileBeingEdited()
     {
-        return theFile;
+        return fileBeingEdited;
     }
 
-    public void setTheFile( FileBean theFile )
+    public void setFileBeingEdited(FileBean fileBeingEdited)
     {
-        this.theFile = theFile;
+        this.fileBeingEdited = fileBeingEdited;
     }
 
     public List<FileBean> getFiles()

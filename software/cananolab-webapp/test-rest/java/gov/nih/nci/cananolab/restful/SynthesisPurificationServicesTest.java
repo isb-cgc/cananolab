@@ -1,6 +1,9 @@
 package gov.nih.nci.cananolab.restful;
 
 import gov.nih.nci.cananolab.restful.util.RestTestLoginUtil;
+import gov.nih.nci.cananolab.restful.view.edit.SimplePurificationConfigBean;
+import gov.nih.nci.cananolab.restful.view.edit.SimpleSynthesisMaterialBean;
+import gov.nih.nci.cananolab.restful.view.edit.SimpleSynthesisPurificationBean;
 import io.restassured.builder.RequestSpecBuilder;
 import io.restassured.filter.log.RequestLoggingFilter;
 import io.restassured.filter.log.ResponseLoggingFilter;
@@ -10,7 +13,10 @@ import io.restassured.response.ResponseBody;
 import io.restassured.specification.RequestSpecification;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import org.codehaus.jackson.map.ObjectMapper;
+import org.json.JSONObject;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -295,12 +301,67 @@ public class SynthesisPurificationServicesTest {
     }
 
     @Test
-    public void testEdit() {
+    public void testEditMethodName_Submit() {
         try {
+            SimpleSynthesisPurificationBean synthesisPurificationBean = getSimpleSynthesisPurificationBean("1000", "1000");
+            synthesisPurificationBean.setMethodName("Test edit of method name");
+            Response response = given().spec(specification)
+                    .body(synthesisPurificationBean).when().post("synthesisPurification/submit")
+                    .then().statusCode(200).extract().response();
+
+            assertNotNull(response);
+            //verify change was saved to database
+            synthesisPurificationBean = getSimpleSynthesisPurificationBean("1000", "1000");
+            assertTrue(synthesisPurificationBean.getMethodName().equals("Test edit of method name"));
 
         }catch (Exception e){
             e.printStackTrace();
         }
+    }
+
+    @Test
+    public void testEditConfig_Submit() {
+        try {
+            SimpleSynthesisPurificationBean synthesisPurificationBean = getSimpleSynthesisPurificationBean("1000", "1000");
+            List<SimplePurificationConfigBean> experimentsConfigs= synthesisPurificationBean.getSimpleExperimentBeans();
+            if(experimentsConfigs!=null && experimentsConfigs.size()>0){
+                SimplePurificationConfigBean configBean = experimentsConfigs.get(0);
+                configBean.setDescription("Test edit config description");
+            }
+            Response response = given().spec(specification)
+                    .body(synthesisPurificationBean).when().post("synthesisPurification/submit")
+                    .then().statusCode(200).extract().response();
+
+            assertNotNull(response);
+            //verify change was saved to database
+            synthesisPurificationBean = getSimpleSynthesisPurificationBean("1000", "1000");
+            experimentsConfigs= synthesisPurificationBean.getSimpleExperimentBeans();
+            SimplePurificationConfigBean configBean = experimentsConfigs.get(0);
+            assertTrue(configBean.getDescription().equals("Test edit config description"));
+
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+    }
+
+    private SimpleSynthesisPurificationBean getSimpleSynthesisPurificationBean(String sampleId, String purificationId){
+        try {
+            Response response = given().spec(specification)
+                    .queryParam("sampleId", sampleId)
+                    .queryParam("purificationId",purificationId)
+                    .when().get("synthesisPurification/setupEdit")
+                    .then().statusCode(200).extract().response();
+
+
+            JSONObject jResponse = new JSONObject(response.body().asString());
+            ObjectMapper mapper = new ObjectMapper();
+            return mapper.readValue(jResponse.toString(), SimpleSynthesisPurificationBean.class);
+
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 
 

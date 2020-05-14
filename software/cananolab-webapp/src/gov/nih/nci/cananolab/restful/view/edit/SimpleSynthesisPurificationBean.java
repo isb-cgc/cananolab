@@ -179,6 +179,7 @@ public class SimpleSynthesisPurificationBean {
         if(purificationConfigs!=null){
             for(PurificationConfigBean purificationConfigBean: purificationConfigs){
                 SimplePurificationConfigBean simpleExperimentBean = new SimplePurificationConfigBean();
+                simpleExperimentBean.setId(purificationConfigBean.getDomain().getPurificationConfigPkId());
                 simpleExperimentBean.setTechniqueDisplayName(purificationConfigBean.getTechniqueDisplayName());
                 simpleExperimentBean.setDescription(purificationConfigBean.getDescription());
                 simpleExperimentBean.setTechniqueid(purificationConfigBean.getDomain().getPurificationConfigPkId());

@@ -4,6 +4,7 @@ import gov.nih.nci.cananolab.dto.particle.synthesis.SynthesisMaterialBean;
 import gov.nih.nci.cananolab.restful.synthesis.SynthesisMaterialBO;
 import gov.nih.nci.cananolab.restful.util.CommonUtil;
 import gov.nih.nci.cananolab.restful.view.SimpleAdvancedSearchSynthesisBean;
+import gov.nih.nci.cananolab.restful.view.edit.SimpleFileBean;
 import gov.nih.nci.cananolab.util.Constants;
 import gov.nih.nci.cananolab.restful.view.edit.SimpleSynthesisMaterialBean;
 import gov.nih.nci.cananolab.security.utils.SpringSecurityUtil;
@@ -138,6 +139,25 @@ public class SynthesisMaterialServices {
     @Path("/saveFile")
     @Produces ("application/json")
     public Response saveFile(@Context HttpServletRequest httpRequest, SimpleSynthesisMaterialBean simpleSynthesisMaterialBean) {
+        try {
+            SynthesisMaterialBO synthesisMaterialBO = (SynthesisMaterialBO) SpringApplicationContext.getBean(httpRequest,"synthesisMaterialBO");
+            if (!SpringSecurityUtil.isUserLoggedIn())
+                return Response.status(Response.Status.UNAUTHORIZED)
+                        .entity(Constants.MSG_SESSION_INVALID).build();
+            SimpleSynthesisMaterialBean synthesisMaterialBean = synthesisMaterialBO.saveFile(simpleSynthesisMaterialBean,httpRequest);
+            List<String> errors = synthesisMaterialBean.getErrors();
+            return (errors == null || errors.size() == 0) ?
+                    Response.ok(synthesisMaterialBean).build() :
+                    Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(errors).build();
+        } catch (Exception e){
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(CommonUtil.wrapErrorMessageInList("Error while saving the Syn Mat File. " + e.getMessage())).build();
+        }
+    }
+
+    @POST
+    @Path("/saveFile")
+    @Produces ("application/json")
+    public Response saveFile(@Context HttpServletRequest httpRequest, SimpleSynthesisMaterialBean simpleSynthesisMaterialBean, SimpleFileBean fileBean) {
         try {
             SynthesisMaterialBO synthesisMaterialBO = (SynthesisMaterialBO) SpringApplicationContext.getBean(httpRequest,"synthesisMaterialBO");
             if (!SpringSecurityUtil.isUserLoggedIn())
