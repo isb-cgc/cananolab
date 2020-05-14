@@ -74,7 +74,7 @@ public class SynthesisPurificationServicesTest {
     @Test
     public void testSetupEdit() {
         try {
-            Response response = given().spec(specification).queryParam("sampleId", "1000").queryParam("purificationId", "1000")
+            Response response = given().spec(specification).queryParam("sampleId", "1000").queryParam("dataId", "1000")
                     .when().get("synthesisPurification/setupEdit")
                     .then().statusCode(200).extract().response();
 
