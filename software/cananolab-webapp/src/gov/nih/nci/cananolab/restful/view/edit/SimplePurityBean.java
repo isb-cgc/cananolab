@@ -1,7 +1,9 @@
 package gov.nih.nci.cananolab.restful.view.edit;
 
 import gov.nih.nci.cananolab.domain.common.File;
+import gov.nih.nci.cananolab.domain.particle.SynthesisPurity;
 import gov.nih.nci.cananolab.dto.common.ColumnHeader;
+import gov.nih.nci.cananolab.dto.common.FileBean;
 import gov.nih.nci.cananolab.dto.common.FindingBean;
 import gov.nih.nci.cananolab.dto.common.PurityRow;
 import gov.nih.nci.cananolab.dto.common.Row;
@@ -85,6 +87,24 @@ public class SimplePurityBean {
 
     public void setFileBeingEdited(File fileBeingEdited) {
         this.fileBeingEdited = fileBeingEdited;
+    }
+
+    public void transferFromPurityBean(SynthesisPurityBean purityBean, String sampleId){
+        this.setCreatedDate(purityBean.getDomain().getCreatedDate());
+        this.setCreatedBy(purityBean.getDomain().getCreatedBy());
+        this.setId(purityBean.getDomain().getId());
+        this.transferRowsFromPurityBean(purityBean);
+        this.transferFilesFromPurityBean(purityBean, sampleId);
+    }
+
+    public void transferFilesFromPurityBean(SynthesisPurityBean purityBean,String sampleId){
+        List<FileBean> fileBeans = purityBean.getFiles();
+        if(fileBeans!=null){
+            for(FileBean fileBean:fileBeans){
+                SimpleFileBean simpleFileBean= new SimpleFileBean(fileBean,sampleId.toString());
+                this.addFile(simpleFileBean);
+            }
+        }
     }
 
     public void transferRowsFromPurityBean(SynthesisPurityBean purityBean) {

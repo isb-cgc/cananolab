@@ -150,21 +150,22 @@ public class SimpleSynthesisPurificationBean {
             purityBeans = new ArrayList<SimplePurityBean>();
             for(SynthesisPurityBean purityBean : synBean.getPurityBeans()){
                 SimplePurityBean simplePurityBean = new SimplePurityBean();
-                SynthesisPurity purity = purityBean.getDomain();
-                simplePurityBean.setId(purity.getId());
-                simplePurityBean.setCreatedBy(purity.getCreatedBy());
-                simplePurityBean.setCreatedDate(purity.getCreatedDate());
-                if (purity.getFiles()!=null){
-                    List<SimpleFileBean> purityFiles = new ArrayList<SimpleFileBean>();
-                    for(FileBean fileBean: purityBean.getFiles()){
-                        SimpleFileBean simpleFileBean = new SimpleFileBean(fileBean, this.sampleId);
-                        boolean isPublic = springSecurityAclService.checkObjectPublic(Long.valueOf(getSampleId()), SecureClassesEnum.SAMPLE.getClazz());
-                        simpleFileBean.setIsPublic(isPublic);
-                        purityFiles.add(simpleFileBean);
-                    }
-                    simplePurityBean.setFiles(purityFiles);
-                }
-                simplePurityBean.transferRowsFromPurityBean(purityBean);
+//                SynthesisPurity purity = purityBean.getDomain();
+                simplePurityBean.transferFromPurityBean(purityBean, sampleId);
+//                simplePurityBean.setId(purity.getId());
+//                simplePurityBean.setCreatedBy(purity.getCreatedBy());
+//                simplePurityBean.setCreatedDate(purity.getCreatedDate());
+//                if (purity.getFiles()!=null){
+//                    List<SimpleFileBean> purityFiles = new ArrayList<SimpleFileBean>();
+//                    for(FileBean fileBean: purityBean.getFiles()){
+//                        SimpleFileBean simpleFileBean = new SimpleFileBean(fileBean, this.sampleId);
+//                        boolean isPublic = springSecurityAclService.checkObjectPublic(Long.valueOf(getSampleId()), SecureClassesEnum.SAMPLE.getClazz());
+//                        simpleFileBean.setIsPublic(isPublic);
+//                        purityFiles.add(simpleFileBean);
+//                    }
+//                    simplePurityBean.setFiles(purityFiles);
+//                }
+//                simplePurityBean.transferRowsFromPurityBean(purityBean);
                 purityBeans.add(simplePurityBean);
             }
 

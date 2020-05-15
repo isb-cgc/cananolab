@@ -19,6 +19,7 @@ public class SimplePurityCell {
 		datumOrCondition = cell.getDatumOrCondition();
 		columnOrder = cell.getColumnOrder();
 		operand = cell.getOperand();
+		createdDate = cell.getCreatedDate();
 	}
 	
 	public void transferToTableCell(PurityTableCell cell) {
