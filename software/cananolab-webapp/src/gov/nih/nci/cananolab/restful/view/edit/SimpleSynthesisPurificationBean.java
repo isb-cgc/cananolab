@@ -2,6 +2,7 @@ package gov.nih.nci.cananolab.restful.view.edit;
 
 import gov.nih.nci.cananolab.domain.common.Instrument;
 import gov.nih.nci.cananolab.domain.common.PurificationConfig;
+import gov.nih.nci.cananolab.domain.common.PurityDatum;
 import gov.nih.nci.cananolab.domain.particle.SynthesisPurification;
 import gov.nih.nci.cananolab.domain.particle.SynthesisPurity;
 import gov.nih.nci.cananolab.dto.common.FileBean;
@@ -13,6 +14,7 @@ import gov.nih.nci.cananolab.security.service.SpringSecurityAclService;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 import javax.servlet.http.HttpServletRequest;
 
 public class SimpleSynthesisPurificationBean {
@@ -162,6 +164,7 @@ public class SimpleSynthesisPurificationBean {
                     }
                     simplePurityBean.setFiles(purityFiles);
                 }
+                simplePurityBean.transferRowsFromPurityBean(purityBean);
                 purityBeans.add(simplePurityBean);
             }
 

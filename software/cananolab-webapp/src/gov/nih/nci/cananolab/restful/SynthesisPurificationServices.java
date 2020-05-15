@@ -54,19 +54,19 @@ public class SynthesisPurificationServices {
      *
      * @param httpRequest
      * @param sampleId
-     * @param purificationId - id of purification element to be edited
+     * @param dataId - id of purification element to be edited
      * @return SimpleSynthesisPurificationBean
      */
     @GET
     @Path("/setupEdit")
     @Produces ("application/json")
-    public Response setupEdit(@Context HttpServletRequest httpRequest, @QueryParam("sampleId") String sampleId,  @QueryParam("dataId") String purificationId) {
+    public Response setupEdit(@Context HttpServletRequest httpRequest, @QueryParam("sampleId") String sampleId,  @QueryParam("dataId") String dataId) {
         if (!SpringSecurityUtil.isUserLoggedIn())
             return Response.status(Response.Status.UNAUTHORIZED)
                     .entity("Session expired").build();
         try{
             SynthesisPurificationBO synthesisPurificationBO = (SynthesisPurificationBO) SpringApplicationContext.getBean(httpRequest, "synthesisPurificationBO");
-            SimpleSynthesisPurificationBean synthesisPurificationBean = synthesisPurificationBO.setupUpdate(sampleId, purificationId, httpRequest);
+            SimpleSynthesisPurificationBean synthesisPurificationBean = synthesisPurificationBO.setupUpdate(sampleId, dataId, httpRequest);
             List<String> errors = synthesisPurificationBean.getErrors();
             return (errors == null || errors.size() == 0) ?
                     Response.ok(synthesisPurificationBean).build() :

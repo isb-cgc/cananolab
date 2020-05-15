@@ -2,12 +2,17 @@ package gov.nih.nci.cananolab.restful.view.edit;
 
 import gov.nih.nci.cananolab.domain.common.File;
 import gov.nih.nci.cananolab.dto.common.ColumnHeader;
+import gov.nih.nci.cananolab.dto.common.FindingBean;
+import gov.nih.nci.cananolab.dto.common.PurityRow;
+import gov.nih.nci.cananolab.dto.common.Row;
+import gov.nih.nci.cananolab.dto.particle.synthesis.SynthesisPurityBean;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
 public class SimplePurityBean {
     List<ColumnHeader> columnHeaders = new ArrayList<ColumnHeader>();
+    List<SimplePurityRowBean> purityRows = new ArrayList<SimplePurityRowBean>();
     List<SimpleFileBean> files = new ArrayList<SimpleFileBean>();
     File fileBeingEdited;
     Long id;
@@ -28,6 +33,14 @@ public class SimplePurityBean {
 
     public void setCreatedDate(Date date){
         this.createdDate = date;
+    }
+
+    public List<SimplePurityRowBean> getPurityRows() {
+        return purityRows;
+    }
+
+    public void setPurityRows(List<SimplePurityRowBean> purityRows) {
+        this.purityRows = purityRows;
     }
 
     public Long getId() {
@@ -72,5 +85,35 @@ public class SimplePurityBean {
 
     public void setFileBeingEdited(File fileBeingEdited) {
         this.fileBeingEdited = fileBeingEdited;
+    }
+
+    public void transferRowsFromPurityBean(SynthesisPurityBean purityBean) {
+        if (purityBean == null) return;
+
+        this.columnHeaders= purityBean.getColumnHeaders();
+
+        List<PurityRow> beanRows = purityBean.getRows();
+        this.purityRows.clear();
+
+        if (beanRows != null) {
+            for (PurityRow beanRow : beanRows) {
+                SimplePurityRowBean aRow = new SimplePurityRowBean();
+                aRow.transferFromRow(beanRow);
+
+                this.purityRows.add(aRow);
+            }
+        }
+    }
+
+    protected void transferRowsToPurityBean(SynthesisPurityBean purityBean) {
+        if (this.purityRows == null) return;
+        if (purityBean == null) return;
+
+        purityBean.getRows().clear();
+        for (SimplePurityRowBean simpleRow : this.purityRows) {
+            PurityRow rowBean = new PurityRow();
+            simpleRow.transferToRow(rowBean);
+            purityBean.getRows().add(rowBean);
+        }
     }
 }

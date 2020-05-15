@@ -48,9 +48,12 @@
             </key>
             <one-to-many class="gov.nih.nci.cananolab.domain.common.PurityDatumCondition"/>
         </set>
+
+
+
         <many-to-one class="gov.nih.nci.cananolab.domain.particle.SynthesisPurity"
-                     fetch="select" name="synthesisPurity" lazy="proxy">
-            <column name="purity_pk_id"/>
+                     fetch="select" name="synthesisPurity">
+            <column name="purity_pk_id" not-null="true"/>
         </many-to-one>
         <many-to-one class="File"
                      fetch="select" name="file" lazy="proxy">
