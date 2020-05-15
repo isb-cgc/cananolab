@@ -251,6 +251,7 @@ public class SynthesisPurityBean
                 }
                 rows.add( row );
             }
+            updateColumnOrder();
         }
     }
 
