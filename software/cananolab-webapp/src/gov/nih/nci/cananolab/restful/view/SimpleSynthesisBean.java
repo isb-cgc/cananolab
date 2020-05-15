@@ -224,7 +224,9 @@ public class SimpleSynthesisBean {
                     purification.put("Source", purificationBean.getSource());
                     purification.put("Date", purificationBean.getDomainEntity().getCreatedDate());
                     purification.put("Yield", purificationBean.getDomainEntity().getYield());
-                    purification.put("Protocol", purificationBean.getDomainEntity().getProtocol().getName());
+                    if(purificationBean.getDomainEntity().getProtocol() != null) {
+                        purification.put("Protocol", purificationBean.getDomainEntity().getProtocol().getName());
+                    }
                     purification.put("Analysis", purificationBean.getDomainEntity().getAnalysis());
                     if(purificationBean.getDomainEntity().getPurificationConfigs() != null){
                         List<Map<String, Object>> techniques = transferPurificationConfigurations(purificationBean);

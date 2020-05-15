@@ -17,13 +17,20 @@
                 <comment>created_by</comment>
             </column>
         </property>
+
 <!--        <many-to-one-->
-<!--                class="SynthesisPurification"-->
-<!--                fetch="select" name="synthesisPurification">-->
-<!--            <column name="synthesis_purification_pk_id" not-null="true">-->
-<!--                <comment>synthesis_purification_pk_id</comment>-->
+<!--                class="SynthesisMaterial"-->
+<!--                fetch="select" name="synthesisMaterial">-->
+<!--            <column name="synthesis_material_pk_id" not-null="true">-->
+<!--                <comment>synthesis_material_pk_id</comment>-->
 <!--            </column>-->
 <!--        </many-to-one>-->
+
+        <many-to-one
+            class="SynthesisPurification" fetch="select" name="synthesisPurification">
+            <column name="synthesis_purification_pk_id" not-null="true"/>
+        </many-to-one>
+
         <set fetch="select" lazy="true"
              name="purityDatumCollection" sort="unsorted" table="purity_datum" cascade="all-delete-orphan">
             <key>
