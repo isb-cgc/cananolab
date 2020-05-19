@@ -127,6 +127,16 @@ public class SynthesisPurification implements java.io.Serializable {
 		this.purities = purities;
 	}
 
+	public Set<SynthesisPurity> addPurity(SynthesisPurity purity){
+		this.purities.add(purity);
+		return purities;
+	}
+
+	public Set<SynthesisPurity> removePurity(SynthesisPurity purity){
+		this.purities.remove(purity);
+		return purities;
+	}
+
 	public Set<PurificationConfig> getPurificationConfigs() {
 		return this.purificationConfigs;
 	}

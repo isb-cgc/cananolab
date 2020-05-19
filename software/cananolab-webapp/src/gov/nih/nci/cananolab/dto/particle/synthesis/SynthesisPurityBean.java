@@ -379,7 +379,7 @@ public class SynthesisPurityBean
         numberOfRows--;
     }
 
-    public void setupDomain( String internalFileUriPath, String createdBy )
+    public void setupDomain( String internalURL, String createdBy )
             throws Exception
     {
 
@@ -421,7 +421,7 @@ public class SynthesisPurityBean
 
         for( FileBean fileBean : files )
         {
-            fileBean.setupDomainFile( internalFileUriPath, createdBy );
+            fileBean.setupDomainFile( internalURL, createdBy );
             domain.getFiles().add( fileBean.getDomainFile() );
         }
 

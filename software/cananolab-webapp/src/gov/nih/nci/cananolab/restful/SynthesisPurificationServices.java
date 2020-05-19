@@ -375,7 +375,8 @@ public class SynthesisPurificationServices {
                 return Response.status(Response.Status.UNAUTHORIZED).entity(Constants.MSG_SESSION_INVALID).build();
 
             SynthesisPurificationBO purificationBO = (SynthesisPurificationBO) SpringApplicationContext.getBean(httpRequest, "synthesisPurificationBO");
-            List<String> msgs = purificationBO.savePurification(editBean,httpRequest);
+//            List<String> msgs = purificationBO.savePurification(editBean,httpRequest);
+            List<String> msgs = purificationBO.create(editBean, httpRequest);
             return Response.ok(msgs).header("Access-Control-Allow-Credentials", "true")
                     .header("Access-Control-Allow-Origin", "*").header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS")
                     .header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization").build();

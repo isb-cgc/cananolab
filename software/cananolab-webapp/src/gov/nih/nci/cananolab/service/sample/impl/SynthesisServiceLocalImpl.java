@@ -914,14 +914,6 @@ public class SynthesisServiceLocalImpl extends BaseServiceLocalImpl implements S
                     SecureClassesEnum.SAMPLE.getClazz())) {
                 throw new NoAccessException();
             }
-            try {
-                appService
-                        .load(SynthesisPurification.class, synthesisPurificationBean.getDomainEntity().getId());
-            }catch (Exception e) {
-                String err = "Object doesn't exist in the database anymore.  Please log in again.";
-                logger.error(err);
-                throw new SynthesisException(err, e);
-            }
 
             Synthesis synthesis;
             if(sample.getSynthesis()==null){
@@ -932,6 +924,15 @@ public class SynthesisServiceLocalImpl extends BaseServiceLocalImpl implements S
             }
 
             if(!newEntity){
+                try {
+                    appService
+                            .load(SynthesisPurification.class, synthesisPurificationBean.getDomainEntity().getId());
+                }
+                catch (Exception e) {
+                    String err = "Object doesn't exist in the database anymore.  Please log in again.";
+                    logger.error(err);
+                    throw new SynthesisException(err, e);
+                }
                 //Get the material by id from database
                 Long test1 = synthesisPurification.getId();
                 Long test2 = synthesis.getId();

@@ -3,13 +3,18 @@ package gov.nih.nci.cananolab.dto.particle.synthesis;
 import gov.nih.nci.cananolab.domain.common.Instrument;
 import gov.nih.nci.cananolab.domain.common.PurificationConfig;
 import gov.nih.nci.cananolab.domain.common.Technique;
+import gov.nih.nci.cananolab.domain.particle.SynthesisMaterialElement;
 import gov.nih.nci.cananolab.domain.particle.SynthesisPurification;
 import gov.nih.nci.cananolab.domain.particle.SynthesisPurity;
 import gov.nih.nci.cananolab.dto.common.ProtocolBean;
 import gov.nih.nci.cananolab.dto.common.PurificationConfigBean;
 
 import gov.nih.nci.cananolab.util.ClassUtils;
+import gov.nih.nci.cananolab.util.Constants;
+import gov.nih.nci.cananolab.util.StringUtils;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.HashSet;
 import java.util.List;
 import org.springframework.security.access.method.P;
 
@@ -104,7 +109,44 @@ public class SynthesisPurificationBean extends BaseSynthesisEntityBean {
     public void setPurificationConfigs(List<PurificationConfigBean> purificationConfigs){this.purificationConfigs= purificationConfigs;}
 
 
-    public void setUpDomainEntity(String username) {
+    public void setUpDomainEntity(String username) throws Exception{
         //todo write
+        logger.debug("in SynthesisPurificationBean.setUpDomainEntity");
+
+        if(domain.getId() !=null && domain.getId()==0){
+            domain.setId(null);
+        }
+
+        if(domain.getId()==null){
+            logger.debug("call domain.setCreatedBy "+ domain);
+            domain.setCreatedBy(username);
+            domain.setCreatedDate(Calendar.getInstance().getTime());
+        } else {
+            // updated created_by if created_by contains copy, but keep the original
+            // created_date
+            if(domain.getCreatedBy()!=null&&domain.getCreatedBy().contains(
+                    Constants.AUTO_COPY_ANNOTATION_PREFIX)){
+                domain.setCreatedBy(username);
+            }
+        }
+
+        // clear the old domain material elements in the domain
+        if(domain.getPurities() != null){
+            domain.getPurities().clear();
+        } else {
+            domain.setPurities(new HashSet<SynthesisPurity>());
+        }
+
+        //reset the domain material elements to what is in the bean
+        for(SynthesisPurityBean synthesisPurityBean:purityBeans){
+            String internalUriPath = Constants.FOLDER_PARTICLE
+                    + '/'
+                    + "synthesis"
+                    + '/'
+                    + StringUtils.getOneWordLowerCaseFirstLetter(this.displayName);
+            synthesisPurityBean.setupDomain(internalUriPath,username);
+            domain.addPurity(synthesisPurityBean.getDomain());
+        }
+
     }
 }
