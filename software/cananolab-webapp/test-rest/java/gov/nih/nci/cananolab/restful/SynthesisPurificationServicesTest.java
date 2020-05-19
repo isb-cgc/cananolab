@@ -212,6 +212,23 @@ public class SynthesisPurificationServicesTest {
     @Test
     public void testSubmit() {
         try {
+            //Testing submission of a brand new purification
+            SimpleSynthesisPurificationBean newBean = new SimpleSynthesisPurificationBean();
+            newBean.setMethodName("I am a method name");
+            newBean.setDesignMethodDescription("I am a description of a method design");
+            newBean.setYield(new Float(12.85));
+            newBean.setType("Interim Purification");
+            newBean.setSampleId("1000");
+
+            Response response = given().spec(specification)
+                    .body(newBean).when().post("synthesisPurification/submit")
+                    .then().statusCode(200).extract().response();
+
+            assertNotNull(response);
+            //verify change was saved to database
+            newBean = getSimpleSynthesisPurificationBean("1000", "1000");
+            assertNotNull(newBean.getId());
+            assertTrue(newBean.getMethodName().equals("I am a method name"));
 
         }catch (Exception e){
             e.printStackTrace();

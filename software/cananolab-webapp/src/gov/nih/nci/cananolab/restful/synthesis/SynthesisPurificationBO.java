@@ -159,7 +159,7 @@ public class SynthesisPurificationBO extends BaseAnnotationBO {
      * @return
      * @throws Exception
      */
-    public SimpleSynthesisPurificationBean setupUpdate(String sampleId, String dataId, HttpServletRequest httpRequest) throws Exception {
+    public SimpleSynthesisPurificationBean setupUpdate(String sampleId, String dataId, HttpServletRequest httpRequest) throws SynthesisException {
         SynthesisForm form = new SynthesisForm();
         // set up other particles with the same primary point of contact
 //        InitSampleSetup.getInstance().getOtherSampleNames(httpRequest, sampleId, sampleService);
@@ -175,7 +175,11 @@ public class SynthesisPurificationBO extends BaseAnnotationBO {
             return simpleSynthesisPurificationBean;
         } catch (IllegalFormatConversionException e){
             logger.error("Either sample id or data id is not an appropriate identifier. ",e);
-            throw e;
+            throw new SynthesisException("Either sample id or data id is not an appropriate identifier. ",e);
+        } catch (NoAccessException e) {
+            String err ="User has no access to edit "+ sampleId;
+            logger.error(err, e);
+            throw new SynthesisException(err, e);
         }
     }
 
@@ -251,13 +255,19 @@ public class SynthesisPurificationBO extends BaseAnnotationBO {
 
         List<String> msgs = new ArrayList<String>();
         SynthesisPurificationBean entityBean = transferSimplePurification(editBean, httpRequest) ;
-        entityBean.setUpDomainEntity(SpringSecurityUtil.getLoggedInUserName());
+        try {
+            entityBean.setUpDomainEntity(SpringSecurityUtil.getLoggedInUserName());
+
         String sampleId = editBean.getSampleId();
         synthesisService.deleteSynthesisPurification(new Long(sampleId),entityBean.getDomainEntity());
 
         msgs.add("success");
         return msgs;
-
+        }
+        catch (Exception e) {
+            msgs.add("Error deleting purification");
+            throw new SynthesisException("Error deleting purification", e);
+        }
     }
 
     /**
