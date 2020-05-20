@@ -8,8 +8,22 @@
             <generator class="hilo"/>
         </id>
 
-        <property name="activationMethod" column="activation_method" type="string"/>
-        <property name="activationEffect" column="activation_effect" type="string"/>
+<!--
+               <property name="activationMethod" column="activation_method" type="string"/>
+ <property name="activationEffect" column="activation_effect" type="string"/>
+-->
+        <property generated="never" lazy="false" name="activationMethod" type="string">
+            <column length="200" name="activation_method" not-null="true">
+                <comment>activation_method</comment>
+            </column>
+        </property>
+
+
+        <property generated="never" lazy="false" name="activationEffect" type="string">
+            <column length="200" name="activation_effect" not-null="true">
+                <comment>activation_effect</comment>
+            </column>
+        </property>
 
 
         <property generated="never" lazy="false" name="createdBy" type="string">

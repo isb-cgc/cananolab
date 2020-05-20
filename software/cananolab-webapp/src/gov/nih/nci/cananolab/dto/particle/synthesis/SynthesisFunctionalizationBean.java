@@ -14,8 +14,8 @@ import java.util.*;
 import org.apache.log4j.Logger;
 
 
-public class SynthesisFunctionalizationBean  extends BaseSynthesisEntityBean {
-    Logger logger = Logger.getLogger("SynthesisFunctionalizationBean.class");
+public class SynthesisFunctionalizationBean extends BaseSynthesisEntityBean {
+    Logger logger = Logger.getLogger( "SynthesisFunctionalizationBean.class" );
     private SynthesisFunctionalization domainEntity;
     private boolean withProperties = false;
     private ProtocolBean protocolBean = new ProtocolBean();
@@ -24,105 +24,115 @@ public class SynthesisFunctionalizationBean  extends BaseSynthesisEntityBean {
 
     List<SynthesisFunctionalizationElementBean> synthesisFunctionalizationElements = new ArrayList<SynthesisFunctionalizationElementBean>();
 
-    public SynthesisFunctionalizationBean(SynthesisFunctionalization synthesisFunctionalization){
-        this.domainEntity=synthesisFunctionalization;
+    public SynthesisFunctionalizationBean( SynthesisFunctionalization synthesisFunctionalization ) {
+        this.domainEntity = synthesisFunctionalization;
 
-        if(synthesisFunctionalization.getSynthesisFunctionalizationElements()!=null){
-            for(SynthesisFunctionalizationElement synthesisFunctionalizationElement: synthesisFunctionalization.getSynthesisFunctionalizationElements()){
-                synthesisFunctionalizationElements.add(new SynthesisFunctionalizationElementBean(synthesisFunctionalizationElement));
+        if( synthesisFunctionalization.getSynthesisFunctionalizationElements() != null ) {
+            for( SynthesisFunctionalizationElement synthesisFunctionalizationElement : synthesisFunctionalization.getSynthesisFunctionalizationElements() ) {
+                synthesisFunctionalizationElements.add( new SynthesisFunctionalizationElementBean( synthesisFunctionalizationElement ) );
             }
 
         }
-        Collections.sort(synthesisFunctionalizationElements, new Comparators.SFEBeanTypeComparator());
+        Collections.sort( synthesisFunctionalizationElements, new Comparators.SFEBeanTypeComparator() );
 
     }
 
     public SynthesisFunctionalizationBean() {
+    }
 
+    public Long getId() {
+        return this.domainEntity.getId();
     }
 
 
-    public SynthesisFunctionalization getDomainCopy(String createdBy) {
+    public SynthesisFunctionalization getDomainCopy( String createdBy ) {
 
-        SynthesisFunctionalization copy = (SynthesisFunctionalization) ClassUtils.deepCopy(this
-                .getDomainEntity());
-        resetDomainCopy(createdBy, copy);
+        SynthesisFunctionalization copy = (SynthesisFunctionalization) ClassUtils.deepCopy( this
+                .getDomainEntity() );
+        resetDomainCopy( createdBy, copy );
         return copy;
 
     }
 
-    public  SynthesisFunctionalizationElementBean getSynthesisFunctionalizationElementById(Long id){
-        return getSynthesisFunctionalizationElementById(id.toString());
+
+    public SynthesisFunctionalizationElementBean getSynthesisFunctionalizationElementById( String id ) {
+//        for(SynthesisMaterialElementBean element:synthesisMaterialElements){
+//            if(element.getDomainEntity().getId().equals(id)){
+//                return element;
+//            }
+//        }
+//        return null;
+        return getSynthesisFunctionalizationElementById( new Long( id ) );
     }
 
-
-    public SynthesisFunctionalizationElementBean getSynthesisFunctionalizationElementById(String id){
-        for(SynthesisFunctionalizationElementBean element:synthesisFunctionalizationElements){
-            if(element.getDomainEntity().getId().equals(id)){
+    public SynthesisFunctionalizationElementBean getSynthesisFunctionalizationElementById( Long id ) {
+//        return getSynthesisMaterialElementById(id.toString());
+        for( SynthesisFunctionalizationElementBean element : synthesisFunctionalizationElements ) {
+            if( element.getDomainEntity().getId().equals( id ) ) {
                 return element;
             }
         }
         return null;
     }
-    
-    public void removeFunctionalizationElement(SynthesisFunctionalizationElementBean functionalizationElementBean) {
-        synthesisFunctionalizationElements.remove(functionalizationElementBean);
+
+    public void removeFunctionalizationElement( SynthesisFunctionalizationElementBean functionalizationElementBean ) {
+        synthesisFunctionalizationElements.remove( functionalizationElementBean );
     }
 
 
-    public void setUpDomainEntity(String loggedInUserName)  throws Exception {
-        logger.debug("In SynthesisFunctionalizationBean.setupDomain");
+    public void setUpDomainEntity( String loggedInUserName ) throws Exception {
+        logger.debug( "In SynthesisFunctionalizationBean.setupDomain" );
 
         //forms defaults Ids to 0, so need to check both null and 0
-        if(domainEntity.getId() !=null && domainEntity.getId()==0){
-            domainEntity.setId(null);
+        if( domainEntity.getId() != null && domainEntity.getId() == 0 ) {
+            domainEntity.setId( null );
         }
 
-        if(domainEntity.getId()==null){
-            logger.debug("call domain.setCreatedBy "+ loggedInUserName);
-            domainEntity.setCreatedBy(loggedInUserName);
-            domainEntity.setCreatedDate(Calendar.getInstance().getTime());
+        if( domainEntity.getId() == null ) {
+            logger.debug( "call domain.setCreatedBy " + loggedInUserName );
+            domainEntity.setCreatedBy( loggedInUserName );
+            domainEntity.setCreatedDate( Calendar.getInstance().getTime() );
         } else {
             // updated created_by if created_by contains copy, but keep the original
             // created_date
-            if(domainEntity.getCreatedBy()!=null&&domainEntity.getCreatedBy().contains(
-                    Constants.AUTO_COPY_ANNOTATION_PREFIX)){
-                domainEntity.setCreatedBy(loggedInUserName);
+            if( domainEntity.getCreatedBy() != null && domainEntity.getCreatedBy().contains(
+                    Constants.AUTO_COPY_ANNOTATION_PREFIX ) ) {
+                domainEntity.setCreatedBy( loggedInUserName );
             }
         }
 
         // clear the old domain functionalization elements in the domain
-        if(domainEntity.getSynthesisFunctionalizationElements() != null){
+        if( domainEntity.getSynthesisFunctionalizationElements() != null ) {
             domainEntity.getSynthesisFunctionalizationElements().clear();
         } else {
-            domainEntity.setSynthesisFunctionalizationElements(new HashSet<SynthesisFunctionalizationElement>());
+            domainEntity.setSynthesisFunctionalizationElements( new HashSet<SynthesisFunctionalizationElement>() );
         }
 
         //reset the domain functionalization elements to what is in the bean
-        for(SynthesisFunctionalizationElementBean synthesisFunctionalizationElement:synthesisFunctionalizationElements){
-            synthesisFunctionalizationElement.setupDomain(loggedInUserName);
-            domainEntity.addSynthesisFunctionalizationElement(synthesisFunctionalizationElement.getDomainEntity());
+        for( SynthesisFunctionalizationElementBean synthesisFunctionalizationElement : synthesisFunctionalizationElements ) {
+            synthesisFunctionalizationElement.setupDomain( loggedInUserName );
+            domainEntity.addSynthesisFunctionalizationElement( synthesisFunctionalizationElement.getDomainEntity() );
         }
 
 
-        if (protocolBean != null && protocolBean.getDomain().getId() != null
-                && protocolBean.getDomain().getId().longValue() != 0) {
-            domainEntity.setProtocol(protocolBean.getDomain());
+        if( protocolBean != null && protocolBean.getDomain().getId() != null
+                && protocolBean.getDomain().getId().longValue() != 0 ) {
+            domainEntity.setProtocol( protocolBean.getDomain() );
         } else {
-            domainEntity.setProtocol(null);
+            domainEntity.setProtocol( null );
         }
         domainEntity.getFiles();
-        if (files.isEmpty()) {
-            domainEntity.setFiles(null);
-        } else if (domainEntity.getFiles() != null) {
+        if( files.isEmpty() ) {
+            domainEntity.setFiles( null );
+        } else if( domainEntity.getFiles() != null ) {
             domainEntity.getFiles().clear();
         } else {
-            domainEntity.setFiles(new HashSet<File>());
+            domainEntity.setFiles( new HashSet<File>() );
         }
-        for (FileBean file : files) {
-            domainEntity.getFiles().add(file.getDomainFile());
+        for( FileBean file : files ) {
+            domainEntity.getFiles().add( file.getDomainFile() );
         }
-        domainEntity.setDescription(description);
+        domainEntity.setDescription( description );
 
     }
 
@@ -131,12 +141,12 @@ public class SynthesisFunctionalizationBean  extends BaseSynthesisEntityBean {
         return domainEntity;
     }
 
-    public void setDomainEntity(SynthesisFunctionalization domainEntity) {
+    public void setDomainEntity( SynthesisFunctionalization domainEntity ) {
         this.domainEntity = domainEntity;
     }
 
-    public void setSynthesis(SynthesisBean synthesisBean){
-        this.domainEntity.setSynthesis(synthesisBean.getDomain());
+    public void setSynthesis( SynthesisBean synthesisBean ) {
+        this.domainEntity.setSynthesis( synthesisBean.getDomain() );
     }
 
 
@@ -144,7 +154,7 @@ public class SynthesisFunctionalizationBean  extends BaseSynthesisEntityBean {
 //        return source;
 //    }
 
-    public String getSource(){
+    public String getSource() {
         return domainEntity.getCreatedBy();
     }
 //    public void setSource(PointOfContact source) {
@@ -155,62 +165,62 @@ public class SynthesisFunctionalizationBean  extends BaseSynthesisEntityBean {
         return withProperties;
     }
 
-    public void setWithProperties(boolean withProperties) {
+    public void setWithProperties( boolean withProperties ) {
         this.withProperties = withProperties;
     }
 
-    public void resetDomainCopy(String createdBy, SynthesisFunctionalization copy) {
-        copy.setId(null);
-        copy.setCreatedBy(createdBy + ":"
-                + Constants.AUTO_COPY_ANNOTATION_PREFIX);
+    public void resetDomainCopy( String createdBy, SynthesisFunctionalization copy ) {
+        copy.setId( null );
+        copy.setCreatedBy( createdBy + ":"
+                + Constants.AUTO_COPY_ANNOTATION_PREFIX );
 
         Collection<SynthesisFunctionalizationElement> oldElements = copy.getSynthesisFunctionalizationElements();
-        if (oldElements==null || oldElements.isEmpty()){
-            copy.setSynthesisFunctionalizationElements(null);
-        }else {
-            copy.setSynthesisFunctionalizationElements(new HashSet<SynthesisFunctionalizationElement>(oldElements));
-            for(SynthesisFunctionalizationElement sfe:copy.getSynthesisFunctionalizationElements()){
-                sfe.setCreatedBy(createdBy + ":"
+        if( oldElements == null || oldElements.isEmpty() ) {
+            copy.setSynthesisFunctionalizationElements( null );
+        } else {
+            copy.setSynthesisFunctionalizationElements( new HashSet<SynthesisFunctionalizationElement>( oldElements ) );
+            for( SynthesisFunctionalizationElement sfe : copy.getSynthesisFunctionalizationElements() ) {
+                sfe.setCreatedBy( createdBy + ":"
                         + Constants.AUTO_COPY_ANNOTATION_PREFIX + ":"
-                        + sfe.getId());
-                sfe.setId(null);
+                        + sfe.getId() );
+                sfe.setId( null );
                 Collection<SfeInherentFunction> oldFunctions = sfe.getSfeInherentFunctions();
-                if (oldFunctions == null || oldFunctions.isEmpty()) {
-                    sfe.setSfeInherentFunctions(null);
+                if( oldFunctions == null || oldFunctions.isEmpty() ) {
+                    sfe.setSfeInherentFunctions( null );
                 } else {
 
-                    sfe.setSfeInherentFunctions(new HashSet<SfeInherentFunction>(oldFunctions));
-                    for (SfeInherentFunction function : sfe.getSfeInherentFunctions()) {
-                        SfeInherentFunctionBean functionBean = new SfeInherentFunctionBean(function);
-                        functionBean.resetDomainCopy(createdBy, function);
+                    sfe.setSfeInherentFunctions( new HashSet<SfeInherentFunction>( oldFunctions ) );
+                    for( SfeInherentFunction function : sfe.getSfeInherentFunctions() ) {
+                        SfeInherentFunctionBean functionBean = new SfeInherentFunctionBean( function );
+                        functionBean.resetDomainCopy( createdBy, function );
                     }
                 }
                 Collection<File> oldFiles = sfe.getFiles();
-                if (oldFiles == null || oldFiles.isEmpty()) {
-                    sfe.setFiles(null);
+                if( oldFiles == null || oldFiles.isEmpty() ) {
+                    sfe.setFiles( null );
                 } else {
-                    sfe.setFiles(new HashSet<File>(oldFiles));
-                    for (File file : sfe.getFiles()) {
-                        FileBean fileBean = new FileBean(file);
-                        fileBean.resetDomainCopy(createdBy, file);
+                    sfe.setFiles( new HashSet<File>( oldFiles ) );
+                    for( File file : sfe.getFiles() ) {
+                        FileBean fileBean = new FileBean( file );
+                        fileBean.resetDomainCopy( createdBy, file );
                     }
                 }
             }
             Collection<File> oldFiles = copy.getFiles();
-            if (oldFiles == null || oldFiles.isEmpty()) {
-                copy.setFiles(null);
+            if( oldFiles == null || oldFiles.isEmpty() ) {
+                copy.setFiles( null );
             } else {
-                copy.setFiles(new HashSet<File>(oldFiles));
-                for (File file : copy.getFiles()) {
-                    FileBean fileBean = new FileBean(file);
-                    fileBean.resetDomainCopy(createdBy, file);
+                copy.setFiles( new HashSet<File>( oldFiles ) );
+                for( File file : copy.getFiles() ) {
+                    FileBean fileBean = new FileBean( file );
+                    fileBean.resetDomainCopy( createdBy, file );
                 }
             }
         }
 
     }
 
-    public String getDescription(){
+    public String getDescription() {
         return domainEntity.getDescription();
     }
 
@@ -218,7 +228,7 @@ public class SynthesisFunctionalizationBean  extends BaseSynthesisEntityBean {
         return synthesisFunctionalizationElements;
     }
 
-    public void setSynthesisFunctionalizationElements(List<SynthesisFunctionalizationElementBean> synthesisFunctionalizationElements) {
+    public void setSynthesisFunctionalizationElements( List<SynthesisFunctionalizationElementBean> synthesisFunctionalizationElements ) {
         this.synthesisFunctionalizationElements = synthesisFunctionalizationElements;
     }
 
@@ -226,7 +236,7 @@ public class SynthesisFunctionalizationBean  extends BaseSynthesisEntityBean {
         return logger;
     }
 
-    public void setLogger(Logger logger) {
+    public void setLogger( Logger logger ) {
         this.logger = logger;
     }
 
@@ -234,7 +244,7 @@ public class SynthesisFunctionalizationBean  extends BaseSynthesisEntityBean {
         return protocolBean;
     }
 
-    public void setProtocolBean(ProtocolBean protocolBean) {
+    public void setProtocolBean( ProtocolBean protocolBean ) {
         this.protocolBean = protocolBean;
     }
 }

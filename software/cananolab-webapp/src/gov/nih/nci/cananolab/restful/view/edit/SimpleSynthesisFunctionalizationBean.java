@@ -2,10 +2,12 @@ package gov.nih.nci.cananolab.restful.view.edit;
 
 import gov.nih.nci.cananolab.domain.particle.*;
 import gov.nih.nci.cananolab.dto.common.FileBean;
+import gov.nih.nci.cananolab.dto.common.ProtocolBean;
 import gov.nih.nci.cananolab.dto.particle.synthesis.SynthesisFunctionalizationBean;
 import gov.nih.nci.cananolab.dto.particle.synthesis.SynthesisFunctionalizationElementBean;
 import gov.nih.nci.cananolab.security.enums.SecureClassesEnum;
 import gov.nih.nci.cananolab.security.service.SpringSecurityAclService;
+import gov.nih.nci.cananolab.service.protocol.ProtocolService;
 
 import java.util.*;
 import javax.servlet.http.HttpServletRequest;
@@ -22,11 +24,14 @@ public class SimpleSynthesisFunctionalizationBean {
     private String createdBy="";
     private String description;
     private String type;
+    ArrayList<SimpleProtocol> protocolLookup;
     SimpleProtocol simpleProtocol;
 
 
     SimpleFileBean fileBeingEdited;
     SimpleSynthesisFunctionalizationElementBean functionalizationElementBeingEdited;
+
+
 
     public SimpleFileBean getFileBeingEdited() {
         return fileBeingEdited;
@@ -222,6 +227,21 @@ public class SimpleSynthesisFunctionalizationBean {
 
     private void setFiles(List<SimpleFileBean> fileElements) {
         this.fileElements = fileElements;
+    }
+
+    public void setProtocolLookup(HttpServletRequest request, ProtocolService protocolService)
+            throws Exception {
+        protocolLookup = new ArrayList<SimpleProtocol>();
+        List<ProtocolBean> protoBeans = protocolService.getSynthesisProtocols(request);
+
+        if (protoBeans == null)
+            return;
+
+        for (ProtocolBean protoBean : protoBeans) {
+            SimpleProtocol simpleProto = new SimpleProtocol();
+            simpleProto.transferFromProtocolBean(protoBean);
+            protocolLookup.add(simpleProto);
+        }
     }
 
     @Override

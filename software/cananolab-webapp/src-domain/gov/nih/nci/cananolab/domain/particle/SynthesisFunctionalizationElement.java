@@ -8,7 +8,7 @@ import java.util.*;
 public class SynthesisFunctionalizationElement {
 
     private Long synthesisFunctionalizationElementPkId;
-    private Long  synthesisFunctionalizationId;
+    private Long synthesisFunctionalizationId;
     private SynthesisFunctionalization synthesisFunctionalization;
 
     private String activationMethod;
@@ -24,13 +24,12 @@ public class SynthesisFunctionalizationElement {
     private String valueUnit;
     private String pubChemDatasourceName;
     private Long pubChemId;
-    private Set<SfeInherentFunction> sfeInherentFunctions = new HashSet<SfeInherentFunction>(0);
-    private Set<File> files = new HashSet<File>(0);
-/*
-    private Supplier supplier;
-*/
+    private Set<SfeInherentFunction> sfeInherentFunctions = new HashSet<SfeInherentFunction>( 0 );
+    private Set<File> files = new HashSet<File>( 0 );
+    /*
+        private Supplier supplier;
+    */
     private String type;
-
 
 
     public SynthesisFunctionalizationElement() {
@@ -44,8 +43,8 @@ public class SynthesisFunctionalizationElement {
 //		this.createdDate = createdDate;
 //	}
 
-    public SynthesisFunctionalizationElement(Long synthesisFunctionalizationElementPkId, Long synthesisFunctionalization,
-                                    String createdBy, Date createdDate) {
+    public SynthesisFunctionalizationElement( Long synthesisFunctionalizationElementPkId, Long synthesisFunctionalization,
+                                              String createdBy, Date createdDate ) {
         this.synthesisFunctionalizationElementPkId = synthesisFunctionalizationElementPkId;
         this.synthesisFunctionalizationId = synthesisFunctionalization;
         this.createdBy = createdBy;
@@ -56,66 +55,25 @@ public class SynthesisFunctionalizationElement {
         return synthesisFunctionalization;
     }
 
-    public void setSynthesisFunctionalization(SynthesisFunctionalization synthesisFunctionalization) {
+    public void setSynthesisFunctionalization( SynthesisFunctionalization synthesisFunctionalization ) {
         this.synthesisFunctionalization = synthesisFunctionalization;
+        this.setSynthesisFunctionalizationId( synthesisFunctionalization.getId() );
     }
 
-    public Long getSynthesisFunctionalizationId(){return synthesisFunctionalizationId;}
-    public void setSynthesisFunctionalizationId(Long functionalizationId){
+    public Long getSynthesisFunctionalizationId() {
+        return synthesisFunctionalizationId;
+    }
+
+    public void setSynthesisFunctionalizationId( Long functionalizationId ) {
         synthesisFunctionalizationId = functionalizationId;
     }
 
-//	public SynthesisFunctionalizationElement(Long synthesisFunctionalizationElementPkId, SynthesisFunctionalization synthesisFunctionalization,
-//			String molecularFormula, String molecularFormulaType, String description, String createdBy,
-//			Date createdDate, String chemicalName, Float value, String valueUnit, String pubChemDatasourceName,
-//			Long pubChemId, Set<SfeInherentFunction> sfeInherentFunctions, Set<File> files, Supplier supplier, String type) {
-//		this.synthesisFunctionalizationElementPkId = synthesisFunctionalizationElementPkId;
-//		this.synthesisFunctionalization = synthesisFunctionalization;
-//		this.molecularFormula = molecularFormula;
-//		this.molecularFormulaType = molecularFormulaType;
-//		this.description = description;
-//		this.createdBy = createdBy;
-//		this.createdDate = createdDate;
-//		this.chemicalName = chemicalName;
-//		this.value = value;
-//		this.valueUnit = valueUnit;
-//		this.pubChemDatasourceName = pubChemDatasourceName;
-//		this.pubChemId = pubChemId;
-//		this.sfeInherentFunctions = sfeInherentFunctions;
-//		this.files = files;
-//		this.supplier = supplier;
-//		this.type = type;
-//	}
-
-/*
-    public SynthesisFunctionalizationElement(Long synthesisFunctionalizationElementPkId, Long synthesisFunctionalization,
-                                    String molecularFormula, String molecularFormulaType, String description, String createdBy,
-                                    Date createdDate, String chemicalName, Float value, String valueUnit, String pubChemDatasourceName,
-                                    Long pubChemId, Set<SfeInherentFunction> sfeInherentFunctions, Set<File> files, Supplier supplier, String type) {
-        this.synthesisFunctionalizationElementPkId = synthesisFunctionalizationElementPkId;
-        this.synthesisFunctionalizationId = synthesisFunctionalization;
-        this.molecularFormula = molecularFormula;
-        this.molecularFormulaType = molecularFormulaType;
-        this.description = description;
-        this.createdBy = createdBy;
-        this.createdDate = createdDate;
-        this.chemicalName = chemicalName;
-        this.value = value;
-        this.valueUnit = valueUnit;
-        this.pubChemDatasourceName = pubChemDatasourceName;
-        this.pubChemId = pubChemId;
-        this.sfeInherentFunctions = sfeInherentFunctions;
-        this.files = files;
-        this.supplier = supplier;
-        this.type = type;
-    }
-*/
 
     public Long getId() {
         return this.synthesisFunctionalizationElementPkId;
     }
 
-    public void setId(Long synthesisFunctionalizationElementPkId) {
+    public void setId( Long synthesisFunctionalizationElementPkId ) {
         this.synthesisFunctionalizationElementPkId = synthesisFunctionalizationElementPkId;
     }
 
@@ -124,7 +82,7 @@ public class SynthesisFunctionalizationElement {
         return this.molecularFormula;
     }
 
-    public void setMolecularFormula(String molecularFormula) {
+    public void setMolecularFormula( String molecularFormula ) {
         this.molecularFormula = molecularFormula;
     }
 
@@ -132,7 +90,7 @@ public class SynthesisFunctionalizationElement {
         return this.molecularFormulaType;
     }
 
-    public void setMolecularFormulaType(String molecularFormulaType) {
+    public void setMolecularFormulaType( String molecularFormulaType ) {
         this.molecularFormulaType = molecularFormulaType;
     }
 
@@ -140,7 +98,7 @@ public class SynthesisFunctionalizationElement {
         return this.description;
     }
 
-    public void setDescription(String description) {
+    public void setDescription( String description ) {
         this.description = description;
     }
 
@@ -148,7 +106,7 @@ public class SynthesisFunctionalizationElement {
         return this.createdBy;
     }
 
-    public void setCreatedBy(String createdBy) {
+    public void setCreatedBy( String createdBy ) {
         this.createdBy = createdBy;
     }
 
@@ -156,7 +114,7 @@ public class SynthesisFunctionalizationElement {
         return this.createdDate;
     }
 
-    public void setCreatedDate(Date createdDate) {
+    public void setCreatedDate( Date createdDate ) {
         this.createdDate = createdDate;
     }
 
@@ -164,7 +122,7 @@ public class SynthesisFunctionalizationElement {
         return this.chemicalName;
     }
 
-    public void setChemicalName(String chemicalName) {
+    public void setChemicalName( String chemicalName ) {
         this.chemicalName = chemicalName;
     }
 
@@ -172,7 +130,7 @@ public class SynthesisFunctionalizationElement {
         return this.value;
     }
 
-    public void setValue(Float value) {
+    public void setValue( Float value ) {
         this.value = value;
     }
 
@@ -180,7 +138,7 @@ public class SynthesisFunctionalizationElement {
         return this.valueUnit;
     }
 
-    public void setValueUnit(String valueUnit) {
+    public void setValueUnit( String valueUnit ) {
         this.valueUnit = valueUnit;
     }
 
@@ -188,7 +146,7 @@ public class SynthesisFunctionalizationElement {
         return this.pubChemDatasourceName;
     }
 
-    public void setPubChemDatasourceName(String pubChemDatasourceName) {
+    public void setPubChemDatasourceName( String pubChemDatasourceName ) {
         this.pubChemDatasourceName = pubChemDatasourceName;
     }
 
@@ -196,7 +154,7 @@ public class SynthesisFunctionalizationElement {
         return this.pubChemId;
     }
 
-    public void setPubChemId(Long pubChemId) {
+    public void setPubChemId( Long pubChemId ) {
         this.pubChemId = pubChemId;
     }
 
@@ -204,12 +162,12 @@ public class SynthesisFunctionalizationElement {
         return this.sfeInherentFunctions;
     }
 
-    public void setSfeInherentFunctions(Set<SfeInherentFunction> sfeInherentFunctions) {
+    public void setSfeInherentFunctions( Set<SfeInherentFunction> sfeInherentFunctions ) {
         this.sfeInherentFunctions = sfeInherentFunctions;
     }
 
-    public void addSfeInherentFunction(SfeInherentFunction function){
-        this.sfeInherentFunctions.add(function);
+    public void addSfeInherentFunction( SfeInherentFunction function ) {
+        this.sfeInherentFunctions.add( function );
     }
 
 /*
@@ -226,15 +184,15 @@ public class SynthesisFunctionalizationElement {
         return this.files;
     }
 
-    public void setFiles(Set<File> files) {
+    public void setFiles( Set<File> files ) {
         this.files = files;
     }
 
-    public String getType(){
+    public String getType() {
         return type;
     }
 
-    public void setType(String type){
+    public void setType( String type ) {
         this.type = type;
     }
 
@@ -242,7 +200,7 @@ public class SynthesisFunctionalizationElement {
         return activationMethod;
     }
 
-    public void setActivationMethod(String activationMethod) {
+    public void setActivationMethod( String activationMethod ) {
         this.activationMethod = activationMethod;
     }
 
@@ -250,7 +208,7 @@ public class SynthesisFunctionalizationElement {
         return activationEffect;
     }
 
-    public void setActivationEffect(String activationEffect) {
+    public void setActivationEffect( String activationEffect ) {
         this.activationEffect = activationEffect;
     }
 }
