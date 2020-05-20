@@ -54,10 +54,11 @@ public class CaNanoLabApplicationServiceImpl extends WritableApplicationServiceI
 
 	public void saveOrUpdate(Object object) throws ApplicationException {
 		try {
-			CaNanoLabORMDAO dao = (CaNanoLabORMDAO) classCache
-					.getDAOForClass(object.getClass().getCanonicalName());
+			CaNanoLabORMDAO dao = (CaNanoLabORMDAO) classCache.getDAOForClass(object.getClass().getCanonicalName());
 			dao.saveOrUpdate(object);
 		} catch (Exception e) {
+			e.printStackTrace();
+
 			String err = "Could not save or update for class "
 					+ object.getClass().getCanonicalName();
 			logger.error(err);

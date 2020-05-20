@@ -1,13 +1,7 @@
 package gov.nih.nci.cananolab.service.sample.helper;
 
 import gov.nih.nci.cananolab.domain.common.File;
-import gov.nih.nci.cananolab.domain.particle.NanomaterialEntity;
-import gov.nih.nci.cananolab.domain.particle.SmeInherentFunction;
-import gov.nih.nci.cananolab.domain.particle.Synthesis;
-import gov.nih.nci.cananolab.domain.particle.SynthesisFunctionalization;
-import gov.nih.nci.cananolab.domain.particle.SynthesisMaterial;
-import gov.nih.nci.cananolab.domain.particle.SynthesisMaterialElement;
-import gov.nih.nci.cananolab.domain.particle.SynthesisPurification;
+import gov.nih.nci.cananolab.domain.particle.*;
 import gov.nih.nci.cananolab.exception.NoAccessException;
 import gov.nih.nci.cananolab.exception.SynthesisException;
 import gov.nih.nci.cananolab.security.enums.SecureClassesEnum;
@@ -61,10 +55,31 @@ public class SynthesisHelper
         return functionList;
     }
 
+    public List<SfeInherentFunction> findSfeFunctionByElementId(Long sampleId, Long id, String fullClassName) throws Exception{
+        if (!springSecurityAclService.currentUserHasReadPermission(sampleId, SecureClassesEnum.SAMPLE.getClazz()) &&
+                !springSecurityAclService.currentUserHasWritePermission(sampleId, SecureClassesEnum.SAMPLE.getClazz())) {
+            throw new NoAccessException("User has no access to the sample " + sampleId);
+        }
+        List<SfeInherentFunction> functionList = new ArrayList<SfeInherentFunction>();
+        CaNanoLabApplicationService appService = (CaNanoLabApplicationService) ApplicationServiceProvider.getApplicationService();
+        String hql = "select anEntity.smeInherentFunctions from " + fullClassName + " anEntity where anEntity.id = " + id;
+        HQLCriteria crit = new HQLCriteria(hql);
+        List results = appService.query(crit);
+        for (int i = 0; i < results.size(); i++) {
+            SfeInherentFunction function = (SfeInherentFunction) results.get(i);
+            if (springSecurityAclService.currentUserHasReadPermission(sampleId, SecureClassesEnum.SAMPLE.getClazz()) ||
+                    springSecurityAclService.currentUserHasWritePermission(sampleId, SecureClassesEnum.SAMPLE.getClazz())) {
+                functionList.add(function);
+            } else {
+                logger.debug("User doesn't have access to file of id:" + function.getId());
+            }
+        }
+        return functionList;
+    }
+
 
     public Synthesis findSynthesisBySampleId(String sampleId) throws SynthesisException {
         try{
-            System.out.println("MHL 000 findSynthesisBySampleId: [" + sampleId + "]");
             Long id = new Long(sampleId);
             return findSynthesisBySampleId(id);
         }
@@ -135,6 +150,9 @@ public class SynthesisHelper
                 Property.forName("id").eq(new Long(entityId)));
         crit.setFetchMode("files", FetchMode.JOIN);
         crit.setFetchMode("files.keywordConnection", FetchMode.JOIN);
+        crit.setFetchMode("protocol", FetchMode.JOIN);
+        crit.setFetchMode("protocol.file", FetchMode.JOIN);
+        crit.setFetchMode("protocol.file.keywordCollection", FetchMode.JOIN);
         crit.setFetchMode("synthesisFunctionalizationElements", FetchMode.JOIN);
         crit.setFetchMode("synthesisFunctionalizationElements.sfeInherentFunctions", FetchMode.JOIN);
         crit.setFetchMode("synthesisFunctionalizationElements.files", FetchMode.JOIN);
@@ -261,6 +279,60 @@ public class SynthesisHelper
         for (int i = 0; i < results.size(); i++) {
             File file = (File) results.get(i);
             //TODO work out security for synthesis material
+            if (springSecurityAclService.currentUserHasReadPermission(synthesisId, SecureClassesEnum.SYNTHESIS.getClazz()) ||
+                    springSecurityAclService.currentUserHasWritePermission(synthesisId, SecureClassesEnum.SYNTHESIS.getClazz())) {
+                fileCollection.add(file);
+            } else {
+                logger.debug("User doesn't have access to file of id:" + file.getId());
+            }
+        }
+        return fileCollection;
+    }
+
+    public List<File> findFilesBySynFuncElement(Long sampleId, Long elementId, String className) throws Exception {
+        List<File> fileCollection = new ArrayList<File>();
+        String fullClassName = null;
+        if (ClassUtils.getFullClass(className) != null) {
+            fullClassName = ClassUtils.getFullClass(className).getName();
+        } else {
+            return null;
+        }
+
+        CaNanoLabApplicationService appService = (CaNanoLabApplicationService) ApplicationServiceProvider.getApplicationService();
+        String hql = "select anEntity.files from " + fullClassName + " anEntity where anEntity.id = " + elementId;
+        HQLCriteria crit = new HQLCriteria(hql);
+        List results = appService.query(crit);
+        for (int i = 0; i < results.size(); i++) {
+            File file = (File) results.get(i);
+            if (springSecurityAclService.currentUserHasReadPermission(sampleId, SecureClassesEnum.SAMPLE.getClazz()) ||
+                    springSecurityAclService.currentUserHasWritePermission(sampleId, SecureClassesEnum.SAMPLE.getClazz())) {
+                fileCollection.add(file);
+            } else {
+                logger.debug("User doesn't have access to file of id:" + file.getId());
+            }
+        }
+        return fileCollection;
+
+    }
+
+
+    public List<File> findFilesByFunctionalizationId(Long synthesisId, Long synFuncId, String className) throws Exception {
+
+        List<File> fileCollection = new ArrayList<File>();
+        String fullClassName = null;
+        if (ClassUtils.getFullClass(className) != null) {
+            fullClassName = ClassUtils.getFullClass(className).getName();
+        } else {
+            return null;
+        }
+        CaNanoLabApplicationService appService = (CaNanoLabApplicationService) ApplicationServiceProvider.getApplicationService();
+        String hql = "select anEntity.fileCollection from " + fullClassName + " anEntity where anEntity.id = " + synFuncId;
+
+        HQLCriteria crit = new HQLCriteria(hql);
+        List results = appService.query(crit);
+        for (int i = 0; i < results.size(); i++) {
+            File file = (File) results.get(i);
+            //TODO work out security for synthesis functionalization?
             if (springSecurityAclService.currentUserHasReadPermission(synthesisId, SecureClassesEnum.SYNTHESIS.getClazz()) ||
                     springSecurityAclService.currentUserHasWritePermission(synthesisId, SecureClassesEnum.SYNTHESIS.getClazz())) {
                 fileCollection.add(file);

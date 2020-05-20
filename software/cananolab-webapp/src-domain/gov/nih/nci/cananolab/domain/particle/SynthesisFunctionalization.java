@@ -16,6 +16,7 @@ public class SynthesisFunctionalization implements Serializable {
 
 	private Long synthesisFunctionalizationPkId;
 	private Synthesis synthesis;
+	private Long synthesisId;
 	private Protocol protocol;
 	private String description;
 	private Date createdDate;
@@ -46,12 +47,6 @@ public class SynthesisFunctionalization implements Serializable {
 		this.synthesisFunctionalizationPkId = synthesisFuntionalizationPkId;
 	}
 
-	public SynthesisFunctionalization(Long synthesisFuntionalizationPkId, Synthesis synthesis,
-			Set synthesisFuncPurifications) {
-		this.synthesisFunctionalizationPkId = synthesisFuntionalizationPkId;
-		this.synthesis = synthesis;
-
-	}
 
 	public Long getId() {
 		return this.synthesisFunctionalizationPkId;
@@ -79,7 +74,16 @@ public class SynthesisFunctionalization implements Serializable {
 
 	public void setSynthesis(Synthesis synthesis) {
 		this.synthesis = synthesis;
+		this.synthesisId = synthesis.getId();
 	}
+
+	public Long getSynthesisId(){return this.synthesisId;};
+
+	public void setSynthesisId(Long synthesisId){
+		this.synthesisId = synthesisId;
+	}
+
+
 
 	public Protocol getProtocol() {
 		return protocol;

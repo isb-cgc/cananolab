@@ -38,6 +38,7 @@ import gov.nih.nci.cananolab.restful.workspace.WorkspaceManager;
 import gov.nih.nci.cananolab.security.CananoUserDetails;
 import gov.nih.nci.cananolab.security.utils.SpringSecurityUtil;
 import gov.nih.nci.cananolab.util.Constants;
+import org.springframework.web.bind.annotation.CrossOrigin;
 
 @Path("/core")
 public class CoreServices 
@@ -186,6 +187,7 @@ public class CoreServices
 		}
 	}
 
+	@CrossOrigin
 	@POST
 	@Path("/uploadFile")
 	@Consumes("multipart/form-data")

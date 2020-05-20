@@ -19,10 +19,17 @@
         <many-to-one name="protocol" class="gov.nih.nci.cananolab.domain.common.Protocol">
             <column name="protocol_pk_id" />
         </many-to-one>
-        <set name="synthesisFunctionalizationElements" inverse="true">
+        <set
+                fetch="select" inverse="true" lazy="false"
+                name="synthesisFunctionalizationElements"
+                sort="unsorted"
+                table="synthesis-functionalization-elements"
+                cascade="all-delete-orphan">
+
             <key>
                 <column name="synthesis_functionalization_pk_id"/>
             </key>
+
             <one-to-many not-found="ignore" class="SynthesisFunctionalizationElement"/>
         </set>
         <set name="files" table="synthesis_functionalization_file" lazy="false" inverse="false" cascade="all-delete-orphan">
