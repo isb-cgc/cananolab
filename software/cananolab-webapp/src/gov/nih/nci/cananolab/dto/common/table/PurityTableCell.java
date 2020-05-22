@@ -22,6 +22,7 @@ import java.util.Date;
  *
  */
 public class PurityTableCell {
+	Long id;
 	String value;
 	String operand = "=";
 	String datumOrCondition;
@@ -61,6 +62,7 @@ public class PurityTableCell {
 		this.datum = datum;
 		this.condition = null;
 		this.createdDate = datum.getCreatedDate();
+		this.id = datum.getId();
 	}
 
 	public PurityTableCell(PurityDatumCondition condition) {
@@ -76,6 +78,7 @@ public class PurityTableCell {
 		this.condition = condition;
 		this.datum = null;
 		this.createdDate = condition.getCreatedDate();
+		this.id=condition.getId();
 	}
 
 	/**
@@ -137,5 +140,13 @@ public class PurityTableCell {
 	
 	public void setOperand(String operand){
 		this.operand = operand;
+	}
+
+	public void setId(Long id){
+		this.id = id;
+	}
+
+	public Long getId(){
+		return this.id;
 	}
 }

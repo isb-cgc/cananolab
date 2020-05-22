@@ -4,10 +4,14 @@ import gov.nih.nci.cananolab.domain.characterization.physical.Purity;
 import gov.nih.nci.cananolab.domain.common.File;
 import gov.nih.nci.cananolab.domain.common.Protocol;
 import gov.nih.nci.cananolab.domain.common.PurificationConfig;
+import gov.nih.nci.cananolab.domain.common.PurityDatum;
+import gov.nih.nci.cananolab.domain.common.PurityDatumCondition;
 import gov.nih.nci.cananolab.domain.particle.Synthesis;
 import gov.nih.nci.cananolab.domain.particle.SynthesisPurification;
 import gov.nih.nci.cananolab.domain.particle.SynthesisPurity;
+import gov.nih.nci.cananolab.dto.common.FileBean;
 import gov.nih.nci.cananolab.dto.common.ProtocolBean;
+import gov.nih.nci.cananolab.dto.common.PurityRow;
 import gov.nih.nci.cananolab.dto.particle.SampleBean;
 import gov.nih.nci.cananolab.dto.particle.synthesis.SynthesisMaterialBean;
 import gov.nih.nci.cananolab.dto.particle.synthesis.SynthesisPurificationBean;
@@ -26,6 +30,8 @@ import gov.nih.nci.cananolab.restful.view.edit.SimpleFileBean;
 import gov.nih.nci.cananolab.restful.view.edit.SimpleProtocol;
 import gov.nih.nci.cananolab.restful.view.edit.SimplePurificationConfigBean;
 import gov.nih.nci.cananolab.restful.view.edit.SimplePurityBean;
+import gov.nih.nci.cananolab.restful.view.edit.SimplePurityCell;
+import gov.nih.nci.cananolab.restful.view.edit.SimplePurityRowBean;
 import gov.nih.nci.cananolab.restful.view.edit.SimpleSynthesisPurificationBean;
 import gov.nih.nci.cananolab.security.CananoUserDetails;
 import gov.nih.nci.cananolab.security.enums.SecureClassesEnum;
@@ -371,7 +377,7 @@ public class SynthesisPurificationBO extends BaseAnnotationBO {
     private SynthesisPurityBean transferSimplePurity(SimplePurityBean simplePurityBean, HttpServletRequest httpRequest){
         //TODO write all the transfer stuff
         SynthesisPurityBean purityBean = new SynthesisPurityBean();
-        Purity purity = new Purity();
+        SynthesisPurity purity = new SynthesisPurity();
 
         //id
         if((simplePurityBean.getId()!=null)&&(simplePurityBean.getId()>0)){
@@ -383,9 +389,44 @@ public class SynthesisPurificationBO extends BaseAnnotationBO {
             purity.setCreatedDate(simplePurityBean.getCreatedDate());
         }
 
+        //check for Files
+        List<SimpleFileBean> sfileBeans = simplePurityBean.getFiles();
+        Set<File> files = new HashSet<File>();
+        List<FileBean> fileBeans = new ArrayList<FileBean>();
+        if(sfileBeans!=null){
+            for(SimpleFileBean simpleFileBean: sfileBeans){
+                FileBean fileBean = new FileBean(simpleFileBean);
+                files.add(fileBean.getDomainFile());
+                fileBeans.add(fileBean);
+//                File file1 = new File();
+//                file1.setId(simpleFileBean.getId());
+//                file1.setUriExternal(simpleFileBean.getUriExternal());
+//                file1.setUri(simpleFileBean.getUri());
+//                file1.setType(simpleFileBean.getType());
+//                file1.setDescription(simpleFileBean.getDescription());
+//                file1.setTitle(simpleFileBean.getTitle());
+//                file1.setCreatedDate(simpleFileBean.getCreatedDate());
+//                file1.setCreatedBy(simpleFileBean.getCreatedBy());
+//                files.add(file1);
+            }}
+        purityBean.setFiles(fileBeans);
+        purity.setFiles(files);
+
         //Columns
         purityBean.setColumnHeaders(simplePurityBean.getColumnHeaders());
+        List<SimplePurityRowBean> simplePurityRowBeans = simplePurityBean.getPurityRows();
+        if(simplePurityRowBeans!= null){
+            for(SimplePurityRowBean simplePurityRowBean: simplePurityRowBeans){
+                List<SimplePurityCell> simpleCells = simplePurityRowBean.getCells();
+                if(simpleCells!=null){
+                    for (SimplePurityCell simpleCell :simpleCells){
+                        PurityDatum purityDatum = new PurityDatum();
+                        
 
+                    }
+                }
+            }
+        }
 
 
 
@@ -464,38 +505,14 @@ public class SynthesisPurificationBO extends BaseAnnotationBO {
 
         Set<SynthesisPurity> purities = new HashSet<SynthesisPurity>();
         List<SimplePurityBean> simplePurityBeans = sSynPurificationBean.getPurityBeans();
-        if(simplePurityBeans != null){
-            for(SimplePurityBean sPurityBean: simplePurityBeans){
-                SynthesisPurity purity = new SynthesisPurity();
-                purity.setId(sPurityBean.getId());
-                purity.setCreatedBy(sPurityBean.getCreatedBy());
-                purity.setCreatedDate(sPurityBean.getCreatedDate());
-                purity.setSynthesisPurificationId(sSynPurificationBean.getId());
+        if(simplePurityBeans != null) {
+            for (SimplePurityBean sPurityBean : simplePurityBeans) {
 
+                SynthesisPurityBean purityBean = transferSimplePurity(sPurityBean, httpRequest);
 
-                //check for Files
-                List<SimpleFileBean> sfileBeans = sPurityBean.getFiles();
-                Set<File> files = new HashSet<File>();
-                if(sfileBeans!=null){
-                    for(SimpleFileBean simpleFileBean: sfileBeans){
+                purityBean.getDomain().setSynthesisPurificationId(sSynPurificationBean.getId());
+                purities.add(purityBean.getDomain());
 
-                        File file1 = new File();
-                        file1.setId(simpleFileBean.getId());
-                        file1.setUriExternal(simpleFileBean.getUriExternal());
-                        file1.setUri(simpleFileBean.getUri());
-                        file1.setType(simpleFileBean.getType());
-                        file1.setDescription(simpleFileBean.getDescription());
-                        file1.setTitle(simpleFileBean.getTitle());
-                        file1.setCreatedDate(simpleFileBean.getCreatedDate());
-                        file1.setCreatedBy(simpleFileBean.getCreatedBy());
-                        files.add(file1);
-                    }}
-                purity.setFiles(files);
-
-                //TODO datum
-                sPurityBean.getColumnHeaders();
-
-                purities.add(purity);
             }
         }
         purification.setPurities(purities);
