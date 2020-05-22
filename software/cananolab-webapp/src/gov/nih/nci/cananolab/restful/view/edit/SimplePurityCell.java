@@ -5,6 +5,7 @@ import gov.nih.nci.cananolab.dto.common.table.TableCell;
 import java.util.Date;
 
 public class SimplePurityCell {
+	Long id;
 	String value;
 	String datumOrCondition;
 	//private Datum datum = new Datum();
@@ -20,6 +21,7 @@ public class SimplePurityCell {
 		columnOrder = cell.getColumnOrder();
 		operand = cell.getOperand();
 		createdDate = cell.getCreatedDate();
+		id = cell.getId();
 	}
 	
 	public void transferToTableCell(PurityTableCell cell) {
@@ -27,6 +29,7 @@ public class SimplePurityCell {
 		cell.setDatumOrCondition(datumOrCondition);
 		cell.setValue(value);
 		cell.setOperand(operand);
+		cell.setId(cell.getId());
 	}
 	
 	public String getValue() {
@@ -60,5 +63,11 @@ public class SimplePurityCell {
 	
 	public void setOperand(String operand){
 		this.operand = operand;
+	}
+	public void setId(Long id){
+		this.id = id;
+	}
+	public Long getId(){
+		return id;
 	}
 }
