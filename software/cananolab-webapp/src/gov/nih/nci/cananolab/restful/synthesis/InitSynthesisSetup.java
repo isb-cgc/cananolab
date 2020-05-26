@@ -1,7 +1,9 @@
 package gov.nih.nci.cananolab.restful.synthesis;
 
 import gov.nih.nci.cananolab.domain.common.Instrument;
+import gov.nih.nci.cananolab.domain.common.PointOfContact;
 import gov.nih.nci.cananolab.dto.common.ExperimentConfigBean;
+import gov.nih.nci.cananolab.dto.common.PointOfContactBean;
 import gov.nih.nci.cananolab.dto.particle.synthesis.SynthesisBean;
 import gov.nih.nci.cananolab.dto.particle.synthesis.SynthesisFunctionalizationBean;
 import gov.nih.nci.cananolab.dto.particle.synthesis.SynthesisMaterialBean;
@@ -11,11 +13,15 @@ import gov.nih.nci.cananolab.restful.core.InitSetup;
 import gov.nih.nci.cananolab.restful.protocol.InitProtocolSetup;
 import gov.nih.nci.cananolab.restful.sample.InitSampleSetup;
 import gov.nih.nci.cananolab.service.common.LookupService;
+import gov.nih.nci.cananolab.service.sample.SampleService;
 import gov.nih.nci.cananolab.service.sample.SynthesisService;
 import gov.nih.nci.cananolab.util.StringUtils;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.SortedSet;
+import java.util.TreeSet;
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 
@@ -132,7 +138,7 @@ public class InitSynthesisSetup {
 
     }
 
-    public void setSynthesisPurificationDropdowns(HttpServletRequest request) throws Exception {
+    public void setSynthesisPurificationDropdowns(HttpServletRequest request, String sampleId) throws Exception {
 
         InitSetup.getInstance().getDefaultAndOtherTypesByLookup(request,
                 "purityTypes", "synthesis", "purityType",
@@ -143,8 +149,6 @@ public class InitSynthesisSetup {
                 "otherValueType", true);
 
         setExperimentConfigDropDowns(request);
-
-
     }
 
     public void setExperimentConfigDropDowns(HttpServletRequest request)

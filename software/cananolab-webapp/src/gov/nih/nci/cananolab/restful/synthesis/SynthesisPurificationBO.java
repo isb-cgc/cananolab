@@ -2,6 +2,7 @@ package gov.nih.nci.cananolab.restful.synthesis;
 
 import gov.nih.nci.cananolab.domain.characterization.physical.Purity;
 import gov.nih.nci.cananolab.domain.common.File;
+import gov.nih.nci.cananolab.domain.common.PointOfContact;
 import gov.nih.nci.cananolab.domain.common.Protocol;
 import gov.nih.nci.cananolab.domain.common.PurificationConfig;
 import gov.nih.nci.cananolab.domain.common.PurityDatum;
@@ -9,9 +10,12 @@ import gov.nih.nci.cananolab.domain.common.PurityDatumCondition;
 import gov.nih.nci.cananolab.domain.particle.Synthesis;
 import gov.nih.nci.cananolab.domain.particle.SynthesisPurification;
 import gov.nih.nci.cananolab.domain.particle.SynthesisPurity;
+import gov.nih.nci.cananolab.dto.common.ColumnHeader;
 import gov.nih.nci.cananolab.dto.common.FileBean;
+import gov.nih.nci.cananolab.dto.common.PointOfContactBean;
 import gov.nih.nci.cananolab.dto.common.ProtocolBean;
 import gov.nih.nci.cananolab.dto.common.PurityRow;
+import gov.nih.nci.cananolab.dto.common.table.PurityTableCell;
 import gov.nih.nci.cananolab.dto.particle.SampleBean;
 import gov.nih.nci.cananolab.dto.particle.synthesis.SynthesisMaterialBean;
 import gov.nih.nci.cananolab.dto.particle.synthesis.SynthesisPurificationBean;
@@ -50,6 +54,7 @@ import java.util.IllegalFormatConversionException;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.TreeSet;
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import org.apache.log4j.Logger;
@@ -58,6 +63,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
+import sun.jvm.hotspot.memory.HeapBlock;
 
 @Transactional(readOnly=false, propagation= Propagation.REQUIRED)
 @Component("synthesisPurificationBO")
@@ -119,11 +125,12 @@ public class SynthesisPurificationBO extends BaseAnnotationBO {
     public Map<String, Object> setupNew(String sampleId, HttpServletRequest httpRequest) throws Exception {
         SynthesisPurificationBean synthesisPurificationBean = new SynthesisPurificationBean();
         List<String> otherNames = InitSampleSetup.getInstance().getOtherSampleNames(httpRequest, sampleId, sampleService);
-        this.setLookups(httpRequest, synthesisPurificationBean);
+        this.setLookups(httpRequest, sampleId);
         this.checkOpenForms(synthesisPurificationBean, httpRequest);
         //TODO write
         Map<String,Object> testLookup = new HashMap<String, Object>();
         testLookup.put("protocolLookup", this.setProtocolLookup(httpRequest));
+        testLookup.put("Sources", this.setPOCDropdown(httpRequest, sampleId));
         testLookup.putAll(SynthesisUtil.reformatLocalSearchDropdownsInSessionForSynthesisPurification(httpRequest.getSession()));
         return testLookup;
 
@@ -145,16 +152,28 @@ public class SynthesisPurificationBO extends BaseAnnotationBO {
         return protocolLookup;
     }
 
+    public Set setPOCDropdown(HttpServletRequest request, String sampleId)
+            throws Exception {
+        List<PointOfContactBean> pocs = sampleService.findPointOfContactsBySampleId(sampleId);
+        Set<String> displaySet = new TreeSet<String>();
+        for(PointOfContactBean pointOfContactBean:pocs){
+            String display = pointOfContactBean.getDomain().getOrganization().getName() + " (" + pointOfContactBean.getDomain().getCreatedBy() + ")";
+            displaySet.add(display);
+        }
+
+        return displaySet;
+    }
+
     /**
      * Crafts the lookups for the purification web form
      *
      * @param httpRequest
-     * @param elementBean
+     * @param sampleId
      * @throws Exception
      */
-    private void setLookups(HttpServletRequest httpRequest, SynthesisPurificationBean elementBean) throws Exception {
+    private void setLookups(HttpServletRequest httpRequest, String sampleId) throws Exception {
         ServletContext appContext = httpRequest.getSession().getServletContext();
-        InitSynthesisSetup.getInstance().setSynthesisPurificationDropdowns(httpRequest);
+        InitSynthesisSetup.getInstance().setSynthesisPurificationDropdowns(httpRequest, sampleId);
     }
 
     /**
@@ -417,13 +436,54 @@ public class SynthesisPurificationBO extends BaseAnnotationBO {
         List<SimplePurityRowBean> simplePurityRowBeans = simplePurityBean.getPurityRows();
         if(simplePurityRowBeans!= null){
             for(SimplePurityRowBean simplePurityRowBean: simplePurityRowBeans){
+                PurityRow row = new PurityRow();
                 List<SimplePurityCell> simpleCells = simplePurityRowBean.getCells();
                 if(simpleCells!=null){
+                    PurityDatum purityDatum = new PurityDatum();
                     for (SimplePurityCell simpleCell :simpleCells){
-                        PurityDatum purityDatum = new PurityDatum();
-                        
+                        PurityTableCell cell = new PurityTableCell();
+                        cell.setCreatedBy(simpleCell.getCreatedBy());
+                        cell.setCreatedDate(simpleCell.getCreatedDate());
+                        cell.setId(simpleCell.getId());
+                        cell.setValue(simpleCell.getValue());
+                        cell.setDatumOrCondition(simpleCell.getDatumOrCondition());
+                        cell.setColumnOrder(simpleCell.getColumnOrder());
+                        if(simpleCell.getDatumOrCondition().equals("datum")) {
+                            purityDatum.setValue(new Float(simpleCell.getValue()));
+                            purityDatum.setCreatedBy(simpleCell.getCreatedBy());
+                            purityDatum.setCreatedDate(simpleCell.getCreatedDate());
+                            purityDatum.setOperand(simpleCell.getOperand());
+                            purityDatum.setSynthesisPurity(purity);
+                            purityDatum.setId(simpleCell.getId());
+                            for (ColumnHeader header : simplePurityBean.getColumnHeaders()) {
+                                if (header.getColumnOrder().equals(simpleCell.getColumnOrder())) {
+                                    purityDatum.setValueUnit(header.getValueUnit());
+                                    purityDatum.setName(header.getDisplayName());
+                                    purityDatum.setValueType(header.getValueType());
+                                }
+                            }
+                            cell.setPurityDatum(purityDatum);
+                        } else {
+                            PurityDatumCondition condition = new PurityDatumCondition();
+                            condition.setValue(simpleCell.getValue());
+                            condition.setCreatedBy(simpleCell.getCreatedBy());
+                            condition.setCreatedDate(simpleCell.getCreatedDate());
+                            condition.setOperand(simpleCell.getOperand());
+                            condition.setId(simpleCell.getId());
+                            for (ColumnHeader header : simplePurityBean.getColumnHeaders()) {
+                                if (header.getColumnOrder().equals(simpleCell.getColumnOrder())) {
+                                    condition.setValueUnit(header.getValueUnit());
+                                    condition.setName(header.getDisplayName());
+                                    condition.setValueType(header.getValueType());
+                                }
+                            }
+                            cell.setCondition(condition);
+                        }
+                        row.addCell(cell);
 
                     }
+                    purityBean.addRow(row);
+
                 }
             }
         }

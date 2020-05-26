@@ -6036,7 +6036,8 @@ VALUES (66256896, 'Synthesis Test Protocol', 'synthesis', 'canano_curator', '202
        (66584577, 'Test In Vitro Characterization Protocol', 'in vitro assay', 'canano_curator', '2020-01-10 20:04:41',
         'TiVCP', '1.1', NULL),
        (66945024, 'Test Synthesis Purification Protocol', 'purification', 'canano_curator', '2020-04-21 16:02:41',
-        'Sypur', '1.0', NULL);
+        'Sypur', '1.0', NULL),
+        (1111, 'Test Protocol for Purification 2', 'purification', 'canano_curator', '2020-05-26 18:00:00','Pure2','1.0',NULL);
 /*!40000 ALTER TABLE `protocol`
     ENABLE KEYS */;
 UNLOCK TABLES;

@@ -12,6 +12,7 @@ public class SimplePurityCell {
 	//private Condition condition = new Condition();
 	Integer columnOrder;
 	Date createdDate;
+	String createdBy;
 	String operand;
 	
 	public void transferFromTableCell(PurityTableCell cell) {
@@ -22,6 +23,7 @@ public class SimplePurityCell {
 		operand = cell.getOperand();
 		createdDate = cell.getCreatedDate();
 		id = cell.getId();
+		createdBy = cell.getCreatedBy();
 	}
 	
 	public void transferToTableCell(PurityTableCell cell) {
@@ -29,7 +31,9 @@ public class SimplePurityCell {
 		cell.setDatumOrCondition(datumOrCondition);
 		cell.setValue(value);
 		cell.setOperand(operand);
-		cell.setId(cell.getId());
+		cell.setId(id);
+		cell.setCreatedDate(createdDate);
+		cell.setCreatedBy(createdBy);
 	}
 	
 	public String getValue() {
@@ -69,5 +73,13 @@ public class SimplePurityCell {
 	}
 	public Long getId(){
 		return id;
+	}
+
+	public String getCreatedBy() {
+		return createdBy;
+	}
+
+	public void setCreatedBy(String createdBy) {
+		this.createdBy = createdBy;
 	}
 }

@@ -21,6 +21,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 //public class SynthesisPurityBean {
 //    //TODO write
@@ -263,6 +264,31 @@ public class SynthesisPurityBean
     public void setRows( List<PurityRow> rows )
     {
         this.rows = rows;
+    }
+
+    public void addRow(PurityRow row){
+        //This new row is probably not cross-linked
+        Set<PurityDatumCondition> conditions = new HashSet<PurityDatumCondition>();
+        for(PurityTableCell cell: row.getCells()){
+            if(cell.getCondition()!=null){
+                conditions.add((cell.getCondition()));
+            }
+        }
+        for(PurityTableCell cell: row.getCells()){
+            if(cell.getPurityDatum()!=null){
+                for(PurityDatumCondition condition:conditions){
+                    condition.setPurityDatum(cell.getPurityDatum());
+                }
+                cell.getPurityDatum().setConditionCollection(conditions);
+            }
+        }
+
+
+        rows.add(row);
+    }
+
+    public void removeRow(PurityRow row){
+        rows.remove(row);
     }
 
     public List<ColumnHeader> getColumnHeaders()
