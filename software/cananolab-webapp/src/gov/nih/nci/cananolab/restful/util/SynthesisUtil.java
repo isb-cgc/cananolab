@@ -80,6 +80,11 @@ public class SynthesisUtil {
         SortedSet<String> types = (SortedSet<String>) session.getAttribute("purityTypes");
         if (types != null)
             typeMap.put("purificationTypes", new ArrayList<String>(types));
+        SortedSet<String> pocs = (SortedSet<String>) session.getAttribute("samplePointOfContacts");
+        if(pocs !=null)
+            typeMap.put("Sources", new ArrayList<String>(pocs));
+
+
 
 //        types = (SortedSet<String>) session.getAttribute("supplierNames");
 //        if(types!=null)

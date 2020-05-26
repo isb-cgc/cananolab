@@ -8,10 +8,8 @@
             <generator class="hilo"/>
         </id>
         <many-to-one class="gov.nih.nci.cananolab.domain.common.Protocol"
-                     fetch="select" name="protocol">
-            <column name="protocol_pk_id" >
-                <comment>protocol_pk_id</comment>
-            </column>
+                     fetch="select" name="protocol"  lazy="false" >
+            <column name="protocol_pk_id"/>
         </many-to-one>
 <!--        <many-to-one-->
 <!--                class="SynthesisFunctionalization"-->

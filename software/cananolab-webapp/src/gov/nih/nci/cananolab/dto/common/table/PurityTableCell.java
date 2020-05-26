@@ -32,6 +32,7 @@ public class PurityTableCell {
 	// FR# 26194, matrix column order.
 	Integer columnOrder;
 	Date createdDate;
+	String createdBy;
 
 	public PurityTableCell() {
 	}
@@ -63,6 +64,7 @@ public class PurityTableCell {
 		this.condition = null;
 		this.createdDate = datum.getCreatedDate();
 		this.id = datum.getId();
+		this.createdBy = datum.getCreatedBy();
 	}
 
 	public PurityTableCell(PurityDatumCondition condition) {
@@ -79,6 +81,7 @@ public class PurityTableCell {
 		this.datum = null;
 		this.createdDate = condition.getCreatedDate();
 		this.id=condition.getId();
+		this.createdBy= condition.getCreatedBy();
 	}
 
 	/**
@@ -148,5 +151,13 @@ public class PurityTableCell {
 
 	public Long getId(){
 		return this.id;
+	}
+
+	public String getCreatedBy() {
+		return createdBy;
+	}
+
+	public void setCreatedBy(String createdBy) {
+		this.createdBy = createdBy;
 	}
 }

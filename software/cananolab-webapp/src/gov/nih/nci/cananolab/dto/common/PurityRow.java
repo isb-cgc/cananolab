@@ -31,4 +31,23 @@ public class PurityRow {
 	public void setCells(List<PurityTableCell> cells) {
 		this.cells = cells;
 	}
+
+	public void addCell(PurityTableCell cell){
+		cells.add(cell);
+	}
+
+	public void removeCell(PurityTableCell cell){
+		cells.remove(cell);
+	}
+
+	public void removeCellById(Long id){
+		for (PurityTableCell cell:cells){
+			if (cell.getId().equals(id)){
+				removeCell(cell);
+				return;
+			}
+		}
+	}
+
+
 }

@@ -15,51 +15,23 @@ public class PurityDatumCondition implements Serializable {
      */
     private static final long serialVersionUID = 1234567890L;
 
-
-    /**
-     *
-     **/
-
     private String createdBy;
-    /**
-     *
-     **/
 
     private Date createdDate;
-    /**
-     *
-     **/
 
     private Long id;
-    /**
-     *
-     **/
 
     private String name;
-    /**
-     *
-     **/
 
     private String property;
-    /**
-     *
-     **/
 
     private String value;
-    /**
-     *
-     **/
 
     private String valueType;
-    /**
-     *
-     **/
 
     private String valueUnit;
-    /**
-     * An associated gov.nih.nci.cananolab.domain.common.Datum object's collection
-     **/
 
+    private String operand;
 
     private PurityDatum purityDatum;
 
@@ -215,23 +187,13 @@ public class PurityDatumCondition implements Serializable {
         this.valueUnit = valueUnit;
     }
 
-    /**
-     * Retrieves the value of the datumCollection attribute
-     *
-     * @return datumCollection
-     **/
-//
-//    public Collection<Datum> getDatumCollection() {
-//        return datumCollection;
-//    }
-//
-//    /**
-//     * Sets the value of datumCollection attribute
-//     **/
-//
-//    public void setDatumCollection(Collection<Datum> datumCollection) {
-//        this.datumCollection = datumCollection;
-//    }
+    public String getOperand() {
+        return operand;
+    }
+
+    public void setOperand(String operand) {
+        this.operand = operand;
+    }
 
     /**
      * Compares <code>obj</code> to it self and returns true if they both are same

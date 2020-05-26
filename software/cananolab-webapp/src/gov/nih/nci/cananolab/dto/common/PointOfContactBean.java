@@ -13,6 +13,7 @@ package gov.nih.nci.cananolab.dto.common;
 
 import gov.nih.nci.cananolab.domain.common.Organization;
 import gov.nih.nci.cananolab.domain.common.PointOfContact;
+import gov.nih.nci.cananolab.security.CananoUserDetails;
 import gov.nih.nci.cananolab.util.StringUtils;
 
 import java.util.ArrayList;
@@ -26,7 +27,7 @@ import java.util.List;
  *
  */
 
-public class PointOfContactBean {
+public class PointOfContactBean implements Comparable{
 	private PointOfContact domain = new PointOfContact();
 	private String displayName = "";
 	private Boolean primaryStatus = true;
@@ -37,6 +38,20 @@ public class PointOfContactBean {
 
 	public PointOfContactBean(PointOfContact pointOfContact) {
 		domain = pointOfContact;
+	}
+
+
+	public int compareTo(PointOfContactBean pocBean) {
+		return this.getOrganizationDisplayName().toLowerCase().compareTo(pocBean.getOrganizationDisplayName().toLowerCase());
+	}
+
+	@Override
+	public int compareTo(Object o) {
+		int diff = 0;
+		if (o instanceof PointOfContactBean) {
+			return this.compareTo((PointOfContactBean) o);
+		}
+		return diff;
 	}
 
 	/**
@@ -166,4 +181,6 @@ public class PointOfContactBean {
 		// don't need to set point of contact because POCs are shared
 		// don't need to set organization because organizations are shared
 	}
+
+
 }
