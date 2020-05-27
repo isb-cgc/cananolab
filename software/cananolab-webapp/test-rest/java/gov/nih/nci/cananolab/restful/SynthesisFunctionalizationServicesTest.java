@@ -111,6 +111,8 @@ public class SynthesisFunctionalizationServicesTest {
             ObjectMapper mapper = new ObjectMapper();
             SimpleSynthesisFunctionalizationBean synthesisFunctionalizationBean = mapper.readValue( jResponse.toString(), SimpleSynthesisFunctionalizationBean.class );
             assertTrue( synthesisFunctionalizationBean.getType().equalsIgnoreCase( "Synthesis" ) );
+            assertTrue( synthesisFunctionalizationBean.getCreatedBy() != null );
+            assertTrue( synthesisFunctionalizationBean.getCreatedBy().length() > 0 );
 
         } catch( Exception e ) {
             e.printStackTrace();
@@ -190,7 +192,7 @@ public class SynthesisFunctionalizationServicesTest {
     }
 
     @Test
-    public void testDaveFunctionalizationElement() {
+    public void testSaveFunctionalizationElement() {
         SimpleSynthesisFunctionalizationBean functionalizationBean = getSimpleSynthesisFunctionalizationBean( "1000", "1000" );
 //
         int initialNumberOfElements = functionalizationBean.getFunctionalizationElements().size();
