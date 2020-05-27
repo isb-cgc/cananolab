@@ -265,6 +265,37 @@ public class Comparators {
 		}
 	}
 
+    public static class SynthesisFunctionalizationElementTypeDataComparator implements Comparator<SynthesisFunctionalizationElementBean>{
+    	public int compare(SynthesisFunctionalizationElementBean entity1, SynthesisFunctionalizationElementBean entity2){
+			if (entity1
+					.getDomainEntity()
+					.getClass()
+					.getCanonicalName()
+					.equals(entity2.getDomainEntity().getClass()
+							.getCanonicalName())) {
+				if (entity1.getDomainEntity().getCreatedDate()
+						.compareTo(entity2.getDomainEntity().getCreatedDate()) == 0) {
+					return entity1.getDomainEntity().getId()
+							.compareTo(entity2.getDomainEntity().getId());
+				} else {
+					return entity1
+							.getDomainEntity()
+							.getCreatedDate()
+							.compareTo(
+									entity2.getDomainEntity().getCreatedDate());
+				}
+			} else {
+				return entity1
+						.getDomainEntity()
+						.getClass()
+						.getCanonicalName()
+						.compareTo(
+								entity2.getDomainEntity().getClass()
+										.getCanonicalName());
+			}
+		}
+	}
+
 	public static class SynthesisFunctionalizationBeanTypeDataComparator implements Comparator<SynthesisFunctionalizationBean>{
 		public int compare(SynthesisFunctionalizationBean entity1, SynthesisFunctionalizationBean entity2){
 			if (entity1
@@ -337,6 +368,7 @@ public class Comparators {
 							.getCanonicalName())) {
 				if (entity1.getDomain().getCreatedDate()
 						.compareTo(entity2.getDomain().getCreatedDate()) == 0) {
+
 					return entity1.getDomain().getId()
 							.compareTo(entity2.getDomain().getId());
 				} else {

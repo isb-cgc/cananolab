@@ -24,7 +24,7 @@ public class SynthesisFunctionalizationBean extends BaseSynthesisEntityBean {
 
     List<SynthesisFunctionalizationElementBean> synthesisFunctionalizationElements = new ArrayList<SynthesisFunctionalizationElementBean>();
 
-    public SynthesisFunctionalizationBean( SynthesisFunctionalization synthesisFunctionalization ) {
+    public void SynthesisFunctionalizationBean0( SynthesisFunctionalization synthesisFunctionalization ) {
         this.domainEntity = synthesisFunctionalization;
 
         if( synthesisFunctionalization.getSynthesisFunctionalizationElements() != null ) {
@@ -36,6 +36,30 @@ public class SynthesisFunctionalizationBean extends BaseSynthesisEntityBean {
         Collections.sort( synthesisFunctionalizationElements, new Comparators.SFEBeanTypeComparator() );
 
     }
+
+
+    public SynthesisFunctionalizationBean(SynthesisFunctionalization functionalization){
+
+        domainEntity = functionalization;
+        if (functionalization.getSynthesisFunctionalizationElements() != null) {
+            for(SynthesisFunctionalizationElement synthesisFunctionalizationElement : functionalization.getSynthesisFunctionalizationElements()){
+                synthesisFunctionalizationElements.add(new SynthesisFunctionalizationElementBean(synthesisFunctionalizationElement));
+            }
+        }
+        Collections.sort(synthesisFunctionalizationElements, new Comparators.SynthesisFunctionalizationElementTypeDataComparator());
+        if (functionalization.getProtocol() != null) {
+            protocolBean = new ProtocolBean(functionalization.getProtocol());
+        }
+        this.setType("Synthesis");
+        this.setDescription(functionalization.getDescription());
+        if(functionalization.getFiles() !=null && functionalization.getFiles().size()>0){
+            for(File file:functionalization.getFiles()){
+                files.add(new FileBean(file));
+            }
+        }
+
+    }
+
 
     public SynthesisFunctionalizationBean() {
     }
@@ -56,17 +80,10 @@ public class SynthesisFunctionalizationBean extends BaseSynthesisEntityBean {
 
 
     public SynthesisFunctionalizationElementBean getSynthesisFunctionalizationElementById( String id ) {
-//        for(SynthesisMaterialElementBean element:synthesisMaterialElements){
-//            if(element.getDomainEntity().getId().equals(id)){
-//                return element;
-//            }
-//        }
-//        return null;
         return getSynthesisFunctionalizationElementById( new Long( id ) );
     }
 
     public SynthesisFunctionalizationElementBean getSynthesisFunctionalizationElementById( Long id ) {
-//        return getSynthesisMaterialElementById(id.toString());
         for( SynthesisFunctionalizationElementBean element : synthesisFunctionalizationElements ) {
             if( element.getDomainEntity().getId().equals( id ) ) {
                 return element;
