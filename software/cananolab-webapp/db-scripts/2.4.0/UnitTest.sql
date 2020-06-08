@@ -3845,8 +3845,7 @@ CREATE TABLE `datum_condition`
     PRIMARY KEY (`datum_pk_id`, `condition_pk_id`),
     KEY `datum_pk_id` (`datum_pk_id`),
     KEY `condition_pk_id` (`condition_pk_id`),
-    CONSTRAINT `FK_datum_condition_datum` FOREIGN KEY (`datum_pk_id`) REFERENCES `datum` (`datum_pk_id`),
-    CONSTRAINT `FK_datum_condition_experiment_condition` FOREIGN KEY (`condition_pk_id`) REFERENCES `experiment_condition` (`condition_pk_id`)
+    CONSTRAINT `FK_datum_condition_datum` FOREIGN KEY (`datum_pk_id`) REFERENCES `datum` (`datum_pk_id`)
 ) ENGINE = InnoDB
   DEFAULT CHARSET = latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -6177,7 +6176,7 @@ CREATE TABLE `purity_datum`
     `created_by`         varchar(200)    NOT NULL COMMENT 'created_by',
     `created_date`       datetime        NOT NULL COMMENT 'created_date',
     `numberMod`          varchar(20)  DEFAULT '=' COMMENT 'numberMod',
-    `purity_pk_id`       bigint(200)  DEFAULT NULL COMMENT 'purity_pk_id',
+    `purity_pk_id`       bigint(200)  NOT NULL COMMENT 'purity_pk_id',
     `file_pk_id`         bigint(20)   DEFAULT NULL COMMENT 'file_pk_id',
     PRIMARY KEY (`purity_datum_pk_id`),
     KEY `FK_purity_TO_purity_datum` (`purity_pk_id`),
@@ -6197,8 +6196,8 @@ LOCK TABLES `purity_datum` WRITE;
     DISABLE KEYS */;
 INSERT IGNORE INTO `purity_datum` (`purity_datum_pk_id`, `name`, `value`, `value_type`, `value_unit`, `created_by`,
                                    `created_date`, `numberMod`, `purity_pk_id`, `file_pk_id`)
-VALUES (1000, 'Purity datum 1', 55.0000000000, 'purity', '%', 'canano_curator', '2019-12-06 12:15:00', '=', 1000, 1444),
-       (1111, 'Purity datum 1', 55.0000000000, 'purity', '%', 'canano_curator', '2019-12-06 12:15:00', '=', 1111, 1111);
+VALUES (1000, 'Purity datum 1', 55.00, 'purity', '%', 'canano_curator', '2019-12-06 12:15:00', '=', 1000, 1444),
+       (1111, 'Purity datum 1', 123.00, 'purity', '%', 'canano_curator', '2019-12-06 12:15:00', '=', 1111, 1111);
 /*!40000 ALTER TABLE `purity_datum`
     ENABLE KEYS */;
 UNLOCK TABLES;
@@ -6212,7 +6211,7 @@ DROP TABLE IF EXISTS `purity_datum_condition`;
 SET character_set_client = utf8mb4;
 CREATE TABLE `purity_datum_condition`
 (
-    `datum_pk_id`     bigint(20)   NOT NULL COMMENT 'purity_datum_pk_id',
+    `purity_datum_pk_id`     bigint(20)   NOT NULL COMMENT 'purity_datum_pk_id',
     `condition_pk_id` bigint(20)   NOT NULL COMMENT 'condition_pk_id',
     `name`            varchar(200) NOT NULL,
     `property`        varchar(200) DEFAULT NULL,
@@ -6221,10 +6220,9 @@ CREATE TABLE `purity_datum_condition`
     `value_type`      varchar(200) DEFAULT NULL,
     `created_by`      varchar(200) NOT NULL,
     `created_date`    datetime     NOT NULL,
-    PRIMARY KEY (`datum_pk_id`, `condition_pk_id`),
-    KEY `FK_experiment_condition_TO_purity_datum_condition` (`condition_pk_id`),
-    CONSTRAINT `FK_experiment_condition_TO_purity_datum_condition` FOREIGN KEY (`condition_pk_id`) REFERENCES `experiment_condition` (`condition_pk_id`),
-    CONSTRAINT `FK_purity_datum_TO_purity_datum_condition` FOREIGN KEY (`datum_pk_id`) REFERENCES `purity_datum` (`purity_datum_pk_id`)
+    `numberMod`          varchar(20)  DEFAULT '=' COMMENT 'numberMod',
+    PRIMARY KEY (`condition_pk_id`),
+    CONSTRAINT `FK_purity_datum_TO_purity_datum_condition` FOREIGN KEY (`purity_datum_pk_id`) REFERENCES `purity_datum` (`purity_datum_pk_id`)
 ) ENGINE = InnoDB
   DEFAULT CHARSET = latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -6236,7 +6234,7 @@ CREATE TABLE `purity_datum_condition`
 LOCK TABLES `purity_datum_condition` WRITE;
 /*!40000 ALTER TABLE `purity_datum_condition`
     DISABLE KEYS */;
-INSERT IGNORE INTO `purity_datum_condition` (`datum_pk_id`, `condition_pk_id`, `name`, `property`, `value`,
+INSERT IGNORE INTO `purity_datum_condition` (`purity_datum_pk_id`, `condition_pk_id`, `name`, `property`, `value`,
                                              `value_unit`, `value_type`, `created_by`, `created_date`)
 VALUES (1000, 1000, 'Synthesis condition 1', '', '42', 'g', 'observed', 'canano_user', '2019-12-06 12:15:00'),
        (1111, 1111, 'datum_test', NULL, '84', 'mg', 'observed', 'canano_curator', '2019-12-06 12:15:00');

@@ -6,7 +6,10 @@
     <class name="PurityDatum" table="purity_datum">
         <cache include="all" usage="read-write"/>
         <id column="purity_datum_pk_id" name="id" type="long">
-            <generator class="hilo"/>
+            <generator class="hilo">
+                <param name="table">hibernate_unique_key</param>
+                <param name="column">next_hi</param>
+            </generator>
         </id>
         <property generated="never" lazy="false" name="createdBy" type="string">
             <column length="200" name="created_by" not-null="true"/>
@@ -42,8 +45,7 @@
         <set fetch="select"
              name="conditionCollection" sort="unsorted" table="purity_datum_condition" cascade="all-delete-orphan">
             <key>
-                <column name="datum_pk_id">
-                    <comment>purity_pk_id</comment>
+                <column name="purity_datum_pk_id">
                 </column>
             </key>
             <one-to-many class="gov.nih.nci.cananolab.domain.common.PurityDatumCondition"/>

@@ -1,5 +1,6 @@
 package gov.nih.nci.cananolab.dto.particle.synthesis;
 
+import gov.nih.nci.cananolab.domain.characterization.physical.Purity;
 import gov.nih.nci.cananolab.domain.common.File;
 import gov.nih.nci.cananolab.domain.common.PurityDatum;
 import gov.nih.nci.cananolab.domain.common.PurityDatumCondition;
@@ -277,7 +278,7 @@ public class SynthesisPurityBean
         for(PurityTableCell cell: row.getCells()){
             if(cell.getPurityDatum()!=null){
                 for(PurityDatumCondition condition:conditions){
-                    condition.setPurityDatum(cell.getPurityDatum());
+                    condition.setPurityDatumPkId(cell.getPurityDatum().getId());
                 }
                 cell.getPurityDatum().setConditionCollection(conditions);
             }
@@ -880,6 +881,11 @@ public class SynthesisPurityBean
                 rInd++;
             }
         }
+    }
+
+    public void setDomain(SynthesisPurity domain){
+        this.domain = domain;
+        this.id = domain.getId();
     }
 
 }
