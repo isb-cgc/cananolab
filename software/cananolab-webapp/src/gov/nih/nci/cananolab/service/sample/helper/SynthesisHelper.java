@@ -1,6 +1,7 @@
 package gov.nih.nci.cananolab.service.sample.helper;
 
 import gov.nih.nci.cananolab.domain.common.File;
+import gov.nih.nci.cananolab.domain.common.PurityDatumCondition;
 import gov.nih.nci.cananolab.domain.particle.*;
 import gov.nih.nci.cananolab.exception.NoAccessException;
 import gov.nih.nci.cananolab.exception.SynthesisException;
@@ -368,6 +369,27 @@ public class SynthesisHelper
         return fileCollection;
 
     }
+
+    public List<PurityDatumCondition>  findPurityDatumConditionByDatum(Long datumPkId) throws Exception {
+        List<PurityDatumCondition> conditionList = new ArrayList<PurityDatumCondition>();
+        CaNanoLabApplicationService appService = (CaNanoLabApplicationService) ApplicationServiceProvider.getApplicationService();
+        String fullClassName;
+        if (ClassUtils.getFullClass("PurityDatumCondition") != null) {
+            fullClassName = ClassUtils.getFullClass("PurityDatumCondition").getName();
+        } else {
+            return null;
+        }
+        DetachedCriteria crit = DetachedCriteria.forClass(PurityDatumCondition.class).add(
+                Property.forName("purityDatumPkId").eq(new Long(datumPkId)));
+        String hql = "select anEntity from " + fullClassName + " anEntity where anEntity.purity_datum_pk_id = " + datumPkId;
+        crit.setResultTransformer(CriteriaSpecification.DISTINCT_ROOT_ENTITY);
+        List results = appService.query(crit);
+        for (int i = 0; i < results.size(); i++) {
+            PurityDatumCondition condition = (PurityDatumCondition) results.get(i);
+            conditionList.add(condition);
+        }
+        return conditionList;
+}
 
     //TODO retrieve list of Supplier names
     public List<String> getAllSupplierNames() throws Exception {

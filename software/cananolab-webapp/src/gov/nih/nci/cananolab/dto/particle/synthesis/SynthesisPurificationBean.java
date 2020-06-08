@@ -37,7 +37,7 @@ public class SynthesisPurificationBean extends BaseSynthesisEntityBean {
 
 
     public SynthesisPurificationBean(SynthesisPurification purification){
-        //TODO write
+
         this.domain=purification;
         this.displayName = purification.getMethodName();
         this.type = purification.getType();
@@ -79,6 +79,7 @@ public class SynthesisPurificationBean extends BaseSynthesisEntityBean {
 
     public void setDomainEntity(SynthesisPurification domain) {
         this.domain = domain;
+        this.domainId =domain.getId();
     }
 
     public SynthesisPurification getDomainCopy(String createdBy, boolean copyData) {

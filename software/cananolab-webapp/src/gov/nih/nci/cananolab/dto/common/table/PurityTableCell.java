@@ -76,6 +76,7 @@ public class PurityTableCell {
 			this.value = "";
 		} else {
 			this.value = condition.getValue();
+			this.operand=condition.getOperand();
 		}
 		this.condition = condition;
 		this.datum = null;
