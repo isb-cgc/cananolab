@@ -1189,3 +1189,14 @@ user-actions {
   text-align: right;
   padding: 25px;
 }
+
+.fileErrorMessage {
+  padding-bottom:10px !important;
+}
+.fileErrorMessage div {
+  padding:13px !important;
+  color:#000;
+  background-color:#f8d7da;
+  border:1px solid #721c24 !important;
+  border-radius:3px;
+}
