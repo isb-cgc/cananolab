@@ -1026,13 +1026,10 @@ public class SynthesisServiceLocalImpl extends BaseServiceLocalImpl implements S
                     PurityDatum newDatum = createDatum(datum);
                     datum.setId(newDatum.getId());
                     synthesisPurity.setPurityDatumCollection(datumHolder);
-                } else {
-//                    datum.setSynthesisPurity(null);
-                    datum.setSynthesisPurityId(synthesisPurity.getId());
-                    datum = saveDatum(datum);
                 }
 
             }
+
             synthesisPurity.setPurityDatumCollection(datumHolder);
 
 
@@ -1118,7 +1115,8 @@ public class SynthesisServiceLocalImpl extends BaseServiceLocalImpl implements S
             datum.setConditionCollection(null);
             appService.saveOrUpdate(datum);
             for (PurityDatumCondition condition:conditionHolder){
-                condition.setPurityDatumPkId(datum.getId());
+//                condition.setPurityDatumPkId(datum.getId());
+                condition.setPurityDatum(datum);
                 PurityDatumCondition newCondition = createCondition(condition);
                 condition.setId(newCondition.getId());
             }
