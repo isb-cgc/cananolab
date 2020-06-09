@@ -33,18 +33,18 @@ public class PurityDatumCondition implements Serializable {
 
     private String operand;
 
-//    private PurityDatum purityDatum;
+    private PurityDatum purityDatum;
 
     private Long purityDatumPkId;
 
-//    public PurityDatum getPurityDatum() {
-//        return purityDatum;
-//    }
+    public PurityDatum getPurityDatum() {
+        return purityDatum;
+    }
 
-//    public void setPurityDatum(PurityDatum purityDatum) {
-//        this.purityDatum = purityDatum;
-//        this.purityDatumPkId = purityDatum.getId();
-//    }
+    public void setPurityDatum(PurityDatum purityDatum) {
+        this.purityDatum = purityDatum;
+        this.purityDatumPkId = purityDatum.getId();
+    }
 
     /**
      * Retrieves the value of the createdBy attribute
