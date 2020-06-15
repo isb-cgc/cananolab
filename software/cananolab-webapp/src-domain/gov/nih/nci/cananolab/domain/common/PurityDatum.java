@@ -81,7 +81,7 @@ public class PurityDatum implements java.io.Serializable {
 		return synthesisPurityId;
 	}
 
-	public void setSynthesisPurityId(Long id){
+	private void setSynthesisPurityId(Long id){
 		this.synthesisPurityId = id;
 	}
 

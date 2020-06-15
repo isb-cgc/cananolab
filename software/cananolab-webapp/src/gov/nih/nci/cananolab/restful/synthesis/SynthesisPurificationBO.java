@@ -772,7 +772,8 @@ public class SynthesisPurificationBO extends BaseAnnotationBO {
 
         datum.setConditionCollection(conditionSet);
         for(PurityDatumCondition condition:datum.getConditionCollection()){
-            condition.setPurityDatumPkId(datum.getId());
+//            condition.setPurityDatumPkId(datum.getId());
+            condition.setPurityDatum(datum);
         }
         datumCell.setCondition(null);
         datumCell.setPurityDatum(datum);

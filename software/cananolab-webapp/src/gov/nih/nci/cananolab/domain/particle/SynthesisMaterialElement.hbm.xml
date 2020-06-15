@@ -9,65 +9,45 @@
         </id>
         <many-to-one name="supplier"  class="gov.nih.nci.cananolab.domain.common.Supplier" lazy="false" column="supplier_pk_id" />
         <property generated="never" lazy="false" name="createdBy" type="string" >
-            <column length="200" name="created_by" not-null="true">
-                <comment>created_by</comment>
-            </column>
+            <column length="200" name="created_by" not-null="true"/>
         </property>
         <property generated="never" lazy="false" name="createdDate" type="timestamp">
-            <column length="19" name="created_date" not-null="true">
-                <comment>created_date</comment>
-            </column>
+            <column length="19" name="created_date" not-null="true"/>
         </property>
         <property generated="never" lazy="false" name="description" type="string">
-            <column length="65535" name="description">
-                <comment>description</comment>
-            </column>
+            <column length="65535" name="description"/>
         </property>
         <property generated="never" lazy="false" name="chemicalName" type="string">
-            <column length="200" name="chemical_name">
-                <comment>chemical_name</comment>
-            </column>
+            <column length="200" name="chemical_name"/>
         </property>
         <property generated="never" lazy="false" name="value" type="float">
-            <column name="value" precision="22" scale="3">
-                <comment>value</comment>
-            </column>
+            <column name="value" precision="22" scale="3"/>
         </property>
         <property generated="never" lazy="false" name="valueUnit" type="string">
-            <column length="200" name="value_unit">
-                <comment>value_unit</comment>
-            </column>
+            <column length="200" name="value_unit"/>
         </property>
         <property generated="never" lazy="false" name="molecularFormula" type="string">
-            <column length="2000" name="molecular_formula">
-                <comment>molecular_formula</comment>
-            </column>
+            <column length="2000" name="molecular_formula"/>
         </property>
         <property generated="never" lazy="false" name="molecularFormulaType" type="string">
-            <column length="200" name="molecular_formula_type">
-                <comment>molecular_formula_type</comment>
-            </column>
+            <column length="200" name="molecular_formula_type"/>
         </property>
         <property generated="never" lazy="false" name="pubChemId" type="java.lang.Long">
-            <column name="pub_chem_id">
-                <comment>pub_chem_id</comment>
-            </column>
+            <column name="pub_chem_id"/>
         </property>
         <property name="type" type="string">
             <column name="type" not-null="true"/>
         </property>
         <property generated="never" lazy="false" name="pubChemDatasourceName" type="string">
-            <column length="200" name="pub_chem_datasource_name">
-                <comment>pub_chem_datasource_name</comment>
-            </column>
+            <column length="200" name="pub_chem_datasource_name"/>
         </property>
+
         <many-to-one
                 class="SynthesisMaterial"
                 fetch="select" name="synthesisMaterial">
-            <column name="synthesis_material_pk_id" not-null="true">
-                <comment>synthesis_material_pk_id</comment>
-            </column>
+            <column name="synthesis_material_pk_id" not-null="true"/>
         </many-to-one>
+
         <set name="files" table="synthesis_material_element_file" lazy="false" inverse="false" cascade="all-delete-orphan">
             <cache usage="read-write" />
             <key column="synthesis_material_element_pk_id" />

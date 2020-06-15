@@ -1012,29 +1012,44 @@ public class SynthesisServiceLocalImpl extends BaseServiceLocalImpl implements S
             }
 
 
-
-
             synthesisPurity.setSynthesisPurification(synthesisPurificationBean.getDomainEntity());
 
-            Set<PurityDatum> datumHolder = synthesisPurity.getPurityDatumCollection();
+            Set<PurityDatum> originalDatum = synthesisHelper.getPurityDatumByPurity(synthesisPurity.getId());
+//            Set<PurityDatum> datumHolder = synthesisPurity.getPurityDatumCollection();
 
-            for(PurityDatum datum: datumHolder){
+
+
+//            for (PurityDatum datum: synthesisPurity.getPurityDatumCollection()){
+//                if (datum.getId()==null){
+//                    synthesisPurity.getPurityDatumCollection().remove(datum);
+//                }
+//                for(PurityDatumCondition condition:datum.getConditionCollection()){
+//                    if (condition.getId()==null){
+//                        datum.getConditionCollection().remove(condition);
+//                    }
+//                }
+//            }
+
+
+
+            for(PurityDatum datum: synthesisPurity.getPurityDatumCollection()){
                 if(datum.getId()==null){
                     //create new datum
 //                    datum.setSynthesisPurity(synthesisPurity);
-                    datum.setSynthesisPurityId(synthesisPurity.getId());
+//                    datum.setSynthesisPurity(synthesisPurity);
                     PurityDatum newDatum = createDatum(datum);
-                    datum.setId(newDatum.getId());
-                    synthesisPurity.setPurityDatumCollection(datumHolder);
+//                    datum.setId(newDatum.getId());
+                } else
+                {
+                    saveDatum(datum);
                 }
 
             }
 
-            synthesisPurity.setPurityDatumCollection(datumHolder);
-
 
             //TODO enable when I have everything aligned
-             appService.saveOrUpdate(synthesisPurity);
+            appService.saveOrUpdate(synthesisPurity);
+
 
 
             for (FileBean fileBean : synthesisPurityBean.getFiles()) {
@@ -1111,16 +1126,17 @@ public class SynthesisServiceLocalImpl extends BaseServiceLocalImpl implements S
         try{
             CaNanoLabApplicationService appService = (CaNanoLabApplicationService) ApplicationServiceProvider.getApplicationService();
 //Need to blank condition until we have a datum id
-            Set<PurityDatumCondition> conditionHolder = datum.getConditionCollection();
-            datum.setConditionCollection(null);
+
             appService.saveOrUpdate(datum);
-            for (PurityDatumCondition condition:conditionHolder){
+//            Set<PurityDatumCondition> conditionHolder = datum.getConditionCollection();
+//            datum.setConditionCollection(null);
+            for (PurityDatumCondition condition:datum.getConditionCollection()){
 //                condition.setPurityDatumPkId(datum.getId());
-                condition.setPurityDatum(datum);
+//                condition.setPurityDatum(datum);
                 PurityDatumCondition newCondition = createCondition(condition);
-                condition.setId(newCondition.getId());
+//                condition.setId(newCondition.getId());
             }
-            datum.setConditionCollection(conditionHolder);
+//            datum.setConditionCollection(conditionHolder);
             return datum;
         } catch (Exception e){
             String err = "Problem saving new Purity Datum ";
@@ -1217,9 +1233,12 @@ public class SynthesisServiceLocalImpl extends BaseServiceLocalImpl implements S
                 logger.error(err);
                 throw new SynthesisException(err, e);
             }
-            List<PurityDatumCondition> conditionList = synthesisHelper.findPurityDatumConditionByDatum(datum.getId());
-            Set<PurityDatumCondition> conditionSet = new HashSet<>(conditionList);
+            Set<PurityDatumCondition> conditionSet = synthesisHelper.findPurityDatumConditionByDatum(datum.getId());
+
             datum.setConditionCollection(conditionSet);
+            for(PurityDatumCondition condition: conditionSet){
+                condition.setPurityDatum(datum);
+            }
             appService.saveOrUpdate(datum);
             return datum;
         } catch (Exception e){

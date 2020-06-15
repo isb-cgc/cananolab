@@ -1,6 +1,7 @@
 package gov.nih.nci.cananolab.service.sample.helper;
 
 import gov.nih.nci.cananolab.domain.common.File;
+import gov.nih.nci.cananolab.domain.common.PurityDatum;
 import gov.nih.nci.cananolab.domain.common.PurityDatumCondition;
 import gov.nih.nci.cananolab.domain.particle.*;
 import gov.nih.nci.cananolab.exception.NoAccessException;
@@ -14,6 +15,7 @@ import gov.nih.nci.cananolab.util.ClassUtils;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import org.apache.log4j.Logger;
 import org.hibernate.FetchMode;
 import org.hibernate.criterion.CriteriaSpecification;
@@ -370,26 +372,63 @@ public class SynthesisHelper
 
     }
 
-    public List<PurityDatumCondition>  findPurityDatumConditionByDatum(Long datumPkId) throws Exception {
-        List<PurityDatumCondition> conditionList = new ArrayList<PurityDatumCondition>();
+//    public List<PurityDatumCondition>  findPurityDatumConditionByDatum(Long datumPkId) throws Exception {
+//        List<PurityDatumCondition> conditionList = new ArrayList<PurityDatumCondition>();
+//        CaNanoLabApplicationService appService = (CaNanoLabApplicationService) ApplicationServiceProvider.getApplicationService();
+//        String fullClassName;
+//        if (ClassUtils.getFullClass("PurityDatumCondition") != null) {
+//            fullClassName = ClassUtils.getFullClass("PurityDatumCondition").getName();
+//        } else {
+//            return null;
+//        }
+//        DetachedCriteria crit = DetachedCriteria.forClass(PurityDatumCondition.class).add(
+//                Property.forName("purityDatumPkId").eq(new Long(datumPkId)));
+//        String hql = "select anEntity from " + fullClassName + " anEntity where anEntity.purity_datum_pk_id = " + datumPkId;
+//        crit.setResultTransformer(CriteriaSpecification.DISTINCT_ROOT_ENTITY);
+//        List results = appService.query(crit);
+//        for (int i = 0; i < results.size(); i++) {
+//            PurityDatumCondition condition = (PurityDatumCondition) results.get(i);
+//            conditionList.add(condition);
+//        }
+//        return conditionList;
+//}
+
+    public Set<PurityDatumCondition> findPurityDatumConditionByDatum(Long datumPkId) throws Exception
+    {
+
+        PurityDatum datum;
         CaNanoLabApplicationService appService = (CaNanoLabApplicationService) ApplicationServiceProvider.getApplicationService();
-        String fullClassName;
-        if (ClassUtils.getFullClass("PurityDatumCondition") != null) {
-            fullClassName = ClassUtils.getFullClass("PurityDatumCondition").getName();
-        } else {
-            return null;
-        }
-        DetachedCriteria crit = DetachedCriteria.forClass(PurityDatumCondition.class).add(
-                Property.forName("purityDatumPkId").eq(new Long(datumPkId)));
-        String hql = "select anEntity from " + fullClassName + " anEntity where anEntity.purity_datum_pk_id = " + datumPkId;
+        DetachedCriteria crit = DetachedCriteria.forClass(PurityDatum.class);
+//        crit.createAlias("datum", "datum");
+//        crit.add(Property.forName("datum.id").eq(datumPkId));
+        crit.add(Property.forName("id").eq(datumPkId));
+        crit.setFetchMode("conditionCollection", FetchMode.JOIN);
         crit.setResultTransformer(CriteriaSpecification.DISTINCT_ROOT_ENTITY);
         List results = appService.query(crit);
-        for (int i = 0; i < results.size(); i++) {
-            PurityDatumCondition condition = (PurityDatumCondition) results.get(i);
-            conditionList.add(condition);
+
+        if (!results.isEmpty()){
+            datum = (PurityDatum)results.get(0);
+            return  datum.getConditionCollection();
         }
-        return conditionList;
-}
+
+        return null;
+
+    }
+
+    public Set<PurityDatum> getPurityDatumByPurity(Long purityId) throws Exception{
+        SynthesisPurity synthesisPurity;
+        CaNanoLabApplicationService appService = (CaNanoLabApplicationService) ApplicationServiceProvider.getApplicationService();
+        DetachedCriteria crit = DetachedCriteria.forClass(SynthesisPurity.class);
+        crit.add(Property.forName("id").eq(purityId));
+        crit.setFetchMode("purityDatum",FetchMode.JOIN);
+        List results = appService.query(crit);
+
+        if(!results.isEmpty()){
+            synthesisPurity = (SynthesisPurity)results.get(0);
+            return synthesisPurity.getPurityDatumCollection();
+        }
+        return null;
+    }
 
     //TODO retrieve list of Supplier names
     public List<String> getAllSupplierNames() throws Exception {

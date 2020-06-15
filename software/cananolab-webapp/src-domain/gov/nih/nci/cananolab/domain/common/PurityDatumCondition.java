@@ -202,7 +202,7 @@ public class PurityDatumCondition implements Serializable {
         return purityDatumPkId;
     }
 
-    public void setPurityDatumPkId(Long purityDatumPkId) {
+    private void setPurityDatumPkId(Long purityDatumPkId) {
         this.purityDatumPkId = purityDatumPkId;
     }
 

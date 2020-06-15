@@ -11,38 +11,21 @@
                      fetch="select" name="protocol"  lazy="false" >
             <column name="protocol_pk_id"/>
         </many-to-one>
-<!--        <many-to-one-->
-<!--                class="SynthesisFunctionalization"-->
-<!--                fetch="select" name="synthesisFunctionalization">-->
-<!--            <column name="synthesis_funtionalization_pk_id" not-null="true">-->
-<!--                <comment>synthesis_funtionalization_pk_id</comment>-->
-<!--            </column>-->
-<!--        </many-to-one>-->
         <property name="type" type="string">
-            <column length="200" name="type">
-                <comment>type</comment>
-            </column>
+            <column length="200" name="type"/>
         </property>
         <property name="methodName" type="string">
-            <column length="200" name="method_name">
-                <comment>method_name</comment>
-            </column>
+            <column length="200" name="method_name"/>
         </property>
         <property
                 name="designMethodDescription" type="string">
-            <column length="65535" name="design_method_description">
-                <comment>design_method_description</comment>
-            </column>
+            <column length="65535" name="design_method_description"/>
         </property>
         <property name="createdBy" type="string">
-            <column length="200" name="created_by" not-null="true">
-                <comment>created_by</comment>
-            </column>
+            <column length="200" name="created_by" not-null="true"/>
         </property>
         <property name="createdDate" type="timestamp">
-            <column length="19" name="created_date" not-null="true">
-                <comment>created_date</comment>
-            </column>
+            <column length="19" name="created_date" not-null="true"/>
         </property>
         <property name="yield" type="float">
             <column name="yield" />
@@ -51,29 +34,18 @@
             <column length="65535" name="analysis"/>
         </property>
 
-<!--        <set fetch="select" inverse="true" lazy="true"-->
-<!--             name="synthesisMaterialElements" sort="unsorted" table="synthesis_material_element" cascade="all-delete-orphan">-->
-<!--            <key>-->
-<!--                <column name="synthesis_material_pk_id" not-null="true"/>-->
-<!--            </key>-->
-<!--            <one-to-many class="SynthesisMaterialElement"/>-->
-<!--        </set>-->
-
         <set fetch="select" inverse="true" lazy="true" name="purities"
              table="synthesis_purity">
             <key>
-                <column name="synthesis_purification_pk_id" not-null="true">
-                    <comment>synthesis_purification_pk_id</comment>
-                </column>
+                <column name="synthesis_purification_pk_id" not-null="true"/>
             </key>
             <one-to-many class="gov.nih.nci.cananolab.domain.particle.SynthesisPurity"/>
         </set>
+
         <set fetch="select" inverse="true" lazy="true"
              name="purificationConfigs" table="purification_config">
             <key>
-                <column name="synthesis_purification_pk_id">
-                    <comment>synthesis_purification_pk_id</comment>
-                </column>
+                <column name="synthesis_purification_pk_id"/>
             </key>
             <one-to-many class="gov.nih.nci.cananolab.domain.common.PurificationConfig"/>
         </set>
