@@ -278,7 +278,8 @@ public class SynthesisPurityBean
         for(PurityTableCell cell: row.getCells()){
             if(cell.getPurityDatum()!=null){
                 for(PurityDatumCondition condition:conditions){
-                    condition.setPurityDatumPkId(cell.getPurityDatum().getId());
+//                    condition.setPurityDatumPkId(cell.getPurityDatum().getId());
+                    condition.setPurityDatum(cell.getPurityDatum());
                 }
                 cell.getPurityDatum().setConditionCollection(conditions);
             }

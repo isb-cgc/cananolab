@@ -237,6 +237,31 @@ public class SynthesisPurificationServicesTest {
 
 
     @Test
+    public void testSimplePurificationEdit() {
+        try {
+            //Testing submission of a brand new purification
+            SimpleSynthesisPurificationBean editBean = getSimpleSynthesisPurificationBean("1000","1000");
+            editBean.setMethodName("I am a method name");
+            editBean.setDesignMethodDescription("I am a description of a method design");
+            editBean.setYield(new Float(12.85));
+            editBean.setType("Interim Purification");
+
+            Response response = given().spec(specification)
+                    .body(editBean).when().post("synthesisPurification/submit")
+                    .then().statusCode(200).extract().response();
+
+            assertNotNull(response);
+            //verify change was saved to database
+            editBean = getSimpleSynthesisPurificationBean("1000", "1000");
+            assertNotNull(editBean.getId());
+            assertTrue(editBean.getMethodName().equals("I am a method name"));
+
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+    }
+
+    @Test
     public void testSaveFile() {
         try {
 

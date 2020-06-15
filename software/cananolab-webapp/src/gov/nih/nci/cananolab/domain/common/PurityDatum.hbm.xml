@@ -3,7 +3,7 @@
         "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
 <!-- Generated Apr 3, 2019, 8:32:55 PM by Hibernate Tools 5.4.2.Final -->
 <hibernate-mapping package="gov.nih.nci.cananolab.domain.common">
-    <class name="PurityDatum" table="purity_datum">
+    <class name="PurityDatum" table="purity_datum" dynamic-update="true" dynamic-insert="true" lazy="false">
         <cache include="all" usage="read-write"/>
         <id column="purity_datum_pk_id" name="id" type="long">
             <generator class="hilo">
@@ -33,30 +33,26 @@
                   name="operand" type="string">
             <column length="20" name="numberMod"/>
         </property>
-<!--        <set fetch="select" lazy="true" name="conditionCollection"-->
-<!--             sort="unsorted" table="purity_datum_condition">-->
-<!--            <cache include="all" usage="read-write"/>-->
-<!--            <key>-->
-<!--                <column name="datum_pk_id" not-null="true"/>-->
-<!--            </key>-->
-<!--            <many-to-many class="Condition"-->
-<!--                          column="condition_pk_id" unique="false" />-->
+
+<!--        <set name="conditionCollection" table="purity_datum_condition" cascade="all" lazy="false">-->
+<!--            <cache usage="read-write" />-->
+<!--            <key column ="purity_datum_pk_id"/>-->
+<!--            <one-to-many-->
+<!--                    class="gov.nih.nci.cananolab.domain.common.PurityDatumCondition"/>-->
 <!--        </set>-->
-        <set fetch="select"
-             name="conditionCollection" sort="unsorted" table="purity_datum_condition" cascade="all-delete-orphan">
-            <key>
-                <column name="purity_datum_pk_id">
-                </column>
-            </key>
-            <one-to-many class="gov.nih.nci.cananolab.domain.common.PurityDatumCondition"/>
+
+        <set name="conditionCollection" inverse="true" lazy="false" fetch="select">
+            <cache usage="read-write" />
+            <key column ="purity_datum_pk_id" />
+            <one-to-many
+                    class="gov.nih.nci.cananolab.domain.common.PurityDatumCondition"/>
         </set>
 
-
-
         <many-to-one class="gov.nih.nci.cananolab.domain.particle.SynthesisPurity"
-                     fetch="select" name="synthesisPurity">
-            <column name="purity_pk_id" not-null="true"/>
+                     name="synthesisPurity" update="false">
+            <column name="purity_pk_id" not-null="true" />
         </many-to-one>
+
         <many-to-one class="File"
                      fetch="select" name="file" lazy="proxy">
             <column name="file_pk_id"/>
