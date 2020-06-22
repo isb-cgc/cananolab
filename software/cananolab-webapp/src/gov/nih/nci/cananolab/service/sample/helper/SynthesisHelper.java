@@ -1,6 +1,7 @@
 package gov.nih.nci.cananolab.service.sample.helper;
 
 import gov.nih.nci.cananolab.domain.common.File;
+import gov.nih.nci.cananolab.domain.common.PurificationConfig;
 import gov.nih.nci.cananolab.domain.common.PurityDatum;
 import gov.nih.nci.cananolab.domain.common.PurityDatumCondition;
 import gov.nih.nci.cananolab.domain.particle.*;
@@ -35,6 +36,8 @@ public class SynthesisHelper
 
     public SynthesisHelper() {
     }
+
+
 
     public List<SmeInherentFunction> findSmeFunctionByElementId(Long sampleId, Long id, String fullClassName) throws Exception{
         if (!springSecurityAclService.currentUserHasReadPermission(sampleId, SecureClassesEnum.SAMPLE.getClazz()) &&
@@ -262,6 +265,8 @@ public class SynthesisHelper
         return entity;
     }
 
+
+
     public List<File> findFilesByMaterialId(Long synthesisId, Long synMatId, String className) throws Exception {
 //        if (!springSecurityAclService.currentUserHasReadPermission(Long.valueOf(sampleId), SecureClassesEnum.SAMPLE.getClazz()) &&
 //                !springSecurityAclService.currentUserHasWritePermission(Long.valueOf(sampleId), SecureClassesEnum.SAMPLE.getClazz())) {
@@ -430,7 +435,23 @@ public class SynthesisHelper
         return null;
     }
 
-    //TODO retrieve list of Supplier names
+    public Set<PurificationConfig> findConfigByPurificationId(Long id) throws Exception {
+        SynthesisPurification purification;
+        CaNanoLabApplicationService appService = (CaNanoLabApplicationService) ApplicationServiceProvider.getApplicationService();
+        DetachedCriteria crit = DetachedCriteria.forClass(SynthesisPurification.class);
+        crit.add(Property.forName("id").eq(id));
+        crit.setFetchMode("technique",FetchMode.JOIN);
+//        crit.setFetchMode("purificationConfig", FetchMode.JOIN);
+
+        List results = appService.query(crit);
+        if(!results.isEmpty()){
+            purification = (SynthesisPurification)results.get(0);
+            return  purification.getPurificationConfigs();
+        }
+        return null;
+    }
+
+
     public List<String> getAllSupplierNames() throws Exception {
         CaNanoLabApplicationService appService = (CaNanoLabApplicationService) ApplicationServiceProvider.getApplicationService();
         HQLCriteria crit = new HQLCriteria("select distinct supplierName from gov.nih.nci.cananolab.domain.common.Supplier");

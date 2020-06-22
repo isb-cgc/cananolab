@@ -571,7 +571,7 @@ public class SynthesisServiceLocalImpl extends BaseServiceLocalImpl implements S
         }
     }
 
-    private void deleteSynthesisPurity(Long sampleId, SynthesisPurification synthesisPurification, SynthesisPurity element) {
+    private void deleteSynthesisPurity(Long sampleId, SynthesisPurification synthesisPurification, SynthesisPurity element) throws SynthesisException {
         //TODO write
         if (element.getFiles()!=null){
             for(File file:element.getFiles()){
@@ -589,19 +589,49 @@ public class SynthesisServiceLocalImpl extends BaseServiceLocalImpl implements S
 
     }
 
-    private void deletePurityDatum(Long sampleId, SynthesisPurity element, PurityDatum purityDatum) {
+    private void deletePurityDatumCondition(PurityDatumCondition element) throws SynthesisException {
         //TODO write
+        try {
+            CaNanoLabApplicationService appService = (CaNanoLabApplicationService) ApplicationServiceProvider
+                    .getApplicationService();
+//            List<SmeInherentFunction> functionList = synthesisHelper.findSmeFunctionByElementId(sampleId, element.getId(),"SynthesisMaterialElement");
+//            element.setSmeInherentFunctions(new HashSet<SmeInherentFunction>(functionList));
+//            element.getSmeInherentFunctions().remove(function);
+            appService.delete(element);
+
+        }catch (Exception e){
+            String err = "Error deleting Purity Datum " + element.getId();
+            logger.error(err, e);
+            throw new SynthesisException(err, e);
+        }
+    }
+
+    private void deletePurityDatum(Long sampleId, SynthesisPurity element, PurityDatum purityDatum) throws SynthesisException {
+        //TODO write
+        try {
+        for(PurityDatumCondition condition: purityDatum.getConditionCollection()){
+            deletePurityDatumCondition(condition);
+        }
+        }catch (Exception e){
+            String err = "Error deleting Purity Datum Condtion " + element.getId();
+            logger.error(err, e);
+            throw new SynthesisException(err, e);
+        }
         
     }
 
     private void deleteSynthesisPurityFile(SynthesisPurity element, File file) {
         //TODO write
+        //This file might be used by other options so we want to check
+        //If file is used elsewhere, then set fileid to null and leave it
+        //If not used elsewhere, then do we want to delete file record?
+        //Will that leave the file itself orphaned on server?
 
     }
 
 
     public void saveSynthesisMaterial(SampleBean sampleBean, SynthesisMaterialBean synthesisMaterialBean) throws SynthesisException, NoAccessException {
-        //TODO reduce dependence on synthesis opbject, rely on synthesisId instead
+
         if (SpringSecurityUtil.getPrincipal() == null) {
             throw new NoAccessException();
         }
@@ -699,7 +729,7 @@ public class SynthesisServiceLocalImpl extends BaseServiceLocalImpl implements S
 
 
     public void saveSynthesisMaterialElement(SynthesisMaterial material, SynthesisMaterialElementBean synthesisMaterialElementBean) throws SynthesisException {
-//TODO reduce dependence on synthesisMaterial object, rely on synthesisMaterialId instead
+
         try {
             CaNanoLabApplicationService appService = (CaNanoLabApplicationService) ApplicationServiceProvider
                     .getApplicationService();
@@ -920,28 +950,7 @@ public class SynthesisServiceLocalImpl extends BaseServiceLocalImpl implements S
                 synthesisPurification.setSynthesisId(synthesis.getId());
             }
 
-            Set<PurificationConfig> configs = synthesisPurification.getPurificationConfigs();
-            if(configs!=null){
-                for(PurificationConfig config:configs){
-                    if(config.getInstrumentCollection()!=null){
-                        for(Instrument instrument:config.getInstrumentCollection()){
-                            if(instrument.getId()==null){
-                                Instrument newInstrument = createInstrumentRecord(instrument);
-                                instrument.setId(newInstrument.getId());
-                            } else{
-                                appService.saveOrUpdate(instrument);
-                            }
-                        }
-                    }
-
-                    if(config.getPurificationConfigPkId()==null){
-                        PurificationConfig newConfig = createTechniqueRecord(config);
-                        config.setPurificationConfigPkId(newConfig.getPurificationConfigPkId());
-                    } else{
-                        appService.saveOrUpdate(config);
-                    }
-                }
-            }
+            savePurificationConfig(synthesisPurification);
 
 //            if(synthesisMaterialElementBean.getSupplier()!= null && synthesisMaterialElementBean.getSupplier().getId()==null){
 //                Supplier supplier = createSupplierRecord(synthesisMaterialElementBean.getSupplier());
@@ -1058,6 +1067,50 @@ public class SynthesisServiceLocalImpl extends BaseServiceLocalImpl implements S
         }
         catch (Exception e) {
             String err = "Problem saving Synthesis Purity ";
+            logger.error(err, e);
+            throw new SynthesisException(err, e);
+        }
+    }
+
+    private void savePurificationConfig(SynthesisPurification purification) throws Exception {
+        try{
+        CaNanoLabApplicationService appService = (CaNanoLabApplicationService) ApplicationServiceProvider
+                .getApplicationService();
+
+        Set<PurificationConfig> oldConfigs = synthesisHelper.findConfigByPurificationId(purification.getId());
+
+        Set<PurificationConfig> configs = purification.getPurificationConfigs();
+        for(PurificationConfig config: configs){
+            if(!oldConfigs.contains(config)){
+                //TODO new config
+                appService.saveOrUpdate(config);
+            }
+        }
+
+
+//        if(configs!=null){
+//            for(PurificationConfig config:configs){
+//                if(config.getInstrumentCollection()!=null){
+//                    for(Instrument instrument:config.getInstrumentCollection()){
+//                        if(instrument.getId()==null){
+//                            Instrument newInstrument = createInstrumentRecord(instrument);
+//                            instrument.setId(newInstrument.getId());
+//                        } else{
+//                            appService.saveOrUpdate(instrument);
+//                        }
+//                    }
+//                }
+//
+//                if(config.getPurificationConfigPkId()==null){
+//                    PurificationConfig newConfig = createTechniqueRecord(config);
+//                    config.setPurificationConfigPkId(newConfig.getPurificationConfigPkId());
+//                } else{
+//                    appService.saveOrUpdate(config);
+//                }
+//            }
+//        }
+        } catch(Exception e){
+            String err = "Problem saving Purification Configuration ";
             logger.error(err, e);
             throw new SynthesisException(err, e);
         }
