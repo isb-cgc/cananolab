@@ -34,7 +34,7 @@
             <column length="65535" name="analysis"/>
         </property>
 
-        <set fetch="select" inverse="true" lazy="true" name="purities"
+        <set fetch="select" inverse="true" lazy="false" name="purities"
              table="synthesis_purity">
             <key>
                 <column name="synthesis_purification_pk_id" not-null="true"/>
@@ -42,7 +42,7 @@
             <one-to-many class="gov.nih.nci.cananolab.domain.particle.SynthesisPurity"/>
         </set>
 
-        <set fetch="select" inverse="true" lazy="true"
+        <set fetch="select" inverse="true" lazy="false"
              name="purificationConfigs" table="purification_config">
             <key>
                 <column name="synthesis_purification_pk_id"/>

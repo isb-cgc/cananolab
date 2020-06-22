@@ -568,7 +568,7 @@ public class SynthesisPurificationBO extends BaseAnnotationBO {
 
                 SynthesisPurityBean purityBean = transferSimplePurity(sPurityBean, httpRequest);
 
-                purityBean.getDomain().setSynthesisPurificationId(sSynPurificationBean.getId());
+//                purityBean.getDomain().setSynthesisPurificationId(sSynPurificationBean.getId());
                 purityBean.getDomain().setSynthesisPurification(purification);
                 purities.add(purityBean.getDomain());
 
