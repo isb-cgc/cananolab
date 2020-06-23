@@ -186,7 +186,7 @@ public class SimpleSynthesisPurificationBean {
                 simpleExperimentBean.setId(purificationConfigBean.getDomain().getPurificationConfigPkId());
                 simpleExperimentBean.setTechniqueDisplayName(purificationConfigBean.getTechniqueDisplayName());
                 simpleExperimentBean.setDescription(purificationConfigBean.getDescription());
-                simpleExperimentBean.setTechniqueid(purificationConfigBean.getDomain().getPurificationConfigPkId());
+                simpleExperimentBean.setTechniqueid(purificationConfigBean.getDomain().getTechnique().getId());
                 simpleExperimentBean.setTechniqueType(purificationConfigBean.getDomain().getTechnique().getType());
                 simpleExperimentBean.setAbbreviation(purificationConfigBean.getDomain().getTechnique().getAbbreviation());
                 List<SimpleInstrumentBean> simpleInstrumentBeans = new ArrayList<SimpleInstrumentBean>();
