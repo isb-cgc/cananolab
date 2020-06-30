@@ -17,6 +17,14 @@ public class SimplePurityRowBean {
 	public void setCells(List<SimplePurityCell> cells) {
 		this.cells = cells;
 	}
+
+	public void addCell(SimplePurityCell cell){
+		cells.add(cell);
+	}
+
+	public void removeCell(SimplePurityCell cell){
+		cells.remove(cell);
+	}
 	
 	public void transferFromRow(PurityRow beanRow) {
 		if (beanRow == null) return;

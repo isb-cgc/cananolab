@@ -271,4 +271,29 @@ public class ProtocolServices
 			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(CommonUtil.wrapErrorMessageInList("Error while deleting the protocol " + e.getMessage())).build();
 		}
 	}
+
+	@GET
+	@Path("/getProtocolById")
+	@Produces ("application/json")
+	public Response getProtocolById(@Context HttpServletRequest httpRequest,
+								@DefaultValue("") @QueryParam("protocolId") String protocolId){
+
+		try {
+			ProtocolManager protocolManager = (ProtocolManager) SpringApplicationContext.getBean(httpRequest, "protocolManager");
+			ProtocolBO protocolBO = (ProtocolBO) SpringApplicationContext.getBean(httpRequest, "protocolBO");
+
+			if (!SpringSecurityUtil.isUserLoggedIn())
+				return Response.status(Response.Status.UNAUTHORIZED).entity(Constants.MSG_SESSION_INVALID).build();
+
+			ProtocolBean bean = protocolManager.getProtocolById(protocolId);
+			SimpleSubmitProtocolBean view = new SimpleSubmitProtocolBean();
+			protocolBO.transferProtocolBeanForEdit(bean, view, httpRequest);
+
+			return Response.ok(view).header("Access-Control-Allow-Credentials", "true").header("Access-Control-Allow-Origin", "*").header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS").header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization").build();
+
+		} catch (Exception e) {
+			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(CommonUtil.wrapErrorMessageInList("Error while viewing for protocol " + e.getMessage())).build();
+
+		}
+	}
 }

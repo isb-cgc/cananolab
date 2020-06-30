@@ -214,7 +214,9 @@ VALUES (1, 1, 1000, NULL, 3, 1),
        (9015, 11, 66256896, NULL, 3, 1),
        (9016, 8, 66420736, 1, 3, 1),
        (9017, 11, 66584576, NULL, 3, 1),
-       (9018, 11, 66584577, NULL, 3, 1);
+       (9018, 11, 66584577, NULL, 3, 1),
+       (9019, 11, 1111, NULL, 3, 1),
+       (9020, 11, 66945024, NULL, 3, 1);
 /*!40000 ALTER TABLE `acl_object_identity`
     ENABLE KEYS */;
 UNLOCK TABLES;
@@ -1560,7 +1562,7 @@ VALUES (1, 'asymmetrical flow field-flow fractionation with multi-angle laser li
        (15401043, 'solubility', 'otherUnit', 'mg/L'),
        (15401044, 'scanning electron microscopy', 'otherInstrument', 'digital imaging capture system'),
        (15401045, 'instrument', 'otherManufacturer', 'Point Electronic GmBh'),
-       (15401046, 'purity', 'otherAssayType', 'purity'),
+       (15401046, 'purity', 'assayType', 'purity'),
        (15401047, 'technique', 'otherType', 'elemental analysis'),
        (15401048, 'elemental analysis', 'otherInstrument', 'elemental analysis instrument'),
        (15401049, 'instrument', 'otherManufacturer', 'LECO'),
@@ -6094,8 +6096,8 @@ CREATE TABLE `purification_config`
     `created_by`                   varchar(200) NOT NULL COMMENT 'created_by',
     `created_date`                 datetime     NOT NULL COMMENT 'created_date',
     PRIMARY KEY (`purification_config_pk_id`),
-    KEY `FK_synthesis_purification_TO_purification_config` (`synthesis_purification_pk_id`),
-    KEY `FK_technique_TO_purification_config_idx` (`technique_pk_id`),
+    KEY `synthesis_purification_pk_id` (`synthesis_purification_pk_id`),
+    KEY `technique_pk_id` (`technique_pk_id`),
     CONSTRAINT `FK_synthesis_purification_TO_purification_config` FOREIGN KEY (`synthesis_purification_pk_id`) REFERENCES `synthesis_purification` (`synthesis_purification_pk_id`),
     CONSTRAINT `FK_technique_TO_purification_config` FOREIGN KEY (`technique_pk_id`) REFERENCES `technique` (`technique_pk_id`)
 ) ENGINE = InnoDB
@@ -6958,7 +6960,7 @@ SET character_set_client = utf8mb4;
 CREATE TABLE `synthesis_purification`
 (
     `synthesis_purification_pk_id` bigint(20)   NOT NULL COMMENT 'synthesis_purification_pk_id',
-    `synthesis_pk_id`              bigint(20)     DEFAULT NULL COMMENT 'synthesis_pk_id',
+    `synthesis_pk_id`              bigint(20)     NOT NULL COMMENT 'synthesis_pk_id',
     `protocol_pk_id`               bigint(20)     DEFAULT NULL COMMENT 'protocol_pk_id',
     `type`                         varchar(200)   DEFAULT NULL COMMENT 'type',
     `method_name`                  varchar(200)   DEFAULT NULL COMMENT 'method_name',

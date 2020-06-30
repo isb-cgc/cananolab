@@ -36,6 +36,7 @@ public class ColumnHeader {
 	// FR# 26194, matrix column order.
 	private Integer columnOrder;
 	private Date createdDate;
+	private String createdBy;
 
 	public ColumnHeader(Datum datum) {
 		this.columnName = datum.getName();
@@ -43,6 +44,7 @@ public class ColumnHeader {
 		this.valueUnit = datum.getValueUnit();
 		this.columnType = FindingBean.DATUM_TYPE;
 		this.createdDate = datum.getCreatedDate();
+		this.createdBy =  datum.getCreatedBy();
 //		this.operand = datum.getOperand();
 	}
 
@@ -53,6 +55,7 @@ public class ColumnHeader {
 		this.valueUnit = condition.getValueUnit();
 		this.columnType = FindingBean.CONDITION_TYPE;
 		this.createdDate = condition.getCreatedDate();
+		this.createdBy = condition.getCreatedBy();
 	}
 
 	public ColumnHeader(PurityDatum datum) {
@@ -61,6 +64,7 @@ public class ColumnHeader {
 		this.valueUnit = datum.getValueUnit();
 		this.columnType = SynthesisPurityBean.DATUM_TYPE;
 		this.createdDate = datum.getCreatedDate();
+		this.createdBy = datum.getCreatedBy();
 //		this.operand = datum.getOperand();
 	}
 
@@ -71,6 +75,7 @@ public class ColumnHeader {
 		this.valueUnit = condition.getValueUnit();
 		this.columnType = FindingBean.CONDITION_TYPE;
 		this.createdDate = condition.getCreatedDate();
+		this.createdBy = condition.getCreatedBy();
 	}
 
 	public ColumnHeader() {
