@@ -1,9 +1,18 @@
 package gov.nih.nci.cananolab.restful;
 
+import gov.nih.nci.cananolab.dto.common.ColumnHeader;
+import gov.nih.nci.cananolab.restful.protocol.ProtocolBO;
 import gov.nih.nci.cananolab.restful.util.RestTestLoginUtil;
+import gov.nih.nci.cananolab.restful.view.SimpleSynthesisBean;
+import gov.nih.nci.cananolab.restful.view.edit.SimpleProtocol;
 import gov.nih.nci.cananolab.restful.view.edit.SimplePurificationConfigBean;
+import gov.nih.nci.cananolab.restful.view.edit.SimplePurityBean;
+import gov.nih.nci.cananolab.restful.view.edit.SimplePurityCell;
+import gov.nih.nci.cananolab.restful.view.edit.SimplePurityRowBean;
+import gov.nih.nci.cananolab.restful.view.edit.SimpleSubmitProtocolBean;
 import gov.nih.nci.cananolab.restful.view.edit.SimpleSynthesisMaterialBean;
 import gov.nih.nci.cananolab.restful.view.edit.SimpleSynthesisPurificationBean;
+import gov.nih.nci.cananolab.util.Constants;
 import io.restassured.builder.RequestSpecBuilder;
 import io.restassured.filter.log.RequestLoggingFilter;
 import io.restassured.filter.log.ResponseLoggingFilter;
@@ -53,19 +62,17 @@ public class SynthesisPurificationServicesTest {
     @Test
     public void testSetupNew() {
         try {
+            String debug="pause";
             Response response = given().spec(specification).queryParam("sampleId", "1000")
                     .when().get("synthesisPurification/setup")
                     .then().statusCode(200).extract().response();
 
             assertNotNull(response);
-            ResponseBody body = response.body();
-            String result = body.prettyPrint();
-            System.out.println(result);
-            //TODO make this specific for purification
-//            ArrayList<String> purificationTypes = response.path("purificationTypes");
-//            assertTrue(purificationTypes.size()>0);
-//            ArrayList<String> protocols = response.path("protocolLookup");
-//            assertTrue(protocols.size()>0);
+
+            List<String> manufacturers = response.path("manufacturers" );
+            assertTrue(manufacturers.size()>100);
+            List<String> purificationTypes = response.path("purificationTypes" );
+            assertTrue(purificationTypes.contains("Final Purification"));
         } catch (Exception e){
             e.printStackTrace();
         }
@@ -99,12 +106,15 @@ public class SynthesisPurificationServicesTest {
     @Test
     public void testGetAssayTypes() {
         try {
-            Response response = given().spec(specification).queryParam("purfName", "Final")
-                    .when().get("synthesisPurification/getAssayTypes")
+            Response response = given().spec(specification).queryParam("purfName", "purity")
+                    .when().get("synthesisPurification/getAssayTypesByPurificationName")
                     .then().statusCode(200).extract().response();
 
             assertNotNull(response);
-            //TODO check the results coming back.
+            List<String> types = response.path( "");
+            assertTrue(types.size()>0);
+            assertTrue(types.contains("purity"));
+
         }catch (Exception e){
             e.printStackTrace();
         }
@@ -119,7 +129,9 @@ public class SynthesisPurificationServicesTest {
 
             assertNotNull(response);
             //TODO check the results coming back.
-
+            ResponseBody body = response.body();
+            String result = body.prettyPrint();
+            System.out.println(result);
         }catch (Exception e){
             e.printStackTrace();
         }
@@ -156,6 +168,9 @@ public class SynthesisPurificationServicesTest {
 
             assertNotNull(response);
             //TODO check response
+            ResponseBody body = response.body();
+            String result = body.prettyPrint();
+            System.out.println(result);
 
         }catch (Exception e){
             e.printStackTrace();
@@ -210,7 +225,7 @@ public class SynthesisPurificationServicesTest {
     }
 
     @Test
-    public void testSubmit() {
+    public void testNewPurification() {
         try {
             //Testing submission of a brand new purification
             SimpleSynthesisPurificationBean newBean = new SimpleSynthesisPurificationBean();
@@ -283,6 +298,74 @@ public class SynthesisPurificationServicesTest {
     public void testSavePurity() {
         try {
 
+                //Testing submission of a brand new purity
+                SimpleSynthesisPurificationBean existingBean = getSimpleSynthesisPurificationBean("1000", "1000");
+                int originalnumberofPurities = existingBean.getPurityBeans().size();
+                SimplePurityBean newPurity = new SimplePurityBean();
+                List<ColumnHeader> columnHeaders= new ArrayList<ColumnHeader>();
+                ColumnHeader columnDatum = new ColumnHeader();
+                ColumnHeader columnCondition = new ColumnHeader();
+
+                columnDatum.setColumnOrder(1);
+                columnDatum.setColumnName("new Datum column");
+                columnDatum.setColumnType(Constants.DATUM);
+                columnDatum.setDisplayName("Datum column");
+                columnDatum.setValueType("observed");
+                columnDatum.setValueUnit("mg/mL");
+                columnHeaders.add(columnDatum);
+
+                columnCondition.setColumnOrder(2);
+                columnCondition.setColumnName("new Condition column");
+                columnCondition.setColumnType(Constants.CONDITION);
+                columnCondition.setDisplayName("Condition column");
+                columnCondition.setValueType("mean");
+                columnCondition.setValueUnit("mL");
+                columnCondition.setConditionProperty("Foo");
+                columnHeaders.add(columnCondition);
+                newPurity.setColumnHeaders(columnHeaders);
+
+                List<SimplePurityRowBean> rowBeans = new ArrayList<SimplePurityRowBean>();
+                SimplePurityRowBean newPurityRow = new SimplePurityRowBean();
+                SimplePurityCell newCellDatum = new SimplePurityCell();
+                SimplePurityCell newCellCondition = new SimplePurityCell();
+
+                newCellDatum.setColumnOrder(1);
+                newCellDatum.setDatumOrCondition(Constants.DATUM);
+                newCellDatum.setOperand("=");
+                newCellDatum.setValue("22.4");
+
+                newCellCondition.setColumnOrder(2);
+                newCellCondition.setDatumOrCondition(Constants.CONDITION);
+                newCellCondition.setOperand("<");
+                newCellCondition.setValue("1");
+
+                newPurityRow.addCell(newCellDatum);
+                newPurityRow.addCell(newCellCondition);
+                rowBeans.add(newPurityRow);
+                newPurity.setPurityRows(rowBeans);
+
+                existingBean.getPurityBeans().add(newPurity);
+
+
+                Response response = given().spec(specification)
+                        .body(existingBean).when().post("synthesisPurification/submit")
+                        .then().statusCode(200).extract().response();
+
+                assertNotNull(response);
+                //verify change was saved to database
+                existingBean = getSimpleSynthesisPurificationBean("1000", "1000");
+                List<SimplePurityBean> testBeans = existingBean.getPurityBeans();
+                assertNotNull(testBeans);
+                assertTrue(testBeans.size() > originalnumberofPurities);
+                for(SimplePurityBean createdBean: testBeans){
+                    assertTrue(createdBean.getId()!=null);
+                    assertTrue(createdBean.getId()>0);
+                    assertTrue(createdBean.getCreatedBy()!=null);
+                    assertTrue(createdBean.getCreatedDate()!=null);
+                }
+
+
+
         }catch (Exception e){
             e.printStackTrace();
         }
@@ -291,7 +374,22 @@ public class SynthesisPurificationServicesTest {
     @Test
     public void testRemovePurity() {
         try {
+            SimpleSynthesisPurificationBean existingBean = getSimpleSynthesisPurificationBean("1000", "1000");
+            List<SimplePurityBean> existingPurities = existingBean.getPurityBeans();
+            int originalnumberofPurities = existingPurities.size();
+            assertTrue(originalnumberofPurities > 0);
+            SimplePurityBean removedBean = existingPurities.get(originalnumberofPurities-1);
+            existingBean.getPurityBeans().remove(removedBean);
 
+            Response response = given().spec(specification)
+                    .body(existingBean).when().post("synthesisPurification/submit")
+                    .then().statusCode(200).extract().response();
+
+            assertNotNull(response);
+            existingBean = getSimpleSynthesisPurificationBean("1000", "1000");
+            List<SimplePurityBean> testBeans = existingBean.getPurityBeans();
+            assertNotNull(testBeans);
+            assertTrue(testBeans.size() < originalnumberofPurities);
         }catch (Exception e){
             e.printStackTrace();
         }
@@ -327,6 +425,29 @@ public class SynthesisPurificationServicesTest {
     @Test
     public void testSavePurification() {
         try {
+        //Testing submission of a brand new purification
+            SimpleSynthesisBean synthesisBean = getSimpleSynthesisBean("1000");
+            int originalPurificationCount = synthesisBean.getSynthesisPurification().size();
+            SimpleSynthesisPurificationBean purificationBean = new SimpleSynthesisPurificationBean();
+            purificationBean.setDesignMethodDescription("New Purification");
+            purificationBean.setMethodName("Interim 1");
+            purificationBean.setType("Interim Purification");
+            purificationBean.setYield(new Float(92.0));
+            purificationBean.setAnalysis("This purification step yielded results");
+            purificationBean.setSampleId("1000");
+            purificationBean.setSimpleProtocol(getProtocol("66256896"));
+            Response response = given().spec(specification)
+                    .body(purificationBean).when().post("synthesisPurification/submit")
+                    .then().statusCode(200).extract().response();
+
+            assertNotNull(response);
+            ResponseBody body = response.body();
+            String result = body.prettyPrint();
+            System.out.println(result);
+            synthesisBean = getSimpleSynthesisBean("1000");
+            assertTrue(synthesisBean.getSynthesisPurification().size() > originalPurificationCount);
+
+
 
         }catch (Exception e){
             e.printStackTrace();
@@ -334,8 +455,22 @@ public class SynthesisPurificationServicesTest {
     }
 
     @Test
+    public void testNewSynthesis(){
+
+    }
+
+    @Test
     public void testRemovePurification() {
         try {
+
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+    }
+
+    @Test
+    public void testSaveProtocol(){
+        try{
 
         }catch (Exception e){
             e.printStackTrace();
@@ -386,11 +521,47 @@ public class SynthesisPurificationServicesTest {
         }
     }
 
+    private SimpleProtocol getProtocol(String protocolId){
+        try{
+            Response response = given().spec(specification)
+                    .queryParam("protocolId", protocolId)
+                    .when().get("protocol/getProtocolById")
+                    .then().statusCode(200).extract().response();
+
+            JSONObject jResponse = new JSONObject(response.body().asString());
+            ObjectMapper mapper = new ObjectMapper();
+            SimpleSubmitProtocolBean submitProtocolBean = mapper.readValue(jResponse.toString(), SimpleSubmitProtocolBean.class);
+            SimpleProtocol protocol = new SimpleProtocol();
+            protocol.transferFromSimpleSubmitProtocol(submitProtocolBean);
+            return protocol;
+
+        } catch (Exception e){
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    private SimpleSynthesisBean getSimpleSynthesisBean(String sampleId){
+        try{
+            Response response = given().spec(specification)
+                    .queryParam("sampleId", sampleId)
+                    .when().get("synthesis/summaryView")
+                    .then().statusCode(200).extract().response();
+            JSONObject jResponse = new JSONObject(response.body().asString());
+            ObjectMapper mapper = new ObjectMapper();
+            return mapper.readValue(jResponse.toString(), SimpleSynthesisBean.class);
+
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+        return null;
+    }
+
     private SimpleSynthesisPurificationBean getSimpleSynthesisPurificationBean(String sampleId, String purificationId){
         try {
             Response response = given().spec(specification)
                     .queryParam("sampleId", sampleId)
-                    .queryParam("purificationId",purificationId)
+                    .queryParam("dataId",purificationId)
                     .when().get("synthesisPurification/setupEdit")
                     .then().statusCode(200).extract().response();
 

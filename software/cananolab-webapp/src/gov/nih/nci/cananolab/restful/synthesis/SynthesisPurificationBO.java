@@ -523,8 +523,8 @@ public class SynthesisPurificationBO extends BaseAnnotationBO {
         Synthesis synthesis;
         try{
             synthesis = synthesisService.getHelper().findSynthesisBySampleId(sSynPurificationBean.getSampleId());
-            purification.setSynthesisId(synthesis.getId());
-
+//            purification.setSynthesisId(synthesis.getId());
+            purification.setSynthesis(synthesis);
         }
         catch (SynthesisException e) {
             String err = "Unable to retrieve Synthesis attached to this Purification. ";

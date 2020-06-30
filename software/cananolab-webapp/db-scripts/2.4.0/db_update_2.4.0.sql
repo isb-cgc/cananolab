@@ -78,119 +78,130 @@ alter table `canano`.`acl_entry`
 
 
 -- synthesis
-CREATE TABLE `canano`.`synthesis`
+
+CREATE TABLE `synthesis`
 (
-    `synthesis_pk_id` BIGINT(20) NOT NULL COMMENT 'synthesis_pk_id',
-    `sample_pk_id`    BIGINT(20) NOT NULL COMMENT 'sample_pk_id',
+    `synthesis_pk_id` bigint(20) NOT NULL COMMENT 'synthesis_pk_id',
+    `sample_pk_id`    bigint(20) NOT NULL COMMENT 'sample_pk_id',
     PRIMARY KEY (`synthesis_pk_id`),
+    KEY `FK_sample_TO_synthesis` (`sample_pk_id`),
     CONSTRAINT `FK_sample_TO_synthesis` FOREIGN KEY (`sample_pk_id`) REFERENCES `sample` (`sample_pk_id`)
 );
 
 
 
 
-
 -- synthesis_material
 
-CREATE TABLE `canano`.`synthesis_material`
+CREATE TABLE `synthesis_material`
 (
-    `synthesis_material_pk_id` BIGINT(20)   NOT NULL COMMENT 'synthesis_material_pk_id', -- synthesis_material_pk_id
-    `synthesis_pk_id`          BIGINT(20)   NOT NULL COMMENT 'synthesis_pk_id',          -- synthesis_pk_id
-    `protocol_pk_id`           BIGINT(20)   NULL COMMENT 'protocol_pk_id',               -- protocol_pk_id
-    `description`              TEXT         NOT NULL COMMENT 'description',                  -- description
-    `created_date`             DATETIME     NOT NULL COMMENT 'created_date',             -- created_date
-    `created_by`               VARCHAR(200) NOT NULL COMMENT 'created_by',               -- created_by
+    `synthesis_material_pk_id` bigint(20)   NOT NULL COMMENT 'synthesis_material_pk_id',
+    `synthesis_pk_id`          bigint(20)   NOT NULL COMMENT 'synthesis_pk_id',
+    `protocol_pk_id`           bigint(20) DEFAULT NULL COMMENT 'protocol_pk_id',
+    `description`              text         NOT NULL COMMENT 'description',
+    `created_date`             datetime     NOT NULL COMMENT 'created_date',
+    `created_by`               varchar(200) NOT NULL COMMENT 'created_by',
     PRIMARY KEY (`synthesis_material_pk_id`),
-    CONSTRAINT  `FK_synthesis_TO_synthesis_material` FOREIGN KEY (`synthesis_pk_id`) REFERENCES `synthesis` (`synthesis_pk_id`),
-    CONSTRAINT `FK_protocol_TO_synthesis_material` FOREIGN KEY (`protocol_pk_id`) REFERENCES `protocol` (`protocol_pk_id`)
+    KEY `FK_synthesis_TO_synthesis_material` (`synthesis_pk_id`),
+    KEY `FK_protocol_TO_synthesis_material` (`protocol_pk_id`),
+    CONSTRAINT `FK_protocol_TO_synthesis_material` FOREIGN KEY (`protocol_pk_id`) REFERENCES `protocol` (`protocol_pk_id`),
+    CONSTRAINT `FK_synthesis_TO_synthesis_material` FOREIGN KEY (`synthesis_pk_id`) REFERENCES `synthesis` (`synthesis_pk_id`)
 );
 
 -- synthesis_material_file
-CREATE TABLE `canano`.`synthesis_material_file`
+CREATE TABLE `synthesis_material_file`
 (
-    `synthesis_material_pk_id` BIGINT(20) NOT NULL COMMENT 'synthesis_material_pk_id', -- synthesis_material_pk_id
-    `file_pk_id`               BIGINT(20) NOT NULL COMMENT 'file_pk_id',                -- file_pk_id
+    `synthesis_material_pk_id` bigint(20) NOT NULL COMMENT 'synthesis_material_pk_id',
+    `file_pk_id`               bigint(20) NOT NULL COMMENT 'file_pk_id',
     PRIMARY KEY (`synthesis_material_pk_id`, `file_pk_id`),
-    CONSTRAINT  `FK_synthesis_material_TO_synthesis_material_file` FOREIGN KEY (`synthesis_material_pk_id`) REFERENCES `synthesis_material` (`synthesis_material_pk_id`),
-    CONSTRAINT  `FK_file_TO_synthesis_material_file` FOREIGN KEY(`file_pk_id`)  REFERENCES `file` (`file_pk_id`)
+    KEY `FK_file_TO_synthesis_material_file` (`file_pk_id`),
+    CONSTRAINT `FK_file_TO_synthesis_material_file` FOREIGN KEY (`file_pk_id`) REFERENCES `file` (`file_pk_id`),
+    CONSTRAINT `FK_synthesis_material_TO_synthesis_material_file` FOREIGN KEY (`synthesis_material_pk_id`) REFERENCES `synthesis_material` (`synthesis_material_pk_id`)
 );
 
 -- supplier
 
-CREATE TABLE `canano`.`supplier`
+CREATE TABLE `supplier`
 (
-    `supplier_pk_id` BIGINT(20)   NOT NULL COMMENT 'supplier_pk_id',
-    `supplier_name`  VARCHAR(200) NOT NULL COMMENT 'supplier_name', -- supplier_name
-    `lot`            VARCHAR(50)  NULL COMMENT 'lot' ,               -- lot
+    `supplier_pk_id` bigint(20)   NOT NULL COMMENT 'supplier_pk_id',
+    `supplier_name`  varchar(200) NOT NULL COMMENT 'supplier_name',
+    `lot`            varchar(50) DEFAULT NULL COMMENT 'lot',
     PRIMARY KEY (`supplier_pk_id`)
 );
 
 -- synthesis_material_element
 
-CREATE TABLE `canano`.`synthesis_material_element`
+CREATE TABLE `synthesis_material_element`
 (
-    `synthesis_material_element_pk_id` BIGINT(20)     NOT NULL COMMENT 'synthesis_material_element_pk_id', -- synthesis_material_element_pk_id
-    `synthesis_material_pk_id`         BIGINT(20)     NOT NULL COMMENT 'synthesis_material_pk_id',         -- synthesis_material_pk_id
-    `molecular_formula`                VARCHAR(2000)  NULL COMMENT 'molecular_formula',                    -- molecular_formula
-    `molecular_formula_type`           VARCHAR(200)   NULL COMMENT 'molecular_formula_type',               -- molecular_formula_type
-    `description`                      TEXT           NULL COMMENT 'description',                          -- description
-    `created_by`                       VARCHAR(200)   NOT NULL COMMENT 'created_by',                       -- created_by
-    `created_date`                     DATETIME       NOT NULL COMMENT 'created_date',                     -- created_date
-    `chemical_name`                    VARCHAR(200)   NOT NULL COMMENT 'chemical_name',                        -- chemical_name
-    `value`                            DECIMAL(22, 3) NULL COMMENT 'value',                                -- value
-    `value_unit`                       VARCHAR(200)   NULL COMMENT 'value_unit',                           -- value_unit
-    `pub_chem_datasource_name`         VARCHAR(200)   NULL COMMENT 'pub_chem_datasource_name',             -- pub_chem_datasource_name
-    `pub_chem_id`                      BIGINT(20)     NULL COMMENT 'pub_chem_id',                          -- pub_chem_id
-    `supplier_pk_id`                   BIGINT(20)     NULL COMMENT 'supplier_pk_id',
-    `type`                             VARCHAR(200)   NOT NULL,
+    `synthesis_material_element_pk_id` bigint(20)   NOT NULL COMMENT 'synthesis_material_element_pk_id',
+    `synthesis_material_pk_id`         bigint(20)   NOT NULL COMMENT 'synthesis_material_pk_id',
+    `molecular_formula`                varchar(2000)  DEFAULT NULL COMMENT 'molecular_formula',
+    `molecular_formula_type`           varchar(200)   DEFAULT NULL COMMENT 'molecular_formula_type',
+    `description`                      text COMMENT 'description',
+    `created_by`                       varchar(200) NOT NULL COMMENT 'created_by',
+    `created_date`                     datetime     NOT NULL COMMENT 'created_date',
+    `chemical_name`                    varchar(200) NOT NULL COMMENT 'chemical_name',
+    `value`                            decimal(22, 3) DEFAULT NULL COMMENT 'value',
+    `value_unit`                       varchar(200)   DEFAULT NULL COMMENT 'value_unit',
+    `pub_chem_datasource_name`         varchar(200)   DEFAULT NULL COMMENT 'pub_chem_datasource_name',
+    `pub_chem_id`                      bigint(20)     DEFAULT NULL COMMENT 'pub_chem_id',
+    `supplier_pk_id`                   bigint(20)     DEFAULT NULL COMMENT 'supplier_pk_id',
+    `type`                             varchar(200) NOT NULL,
     PRIMARY KEY (`synthesis_material_element_pk_id`),
-    CONSTRAINT  `FK_synthesis_material_TO_synthesis_material_element` FOREIGN KEY (`synthesis_material_pk_id`) REFERENCES `synthesis_material` (`synthesis_material_pk_id`),
-    CONSTRAINT  `FK_synthesis_material_element_TO_supplier` FOREIGN KEY (`supplier_pk_id`) REFERENCES `supplier` (`supplier_pk_id`)
+    KEY `FK_synthesis_material_TO_synthesis_material_element` (`synthesis_material_pk_id`),
+    KEY `FK_synthesis_material_element_TO_supplier` (`supplier_pk_id`),
+    CONSTRAINT `FK_synthesis_material_TO_synthesis_material_element` FOREIGN KEY (`synthesis_material_pk_id`) REFERENCES `synthesis_material` (`synthesis_material_pk_id`),
+    CONSTRAINT `FK_synthesis_material_element_TO_supplier` FOREIGN KEY (`supplier_pk_id`) REFERENCES `supplier` (`supplier_pk_id`)
 );
 
 -- synthesis_functionalization
 
-CREATE TABLE `canano`.`synthesis_functionalization`
+CREATE TABLE `synthesis_functionalization`
 (
-    `synthesis_functionalization_pk_id` BIGINT(20)   NOT NULL COMMENT 'synthesis_functionalization_pk_id', -- synthesis_functionalization_pk_id
-    `synthesis_pk_id`                   BIGINT(20)   NULL COMMENT 'synthesis_pk_id',                       -- synthesis_pk_id
-    `protocol_pk_id`                    BIGINT(20)   NULL COMMENT 'protocol_pk_id',                        -- protocol_pk_id
-    `description`                       TEXT         NULL COMMENT 'description',                           -- description
-    `created_date`                      DATETIME     NOT NULL COMMENT 'created_date',                      -- created_date
-    `created_by`                        VARCHAR(200) NOT NULL COMMENT 'created_by',                        -- created_by
-    `type`                              VARCHAR(200) NULL COMMENT 'type',                                   -- type
+    `synthesis_functionalization_pk_id` bigint(20)   NOT NULL COMMENT 'synthesis_functionalization_pk_id',
+    `synthesis_pk_id`                   bigint(20)   DEFAULT NULL COMMENT 'synthesis_pk_id',
+    `protocol_pk_id`                    bigint(20)   DEFAULT NULL COMMENT 'protocol_pk_id',
+    `description`                       text COMMENT 'description',
+    `created_date`                      datetime     NOT NULL COMMENT 'created_date',
+    `created_by`                        varchar(200) NOT NULL COMMENT 'created_by',
+    `type`                              varchar(200) DEFAULT NULL COMMENT 'type',
     PRIMARY KEY (`synthesis_functionalization_pk_id`),
-    CONSTRAINT `FK_synthesis_TO_synthesis_functionalization` FOREIGN KEY (`synthesis_pk_id`) REFERENCES `synthesis` (`synthesis_pk_id`),
-    CONSTRAINT `FK_protocol_TO_synthesis_functionalization` FOREIGN KEY (`protocol_pk_id`) REFERENCES `protocol` (`protocol_pk_id`)
+    KEY `FK_synthesis_TO_synthesis_functionalization` (`synthesis_pk_id`),
+    KEY `FK_protocol_TO_synthesis_functionalization` (`protocol_pk_id`),
+    CONSTRAINT `FK_protocol_TO_synthesis_functionalization` FOREIGN KEY (`protocol_pk_id`) REFERENCES `protocol` (`protocol_pk_id`),
+    CONSTRAINT `FK_synthesis_TO_synthesis_functionalization` FOREIGN KEY (`synthesis_pk_id`) REFERENCES `synthesis` (`synthesis_pk_id`)
 );
 
 -- synthesis_functionalization_file
-CREATE TABLE `canano`.`synthesis_functionalization_file`
+CREATE TABLE `synthesis_functionalization_file`
 (
-    `synthesis_functionalization_pk_id` BIGINT(20) NOT NULL COMMENT 'synthesis_material_pk_id', -- synthesis_material_pk_id
-    `file_pk_id`                        BIGINT(20) NOT NULL COMMENT 'file_pk_id',                -- file_pk_id
+    `synthesis_functionalization_pk_id` bigint(20) NOT NULL COMMENT 'synthesis_material_pk_id',
+    `file_pk_id`                        bigint(20) NOT NULL COMMENT 'file_pk_id',
     PRIMARY KEY (`synthesis_functionalization_pk_id`, `file_pk_id`),
-    CONSTRAINT `FK_syn_func_TO_syn_func_file` FOREIGN KEY (`synthesis_functionalization_pk_id`) REFERENCES `synthesis_functionalization` (`synthesis_functionalization_pk_id`),
-    CONSTRAINT `FK_file_TO_synthesis_file` FOREIGN KEY (`file_pk_id`) REFERENCES `file` (`file_pk_id`)
+    KEY `FK_file_TO_synthesis_file` (`file_pk_id`),
+    CONSTRAINT `FK_file_TO_synthesis_file` FOREIGN KEY (`file_pk_id`) REFERENCES `file` (`file_pk_id`),
+    CONSTRAINT `FK_syn_func_TO_syn_func_file` FOREIGN KEY (`synthesis_functionalization_pk_id`) REFERENCES `synthesis_functionalization` (`synthesis_functionalization_pk_id`)
 );
 
 -- synthesis_purification
 
-CREATE TABLE `canano`.`synthesis_purification`
+CREATE TABLE `synthesis_purification`
 (
-    `synthesis_purification_pk_id` BIGINT(20)      NOT NULL COMMENT 'synthesis_purification_pk_id', -- synthesis_purification_pk_id
-    `synthesis_pk_id`              BIGINT(20)      NULL COMMENT 'synthesis_pk_id',                  -- synthesis_pk_id
-    `protocol_pk_id`               BIGINT(20)      NULL COMMENT 'protocol_pk_id',               -- protocol_pk_id
-    `type`                         VARCHAR(200)    NULL COMMENT 'type',                             -- type
-    `method_name`                  VARCHAR(200)    NULL COMMENT 'method_name',                      -- method_name
-    `design_method_description`    TEXT            NULL COMMENT 'design_method_description',        -- design_method_description
-    `created_by`                   VARCHAR(200)    NOT NULL COMMENT 'created_by',                   -- created_by
-    `created_date`                 DATETIME        NOT NULL COMMENT 'created_date',                 -- created_date
-    `yield`                        DECIMAL(30, 10) NULL COMMENT 'yield',
-    `analysis`                     TEXT,
+    `synthesis_purification_pk_id` bigint(20)   NOT NULL COMMENT 'synthesis_purification_pk_id',
+    `synthesis_pk_id`              bigint(20)     DEFAULT NULL COMMENT 'synthesis_pk_id',
+    `protocol_pk_id`               bigint(20)     DEFAULT NULL COMMENT 'protocol_pk_id',
+    `type`                         varchar(200)   DEFAULT NULL COMMENT 'type',
+    `method_name`                  varchar(200)   DEFAULT NULL COMMENT 'method_name',
+    `design_method_description`    text COMMENT 'design_method_description',
+    `created_by`                   varchar(200) NOT NULL COMMENT 'created_by',
+    `created_date`                 datetime     NOT NULL COMMENT 'created_date',
+    `yield`                        decimal(30, 3) DEFAULT NULL COMMENT 'yield',
+    `analysis`                     text,
     PRIMARY KEY (`synthesis_purification_pk_id`),
-    CONSTRAINT  `FK_synthesis_TO_synthesis_purification` FOREIGN KEY (`synthesis_pk_id`) REFERENCES `synthesis` (`synthesis_pk_id`),
-    CONSTRAINT `FK_protocol_TO_synthesis_purification` FOREIGN KEY (`protocol_pk_id`) REFERENCES `protocol` (`protocol_pk_id`)
+    KEY `FK_synthesis_TO_synthesis_purification` (`synthesis_pk_id`),
+    KEY `FK_protocol_TO_synthesis_purification` (`protocol_pk_id`),
+    CONSTRAINT `FK_protocol_TO_synthesis_purification` FOREIGN KEY (`protocol_pk_id`) REFERENCES `protocol` (`protocol_pk_id`),
+    CONSTRAINT `FK_synthesis_TO_synthesis_purification` FOREIGN KEY (`synthesis_pk_id`) REFERENCES `synthesis` (`synthesis_pk_id`)
 );
 
 
@@ -200,67 +211,67 @@ CREATE TABLE `canano`.`synthesis_purification`
 
 -- synthesis_functionalization_element
 
-CREATE TABLE `canano`.`synthesis_functionalization_element`
+CREATE TABLE `synthesis_functionalization_element`
 (
-    `synthesis_functionalization_element_pk_id` BIGINT(20)     NOT NULL COMMENT 'synthesis_functionalization_element_pk_id', -- synthesis_functionalization_element_pk_id
-    `synthesis_functionalization_pk_id`         BIGINT(20)     NOT NULL COMMENT 'synthesis_functionalization_pk_id',         -- synthesis_functionalization_pk_id
-    `molecular_formula`                         VARCHAR(2000)  NULL COMMENT 'molecular_formula',                             -- molecular_formula
-    `molecular_formula_type`                    VARCHAR(200)   NULL COMMENT 'molecular_formula_type',                        -- molecular_formula_type
-    `description`                               TEXT           NULL COMMENT 'description',                                   -- description
-    `created_by`                                VARCHAR(200)   NOT NULL COMMENT 'created_by',                                -- created_by
-    `created_date`                              DATETIME       NOT NULL COMMENT 'created_date',                              -- created_date
-    `chemical_name`                             VARCHAR(200)   NULL COMMENT 'chemical_name',                                 -- chemical_name
-    `value`                                     DECIMAL(22, 3) NULL COMMENT 'value',                                         -- value
-    `value_unit`                                VARCHAR(200)   NULL COMMENT 'value_unit',                                    -- value_unit
-    `pub_chem_datasource_name`                  VARCHAR(200)   NULL COMMENT 'pub_chem_datasource_name',                      -- pub_chem_datasource_name
-    `pub_chem_id`                               BIGINT(20)     NULL COMMENT 'pub_chem_id',                                   -- pub_chem_id
-    `type`                                      VARCHAR(200)   NULL COMMENT 'type',
-    `activation_method`                         VARCHAR(200) DEFAULT NULL,
-    `activation_effect`                         TEXT,
+    `synthesis_functionalization_element_pk_id` bigint(20)   NOT NULL COMMENT 'synthesis_functionalization_element_pk_id',
+    `synthesis_functionalization_pk_id`         bigint(20)   NOT NULL COMMENT 'synthesis_functionalization_pk_id',
+    `molecular_formula`                         varchar(2000)  DEFAULT NULL COMMENT 'molecular_formula',
+    `molecular_formula_type`                    varchar(200)   DEFAULT NULL COMMENT 'molecular_formula_type',
+    `description`                               text COMMENT 'description',
+    `created_by`                                varchar(200) NOT NULL COMMENT 'created_by',
+    `created_date`                              datetime     NOT NULL COMMENT 'created_date',
+    `chemical_name`                             varchar(200)   DEFAULT NULL COMMENT 'chemical_name',
+    `value`                                     decimal(22, 3) DEFAULT NULL COMMENT 'value',
+    `value_unit`                                varchar(200)   DEFAULT NULL COMMENT 'value_unit',
+    `pub_chem_datasource_name`                  varchar(200)   DEFAULT NULL COMMENT 'pub_chem_datasource_name',
+    `pub_chem_id`                               bigint(20)     DEFAULT NULL COMMENT 'pub_chem_id',
+    `type`                                      varchar(200)   DEFAULT NULL COMMENT 'type',
+    `activation_method`                         varchar(200)   DEFAULT NULL,
+    `activation_effect`                         text,
     PRIMARY KEY (`synthesis_functionalization_element_pk_id`),
-    CONSTRAINT  `FK_synthesis_funct_TO_synthesis_functionalization_element` FOREIGN KEY (`synthesis_functionalization_pk_id`)
+    CONSTRAINT `FK_synthesis_funct_TO_synthesis_functionalization_element` FOREIGN KEY (`synthesis_functionalization_pk_id`)
         REFERENCES `synthesis_functionalization` (`synthesis_functionalization_pk_id`)
 );
 
 -- sme_inherent_function
 
-CREATE TABLE `canano`.`sme_inherent_function`
+CREATE TABLE `sme_inherent_function`
 (
-    `sme_inherent_function_pk_id`      BIGINT(20)   NOT NULL COMMENT 'sme_inherent_function_pk_id',      -- sme_inherent__function_pk_id
-    `synthesis_material_element_pk_id` BIGINT(20)   NOT NULL COMMENT 'synthesis_material_element_pk_id', -- synthesis_material_element_pk_id
-    `type`                             VARCHAR(200) NULL COMMENT 'type',                                 -- type
-    `description`                      TEXT         NULL COMMENT 'description',                           -- description
+    `sme_inherent_function_pk_id`      bigint(20) NOT NULL COMMENT 'sme_inherent_function_pk_id',
+    `synthesis_material_element_pk_id` bigint(20) NOT NULL COMMENT 'synthesis_material_element_pk_id',
+    `type`                             varchar(200) DEFAULT NULL COMMENT 'type',
+    `description`                      text COMMENT 'description',
     PRIMARY KEY (`sme_inherent_function_pk_id`),
-    CONSTRAINT  `FK_synthesis_material_element_TO_sme_inherent_function` FOREIGN KEY (`synthesis_material_element_pk_id`)
-        REFERENCES `synthesis_material_element` (`synthesis_material_element_pk_id`)
+    KEY `FK_synthesis_material_element_TO_sme_inherent_function` (`synthesis_material_element_pk_id`),
+    CONSTRAINT `FK_synthesis_material_element_TO_sme_inherent_function` FOREIGN KEY (`synthesis_material_element_pk_id`) REFERENCES `synthesis_material_element` (`synthesis_material_element_pk_id`)
 );
 
 
 
 -- sfe_inherent_function
 
-CREATE TABLE `canano`.`sfe_inherent_function`
+CREATE TABLE `sfe_inherent_function`
 (
-    `sfe_inherent_function_pk_id`               BIGINT(20)   NOT NULL COMMENT 'sfe_inherent_function_pk_id',
-    `synthesis_functionalization_element_pk_id` BIGINT(20)   NOT NULL COMMENT 'synthesis_functionalization_element_pk_id',
-    `type`                                      VARCHAR(200) NULL COMMENT 'type',
-    `description`                               TEXT         NULL COMMENT 'description',
+    `sfe_inherent_function_pk_id`               bigint(20) NOT NULL COMMENT 'sfe_inherent_function_pk_id',
+    `synthesis_functionalization_element_pk_id` bigint(20) NOT NULL COMMENT 'synthesis_functionalization_element_pk_id',
+    `type`                                      varchar(200) DEFAULT NULL COMMENT 'type',
+    `description`                               text COMMENT 'description',
     PRIMARY KEY (`sfe_inherent_function_pk_id`),
-    CONSTRAINT FOREIGN KEY `FK_synthesis_functionalization_element_TO_sfe_inherent_function` (`synthesis_functionalization_element_pk_id`)
-        REFERENCES `synthesis_functionalization_element` (`synthesis_functionalization_element_pk_id`)
+    KEY `FK_synthesis_material_element_TO_sfe_inherent_function` (`synthesis_functionalization_element_pk_id`),
+    CONSTRAINT `sfe_inherent_function_ibfk_1` FOREIGN KEY (`synthesis_functionalization_element_pk_id`) REFERENCES `synthesis_functionalization_element` (`synthesis_functionalization_element_pk_id`)
 );
 
 
 -- synthesis_material_element_file
 
-CREATE TABLE `canano`.`synthesis_material_element_file`
+CREATE TABLE `synthesis_material_element_file`
 (
-    `synthesis_material_element_pk_id` BIGINT(20) NOT NULL COMMENT 'synthesis_material_element_pk_id', -- synthesis_material_element_pk_id
-    `file_pk_id`                       BIGINT(20) NOT NULL COMMENT 'file_pk_id',                        -- file_pk_id
-    PRIMARY KEY (`synthesis_material_element_pk_id`,`file_pk_id`),
-    CONSTRAINT `FK_synthesis_material_element_TO_synthesis_material_element_file` FOREIGN KEY (`synthesis_material_element_pk_id`)
-        REFERENCES `synthesis_material_element` (`synthesis_material_element_pk_id`),
-    CONSTRAINT `FK_file_TO_synthesis_material_element_file` FOREIGN KEY (`file_pk_id`) REFERENCES `file` (`file_pk_id`)
+    `synthesis_material_element_pk_id` bigint(20) NOT NULL COMMENT 'synthesis_material_element_pk_id',
+    `file_pk_id`                       bigint(20) NOT NULL COMMENT 'file_pk_id',
+    PRIMARY KEY (`synthesis_material_element_pk_id`, `file_pk_id`),
+    KEY `FK_file_TO_synthesis_material_element_file` (`file_pk_id`),
+    CONSTRAINT `FK_file_TO_synthesis_material_element_file` FOREIGN KEY (`file_pk_id`) REFERENCES `file` (`file_pk_id`),
+    CONSTRAINT `FK_synthesis_material_element_TO_synthesis_material_element_file` FOREIGN KEY (`synthesis_material_element_pk_id`) REFERENCES `synthesis_material_element` (`synthesis_material_element_pk_id`)
 );
 
 
@@ -268,99 +279,107 @@ CREATE TABLE `canano`.`synthesis_material_element_file`
 
 -- synthesis_functionalization_element_file
 
-CREATE TABLE `canano`.`synthesis_functionalization_element_file`
+CREATE TABLE `synthesis_functionalization_element_file`
 (
-    `synthesis_functionalization_element_pk_id` BIGINT(20) NOT NULL COMMENT 'synthesis_functionalization_element_file', -- synthesis_material_element_pk_id
-    `file_pk_id`                                BIGINT(20) NOT NULL COMMENT 'file_pk_id',                                -- file_pk_id
+    `synthesis_functionalization_element_pk_id` bigint(20) NOT NULL COMMENT 'synthesis_functionalization_element_file',
+    `file_pk_id`                                bigint(20) NOT NULL COMMENT 'file_pk_id',
     PRIMARY KEY (`synthesis_functionalization_element_pk_id`, `file_pk_id`),
-    CONSTRAINT  `FK_synthesis_func_element_TO_sfe_element_file` FOREIGN KEY(`synthesis_functionalization_element_pk_id`)
-        REFERENCES `synthesis_functionalization_element` (`synthesis_functionalization_element_pk_id`),
-    CONSTRAINT `FK_file_TO_synthesis_functionalization_element_file` FOREIGN KEY(`file_pk_id`) REFERENCES `file` (`file_pk_id`)
-);
+    KEY `FK_file_TO_synthesis_functionalization_element_file` (`file_pk_id`),
+    CONSTRAINT `FK_file_TO_synthesis_functionalization_element_file` FOREIGN KEY (`file_pk_id`) REFERENCES `file` (`file_pk_id`),
+    CONSTRAINT `FK_synthesis_func_element_TO_sfe_element_file` FOREIGN KEY (`synthesis_functionalization_element_pk_id`) REFERENCES `synthesis_functionalization_element` (`synthesis_functionalization_element_pk_id`)
+) ;
 
 -- synthesis_purity
 
-CREATE TABLE `canano`.`synthesis_purity`
+CREATE TABLE `synthesis_purity`
 (
-    `purity_pk_id`                 BIGINT(200)  NOT NULL COMMENT 'purity_pk_id',                 -- purity_pk_id
-    `synthesis_purification_pk_id` BIGINT(20)   NOT NULL COMMENT 'synthesis_purification_pk_id', -- synthesis_purification_pk_id
-    `created_by`                   VARCHAR(200) NOT NULL COMMENT 'created_by',                   -- created_by
-    `created_date`                 DATETIME     NOT NULL COMMENT 'created_date',                  -- created_date
+    `purity_pk_id`                 bigint(200)  NOT NULL COMMENT 'purity_pk_id',
+    `synthesis_purification_pk_id` bigint(20)   NOT NULL COMMENT 'synthesis_purification_pk_id',
+    `created_by`                   varchar(200) NOT NULL COMMENT 'created_by',
+    `created_date`                 datetime     NOT NULL COMMENT 'created_date',
     PRIMARY KEY (`purity_pk_id`),
+    KEY `FK_synthesis_purity_to purification` (`synthesis_purification_pk_id`),
     CONSTRAINT `FK_synthesis_purity_to purification` FOREIGN KEY (`synthesis_purification_pk_id`) REFERENCES `synthesis_purification` (`synthesis_purification_pk_id`)
 );
 
-create table purity_datum
+CREATE TABLE `purity_datum`
 (
-    purity_datum_pk_id BIGINT          not null,
-    `name`             VARCHAR(200)    NOT NULL COMMENT 'name',
-    `value`            DECIMAL(30, 10) NOT NULL COMMENT 'value',
-    `value_type`       VARCHAR(200)    NULL COMMENT 'value_type',
-    `value_unit`       VARCHAR(200)    NULL COMMENT 'value_unit',
-    `created_by`       VARCHAR(200)    NOT NULL COMMENT 'created_by',
-    `created_date`     DATETIME        NOT NULL COMMENT 'created_date',
-    `numberMod`        VARCHAR(20)     NULL DEFAULT '=' COMMENT 'numberMod',
-    `purity_pk_id`     BIGINT(200)     NULL COMMENT 'purity_pk_id',
-    `file_pk_id`       BIGINT(20)      NULL COMMENT 'file_pk_id',
+    `purity_datum_pk_id` bigint(20)      NOT NULL,
+    `name`               varchar(200)    NOT NULL COMMENT 'name',
+    `value`              decimal(30, 10) NOT NULL COMMENT 'value',
+    `value_type`         varchar(200) DEFAULT NULL COMMENT 'value_type',
+    `value_unit`         varchar(200) DEFAULT NULL COMMENT 'value_unit',
+    `created_by`         varchar(200)    NOT NULL COMMENT 'created_by',
+    `created_date`       datetime        NOT NULL COMMENT 'created_date',
+    `numberMod`          varchar(20)  DEFAULT '=' COMMENT 'numberMod',
+    `purity_pk_id`       bigint(200)  NOT NULL COMMENT 'purity_pk_id',
+    `file_pk_id`         bigint(20)   DEFAULT NULL COMMENT 'file_pk_id',
     PRIMARY KEY (`purity_datum_pk_id`),
-    CONSTRAINT `FK_purity_TO_purity_datum` FOREIGN KEY (`purity_pk_id`) REFERENCES `synthesis_purity`(`purity_pk_id`),
-    CONSTRAINT `FK_file_TO_purity_datum` FOREIGN KEY (`file_pk_id`) REFERENCES `file`(`file_pk_id`)
+    KEY `FK_purity_TO_purity_datum` (`purity_pk_id`),
+    KEY `FK_file_TO_purity_datum` (`file_pk_id`),
+    CONSTRAINT `FK_file_TO_purity_datum` FOREIGN KEY (`file_pk_id`) REFERENCES `file` (`file_pk_id`),
+    CONSTRAINT `FK_purity_TO_purity_datum` FOREIGN KEY (`purity_pk_id`) REFERENCES `synthesis_purity` (`purity_pk_id`)
 );
 
 -- purity_file
 
-CREATE TABLE `canano`.`purity_file`
+CREATE TABLE `purity_file`
 (
-    `purity_pk_id` BIGINT(200) NOT NULL COMMENT 'purity_pk_id', -- purity_pk_id
-    `file_pk_id`   BIGINT(20)  NOT NULL COMMENT 'file_pk_id',    -- file_pk_id
-    PRIMARY KEY (`purity_pk_id`,`file_pk_id`),
-    CONSTRAINT `FK_purity_TO_purity_file` FOREIGN KEY (`purity_pk_id`) REFERENCES `synthesis_purity` (`purity_pk_id`),
-    CONSTRAINT  `FK_file_TO_purity_file` FOREIGN KEY (`file_pk_id`) REFERENCES `file` (`file_pk_id`)
+    `purity_pk_id` bigint(200) NOT NULL COMMENT 'purity_pk_id',
+    `file_pk_id`   bigint(20)  NOT NULL COMMENT 'file_pk_id',
+    PRIMARY KEY (`purity_pk_id`, `file_pk_id`),
+    KEY `FK_file_TO_purity_file` (`file_pk_id`),
+    CONSTRAINT `FK_file_TO_purity_file` FOREIGN KEY (`file_pk_id`) REFERENCES `file` (`file_pk_id`),
+    CONSTRAINT `FK_purity_TO_purity_file` FOREIGN KEY (`purity_pk_id`) REFERENCES `synthesis_purity` (`purity_pk_id`)
 );
 
 -- purification_config
 
-CREATE TABLE `canano`.`purification_config`
+CREATE TABLE `purification_config`
 (
-    `purification_config_pk_id`    BIGINT(20)   NOT NULL COMMENT 'purification_config_pk_id', -- purification_config_pk_id
-    `synthesis_purification_pk_id` BIGINT(20)   NULL COMMENT 'synthesis_purification_pk_id',  -- synthesis_purification_pk_id
-    `technique_pk_id`              BIGINT(20)   NULL COMMENT 'technique_pk_id',               -- technique_pk_id
-    `description`                  TEXT         NULL COMMENT 'description',                   -- description
-    `created_by`                   VARCHAR(200) NOT NULL COMMENT 'created_by',                -- created_by
-    `created_date`                 DATETIME     NOT NULL COMMENT 'created_date',              -- created_date
+    `purification_config_pk_id`    bigint(20)   NOT NULL COMMENT 'purification_config_pk_id',
+    `synthesis_purification_pk_id` bigint(20) DEFAULT NULL COMMENT 'synthesis_purification_pk_id',
+    `technique_pk_id`              bigint(20) DEFAULT NULL COMMENT 'technique_pk_id',
+    `description`                  text COMMENT 'description',
+    `created_by`                   varchar(200) NOT NULL COMMENT 'created_by',
+    `created_date`                 datetime     NOT NULL COMMENT 'created_date',
     PRIMARY KEY (`purification_config_pk_id`),
-    CONSTRAINT  `FK_synthesis_purification_TO_purification_config` FOREIGN KEY (`synthesis_purification_pk_id`) REFERENCES `synthesis_purification` (`synthesis_purification_pk_id`),
+    KEY `FK_synthesis_purification_TO_purification_config` (`synthesis_purification_pk_id`),
+    KEY `FK_technique_TO_purification_config_idx` (`technique_pk_id`),
+    CONSTRAINT `FK_synthesis_purification_TO_purification_config` FOREIGN KEY (`synthesis_purification_pk_id`) REFERENCES `synthesis_purification` (`synthesis_purification_pk_id`),
     CONSTRAINT `FK_technique_TO_purification_config` FOREIGN KEY (`technique_pk_id`) REFERENCES `technique` (`technique_pk_id`)
 );
 
 -- purification_config_instrument
 
-CREATE TABLE `canano`.`purification_config_instrument`
+CREATE TABLE `purification_config_instrument`
 (
-    `purification_config_pk_id` BIGINT(20) NOT NULL COMMENT 'purification_config_pk_id', -- purification_config_pk_id
-    `instrument_pk_id`          BIGINT(20) NOT NULL COMMENT 'instrument_pk_id',           -- instrument_pk_id
-    PRIMARY KEY (`purification_config_pk_id`, instrument_pk_id),
-    CONSTRAINT `FK_purification_config_TO_purification_config_instrument` FOREIGN KEY (`purification_config_pk_id`)
-        REFERENCES `purification_config` (`purification_config_pk_id`),
-    CONSTRAINT `FK_instrument_TO_purification_config_instrument` FOREIGN KEY (`instrument_pk_id`) REFERENCES `instrument` (`instrument_pk_id`)
+    `purification_config_pk_id` bigint(20) NOT NULL COMMENT 'purification_config_pk_id',
+    `instrument_pk_id`          bigint(20) NOT NULL COMMENT 'instrument_pk_id',
+    PRIMARY KEY (`purification_config_pk_id`, `instrument_pk_id`),
+    KEY `FK_instrument_TO_purification_config_instrument` (`instrument_pk_id`),
+    CONSTRAINT `FK_instrument_TO_purification_config_instrument` FOREIGN KEY (`instrument_pk_id`) REFERENCES `instrument` (`instrument_pk_id`),
+    CONSTRAINT `FK_purification_config_TO_purification_config_instrument` FOREIGN KEY (`purification_config_pk_id`) REFERENCES `purification_config` (`purification_config_pk_id`)
 );
 
 
 
 -- purity_datum_condition
 
-CREATE TABLE `purity_datum_condition` (
-            `datum_pk_id` bigint(20) NOT NULL COMMENT 'purity_datum_pk_id',
-            `condition_pk_id` bigint(20) NOT NULL COMMENT 'condition_pk_id',
-            `name` varchar(200) NOT NULL,
-            `property` varchar(200) DEFAULT NULL,
-            `value` varchar(200) NOT NULL,
-            `value_unit` varchar(200) DEFAULT NULL,
-            `value_type` varchar(200) DEFAULT NULL,
-            `created_by` varchar(200) NOT NULL,
-            `created_date` datetime NOT NULL,
-            PRIMARY KEY (`condition_pk_id`),
-            CONSTRAINT `FK_purity_datum_TO_purity_datum_condition` FOREIGN KEY (`datum_pk_id`) REFERENCES `purity_datum` (`purity_datum_pk_id`)
+CREATE TABLE `purity_datum_condition`
+(
+    `purity_datum_pk_id`     bigint(20)   NOT NULL COMMENT 'purity_datum_pk_id',
+    `condition_pk_id` bigint(20)   NOT NULL COMMENT 'condition_pk_id',
+    `name`            varchar(200) NOT NULL,
+    `property`        varchar(200) DEFAULT NULL,
+    `value`           varchar(200) NOT NULL,
+    `value_unit`      varchar(200) DEFAULT NULL,
+    `value_type`      varchar(200) DEFAULT NULL,
+    `created_by`      varchar(200) NOT NULL,
+    `created_date`    datetime     NOT NULL,
+    `numberMod`          varchar(20)  DEFAULT '=' COMMENT 'numberMod',
+    PRIMARY KEY (`condition_pk_id`),
+    CONSTRAINT `FK_purity_datum_TO_purity_datum_condition` FOREIGN KEY (`purity_datum_pk_id`) REFERENCES `purity_datum` (`purity_datum_pk_id`)
 );
 
 
@@ -451,5 +470,6 @@ VALUES (1010, 'pubchem', 'dataSource', 'Compound'),
        (1091, 'functionalization', 'type', 'antibody'),
        (1092, 'functionalization', 'type', 'biopolymer'),
        (1093, 'functionalization', 'type', 'small molecule'),
-       (1094, 'synthesis', 'materialType', 'reagent');
+       (1094, 'synthesis', 'materialType', 'reagent'),
+       (1096, 'protocol', 'type', 'purification');
 

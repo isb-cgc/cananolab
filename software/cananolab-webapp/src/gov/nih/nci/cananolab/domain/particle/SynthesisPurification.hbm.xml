@@ -11,6 +11,10 @@
                      fetch="select" name="protocol"  lazy="false" >
             <column name="protocol_pk_id"/>
         </many-to-one>
+        <many-to-one class="Synthesis"
+                     fetch="select" name="synthesis">
+            <column name="synthesis_pk_id" not-null="true"/>
+        </many-to-one>
         <property name="type" type="string">
             <column length="200" name="type"/>
         </property>

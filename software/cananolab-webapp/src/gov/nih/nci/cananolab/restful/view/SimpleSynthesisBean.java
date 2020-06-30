@@ -21,12 +21,13 @@ import java.util.Map;
 import org.apache.log4j.Logger;
 
 public class SimpleSynthesisBean {
-    Long id;
+//    Long id;
     List<String> synthesisSections = new ArrayList<String>();
     List synthesisFunctionalization;
     List synthesisPurification;
 //    MultiMap synthesisMaterials;
     List synthesisMaterials;
+    Long sampleId;
 
     List<String> errors;
     private Logger logger = Logger.getLogger(SimpleSynthesisBean.class);
@@ -68,7 +69,7 @@ public class SimpleSynthesisBean {
 
     public void transferSynthesisForSummaryView(SynthesisBean synBean) {
 
-
+        sampleId = synBean.getDomain().getSample().getId();
         Map<String, Object> files;
 
         List<Map<String, Object>> fileList;

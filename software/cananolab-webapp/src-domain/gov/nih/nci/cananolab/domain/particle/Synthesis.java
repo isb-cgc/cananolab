@@ -16,8 +16,16 @@ public class Synthesis implements Serializable {
 	private Set<SynthesisFunctionalization> synthesisFunctionalizations;
 	private Set<SynthesisPurification> synthesisPurifications;
 
+    public void addPurification(SynthesisPurification synthesisPurification) {
+    	synthesisPurifications.add(synthesisPurification);
+    }
 
-	public Set<SynthesisPurification> getSynthesisPurifications() {
+    public void removePurification(SynthesisPurification synthesisPurification){
+    	synthesisPurifications.remove(synthesisPurification);
+	}
+
+
+    public Set<SynthesisPurification> getSynthesisPurifications() {
 		return synthesisPurifications;
 	}
 

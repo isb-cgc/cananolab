@@ -81,6 +81,7 @@ public class ProtocolManager
 			return protocolBean;
 		} catch (Exception e) {
 			logger.error("Error in retrieving the protocol " + protocolId);
+			logger.error(e.getMessage());
 		}
 		return null;
 	}

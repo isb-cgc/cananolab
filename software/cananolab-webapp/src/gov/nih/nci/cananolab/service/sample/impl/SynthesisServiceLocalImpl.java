@@ -947,6 +947,7 @@ public class SynthesisServiceLocalImpl extends BaseServiceLocalImpl implements S
                 }
 
             } else {
+                synthesisPurification.setSynthesis(synthesis);
                 synthesisPurification.setSynthesisId(synthesis.getId());
             }
 
@@ -966,7 +967,6 @@ public class SynthesisServiceLocalImpl extends BaseServiceLocalImpl implements S
 
 //TODO Enable when I get the other stuff lined up
             appService.saveOrUpdate(synthesisPurification);
-
 
             for(SynthesisPurityBean synthesisPurityBean: synthesisPurificationBean.getPurityBeans()){
                 this.saveSynthesisPurity(synthesisPurityBean,synthesisPurificationBean);

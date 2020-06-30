@@ -62,5 +62,15 @@ public class SimpleProtocol {
 		}
 		displayName = protoBean.getDisplayName();
 	}
+
+	public void transferFromSimpleSubmitProtocol(SimpleSubmitProtocolBean simpleSubmitProtocolBean){
+		if(simpleSubmitProtocolBean == null) return;
+
+
+		domainId = simpleSubmitProtocolBean.getId();
+		domainFileId = simpleSubmitProtocolBean.getFileId();
+		domainFileUri = simpleSubmitProtocolBean.getUri();
+		displayName = simpleSubmitProtocolBean.getName();
+	}
 }
 
