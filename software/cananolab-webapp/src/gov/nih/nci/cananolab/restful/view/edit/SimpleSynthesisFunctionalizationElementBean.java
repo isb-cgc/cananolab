@@ -155,4 +155,25 @@ public class SimpleSynthesisFunctionalizationElementBean {
         this.valueUnit = valueUnit;
     }
 
+    @Override
+    public String toString() {
+        return "SimpleSynthesisFunctionalizationElementBean{" +
+                "chemicalName='" + chemicalName + '\'' +
+                ", createdBy='" + createdBy + '\'' +
+                ", createdDate=" + createdDate +
+                ", description='" + description + '\'' +
+                ", id=" + id +
+                ", functionList=" + functionList +
+                ", molecularFormula='" + molecularFormula + '\'' +
+                ", molecularFormulaType='" + molecularFormulaType + '\'' +
+                ", pubChemDataSource='" + pubChemDataSource + '\'' +
+                ", pubChemId=" + pubChemId +
+                ", type='" + type + '\'' +
+                ", value=" + value +
+                ", valueUnit='" + valueUnit + '\'' +
+                ", activationMethod='" + activationMethod + '\'' +
+                ", activationEffect='" + activationEffect + '\'' +
+                ", files=" + files +
+                '}';
+    }
 }
