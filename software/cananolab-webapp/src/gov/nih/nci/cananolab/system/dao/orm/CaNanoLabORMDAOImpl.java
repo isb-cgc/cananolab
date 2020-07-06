@@ -10,6 +10,8 @@ package gov.nih.nci.cananolab.system.dao.orm;
 
 
 
+import gov.nih.nci.cananolab.domain.particle.SynthesisPurification;
+import gov.nih.nci.cananolab.domain.particle.SynthesisPurity;
 import gov.nih.nci.cananolab.system.dao.DAOException;
 import java.io.Serializable;
 import java.util.List;
@@ -20,6 +22,7 @@ import org.hibernate.Session;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Property;
 import org.hibernate.type.NullableType;
+import org.springframework.orm.hibernate3.HibernateTemplate;
 
 /**
  * Modified the original ORMDAOImpl to contain generic CRUD operations. Removed
@@ -43,7 +46,8 @@ public class CaNanoLabORMDAOImpl extends WritableORMDAOImpl implements CaNanoLab
 	}
 
 	public void saveOrUpdate(Object t) {
-		getHibernateTemplate().saveOrUpdate(t);
+		HibernateTemplate hibernateTemplate = getHibernateTemplate();
+		hibernateTemplate.saveOrUpdate(t);
 	}
 
 	public void delete(Object t) {

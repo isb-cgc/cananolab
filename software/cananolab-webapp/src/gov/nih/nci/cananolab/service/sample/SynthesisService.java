@@ -61,6 +61,8 @@ public interface SynthesisService extends BaseService {
 
     List<String> getSupplierNames() throws SynthesisException;
 
+    List<String> getFunctionalizationActivationMethods() throws SynthesisException;
+
     Supplier createSupplierRecord(Supplier supplier) throws SynthesisException;
 
     void deleteSynthesisMaterialElement(Long sampleId, SynthesisMaterial synthesisMaterial, SynthesisMaterialElement element) throws NoAccessException, SynthesisException;

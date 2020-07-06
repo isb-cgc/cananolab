@@ -341,7 +341,7 @@ public class SynthesisServiceLocalImpl extends BaseServiceLocalImpl implements S
         try {
             CaNanoLabApplicationService appService = (CaNanoLabApplicationService) ApplicationServiceProvider
                     .getApplicationService();
-            List<SfeInherentFunction> functionList = synthesisHelper.findSfeFunctionByElementId(sampleId, element.getId(),"SynthesisMaterialElement");
+            List<SfeInherentFunction> functionList = synthesisHelper.findSfeFunctionByElementId(sampleId, element.getId(),"SynthesisFunctionalizationElement");
             element.setSfeInherentFunctions(new HashSet<SfeInherentFunction>(functionList));
             element.getSfeInherentFunctions().remove(function);
             appService.delete(function);
@@ -1210,6 +1210,18 @@ public class SynthesisServiceLocalImpl extends BaseServiceLocalImpl implements S
         }
     }
 
+    public List<String> getSupplierNames() throws SynthesisException {
+        try {
+            return synthesisHelper.getAllSupplierNames();
+        }
+        catch (Exception e) {
+            String err = "Error finding suppliers ";
+            logger.error(err, e);
+            throw new SynthesisException(err, e);
+        }
+    }
+
+
 //    public SortedSet<String> getSupplierNames() throws Exception
 //    {
 //        try {
@@ -1231,12 +1243,13 @@ public class SynthesisServiceLocalImpl extends BaseServiceLocalImpl implements S
 //        }
 //    }
 
-    public List<String> getSupplierNames() throws SynthesisException {
+    public List<String> getFunctionalizationActivationMethods() throws SynthesisException {
         try {
-            return synthesisHelper.getAllSupplierNames();
+            return synthesisHelper.getAllActivationMethods();
         }
         catch (Exception e) {
-            String err = "Error finding suppliers ";
+            String err = "Error finding Activation Methods ";
+            e.printStackTrace();
             logger.error(err, e);
             throw new SynthesisException(err, e);
         }

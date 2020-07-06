@@ -68,7 +68,7 @@ public class SynthesisHelper
         }
         List<SfeInherentFunction> functionList = new ArrayList<SfeInherentFunction>();
         CaNanoLabApplicationService appService = (CaNanoLabApplicationService) ApplicationServiceProvider.getApplicationService();
-        String hql = "select anEntity.smeInherentFunctions from " + fullClassName + " anEntity where anEntity.id = " + id;
+        String hql = "select anEntity.sfeInherentFunctions from " + fullClassName + " anEntity where anEntity.id = " + id;
         HQLCriteria crit = new HQLCriteria(hql);
         List results = appService.query(crit);
         for (int i = 0; i < results.size(); i++) {
@@ -164,17 +164,6 @@ public class SynthesisHelper
         crit.setFetchMode("synthesisFunctionalizationElements.files", FetchMode.JOIN);
         crit.setFetchMode("synthesisFunctionalizationElements.files.keywordCollection", FetchMode.JOIN);
 
-//        crit.setFetchMode("synthesisFunctionalizationElements.activationMethod", FetchMode.JOIN);
-//        crit.setFetchMode("synthesisFunctionalizationElements.activationEffect", FetchMode.JOIN);
-
-
-//        crit.setFetchMode("synthesisFunctionalizations", FetchMode.JOIN);
-//        crit.setFetchMode("synthesisFunctionalizations.files", FetchMode.JOIN);
-//        crit.setFetchMode("synthesisFunctionalizations.files.keywordConnection", FetchMode.JOIN);
-//        crit.setFetchMode("synthesisFunctionalizations.synthesisFunctionalizationElements", FetchMode.JOIN);
-//        crit.setFetchMode("synthesisFunctionalizations.synthesisFunctionalizationElements.sfeInherentFunctions", FetchMode.JOIN);
-//        crit.setFetchMode("synthesisFunctionalizations.synthesisFunctionalizationElements.files", FetchMode.JOIN);
-//        crit.setFetchMode("synthesisFunctionalizations.synthesisFunctionalizationElements.files.keywordCollection", FetchMode.JOIN);
 
         crit.setResultTransformer(CriteriaSpecification.DISTINCT_ROOT_ENTITY);
         List result = appService.query(crit);
@@ -183,6 +172,19 @@ public class SynthesisHelper
         }
         return entity;
     }
+
+    public List<String> getAllActivationMethods() throws Exception {
+        CaNanoLabApplicationService appService = (CaNanoLabApplicationService) ApplicationServiceProvider.getApplicationService();
+        HQLCriteria crit = new HQLCriteria("SELECT DISTINCT value  FROM gov.nih.nci.cananolab.domain.common.CommonLookup where name = 'activation method'");
+        List results = appService.query(crit);
+        List<String> activationMethods = new ArrayList<String>();
+        for(int i = 0; i< results.size();i++){
+            String activationMethod = (String) results.get(i).toString();
+            activationMethods.add(activationMethod);
+        }
+        return activationMethods;
+    }
+
 
     public SynthesisMaterial findSynthesisMaterialById(Long sampleId, Long entityId) throws Exception{
         SynthesisMaterial entity = null;
@@ -466,7 +468,6 @@ public class SynthesisHelper
         }
         return supplierNames;
     }
-
 
 
 }
