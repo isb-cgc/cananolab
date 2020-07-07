@@ -111,13 +111,12 @@ public class ProtocolServiceHelper
 		List results = appService.query(crit);
 		for(int i=0;i< results.size();i++){
 			Protocol protocol = (Protocol) results.get(i);
-			//TODO
-//			if (springSecurityAclService.currentUserHasReadPermission(protocol.getId(), SecureClassesEnum.PROTOCOL.getClazz()) ||
-//					springSecurityAclService.currentUserHasWritePermission(protocol.getId(), SecureClassesEnum.PROTOCOL.getClazz())) {
+			if (springSecurityAclService.currentUserHasReadPermission(protocol.getId(), SecureClassesEnum.PROTOCOL.getClazz()) ||
+					springSecurityAclService.currentUserHasWritePermission(protocol.getId(), SecureClassesEnum.PROTOCOL.getClazz())) {
 				protocols.add(protocol);
-//			} else {
-//				logger.debug("User doesn't have access to protocol with id " + protocol.getId());
-//			}
+			} else {
+				logger.debug("User doesn't have access to protocol with id " + protocol.getId());
+			}
 		}
 		return protocols;
 	}

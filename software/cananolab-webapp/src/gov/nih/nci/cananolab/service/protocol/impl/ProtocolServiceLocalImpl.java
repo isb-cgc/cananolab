@@ -389,7 +389,7 @@ public class ProtocolServiceLocalImpl extends BaseServiceLocalImpl implements Pr
 			}
 			return protocolBeans;
 		} catch (Exception e) {
-			String error = "Error in retrieving protocolIds by owner";
+			String error = "Error in retrieving protocols by Type";
 			throw new ProtocolException(error, e);
 		}
 
