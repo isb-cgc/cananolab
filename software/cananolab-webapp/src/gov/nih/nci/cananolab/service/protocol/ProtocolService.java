@@ -64,6 +64,8 @@ public interface ProtocolService extends BaseService {
 			throws ProtocolException, NoAccessException;
 
 	List<String> findProtocolIdsByOwner(String currentOwner) throws ProtocolException;
+
+	List<ProtocolBean> findProtocolsByType(String protocolType) throws ProtocolException;
 	
 	List<String> findProtocolIdsSharedWithUser(CananoUserDetails userDetails) throws ProtocolException;
 
