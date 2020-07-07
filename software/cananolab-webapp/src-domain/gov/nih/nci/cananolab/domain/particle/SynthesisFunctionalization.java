@@ -4,6 +4,8 @@ package gov.nih.nci.cananolab.domain.particle;
 
 import gov.nih.nci.cananolab.domain.common.File;
 import gov.nih.nci.cananolab.domain.common.Protocol;
+import gov.nih.nci.cananolab.domain.common.CommonLookup;
+
 import java.io.Serializable;
 import java.util.Date;
 import java.util.HashSet;
@@ -23,6 +25,7 @@ public class SynthesisFunctionalization implements Serializable {
 	private String createdBy;
 	private Set<SynthesisFunctionalizationElement> synthesisFunctionalizationElements = new HashSet<SynthesisFunctionalizationElement>();
 	private Set<File> files = new HashSet<File>();
+	private CommonLookup commonLookup;
 //	private String type;
 
 
@@ -117,6 +120,21 @@ public class SynthesisFunctionalization implements Serializable {
 		this.createdBy = createdBy;
 	}
 
+	public Long getSynthesisFunctionalizationPkId() {
+		return synthesisFunctionalizationPkId;
+	}
+
+	public void setSynthesisFunctionalizationPkId( Long synthesisFunctionalizationPkId ) {
+		this.synthesisFunctionalizationPkId = synthesisFunctionalizationPkId;
+	}
+
+	public CommonLookup getCommonLookup() {
+		return commonLookup;
+	}
+
+	public void setCommonLookup( CommonLookup commonLookup ) {
+		this.commonLookup = commonLookup;
+	}
 
 	public Set<SynthesisFunctionalizationElement> getSynthesisFunctionalizationElements() {
 		return synthesisFunctionalizationElements;
