@@ -375,6 +375,25 @@ public class ProtocolServiceLocalImpl extends BaseServiceLocalImpl implements Pr
 		}
 		return protocolIds;
 	}
+
+	public List<ProtocolBean> findProtocolsByType(String type) throws ProtocolException
+	{
+		List<Protocol> protocols = new ArrayList<Protocol>();
+		List<ProtocolBean> protocolBeans = new ArrayList<ProtocolBean>();
+		try {
+			protocols = protocolServiceHelper.findProtocolsByType(type);
+			for (Protocol protocol : protocols) {
+				// don't need to load accessibility
+				ProtocolBean protocolBean = new ProtocolBean(protocol);
+				protocolBeans.add(protocolBean);
+			}
+			return protocolBeans;
+		} catch (Exception e) {
+			String error = "Error in retrieving protocolIds by owner";
+			throw new ProtocolException(error, e);
+		}
+
+	}
 	
 	@Override
 	public List<String> findProtocolIdsSharedWithUser(CananoUserDetails userDetails) throws ProtocolException
@@ -418,7 +437,7 @@ public class ProtocolServiceLocalImpl extends BaseServiceLocalImpl implements Pr
 	public List<ProtocolBean> getPurificationProtocols(HttpServletRequest request) throws Exception {
 		String protocolType = "purification";
 
-		List<ProtocolBean> protocols = findProtocolsBy(protocolType, null, null, null);
+		List<ProtocolBean> protocols = findProtocolsByType(protocolType);
 		request.getSession().setAttribute("purificationProtocols", protocols);
 		return protocols;
 	}
