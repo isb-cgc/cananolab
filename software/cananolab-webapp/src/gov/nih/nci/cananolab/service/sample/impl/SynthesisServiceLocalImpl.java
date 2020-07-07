@@ -172,7 +172,7 @@ public class SynthesisServiceLocalImpl extends BaseServiceLocalImpl implements S
         } catch (NoAccessException e){
             throw e;
         } catch (Exception e) {
-            String err = "Problem finding the synthesis functionalization entity by id: " + dataId;
+            String err = "Problem finding the synthesis purification entity by id: " + dataId;
             logger.error(err, e);
             throw new SynthesisException(err, e);
         }

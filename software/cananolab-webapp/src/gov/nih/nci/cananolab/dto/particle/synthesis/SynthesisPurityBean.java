@@ -18,6 +18,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -88,16 +89,18 @@ public class SynthesisPurityBean
     }
 
 
-    public SynthesisPurityBean( SynthesisPurity synthesisPurity)
+    public SynthesisPurityBean( SynthesisPurity synthesisPurity, List<ColumnHeader> inputColumnHeaders)
     {
         //TODO rewrite?
         domain = synthesisPurity;
         id = synthesisPurity.getId();
+
         List<PurityDatum> data = null;
         if( synthesisPurity.getPurityDatumCollection() != null )
         {
             data = new ArrayList<PurityDatum>( synthesisPurity.getPurityDatumCollection() );
             Collections.sort( data, new Comparators.PurityDatumDateComparator() );
+            setColumnHeaders(inputColumnHeaders);
         }
 
         if( synthesisPurity.getFiles() != null
@@ -126,6 +129,9 @@ public class SynthesisPurityBean
                 ColumnHeader datumColumn = new ColumnHeader( datum );
                 if( ! columnHeaders.contains( datumColumn ) )
                 {
+                    if(datumColumn.getCreatedDate()==null){
+                        datumColumn.setCreatedDate(new Date());
+                    }
                     columnHeaders.add( datumColumn );
                 }
                 if( datumMap.get( datumColumn ) != null )
@@ -151,6 +157,9 @@ public class SynthesisPurityBean
                                 condition );
                         if( ! columnHeaders.contains( conditionColumn ) )
                         {
+                            if(conditionColumn.getCreatedDate()==null){
+                                conditionColumn.setCreatedDate(new Date());
+                            }
                             columnHeaders.add( conditionColumn );
                         }
                         if( conditionMap.get( conditionColumn ) != null )
@@ -257,6 +266,8 @@ public class SynthesisPurityBean
         }
     }
 
+
+
     public List<PurityRow> getRows()
     {
         return rows;
@@ -300,7 +311,9 @@ public class SynthesisPurityBean
 
     public void setColumnHeaders( List<ColumnHeader> columnHeaders )
     {
-        this.columnHeaders = columnHeaders;
+        if(columnHeaders!=null) {
+            this.columnHeaders = columnHeaders;
+        }
     }
 
     public int getNumberOfColumns()

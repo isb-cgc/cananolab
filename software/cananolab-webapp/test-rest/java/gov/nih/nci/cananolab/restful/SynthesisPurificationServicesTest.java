@@ -302,27 +302,10 @@ public class SynthesisPurificationServicesTest {
                 SimpleSynthesisPurificationBean existingBean = getSimpleSynthesisPurificationBean("1000", "1000");
                 int originalnumberofPurities = existingBean.getPurityBeans().size();
                 SimplePurityBean newPurity = new SimplePurityBean();
-                List<ColumnHeader> columnHeaders= new ArrayList<ColumnHeader>();
-                ColumnHeader columnDatum = new ColumnHeader();
-                ColumnHeader columnCondition = new ColumnHeader();
+//                List<ColumnHeader> columnHeaders= new ArrayList<ColumnHeader>();
+//                ColumnHeader columnDatum = new ColumnHeader();
+//                ColumnHeader columnCondition = new ColumnHeader();
 
-                columnDatum.setColumnOrder(1);
-                columnDatum.setColumnName("new Datum column");
-                columnDatum.setColumnType(Constants.DATUM);
-                columnDatum.setDisplayName("Datum column");
-                columnDatum.setValueType("observed");
-                columnDatum.setValueUnit("mg/mL");
-                columnHeaders.add(columnDatum);
-
-                columnCondition.setColumnOrder(2);
-                columnCondition.setColumnName("new Condition column");
-                columnCondition.setColumnType(Constants.CONDITION);
-                columnCondition.setDisplayName("Condition column");
-                columnCondition.setValueType("mean");
-                columnCondition.setValueUnit("mL");
-                columnCondition.setConditionProperty("Foo");
-                columnHeaders.add(columnCondition);
-                newPurity.setColumnHeaders(columnHeaders);
 
                 List<SimplePurityRowBean> rowBeans = new ArrayList<SimplePurityRowBean>();
                 SimplePurityRowBean newPurityRow = new SimplePurityRowBean();
@@ -420,6 +403,28 @@ public class SynthesisPurificationServicesTest {
         }catch (Exception e){
             e.printStackTrace();
         }
+    }
+
+    @Test
+    public void testAddColumn(){
+//TODO
+//        columnDatum.setColumnOrdernOrder(1);
+//        columnDatum.setColumnName("new Datum column");
+//        columnDatum.setColumnType(Constants.DATUM);
+//        columnDatum.setDisplayName("Datum column");
+//        columnDatum.setValueType("observed");
+//        columnDatum.setValueUnit("mg/mL");
+//        columnHeaders.add(columnDatum);
+//
+//        columnCondition.setColumnOrder(2);
+//        columnCondition.setColumnName("new Condition column");
+//        columnCondition.setColumnType(Constants.CONDITION);
+//        columnCondition.setDisplayName("Condition column");
+//        columnCondition.setValueType("mean");
+//        columnCondition.setValueUnit("mL");
+//        columnCondition.setConditionProperty("Foo");
+//        columnHeaders.add(columnCondition);
+//        newPurity.setColumnHeaders(columnHeaders);
     }
 
     @Test
