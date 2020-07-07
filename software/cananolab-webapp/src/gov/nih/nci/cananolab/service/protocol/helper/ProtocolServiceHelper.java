@@ -92,8 +92,32 @@ public class ProtocolServiceHelper
 				springSecurityAclService.currentUserHasWritePermission(protocol.getId(), SecureClassesEnum.PROTOCOL.getClazz())) {
 				protocols.add(protocol);
 			} else {
-				logger.debug("User doesn't have access ot protocol with id " + protocol.getId());
+				logger.debug("User doesn't have access to protocol with id " + protocol.getId());
 			}
+		}
+		return protocols;
+	}
+
+	public List<Protocol> findProtocolsByType(String protocolType) throws Exception{
+		if (StringUtils.isEmpty(protocolType) ) {
+			return null;
+		}
+		List<Protocol> protocols = new ArrayList<Protocol>();
+		CaNanoLabApplicationService appService = (CaNanoLabApplicationService) ApplicationServiceProvider.getApplicationService();
+		DetachedCriteria crit = DetachedCriteria.forClass(Protocol.class)
+				.add(Property.forName("type").eq(protocolType).ignoreCase());
+
+		crit.setResultTransformer(CriteriaSpecification.DISTINCT_ROOT_ENTITY);
+		List results = appService.query(crit);
+		for(int i=0;i< results.size();i++){
+			Protocol protocol = (Protocol) results.get(i);
+			//TODO
+//			if (springSecurityAclService.currentUserHasReadPermission(protocol.getId(), SecureClassesEnum.PROTOCOL.getClazz()) ||
+//					springSecurityAclService.currentUserHasWritePermission(protocol.getId(), SecureClassesEnum.PROTOCOL.getClazz())) {
+				protocols.add(protocol);
+//			} else {
+//				logger.debug("User doesn't have access to protocol with id " + protocol.getId());
+//			}
 		}
 		return protocols;
 	}
