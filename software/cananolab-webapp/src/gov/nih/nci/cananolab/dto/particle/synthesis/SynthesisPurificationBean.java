@@ -6,6 +6,7 @@ import gov.nih.nci.cananolab.domain.common.Technique;
 import gov.nih.nci.cananolab.domain.particle.SynthesisMaterialElement;
 import gov.nih.nci.cananolab.domain.particle.SynthesisPurification;
 import gov.nih.nci.cananolab.domain.particle.SynthesisPurity;
+import gov.nih.nci.cananolab.dto.common.ColumnHeader;
 import gov.nih.nci.cananolab.dto.common.ProtocolBean;
 import gov.nih.nci.cananolab.dto.common.PurificationConfigBean;
 
@@ -34,6 +35,7 @@ public class SynthesisPurificationBean extends BaseSynthesisEntityBean {
     private List<SynthesisPurityBean> purityBeans = new ArrayList<SynthesisPurityBean>();
     private List<PurificationConfigBean> purificationConfigs = new ArrayList<>();
     private ProtocolBean protocolBean = new ProtocolBean();
+    private List<ColumnHeader> columnHeaders = new ArrayList<ColumnHeader>();
 
 
     public SynthesisPurificationBean(SynthesisPurification purification){
@@ -49,9 +51,25 @@ public class SynthesisPurificationBean extends BaseSynthesisEntityBean {
 
         for(SynthesisPurity purity:purification.getPurities()){
 //            SynthesisPurityBean purityBean = new SynthesisPurityBean(purity);
-            SynthesisPurityBean purityBean = new SynthesisPurityBean(purity);
-            purityBean.getDomain().setSynthesisPurification(purification);
-            purityBeans.add(purityBean);
+            if(purity.getId()!=null) {
+                SynthesisPurityBean purityBean = new SynthesisPurityBean(purity,null);
+                purityBean.getDomain().setSynthesisPurification(purification);
+                if (columnHeaders.size() < purityBean.getColumnHeaders().size()) {
+                    columnHeaders = purityBean.getColumnHeaders();
+                }
+                purityBeans.add(purityBean);
+            }
+        }
+
+        for(SynthesisPurity purity:purification.getPurities()){
+            if(purity.getId()==null){
+                SynthesisPurityBean purityBean = new SynthesisPurityBean(purity, columnHeaders);
+                purityBeans.add(purityBean);
+            }
+        }
+
+        for(SynthesisPurityBean purityBean: purityBeans){
+            purityBean.setColumnHeaders(columnHeaders);
         }
         for(PurificationConfig config: purification.getPurificationConfigs()){
             PurificationConfigBean pureBean = new PurificationConfigBean(config);
