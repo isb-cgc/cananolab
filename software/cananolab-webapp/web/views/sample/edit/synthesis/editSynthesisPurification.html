@@ -1,13 +1,292 @@
 <button ng-click="tempShow=!tempShow">debug</button>
 <div style="width:800px;" ng-show="tempShow">
-  <B>Material Copy</B> - {{materialCopy}} <br /><br />
-  <B>Material</B> - {{material}} <br /><br />
+  <B>Purification Copy</B> - {{purificationCopy}} <br /><br />
+  <B>Purification</B> - {{purification}} <br /><br />
   <B>Material Element</B> - {{materialElement}}<br /><br />
 </div>
 
 <div class="spacer">
   <form novalidate="" class="ng-pristine ng-valid">
-<button ng-click="testSave()">Test Save </button>
-<button ng-click="testSave2()">Test Save New Data</button>
+    <table class="contentTitle" width="100%" border="0" summary="layout">
+      <tbody>
+        <tr>
+          <!-- ngIf: nanoEntityId!=null && nanoEntityId!='' -->
+          <td scope="col" align="left" class="ng-scope">
+            <h1 class="ng-binding">{{setPageTitle()}}
+            </h1>
+          </td><!-- end ngIf: nanoEntityId!=null && nanoEntityId!='' -->
+
+          <!-- ngIf: nanoEntityId==null -->
+
+          <td align="right" width="30%">
+            <a class="helpText"
+              href="javascript:openHelpWindow('https://wiki.nci.nih.gov/display/caNanoLab/Managing+Sample+Composition+Annotations#ManagingSampleCompositionAnnotations-NanomaterialAddingNanomaterialEntityCompositionAnnotations')">Help</a>
+            &nbsp;
+            <a class="helpText"
+              href="javascript:openHelpWindow('https://wiki.nci.nih.gov/display/caNanoLab/caNanoLab+Glossary')">Glossary</a>
+            &nbsp;
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <span style="font-family:Arial,Helvetica,sans-serif;font-size:16px;color:red;align-content: center;">
+      <ul>
+        <!-- ngRepeat: message in messages -->
+      </ul>
+    </span>
+    <table width="100%" align="center" class="submissionView" summary="layout">
+      <tbody>
+        <tr>
+          <td class="cellLabel" width="100">
+            <label for="type">Protocol</label>
+          </td>
+          <td>
+            <div id="categoryPrompt">
+              <select ng-model="purification.simpleProtocol"
+                ng-options="o as o.displayName for o in dropdowns.protocolLookup track by o.domainId">
+              </select>
+              <!-- <input type="text" size="50" value="{{material.simpleProtocol.displayName}}" data-ng-model="material.simpleProtocol.displayName"> -->
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td class="cellLabel" width="100">
+            <label for="yield">Yield</label>
+          </td>
+          <td>
+            <div id="categoryPrompt">
+              <input type="text" size="35" value="{{purification.yield}}" data-ng-model="purification.yield">
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <br>
+    <br>
+    <table width="100%" align="center" class="submissionView ng-scope">
+      <tbody>
+        <tr>
+          <td class="cellLabel" width="100">
+            <label for="type">Design and Methods Description</label>
+          </td>
+          <td>
+            <div id="categoryPrompt">
+              <textarea rows="5" cols="70"
+                data-ng-model="purification.designMethodDescription">{{purification.designMethodDescription}}</textarea>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+
+
+    <br>
+    <br>
+    <table width="100%" align="center" class="submissionView ng-scope">
+      <tbody>
+        <tr>
+          <td class="cellLabel" width="15%">
+            Finding
+          </td>
+          <td>
+            <button type="button" ng-click="openMaterialEditForm({},-1, 0)" class="btn btn-primary btn-xs"
+              id="addFile">Add</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <br>
+    <br>
+
+
+    <table width="100%" align="center" class="submissionView ng-scope">
+      <tbody>
+        <tr>
+          <td class="cellLabel" width="100">
+            <label for="analysis">Analysis and Conclusion</label>
+          </td>
+          <td>
+            <div id="categoryPrompt">
+              <textarea rows="5" cols="70" data-ng-model="purification.analysis">{{purification.analysis}}</textarea>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <br>
+    <br>
+
+    <table width="100%" align="center" class="submissionView" summary="layout">
+      <tbody>
+        <tr>
+          <td width="10%"><label>Files</label></td>
+          <td width="90%">
+            <button type="button" class="btn btn-primary btn-xs ng-click-active"
+              ng-click="openFileForm(-1, $parent.$index)">Add</button>
+          </td>
+        </tr>
+        <tr>
+          <td colspan="2" ng-show="material.fileElements.length">
+            <table class="editTableWithGrid" align="center" width="95%">
+              <tr>
+                <td class="cellLabel">
+                  File Type
+                </td>
+                <td class="cellLabel">
+                  Title
+                </td>
+                <td class="cellLabel">
+                  Keywords
+                </td>
+                <td class="cellLabel" colspan="2">
+                  Description
+                </td>
+              </tr>
+              <tr class="synthesisFiles" ng-repeat="file in material.fileElements">
+                <td width="10%">
+                  {{file.type}}
+                </td>
+                <td width="20%">
+                  <a href="#" target="_blank"
+                    ng-href="{{file.urlExternal==true ? file.uri:'/caNanoLab/rest/sample/download?fileId='+file.id}}">{{file.title}}</a>
+                </td>
+                <td width="20%">
+                  {{file.keywordsStr}}
+                </td>
+                <td width="40%">
+                  {{file.description}}
+                </td>
+                <td width="10%">
+                  <button type="button" class="btn btn-primary btn-xs ng-click-active"
+                    ng-click="openFileForm($index, $parent.$index, file)">Edit</button>
+                </td>
+              </tr>
+              <tr ng-show="fileFormIndex!=null">
+                <td colspan="4">{{currentFile}}, {{fileObject}}
+                  <table class="editTableWithGrid form" align="center" width="95%">
+                    <tr ng-if="fileErrorMessage">
+                      <td colspan="2" class="fileErrorMessage">
+                        <div>
+                          {{fileErrorMessage}}
+                        </div>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td width="25%">
+                        <input type="radio" ng-model="currentFile.uriExternal" ng-value="false" name="uriExternal">
+                        <label for="external0">Upload</label>
+                      </td>
+                      <td width="75%">
+                        <input type="radio" ng-model="currentFile.uriExternal" ng-value="true" name="uriExternal">
+                        <label for="external0">Enter File URL</label>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td class="cellLabel">
+                        <span ng-bind-html="currentFile.uriExternal ? 'External URL':'File'">Label</span>*
+                      </td>
+                      <td>
+                        <input type="file" id="uploadFile" file-model="fileObject" ng-show="!currentFile.uriExternal">
+                        <input type="text" data-ng-model="currentFile.externalUrl" ng-if="currentFile.uriExternal"
+                          size="60">
+                      </td>
+                    </tr>
+                    <tr>
+                      <td class="cellLabel">
+                        File Type*
+                      </td>
+                      <td>
+                        <select ng-model="currentFile.type" ng-options="o as o for o in dropdowns.fileTypes">
+                        </select>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td class="cellLabel">
+                        File Title*
+                      </td>
+                      <td>
+                        <input type="text" name="title" data-ng-model="currentFile.title" size="60">
+                      </td>
+                    </tr>
+                    <tr>
+                      <td class="cellLabel">
+                        Keywords
+                      </td>
+                      <td>
+                        <textarea data-ng-model="currentFile.keywordsStr" cols="60" rows="3" id="fileKeywords"
+                          class="ng-valid ng-dirty"></textarea><br />
+                        <em>(one word per line)</em>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td class="cellLabel">
+                        Description
+                      </td>
+                      <td>
+                        <textarea ng-model="currentFile.description" cols="60" rows="3" id="fileDescription"
+                          class="ng-valid ng-dirty"></textarea>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td colspan="2" class="saveSynthesis">
+                        <button class="btn btn-default btn-xs" ng-click="cancelFile()">Cancel</button>
+                        <button class="btn btn-primary btn-xs" ng-disabled="getFileConditions()"
+                          ng-click="saveFile()">Save File</button>
+
+                      </td>
+                    </tr>
+                  </table>
+                </td>
+              </tr>
+
+            </table>
+          </td>
+        </tr>
+        <!-- <tr ng-repeat="file in material.files">
+                    <td>
+                        {{file.type}}
+                    </td>
+                    <td>
+                        <a href="#" target="_blank" ng-href="file.uri">{{file.title}}</a>
+                    </td>
+                    <td>
+                        {{file.keywordsStr}}
+                    </td>
+                    <td>
+                        {{file.description}}
+                    </td>
+                </tr>
+                <tr ng-show="fileFormIndex!=null">
+                    <td colspan="4">
+                        <table class="editTableWithGrid" align="center" width="95%">
+                            <tr>
+                                <td>some file</td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr> -->
+      </tbody>
+    </table>
+
+    <br>
+    <div class="form__actions">
+      <div class="form__action form__action--left">
+        <!-- ngIf: nanoEntityId !== null --><button class="btn btn-danger ng-scope" type="button" value="Delete"
+          ng-click="deleteMaterial()" ng-if="synMaterialId!=-1">Delete</button>
+        <!-- end ngIf: nanoEntityId !== null -->
+      </div>
+      <div class="form__action form__action--right">
+        <input type="hidden" ng-model="nanoEntityForm.createdBy" class="ng-pristine ng-valid">
+        <input type="hidden" ng-model="nanoEntityForm.createdDate" class="ng-pristine ng-valid">
+        <button class="btn btn-danger" type="reset" value="Reset" ng-click="resetForm()">Reset</button>
+        <button ng-disabled="!purification.simpleProtocol.displayName" class="btn btn-primary ng-binding" type="submit"
+          ng-click="savePurification()" ng-show="!addNewComposingElement">
+          Update
+        </button>
+
+      </div>
+    </div>
+
+
   </form>
 </div>
