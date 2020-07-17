@@ -101,6 +101,9 @@ var app = angular.module('angularApp')
 
   // open the file edit form //
   $scope.openFileForm = function (index, parentIndex, file) {
+    $scope.uploadComplete = false;
+    $scope.uploadError = false;
+
     $scope.fileObject = null;
     $('#uploadFile')[0].value = "";
     $scope.uploadError = null;
@@ -166,18 +169,20 @@ var app = angular.module('angularApp')
 
   // save file //
   $scope.saveFile = function() {
-    $scope.uploadComplete = false;
-    $scope.uploadError = false;
-
     if ($scope.fileObject && !$scope.currentFile.uriExternal) {
       $scope.uploadFile();
 
       // watch upload complete //
       $scope.$watch('uploadComplete', function () {
+        console.log($scope.uploadComplete)
+
         if ($scope.uploadComplete) {
-          console.log('upload complete', $scope.uploadComplete)
+          $scope.fileFormIndex = null;
+          console.log('upload complete. Add to file')
         };
       });
+
+      
 
       // watch upload error //
       $scope.$watch('uploadError', function () {
@@ -194,6 +199,7 @@ var app = angular.module('angularApp')
 
   // uploads file to server //
   $scope.uploadFile = function() {
+    console.log('i am uploading')
     var fd = new FormData(); // create new form data object //
     fd.append('file', $scope.fileObject);
     $http.post('/caNanoLab/rest/core/uploadFile', fd, { withCredentials: false, headers: { 'Content-Type': undefined }, transformRequest: angular.identity }).
@@ -233,15 +239,15 @@ var app = angular.module('angularApp')
 
   // submit the entire synthesis material //
   $scope.saveMaterial = function () {
-    $scope.fileMaterial = angular.copy($scope.material);
-    $scope.fileMaterial['fileBeingEdited'] = { "uri": $scope.somefile.name, "title": "test", "type": "document", "uriExternal": false };
-    $http({ method: 'POST', url: '/caNanoLab/rest/synthesisMaterial/saveFile', data: $scope.fileMaterial }).
-      success(function (data, status, headers, config) {
-        $location.search({ 'message': 'Synthesis Material successfully saved.', 'sampleId': $scope.sampleId }).path('/editSynthesis').replace();
-      }).
-      error(function (data, status, headers, config) {
-        console.log('fail')
-      });
+    // $scope.fileMaterial = angular.copy($scope.material);
+    // $scope.fileMaterial['fileBeingEdited'] = { "uri": $scope.somefile.name, "title": "test", "type": "document", "uriExternal": false };
+    // $http({ method: 'POST', url: '/caNanoLab/rest/synthesisMaterial/saveFile', data: $scope.fileMaterial }).
+    //   success(function (data, status, headers, config) {
+    //     $location.search({ 'message': 'Synthesis Material successfully saved.', 'sampleId': $scope.sampleId }).path('/editSynthesis').replace();
+    //   }).
+    //   error(function (data, status, headers, config) {
+    //     console.log('fail')
+    //   });
 
     $http({ method: 'POST', url: '/caNanoLab/rest/synthesisMaterial/submit', data: $scope.material }).
       success(function (data, status, headers, config) {
