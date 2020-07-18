@@ -1,7 +1,9 @@
 package gov.nih.nci.cananolab.restful;
 
+import gov.nih.nci.cananolab.exception.SynthesisException;
 import gov.nih.nci.cananolab.restful.util.RestTestLoginUtil;
 import gov.nih.nci.cananolab.restful.view.edit.*;
+import gov.nih.nci.cananolab.service.sample.impl.SynthesisServiceLocalImpl;
 import io.restassured.RestAssured;
 import io.restassured.authentication.PreemptiveBasicAuthScheme;
 import io.restassured.builder.RequestSpecBuilder;
@@ -83,8 +85,8 @@ public class SynthesisFunctionalizationServicesTest {
                     .when().get( "synthesisFunctionalization/setup" )
                     .then().statusCode( 200 ).extract().response();
 
-            // TODO setup is broken
-            assertNotNull( response );
+            assertNotNull( response.asString() );
+            System.out.println( "response: " + response.toString() );
 
         } catch( Exception e ) {
             e.printStackTrace();
@@ -106,6 +108,7 @@ public class SynthesisFunctionalizationServicesTest {
             String id = response.path( "id" ).toString();
             assertTrue( id.equals( "1000" ) );
             ArrayList<SimpleSynthesisFunctionalizationElementBean> functionalizationElements = response.path( "functionalizationElements" );
+
             assertTrue( functionalizationElements.size() > 0 );
             JSONObject jResponse = new JSONObject( response.body().asString() );
             ObjectMapper mapper = new ObjectMapper();
@@ -113,6 +116,11 @@ public class SynthesisFunctionalizationServicesTest {
             assertTrue( synthesisFunctionalizationBean.getType().equalsIgnoreCase( "Synthesis" ) );
             assertTrue( synthesisFunctionalizationBean.getCreatedBy() != null );
             assertTrue( synthesisFunctionalizationBean.getCreatedBy().length() > 0 );
+
+
+            assertTrue( functionalizationElements.get( 0 ).getInherentFunctionList() != null );
+            assertTrue( functionalizationElements.get( 0 ).getInherentFunctionList().size() > 0 );
+
 
         } catch( Exception e ) {
             e.printStackTrace();
@@ -148,6 +156,8 @@ public class SynthesisFunctionalizationServicesTest {
         elementBean.setDescription( "Test SynFunc with IF" );
         elementBean.setCreatedBy( "" );
         elementBean.setType( "core" );
+
+        // Inherent Function
         List<Map<String, String>> inherentFunctionList = new ArrayList<Map<String, String>>();
         Map<String, String> newIF = new HashMap<String, String>();
         newIF.put( "description", "testDescription" );
@@ -155,6 +165,8 @@ public class SynthesisFunctionalizationServicesTest {
         newIF.put( "id", "297" );
         inherentFunctionList.add( newIF );
         elementBean.setInherentFunctionList( inherentFunctionList );
+
+
         List<SimpleSynthesisFunctionalizationElementBean> elementBeans = new ArrayList<SimpleSynthesisFunctionalizationElementBean>();
         elementBeans.add( elementBean );
         functionalizationBean.setFunctionalizationElements( elementBeans );
@@ -164,6 +176,11 @@ public class SynthesisFunctionalizationServicesTest {
                     .then().statusCode( 200 ).extract().response();
 
             assertNotNull( response );
+
+            assertNotNull( getSimpleSynthesisFunctionalizationBean( "1000", "1000" ).getFunctionalizationElements().get( 0 ).getInherentFunctionList() );
+            assertTrue( getSimpleSynthesisFunctionalizationBean( "1000", "1000" ).getFunctionalizationElements().get( 0 ).getInherentFunctionList().size() > 0 );
+
+
             String debug = response.asString();
             System.out.println( debug );
         } catch( Exception e ) {
@@ -258,11 +275,13 @@ public class SynthesisFunctionalizationServicesTest {
         SimpleFileBean fileBean = new SimpleFileBean();
         fileBean.setType( "document" );
         fileBean.setTitle( "TestTitle" );
+        fileBean.setKeywordsStr( "TestKeyWord" );
         fileBean.setUriExternal( true );
-        fileBean.setExternalUrl( "http://192.168.1.25:8080/test_file.txt" );
+        fileBean.setDescription( "Test File description" );
+        fileBean.setExternalUrl( "http://192.168.1.25:8080/test_file.txt" );  // THIS NEEDS TO BE SET TO AN EXISTING FILE!
 
         fileBean.setSampleId( "1000" );
-        fileBean.setUri( "http://192.168.1.25:8080/test_file.txt" );
+        fileBean.setUri( "http://192.168.1.25:8080/test_file.txt" );  // THIS NEEDS TO BE SET TO AN EXISTING FILE!
         functionalizationBean.setFileBeingEdited( fileBean );
 
         try {
@@ -332,21 +351,24 @@ public class SynthesisFunctionalizationServicesTest {
         SimpleSynthesisFunctionalizationBean functionalizationBean = new SimpleSynthesisFunctionalizationBean();
         functionalizationBean.setSampleId( "1000" );
         functionalizationBean.setId( new Long( 1000 ) );
+
         SimpleFileBean fileBean = new SimpleFileBean();
         fileBean.setType( "TestType" );
         fileBean.setTitle( "TestTitle" );
         fileBean.setUriExternal( true );
-        fileBean.setExternalUrl( "https:///somewhere.com" );
+        fileBean.setExternalUrl( "http://192.168.1.25:8080/test_file.txt" );  // THIS NEEDS TO BE SET TO AN EXISTING FILE!
         fileBean.setSampleId( "1000" );
+        fileBean.setId( new Long( 67043330 ) ); // this needs to changed for each test.
+
         List<SimpleFileBean> fileBeans = new ArrayList<SimpleFileBean>();
         fileBeans.add( fileBean );
         functionalizationBean.setFileElements( fileBeans );
+        functionalizationBean.setFileBeingEdited( fileBeans.get( 0 ) );
 
         try {
             Response response = given().spec( specification ).
                     body( functionalizationBean ).when().post( "synthesisFunctionalization/removeFile" )
                     .then().statusCode( 200 ).extract().response();
-
 
             assertNotNull( response );
         } catch( Exception e ) {
@@ -357,16 +379,36 @@ public class SynthesisFunctionalizationServicesTest {
 
     @Test
     public void testSubmit() {
+        // FunctionalizationBean
+        String description = "TEST_FunctionalizationBean description";
+
+        // Element
+        String chemName = "TEST_Chem_" + new Date().toString();
+        Float value = 12.34F;
+        String units = "TEST_Units";
+        String molecularFormula = "TEST_CHO2Si";
+        String molecularFormulaType = "TEST_molecularFormulaType";
+        String elementDescription = "TEST_functionalization element elementDescription";
+        String elementType = "TEST_type";
+        String elementActivationMethod = "TEST_elementActivationMethod";
+        String elementActivationMEffect = "TEST_elementActivationEffect";
+        String pubChemDataSource = "TEST_compound";
+
         SimpleSynthesisFunctionalizationBean functionalizationBean = getSimpleSynthesisFunctionalizationBean( "1000", "1000" );
         SimpleSynthesisFunctionalizationElementBean elementBean = new SimpleSynthesisFunctionalizationElementBean();
-        elementBean.setChemicalName( "TestChem" );
-        elementBean.setMolecularFormula( "CHO2Si" );
-        elementBean.setMolecularFormulaType( "Hill" );
-        elementBean.setDescription( "Test functionalization element" );
-        elementBean.setCreatedBy( "" );
-        elementBean.setType( "reagent" );
-        elementBean.setActivationMethod( "Heat" );
-        elementBean.setActivationEffect( "turns green" );
+        functionalizationBean.setDescription( description );
+
+        elementBean.setChemicalName( chemName );
+        elementBean.setPubChemDataSource( pubChemDataSource );
+        elementBean.setValue( value );
+        elementBean.setValueUnit( units );
+        elementBean.setMolecularFormula( molecularFormula );
+        elementBean.setMolecularFormulaType( molecularFormulaType );
+        elementBean.setDescription( elementDescription );
+        elementBean.setCreatedBy( "CreatedBy MHL" ); // This get's replaced with the parent Functionalization's "created by", so I'm not doing an assert on elementBean.getCreatedBy
+        elementBean.setType( elementType );
+        elementBean.setActivationMethod( elementActivationMethod );
+        elementBean.setActivationEffect( elementActivationMEffect );
         List<SimpleSynthesisFunctionalizationElementBean> elementBeans = new ArrayList<SimpleSynthesisFunctionalizationElementBean>();
         elementBeans.add( elementBean );
         functionalizationBean.setFunctionalizationElements( elementBeans );
@@ -378,6 +420,35 @@ public class SynthesisFunctionalizationServicesTest {
 
             assertNotNull( response );
             String debug = response.asString();
+            assertEquals( debug, "[\"success\"]" );
+
+
+            // Make sure the changes stuck.
+            SimpleSynthesisFunctionalizationBean testFunctionalizationBean = getSimpleSynthesisFunctionalizationBean( "1000", "1000" );
+            List<SimpleSynthesisFunctionalizationElementBean> testElements = testFunctionalizationBean.getFunctionalizationElements();
+
+            // The chemName should be unique enough to use as a value to use to find our test element.
+            SimpleSynthesisFunctionalizationElementBean testElement = null;
+            for( SimpleSynthesisFunctionalizationElementBean element : testElements ) {
+                if( element.getChemicalName().equalsIgnoreCase( chemName ) ) {
+                    testElement = element;
+                }
+            }
+
+            // Did we find the element we updated
+            assertNotNull( testElement );
+
+            // Check the element values
+            assertEquals( testElement.getChemicalName(), chemName );
+            assertEquals( testElement.getPubChemDataSource(), pubChemDataSource );
+            assertEquals( testElement.getValue(), value );
+            assertEquals( testElement.getValueUnit(), units );
+            assertEquals( testElement.getMolecularFormula(), molecularFormula );
+            assertEquals( testElement.getMolecularFormulaType(), molecularFormulaType );
+            assertEquals( testElement.getDescription(), elementDescription );
+
+            assertEquals( testFunctionalizationBean.getDescription(), description );
+
             System.out.println( debug );
         } catch( Exception e ) {
             e.printStackTrace();
