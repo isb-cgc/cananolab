@@ -11,8 +11,8 @@ public class SimplePurityCell {
 	//private Datum datum = new Datum();
 	//private Condition condition = new Condition();
 	Integer columnOrder;
-	Date createdDate;
-	String createdBy;
+//	Date createdDate;
+//	String createdBy;
 	String operand;
 	
 	public void transferFromTableCell(PurityTableCell cell) {
@@ -21,9 +21,9 @@ public class SimplePurityCell {
 		datumOrCondition = cell.getDatumOrCondition();
 		columnOrder = cell.getColumnOrder();
 		operand = cell.getOperand();
-		createdDate = cell.getCreatedDate();
+//		createdDate = cell.getCreatedDate();
 		id = cell.getId();
-		createdBy = cell.getCreatedBy();
+//		createdBy = cell.getCreatedBy();
 	}
 	
 	public void transferToTableCell(PurityTableCell cell) {
@@ -32,8 +32,8 @@ public class SimplePurityCell {
 		cell.setValue(value);
 		cell.setOperand(operand);
 		cell.setId(id);
-		cell.setCreatedDate(createdDate);
-		cell.setCreatedBy(createdBy);
+//		cell.setCreatedDate(createdDate);
+//		cell.setCreatedBy(createdBy);
 	}
 	
 	public String getValue() {
@@ -54,12 +54,12 @@ public class SimplePurityCell {
 	public void setColumnOrder(Integer columnOrder) {
 		this.columnOrder = columnOrder;
 	}
-	public Date getCreatedDate() {
-		return createdDate;
-	}
-	public void setCreatedDate(Date createdDate) {
-		this.createdDate = createdDate;
-	}
+//	public Date getCreatedDate() {
+//		return createdDate;
+//	}
+//	public void setCreatedDate(Date createdDate) {
+//		this.createdDate = createdDate;
+//	}
 	
 	public String getOperand() {
 		return operand;
@@ -75,11 +75,11 @@ public class SimplePurityCell {
 		return id;
 	}
 
-	public String getCreatedBy() {
-		return createdBy;
-	}
-
-	public void setCreatedBy(String createdBy) {
-		this.createdBy = createdBy;
-	}
+//	public String getCreatedBy() {
+//		return createdBy;
+//	}
+//
+//	public void setCreatedBy(String createdBy) {
+//		this.createdBy = createdBy;
+//	}
 }

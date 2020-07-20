@@ -18,24 +18,24 @@ public class SimplePurityBean {
     List<SimpleFileBean> files = new ArrayList<SimpleFileBean>();
     File fileBeingEdited;
     Long id;
-    String createdBy;
-    Date createdDate;
+//    String createdBy;
+//    Date createdDate;
 
-    public String getCreatedBy() {
-        return this.createdBy;
-    }
-
-    public void setCreatedBy(String createdBy){
-        this.createdBy = createdBy;
-    }
-
-    public Date getCreatedDate() {
-        return this.createdDate;
-    }
-
-    public void setCreatedDate(Date date){
-        this.createdDate = date;
-    }
+//    public String getCreatedBy() {
+//        return this.createdBy;
+//    }
+//
+//    public void setCreatedBy(String createdBy){
+//        this.createdBy = createdBy;
+//    }
+//
+//    public Date getCreatedDate() {
+//        return this.createdDate;
+//    }
+//
+//    public void setCreatedDate(Date date){
+//        this.createdDate = date;
+//    }
 
     public List<SimplePurityRowBean> getPurityRows() {
         return purityRows;
@@ -90,11 +90,12 @@ public class SimplePurityBean {
     }
 
     public void transferFromPurityBean(SynthesisPurityBean purityBean, String sampleId){
-        this.setCreatedDate(purityBean.getDomain().getCreatedDate());
-        this.setCreatedBy(purityBean.getDomain().getCreatedBy());
+//        this.setCreatedDate(purityBean.getDomain().getCreatedDate());
+//        this.setCreatedBy(purityBean.getDomain().getCreatedBy());
         this.setId(purityBean.getDomain().getId());
         this.transferRowsFromPurityBean(purityBean);
         this.transferFilesFromPurityBean(purityBean, sampleId);
+
     }
 
     public void transferFilesFromPurityBean(SynthesisPurityBean purityBean,String sampleId){

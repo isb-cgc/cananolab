@@ -15,6 +15,7 @@ import gov.nih.nci.cananolab.util.Constants;
 import gov.nih.nci.cananolab.util.StringUtils;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import org.springframework.security.access.method.P;
@@ -36,7 +37,25 @@ public class SynthesisPurificationBean extends BaseSynthesisEntityBean {
     private List<PurificationConfigBean> purificationConfigs = new ArrayList<>();
     private ProtocolBean protocolBean = new ProtocolBean();
     private List<ColumnHeader> columnHeaders = new ArrayList<ColumnHeader>();
+    private Date createdDate = new Date();
+    private String createdBy = new String();
 
+
+    public Date getCreatedDate() {
+        return createdDate;
+    }
+
+    public void setCreatedDate(Date createdDate) {
+        this.createdDate = createdDate;
+    }
+
+    public String getCreatedBy() {
+        return createdBy;
+    }
+
+    public void setCreatedBy(String createdBy) {
+        this.createdBy = createdBy;
+    }
 
     public SynthesisPurificationBean(SynthesisPurification purification){
 
@@ -45,6 +64,9 @@ public class SynthesisPurificationBean extends BaseSynthesisEntityBean {
         this.displayName = purification.getMethodName();
         this.type = purification.getType();
         this.description = purification.getDesignMethodDescription();
+        this.createdBy = purification.getCreatedBy();
+        this.createdDate = purification.getCreatedDate();
+
         if(purification.getProtocol()!=null) {
             this.protocolBean = new ProtocolBean(purification.getProtocol());
         }
