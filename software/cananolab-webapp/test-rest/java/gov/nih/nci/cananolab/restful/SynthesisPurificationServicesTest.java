@@ -343,8 +343,7 @@ public class SynthesisPurificationServicesTest {
                 for(SimplePurityBean createdBean: testBeans){
                     assertTrue(createdBean.getId()!=null);
                     assertTrue(createdBean.getId()>0);
-                    assertTrue(createdBean.getCreatedBy()!=null);
-                    assertTrue(createdBean.getCreatedDate()!=null);
+
                 }
 
 
@@ -523,6 +522,29 @@ public class SynthesisPurificationServicesTest {
 
         }catch (Exception e){
             e.printStackTrace();
+        }
+    }
+
+    @Test
+    public void testUpdateProtocol(){
+        try{
+            SimpleSynthesisPurificationBean synthesisPurificationBean = getSimpleSynthesisPurificationBean("1000", "1000");
+            SimpleProtocol oldProtocol = synthesisPurificationBean.getSimpleProtocol();
+            SimpleProtocol newProtocol = getProtocol("1111");
+            if(newProtocol.getDomainFileUri().length()<1){
+                newProtocol.setDomainFileUri(null);
+            }
+            synthesisPurificationBean.setSimpleProtocol(newProtocol);
+            Response response = given().spec(specification)
+                    .body(synthesisPurificationBean).when().post("synthesisPurification/submit")
+                    .then().statusCode(200).extract().response();
+            assertNotNull(response);
+            synthesisPurificationBean = getSimpleSynthesisPurificationBean("1000", "1000");
+            assertTrue(newProtocol.getDomainId().equals(synthesisPurificationBean.getSimpleProtocol().getDomainId()));
+            assertFalse(oldProtocol.getDomainId().equals(synthesisPurificationBean.getSimpleProtocol().getDomainId()));
+        }catch (Exception e){
+            e.printStackTrace();
+
         }
     }
 

@@ -403,11 +403,11 @@ public class SynthesisPurificationBO extends BaseAnnotationBO {
         //id
         if((simplePurityBean.getId()!=null)&&(simplePurityBean.getId()>0)){
             purity.setId(simplePurityBean.getId());
-            purity.setCreatedBy(simplePurityBean.getCreatedBy());
-            purity.setCreatedDate(simplePurityBean.getCreatedDate());
-        }else {
-            purity.setCreatedBy(simplePurityBean.getCreatedBy());
-            purity.setCreatedDate(simplePurityBean.getCreatedDate());
+//            purity.setCreatedBy(simplePurityBean.getCreatedBy());
+//            purity.setCreatedDate(simplePurityBean.getCreatedDate());
+//        }else {
+//            purity.setCreatedBy(simplePurityBean.getCreatedBy());
+//            purity.setCreatedDate(simplePurityBean.getCreatedDate());
         }
 
         //check for Files
@@ -712,7 +712,7 @@ public class SynthesisPurificationBO extends BaseAnnotationBO {
 
 
 
-
+//TODO assign new createddate createdby to newly created row
         PurityRow newRow = new PurityRow();
 
         //Loop through conditions first
@@ -723,10 +723,10 @@ public class SynthesisPurificationBO extends BaseAnnotationBO {
             PurityDatumCondition datumCondition = new PurityDatumCondition();
             conditionCell.setColumnOrder(sConditionCell.getColumnOrder());
             conditionCell.setDatumOrCondition("condition");
-            conditionCell.setCreatedBy(sConditionCell.getCreatedBy());
-            datumCondition.setCreatedBy(sConditionCell.getCreatedBy());
-            conditionCell.setCreatedDate(sConditionCell.getCreatedDate());
-            datumCondition.setCreatedDate(sConditionCell.getCreatedDate());
+//            conditionCell.setCreatedBy(sConditionCell.getCreatedBy());
+//            datumCondition.setCreatedBy(sConditionCell.getCreatedBy());
+//            conditionCell.setCreatedDate(sConditionCell.getCreatedDate());
+//            datumCondition.setCreatedDate(sConditionCell.getCreatedDate());
             conditionCell.setValue(sConditionCell.getValue());
             datumCondition.setValue(sConditionCell.getValue());
             conditionCell.setId(sConditionCell.getId());
@@ -751,10 +751,10 @@ public class SynthesisPurificationBO extends BaseAnnotationBO {
         PurityTableCell datumCell = new PurityTableCell();
         datumCell.setColumnOrder(currentDatumCell.getColumnOrder());
         datumCell.setDatumOrCondition("datum");
-        datumCell.setCreatedBy(currentDatumCell.getCreatedBy());
-        datum.setCreatedBy(currentDatumCell.getCreatedBy());
-        datumCell.setCreatedDate(currentDatumCell.getCreatedDate());
-        datum.setCreatedDate(currentDatumCell.getCreatedDate());
+//        datumCell.setCreatedBy(currentDatumCell.getCreatedBy());
+//        datum.setCreatedBy(currentDatumCell.getCreatedBy());
+//        datumCell.setCreatedDate(currentDatumCell.getCreatedDate());
+//        datum.setCreatedDate(currentDatumCell.getCreatedDate());
         datumCell.setValue(currentDatumCell.getValue());
         datum.setValue(new Float(currentDatumCell.getValue()));
         datumCell.setId(currentDatumCell.getId());
