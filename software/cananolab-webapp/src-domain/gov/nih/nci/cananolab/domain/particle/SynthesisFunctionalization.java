@@ -25,7 +25,7 @@ public class SynthesisFunctionalization implements Serializable {
 	private String createdBy;
 	private Set<SynthesisFunctionalizationElement> synthesisFunctionalizationElements = new HashSet<SynthesisFunctionalizationElement>();
 	private Set<File> files = new HashSet<File>();
-	private CommonLookup commonLookup;
+//	private CommonLookup commonLookup;  --We copy in text from CommonLookup but there are no links to it
 //	private String type;
 
 
@@ -65,6 +65,9 @@ public class SynthesisFunctionalization implements Serializable {
 
 	public void addSynthesisFunctionalizationElement(SynthesisFunctionalizationElement domainEntity) {
 		synthesisFunctionalizationElements.add(domainEntity);
+		if(domainEntity!=null) {
+			synthesisFunctionalizationPkId = domainEntity.getSynthesisFunctionalizationId();
+		}
 	}
 
 	public void setId(Long synthesisFuntionalizationPkId) {
@@ -128,13 +131,13 @@ public class SynthesisFunctionalization implements Serializable {
 		this.synthesisFunctionalizationPkId = synthesisFunctionalizationPkId;
 	}
 
-	public CommonLookup getCommonLookup() {
-		return commonLookup;
-	}
-
-	public void setCommonLookup( CommonLookup commonLookup ) {
-		this.commonLookup = commonLookup;
-	}
+//	public CommonLookup getCommonLookup() {
+//		return commonLookup;
+//	}
+//
+//	public void setCommonLookup( CommonLookup commonLookup ) {
+//		this.commonLookup = commonLookup;
+//	}
 
 	public Set<SynthesisFunctionalizationElement> getSynthesisFunctionalizationElements() {
 		return synthesisFunctionalizationElements;

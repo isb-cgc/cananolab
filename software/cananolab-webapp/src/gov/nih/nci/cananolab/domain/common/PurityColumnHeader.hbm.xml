@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated Apr 3, 2019, 8:32:55 PM by Hibernate Tools 5.4.2.Final -->
+<hibernate-mapping package="gov.nih.nci.cananolab.domain.common">
+    <class name="PurityColumnHeader" table="purity_column_header" dynamic-update="true" dynamic-insert="true" lazy="false">
+        <cache include="all" usage="read-write"/>
+        <id column="column_pk_id" name="id" type="long">
+            <generator class="hilo">
+                <param name="table">hibernate_unique_key</param>
+                <param name="column">next_hi</param>
+            </generator>
+        </id>
+        <property generated="never" lazy="false" name="createdBy" type="string">
+            <column length="200" name="created_by" not-null="true"/>
+        </property>
+        <property generated="never" lazy="false" name="createdDate" type="java.util.Date">
+            <column length="19" name="created_date" not-null="true"/>
+        </property>
+        <property generated="never" lazy="false" name="name" type="string">
+            <column length="200" name="name" not-null="true"/>
+        </property>
+        <property generated="never" lazy="false" name="property" type="string">
+            <column length="200" name="property" not-null="true"/>
+        </property>
+        <property generated="never" lazy="false" name="valueType" type="string">
+            <column length="200" name="value_type"/>
+        </property>
+        <property generated="never" lazy="false" name="valueUnit" type="string">
+            <column length="200" name="value_unit"/>
+        </property>
+        <property name="columnOrder" type="int" generated="never" lazy="false">
+            <column name="column_order" length="10" not-null="true"/>
+        </property>
+        <property name="constantValue" type="float" generated="never" lazy="false">
+            <column name="constant_value" precision="30" scale="10"/>
+        </property>
+
+    </class>
+</hibernate-mapping>

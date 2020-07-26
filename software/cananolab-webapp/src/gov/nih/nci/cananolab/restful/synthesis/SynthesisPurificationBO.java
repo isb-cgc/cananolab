@@ -6,6 +6,7 @@ import gov.nih.nci.cananolab.domain.common.Instrument;
 import gov.nih.nci.cananolab.domain.common.PointOfContact;
 import gov.nih.nci.cananolab.domain.common.Protocol;
 import gov.nih.nci.cananolab.domain.common.PurificationConfig;
+import gov.nih.nci.cananolab.domain.common.PurityColumnHeader;
 import gov.nih.nci.cananolab.domain.common.PurityDatum;
 import gov.nih.nci.cananolab.domain.common.PurityDatumCondition;
 import gov.nih.nci.cananolab.domain.common.Technique;
@@ -51,10 +52,13 @@ import gov.nih.nci.cananolab.service.sample.SynthesisService;
 import gov.nih.nci.cananolab.ui.form.SynthesisForm;
 import gov.nih.nci.cananolab.util.StringUtils;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.IllegalFormatConversionException;
+import java.util.Iterator;
 import java.util.List;
+import java.util.ListIterator;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
@@ -180,7 +184,7 @@ public class SynthesisPurificationBO extends BaseAnnotationBO {
     }
 
     /**
-     * Returns current purifcation information and fields for editing that purification
+     * Returns current purification information and fields for editing that purification
      * @param sampleId
      * @param dataId - id of purification to view/edit
      * @param httpRequest
@@ -194,7 +198,7 @@ public class SynthesisPurificationBO extends BaseAnnotationBO {
 
         try {
             SynthesisPurificationBean synBean = synthesisService.findSynthesisPurificationById(new Long(sampleId), new Long(dataId));
-
+            assignColumnHeadersForPurification(synBean);
             form.setSynthesisPurificationBean(synBean);
             this.checkOpenForms(synBean, httpRequest);
             httpRequest.getSession().setAttribute("sampleId", sampleId);
@@ -209,6 +213,44 @@ public class SynthesisPurificationBO extends BaseAnnotationBO {
             logger.error(err, e);
             throw new SynthesisException(err, e);
         }
+
+    }
+
+    public void assignColumnHeadersForPurification(SynthesisPurificationBean purification) throws SynthesisException {
+        //checks each purity in the purification and retrieves the connected column headers
+        if(purification.getPurityBeans()!=null){
+            for(SynthesisPurityBean purityBean: purification.getPurityBeans()){
+                List<PurityColumnHeader> headerList = getColumnHeaderForPurity(purityBean.getDomain());
+                purityBean.setPurityColumnHeaders(headerList);
+            }
+        }
+    }
+
+    public List<PurityColumnHeader> getColumnHeaderForPurity(SynthesisPurity purity) throws SynthesisException{
+        List<Long> columnIds = new ArrayList<Long>();
+        if(purity.getPurityDatumCollection()!=null && purity.getPurityDatumCollection().size()>0){
+            for(PurityDatum datum:purity.getPurityDatumCollection()){
+                columnIds.add(datum.getColumnId());
+                if(datum.getConditionCollection()!=null && datum.getConditionCollection().size()>0){
+                    for(PurityDatumCondition condition: datum.getConditionCollection()){
+                        columnIds.add(condition.getColumnId());
+                    }
+                }
+                break;
+            }
+        }
+        try {
+            List<PurityColumnHeader> columnHeaders = new ArrayList<PurityColumnHeader>();
+            for (Long id : columnIds) {
+                columnHeaders.add(synthesisService.getColumnHeaderById(id));
+            }
+            return columnHeaders;
+        } catch(Exception e){
+            String err ="Problem retrieving Purity Column Headers";
+            logger.error(err, e);
+            throw new SynthesisException(err, e);
+        }
+
     }
 
 
@@ -261,7 +303,7 @@ public class SynthesisPurificationBO extends BaseAnnotationBO {
 
             synthesisPurificationBean.setType(null);
         }
-//TODO uncomment when I have everything aligned
+
         synthesisService.saveSynthesisPurification(sampleBean, synthesisPurificationBean);
         if (!newEntity && !userDetails.isCurator() &&
                 springSecurityAclService.checkObjectPublic(sampleBean.getDomain().getId(), SecureClassesEnum.SAMPLE.getClazz())) {

@@ -1,5 +1,6 @@
 package gov.nih.nci.cananolab.service.sample;
 
+import gov.nih.nci.cananolab.domain.common.PurityColumnHeader;
 import gov.nih.nci.cananolab.domain.common.Supplier;
 import gov.nih.nci.cananolab.domain.particle.*;
 
@@ -73,4 +74,5 @@ public interface SynthesisService extends BaseService {
 
     void deleteSfeInherentFunction(Long sampleId, SynthesisFunctionalizationElement element, SfeInherentFunction function)throws SynthesisException;
 
+    public PurityColumnHeader getColumnHeaderById(Long id) throws SynthesisException;
     }

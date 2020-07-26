@@ -85,7 +85,7 @@ public class SynthesisFunctionalizationBean extends BaseSynthesisEntityBean {
 
     public SynthesisFunctionalizationElementBean getSynthesisFunctionalizationElementById( Long id ) {
         for( SynthesisFunctionalizationElementBean element : synthesisFunctionalizationElements ) {
-            if( element.getDomainEntity().getId().equals( id ) ) {
+            if( (element.getDomainEntity().getId()!=null) && (element.getDomainEntity().getId().equals( id ) )) {
                 return element;
             }
         }

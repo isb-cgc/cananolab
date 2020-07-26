@@ -31,5 +31,10 @@
 			<column name="purity_datum_pk_id" not-null="true">
 			</column>
 		</many-to-one>
+
+<!--		<many-to-one name="columnId" class="gov.nih.nci.cananolab.domain.common.PurityColumnHeader" update="false">-->
+<!--			<column name="column_pk_id" not-null="true"/>-->
+<!--		</many-to-one>-->
+		<property name="columnId" type="long" column="column_pk_id"/>
 	</class>
 </hibernate-mapping>

@@ -53,6 +53,13 @@
             <column name="purity_pk_id" not-null="true" />
         </many-to-one>
 
+<!--        <many-to-one name="columnHeader" class="gov.nih.nci.cananolab.domain.common.PurityColumnHeader" update="false">-->
+<!--            <column name="column_pk_id" not-null="true"/>-->
+<!--        </many-to-one>-->
+        <property generated="never" lazy="false" name="columnId" type="long">
+            <column name="column_pk_id" not-null="true"/>
+        </property>
+
         <many-to-one class="File"
                      fetch="select" name="file" lazy="proxy">
             <column name="file_pk_id"/>

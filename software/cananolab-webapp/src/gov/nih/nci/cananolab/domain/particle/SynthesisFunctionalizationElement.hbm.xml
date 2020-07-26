@@ -7,11 +7,6 @@
         <id column="synthesis_functionalization_element_pk_id" name="id" type="long">
             <generator class="hilo"/>
         </id>
-
-<!--
-               <property name="activationMethod" column="activation_method" type="string"/>
- <property name="activationEffect" column="activation_effect" type="string"/>
--->
         <property generated="never" lazy="false" name="activationMethod" type="string">
             <column length="200" name="activation_method" not-null="true">
                 <comment>activation_method</comment>
@@ -92,7 +87,7 @@
             <many-to-many class="gov.nih.nci.cananolab.domain.common.File" column="file_pk_id" />
         </set>
 
-        <set name="sfeInherentFunctions" inverse="true">
+        <set name="sfeInherentFunctions" inverse="true" cascade="all-delete-orphan">
             <key>
                 <column name="synthesis_functionalization_element_pk_id"/>
             </key>

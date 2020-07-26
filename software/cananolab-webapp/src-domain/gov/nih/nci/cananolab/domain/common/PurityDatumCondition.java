@@ -21,6 +21,7 @@ public class PurityDatumCondition implements Serializable {
 
     private Long id;
 
+    private Long columnId;
     private String name;
 
     private String property;
@@ -204,6 +205,14 @@ public class PurityDatumCondition implements Serializable {
 
     private void setPurityDatumPkId(Long purityDatumPkId) {
         this.purityDatumPkId = purityDatumPkId;
+    }
+
+    public Long getColumnId() {
+        return columnId;
+    }
+
+    public void setColumnId(Long columnId) {
+        this.columnId = columnId;
     }
 
     /**
