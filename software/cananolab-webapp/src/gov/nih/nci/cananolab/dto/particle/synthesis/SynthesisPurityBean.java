@@ -2,6 +2,7 @@ package gov.nih.nci.cananolab.dto.particle.synthesis;
 
 import gov.nih.nci.cananolab.domain.characterization.physical.Purity;
 import gov.nih.nci.cananolab.domain.common.File;
+import gov.nih.nci.cananolab.domain.common.PurityColumnHeader;
 import gov.nih.nci.cananolab.domain.common.PurityDatum;
 import gov.nih.nci.cananolab.domain.common.PurityDatumCondition;
 import gov.nih.nci.cananolab.domain.particle.SynthesisPurity;
@@ -77,6 +78,7 @@ public class SynthesisPurityBean
     private List<PurityRow> rows = new ArrayList<PurityRow>();
     private List<FileBean> files = new ArrayList<FileBean>();
     private List<ColumnHeader> columnHeaders = new ArrayList<ColumnHeader>();
+    private List<PurityColumnHeader> purityColumnHeaders = new ArrayList<PurityColumnHeader>();
     private int numberOfColumns;
     private int numberOfRows;
     private FileBean fileBeingEdited;
@@ -271,6 +273,14 @@ public class SynthesisPurityBean
     public List<PurityRow> getRows()
     {
         return rows;
+    }
+
+    public void setPurityColumnHeaders(List<PurityColumnHeader> headerList) {
+        this.purityColumnHeaders = headerList;
+    }
+
+    public List<PurityColumnHeader> getPurityColumnHeaders(){
+        return purityColumnHeaders;
     }
 
     public void setRows( List<PurityRow> rows )

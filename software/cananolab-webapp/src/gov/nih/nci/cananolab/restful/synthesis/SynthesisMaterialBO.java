@@ -387,8 +387,10 @@ public class SynthesisMaterialBO extends BaseAnnotationBO {
             SynthesisMaterialBean originalSynMat = synthesisService.findSynthesisMaterialById(sampleId, id);
             List<Long> codeMap = new ArrayList<Long>();
             for(SynthesisMaterialElementBean elementBean: entityBean.getSynthesisMaterialElements()){
-                codeMap.add(elementBean.getDomainId());
-
+                //If I have added new elements they will have a null domainid
+                if(elementBean.getDomainId()!=null) {
+                    codeMap.add(elementBean.getDomainId());
+                }
             }
 
             //check if any elements have been removed

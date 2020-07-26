@@ -6194,6 +6194,42 @@ VALUES (1000, 1000),
 UNLOCK TABLES;
 
 --
+-- Table structure for table `purity_column_header`
+--
+DROP TABLE IF EXISTS `purity_column_header`;
+/*!40101 SET @saved_cs_client = @@character_set_client */;
+SET character_set_client = utf8mb4;
+CREATE TABLE `purity_column_header` (
+  `column_pk_id` bigint(20) NOT NULL,
+  `name` varchar(200) NOT NULL,
+  `property` varchar(200) DEFAULT NULL,
+  `value_type` varchar(200) DEFAULT NULL,
+  `value_unit` varchar(200) DEFAULT NULL,
+  `created_by` varchar(200) NOT NULL,
+  `created_date` datetime NOT NULL,
+  `column_order` INT(10) NOT NULL, 
+  `constant_value` DECIMAL(30,10) DEFAULT NULL,
+  PRIMARY KEY (`column_pk_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+
+LOCK TABLES `purity_column_header` WRITE;
+/*!40000 ALTER TABLE `purity_column_header`
+    DISABLE KEYS */;
+INSERT IGNORE INTO `canano`.`purity_column_header` (
+`column_pk_id`,
+ `name`, `value_type`,
+ `value_unit`,
+ `created_by`,
+ `created_date`,
+ `column_order`) 
+ VALUES ('1010', 'Purity datum 1', 'purity', '%', 'canano_curator', '2020-07-20 16:08:15',0),
+ ('2000', 'Synthesis condition 1', 'observed', 'g', 'canano_curator', '2020-07-20 16:08:15',1),
+ ('2010', 'datum test', 'observed', 'mg', 'canano_curator', '2020-07-20 16:08:15',0);
+/*!40000 ALTER TABLE `purity_column_header`
+    ENABLE KEYS */;
+UNLOCK TABLES;
+--
 -- Table structure for table `purity_datum`
 --
 
@@ -6212,11 +6248,14 @@ CREATE TABLE `purity_datum`
     `numberMod`          varchar(20)  DEFAULT '=' COMMENT 'numberMod',
     `purity_pk_id`       bigint(200)  NOT NULL COMMENT 'purity_pk_id',
     `file_pk_id`         bigint(20)   DEFAULT NULL COMMENT 'file_pk_id',
+    `column_pk_id`		 bigint(20)	NOT NULL,
     PRIMARY KEY (`purity_datum_pk_id`),
     KEY `FK_purity_TO_purity_datum` (`purity_pk_id`),
     KEY `FK_file_TO_purity_datum` (`file_pk_id`),
+    KEY `FK_column_TO_purity_datum`(`column_pk_id`),
     CONSTRAINT `FK_file_TO_purity_datum` FOREIGN KEY (`file_pk_id`) REFERENCES `file` (`file_pk_id`),
-    CONSTRAINT `FK_purity_TO_purity_datum` FOREIGN KEY (`purity_pk_id`) REFERENCES `synthesis_purity` (`purity_pk_id`)
+    CONSTRAINT `FK_purity_TO_purity_datum` FOREIGN KEY (`purity_pk_id`) REFERENCES `synthesis_purity` (`purity_pk_id`),
+    CONSTRAINT `FK_column_TO_purity_datum` FOREIGN KEY (`column_pk_id`) REFERENCES `purity_column_header` (`column_pk_id`)
 ) ENGINE = InnoDB
   DEFAULT CHARSET = latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -6229,9 +6268,9 @@ LOCK TABLES `purity_datum` WRITE;
 /*!40000 ALTER TABLE `purity_datum`
     DISABLE KEYS */;
 INSERT IGNORE INTO `purity_datum` (`purity_datum_pk_id`, `name`, `value`, `value_type`, `value_unit`, `created_by`,
-                                   `created_date`, `numberMod`, `purity_pk_id`, `file_pk_id`)
-VALUES (1000, 'Purity datum 1', 55.00, 'purity', '%', 'canano_curator', '2019-12-06 12:15:00', '=', 1000, 1444),
-       (1111, 'Purity datum 1', 123.00, 'purity', '%', 'canano_curator', '2019-12-06 12:15:00', '=', 1111, 1111);
+                                   `created_date`, `numberMod`, `purity_pk_id`, `file_pk_id`,`column_pk_id`)
+VALUES (1000, 'Purity datum 1', 55.00, 'purity', '%', 'canano_curator', '2019-12-06 12:15:00', '=', 1000, 1444,1010),
+       (1111, 'Purity datum 2', 123.00, 'purity', '%', 'canano_curator', '2019-12-06 12:15:00', '=', 1111, 1111,1010);
 /*!40000 ALTER TABLE `purity_datum`
     ENABLE KEYS */;
 UNLOCK TABLES;
@@ -6255,8 +6294,11 @@ CREATE TABLE `purity_datum_condition`
     `created_by`      varchar(200) NOT NULL,
     `created_date`    datetime     NOT NULL,
     `numberMod`          varchar(20)  DEFAULT '=' COMMENT 'numberMod',
+    `column_pk_id`		 bigint(20)	NOT NULL,
     PRIMARY KEY (`condition_pk_id`),
-    CONSTRAINT `FK_purity_datum_TO_purity_datum_condition` FOREIGN KEY (`purity_datum_pk_id`) REFERENCES `purity_datum` (`purity_datum_pk_id`)
+    KEY `FK_column_TO_purity_datum_condition`(`column_pk_id`),
+    CONSTRAINT `FK_purity_datum_TO_purity_datum_condition` FOREIGN KEY (`purity_datum_pk_id`) REFERENCES `purity_datum` (`purity_datum_pk_id`),
+    CONSTRAINT `FK_column_TO_purity_condition` FOREIGN KEY (`column_pk_id`) REFERENCES `purity_column_header` (`column_pk_id`)
 ) ENGINE = InnoDB
   DEFAULT CHARSET = latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -6269,9 +6311,9 @@ LOCK TABLES `purity_datum_condition` WRITE;
 /*!40000 ALTER TABLE `purity_datum_condition`
     DISABLE KEYS */;
 INSERT IGNORE INTO `purity_datum_condition` (`purity_datum_pk_id`, `condition_pk_id`, `name`, `property`, `value`,
-                                             `value_unit`, `value_type`, `created_by`, `created_date`)
-VALUES (1000, 1000, 'Synthesis condition 1', '', '42', 'g', 'observed', 'canano_user', '2019-12-06 12:15:00'),
-       (1111, 1111, 'datum_test', NULL, '84', 'mg', 'observed', 'canano_curator', '2019-12-06 12:15:00');
+                                             `value_unit`, `value_type`, `created_by`, `created_date`,`column_pk_id`)
+VALUES (1000, 1000, 'Synthesis condition 1', NULL, '42', 'g', 'observed', 'canano_user', '2019-12-06 12:15:00',2000),
+       (1111, 1111, 'datum_test', NULL, '84', 'mg', 'observed', 'canano_curator', '2019-12-06 12:15:00',2010);
 /*!40000 ALTER TABLE `purity_datum_condition`
     ENABLE KEYS */;
 UNLOCK TABLES;

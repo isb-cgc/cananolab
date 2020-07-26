@@ -2,6 +2,7 @@ package gov.nih.nci.cananolab.service.sample.helper;
 
 import gov.nih.nci.cananolab.domain.common.File;
 import gov.nih.nci.cananolab.domain.common.PurificationConfig;
+import gov.nih.nci.cananolab.domain.common.PurityColumnHeader;
 import gov.nih.nci.cananolab.domain.common.PurityDatum;
 import gov.nih.nci.cananolab.domain.common.PurityDatumCondition;
 import gov.nih.nci.cananolab.domain.particle.*;
@@ -37,6 +38,34 @@ public class SynthesisHelper
     public SynthesisHelper() {
     }
 
+    public PurityColumnHeader findPurityColumnHeaderById(Long id, String fullClassName) throws Exception{
+//        if (!springSecurityAclService.currentUserHasReadPermission(id, SecureClassesEnum.SAMPLE.getClazz()) &&
+//                !springSecurityAclService.currentUserHasWritePermission(id, SecureClassesEnum.SAMPLE.getClazz())) {
+//            throw new NoAccessException("User has no access to the purity column header " + id);
+//        }
+        PurityColumnHeader header = new PurityColumnHeader();
+//        CaNanoLabApplicationService appService = (CaNanoLabApplicationService) ApplicationServiceProvider.getApplicationService();
+//        String hql = "select anEntity.purityColumnHeader from " + fullClassName + " anEntity where anEntity.id = " + id;
+//        HQLCriteria crit = new HQLCriteria(hql);
+//        List result = appService.query(crit);
+//        if (!result.isEmpty()){
+//            header = (PurityColumnHeader)result.get(0);
+//        }
+//        return header;
+
+
+        CaNanoLabApplicationService appService = (CaNanoLabApplicationService) ApplicationServiceProvider.getApplicationService();
+//        DetachedCriteria crit = DetachedCriteria.forClass(SynthesisPurification.class).add(
+//                Property.forName("id").eq(new Long(entityId)));
+        DetachedCriteria crit = DetachedCriteria.forClass(PurityColumnHeader.class).add(
+                Property.forName("id").eq(new Long(id)));
+        List result = appService.query(crit);
+        if (!result.isEmpty()){
+            header = (PurityColumnHeader)result.get(0);
+        }
+        return header;
+
+    }
 
 
     public List<SmeInherentFunction> findSmeFunctionByElementId(Long sampleId, Long id, String fullClassName) throws Exception{

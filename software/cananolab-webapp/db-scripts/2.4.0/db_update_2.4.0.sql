@@ -473,3 +473,32 @@ VALUES (1010, 'pubchem', 'dataSource', 'Compound'),
        (1094, 'synthesis', 'materialType', 'reagent'),
        (1096, 'protocol', 'type', 'purification');
 
+UPDATE `canano`.`users` SET `first_name` = 'canano', `last_name` = 'curator' WHERE (`username` = 'canano_curator');
+UPDATE `canano`.`users` SET `first_name` = 'canano', `last_name` = 'guest' WHERE (`username` = 'canano_guest');
+UPDATE `canano`.`users` SET `first_name` = 'canano', `last_name` = 'researcher' WHERE (`username` = 'canano_res');
+UPDATE `canano`.`users` SET `first_name` = 'canano', `last_name` = 'researcher1' WHERE (`username` = 'canano_res1');
+UPDATE `canano`.`users` SET `first_name` = 'guest1', `last_name` = 'user' WHERE (`username` = 'guest1');
+UPDATE `canano`.`users` SET `first_name` = 'guest2', `last_name` = 'user' WHERE (`username` = 'guest2');
+UPDATE `canano`.`users` SET `first_name` = 'guest3', `last_name` = 'user' WHERE (`username` = 'guest3');
+UPDATE `canano`.`users` SET `first_name` = 'guest4', `last_name` = 'user' WHERE (`username` = 'guest4');
+UPDATE `canano`.`users` SET `first_name` = 'guest5', `last_name` = 'user' WHERE (`username` = 'guest5');
+DELETE FROM `canano`.`authorities` WHERE (`username` = 'guest6');
+DELETE FROM `canano`.`authorities` WHERE (`username` = 'guest7');
+DELETE FROM `canano`.`authorities` WHERE (`username` = 'guest8');
+DELETE FROM `canano`.`authorities` WHERE (`username` = 'guest9');
+DELETE FROM `canano`.`authorities` WHERE (`username` = 'guest10');
+DELETE FROM `canano`.`authorities` WHERE (`username` = 'guest11');
+DELETE FROM `canano`.`authorities` WHERE (`username` = 'guest12');
+DELETE FROM `canano`.`authorities` WHERE (`username` = 'guest13');
+DELETE FROM `canano`.`authorities` WHERE (`username` = 'guest14');
+DELETE FROM `canano`.`authorities` WHERE (`username` = 'guest15');
+DELETE FROM `canano`.`users`  WHERE (`username` = 'guest6');
+DELETE FROM `canano`.`users` WHERE (`username` = 'guest7');
+DELETE FROM `canano`.`users` WHERE (`username` = 'guest8');
+DELETE FROM `canano`.`users` WHERE (`username` = 'guest9');
+DELETE FROM `canano`.`users` WHERE (`username` = 'guest10');
+DELETE FROM `canano`.`users` WHERE (`username` = 'guest11');
+DELETE FROM `canano`.`users` WHERE (`username` = 'guest12');
+DELETE FROM `canano`.`users` WHERE (`username` = 'guest13');
+DELETE FROM `canano`.`users` WHERE (`username` = 'guest14');
+DELETE FROM `canano`.`users` WHERE (`username` = 'guest15');

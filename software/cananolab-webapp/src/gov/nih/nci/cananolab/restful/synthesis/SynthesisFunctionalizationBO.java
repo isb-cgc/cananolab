@@ -360,8 +360,10 @@ public class SynthesisFunctionalizationBO extends BaseAnnotationBO {
             SynthesisFunctionalizationBean originalSynMat = synthesisService.findSynthesisFunctionalizationById(sampleId, id);
             List<Long> codeMap = new ArrayList<Long>();
             for(SynthesisFunctionalizationElementBean elementBean: entityBean.getSynthesisFunctionalizationElements()){
-                codeMap.add(elementBean.getDomainId());
-
+                //If I've added new elements they will have a domainId of null
+                if(elementBean.getDomainId()!=null) {
+                    codeMap.add(elementBean.getDomainId());
+                }
             }
 
             //check if any elements have been removed
@@ -395,6 +397,7 @@ public class SynthesisFunctionalizationBO extends BaseAnnotationBO {
         List<SfeInherentFunctionBean> removedFunctions = new ArrayList<SfeInherentFunctionBean>();
         List<Long> functionIds = new ArrayList<Long>();
         for (SfeInherentFunctionBean function : currentFunctionBeans) {
+
             functionIds.add(function.getDomain().getId());
         }
 

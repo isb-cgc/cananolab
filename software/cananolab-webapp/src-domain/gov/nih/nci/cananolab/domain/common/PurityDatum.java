@@ -16,6 +16,8 @@ public class PurityDatum implements java.io.Serializable {
 	private File file;
 	private SynthesisPurity synthesisPurity;
 	private Long synthesisPurityId;
+	private Long columnId;
+//	private PurityColumnHeader columnHeader = new PurityColumnHeader();
 	private String name;
 	private Float value;
 	private String valueType;
@@ -28,16 +30,18 @@ public class PurityDatum implements java.io.Serializable {
 	public PurityDatum() {
 	}
 
-	public PurityDatum(long datumPkId, String name, Float value, String createdBy, Date createdDate) {
+	public PurityDatum(long datumPkId, String name, Float value, String createdBy, Date createdDate, Long headerId) {
 		this.datumPkId = datumPkId;
 		this.name = name;
 		this.value = value;
 		this.createdBy = createdBy;
 		this.createdDate = createdDate;
+		this.columnId = headerId;
 	}
 
 	public PurityDatum(long datumPkId, File file, SynthesisPurity synthesisPurity, String name, Float value, String valueType,
-					   String valueUnit, String createdBy, Date createdDate, String operand, Set<PurityDatumCondition> experimentConditions) {
+					   String valueUnit, String createdBy, Date createdDate, String operand,
+					   Set<PurityDatumCondition> experimentConditions, Long headerId) {
 		this.datumPkId = datumPkId;
 		this.file = file;
 		this.synthesisPurity = synthesisPurity;
@@ -50,6 +54,7 @@ public class PurityDatum implements java.io.Serializable {
 		this.createdDate = createdDate;
 		this.operand = operand;
 		this.conditionCollection = experimentConditions;
+		this.columnId = headerId;
 	}
 
 	public Long getId() {
@@ -149,8 +154,20 @@ public class PurityDatum implements java.io.Serializable {
 		this.conditionCollection = experimentConditions;
 	}
 
+	public Long getColumnId() {
+		return columnId;
+	}
 
+	public void setColumnId(Long columnId) {
+		this.columnId = columnId;
+	}
 
-
-
+//	public PurityColumnHeader getColumnHeader(){
+//		return columnHeader;
+//	}
+//
+//	public void setColumnHeader(PurityColumnHeader header){
+//		this.columnHeader = header;
+//		this.columnId = header.getId();
+//	}
 }

@@ -1,5 +1,6 @@
 package gov.nih.nci.cananolab.restful;
 
+import gov.nih.nci.cananolab.dto.particle.synthesis.SynthesisFunctionalizationElementBean;
 import gov.nih.nci.cananolab.exception.SynthesisException;
 import gov.nih.nci.cananolab.restful.util.RestTestLoginUtil;
 import gov.nih.nci.cananolab.restful.view.edit.*;
@@ -150,6 +151,8 @@ public class SynthesisFunctionalizationServicesTest {
     public void testSubmitWithIF() {
         SimpleSynthesisFunctionalizationBean functionalizationBean = getSimpleSynthesisFunctionalizationBean( "1000", "1000" );
         SimpleSynthesisFunctionalizationElementBean elementBean = new SimpleSynthesisFunctionalizationElementBean();
+        int originalnumberofElements = functionalizationBean.getFunctionalizationElements().size();
+
         elementBean.setChemicalName( "TestChemIF" );
         elementBean.setMolecularFormula( "ABXYZ10" );
         elementBean.setMolecularFormulaType( "Hill" );
@@ -162,12 +165,11 @@ public class SynthesisFunctionalizationServicesTest {
         Map<String, String> newIF = new HashMap<String, String>();
         newIF.put( "description", "testDescription" );
         newIF.put( "type", "Function Type" );
-        newIF.put( "id", "297" );
         inherentFunctionList.add( newIF );
         elementBean.setInherentFunctionList( inherentFunctionList );
 
 
-        List<SimpleSynthesisFunctionalizationElementBean> elementBeans = new ArrayList<SimpleSynthesisFunctionalizationElementBean>();
+        List<SimpleSynthesisFunctionalizationElementBean> elementBeans = functionalizationBean.getFunctionalizationElements();
         elementBeans.add( elementBean );
         functionalizationBean.setFunctionalizationElements( elementBeans );
         try {
@@ -176,7 +178,18 @@ public class SynthesisFunctionalizationServicesTest {
                     .then().statusCode( 200 ).extract().response();
 
             assertNotNull( response );
-
+            functionalizationBean = getSimpleSynthesisFunctionalizationBean( "1000", "1000" );
+            assertTrue(functionalizationBean.getFunctionalizationElements().size()>originalnumberofElements);
+            boolean matchFound = false;
+            for(SimpleSynthesisFunctionalizationElementBean simpleElementBean:functionalizationBean.getFunctionalizationElements()){
+                if(simpleElementBean.getMolecularFormula().equals("ABXYZ10")) {
+                    matchFound=true;
+                    assertTrue(simpleElementBean.getInherentFunctionList()!=null);
+                    assertTrue(simpleElementBean.getInherentFunctionList().size()>0);
+                }
+                assertTrue(simpleElementBean.getId()!=null);
+            }
+            assertTrue(matchFound);
             assertNotNull( getSimpleSynthesisFunctionalizationBean( "1000", "1000" ).getFunctionalizationElements().get( 0 ).getInherentFunctionList() );
             assertTrue( getSimpleSynthesisFunctionalizationBean( "1000", "1000" ).getFunctionalizationElements().get( 0 ).getInherentFunctionList().size() > 0 );
 

@@ -464,6 +464,26 @@ private static RequestSpecification specification;
     }
 
     @Test
+    public void testDeleteMaterialElement(){
+        SimpleSynthesisMaterialBean materialBean = getSimpleSynthesisMaterialBean("1000","1000");
+        List<SimpleSynthesisMaterialElementBean> elementBeans = materialBean.getMaterialElements();
+        elementBeans.remove(0);
+        materialBean.setMaterialElements(elementBeans);
+        try {
+            Response response = given().spec(specification).
+                    body(materialBean).when().post("synthesisMaterial/submit")
+                    .then().statusCode(200).extract().response();
+
+            assertNotNull(response);
+            String debug = response.asString();
+            System.out.println(debug);
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Test
     public void testSubmitWithIF(){
         SimpleSynthesisMaterialBean materialBean = getSimpleSynthesisMaterialBean("1000","1000");
         SimpleSynthesisMaterialElementBean elementBean = new SimpleSynthesisMaterialElementBean();
@@ -471,7 +491,6 @@ private static RequestSpecification specification;
         elementBean.setMolecularFormula("ABXYZ10");
         elementBean.setMolecularFormulaType("Hill");
         elementBean.setDescription("Test ME with IF");
-        elementBean.setCreatedBy("");
         elementBean.setType("core");
         List<Map<String, String>> inherentFunctionList = new ArrayList<Map<String, String>>();
         Map<String,String> newIF = new HashMap<String, String>();
@@ -479,7 +498,8 @@ private static RequestSpecification specification;
         newIF.put("type", "Function Type");
         inherentFunctionList.add(newIF);
         elementBean.setInherentFunctionList(inherentFunctionList);
-        List<SimpleSynthesisMaterialElementBean> elementBeans = new ArrayList<SimpleSynthesisMaterialElementBean>();
+
+        List<SimpleSynthesisMaterialElementBean> elementBeans = materialBean.getMaterialElements();
         elementBeans.add(elementBean);
         materialBean.setMaterialElements(elementBeans);
         try {
