@@ -9,6 +9,7 @@ import gov.nih.nci.cananolab.dto.particle.synthesis.SynthesisFunctionalizationBe
 import gov.nih.nci.cananolab.dto.particle.synthesis.SynthesisMaterialBean;
 import gov.nih.nci.cananolab.dto.particle.synthesis.SynthesisMaterialElementBean;
 import gov.nih.nci.cananolab.dto.particle.synthesis.SynthesisPurificationBean;
+import gov.nih.nci.cananolab.exception.BaseException;
 import gov.nih.nci.cananolab.restful.core.InitSetup;
 import gov.nih.nci.cananolab.restful.protocol.InitProtocolSetup;
 import gov.nih.nci.cananolab.restful.sample.InitSampleSetup;
@@ -69,17 +70,6 @@ public class InitSynthesisSetup {
 
     }
 
-    public void setSynthesisFunctionalizationDropDowns(HttpServletRequest request) throws Exception {
-        InitSampleSetup.getInstance().setSharedDropdowns(request);
-        InitSetup.getInstance().getDefaultAndOtherTypesByLookup(request,"amountUnits", "material", "value_unit", "otherValueUnit", true);
-        InitSetup.getInstance().getDefaultAndOtherTypesByLookup(request,"fileTypes", "file", "type", "otherType", true);
-        InitSetup.getInstance().getDefaultAndOtherTypesByLookup(request,"formulaTypes", "molecular formula", "type", "otherType", true);
-        //TODO Activation method
-        //TODO Inherent function type
-
-        //TODO more?
-    }
-
     /**
      *
      * @param request
@@ -90,18 +80,35 @@ public class InitSynthesisSetup {
 //        InitSetup.getInstance().persistLookup(request);
         InitSetup.getInstance().persistLookup(request, "synthesis", "materialType",
                 "otherType", synthesisMaterialBean.getType());
-
-
-
     }
+
+
 
 
     public void setSynthesisFunctionalizationDropdowns(HttpServletRequest request) throws Exception {
         InitSampleSetup.getInstance().setSharedDropdowns(request);
+        ServletContext appContext = request.getSession().getServletContext();
+        InitSetup.getInstance().getDefaultAndOtherTypesByLookup(request,
+                "materialTypes", "synthesis", "materialType",
+                "otherMaterialType", true);
+
+        InitSetup.getInstance().getDefaultAndOtherTypesByLookup(request,
+                "pubchemDataSource", "pubchem", "data source",
+                "otherDataSource", true);
+
+        InitSetup.getInstance().getDefaultAndOtherTypesByLookup(request,"amountUnits", "material", "value_unit", "otherValueUnit", true);
+
+        InitSetup.getInstance().getDefaultAndOtherTypesByLookup(request,"formulaTypes", "molecular formula", "type", "otherType", true);
+
+        InitSetup.getInstance().getDefaultAndOtherTypesByLookup(request,"inherentFunctionTypes", "function", "type", "otherType", true);
+
+        InitSetup.getInstance().getDefaultAndOtherTypesByLookup(request,"fileTypes", "file", "type", "otherType", true);
+
     }
 
-    public void persistSynthesisFunctionalizationDropdowns(HttpServletRequest request, SynthesisFunctionalizationBean synthesisFunctionalizationBean){
-//TODO write
+    public void persistSynthesisFunctionalizationDropdowns(HttpServletRequest request, SynthesisFunctionalizationBean synthesisFunctionalizationBean) throws BaseException {
+        InitSetup.getInstance().persistLookup(request, "synthesis", "functionalizationType",
+                "otherType", "TEST_VALUE");
     }
 
 

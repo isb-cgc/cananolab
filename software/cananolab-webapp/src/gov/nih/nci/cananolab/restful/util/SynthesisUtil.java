@@ -48,6 +48,37 @@ public class SynthesisUtil {
 
     }
 
+    public static Map<String, Object> reformatLocalSearchDropdownsInSessionForSynthesisFunctionalization(HttpSession session){
+
+        if (session==null){
+            return null;
+        }
+
+        ServletContext appContext = session.getServletContext();
+        Map<String, Object> typeMap = new HashMap<String, Object>();
+
+        //TODO  "Reagent" is not on list returned.  "Synthesis" is.  Align this and clean it up
+        SortedSet<String> types = (SortedSet<String>) session.getAttribute("materialTypes");
+        if (types != null)
+            typeMap.put("materialTypes", new ArrayList<String>(types));
+
+
+        List<String> pubChemSources = Arrays.asList(SampleConstants.PUBCHEM_DS_LIST);
+        if(pubChemSources != null)
+            typeMap.put("pubChemDataSources", pubChemSources);
+
+
+        types = (SortedSet<String>) session.getAttribute("fileTypes");
+        if (types != null)
+            typeMap.put("fileTypes", new ArrayList<String>(types));
+
+
+        Map<String,Object> newMap = reformatLocalSearchDropdownsInSessionForSynthesisMaterialElement(session);
+        typeMap.putAll(newMap);
+        return typeMap;
+
+    }
+
 
     public static Map<String,Object> reformatLocalSearchDropdownsInSessionForSynthesisMaterialElement(HttpSession session){
         if (session==null){
