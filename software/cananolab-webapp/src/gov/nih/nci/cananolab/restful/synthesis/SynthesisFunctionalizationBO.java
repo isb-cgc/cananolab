@@ -652,32 +652,35 @@ public class SynthesisFunctionalizationBO extends BaseAnnotationBO {
     public Map<String, Object> setupNew(String sampleId, HttpServletRequest request) throws Exception {
 
         SynthesisFunctionalizationBean synthesisFunctionalizationBean = new SynthesisFunctionalizationBean();
+     //   List<String> otherNames = InitSampleSetup.getInstance().getOtherSampleNames(request, sampleId, sampleService);
+        this.setLookups(request);
+        this.checkOpenForms(synthesisFunctionalizationBean, request);
+        Map<String,Object> testLookup = new HashMap<String, Object>();
+        testLookup.put("protocolLookup", this.setProtocolLookup(request));
+        testLookup.putAll(SynthesisUtil.reformatLocalSearchDropdownsInSessionForSynthesisFunctionalization(request.getSession()));
+        return testLookup;
+
+/*
+
+
+        SynthesisFunctionalizationBean synthesisFunctionalizationBean = new SynthesisFunctionalizationBean();
         this.setLookups(request);
         this.checkOpenForms(synthesisFunctionalizationBean, request);
         Map<String,Object> testLookup = new HashMap<String, Object>();
 
- /*       List<ProtocolBean> protocolBeans =  protocolService.getSynthesisProtocols(request);
-        testLookup.put("protocols", protocolBeans);
- //       testLookup.put("protocolLookup", this.setProtocolLookup(request));
-*/
         testLookup.put("protocolLookup", this.setProtocolLookup(request));
 
         List<String> activationMethods = synthesisService.getFunctionalizationActivationMethods();
         testLookup.put("activationMethods",activationMethods);
         return testLookup;
+*/
     }
 
 
 
     public void setLookups(HttpServletRequest request) throws Exception {
+        ServletContext appContext = request.getSession().getServletContext();
         InitSynthesisSetup.getInstance().setSynthesisFunctionalizationDropdowns(request);
-    //    ServletContext appContext = request.getSession().getServletContext();
-
-
-//        List<ProtocolBean> protocols = protocolService.getSynthesisProtocols(request);
-
-//        InitSetup.getInstance().getDefaultTypesByLookup(appContext,
-//                "wallTypes", "carbon nanotube", "wallType");
     }
 
     public SynthesisFunctionalizationBean setupSynFunctionalizationForAdvSearch(String sampleId, Long id,

@@ -6702,7 +6702,6 @@ CREATE TABLE `synthesis_functionalization`
     `description`                       text COMMENT 'description',
     `created_date`                      datetime     NOT NULL COMMENT 'created_date',
     `created_by`                        varchar(200) NOT NULL COMMENT 'created_by',
-    `type`                              varchar(200) DEFAULT NULL COMMENT 'type',
     PRIMARY KEY (`synthesis_functionalization_pk_id`),
     KEY `FK_synthesis_TO_synthesis_functionalization` (`synthesis_pk_id`),
     KEY `FK_protocol_TO_synthesis_functionalization` (`protocol_pk_id`),
@@ -6720,15 +6719,15 @@ LOCK TABLES `synthesis_functionalization` WRITE;
 /*!40000 ALTER TABLE `synthesis_functionalization`
     DISABLE KEYS */;
 INSERT IGNORE INTO `synthesis_functionalization` (`synthesis_functionalization_pk_id`, `synthesis_pk_id`,
-                                                  `protocol_pk_id`, `description`, `created_date`, `created_by`, `type`)
-VALUES (1000, 1000, 66256896, 'Synthesis Functionalization Test 1', '2019-12-06 12:15:00', 'canano_curator', NULL),
+                                                  `protocol_pk_id`, `description`, `created_date`, `created_by`)
+VALUES (1000, 1000, 66256896, 'Synthesis Functionalization Test 1', '2019-12-06 12:15:00', 'canano_curator'),
        (1005, 1005, 66256896,
         'In order to produce PEG-capped AuNPs, various concentrations (3.6, 8.4, 16.8 and 25.2 ug per ml of as synthesized AuNP suspension) of 5,000 Mw PEG were added to the ‘as synthesized’ AuNP solutions at room temperature. After the required amount of PEG was added, the solution was stirred at room temperature for 2 h to allow for complete exchange of the citrate molecules with PEG.',
-        '2019-08-29 00:00:00', 'canano_curator', NULL),
-       (1111, 1111, 66256896, 'Synthesis Functionalization Test 1', '2019-12-06 12:15:00', 'canano_curator', NULL),
+        '2019-08-29 00:00:00', 'canano_curator'),
+       (1111, 1111, 66256896, 'Synthesis Functionalization Test 1', '2019-12-06 12:15:00', 'canano_curator'),
        (1222, 1222, NULL,
         'In order to produce PEG-capped AuNPs, various concentrations (3.6, 8.4, 16.8 and 25.2 ug per ml of as synthesized AuNP suspension) of 5,000 Mw PEG were added to the ‘as synthesized’ AuNP solutions at room temperature. After the required amount of PEG was added, the solution was stirred at room temperature for 2 h to allow for complete exchange of the citrate molecules with PEG.',
-        '2019-08-29 00:00:00', 'canano_curator', NULL);
+        '2019-08-29 00:00:00', 'canano_curator');
 /*!40000 ALTER TABLE `synthesis_functionalization`
     ENABLE KEYS */;
 UNLOCK TABLES;

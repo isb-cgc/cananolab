@@ -190,6 +190,7 @@ public class SynthesisFunctionalizationServicesTest {
                 assertTrue(simpleElementBean.getId()!=null);
             }
             assertTrue(matchFound);
+            assertNotNull( getSimpleSynthesisFunctionalizationBean( "1000", "1000" ).getFunctionalizationElements().get( 0 ) );
             assertNotNull( getSimpleSynthesisFunctionalizationBean( "1000", "1000" ).getFunctionalizationElements().get( 0 ).getInherentFunctionList() );
             assertTrue( getSimpleSynthesisFunctionalizationBean( "1000", "1000" ).getFunctionalizationElements().get( 0 ).getInherentFunctionList().size() > 0 );
 
@@ -371,7 +372,7 @@ public class SynthesisFunctionalizationServicesTest {
         fileBean.setUriExternal( true );
         fileBean.setExternalUrl( "http://192.168.1.25:8080/test_file.txt" );  // THIS NEEDS TO BE SET TO AN EXISTING FILE!
         fileBean.setSampleId( "1000" );
-        fileBean.setId( new Long( 67043330 ) ); // this needs to changed for each test.
+        fileBean.setId( new Long( 67010562 ) ); // this needs to changed for each test.
 
         List<SimpleFileBean> fileBeans = new ArrayList<SimpleFileBean>();
         fileBeans.add( fileBean );

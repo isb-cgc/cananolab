@@ -23,12 +23,13 @@ L-->
 		<property name="hibernate.cache.region.factory_class">net.sf.ehcache.hibernate.SingletonEhCacheRegionFactory</property>
 		<property name="connection.driver_class">com.mysql.jdbc.Driver</property>
 
-		<!-- For debugging set this to true and enable next two lines
-		<property name="hibernate.show_sql">true</property>
+		<!-- For debugging set this to true and enable next three lines -->
 
-			<property name="format_sql">true</property>
-            <property name="use_sql_comments">true</property>
--->
+		<property name="hibernate.show_sql">true</property>
+		<property name="format_sql">true</property>
+		<property name="use_sql_comments">true</property>
+
+
 
         <!-- Mapped Resources -->
 		<mapping resource="gov/nih/nci/cananolab/domain/common/Finding.hbm.xml" />
