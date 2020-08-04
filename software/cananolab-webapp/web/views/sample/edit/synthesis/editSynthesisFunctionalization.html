@@ -1,10 +1,13 @@
 <button ng-click="tempShow=!tempShow">debug</button>
 <div style="width:800px;" ng-show="tempShow">
-    <B>Purification Copy</B> - {{purificationCopy}} <br /><br />
-    <B>Purification</B> - {{purification}} <br /><br />
-    <B>Material Element</B> - {{materialElement}}<br /><br />
+    <B>Functionalization Copy</B> - {{functionalization}} <br /><br />
+    <B>Functionalization</B> - {{functionalization}} <br /><br />
+    <B>Functionalization Element</B> - {{functionalizationElement}}<br /><br />
+    <B>Sample Id</B> - {{sampleId}}<br /><br />
+    <B>Data Id</B> - {{dataId}}<br /><br />
+    
 </div>
-<button ng-click="testSave()">Test Save</button>
+
 <div class="spacer">
     <form novalidate="" class="ng-pristine ng-valid">
         <table class="contentTitle" width="100%" border="0" summary="layout">
@@ -20,7 +23,7 @@
 
                     <td align="right" width="30%">
                         <a class="helpText"
-                            href="javascript:openHelpWindow('https://wiki.nci.nih.gov/display/caNanoLab/Managing+Sample+Composition+Annotations#ManagingSampleCompositionAnnotations-NanomaterialAddingNanomaterialEntityCompositionAnnotations')">Help</a>
+                            href="javascript:openHelpWindow('https://wiki.nci.nih.gov/display/caNanoLab/Managing+Sample+Composition+Annotations#ManagingSampleCompositionAnnotations-NanofunctionalizationAddingNanofunctionalizationEntityCompositionAnnotations')">Help</a>
                         &nbsp;
                         <a class="helpText"
                             href="javascript:openHelpWindow('https://wiki.nci.nih.gov/display/caNanoLab/caNanoLab+Glossary')">Glossary</a>
@@ -42,80 +45,222 @@
                     </td>
                     <td>
                         <div id="categoryPrompt">
-                            <select ng-model="purification.simpleProtocol"
+                            <select ng-model="functionalization.simpleProtocol"
                                 ng-options="o as o.displayName for o in dropdowns.protocolLookup track by o.domainId">
                             </select>
-                            <!-- <input type="text" size="50" value="{{material.simpleProtocol.displayName}}" data-ng-model="material.simpleProtocol.displayName"> -->
+                            <!-- <input type="text" size="50" value="{{functionalization.simpleProtocol.displayName}}" data-ng-model="functionalization.simpleProtocol.displayName"> -->
                         </div>
                     </td>
                 </tr>
                 <tr>
-                    <td class="cellLabel" width="100">
-                        <label for="yield">Yield</label>
+                    <td class="cellLabel">
+                        <label for="neDescription">Description</label>
                     </td>
                     <td>
-                        <div id="categoryPrompt">
-                            <input type="text" size="35" value="{{purification.yield}}"
-                                data-ng-model="purification.yield">
-                        </div>
+                        <textarea cols="100" rows="3" id="neDescription" data-ng-model="functionalization.description"
+                            class="ng-pristine ng-valid">{{functionalization.description}}</textarea>
                     </td>
                 </tr>
             </tbody>
         </table>
-        <br>
-        <br>
-        <table width="100%" align="center" class="submissionView ng-scope">
-            <tbody>
-                <tr>
-                    <td class="cellLabel" width="100">
-                        <label for="type">Design and Methods Description</label>
-                    </td>
-                    <td>
-                        <div id="categoryPrompt">
-                            <textarea rows="5" cols="70"
-                                data-ng-model="purification.designMethodDescription">{{purification.designMethodDescription}}</textarea>
-                        </div>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
-
-
         <br>
         <br>
         <table width="100%" align="center" class="submissionView ng-scope">
             <tbody>
                 <tr>
                     <td class="cellLabel" width="15%">
-                        Finding
+                        Functionalization Materials
                     </td>
                     <td>
-                        <button type="button" ng-click="openMaterialEditForm({},-1, 0)" class="btn btn-primary btn-xs"
+                        <!-- <a style="display: block;" id="addFile" href="javascript:clearFile('nanofunctionalizationEntity'); openSubmissionForm('File');"><img align="top" src="images/btn_add.gif" border="0" alt="add a nanofunctionalization entity file"></a> -->
+                        <button type="button" ng-click="openFunctionalizationEditForm({},-1, 0)" class="btn btn-primary btn-xs"
                             id="addFile">Add</button>
                     </td>
                 </tr>
-            </tbody>
-        </table>
-        <br>
-        <br>
-
-
-        <table width="100%" align="center" class="submissionView ng-scope">
-            <tbody>
-                <tr>
-                    <td class="cellLabel" width="100">
-                        <label for="analysis">Analysis and Conclusion</label>
+                <tr ng-show="functionalization.functionalizationElements.length">
+                    <td colspan="2">
+                        <table class="editTableWithGrid" align="center" width="95%">
+                            <tbody>
+                                <tr ng-repeat="fe in functionalization.functionalizationElements">
+                                    <td width="10%"><label>Functionalization Type</label></td>
+                                    <td width="70%">{{fe.type}}</td>
+                                    <td width="10%">
+                                        <button type="button" class="btn btn-primary btn-xs ng-click-active"
+                                            ng-click="openFunctionalizationEditForm(fe, $index, 1)">Edit</button>
+                                    </td>
+                                    <td width="10%">
+                                        <button type="button" class="btn btn-danger btn-xs ng-click-active"
+                                            ng-click="deleteFunctionalizationElement(fe, $index, 1)">Delete</button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
                     </td>
-                    <td>
-                        <div id="categoryPrompt">
-                            <textarea rows="5" cols="70"
-                                data-ng-model="purification.analysis">{{purification.analysis}}</textarea>
-                        </div>
+                </tr>
+                <tr ng-show="functionalizationElementFormIndex!=null">
+                    <td colspan="2">
+                        <table class="editForm" align="center" width="100%" cellspacing="0" cellpadding="0">
+                            <tbody>
+                                <tr>
+                                    <!-- add index here and add index to show form. only show current index form. close all first -->
+                                    <td colspan="3">
+                                        <table class="editTableWithGrid form" align="center" width="95.5%">
+                                            <tr>
+                                                <td width="10%">
+                                                    <label>Functionalization Type*</label>
+                                                </td>
+                                                <td width="40%">
+                                                    <select ng-model="functionalizationElement.type"
+                                                        ng-options="o as o for o in dropdowns.materialTypes">
+                                                    </select>
+                                                </td>
+                                                <td width="10%">
+                                                    <label>Chemical Name*</label>
+                                                </td>
+                                                <td width="40%">
+                                                    <input type="text" size="35"
+                                                        value="{{functionalizationElement.chemicalName}}"
+                                                        data-ng-model="functionalizationElement.chemicalName">
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td width="10%">
+                                                    <label>PubChem Data Source</label>
+                                                </td>
+                                                <td width="90%" colspan="3">
+                                                    <select ng-model="functionalizationElement.pubChemDataSource"
+                                                        ng-options="o as o for o in dropdowns.pubChemDataSources">
+                                                    </select>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td width="10%"><label>Amount</label></td>
+                                                <td width="40%">
+                                                    <input type="text" value="12" data-ng-model="functionalizationElement.value">
+                                                </td>
+                                                <td width="10%"><label>Amount Unit</label></td>
+                                                <td width="40%">
+                                                    <select ng-model="functionalizationElement.valueUnit"
+                                                        ng-options="o as o for o in dropdowns.amountUnits">
+                                                        <option>mg</option>
+                                                    </select>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td width="10%"><label>Molecular Formula Type</label></td>
+                                                <td width="40%">
+                                                    <select ng-model="functionalizationElement.molecularFormulaType"
+                                                        ng-options="o as o for o in dropdowns.formulaTypes">
+                                                        <option>Hill</option>
+                                                    </select>
+                                                </td>
+                                                <td width="10%"><label>Molecular Formula</label></td>
+                                                <td width="40%">
+                                                    <input type="text" value="{{functionalizationElement.molecularFormula}}"
+                                                        data-ng-model="functionalizationElement.molecularFormula">
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td width="10%"><label>Functionalization Description</label></td>
+                                                <td width="90%" colspan="3">
+                                                    <textarea rows="5" cols="70"
+                                                        data-ng-model="functionalizationElement.description">
+                                                            {{functionalizationElement.description}}
+                                                        </textarea>
+                                                </td>
+                                            </tr>
+
+                                            <tr>
+                                                <td width="10%"><label>Inherent Functions</label></td>
+                                                <td width="90%" colspan="3"><button type="button"
+                                                        class="btn btn-primary btn-xs ng-click-active"
+                                                        ng-click="openInherentFunctionForm(-1, $parent.$index)">Add</button>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td width="90%" colspan="4">
+                                                    <div class="inherentFunctions"
+                                                        ng-repeat="i in functionalizationElement.inherentFunctionList">
+                                                        <table class="editTableWithGrid" align="center" width="95%">
+                                                            <tr>
+                                                                <td width="15%"><label>Type</label></td>
+                                                                <td width="65%">
+                                                                    {{i.type}}
+                                                                </td>
+                                                                <td width="10%">
+                                                                    <button type="button"
+                                                                        class="btn btn-primary btn-xs ng-click-active"
+                                                                        ng-click="openInherentFunctionForm($index, $parent.$index, i)">Edit</button>
+                                                                </td>
+                                                                <td width="10%">
+                                                                    <button type="button"
+                                                                        class="btn btn-danger btn-xs ng-click-active"
+                                                                        ng-click="deleteInherentFunction($index, $parent.$index, i)">Delete</button>
+                                                                </td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td width="15%"><label>Description</label></td>
+                                                                <td width="85%" colspan="3">{{i.description}}</td>
+                                                            </tr>
+                                                        </table><br />
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                            <tr ng-show="inherentFunctionFormIndex!=null">
+                                                <td colspan="4">
+                                                    <table class="editTableWithGrid" align="center" width="95%">
+                                                        <tr>
+                                                            <td width="15%"><label>Type</label></td>
+                                                            <td width="85%">
+                                                                <select ng-model="inherentFunction.type"
+                                                                    ng-options="o as o for o in dropdowns.inherentFunctionTypes">
+
+                                                                </select>
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td width="15%"><label>Description</label></td>
+                                                            <td width="85%">
+                                                                <textarea rows="5" cols="70"
+                                                                    data-ng-model="inherentFunction.description">
+                                                                                                                                        {{inherentFunction.description}}
+                                                                                                                                    </textarea>
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td colspan="2" class="saveSynthesis">
+                                                                <button class="btn btn-default btn-xs"
+                                                                    ng-click="cancelInherentFunction($index,inherentFunction)">Cancel</button>
+                                                                <button
+                                                                    ng-disabled="!inherentFunction.type||!functionalization.simpleProtocol.displayName||!functionalizationElement.type||!functionalizationElement.chemicalName"
+                                                                    class="btn btn-primary btn-xs"
+                                                                    ng-click="saveInherentFunction(inherentFunction)">Save
+                                                                    Inherent Function</button>
+                                                            </td>
+                                                        </tr>
+                                                    </table>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td colspan="4" class="saveSynthesis">
+                                                    <button class="btn btn-default btn-xs"
+                                                        ng-click="cancelFunctionalizationElement(functionalizationElement)">Cancel</button>
+                                                    <button
+                                                        ng-disabled="!functionalization.simpleProtocol.displayName||!functionalizationElement.type||!functionalizationElement.chemicalName||inherentFunctionFormIndex!=null"
+                                                        class="btn btn-primary btn-xs"
+                                                        ng-click="saveFunctionalizationElement(functionalizationElement)">Save Functionalization
+                                                        Element</button>
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
                     </td>
                 </tr>
             </tbody>
         </table>
-        <br>
         <br>
 
         <table width="100%" align="center" class="submissionView" summary="layout">
@@ -128,7 +273,7 @@
                     </td>
                 </tr>
                 <tr>
-                    <td colspan="2" ng-show="material.fileElements.length">
+                    <td colspan="2" ng-show="functionalization.fileElements.length">
                         <table class="editTableWithGrid" align="center" width="95%">
                             <tr>
                                 <td class="cellLabel">
@@ -144,7 +289,7 @@
                                     Description
                                 </td>
                             </tr>
-                            <tr class="synthesisFiles" ng-repeat="file in material.fileElements">
+                            <tr class="synthesisFiles" ng-repeat="file in functionalization.fileElements">
                                 <td width="10%">
                                     {{file.type}}
                                 </td>
@@ -251,7 +396,7 @@
                         </table>
                     </td>
                 </tr>
-                <!-- <tr ng-repeat="file in material.files">
+                <!-- <tr ng-repeat="file in functionalization.files">
                     <td>
                         {{file.type}}
                     </td>
@@ -281,15 +426,15 @@
         <div class="form__actions">
             <div class="form__action form__action--left">
                 <!-- ngIf: nanoEntityId !== null --><button class="btn btn-danger ng-scope" type="button" value="Delete"
-                    ng-click="deleteMaterial()" ng-if="synMaterialId!=-1">Delete</button>
+                    ng-click="deleteFunctionalization()" ng-if="synFunctionalizationId!=-1">Delete</button>
                 <!-- end ngIf: nanoEntityId !== null -->
             </div>
             <div class="form__action form__action--right">
                 <input type="hidden" ng-model="nanoEntityForm.createdBy" class="ng-pristine ng-valid">
                 <input type="hidden" ng-model="nanoEntityForm.createdDate" class="ng-pristine ng-valid">
                 <button class="btn btn-danger" type="reset" value="Reset" ng-click="resetForm()">Reset</button>
-                <button ng-disabled="!purification.simpleProtocol.displayName" class="btn btn-primary ng-binding"
-                    type="submit" ng-click="savePurification()" ng-show="!addNewComposingElement">
+                <button ng-disabled="!functionalization.simpleProtocol.displayName" class="btn btn-primary ng-binding"
+                    type="submit" ng-click="saveFunctionalization()" ng-show="!addNewComposingElement">
                     Update
                 </button>
 
