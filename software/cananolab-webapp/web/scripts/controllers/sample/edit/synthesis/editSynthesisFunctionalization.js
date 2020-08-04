@@ -5,20 +5,17 @@ var app = angular.module('angularApp')
     $scope.dropdowns = {};
     $scope.currentFile = {}; // current file being edited //
     $scope.fileArray = [];
-    $scope.technique = {}; // current inherent function being edited //
-    $scope.techniqueFormIndex = null;
+    $scope.inherentFunction = {}; // current inherent function being edited //
+    $scope.inherentFunctionFormIndex = null;
     $scope.fileFormIndex = null;
+    $scope.functionalizationElement = {}; // current functionalization being edited //
+    $scope.functionalizationElementFormIndex = null;
+    $scope.functionalizationEditUrl = `/caNanoLab/rest/synthesisFunctionalization/edit?sampleId=${$scope.sampleId}&synFunctionalizationId=${$scope.synFunctionalizationId}`
     $scope.sampleId = $location.search()['sampleId'];
     $scope.sampleName = '';
     $scope.dataId = $location.search()['dataId'];
     $scope.sampleName = sampleService.sampleName($scope.sampleId);
     $scope.fileId = null;
-
-    // $scope.dummyData = { "errors": null, "sampleId": "1000", "id": 1000, "simpleProtocol": { "domainId": 66256896, "domainFileId": 66289664, "domainFileUri": "protocols/20200110_12-52-36-363_2020 Holiday & Pay Calendar.pdf", "displayName": "Synthesis Test Protocol (STP), version 1.0" }, "createdBy": "canano_user", "createdDate": 1575652500000, "type": "Interim Purification", "methodName": null, "designMethodDescription": "Test entry for synthesis purification", "analysis": "Analysis for synth 1", "yield": 84.7, "purityBeans": [{ "columnHeaders": [], "purityRows": [], "files": [{ "uriExternal": false, "uri": "https://evs.nci.nih.gov/ftp1/CTCAE/CTCAE_5.0/NCIt_CTCAE_5.0.xlsx", "type": "Excel", "title": "Synthesis File", "description": "dummy row for testing of synthesis", "keywordsStr": "", "id": 1333, "createdBy": "canano_curator", "createdDate": 1575652500000, "sampleId": "1000", "errors": null, "externalUrl": null, "theAccess": { "recipient": null, "recipientDisplayName": null, "accessType": null, "roleName": "", "roleDisplayName": "", "principal": false }, "isPublic": false }], "fileBeingEdited": null, "id": 1002, "createdBy": "canano_curator", "createdDate": 1566964800000 }, { "columnHeaders": [{ "columnName": "Purity datum 1", "conditionProperty": null, "valueType": "purity", "valueUnit": "%", "columnType": "purity datum", "displayName": "Purity datum 1<br>(purity,%)", "constantValue": "", "columnOrder": 1, "createdDate": 1575652500000 }, { "columnName": "Synthesis condition 1", "conditionProperty": "", "valueType": "observed", "valueUnit": "g", "columnType": "condition", "displayName": "Synthesis condition 1<br>(observed,g)", "constantValue": "", "columnOrder": 2, "createdDate": 1575652500000 }], "purityRows": [{ "cells": [{ "id": 1000, "value": "55.0", "datumOrCondition": "datum", "columnOrder": 1, "createdDate": 1575652500000, "createdBy": "canano_curator", "operand": "=" }, { "id": 1000, "value": "42", "datumOrCondition": "condition", "columnOrder": 2, "createdDate": 1575652500000, "createdBy": "canano_user", "operand": "=" }] }], "files": [], "fileBeingEdited": null, "id": 1000, "createdBy": "canano_curator", "createdDate": 1575652500000 }], "simpleExperimentBeans": [{ "techniqueid": 1000, "techniqueDisplayName": "Interim purification technique(InP)", "techniqueType": "Interim purification technique", "abbreviation": "InP", "description": "Configuration for synthesis purification", "id": 1000, "dirty": false, "instruments": [{ "manufacturer": "Biome", "modelName": "Test Scale", "type": "scale", "id": 1000 }] }, { "techniqueid": 1000, "techniqueDisplayName": "Interim purification technique(InP)", "techniqueType": "Interim purification technique", "abbreviation": "InP", "description": "Configuration for purification 2", "id": 1001, "dirty": false, "instruments": [{ "manufacturer": "Invitrogen", "modelName": "Countess", "type": "cytometer", "id": 44793856 }, { "manufacturer": "Agilent", "modelName": "1200", "type": "HPLC system", "id": 62914561 }] }] }
-    // $scope.dummyData2 = { "errors": null, "sampleId": "1000", "id": 1000, "simpleProtocol": { "domainId": 66256896, "domainFileId": 66289664, "domainFileUri": "protocols/20200110_12-52-36-363_2020 Holiday & Pay Calendar.pdf", "displayName": "Synthesis Test Protocol (STP), version 1.0" }, "createdBy": "canano_user", "createdDate": 1575652500000, "type": "Interim Purification", "methodName": null, "designMethodDescription": "Test entry for synthesis purification", "analysis": "Analysis for synth 1", "yield": 84.7, "purityBeans": [{ "columnHeaders": [], "purityRows": [], "files": [{ "uriExternal": false, "uri": "https://evs.nci.nih.gov/ftp1/CTCAE/CTCAE_5.0/NCIt_CTCAE_5.0.xlsx", "type": "Excel", "title": "Synthesis File", "description": "dummy row for testing of synthesis", "keywordsStr": "", "id": 1333, "createdBy": "canano_curator", "createdDate": 1575652500000, "sampleId": "1000", "errors": null, "externalUrl": null, "theAccess": { "recipient": null, "recipientDisplayName": null, "accessType": null, "roleName": "", "roleDisplayName": "", "principal": false }, "isPublic": false }], "fileBeingEdited": null, "id": 1002, "createdBy": "canano_curator", "createdDate": 1566964800000 }, { "columnHeaders": [{ "columnName": "Purity datum 1", "conditionProperty": null, "valueType": "purity", "valueUnit": "%", "columnType": "purity datum", "displayName": "Purity datum 1<br>(purity,%)", "constantValue": "", "columnOrder": 1, "createdDate": 1575652500000 }, { "columnName": "Synthesis condition 1", "conditionProperty": "", "valueType": "observed", "valueUnit": "g", "columnType": "condition", "displayName": "Synthesis condition 1<br>(observed,g)", "constantValue": "", "columnOrder": 2, "createdDate": 1575652500000 }], "purityRows": [{ "cells": [{ "id": 1000, "value": "55.0", "datumOrCondition": "datum", "columnOrder": 1, "createdDate": 1575652500000, "createdBy": "canano_curator", "operand": "=" }, { "id": 1000, "value": "42", "datumOrCondition": "condition", "columnOrder": 2, "createdDate": 1575652500000, "createdBy": "canano_user", "operand": "=" }] }], "files": [], "fileBeingEdited": null, "id": 1000, "createdBy": "canano_curator", "createdDate": 1575652500000 }], "simpleExperimentBeans": [{ "techniqueid": 1000, "techniqueDisplayName": "Interim purification technique(InP)", "techniqueType": "Interim purification technique", "abbreviation": "InP", "description": "Configuration for synthesis purification", "id": 1000, "dirty": false, "instruments": [{ "manufacturer": "Biome", "modelName": "Test Scale", "type": "scale", "id": 1000 }] }, { "techniqueid": 1000, "techniqueDisplayName": "Interim purification technique(InP)", "techniqueType": "Interim purification technique", "abbreviation": "InP", "description": "Configuration for purification 2", "id": 1001, "dirty": false, "instruments": [{ "manufacturer": "Invitrogen", "modelName": "Countess", "type": "cytometer", "id": 44793856 }, { "manufacturer": "Agilent", "modelName": "1200", "type": "HPLC system", "id": 62914561 }] }] }
-    // $scope.dummyData3 = { "errors": null, "sampleId": "1000", "id": 1000, "simpleProtocol": { "domainId": null, "domainFileId": null, "domainFileUri": null, "displayName": "" }, "createdBy": "canano_user", "createdDate": 1575652500000, "type": "Final Purification", "methodName": null, "designMethodDescription": "This is a new save", "analysis": "This is a new analysis", "yield": 6969, "purityBeans": [{ "columnHeaders": [{ "columnName": "Purity datum 1", "conditionProperty": null, "valueType": "purity", "valueUnit": "%", "columnType": "purity datum", "displayName": "Purity datum 1<br>(purity,%)", "constantValue": "", "columnOrder": 1, "createdDate": 1575652500000 }, { "columnName": "Synthesis condition 1", "conditionProperty": "", "valueType": "observed", "valueUnit": "g", "columnType": "condition", "displayName": "Synthesis condition 1<br>(observed,g)", "constantValue": "", "columnOrder": 2, "createdDate": 1575652500000 }], "purityRows": [{ "cells": [{ "value": "55.0", "datumOrCondition": "datum", "columnOrder": 1, "createdDate": 1575652500000, "operand": "=" }, { "value": "42", "datumOrCondition": "condition", "columnOrder": 2, "createdDate": 1575652500000, "operand": "=" }] }, { "cells": [{ "value": "51.0", "datumOrCondition": "datum", "columnOrder": 1, "createdDate": 1575652500000, "operand": "=" }, { "value": "1000", "datumOrCondition": "condition", "columnOrder": 2, "createdDate": 1575652500000, "operand": "=" }] }], "files": [], "fileBeingEdited": null, "id": 1000, "createdBy": "canano_curator", "createdDate": 1575652500000 }, { "columnHeaders": [], "purityRows": [], "files": [{ "uriExternal": false, "uri": "https://evs.nci.nih.gov/ftp1/CTCAE/CTCAE_5.0/NCIt_CTCAE_5.0.xlsx", "type": "Excel", "title": "Synthesis File", "description": "dummy row for testing of synthesis", "keywordsStr": "", "id": 1000, "createdBy": "canano_curator", "createdDate": 1575652500000, "sampleId": "1000", "errors": null, "externalUrl": null, "theAccess": { "recipient": null, "recipientDisplayName": null, "accessType": null, "roleName": "", "roleDisplayName": "", "principal": false }, "isPublic": false }], "fileBeingEdited": null, "id": 1002, "createdBy": "canano_curator", "createdDate": 1566964800000 }], "simpleExperimentBeans": [{ "techniqueid": 1001, "techniqueDisplayName": "This is an edited technique", "techniqueType": "Interim purification technique", "abbreviation": "InP", "description": "Edited Configuartion Desc", "id": 1001, "dirty": true, "instruments": [{ "manufacturer": "Abbott", "modelName": "SomeModel", "type": "sometype", "id": 44793856 }, { "manufacturer": "Agilent", "modelName": "1200", "type": "HPLC system", "id": 62914561 }] }, { "techniqueid": 1000, "techniqueDisplayName": "Interim purification technique(InP)", "techniqueType": "Interim purification technique", "abbreviation": "InP", "description": "Configuration for synthesissadsdsadsd purification", "id": 1000, "dirty": false, "instruments": [{ "manufacturer": "Biome", "modelName": "Test Scale", "type": "scale", "id": 1000 }] }] }
-    // $scope.dummyData4 = { "errors": null, "sampleId": "1000", "id": 1000, "simpleProtocol": { "domainId": null, "domainFileId": null, "domainFileUri": null, "displayName": "" }, "createdBy": "canano_user", "createdDate": 1575652500000, "type": "Final Purification", "methodName": null, "designMethodDescription": "This is a new save", "analysis": "This is a new analysis", "yield": 6969, "purityBeans": [{ "columnHeaders": [{ "columnName": "Purity datum 1", "conditionProperty": null, "valueType": "purity", "valueUnit": "%", "columnType": "purity datum", "displayName": "Purity datum 1<br>(purity,%)", "constantValue": "", "columnOrder": 1, "createdDate": 1575652500000 }, { "columnName": "Synthesis condition 1", "conditionProperty": "", "valueType": "observed", "valueUnit": "g", "columnType": "condition", "displayName": "Synthesis condition 1<br>(observed,g)", "constantValue": "", "columnOrder": 2, "createdDate": 1575652500000 }], "purityRows": [{ "cells": [{ "value": "55.0", "datumOrCondition": "datum", "columnOrder": 1, "createdDate": 1575652500000, "operand": "=" }, { "value": "42", "datumOrCondition": "condition", "columnOrder": 2, "createdDate": 1575652500000, "operand": "=" }] }, { "cells": [{ "value": "51.0", "datumOrCondition": "datum", "columnOrder": 1, "createdDate": 1575652500000, "operand": "=" }, { "value": "1000", "datumOrCondition": "condition", "columnOrder": 2, "createdDate": 1575652500000, "operand": "=" }] }], "files": [], "fileBeingEdited": null, "id": 1000, "createdBy": "canano_curator", "createdDate": 1575652500000 }, { "columnHeaders": [], "purityRows": [], "files": [{ "uriExternal": false, "uri": "https://evs.nci.nih.gov/ftp1/CTCAE/CTCAE_5.0/NCIt_CTCAE_5.0.xlsx", "type": "Excel", "title": "Synthesis File", "description": "dummy row for testing of synthesis", "keywordsStr": "", "id": 1000, "createdBy": "canano_curator", "createdDate": 1575652500000, "sampleId": "1000", "errors": null, "externalUrl": null, "theAccess": { "recipient": null, "recipientDisplayName": null, "accessType": null, "roleName": "", "roleDisplayName": "", "principal": false }, "isPublic": false }], "fileBeingEdited": null, "id": 1002, "createdBy": "canano_curator", "createdDate": 1566964800000 }], "simpleExperimentBeans": [{ "techniqueid": 1001, "techniqueDisplayName": "This is an edited technique", "techniqueType": "Interim purification technique", "abbreviation": "InP", "description": "Edited Configuartion Desc", "id": 1001, "dirty": true, "instruments": [{ "manufacturer": "Abbott", "modelName": "SomeModel", "type": "sometype", "id": 44793856 }, { "manufacturer": "Agilent", "modelName": "1200", "type": "HPLC system", "id": 62914561 }] }, { "techniqueid": 1000, "techniqueDisplayName": "Interim purification technique(InP)", "techniqueType": "Interim purification technique", "abbreviation": "InP", "description": "Configuration for synthesissadsdsadsd purification", "id": 1000, "dirty": false, "instruments": [{ "manufacturer": "Biome", "modelName": "Test Scale", "type": "scale", "id": 1000 }] }] }
-    // $scope.dummyData5 = { "errors": null, "sampleId": "1000", "id": 1000, "simpleProtocol": { "domainId": null, "domainFileId": null, "domainFileUri": null, "displayName": "" }, "createdBy": "canano_user", "createdDate": 1575652500000, "type": "Final Purification", "methodName": null, "designMethodDescription": "This is a new save", "analysis": "This is a new analysis", "yield": 6969, "purityBeans": [{ "columnHeaders": [{ "columnName": "Purity datum 1", "conditionProperty": null, "valueType": "purity", "valueUnit": "%", "columnType": "purity datum", "displayName": "Purity datum 1<br>(purity,%)", "constantValue": "", "columnOrder": 1, "createdDate": 1575652500000 }, { "columnName": "Synthesis condition 1", "conditionProperty": "", "valueType": "observed", "valueUnit": "g", "columnType": "condition", "displayName": "Synthesis condition 1<br>(observed,g)", "constantValue": "", "columnOrder": 2, "createdDate": 1575652500000 }], "purityRows": [{ "cells": [{ "value": "55.0", "datumOrCondition": "datum", "columnOrder": 1, "createdDate": 1575652500000, "operand": "=" }, { "value": "42", "datumOrCondition": "condition", "columnOrder": 2, "createdDate": 1575652500000, "operand": "=" }] }, { "cells": [{ "value": "51.0", "datumOrCondition": "datum", "columnOrder": 1, "createdDate": 1575652500000, "operand": "=" }, { "value": "1000", "datumOrCondition": "condition", "columnOrder": 2, "createdDate": 1575652500000, "operand": "=" }] }], "files": [], "fileBeingEdited": null, "id": 1000, "createdBy": "canano_curator", "createdDate": 1575652500000 }, { "columnHeaders": [], "purityRows": [], "files": [{ "uriExternal": false, "uri": "https://evs.nci.nih.gov/ftp1/CTCAE/CTCAE_5.0/NCIt_CTCAE_5.0.xlsx", "type": "Excel", "title": "Synthesis File", "description": "dummy row for testing of synthesis", "keywordsStr": "", "id": 1000, "createdBy": "canano_curator", "createdDate": 1575652500000, "sampleId": "1000", "errors": null, "externalUrl": null, "theAccess": { "recipient": null, "recipientDisplayName": null, "accessType": null, "roleName": "", "roleDisplayName": "", "principal": false }, "isPublic": false }], "fileBeingEdited": null, "id": 1002, "createdBy": "canano_curator", "createdDate": 1566964800000 }], "simpleExperimentBeans": [{ "techniqueid": 1001, "techniqueDisplayName": "This is an edited technique", "techniqueType": "Interim purification technique", "abbreviation": "InP", "description": "Edited Configuartion Desc", "id": 1001, "dirty": true, "instruments": [{ "manufacturer": "Abbott", "modelName": "SomeModel", "type": "sometype", "id": 44793856 }, { "manufacturer": "Agilent", "modelName": "1200", "type": "HPLC system", "id": 62914561 }] }, { "techniqueid": 1000, "techniqueDisplayName": "Interim purification technique(InP)", "techniqueType": "Interim purification technique", "abbreviation": "InP", "description": "Configuration for synthesissadsdsadsd purification", "id": 1000, "dirty": false, "instruments": [{ "manufacturer": "Biome", "modelName": "Test Scale", "type": "scale", "id": 1000 }] }] }
 
     // initial setup for dropdowns //
     $http({ method: 'GET', url: `/caNanoLab/rest/synthesisFunctionalization/setup?sampleId=${$scope.sampleId}` }).
@@ -28,9 +25,9 @@ var app = angular.module('angularApp')
       }).error(function (data, status, headers, config) {
       });
 
-    // function to return edit data for material //
+    // function to return edit data for functionalization //
     if ($scope.dataId == -1) {
-      // $scope.material = { "sampleId": $scope.sampleId, "materialElements": [], "description": "" };
+      $scope.functionalization = { "sampleId": $scope.sampleId, "functionalizationElements": [], "description": "" };
     }
     else {
       $http({ method: 'GET', url: `/caNanoLab/rest/synthesisFunctionalization/edit?sampleId=${$scope.sampleId}&dataId=${$scope.dataId}` }).
@@ -49,35 +46,35 @@ var app = angular.module('angularApp')
 
     // cancel inherent function //
     $scope.cancelInherentFunction = function (index, i) {
-      console.log('dont do anything. Original Material stays as is');
+      console.log('dont do anything. Original Functionalization stays as is');
       $scope.inherentFunctionFormIndex = null;
     };
 
-    // cancel material element edit //
-    $scope.cancelMaterialElement = function (me) {
-      $scope.materialElementFormIndex = null;
+    // cancel functionalization element edit //
+    $scope.cancelFunctionalizationElement = function (me) {
+      $scope.functionalizationElementFormIndex = null;
     };
 
-    // delete for material //
-    $scope.deleteMaterial = function () {
+    // delete for functionalization //
+    $scope.deleteFunctionalization = function () {
       if (confirm("Are you sure you want to delete?")) {
-        $http({ method: 'POST', url: '/caNanoLab/rest/synthesisMaterial/delete', data: $scope.material }).
+        $http({ method: 'POST', url: '/caNanoLab/rest/synthesisFunctionalization/delete', data: $scope.functionalization }).
           success(function (data, status, headers, config) {
-            $location.search({ 'message': 'Synthesis Material successfully deleted.', 'sampleId': $scope.sampleId }).path('/editSynthesis').replace();
+            $location.search({ 'message': 'Synthesis Functionalization successfully deleted.', 'sampleId': $scope.sampleId }).path('/editSynthesis').replace();
           }).
           error(function (data, status, headers, config) {
           });
       };
     };
 
-    // deletes inherent function from material element //
+    // deletes inherent function from functionalization element //
     $scope.deleteInherentFunction = function (index, parentIndex, inherentFunction) {
-      $scope.materialElement.inherentFunctionList.splice(index, 1);
+      $scope.functionalizationElement.inherentFunctionList.splice(index, 1);
     };
 
-    // delete material element //
-    $scope.deleteMaterialElement = function (me, index) {
-      $scope.material.materialElements.splice(index, 1)
+    // delete functionalization element //
+    $scope.deleteFunctionalizationElement = function (me, index) {
+      $scope.functionalization.functionalizationElements.splice(index, 1)
     };
 
     // gets file conditions to make save file button enabled or disabled //
@@ -104,6 +101,9 @@ var app = angular.module('angularApp')
 
     // open the file edit form //
     $scope.openFileForm = function (index, parentIndex, file) {
+      $scope.uploadComplete = false;
+      $scope.uploadError = false;
+
       $scope.fileObject = null;
       $('#uploadFile')[0].value = "";
       $scope.uploadError = null;
@@ -156,32 +156,34 @@ var app = angular.module('angularApp')
       };
     };
 
-    // opens material edit form //
-    $scope.openMaterialEditForm = function (me, index, type) {
+    // opens functionalization edit form //
+    $scope.openFunctionalizationEditForm = function (me, index, type) {
       if (index != -1) {
-        $scope.materialElement = angular.copy(me);
-        $scope.materialElementFormIndex = index;
+        $scope.functionalizationElement = angular.copy(me);
+        $scope.functionalizationElementFormIndex = index;
       }
       else {
-        $scope.materialElementFormIndex = -1;
-        $scope.materialElement = {};
+        $scope.functionalizationElementFormIndex = -1;
+        $scope.functionalizationElement = {};
       };
     };
 
     // save file //
     $scope.saveFile = function () {
-      $scope.uploadComplete = false;
-      $scope.uploadError = false;
-
       if ($scope.fileObject && !$scope.currentFile.uriExternal) {
         $scope.uploadFile();
 
         // watch upload complete //
         $scope.$watch('uploadComplete', function () {
+          console.log($scope.uploadComplete)
+
           if ($scope.uploadComplete) {
-            console.log('upload complete', $scope.uploadComplete)
+            $scope.fileFormIndex = null;
+            console.log('upload complete. Add to file')
           };
         });
+
+
 
         // watch upload error //
         $scope.$watch('uploadError', function () {
@@ -198,6 +200,7 @@ var app = angular.module('angularApp')
 
     // uploads file to server //
     $scope.uploadFile = function () {
+      console.log('i am uploading')
       var fd = new FormData(); // create new form data object //
       fd.append('file', $scope.fileObject);
       $http.post('/caNanoLab/rest/core/uploadFile', fd, { withCredentials: false, headers: { 'Content-Type': undefined }, transformRequest: angular.identity }).
@@ -213,43 +216,43 @@ var app = angular.module('angularApp')
     // save inherent function //
     $scope.saveInherentFunction = function (i) {
       if ($scope.inherentFunctionFormIndex == -1) {
-        if (!$scope.materialElement.inherentFunctionList) {
-          $scope.materialElement['inherentFunctionList'] = [];
+        if (!$scope.functionalizationElement.inherentFunctionList) {
+          $scope.functionalizationElement['inherentFunctionList'] = [];
         };
-        $scope.materialElement.inherentFunctionList.push($scope.inherentFunction)
+        $scope.functionalizationElement.inherentFunctionList.push($scope.inherentFunction)
       }
       else {
-        $scope.materialElement.inherentFunctionList[$scope.inherentFunctionFormIndex] = $scope.inherentFunction;
+        $scope.functionalizationElement.inherentFunctionList[$scope.inherentFunctionFormIndex] = $scope.inherentFunction;
       }
       $scope.inherentFunctionFormIndex = null;
     };
 
-    // save material element //
-    $scope.saveMaterialElement = function (me) {
-      if ($scope.materialElementFormIndex == -1) {
-        $scope.material.materialElements.push($scope.materialElement)
+    // save functionalization element //
+    $scope.saveFunctionalizationElement = function (me) {
+      if ($scope.functionalizationElementFormIndex == -1) {
+        $scope.functionalization.functionalizationElements.push($scope.functionalizationElement)
       }
       else {
-        $scope.material['materialElements'][$scope.materialElementFormIndex] = me;
+        $scope.functionalization['functionalizationElements'][$scope.functionalizationElementFormIndex] = me;
       }
-      $scope.materialElementFormIndex = null;
+      $scope.functionalizationElementFormIndex = null;
     };
 
-    // submit the entire synthesis material //
-    $scope.savePurification = function () {
-      // $scope.fileMaterial = angular.copy($scope.material);
-      // $scope.fileMaterial['fileBeingEdited'] = { "uri": $scope.somefile.name, "title": "test", "type": "document", "uriExternal": false };
-      // $http({ method: 'POST', url: '/caNanoLab/rest/synthesisMaterial/saveFile', data: $scope.fileMaterial }).
+    // submit the entire synthesis functionalization //
+    $scope.saveFunctionalization = function () {
+      // $scope.fileFunctionalization = angular.copy($scope.functionalization);
+      // $scope.fileFunctionalization['fileBeingEdited'] = { "uri": $scope.somefile.name, "title": "test", "type": "document", "uriExternal": false };
+      // $http({ method: 'POST', url: '/caNanoLab/rest/synthesisFunctionalization/saveFile', data: $scope.fileFunctionalization }).
       //   success(function (data, status, headers, config) {
-      //     $location.search({ 'message': 'Synthesis Material successfully saved.', 'sampleId': $scope.sampleId }).path('/editSynthesis').replace();
+      //     $location.search({ 'message': 'Synthesis Functionalization successfully saved.', 'sampleId': $scope.sampleId }).path('/editSynthesis').replace();
       //   }).
       //   error(function (data, status, headers, config) {
       //     console.log('fail')
       //   });
 
-      $http({ method: 'POST', url: '/caNanoLab/rest/synthesisPurification/submit', data: $scope.purification }).
+      $http({ method: 'POST', url: '/caNanoLab/rest/synthesisFunctionalization/submit', data: $scope.functionalization }).
         success(function (data, status, headers, config) {
-          $location.search({ 'message': 'Synthesis Purification successfully saved.', 'sampleId': $scope.sampleId }).path('/editSynthesis').replace();
+          $location.search({ 'message': 'Synthesis Functionalization successfully saved.', 'sampleId': $scope.sampleId }).path('/editSynthesis').replace();
         }).
         error(function (data, status, headers, config) {
           console.log('fail')
@@ -261,51 +264,5 @@ var app = angular.module('angularApp')
       fileType ? $scope.currentFile.uriExternal = true : $scope.currentFile.uriExternal = false;
     };
 
-    $scope.setPageTitle = () => $scope.dataId == -1 ? `Add ${$scope.sampleName.name} Synthesis - Purification` : `Edit ${$scope.sampleName.name} Synthesis - Purification`;
-
-
-
-    $scope.testSave = () => {
-      // $scope.fileMaterial = angular.copy($scope.material);
-      // $scope.fileMaterial['fileBeingEdited'] = { "uri": $scope.somefile.name, "title": "test", "type": "document", "uriExternal": false };
-      // $http({ method: 'POST', url: '/caNanoLab/rest/synthesisMaterial/saveFile', data: $scope.fileMaterial }).
-      //   success(function (data, status, headers, config) {
-      //     $location.search({ 'message': 'Synthesis Material successfully saved.', 'sampleId': $scope.sampleId }).path('/editSynthesis').replace();
-      //   }).
-      //   error(function (data, status, headers, config) {
-      //     console.log('fail')
-      //   });
-      $scope.dummyData = { "id": 1000, "sampleId": "1000", "dataId": "", "functionalizationElements": [{ "chemicalName": "SynFuncMat Element1", "createdBy": "canano_curator", "createdDate": 1575652500000, "description": "Synthesis Functionalization Material Element 1", "id": 1000, "molecularFormula": "kK-N12-C4-L", "molecularFormulaType": "Hill", "pubChemDataSource": null, "pubChemId": null, "type": "material", "value": 84.0, "valueUnit": "pg", "activationMethod": "Lightning", "activationEffect": "Animation", "files": [], "inherentFunctionList": [{ "description": "Inherent Function 2", "id": "1001", "type": "activation" }, { "description": "Synthesis Functionalization Material Inherent Function 1", "id": "1000", "type": "biocompatibility" }] }, { "chemicalName": "McNuggets", "createdBy": "canano_curator", "createdDate": 1575652500000, "description": "Synthesis Functionalization Material Element 2", "id": 1001, "molecularFormula": "AbCdEfG", "molecularFormulaType": "Hill", "pubChemDataSource": null, "pubChemId": null, "type": "material", "value": 10.0, "valueUnit": "piece", "activationMethod": "Does not require activation", "activationEffect": null, "files": [], "inherentFunctionList": null }], "fileElements": [], "errors": [], "date": 1575652500000, "createdBy": "canano_curator", "description": "Synthesis Functionalization Edited", "type": "Synthesis", "simpleProtocol": { "domainId": 66256896, "domainFileId": 66289664, "domainFileUri": "protocols/20200110_12-52-36-363_2020 Holiday & Pay Calendar.pdf", "displayName": "Synthesis Test Protocol (STP), version 1.0" }, "fileBeingEdited": null, "functionalizationElementBeingEdited": null };
-
-      $http({ method: 'POST', url: '/caNanoLab/rest/synthesisFunctionalization/submit', data: $scope.dummyData }).
-        success(function (data, status, headers, config) {
-          console.log(data)
-          // $location.search({ 'message': 'Synthesis Material successfully saved.', 'sampleId': $scope.sampleId }).path('/editSynthesis').replace();
-        }).
-        error(function (data, status, headers, config) {
-          console.log('fail')
-        });
-    };
-
-    $scope.testSave2 = () => {
-      // $scope.fileMaterial = angular.copy($scope.material);
-      // $scope.fileMaterial['fileBeingEdited'] = { "uri": $scope.somefile.name, "title": "test", "type": "document", "uriExternal": false };
-      // $http({ method: 'POST', url: '/caNanoLab/rest/synthesisMaterial/saveFile', data: $scope.fileMaterial }).
-      //   success(function (data, status, headers, config) {
-      //     $location.search({ 'message': 'Synthesis Material successfully saved.', 'sampleId': $scope.sampleId }).path('/editSynthesis').replace();
-      //   }).
-      //   error(function (data, status, headers, config) {
-      //     console.log('fail')
-      //   });
-
-      $http({ method: 'POST', url: '/caNanoLab/rest/synthesisPurification/savePurification', data: $scope.dummyData3 }).
-        success(function (data, status, headers, config) {
-          console.log(data)
-          // $location.search({ 'message': 'Synthesis Material successfully saved.', 'sampleId': $scope.sampleId }).path('/editSynthesis').replace();
-        }).
-        error(function (data, status, headers, config) {
-          console.log('fail')
-        });
-    };
+    $scope.setPageTitle = () => $scope.synFunctionalizationId == -1 ? `Add ${$scope.sampleName.name} Synthesis - Functionalization` : `Edit ${$scope.sampleName.name} Synthesis - Functionalization`;
   });
-
