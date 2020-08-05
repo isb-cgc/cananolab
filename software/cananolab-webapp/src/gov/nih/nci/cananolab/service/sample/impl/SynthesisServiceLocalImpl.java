@@ -1,5 +1,6 @@
 package gov.nih.nci.cananolab.service.sample.impl;
 
+import gov.nih.nci.cananolab.domain.characterization.OtherCharacterization;
 import gov.nih.nci.cananolab.domain.common.File;
 import gov.nih.nci.cananolab.domain.common.Instrument;
 import gov.nih.nci.cananolab.domain.common.PurificationConfig;
@@ -50,6 +51,8 @@ import net.sf.ehcache.management.sampled.SampledEhcacheMBeans;
 import net.sf.ehcache.management.sampled.SampledMBeanRegistrationProvider;
 import org.apache.log4j.Logger;
 import org.bouncycastle.util.test.Test;
+import org.hibernate.criterion.DetachedCriteria;
+import org.hibernate.criterion.Property;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.security.access.method.P;
@@ -305,6 +308,8 @@ public class SynthesisServiceLocalImpl extends BaseServiceLocalImpl implements S
             throw new SynthesisException(err, e);
         }
     }
+
+
 
     public SynthesisBean findSynthesisBySampleId(Long sampleId) throws SynthesisException {
         SynthesisBean synthesisBean = null;

@@ -142,21 +142,21 @@ public class SynthesisPurificationServicesTest {
         try {
 
             //String jsessionId = RestTestLoginUtil.testLogin();
-            Map<String, String> params = new HashMap<String, String>();
-            params.put("columnType", "datum");
-            params.put("charType", "physico-chemical characterization");
-            params.put("charName", "molecular weight");
-            params.put("assayType", "molecular weight");
+//            Map<String, String> params = new HashMap<String, String>();
+//            params.put("columnType", "datum");
+//            params.put("charType", "physico-chemical characterization");
+//            params.put("charName", "molecular weight");
+//            params.put("assayType", "molecular weight");
 
             //doesn't work for now
-            Response res =
-                    given()//.contentType("application/json").cookie("JSESSIONID=" + jsessionId)
-                            .params(params)
-                            .expect()
-                            .body("", hasItems("PDI", "other"))
-                            .when().get(RestTestLoginUtil.readTestUrlProperty() +  "caNanoLab/rest/characterization/getColumnNameOptionsByType");
-
-            System.out.println(res.getBody().asString());
+//            Response res =
+//                    given()//.contentType("application/json").cookie("JSESSIONID=" + jsessionId)
+//                            .params(params)
+//                            .expect()
+//                            .body("", hasItems("PDI", "other"))
+//                            .when().get( "/characterization/getColumnNameOptionsByType");
+//
+//            System.out.println(res.getBody().asString());
 
             Response response = given().spec(specification)
                     .queryParam("columnType", "datum")
@@ -170,7 +170,12 @@ public class SynthesisPurificationServicesTest {
             //TODO check response
             ResponseBody body = response.body();
             String result = body.prettyPrint();
+            assertTrue(result.length()>0);
             System.out.println(result);
+
+            List<String> types = response.path( "");
+            assertTrue(types.size()>0);
+            assertTrue(types.contains("purity"));
 
         }catch (Exception e){
             e.printStackTrace();
