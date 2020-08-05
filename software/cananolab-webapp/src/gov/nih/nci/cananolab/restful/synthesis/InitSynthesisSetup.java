@@ -16,6 +16,7 @@ import gov.nih.nci.cananolab.restful.sample.InitSampleSetup;
 import gov.nih.nci.cananolab.service.common.LookupService;
 import gov.nih.nci.cananolab.service.sample.SampleService;
 import gov.nih.nci.cananolab.service.sample.SynthesisService;
+import gov.nih.nci.cananolab.util.ClassUtils;
 import gov.nih.nci.cananolab.util.StringUtils;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -35,6 +36,25 @@ public class InitSynthesisSetup {
     public String getDetailPage(String synthesisMaterial) {
         //TODO write
         return "/caNanoLab/views/sample/composition/functionalizingEntity/SynthesisInfo.html";
+    }
+
+    public SortedSet<String> getPurificationNamesByType(HttpServletRequest httpServletRequest, String purfType, SynthesisService synthesisService) throws Exception {
+        if (StringUtils.isEmpty(purfType)) {
+            return null;
+        }
+        SortedSet<String> charNames = new TreeSet<String>();
+        String shortClassNameForCharType = ClassUtils.getShortClassNameFromDisplayName(purfType);
+        Class clazz = ClassUtils.getFullClass(shortClassNameForCharType);
+        if (clazz != null) {
+            charNames = InitSetup.getInstance().getDefaultTypesByReflection(httpServletRequest.getSession().getServletContext(),
+                    "defaultCharTypeChars", clazz.getName());
+        }
+//        List<String> otherCharNames = synthesisService.findOtherCharacterizationByAssayCategory(purfType);
+//        if (!otherCharNames.isEmpty()) {
+//            charNames.addAll(otherCharNames);
+//        }
+        httpServletRequest.getSession().setAttribute("charTypeChars", charNames);
+        return charNames;
     }
 
 
