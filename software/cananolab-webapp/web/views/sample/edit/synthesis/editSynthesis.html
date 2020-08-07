@@ -142,7 +142,12 @@
     <!-- Functionalization -->
     <table ng-hide="show1" class="summaryViewNoTop" width="100%" summary="layout">
         <tr>
-            <td class="heading">Functionalization</td>
+            <td class="heading">Functionalization&nbsp;&nbsp;
+                <a href="#/editSynthesisFunctionalization?sampleId={{sampleId}}&dataId=-1" class="btn btn-primary btn-xs"
+                    style="color:white;text-decoration: none;">
+                    Add
+                </a>
+            </td>
         </tr>
         <tr ng-repeat="f in functionalizations">
             <td>
