@@ -243,7 +243,12 @@
     <!-- Purification -->
     <table ng-hide="show2" class="summaryViewNoTop" width="100%" summary="layout">
         <tr>
-            <td class="heading">Purification</td>
+            <td class="heading">Purification&nbsp;&nbsp;
+                <a href="#/editSynthesisPurification?sampleId={{sampleId}}&dataId=-1" class="btn btn-primary btn-xs"
+                    style="color:white;text-decoration: none;">
+                    Add
+                </a>
+            </td>
         </tr>
         <tr ng-repeat="p in purifications">
             <td>
