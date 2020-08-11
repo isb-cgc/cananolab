@@ -30,7 +30,7 @@ var app = angular.module('angularApp')
 
     // function to return edit data for material //
     if ($scope.dataId == -1) {
-       // $scope.material = { "sampleId": $scope.sampleId, "materialElements": [], "description": "" };
+      $scope.purification = { "sampleId": $scope.sampleId, "functionalizationElements": [], "description": "" };
     }
     else {
       $http({ method: 'GET', url: `/caNanoLab/rest/synthesisPurification/setupEdit?sampleId=${$scope.sampleId}&dataId=${$scope.dataId}` }).
