@@ -17,8 +17,7 @@
         </id>
         <!--the synthesis pk id is generated from the sample pk id
         <one-to-one name="sample" class="Sample"  constrained="true"/>        -->
-        <many-to-one name="sample" class="Sample" column="sample_pk_id" unique="true" not-null="true" cascade="all"/>
-
+        <many-to-one name="sample" class="Sample" column="sample_pk_id" unique="true" lazy="proxy"  not-null="true" cascade="all"/>
         <set name="synthesisFunctionalizations" inverse="true">
             <key>
                 <column name="synthesis_pk_id" not-null="true"/>

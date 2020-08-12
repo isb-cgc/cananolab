@@ -137,6 +137,7 @@ public class SynthesisHelper
         DetachedCriteria crit = DetachedCriteria.forClass(Synthesis.class);
         crit.createAlias("sample", "sample");
         crit.add(Property.forName("sample.id").eq(sampleId));
+        crit.setFetchMode("synthesis", FetchMode.JOIN);
         crit.setFetchMode("synthesisMaterials", FetchMode.JOIN);
         crit.setFetchMode("synthesisMaterials,protocol", FetchMode.JOIN);
         crit.setFetchMode("synthesisMaterials.protocol.file", FetchMode.JOIN);
@@ -169,6 +170,7 @@ public class SynthesisHelper
         List result = appService.query(crit);
         if (!result.isEmpty()){
             synthesis = (Synthesis)result.get(0);
+            synthesis.getSample().setSynthesis(synthesis);
         }
         return synthesis;
     }
