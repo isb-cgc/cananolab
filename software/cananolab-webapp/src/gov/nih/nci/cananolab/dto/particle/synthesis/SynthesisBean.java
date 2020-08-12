@@ -111,6 +111,7 @@ public class SynthesisBean extends BaseSynthesisEntityBean {
         SortedSet<SynthesisPurificationBean> typeSynPurification;
          for(SynthesisPurificationBean synthesisPurificationBean:synthesisPurificationBeanList){
              String type = synthesisPurificationBean.getDomainEntity().getType();
+             if(type==null) type = "none";
              if(type2PurEntities.get(type)!=null){
                  typeSynPurification=type2PurEntities.get(type);
              }else {
