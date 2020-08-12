@@ -593,10 +593,10 @@ public class SampleServiceHelper
 				"sampleComposition.functionalizingEntityCollection.functionCollection",
 				FetchMode.JOIN);
 		crit.setFetchMode("publicationCollection", FetchMode.JOIN);
-		crit.setFetchMode("synthesisCollection", FetchMode.JOIN);
-		crit.setFetchMode("synthesisCollection.synthesisMaterials", FetchMode.JOIN);
-		crit.setFetchMode("synthesisCollection.synthesisFunctionalizations", FetchMode.JOIN);
-		crit.setFetchMode("synthesisCollection.synthesisPurifications",FetchMode.JOIN);
+		crit.setFetchMode("synthesis", FetchMode.JOIN);
+		crit.setFetchMode("synthesis.synthesisMaterials", FetchMode.JOIN);
+		crit.setFetchMode("synthesis.synthesisFunctionalizations", FetchMode.JOIN);
+		crit.setFetchMode("synthesis.synthesisPurifications",FetchMode.JOIN);
 		crit.setResultTransformer(CriteriaSpecification.DISTINCT_ROOT_ENTITY);
 
 		List result = appService.query(crit);
@@ -714,10 +714,10 @@ public class SampleServiceHelper
 				"sampleComposition.functionalizingEntityCollection.functionCollection",
 				FetchMode.JOIN);
 		crit.setFetchMode("publicationCollection", FetchMode.JOIN);
-		crit.setFetchMode("synthesisCollection", FetchMode.JOIN);
-		crit.setFetchMode("synthesisCollection.synthesisMaterials", FetchMode.JOIN);
-		crit.setFetchMode("synthesisCollection.synthesisFunctionalizations", FetchMode.JOIN);
-		crit.setFetchMode("synthesisCollection.synthesisPurifications",FetchMode.JOIN);
+		crit.setFetchMode("synthesis", FetchMode.JOIN);
+		crit.setFetchMode("synthesis.synthesisMaterials", FetchMode.JOIN);
+		crit.setFetchMode("synthesis.synthesisFunctionalizations", FetchMode.JOIN);
+		crit.setFetchMode("synthesis.synthesisPurifications",FetchMode.JOIN);
 		crit.setResultTransformer(CriteriaSpecification.DISTINCT_ROOT_ENTITY);
 
 		List result = appService.query(crit);

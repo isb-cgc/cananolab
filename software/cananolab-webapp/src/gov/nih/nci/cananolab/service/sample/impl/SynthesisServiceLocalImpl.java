@@ -1,6 +1,7 @@
 package gov.nih.nci.cananolab.service.sample.impl;
 
 import gov.nih.nci.cananolab.domain.characterization.OtherCharacterization;
+import gov.nih.nci.cananolab.domain.common.Datum;
 import gov.nih.nci.cananolab.domain.common.File;
 import gov.nih.nci.cananolab.domain.common.Instrument;
 import gov.nih.nci.cananolab.domain.common.PurificationConfig;
@@ -715,7 +716,7 @@ public class SynthesisServiceLocalImpl extends BaseServiceLocalImpl implements S
             }
 
             if (!newEntity) {
-                //Get the material by id from database
+                //Get the purification by id from database
                 Long test1 = synthesisPurity.getSynthesisPurificationId();
                 Long test2 = synthesisPurificationBean.getDomainEntity().getId();
                 if (!test1.equals(test2)) {
@@ -725,8 +726,10 @@ public class SynthesisServiceLocalImpl extends BaseServiceLocalImpl implements S
 
 
                 try {
-                    appService
-                            .load(SynthesisPurity.class, synthesisPurityBean.getDomain().getId());
+                    SynthesisPurity tempPure = (SynthesisPurity)appService.getObject(SynthesisPurity.class, "id", synthesisPurityBean.getDomain().getId());
+
+                    synthesisPurity.setCreatedDate(tempPure.getCreatedDate());
+                    synthesisPurity.setCreatedBy(tempPure.getCreatedBy());
                 }
                 catch (Exception e) {
                     String err = "Object doesn't exist in the database anymore.  Please log in again.";
@@ -1126,6 +1129,10 @@ public class SynthesisServiceLocalImpl extends BaseServiceLocalImpl implements S
             try {
                 appService
                         .load(PurityDatum.class, datum.getId());
+                SynthesisPurity tempDatum = (SynthesisPurity)appService.getObject(Datum.class, "id", datum.getId());
+
+                datum.setCreatedDate(tempDatum.getCreatedDate());
+                datum.setCreatedBy(tempDatum.getCreatedBy());
             }
             catch (Exception e) {
                 String err = "Object doesn't exist in the database anymore.  Please log in again.";
