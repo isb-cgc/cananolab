@@ -250,11 +250,11 @@
                 </a>
             </td>
         </tr>
-        <tr ng-repeat="p in purifications">
+        <tr ng-repeat="p in purifications track by $index">
             <td>
                 <table cellspacing="0" cellpadding="0" width="100%">
                     <tr>
-                        <td class="subHeading">{{p.DisplayName}}</td>
+                        <td class="subHeading">Purification {{$index+1}}</td>
                     </tr>
                     <tr>
                         <td>

@@ -3,6 +3,7 @@
   <B>Purification Copy</B> - {{purificationCopy}} <br /><br />
   <B>Purification</B> - {{purification}} <br /><br />
   <B>Material Element</B> - {{materialElement}}<br /><br />
+  <B>techniqueFormIndex</B> - {{techniqueFormIndex}}
 </div>
 
 <div class="spacer">
@@ -36,6 +37,19 @@
     </span>
     <table width="100%" align="center" class="submissionView" summary="layout">
       <tbody>
+        <tr>
+          <td class="cellLabel" width="100">
+            <label for="type">Purification Type</label>
+          </td>
+          <td>
+            <div id="categoryPrompt">
+              <select ng-model="purification.type"
+                ng-options="o as o for o in dropdowns.purificationTypes">
+              </select>
+              <!-- <input type="text" size="50" value="{{material.simpleProtocol.displayName}}" data-ng-model="material.simpleProtocol.displayName"> -->
+            </div>
+          </td>
+        </tr>
         <tr>
           <td class="cellLabel" width="100">
             <label for="type">Protocol</label>
@@ -74,6 +88,38 @@
               <textarea rows="5" cols="70"
                 data-ng-model="purification.designMethodDescription">{{purification.designMethodDescription}}</textarea>
             </div>
+          </td>
+        </tr>
+        <tr>
+          <td colspan="2">
+            <table width="100%" align="center" class="submissionView ng-scope">
+              <tbody>
+                <tr>
+                  <td class="cellLabel" width="15%">
+                    Technique and Instruments
+                  </td>
+                  <td>
+                    <!-- <a style="display: block;" id="addFile" href="javascript:clearFile('nanofunctionalizationEntity'); openSubmissionForm('File');"><img align="top" src="images/btn_add.gif" border="0" alt="add a nanofunctionalization entity file"></a> -->
+                    <button type="button" ng-click="openTechniqueInstrumentsForm(-1,0,{})" class="btn btn-primary btn-xs"
+                      id="addFile">Add</button>
+                  </td>
+                </tr>
+                <tr ng-show="techniqueFormIndex!=null">
+                  <td colspan="2">
+                    <table class="editTableWithGrid form" align="center" width="95.5%">
+                      <tr>
+                          <td width="30%">
+                            <label>Material Type*</label>
+                          </td>
+                          <td>
+                            <input type="text" size="35" value="">
+                          </td>
+                      </tr>
+                    </table>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
           </td>
         </tr>
       </tbody>
@@ -279,7 +325,7 @@
         <input type="hidden" ng-model="nanoEntityForm.createdBy" class="ng-pristine ng-valid">
         <input type="hidden" ng-model="nanoEntityForm.createdDate" class="ng-pristine ng-valid">
         <button class="btn btn-danger" type="reset" value="Reset" ng-click="resetForm()">Reset</button>
-        <button ng-disabled="!purification.simpleProtocol.displayName" class="btn btn-primary ng-binding" type="submit"
+        <button ng-disabled="!purification.simpleProtocol.displayName || !purification.type" class="btn btn-primary ng-binding" type="submit"
           ng-click="savePurification()" ng-show="!addNewComposingElement">
           Update
         </button>
