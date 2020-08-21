@@ -3,7 +3,7 @@
   <B>Purification Copy</B> - {{purificationCopy}} <br /><br />
   <B>Purification</B> - {{purification}} <br /><br />
   <B>Material Element</B> - {{materialElement}}<br /><br />
-  <B>techniqueFormIndex</B> - {{techniqueFormIndex}}
+  <B>Technique</B> - {{technique}}
 </div>
 
 <div class="spacer">
@@ -104,16 +104,90 @@
                       id="addFile">Add</button>
                   </td>
                 </tr>
+                <tr ng-show="purification.simpleExperimentBeans.length">
+                  <td colspan="2">
+                    <table class="editTableWithGrid" align="center" width="95%">
+                      <tbody>
+                        <tr ng-repeat="t in purification.simpleExperimentBeans">
+                          <td width="10%"><label>Technique Type</label></td>
+                          <td width="70%">{{t.techniqueType}}</td>
+                          <td width="10%">
+                            <button type="button" class="btn btn-primary btn-xs ng-click-active"
+                              ng-click="openTechniqueInstrumentsForm($index, 0, t)">Edit</button>
+                          </td>
+                          <td width="10%">
+                            <button type="button" class="btn btn-danger btn-xs ng-click-active"
+                              ng-click="deleteTechnique($index, 0, t)">Delete</button>
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </td>
+                </tr>
                 <tr ng-show="techniqueFormIndex!=null">
                   <td colspan="2">
                     <table class="editTableWithGrid form" align="center" width="95.5%">
                       <tr>
-                          <td width="30%">
-                            <label>Material Type*</label>
-                          </td>
-                          <td>
-                            <input type="text" size="35" value="">
-                          </td>
+                        <td width="30%">
+                          <label>Technique*</label>
+                        </td>
+                        <td>
+                          <select ng-model="technique.techniqueType" ng-options="o as o for o in dropdowns.techniques">
+                          </select>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td width="30%">
+                          <label>Abbreviation</label>
+                        </td>
+                        <td>
+                          <input type="text" name="abbreviation" ng-model="technique.abbreviation" size="30" value="{{technique.abbreviation}}">
+                        </td>
+                      </tr>
+                      <tr>
+                        <td width="30%">
+                          <label>Description</label>
+                        </td>
+                        <td>
+                          <textarea ng-model="technique.description" name="description" cols="70" rows="5" id="configDescription"
+                            class="ng-pristine ng-valid">{{technique.description}}</textarea>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td width="30%"><label>Instruments</label></td>
+                        <td width="70%">
+                          <button type="button" class="btn btn-primary btn-xs ng-click-active" ng-click="openInherentFunctionForm(-1, $parent.$index)">Add</button>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td width="90%" colspan="2">
+                          <div class="inherentFunctions" ng-repeat="i in technique.instruments">
+                            <table class="editTableWithGrid" align="center" width="95%">
+                              <tr>
+                                <td width="15%"><label>Type</label></td>
+                                <td width="65%">
+                                  {{i.type}}
+                                </td>
+                                <td width="10%">
+                                  <button type="button" class="btn btn-primary btn-xs ng-click-active"
+                                    ng-click="openInherentFunctionForm($index, $parent.$index, i)">Edit</button>
+                                </td>
+                                <td width="10%">
+                                  <button type="button" class="btn btn-danger btn-xs ng-click-active"
+                                    ng-click="deleteInherentFunction($index, $parent.$index, i)">Delete</button>
+                                </td>
+                              </tr>
+                            </table><br />
+                          </div>
+                        </td>
+                      </tr>
+
+                      <tr>
+                        <td colspan="2" class="saveSynthesis">
+                          <button class="btn btn-default btn-xs" ng-click="cancelTechnique(technique)">Cancel</button>
+                          <button
+                            class="btn btn-primary btn-xs" ng-click="saveTechnique(technique)">Save Technique</button>
+                        </td>
                       </tr>
                     </table>
                   </td>
