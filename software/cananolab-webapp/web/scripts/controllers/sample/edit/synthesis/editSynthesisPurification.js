@@ -5,7 +5,8 @@ var app = angular.module('angularApp')
     $scope.dropdowns = {};
     $scope.currentFile = {}; // current file being edited //
     $scope.fileArray = [];
-    $scope.technique = {}; // current inherent function being edited //
+    $scope.technique = {}; // current inherent being edited //
+    $scope.instrument = {}; // current instrument being edited //
     $scope.techniqueFormIndex = null;
     $scope.fileFormIndex = null;
     $scope.sampleId = $location.search()['sampleId'];
@@ -48,9 +49,9 @@ var app = angular.module('angularApp')
     };
 
     // cancel inherent function //
-    $scope.cancelInherentFunction = function (index, i) {
-      console.log('dont do anything. Original Material stays as is');
-      $scope.inherentFunctionFormIndex = null;
+    $scope.cancelTechnique = function (index, i) {
+      console.log('dont do anything. Original technique stays as is');
+      $scope.techniqueFormIndex = null;
     };
 
     // cancel material element edit //
@@ -152,7 +153,7 @@ var app = angular.module('angularApp')
         $scope.techniqueFormIndex = index;
       }
       else {
-        $scope.technique = { "description": null, "type": null }
+        $scope.technique = { "type": null, "abbreviation": null, "description":null,"instruments":[] }
         $scope.techniqueFormIndex = index;
       };
     };
@@ -215,14 +216,14 @@ var app = angular.module('angularApp')
     };
 
     // save material element //
-    $scope.saveMaterialElement = function (me) {
-      if ($scope.materialElementFormIndex == -1) {
-        $scope.material.materialElements.push($scope.materialElement)
+    $scope.saveTechnique = function (technique) {
+      if ($scope.techniqueFormIndex == -1) {
+        $scope.simpleExperimentBeans.push($scope.technique)
       }
       else {
-        $scope.material['materialElements'][$scope.materialElementFormIndex] = me;
+        $scope.purification['simpleExperimentBeans'][$scope.techniqueFormIndex] = technique;
       }
-      $scope.materialElementFormIndex = null;
+      $scope.techniqueFormIndex = null;
     };
 
     // submit the entire synthesis material //
