@@ -1,6 +1,7 @@
 package gov.nih.nci.cananolab.restful;
 
 import gov.nih.nci.cananolab.restful.sample.CharacterizationManager;
+import gov.nih.nci.cananolab.restful.sample.ExperimentConfigManager;
 import gov.nih.nci.cananolab.restful.synthesis.SynthesisManager;
 import gov.nih.nci.cananolab.restful.synthesis.SynthesisMaterialBO;
 import gov.nih.nci.cananolab.restful.synthesis.SynthesisPurificationBO;
@@ -315,14 +316,30 @@ public class SynthesisPurificationServices {
         }
     }
 
+
+
     @GET
     @Path("/getInstrumentTypesByTechniqueType")
     @Produces ("application/json")
     public Response getInstrumentTypesByTechniqueType(@Context HttpServletRequest httpRequest,
                                                       @DefaultValue("") @QueryParam("techniqueType") String techniqueType)
     {
-//TODO write
-        return null;
+
+
+        try
+        {
+            ExperimentConfigManager experimentMgr =
+                    (ExperimentConfigManager) SpringApplicationContext.getBean(httpRequest, "experimentConfigManager");
+
+            List<String> types = experimentMgr.getInstrumentTypesByTechniqueType(httpRequest, techniqueType);
+
+            return Response.ok(types).header("Access-Control-Allow-Credentials", "true")
+                    .header("Access-Control-Allow-Origin", "*").header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS")
+                    .header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization").build();
+        } catch (Exception e) {
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
+                    .entity(CommonUtil.wrapErrorMessageInList(e.getMessage())).build();
+        }
     }
 
     @POST
@@ -423,5 +440,6 @@ public class SynthesisPurificationServices {
         }
 
     }
+
 
 }
