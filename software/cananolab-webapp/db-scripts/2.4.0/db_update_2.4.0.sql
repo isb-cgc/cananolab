@@ -73,10 +73,6 @@ alter table `canano`.`acl_entry`
             references `canano`.`acl_sid` (`id`) on delete cascade;
 
 
-
-
-
-
 -- synthesis
 
 CREATE TABLE `synthesis`
@@ -87,8 +83,6 @@ CREATE TABLE `synthesis`
     KEY `FK_sample_TO_synthesis` (`sample_pk_id`),
     CONSTRAINT `FK_sample_TO_synthesis` FOREIGN KEY (`sample_pk_id`) REFERENCES `sample` (`sample_pk_id`)
 );
-
-
 
 
 -- synthesis_material
@@ -159,12 +153,11 @@ CREATE TABLE `synthesis_material_element`
 CREATE TABLE `synthesis_functionalization`
 (
     `synthesis_functionalization_pk_id` bigint(20)   NOT NULL COMMENT 'synthesis_functionalization_pk_id',
-    `synthesis_pk_id`                   bigint(20)   DEFAULT NULL COMMENT 'synthesis_pk_id',
-    `protocol_pk_id`                    bigint(20)   DEFAULT NULL COMMENT 'protocol_pk_id',
+    `synthesis_pk_id`                   bigint(20) DEFAULT NULL COMMENT 'synthesis_pk_id',
+    `protocol_pk_id`                    bigint(20) DEFAULT NULL COMMENT 'protocol_pk_id',
     `description`                       text COMMENT 'description',
     `created_date`                      datetime     NOT NULL COMMENT 'created_date',
     `created_by`                        varchar(200) NOT NULL COMMENT 'created_by',
-    `type`                              varchar(200) DEFAULT NULL COMMENT 'type',
     PRIMARY KEY (`synthesis_functionalization_pk_id`),
     KEY `FK_synthesis_TO_synthesis_functionalization` (`synthesis_pk_id`),
     KEY `FK_protocol_TO_synthesis_functionalization` (`protocol_pk_id`),
@@ -205,10 +198,6 @@ CREATE TABLE `synthesis_purification`
 );
 
 
-
-
-
-
 -- synthesis_functionalization_element
 
 CREATE TABLE `synthesis_functionalization_element`
@@ -247,7 +236,6 @@ CREATE TABLE `sme_inherent_function`
 );
 
 
-
 -- sfe_inherent_function
 
 CREATE TABLE `sfe_inherent_function`
@@ -275,8 +263,6 @@ CREATE TABLE `synthesis_material_element_file`
 );
 
 
-
-
 -- synthesis_functionalization_element_file
 
 CREATE TABLE `synthesis_functionalization_element_file`
@@ -287,7 +273,7 @@ CREATE TABLE `synthesis_functionalization_element_file`
     KEY `FK_file_TO_synthesis_functionalization_element_file` (`file_pk_id`),
     CONSTRAINT `FK_file_TO_synthesis_functionalization_element_file` FOREIGN KEY (`file_pk_id`) REFERENCES `file` (`file_pk_id`),
     CONSTRAINT `FK_synthesis_func_element_TO_sfe_element_file` FOREIGN KEY (`synthesis_functionalization_element_pk_id`) REFERENCES `synthesis_functionalization_element` (`synthesis_functionalization_element_pk_id`)
-) ;
+);
 
 -- synthesis_purity
 
@@ -302,6 +288,25 @@ CREATE TABLE `synthesis_purity`
     CONSTRAINT `FK_synthesis_purity_to purification` FOREIGN KEY (`synthesis_purification_pk_id`) REFERENCES `synthesis_purification` (`synthesis_purification_pk_id`)
 );
 
+--
+-- Table structure for table `purity_column_header`
+--
+
+SET character_set_client = utf8;
+CREATE TABLE `purity_column_header`
+(
+    `column_pk_id`   bigint(20)   NOT NULL,
+    `name`           varchar(200) NOT NULL,
+    `property`       varchar(200)    DEFAULT NULL,
+    `value_type`     varchar(200)    DEFAULT NULL,
+    `value_unit`     varchar(200)    DEFAULT NULL,
+    `created_by`     varchar(200) NOT NULL,
+    `created_date`   datetime     NOT NULL,
+    `column_order`   INT(10)      NOT NULL,
+    `constant_value` DECIMAL(30, 10) DEFAULT NULL,
+    PRIMARY KEY (`column_pk_id`)
+);
+
 CREATE TABLE `purity_datum`
 (
     `purity_datum_pk_id` bigint(20)      NOT NULL,
@@ -312,12 +317,12 @@ CREATE TABLE `purity_datum`
     `created_by`         varchar(200)    NOT NULL COMMENT 'created_by',
     `created_date`       datetime        NOT NULL COMMENT 'created_date',
     `numberMod`          varchar(20)  DEFAULT '=' COMMENT 'numberMod',
-    `purity_pk_id`       bigint(200)  NOT NULL COMMENT 'purity_pk_id',
-    `file_pk_id`         bigint(20)   DEFAULT NULL COMMENT 'file_pk_id',
+    `purity_pk_id`       bigint(200)     NOT NULL COMMENT 'purity_pk_id',
+    `column_pk_id`       bigint(20)      NOT NULL,
     PRIMARY KEY (`purity_datum_pk_id`),
     KEY `FK_purity_TO_purity_datum` (`purity_pk_id`),
-    KEY `FK_file_TO_purity_datum` (`file_pk_id`),
-    CONSTRAINT `FK_file_TO_purity_datum` FOREIGN KEY (`file_pk_id`) REFERENCES `file` (`file_pk_id`),
+    KEY `FK_column_TO_purity_datum` (`column_pk_id`),
+    CONSTRAINT `FK_column_TO_purity_datum` FOREIGN KEY (`column_pk_id`) REFERENCES `purity_column_header` (`column_pk_id`),
     CONSTRAINT `FK_purity_TO_purity_datum` FOREIGN KEY (`purity_pk_id`) REFERENCES `synthesis_purity` (`purity_pk_id`)
 );
 
@@ -363,30 +368,31 @@ CREATE TABLE `purification_config_instrument`
 );
 
 
-
 -- purity_datum_condition
 
 CREATE TABLE `purity_datum_condition`
 (
-    `purity_datum_pk_id`     bigint(20)   NOT NULL COMMENT 'purity_datum_pk_id',
-    `condition_pk_id` bigint(20)   NOT NULL COMMENT 'condition_pk_id',
-    `name`            varchar(200) NOT NULL,
-    `property`        varchar(200) DEFAULT NULL,
-    `value`           varchar(200) NOT NULL,
-    `value_unit`      varchar(200) DEFAULT NULL,
-    `value_type`      varchar(200) DEFAULT NULL,
-    `created_by`      varchar(200) NOT NULL,
-    `created_date`    datetime     NOT NULL,
+    `purity_datum_pk_id` bigint(20)   NOT NULL COMMENT 'purity_datum_pk_id',
+    `condition_pk_id`    bigint(20)   NOT NULL COMMENT 'condition_pk_id',
+    `name`               varchar(200) NOT NULL,
+    `property`           varchar(200) DEFAULT NULL,
+    `value`              varchar(200) NOT NULL,
+    `value_unit`         varchar(200) DEFAULT NULL,
+    `value_type`         varchar(200) DEFAULT NULL,
+    `created_by`         varchar(200) NOT NULL,
+    `created_date`       datetime     NOT NULL,
     `numberMod`          varchar(20)  DEFAULT '=' COMMENT 'numberMod',
+    `column_pk_id`       bigint(20)   NOT NULL,
     PRIMARY KEY (`condition_pk_id`),
-    CONSTRAINT `FK_purity_datum_TO_purity_datum_condition` FOREIGN KEY (`purity_datum_pk_id`) REFERENCES `purity_datum` (`purity_datum_pk_id`)
+    KEY `FK_column_TO_purity_datum_condition` (`column_pk_id`),
+    CONSTRAINT `FK_purity_datum_TO_purity_datum_condition` FOREIGN KEY (`purity_datum_pk_id`) REFERENCES `purity_datum` (`purity_datum_pk_id`),
+    CONSTRAINT `FK_column_TO_purity_condition` FOREIGN KEY (`column_pk_id`) REFERENCES `purity_column_header` (`column_pk_id`)
 );
 
 
 
-
 insert into common_lookup
-(common_lookup_pk_id, name, attribute, value)
+    (common_lookup_pk_id, name, attribute, value)
 VALUES (1010, 'pubchem', 'dataSource', 'Compound'),
        (1011, 'pubchem', 'dataSource', 'BioAssay'),
        (1012, 'pubchem', 'dataSource', 'Substance'),
@@ -404,44 +410,44 @@ VALUES (1010, 'pubchem', 'dataSource', 'Compound'),
        (1024, 'synthesis', 'materialType', 'RNA'),
        (1025, 'synthesis', 'materialType', 'shell'),
        (1026, 'synthesis', 'materialType', 'terminal group'),
-       (1027, 'material', 'value_unit','%'),
-       (1028, 'material', 'value_unit','%mol'),
-       (1029, 'material', 'value_unit','%mole'),
-       (1030, 'material', 'value_unit','%wt'),
-       (1031, 'material', 'value_unit','%wt/vol'),
-       (1032, 'material', 'value_unit','%wt/wt'),
-       (1033, 'material', 'value_unit','g'),
-       (1034, 'material', 'value_unit','g/cm3'),
-       (1035, 'material', 'value_unit','g/mL'),
-       (1036, 'material', 'value_unit','Gy'),
-       (1037, 'material', 'value_unit','L'),
-       (1038, 'material', 'value_unit','M'),
-       (1039, 'material', 'value_unit','mCi'),
-       (1040, 'material', 'value_unit','mg'),
-       (1041, 'material', 'value_unit','mg/mL'),
-       (1042, 'material', 'value_unit','microCi'),
-       (1043, 'material', 'value_unit','microCi/mg'),
-       (1044, 'material', 'value_unit','mL'),
-       (1045, 'material', 'value_unit','mM'),
-       (1046, 'material', 'value_unit','mmol'),
-       (1047, 'material', 'value_unit','mmol/L'),
-       (1048, 'material', 'value_unit','mol'),
-       (1049, 'material', 'value_unit','mol%'),
-       (1050, 'material', 'value_unit','mole%'),
-       (1051, 'material', 'value_unit','ng'),
-       (1052, 'material', 'value_unit','nM'),
-       (1053, 'material', 'value_unit','nmol'),
-       (1054, 'material', 'value_unit','pmol'),
-       (1055, 'material', 'value_unit','uCi/mg'),
-       (1056, 'material', 'value_unit','ug'),
-       (1057, 'material', 'value_unit','ug/mL'),
-       (1058, 'material', 'value_unit','ug/uL'),
-       (1059, 'material', 'value_unit','uL'),
-       (1060, 'material', 'value_unit','uL/mL'),
-       (1061, 'material', 'value_unit','uM'),
-       (1062, 'material', 'value_unit','umol'),
-       (1063, 'material', 'value_unit','wt%'),
-       (1064, 'material', 'value_unit','wt/wt'),
+       (1027, 'material', 'value_unit', '%'),
+       (1028, 'material', 'value_unit', '%mol'),
+       (1029, 'material', 'value_unit', '%mole'),
+       (1030, 'material', 'value_unit', '%wt'),
+       (1031, 'material', 'value_unit', '%wt/vol'),
+       (1032, 'material', 'value_unit', '%wt/wt'),
+       (1033, 'material', 'value_unit', 'g'),
+       (1034, 'material', 'value_unit', 'g/cm3'),
+       (1035, 'material', 'value_unit', 'g/mL'),
+       (1036, 'material', 'value_unit', 'Gy'),
+       (1037, 'material', 'value_unit', 'L'),
+       (1038, 'material', 'value_unit', 'M'),
+       (1039, 'material', 'value_unit', 'mCi'),
+       (1040, 'material', 'value_unit', 'mg'),
+       (1041, 'material', 'value_unit', 'mg/mL'),
+       (1042, 'material', 'value_unit', 'microCi'),
+       (1043, 'material', 'value_unit', 'microCi/mg'),
+       (1044, 'material', 'value_unit', 'mL'),
+       (1045, 'material', 'value_unit', 'mM'),
+       (1046, 'material', 'value_unit', 'mmol'),
+       (1047, 'material', 'value_unit', 'mmol/L'),
+       (1048, 'material', 'value_unit', 'mol'),
+       (1049, 'material', 'value_unit', 'mol%'),
+       (1050, 'material', 'value_unit', 'mole%'),
+       (1051, 'material', 'value_unit', 'ng'),
+       (1052, 'material', 'value_unit', 'nM'),
+       (1053, 'material', 'value_unit', 'nmol'),
+       (1054, 'material', 'value_unit', 'pmol'),
+       (1055, 'material', 'value_unit', 'uCi/mg'),
+       (1056, 'material', 'value_unit', 'ug'),
+       (1057, 'material', 'value_unit', 'ug/mL'),
+       (1058, 'material', 'value_unit', 'ug/uL'),
+       (1059, 'material', 'value_unit', 'uL'),
+       (1060, 'material', 'value_unit', 'uL/mL'),
+       (1061, 'material', 'value_unit', 'uM'),
+       (1062, 'material', 'value_unit', 'umol'),
+       (1063, 'material', 'value_unit', 'wt%'),
+       (1064, 'material', 'value_unit', 'wt/wt'),
        (1065, 'function', 'type', 'transfection'),
        (1066, 'function', 'type', 'therapeutic function'),
        (1067, 'function', 'type', 'therapeutic'),
@@ -473,32 +479,99 @@ VALUES (1010, 'pubchem', 'dataSource', 'Compound'),
        (1094, 'synthesis', 'materialType', 'reagent'),
        (1096, 'protocol', 'type', 'purification');
 
-UPDATE `canano`.`users` SET `first_name` = 'canano', `last_name` = 'curator' WHERE (`username` = 'canano_curator');
-UPDATE `canano`.`users` SET `first_name` = 'canano', `last_name` = 'guest' WHERE (`username` = 'canano_guest');
-UPDATE `canano`.`users` SET `first_name` = 'canano', `last_name` = 'researcher' WHERE (`username` = 'canano_res');
-UPDATE `canano`.`users` SET `first_name` = 'canano', `last_name` = 'researcher1' WHERE (`username` = 'canano_res1');
-UPDATE `canano`.`users` SET `first_name` = 'guest1', `last_name` = 'user' WHERE (`username` = 'guest1');
-UPDATE `canano`.`users` SET `first_name` = 'guest2', `last_name` = 'user' WHERE (`username` = 'guest2');
-UPDATE `canano`.`users` SET `first_name` = 'guest3', `last_name` = 'user' WHERE (`username` = 'guest3');
-UPDATE `canano`.`users` SET `first_name` = 'guest4', `last_name` = 'user' WHERE (`username` = 'guest4');
-UPDATE `canano`.`users` SET `first_name` = 'guest5', `last_name` = 'user' WHERE (`username` = 'guest5');
-DELETE FROM `canano`.`authorities` WHERE (`username` = 'guest6');
-DELETE FROM `canano`.`authorities` WHERE (`username` = 'guest7');
-DELETE FROM `canano`.`authorities` WHERE (`username` = 'guest8');
-DELETE FROM `canano`.`authorities` WHERE (`username` = 'guest9');
-DELETE FROM `canano`.`authorities` WHERE (`username` = 'guest10');
-DELETE FROM `canano`.`authorities` WHERE (`username` = 'guest11');
-DELETE FROM `canano`.`authorities` WHERE (`username` = 'guest12');
-DELETE FROM `canano`.`authorities` WHERE (`username` = 'guest13');
-DELETE FROM `canano`.`authorities` WHERE (`username` = 'guest14');
-DELETE FROM `canano`.`authorities` WHERE (`username` = 'guest15');
-DELETE FROM `canano`.`users`  WHERE (`username` = 'guest6');
-DELETE FROM `canano`.`users` WHERE (`username` = 'guest7');
-DELETE FROM `canano`.`users` WHERE (`username` = 'guest8');
-DELETE FROM `canano`.`users` WHERE (`username` = 'guest9');
-DELETE FROM `canano`.`users` WHERE (`username` = 'guest10');
-DELETE FROM `canano`.`users` WHERE (`username` = 'guest11');
-DELETE FROM `canano`.`users` WHERE (`username` = 'guest12');
-DELETE FROM `canano`.`users` WHERE (`username` = 'guest13');
-DELETE FROM `canano`.`users` WHERE (`username` = 'guest14');
-DELETE FROM `canano`.`users` WHERE (`username` = 'guest15');
+UPDATE `canano`.`users`
+SET `first_name` = 'canano',
+    `last_name`  = 'curator'
+WHERE (`username` = 'canano_curator');
+UPDATE `canano`.`users`
+SET `first_name` = 'canano',
+    `last_name`  = 'guest'
+WHERE (`username` = 'canano_guest');
+UPDATE `canano`.`users`
+SET `first_name` = 'canano',
+    `last_name`  = 'researcher'
+WHERE (`username` = 'canano_res');
+UPDATE `canano`.`users`
+SET `first_name` = 'canano',
+    `last_name`  = 'researcher1'
+WHERE (`username` = 'canano_res1');
+UPDATE `canano`.`users`
+SET `first_name` = 'guest1',
+    `last_name`  = 'user'
+WHERE (`username` = 'guest1');
+UPDATE `canano`.`users`
+SET `first_name` = 'guest2',
+    `last_name`  = 'user'
+WHERE (`username` = 'guest2');
+UPDATE `canano`.`users`
+SET `first_name` = 'guest3',
+    `last_name`  = 'user'
+WHERE (`username` = 'guest3');
+UPDATE `canano`.`users`
+SET `first_name` = 'guest4',
+    `last_name`  = 'user'
+WHERE (`username` = 'guest4');
+UPDATE `canano`.`users`
+SET `first_name` = 'guest5',
+    `last_name`  = 'user'
+WHERE (`username` = 'guest5');
+DELETE
+FROM `canano`.`authorities`
+WHERE (`username` = 'guest6');
+DELETE
+FROM `canano`.`authorities`
+WHERE (`username` = 'guest7');
+DELETE
+FROM `canano`.`authorities`
+WHERE (`username` = 'guest8');
+DELETE
+FROM `canano`.`authorities`
+WHERE (`username` = 'guest9');
+DELETE
+FROM `canano`.`authorities`
+WHERE (`username` = 'guest10');
+DELETE
+FROM `canano`.`authorities`
+WHERE (`username` = 'guest11');
+DELETE
+FROM `canano`.`authorities`
+WHERE (`username` = 'guest12');
+DELETE
+FROM `canano`.`authorities`
+WHERE (`username` = 'guest13');
+DELETE
+FROM `canano`.`authorities`
+WHERE (`username` = 'guest14');
+DELETE
+FROM `canano`.`authorities`
+WHERE (`username` = 'guest15');
+DELETE
+FROM `canano`.`users`
+WHERE (`username` = 'guest6');
+DELETE
+FROM `canano`.`users`
+WHERE (`username` = 'guest7');
+DELETE
+FROM `canano`.`users`
+WHERE (`username` = 'guest8');
+DELETE
+FROM `canano`.`users`
+WHERE (`username` = 'guest9');
+DELETE
+FROM `canano`.`users`
+WHERE (`username` = 'guest10');
+DELETE
+FROM `canano`.`users`
+WHERE (`username` = 'guest11');
+DELETE
+FROM `canano`.`users`
+WHERE (`username` = 'guest12');
+DELETE
+FROM `canano`.`users`
+WHERE (`username` = 'guest13');
+DELETE
+FROM `canano`.`users`
+WHERE (`username` = 'guest14');
+DELETE
+FROM `canano`.`users`
+WHERE (`username` = 'guest15');

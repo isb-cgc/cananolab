@@ -1,8 +1,6 @@
--- MySQL dump 10.13  Distrib 8.0.16, for macos10.14 (x86_64)
---
--- Host: 127.0.0.1    Database: canano
--- ------------------------------------------------------
--- Server version	5.7.26
+/*
+ This script is intended for setting up a local database for unit testing by developers
+ */
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT = @@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS = @@CHARACTER_SET_RESULTS */;
@@ -15,13 +13,102 @@ SET NAMES utf8;
 /*!40101 SET @OLD_SQL_MODE = @@SQL_MODE, SQL_MODE = 'NO_AUTO_VALUE_ON_ZERO' */;
 /*!40111 SET @OLD_SQL_NOTES = @@SQL_NOTES, SQL_NOTES = 0 */;
 
+DROP TABLE IF EXISTS `acl_entry`;
+DROP TABLE IF EXISTS `acl_object_identity`;
+DROP TABLE IF EXISTS `acl_class`;
+DROP TABLE IF EXISTS `acl_sid`;
+DROP TABLE IF EXISTS `antibody`;
+DROP TABLE IF EXISTS `biopolymer_f`;
+DROP TABLE IF EXISTS `functionalizing_entity_file`;
+DROP TABLE IF EXISTS `target`;
+DROP TABLE IF EXISTS `nano_function`;
+DROP TABLE IF EXISTS `small_molecule`;
+DROP TABLE IF EXISTS `other_functionalizing_entity`;
+DROP TABLE IF EXISTS `functionalizing_entity`;
+DROP TABLE IF EXISTS `activation_method`;
+DROP TABLE IF EXISTS `administration`;
+DROP TABLE IF EXISTS `chemical_association_file`;
+DROP TABLE IF EXISTS `chemical_association`;
+DROP TABLE IF EXISTS `composing_element`;
+DROP TABLE IF EXISTS `associated_element`;
+DROP TABLE IF EXISTS `author_publication`;
+DROP TABLE IF EXISTS `author`;
+DROP TABLE IF EXISTS `authorities`;
+DROP TABLE IF EXISTS `biopolymer_p`;
+DROP TABLE IF EXISTS `carbon_nanotube`;
+DROP TABLE IF EXISTS `experiment_config_instrument`;
+DROP TABLE IF EXISTS `experiment_config`;
+DROP TABLE IF EXISTS `datum_condition`;
+DROP TABLE IF EXISTS `datum`;
+DROP TABLE IF EXISTS `finding_file`;
+DROP TABLE IF EXISTS `finding`;
+DROP TABLE IF EXISTS `physical_state`;
+DROP TABLE IF EXISTS `shape`;
+DROP TABLE IF EXISTS `solubility`;
+DROP TABLE IF EXISTS `characterization`;
+DROP TABLE IF EXISTS `common_lookup`;
+DROP TABLE IF EXISTS `composition_file`;
+
+DROP TABLE IF EXISTS `data_availability`;
+DROP TABLE IF EXISTS `data_review_status`;
+DROP TABLE IF EXISTS `databasechangelog`;
+DROP TABLE IF EXISTS `databasechangeloglock`;
+DROP TABLE IF EXISTS `dendrimer`;
+DROP TABLE IF EXISTS `emulsion`;
+drop table if exists `purity_datum_condition`;
+DROP TABLE IF EXISTS `experiment_condition`;
+DROP TABLE IF EXISTS `favorite_data`;
+DROP TABLE IF EXISTS `keyword_file`;
+DROP TABLE IF EXISTS `nanomaterial_entity_file`;
+DROP TABLE IF EXISTS `fullerene`;
+DROP TABLE IF EXISTS `group_authorities`;
+DROP TABLE IF EXISTS `group_members`;
+DROP TABLE IF EXISTS `groups`;
+DROP TABLE IF EXISTS `hibernate_unique_key`;
+drop table if exists `purification_config_instrument`;
+DROP TABLE IF EXISTS `instrument`;
+DROP TABLE IF EXISTS `instrument_to_review`;
+DROP TABLE IF EXISTS `keyword_sample`;
+DROP TABLE IF EXISTS `keyword`;
+DROP TABLE IF EXISTS `liposome`;
+DROP TABLE IF EXISTS `other_nanomaterial_entity`;
+DROP TABLE IF EXISTS `polymer`;
+DROP TABLE IF EXISTS `nanomaterial_entity`;
+DROP TABLE IF EXISTS `composition`;
+DROP TABLE IF EXISTS `sample_publication`;
+DROP TABLE IF EXISTS `sample_other_poc`;
+drop table if exists `purity_file`;
+drop table if exists `purity_datum`;
+drop table if exists `synthesis_material_file`;
+drop table if exists `synthesis_functionalization_file`;
+drop table if exists `purification_config`;
+drop table if exists `synthesis_purity`;
+drop table if exists `synthesis_material_element_file`;
+drop table if exists `sme_inherent_function`;
+drop table if exists `synthesis_purification`;
+drop table if exists `synthesis_material_element`;
+DROP TABLE IF EXISTS `supplier`;
+drop table if exists `synthesis_material`;
+drop table if exists `sfe_inherent_function`;
+drop table if exists `synthesis_functionalization_element_file`;
+drop table IF exists `synthesis_functionalization_element`;
+drop table if exists `synthesis_functionalization`;
+drop table if exists `synthesis`;
+DROP TABLE IF EXISTS `sample`;
+DROP TABLE IF EXISTS `point_of_contact`;
+DROP TABLE IF EXISTS `organization`;
+DROP TABLE IF EXISTS `protocol`;
+DROP TABLE IF EXISTS `publication`;
+DROP TABLE IF EXISTS `file`;
+DROP TABLE IF EXISTS `technique`;
+DROP TABLE IF EXISTS `users`;
+
 --
 -- Table structure for table `acl_class`
 --
 
-DROP TABLE IF EXISTS `acl_class`;
 /*!40101 SET @saved_cs_client = @@character_set_client */;
-SET character_set_client = utf8mb4;
+SET character_set_client = utf8;
 CREATE TABLE `acl_class`
 (
     `id`    bigint(20) unsigned NOT NULL AUTO_INCREMENT,
@@ -68,7 +155,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `acl_entry`;
 /*!40101 SET @saved_cs_client = @@character_set_client */;
-SET character_set_client = utf8mb4;
+SET character_set_client = utf8;
 CREATE TABLE `acl_entry`
 (
     `id`                  bigint(20) unsigned NOT NULL AUTO_INCREMENT,
@@ -196,7 +283,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `acl_object_identity`;
 /*!40101 SET @saved_cs_client = @@character_set_client */;
-SET character_set_client = utf8mb4;
+SET character_set_client = utf8;
 CREATE TABLE `acl_object_identity`
 (
     `id`                 bigint(20) unsigned NOT NULL AUTO_INCREMENT,
@@ -257,7 +344,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `acl_sid`;
 /*!40101 SET @saved_cs_client = @@character_set_client */;
-SET character_set_client = utf8mb4;
+SET character_set_client = utf8;
 CREATE TABLE `acl_sid`
 (
     `id`        bigint(20) unsigned NOT NULL AUTO_INCREMENT,
@@ -303,7 +390,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `activation_method`;
 /*!40101 SET @saved_cs_client = @@character_set_client */;
-SET character_set_client = utf8mb4;
+SET character_set_client = utf8;
 CREATE TABLE `activation_method`
 (
     `activation_method_pk_id` bigint(20)   NOT NULL,
@@ -333,7 +420,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `administration`;
 /*!40101 SET @saved_cs_client = @@character_set_client */;
-SET character_set_client = utf8mb4;
+SET character_set_client = utf8;
 CREATE TABLE `administration`
 (
     `administration_id`  bigint(20)   NOT NULL,
@@ -370,7 +457,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `antibody`;
 /*!40101 SET @saved_cs_client = @@character_set_client */;
-SET character_set_client = utf8mb4;
+SET character_set_client = utf8;
 CREATE TABLE `antibody`
 (
     `antibody_pk_id` bigint(20) NOT NULL,
@@ -402,7 +489,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `associated_element`;
 /*!40101 SET @saved_cs_client = @@character_set_client */;
-SET character_set_client = utf8mb4;
+SET character_set_client = utf8;
 CREATE TABLE `associated_element`
 (
     `associated_element_pk_id` bigint(20)   NOT NULL,
@@ -450,7 +537,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `author`;
 /*!40101 SET @saved_cs_client = @@character_set_client */;
-SET character_set_client = utf8mb4;
+SET character_set_client = utf8;
 CREATE TABLE `author`
 (
     `author_pk_id` bigint(20)   NOT NULL,
@@ -482,7 +569,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `author_publication`;
 /*!40101 SET @saved_cs_client = @@character_set_client */;
-SET character_set_client = utf8mb4;
+SET character_set_client = utf8;
 CREATE TABLE `author_publication`
 (
     `author_pk_id`      bigint(20) NOT NULL,
@@ -513,7 +600,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `authorities`;
 /*!40101 SET @saved_cs_client = @@character_set_client */;
-SET character_set_client = utf8mb4;
+SET character_set_client = utf8;
 CREATE TABLE `authorities`
 (
     `username`  varchar(100) NOT NULL,
@@ -552,7 +639,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `biopolymer_f`;
 /*!40101 SET @saved_cs_client = @@character_set_client */;
-SET character_set_client = utf8mb4;
+SET character_set_client = utf8;
 CREATE TABLE `biopolymer_f`
 (
     `biopolymer_pk_id` bigint(20)  NOT NULL,
@@ -585,7 +672,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `biopolymer_p`;
 /*!40101 SET @saved_cs_client = @@character_set_client */;
-SET character_set_client = utf8mb4;
+SET character_set_client = utf8;
 CREATE TABLE `biopolymer_p`
 (
     `biopolymer_pk_id` bigint(20)  NOT NULL,
@@ -618,7 +705,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `carbon_nanotube`;
 /*!40101 SET @saved_cs_client = @@character_set_client */;
-SET character_set_client = utf8mb4;
+SET character_set_client = utf8;
 CREATE TABLE `carbon_nanotube`
 (
     `carbon_nanotube_pk_id` bigint(20) NOT NULL,
@@ -652,7 +739,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `characterization`;
 /*!40101 SET @saved_cs_client = @@character_set_client */;
-SET character_set_client = utf8mb4;
+SET character_set_client = utf8;
 CREATE TABLE `characterization`
 (
     `characterization_pk_id`    bigint(20)   NOT NULL,
@@ -711,7 +798,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `chemical_association`;
 /*!40101 SET @saved_cs_client = @@character_set_client */;
-SET character_set_client = utf8mb4;
+SET character_set_client = utf8;
 CREATE TABLE `chemical_association`
 (
     `chemical_association_pk_id`      bigint(20)   NOT NULL,
@@ -757,7 +844,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `chemical_association_file`;
 /*!40101 SET @saved_cs_client = @@character_set_client */;
-SET character_set_client = utf8mb4;
+SET character_set_client = utf8;
 CREATE TABLE `chemical_association_file`
 (
     `chemical_association_pk_id` bigint(20) NOT NULL,
@@ -788,7 +875,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `common_lookup`;
 /*!40101 SET @saved_cs_client = @@character_set_client */;
-SET character_set_client = utf8mb4;
+SET character_set_client = utf8;
 CREATE TABLE `common_lookup`
 (
     `common_lookup_pk_id` bigint(20)   NOT NULL,
@@ -3583,7 +3670,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `composing_element`;
 /*!40101 SET @saved_cs_client = @@character_set_client */;
-SET character_set_client = utf8mb4;
+SET character_set_client = utf8;
 CREATE TABLE `composing_element`
 (
     `composing_element_pk_id`   bigint(20)   NOT NULL,
@@ -3622,7 +3709,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `composition`;
 /*!40101 SET @saved_cs_client = @@character_set_client */;
-SET character_set_client = utf8mb4;
+SET character_set_client = utf8;
 CREATE TABLE `composition`
 (
     `composition_pk_id` bigint(20) NOT NULL,
@@ -3658,7 +3745,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `composition_file`;
 /*!40101 SET @saved_cs_client = @@character_set_client */;
-SET character_set_client = utf8mb4;
+SET character_set_client = utf8;
 CREATE TABLE `composition_file`
 (
     `composition_pk_id` bigint(20) NOT NULL,
@@ -3689,7 +3776,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `data_availability`;
 /*!40101 SET @saved_cs_client = @@character_set_client */;
-SET character_set_client = utf8mb4;
+SET character_set_client = utf8;
 CREATE TABLE `data_availability`
 (
     `sample_id`             bigint(20)   NOT NULL,
@@ -3720,7 +3807,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `data_review_status`;
 /*!40101 SET @saved_cs_client = @@character_set_client */;
-SET character_set_client = utf8mb4;
+SET character_set_client = utf8;
 CREATE TABLE `data_review_status`
 (
     `data_id`        bigint(20)   NOT NULL,
@@ -3751,7 +3838,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `databasechangelog`;
 /*!40101 SET @saved_cs_client = @@character_set_client */;
-SET character_set_client = utf8mb4;
+SET character_set_client = utf8;
 CREATE TABLE `databasechangelog`
 (
     `ID`           varchar(63)  NOT NULL,
@@ -3785,7 +3872,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `databasechangeloglock`;
 /*!40101 SET @saved_cs_client = @@character_set_client */;
-SET character_set_client = utf8mb4;
+SET character_set_client = utf8;
 CREATE TABLE `databasechangeloglock`
 (
     `ID`          int(11)    NOT NULL,
@@ -3816,7 +3903,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `datum`;
 /*!40101 SET @saved_cs_client = @@character_set_client */;
-SET character_set_client = utf8mb4;
+SET character_set_client = utf8;
 CREATE TABLE `datum`
 (
     `datum_pk_id`   bigint(20)      NOT NULL,
@@ -3869,7 +3956,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `datum_condition`;
 /*!40101 SET @saved_cs_client = @@character_set_client */;
-SET character_set_client = utf8mb4;
+SET character_set_client = utf8;
 CREATE TABLE `datum_condition`
 (
     `datum_pk_id`     bigint(20) NOT NULL,
@@ -3909,7 +3996,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `dendrimer`;
 /*!40101 SET @saved_cs_client = @@character_set_client */;
-SET character_set_client = utf8mb4;
+SET character_set_client = utf8;
 CREATE TABLE `dendrimer`
 (
     `dendrimer_pk_id` bigint(20) NOT NULL,
@@ -3939,7 +4026,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `emulsion`;
 /*!40101 SET @saved_cs_client = @@character_set_client */;
-SET character_set_client = utf8mb4;
+SET character_set_client = utf8;
 CREATE TABLE `emulsion`
 (
     `emulsion_pk_id` bigint(20) NOT NULL,
@@ -3969,7 +4056,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `experiment_condition`;
 /*!40101 SET @saved_cs_client = @@character_set_client */;
-SET character_set_client = utf8mb4;
+SET character_set_client = utf8;
 CREATE TABLE `experiment_condition`
 (
     `condition_pk_id` bigint(20)   NOT NULL,
@@ -4018,7 +4105,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `experiment_config`;
 /*!40101 SET @saved_cs_client = @@character_set_client */;
-SET character_set_client = utf8mb4;
+SET character_set_client = utf8;
 CREATE TABLE `experiment_config`
 (
     `experiment_config_pk_id` bigint(20)   NOT NULL,
@@ -4058,7 +4145,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `experiment_config_instrument`;
 /*!40101 SET @saved_cs_client = @@character_set_client */;
-SET character_set_client = utf8mb4;
+SET character_set_client = utf8;
 CREATE TABLE `experiment_config_instrument`
 (
     `experiment_config_pk_id` bigint(20) NOT NULL,
@@ -4094,7 +4181,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `favorite_data`;
 /*!40101 SET @saved_cs_client = @@character_set_client */;
-SET character_set_client = utf8mb4;
+SET character_set_client = utf8;
 CREATE TABLE `favorite_data`
 (
     `favorite_data_id`    bigint(20)   DEFAULT NULL,
@@ -4128,7 +4215,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `file`;
 /*!40101 SET @saved_cs_client = @@character_set_client */;
-SET character_set_client = utf8mb4;
+SET character_set_client = utf8;
 CREATE TABLE `file`
 (
     `file_pk_id`      bigint(20)   NOT NULL,
@@ -4192,7 +4279,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `finding`;
 /*!40101 SET @saved_cs_client = @@character_set_client */;
-SET character_set_client = utf8mb4;
+SET character_set_client = utf8;
 CREATE TABLE `finding`
 (
     `finding_pk_id`          bigint(20)   NOT NULL,
@@ -4226,7 +4313,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `finding_file`;
 /*!40101 SET @saved_cs_client = @@character_set_client */;
-SET character_set_client = utf8mb4;
+SET character_set_client = utf8;
 CREATE TABLE `finding_file`
 (
     `finding_pk_id` bigint(20) NOT NULL,
@@ -4259,7 +4346,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `fullerene`;
 /*!40101 SET @saved_cs_client = @@character_set_client */;
-SET character_set_client = utf8mb4;
+SET character_set_client = utf8;
 CREATE TABLE `fullerene`
 (
     `fullerene_pk_id`       bigint(20) NOT NULL,
@@ -4292,7 +4379,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `functionalizing_entity`;
 /*!40101 SET @saved_cs_client = @@character_set_client */;
-SET character_set_client = utf8mb4;
+SET character_set_client = utf8;
 CREATE TABLE `functionalizing_entity`
 (
     `functionalizing_entity_pk_id` bigint(20) NOT NULL,
@@ -4328,7 +4415,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `functionalizing_entity_file`;
 /*!40101 SET @saved_cs_client = @@character_set_client */;
-SET character_set_client = utf8mb4;
+SET character_set_client = utf8;
 CREATE TABLE `functionalizing_entity_file`
 (
     `functionalizing_entity_pk_id` bigint(20) NOT NULL,
@@ -4359,7 +4446,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `group_authorities`;
 /*!40101 SET @saved_cs_client = @@character_set_client */;
-SET character_set_client = utf8mb4;
+SET character_set_client = utf8;
 CREATE TABLE `group_authorities`
 (
     `group_id`  int(11)     NOT NULL,
@@ -4387,7 +4474,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `group_members`;
 /*!40101 SET @saved_cs_client = @@character_set_client */;
-SET character_set_client = utf8mb4;
+SET character_set_client = utf8;
 CREATE TABLE `group_members`
 (
     `id`       int(11)      NOT NULL AUTO_INCREMENT,
@@ -4419,7 +4506,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `groups`;
 /*!40101 SET @saved_cs_client = @@character_set_client */;
-SET character_set_client = utf8mb4;
+SET character_set_client = utf8;
 CREATE TABLE `groups`
 (
     `id`                int(11)      NOT NULL AUTO_INCREMENT,
@@ -4449,7 +4536,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `hibernate_unique_key`;
 /*!40101 SET @saved_cs_client = @@character_set_client */;
-SET character_set_client = utf8mb4;
+SET character_set_client = utf8;
 CREATE TABLE `hibernate_unique_key`
 (
     `next_hi` bigint(20) NOT NULL
@@ -4476,7 +4563,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `instrument`;
 /*!40101 SET @saved_cs_client = @@character_set_client */;
-SET character_set_client = utf8mb4;
+SET character_set_client = utf8;
 CREATE TABLE `instrument`
 (
     `instrument_pk_id` bigint(20)   NOT NULL,
@@ -5304,7 +5391,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `instrument_to_review`;
 /*!40101 SET @saved_cs_client = @@character_set_client */;
-SET character_set_client = utf8mb4;
+SET character_set_client = utf8;
 CREATE TABLE `instrument_to_review`
 (
     `instrument_pk_id`        bigint(20) NOT NULL,
@@ -5333,7 +5420,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `keyword`;
 /*!40101 SET @saved_cs_client = @@character_set_client */;
-SET character_set_client = utf8mb4;
+SET character_set_client = utf8;
 CREATE TABLE `keyword`
 (
     `keyword_pk_id` bigint(20)   NOT NULL,
@@ -5360,7 +5447,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `keyword_file`;
 /*!40101 SET @saved_cs_client = @@character_set_client */;
-SET character_set_client = utf8mb4;
+SET character_set_client = utf8;
 CREATE TABLE `keyword_file`
 (
     `keyword_pk_id` bigint(20) NOT NULL,
@@ -5391,7 +5478,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `keyword_sample`;
 /*!40101 SET @saved_cs_client = @@character_set_client */;
-SET character_set_client = utf8mb4;
+SET character_set_client = utf8;
 CREATE TABLE `keyword_sample`
 (
     `keyword_pk_id` bigint(20) NOT NULL,
@@ -5422,7 +5509,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `liposome`;
 /*!40101 SET @saved_cs_client = @@character_set_client */;
-SET character_set_client = utf8mb4;
+SET character_set_client = utf8;
 CREATE TABLE `liposome`
 (
     `liposome_pk_id` bigint(20) NOT NULL,
@@ -5454,7 +5541,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `nano_function`;
 /*!40101 SET @saved_cs_client = @@character_set_client */;
-SET character_set_client = utf8mb4;
+SET character_set_client = utf8;
 CREATE TABLE `nano_function`
 (
     `function_pk_id`               bigint(20)   NOT NULL,
@@ -5501,7 +5588,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `nanomaterial_entity`;
 /*!40101 SET @saved_cs_client = @@character_set_client */;
-SET character_set_client = utf8mb4;
+SET character_set_client = utf8;
 CREATE TABLE `nanomaterial_entity`
 (
     `nanomaterial_entity_pk_id` bigint(20)   NOT NULL,
@@ -5541,7 +5628,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `nanomaterial_entity_file`;
 /*!40101 SET @saved_cs_client = @@character_set_client */;
-SET character_set_client = utf8mb4;
+SET character_set_client = utf8;
 CREATE TABLE `nanomaterial_entity_file`
 (
     `nanomaterial_entity_pk_id` bigint(20) NOT NULL,
@@ -5572,7 +5659,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `organization`;
 /*!40101 SET @saved_cs_client = @@character_set_client */;
-SET character_set_client = utf8mb4;
+SET character_set_client = utf8;
 CREATE TABLE `organization`
 (
     `organization_pk_id` bigint(20)   NOT NULL,
@@ -5869,7 +5956,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `other_functionalizing_entity`;
 /*!40101 SET @saved_cs_client = @@character_set_client */;
-SET character_set_client = utf8mb4;
+SET character_set_client = utf8;
 CREATE TABLE `other_functionalizing_entity`
 (
     `other_func_entity_pk_id` bigint(20)   NOT NULL,
@@ -5898,7 +5985,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `other_nanomaterial_entity`;
 /*!40101 SET @saved_cs_client = @@character_set_client */;
-SET character_set_client = utf8mb4;
+SET character_set_client = utf8;
 CREATE TABLE `other_nanomaterial_entity`
 (
     `other_nanomaterial_entity_pk_id` bigint(20)   NOT NULL,
@@ -5930,7 +6017,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `physical_state`;
 /*!40101 SET @saved_cs_client = @@character_set_client */;
-SET character_set_client = utf8mb4;
+SET character_set_client = utf8;
 CREATE TABLE `physical_state`
 (
     `physical_state_pk_id` bigint(20)   NOT NULL,
@@ -5959,7 +6046,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `point_of_contact`;
 /*!40101 SET @saved_cs_client = @@character_set_client */;
-SET character_set_client = utf8mb4;
+SET character_set_client = utf8;
 CREATE TABLE `point_of_contact`
 (
     `poc_pk_id`          bigint(20)   NOT NULL,
@@ -6001,7 +6088,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `polymer`;
 /*!40101 SET @saved_cs_client = @@character_set_client */;
-SET character_set_client = utf8mb4;
+SET character_set_client = utf8;
 CREATE TABLE `polymer`
 (
     `polymer_pk_id`     bigint(20) NOT NULL,
@@ -6032,7 +6119,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `protocol`;
 /*!40101 SET @saved_cs_client = @@character_set_client */;
-SET character_set_client = utf8mb4;
+SET character_set_client = utf8;
 CREATE TABLE `protocol`
 (
     `protocol_pk_id`        bigint(20)   NOT NULL,
@@ -6081,7 +6168,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `publication`;
 /*!40101 SET @saved_cs_client = @@character_set_client */;
-SET character_set_client = utf8mb4;
+SET character_set_client = utf8;
 CREATE TABLE `publication`
 (
     `publication_pk_id`  bigint(20)   NOT NULL,
@@ -6118,7 +6205,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `purification_config`;
 /*!40101 SET @saved_cs_client = @@character_set_client */;
-SET character_set_client = utf8mb4;
+SET character_set_client = utf8;
 CREATE TABLE `purification_config`
 (
     `purification_config_pk_id`    bigint(20)   NOT NULL COMMENT 'purification_config_pk_id',
@@ -6128,8 +6215,8 @@ CREATE TABLE `purification_config`
     `created_by`                   varchar(200) NOT NULL COMMENT 'created_by',
     `created_date`                 datetime     NOT NULL COMMENT 'created_date',
     PRIMARY KEY (`purification_config_pk_id`),
-    KEY `synthesis_purification_pk_id` (`synthesis_purification_pk_id`),
-    KEY `technique_pk_id` (`technique_pk_id`),
+    KEY `FK_synthesis_purification_TO_purification_config` (`synthesis_purification_pk_id`),
+    KEY `FK_technique_TO_purification_config_idx` (`technique_pk_id`),
     CONSTRAINT `FK_synthesis_purification_TO_purification_config` FOREIGN KEY (`synthesis_purification_pk_id`) REFERENCES `synthesis_purification` (`synthesis_purification_pk_id`),
     CONSTRAINT `FK_technique_TO_purification_config` FOREIGN KEY (`technique_pk_id`) REFERENCES `technique` (`technique_pk_id`)
 ) ENGINE = InnoDB
@@ -6161,7 +6248,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `purification_config_instrument`;
 /*!40101 SET @saved_cs_client = @@character_set_client */;
-SET character_set_client = utf8mb4;
+SET character_set_client = utf8;
 CREATE TABLE `purification_config_instrument`
 (
     `purification_config_pk_id` bigint(20) NOT NULL COMMENT 'purification_config_pk_id',
@@ -6198,7 +6285,7 @@ UNLOCK TABLES;
 --
 DROP TABLE IF EXISTS `purity_column_header`;
 /*!40101 SET @saved_cs_client = @@character_set_client */;
-SET character_set_client = utf8mb4;
+SET character_set_client = utf8;
 CREATE TABLE `purity_column_header` (
   `column_pk_id` bigint(20) NOT NULL,
   `name` varchar(200) NOT NULL,
@@ -6235,7 +6322,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `purity_datum`;
 /*!40101 SET @saved_cs_client = @@character_set_client */;
-SET character_set_client = utf8mb4;
+SET character_set_client = utf8;
 CREATE TABLE `purity_datum`
 (
     `purity_datum_pk_id` bigint(20)      NOT NULL,
@@ -6278,7 +6365,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `purity_datum_condition`;
 /*!40101 SET @saved_cs_client = @@character_set_client */;
-SET character_set_client = utf8mb4;
+SET character_set_client = utf8;
 CREATE TABLE `purity_datum_condition`
 (
     `purity_datum_pk_id`     bigint(20)   NOT NULL COMMENT 'purity_datum_pk_id',
@@ -6321,10 +6408,10 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `purity_file`;
 /*!40101 SET @saved_cs_client = @@character_set_client */;
-SET character_set_client = utf8mb4;
+SET character_set_client = utf8;
 CREATE TABLE `purity_file`
 (
-    `purity_pk_id` bigint(200) NOT NULL COMMENT 'purity_pk_id',
+    `purity_pk_id` bigint(20) NOT NULL COMMENT 'purity_pk_id',
     `file_pk_id`   bigint(20)  NOT NULL COMMENT 'file_pk_id',
     PRIMARY KEY (`purity_pk_id`, `file_pk_id`),
     KEY `FK_file_TO_purity_file` (`file_pk_id`),
@@ -6353,7 +6440,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `sample`;
 /*!40101 SET @saved_cs_client = @@character_set_client */;
-SET character_set_client = utf8mb4;
+SET character_set_client = utf8;
 CREATE TABLE `sample`
 (
     `sample_pk_id`          bigint(20)   NOT NULL,
@@ -6393,7 +6480,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `sample_other_poc`;
 /*!40101 SET @saved_cs_client = @@character_set_client */;
-SET character_set_client = utf8mb4;
+SET character_set_client = utf8;
 CREATE TABLE `sample_other_poc`
 (
     `sample_pk_id` bigint(20) NOT NULL,
@@ -6424,7 +6511,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `sample_publication`;
 /*!40101 SET @saved_cs_client = @@character_set_client */;
-SET character_set_client = utf8mb4;
+SET character_set_client = utf8;
 CREATE TABLE `sample_publication`
 (
     `sample_pk_id`      bigint(20) NOT NULL,
@@ -6454,7 +6541,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `sfe_inherent_function`;
 /*!40101 SET @saved_cs_client = @@character_set_client */;
-SET character_set_client = utf8mb4;
+SET character_set_client = utf8;
 CREATE TABLE `sfe_inherent_function`
 (
     `sfe_inherent_function_pk_id`               bigint(20) NOT NULL COMMENT 'sfe_inherent_function_pk_id',
@@ -6492,7 +6579,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `shape`;
 /*!40101 SET @saved_cs_client = @@character_set_client */;
-SET character_set_client = utf8mb4;
+SET character_set_client = utf8;
 CREATE TABLE `shape`
 (
     `shape_pk_id`        bigint(20)   NOT NULL,
@@ -6526,7 +6613,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `small_molecule`;
 /*!40101 SET @saved_cs_client = @@character_set_client */;
-SET character_set_client = utf8mb4;
+SET character_set_client = utf8;
 CREATE TABLE `small_molecule`
 (
     `small_molecule_pk_id` bigint(20) NOT NULL,
@@ -6555,7 +6642,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `sme_inherent_function`;
 /*!40101 SET @saved_cs_client = @@character_set_client */;
-SET character_set_client = utf8mb4;
+SET character_set_client = utf8;
 CREATE TABLE `sme_inherent_function`
 (
     `sme_inherent_function_pk_id`      bigint(20) NOT NULL COMMENT 'sme_inherent_function_pk_id',
@@ -6592,7 +6679,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `solubility`;
 /*!40101 SET @saved_cs_client = @@character_set_client */;
-SET character_set_client = utf8mb4;
+SET character_set_client = utf8;
 CREATE TABLE `solubility`
 (
     `solubility_pk_id`            bigint(20) NOT NULL,
@@ -6624,7 +6711,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `supplier`;
 /*!40101 SET @saved_cs_client = @@character_set_client */;
-SET character_set_client = utf8mb4;
+SET character_set_client = utf8;
 CREATE TABLE `supplier`
 (
     `supplier_pk_id` bigint(20)   NOT NULL COMMENT 'supplier_pk_id',
@@ -6656,7 +6743,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `synthesis`;
 /*!40101 SET @saved_cs_client = @@character_set_client */;
-SET character_set_client = utf8mb4;
+SET character_set_client = utf8;
 CREATE TABLE `synthesis`
 (
     `synthesis_pk_id` bigint(20) NOT NULL COMMENT 'synthesis_pk_id',
@@ -6690,7 +6777,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `synthesis_functionalization`;
 /*!40101 SET @saved_cs_client = @@character_set_client */;
-SET character_set_client = utf8mb4;
+SET character_set_client = utf8;
 CREATE TABLE `synthesis_functionalization`
 (
     `synthesis_functionalization_pk_id` bigint(20)   NOT NULL COMMENT 'synthesis_functionalization_pk_id',
@@ -6735,7 +6822,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `synthesis_functionalization_element`;
 /*!40101 SET @saved_cs_client = @@character_set_client */;
-SET character_set_client = utf8mb4;
+SET character_set_client = utf8;
 CREATE TABLE `synthesis_functionalization_element`
 (
     `synthesis_functionalization_element_pk_id` bigint(20)   NOT NULL COMMENT 'synthesis_functionalization_element_pk_id',
@@ -6798,7 +6885,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `synthesis_functionalization_element_file`;
 /*!40101 SET @saved_cs_client = @@character_set_client */;
-SET character_set_client = utf8mb4;
+SET character_set_client = utf8;
 CREATE TABLE `synthesis_functionalization_element_file`
 (
     `synthesis_functionalization_element_pk_id` bigint(20) NOT NULL COMMENT 'synthesis_functionalization_element_file',
@@ -6830,7 +6917,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `synthesis_functionalization_file`;
 /*!40101 SET @saved_cs_client = @@character_set_client */;
-SET character_set_client = utf8mb4;
+SET character_set_client = utf8;
 CREATE TABLE `synthesis_functionalization_file`
 (
     `synthesis_functionalization_pk_id` bigint(20) NOT NULL COMMENT 'synthesis_material_pk_id',
@@ -6860,7 +6947,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `synthesis_material`;
 /*!40101 SET @saved_cs_client = @@character_set_client */;
-SET character_set_client = utf8mb4;
+SET character_set_client = utf8;
 CREATE TABLE `synthesis_material`
 (
     `synthesis_material_pk_id` bigint(20)   NOT NULL COMMENT 'synthesis_material_pk_id',
@@ -6905,7 +6992,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `synthesis_material_element`;
 /*!40101 SET @saved_cs_client = @@character_set_client */;
-SET character_set_client = utf8mb4;
+SET character_set_client = utf8;
 CREATE TABLE `synthesis_material_element`
 (
     `synthesis_material_element_pk_id` bigint(20)   NOT NULL COMMENT 'synthesis_material_element_pk_id',
@@ -6960,7 +7047,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `synthesis_material_element_file`;
 /*!40101 SET @saved_cs_client = @@character_set_client */;
-SET character_set_client = utf8mb4;
+SET character_set_client = utf8;
 CREATE TABLE `synthesis_material_element_file`
 (
     `synthesis_material_element_pk_id` bigint(20) NOT NULL COMMENT 'synthesis_material_element_pk_id',
@@ -6992,7 +7079,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `synthesis_material_file`;
 /*!40101 SET @saved_cs_client = @@character_set_client */;
-SET character_set_client = utf8mb4;
+SET character_set_client = utf8;
 CREATE TABLE `synthesis_material_file`
 (
     `synthesis_material_pk_id` bigint(20) NOT NULL COMMENT 'synthesis_material_pk_id',
@@ -7026,7 +7113,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `synthesis_purification`;
 /*!40101 SET @saved_cs_client = @@character_set_client */;
-SET character_set_client = utf8mb4;
+SET character_set_client = utf8;
 CREATE TABLE `synthesis_purification`
 (
     `synthesis_purification_pk_id` bigint(20)   NOT NULL COMMENT 'synthesis_purification_pk_id',
@@ -7081,19 +7168,18 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `synthesis_purity`;
 /*!40101 SET @saved_cs_client = @@character_set_client */;
-SET character_set_client = utf8mb4;
+SET character_set_client = utf8;
 CREATE TABLE `synthesis_purity`
 (
     `purity_pk_id`                 bigint(200)  NOT NULL COMMENT 'purity_pk_id',
     `synthesis_purification_pk_id` bigint(20)   NOT NULL COMMENT 'synthesis_purification_pk_id',
     `created_by`                   varchar(200) NOT NULL COMMENT 'created_by',
     `created_date`                 datetime     NOT NULL COMMENT 'created_date',
-    `file_pk_id`                   bigint(200)  DEFAULT NULL,
     PRIMARY KEY (`purity_pk_id`),
     KEY `FK_synthesis_purity_to purification` (`synthesis_purification_pk_id`),
-    KEY `FK_file_TO_purity` (`file_pk_id`),
-    CONSTRAINT `FK_file_TO_purity` FOREIGN KEY (`file_pk_id`) REFERENCES `file` (`file_pk_id`),
-   CONSTRAINT `FK_synthesis_purity_to purification` FOREIGN KEY (`synthesis_purification_pk_id`) REFERENCES `synthesis_purification` (`synthesis_purification_pk_id`)
+    CONSTRAINT `FK_synthesis_purity_to purification` FOREIGN KEY (`synthesis_purification_pk_id`) REFERENCES `synthesis_purification` (`synthesis_purification_pk_id`)
+
+
 ) ENGINE = InnoDB
   DEFAULT CHARSET = latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -7120,7 +7206,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `target`;
 /*!40101 SET @saved_cs_client = @@character_set_client */;
-SET character_set_client = utf8mb4;
+SET character_set_client = utf8;
 CREATE TABLE `target`
 (
     `target_pk_id`             bigint(20)   NOT NULL,
@@ -7156,7 +7242,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `technique`;
 /*!40101 SET @saved_cs_client = @@character_set_client */;
-SET character_set_client = utf8mb4;
+SET character_set_client = utf8;
 CREATE TABLE `technique`
 (
     `technique_pk_id` bigint(20)   NOT NULL,
@@ -7194,7 +7280,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `users`;
 /*!40101 SET @saved_cs_client = @@character_set_client */;
-SET character_set_client = utf8mb4;
+SET character_set_client = utf8;
 CREATE TABLE `users`
 (
     `username`     varchar(100) NOT NULL,
