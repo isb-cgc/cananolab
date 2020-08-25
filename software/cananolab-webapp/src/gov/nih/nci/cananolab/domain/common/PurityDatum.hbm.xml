@@ -60,9 +60,6 @@
             <column name="column_pk_id" not-null="true"/>
         </property>
 
-        <many-to-one class="File"
-                     fetch="select" name="file" lazy="proxy">
-            <column name="file_pk_id"/>
-        </many-to-one>
+
     </class>
 </hibernate-mapping>

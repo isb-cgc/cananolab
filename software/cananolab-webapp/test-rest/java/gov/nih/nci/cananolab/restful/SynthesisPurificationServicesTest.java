@@ -93,10 +93,11 @@ public class SynthesisPurificationServicesTest {
 //            ArrayList<String> pubChemTypes = response.path("pubChemDataSources");
 //            assertTrue(pubChemTypes.contains("Substance"));
             String design = response.path("designMethodDescription");
-            assertTrue(design.equals("Test entry for synthesis purification"));
+            assertTrue(design.equals("I am a description of a method design"));
             String type = response.path("type");
             assertTrue(type.equals("Interim Purification"));
             ArrayList<String> purityBeans = response.path("purityBeans");
+            assertTrue(purityBeans.size() == 2);
 
         }catch (Exception e){
             e.printStackTrace();
@@ -196,6 +197,15 @@ public class SynthesisPurificationServicesTest {
                     .then().statusCode(200).extract().response();
             assertNotNull(response);
             //TODO check the results coming back.
+            //TODO check response
+            ResponseBody body = response.body();
+            String result = body.prettyPrint();
+            assertTrue(result.length()>0);
+            System.out.println(result);
+
+            List<String> types = response.path( "");
+            assertTrue(types.size()>0);
+            assertTrue(types.contains("purity"));
 
         }catch (Exception e){
             e.printStackTrace();

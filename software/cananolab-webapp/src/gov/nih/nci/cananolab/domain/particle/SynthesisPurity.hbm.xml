@@ -38,5 +38,7 @@
                 <column name="file_pk_id" not-null="true"/>
             </many-to-many>
         </set>
+
+
     </class>
 </hibernate-mapping>
