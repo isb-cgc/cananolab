@@ -1,5 +1,7 @@
 package gov.nih.nci.cananolab.restful;
 
+import gov.nih.nci.cananolab.domain.common.Technique;
+import gov.nih.nci.cananolab.exception.ExperimentConfigException;
 import gov.nih.nci.cananolab.restful.sample.CharacterizationManager;
 import gov.nih.nci.cananolab.restful.sample.ExperimentConfigManager;
 import gov.nih.nci.cananolab.restful.synthesis.SynthesisManager;
@@ -12,6 +14,8 @@ import gov.nih.nci.cananolab.restful.view.edit.SimplePurificationEditBean;
 import gov.nih.nci.cananolab.restful.view.edit.SimpleSynthesisFunctionalizationBean;
 import gov.nih.nci.cananolab.restful.view.edit.SimpleSynthesisPurificationBean;
 import gov.nih.nci.cananolab.security.utils.SpringSecurityUtil;
+import gov.nih.nci.cananolab.system.applicationservice.CaNanoLabApplicationService;
+import gov.nih.nci.cananolab.system.applicationservice.client.ApplicationServiceProvider;
 import gov.nih.nci.cananolab.util.Constants;
 import java.util.ArrayList;
 import java.util.List;
@@ -26,10 +30,12 @@ import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.Response;
 import org.apache.log4j.Logger;
+import org.hibernate.criterion.DetachedCriteria;
+import org.hibernate.criterion.Property;
 
 @Path("/synthesisPurification")
 public class SynthesisPurificationServices {
-
+    private static final Logger logger = Logger.getLogger(SynthesisPurificationServices.class);
     /**
      *
      * @param httpRequest
@@ -341,6 +347,29 @@ public class SynthesisPurificationServices {
                     .entity(CommonUtil.wrapErrorMessageInList(e.getMessage())).build();
         }
     }
+
+    @GET
+    @Path("/findTechniqueByType")
+    @Produces ("application/json")
+    public Technique findTechniqueByType(String type) throws ExperimentConfigException
+    {
+        Technique technique = null;
+        try {
+            CaNanoLabApplicationService appService = (CaNanoLabApplicationService) ApplicationServiceProvider.getApplicationService();
+            DetachedCriteria crit = DetachedCriteria.forClass(Technique.class)
+                    .add(Property.forName("type").eq(new String(type)).ignoreCase());
+            List results = appService.query(crit);
+            for (int i = 0; i < results.size(); i++) {
+                technique = (Technique) results.get(i);
+            }
+        } catch (Exception e) {
+            String err = "Problem to retrieve technique by type.";
+
+            throw new ExperimentConfigException(err);
+        }
+        return technique;
+    }
+
 
     @POST
     @Path("saveTechniqueAndInstrument")

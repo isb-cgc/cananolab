@@ -335,36 +335,36 @@ public class SampleBO extends BaseAnnotationBO {
 		//this.userIsCurator = sampleBean.getUser().isCurator();
 		sampleEdit.setIsPublic(springSecurityAclService.checkObjectPublic(sampleBean.getDomain().getId(), SecureClassesEnum.SAMPLE.getClazz()));
 
-		logger.debug("Transferming POC");
+		logger.debug("Transfering POC");
 		sampleEdit.transferPointOfContactData(sampleBean);
-		logger.debug("Transferming POC");
+
 
 		sampleEdit.setKeywords(new ArrayList<String>(sampleBean.getKeywordSet()));
 
-		logger.debug("Transferming Access");
+		logger.debug("Transfering Access");
 		sampleEdit.transferAccessibilityData(sampleBean);
-		logger.debug("Done Transferming acess");
+
 
 		sampleEdit.transferDataAvailability(request, sampleBean, availableEntityNames);
 
-		logger.debug("Transferming lookup");
+		logger.debug("Transfering lookup");
 		setupLookups(request);
-		logger.debug("Done Transferming lookup");
-		logger.debug("Transferming GroupName");
+		logger.debug("Done Transfering lookup");
+		logger.debug("Transfering GroupName");
 		sampleEdit.setupGroupNamesForNewAccess(request, userService);
-		logger.debug("Done Transferming GroupName");
+		logger.debug("Done Transfering GroupName");
 
 		logger.debug("Transferming FilteredUsersParamForNewAccess");
 		setupFilteredUsersParamForNewAccess(request, sampleBean.getDomain().getCreatedBy(), sampleEdit);
 		logger.debug("Done Transferming FilteredUsersParamForNewAccess");
 
-		logger.debug("Transferming REview button");
+		logger.debug("Transfering REview button");
 		sampleEdit.setupReviewButton(request, curatorService, sampleBean, springSecurityAclService);
-		logger.debug("Done Transferming REview button");
+		logger.debug("Done Transfering REview button");
 
-		logger.debug("Transferming role map");
+		logger.debug("Transfering role map");
 		sampleEdit.setupRoleNameMap();
-		logger.debug("Done Transferming role map");
+		logger.debug("Done Transfering role map");
 
 	}
 
