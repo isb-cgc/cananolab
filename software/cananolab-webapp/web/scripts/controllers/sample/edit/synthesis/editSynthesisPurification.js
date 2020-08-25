@@ -7,6 +7,7 @@ var app = angular.module('angularApp')
     $scope.fileArray = [];
     $scope.technique = {}; // current inherent being edited //
     $scope.instrument = {}; // current instrument being edited //
+    $scope.instrumentFormIndex = null; // current instrument being edited //
     $scope.techniqueFormIndex = null;
     $scope.fileFormIndex = null;
     $scope.sampleId = $location.search()['sampleId'];
@@ -48,16 +49,16 @@ var app = angular.module('angularApp')
       $scope.fileFormIndex = null;
     };
 
-    // cancel inherent function //
+    // cancel technique //
     $scope.cancelTechnique = function (index, i) {
       console.log('dont do anything. Original technique stays as is');
       $scope.techniqueFormIndex = null;
     };
 
-    // cancel material element edit //
-    $scope.cancelMaterialElement = function (me) {
-      $scope.materialElementFormIndex = null;
-    };
+    $scope.cancelInstrument = function (index, i) {
+      console.log('dont do anything. Original technique stays as is');
+      $scope.instrumentFormIndex = null;
+    };    
 
     // delete for material //
     $scope.deleteMaterial = function () {
@@ -153,10 +154,23 @@ var app = angular.module('angularApp')
         $scope.techniqueFormIndex = index;
       }
       else {
-        $scope.technique = { "type": null, "abbreviation": null, "description":null,"instruments":[] }
+        $scope.technique = { "type": null, "abbreviation": null, "description": null, "instruments": [] }
         $scope.techniqueFormIndex = index;
       };
     };
+
+    // open the inherent function edit form //
+    $scope.openInstrumentForm = function (index, parentIndex, instrument) {
+      console.log(index)
+      if (index != -1) {
+        $scope.instrument = angular.copy(instrument);
+        $scope.instrumentFormIndex = index;
+      }
+      else {
+        $scope.instrument = { "type": null, "manufacturer": null, "modelName": null }
+        $scope.instrumentFormIndex = index;
+      };
+    };    
 
 
     // save file //
@@ -215,7 +229,7 @@ var app = angular.module('angularApp')
       $scope.inherentFunctionFormIndex = null;
     };
 
-    // save material element //
+    // save technique //
     $scope.saveTechnique = function (technique) {
       if ($scope.techniqueFormIndex == -1) {
         $scope.simpleExperimentBeans.push($scope.technique)
@@ -225,6 +239,17 @@ var app = angular.module('angularApp')
       }
       $scope.techniqueFormIndex = null;
     };
+
+    // save instrument //
+    $scope.saveInstrument = function (instrument) {
+      if ($scope.instrumentFormIndex == -1) {
+        $scope.technique.push($scope.instrument)
+      }
+      else {
+        $scope.technique.instruments[$scope.instrumentFormIndex] = instrument;
+      }
+      $scope.instrumentFormIndex = null;
+    };    
 
     // submit the entire synthesis material //
     $scope.savePurification = function () {
