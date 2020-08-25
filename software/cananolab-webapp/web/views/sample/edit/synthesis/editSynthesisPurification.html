@@ -4,6 +4,7 @@
   <B>Purification</B> - {{purification}} <br /><br />
   <B>Material Element</B> - {{materialElement}}<br /><br />
   <B>Technique</B> - {{technique}}
+  <B>Instrument</B> - {{instrument}}
 </div>
 
 <div class="spacer">
@@ -170,14 +171,42 @@
                                 </td>
                                 <td width="10%">
                                   <button type="button" class="btn btn-primary btn-xs ng-click-active"
-                                    ng-click="openInherentFunctionForm($index, $parent.$index, i)">Edit</button>
+                                    ng-click="openInstrumentForm($index, $parent.$index, i)">Edit</button>
                                 </td>
                                 <td width="10%">
                                   <button type="button" class="btn btn-danger btn-xs ng-click-active"
-                                    ng-click="deleteInherentFunction($index, $parent.$index, i)">Delete</button>
+                                    ng-click="deleteInstrument($index, $parent.$index, i)">Delete</button>
                                 </td>
                               </tr>
                             </table><br />
+                          </div>
+                          <div class="inherentFunctions" ng-if="instrumentFormIndex!=null" ng-repeat="i in technique.instruments">
+                            <table class="editTableWithGrid" align="center" width="95%">
+                              <tr>
+                                <td width="15%"><label>Manufacturer</label></td>
+                                <td width="85%">
+                                  <select ng-model="instrument.manufacturer" ng-options="o as o for o in dropdowns.manufacturers"></select>
+                                </td>
+                              </tr>
+                              <tr>
+                                <td width="15%"><label>Model Name</label></td>
+                                <td width="85%">
+                                  <input type="text" name="modelName" ng-model="instrument.modelName" value="{{instrument.modelName}}">
+                                </td>
+                              </tr>
+                              <tr>
+                                <td width="15%"><label>Type</label></td>
+                                <td width="85%">
+                                  <input type="text" name="type" ng-model="instrument.type" value="{{instrument.type}}">
+                                </td>
+                              </tr>
+                              <tr>
+                                <td colspan="2" class="saveSynthesis">
+                                  <button class="btn btn-default btn-xs" ng-click="cancelInstrument(instrument)">Cancel</button>
+                                  <button class="btn btn-primary btn-xs" ng-click="saveInstrument(instrument)">Save Instrument</button>
+                                </td>
+                              </tr>
+                            </table>
                           </div>
                         </td>
                       </tr>
