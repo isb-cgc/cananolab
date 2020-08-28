@@ -61,7 +61,7 @@ var app = angular.module('angularApp')
     };    
 
     // delete for material //
-    $scope.deleteMaterial = function () {
+    $scope.deletePurification = function () {
       if (confirm("Are you sure you want to delete?")) {
         $http({ method: 'POST', url: '/caNanoLab/rest/synthesisMaterial/delete', data: $scope.material }).
           success(function (data, status, headers, config) {
@@ -72,14 +72,29 @@ var app = angular.module('angularApp')
       };
     };
 
-    // deletes inherent function from material element //
-    $scope.deleteInherentFunction = function (index, parentIndex, inherentFunction) {
-      $scope.materialElement.inherentFunctionList.splice(index, 1);
+    // deletes technique from purification //
+    $scope.deleteTechnique = function (index, parentIndex, technique) {
+      $scope.purification['simpleExperimentBeans'].splice(index, 1);
     };
+
+    // deletes instrument from technique //
+    $scope.deleteInstrument = function (index, parentIndex, instrument) {
+      $scope.technique['instruments'].splice(index, 1);
+    };    
 
     // delete material element //
     $scope.deleteMaterialElement = function (me, index) {
       $scope.material.materialElements.splice(index, 1)
+    };
+
+    // gets abbreviation and desc for technique //
+    $scope.getAbbreviationDescForTechnique = function() {
+      $http({ method: 'GET', url: `/caNanoLab/rest/synthesisPurification/findTechniqueByType?techniqueType=${$scope.technique.techniqueType}` }).
+        success(function (data, status, headers, config) {
+          $scope.techniqueAbbreviationDesc = data;
+          $scope.loader = false;
+        }).error(function (data, status, headers, config) {
+        });      
     };
 
     // gets file conditions to make save file button enabled or disabled //
@@ -161,7 +176,7 @@ var app = angular.module('angularApp')
 
     // open the inherent function edit form //
     $scope.openInstrumentForm = function (index, parentIndex, instrument) {
-      console.log(index)
+      $scope.getInstrumentTypes();
       if (index != -1) {
         $scope.instrument = angular.copy(instrument);
         $scope.instrumentFormIndex = index;
@@ -172,6 +187,15 @@ var app = angular.module('angularApp')
       };
     };    
 
+    // get instrument types based on technique type //
+    $scope.getInstrumentTypes = function() {
+      $http({ method: 'GET', url: `/caNanoLab/rest/synthesisPurification/getInstrumentTypesByTechniqueType?techniqueType=${$scope.technique.techniqueType}` }).
+        success(function (data, status, headers, config) {
+          $scope.instrumentTypes = data;
+          $scope.loader = false;
+        }).error(function (data, status, headers, config) {
+        });
+    };
 
     // save file //
     $scope.saveFile = function () {
@@ -232,7 +256,7 @@ var app = angular.module('angularApp')
     // save technique //
     $scope.saveTechnique = function (technique) {
       if ($scope.techniqueFormIndex == -1) {
-        $scope.simpleExperimentBeans.push($scope.technique)
+        $scope.purification['simpleExperimentBeans'].push($scope.technique)
       }
       else {
         $scope.purification['simpleExperimentBeans'][$scope.techniqueFormIndex] = technique;
