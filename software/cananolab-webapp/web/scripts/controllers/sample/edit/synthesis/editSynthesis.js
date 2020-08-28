@@ -51,13 +51,5 @@ var app = angular.module('angularApp')
         $scope.purifications = data.synthesisPurification;
         $scope.loader = false;
       });
-
-    $http({ method: 'GET', url: '/caNanoLab/rest/sample/getCurrentSampleName?sampleId=' + $scope.sampleId }).
-      success(function (data, status, headers, config) {
-        $scope.sampleName = sampleService.sampleName($scope.sampleId);
-        $scope.materials = data.synthesisMaterials;
-        $scope.functionalizations = data.synthesisFunctionalization;
-        $scope.purifications = data.synthesisPurification;
-        $scope.loader = false;
-      });      
+  
   });
