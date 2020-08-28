@@ -4,7 +4,9 @@
   <B>Purification</B> - {{purification}} <br /><br />
   <B>Material Element</B> - {{materialElement}}<br /><br />
   <B>Technique</B> - {{technique}}<br /><br />
-  <B>Instrument</B> - {{instrument}}
+  <B>Instrument</B> - {{instrument}}<br /><br />
+  <B>Instrument Types</B> - {{instrumentTypes}}<br /><Br />
+  <B>Abb/Desc</B> - {{techniqueAbbreviationDesc}}
 </div>
 
 <div class="spacer">
@@ -133,7 +135,7 @@
                           <label>Technique*</label>
                         </td>
                         <td>
-                          <select ng-model="technique.techniqueType" ng-options="o as o for o in dropdowns.techniques">
+                          <select ng-model="technique.techniqueType" ng-change="getAbbreviationDescForTechnique()" ng-options="o as o for o in dropdowns.techniques">
                           </select>
                         </td>
                       </tr>
@@ -157,7 +159,7 @@
                       <tr>
                         <td width="30%"><label>Instruments</label></td>
                         <td width="70%">
-                          <button type="button" class="btn btn-primary btn-xs ng-click-active" ng-click="openTechniqueInstrumentsForm(-1, $parent.$index)">Add</button>
+                          <button type="button" class="btn btn-primary btn-xs ng-click-active" ng-click="openInstrumentForm(-1, $parent.$index)">Add</button>
                         </td>
                       </tr>
                       <tr>
@@ -197,7 +199,7 @@
                               <tr>
                                 <td width="15%"><label>Type</label></td>
                                 <td width="85%">
-                                  <input type="text" name="type" ng-model="instrument.type" value="{{instrument.type}}">
+                                  <select ng-model="instrument.type" ng-options="o as o for o in instrumentTypes"></select>
                                 </td>
                               </tr>
                               <tr>
