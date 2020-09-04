@@ -4,6 +4,7 @@ import gov.nih.nci.cananolab.dto.common.ColumnHeader;
 import gov.nih.nci.cananolab.restful.protocol.ProtocolBO;
 import gov.nih.nci.cananolab.restful.util.RestTestLoginUtil;
 import gov.nih.nci.cananolab.restful.view.SimpleSynthesisBean;
+import gov.nih.nci.cananolab.restful.view.edit.SimpleInstrumentBean;
 import gov.nih.nci.cananolab.restful.view.edit.SimpleProtocol;
 import gov.nih.nci.cananolab.restful.view.edit.SimplePurificationConfigBean;
 import gov.nih.nci.cananolab.restful.view.edit.SimplePurityBean;
@@ -29,6 +30,7 @@ import org.json.JSONObject;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import org.springframework.security.access.method.P;
 
 import static io.restassured.RestAssured.given;
 import static org.hamcrest.Matchers.hasItems;
@@ -97,7 +99,7 @@ public class SynthesisPurificationServicesTest {
             String type = response.path("type");
             assertTrue(type.equals("Interim Purification"));
             ArrayList<String> purityBeans = response.path("purityBeans");
-            assertTrue(purityBeans.size() == 2);
+            assertTrue(purityBeans.size() == 1);
 
         }catch (Exception e){
             e.printStackTrace();
@@ -393,9 +395,26 @@ public class SynthesisPurificationServicesTest {
     }
 
     @Test
-    public void testGetInstrumentTypesByTechniqueType() {
+    public void testFindTechniqueByType(){
         try {
 
+            Response response = given().spec(specification)
+                    .queryParam("type", "Interim purification technique")
+                    .when().get("synthesisPurification/findTechniqueByType")
+                    .then().statusCode(200).extract().response();
+            assertNotNull(response);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+    }
+
+    @Test
+    public void testGetInstrumentTypesByTechniqueType() {
+        try {
+            Response response = given().spec(specification)
+                    .body("Interim purification technique").when().post("synthesisPurification/getInstrumentTypesByTechniqueType")
+                    .then().statusCode(200).extract().response();
+            assertNotNull(response);
         }catch (Exception e){
             e.printStackTrace();
         }
@@ -405,6 +424,27 @@ public class SynthesisPurificationServicesTest {
     public void testSaveTechniqueAndInstrument() {
         try {
 
+            SimpleSynthesisPurificationBean existingBean = getSimpleSynthesisPurificationBean("1000", "1000");
+            List<SimplePurificationConfigBean> experiments = existingBean.getSimpleExperimentBeans();
+            for(SimplePurificationConfigBean experiment: experiments){
+                List<SimpleInstrumentBean> instrumentBeans = experiment.getInstruments();
+                for (SimpleInstrumentBean instrumentBean:instrumentBeans){
+                    instrumentBean.setManufacturer("Test Manufacturer");
+                }
+                experiment.setDescription("Test technique description");
+            }
+            Response response = given().spec(specification)
+                    .body(existingBean).when().post("synthesisPurification/submit")
+                    .then().statusCode(200).extract().response();
+
+            assertNotNull(response);
+            existingBean = getSimpleSynthesisPurificationBean("1000", "1000");
+            for(SimplePurificationConfigBean experiment:existingBean.getSimpleExperimentBeans()){
+                assertTrue(experiment.getDescription().equals("Test technique description"));
+                for(SimpleInstrumentBean instrumentBean:experiment.getInstruments()){
+                    assertTrue(instrumentBean.getManufacturer().equals("Test Manufacturer"));
+                }
+            }
         }catch (Exception e){
             e.printStackTrace();
         }

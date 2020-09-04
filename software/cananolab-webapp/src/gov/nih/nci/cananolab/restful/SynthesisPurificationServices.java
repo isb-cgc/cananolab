@@ -43,9 +43,9 @@ public class SynthesisPurificationServices {
      * @return  Map of drop down options
      */
     @GET
-    @Path("/setup")
+    @Path("/setupNew")
     @Produces("application/json")
-    public Response setup(@Context HttpServletRequest httpRequest, @DefaultValue("") @QueryParam("sampleId") String sampleId)
+    public Response setupNew(@Context HttpServletRequest httpRequest, @DefaultValue("") @QueryParam("sampleId") String sampleId)
     {
         try{
             SynthesisPurificationBO synthesisPurificationBO = (SynthesisPurificationBO) SpringApplicationContext.getBean(httpRequest, "synthesisPurificationBO");
@@ -330,8 +330,6 @@ public class SynthesisPurificationServices {
     public Response getInstrumentTypesByTechniqueType(@Context HttpServletRequest httpRequest,
                                                       @DefaultValue("") @QueryParam("techniqueType") String techniqueType)
     {
-
-
         try
         {
             ExperimentConfigManager experimentMgr =
@@ -351,7 +349,7 @@ public class SynthesisPurificationServices {
     @GET
     @Path("/findTechniqueByType")
     @Produces ("application/json")
-    public Technique findTechniqueByType(String type) throws ExperimentConfigException
+    public Technique findTechniqueByType(@QueryParam("type") String type) throws ExperimentConfigException
     {
         Technique technique = null;
         try {
