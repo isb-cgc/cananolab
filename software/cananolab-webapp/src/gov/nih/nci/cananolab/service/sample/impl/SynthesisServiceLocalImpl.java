@@ -1129,7 +1129,7 @@ public class SynthesisServiceLocalImpl extends BaseServiceLocalImpl implements S
             try {
                 appService
                         .load(PurityDatum.class, datum.getId());
-                SynthesisPurity tempDatum = (SynthesisPurity)appService.getObject(Datum.class, "id", datum.getId());
+                SynthesisPurity tempDatum = (SynthesisPurity)appService.getObject(PurityDatum.class, "id", datum.getId());
 
                 datum.setCreatedDate(tempDatum.getCreatedDate());
                 datum.setCreatedBy(tempDatum.getCreatedBy());

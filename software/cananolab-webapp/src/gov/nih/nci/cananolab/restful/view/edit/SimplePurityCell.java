@@ -14,6 +14,10 @@ public class SimplePurityCell {
 //	Date createdDate;
 //	String createdBy;
 	String operand;
+
+
+
+	Long columnId;
 	
 	public void transferFromTableCell(PurityTableCell cell) {
 		if (cell == null) return;
@@ -23,6 +27,7 @@ public class SimplePurityCell {
 		operand = cell.getOperand();
 //		createdDate = cell.getCreatedDate();
 		id = cell.getId();
+		columnId = cell.getColumnId();
 //		createdBy = cell.getCreatedBy();
 	}
 	
@@ -32,6 +37,7 @@ public class SimplePurityCell {
 		cell.setValue(value);
 		cell.setOperand(operand);
 		cell.setId(id);
+		cell.setColumnId(columnId);
 //		cell.setCreatedDate(createdDate);
 //		cell.setCreatedBy(createdBy);
 	}
@@ -82,4 +88,12 @@ public class SimplePurityCell {
 //	public void setCreatedBy(String createdBy) {
 //		this.createdBy = createdBy;
 //	}
+
+	public Long getColumnId() {
+		return columnId;
+	}
+
+	public void setColumnId(Long columnId) {
+		this.columnId = columnId;
+	}
 }

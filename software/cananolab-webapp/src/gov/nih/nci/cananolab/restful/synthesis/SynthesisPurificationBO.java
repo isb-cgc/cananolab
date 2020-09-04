@@ -775,6 +775,8 @@ public class SynthesisPurificationBO extends BaseAnnotationBO {
             datumCondition.setId(sConditionCell.getId());
             conditionCell.setOperand(sConditionCell.getOperand());
             datumCondition.setOperand(sConditionCell.getOperand());
+            conditionCell.setColumnId(sConditionCell.getColumnId());
+            datumCondition.setColumnId(sConditionCell.getColumnId());
             for(ColumnHeader header:columnHeaders){
                 if(header.getColumnOrder().equals(conditionCell.getColumnOrder())){
                     datumCondition.setName(header.getColumnName());
@@ -803,6 +805,8 @@ public class SynthesisPurificationBO extends BaseAnnotationBO {
         datum.setId(currentDatumCell.getId());
         datumCell.setOperand(currentDatumCell.getOperand());
         datum.setOperand(currentDatumCell.getOperand());
+        datumCell.setColumnId(currentDatumCell.getColumnId());
+        datum.setColumnId(currentDatumCell.getColumnId());
         for(ColumnHeader header:columnHeaders) {
             if (header.getColumnOrder().equals(currentDatumCell.getColumnOrder())) {
                 datum.setName(header.getColumnName());

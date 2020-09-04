@@ -126,10 +126,14 @@ public class SynthesisUtil {
         if (types != null)
             typeMap.put("techniques", new ArrayList<String>(types));
 
-        //Manufacturers just pulls back brand names, not instrument identifiers.
-        types = (SortedSet<String>) session.getAttribute("manufacturers");
-        if (types != null)
-            typeMap.put("manufacturers", new ArrayList<String>(types));
+//        //Manufacturers just pulls back brand names, not instrument identifiers.
+//        types = (SortedSet<String>) session.getAttribute("manufacturers");
+//        if (types != null)
+//            typeMap.put("manufacturers", new ArrayList<String>(types));
+
+        types = (SortedSet<String>) session.getAttribute("instrumentType");
+        if (types!=null)
+            typeMap.put("instruments", new ArrayList<String>(types));
 
         //TODO instrument type is dependent on technique
 
