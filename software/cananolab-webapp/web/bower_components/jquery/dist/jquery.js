@@ -6567,6 +6567,9 @@
 		} );
 	} )();
 
+function curCSS( elem, name, computed ) {
+	var width, minWidth, maxWidth, ret,
+		style = elem.style;
 
 	function curCSS( elem, name, computed ) {
 		var width, minWidth, maxWidth, ret,
@@ -10837,6 +10840,7 @@
 
 
 
+var
 
 	var
 
