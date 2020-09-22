@@ -6,7 +6,8 @@
   <B>Technique</B> - {{technique}}<br /><br />
   <B>Instrument</B> - {{instrument}}<br /><br />
   <B>Instrument Types</B> - {{instrumentTypes}}<br /><Br />
-  <B>Abb/Desc</B> - {{techniqueAbbreviationDesc}}
+  <B>Abb/Desc</B> - {{techniqueAbbreviationDesc}}<br /><br />
+  <B>Findings</B> - {{purification.purityBeans}}
 </div>
 
 <div class="spacer">
@@ -233,19 +234,400 @@
 
     <br>
     <br>
-    <table width="100%" align="center" class="submissionView ng-scope">
-      <tbody>
-        <tr>
-          <td class="cellLabel" width="15%">
-            Finding
-          </td>
-          <td>
-            <button type="button" ng-click="openMaterialEditForm({},-1, 0)" class="btn btn-primary btn-xs"
-              id="addFile">Add</button>
-          </td>
-        </tr>
-      </tbody>
-    </table>
+<table class="submissionView" width="100%" align="center">
+  <tbody>
+    <tr>
+      <td class="cellLabel" width="20%">
+        Finding
+      </td>
+      <td>
+        <button ng-click="addNewFinding()" ng-disabled="updateFinding" class="btn btn-primary btn-xs">Add</button>
+      </td>
+    </tr>
+    <tr ng-repeat="finding in purification.purityBeans">
+      <td colspan="2">
+        <table class="editTableWithGrid" width="95%" align="center" ng-if="purification.purityBeans.length">
+          <tbody>
+            <tr>
+              <th style="text-align: right">
+                <button ng-click="updateExistingFinding(finding)" ng-disabled="updateFinding"
+                  class="btn btn-primary btn-xs"> Edit
+                </button>
+
+              </th>
+            </tr>
+
+            <tr>
+              <td class="cellLabel">
+                Data and Conditions
+              </td>
+            </tr>
+            <tr ng-if="finding.columnHeaders.length">
+              <td>
+                <table class="summaryViewWithGrid" width="95%" align="center">
+                  <tbody>
+                    <tr>
+                      <td class="cellLabel" ng-repeat="header in finding.columnHeaders"
+                        ng-bind-html="header.displayName">
+                        {{header.displayName}}
+                      </td>
+                    </tr>
+                    <tr ng-repeat="row in finding.purityRows">
+                      <td ng-repeat="cell in row.cells" style="padding-left:15px;">
+                        <span ng-if="cell.operand!='='">{{cell.operand}}</span>{{cell.value}}
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+                <br>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <ng-include src="'/caNanoLab/views/sample/view/manageFileView.html'"></ng-include>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        <br>
+      </td>
+    </tr>
+    <tr>
+      <td colspan="2">
+        <span id="editFindingInfo"></span>
+        <table class="subSubmissionView" summary="layout" width="95%" align="center" ng-if="updateFinding">
+          <tbody>
+            <tr>
+              <th colspan="2">
+                Finding Info
+              </th>
+            </tr>
+            <tr>
+              <td class="cellLabel">
+                Data and Conditions
+              </td>
+              <td class="cellLabel">
+                <input type="text" ng-model="currentFinding.numberOfColumns" name="numberOfRows" size="4" id="colNum">
+                <label for="colNum">columns</label>
+                <input type="text" ng-model="currentFinding.numberOfRows" name="numberOfRows" size="4" id="rowNum">
+                <label for="rowNum">rows</label>
+                <button ng-click="updateRowsColsForFinding()" class="btn btn-primary btn-xs">Update</button>
+                <button ng-hide="isNewFinding" ng-click="openColumnOrderForm()" class="btn btn-primary btn-xs">Set
+                  Column Order</button>
+
+                <!-- Import a comma separated list to Characterization -> Finding ->Finding Info -> Data & Conditions  -->
+                <!-- Whe the user selects a file from the local machine, the file name is passed to the function fileNameChanged.  -->
+                <label class="btn btn-primary btn-xs  btn-file readBytesButtons">
+                  Import csv
+                  <input type="file" id="csvFile" style="display: none"
+                    onchange="angular.element(this).scope().fileNameChanged(this.files)">
+                </label>
+
+
+              </td>
+            </tr>
+            <tr ng-show="columnOrder">
+              <td colspan="2">
+                <table class="promptbox" width="85%" align="center" id="matrix"
+                  ng-if="currentFinding.columnHeaders.length">
+                  <tbody>
+                    <tr>
+                      <td>
+                        <h3 style="margin:0px;padding:0px;">Column Order</h3>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td ng-repeat="cell in currentFinding.columnHeaders" class="cellLabel"
+                        ng-bind-html="cell.displayName"></td>
+                    </tr>
+                    <tr>
+                      <td ng-repeat="cell in currentFinding.columnHeaders">
+                        <input style="min-height: 28px" type="number" name="cellRow" min=1
+                          max={{currentFinding.columnHeaders.length}} ng-model="cell.columnOrder"
+                          ng-change="columnOrderChanged(cell.columnOrder, $index)"></td>
+                      <td><button ng-click="updateColumnOrder()" ng-disabled="disableChangeColumnOrder"
+                          class="btn btn-primary btn-xs">Update Order</button></td>
+                    </tr>
+                  </tbody>
+                </table>
+              </td>
+            </tr>
+            <tr>
+              <td colspan="2">
+                <table class="promptbox" width="85%" align="center" id="matrix"
+                  ng-if="currentFinding.columnHeaders.length">
+                  <tbody>
+                    <tr>
+                      <td colspan="{{currentFinding.columnHeaders.length}}">
+                        <h3 style="margin:0px;padding:0px;">Column Data</h3>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td ng-repeat="cell in currentFinding.columnHeaders" class="cellLabel"><a
+                          ng-click="openColumnForm(cell)" href=""
+                          ng-bind-html="cell.displayName">{{cell.displayName}}</a></td>
+                    </tr>
+                    <tr ng-if="columnForm">
+                      <td colspan="{{currentFinding.columnHeaders.length}}">
+                        <table class="subSubmissionView" width="100%" align="center" id="matrix"
+                          ng-if="currentFinding.columnHeaders.length">
+                          <tr>
+                            <td colspan="2">
+                              <h3 style="margin:0px;padding:0px;">Column Definitions</h3>At least one column must be of
+                              type Datum.
+                            </td>
+                          </tr>
+                          <tr>
+                            <td width="30%">
+                              <label for="columnType">Column Type *</label>
+                            </td>
+                            <td>
+                              <select ng-hide="loader" ng-model="findingsColumn.columnType"
+                                ng-change="onColumnTypeDropdownChange()">
+                                <option value=""></option>
+                                <option>datum</option>
+                                <option>condition</option>
+                              </select>
+                            </td>
+                          </tr>
+                          <tr>
+                            <td>
+                              <label for="columnName">Column Name *</label>
+                            </td>
+                            <td>
+                              <select ng-hide="loader" ng-model="findingsColumn.columnName"
+                                ng-init="findingsColumn.columnName=findingsColumn.columnName"
+                                ng-change="onColumnNameDropdownChange()">
+
+                                <!--
+															<select ng-model="findingsColumn.columnName" data-ng-options="option for option in columnNameLookup" ng-change="onColumnNameDropdownChange()"> -->
+                                <option value=""></option>
+                                <option ng-repeat="option in columnNameLookup" ng-disabled="disableColumn(option)">
+                                  {{option}}</option>
+
+                              </select>
+
+                              <div id="promptCategory" ng-if="findingsColumn.columnName=='other'">
+                                <table cellspacing="5" cellpadding="0" border="0" width="100%" class="promptbox"
+                                  summary="layout">
+                                  <tbody>
+                                    <tr>
+                                      <td class="cellLabel">
+                                        <label for="textCategory" category="">New Column Name:</label>
+                                      </td>
+                                    </tr>
+                                    <tr>
+                                      <td>
+                                        <input type="text" id="textCategory" ng-model='localForm.otherCategoryText'
+                                          class="promptbox">
+                                      </td>
+                                    </tr>
+                                    <tr>
+                                      <td style="text-align: right">
+                                        <button type="button" class="btn btn-primary btn-xs"
+                                          ng-click="findingsColumn.columnName=localForm.otherCategoryText; columnNameLookup.push(localForm.otherCategoryText);"
+                                          ng-disabled='localForm.otherCategoryText.length < 1 || localForm.otherCategoryText === undefined '>Add</button>
+
+                                        <button type="button" class="btn btn-default btn-xs"
+                                          ng-click="findingsColumn.columnName='';">Cancel</button>
+
+                                      </td>
+                                    </tr>
+                                  </tbody>
+                                </table>
+                              </div>
+                            </td>
+                          </tr>
+                          <tr ng-if="findingsColumn.columnType=='condition'">
+                            <td><label for="conditionProperty">Condition Property</label></td>
+                            <td><select ng-hide="loader" ng-model="findingsColumn.conditionProperty"
+                                data-ng-options="option for option in conditionTypeLookup">
+                                <option value=""></option>
+                              </select>
+                              <div id="promptCategory" ng-if="findingsColumn.columnType=='other'">
+                                <table cellspacing="5" cellpadding="0" border="0" width="100%" class="promptbox"
+                                  summary="layout">
+                                  <tbody>
+                                    <tr>
+                                      <td class="cellLabel">
+                                        <label for="textCategory" category="">New Condition Property:</label>
+                                      </td>
+                                    </tr>
+                                    <tr>
+                                      <td>
+                                        <input type="text" id="textCategory" ng-model='localForm.otherCategoryText'
+                                          class="promptbox">
+                                      </td>
+                                    </tr>
+                                    <tr>
+                                      <td style="text-align: right">
+
+                                        <button type="button" class="btn btn-primary btn-xs"
+                                          ng-click="findingsColumn.columnType=localForm.otherCategoryText; conditionTypeLookup.push(localForm.otherCategoryText);">Add</button>
+
+                                        <button type="button" class="btn btn-default btn-xs"
+                                          ng-click="findingsColumn.columnType='';">Cancel</button>
+                                      </td>
+                                    </tr>
+                                  </tbody>
+                                </table>
+                              </div>
+                            </td>
+                          </tr>
+                          <tr>
+                            <td><label for="valueType">Column Value Type</label></td>
+                            <td><select ng-hide="loader" ng-model="findingsColumn.valueType"
+                                data-ng-options="option for option in data.datumConditionValueTypeLookup">
+                                <option value=""></option>
+                              </select>
+                              <div id="promptCategory" ng-if="findingsColumn.valueType=='other'">
+                                <table cellspacing="5" cellpadding="0" border="0" width="100%" class="promptbox"
+                                  summary="layout">
+                                  <tbody>
+                                    <tr>
+                                      <td class="cellLabel">
+                                        <label for="textCategory" category="">New Column Value Type:</label>
+                                      </td>
+                                    </tr>
+                                    <tr>
+                                      <td>
+                                        <input type="text" id="textCategory" ng-model='localForm.otherCategoryText'
+                                          class="promptbox">
+                                      </td>
+                                    </tr>
+                                    <tr>
+                                      <td style="text-align: right">
+                                        <button type="button" class="btn btn-primary btn-xs"
+                                          ng-click="findingsColumn.valueType=localForm.otherCategoryText; data.datumConditionValueTypeLookup.push(localForm.otherCategoryText);">Add</button>
+
+                                        <button type="button" class="btn btn-default btn-xs"
+                                          ng-click="findingsColumn.valueType='';">Cancel</button>
+                                      </td>
+                                    </tr>
+                                  </tbody>
+                                </table>
+                              </div>
+                            </td>
+
+
+                      </td>
+                    </tr>
+
+                    <tr>
+                      <td><label for="valueUnit">Column Value Unit</label></td>
+                      <td><select ng-hide="loader" ng-model="findingsColumn.valueUnit"
+                          data-ng-options="option for option in valueUnitsLookup">
+                          <option value=""></option>
+                        </select>
+
+                        <div id="promptCategory" ng-if="findingsColumn.valueUnit=='other'">
+                          <table cellspacing="5" cellpadding="0" border="0" width="100%" class="promptbox"
+                            summary="layout">
+                            <tbody>
+                              <tr>
+                                <td class="cellLabel">
+                                  <label for="textCategory" category="">New Column Value Unit:</label>
+                                </td>
+                              </tr>
+                              <tr>
+                                <td>
+                                  <input type="text" id="textCategory" ng-model='localForm.otherCategoryText'
+                                    class="promptbox">
+                                </td>
+                              </tr>
+                              <tr>
+                                <td style="text-align: right">
+
+                                  <button type="button" class="btn btn-primary btn-xs"
+                                    ng-click="findingsColumn.valueUnit=localForm.otherCategoryText;valueUnitsLookup.push(localForm.otherCategoryText);">Add</button>
+
+                                  <button type="button" class="btn btn-default btn-xs"
+                                    ng-click="findingsColumn.valueUnit='';">Cancel</button>
+                                </td>
+                              </tr>
+                            </tbody>
+                          </table>
+                        </div>
+                      </td>
+
+              </td>
+            </tr>
+            <tr>
+              <td><label for="constantValue">Constant Value</label></td>
+              <td><input type="text" name="constantValue" ng-model="findingsColumn.constantValue"><br />
+                <span style="font-style: italic; font-size: 0.8em;">For boolean column value type, please enter 1 for
+                  true, 0 for false</span>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <button ng-click="removeColumnForm()" class="btn btn-danger btn-xs">Reset</button>
+              </td>
+              <td>
+
+                <button
+                  ng-disabled="!findingsColumn.columnType||columnNameLookup.indexOf(findingsColumn.columnName)==-1"
+                  ng-click="saveColumnForm()" class="btn btn-primary btn-xs">
+                  Save
+                </button>
+                &nbsp;
+                <button ng-click="closeColumnForm()" class="btn btn-default btn-xs">
+                  Cancel
+                </button>
+              </td>
+            </tr>
+        </table>
+      </td>
+    </tr>
+
+
+    <tr ng-repeat="row in currentFinding.purityRows   track by $index">
+      <td ng-repeat="cell in row.cells  track by $index">
+        <div class="finding_row">
+          <div class="finding_cell">
+            <select ng-hide="loader" data-ng-model="cell.operand" data-ng-options="option for option in operands"
+              id="operand" aria-label="operand">
+            </select>
+
+          </div>
+          <div class="finding_cell">
+            <input id={{$index}}:{{$parent.$index}}
+              ng-class="{finding_cell_bad: badFindingCell[$index][$parent.$index]}" type="text" name="cellRow"
+              ng-model="cell.value" oninput="angular.element(this).scope().currentFindingCellChanged( this)">
+          </div>
+        </div>
+      </td>
+
+      <td><button ng-click="deleteDataConditionRow(row)" class="btn btn-danger btn-xs">Delete</button></td>
+    </tr>
+
+  </tbody>
+</table>
+</td>
+</tr>
+<tr>
+  <td colspan="{{currentFinding.columnHeaders.length}}">
+    <ng-include src="'/caNanoLab/views/sample/edit/manageFileEdit.html'"></ng-include>
+  </td>
+</tr>
+<tr>
+  <td>
+    <button ng-if="!isNewFinding" ng-click="removeFindingInfo()" class="btn btn-danger btn-xs"
+      ng-disabled="columnForm">Delete</button>
+  </td>
+  <td align="right" style="float:right;">
+    <button ng-click="saveFindingInfo()" ng-disabled="data.type==''||data.name==''||columnForm||columnInvalid()"
+      class="btn btn-primary btn-xs">Save</button>
+    <button ng-disabled="columnForm" ng-click="cancelFindingInfo()" class="btn btn-default btn-xs">Cancel</button>
+  </td>
+</tr>
+</tbody>
+</table>
+</td>
+</tr>
+</tbody>
+</table>
+<br />
     <br>
     <br>
 
