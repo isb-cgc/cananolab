@@ -1206,6 +1206,10 @@ public class SampleBO extends BaseAnnotationBO {
 			throw new Exception("Input sample id is null");
 
 		SampleBean sampleBean = (SampleBean) request.getSession().getAttribute("theSample");
+
+		if(sampleBean==null)
+			sampleBean = sampleService.findSampleById(sampleId, true);
+
 		if (sampleBean == null)
 			throw new Exception("No sample in session matching sample id: "  + sampleId);
 
