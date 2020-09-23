@@ -345,6 +345,75 @@ var app = angular.module('angularApp')
         error(function (data, status, headers, config) {
           console.log('fail')
         });
+    };   
+    
+
+
+// Finding section code //    
+
+    // opens new finding dialog //
+    $scope.addNewFinding = function () {
+      var old = $location.hash();
+      $scope.currentFinding = { 'columnHeaders': [] };
+      $scope.currentFinding.dirty = 1;
+      $scope.updateFinding = 1;
+      $scope.finding = {};
+      $scope.scroll('editFindingInfo');
+      $scope.isNewFinding = 1;
+      $scope.currentFindingCopy = angular.copy($scope.currentFinding);
+
+    };
+
+    /**
+     * Check each cell for valid data for column type and set status in $scope.badFindingCell array.
+     */
+    function checkAllFindingCells() {
+      let rowCount = $scope.currentFinding.rows.length;
+      if (rowCount > 0) {
+        let cellCount = $scope.currentFinding.purityRows[0].cells.length;
+        $scope.badFindingCell = createArray(cellCount, rowCount);
+        for (let y = 0; y < rowCount; y++) {
+          for (let x = 0; x < cellCount; x++) {
+            $scope.badFindingCell[x][y] = validateFindingCellInput($scope.currentFinding.purityRows[y].cells[x].datumOrCondition,
+              $scope.currentFinding.purityRows[y].cells[x].value);
+          }
+        }
+      }
+    }    
+    
+    // sets the column order //
+    $scope.updateColumnOrder = function () {
+      $scope.loader = true;
+
+
+      $http({ method: 'POST', url: '/caNanoLab/rest/characterization/setColumnOrder', data: $scope.currentFinding }).
+        success(function (data, status, headers, config) {
+          $scope.loader = false;
+          $scope.currentFinding = data;
+          $scope.columnOrder = 0;
+
+          initDatumOrCondition();
+          checkAllFindingCells();
+        }).
+        error(function (data, status, headers, config) {
+          $scope.loader = false;
+          $scope.columnOrder = 0;
+        });
     };    
+
+    // open finding dialog with existing finding //
+    $scope.updateExistingFinding = function (finding) {
+      var old = $location.hash();
+      $scope.updateFinding = 1;
+      $scope.currentFinding = finding;
+      checkAllFindingCells();
+      $scope.scroll('editFindingInfo');
+      $scope.isNewFinding = 0;
+      $scope.currentFinding.dirty = 1;
+      $scope.currentFindingCopy = angular.copy(finding);
+    };
+     
+
+// end finding section code //
   });
 
