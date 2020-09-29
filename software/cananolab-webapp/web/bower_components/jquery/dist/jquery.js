@@ -6417,6 +6417,7 @@
 		if ( !view || !view.opener ) {
 			view = window;
 		}
+	} );
 
 		return view.getComputedStyle( elem );
 	};
@@ -6567,9 +6568,6 @@
 		} );
 	} )();
 
-function curCSS( elem, name, computed ) {
-	var width, minWidth, maxWidth, ret,
-		style = elem.style;
 
 	function curCSS( elem, name, computed ) {
 		var width, minWidth, maxWidth, ret,
@@ -7004,6 +7002,7 @@ function curCSS( elem, name, computed ) {
 				num = parseFloat( val );
 				return extra === true || isFinite( num ) ? num || 0 : val;
 			}
+		},
 
 			return val;
 		}
@@ -10840,7 +10839,6 @@ function curCSS( elem, name, computed ) {
 
 
 
-var
 
 	var
 
