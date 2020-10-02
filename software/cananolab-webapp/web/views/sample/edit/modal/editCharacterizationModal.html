@@ -86,8 +86,12 @@
 <td>
                 <div class="input-group" style="width:350px;">
               <input type="text" readonly class="form-control" datepicker-popup="{{format}}" ng-model="data.characterizationDate" is-open="$parent.opened" min-date="minDate" max-date="'2050-06-22'" datepicker-options="dateOptions" date-disabled="disabled(date, mode)" ng-required="true" close-text="Close" />
-              <span class="input-group-btn">
-                <button type="button" class="btn btn-default" ng-click="open($event)"><i class="glyphicon glyphicon-calendar"></i></button>
+              <span class="input-group-btn-canano">
+                <button type="button" class="btn-canano btn-canano-default" ng-click="open($event)">
+
+                    <img height="16" alt="images/calendar_icon_2.png" src="images/calendar_icon_2.png">
+                    MHL
+                </button>
               </span>
             </div>
 
@@ -98,17 +102,17 @@
 <div style="padding-top:20px;margin-left:38px;width:300px" ng-show="deleteBlock" class="message">
     Are you sure you wish to delete this contact?<br /><br />
     <div>
-        <button ng-disabled="loader" style="margin-right:50px !important;" ng-click="delete(1,1)" class="btn btn-danger btn-sm">Yes</button>
-        <button ng-disabled="loader" style="margin-right:50px !important;" ng-click="delete(0,1)" class="btn btn-warning btn-modal">No</button>
+        <button ng-disabled="loader" style="margin-right:50px !important;" ng-click="delete(1,1)" class="btn-canano btn-canano-danger btn-canano-sm">Yes</button>
+        <button ng-disabled="loader" style="margin-right:50px !important;" ng-click="delete(0,1)" class="btn-canano btn-canano-warning btn-canano-modal">No</button>
     </div>
 </div>
 
 </div>
 <div style="clear:both;"></div>
 <div class="modal-footer">
-    <button ng-click="cancel()" class="btn btn-warning btn-modal" ng-disabled="loader">Cancel</button>
-    <button ng-if="!poc.primaryContact&&type!='add'" ng-click="delete()" class="btn btn-warning btn-danger" ng-disabled="loader">Delete</button>    
-    <button ng-click="save()" class='btn btn-primary btn-modal' ng-disabled="loader">Submit</button>
+    <button ng-click="cancel()" class="btn-canano btn-canano-warning btn-canano-modal" ng-disabled="loader">Cancel</button>
+    <button ng-if="!poc.primaryContact&&type!='add'" ng-click="delete()" class="btn-canano btn-canano-warning btn-canano-danger" ng-disabled="loader">Delete</button>    
+    <button ng-click="save()" class='btn-canano btn-canano-primary btn-canano-modal' ng-disabled="loader">Submit</button>
 </div>
 
 

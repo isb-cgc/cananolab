@@ -203,8 +203,8 @@
 	<div style="margin-top:100px;margin-left:38px;width:300px" ng-show="deleteBlock" class="message">
 	    	<br /><br />Are you sure you wish to delete the data availability metric?<br /><br />
 	    	<div>
-	    	<button ng-disabled="loader" style="margin-right:50px !important;" ng-click="delete(1,1)" class="btn btn-danger btn-sm">Yes</button>
-	    	<button ng-disabled="loader" style="margin-right:50px !important;" ng-click="delete(0,1)" class="btn btn-default btn-modal">No</button>
+	    	<button ng-disabled="loader" style="margin-right:50px !important;" ng-click="delete(1,1)" class="btn-canano btn-canano-danger btn-canano-sm">Yes</button>
+	    	<button ng-disabled="loader" style="margin-right:50px !important;" ng-click="delete(0,1)" class="btn-canano btn-canano-default btn-canano-modal">No</button>
 		</div>
 	</div>
 
@@ -212,9 +212,9 @@
 
 <br /><br />
 <div class="modal-footer metrics">
-  <button ng-disabled="loader" ng-if="edit" class="btn btn-default btn-danger" ng-click="delete()">Delete</button>
-  <button ng-disabled="loader" ng-if="edit" class="btn btn-primary btn-modal" ng-click="regenerate()">Regenerate</button>
-  <button ng-disabled="loader" class="btn btn-default btn-modal" ng-click="ok()">Close</button>
+  <button ng-disabled="loader" ng-if="edit" class="btn-canano btn-canano-default btn-canano-danger" ng-click="delete()">Delete</button>
+  <button ng-disabled="loader" ng-if="edit" class="btn-canano btn-canano-primary btn-canano-modal" ng-click="regenerate()">Regenerate</button>
+  <button ng-disabled="loader" class="btn-canano btn-canano-default btn-canano-modal" ng-click="ok()">Close</button>
 </div>
   <div id="loaderPopup" ng-show="loader">
     <div id="loaderText">

@@ -204,6 +204,7 @@ public class SynthesisFunctionalizationElement {
         this.activationMethod = activationMethod;
     }
 
+
     public String getActivationEffect() {
         return activationEffect;
     }

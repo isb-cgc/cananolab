@@ -168,13 +168,13 @@
 <br>
  <div class="form__actions">
         <div class="form__action form__action--left">
-            <button ng-click="doDelete()" type="button" ng-if="(protocolId && protocolId != null)" class="btn btn-danger">Delete</button>                         
+            <button ng-click="doDelete()" type="button" ng-if="(protocolId && protocolId != null)" class="btn-canano btn-canano-danger">Delete</button>                         
         </div>
         <div ng-class="(protocolId && protocolId !== '') ? 'form__action form__action--right' : 'form__action__right'">
-            <button ng-click="resetForm()" type="reset" class="btn btn-danger">Reset</button>
-            <button ng-click="doSubmit()" type="button" ng-if="protocolId == null" class="btn btn-primary">Save</button>
-            <button ng-click="doSubmit()" type="button" ng-if="protocolId != null" class="btn btn-primary">Update</button>
-            <button ng-click="submitForReview()" type="button" ng-if="protocolForm.review" class="btn btn-primary">Submit for Review</button> 
+            <button ng-click="resetForm()" type="reset" class="btn-canano btn-canano-danger">Reset</button>
+            <button ng-click="doSubmit()" type="button" ng-if="protocolId == null" class="btn-canano btn-canano-primary">Save</button>
+            <button ng-click="doSubmit()" type="button" ng-if="protocolId != null" class="btn-canano btn-canano-primary">Update</button>
+            <button ng-click="submitForReview()" type="button" ng-if="protocolForm.review" class="btn-canano btn-canano-primary">Submit for Review</button> 
         </div>
     </div>
 </form>

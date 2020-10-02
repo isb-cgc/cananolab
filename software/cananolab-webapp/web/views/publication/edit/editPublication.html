@@ -213,7 +213,7 @@
         <div id="authorSection" style="position: relative;">
             <!-- <a style="display: block" id="addAuthor"
                ng-href="clearAuthor();openSubmissionForm('Author');">Add</a> -->
-            <button type="button" class="btn btn-primary btn-xs" ng-click="addNewAuthor=true" id="addAuthor">Add</button>
+            <button type="button" class="btn-canano btn-canano-primary btn-canano-xs" ng-click="addNewAuthor=true" id="addAuthor">Add</button>
             <br>
             <table id="authorTable" class="summaryViewNoGrid" width="85%" ng-show="showAuthorTable">
                 <tbody id="authorRows">
@@ -276,7 +276,7 @@
                        <!--  <input class="promptButton"
                                id="deleteAuthor" type="button" value="Delete"
                                ng-click="deleteAuthor()" /> -->
-                        <button class="btn btn-xs btn-danger" type="button" id="deleteAuthor" ng-click="deleteAuthor()" >Delete</button>
+                        <button class="btn-canano btn-canano-xs btn-canano-danger" type="button" id="deleteAuthor" ng-click="deleteAuthor()" >Delete</button>
                     </td>
                     <td align="right" colspan="6">
                         <div align="right">
@@ -284,8 +284,8 @@
                                    ng-click="addAuthor();" />
                             <input class="promptButton" type="button" value="Cancel"
                                    ng-click="addNewAuthor=false" /> -->
-                            <button class="btn btn-xs btn-primary" type="button" ng-click="addAuthor();">Save</button>
-                            <button class="btn btn-xs btn-default" type="button" ng-click="addNewAuthor=false" >Cancel</button>
+                            <button class="btn-canano btn-canano-xs btn-canano-primary" type="button" ng-click="addAuthor();">Save</button>
+                            <button class="btn-canano btn-canano-xs btn-canano-default" type="button" ng-click="addNewAuthor=false" >Cancel</button>
                         </div>
                     </td>
                 </tr>
@@ -400,7 +400,7 @@
                     </tr>
                     <tr>
                         <td valign="top" style="padding-left:15px !important;">
-                            <button class="btn btn-primary" type="button" ng-click="showSearchSampleTable=true;searchMatchedSamples();">Search For Samples</button>
+                            <button class="btn-canano btn-canano-primary" type="button" ng-click="showSearchSampleTable=true;searchMatchedSamples();">Search For Samples</button>
                         </td>
                         <td valign="top">
                             <table class="invisibleTable" style="margin-left:15px;" summary="layout" ng-show="showSearchSampleTable">
@@ -525,14 +525,14 @@
 
     <div class="form__actions form__actions--margin-tboff">
         <div class="form__action form__action--left">
-            <button ng-click="doDelete()" ng-if="publicationId != null && (sampleId == null || sampleId == '')" class='btn btn-danger'>Delete</button>
-            <button class="btn btn-danger" ng-click="removeFromSample()" id="removeFromSampleButton" ng-if="sampleId != null && sampleId != '' && publicationId != null">Delete from Sample</button>
+            <button ng-click="doDelete()" ng-if="publicationId != null && (sampleId == null || sampleId == '')" class='btn-canano btn-canano-danger'>Delete</button>
+            <button class="btn-canano btn-canano-danger" ng-click="removeFromSample()" id="removeFromSampleButton" ng-if="sampleId != null && sampleId != '' && publicationId != null">Delete from Sample</button>
         </div>
         <div class="form__action form__action--right">
-            <button ng-click="resetForm()" type="reset" class="btn btn-danger">Reset</button>&nbsp;
-            <button ng-click="doSubmit()" type="submit" ng-if="publicationId == null" class="btn btn-primary">Save</button>
-            <button ng-click="doSubmit()" type="submit" ng-if="publicationId != null" class="btn btn-primary">Update</button>
-            <button ng-click="submitForReview()" ng-if="publicationForm.review" class="btn btn-primary">Submit for Review</button>
+            <button ng-click="resetForm()" type="reset" class="btn-canano btn-canano-danger">Reset</button>&nbsp;
+            <button ng-click="doSubmit()" type="submit" ng-if="publicationId == null" class="btn-canano btn-canano-primary">Save</button>
+            <button ng-click="doSubmit()" type="submit" ng-if="publicationId != null" class="btn-canano btn-canano-primary">Update</button>
+            <button ng-click="submitForReview()" ng-if="publicationForm.review" class="btn-canano btn-canano-primary">Submit for Review</button>
         </div>
     </div>
 </form>

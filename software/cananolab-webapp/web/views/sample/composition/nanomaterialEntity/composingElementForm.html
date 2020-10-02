@@ -35,9 +35,9 @@
                         <tr>
                             <td style="text-align: right">
 
-                <button type="button" class="btn btn-primary btn-xs" ng-click="composingElementForm.type=localForm.otherCategoryText; composingElementTypes.push(localForm.otherCategoryText);">Add</button>
+                <button type="button" class="btn-canano btn-canano-primary btn-canano-xs" ng-click="composingElementForm.type=localForm.otherCategoryText; composingElementTypes.push(localForm.otherCategoryText);">Add</button>
 
-                <button type="button" class="btn btn-default btn-xs" ng-click="composingElementForm.type='';">Cancel</button>
+                <button type="button" class="btn-canano btn-canano-default btn-canano-xs" ng-click="composingElementForm.type='';">Cancel</button>
 
                             </td>
                         </tr>
@@ -114,9 +114,9 @@
                         </tr>
                         <tr>
                             <td style="text-align: right">
-                <button type="button" class="btn btn-primary btn-xs" ng-click="composingElementForm.valueUnit=localForm.otherCategoryText; composingElementUnits.push(localForm.otherCategoryText);">Add</button>
+                <button type="button" class="btn-canano btn-canano-primary btn-canano-xs" ng-click="composingElementForm.valueUnit=localForm.otherCategoryText; composingElementUnits.push(localForm.otherCategoryText);">Add</button>
 
-                <button type="button" class="btn btn-default btn-xs" ng-click="composingElementForm.valueUnit='';">Cancel</button>
+                <button type="button" class="btn-canano btn-canano-default btn-canano-xs" ng-click="composingElementForm.valueUnit='';">Cancel</button>
                             </td>
                         </tr>
                         </tbody>
@@ -158,9 +158,9 @@
                         <tr>
                             <td style="text-align: right">
 
-                <button type="button" class="btn btn-primary btn-xs" ng-click="composingElementForm.molecularFormulaType=localForm.otherCategoryText; molecularFormulaTypes.push(localForm.otherCategoryText);">Add</button>
+                <button type="button" class="btn-canano btn-canano-primary btn-canano-xs" ng-click="composingElementForm.molecularFormulaType=localForm.otherCategoryText; molecularFormulaTypes.push(localForm.otherCategoryText);">Add</button>
 
-                <button type="button" class="btn btn-default btn-xs" ng-click="composingElementForm.molecularFormulaType='';">Cancel</button>                
+                <button type="button" class="btn-canano btn-canano-default btn-canano-xs" ng-click="composingElementForm.molecularFormulaType='';">Cancel</button>                
                             </td>
                         </tr>
                         </tbody>
@@ -191,7 +191,7 @@
         <td colspan="3">
             <div id="functionSection" style="position: relative;">
                 <!-- <a style="display: block" id="addInherentFunction" href="javascript:confirmAddNew(null, 'InherentFunction', 'Inherent Function', 'clearInherentFunction()');">Add</a> -->
-                <button type="button" class="btn btn-primary btn-xs" ng-click="openAddNewInherentFunction();" id="addInherentFunction">Add</button>
+                <button type="button" class="btn-canano btn-canano-primary btn-canano-xs" ng-click="openAddNewInherentFunction();" id="addInherentFunction">Add</button>
                 <br>
                 <table id="functionTable" class="editTableWithGrid" width="85%" ng-show="showInherentFunctionTable">
                     <tbody id="functionRows">
@@ -222,7 +222,7 @@
                         </td>
                         <td>
 
-                <button type="button" class="btn btn-primary btn-xs" id="editInFunction" ng-click="editInherentFunction('{{inherentFunction.id}}');">Edit</button>
+                <button type="button" class="btn-canano btn-canano-primary btn-canano-xs" id="editInFunction" ng-click="editInherentFunction('{{inherentFunction.id}}');">Edit</button>
                         </td>
 
                     </tr>
@@ -261,9 +261,9 @@
                                         </tr>
                                         <tr>
                                             <td style="text-align: right">
-                <button type="button" class="btn btn-primary btn-xs" ng-click="theInherentFunction.type=localForm.otherCategoryText; functionTypes.push(localForm.otherCategoryText);">Add</button>
+                <button type="button" class="btn-canano btn-canano-primary btn-canano-xs" ng-click="theInherentFunction.type=localForm.otherCategoryText; functionTypes.push(localForm.otherCategoryText);">Add</button>
 
-                <button type="button" class="btn btn-default btn-xs" ng-click="theInherentFunction.type='';">Cancel</button>                                                                
+                <button type="button" class="btn-canano btn-canano-default btn-canano-xs" ng-click="theInherentFunction.type='';">Cancel</button>                                                                
                                             </td>
                                         </tr>
                                         </tbody>
@@ -305,10 +305,10 @@
                                         <tr>
                                             <td style="text-align: right">
 
-                <button type="button" class="btn btn-primary btn-xs" ng-click="theInherentFunction.modality=localForm.otherCategoryText; modalityTypes.push(localForm.otherCategoryText);">Add</button>   
+                <button type="button" class="btn-canano btn-canano-primary btn-canano-xs" ng-click="theInherentFunction.modality=localForm.otherCategoryText; modalityTypes.push(localForm.otherCategoryText);">Add</button>   
 
 
-                <button type="button" class="btn btn-default btn-xs" ng-click="theInherentFunction.modality='';">Cancel</button>
+                <button type="button" class="btn-canano btn-canano-default btn-canano-xs" ng-click="theInherentFunction.modality='';">Cancel</button>
                                             </td>
                                         </tr>
                                         </tbody>
@@ -329,12 +329,12 @@
                     <tr>
                         <td ng-show="theInherentFunction.id != null || theInherentFunction.id != ''">
 
-                <button ng-click="deleteInherentFunction()" class='btn btn-danger btn-xs' id="deleteInherentFunction">Delete</button> 
+                <button ng-click="deleteInherentFunction()" class='btn-canano btn-canano-danger btn-canano-xs' id="deleteInherentFunction">Delete</button> 
                         </td>
                         <td colspan="3">
                             <div align="right">
-                <button ng-click="closeAddNewInherentFunction();addInherentFunction();" class='btn btn-primary btn-xs'>Save</button>
-                <button ng-click="closeAddNewInherentFunction();" class='btn btn-default btn-xs'>Cancel</button>                
+                <button ng-click="closeAddNewInherentFunction();addInherentFunction();" class='btn-canano btn-canano-primary btn-canano-xs'>Save</button>
+                <button ng-click="closeAddNewInherentFunction();" class='btn-canano btn-canano-default btn-canano-xs'>Cancel</button>                
                             </div>
                         </td>
                     </tr>
@@ -345,7 +345,7 @@
     </tr>
     <tr>
         <td>
-                <button ng-click="removeComposingElement('{{composingElementForm.id}}');" class='btn btn-danger btn-xs' ng-show="composingElementForm.id != null" id="deleteComposingElement">Delete</button> 
+                <button ng-click="removeComposingElement('{{composingElementForm.id}}');" class='btn-canano btn-canano-danger btn-canano-xs' ng-show="composingElementForm.id != null" id="deleteComposingElement">Delete</button> 
 
 
         </td>
@@ -353,10 +353,10 @@
             <div align="right">
                 <input type="hidden" ng-model="composingElementForm.createdBy">
                 <input type="hidden" ng-model="composingElementForm.createdDate">
-                <button type="button" class="btn btn-primary btn-xs" ng-click="saveComposingElement();">
+                <button type="button" class="btn-canano btn-canano-primary btn-canano-xs" ng-click="saveComposingElement();">
                     Save
                 </button>
-                <button type="button" class="btn btn-default btn-xs" ng-click="closeAddComposingElement();">
+                <button type="button" class="btn-canano btn-canano-default btn-canano-xs" ng-click="closeAddComposingElement();">
                   Cancel
                 </button>                                
             </div>

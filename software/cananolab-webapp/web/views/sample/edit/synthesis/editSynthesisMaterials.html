@@ -69,8 +69,8 @@
                             Materials
                         </td>
                         <td>
-                            <!-- <a style="display: block;" id="addFile" href="javascript:clearFile('nanomaterialEntity'); openSubmissionForm('File');"><img align="top" src="images/btn_add.gif" border="0" alt="add a nanomaterial entity file"></a> -->
-                            <button type="button" ng-click="openMaterialEditForm({},-1, 0)" class="btn btn-primary btn-xs" id="addFile">Add</button>
+                            <!-- <a style="display: block;" id="addFile" href="javascript:clearFile('nanomaterialEntity'); openSubmissionForm('File');"><img align="top" src="images/btn-canano_add.gif" border="0" alt="add a nanomaterial entity file"></a> -->
+                            <button type="button" ng-click="openMaterialEditForm({},-1, 0)" class="btn-canano btn-canano-primary btn-canano-xs" id="addFile">Add</button>
                         </td>
                     </tr>
                     <tr ng-show="material.materialElements.length">
@@ -81,10 +81,10 @@
                                         <td width="10%"><label>Material Type</label></td>
                                         <td width="70%">{{me.type}}</td>
                                         <td width="10%">
-                                            <button type="button" class="btn btn-primary btn-xs ng-click-active" ng-click="openMaterialEditForm(me, $index, 1)">Edit</button>
+                                            <button type="button" class="btn-canano btn-canano-primary btn-canano-xs ng-click-active" ng-click="openMaterialEditForm(me, $index, 1)">Edit</button>
                                         </td>
                                         <td width="10%">
-                                            <button type="button" class="btn btn-danger btn-xs ng-click-active"
+                                            <button type="button" class="btn-canano btn-canano-danger btn-canano-xs ng-click-active"
                                                 ng-click="deleteMaterialElement(me, $index, 1)">Delete</button>
                                         </td>
                                     </tr>
@@ -170,7 +170,7 @@
 
                                                 <tr>
                                                     <td width="10%"><label>Inherent Functions</label></td>
-                                                    <td width="90%" colspan="3"><button type="button" class="btn btn-primary btn-xs ng-click-active" ng-click="openInherentFunctionForm(-1, $parent.$index)">Add</button></td>
+                                                    <td width="90%" colspan="3"><button type="button" class="btn-canano btn-canano-primary btn-canano-xs ng-click-active" ng-click="openInherentFunctionForm(-1, $parent.$index)">Add</button></td>
                                                 </tr>
                                                 <tr>
                                                     <td width="90%" colspan="4">
@@ -182,10 +182,10 @@
                                                                         {{i.type}}
                                                                     </td>
                                                                     <td width="10%">
-                                                                        <button type="button" class="btn btn-primary btn-xs ng-click-active" ng-click="openInherentFunctionForm($index, $parent.$index, i)">Edit</button>
+                                                                        <button type="button" class="btn-canano btn-canano-primary btn-canano-xs ng-click-active" ng-click="openInherentFunctionForm($index, $parent.$index, i)">Edit</button>
                                                                     </td>
                                                                     <td width="10%">
-                                                                        <button type="button" class="btn btn-danger btn-xs ng-click-active" ng-click="deleteInherentFunction($index, $parent.$index, i)">Delete</button>
+                                                                        <button type="button" class="btn-canano btn-canano-danger btn-canano-xs ng-click-active" ng-click="deleteInherentFunction($index, $parent.$index, i)">Delete</button>
                                                                     </td>
                                                                 </tr>
                                                                 <tr>
@@ -218,9 +218,9 @@
                                                             </tr>
                                                             <tr>
                                                                 <td colspan="2" class="saveSynthesis">
-                                                                    <button class="btn btn-default btn-xs"
+                                                                    <button class="btn-canano btn-canano-default btn-canano-xs"
                                                                         ng-click="cancelInherentFunction($index,inherentFunction)">Cancel</button>
-                                                                    <button ng-disabled="!inherentFunction.type||!material.simpleProtocol.displayName||!materialElement.type||!materialElement.chemicalName" class="btn btn-primary btn-xs" ng-click="saveInherentFunction(inherentFunction)">Save Inherent Function</button>
+                                                                    <button ng-disabled="!inherentFunction.type||!material.simpleProtocol.displayName||!materialElement.type||!materialElement.chemicalName" class="btn-canano btn-canano-primary btn-canano-xs" ng-click="saveInherentFunction(inherentFunction)">Save Inherent Function</button>
                                                                 </td>
                                                             </tr>
                                                         </table>
@@ -228,8 +228,8 @@
                                                 </tr>
                                                 <tr>
                                                     <td colspan="4" class="saveSynthesis">
-                                                        <button class="btn btn-default btn-xs" ng-click="cancelMaterialElement(materialElement)">Cancel</button>
-                                                        <button ng-disabled="!material.simpleProtocol.displayName||!materialElement.type||!materialElement.chemicalName||inherentFunctionFormIndex!=null" class="btn btn-primary btn-xs" ng-click="saveMaterialElement(materialElement)">Save Material Element</button>
+                                                        <button class="btn-canano btn-canano-default btn-canano-xs" ng-click="cancelMaterialElement(materialElement)">Cancel</button>
+                                                        <button ng-disabled="!material.simpleProtocol.displayName||!materialElement.type||!materialElement.chemicalName||inherentFunctionFormIndex!=null" class="btn-canano btn-canano-primary btn-canano-xs" ng-click="saveMaterialElement(materialElement)">Save Material Element</button>
                                                     </td>
                                                 </tr>
                                             </table>
@@ -248,7 +248,7 @@
                 <tr>
                     <td width="10%"><label>Files</label></td>
                     <td width="90%">
-                        <button type="button" class="btn btn-primary btn-xs ng-click-active"
+                        <button type="button" class="btn-canano btn-canano-primary btn-canano-xs ng-click-active"
                             ng-click="openFileForm(-1, $parent.$index)">Add</button>
                     </td>
                 </tr>
@@ -283,7 +283,7 @@
                                     {{file.description}}
                                 </td>
                                 <td width="10%">
-                                    <button type="button" class="btn btn-primary btn-xs ng-click-active"
+                                    <button type="button" class="btn-canano btn-canano-primary btn-canano-xs ng-click-active"
                                         ng-click="openFileForm($index, $parent.$index, file)">Edit</button>
                                 </td>
                             </tr>    
@@ -352,8 +352,8 @@
                                         </tr>
                                         <tr>
                                             <td colspan="2" class="saveSynthesis">
-                                                <button class="btn btn-default btn-xs" ng-click="cancelFile()">Cancel</button>
-                                                <button class="btn btn-primary btn-xs" ng-disabled="getFileConditions()" ng-click="saveFile()">Save File</button>
+                                                <button class="btn-canano btn-canano-default btn-canano-xs" ng-click="cancelFile()">Cancel</button>
+                                                <button class="btn-canano btn-canano-primary btn-canano-xs" ng-disabled="getFileConditions()" ng-click="saveFile()">Save File</button>
 
                                             </td>
                                         </tr>
@@ -393,15 +393,15 @@
         <br>
         <div class="form__actions">
             <div class="form__action form__action--left">
-                <!-- ngIf: nanoEntityId !== null --><button class="btn btn-danger ng-scope" type="button" value="Delete"
+                <!-- ngIf: nanoEntityId !== null --><button class="btn-canano btn-canano-danger ng-scope" type="button" value="Delete"
                     ng-click="deleteMaterial()" ng-if="synMaterialId!=-1">Delete</button>
                 <!-- end ngIf: nanoEntityId !== null -->
             </div>
             <div class="form__action form__action--right">
                 <input type="hidden" ng-model="nanoEntityForm.createdBy" class="ng-pristine ng-valid">
                 <input type="hidden" ng-model="nanoEntityForm.createdDate" class="ng-pristine ng-valid">
-                <button class="btn btn-danger" type="reset" value="Reset" ng-click="resetForm()">Reset</button>
-                <button ng-disabled="!material.simpleProtocol.displayName" class="btn btn-primary ng-binding" type="submit" ng-click="saveMaterial()"
+                <button class="btn-canano btn-canano-danger" type="reset" value="Reset" ng-click="resetForm()">Reset</button>
+                <button ng-disabled="!material.simpleProtocol.displayName" class="btn-canano btn-canano-primary ng-binding" type="submit" ng-click="saveMaterial()"
                     ng-show="!addNewComposingElement">
                     Update
                 </button>

@@ -11,6 +11,7 @@
       <link rel="icon" href="images/favicon.ico" />
       <link rel="shortcut icon" href="images/favicon.ico" />
       <link rel="stylesheet" href="styles/bootstrap.css">
+      <link rel="stylesheet" href="styles/btn-canano.css">
       <link rel="stylesheet" href="styles/nano-angular.css">
       <link rel="stylesheet" href="css/font-awesome.min.css">
       <link rel="stylesheet" href="styles/main.css">
@@ -69,7 +70,7 @@
                               <td id="keywordSearch"> 
                                 
                                  <input type="text" ng-disabled="isSearching" ng-init="keyword_search_text=''" ng-model="keyword_search_text" aria-label="Search" placeholder="Enter keyword" id="keywordsearch" name="keyword_search_text" role="search">&nbsp;
-                                 <button class="btn btn-primary btn-xs keyword_search" ng-click="doKeywordSearch()" ng-disabled="isSearching" >Search</button>
+                                  <button class="btn-canano btn-canano-primary btn-canano-xs keyword_search" ng-click="doKeywordSearch()" ng-disabled="isSearching" >SearchMHL00</button>
                                  <div ng-show="isSearching" id="searching">Searching</div>
                               </td>
                            </tr>
@@ -79,7 +80,7 @@
               </tr>
                <tr>
                   <td class="sideMenu" role="complementary" aria-labelledby="sideMenu">
-                      <div id="skiptomain" class="skiptocontent"><a ng-href="{{createSkipNavUrl()}}" class="skipLink">skip to main content</a>
+                      <div id="skiptomain" class="skiptocontent"><a ng-href="{{createSkipNavUrl()}}" class="skipLink">skip to main contentMHL</a>
                                     </div>
                      <navigation></navigation>
                   </td>

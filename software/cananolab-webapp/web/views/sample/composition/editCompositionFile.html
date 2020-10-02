@@ -116,7 +116,7 @@
             <br />
             <div class="form__actions">
                 <div class="form__action form__action--left">
-                        <button type="button" class="btn btn-danger" ng-click="removeFile('{{fileForm.id}}');" id="deleteFile" ng-show="fileForm.id != null">
+                        <button type="button" class="btn-canano btn-canano-danger" ng-click="removeFile('{{fileForm.id}}');" id="deleteFile" ng-show="fileForm.id != null">
                             Delete
                         </button>                    
                 </div>
@@ -126,15 +126,15 @@
                         <input type="hidden" ng-model="fileForm.createdBy">
                         <input type="hidden" ng-model="fileForm.createdDate">    
 
-                        <button type="button" class="btn btn-danger" ng-click="resetForm()">
+                        <button type="button" class="btn-canano btn-canano-danger" ng-click="resetForm()">
                             Reset
                         </button>
 
-                        <button type="button" class="btn btn-primary" ng-click="saveFile()" ng-if="compositionFileId == null">
+                        <button type="button" class="btn-canano btn-canano-primary" ng-click="saveFile()" ng-if="compositionFileId == null">
                             Submit
                         </button>
 
-                        <button type="button" class="btn btn-primary" ng-click="saveFile()" ng-if="compositionFileId != null">
+                        <button type="button" class="btn-canano btn-canano-primary" ng-click="saveFile()" ng-if="compositionFileId != null">
                             Update
                         </button>
                     

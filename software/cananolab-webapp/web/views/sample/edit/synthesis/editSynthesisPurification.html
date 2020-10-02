@@ -6,8 +6,7 @@
   <B>Technique</B> - {{technique}}<br /><br />
   <B>Instrument</B> - {{instrument}}<br /><br />
   <B>Instrument Types</B> - {{instrumentTypes}}<br /><Br />
-  <B>Abb/Desc</B> - {{techniqueAbbreviationDesc}}<br /><br />
-  <B>Findings</B> - {{purification.purityBeans}}
+  <B>Abb/Desc</B> - {{techniqueAbbreviationDesc}}
 </div>
 
 <div class="spacer">
@@ -104,7 +103,7 @@
                   </td>
                   <td>
                     <!-- <a style="display: block;" id="addFile" href="javascript:clearFile('nanofunctionalizationEntity'); openSubmissionForm('File');"><img align="top" src="images/btn_add.gif" border="0" alt="add a nanofunctionalization entity file"></a> -->
-                    <button type="button" ng-click="openTechniqueInstrumentsForm(-1,0,{})" class="btn btn-primary btn-xs"
+                    <button type="button" ng-click="openTechniqueInstrumentsForm(-1,0,{})" class="btn btn-canano-primary btn-canano-xs"
                       id="addFile">Add</button>
                   </td>
                 </tr>
@@ -116,11 +115,11 @@
                           <td width="10%"><label>Technique Type</label></td>
                           <td width="70%">{{t.techniqueType}}</td>
                           <td width="10%">
-                            <button type="button" class="btn btn-primary btn-xs ng-click-active"
+                            <button type="button" class="btn btn-canano-primary btn-canano-xs ng-click-active"
                               ng-click="openTechniqueInstrumentsForm($index, 0, t)">Edit</button>
                           </td>
                           <td width="10%">
-                            <button type="button" class="btn btn-danger btn-xs ng-click-active"
+                            <button type="button" class="btn btn-canano-danger btn-canano-xs ng-click-active"
                               ng-click="deleteTechnique($index, 0, t)">Delete</button>
                           </td>
                         </tr>
@@ -160,7 +159,7 @@
                       <tr>
                         <td width="30%"><label>Instruments</label></td>
                         <td width="70%">
-                          <button type="button" class="btn btn-primary btn-xs ng-click-active" ng-click="openInstrumentForm(-1, $parent.$index)">Add</button>
+                          <button type="button" class="btn btn-canano-primary btn-canano-xs ng-click-active" ng-click="openInstrumentForm(-1, $parent.$index)">Add</button>
                         </td>
                       </tr>
                       <tr>
@@ -173,11 +172,11 @@
                                   {{i.type}}
                                 </td>
                                 <td width="10%">
-                                  <button type="button" class="btn btn-primary btn-xs ng-click-active"
+                                  <button type="button" class="btn btn-canano-primary btn-canano-xs ng-click-active"
                                     ng-click="openInstrumentForm($index, $parent.$index, i)">Edit</button>
                                 </td>
                                 <td width="10%">
-                                  <button type="button" class="btn btn-danger btn-xs ng-click-active"
+                                  <button type="button" class="btn btn-canano-danger btn-canano-xs ng-click-active"
                                     ng-click="deleteInstrument($index, $parent.$index, i)">Delete</button>
                                 </td>
                               </tr>
@@ -205,8 +204,8 @@
                               </tr>
                               <tr>
                                 <td colspan="2" class="saveSynthesis">
-                                  <button class="btn btn-default btn-xs" ng-click="cancelInstrument(instrument)">Cancel</button>
-                                  <button class="btn btn-primary btn-xs" ng-click="saveInstrument(instrument)">Save Instrument</button>
+                                  <button class="btn btn-canano-default btn-canano-xs" ng-click="cancelInstrument(instrument)">Cancel</button>
+                                  <button class="btn btn-canano-primary btn-canano-xs" ng-click="saveInstrument(instrument)">Save Instrument</button>
                                 </td>
                               </tr>
                             </table>
@@ -216,9 +215,9 @@
 
                       <tr>
                         <td colspan="2" class="saveSynthesis">
-                          <button class="btn btn-default btn-xs" ng-click="cancelTechnique(technique)">Cancel</button>
+                          <button class="btn btn-canano-default btn-canano-xs" ng-click="cancelTechnique(technique)">Cancel</button>
                           <button
-                            class="btn btn-primary btn-xs" ng-click="saveTechnique(technique)">Save Technique</button>
+                            class="btn btn-canano-primary btn-canano-xs" ng-click="saveTechnique(technique)">Save Technique</button>
                         </td>
                       </tr>
                     </table>
@@ -241,7 +240,7 @@
         Finding
       </td>
       <td>
-        <button ng-click="addNewFinding()" ng-disabled="updateFinding" class="btn btn-primary btn-xs">Add</button>
+        <button ng-click="addNewFinding()" ng-disabled="updateFinding" class="btn btn-canano-primary btn-canano-xs">Add</button>
       </td>
     </tr>
     <tr ng-repeat="finding in purification.purityBeans">
@@ -251,7 +250,7 @@
             <tr>
               <th style="text-align: right">
                 <button ng-click="updateExistingFinding(finding)" ng-disabled="updateFinding"
-                  class="btn btn-primary btn-xs"> Edit
+                  class="btn btn-canano-primary btn-canano-xs"> Edit
                 </button>
 
               </th>
@@ -311,13 +310,13 @@
                 <label for="colNum">columns</label>
                 <input type="text" ng-model="currentFinding.numberOfRows" name="numberOfRows" size="4" id="rowNum">
                 <label for="rowNum">rows</label>
-                <button ng-click="updateRowsColsForFinding()" class="btn btn-primary btn-xs">Update</button>
-                <button ng-hide="isNewFinding" ng-click="openColumnOrderForm()" class="btn btn-primary btn-xs">Set
+                <button ng-click="updateRowsColsForFinding()" class="btn btn-canano-primary btn-canano-xs">Update</button>
+                <button ng-hide="isNewFinding" ng-click="openColumnOrderForm()" class="btn btn-canano-primary btn-canano-xs">Set
                   Column Order</button>
 
                 <!-- Import a comma separated list to Characterization -> Finding ->Finding Info -> Data & Conditions  -->
                 <!-- Whe the user selects a file from the local machine, the file name is passed to the function fileNameChanged.  -->
-                <label class="btn btn-primary btn-xs  btn-file readBytesButtons">
+                <label class="btn btn-canano-primary btn-canano-xs  btn-canano-file readBytesButtons">
                   Import csv
                   <input type="file" id="csvFile" style="display: none"
                     onchange="angular.element(this).scope().fileNameChanged(this.files)">
@@ -346,7 +345,7 @@
                           max={{currentFinding.columnHeaders.length}} ng-model="cell.columnOrder"
                           ng-change="columnOrderChanged(cell.columnOrder, $index)"></td>
                       <td><button ng-click="updateColumnOrder()" ng-disabled="disableChangeColumnOrder"
-                          class="btn btn-primary btn-xs">Update Order</button></td>
+                          class="btn btn-canano-primary btn-canano-xs">Update Order</button></td>
                     </tr>
                   </tbody>
                 </table>
@@ -424,11 +423,11 @@
                                     </tr>
                                     <tr>
                                       <td style="text-align: right">
-                                        <button type="button" class="btn btn-primary btn-xs"
+                                        <button type="button" class="btn btn-canano-primary btn-canano-xs"
                                           ng-click="findingsColumn.columnName=localForm.otherCategoryText; columnNameLookup.push(localForm.otherCategoryText);"
                                           ng-disabled='localForm.otherCategoryText.length < 1 || localForm.otherCategoryText === undefined '>Add</button>
 
-                                        <button type="button" class="btn btn-default btn-xs"
+                                        <button type="button" class="btn btn-canano-default btn-canano-xs"
                                           ng-click="findingsColumn.columnName='';">Cancel</button>
 
                                       </td>
@@ -462,10 +461,10 @@
                                     <tr>
                                       <td style="text-align: right">
 
-                                        <button type="button" class="btn btn-primary btn-xs"
+                                        <button type="button" class="btn btn-canano-primary btn-canano-xs"
                                           ng-click="findingsColumn.columnType=localForm.otherCategoryText; conditionTypeLookup.push(localForm.otherCategoryText);">Add</button>
 
-                                        <button type="button" class="btn btn-default btn-xs"
+                                        <button type="button" class="btn btn-canano-default btn-canano-xs"
                                           ng-click="findingsColumn.columnType='';">Cancel</button>
                                       </td>
                                     </tr>
@@ -497,10 +496,10 @@
                                     </tr>
                                     <tr>
                                       <td style="text-align: right">
-                                        <button type="button" class="btn btn-primary btn-xs"
+                                        <button type="button" class="btn btn-canano-primary btn-canano-xs"
                                           ng-click="findingsColumn.valueType=localForm.otherCategoryText; data.datumConditionValueTypeLookup.push(localForm.otherCategoryText);">Add</button>
 
-                                        <button type="button" class="btn btn-default btn-xs"
+                                        <button type="button" class="btn btn-canano-default btn-canano-xs"
                                           ng-click="findingsColumn.valueType='';">Cancel</button>
                                       </td>
                                     </tr>
@@ -538,10 +537,10 @@
                               <tr>
                                 <td style="text-align: right">
 
-                                  <button type="button" class="btn btn-primary btn-xs"
+                                  <button type="button" class="btn btn-canano-primary btn-canano-xs"
                                     ng-click="findingsColumn.valueUnit=localForm.otherCategoryText;valueUnitsLookup.push(localForm.otherCategoryText);">Add</button>
 
-                                  <button type="button" class="btn btn-default btn-xs"
+                                  <button type="button" class="btn btn-canano-default btn-canano-xs"
                                     ng-click="findingsColumn.valueUnit='';">Cancel</button>
                                 </td>
                               </tr>
@@ -561,17 +560,17 @@
             </tr>
             <tr>
               <td>
-                <button ng-click="removeColumnForm()" class="btn btn-danger btn-xs">Reset</button>
+                <button ng-click="removeColumnForm()" class="btn btn-canano-danger btn-canano-xs">Reset</button>
               </td>
               <td>
 
                 <button
                   ng-disabled="!findingsColumn.columnType||columnNameLookup.indexOf(findingsColumn.columnName)==-1"
-                  ng-click="saveColumnForm()" class="btn btn-primary btn-xs">
+                  ng-click="saveColumnForm()" class="btn btn-canano-primary btn-canano-xs">
                   Save
                 </button>
                 &nbsp;
-                <button ng-click="closeColumnForm()" class="btn btn-default btn-xs">
+                <button ng-click="closeColumnForm()" class="btn btn-canano-default btn-canano-xs">
                   Cancel
                 </button>
               </td>
@@ -598,7 +597,7 @@
         </div>
       </td>
 
-      <td><button ng-click="deleteDataConditionRow(row)" class="btn btn-danger btn-xs">Delete</button></td>
+      <td><button ng-click="deleteDataConditionRow(row)" class="btn btn-canano-danger btn-canano-xs">Delete</button></td>
     </tr>
 
   </tbody>
@@ -612,13 +611,13 @@
 </tr>
 <tr>
   <td>
-    <button ng-if="!isNewFinding" ng-click="removeFindingInfo()" class="btn btn-danger btn-xs"
+    <button ng-if="!isNewFinding" ng-click="removeFindingInfo()" class="btn btn-canano-danger btn-canano-xs"
       ng-disabled="columnForm">Delete</button>
   </td>
   <td align="right" style="float:right;">
     <button ng-click="saveFindingInfo()" ng-disabled="data.type==''||data.name==''||columnForm||columnInvalid()"
-      class="btn btn-primary btn-xs">Save</button>
-    <button ng-disabled="columnForm" ng-click="cancelFindingInfo()" class="btn btn-default btn-xs">Cancel</button>
+      class="btn btn-canano-primary btn-canano-xs">Save</button>
+    <button ng-disabled="columnForm" ng-click="cancelFindingInfo()" class="btn btn-canano-default btn-canano-xs">Cancel</button>
   </td>
 </tr>
 </tbody>
@@ -654,7 +653,7 @@
         <tr>
           <td width="10%"><label>Files</label></td>
           <td width="90%">
-            <button type="button" class="btn btn-primary btn-xs ng-click-active"
+            <button type="button" class="btn-canano btn-canano-primary btn-canano-xs ng-click-active"
               ng-click="openFileForm(-1, $parent.$index)">Add</button>
           </td>
         </tr>
@@ -690,7 +689,7 @@
                   {{file.description}}
                 </td>
                 <td width="10%">
-                  <button type="button" class="btn btn-primary btn-xs ng-click-active"
+                  <button type="button" class="btn-canano btn-canano-primary btn-canano-xs ng-click-active"
                     ng-click="openFileForm($index, $parent.$index, file)">Edit</button>
                 </td>
               </tr>
@@ -762,8 +761,8 @@
                     </tr>
                     <tr>
                       <td colspan="2" class="saveSynthesis">
-                        <button class="btn btn-default btn-xs" ng-click="cancelFile()">Cancel</button>
-                        <button class="btn btn-primary btn-xs" ng-disabled="getFileConditions()"
+                        <button class="btn-canano btn-canano-default btn-canano-xs" ng-click="cancelFile()">Cancel</button>
+                        <button class="btn-canano btn-canano-primary btn-canano-xs" ng-disabled="getFileConditions()"
                           ng-click="saveFile()">Save File</button>
 
                       </td>
@@ -804,15 +803,15 @@
     <br>
     <div class="form__actions">
       <div class="form__action form__action--left">
-        <!-- ngIf: nanoEntityId !== null --><button class="btn btn-danger ng-scope" type="button" value="Delete"
+        <!-- ngIf: nanoEntityId !== null --><button class="btn-canano btn-canano-danger ng-scope" type="button" value="Delete"
           ng-click="deleteMaterial()" ng-if="synMaterialId!=-1">Delete</button>
         <!-- end ngIf: nanoEntityId !== null -->
       </div>
       <div class="form__action form__action--right">
         <input type="hidden" ng-model="nanoEntityForm.createdBy" class="ng-pristine ng-valid">
         <input type="hidden" ng-model="nanoEntityForm.createdDate" class="ng-pristine ng-valid">
-        <button class="btn btn-danger" type="reset" value="Reset" ng-click="resetForm()">Reset</button>
-        <button ng-disabled="!purification.simpleProtocol.displayName || !purification.type" class="btn btn-primary ng-binding" type="submit"
+        <button class="btn-canano btn-canano-danger" type="reset" value="Reset" ng-click="resetForm()">Reset</button>
+        <button ng-disabled="!purification.simpleProtocol.displayName || !purification.type" class="btn-canano btn-canano-primary ng-binding" type="submit"
           ng-click="savePurification()" ng-show="!addNewComposingElement">
           Update
         </button>

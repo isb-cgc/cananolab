@@ -56,7 +56,7 @@
 								<span id="nameValue">{{sample.name}}</span>
 							</td>
 							<td>
-								<button class="btn btn-primary btn-xs" type="button" id="sampleEdit" ng-click="editSampleCriteria(sample)">Edit</button>
+								<button class="btn-canano btn-canano-primary btn-canano-xs" type="button" id="sampleEdit" ng-click="editSampleCriteria(sample)">Edit</button>
 							</td>
 						</tr>
 					</tbody>
@@ -99,13 +99,13 @@
 								<tbody><tr>
 									
 									<td>
-										<button class="btn btn-primary btn-xs" id="sampleAdd" ng-click="updateSampleCriteria()" ng-disabled="!theSampleQuery.nameType||!theSampleQuery.operand||!theSampleQuery.name">Add</button>	
+										<button class="btn-canano btn-canano-primary btn-canano-xs" id="sampleAdd" ng-click="updateSampleCriteria()" ng-disabled="!theSampleQuery.nameType||!theSampleQuery.operand||!theSampleQuery.name">Add</button>	
 									</td>
 									<td>
-										<button class="btn btn-danger btn-xs" id="sampleReset" ng-click="clearSampleQuery();">Reset</button>
+										<button class="btn-canano btn-canano-danger btn-canano-xs" id="sampleReset" ng-click="clearSampleQuery();">Reset</button>
 									</td>
 									<td>
-										<button class="btn btn-danger btn-xs" id="sampleRemove" ng-show="!isNewSample"  ng-click="removeSample();">Delete</button>
+										<button class="btn-canano btn-canano-danger btn-canano-xs" id="sampleRemove" ng-show="!isNewSample"  ng-click="removeSample();">Delete</button>
 									</td>
 								</tr>
 							</tbody></table>
@@ -150,7 +150,7 @@
 								<span id="chemicalNameValue">{{composition.chemicalName}}</span>
 							</td>
 							<td>
-								<button class="btn btn-primary btn-xs" typ="button" id="compositionEdit" ng-click="editCompositionCriteria(composition)">Edit</button>
+								<button class="btn-canano btn-canano-primary btn-canano-xs" typ="button" id="compositionEdit" ng-click="editCompositionCriteria(composition)">Edit</button>
 							</td>
 						</tr></tbody>
 				</table>
@@ -206,7 +206,7 @@
 									<td>
 										<button 
 											id="compositionAdd" 
-											class="btn btn-primary btn-xs"
+											class="btn-canano btn-canano-primary btn-canano-xs"
 											ng-click="updateCompositionCriteria()" 
 											ng-disabled="!theCompositionQuery.compositionType||!theCompositionQuery.entityType"
 											>
@@ -216,7 +216,7 @@
 									<td>
 										<button 
 											id="compositionReset" 
-											class="btn btn-danger btn-xs promptButton" 
+											class="btn-canano btn-canano-danger btn-canano-xs promptButton" 
 											ng-click="clearCompositionQuery();"
 											>Reset
 										</button>
@@ -225,7 +225,7 @@
 										<button 
 											id="compositionRemove" 
 											ng-show="!isNewComposition" 
-											class="btn btn-danger btn-xs promptButton" 
+											class="btn-canano btn-canano-danger btn-canano-xs promptButton" 
 											ng-click="removeComposition();"
 											>
 											Delete
@@ -348,13 +348,13 @@
 								<tbody>
 								<tr>
 									<td>
-										<button type="button" class="btn btn-primary btn-xs" id="characterizationAdd" ng-click="updateCharacterizationCriteria()" ng-disabled="!theCharacterizationQuery.characterizationType||!theCharacterizationQuery.characterizationName">Add</button>	
+										<button type="button" class="btn-canano btn-canano-primary btn-canano-xs" id="characterizationAdd" ng-click="updateCharacterizationCriteria()" ng-disabled="!theCharacterizationQuery.characterizationType||!theCharacterizationQuery.characterizationName">Add</button>	
 									</td>
 									<td>
-										<button type="button" id="characterizationReset" class="btn btn-danger btn-xs promptButton" ng-click="clearCharacterizationQuery();">Reset</button>
+										<button type="button" id="characterizationReset" class="btn-canano btn-canano-danger btn-canano-xs promptButton" ng-click="clearCharacterizationQuery();">Reset</button>
 									</td>
 									<td>
-										<button type="button" id="characterizationRemove" ng-show="!isNewCharacterization" class="btn btn-danger btn-xs promptButton" ng-click="removeCharacterization();">Delete</button>
+										<button type="button" id="characterizationRemove" ng-show="!isNewCharacterization" class="btn-canano btn-canano-danger btn-canano-xs promptButton" ng-click="removeCharacterization();">Delete</button>
 									</td>
 								</tr>
 							</tbody></table>
@@ -395,8 +395,8 @@
 					parameters returns all samples.</em> </span>
 		</div>
 		<div class="form__action__right">
-			<button class="btn btn-danger" type="button" id="reset" ng-click="resetForm()">Reset</button>
-			<button class="btn btn-primary" type="button" id="search" ng-disabled="" ng-click="search()">Search</button>	
+			<button class="btn-canano btn-canano-danger" type="button" id="reset" ng-click="resetForm()">Reset</button>
+			<button class="btn-canano btn-canano-primary" type="button" id="search" ng-disabled="" ng-click="search()">Search</button>	
 		</div>
 	</div>
 </div>
