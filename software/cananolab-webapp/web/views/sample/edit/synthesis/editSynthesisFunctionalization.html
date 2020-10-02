@@ -72,8 +72,8 @@
                         Functionalization Materials
                     </td>
                     <td>
-                        <!-- <a style="display: block;" id="addFile" href="javascript:clearFile('nanofunctionalizationEntity'); openSubmissionForm('File');"><img align="top" src="images/btn_add.gif" border="0" alt="add a nanofunctionalization entity file"></a> -->
-                        <button type="button" ng-click="openFunctionalizationEditForm({},-1, 0)" class="btn btn-primary btn-xs"
+                        <!-- <a style="display: block;" id="addFile" href="javascript:clearFile('nanofunctionalizationEntity'); openSubmissionForm('File');"><img align="top" src="images/btn-canano_add.gif" border="0" alt="add a nanofunctionalization entity file"></a> -->
+                        <button type="button" ng-click="openFunctionalizationEditForm({},-1, 0)" class="btn-canano btn-canano-primary btn-canano-xs"
                             id="addFile">Add</button>
                     </td>
                 </tr>
@@ -85,11 +85,11 @@
                                     <td width="10%"><label>Functionalization Type</label></td>
                                     <td width="70%">{{fe.type}}</td>
                                     <td width="10%">
-                                        <button type="button" class="btn btn-primary btn-xs ng-click-active"
+                                        <button type="button" class="btn-canano btn-canano-primary btn-canano-xs ng-click-active"
                                             ng-click="openFunctionalizationEditForm(fe, $index, 1)">Edit</button>
                                     </td>
                                     <td width="10%">
-                                        <button type="button" class="btn btn-danger btn-xs ng-click-active"
+                                        <button type="button" class="btn-canano btn-canano-danger btn-canano-xs ng-click-active"
                                             ng-click="deleteFunctionalizationElement(fe, $index, 1)">Delete</button>
                                     </td>
                                 </tr>
@@ -173,7 +173,7 @@
                                             <tr>
                                                 <td width="10%"><label>Inherent Functions</label></td>
                                                 <td width="90%" colspan="3"><button type="button"
-                                                        class="btn btn-primary btn-xs ng-click-active"
+                                                        class="btn-canano btn-canano-primary btn-canano-xs ng-click-active"
                                                         ng-click="openInherentFunctionForm(-1, $parent.$index)">Add</button>
                                                 </td>
                                             </tr>
@@ -189,12 +189,12 @@
                                                                 </td>
                                                                 <td width="10%">
                                                                     <button type="button"
-                                                                        class="btn btn-primary btn-xs ng-click-active"
+                                                                        class="btn-canano btn-canano-primary btn-canano-xs ng-click-active"
                                                                         ng-click="openInherentFunctionForm($index, $parent.$index, i)">Edit</button>
                                                                 </td>
                                                                 <td width="10%">
                                                                     <button type="button"
-                                                                        class="btn btn-danger btn-xs ng-click-active"
+                                                                        class="btn-canano btn-canano-danger btn-canano-xs ng-click-active"
                                                                         ng-click="deleteInherentFunction($index, $parent.$index, i)">Delete</button>
                                                                 </td>
                                                             </tr>
@@ -229,11 +229,11 @@
                                                         </tr>
                                                         <tr>
                                                             <td colspan="2" class="saveSynthesis">
-                                                                <button class="btn btn-default btn-xs"
+                                                                <button class="btn-canano btn-canano-default btn-canano-xs"
                                                                     ng-click="cancelInherentFunction($index,inherentFunction)">Cancel</button>
                                                                 <button
                                                                     ng-disabled="!inherentFunction.type||!functionalization.simpleProtocol.displayName||!functionalizationElement.type||!functionalizationElement.chemicalName"
-                                                                    class="btn btn-primary btn-xs"
+                                                                    class="btn-canano btn-canano-primary btn-canano-xs"
                                                                     ng-click="saveInherentFunction(inherentFunction)">Save
                                                                     Inherent Function</button>
                                                             </td>
@@ -243,11 +243,11 @@
                                             </tr>
                                             <tr>
                                                 <td colspan="4" class="saveSynthesis">
-                                                    <button class="btn btn-default btn-xs"
+                                                    <button class="btn-canano btn-canano-default btn-canano-xs"
                                                         ng-click="cancelFunctionalizationElement(functionalizationElement)">Cancel</button>
                                                     <button
                                                         ng-disabled="!functionalization.simpleProtocol.displayName||!functionalizationElement.type||!functionalizationElement.chemicalName||inherentFunctionFormIndex!=null"
-                                                        class="btn btn-primary btn-xs"
+                                                        class="btn-canano btn-canano-primary btn-canano-xs"
                                                         ng-click="saveFunctionalizationElement(functionalizationElement)">Save Functionalization
                                                         Element</button>
                                                 </td>
@@ -268,7 +268,7 @@
                 <tr>
                     <td width="10%"><label>Files</label></td>
                     <td width="90%">
-                        <button type="button" class="btn btn-primary btn-xs ng-click-active"
+                        <button type="button" class="btn-canano btn-canano-primary btn-canano-xs ng-click-active"
                             ng-click="openFileForm(-1, $parent.$index)">Add</button>
                     </td>
                 </tr>
@@ -304,7 +304,7 @@
                                     {{file.description}}
                                 </td>
                                 <td width="10%">
-                                    <button type="button" class="btn btn-primary btn-xs ng-click-active"
+                                    <button type="button" class="btn-canano btn-canano-primary btn-canano-xs ng-click-active"
                                         ng-click="openFileForm($index, $parent.$index, file)">Edit</button>
                                 </td>
                             </tr>
@@ -382,9 +382,9 @@
                                         </tr>
                                         <tr>
                                             <td colspan="2" class="saveSynthesis">
-                                                <button class="btn btn-default btn-xs"
+                                                <button class="btn-canano btn-canano-default btn-canano-xs"
                                                     ng-click="cancelFile()">Cancel</button>
-                                                <button class="btn btn-primary btn-xs" ng-disabled="getFileConditions()"
+                                                <button class="btn-canano btn-canano-primary btn-canano-xs" ng-disabled="getFileConditions()"
                                                     ng-click="saveFile()">Save File</button>
 
                                             </td>
@@ -425,15 +425,15 @@
         <br>
         <div class="form__actions">
             <div class="form__action form__action--left">
-                <!-- ngIf: nanoEntityId !== null --><button class="btn btn-danger ng-scope" type="button" value="Delete"
+                <!-- ngIf: nanoEntityId !== null --><button class="btn-canano btn-canano-danger ng-scope" type="button" value="Delete"
                     ng-click="deleteFunctionalization()" ng-if="synFunctionalizationId!=-1">Delete</button>
                 <!-- end ngIf: nanoEntityId !== null -->
             </div>
             <div class="form__action form__action--right">
                 <input type="hidden" ng-model="nanoEntityForm.createdBy" class="ng-pristine ng-valid">
                 <input type="hidden" ng-model="nanoEntityForm.createdDate" class="ng-pristine ng-valid">
-                <button class="btn btn-danger" type="reset" value="Reset" ng-click="resetForm()">Reset</button>
-                <button ng-disabled="!functionalization.simpleProtocol.displayName" class="btn btn-primary ng-binding"
+                <button class="btn-canano btn-canano-danger" type="reset" value="Reset" ng-click="resetForm()">Reset</button>
+                <button ng-disabled="!functionalization.simpleProtocol.displayName" class="btn-canano btn-canano-primary ng-binding"
                     type="submit" ng-click="saveFunctionalization()" ng-show="!addNewComposingElement">
                     Update
                 </button>
