@@ -42,7 +42,12 @@ var app = angular.module('angularApp')
       success(function(data, status, headers, config) {
         // $rootScope.sampleData = data;
         $scope.sampleData.data = data;
-        $location.path("/sampleResults").replace();
+        if (data.length) {
+          $location.path("/sampleResults").replace();
+        }
+        else {
+          $scope.message = 'No samples were found for the given parameters.';
+        }
 
       }).
       error(function(data, status, headers, config) {
@@ -50,7 +55,7 @@ var app = angular.module('angularApp')
         // or server returns response with an error status.
         // $rootScope.sampleData = data;
         $scope.loader = false;
-        $scope.message = data;
+        $scope.message = 'No samples were found for the given parameters.';
       }); 
     };
 
