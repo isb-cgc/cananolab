@@ -6354,7 +6354,7 @@ LOCK TABLES `purity_datum` WRITE;
 INSERT IGNORE INTO `purity_datum` (`purity_datum_pk_id`, `name`, `value`, `value_type`, `value_unit`, `created_by`,
                                    `created_date`, `numberMod`, `purity_pk_id`, `column_pk_id`)
 VALUES (1000, 'Purity datum 1', 55.00, 'purity', '%', 'canano_curator', '2019-12-06 12:15:00', '=', 1000, 1010),
-       (1010, 'Purity datum 2', 57.10, 'purity', '%', 'canano_curator', '2019-12-06 12:15:00', '=', 1000, 1010),
+       (1010, 'Purity datum 2', 57.10, 'purity', '%', 'canano_curator', '2019-12-06 12:15:00', '=', 1010, 1010),
        (1111, 'Purity datum 2', 123.00, 'purity', '%', 'canano_curator', '2019-12-06 12:15:00', '=', 1111,1010);
 /*!40000 ALTER TABLE `purity_datum`
     ENABLE KEYS */;
@@ -7195,6 +7195,7 @@ LOCK TABLES `synthesis_purity` WRITE;
     DISABLE KEYS */;
 INSERT IGNORE INTO `synthesis_purity` (`purity_pk_id`, `synthesis_purification_pk_id`, `created_by`, `created_date`)
 VALUES (1000, 1000, 'canano_curator', '2019-12-06 12:15:00'),
+       (1010, 1000, 'canano_curator', '2020-10-06 12:15:00'),
        (1005, 1005, 'canano_curator', '2019-08-28 00:00:00'),
        (1111, 1111, 'canano_curator', '2019-12-06 12:15:00'),
        (1222, 1222, 'canano_curator', '2019-08-28 00:00:00');
