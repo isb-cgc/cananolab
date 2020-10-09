@@ -21,7 +21,7 @@ app.factory("sampleService", function($http){
 			that.name = "";
 			$http({method: 'GET', url: '/caNanoLab/rest/sample/getCurrentSampleName?sampleId='+sampleId}).
 			success(function(data, status, headers, config) {
-				that.name = data;
+				that.name = data.sampleName;
 			}).
 			error(function(data, status, headers, config) {
 			});	

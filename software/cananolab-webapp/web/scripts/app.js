@@ -180,7 +180,27 @@ app.config(function ($routeProvider, $httpProvider) {
       .when('/setupCharacterization', {
        templateUrl: 'views/sample/edit/setupCharacterization.html',
        controller: 'SetupCharacterizationCtrl'
-      })             
+      })    
+      .when('/synthesis', {
+        templateUrl: 'views/sample/view/synthesis.html',
+        controller: 'SynthesisCtrl'
+       }) 
+       .when('/editSynthesis', {
+        templateUrl: 'views/sample/edit/synthesis/editSynthesis.html',
+        controller: 'EditSynthesisCtrl'
+       })   
+       .when('/editSynthesisMaterials', {
+        templateUrl: 'views/sample/edit/synthesis/editSynthesisMaterials.html',
+         controller: 'EditSynthesisMaterialsCtrl'
+       })   
+       .when('/editSynthesisFunctionalization', {
+        templateUrl: 'views/sample/edit/synthesis/editSynthesisFunctionalization.html',
+        controller: 'EditSynthesisFunctionalizationCtrl'
+       })   
+       .when('/editSynthesisPurification', {
+        templateUrl: 'views/sample/edit/synthesis/editSynthesisPurification.html',
+        controller: 'EditSynthesisPurificationCtrl'
+       })                                      
       .when('/publication', {
        templateUrl: 'views/sample/view/publication.html',
        controller: 'PublicationCtrl'
@@ -324,9 +344,10 @@ app.config(function ($routeProvider, $httpProvider) {
 
 app.filter('newlines', function () {
     return function(text) {
-      if(text)
+      if(text && typeof(text)=='string') {
           return text.replace(/\n/g, '<br/>').replace(/&amp;apos;/g, "'").replace(/&gt;/g, ">").replace(/&lt;/g, "<").replace(/&quot;/g,'"')
-        return '';
+      }
+       return '';
     }
 });
 
