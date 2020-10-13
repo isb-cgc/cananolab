@@ -5,7 +5,7 @@
         </td>
         <td>
             <!-- <a style="display: block;" id="addFile" href="javascript:clearFile('nanomaterialEntity'); openSubmissionForm('File');"><img align="top" src="images/btn_add.gif" border="0" alt="add a nanomaterial entity file"></a> -->
-            <button type="button" class="btn btn-primary btn-xs" ng-click="openAddNewFile()" id="addFile" ng-show="updateFinding">Add</button>
+            <button type="button" class="btn-canano btn-canano-primary btn-canano-xs" ng-click="openAddNewFile()" id="addFile" ng-show="updateFinding">Add</button>
         </td>
     </tr>
     <tr>
@@ -44,7 +44,7 @@
                         {{file.description}}
                     </td>
                     <td align="right">
-                        <button ng-click="editFile('{{file.id}}');" class="btn btn-primary btn-xs" ng-show="updateFinding">Edit</button>&nbsp;
+                        <button ng-click="editFile('{{file.id}}');" class="btn-canano btn-canano-primary btn-canano-xs" ng-show="updateFinding">Edit</button>&nbsp;
                     </td>
                 </tr>
                 </tbody>
@@ -116,8 +116,8 @@
                                             <td style="text-align: right">
                                                 <!-- <input type="button" class="promptButton" value="Add" ng-click="fileForm.type=localForm.otherCategoryText; fileTypes.push(localForm.otherCategoryText);">
                                                 <input type="button" class="promptButton" value="Cancel" ng-click="fileForm.type='';"> -->
-                                                <button type="button" class="btn btn-primary promptButton" ng-click="fileForm.type=localForm.otherCategoryText; fileTypes.push(localForm.otherCategoryText);">Add</button>
-                                                <button type="button" class="btn btn-default promptButton" ng-click="fileForm.type='';">Cancel</button>
+                                                <button type="button" class="btn-canano btn-canano-primary promptButton" ng-click="fileForm.type=localForm.otherCategoryText; fileTypes.push(localForm.otherCategoryText);">Add</button>
+                                                <button type="button" class="btn-canano btn-canano-default promptButton" ng-click="fileForm.type='';">Cancel</button>
                                             </td>
                                         </tr>
                                         </tbody>
@@ -156,7 +156,7 @@
 
                     <tr>
                         <td>
-                            <button type="button" class="btn btn-danger btn-xs" ng-click="removeFile('{{fileForm.id}}');" id="deleteFile" ng-show="fileForm.id != null">
+                            <button type="button" class="btn-canano btn-canano-danger btn-canano-xs" ng-click="removeFile('{{fileForm.id}}');" id="deleteFile" ng-show="fileForm.id != null">
                                 Delete
                             </button>
                         </td>
@@ -168,14 +168,14 @@
             					 <input type="hidden" ng-model="fileForm.createdDate">            					
 
                                 <button 
-                                    class="btn btn-primary btn-xs promptButton" 
+                                    class="btn-canano btn-canano-primary btn-canano-xs promptButton"
                                     type="button" 
                                     ng-click="closeAddNewFile();saveFile();" 
                                     >
                                     Save
                                 </button>
                                 <button 
-                                    class="btn btn-default btn-xs promptButton" 
+                                    class="btn-canano btn-canano-default btn-canano-xs promptButton"
                                     type="button" 
                                     ng-click="closeAddNewFile();"
                                     >

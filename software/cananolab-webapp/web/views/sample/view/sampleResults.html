@@ -5,7 +5,7 @@
          <h1>Sample Search Results</h1>
        </td>
         <td align="right" width="30%">
-        <button class="btn back btn-xs" ng-click="goBack()">Back</button>
+		<button class="btn-canano back btn-canano-xs" ng-click="goBack()">Back</button>
 		<a class="helpText" ng-click="exportJsonAll()" href="">Export<span class="small-link-text"> (JSON)</span></a>&nbsp;
 		<a class="helpText" ng-click="exportXmlAll()" href="">Export<span class="small-link-text"> (XML)</span></a>&nbsp;
         <a class="helpText" href= "javascript:openHelpWindow('https://wiki.nci.nih.gov/display/caNanoLab/Managing+Samples+in+caNanoLab#ManagingSamplesincaNanoLab-SearchSample')">Help</a>
@@ -16,7 +16,8 @@
 <br /><div ng-init="p=tableParams.$params;
 				length=sampleData.data.length;
 				">{{utilsService.resultCount(tableParams.$params,length,tableParams.data.length)}}
-	</div><br />
+	</div>
+	<br />
 
 <table ng-table="tableParams" class="table sample" cellspacing="0" cellpadding="0">
 	<tr ng-repeat="row in $data track by $index" ng-class="{ 'emphasis': $index%2==0}">

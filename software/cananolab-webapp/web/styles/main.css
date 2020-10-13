@@ -68,6 +68,13 @@ Main Buttons
     border-color: #357ebd;
 }
 
+/* Added 15 SEP 2020, part of eliminating bootstrap 2 */
+.btn-canano-primary {
+    color: #ffffff;
+    background-color: #0073b9;
+    border-color: #357ebd;
+}
+
 /*###############
 HDR AND FTR BEGINS
 ###############*/
@@ -1476,6 +1483,15 @@ table.summaryViewNoGrid {
     background-color:#005518 !important;
     color:#fff;
     box-shadow: 0px 0px 0px 1px #fff;    
+}
+
+/* Added 17 SEP 2020, part of eliminating bootstrap 2 */
+.btn-canano.back  {
+    margin-right:15px;
+    font-weight:700;
+    background-color:#005518 !important;
+    color:#fff;
+    box-shadow: 0px 0px 0px 1px #fff;
 }
 
 .backButtonNote {

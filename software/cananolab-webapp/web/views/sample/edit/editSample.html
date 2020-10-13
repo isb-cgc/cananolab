@@ -12,7 +12,7 @@
 	            <h1>Update Sample</h1>
 	        </th>
             <td align="right" width="30%">
-                <button class="btn back btn-xs" ng-click="goBack()">Back</button>
+                <button class="btn-canano back btn-canano-xs" ng-click="goBack()">Back</button>
 
                 <a class="helpText" ng-click="exportJson()" href="">Export<span class="small-link-text"> (JSON)</span></a>&nbsp;
                 <a class="helpText" ng-click="exportXml()" href="">Export<span class="small-link-text"> (XML)</span></a>&nbsp;
@@ -71,7 +71,7 @@
                         Point of Contact *
                     </td>
                     <td>
-                            <button ng-disabled="!sampleData.sampleName" ng-click="openPointOfContactModal(sampleId.data, {},'add')" class="btn btn-primary btn-xs">Add</button>
+                            <button ng-disabled="!sampleData.sampleName" ng-click="openPointOfContactModal(sampleId.data, {},'add')" class="btn-canano btn-canano-primary btn-canano-xs">Add</button>
                     </td>
                 </tr>
                 <!-- Point of Contact Data -->
@@ -117,7 +117,7 @@
                                             <button 
                                                 type="button" 
                                                 ng-click="openPointOfContactModal(sampleId.data, poc)" 
-                                                class="btn btn-primary btn-xs"
+                                                class="btn-canano btn-canano-primary btn-canano-xs"
                                                 >Edit
                                             </button>
                                             
@@ -146,7 +146,7 @@
                         </div>
 
                         <label for="newKeyword" aria-label="New Keyword"><input id="newKeyword" type="text" ng-model="newKeyword"></label>
-                        <button type="button" class="btn btn-primary btn-xs" ng-click="addKeyword()">Add</button>
+                        <button type="button" class="btn-canano btn-canano-primary btn-canano-xs" ng-click="addKeyword()">Add</button>
                    </td>
                 </tr>
 
@@ -166,7 +166,7 @@
                             </td>
 
                         <td>
-                            <button ng-if="!sampleData.dataAvailability" ng-click="generateDataAvailability(sampleId.data)" class="btn btn-primary btn-xs">Generate</button>
+                            <button ng-if="!sampleData.dataAvailability" ng-click="generateDataAvailability(sampleId.data)" class="btn-canano btn-canano-primary btn-canano-xs">Generate</button>
                             <div id="loader" class="sample offset" ng-show="generateLoader">
                                 <div id="loaderText">
                                     Generating Data Availability Metrics
@@ -192,7 +192,7 @@
                                 <tr><td>{{sampleData.dataAvailability.caNanoLabScore}}</td>
                                     <td>{{sampleData.dataAvailability.mincharScore}}</td>
                                     <td>
-                                            <button ng-click="openDataAvailability(sampleId.data)" class="btn btn-primary btn-xs">Edit</button>
+                                            <button ng-click="openDataAvailability(sampleId.data)" class="btn-canano btn-canano-primary btn-canano-xs">Edit</button>
                                     </td>
                                 </tr>
                             </tbody></table>
@@ -204,14 +204,14 @@
 
        <div class="form__actions editSampleButtonBar">
             <div class="form__action form__action--left" ng-if="sampleId.data">
-                <button ng-click="delete()" type="button" class='btn btn-danger'>Delete</button>
-                <button ng-click="copy()" type="button" class='btn btn-primary'>Copy</button>                                    
+                <button ng-click="delete()" type="button" class='btn-canano btn-canano-danger'>Delete</button>
+                <button ng-click="copy()" type="button" class='btn-canano btn-canano-primary'>Copy</button>
             </div>
             <div class="form__action form__action--right">
-                <button ng-click="reset()" class='btn btn-danger' ng-disabled="!scratchPad.editSampleData.dirty">Reset</button> 
-                <button ng-click="update()" ng-if="updateButton=='Update'" class='btn btn-primary' ng-disabled="!scratchPad.editSampleData.dirty || !sampleData.pointOfContacts.length">{{updateButton}}</button>
-                <button ng-click="submitSample()" ng-if="updateButton=='Save'" class='btn btn-primary' ng-disabled="!scratchPad.editSampleData.dirty || !sampleData.pointOfContacts.length">{{updateButton}}</button>
-                <button ng-click="submitForReview()" ng-if="updateButton=='Update' && sampleData.showReviewButton && submitForReviewButton" class='btn btn-primary'>Submit for Review</button>                
+                <button ng-click="reset()" class='btn-canano btn-canano-danger' ng-disabled="!scratchPad.editSampleData.dirty">Reset</button>
+                <button ng-click="update()" ng-if="updateButton=='Update'" class='btn-canano btn-canano-primary' ng-disabled="!scratchPad.editSampleData.dirty || !sampleData.pointOfContacts.length">{{updateButton}}</button>
+                <button ng-click="submitSample()" ng-if="updateButton=='Save'" class='btn-canano btn-canano-primary' ng-disabled="!scratchPad.editSampleData.dirty || !sampleData.pointOfContacts.length">{{updateButton}}</button>
+                <button ng-click="submitForReview()" ng-if="updateButton=='Update' && sampleData.showReviewButton && submitForReviewButton" class='btn-canano btn-canano-primary'>Submit for Review</button>
             </div>
         </div>
     </form>

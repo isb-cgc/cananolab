@@ -58,10 +58,10 @@
                         </tr>
                         <tr>
                             <td style="text-align: right">
-                            <button type="button" class="btn btn-primary btn-xs" ng-click="chemAssociationForm.type=localForm.otherCategoryText; associationTypes.push(localForm.otherCategoryText);">
+                            <button type="button" class="btn-canano btn-canano-primary btn-canano-xs" ng-click="chemAssociationForm.type=localForm.otherCategoryText; associationTypes.push(localForm.otherCategoryText);">
                                 Add
                             </button> 
-                            <button type="button" class="btn btn-default btn-xs" ng-click="chemAssociationForm.type='';">
+                            <button type="button" class="btn-canano btn-canano-default btn-canano-xs" ng-click="chemAssociationForm.type='';">
                                 Cancel
                             </button>                              
                             </td>
@@ -101,11 +101,11 @@
                         </tr>
                         <tr>
                             <td style="text-align: right">
-                            <button type="button" class="btn btn-default btn-xs" ng-click="chemAssociationForm.bondType=localForm.otherCategoryText1; bondTypes.push(localForm.otherCategoryText1);">
+                            <button type="button" class="btn-canano btn-canano-default btn-canano-xs" ng-click="chemAssociationForm.bondType=localForm.otherCategoryText1; bondTypes.push(localForm.otherCategoryText1);">
                                 Add
                             </button> 
 
-                            <button type="button" class="btn btn-default btn-xs" ng-click="chemAssociationForm.bondType='';">
+                            <button type="button" class="btn-canano btn-canano-default btn-canano-xs" ng-click="chemAssociationForm.bondType='';">
                                 Cancel
                             </button>                             
                             </td>
@@ -211,7 +211,7 @@
 
             <div class="form__actions">
                 <div class="form__action form__action--left">
-                    <button type="button" class="btn btn-danger" ng-click="doDelete()" ng-if="chemAssociationId != null">
+                    <button type="button" class="btn-canano btn-canano-danger" ng-click="doDelete()" ng-if="chemAssociationId != null">
                         Delete
                     </button>                       
                 </div>
@@ -220,15 +220,15 @@
                     <input type="hidden" ng-model="chemAssociationForm.createdBy">
                     <input type="hidden" ng-model="chemAssociationForm.createdDate">
 
-                    <button type="button" class="btn btn-danger" ng-click="resetForm()">
+                    <button type="button" class="btn-canano btn-canano-danger" ng-click="resetForm()">
                         Reset
                     </button>
 
-                    <button type="button" class="btn btn-primary" ng-click="doSubmit()" ng-if="chemAssociationId == null">
+                    <button type="button" class="btn-canano btn-canano-primary" ng-click="doSubmit()" ng-if="chemAssociationId == null">
                         Submit
                     </button>
 
-                    <button type="button" class="btn btn-primary" ng-click="doSubmit()" ng-if="chemAssociationId != null">
+                    <button type="button" class="btn-canano btn-canano-primary" ng-click="doSubmit()" ng-if="chemAssociationId != null">
                         Update
                     </button>                     
                 </div>                
