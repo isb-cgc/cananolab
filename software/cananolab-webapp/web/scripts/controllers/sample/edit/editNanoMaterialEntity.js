@@ -647,7 +647,7 @@ var app = angular.module('angularApp')
                 $scope.upload[index] = $upload.upload({
                     url: uploadUrl,
                     method: 'POST',
-                    headers: { 'my-header': 'my-header-value', 'Accept': 'application/json, text/plain' },
+                    headers: { 'my-header': 'my-header-value', 'Accept':'application/json, text/plain'},
                     data : $scope.fileForm,
                     file: $scope.selectedFiles[index],
                     transformResponse: angular.identity,
@@ -655,6 +655,7 @@ var app = angular.module('angularApp')
                 });
                 $scope.upload[index].then(function(response) {
                     $timeout(function() {
+                        console.log('am i here?')
                         //$scope.uploadResult.push(response.data);
                         //alert(response.data);
                         //$scope.nanoEntityForm = response.data;
