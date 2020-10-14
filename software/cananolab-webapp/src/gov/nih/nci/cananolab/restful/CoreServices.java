@@ -189,7 +189,7 @@ public class CoreServices
 	@POST
 	@Path("/uploadFile")
 	@Consumes("multipart/form-data")
-	@Produces ("application/json")
+	@Produces ({"application/json", "text/plain"})
 	public Response uploadFile(@Context HttpServletRequest httpRequest, MultipartInput input)
 	{
 		try {
