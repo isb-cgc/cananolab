@@ -280,9 +280,10 @@ var app = angular.module('angularApp')
                 $scope.upload[index] = $upload.upload({
                     url: uploadUrl,
                     method: 'POST',
-                    headers: {'my-header': 'my-header-value'},
+                    headers: { 'my-header': 'my-header-value', 'Accept': 'application/json, text/plain' },
                     data : $scope.protocolForm,
                     file: $scope.selectedFiles[index],
+                    transformResponse: angular.identity,
                     fileFormDataName: 'myFile'
                 });
                 $scope.upload[index].then(function(response) {
