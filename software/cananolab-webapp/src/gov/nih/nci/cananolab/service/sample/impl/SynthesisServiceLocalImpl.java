@@ -84,7 +84,7 @@ public class SynthesisServiceLocalImpl extends BaseServiceLocalImpl implements S
                     }
                 }
                 catch (Exception e) {
-                    String err = "Problem saving Synthesis Functionalization";
+                    String err = "Problem saving Synthesis Functionalization MHL010";
                     logger.error(err, e);
                     throw new SynthesisException(err, e);
                 }
@@ -98,7 +98,7 @@ public class SynthesisServiceLocalImpl extends BaseServiceLocalImpl implements S
             throw e;
         }
         catch (Exception e) {
-            String err = "Problem saving Synthesis Functionalization";
+            String err = "Problem saving Synthesis Functionalization MHL011";
             logger.error(err, e);
             throw new SynthesisException(err, e);
         }
@@ -452,16 +452,18 @@ public class SynthesisServiceLocalImpl extends BaseServiceLocalImpl implements S
             if (synthesisFunctionalization.getId() != null) {
                 newEntity = false;
             }
-            //Make doubly sure that the entity hasn't been left cached in memory but already removed from database
-            try {
-                appService
-                        .load(SynthesisFunctionalization.class,
-                                synthesisFunctionalizationBean.getDomainEntity().getId());
-            }
-            catch (Exception e) {
-                String err = "Object doesn't exist in the database anymore.  Please log in again.";
-                logger.error(err);
-                throw new SynthesisException(err, e);
+
+            if( ! newEntity ) {
+                //Make doubly sure that the entity hasn't been left cached in memory but already removed from database
+                try {
+                    appService
+                            .load( SynthesisFunctionalization.class,
+                                    synthesisFunctionalizationBean.getDomainEntity().getId() );
+                } catch( Exception e ) {
+                    String err = "Object doesn't exist in the database anymore.  Please log in again.";
+                    logger.error( err );
+                    throw new SynthesisException( err, e );
+                }
             }
 
             Synthesis synthesis;
@@ -508,7 +510,7 @@ public class SynthesisServiceLocalImpl extends BaseServiceLocalImpl implements S
             throw e;
         }
         catch (Exception e) {
-            String err = "Problem saving Synthesis Functionalization ";
+            String err = "Problem saving Synthesis Functionalization MHL012";
             logger.error(err, e);
             throw new SynthesisException(err, e);
         }
