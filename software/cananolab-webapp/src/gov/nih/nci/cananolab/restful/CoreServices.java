@@ -4,6 +4,9 @@ import java.io.InputStream;
 import java.util.List;
 import java.util.Map;
 
+import javax.json.Json;
+import javax.json.JsonBuilderFactory;
+import javax.json.JsonObject;
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.Consumes;
@@ -208,7 +211,25 @@ public class CoreServices
 			}
 
 			protocolBO.saveFile(fileInputStream,fileName,httpRequest);
-			return Response.ok(fileName).header("Access-Control-Allow-Credentials", "true").header("Access-Control-Allow-Origin", "*").header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS").header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization").build();
+//			return Response.ok(fileName).header("Access-Control-Allow-Credentials", "true")
+//					.header("Access-Control-Allow-Origin", "*")
+//					.header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS")
+//					.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization").build();
+
+
+
+
+			JsonBuilderFactory factory = Json.createBuilderFactory(null);
+			JsonObject value = factory.createObjectBuilder()
+					.add("fileName", fileName).build();
+			return
+//					Response.ok(fileName)
+					Response.ok(value)
+/*					.header("Access-Control-Allow-Credentials", "true")
+					.header("Access-Control-Allow-Origin", "*")
+					.header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS")
+					.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization")
+*/					.build();
 		} catch (Exception e) {
 			logger.error(e.getMessage());
 			e.printStackTrace();
