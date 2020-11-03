@@ -12,10 +12,14 @@ import gov.nih.nci.cananolab.dto.particle.synthesis.SynthesisPurificationBean;
 import gov.nih.nci.cananolab.exception.BaseException;
 import gov.nih.nci.cananolab.restful.core.InitSetup;
 import gov.nih.nci.cananolab.restful.protocol.InitProtocolSetup;
+import gov.nih.nci.cananolab.restful.sample.ExperimentConfigManager;
 import gov.nih.nci.cananolab.restful.sample.InitSampleSetup;
 import gov.nih.nci.cananolab.service.common.LookupService;
 import gov.nih.nci.cananolab.service.sample.SampleService;
 import gov.nih.nci.cananolab.service.sample.SynthesisService;
+import gov.nih.nci.cananolab.system.applicationservice.CaNanoLabApplicationService;
+import gov.nih.nci.cananolab.system.applicationservice.client.ApplicationServiceProvider;
+import gov.nih.nci.cananolab.system.query.hibernate.HQLCriteria;
 import gov.nih.nci.cananolab.util.ClassUtils;
 import gov.nih.nci.cananolab.util.StringUtils;
 import java.util.ArrayList;
@@ -187,6 +191,22 @@ public class InitSynthesisSetup {
 
         InitSetup.getInstance().getDefaultAndOtherTypesByLookup(request,
                 "techniqueTypes", "technique", "type", "otherType", true);
+
+//        InitSetup.getInstance().getDefaultAndOtherTypesByLookup(request, "instrumentTypes", "instrument", "type", "otherType", true);
+
+        List<String> instruments = getAllInstrumentTypes();
+
+        InitSetup.getInstance().assignTypesToSession(request.getServletContext(), "instrumentTypes", instruments);
+        ServletContext appContext = request.getSession().getServletContext();
+        //        appContext.setAttribute("instrumentTypes", instruments);
+//        request.getSession().setAttribute("instruments", instruments);
+
+//        if (ClassUtils.getFullClass("Instrument") != null){
+//            ServletContext appContext = request.getSession().getServletContext();
+//            String fullClassName = ClassUtils.getFullClass("Instrument").getName();
+//            InitSetup.getInstance().getDefaultTypesByReflection(appContext, "instrumentTypes", fullClassName);
+//        }
+
     }
 
     public void persistExperimentConfigDropdowns(HttpServletRequest request,
@@ -203,6 +223,8 @@ public class InitSynthesisSetup {
         }
         setExperimentConfigDropDowns(request);
     }
+
+
 
     public void getInstrumentsForTechnique(HttpServletRequest request,
                                            String technique) throws Exception {
@@ -240,6 +262,47 @@ public class InitSynthesisSetup {
         request.getSession().setAttribute("charDatumNames", allDatumNames);
         return allDatumNames;
     }
+    public List<String> getAllInstrumentTypes() throws Exception{
+        List<String> instruments = new ArrayList<String>();
+        String fullClassName = null;
+        if (ClassUtils.getFullClass("Instrument") != null){
+            fullClassName = ClassUtils.getFullClass("Instrument").getName();
+        } else {
+            return null;
+        }
+        CaNanoLabApplicationService appService = (CaNanoLabApplicationService) ApplicationServiceProvider.getApplicationService();
+        String hql = "select distinct type from " + fullClassName + " anEntity";
+        HQLCriteria crit = new HQLCriteria(hql);
+        List results = appService.query(crit);
+        for (int i = 0; i < results.size(); i++) {
+            String instrument = results.get(i).toString();
+            instruments.add(instrument);
 
+        }
+        return instruments;
+    }
+
+
+
+    public List<Instrument> getInstrumentByType(HttpServletRequest httpRequest,String type) throws Exception {
+        List<Instrument> instruments = new ArrayList<Instrument>();
+        String fullClassName = null;
+        if (ClassUtils.getFullClass("Instrument") != null){
+            fullClassName = ClassUtils.getFullClass("Instrument").getName();
+        } else {
+            return null;
+        }
+        CaNanoLabApplicationService appService = (CaNanoLabApplicationService) ApplicationServiceProvider.getApplicationService();
+        String hql = "select distinct manufacturer, model_name from " + fullClassName + " anEntity where anEntity.type = " + type;
+
+        HQLCriteria crit = new HQLCriteria(hql);
+        List results = appService.query(crit);
+        for (int i = 0; i < results.size(); i++) {
+            Instrument instrument = (Instrument) results.get(i);
+            instruments.add(instrument);
+
+        }
+        return instruments;
+    }
 
 }

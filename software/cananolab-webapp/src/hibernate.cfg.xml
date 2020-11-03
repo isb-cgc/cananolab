@@ -64,7 +64,6 @@ L-->
         <mapping resource="gov/nih/nci/cananolab/domain/particle/SynthesisMaterialElement.hbm.xml"/>
         <mapping resource="gov/nih/nci/cananolab/domain/particle/SynthesisPurification.hbm.xml"/>
         <mapping resource="gov/nih/nci/cananolab/domain/common/Supplier.hbm.xml"/>
-		<mapping resource="gov/nih/nci/cananolab/domain/common/PurityDatum.hbm.xml"/>
 		<mapping resource="gov/nih/nci/cananolab/domain/particle/SynthesisPurity.hbm.xml"/>
 		<mapping resource="gov/nih/nci/cananolab/domain/common/PurityDatumCondition.hbm.xml"/>
 		<mapping resource="gov/nih/nci/cananolab/domain/common/PurityColumnHeader.hbm.xml"/>

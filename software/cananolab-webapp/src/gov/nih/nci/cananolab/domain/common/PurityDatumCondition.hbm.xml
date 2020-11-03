@@ -23,12 +23,13 @@
 		<property name="createdBy" type="string" column="created_by" />
 		<property name="createdDate" type="java.util.Date" column="created_date" />
 		<property name="operand" type="java.lang.String" column="numberMod"/>
+		<property name="type" type="java.lang.String" column="type"/>
 
 
 		<many-to-one
-				class="PurityDatum"
-				name="purityDatum" update="false">
-			<column name="purity_datum_pk_id" not-null="true">
+				class="gov.nih.nci.cananolab.domain.particle.SynthesisPurity"
+				name="purity" update="false">
+			<column name="purity_pk_id" not-null="true">
 			</column>
 		</many-to-one>
 

@@ -1,5 +1,111 @@
 package gov.nih.nci.cananolab.restful.view.edit;
 
+import gov.nih.nci.cananolab.dto.common.ColumnHeader;
+import gov.nih.nci.cananolab.dto.common.PurityRow;
+import java.security.PrivateKey;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+import javax.enterprise.inject.New;
+import net.sf.ehcache.search.parser.MValue;
+
 public class SimplePurificationEditBean {
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public Set<DataAndConditions> getDataAndConditions() {
+        return dataAndConditions;
+    }
+
+    public void setDataAndConditions(Set<DataAndConditions> dataAndConditions) {
+        this.dataAndConditions = dataAndConditions;
+    }
+
     //TODO write
+    private String name = "Purification Results";
+    private Set<DataAndConditions> dataAndConditions = new HashSet<DataAndConditions>();
+    public void transferPurificationToPurificationEdit(SimpleSynthesisPurificationBean purificationBean){
+        List<ColumnHeader> columnHeaders = purificationBean.getColumnHeaders();
+        DataAndConditions colHeaders = new DataAndConditions();
+        colHeaders.setName("colTitles");
+        HashSet<String> colTitles = new HashSet<String>();
+        HashMap<Integer, String> columnMap = new HashMap<Integer,String>();
+        int columnCount;
+        //Need to build a data object called colTitles with all the columns in order
+        int i = 1;
+        for(ColumnHeader header: columnHeaders){
+            colTitles.add(header.getColumnName());
+            columnMap.put(i,header.getColumnName());
+            i++;
+        }
+        colHeaders.setValues(colTitles);
+        dataAndConditions.add(colHeaders);
+        columnCount = columnHeaders.size();
+
+        HashSet<HashMap<Integer, String>> rowSet = new HashSet<HashMap<Integer, String>>();
+        for(SimplePurityBean purityBean: purificationBean.getPurityBeans()){
+
+            HashMap<String, Set<DataAndConditions>> rowSets = new HashMap<String, Set<DataAndConditions>>();
+            int rowCount = purityBean.getPurityRows().size();
+
+
+            for(SimplePurityRowBean rowBean: purityBean.getPurityRows()){
+                HashMap<Integer, String> rowMap = new HashMap<Integer, String>();
+                int j=1;
+                for(SimplePurityCell cell: rowBean.getCells()){
+                    rowMap.put(cell.columnOrder, cell.value);
+                    j++;
+                }
+                rowSet.add(rowMap);
+            }
+
+
+        }
+        //Need to build a data object with all of the values for each column -
+        //  - so need to have a hash of values attached to that column by Name?
+        for (int k=0; k<columnCount;k++){
+            DataAndConditions datumRow = new DataAndConditions();
+            datumRow.setName(columnMap.get(k+1));
+            HashSet<String> values = new HashSet<String>();
+            for(HashMap<Integer,String> row : rowSet){
+                values.add(row.get(k+1));
+            }
+            datumRow.setValues(values);
+            dataAndConditions.add(datumRow);
+        }
+
+
+    }
+
+    private class DataAndConditions {
+        String name = new String();
+        HashSet<String> values = new HashSet<String>();
+
+        public String getName(){
+            return name;
+        }
+
+        public void setName(String newName){
+            this.name = newName;
+        }
+
+        public Set<String> getValues() {
+            return values;
+        }
+
+        public void setValues(HashSet<String> newValues){
+            this.values = newValues;
+        }
+
+        public HashSet<String>  addValue(String value){
+            values.add(value);
+            return this.values;
+        }
+    }
 }

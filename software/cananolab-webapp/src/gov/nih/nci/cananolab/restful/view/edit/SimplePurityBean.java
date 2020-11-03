@@ -13,7 +13,7 @@ import java.util.Date;
 import java.util.List;
 
 public class SimplePurityBean {
-    List<ColumnHeader> columnHeaders = new ArrayList<ColumnHeader>();
+//    List<ColumnHeader> columnHeaders = new ArrayList<ColumnHeader>();
     List<SimplePurityRowBean> purityRows = new ArrayList<SimplePurityRowBean>();
     List<SimpleFileBean> files = new ArrayList<SimpleFileBean>();
     File fileBeingEdited;
@@ -54,13 +54,13 @@ public class SimplePurityBean {
     }
 
 
-    public void setColumnHeaders(List<ColumnHeader> columnHeaders) {
-        this.columnHeaders = columnHeaders;
-    }
-
-    public List<ColumnHeader> getColumnHeaders() {
-        return this.columnHeaders;
-    }
+//    public void setColumnHeaders(List<ColumnHeader> columnHeaders) {
+//        this.columnHeaders = columnHeaders;
+//    }
+//
+//    public List<ColumnHeader> getColumnHeaders() {
+//        return this.columnHeaders;
+//    }
 
     public void setFiles(List<SimpleFileBean> files) {
         this.files = files;
@@ -111,7 +111,7 @@ public class SimplePurityBean {
     public void transferRowsFromPurityBean(SynthesisPurityBean purityBean) {
         if (purityBean == null) return;
 
-        this.columnHeaders= purityBean.getColumnHeaders();
+//        this.columnHeaders= purityBean.getColumnHeaders();
 
         List<PurityRow> beanRows = purityBean.getRows();
         this.purityRows.clear();

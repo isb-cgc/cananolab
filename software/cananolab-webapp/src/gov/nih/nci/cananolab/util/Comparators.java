@@ -14,7 +14,7 @@ import gov.nih.nci.cananolab.domain.common.File;
 import gov.nih.nci.cananolab.domain.common.Instrument;
 import gov.nih.nci.cananolab.domain.common.Protocol;
 import gov.nih.nci.cananolab.domain.common.Publication;
-import gov.nih.nci.cananolab.domain.common.PurityDatum;
+
 import gov.nih.nci.cananolab.domain.common.PurityDatumCondition;
 import gov.nih.nci.cananolab.domain.particle.Characterization;
 import gov.nih.nci.cananolab.domain.particle.Sample;
@@ -459,8 +459,8 @@ public class Comparators {
 		}
 	}
 
-	public static class PurityDatumDateComparator implements Comparator<PurityDatum>{
-		public int compare(PurityDatum datum1, PurityDatum datum2) { return datum1.getCreatedDate().compareTo(datum2.getCreatedDate());}
+	public static class PurityDatumDateComparator implements Comparator<PurityDatumCondition>{
+		public int compare(PurityDatumCondition datum1, PurityDatumCondition datum2) { return datum1.getCreatedDate().compareTo(datum2.getCreatedDate());}
 	}
 
 	public static class ConditionDateComparator implements

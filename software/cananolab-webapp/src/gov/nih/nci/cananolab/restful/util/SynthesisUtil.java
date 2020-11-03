@@ -121,7 +121,7 @@ public class SynthesisUtil {
 //        if(types!=null)
 //            typeMap.put("supplierNames", types);
 
-        //TODO technique
+
         types = (SortedSet<String>) session.getAttribute("techniqueTypes");
         if (types != null)
             typeMap.put("techniques", new ArrayList<String>(types));
@@ -131,11 +131,11 @@ public class SynthesisUtil {
 //        if (types != null)
 //            typeMap.put("manufacturers", new ArrayList<String>(types));
 
-        types = (SortedSet<String>) session.getAttribute("instrumentType");
+        types = (SortedSet<String>) session.getServletContext().getAttribute("instrumentTypes");
         if (types!=null)
             typeMap.put("instruments", new ArrayList<String>(types));
 
-        //TODO instrument type is dependent on technique
+
 
         //TODO column type - datum or condition
         types = (SortedSet<String>) session.getAttribute("datumConditionValueTypes");

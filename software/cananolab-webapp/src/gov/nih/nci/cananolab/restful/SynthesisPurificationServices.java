@@ -1,23 +1,17 @@
 package gov.nih.nci.cananolab.restful;
 
+import gov.nih.nci.cananolab.domain.common.Instrument;
 import gov.nih.nci.cananolab.domain.common.Technique;
 import gov.nih.nci.cananolab.exception.ExperimentConfigException;
-import gov.nih.nci.cananolab.restful.sample.CharacterizationManager;
 import gov.nih.nci.cananolab.restful.sample.ExperimentConfigManager;
 import gov.nih.nci.cananolab.restful.synthesis.SynthesisManager;
-import gov.nih.nci.cananolab.restful.synthesis.SynthesisMaterialBO;
 import gov.nih.nci.cananolab.restful.synthesis.SynthesisPurificationBO;
 import gov.nih.nci.cananolab.restful.util.CommonUtil;
-import gov.nih.nci.cananolab.restful.view.edit.SimpleCharacterizationEditBean;
-import gov.nih.nci.cananolab.restful.view.edit.SimpleFileBean;
-import gov.nih.nci.cananolab.restful.view.edit.SimplePurificationEditBean;
-import gov.nih.nci.cananolab.restful.view.edit.SimpleSynthesisFunctionalizationBean;
 import gov.nih.nci.cananolab.restful.view.edit.SimpleSynthesisPurificationBean;
 import gov.nih.nci.cananolab.security.utils.SpringSecurityUtil;
 import gov.nih.nci.cananolab.system.applicationservice.CaNanoLabApplicationService;
 import gov.nih.nci.cananolab.system.applicationservice.client.ApplicationServiceProvider;
 import gov.nih.nci.cananolab.util.Constants;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
@@ -325,9 +319,9 @@ public class SynthesisPurificationServices {
 
 
     @GET
-    @Path("/getInstrumentTypesByTechniqueType")
+    @Path("/getInstrumentsByType")
     @Produces ("application/json")
-    public Response getInstrumentTypesByTechniqueType(@Context HttpServletRequest httpRequest,
+    public Response getInstrumentsByType(@Context HttpServletRequest httpRequest,
                                                       @DefaultValue("") @QueryParam("techniqueType") String techniqueType)
     {
         try
@@ -335,7 +329,7 @@ public class SynthesisPurificationServices {
             ExperimentConfigManager experimentMgr =
                     (ExperimentConfigManager) SpringApplicationContext.getBean(httpRequest, "experimentConfigManager");
 
-            List<String> types = experimentMgr.getInstrumentTypesByTechniqueType(httpRequest, techniqueType);
+            List<Instrument> types = experimentMgr.getInstrumentsByType(httpRequest, techniqueType);
 
             return Response.ok(types).header("Access-Control-Allow-Credentials", "true")
                     .header("Access-Control-Allow-Origin", "*").header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS")
@@ -467,6 +461,8 @@ public class SynthesisPurificationServices {
         }
 
     }
+
+
 
 
 }
