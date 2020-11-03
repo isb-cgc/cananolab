@@ -4,6 +4,8 @@ import gov.nih.nci.cananolab.domain.particle.SynthesisPurity;
 import java.io.Serializable;
 import java.util.Collection;
 import java.util.Date;
+import org.apache.poi.hssf.record.formula.functions.If;
+
 
 /**
  *
@@ -34,17 +36,18 @@ public class PurityDatumCondition implements Serializable {
 
     private String operand;
 
-    private PurityDatum purityDatum;
+    private String type;
 
-    private Long purityDatumPkId;
+    private Long purityPkId;
+    private SynthesisPurity purity;
 
-    public PurityDatum getPurityDatum() {
-        return purityDatum;
+    public SynthesisPurity getPurity() {
+        return purity;
     }
 
-    public void setPurityDatum(PurityDatum purityDatum) {
-        this.purityDatum = purityDatum;
-        this.purityDatumPkId = purityDatum.getId();
+    public void setPurity(SynthesisPurity purity) {
+        this.purity = purity;
+        this.purityPkId = purity.getId();
     }
 
     /**
@@ -199,12 +202,12 @@ public class PurityDatumCondition implements Serializable {
         this.operand = operand;
     }
 
-    public Long getPurityDatumPkId() {
-        return purityDatumPkId;
+    public Long getPurityPkId() {
+        return purityPkId;
     }
 
-    private void setPurityDatumPkId(Long purityDatumPkId) {
-        this.purityDatumPkId = purityDatumPkId;
+    private void setPurityPkId(Long purityPkId) {
+        this.purityPkId = purityPkId;
     }
 
     public Long getColumnId() {
@@ -213,6 +216,16 @@ public class PurityDatumCondition implements Serializable {
 
     public void setColumnId(Long columnId) {
         this.columnId = columnId;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) throws Exception {
+        if(type.equals("datum")||type.equals("condition")){
+        this.type = type;}
+        else throw new Exception("Column type must be either datum or condition");
     }
 
     /**

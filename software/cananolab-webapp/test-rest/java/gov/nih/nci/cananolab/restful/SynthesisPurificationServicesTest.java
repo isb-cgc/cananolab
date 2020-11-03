@@ -1,7 +1,5 @@
 package gov.nih.nci.cananolab.restful;
 
-import gov.nih.nci.cananolab.dto.common.ColumnHeader;
-import gov.nih.nci.cananolab.restful.protocol.ProtocolBO;
 import gov.nih.nci.cananolab.restful.util.RestTestLoginUtil;
 import gov.nih.nci.cananolab.restful.view.SimpleSynthesisBean;
 import gov.nih.nci.cananolab.restful.view.edit.SimpleInstrumentBean;
@@ -11,7 +9,6 @@ import gov.nih.nci.cananolab.restful.view.edit.SimplePurityBean;
 import gov.nih.nci.cananolab.restful.view.edit.SimplePurityCell;
 import gov.nih.nci.cananolab.restful.view.edit.SimplePurityRowBean;
 import gov.nih.nci.cananolab.restful.view.edit.SimpleSubmitProtocolBean;
-import gov.nih.nci.cananolab.restful.view.edit.SimpleSynthesisMaterialBean;
 import gov.nih.nci.cananolab.restful.view.edit.SimpleSynthesisPurificationBean;
 import gov.nih.nci.cananolab.util.Constants;
 import io.restassured.builder.RequestSpecBuilder;
@@ -22,19 +19,20 @@ import io.restassured.response.Response;
 import io.restassured.response.ResponseBody;
 import io.restassured.specification.RequestSpecification;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.json.JSONObject;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-import org.springframework.security.access.method.P;
 
 import static io.restassured.RestAssured.given;
-import static org.hamcrest.Matchers.hasItems;
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 public class SynthesisPurificationServicesTest {
     private static RequestSpecification specification;
@@ -66,17 +64,22 @@ public class SynthesisPurificationServicesTest {
         try {
             String debug="pause";
             Response response = given().spec(specification).queryParam("sampleId", "1000")
-                    .when().get("synthesisPurification/setup")
+                    .when().get("synthesisPurification/setupNew")
                     .then().statusCode(200).extract().response();
 
             assertNotNull(response);
 
-            List<String> manufacturers = response.path("manufacturers" );
-            assertTrue(manufacturers.size()>100);
+//            List<String> manufacturers = response.path("manufacturers" );
+//            assertTrue(manufacturers.size()>100);
             List<String> purificationTypes = response.path("purificationTypes" );
             assertTrue(purificationTypes.contains("Final Purification"));
+            List<String> techniqueTypes = response.path("techniques");
+            assertTrue(techniqueTypes.size()>20);
+            List<String> instrumentTypes = response.path("instruments");
+            assertTrue(instrumentTypes.size()>20);
         } catch (Exception e){
-            e.printStackTrace();
+           e.printStackTrace();
+            fail();
         }
     }
 
@@ -94,10 +97,10 @@ public class SynthesisPurificationServicesTest {
 //            assertTrue(materialTypes.contains("coat"));
 //            ArrayList<String> pubChemTypes = response.path("pubChemDataSources");
 //            assertTrue(pubChemTypes.contains("Substance"));
-            String design = response.path("designMethodDescription");
-            assertTrue(design.equals("I am a description of a method design"));
+//            String design = response.path("designMethodDescription");
+//            assertTrue(design.equals("I am a description of a method design"));
             String type = response.path("type");
-            assertTrue(type.equals("Interim Purification"));
+            assertEquals(type,"Interim Purification");
             ArrayList<String> purityBeans = response.path("purityBeans");
             assertTrue(purityBeans.size() == 1);
 
@@ -170,7 +173,7 @@ public class SynthesisPurificationServicesTest {
                     .then().statusCode(200).extract().response();
 
             assertNotNull(response);
-            //TODO check response
+
             ResponseBody body = response.body();
             String result = body.prettyPrint();
             assertTrue(result.length()>0);
@@ -260,10 +263,11 @@ public class SynthesisPurificationServicesTest {
             //verify change was saved to database
             newBean = getSimpleSynthesisPurificationBean("1000", "1000");
             assertNotNull(newBean.getId());
-            assertTrue(newBean.getMethodName().equals("I am a method name"));
+            assertEquals(newBean.getMethodName(),"I am a method name");
 
         }catch (Exception e){
             e.printStackTrace();
+            fail();
         }
     }
 
@@ -286,7 +290,7 @@ public class SynthesisPurificationServicesTest {
             //verify change was saved to database
             editBean = getSimpleSynthesisPurificationBean("1000", "1000");
             assertNotNull(editBean.getId());
-            assertTrue(editBean.getMethodName().equals("I am a method name"));
+            assertEquals(editBean.getMethodName(),"I am a method name");
 
         }catch (Exception e){
             e.printStackTrace();
@@ -358,7 +362,7 @@ public class SynthesisPurificationServicesTest {
                 assertNotNull(testBeans);
                 assertTrue(testBeans.size() > originalnumberofPurities);
                 for(SimplePurityBean createdBean: testBeans){
-                    assertTrue(createdBean.getId()!=null);
+                    assertNotNull(createdBean.getId());
                     assertTrue(createdBean.getId()>0);
 
                 }
@@ -440,7 +444,7 @@ public class SynthesisPurificationServicesTest {
             assertNotNull(response);
             existingBean = getSimpleSynthesisPurificationBean("1000", "1000");
             for(SimplePurificationConfigBean experiment:existingBean.getSimpleExperimentBeans()){
-                assertTrue(experiment.getDescription().equals("Test technique description"));
+                assertEquals(experiment.getDescription(),"Test technique description");
                 for(SimpleInstrumentBean instrumentBean:experiment.getInstruments()){
                     assertTrue(instrumentBean.getManufacturer().equals("Test Manufacturer"));
                 }
@@ -573,7 +577,7 @@ public class SynthesisPurificationServicesTest {
             synthesisPurificationBean = getSimpleSynthesisPurificationBean("1000", "1000");
             experimentsConfigs= synthesisPurificationBean.getSimpleExperimentBeans();
             SimplePurificationConfigBean configBean = experimentsConfigs.get(0);
-            assertTrue(configBean.getDescription().equals("Test edit config description"));
+            assertEquals(configBean.getDescription(),"Test edit config description");
 
         }catch (Exception e){
             e.printStackTrace();
@@ -595,11 +599,13 @@ public class SynthesisPurificationServicesTest {
                     .then().statusCode(200).extract().response();
             assertNotNull(response);
             synthesisPurificationBean = getSimpleSynthesisPurificationBean("1000", "1000");
-            assertTrue(newProtocol.getDomainId().equals(synthesisPurificationBean.getSimpleProtocol().getDomainId()));
-            assertFalse(oldProtocol.getDomainId().equals(synthesisPurificationBean.getSimpleProtocol().getDomainId()));
+//            assertTrue(newProtocol.getDomainId().equals(synthesisPurificationBean.getSimpleProtocol().getDomainId()));
+//            assertFalse(oldProtocol.getDomainId().equals(synthesisPurificationBean.getSimpleProtocol().getDomainId()));
+            assertEquals(newProtocol.getDomainId(), synthesisPurificationBean.getSimpleProtocol().getDomainId());
+            assertNotEquals(oldProtocol.getDomainId(), synthesisPurificationBean.getSimpleProtocol().getDomainId());
         }catch (Exception e){
             e.printStackTrace();
-
+            fail();
         }
     }
 

@@ -1,9 +1,10 @@
 package gov.nih.nci.cananolab.service.sample.helper;
 
 import gov.nih.nci.cananolab.domain.common.File;
+import gov.nih.nci.cananolab.domain.common.Instrument;
 import gov.nih.nci.cananolab.domain.common.PurificationConfig;
 import gov.nih.nci.cananolab.domain.common.PurityColumnHeader;
-import gov.nih.nci.cananolab.domain.common.PurityDatum;
+
 import gov.nih.nci.cananolab.domain.common.PurityDatumCondition;
 import gov.nih.nci.cananolab.domain.particle.*;
 import gov.nih.nci.cananolab.exception.NoAccessException;
@@ -356,6 +357,28 @@ public class SynthesisHelper
 
     }
 
+    public List<Instrument> findInstrumentByType(String type) throws Exception {
+        List<Instrument> instruments = new ArrayList<Instrument>();
+        String fullClassName = null;
+        if (ClassUtils.getFullClass("Instrument") != null){
+            fullClassName = ClassUtils.getFullClass("Instrument").getName();
+        } else {
+            return null;
+        }
+        CaNanoLabApplicationService appService = (CaNanoLabApplicationService) ApplicationServiceProvider.getApplicationService();
+        String hql = "select distinct manufacturer, model_name from " + fullClassName + " anEntity where anEntity.type = " + type;
+
+        HQLCriteria crit = new HQLCriteria(hql);
+        List results = appService.query(crit);
+        for (int i = 0; i < results.size(); i++) {
+            Instrument instrument = (Instrument) results.get(i);
+            //TODO work out security for synthesis functionalization?
+                instruments.add(instrument);
+
+        }
+        return instruments;
+    }
+
 
     public List<File> findFilesByFunctionalizationId(Long synthesisId, Long synFuncId, String className) throws Exception {
 
@@ -431,29 +454,34 @@ public class SynthesisHelper
 //        return conditionList;
 //}
 
-    public Set<PurityDatumCondition> findPurityDatumConditionByDatum(Long datumPkId) throws Exception
+    public Set<PurityDatumCondition> findPurityDatumConditionByPurity(Long purityPkId) throws Exception
     {
 
-        PurityDatum datum;
+        PurityDatumCondition datum;
         CaNanoLabApplicationService appService = (CaNanoLabApplicationService) ApplicationServiceProvider.getApplicationService();
-        DetachedCriteria crit = DetachedCriteria.forClass(PurityDatum.class);
+        DetachedCriteria crit = DetachedCriteria.forClass(PurityDatumCondition.class);
 //        crit.createAlias("datum", "datum");
 //        crit.add(Property.forName("datum.id").eq(datumPkId));
-        crit.add(Property.forName("id").eq(datumPkId));
+        crit.add(Property.forName("id").eq(purityPkId));
         crit.setFetchMode("conditionCollection", FetchMode.JOIN);
         crit.setResultTransformer(CriteriaSpecification.DISTINCT_ROOT_ENTITY);
         List results = appService.query(crit);
 
+
         if (!results.isEmpty()){
-            datum = (PurityDatum)results.get(0);
-            return  datum.getConditionCollection();
+            Set<PurityDatumCondition> purityDatumConditions = new HashSet<PurityDatumCondition>();
+            for(Object o:results){
+            datum = (PurityDatumCondition) o;
+//            return  datum.getConditionCollection();
+            purityDatumConditions.add(datum);}
+            return purityDatumConditions;
         }
 
         return null;
 
     }
 
-    public Set<PurityDatum> getPurityDatumByPurity(Long purityId) throws Exception{
+    public Set<PurityDatumCondition> getPurityDatumByPurity(Long purityId) throws Exception{
         SynthesisPurity synthesisPurity;
         CaNanoLabApplicationService appService = (CaNanoLabApplicationService) ApplicationServiceProvider.getApplicationService();
         DetachedCriteria crit = DetachedCriteria.forClass(SynthesisPurity.class);

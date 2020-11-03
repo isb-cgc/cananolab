@@ -175,6 +175,16 @@ public class InitSetup {
 		return types;
 	}
 
+	public SortedSet<String> assignTypesToSession(ServletContext appContext, String contextAttribute, List<String> types){
+
+		SortedSet sortedTypes = new TreeSet();
+		for(String type:types){
+			sortedTypes.add(type);
+		}
+		appContext.setAttribute(contextAttribute, sortedTypes);
+		return sortedTypes;
+	}
+
 	/**
 	 * Retrieve default lookup values by reflection and store in the app context
 	 *

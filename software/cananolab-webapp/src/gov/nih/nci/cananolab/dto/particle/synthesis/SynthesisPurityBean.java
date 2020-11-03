@@ -3,7 +3,7 @@ package gov.nih.nci.cananolab.dto.particle.synthesis;
 import gov.nih.nci.cananolab.domain.characterization.physical.Purity;
 import gov.nih.nci.cananolab.domain.common.File;
 import gov.nih.nci.cananolab.domain.common.PurityColumnHeader;
-import gov.nih.nci.cananolab.domain.common.PurityDatum;
+
 import gov.nih.nci.cananolab.domain.common.PurityDatumCondition;
 import gov.nih.nci.cananolab.domain.particle.SynthesisPurity;
 import gov.nih.nci.cananolab.dto.common.BadCellInputException;
@@ -26,50 +26,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-//public class SynthesisPurityBean {
-//    //TODO write
-//
-//    SynthesisPurity domain;
-//    private List<FileBean> files = new ArrayList<FileBean>();
-//    private List<PurityDatum> datums = new ArrayList<PurityDatum>();
-//    //CreatedBy
-//    //CreatedDate
-//
-//    //purity_datum
-//    //  -- purity_datum_condition
-//    //  -- -- experiment_condition
-//
-//    public  SynthesisPurityBean(SynthesisPurity synthesisPurity){
-//        domain = synthesisPurity;
-//
-//        for (File file: synthesisPurity.getFiles()){
-//            files.add( new FileBean( file ) );
-//        }
-//        Collections.sort( files, new Comparators.FileBeanDateComparator() );
-//
-//        if( synthesisPurity.getPurityDatumCollection() != null )
-//        {
-//            datums = new ArrayList<PurityDatum>( synthesisPurity.getPurityDatumCollection() );
-//            Collections.sort( datums, new Comparators.PurityDatumDateComparator() );
-//        }
-//
-//    }
-//
-//    public List<FileBean> getFiles()
-//    {
-//        return files;
-//    }
-//
-//    public void setFiles( List<FileBean> files )
-//    {
-//        this.files = files;
-//    }
-//
-//    public List<PurityDatum> getDatum(){return datums;}
-//    public void setDatum(List<PurityDatum> datums){
-//        this.datums = datums;
-//    }
-//}
+
 
 public class SynthesisPurityBean
 {
@@ -97,10 +54,10 @@ public class SynthesisPurityBean
         domain = synthesisPurity;
         id = synthesisPurity.getId();
 
-        List<PurityDatum> data = null;
+        List<PurityDatumCondition> data = null;
         if( synthesisPurity.getPurityDatumCollection() != null )
         {
-            data = new ArrayList<PurityDatum>( synthesisPurity.getPurityDatumCollection() );
+            data = new ArrayList<PurityDatumCondition>( synthesisPurity.getPurityDatumCollection() );
             Collections.sort( data, new Comparators.PurityDatumDateComparator() );
             setColumnHeaders(inputColumnHeaders);
         }
@@ -120,12 +77,12 @@ public class SynthesisPurityBean
         {
             // get data matrix column headers and generate a map based
             // on headers.
-            Map<ColumnHeader, List<PurityDatum>> datumMap = new HashMap<ColumnHeader, List<PurityDatum>>();
+
             Map<ColumnHeader, List<PurityDatumCondition>> conditionMap = new HashMap<ColumnHeader, List<PurityDatumCondition>>();
 
-            List<PurityDatum> datumList = new ArrayList<PurityDatum>();
+
             List<PurityDatumCondition> conditionList = new ArrayList<PurityDatumCondition>();
-            for( PurityDatum datum : data )
+            for( PurityDatumCondition datum : data )
             {
                 // add datum column
                 ColumnHeader datumColumn = new ColumnHeader( datum );
@@ -136,73 +93,73 @@ public class SynthesisPurityBean
                     }
                     columnHeaders.add( datumColumn );
                 }
-                if( datumMap.get( datumColumn ) != null )
+                if( conditionMap.get( datumColumn ) != null )
                 {
-                    datumList = datumMap.get( datumColumn );
+                    conditionList = conditionMap.get( datumColumn );
                 }
                 else
                 {
-                    datumList = new ArrayList<PurityDatum>();
-                    datumMap.put( datumColumn, datumList );
+                    conditionList = new ArrayList<PurityDatumCondition>();
+                    conditionMap.put( datumColumn, conditionList );
                 }
-                datumList.add( datum );
+                conditionList.add( datum );
                 // add condition columns
-                if( datum.getConditionCollection() != null )
-                {
-                    List<PurityDatumCondition> conditions = new ArrayList<PurityDatumCondition>( datum
-                            .getConditionCollection() );
-                    Collections.sort( conditions,
-                            new Comparators.PurityConditionDateComparator() );
-                    for( PurityDatumCondition condition : conditions )
-                    {
-                        ColumnHeader conditionColumn = new ColumnHeader(
-                                condition );
-                        if( ! columnHeaders.contains( conditionColumn ) )
-                        {
-                            if(conditionColumn.getCreatedDate()==null){
-                                conditionColumn.setCreatedDate(new Date());
-                            }
-                            columnHeaders.add( conditionColumn );
-                        }
-                        if( conditionMap.get( conditionColumn ) != null )
-                        {
-                            conditionList = conditionMap.get( conditionColumn );
-                        }
-                        else
-                        {
-                            conditionList = new ArrayList<PurityDatumCondition>();
-                            conditionMap.put( conditionColumn, conditionList );
-                        }
-                        // in case of copied Finding, ids are all null before
-                        // persisting
-                        if( condition.getId() != null )
-                        {
-                            if( ! conditionList.contains( condition ) )
-                            {
-                                conditionList.add( condition );
-                            }
-                        }
-                        // use created_by field that contains the original ID to
-                        // test whether condition is already in the list
-                        else
-                        {
-                            boolean existed = false;
-                            for( PurityDatumCondition cond : conditionList )
-                            {
-                                if( cond.getCreatedBy().equals(
-                                        condition.getCreatedBy() ) )
-                                {
-                                    existed = true;
-                                    break;
-                                }
-                            }
-                            if( ! existed )
-                            {
-                                conditionList.add( condition );
-                            }
-                        }
-                    }
-                }
+//                if( datum.getConditionCollection() != null )
+//                {
+//                    List<PurityDatumCondition> conditions = new ArrayList<PurityDatumCondition>( datum
+//                            .getConditionCollection() );
+//                    Collections.sort( conditions,
+//                            new Comparators.PurityConditionDateComparator() );
+//                    for( PurityDatumCondition condition : conditions )
+//                    {
+//                        ColumnHeader conditionColumn = new ColumnHeader(
+//                                condition );
+//                        if( ! columnHeaders.contains( conditionColumn ) )
+//                        {
+//                            if(conditionColumn.getCreatedDate()==null){
+//                                conditionColumn.setCreatedDate(new Date());
+//                            }
+//                            columnHeaders.add( conditionColumn );
+//                        }
+//                        if( conditionMap.get( conditionColumn ) != null )
+//                        {
+//                            conditionList = conditionMap.get( conditionColumn );
+//                        }
+//                        else
+//                        {
+//                            conditionList = new ArrayList<PurityDatumCondition>();
+//                            conditionMap.put( conditionColumn, conditionList );
+//                        }
+//                        // in case of copied Finding, ids are all null before
+//                        // persisting
+//                        if( condition.getId() != null )
+//                        {
+//                            if( ! conditionList.contains( condition ) )
+//                            {
+//                                conditionList.add( condition );
+//                            }
+//                        }
+//                        // use created_by field that contains the original ID to
+//                        // test whether condition is already in the list
+//                        else
+//                        {
+//                            boolean existed = false;
+//                            for( PurityDatumCondition cond : conditionList )
+//                            {
+//                                if( cond.getCreatedBy().equals(
+//                                        condition.getCreatedBy() ) )
+//                                {
+//                                    existed = true;
+//                                    break;
+//                                }
+//                            }
+//                            if( ! existed )
+//                            {
+//                                conditionList.add( condition );
+//                            }
+//                        }
+//                    }
+//                }
             }
             // sort column headers by created date and set column orders
             setupColumnOrder();
@@ -210,7 +167,7 @@ public class SynthesisPurityBean
             int numRows = - 1;
             // iterate through all datum columns and find the biggest list size
             // as the number of rows
-            for( Map.Entry<ColumnHeader, List<PurityDatum>> entry : datumMap
+            for( Map.Entry<ColumnHeader, List<PurityDatumCondition>> entry : conditionMap
                     .entrySet() )
             {
                 int numData = entry.getValue().size();
@@ -239,20 +196,20 @@ public class SynthesisPurityBean
                 for( int j = 0; j < numberOfColumns; j++ )
                 {
                     ColumnHeader theHeader = columnHeaders.get( j );
-                    if( theHeader.getColumnType()
-                            .equals( SynthesisPurityBean.DATUM_TYPE ) )
-                    {
-                        PurityDatum datum = new PurityDatum();
-                        if( datumMap.get( theHeader ) != null
-                                && datumMap.get( theHeader ).size() > i )
-                        {
-                            datum = datumMap.get( theHeader ).get( i );
-                        }
-                        row.getCells().add( new PurityTableCell( datum ) );
-                    }
-                    else if( theHeader.getColumnType().equals(
-                            SynthesisPurityBean.CONDITION_TYPE ) )
-                    {
+//                    if( theHeader.getColumnType()
+//                            .equals( SynthesisPurityBean.DATUM_TYPE ) )
+//                    {
+//                        PurityDatumCondition datum = new PurityDatumCondition();
+//                        if( conditionMap.get( theHeader ) != null
+//                                && conditionMap.get( theHeader ).size() > i )
+//                        {
+//                            datum = conditionMap.get( theHeader ).get( i );
+//                        }
+//                        row.getCells().add( new PurityTableCell( datum ) );
+//                    }
+//                    else if( theHeader.getColumnType().equals(
+//                            SynthesisPurityBean.CONDITION_TYPE ) )
+//                    {
                         PurityDatumCondition condition = new PurityDatumCondition();
                         if( conditionMap.get( theHeader ) != null
                                 && conditionMap.get( theHeader ).size() > i )
@@ -260,7 +217,7 @@ public class SynthesisPurityBean
                             condition = conditionMap.get( theHeader ).get( i );
                         }
                         row.getCells().add( new PurityTableCell( condition ) );
-                    }
+//                    }
                 }
                 rows.add( row );
             }
@@ -296,15 +253,7 @@ public class SynthesisPurityBean
                 conditions.add((cell.getCondition()));
             }
         }
-        for(PurityTableCell cell: row.getCells()){
-            if(cell.getPurityDatum()!=null){
-                for(PurityDatumCondition condition:conditions){
-//                    condition.setPurityDatumPkId(cell.getPurityDatum().getId());
-                    condition.setPurityDatum(cell.getPurityDatum());
-                }
-                cell.getPurityDatum().setConditionCollection(conditions);
-            }
-        }
+
 
 
         rows.add(row);
@@ -459,7 +408,7 @@ public class SynthesisPurityBean
         }
         else
         {
-            domain.setPurityDatumCollection( new HashSet<PurityDatum>() );
+            domain.setPurityDatumCollection( new HashSet<PurityDatumCondition>() );
         }
         if( domain.getFiles() != null )
         {
@@ -517,43 +466,43 @@ public class SynthesisPurityBean
         {
             int cInd = 0;
             List<PurityDatumCondition> rowConditions = new ArrayList<PurityDatumCondition>();
-            List<PurityDatum> rowData = new ArrayList<PurityDatum>();
+
             for( PurityTableCell cell : row.getCells() )
             {
                 ColumnHeader columnHeader = columnHeaders.get( cInd );
 
                 if( SynthesisPurityBean.DATUM_TYPE.equals( columnHeader.getColumnType() ) )
                 {
-                    PurityDatum datum = cell.getPurityDatum();
+                    PurityDatumCondition datum = cell.getCondition();
                     // set bogus empty cell
-                    if( StringUtils.isEmpty( cell.getValue() ) )
-                    {
-                        datum.setValue( Float.valueOf( - 1 ) );
-                        datum
-                                .setCreatedBy( createdBy
-                                        + ":"
-                                        + Constants.PLACEHOLDER_DATUM_CONDITION_CREATED_BY );
-                    }
-                    else
-                    {
-                        // datum.setValue(Float.valueOf(cell.getValue()));
-
-                        try
-                        {
-                            datum.setValue( Float.valueOf( cell.getValue() ) );
-                        }
-                        catch( NumberFormatException e )
-                        {
-                            e.printStackTrace();
-                        }
-
-
-                        datum.setOperand( cell.getOperand() );
-                    }
+//                    if( StringUtils.isEmpty( cell.getValue() ) )
+//                    {
+//                        datum.setValue( Float.valueOf( - 1 ) );
+//                        datum
+//                                .setCreatedBy( createdBy
+//                                        + ":"
+//                                        + Constants.PLACEHOLDER_DATUM_CONDITION_CREATED_BY );
+//                    }
+//                    else
+//                    {
+//                        // datum.setValue(Float.valueOf(cell.getValue()));
+//
+//                        try
+//                        {
+//                            datum.setValue( Float.valueOf( cell.getValue() ) );
+//                        }
+//                        catch( NumberFormatException e )
+//                        {
+//                            e.printStackTrace();
+//                        }
+//
+//
+//                        datum.setOperand( cell.getOperand() );
+//                    }
                     datum.setValueType( columnHeader.getValueType() );
                     datum.setValueUnit( columnHeader.getValueUnit() );
                     datum.setName( columnHeader.getColumnName() );
-                    rowData.add( datum );
+                    rowConditions.add( datum );
                     if( datum.getId() != null && datum.getId() <= 0 )
                     {
                         datum.setId( null );
@@ -635,22 +584,22 @@ public class SynthesisPurityBean
                 cInd++;
             }
             // associate conditions to each datum on each row
-            for( PurityDatum datum : rowData )
+            for( PurityDatumCondition datum : rowConditions )
             {
-                if( datum.getConditionCollection() == null )
-                {
-                    datum.setConditionCollection( new HashSet<PurityDatumCondition>() );
-                }
-                else
-                {
-                    datum.getConditionCollection().clear();
-                }
-                for( PurityDatumCondition condition : rowConditions )
-                {
-                    datum.getConditionCollection().add( condition );
-                }
+//                if( datum.getConditionCollection() == null )
+//                {
+//                    datum.setConditionCollection( new HashSet<PurityDatumCondition>() );
+//                }
+//                else
+//                {
+//                    datum.getConditionCollection().clear();
+//                }
+//                for( PurityDatumCondition condition : rowConditions )
+//                {
+//                    datum.getConditionCollection().add( condition );
+//                }
                 domain.getPurityDatumCollection().add( datum );
-                datum.setSynthesisPurity( domain );
+                datum.setPurity( domain );
                 rInd++;
             }
         }
@@ -752,15 +701,15 @@ public class SynthesisPurityBean
         }
         else
         {
-            Collection<PurityDatum> oldDatums = copy.getPurityDatumCollection();
+            Collection<PurityDatumCondition> oldDatums = copy.getPurityDatumCollection();
             if( oldDatums == null || oldDatums.isEmpty() )
             {
                 copy.setPurityDatumCollection( null );
             }
             else
             {
-                copy.setPurityDatumCollection( new HashSet<PurityDatum>( oldDatums ) );
-                for( PurityDatum datum : copy.getPurityDatumCollection() )
+                copy.setPurityDatumCollection( new HashSet<PurityDatumCondition>( oldDatums ) );
+                for( PurityDatumCondition datum : copy.getPurityDatumCollection() )
                 {
                     String originalDatumId = datum.getId().toString();
                     datum.setId( null );
@@ -770,58 +719,60 @@ public class SynthesisPurityBean
                             .getCreatedBy()
                             .contains(
                                     Constants.PLACEHOLDER_DATUM_CONDITION_CREATED_BY )
-                            && datum.getValue() != - 1 )
+                            && datum.getValue()
+                            .contains(
+                                    Constants.PLACEHOLDER_DATUM_CONDITION_CREATED_BY ))
                     {
                         datum.setCreatedBy( createdBy + ":"
                                 + Constants.AUTO_COPY_ANNOTATION_PREFIX + ":"
                                 + originalDatumId );
                     }
                     // conditions
-                    Collection<PurityDatumCondition> oldConditions = datum
-                            .getConditionCollection();
-                    if( oldConditions == null || oldConditions.isEmpty() )
-                    {
-                        datum.setConditionCollection( null );
-                    }
-                    else
-                    {
-                        datum.setConditionCollection( new HashSet<PurityDatumCondition>(
-                                oldConditions ) );
-                        for( PurityDatumCondition condition : datum
-                                .getConditionCollection() )
-                        {
-                            String originalCondId = null;
-                            // condition ID could have been set to null for the
-                            // previous datum if the same condition is
-                            // associated with multiple datum
-                            if( condition.getId() != null )
-                            {
-                                originalCondId = condition.getId().toString();
-                            }
-                            condition.setId( null );
-                            // keep the bogus place holder if empty
-                            // condition
-                            if( StringUtils.isEmpty( condition.getCreatedBy() )
-                                    || ! condition
-                                    .getCreatedBy()
-                                    .contains(
-                                            Constants.PLACEHOLDER_DATUM_CONDITION_CREATED_BY )
-                                    && ! condition
-                                    .getValue()
-                                    .contains(
-                                            Constants.PLACEHOLDER_DATUM_CONDITION_CREATED_BY ) )
-                            {
-                                if( originalCondId != null )
-                                {
-                                    condition
-                                            .setCreatedBy( createdBy
-                                                    + ":"
-                                                    + Constants.AUTO_COPY_ANNOTATION_PREFIX
-                                                    + ":" + originalCondId );
-                                }
-                            }
-                        }
-                    }
+//                    Collection<PurityDatumCondition> oldConditions = datum
+//                            .getConditionCollection();
+//                    if( oldConditions == null || oldConditions.isEmpty() )
+//                    {
+//                        datum.setConditionCollection( null );
+//                    }
+//                    else
+//                    {
+//                        datum.setConditionCollection( new HashSet<PurityDatumCondition>(
+//                                oldConditions ) );
+//                        for( PurityDatumCondition condition : datum
+//                                .getConditionCollection() )
+//                        {
+//                            String originalCondId = null;
+//                            // condition ID could have been set to null for the
+//                            // previous datum if the same condition is
+//                            // associated with multiple datum
+//                            if( condition.getId() != null )
+//                            {
+//                                originalCondId = condition.getId().toString();
+//                            }
+//                            condition.setId( null );
+//                            // keep the bogus place holder if empty
+//                            // condition
+//                            if( StringUtils.isEmpty( condition.getCreatedBy() )
+//                                    || ! condition
+//                                    .getCreatedBy()
+//                                    .contains(
+//                                            Constants.PLACEHOLDER_DATUM_CONDITION_CREATED_BY )
+//                                    && ! condition
+//                                    .getValue()
+//                                    .contains(
+//                                            Constants.PLACEHOLDER_DATUM_CONDITION_CREATED_BY ) )
+//                            {
+//                                if( originalCondId != null )
+//                                {
+//                                    condition
+//                                            .setCreatedBy( createdBy
+//                                                    + ":"
+//                                                    + Constants.AUTO_COPY_ANNOTATION_PREFIX
+//                                                    + ":" + originalCondId );
+//                                }
+//                            }
+//                        }
+//                    }
                 }
             }
         }
@@ -889,7 +840,7 @@ public class SynthesisPurityBean
                     if( gov.nih.nci.cananolab.dto.particle.synthesis.SynthesisPurityBean.DATUM_TYPE.equals( columnHeader
                             .getColumnType() ) )
                     {
-                        PurityDatum datum = cell.getPurityDatum();
+                        PurityDatumCondition datum = cell.getCondition();
                         datum.setCreatedDate( DateUtils
                                 .addSecondsToCurrentDate( rInd * 100 + cInd ) );
                     }

@@ -769,7 +769,7 @@ L-->
 		timeToLiveSeconds="100000"
 		overflowToDisk="true"/>
 
-	<cache name="gov.nih.nci.cananolab.domain.common.PurityDatum"
+	<cache name="gov.nih.nci.cananolab.domain.common.PurityDatumCondition"
 		   maxElementsInMemory="500"
 		   eternal="false"
 		   timeToIdleSeconds="1800"

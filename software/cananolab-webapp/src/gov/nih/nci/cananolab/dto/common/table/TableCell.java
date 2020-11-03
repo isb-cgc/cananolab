@@ -10,7 +10,6 @@ package gov.nih.nci.cananolab.dto.common.table;
 
 import gov.nih.nci.cananolab.domain.common.Condition;
 import gov.nih.nci.cananolab.domain.common.Datum;
-import gov.nih.nci.cananolab.domain.common.PurityDatum;
 import gov.nih.nci.cananolab.dto.common.FindingBean;
 import gov.nih.nci.cananolab.util.Constants;
 import gov.nih.nci.cananolab.util.StringUtils;

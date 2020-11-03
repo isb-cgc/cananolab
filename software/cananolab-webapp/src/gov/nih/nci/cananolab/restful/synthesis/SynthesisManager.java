@@ -40,6 +40,7 @@ public class SynthesisManager {
         if (purfType.length() == 0) {
             return null;
         }
+        //TODO should probably not be in Init
         SortedSet<String> charNames = InitSynthesisSetup.getInstance()
                 .getPurificationNamesByType(httpServletRequest, purfType, synthesisService);
         String[] charNameArray = new String[charNames.size()];

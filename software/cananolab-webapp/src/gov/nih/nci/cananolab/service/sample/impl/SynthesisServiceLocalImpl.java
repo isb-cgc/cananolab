@@ -6,7 +6,7 @@ import gov.nih.nci.cananolab.domain.common.File;
 import gov.nih.nci.cananolab.domain.common.Instrument;
 import gov.nih.nci.cananolab.domain.common.PurificationConfig;
 import gov.nih.nci.cananolab.domain.common.PurityColumnHeader;
-import gov.nih.nci.cananolab.domain.common.PurityDatum;
+
 import gov.nih.nci.cananolab.domain.common.PurityDatumCondition;
 import gov.nih.nci.cananolab.domain.common.Supplier;
 import gov.nih.nci.cananolab.domain.particle.*;
@@ -750,28 +750,16 @@ public class SynthesisServiceLocalImpl extends BaseServiceLocalImpl implements S
 
             synthesisPurity.setSynthesisPurification(synthesisPurificationBean.getDomainEntity());
 
-            Set<PurityDatum> originalDatum = synthesisHelper.getPurityDatumByPurity(synthesisPurity.getId());
-//            Set<PurityDatum> datumHolder = synthesisPurity.getPurityDatumCollection();
+            Set<PurityDatumCondition> originalDatum = synthesisHelper.getPurityDatumByPurity(synthesisPurity.getId());
 
 
-//            for (PurityDatum datum: synthesisPurity.getPurityDatumCollection()){
-//                if (datum.getId()==null){
-//                    synthesisPurity.getPurityDatumCollection().remove(datum);
-//                }
-//                for(PurityDatumCondition condition:datum.getConditionCollection()){
-//                    if (condition.getId()==null){
-//                        datum.getConditionCollection().remove(condition);
-//                    }
-//                }
-//            }
 
-
-            for (PurityDatum datum : synthesisPurity.getPurityDatumCollection()) {
+            for (PurityDatumCondition datum : synthesisPurity.getPurityDatumCollection()) {
                 if (datum.getId() == null) {
                     //create new datum
 //                    datum.setSynthesisPurity(synthesisPurity);
 //                    datum.setSynthesisPurity(synthesisPurity);
-                    PurityDatum newDatum = createDatum(datum);
+                    PurityDatumCondition newDatum = createDatum(datum);
 //                    datum.setId(newDatum.getId());
                 } else {
                     saveDatum(datum);
@@ -957,8 +945,8 @@ public class SynthesisServiceLocalImpl extends BaseServiceLocalImpl implements S
         }
         if (element.getPurityDatumCollection() != null) {
             //delete datum
-            for (PurityDatum purityDatum : element.getPurityDatumCollection()) {
-                deletePurityDatum(sampleId, element, purityDatum);
+            for (PurityDatumCondition purityDatumCondition : element.getPurityDatumCollection()) {
+                deletePurityDatum(sampleId, element, purityDatumCondition);
             }
 
         }
@@ -998,12 +986,10 @@ public class SynthesisServiceLocalImpl extends BaseServiceLocalImpl implements S
 
     }
 
-    private void deletePurityDatum(Long sampleId, SynthesisPurity element, PurityDatum purityDatum) throws SynthesisException {
+    private void deletePurityDatum(Long sampleId, SynthesisPurity element, PurityDatumCondition purityDatum) throws SynthesisException {
         //TODO write
         try {
-            for (PurityDatumCondition condition : purityDatum.getConditionCollection()) {
-                deletePurityDatumCondition(condition);
-            }
+
         }
         catch (Exception e) {
             String err = "Error deleting Purity Datum Condtion " + element.getId();
@@ -1094,7 +1080,7 @@ public class SynthesisServiceLocalImpl extends BaseServiceLocalImpl implements S
         }
     }
 
-    private PurityDatum createDatum(PurityDatum datum) throws SynthesisException {
+    private PurityDatumCondition createDatum(PurityDatumCondition datum) throws SynthesisException {
         try {
             CaNanoLabApplicationService appService =
                     (CaNanoLabApplicationService) ApplicationServiceProvider.getApplicationService();
@@ -1103,13 +1089,14 @@ public class SynthesisServiceLocalImpl extends BaseServiceLocalImpl implements S
             appService.saveOrUpdate(datum);
 //            Set<PurityDatumCondition> conditionHolder = datum.getConditionCollection();
 //            datum.setConditionCollection(null);
-            for (PurityDatumCondition condition : datum.getConditionCollection()) {
-//                condition.setPurityDatumPkId(datum.getId());
-//                condition.setPurityDatum(datum);
-                PurityDatumCondition newCondition = createCondition(condition);
-//                condition.setId(newCondition.getId());
-            }
+//            for (PurityDatumCondition condition : datum.getConditionCollection()) {
+////                condition.setPurityDatumPkId(datum.getId());
+////                condition.setPurityDatum(datum);
+//                PurityDatumCondition newCondition = createCondition(condition);
+////                condition.setId(newCondition.getId());
+//            }
 //            datum.setConditionCollection(conditionHolder);
+            //TODO get the id?
             return datum;
         }
         catch (Exception e) {
@@ -1119,19 +1106,19 @@ public class SynthesisServiceLocalImpl extends BaseServiceLocalImpl implements S
         }
     }
 
-    private PurityDatum saveDatum(PurityDatum datum) throws SynthesisException {
+    private PurityDatumCondition saveDatum(PurityDatumCondition datum) throws SynthesisException {
         try {
-            if (datum.getConditionCollection() != null) {
-                for (PurityDatumCondition condition : datum.getConditionCollection()) {
-                    condition = saveCondition(condition);
-                }
-            }
+//            if (datum.getConditionCollection() != null) {
+//                for (PurityDatumCondition condition : datum.getConditionCollection()) {
+//                    condition = saveCondition(condition);
+//                }
+//            }
             CaNanoLabApplicationService appService =
                     (CaNanoLabApplicationService) ApplicationServiceProvider.getApplicationService();
             try {
                 appService
-                        .load(PurityDatum.class, datum.getId());
-                SynthesisPurity tempDatum = (SynthesisPurity)appService.getObject(PurityDatum.class, "id", datum.getId());
+                        .load(PurityDatumCondition.class, datum.getId());
+                SynthesisPurity tempDatum = (SynthesisPurity)appService.getObject(PurityDatumCondition.class, "id", datum.getId());
 
                 datum.setCreatedDate(tempDatum.getCreatedDate());
                 datum.setCreatedBy(tempDatum.getCreatedBy());
@@ -1141,17 +1128,17 @@ public class SynthesisServiceLocalImpl extends BaseServiceLocalImpl implements S
                 logger.error(err);
                 throw new SynthesisException(err, e);
             }
-            Set<PurityDatumCondition> conditionSet = synthesisHelper.findPurityDatumConditionByDatum(datum.getId());
-
-            datum.setConditionCollection(conditionSet);
-            for (PurityDatumCondition condition : conditionSet) {
-                condition.setPurityDatum(datum);
-            }
+//            Set<PurityDatumCondition> conditionSet = synthesisHelper.findPurityDatumConditionByDatum(datum.getId());
+//
+//            datum.setConditionCollection(conditionSet);
+//            for (PurityDatumCondition condition : conditionSet) {
+//                condition.setPurityDatum(datum);
+//            }
             appService.saveOrUpdate(datum);
             return datum;
         }
         catch (Exception e) {
-            String err = "Problem saving PurityDatum ";
+            String err = "Problem saving PurityDatumCondition ";
             logger.error(err, e);
             throw new SynthesisException(err, e);
         }

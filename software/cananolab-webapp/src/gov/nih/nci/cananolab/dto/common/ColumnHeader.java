@@ -10,7 +10,6 @@ package gov.nih.nci.cananolab.dto.common;
 
 import gov.nih.nci.cananolab.domain.common.Condition;
 import gov.nih.nci.cananolab.domain.common.Datum;
-import gov.nih.nci.cananolab.domain.common.PurityDatum;
 import gov.nih.nci.cananolab.domain.common.PurityDatumCondition;
 import gov.nih.nci.cananolab.dto.particle.synthesis.SynthesisPurityBean;
 import gov.nih.nci.cananolab.util.StringUtils;
@@ -58,22 +57,12 @@ public class ColumnHeader {
 		this.createdBy = condition.getCreatedBy();
 	}
 
-	public ColumnHeader(PurityDatum datum) {
-		this.columnName = datum.getName();
-		this.valueType = datum.getValueType();
-		this.valueUnit = datum.getValueUnit();
-		this.columnType = SynthesisPurityBean.DATUM_TYPE;
-		this.createdDate = datum.getCreatedDate();
-		this.createdBy = datum.getCreatedBy();
-//		this.operand = datum.getOperand();
-	}
-
 	public ColumnHeader(PurityDatumCondition condition) {
 		this.columnName = condition.getName();
 		this.conditionProperty = condition.getProperty();
 		this.valueType = condition.getValueType();
 		this.valueUnit = condition.getValueUnit();
-		this.columnType = FindingBean.CONDITION_TYPE;
+		this.columnType = condition.getType();
 		this.createdDate = condition.getCreatedDate();
 		this.createdBy = condition.getCreatedBy();
 	}

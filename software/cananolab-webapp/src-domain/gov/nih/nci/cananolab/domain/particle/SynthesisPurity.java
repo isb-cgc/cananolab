@@ -2,7 +2,8 @@ package gov.nih.nci.cananolab.domain.particle;
 // Generated Apr 3, 2019, 8:32:55 PM by Hibernate Tools 5.4.2.Final
 
 import gov.nih.nci.cananolab.domain.common.File;
-import gov.nih.nci.cananolab.domain.common.PurityDatum;
+
+import gov.nih.nci.cananolab.domain.common.PurityDatumCondition;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.HashSet;
@@ -20,7 +21,7 @@ public class SynthesisPurity implements Serializable {
 	private String createdBy;
 	private Date createdDate;
 	private Set<File> files = new HashSet<File>(0);
-	private Set<PurityDatum> purityDatumCollection = new HashSet<PurityDatum>(0);
+	private Set<PurityDatumCondition> purityDatumCollection = new HashSet<PurityDatumCondition>(0);
 
 	public SynthesisPurity() {
 	}
@@ -71,11 +72,11 @@ public class SynthesisPurity implements Serializable {
 		this.files = files;
 	}
 
-	public Set<PurityDatum> getPurityDatumCollection() {
+	public Set<PurityDatumCondition> getPurityDatumCollection() {
 		return this.purityDatumCollection;
 	}
 
-	public void setPurityDatumCollection(Set<PurityDatum> purityDatums) {
+	public void setPurityDatumCollection(Set<PurityDatumCondition> purityDatums) {
 		this.purityDatumCollection = purityDatums;
 	}
 

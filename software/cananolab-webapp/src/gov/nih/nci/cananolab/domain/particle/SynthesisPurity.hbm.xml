@@ -27,7 +27,7 @@
             <cache usage="read-write" />
             <key column ="purity_pk_id" />
             <one-to-many
-                class="gov.nih.nci.cananolab.domain.common.PurityDatum"/>
+                class="gov.nih.nci.cananolab.domain.common.PurityDatumCondition"/>
       </set>
 
         <set fetch="select" lazy="false" name="files" sort="unsorted" table="purity_file">

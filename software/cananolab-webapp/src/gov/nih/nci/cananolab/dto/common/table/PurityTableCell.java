@@ -8,7 +8,7 @@
 
 package gov.nih.nci.cananolab.dto.common.table;
 
-import gov.nih.nci.cananolab.domain.common.PurityDatum;
+
 import gov.nih.nci.cananolab.domain.common.PurityDatumCondition;
 import gov.nih.nci.cananolab.dto.common.FindingBean;
 import gov.nih.nci.cananolab.util.Constants;
@@ -27,7 +27,6 @@ public class PurityTableCell {
 	String operand = "=";
 	String datumOrCondition;
 	PurityDatumCondition condition = new PurityDatumCondition();
-	PurityDatum datum = new PurityDatum();
 
 	// FR# 26194, matrix column order.
 	Integer columnOrder;
@@ -39,38 +38,9 @@ public class PurityTableCell {
 	}
 
 
-	public PurityTableCell(PurityDatum datum) {
-		this.datumOrCondition = FindingBean.DATUM_TYPE;
-		// display bogus placeholder datum as emtpy string
-		if (datum.getValue() == null
-				|| datum.getValue() == -1
-				&& datum.getCreatedBy().contains(
-				Constants.PLACEHOLDER_DATUM_CONDITION_CREATED_BY)) {
-			this.value = "";
-		}
-		// remove .0 from boolean
-		else if (datum.getValueType() != null
-				&& datum.getValueType().equals("boolean")) {
-			if (datum.getValue() == 1) {
-				// remove .0 from number
-				this.value = "1";
-			} else if (datum.getValue() == 0) {
-				this.value = "0";
-			}
-		} else {
-			this.value = datum.getValue().toString();
-			this.operand = datum.getOperand();
-		}
-		this.datum = datum;
-		this.condition = null;
-		this.createdDate = datum.getCreatedDate();
-		this.id = datum.getId();
-		this.createdBy = datum.getCreatedBy();
-		this.columnId= datum.getColumnId();
-	}
 
 	public PurityTableCell(PurityDatumCondition condition) {
-		this.datumOrCondition = "condition";
+		this.datumOrCondition = condition.getType();
 		if (!StringUtils.isEmpty(condition.getValue()) && condition.getValue().contains(
 				Constants.PLACEHOLDER_DATUM_CONDITION_CREATED_BY)
 				&& !StringUtils.isEmpty(condition.getCreatedBy()) && condition.getCreatedBy().contains(
@@ -81,7 +51,6 @@ public class PurityTableCell {
 			this.operand=condition.getOperand();
 		}
 		this.condition = condition;
-		this.datum = null;
 		this.createdDate = condition.getCreatedDate();
 		this.id=condition.getId();
 		this.createdBy= condition.getCreatedBy();
@@ -109,12 +78,6 @@ public class PurityTableCell {
 
 	public void setValue(String value) {
 		this.value = value;
-	}
-
-	public PurityDatum getPurityDatum() {return datum;}
-
-	public void setPurityDatum(PurityDatum purityDatum){
-		this.datum = purityDatum;
 	}
 
 	public PurityDatumCondition getCondition() {

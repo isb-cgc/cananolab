@@ -7,7 +7,7 @@ import gov.nih.nci.cananolab.domain.common.PointOfContact;
 import gov.nih.nci.cananolab.domain.common.Protocol;
 import gov.nih.nci.cananolab.domain.common.PurificationConfig;
 import gov.nih.nci.cananolab.domain.common.PurityColumnHeader;
-import gov.nih.nci.cananolab.domain.common.PurityDatum;
+
 import gov.nih.nci.cananolab.domain.common.PurityDatumCondition;
 import gov.nih.nci.cananolab.domain.common.Technique;
 import gov.nih.nci.cananolab.domain.particle.Synthesis;
@@ -138,7 +138,8 @@ public class SynthesisPurificationBO extends BaseAnnotationBO {
         Map<String,Object> testLookup = new HashMap<String, Object>();
         testLookup.put("protocolLookup", this.setProtocolLookup(httpRequest));
         testLookup.put("Sources", this.setPOCDropdown(httpRequest, sampleId));
-        testLookup.putAll(SynthesisUtil.reformatLocalSearchDropdownsInSessionForSynthesisPurification(httpRequest.getSession()));
+        Map<String, Object> utilMap = SynthesisUtil.reformatLocalSearchDropdownsInSessionForSynthesisPurification(httpRequest.getSession());
+        testLookup.putAll(utilMap);
         return testLookup;
 
     }
@@ -229,14 +230,14 @@ public class SynthesisPurificationBO extends BaseAnnotationBO {
     public List<PurityColumnHeader> getColumnHeaderForPurity(SynthesisPurity purity) throws SynthesisException{
         List<Long> columnIds = new ArrayList<Long>();
         if(purity.getPurityDatumCollection()!=null && purity.getPurityDatumCollection().size()>0){
-            for(PurityDatum datum:purity.getPurityDatumCollection()){
+            for(PurityDatumCondition datum:purity.getPurityDatumCollection()){
                 columnIds.add(datum.getColumnId());
-                if(datum.getConditionCollection()!=null && datum.getConditionCollection().size()>0){
-                    for(PurityDatumCondition condition: datum.getConditionCollection()){
-                        columnIds.add(condition.getColumnId());
-                    }
-                }
-                break;
+//                if(datum.getConditionCollection()!=null && datum.getConditionCollection().size()>0){
+//                    for(PurityDatumCondition condition: datum.getConditionCollection()){
+//                        columnIds.add(condition.getColumnId());
+//                    }
+//                }
+//                break;
             }
         }
         try {
@@ -421,6 +422,7 @@ public class SynthesisPurificationBO extends BaseAnnotationBO {
         //TODO write
     }
 
+
     /**
      *
      * @param httpRequest
@@ -435,10 +437,11 @@ public class SynthesisPurificationBO extends BaseAnnotationBO {
     /**
      * Transfer from SimplePurityBean to SynthesisPurityBean
      * @param simplePurityBean
+     * @param columnHeaders
      * @param httpRequest
      * @return
      */
-    private SynthesisPurityBean transferSimplePurity(SimplePurityBean simplePurityBean, HttpServletRequest httpRequest){
+    private SynthesisPurityBean transferSimplePurity(SimplePurityBean simplePurityBean, List<ColumnHeader> columnHeaders, HttpServletRequest httpRequest){
         SynthesisPurityBean purityBean = new SynthesisPurityBean();
         SynthesisPurity purity = new SynthesisPurity();
 
@@ -466,9 +469,10 @@ public class SynthesisPurificationBO extends BaseAnnotationBO {
         purity.setFiles(files);
 
         //Columns
-        purityBean.setColumnHeaders(simplePurityBean.getColumnHeaders());
+//        purityBean.setColumnHeaders(simplePurityBean.getColumnHeaders());
+        purityBean.setColumnHeaders(columnHeaders);
         List<SimplePurityRowBean> simplePurityRowBeans = simplePurityBean.getPurityRows();
-        Set<PurityDatum> datumSet = new HashSet<PurityDatum>();
+        Set<PurityDatumCondition> datumSet = new HashSet<PurityDatumCondition>();
 
 //        for(int columnNumber = 1; columnNumber<purityBean.getColumnHeaders().size(); columnNumber++){
 //            ColumnHeader currentColumnHeader;
@@ -501,10 +505,10 @@ public class SynthesisPurificationBO extends BaseAnnotationBO {
         purityBean.setNumberOfColumns(purityBean.getColumnHeaders().size());
         for(PurityRow row: purityBean.getRows()){
             List<PurityTableCell> cells = row.getCells();
-            PurityDatum newDatum = new PurityDatum();
+            PurityDatumCondition newDatum = new PurityDatumCondition();
             for(PurityTableCell cell: cells){
-                if (cell.getPurityDatum()!= null) {
-                    newDatum = cell.getPurityDatum();
+                if (cell.getCondition()!= null) {
+                    newDatum = cell.getCondition();
                 }
             }
 //            for(PurityTableCell cell: cells){
@@ -512,7 +516,7 @@ public class SynthesisPurificationBO extends BaseAnnotationBO {
 //                    newDatum.getConditionCollection().add(cell.getCondition());
 //                }
 //            }
-            newDatum.setSynthesisPurity(purity);
+            newDatum.setPurity(purity);
             purity.getPurityDatumCollection().add(newDatum);
         }
 
@@ -592,7 +596,7 @@ public class SynthesisPurificationBO extends BaseAnnotationBO {
         purification.setMethodName(sSynPurificationBean.getMethodName());
         //source and date
         purification.setCreatedBy(sSynPurificationBean.getCreatedBy());
-        purification.setCreatedDate(sSynPurificationBean.getcreatedDate());
+        purification.setCreatedDate(sSynPurificationBean.getCreatedDate());
         //design and methods description
         purification.setDesignMethodDescription(sSynPurificationBean.getDesignMethodDescription());
         //Technique and instrument
@@ -608,7 +612,7 @@ public class SynthesisPurificationBO extends BaseAnnotationBO {
         if(simplePurityBeans != null) {
             for (SimplePurityBean sPurityBean : simplePurityBeans) {
 
-                SynthesisPurityBean purityBean = transferSimplePurity(sPurityBean, httpRequest);
+                SynthesisPurityBean purityBean = transferSimplePurity(sPurityBean,sSynPurificationBean.getColumnHeaders(), httpRequest);
 
 //                purityBean.getDomain().setSynthesisPurificationId(sSynPurificationBean.getId());
                 purityBean.getDomain().setSynthesisPurification(purification);
@@ -679,78 +683,6 @@ public class SynthesisPurificationBO extends BaseAnnotationBO {
 
     private PurityRow createPurityRow(SimplePurityCell currentDatumCell, List<SimplePurityCell> currentConditionCells, List<ColumnHeader> columnHeaders){
 
-//        if(simplePurityRowBeans!= null){
-//            for(SimplePurityRowBean simplePurityRowBean: simplePurityRowBeans){
-//
-//                List<SimplePurityCell> simpleCells = simplePurityRowBean.getCells();
-//
-//                if(simpleCells!=null){
-//                    PurityDatum purityDatum = new PurityDatum();
-//                    Set<PurityDatumCondition> conditionList = new HashSet<PurityDatumCondition>();
-//                    for (SimplePurityCell simpleCell :simpleCells){
-//                        PurityTableCell cell = new PurityTableCell();
-//                        cell.setCreatedBy(simpleCell.getCreatedBy());
-//                        cell.setCreatedDate(simpleCell.getCreatedDate());
-//                        cell.setId(simpleCell.getId());
-//                        cell.setValue(simpleCell.getValue());
-//                        cell.setDatumOrCondition(simpleCell.getDatumOrCondition());
-//                        cell.setColumnOrder(simpleCell.getColumnOrder());
-//                        if(simpleCell.getDatumOrCondition().equals("datum")) {
-//                            purityDatum.setValue(new Float(simpleCell.getValue()));
-//                            purityDatum.setCreatedBy(simpleCell.getCreatedBy());
-//                            purityDatum.setCreatedDate(simpleCell.getCreatedDate());
-//                            purityDatum.setOperand(simpleCell.getOperand());
-//                            purityDatum.setSynthesisPurity(purity);
-//                            purityDatum.setId(simpleCell.getId());
-//                            for (ColumnHeader header : simplePurityBean.getColumnHeaders()) {
-//                                if (header.getColumnOrder().equals(simpleCell.getColumnOrder())) {
-//                                    purityDatum.setValueUnit(header.getValueUnit());
-//                                    purityDatum.setName(header.getDisplayName());
-//                                    purityDatum.setValueType(header.getValueType());
-//                                }
-//                            }
-//                            cell.setPurityDatum(purityDatum);
-//                        } else {
-//                            PurityDatumCondition condition = new PurityDatumCondition();
-//                            condition.setValue(simpleCell.getValue());
-//                            condition.setCreatedBy(simpleCell.getCreatedBy());
-//                            condition.setCreatedDate(simpleCell.getCreatedDate());
-//                            condition.setOperand(simpleCell.getOperand());
-//                            condition.setId(simpleCell.getId());
-//                            for (ColumnHeader header : simplePurityBean.getColumnHeaders()) {
-//                                if (header.getColumnOrder().equals(simpleCell.getColumnOrder())) {
-//                                    condition.setValueUnit(header.getValueUnit());
-//                                    condition.setName(header.getDisplayName());
-//                                    condition.setValueType(header.getValueType());
-//                                }
-//                            }
-//                            cell.setCondition(condition);
-//                            conditionList.add(condition);
-//                        }
-//
-//                    }
-//                    purityDatum.setConditionCollection(conditionList);
-//                    datumSet.add(purityDatum);
-//                }
-//            }
-//            for(PurityDatum datum:datumSet){
-//                PurityRow row = new PurityRow();
-//                PurityTableCell cell = new PurityTableCell();
-//                cell.setCreatedBy(datum.getCreatedBy());
-//                cell.setCreatedDate(datum.getCreatedDate());
-//                cell.setId(datum.getId());
-//                cell.setValue(datum.getValue().toString());
-//                cell.setDatumOrCondition("datum");
-//
-//                cell.setPurityDatum(datum);
-//
-//
-//                row.addCell(cell);
-//
-//                purityBean.addRow(row);
-//            }
-//        }
-
 
 
 
@@ -787,11 +719,11 @@ public class SynthesisPurificationBO extends BaseAnnotationBO {
             }
             conditionSet.add(datumCondition);
             conditionCell.setCondition(datumCondition);
-            conditionCell.setPurityDatum(null);
+//            conditionCell.setPurityDatum(null);
             tableCells.add(conditionCell);
         }
 
-        PurityDatum datum = new PurityDatum();
+        PurityDatumCondition datum = new PurityDatumCondition();
         PurityTableCell datumCell = new PurityTableCell();
         datumCell.setColumnOrder(currentDatumCell.getColumnOrder());
         datumCell.setDatumOrCondition("datum");
@@ -800,7 +732,7 @@ public class SynthesisPurificationBO extends BaseAnnotationBO {
 //        datumCell.setCreatedDate(currentDatumCell.getCreatedDate());
 //        datum.setCreatedDate(currentDatumCell.getCreatedDate());
         datumCell.setValue(currentDatumCell.getValue());
-        datum.setValue(new Float(currentDatumCell.getValue()));
+        datum.setValue(currentDatumCell.getValue());
         datumCell.setId(currentDatumCell.getId());
         datum.setId(currentDatumCell.getId());
         datumCell.setOperand(currentDatumCell.getOperand());
@@ -816,13 +748,13 @@ public class SynthesisPurificationBO extends BaseAnnotationBO {
         }
 
 
-        datum.setConditionCollection(conditionSet);
-        for(PurityDatumCondition condition:datum.getConditionCollection()){
-//            condition.setPurityDatumPkId(datum.getId());
-            condition.setPurityDatum(datum);
-        }
-        datumCell.setCondition(null);
-        datumCell.setPurityDatum(datum);
+//        datum.setConditionCollection(conditionSet);
+//        for(PurityDatumCondition condition:datum.getConditionCollection()){
+////            condition.setPurityDatumPkId(datum.getId());
+//            condition.setPurityDatum(datum);
+//        }
+        datumCell.setCondition(datum);
+//        datumCell.setPurityDatum(datum);
         tableCells.add(datumCell);
         newRow.setCells(tableCells);
         return newRow;
