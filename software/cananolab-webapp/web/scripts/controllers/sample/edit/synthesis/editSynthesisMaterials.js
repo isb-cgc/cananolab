@@ -202,7 +202,7 @@ var app = angular.module('angularApp')
     console.log('i am uploading')
     var fd = new FormData(); // create new form data object //
     fd.append('file', $scope.fileObject);
-    $http.post('/caNanoLab/rest/core/uploadFile', fd, { withCredentials: false, headers: { 'Accept': 'application/json, text/plain' }, transformRequest: angular.identity }).
+    $http.post('/caNanoLab/rest/core/uploadFile', fd, { withCredentials: false, headers: { 'Content-Type': undefined }, transformRequest: angular.identity }).
       success(function (data, status, headers, config) {
         $scope.uploadComplete = true;
       }).
