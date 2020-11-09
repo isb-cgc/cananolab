@@ -83,29 +83,5 @@ public class SimplePurificationEditBean {
 
     }
 
-    private class DataAndConditions {
-        String name = new String();
-        HashSet<String> values = new HashSet<String>();
 
-        public String getName(){
-            return name;
-        }
-
-        public void setName(String newName){
-            this.name = newName;
-        }
-
-        public Set<String> getValues() {
-            return values;
-        }
-
-        public void setValues(HashSet<String> newValues){
-            this.values = newValues;
-        }
-
-        public HashSet<String>  addValue(String value){
-            values.add(value);
-            return this.values;
-        }
-    }
 }
