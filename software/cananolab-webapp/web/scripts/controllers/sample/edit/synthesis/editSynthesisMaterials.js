@@ -16,6 +16,7 @@ var app = angular.module('angularApp')
   $scope.synMaterialId = $location.search()['synMaterialId'];
   $scope.sampleName = sampleService.sampleName($scope.sampleId);
   $scope.fileId = null;
+  
 
   // initial setup for dropdowns //
   $http({ method: 'GET', url: `/caNanoLab/rest/synthesisMaterial/setup?sampleId=${$scope.sampleId}`}).
@@ -34,6 +35,7 @@ var app = angular.module('angularApp')
       success(function (data, status, headers, config) {
         $scope.material = data;
         $scope.materialCopy = angular.copy($scope.material);
+        $scope.fileArray = angular.copy($scope.material.fileElements)
         $scope.loader = false;
       }).error(function (data, status, headers, config) {
       });  
@@ -129,15 +131,18 @@ var app = angular.module('angularApp')
       $scope.fileId = file['id'];
       $scope.currentFile = { 
         "uri":file.uri, "uriExternal": file.uriExternal, 
+        "id":file.id,
         "externalUrl":file.externalUrl,"type":file.type,
-        "title":file.title, "description":file.description }; // //
+        "title":file.title, "description":file.description }
+
       console.log($scope.currentFile)
     }
     else {
       $scope.currentFile = {
         "uri": "", "uriExternal": false,
         "externalUrl": null, "type": "",
-        "title": "", "description": ""
+        "title": "", "description": "",
+        "id":""
       }; // //
       $scope.fileFormIndex = index;
     };
@@ -205,6 +210,14 @@ var app = angular.module('angularApp')
     $http.post('/caNanoLab/rest/core/uploadFile', fd, { withCredentials: false, headers: { 'Content-Type': undefined }, transformRequest: angular.identity }).
       success(function (data, status, headers, config) {
         $scope.uploadComplete = true;
+        if ($scope.fileFormIndex==-1) {
+          $scope.currentFile['uri'] = data['fileName']
+          $scope.fileArray.push($scope.currentFile);
+        }
+        else {
+          console.log('change existing file')
+        }
+
       }).
       error(function (data, status, headers, config) {
         $scope.uploadError = true;
@@ -251,6 +264,14 @@ var app = angular.module('angularApp')
 
     $http({ method: 'POST', url: '/caNanoLab/rest/synthesisMaterial/submit', data: $scope.material }).
       success(function (data, status, headers, config) {
+        for (var x=0; x<$scope.fileArray.length; x++) {
+          $http({ method: 'POST', url: '/caNanoLab/rest/synthesisMaterial/saveFile', data:[$scope.material,$scope.fileArray[x]] }).
+          success(function() {
+
+          }).error(function() {
+
+          })
+        }
         $location.search({ 'message': 'Synthesis Material successfully saved.', 'sampleId': $scope.sampleId }).path('/editSynthesis').replace();
       }).
       error(function (data, status, headers, config) {
