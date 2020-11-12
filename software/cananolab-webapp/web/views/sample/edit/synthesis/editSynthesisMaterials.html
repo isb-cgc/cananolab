@@ -254,6 +254,7 @@
                 </tr>
                 <tr>
                     <td colspan="2">
+                        {{fileArray}}
                         <table class="editTableWithGrid" align="center" width="95%">
                             <tr>
                                 <td class="cellLabel">
@@ -269,7 +270,7 @@
                                     Description
                                 </td>
                             </tr>
-                            <tr class="synthesisFiles" ng-repeat="file in material.fileElements">
+                            <tr class="synthesisFiles" ng-repeat="file in fileArray">
                                 <td width="10%">
                                     {{file.type}}
                                 </td>
@@ -288,7 +289,7 @@
                                 </td>
                             </tr>    
                             <tr ng-show="fileFormIndex!=null">
-                                <td colspan="4">{{currentFile}}, {{fileObject}}
+                                <td colspan="4">{{currentFile}}, {{fileObject}}, {{fileFormIndex}}
                                     <table class="editTableWithGrid form" align="center" width="95%">
                                         <tr ng-if="fileErrorMessage">
                                             <td colspan="2" class="fileErrorMessage">
