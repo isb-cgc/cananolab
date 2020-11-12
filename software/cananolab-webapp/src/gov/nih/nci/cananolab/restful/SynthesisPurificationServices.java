@@ -37,7 +37,7 @@ public class SynthesisPurificationServices {
      * @return  Map of drop down options
      */
     @GET
-    @Path("/setupNew")
+    @Path("/setup")
     @Produces("application/json")
     public Response setupNew(@Context HttpServletRequest httpRequest, @DefaultValue("") @QueryParam("sampleId") String sampleId)
     {
