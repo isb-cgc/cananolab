@@ -3,10 +3,13 @@ package gov.nih.nci.cananolab.restful;
 import gov.nih.nci.cananolab.domain.common.Instrument;
 import gov.nih.nci.cananolab.domain.common.Technique;
 import gov.nih.nci.cananolab.exception.ExperimentConfigException;
+import gov.nih.nci.cananolab.restful.sample.CharacterizationBO;
 import gov.nih.nci.cananolab.restful.sample.ExperimentConfigManager;
 import gov.nih.nci.cananolab.restful.synthesis.SynthesisManager;
 import gov.nih.nci.cananolab.restful.synthesis.SynthesisPurificationBO;
 import gov.nih.nci.cananolab.restful.util.CommonUtil;
+import gov.nih.nci.cananolab.restful.view.edit.SimpleFindingBean;
+import gov.nih.nci.cananolab.restful.view.edit.SimplePurityBean;
 import gov.nih.nci.cananolab.restful.view.edit.SimpleSynthesisPurificationBean;
 import gov.nih.nci.cananolab.security.utils.SpringSecurityUtil;
 import gov.nih.nci.cananolab.system.applicationservice.CaNanoLabApplicationService;
@@ -462,7 +465,34 @@ public class SynthesisPurificationServices {
 
     }
 
+    @POST
+    @Path("/newPurity")
+    @Produces("application/json")
+    public Response newPurityTemplate(@Context HttpServletRequest httpRequest, SimpleFindingBean purityBean){
+        try {
+            CharacterizationBO characterizationBO =
+                    (CharacterizationBO) SpringApplicationContext.getBean(httpRequest, "characterizationBO");
 
+            SimpleFindingBean simpleFindingBean = characterizationBO.drawNewMatrix(httpRequest, purityBean);
+
+            return Response.ok(simpleFindingBean).header("Access-Control-Allow-Credentials", "true")
+                    .header("Access-Control-Allow-Origin", "*").header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS")
+                    .header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization").build();
+
+
+
+//            if (!SpringSecurityUtil.isUserLoggedIn())
+//                return Response.status(Response.Status.UNAUTHORIZED).entity(Constants.MSG_SESSION_INVALID).build();
+//            SynthesisPurificationBO purificationBO = (SynthesisPurificationBO) SpringApplicationContext.getBean(httpRequest, "synthesisPurificationBO");
+//            SimplePurityBean purityTemplate = purificationBO.createPurityTemplate(purityBean,httpRequest);
+//            return Response.ok(purityTemplate).header("Access-Control-Allow-Credentials", "true")
+//                    .header("Access-Control-Allow-Origin", "*").header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS")
+//                    .header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization").build();
+        }catch (Exception e){
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
+                    .entity(CommonUtil.wrapErrorMessageInList(e.getMessage())).build();
+        }
+    }
 
 
 }
