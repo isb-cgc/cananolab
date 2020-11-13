@@ -1,1437 +1,824 @@
-'use strict';
-var app = angular.module('angularApp')
-  .controller('EditSynthesisPurificationCtrl', function (sampleService, utilsService, navigationService, $anchorScroll,groupService, $rootScope, $scope, $http, $location, $filter, $modal, $routeParams) {
-    $scope.tempShow = false;
-    $scope.dropdowns = {};
-    $scope.currentFile = {}; // current file being edited //
-    $scope.fileArray = [];
-    $scope.technique = {}; // current inherent being edited //
-    $scope.instrument = {}; // current instrument being edited //
-    $scope.instrumentFormIndex = null; // current instrument being edited //
-    $scope.techniqueFormIndex = null;
-    $scope.fileFormIndex = null;
-    $scope.sampleId = $location.search()['sampleId'];
-    $scope.sampleName = '';
-    $scope.dataId = $location.search()['dataId'];
-    $scope.sampleName = sampleService.sampleName($scope.sampleId);
-    $scope.fileId = null;
-
-    /* csv upload */
-    var csvColumnMaxCount = 25;  // Maximum number of columns allowed
-    var csvMaxNumberOfLines = 5000;  // Maximum number of rows allowed
-    var csvMaxLenOfEntry = 200;
-    var runaway = 10240; // A counter used to prevent an endless loop if something goes wrong.  @TODO needs a better name
-    var csvDataColCount = 0;
-    var csvDataObj;
-    var csvDataRowCount;
-    var csvImportError = '';
-
-
-    // scrolls to section on page with provided id //
-    $scope.scroll = function (id) {
-      var old = $location.hash();
-      $location.hash(id);
-      $anchorScroll();
-      $location.hash(old);
-    };
-    // $scope.dummyData = { "errors": null, "sampleId": "1000", "id": 1000, "simpleProtocol": { "domainId": 66256896, "domainFileId": 66289664, "domainFileUri": "protocols/20200110_12-52-36-363_2020 Holiday & Pay Calendar.pdf", "displayName": "Synthesis Test Protocol (STP), version 1.0" }, "createdBy": "canano_user", "createdDate": 1575652500000, "type": "Interim Purification", "methodName": null, "designMethodDescription": "Test entry for synthesis purification", "analysis": "Analysis for synth 1", "yield": 84.7, "purityBeans": [{ "columnHeaders": [], "purityRows": [], "files": [{ "uriExternal": false, "uri": "https://evs.nci.nih.gov/ftp1/CTCAE/CTCAE_5.0/NCIt_CTCAE_5.0.xlsx", "type": "Excel", "title": "Synthesis File", "description": "dummy row for testing of synthesis", "keywordsStr": "", "id": 1333, "createdBy": "canano_curator", "createdDate": 1575652500000, "sampleId": "1000", "errors": null, "externalUrl": null, "theAccess": { "recipient": null, "recipientDisplayName": null, "accessType": null, "roleName": "", "roleDisplayName": "", "principal": false }, "isPublic": false }], "fileBeingEdited": null, "id": 1002, "createdBy": "canano_curator", "createdDate": 1566964800000 }, { "columnHeaders": [{ "columnName": "Purity datum 1", "conditionProperty": null, "valueType": "purity", "valueUnit": "%", "columnType": "purity datum", "displayName": "Purity datum 1<br>(purity,%)", "constantValue": "", "columnOrder": 1, "createdDate": 1575652500000 }, { "columnName": "Synthesis condition 1", "conditionProperty": "", "valueType": "observed", "valueUnit": "g", "columnType": "condition", "displayName": "Synthesis condition 1<br>(observed,g)", "constantValue": "", "columnOrder": 2, "createdDate": 1575652500000 }], "purityRows": [{ "cells": [{ "id": 1000, "value": "55.0", "datumOrCondition": "datum", "columnOrder": 1, "createdDate": 1575652500000, "createdBy": "canano_curator", "operand": "=" }, { "id": 1000, "value": "42", "datumOrCondition": "condition", "columnOrder": 2, "createdDate": 1575652500000, "createdBy": "canano_user", "operand": "=" }] }], "files": [], "fileBeingEdited": null, "id": 1000, "createdBy": "canano_curator", "createdDate": 1575652500000 }], "simpleExperimentBeans": [{ "openTechniqueInstrumentsFormniqueid": 1000, "techniqueDisplayName": "Interim purification technique(InP)", "techniqueType": "Interim purification technique", "abbreviation": "InP", "description": "Configuration for synthesis purification", "id": 1000, "dirty": false, "instruments": [{ "manufacturer": "Biome", "modelName": "Test Scale", "type": "scale", "id": 1000 }] }, { "techniqueid": 1000, "techniqueDisplayName": "Interim purification technique(InP)", "techniqueType": "Interim purification technique", "abbreviation": "InP", "description": "Configuration for purification 2", "id": 1001, "dirty": false, "instruments": [{ "manufacturer": "Invitrogen", "modelName": "Countess", "type": "cytometer", "id": 44793856 }, { "manufacturer": "Agilent", "modelName": "1200", "type": "HPLC system", "id": 62914561 }] }] }
-    // $scope.dummyData2 = { "errors": null, "sampleId": "1000", "id": 1000, "simpleProtocol": { "domainId": 66256896, "domainFileId": 66289664, "domainFileUri": "protocols/20200110_12-52-36-363_2020 Holiday & Pay Calendar.pdf", "displayName": "Synthesis Test Protocol (STP), version 1.0" }, "createdBy": "canano_user", "createdDate": 1575652500000, "type": "Interim Purification", "methodName": null, "designMethodDescription": "Test entry for synthesis purification", "analysis": "Analysis for synth 1", "yield": 84.7, "purityBeans": [{ "columnHeaders": [], "purityRows": [], "files": [{ "uriExternal": false, "uri": "https://evs.nci.nih.gov/ftp1/CTCAE/CTCAE_5.0/NCIt_CTCAE_5.0.xlsx", "type": "Excel", "title": "Synthesis File", "description": "dummy row for testing of synthesis", "keywordsStr": "", "id": 1333, "createdBy": "canano_curator", "createdDate": 1575652500000, "sampleId": "1000", "errors": null, "externalUrl": null, "theAccess": { "recipient": null, "recipientDisplayName": null, "accessType": null, "roleName": "", "roleDisplayName": "", "principal": false }, "isPublic": false }], "fileBeingEdited": null, "id": 1002, "createdBy": "canano_curator", "createdDate": 1566964800000 }, { "columnHeaders": [{ "columnName": "Purity datum 1", "conditionProperty": null, "valueType": "purity", "valueUnit": "%", "columnType": "purity datum", "displayName": "Purity datum 1<br>(purity,%)", "constantValue": "", "columnOrder": 1, "createdDate": 1575652500000 }, { "columnName": "Synthesis condition 1", "conditionProperty": "", "valueType": "observed", "valueUnit": "g", "columnType": "condition", "displayName": "Synthesis condition 1<br>(observed,g)", "constantValue": "", "columnOrder": 2, "createdDate": 1575652500000 }], "purityRows": [{ "cells": [{ "id": 1000, "value": "55.0", "datumOrCondition": "datum", "columnOrder": 1, "createdDate": 1575652500000, "createdBy": "canano_curator", "operand": "=" }, { "id": 1000, "value": "42", "datumOrCondition": "condition", "columnOrder": 2, "createdDate": 1575652500000, "createdBy": "canano_user", "operand": "=" }] }], "files": [], "fileBeingEdited": null, "id": 1000, "createdBy": "canano_curator", "createdDate": 1575652500000 }], "simpleExperimentBeans": [{ "techniqueid": 1000, "techniqueDisplayName": "Interim purification technique(InP)", "techniqueType": "Interim purification technique", "abbreviation": "InP", "description": "Configuration for synthesis purification", "id": 1000, "dirty": false, "instruments": [{ "manufacturer": "Biome", "modelName": "Test Scale", "type": "scale", "id": 1000 }] }, { "techniqueid": 1000, "techniqueDisplayName": "Interim purification technique(InP)", "techniqueType": "Interim purification technique", "abbreviation": "InP", "description": "Configuration for purification 2", "id": 1001, "dirty": false, "instruments": [{ "manufacturer": "Invitrogen", "modelName": "Countess", "type": "cytometer", "id": 44793856 }, { "manufacturer": "Agilent", "modelName": "1200", "type": "HPLC system", "id": 62914561 }] }] }
-    // $scope.dummyData3 = { "errors": null, "sampleId": "1000", "id": 1000, "simpleProtocol": { "domainId": null, "domainFileId": null, "domainFileUri": null, "displayName": "" }, "createdBy": "canano_user", "createdDate": 1575652500000, "type": "Final Purification", "methodName": null, "designMethodDescription": "This is a new save", "analysis": "This is a new analysis", "yield": 6969, "purityBeans": [{ "columnHeaders": [{ "columnName": "Purity datum 1", "conditionProperty": null, "valueType": "purity", "valueUnit": "%", "columnType": "purity datum", "displayName": "Purity datum 1<br>(purity,%)", "constantValue": "", "columnOrder": 1, "createdDate": 1575652500000 }, { "columnName": "Synthesis condition 1", "conditionProperty": "", "valueType": "observed", "valueUnit": "g", "columnType": "condition", "displayName": "Synthesis condition 1<br>(observed,g)", "constantValue": "", "columnOrder": 2, "createdDate": 1575652500000 }], "purityRows": [{ "cells": [{ "value": "55.0", "datumOrCondition": "datum", "columnOrder": 1, "createdDate": 1575652500000, "operand": "=" }, { "value": "42", "datumOrCondition": "condition", "columnOrder": 2, "createdDate": 1575652500000, "operand": "=" }] }, { "cells": [{ "value": "51.0", "datumOrCondition": "datum", "columnOrder": 1, "createdDate": 1575652500000, "operand": "=" }, { "value": "1000", "datumOrCondition": "condition", "columnOrder": 2, "createdDate": 1575652500000, "operand": "=" }] }], "files": [], "fileBeingEdited": null, "id": 1000, "createdBy": "canano_curator", "createdDate": 1575652500000 }, { "columnHeaders": [], "purityRows": [], "files": [{ "uriExternal": false, "uri": "https://evs.nci.nih.gov/ftp1/CTCAE/CTCAE_5.0/NCIt_CTCAE_5.0.xlsx", "type": "Excel", "title": "Synthesis File", "description": "dummy row for testing of synthesis", "keywordsStr": "", "id": 1000, "createdBy": "canano_curator", "createdDate": 1575652500000, "sampleId": "1000", "errors": null, "externalUrl": null, "theAccess": { "recipient": null, "recipientDisplayName": null, "accessType": null, "roleName": "", "roleDisplayName": "", "principal": false }, "isPublic": false }], "fileBeingEdited": null, "id": 1002, "createdBy": "canano_curator", "createdDate": 1566964800000 }], "simpleExperimentBeans": [{ "techniqueid": 1001, "techniqueDisplayName": "This is an edited technique", "techniqueType": "Interim purification technique", "abbreviation": "InP", "description": "Edited Configuartion Desc", "id": 1001, "dirty": true, "instruments": [{ "manufacturer": "Abbott", "modelName": "SomeModel", "type": "sometype", "id": 44793856 }, { "manufacturer": "Agilent", "modelName": "1200", "type": "HPLC system", "id": 62914561 }] }, { "techniqueid": 1000, "techniqueDisplayName": "Interim purification technique(InP)", "techniqueType": "Interim purification technique", "abbreviation": "InP", "description": "Configuration for synthesissadsdsadsd purification", "id": 1000, "dirty": false, "instruments": [{ "manufacturer": "Biome", "modelName": "Test Scale", "type": "scale", "id": 1000 }] }] }
-    // $scope.dummyData4 = { "errors": null, "sampleId": "1000", "id": 1000, "simpleProtocol": { "domainId": null, "domainFileId": null, "domainFileUri": null, "displayName": "" }, "createdBy": "canano_user", "createdDate": 1575652500000, "type": "Final Purification", "methodName": null, "designMethodDescription": "This is a new save", "analysis": "This is a new analysis", "yield": 6969, "purityBeans": [{ "columnHeaders": [{ "columnName": "Purity datum 1", "conditionProperty": null, "valueType": "purity", "valueUnit": "%", "columnType": "purity datum", "displayName": "Purity datum 1<br>(purity,%)", "constantValue": "", "columnOrder": 1, "createdDate": 1575652500000 }, { "columnName": "Synthesis condition 1", "conditionProperty": "", "valueType": "observed", "valueUnit": "g", "columnType": "condition", "displayName": "Synthesis condition 1<br>(observed,g)", "constantValue": "", "columnOrder": 2, "createdDate": 1575652500000 }], "purityRows": [{ "cells": [{ "value": "55.0", "datumOrCondition": "datum", "columnOrder": 1, "createdDate": 1575652500000, "operand": "=" }, { "value": "42", "datumOrCondition": "condition", "columnOrder": 2, "createdDate": 1575652500000, "operand": "=" }] }, { "cells": [{ "value": "51.0", "datumOrCondition": "datum", "columnOrder": 1, "createdDate": 1575652500000, "operand": "=" }, { "value": "1000", "datumOrCondition": "condition", "columnOrder": 2, "createdDate": 1575652500000, "operand": "=" }] }], "files": [], "fileBeingEdited": null, "id": 1000, "createdBy": "canano_curator", "createdDate": 1575652500000 }, { "columnHeaders": [], "purityRows": [], "files": [{ "uriExternal": false, "uri": "https://evs.nci.nih.gov/ftp1/CTCAE/CTCAE_5.0/NCIt_CTCAE_5.0.xlsx", "type": "Excel", "title": "Synthesis File", "description": "dummy row for testing of synthesis", "keywordsStr": "", "id": 1000, "createdBy": "canano_curator", "createdDate": 1575652500000, "sampleId": "1000", "errors": null, "externalUrl": null, "theAccess": { "recipient": null, "recipientDisplayName": null, "accessType": null, "roleName": "", "roleDisplayName": "", "principal": false }, "isPublic": false }], "fileBeingEdited": null, "id": 1002, "createdBy": "canano_curator", "createdDate": 1566964800000 }], "simpleExperimentBeans": [{ "techniqueid": 1001, "techniqueDisplayName": "This is an edited technique", "techniqueType": "Interim purification technique", "abbreviation": "InP", "description": "Edited Configuartion Desc", "id": 1001, "dirty": true, "instruments": [{ "manufacturer": "Abbott", "modelName": "SomeModel", "type": "sometype", "id": 44793856 }, { "manufacturer": "Agilent", "modelName": "1200", "type": "HPLC system", "id": 62914561 }] }, { "techniqueid": 1000, "techniqueDisplayName": "Interim purification technique(InP)", "techniqueType": "Interim purification technique", "abbreviation": "InP", "description": "Configuration for synthesissadsdsadsd purification", "id": 1000, "dirty": false, "instruments": [{ "manufacturer": "Biome", "modelName": "Test Scale", "type": "scale", "id": 1000 }] }] }
-    // $scope.dummyData5 = { "errors": null, "sampleId": "1000", "id": 1000, "simpleProtocol": { "domainId": null, "domainFileId": null, "domainFileUri": null, "displayName": "" }, "createdBy": "canano_user", "createdDate": 1575652500000, "type": "Final Purification", "methodName": null, "designMethodDescription": "This is a new save", "analysis": "This is a new analysis", "yield": 6969, "purityBeans": [{ "columnHeaders": [{ "columnName": "Purity datum 1", "conditionProperty": null, "valueType": "purity", "valueUnit": "%", "columnType": "purity datum", "displayName": "Purity datum 1<br>(purity,%)", "constantValue": "", "columnOrder": 1, "createdDate": 1575652500000 }, { "columnName": "Synthesis condition 1", "conditionProperty": "", "valueType": "observed", "valueUnit": "g", "columnType": "condition", "displayName": "Synthesis condition 1<br>(observed,g)", "constantValue": "", "columnOrder": 2, "createdDate": 1575652500000 }], "purityRows": [{ "cells": [{ "value": "55.0", "datumOrCondition": "datum", "columnOrder": 1, "createdDate": 1575652500000, "operand": "=" }, { "value": "42", "datumOrCondition": "condition", "columnOrder": 2, "createdDate": 1575652500000, "operand": "=" }] }, { "cells": [{ "value": "51.0", "datumOrCondition": "datum", "columnOrder": 1, "createdDate": 1575652500000, "operand": "=" }, { "value": "1000", "datumOrCondition": "condition", "columnOrder": 2, "createdDate": 1575652500000, "operand": "=" }] }], "files": [], "fileBeingEdited": null, "id": 1000, "createdBy": "canano_curator", "createdDate": 1575652500000 }, { "columnHeaders": [], "purityRows": [], "files": [{ "uriExternal": false, "uri": "https://evs.nci.nih.gov/ftp1/CTCAE/CTCAE_5.0/NCIt_CTCAE_5.0.xlsx", "type": "Excel", "title": "Synthesis File", "description": "dummy row for testing of synthesis", "keywordsStr": "", "id": 1000, "createdBy": "canano_curator", "createdDate": 1575652500000, "sampleId": "1000", "errors": null, "externalUrl": null, "theAccess": { "recipient": null, "recipientDisplayName": null, "accessType": null, "roleName": "", "roleDisplayName": "", "principal": false }, "isPublic": false }], "fileBeingEdited": null, "id": 1002, "createdBy": "canano_curator", "createdDate": 1566964800000 }], "simpleExperimentBeans": [{ "techniqueid": 1001, "techniqueDisplayName": "This is an edited technique", "techniqueType": "Interim purification technique", "abbreviation": "InP", "description": "Edited Configuartion Desc", "id": 1001, "dirty": true, "instruments": [{ "manufacturer": "Abbott", "modelName": "SomeModel", "type": "sometype", "id": 44793856 }, { "manufacturer": "Agilent", "modelName": "1200", "type": "HPLC system", "id": 62914561 }] }, { "techniqueid": 1000, "techniqueDisplayName": "Interim purification technique(InP)", "techniqueType": "Interim purification technique", "abbreviation": "InP", "description": "Configuration for synthesissadsdsadsd purification", "id": 1000, "dirty": false, "instruments": [{ "manufacturer": "Biome", "modelName": "Test Scale", "type": "scale", "id": 1000 }] }] }
-
-    // initial setup for dropdowns //
-    $http({ method: 'GET', url: `/caNanoLab/rest/synthesisPurification/setup?sampleId=${$scope.sampleId}` }).
-      success(function (data, status, headers, config) {
-        $scope.dropdowns = data;
-        $scope.loader = false;
-      }).error(function (data, status, headers, config) {
-      });
-
-    // function to return edit data for material //
-    if ($scope.dataId == -1) {
-      $scope.purification = { "sampleId": $scope.sampleId,  "designMethodDescription": "" };
-    }
-    else {
-      $http({ method: 'GET', url: `/caNanoLab/rest/synthesisPurification/setupEdit?sampleId=${$scope.sampleId}&dataId=${$scope.dataId}` }).
-        success(function (data, status, headers, config) {
-          $scope.purification = data;
-          $scope.purificationCopy = angular.copy($scope.purification);
-          $scope.loader = false;
-        }).error(function (data, status, headers, config) {
-        });
-    };
-
-    // cancel file //
-    $scope.cancelFile = function () {
-      $scope.fileFormIndex = null;
-    };
-
-    // cancel technique //
-    $scope.cancelTechnique = function (index, i) {
-      console.log('dont do anything. Original technique stays as is');
-      $scope.techniqueFormIndex = null;
-    };
-
-    $scope.cancelInstrument = function (index, i) {
-      console.log('dont do anything. Original technique stays as is');
-      $scope.instrumentFormIndex = null;
-    };    
-
-    // delete for material //
-    $scope.deletePurification = function () {
-      if (confirm("Are you sure you want to delete?")) {
-        $http({ method: 'POST', url: '/caNanoLab/rest/synthesisMaterial/delete', data: $scope.material }).
-          success(function (data, status, headers, config) {
-            $location.search({ 'message': 'Synthesis Material successfully deleted.', 'sampleId': $scope.sampleId }).path('/editSynthesis').replace();
-          }).
-          error(function (data, status, headers, config) {
-          });
-      };
-    };
-
-    // deletes technique from purification //
-    $scope.deleteTechnique = function (index, parentIndex, technique) {
-      $scope.purification['simpleExperimentBeans'].splice(index, 1);
-    };
-
-    // deletes instrument from technique //
-    $scope.deleteInstrument = function (index, parentIndex, instrument) {
-      $scope.technique['instruments'].splice(index, 1);
-    };    
-
-    // delete material element //
-    $scope.deleteMaterialElement = function (me, index) {
-      $scope.material.materialElements.splice(index, 1)
-    };
-
-    // gets abbreviation and desc for technique //
-    $scope.getAbbreviationDescForTechnique = function() {
-      $http({ method: 'GET', url: `/caNanoLab/rest/synthesisPurification/findTechniqueByType?techniqueType=${$scope.technique.techniqueType}` }).
-        success(function (data, status, headers, config) {
-          $scope.techniqueAbbreviationDesc = data;
-          $scope.loader = false;
-        }).error(function (data, status, headers, config) {
-        });      
-    };
-
-    // gets file conditions to make save file button enabled or disabled //
-    $scope.getFileConditions = function () {
-      let saveButtonDisabled = false;
-      if ($scope.fileId) { // file is existing //
-        if ($scope.currentFile.uriExternal) { // file is external //
-          saveButtonDisabled = !$scope.currentFile.externalUrl || !$scope.currentFile.type || !$scope.currentFile.title ? true : false;
-        }
-        else { // file is internal. Do not have to check file //
-          saveButtonDisabled = !$scope.currentFile.title || !$scope.currentFile.type ? true : false;
-        };
-      }
-      else { // file is new //
-        if ($scope.currentFile.uriExternal) { // file is external //
-          saveButtonDisabled = !$scope.currentFile.externalUrl || !$scope.currentFile.type || !$scope.currentFile.title ? true : false;
-        }
-        else { // file is internal. Do not have to check file //
-          saveButtonDisabled = !$scope.currentFile.title || !$scope.currentFile.type || !$scope.fileObject ? true : false;
-        };
-      };
-      return saveButtonDisabled;
-    };
-
-    // open the file edit form //
-    $scope.openFileForm = function (index, parentIndex, file) {
-      $scope.fileObject = null;
-      $('#uploadFile')[0].value = "";
-      $scope.uploadError = null;
-      $scope.fileId = null;
-      $scope.fileErrorMessage = null;
-      // uriExternal: true
-      // externalUrl: https://google.com/fake.txt
-      // type: document
-      // title: test
-      // keywordsStr: abc
-      // description: 123
-      // myFile: (binary)
-
-      // uriExternal: false
-      // type: document
-      // title: title
-      // keywordsStr: abc
-      // description: 1234
-      // myFile: (binary)
-
-      if (index != -1) {
-        $scope.fileFormIndex = index;
-        $scope.fileId = file['id'];
-        $scope.currentFile = {
-          "uri": file.uri, "uriExternal": file.uriExternal,
-          "externalUrl": file.externalUrl, "type": file.type,
-          "title": file.title, "description": file.description
-        }; // //
-        console.log($scope.currentFile)
-      }
-      else {
-        $scope.currentFile = {
-          "uri": "", "uriExternal": false,
-          "externalUrl": null, "type": "",
-          "title": "", "description": ""
-        }; // //
-        $scope.fileFormIndex = index;
-      };
-    };
-
-    // open the inherent function edit form //
-    $scope.openTechniqueInstrumentsForm = function (index, parentIndex, technique) {
-      console.log(index)
-      if (index != -1) {
-        $scope.technique = angular.copy(technique);
-        $scope.techniqueFormIndex = index;
-      }
-      else {
-        $scope.technique = { "type": null, "abbreviation": null, "description": null, "instruments": [] }
-        $scope.techniqueFormIndex = index;
-      };
-    };
-
-    // open the inherent function edit form //
-    $scope.openInstrumentForm = function (index, parentIndex, instrument) {
-      $scope.getInstrumentTypes();
-      if (index != -1) {
-        $scope.instrument = angular.copy(instrument);
-        $scope.instrumentFormIndex = index;
-      }
-      else {
-        $scope.instrument = { "type": null, "manufacturer": null, "modelName": null }
-        $scope.instrumentFormIndex = index;
-      };
-    };    
-
-    // get instrument types based on technique type //
-    $scope.getInstrumentTypes = function() {
-      $http({ method: 'GET', url: `/caNanoLab/rest/synthesisPurification/getInstrumentTypesByTechniqueType?techniqueType=${$scope.technique.techniqueType}` }).
-        success(function (data, status, headers, config) {
-          $scope.instrumentTypes = data;
-          $scope.loader = false;
-        }).error(function (data, status, headers, config) {
-        });
-    };
-
-    // save file //
-    $scope.saveFile = function () {
-      $scope.uploadComplete = false;
-      $scope.uploadError = false;
-
-      if ($scope.fileObject && !$scope.currentFile.uriExternal) {
-        $scope.uploadFile();
-
-        // watch upload complete //
-        $scope.$watch('uploadComplete', function () {
-          if ($scope.uploadComplete) {
-            console.log('upload complete', $scope.uploadComplete)
-          };
-        });
-
-        // watch upload error //
-        $scope.$watch('uploadError', function () {
-          if ($scope.uploadError) {
-            $scope.fileErrorMessage = 'Error Uploading File';
-          };
-        });
-
-      }
-      else {
-        console.log('just save. No new file or no file at all')
-      }
-    };
-
-    // uploads file to server //
-    $scope.uploadFile = function () {
-      var fd = new FormData(); // create new form data object //
-      fd.append('file', $scope.fileObject);
-      $http.post('/caNanoLab/rest/core/uploadFile', fd, { withCredentials: false, headers: { 'Content-Type': undefined }, transformRequest: angular.identity }).
-        success(function (data, status, headers, config) {
-          $scope.uploadComplete = true;
-        }).
-        error(function (data, status, headers, config) {
-          $scope.uploadError = true;
-          $scope.fileErrorMessage = 'Error Uploading File';
-        });
-    };
-
-    // save inherent function //
-    $scope.openTechniqueInstruments = function (i) {
-      if ($scope.techniqueFormIndex == -1) {
-        if (!$scope.purification.instruments) {
-          $scope.purification['instruments'] = [];
-        };
-        $scope.purification.instruments.push($scope.technique)
-      }
-      else {
-        $scope.purification.instruments[$scope.inherentFunctionFormIndex] = $scope.technique;
-      }
-      $scope.inherentFunctionFormIndex = null;
-    };
-
-    // save technique //
-    $scope.saveTechnique = function (technique) {
-      if ($scope.techniqueFormIndex == -1) {
-        $scope.purification['simpleExperimentBeans'].push($scope.technique)
-      }
-      else {
-        $scope.purification['simpleExperimentBeans'][$scope.techniqueFormIndex] = technique;
-      }
-      $scope.techniqueFormIndex = null;
-    };
-
-    // save instrument //
-    $scope.saveInstrument = function (instrument) {
-      if ($scope.instrumentFormIndex == -1) {
-        $scope.technique.push($scope.instrument)
-      }
-      else {
-        $scope.technique.instruments[$scope.instrumentFormIndex] = instrument;
-      }
-      $scope.instrumentFormIndex = null;
-    };    
-
-    // submit the entire synthesis material //
-    $scope.savePurification = function () {
-      // $scope.fileMaterial = angular.copy($scope.material);
-      // $scope.fileMaterial['fileBeingEdited'] = { "uri": $scope.somefile.name, "title": "test", "type": "document", "uriExternal": false };
-      // $http({ method: 'POST', url: '/caNanoLab/rest/synthesisMaterial/saveFile', data: $scope.fileMaterial }).
-      //   success(function (data, status, headers, config) {
-      //     $location.search({ 'message': 'Synthesis Material successfully saved.', 'sampleId': $scope.sampleId }).path('/editSynthesis').replace();
-      //   }).
-      //   error(function (data, status, headers, config) {
-      //     console.log('fail')
-      //   });
-
-      $http({ method: 'POST', url: '/caNanoLab/rest/synthesisPurification/submit', data: $scope.purification }).
-        success(function (data, status, headers, config) {
-          $location.search({ 'message': 'Synthesis Purification successfully saved.', 'sampleId': $scope.sampleId }).path('/editSynthesis').replace();
-        }).
-        error(function (data, status, headers, config) {
-          console.log('fail')
-        });
-    };
-
-    // sets external url to true or false for current file //
-    $scope.setFileType = (fileType) => {
-      fileType ? $scope.currentFile.uriExternal = true : $scope.currentFile.uriExternal = false;
-    };
-
-    $scope.setPageTitle = () => $scope.dataId == -1 ? `Add ${$scope.sampleName.name} Synthesis - Purification` : `Edit ${$scope.sampleName.name} Synthesis - Purification`;
-
-
-
-    $scope.testSave = () => {
-      // $scope.fileMaterial = angular.copy($scope.material);
-      // $scope.fileMaterial['fileBeingEdited'] = { "uri": $scope.somefile.name, "title": "test", "type": "document", "uriExternal": false };
-      // $http({ method: 'POST', url: '/caNanoLab/rest/synthesisMaterial/saveFile', data: $scope.fileMaterial }).
-      //   success(function (data, status, headers, config) {
-      //     $location.search({ 'message': 'Synthesis Material successfully saved.', 'sampleId': $scope.sampleId }).path('/editSynthesis').replace();
-      //   }).
-      //   error(function (data, status, headers, config) {
-      //     console.log('fail')
-      //   });
-
-      $http({ method: 'POST', url: '/caNanoLab/rest/synthesisPurification/savePurification', data: $scope.dummyData }).
-        success(function (data, status, headers, config) {
-          console.log(data)
-          // $location.search({ 'message': 'Synthesis Material successfully saved.', 'sampleId': $scope.sampleId }).path('/editSynthesis').replace();
-        }).
-        error(function (data, status, headers, config) {
-          console.log('fail')
-        });
-    };
-
-    $scope.testSave2 = () => {
-      // $scope.fileMaterial = angular.copy($scope.material);
-      // $scope.fileMaterial['fileBeingEdited'] = { "uri": $scope.somefile.name, "title": "test", "type": "document", "uriExternal": false };
-      // $http({ method: 'POST', url: '/caNanoLab/rest/synthesisMaterial/saveFile', data: $scope.fileMaterial }).
-      //   success(function (data, status, headers, config) {
-      //     $location.search({ 'message': 'Synthesis Material successfully saved.', 'sampleId': $scope.sampleId }).path('/editSynthesis').replace();
-      //   }).
-      //   error(function (data, status, headers, config) {
-      //     console.log('fail')
-      //   });
-
-      $http({ method: 'POST', url: '/caNanoLab/rest/synthesisPurification/savePurification', data: $scope.dummyData3 }).
-        success(function (data, status, headers, config) {
-          console.log(data)
-          // $location.search({ 'message': 'Synthesis Material successfully saved.', 'sampleId': $scope.sampleId }).path('/editSynthesis').replace();
-        }).
-        error(function (data, status, headers, config) {
-          console.log('fail')
-        });
-    };   
-    
-
-
-// Finding section code //    
-
-    // opens new finding dialog //
-    $scope.addNewFinding = function () {
-      var old = $location.hash();
-      $scope.currentFinding = { 'columnHeaders': [] };
-      $scope.currentFinding.dirty = 1;
-      $scope.updateFinding = 1;
-      $scope.finding = {};
-      $scope.scroll('editFindingInfo');
-      $scope.isNewFinding = 1;
-      $scope.currentFindingCopy = angular.copy($scope.currentFinding);
-
-    };
-
-    // open finding dialog with existing finding //
-    $scope.updateExistingFinding = function (finding) {
-      var old = $location.hash();
-      $scope.updateFinding = 1;
-      $scope.currentFinding = finding;
-      checkAllFindingCells();
-      $scope.scroll('editFindingInfo');
-      $scope.isNewFinding = 0;
-      $scope.currentFinding.dirty = 1;
-      $scope.currentFindingCopy = angular.copy(finding);
-    };
-
-    // updates rows and columns and runs rest call update //
-    // Check that input is valid for it's column type.
-    $scope.updateRowsColsForFinding = function () {
-      $scope.loader = true;
-      $scope.badFindingCell = createArray(csvDataColCount, csvDataRowCount);
-
-      $http({ method: 'POST', url: '/caNanoLab/rest/synthesisPurification/updateDataConditionTable', data: $scope.currentFinding }).
-        success(function (data, status, headers, config) {
-          if (data.rows[csvDataRowCount - 1] === undefined) {
-            csvDataRowCount = data.numberOfRows;
-          }
-
-          for (var y = 0; y < csvDataRowCount; y++) {
-
-            for (var x = 0; x < csvDataColCount; x++) {
-              // If the user has reduced the number of columns, make sure we don't try to update columns that no longer exist.
-              if ((data.rows[y].cells[x] !== null) && (data.rows[y].cells[x] !== undefined)) {
-                data.rows[y].cells[x].value = Object(csvDataObj[y][x]);
-                if (x < $scope.currentFinding.length) {
-                  data.rows[y].cells[x].datumOrCondition = $scope.currentFinding.columnHeaders[x].columnType;
-                }
-                // When the column type is set or reset, check all cell contents for valid entries for each column, one row at a time.
-                if (x < $scope.currentFinding.columnHeaders.length) {
-                  $scope.badFindingCell[x][y] = validateFindingCellInput($scope.currentFinding.columnHeaders[x].columnType,
-                    data.rows[y].cells[x].value);
-                }
-                // If there are fewer column types/header set than there are columns.
-                // Data put in a cell with a column that does not have it's type set is never considered invalid.
-                else {
-                  $scope.badFindingCell[x][y] = false;
-                }
-              }
-            }
-          }
-
-          // If there are already column headers set, preserve them.
-          for (var colX = 0; colX < csvDataColCount; colX++) {
-            if (($scope.currentFinding.columnHeaders[colX] !== null) && ($scope.currentFinding.columnHeaders[colX] !== undefined)) {
-              data.columnHeaders[colX] = $scope.currentFinding.columnHeaders[colX];
-            }
-          }
-
-          $scope.loader = false;
-          $scope.currentFinding = data;
-
-        }).
-        error(function (data, status, headers, config) {
-          $scope.loader = false;
-        });
-    };
-
-    // opens column form to change properties for column //
-    $scope.openColumnForm = function (cell) {
-      $scope.findingsColumn = cell;
-      $scope.columnForm = 1;
-
-      $scope.findingsColumnCopyForRestore = {
-        "columnName": "Column 1",
-        "conditionProperty": null,
-        "valueType": null,
-        "valueUnit": null,
-        "columnType": null,
-        "displayName": "Column 1",
-        "constantValue": "",
-        "columnOrder": 1,
-        "createdDate": null
-      };
-
-      $scope.findingsColumnCopy = angular.copy($scope.findingsColumn);
-
-      if ($scope.findingsColumn.columnType) {
-        $scope.onColumnTypeDropdownChange(1);
-      }
-    };
-
-    // In the HTML the user is limited only numbers, and in a range from 1 to column count.
-    // Here we need to add the limitation of, no duplicate numbers.
-    $scope.columnOrderChanged = function (numberInput, index) {
-      $scope.disableChangeColumnOrder = false;
-      for (let i0 = 0; i0 < ($scope.currentFinding.columnHeaders.length - 1); i0++) {
-        for (let i1 = (i0 + 1); i1 < $scope.currentFinding.columnHeaders.length; i1++) {
-          if ($scope.currentFinding.columnHeaders[i0].columnOrder === $scope.currentFinding.columnHeaders[i1].columnOrder) {
-            $scope.disableChangeColumnOrder = true;
-            return;
-          }
-        }
-      }
-    };
-
-
-    /**
-     * Called when Finding cell input changes.
-     *
-     * @param textInput   Text input from the HTML.
-     */
-    $scope.currentFindingCellChanged = function (textInput) {
-      let xy = textInput.id.split(":");
-      $scope.badFindingCell[xy[0]][xy[1]] = validateFindingCellInput($scope.currentFinding.columnHeaders[xy[0]].columnType, textInput.value);
-    };
-
-    /**
-     * Check for valid cell data for column type
-     * @param colType
-     * @param cellData
-     * @returns True on bad cell data for column type.
-     */
-    function validateFindingCellInput(colType, cellData) {
-      if ((colType === null) || (colType === undefined)) {
-        return false;
-      }
-      return (
-        (colType === 'datum') &&
-        (cellData !== null) && (isNaN(cellData.replace(/(d|f)$/, '')))
-      );
-    }
-
-    /**
-     * Check each cell for valid data for column type and set status in $scope.badFindingCell array.
-     */
-    function checkAllFindingCells() {
-      let rowCount = $scope.currentFinding.rows.length;
-      if (rowCount > 0) {
-        let cellCount = $scope.currentFinding.rows[0].cells.length;
-        $scope.badFindingCell = createArray(cellCount, rowCount);
-        for (let y = 0; y < rowCount; y++) {
-          for (let x = 0; x < cellCount; x++) {
-            $scope.badFindingCell[x][y] = validateFindingCellInput($scope.currentFinding.rows[y].cells[x].datumOrCondition,
-              $scope.currentFinding.rows[y].cells[x].value);
-          }
-        }
-      }
-    }
-
-
-    /**
-     * Create multi dimensional array.
-     * @param len  The length of one or more dimensions of array
-     * @returns {any[]}  The array
-     */
-    function createArray(len) {
-      let arr = new Array(len || 0), i = len;
-      if (arguments.length > 1) {
-        var args = Array.prototype.slice.call(arguments, 1);
-        while (i--) arr[len - 1 - i] = createArray.apply(this, args);
-      }
-      return arr;
-    }
-
-
-    /**
-     * This is called when a file in the users local machine is selected for csv upload.
-     *
-     * @param v File data.
-     */
-    $scope.fileNameChanged = function (v) {
-      dataReaderReadFile(0, v[0].size);
-    };
-
-
-    /**
-     * Called by the call back, get the file data here.
-     *
-     * @param opt_startByte
-     * @param opt_stopByte
-     */
-    var dataReaderReadFile = function (opt_startByte, opt_stopByte) {
-      let files = document.getElementById('csvFile').files;
-      let reader = new FileReader();
-      reader.onloadend = function (evt) {
-        csvDataObj = parseCsv(evt.target.result);
-
-        // Did we get a parse error
-        if (csvDataObj === null) {
-          console.error('CSV import parse error: ', csvImportError);
-          alert('CSV import parse error: ' + csvImportError);
-          return;
-        }
-
-        // Get dimensions of csv data.
-        csvDataColCount = 0;
-        csvDataRowCount = csvDataObj.length;
-        for (var y = 0; y < csvDataRowCount; y++) {
-          if (csvDataObj[y].length > csvDataColCount) {
-            csvDataColCount = csvDataObj[y].length;
-          }
-        }
-        $scope.currentFinding.numberOfColumns = csvDataColCount;
-        $scope.currentFinding.numberOfRows = csvDataRowCount;
-
-        $scope.updateRowsColsForFinding();
-      };
-      reader.readAsBinaryString(files[0].slice(0, files[0].size));
-    };
-
-
-    /**
-     * Return true if: not too many rows, no row is too long, and csv format is correct.
-     *
-     * @param csv
-     * @returns {boolean}
-     */
-    let validateCsv = function (csv) {
-      // Normalize line feeds
-      let temp = (csv.replace(/\r\n/g, '\r').replace(/\n\r/g, '\r').replace(/\n/g, '\r')).split(/\r/);
-
-      // Do we have too many rows?
-      if (temp.length > csvMaxNumberOfLines) {
-        csvImportError = 'Too many Lines (' + temp.length + ')';
-        return false;
-      }
-
-      // Are any cells too long?
-      // Determine length of longest cell entry
-      let biggestLine = 0;
-      for (let f0 = 0; f0 < temp.length; f0++) {
-        if (biggestLine < temp[f0].length) {
-          biggestLine = temp[f0].length;
-        }
-      }
-
-      // If at least one entry is too long, set error and return false
-      if (biggestLine > csvMaxLenOfEntry) {
-        console.error('ERROR line(s) too long (' + biggestLine + ')');
-        csvImportError = 'line(s) too long (' + biggestLine + ')';
-        return false;
-      }
-
-
-      // Send each line to csv validation function.
-      // Remove anything that is not a quote or a comma. That is all we need for validating csv.
-      let regex = new RegExp('[^",]', 'g');
-      for (let f = 0; f < temp.length; f++) {
-        let csvString = temp[f].replace(regex, '');
-        let isValid = validateCsvLine(csvString);
-        if (!isValid) {
-          return false;
-        }
-      }
-
-      // Return true if: not too many rows, no row is too long, and csv format is correct.
-      return true;
-    };
-
-
-    /**
-     * Check for correctly nested quotes.
-     *
-     * @param csvLine
-     * @returns {boolean}
-     */
-    function validateCsvLine(csvLine) {
-      let inQ = false;
-      let badData = false;
-      for (let f = 0; f < csvLine.length; f++) {
-        if (!inQ) {
-
-          // A starting quote plus a nested quote (3 quotes)
-          if ((csvLine.length <= (f + 2)) && csvLine[f] === '"' && csvLine[f + 1] === '"' && csvLine[f + 2] === '"') {
-            inQ = true;
-          }
-
-          // Two quotes, BUT not in a quote, and ends.
-          else if ((csvLine.length <= (f + 1)) && csvLine[f] === '"' && csvLine[f + 1] === '"') {
-            badData = false;
-            break;
-          }
-          else if (csvLine[f] === '"') {
-            inQ = true;
-          }
-        }
-        else {
-          // An ending quote
-          if (csvLine[f] === '"' && csvLine[f + 1] !== '"') {
-            inQ = false;
-          }
-          else if (csvLine[f] === '"' && csvLine[f + 1] === '"') {
-            f++;
-          }
-        }
-      }
-
-      // Are we still in a quote at the end
-      if (inQ) {
-        badData = true;
-        csvImportError = 'csv validation error';
-      }
-      return (!badData);
-    }
-
-
-    /**
-     * Convert csv data to javascript array.
-     *
-     * @param data
-     * @returns {*}   javascript array.
-     */
-    function parseCsv(data) {
-      if (!validateCsv(data)) {
-        return null;
-      }
-
-      // Split on the CR or LF
-      let dataLines = qFix(data.replace(/\r\n/g, '\r').replace(/\n\r/g, '\r').replace(/\n/g, '\r')).split(/\r/);
-      let startCell = 1; //true
-      let currentCell = '';
-      let currentCellType = 0; // 0=unknown  1=comma no double quote  2=comma with double quote
-      let i = 0;
-      let csvData;
-      let csvDataObj = [];
-
-      for (let dataLine = 0; dataLine < dataLines.length && runaway > 0; dataLine++) {
-        csvData = dataLines[dataLine];
-
-        if (csvData.length < 1) {
-          continue;
-        }
-
-        let lineOfValues = [];
-        i = 0;
-        while (i < csvData.length && runaway > 0) {
-          let trailingCommas = [];
-          trailingCommas = csvData.match(/(,+)$/g);
-          if (trailingCommas !== null) {
-            let replacementStr = '';
-            for (let f = 0; f < trailingCommas[0].length; f++) {
-              replacementStr += ',""';
-            }
-            let re = new RegExp(trailingCommas[0] + '$');
-            csvData = csvData.replace(re, replacementStr);
-          }
-          // Determine cell type
-          if (csvData.substr(i, 1) === '"') {
-            currentCellType = 2;
-          }
-          else {
-            currentCellType = 1;
-          }
-
-          if (currentCellType === 1) {
-            // Just grab to the first comma
-            currentCell = csvData.substr(i).match(/[^,]*,/);
-            if (currentCell !== null) {
-              currentCell = currentCell[0];
-              lineOfValues.push(cleanCsvValue(currentCell));
-            }
-            // No comma, we are at the end.
-            else {
-              currentCell = csvData.substr(i);
-              lineOfValues.push(cleanCsvValue(currentCell));
-            }
-            i += currentCell.length;
-          } else if (currentCellType === 2) {
-            csvData = csvData.substr(i);
-            i = 0;
-            startCell = 1;
-            let charStatus = 0;  // Nothing yet
-            let currentChar = '';
-            let currentNextChar = '';
-            let i1 = 0;
-
-            while (i1 < csvData.length) {
-              currentChar = csvData.substr(i1, 1);
-              if (i1 + 1 < csvData.length) {
-                currentNextChar = csvData.substr(i1 + 1, 1);
-              }
-              else {
-                currentNextChar = '';
-              }
-              i1++;
-
-              // The first char
-              if (charStatus === 0 && startCell === 1) {
-                // Is it a quote (it should be)
-                if (currentChar === '"') {
-                  charStatus = 1;  // We have seen the first quote
-                }
-                startCell = 0;  // No longer looking at the first char
-                currentChar = csvData.substr(i1, 1);
-                if (i1 + 1 < csvData.length) {
-                  currentNextChar = csvData.substr(i1 + 1, 1);
-                }
-                else {
-                  currentNextChar = '';
-                }
-              }  // END if (charStatus === 0 && startCell === 1)
-
-              // Not the first char
-              else if (startCell !== 1) {
-                // We are past the first quote
-                if (charStatus === 1) {  // We have seen the first quote
-                  // Check for two double quotes, this is a quote within a quoted cell - ignore it and go past it
-                  if (currentChar === '"' && currentNextChar === '"') {
-                    i1 += 1;
-                  }
-                  // A quote here means the end
-                  else if (currentChar === '"') {
-                    // Find the next comma or the end of the line.
-                    currentCell = csvData.substr(0, i1);
-                    csvData = csvData.substr(currentCell.length + 1);
-                    i1 = 0;
-                    startCell = 1; //true
-                    charStatus = 0;
-                    lineOfValues.push(cleanCsvValue(currentCell));
-                  }
-                }
-
-              }  // END else if( startCell !== 1)
-              runaway--;
-            }
-          }
-          runaway--;
-        } // End while loop
-
-        csvDataObj.push(lineOfValues);
-
-        runaway--;
-
-      } // End for loop
-
-      // Check here for too may columns
-      if (getMaxColumnCount(csvDataObj) > csvColumnMaxCount) {
-        csvImportError = 'Too many columns (' + getMaxColumnCount(csvDataObj) + ')';
-        return null;
-      }
-      let columnCount = getMaxColumnCount(csvDataObj);
-      for (let f = 0; f < csvDataObj.length; f++) {
-        while (csvDataObj[f].length < columnCount) {
-          csvDataObj[f].push('');
-        }
-      }
-      return csvDataObj;
-    }
-
-    /**
-     * Returns number of columns, it is possible for csv data to have inconsistent column count for rows
-     * @param csvData
-     * @returns {number}  The column count for the row(s) with the most columns.
-     */
-    function getMaxColumnCount(csvData) {
-      var columnCount = 0;
-      for (var row = 0; row < csvData.length; row++) {
-        if (columnCount < csvData[row].length) {
-          columnCount = csvData[row].length;
-        }
-      }
-      return columnCount;
-    }
-
-
-    /**
-     * Clean up Unicode type quotes and some UTF-8 chars
-     *
-     * @param input
-     * @returns {string}
-     */
-    function qFix(input) {
-      var output = '';
-      for (var i = 0; i < input.length; ++i) {
-
-        if (input.charCodeAt(i) === 226) {
-          // Unicode double quote
-          if (
-            (input.charCodeAt(i + 1) === 128 && input.charCodeAt(i + 2) === 157) ||
-            (input.charCodeAt(i + 1) === 128 && input.charCodeAt(i + 2) === 156)
-          ) {
-            i += 2;
-            output += '"';
-          }
-          // Unicode single quote
-          else if (input.charCodeAt(i + 1) === 128 && input.charCodeAt(i + 2) === 153) {
-            i += 2;
-            output += '\'';
-          }
-
-        } else if (input.charCodeAt(i) === 194 || input.charCodeAt(i) === 195) {
-          var hexDigit0 = input.charCodeAt(i).toString(16);
-          if (hexDigit0.length % 2) {
-            hexDigit0 = '0' + hexDigit0;
-          }
-          var hexDigit1 = input.charCodeAt(i + 1).toString(16);
-          if (hexDigit1.length % 2) {
-            hexDigit1 = '0' + hexDigit1;
-          }
-          var hex = '%' + hexDigit0 + '%' + hexDigit1;
-          let decoded = decode_utf8(hex);
-          if (decoded === 'ERROR-ERROR') {
-            console.error('ERROR ');
-            output = '';
-            return output;
-          }
-          output += decoded;
-          i++;
-        }
-        else {
-          output += input[i];
-        }
-      }
-      return (output);
-    };
-
-
-    function cleanCsvValue(val) {
-      if (val.substr(0, 1) === '"') {
-        val = val.substr(1);
-      }
-      if (val.substr(val.length - 1) === ',') {
-        val = val.substr(0, val.length - 1);
-      }
-      if (val.substr(val.length - 1) === '"') {
-        val = val.substr(0, val.length - 1);
-      }
-
-      val = val.replace(/""/g, '"');
-      return val;
-    };
-
-
-    /**
-     *
-     * @param s
-     * @returns {string}
-     */
-    function decode_utf8(s) {
-      var returnData = '';
-      try {
-        returnData = decodeURIComponent(s);
-      }
-      catch (e) {
-        returnData = 'ERROR-ERROR'; // TODO  Make this a const
-        console.error('ERROR: ', e);
-      }
-      return returnData;
-    }
-
-
-    // close column form without saving //
-    $scope.closeColumnForm = function () {
-      angular.copy($scope.findingsColumnCopy, $scope.findingsColumn);
-      $scope.columnForm = 0;
-    };
-
-    // close column form with saving //
-    $scope.saveColumnForm = function () {
-      $scope.columnForm = 0;
-
-      var columnIndex = 0;
-      if ($scope.findingsColumn.columnOrder != null) {
-        columnIndex = parseInt($scope.findingsColumn.columnOrder) - 1;
-        for (var x = 0; x < $scope.currentFinding.rows.length; x++) {
-          var curCell = $scope.currentFinding.rows[x].cells[columnIndex];
-          if ($scope.findingsColumn.constantValue != '') {
-            curCell.value = $scope.findingsColumn.constantValue;
-          }
-        };
-        var headerName = $scope.findingsColumn.columnName;
-
-        if ($scope.findingsColumn.valueType != null) {
-          headerName = headerName + ' (' + $scope.findingsColumn.valueType + ')';
-        }
-        $scope.currentFinding.columnHeaders[columnIndex].displayName = headerName;
-
-      }
-
-      // Check here for valid cell data with the new column type.
-      initDatumOrCondition();
-      checkAllFindingCells();
-
-    };
-
-    function initDatumOrCondition() {
-      var rowCount = $scope.currentFinding.rows.length;
-      var cellCount = $scope.currentFinding.rows[0].cells.length;
-      for (var y = 0; y < rowCount; y++) {
-        for (var x = 0; x < cellCount; x++) {
-          $scope.currentFinding.rows[y].cells[x].datumOrCondition = $scope.currentFinding.columnHeaders[x].columnType;
-        }
-      }
-    }
-
-
-
-    // remove column data //
-    $scope.removeColumnForm = function () {
-      resetColumnConfirmDialog = $modal.open({
-        templateUrl: 'views/sample/view/dataColumnHeaderReset.html',
-        controller: 'DataColumnHeaderResetCtrl',
-        size: 'sm',
-        resolve: {
-
-          col: function () {
-            return $scope.findingsColumn;
-          }
-        }
-      });
-
-      resetColumnConfirmDialog.result.then(function (closeType) {
-        if (closeType) {
-          angular.copy($scope.findingsColumnCopyForRestore, $scope.findingsColumn);
-          $scope.columnForm = 0;
-        }
-      });
-    };
-
-    // opens column form to change order for columns. Does not actually order columns //
-    $scope.openColumnOrderForm = function () {
-      $scope.columnOrder = 1;
-    };
-
-    // called when columnType dropdown is changed on column form //
-    $scope.onColumnTypeDropdownChange = function (newOpen) {
-      $http({ method: 'GET', url: '/caNanoLab/rest/synthesisPurification/getColumnNameOptionsByType?columnType=' + $scope.findingsColumn.columnType + '&charName=' + $scope.data.name + '&assayType=' + $scope.data.assayType }).
-        success(function (data, status, headers, config) {
-          $scope.columnNameLookup = data;
-          $scope.loader = false;
-        }).
-        error(function (data, status, headers, config) {
-          $scope.loader = false;
-        });
-
-      if (newOpen) {
-        $scope.getColumnValueUnitOptions();
-      };
-    };
-
-    // gets column value unit options based on  name and condition //
-    $scope.getColumnValueUnitOptions = function () {
-      $http({ method: 'GET', url: '/caNanoLab/rest/synthesisPurification/getColumnValueUnitOptions?columnName=' + $scope.findingsColumn.columnName + '&conditionProperty=' + $scope.findingsColumn.conditionProperty }).
-        success(function (data, status, headers, config) {
-          $scope.valueUnitsLookup = data;
-          $scope.loader = false;
-        }).
-        error(function (data, status, headers, config) {
-          $scope.loader = false;
-        });
-    };
-
-    // called when columnType dropdown is changed on column form //
-    $scope.onColumnNameDropdownChange = function () {
-      $scope.getColumnValueUnitOptions();
-      $http({ method: 'GET', url: '/caNanoLab/rest/synthesisPurification/getConditionPropertyOptions?columnName=' + $scope.findingsColumn.columnName }).
-        success(function (data, status, headers, config) {
-          $scope.conditionTypeLookup = data;
-          $scope.loader = false;
-        }).
-        error(function (data, status, headers, config) {
-          $scope.loader = false;
-        });
-    };
-
-    // sets the column order //
-    $scope.updateColumnOrder = function () {
-      $scope.loader = true;
-
-
-      $http({ method: 'POST', url: '/caNanoLab/rest/synthesisPurification/setColumnOrder', data: $scope.currentFinding }).
-        success(function (data, status, headers, config) {
-          $scope.loader = false;
-          $scope.currentFinding = data;
-          $scope.columnOrder = 0;
-
-          initDatumOrCondition();
-          checkAllFindingCells();
-        }).
-        error(function (data, status, headers, config) {
-          $scope.loader = false;
-          $scope.columnOrder = 0;
-        });
-    };
-
-    // saves finding info //
-    $scope.saveFindingInfo = function () {
-
-      $scope.loader = true;
-      if ($scope.isNewFinding) {
-        $scope.data.finding.push($scope.currentFinding);
-      };
-
-      for (var x = 0; x < $scope.data.finding.length; x++) {
-        if ($scope.data.finding[x].findingId == $scope.currentFinding.findingId) {
-          $scope.data.finding.splice(x, 1);
-          $scope.data.finding.push($scope.currentFinding);
-          break;
-        }
-      };
-
-
-      let haveDatum = false;
-      for (let i0 = 0; i0 < $scope.data.finding.length; i0++) {
-        for (let i1 = 0; i1 < $scope.data.finding[i0].columnHeaders.length; i1++) {
-          if ($scope.data.finding[i0].columnHeaders[i1].columnType === 'datum') {
-            haveDatum = true;
-            break;
-          }
-        }
-        if (haveDatum) {
-          break;
-        }
-      }
-
-      if (!haveDatum) {
-        resetColumnConfirmDialog = $modal.open({
-          templateUrl: 'views/sample/view/noDatumColumn.html',
-          controller: 'NoDatumColumnCtrl',
-          size: 'sm',
-        });
-
-        $scope.loader = false;
-        return;
-      }
-
-      $http({ method: 'POST', url: '/caNanoLab/rest/synthesisPurification/saveFinding', data: $scope.data }).
-        success(function (data, status, headers, config) {
-
-          $scope.saveButton = "Update";
-          $scope.loader = false;
-          $scope.data = data;
-        }).
-        error(function (data, status, headers, config) {
-          $scope.loader = false;
-          alert(data[0]);
-        });
-      $scope.updateFinding = 0;
-    };
-
-    // removes finding info //
-    $scope.removeFindingInfo = function () {
-      if (confirm("Delete the Finding?")) {
-        $scope.loader = true;
-        $http({ method: 'POST', url: '/caNanoLab/rest/synthesisPurification/removeFinding', data: $scope.currentFinding }).
-          success(function (data, status, headers, config) {
-            $scope.loader = false;
-            $scope.data = data;
-          }).
-          error(function (data, status, headers, config) {
-            $scope.loader = false;
-          });
-        $scope.updateFinding = 0;
-      }
-    };
-
-    $scope.cancelFindingInfo = function () {
-      $scope.updateFinding = 0;
-      angular.copy($scope.currentFindingCopy, $scope.currentFinding);
-    };
-
-    // deletes data and condition row //
-    $scope.deleteDataConditionRow = function (row) {
-      $scope.currentFinding.rows.splice($scope.currentFinding.rows.indexOf(row), 1);
-    };
-
-    // save characterization record. //
-    $scope.save = function () {
-      $scope.loader = true;
-      $http({ method: 'POST', url: '/caNanoLab/rest/synthesisPurification/saveCharacterization', data: $scope.data }).
-        success(function (data, status, headers, config) {
-          $location.path("/editCharacterization").search({ 'sampleId': $scope.sampleId, 'charMessage': 'Characterization Saved' }).replace();
-          $scope.loader = false;
-          $scope.sampleMessage = 'Characterization Saved';
-        }).
-        error(function (data, status, headers, config) {
-          $scope.loader = false;
-        });
-    };
-
-    // remove characterization record. //
-    $scope.remove = function () {
-      $scope.loader = true;
-      $http({ method: 'POST', url: '/caNanoLab/rest/synthesisPurification/removeCharacterization', data: $scope.data }).
-        success(function (data, status, headers, config) {
-          $scope.loader = false;
-          $location.path("/editCharacterization").search({ 'sampleId': $scope.sampleId }).replace();
-        }).
-        error(function (data, status, headers, config) {
-          $scope.loader = false;
-        });
-    };
-
-    // reset form //
-    $scope.reset = function () {
-      $scope.data = angular.copy($scope.dataCopy);
-      $scope.domainFileUri = "";
-      $scope.updateExperimentConfig = 0;
-    };
-
-    /* File Section */
-    $scope.onFileSelect = function ($files) {
-      $scope.selectedFiles = [];
-      $scope.selectedFiles = $files;
-
-
-      if ($scope.selectedFiles != null && $scope.selectedFiles.length > 0)
-        $scope.selectedFileName = $scope.selectedFiles[0].name;
-
-      $scope.dataUrls = [];
-      for (var i = 0; i < $files.length; i++) {
-        var $file = $files[i];
-        if ($scope.fileReaderSupported && $file.type.indexOf('image') > -1) {
-          var fileReader = new FileReader();
-          fileReader.readAsDataURL($files[i]);
-          var loadFile = function (fileReader, index) {
-            fileReader.onload = function (e) {
-              $timeout(function () {
-                $scope.dataUrls[index] = e.target.result;
-              });
-            }
-          }(fileReader, i);
-        }
-      }
-    };
-
-    $scope.editFile = function (fileId) {
-      $scope.selectedFileName = '';
-      for (var k = 0; k < $scope.currentFinding.files.length; ++k) {
-
-        var element = $scope.currentFinding.files[k];
-        if (element.id == fileId) {
-          $scope.fileForm.externalUrl = element.externalUrl;
-          $scope.fileForm.uri = element.uri;
-          $scope.fileForm.uriExternal = element.uriExternal;
-          $scope.fileForm.type = element.type;
-          $scope.fileForm.title = element.title;
-          $scope.fileForm.keywordsStr = element.keywordsStr;
-          $scope.fileForm.description = element.description;
-          $scope.fileForm.id = element.id;
-          $scope.fileForm.createdBy = element.createdBy;
-          $scope.fileForm.createdDate = element.createdDate;
-
-          $scope.addNewFile = true;
-
-
-          if ($scope.fileForm.externalUrl != null && $scope.fileForm.externalUrl != '') {
-            $scope.externalUrlEnabled = true;
-            $scope.fileForm.uriExternal = 'true';
-          }
-          else {
-            $scope.externalUrlEnabled = false;
-            $scope.fileForm.uriExternal = 'false';
-          }
-
-          break;
-        }
-      }
-    }
-
-    $scope.removeFile = function (fileId) {
-      if (confirm("Are you sure you want to delete the File?")) {
-        $scope.loader = true;
-
-        for (var k = 0; k < $scope.currentFinding.files.length; ++k) {
-          var element = $scope.currentFinding.files[k];
-          if (element.id == $scope.fileForm.id) {
-            $scope.currentFinding.files.splice(k, 1);
-            $scope.currentFinding.theFileIndex = k;
-          }
-        }
-        //$scope.currentFinding.files = $scope.files;
-
-        if ($scope.currentFinding.theFile == null) {
-          $scope.currentFinding.theFile = {};
-        }
-
-        $scope.currentFinding.theFile.externalUrl = $scope.fileForm.externalUrl;
-        $scope.currentFinding.theFile.uri = $scope.fileForm.uri;
-        $scope.currentFinding.theFile.uriExternal = $scope.fileForm.uriExternal;
-        $scope.currentFinding.theFile.type = $scope.fileForm.type;
-        $scope.currentFinding.theFile.title = $scope.fileForm.title;
-        $scope.currentFinding.theFile.keywordsStr = $scope.fileForm.keywordsStr;
-        $scope.currentFinding.theFile.description = $scope.fileForm.description;
-        $scope.currentFinding.theFile.id = $scope.fileForm.id;
-        $scope.currentFinding.theFile.theAccess = $scope.fileForm.theAccess;
-        $scope.currentFinding.theFile.isPublic = $scope.fileForm.isPublic;
-        $scope.currentFinding.theFile.createdBy = $scope.fileForm.createdBy;
-        $scope.currentFinding.theFile.createdDate = $scope.fileForm.createdDate;
-
-        if ($scope.sampleId != null) {
-          $scope.currentFinding.theFile.sampleId = $scope.sampleId;
-        }
-
-
-        $http({ method: 'POST', url: '/caNanoLab/rest/synthesisPurification/removeFile', data: $scope.currentFinding }).
-          success(function (data, status, headers, config) {
-            $scope.currentFinding = data;
-            $scope.addNewFile = false;
-            $scope.loader = false;
-          }).
-          error(function (data, status, headers, config) {
-            // called asynchronously if an error occurs
-            // or server returns response with an error status.
-            // $rootScope.sampleData = data;
-            $scope.loader = false;
-            $scope.data.errors = data;
-          });
-      }
-    };
-
-    $scope.saveFile = function () {
-      $scope.loader = true;
-      var index = 0;
-      $scope.upload = [];
-      if ($scope.selectedFiles != null && $scope.selectedFiles.length > 0) {
-        $scope.selectedFileName = $scope.selectedFiles[0].name;
-        $scope.upload[index] = $upload.upload({
-          url: uploadUrl,
-          method: 'POST',
-          headers: { 'my-header': 'my-header-value', 'Accept': 'application/json, text/plain' },
-          data: $scope.fileForm,
-          file: $scope.selectedFiles[index],
-          transformResponse: angular.identity,
-          fileFormDataName: 'myFile'
-        });
-        $scope.upload[index].then(function (response) {
-          $timeout(function () {
-            //$scope.uploadResult.push(response.data);
-            //alert(response.data);
-            //$scope.nanoEntityForm = response.data;
-            $scope.saveFileData();
-            //$scope.loader = false;
-          });
-        }, function (response) {
-          $timeout(function () {
-            //only for IE 9
-            if (navigator.appVersion.indexOf("MSIE 9.") != -1) {
-              $scope.saveFileData();
-            }
-          });
-          if (response.status > 0) {
-            $scope.data.errors = response.status + ': ' + response.data;
-            $scope.loader = false;
-          }
-        }, function (evt) {
-          // Math.min is to fix IE which reports 200% sometimes
-          // $scope.progress[index] = Math.min(100, parseInt(100.0 * evt.loaded / evt.total));
-        });
-        $scope.upload[index].xhr(function (xhr) {
-          //			xhr.upload.addEventListener('abort', function() {console.log('abort complete')}, false);
-        });
-      }
-      else {
-        $scope.saveFileData();
-      }
-    };
-
-    $scope.saveFileData = function () {
-      $scope.loader = true;
-
-      var k = 0;
-      if ($scope.fileForm.id != null && $scope.fileForm.id != '') {
-        for (k = 0; k < $scope.currentFinding.files.length; ++k) {
-          var element = $scope.currentFinding.files[k];
-          if (element.id == $scope.fileForm.id) {
-            $scope.currentFinding.files[k] = $scope.fileForm;
-          }
-        }
-      }
-      /*            else {
-       $scope.files.push($scope.fileForm);
-       }
-       */
-      //$scope.currentFinding.files = $scope.files;
-
-      if ($scope.currentFinding.theFile == null) {
-        $scope.currentFinding.theFile = {};
-      }
-
-      $scope.currentFinding.theFile.externalUrl = $scope.fileForm.externalUrl;
-      if ($scope.selectedFileName != null && $scope.selectedFileName != '') {
-        $scope.currentFinding.theFile.uri = $scope.selectedFileName;
-      } else {
-        $scope.currentFinding.theFile.uri = $scope.fileForm.uri;
-      }
-      $scope.currentFinding.theFile.uriExternal = $scope.fileForm.uriExternal;
-      $scope.currentFinding.theFile.type = $scope.fileForm.type;
-      $scope.currentFinding.theFile.title = $scope.fileForm.title;
-      $scope.currentFinding.theFile.keywordsStr = $scope.fileForm.keywordsStr;
-      $scope.currentFinding.theFile.description = $scope.fileForm.description;
-      $scope.currentFinding.theFile.id = $scope.fileForm.id;
-      $scope.currentFinding.theFile.theAccess = $scope.fileForm.theAccess;
-      $scope.currentFinding.theFile.isPublic = $scope.fileForm.isPublic;
-      $scope.currentFinding.theFile.createdBy = $scope.fileForm.createdBy;
-      $scope.currentFinding.theFile.createdDate = $scope.fileForm.createdDate;
-
-      if ($scope.fileForm.id == null || $scope.fileForm.id == '') {
-        $scope.currentFinding.theFileIndex = -1;
-      } else {
-        $scope.currentFinding.theFileIndex = k - 1;
-      }
-
-      if ($scope.sampleId != null) {
-        $scope.currentFinding.theFile.sampleId = $scope.sampleId;
-      }
-
-      $scope.messages = [];
-      $http({ method: 'POST', url: '/caNanoLab/rest/synthesisPurification/saveFile', data: $scope.currentFinding }).
-        success(function (data, status, headers, config) {
-          $scope.currentFinding = data;
-          $scope.addNewFile = false;
-          $scope.loader = false;
-        }).
-        error(function (data, status, headers, config) {
-          // called asynchronously if an error occurs
-          // or server returns response with an error status.
-          // $rootScope.sampleData = data;
-          $scope.loader = false;
-          $scope.data.errors = data;
-          $scope.addNewFile = true;
-        });
-    };
-
-    $scope.getAddNewFile = function () {
-      return $scope.addNewFile;
-    };
-
-    $scope.closeAddNewFile = function () {
-      $scope.addNewFile = false;
-    };
-
-    $scope.columnInvalid = function () {
-      for (var x = 0; x < $scope.currentFinding.columnHeaders.length; x++) {
-        var col = $scope.currentFinding.columnHeaders[x];
-        if (!col.columnType || col.columnType == '') {
-          return 1
-          break
-        };
-      };
-    };
-
-    $scope.disableColumn = function (option) {
-      for (var x = 0; x < $scope.currentFinding.columnHeaders.length; x++) {
-        var col = $scope.currentFinding.columnHeaders[x];
-        if (col.columnName == option) {
-          return 1;
-          break;
-        };
-
-      };
-    };
-
-
-// end finding section code //
-  });
-
+<button ng-click="tempShow=!tempShow">debug</button>
+<div style="width:800px;" ng-show="tempShow">
+  <B>Purification Copy</B> - {{purificationCopy}} <br /><br />
+  <B>Purification</B> - {{purification}} <br /><br />
+  <B>Material Element</B> - {{materialElement}}<br /><br />
+  <B>Technique</B> - {{technique}}<br /><br />
+  <B>Instrument</B> - {{instrument}}<br /><br />
+  <B>Instrument Types</B> - {{instrumentTypes}}<br /><Br />
+  <B>Abb/Desc</B> - {{techniqueAbbreviationDesc}}
+</div>
+
+<div class="spacer">
+  <form novalidate="" class="ng-pristine ng-valid">
+    <table class="contentTitle" width="100%" border="0" summary="layout">
+      <tbody>
+        <tr>
+          <!-- ngIf: nanoEntityId!=null && nanoEntityId!='' -->
+          <td scope="col" align="left" class="ng-scope">
+            <h1 class="ng-binding">{{setPageTitle()}}
+            </h1>
+          </td><!-- end ngIf: nanoEntityId!=null && nanoEntityId!='' -->
+
+          <!-- ngIf: nanoEntityId==null -->
+
+          <td align="right" width="30%">
+            <a class="helpText"
+              href="javascript:openHelpWindow('https://wiki.nci.nih.gov/display/caNanoLab/Managing+Sample+Composition+Annotations#ManagingSampleCompositionAnnotations-NanomaterialAddingNanomaterialEntityCompositionAnnotations')">Help</a>
+            &nbsp;
+            <a class="helpText"
+              href="javascript:openHelpWindow('https://wiki.nci.nih.gov/display/caNanoLab/caNanoLab+Glossary')">Glossary</a>
+            &nbsp;
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <span style="font-family:Arial,Helvetica,sans-serif;font-size:16px;color:red;align-content: center;">
+      <ul>
+        <!-- ngRepeat: message in messages -->
+      </ul>
+    </span>
+    <table width="100%" align="center" class="submissionView" summary="layout">
+      <tbody>
+        <tr>
+          <td class="cellLabel" width="100">
+            <label for="type">Purification Type</label>
+          </td>
+          <td>
+            <div id="categoryPrompt">
+              <select ng-model="purification.type"
+                ng-options="o as o for o in dropdowns.purificationTypes">
+              </select>
+              <!-- <input type="text" size="50" value="{{material.simpleProtocol.displayName}}" data-ng-model="material.simpleProtocol.displayName"> -->
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td class="cellLabel" width="100">
+            <label for="type">Protocol</label>
+          </td>
+          <td>
+            <div id="categoryPrompt">
+              <select ng-model="purification.simpleProtocol"
+                ng-options="o as o.displayName for o in dropdowns.protocolLookup track by o.domainId">
+              </select>
+              <!-- <input type="text" size="50" value="{{material.simpleProtocol.displayName}}" data-ng-model="material.simpleProtocol.displayName"> -->
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td class="cellLabel" width="100">
+            <label for="yield">Yield</label>
+          </td>
+          <td>
+            <div id="categoryPrompt">
+              <input type="text" size="35" value="{{purification.yield}}" data-ng-model="purification.yield">
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <br>
+    <br>
+    <table width="100%" align="center" class="submissionView ng-scope">
+      <tbody>
+        <tr>
+          <td class="cellLabel" width="100">
+            <label for="type">Design and Methods Description</label>
+          </td>
+          <td>
+            <div id="categoryPrompt">
+              <textarea rows="5" cols="70"
+                data-ng-model="purification.designMethodDescription">{{purification.designMethodDescription}}</textarea>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td colspan="2">
+            <table width="100%" align="center" class="submissionView ng-scope">
+              <tbody>
+                <tr>
+                  <td class="cellLabel" width="15%">
+                    Technique and Instruments
+                  </td>
+                  <td>
+                    <!-- <a style="display: block;" id="addFile" href="javascript:clearFile('nanofunctionalizationEntity'); openSubmissionForm('File');"><img align="top" src="images/btn_add.gif" border="0" alt="add a nanofunctionalization entity file"></a> -->
+                    <button type="button" ng-click="openTechniqueInstrumentsForm(-1,0,{})" class="btn btn-canano-primary btn-canano-xs"
+                      id="addFile">Add</button>
+                  </td>
+                </tr>
+                <tr ng-show="purification.simpleExperimentBeans.length">
+                  <td colspan="2">
+                    <table class="editTableWithGrid" align="center" width="95%">
+                      <tbody>
+                        <tr ng-repeat="t in purification.simpleExperimentBeans">
+                          <td width="10%"><label>Technique Type</label></td>
+                          <td width="70%">{{t.techniqueType}}</td>
+                          <td width="10%">
+                            <button type="button" class="btn btn-canano-primary btn-canano-xs ng-click-active"
+                              ng-click="openTechniqueInstrumentsForm($index, 0, t)">Edit</button>
+                          </td>
+                          <td width="10%">
+                            <button type="button" class="btn btn-canano-danger btn-canano-xs ng-click-active"
+                              ng-click="deleteTechnique($index, 0, t)">Delete</button>
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </td>
+                </tr>
+                <tr ng-show="techniqueFormIndex!=null">
+                  <td colspan="2">
+                    <table class="editTableWithGrid form" align="center" width="95.5%">
+                      <tr>
+                        <td width="30%">
+                          <label>Technique*</label>
+                        </td>
+                        <td>
+                          <select ng-model="technique.techniqueType" ng-change="getAbbreviationDescForTechnique()" ng-options="o as o for o in dropdowns.techniques">
+                          </select>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td width="30%">
+                          <label>Abbreviation</label>
+                        </td>
+                        <td>
+                          <input type="text" name="abbreviation" ng-model="technique.abbreviation" size="30" value="{{technique.abbreviation}}">
+                        </td>
+                      </tr>
+                      <tr>
+                        <td width="30%">
+                          <label>Description</label>
+                        </td>
+                        <td>
+                          <textarea ng-model="technique.description" name="description" cols="70" rows="5" id="configDescription"
+                            class="ng-pristine ng-valid">{{technique.description}}</textarea>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td width="30%"><label>Instruments</label></td>
+                        <td width="70%">
+                          <button type="button" class="btn btn-canano-primary btn-canano-xs ng-click-active" ng-click="openInstrumentForm(-1, $parent.$index)">Add</button>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td width="90%" colspan="2">
+                          <div class="inherentFunctions" ng-repeat="i in technique.instruments">
+                            <table class="editTableWithGrid" align="center" width="95%">
+                              <tr>
+                                <td width="15%"><label>Type</label></td>
+                                <td width="65%">
+                                  {{i.type}}
+                                </td>
+                                <td width="10%">
+                                  <button type="button" class="btn btn-canano-primary btn-canano-xs ng-click-active"
+                                    ng-click="openInstrumentForm($index, $parent.$index, i)">Edit</button>
+                                </td>
+                                <td width="10%">
+                                  <button type="button" class="btn btn-canano-danger btn-canano-xs ng-click-active"
+                                    ng-click="deleteInstrument($index, $parent.$index, i)">Delete</button>
+                                </td>
+                              </tr>
+                            </table><br />
+                          </div>
+                          <div class="inherentFunctions" ng-if="instrumentFormIndex!=null" ng-repeat="i in technique.instruments">
+                            <table class="editTableWithGrid" align="center" width="95%">
+                              <tr>
+                                <td width="15%"><label>Manufacturer</label></td>
+                                <td width="85%">
+                                  <select ng-model="instrument.manufacturer" ng-options="o as o for o in dropdowns.manufacturers"></select>
+                                </td>
+                              </tr>
+                              <tr>
+                                <td width="15%"><label>Model Name</label></td>
+                                <td width="85%">
+                                  <input type="text" name="modelName" ng-model="instrument.modelName" value="{{instrument.modelName}}">
+                                </td>
+                              </tr>
+                              <tr>
+                                <td width="15%"><label>Type</label></td>
+                                <td width="85%">
+                                  <select ng-model="instrument.type" ng-options="o as o for o in instrumentTypes"></select>
+                                </td>
+                              </tr>
+                              <tr>
+                                <td colspan="2" class="saveSynthesis">
+                                  <button class="btn btn-canano-default btn-canano-xs" ng-click="cancelInstrument(instrument)">Cancel</button>
+                                  <button class="btn btn-canano-primary btn-canano-xs" ng-click="saveInstrument(instrument)">Save Instrument</button>
+                                </td>
+                              </tr>
+                            </table>
+                          </div>
+                        </td>
+                      </tr>
+
+                      <tr>
+                        <td colspan="2" class="saveSynthesis">
+                          <button class="btn btn-canano-default btn-canano-xs" ng-click="cancelTechnique(technique)">Cancel</button>
+                          <button
+                            class="btn btn-canano-primary btn-canano-xs" ng-click="saveTechnique(technique)">Save Technique</button>
+                        </td>
+                      </tr>
+                    </table>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+
+
+    <br>
+    <br>
+<table class="submissionView" width="100%" align="center">
+  <tbody>
+    <tr>
+      <td class="cellLabel" width="20%">
+        Finding
+      </td>
+      <td>
+        <button ng-click="addNewFinding()" ng-disabled="updateFinding" class="btn btn-canano-primary btn-canano-xs">Add</button>
+      </td>
+    </tr>
+    <tr ng-repeat="finding in purification.editBean">
+      <td colspan="2">{{finding}}
+        <table class="editTableWithGrid" width="95%" align="center" ng-if="purification.purityBeans.length">
+          <tbody>
+            <tr>
+              <th style="text-align: right">
+                <button ng-click="updateExistingFinding(finding)" ng-disabled="updateFinding"
+                  class="btn btn-canano-primary btn-canano-xs"> Edit
+                </button>
+
+              </th>
+            </tr>
+
+            <tr>
+              <td class="cellLabel">
+                Data and Conditions
+              </td>
+            </tr>
+            <tr ng-if="finding.columnHeaders.length">
+              <td>
+                <table class="summaryViewWithGrid" width="95%" align="center">
+                  <tbody>
+                    <tr>
+                      <td class="cellLabel" ng-repeat="header in finding.columnHeaders"
+                        ng-bind-html="header.displayName">
+                        {{header.displayName}}
+                      </td>
+                    </tr>
+                    <tr ng-repeat="row in finding.purityRows">
+                      <td ng-repeat="cell in row.cells" style="padding-left:15px;">
+                        <span ng-if="cell.operand!='='">{{cell.operand}}</span>{{cell.value}}
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+                <br>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <ng-include src="'/caNanoLab/views/sample/view/manageFileView.html'"></ng-include>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        <br>
+      </td>
+    </tr>
+    <tr>
+      <td colspan="2">
+        <span id="editFindingInfo"></span>
+        <table class="subSubmissionView" summary="layout" width="95%" align="center" ng-if="updateFinding">
+          <tbody>
+            <tr>
+              <th colspan="2">
+                Finding Info
+              </th>
+            </tr>
+            <tr>
+              <td class="cellLabel">
+                Data and Conditions
+              </td>
+              <td class="cellLabel">
+                <input type="text" ng-model="currentFinding.numberOfColumns" name="numberOfRows" size="4" id="colNum">
+                <label for="colNum">columns</label>
+                <input type="text" ng-model="currentFinding.numberOfRows" name="numberOfRows" size="4" id="rowNum">
+                <label for="rowNum">rows</label>
+                <button ng-click="updateRowsColsForFinding()" class="btn btn-canano-primary btn-canano-xs">Update</button>
+                <button ng-hide="isNewFinding" ng-click="openColumnOrderForm()" class="btn btn-canano-primary btn-canano-xs">Set
+                  Column Order</button>
+
+                <!-- Import a comma separated list to Characterization -> Finding ->Finding Info -> Data & Conditions  -->
+                <!-- Whe the user selects a file from the local machine, the file name is passed to the function fileNameChanged.  -->
+                <label class="btn btn-canano-primary btn-canano-xs  btn-canano-file readBytesButtons">
+                  Import csv
+                  <input type="file" id="csvFile" style="display: none"
+                    onchange="angular.element(this).scope().fileNameChanged(this.files)">
+                </label>
+
+
+              </td>
+            </tr>
+            <tr ng-show="columnOrder">
+              <td colspan="2">
+                <table class="promptbox" width="85%" align="center" id="matrix"
+                  ng-if="currentFinding.columnHeaders.length">
+                  <tbody>
+                    <tr>
+                      <td>
+                        <h3 style="margin:0px;padding:0px;">Column Order</h3>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td ng-repeat="cell in currentFinding.columnHeaders" class="cellLabel"
+                        ng-bind-html="cell.displayName"></td>
+                    </tr>
+                    <tr>
+                      <td ng-repeat="cell in currentFinding.columnHeaders">
+                        <input style="min-height: 28px" type="number" name="cellRow" min=1
+                          max={{currentFinding.columnHeaders.length}} ng-model="cell.columnOrder"
+                          ng-change="columnOrderChanged(cell.columnOrder, $index)"></td>
+                      <td><button ng-click="updateColumnOrder()" ng-disabled="disableChangeColumnOrder"
+                          class="btn btn-canano-primary btn-canano-xs">Update Order</button></td>
+                    </tr>
+                  </tbody>
+                </table>
+              </td>
+            </tr>
+            <tr>
+              <td colspan="2">
+                <table class="promptbox" width="85%" align="center" id="matrix"
+                  ng-if="currentFinding.columnHeaders.length">
+                  <tbody>
+                    <tr>
+                      <td colspan="{{currentFinding.columnHeaders.length}}">
+                        <h3 style="margin:0px;padding:0px;">Column Data</h3>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td ng-repeat="cell in currentFinding.columnHeaders" class="cellLabel"><a
+                          ng-click="openColumnForm(cell)" href=""
+                          ng-bind-html="cell.displayName">{{cell.displayName}}</a></td>
+                    </tr>
+                    <tr ng-if="columnForm">
+                      <td colspan="{{currentFinding.columnHeaders.length}}">
+                        <table class="subSubmissionView" width="100%" align="center" id="matrix"
+                          ng-if="currentFinding.columnHeaders.length">
+                          <tr>
+                            <td colspan="2">
+                              <h3 style="margin:0px;padding:0px;">Column Definitions</h3>At least one column must be of
+                              type Datum.
+                            </td>
+                          </tr>
+                          <tr>
+                            <td width="30%">
+                              <label for="columnType">Column Type *</label>
+                            </td>
+                            <td>
+                              <select ng-hide="loader" ng-model="findingsColumn.columnType"
+                                ng-change="onColumnTypeDropdownChange()">
+                                <option value=""></option>
+                                <option>datum</option>
+                                <option>condition</option>
+                              </select>
+                            </td>
+                          </tr>
+                          <tr>
+                            <td>
+                              <label for="columnName">Column Name *</label>
+                            </td>
+                            <td>
+                              <select ng-hide="loader" ng-model="findingsColumn.columnName"
+                                ng-init="findingsColumn.columnName=findingsColumn.columnName"
+                                ng-change="onColumnNameDropdownChange()">
+
+                                <!--
+															<select ng-model="findingsColumn.columnName" data-ng-options="option for option in columnNameLookup" ng-change="onColumnNameDropdownChange()"> -->
+                                <option value=""></option>
+                                <option ng-repeat="option in columnNameLookup" ng-disabled="disableColumn(option)">
+                                  {{option}}</option>
+
+                              </select>
+
+                              <div id="promptCategory" ng-if="findingsColumn.columnName=='other'">
+                                <table cellspacing="5" cellpadding="0" border="0" width="100%" class="promptbox"
+                                  summary="layout">
+                                  <tbody>
+                                    <tr>
+                                      <td class="cellLabel">
+                                        <label for="textCategory" category="">New Column Name:</label>
+                                      </td>
+                                    </tr>
+                                    <tr>
+                                      <td>
+                                        <input type="text" id="textCategory" ng-model='localForm.otherCategoryText'
+                                          class="promptbox">
+                                      </td>
+                                    </tr>
+                                    <tr>
+                                      <td style="text-align: right">
+                                        <button type="button" class="btn btn-canano-primary btn-canano-xs"
+                                          ng-click="findingsColumn.columnName=localForm.otherCategoryText; columnNameLookup.push(localForm.otherCategoryText);"
+                                          ng-disabled='localForm.otherCategoryText.length < 1 || localForm.otherCategoryText === undefined '>Add</button>
+
+                                        <button type="button" class="btn btn-canano-default btn-canano-xs"
+                                          ng-click="findingsColumn.columnName='';">Cancel</button>
+
+                                      </td>
+                                    </tr>
+                                  </tbody>
+                                </table>
+                              </div>
+                            </td>
+                          </tr>
+                          <tr ng-if="findingsColumn.columnType=='condition'">
+                            <td><label for="conditionProperty">Condition Property</label></td>
+                            <td><select ng-hide="loader" ng-model="findingsColumn.conditionProperty"
+                                data-ng-options="option for option in conditionTypeLookup">
+                                <option value=""></option>
+                              </select>
+                              <div id="promptCategory" ng-if="findingsColumn.columnType=='other'">
+                                <table cellspacing="5" cellpadding="0" border="0" width="100%" class="promptbox"
+                                  summary="layout">
+                                  <tbody>
+                                    <tr>
+                                      <td class="cellLabel">
+                                        <label for="textCategory" category="">New Condition Property:</label>
+                                      </td>
+                                    </tr>
+                                    <tr>
+                                      <td>
+                                        <input type="text" id="textCategory" ng-model='localForm.otherCategoryText'
+                                          class="promptbox">
+                                      </td>
+                                    </tr>
+                                    <tr>
+                                      <td style="text-align: right">
+
+                                        <button type="button" class="btn btn-canano-primary btn-canano-xs"
+                                          ng-click="findingsColumn.columnType=localForm.otherCategoryText; conditionTypeLookup.push(localForm.otherCategoryText);">Add</button>
+
+                                        <button type="button" class="btn btn-canano-default btn-canano-xs"
+                                          ng-click="findingsColumn.columnType='';">Cancel</button>
+                                      </td>
+                                    </tr>
+                                  </tbody>
+                                </table>
+                              </div>
+                            </td>
+                          </tr>
+                          <tr>
+                            <td><label for="valueType">Column Value Type</label></td>
+                            <td><select ng-hide="loader" ng-model="findingsColumn.valueType"
+                                data-ng-options="option for option in data.datumConditionValueTypeLookup">
+                                <option value=""></option>
+                              </select>
+                              <div id="promptCategory" ng-if="findingsColumn.valueType=='other'">
+                                <table cellspacing="5" cellpadding="0" border="0" width="100%" class="promptbox"
+                                  summary="layout">
+                                  <tbody>
+                                    <tr>
+                                      <td class="cellLabel">
+                                        <label for="textCategory" category="">New Column Value Type:</label>
+                                      </td>
+                                    </tr>
+                                    <tr>
+                                      <td>
+                                        <input type="text" id="textCategory" ng-model='localForm.otherCategoryText'
+                                          class="promptbox">
+                                      </td>
+                                    </tr>
+                                    <tr>
+                                      <td style="text-align: right">
+                                        <button type="button" class="btn btn-canano-primary btn-canano-xs"
+                                          ng-click="findingsColumn.valueType=localForm.otherCategoryText; data.datumConditionValueTypeLookup.push(localForm.otherCategoryText);">Add</button>
+
+                                        <button type="button" class="btn btn-canano-default btn-canano-xs"
+                                          ng-click="findingsColumn.valueType='';">Cancel</button>
+                                      </td>
+                                    </tr>
+                                  </tbody>
+                                </table>
+                              </div>
+                            </td>
+
+
+                      </td>
+                    </tr>
+
+                    <tr>
+                      <td><label for="valueUnit">Column Value Unit</label></td>
+                      <td><select ng-hide="loader" ng-model="findingsColumn.valueUnit"
+                          data-ng-options="option for option in valueUnitsLookup">
+                          <option value=""></option>
+                        </select>
+
+                        <div id="promptCategory" ng-if="findingsColumn.valueUnit=='other'">
+                          <table cellspacing="5" cellpadding="0" border="0" width="100%" class="promptbox"
+                            summary="layout">
+                            <tbody>
+                              <tr>
+                                <td class="cellLabel">
+                                  <label for="textCategory" category="">New Column Value Unit:</label>
+                                </td>
+                              </tr>
+                              <tr>
+                                <td>
+                                  <input type="text" id="textCategory" ng-model='localForm.otherCategoryText'
+                                    class="promptbox">
+                                </td>
+                              </tr>
+                              <tr>
+                                <td style="text-align: right">
+
+                                  <button type="button" class="btn btn-canano-primary btn-canano-xs"
+                                    ng-click="findingsColumn.valueUnit=localForm.otherCategoryText;valueUnitsLookup.push(localForm.otherCategoryText);">Add</button>
+
+                                  <button type="button" class="btn btn-canano-default btn-canano-xs"
+                                    ng-click="findingsColumn.valueUnit='';">Cancel</button>
+                                </td>
+                              </tr>
+                            </tbody>
+                          </table>
+                        </div>
+                      </td>
+
+              </td>
+            </tr>
+            <tr>
+              <td><label for="constantValue">Constant Value</label></td>
+              <td><input type="text" name="constantValue" ng-model="findingsColumn.constantValue"><br />
+                <span style="font-style: italic; font-size: 0.8em;">For boolean column value type, please enter 1 for
+                  true, 0 for false</span>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <button ng-click="removeColumnForm()" class="btn btn-canano-danger btn-canano-xs">Reset</button>
+              </td>
+              <td>
+
+                <button
+                  ng-disabled="!findingsColumn.columnType||columnNameLookup.indexOf(findingsColumn.columnName)==-1"
+                  ng-click="saveColumnForm()" class="btn btn-canano-primary btn-canano-xs">
+                  Save
+                </button>
+                &nbsp;
+                <button ng-click="closeColumnForm()" class="btn btn-canano-default btn-canano-xs">
+                  Cancel
+                </button>
+              </td>
+            </tr>
+        </table>
+      </td>
+    </tr>
+
+
+    <tr ng-repeat="row in currentFinding.purityRows   track by $index">
+      <td ng-repeat="cell in row.cells  track by $index">
+        <div class="finding_row">
+          <div class="finding_cell">
+            <select ng-hide="loader" data-ng-model="cell.operand" data-ng-options="option for option in operands"
+              id="operand" aria-label="operand">
+            </select>
+
+          </div>
+          <div class="finding_cell">
+            <input id={{$index}}:{{$parent.$index}}
+              ng-class="{finding_cell_bad: badFindingCell[$index][$parent.$index]}" type="text" name="cellRow"
+              ng-model="cell.value" oninput="angular.element(this).scope().currentFindingCellChanged( this)">
+          </div>
+        </div>
+      </td>
+
+      <td><button ng-click="deleteDataConditionRow(row)" class="btn btn-canano-danger btn-canano-xs">Delete</button></td>
+    </tr>
+
+  </tbody>
+</table>
+</td>
+</tr>
+<tr>
+  <td colspan="{{currentFinding.columnHeaders.length}}">
+    <ng-include src="'/caNanoLab/views/sample/edit/manageFileEdit.html'"></ng-include>
+  </td>
+</tr>
+<tr>
+  <td>
+    <button ng-if="!isNewFinding" ng-click="removeFindingInfo()" class="btn btn-canano-danger btn-canano-xs"
+      ng-disabled="columnForm">Delete</button>
+  </td>
+  <td align="right" style="float:right;">
+    <button ng-click="saveFindingInfo()" ng-disabled="data.type==''||data.name==''||columnForm||columnInvalid()"
+      class="btn btn-canano-primary btn-canano-xs">Save</button>
+    <button ng-disabled="columnForm" ng-click="cancelFindingInfo()" class="btn btn-canano-default btn-canano-xs">Cancel</button>
+  </td>
+</tr>
+</tbody>
+</table>
+</td>
+</tr>
+</tbody>
+</table>
+<br />
+    <br>
+    <br>
+
+
+    <table width="100%" align="center" class="submissionView ng-scope">
+      <tbody>
+        <tr>
+          <td class="cellLabel" width="100">
+            <label for="analysis">Analysis and Conclusion</label>
+          </td>
+          <td>
+            <div id="categoryPrompt">
+              <textarea rows="5" cols="70" data-ng-model="purification.analysis">{{purification.analysis}}</textarea>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <br>
+    <br>
+
+    <table width="100%" align="center" class="submissionView" summary="layout">
+      <tbody>
+        <tr>
+          <td width="10%"><label>Files</label></td>
+          <td width="90%">
+            <button type="button" class="btn-canano btn-canano-primary btn-canano-xs ng-click-active"
+              ng-click="openFileForm(-1, $parent.$index)">Add</button>
+          </td>
+        </tr>
+        <tr>
+          <td colspan="2" ng-show="material.fileElements.length">
+            <table class="editTableWithGrid" align="center" width="95%">
+              <tr>
+                <td class="cellLabel">
+                  File Type
+                </td>
+                <td class="cellLabel">
+                  Title
+                </td>
+                <td class="cellLabel">
+                  Keywords
+                </td>
+                <td class="cellLabel" colspan="2">
+                  Description
+                </td>
+              </tr>
+              <tr class="synthesisFiles" ng-repeat="file in material.fileElements">
+                <td width="10%">
+                  {{file.type}}
+                </td>
+                <td width="20%">
+                  <a href="#" target="_blank"
+                    ng-href="{{file.urlExternal==true ? file.uri:'/caNanoLab/rest/sample/download?fileId='+file.id}}">{{file.title}}</a>
+                </td>
+                <td width="20%">
+                  {{file.keywordsStr}}
+                </td>
+                <td width="40%">
+                  {{file.description}}
+                </td>
+                <td width="10%">
+                  <button type="button" class="btn-canano btn-canano-primary btn-canano-xs ng-click-active"
+                    ng-click="openFileForm($index, $parent.$index, file)">Edit</button>
+                </td>
+              </tr>
+              <tr ng-show="fileFormIndex!=null">
+                <td colspan="4">{{currentFile}}, {{fileObject}}
+                  <table class="editTableWithGrid form" align="center" width="95%">
+                    <tr ng-if="fileErrorMessage">
+                      <td colspan="2" class="fileErrorMessage">
+                        <div>
+                          {{fileErrorMessage}}
+                        </div>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td width="25%">
+                        <input type="radio" ng-model="currentFile.uriExternal" ng-value="false" name="uriExternal">
+                        <label for="external0">Upload</label>
+                      </td>
+                      <td width="75%">
+                        <input type="radio" ng-model="currentFile.uriExternal" ng-value="true" name="uriExternal">
+                        <label for="external0">Enter File URL</label>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td class="cellLabel">
+                        <span ng-bind-html="currentFile.uriExternal ? 'External URL':'File'">Label</span>*
+                      </td>
+                      <td>
+                        <input type="file" id="uploadFile" file-model="fileObject" ng-show="!currentFile.uriExternal">
+                        <input type="text" data-ng-model="currentFile.externalUrl" ng-if="currentFile.uriExternal"
+                          size="60">
+                      </td>
+                    </tr>
+                    <tr>
+                      <td class="cellLabel">
+                        File Type*
+                      </td>
+                      <td>
+                        <select ng-model="currentFile.type" ng-options="o as o for o in dropdowns.fileTypes">
+                        </select>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td class="cellLabel">
+                        File Title*
+                      </td>
+                      <td>
+                        <input type="text" name="title" data-ng-model="currentFile.title" size="60">
+                      </td>
+                    </tr>
+                    <tr>
+                      <td class="cellLabel">
+                        Keywords
+                      </td>
+                      <td>
+                        <textarea data-ng-model="currentFile.keywordsStr" cols="60" rows="3" id="fileKeywords"
+                          class="ng-valid ng-dirty"></textarea><br />
+                        <em>(one word per line)</em>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td class="cellLabel">
+                        Description
+                      </td>
+                      <td>
+                        <textarea ng-model="currentFile.description" cols="60" rows="3" id="fileDescription"
+                          class="ng-valid ng-dirty"></textarea>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td colspan="2" class="saveSynthesis">
+                        <button class="btn-canano btn-canano-default btn-canano-xs" ng-click="cancelFile()">Cancel</button>
+                        <button class="btn-canano btn-canano-primary btn-canano-xs" ng-disabled="getFileConditions()"
+                          ng-click="saveFile()">Save File</button>
+
+                      </td>
+                    </tr>
+                  </table>
+                </td>
+              </tr>
+
+            </table>
+          </td>
+        </tr>
+        <!-- <tr ng-repeat="file in material.files">
+                    <td>
+                        {{file.type}}
+                    </td>
+                    <td>
+                        <a href="#" target="_blank" ng-href="file.uri">{{file.title}}</a>
+                    </td>
+                    <td>
+                        {{file.keywordsStr}}
+                    </td>
+                    <td>
+                        {{file.description}}
+                    </td>
+                </tr>
+                <tr ng-show="fileFormIndex!=null">
+                    <td colspan="4">
+                        <table class="editTableWithGrid" align="center" width="95%">
+                            <tr>
+                                <td>some file</td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr> -->
+      </tbody>
+    </table>
+
+    <br>
+    <div class="form__actions">
+      <div class="form__action form__action--left">
+        <!-- ngIf: nanoEntityId !== null --><button class="btn-canano btn-canano-danger ng-scope" type="button" value="Delete"
+          ng-click="deleteMaterial()" ng-if="synMaterialId!=-1">Delete</button>
+        <!-- end ngIf: nanoEntityId !== null -->
+      </div>
+      <div class="form__action form__action--right">
+        <input type="hidden" ng-model="nanoEntityForm.createdBy" class="ng-pristine ng-valid">
+        <input type="hidden" ng-model="nanoEntityForm.createdDate" class="ng-pristine ng-valid">
+        <button class="btn-canano btn-canano-danger" type="reset" value="Reset" ng-click="resetForm()">Reset</button>
+        <button ng-disabled="!purification.simpleProtocol.displayName || !purification.type" class="btn-canano btn-canano-primary ng-binding" type="submit"
+          ng-click="savePurification()" ng-show="!addNewComposingElement">
+          Update
+        </button>
+
+      </div>
+    </div>
+
+
+  </form>
+</div>
