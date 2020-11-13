@@ -902,6 +902,36 @@ public class CharacterizationBO extends BaseAnnotationBO {
 		return simpleFinding;
 	}
 
+	public SimpleFindingBean drawNewMatrix(HttpServletRequest request, SimpleFindingBean simpleFinding)
+			throws Exception {
+
+//		CharacterizationBean achar = (CharacterizationBean) request.getSession().getAttribute("theChar");
+//		SimpleCharacterizationEditBean editBean =
+//				(SimpleCharacterizationEditBean) request.getSession().getAttribute("theEditChar");
+//		request.setAttribute("anchor", "result");
+
+
+		FindingBean findingBean = new FindingBean();
+		simpleFinding.transferTableNumbersToFindingBean(findingBean);
+		
+		findingBean.updateMatrix(findingBean.getNumberOfColumns(),
+				findingBean.getNumberOfRows());
+
+		simpleFinding.transferFromFindingBean(request, findingBean);
+		simpleFinding.setColumnHeaders(findingBean.getColumnHeaders());
+		simpleFinding.setDefaultValuesForNullHeaders();
+
+//		request.setAttribute("anchor", "submitFinding");
+
+		//this.checkOpenForms(achar, theForm, request);
+		// set columnHeaders in the session so jsp can check duplicate columns
+//		request.getSession().setAttribute("columnHeaders",
+//				findingBean.getColumnHeaders());
+		//return mapping.findForward("inputForm");
+
+		return simpleFinding;
+	}
+
 	public SimpleCharacterizationEditBean deleteFinding(HttpServletRequest request,
 			SimpleFindingBean simpleFinding)
 			throws Exception {
