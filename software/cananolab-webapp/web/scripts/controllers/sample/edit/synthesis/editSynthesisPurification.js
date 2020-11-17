@@ -1,4 +1,4 @@
-'use strict';
+  'use strict';
 var app = angular.module('angularApp')
   .controller('EditSynthesisPurificationCtrl', function (sampleService, utilsService, navigationService, $anchorScroll,groupService, $rootScope, $scope, $http, $location, $filter, $modal, $routeParams) {
     $scope.tempShow = false;
@@ -15,6 +15,7 @@ var app = angular.module('angularApp')
     $scope.dataId = $location.search()['dataId'];
     $scope.sampleName = sampleService.sampleName($scope.sampleId);
     $scope.fileId = null;
+    $scope.operands = ['='];
 
     /* csv upload */
     var csvColumnMaxCount = 25;  // Maximum number of columns allowed
@@ -368,6 +369,16 @@ var app = angular.module('angularApp')
 
 
 // Finding section code //    
+    $http({ method: 'GET', url: 'rest/synthesisPurification/getDatumNumberModifier?columnName=Number%20Modifier' }).
+      success(function (data, status) {
+        $scope.operands = data;
+        if (data.includes("other")) {
+          var index = data.indexOf("other");
+          data.splice(index, 1);
+          $scope.operands = data;
+        };
+
+      });
 
     // opens new finding dialog //
     $scope.addNewFinding = function () {
@@ -400,7 +411,7 @@ var app = angular.module('angularApp')
       $scope.loader = true;
       $scope.badFindingCell = createArray(csvDataColCount, csvDataRowCount);
 
-      $http({ method: 'POST', url: '/caNanoLab/rest/synthesisPurification/updateDataConditionTable', data: $scope.currentFinding }).
+      $http({ method: 'POST', url: '/caNanoLab/rest/synthesisPurification/newPurity', data: $scope.currentFinding }).
         success(function (data, status, headers, config) {
           if (data.rows[csvDataRowCount - 1] === undefined) {
             csvDataRowCount = data.numberOfRows;
@@ -1004,7 +1015,7 @@ var app = angular.module('angularApp')
 
     // called when columnType dropdown is changed on column form //
     $scope.onColumnTypeDropdownChange = function (newOpen) {
-      $http({ method: 'GET', url: '/caNanoLab/rest/synthesisPurification/getColumnNameOptionsByType?columnType=' + $scope.findingsColumn.columnType + '&charName=' + $scope.data.name + '&assayType=' + $scope.data.assayType }).
+      $http({ method: 'GET', url: '/caNanoLab/rest/synthesisPurification/getColumnNameOptionsByType?columnType=' + $scope.findingsColumn.columnType + '&charName=' + $scope.purification.name + '&assayType=' + $scope.purification.assayType }).
         success(function (data, status, headers, config) {
           $scope.columnNameLookup = data;
           $scope.loader = false;
