@@ -182,6 +182,12 @@ public class InitSynthesisSetup {
         setExperimentConfigDropDowns(request);
     }
 
+    public void setSynthesisPurityDropDowns(HttpServletRequest request, String sampleId) throws Exception{
+        InitSetup.getInstance().getDefaultAndOtherTypesByLookup(request,
+                "datumConditionValueTypes", "datum and condition", "valueType",
+                "otherValueType", true);
+    }
+
     public void setExperimentConfigDropDowns(HttpServletRequest request)
             throws Exception {
         // instrument manufacturers and techniques

@@ -11,13 +11,18 @@ import gov.nih.nci.cananolab.dto.particle.synthesis.SynthesisPurityBean;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import javax.servlet.http.HttpServletRequest;
 
 public class SimplePurityBean {
-//    List<ColumnHeader> columnHeaders = new ArrayList<ColumnHeader>();
+
     List<SimplePurityRowBean> purityRows = new ArrayList<SimplePurityRowBean>();
     List<SimpleFileBean> files = new ArrayList<SimpleFileBean>();
     File fileBeingEdited;
     Long id;
+    int numberOfColumns = 0;
+    int numberOfRows = 0;
+    private List<ColumnHeader> columnHeaders = new ArrayList<ColumnHeader>();
+
 //    String createdBy;
 //    Date createdDate;
 
@@ -54,13 +59,13 @@ public class SimplePurityBean {
     }
 
 
-//    public void setColumnHeaders(List<ColumnHeader> columnHeaders) {
-//        this.columnHeaders = columnHeaders;
-//    }
-//
-//    public List<ColumnHeader> getColumnHeaders() {
-//        return this.columnHeaders;
-//    }
+    public void setColumnHeaders(List<ColumnHeader> columnHeaders) {
+        this.columnHeaders = columnHeaders;
+    }
+
+    public List<ColumnHeader> getColumnHeaders() {
+        return this.columnHeaders;
+    }
 
     public void setFiles(List<SimpleFileBean> files) {
         this.files = files;
@@ -108,6 +113,26 @@ public class SimplePurityBean {
         }
     }
 
+    public void transferFromPurityBean(HttpServletRequest request, SynthesisPurityBean purityBean) {
+        this.setId(purityBean.getDomain().getId());
+        this.transferRowsFromPurityBean(purityBean);
+        transferFilesFromPurityBean(request, purityBean.getFiles());
+    }
+
+    private void transferFilesFromPurityBean(HttpServletRequest request, List<FileBean> files) {
+
+            this.files.clear();
+
+            if (files == null) return;
+
+            for (FileBean file : files) {
+                SimpleFileBean simpleFile = new SimpleFileBean();
+                simpleFile.transferSimpleFileBean(file, request);
+                this.files.add(simpleFile);
+            }
+
+    }
+
     public void transferRowsFromPurityBean(SynthesisPurityBean purityBean) {
         if (purityBean == null) return;
 
@@ -136,5 +161,23 @@ public class SimplePurityBean {
             simpleRow.transferToRow(rowBean);
             purityBean.getRows().add(rowBean);
         }
+    }
+    public void setDefaultValuesForNullHeaders() {
+        int headerIdx = 1;
+        for (ColumnHeader header : this.columnHeaders) {
+            if (header.getColumnName() == null || header.getColumnName().length() == 0) {
+                header.setColumnName("Column "  + headerIdx);
+                header.setColumnOrder(headerIdx);
+            }
+
+            headerIdx++;
+        }
+    }
+
+    public void transferTableNumbersToPurityBean(SynthesisPurityBean purityBean) {
+        if (purityBean == null) return;
+
+        purityBean.setNumberOfColumns(this.numberOfColumns);
+        purityBean.setNumberOfRows(this.numberOfRows);
     }
 }
