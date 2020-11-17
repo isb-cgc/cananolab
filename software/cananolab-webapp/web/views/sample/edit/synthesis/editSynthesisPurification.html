@@ -244,7 +244,7 @@
       </td>
     </tr>
     <tr ng-repeat="finding in purification.editBean">
-      <td colspan="2">{{finding}}
+      <td colspan="2">
         <table class="editTableWithGrid" width="95%" align="center" ng-if="purification.purityBeans.length">
           <tbody>
             <tr>
@@ -262,7 +262,7 @@
               </td>
             </tr>
             <tr ng-if="finding.columnHeaders.length">
-              <td>
+              <td>Purity Rows - {{finding.rows}}
                 <table class="summaryViewWithGrid" width="95%" align="center">
                   <tbody>
                     <tr>
@@ -271,7 +271,7 @@
                         {{header.displayName}}
                       </td>
                     </tr>
-                    <tr ng-repeat="row in finding.purityRows">
+                    <tr ng-repeat="row in finding.rows">
                       <td ng-repeat="cell in row.cells" style="padding-left:15px;">
                         <span ng-if="cell.operand!='='">{{cell.operand}}</span>{{cell.value}}
                       </td>
@@ -352,7 +352,7 @@
               </td>
             </tr>
             <tr>
-              <td colspan="2">
+              <td colspan="2">{{currentFinding}}
                 <table class="promptbox" width="85%" align="center" id="matrix"
                   ng-if="currentFinding.columnHeaders.length">
                   <tbody>
@@ -395,18 +395,16 @@
                             </td>
                             <td>
                               <select ng-hide="loader" ng-model="findingsColumn.columnName"
-                                ng-init="findingsColumn.columnName=findingsColumn.columnName"
-                                ng-change="onColumnNameDropdownChange()">
-
+                                ng-init="findingsColumn.columnName=findingsColumn.columnName" ng-change="onColumnNameDropdownChange()">
+                          
                                 <!--
-															<select ng-model="findingsColumn.columnName" data-ng-options="option for option in columnNameLookup" ng-change="onColumnNameDropdownChange()"> -->
+                          															<select ng-model="findingsColumn.columnName" data-ng-options="option for option in columnNameLookup" ng-change="onColumnNameDropdownChange()"> -->
                                 <option value=""></option>
-                                <option ng-repeat="option in columnNameLookup" ng-disabled="disableColumn(option)">
-                                  {{option}}</option>
-
+                                <option ng-repeat="option in columnNameLookup" ng-disabled="disableColumn(option)">{{option}}</option>
+                          
                               </select>
 
-                              <div id="promptCategory" ng-if="findingsColumn.columnName=='other'">
+                              <div id="promptCategory" ng-if="findingsColumn.columnName=='other'">{{localForm}}
                                 <table cellspacing="5" cellpadding="0" border="0" width="100%" class="promptbox"
                                   summary="layout">
                                   <tbody>
@@ -476,7 +474,7 @@
                           <tr>
                             <td><label for="valueType">Column Value Type</label></td>
                             <td><select ng-hide="loader" ng-model="findingsColumn.valueType"
-                                data-ng-options="option for option in data.datumConditionValueTypeLookup">
+                                data-ng-options="option for option in purification.datumConditionValueTypeLookup">
                                 <option value=""></option>
                               </select>
                               <div id="promptCategory" ng-if="findingsColumn.valueType=='other'">
@@ -497,7 +495,7 @@
                                     <tr>
                                       <td style="text-align: right">
                                         <button type="button" class="btn btn-canano-primary btn-canano-xs"
-                                          ng-click="findingsColumn.valueType=localForm.otherCategoryText; data.datumConditionValueTypeLookup.push(localForm.otherCategoryText);">Add</button>
+                                          ng-click="findingsColumn.valueType=localForm.otherCategoryText; purification.datumConditionValueTypeLookup.push(localForm.otherCategoryText);">Add</button>
 
                                         <button type="button" class="btn btn-canano-default btn-canano-xs"
                                           ng-click="findingsColumn.valueType='';">Cancel</button>
@@ -563,7 +561,7 @@
                 <button ng-click="removeColumnForm()" class="btn btn-canano-danger btn-canano-xs">Reset</button>
               </td>
               <td>
-
+                
                 <button
                   ng-disabled="!findingsColumn.columnType||columnNameLookup.indexOf(findingsColumn.columnName)==-1"
                   ng-click="saveColumnForm()" class="btn btn-canano-primary btn-canano-xs">
@@ -580,7 +578,7 @@
     </tr>
 
 
-    <tr ng-repeat="row in currentFinding.purityRows   track by $index">
+    <tr ng-repeat="row in currentFinding.rows track by $index">
       <td ng-repeat="cell in row.cells  track by $index">
         <div class="finding_row">
           <div class="finding_cell">
@@ -615,7 +613,7 @@
       ng-disabled="columnForm">Delete</button>
   </td>
   <td align="right" style="float:right;">
-    <button ng-click="saveFindingInfo()" ng-disabled="data.type==''||data.name==''||columnForm||columnInvalid()"
+    <button ng-click="saveFindingInfo()" ng-disabled="purification.type==''||purification.name==''||columnForm||columnInvalid()"
       class="btn btn-canano-primary btn-canano-xs">Save</button>
     <button ng-disabled="columnForm" ng-click="cancelFindingInfo()" class="btn btn-canano-default btn-canano-xs">Cancel</button>
   </td>
