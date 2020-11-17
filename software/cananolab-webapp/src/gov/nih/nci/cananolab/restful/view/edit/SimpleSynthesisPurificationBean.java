@@ -7,9 +7,12 @@ import gov.nih.nci.cananolab.domain.particle.SynthesisPurification;
 import gov.nih.nci.cananolab.domain.particle.SynthesisPurity;
 import gov.nih.nci.cananolab.dto.common.ColumnHeader;
 import gov.nih.nci.cananolab.dto.common.FileBean;
+import gov.nih.nci.cananolab.dto.common.FindingBean;
 import gov.nih.nci.cananolab.dto.common.PurificationConfigBean;
 import gov.nih.nci.cananolab.dto.particle.synthesis.SynthesisPurificationBean;
 import gov.nih.nci.cananolab.dto.particle.synthesis.SynthesisPurityBean;
+import gov.nih.nci.cananolab.restful.core.InitSetup;
+import gov.nih.nci.cananolab.restful.util.CommonUtil;
 import gov.nih.nci.cananolab.security.enums.SecureClassesEnum;
 import gov.nih.nci.cananolab.security.service.SpringSecurityAclService;
 import java.security.PrivateKey;
@@ -17,6 +20,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Set;
+import java.util.SortedSet;
 import javax.servlet.http.HttpServletRequest;
 
 public class SimpleSynthesisPurificationBean {
@@ -34,13 +38,26 @@ public class SimpleSynthesisPurificationBean {
     private Float yield;
     private List<SimplePurityBean> purityBeans;
     private List<SimplePurificationConfigBean> purificationConfigBeans;
-    private SimplePurificationEditBean editBean = new SimplePurificationEditBean();
+    private SimplePurityEditBean editBean = new SimplePurityEditBean();
+    private List<ColumnHeader> columnHeaders = new ArrayList<ColumnHeader>();
 
-    public SimplePurificationEditBean getEditBean() {
+    public List<String> getDatumConditionValueTypeLookup() {
+        return datumConditionValueTypeLookup;
+    }
+
+    public void setDatumConditionValueTypeLookup(List<String> datumConditionValueTypeLookup) {
+        this.datumConditionValueTypeLookup = datumConditionValueTypeLookup;
+    }
+
+    List<String> datumConditionValueTypeLookup = new ArrayList<String>();
+    SimpleTechniqueAndInstrument techniqueInstruments = new SimpleTechniqueAndInstrument();
+
+
+    public SimplePurityEditBean getEditBean() {
         return editBean;
     }
 
-    public void setEditBean(SimplePurificationEditBean editBean) {
+    public void setEditBean(SimplePurityEditBean editBean) {
         this.editBean = editBean;
     }
 
@@ -61,7 +78,7 @@ public class SimpleSynthesisPurificationBean {
         this.columnHeaders = columnHeaders;
     }
 
-    private List<ColumnHeader> columnHeaders = new ArrayList<ColumnHeader>();
+
 
     public List<SimplePurificationConfigBean> getSimpleExperimentBeans() {
         return this.purificationConfigBeans;
@@ -230,7 +247,25 @@ public class SimpleSynthesisPurificationBean {
             setSimpleExperimentBeans(simpleExperimentBeans);
 
         }
-
+        this.setupLookups(httpRequest);
 
     }
+
+    protected void setupLookups(HttpServletRequest request) {
+        SortedSet<String> valueTypes = (SortedSet<String>)request.getSession().getAttribute("datumConditionValueTypes");
+        if (valueTypes != null)
+            this.datumConditionValueTypeLookup.addAll(valueTypes);
+        CommonUtil.addOtherToList(this.datumConditionValueTypeLookup);
+
+        try {
+            this.techniqueInstruments.setupLookups(request);
+        }
+        catch (Exception e) {
+            //TODO improve error
+            System.out.println("Issue getting dropdowns");
+        }
+
+    }
+
+
 }
