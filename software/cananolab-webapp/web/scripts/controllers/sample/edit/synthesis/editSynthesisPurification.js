@@ -1079,22 +1079,22 @@ var app = angular.module('angularApp')
 
       $scope.loader = true;
       if ($scope.isNewFinding) {
-        $scope.data.finding.push($scope.currentFinding);
+        $scope.purification.purityBeans.push($scope.currentFinding);
       };
 
-      for (var x = 0; x < $scope.data.finding.length; x++) {
-        if ($scope.data.finding[x].findingId == $scope.currentFinding.findingId) {
-          $scope.data.finding.splice(x, 1);
-          $scope.data.finding.push($scope.currentFinding);
+      for (var x = 0; x < $scope.purification.purityBeans.length; x++) {
+        if ($scope.purification.purityBeans[x].id == $scope.currentFinding.id) {
+          $scope.purification.purityBeans.splice(x, 1);
+          $scope.purification.purityBeans.push($scope.currentFinding);
           break;
         }
       };
 
 
       let haveDatum = false;
-      for (let i0 = 0; i0 < $scope.data.finding.length; i0++) {
-        for (let i1 = 0; i1 < $scope.data.finding[i0].columnHeaders.length; i1++) {
-          if ($scope.data.finding[i0].columnHeaders[i1].columnType === 'datum') {
+      for (let i0 = 0; i0 < $scope.purification.purityBeans.length; i0++) {
+        for (let i1 = 0; i1 < $scope.purification.purityBeans[i0].columnHeaders.length; i1++) {
+          if ($scope.purification.purityBeans[i0].columnHeaders[i1].columnType === 'datum') {
             haveDatum = true;
             break;
           }
@@ -1115,12 +1115,12 @@ var app = angular.module('angularApp')
         return;
       }
 
-      $http({ method: 'POST', url: '/caNanoLab/rest/synthesisPurification/saveFinding', data: $scope.data }).
+      $http({ method: 'POST', url: '/caNanoLab/rest/synthesisPurification/createPurity', data: $scope.purification }).
         success(function (data, status, headers, config) {
 
           $scope.saveButton = "Update";
           $scope.loader = false;
-          $scope.data = data;
+          $scope.purification = data;
         }).
         error(function (data, status, headers, config) {
           $scope.loader = false;
@@ -1136,7 +1136,7 @@ var app = angular.module('angularApp')
         $http({ method: 'POST', url: '/caNanoLab/rest/synthesisPurification/removeFinding', data: $scope.currentFinding }).
           success(function (data, status, headers, config) {
             $scope.loader = false;
-            $scope.data = data;
+            $scope.purification = data;
           }).
           error(function (data, status, headers, config) {
             $scope.loader = false;
@@ -1158,7 +1158,7 @@ var app = angular.module('angularApp')
     // save characterization record. //
     $scope.save = function () {
       $scope.loader = true;
-      $http({ method: 'POST', url: '/caNanoLab/rest/synthesisPurification/saveCharacterization', data: $scope.data }).
+      $http({ method: 'POST', url: '/caNanoLab/rest/synthesisPurification/saveCharacterization', data: $scope.purification }).
         success(function (data, status, headers, config) {
           $location.path("/editCharacterization").search({ 'sampleId': $scope.sampleId, 'charMessage': 'Characterization Saved' }).replace();
           $scope.loader = false;
@@ -1172,7 +1172,7 @@ var app = angular.module('angularApp')
     // remove characterization record. //
     $scope.remove = function () {
       $scope.loader = true;
-      $http({ method: 'POST', url: '/caNanoLab/rest/synthesisPurification/removeCharacterization', data: $scope.data }).
+      $http({ method: 'POST', url: '/caNanoLab/rest/synthesisPurification/removeCharacterization', data: $scope.purification }).
         success(function (data, status, headers, config) {
           $scope.loader = false;
           $location.path("/editCharacterization").search({ 'sampleId': $scope.sampleId }).replace();
@@ -1184,7 +1184,7 @@ var app = angular.module('angularApp')
 
     // reset form //
     $scope.reset = function () {
-      $scope.data = angular.copy($scope.dataCopy);
+      $scope.purification = angular.copy($scope.purificationCopy);
       $scope.domainFileUri = "";
       $scope.updateExperimentConfig = 0;
     };
@@ -1295,7 +1295,7 @@ var app = angular.module('angularApp')
             // or server returns response with an error status.
             // $rootScope.sampleData = data;
             $scope.loader = false;
-            $scope.data.errors = data;
+            $scope.purification.errors = data;
           });
       }
     };
@@ -1331,7 +1331,7 @@ var app = angular.module('angularApp')
             }
           });
           if (response.status > 0) {
-            $scope.data.errors = response.status + ': ' + response.data;
+            $scope.purification.errors = response.status + ': ' + response.data;
             $scope.loader = false;
           }
         }, function (evt) {
@@ -1408,7 +1408,7 @@ var app = angular.module('angularApp')
           // or server returns response with an error status.
           // $rootScope.sampleData = data;
           $scope.loader = false;
-          $scope.data.errors = data;
+          $scope.purification.errors = data;
           $scope.addNewFile = true;
         });
     };
