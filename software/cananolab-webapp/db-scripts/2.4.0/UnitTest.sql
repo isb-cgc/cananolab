@@ -816,7 +816,8 @@ CREATE TABLE `chemical_association`
     KEY `associated_element_b_pk_id` (`associated_element_b_pk_id`),
     KEY `composition_pk_id` (`composition_pk_id`),
     CONSTRAINT `FK_chemical_association_associated_element_a` FOREIGN KEY (`associated_element_a_pk_id`) REFERENCES `associated_element` (`associated_element_pk_id`),
-    CONSTRAINT `FK_chemical_association_associated_element_b` FOREIGN KEY (`associated_element_b_pk_id`) REFERENCES `associated_element` (`associated_element_pk_id`)
+    CONSTRAINT `FK_chemical_association_associated_element_b` FOREIGN KEY (`associated_element_b_pk_id`) REFERENCES `associated_element` (`associated_element_pk_id`),
+    CONSTRAINT `fk_ca_entry_comp` FOREIGN KEY (`composition_pk_id`) REFERENCES `composition` (`composition_pk_id`) ON DELETE CASCADE
 ) ENGINE = InnoDB
   DEFAULT CHARSET = latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -3964,7 +3965,8 @@ CREATE TABLE `datum_condition`
     PRIMARY KEY (`datum_pk_id`, `condition_pk_id`),
     KEY `datum_pk_id` (`datum_pk_id`),
     KEY `condition_pk_id` (`condition_pk_id`),
-    CONSTRAINT `FK_datum_condition_datum` FOREIGN KEY (`datum_pk_id`) REFERENCES `datum` (`datum_pk_id`)
+    CONSTRAINT `FK_datum_condition_datum` FOREIGN KEY (`datum_pk_id`) REFERENCES `datum` (`datum_pk_id`),
+    CONSTRAINT `FK_datum_condition_experiment_condition` FOREIGN KEY (`condition_pk_id`) REFERENCES `experiment_condition` (`condition_pk_id`)
 ) ENGINE = InnoDB
   DEFAULT CHARSET = latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;

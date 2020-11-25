@@ -821,4 +821,104 @@ public class SynthesisPurificationBO extends BaseAnnotationBO {
          */
 
     }
+
+    public SimplePurityBean drawMatrix(HttpServletRequest request, SimplePurityBean simplePurityBean)
+            throws Exception {
+
+        SynthesisPurificationBean achar = (SynthesisPurificationBean) request.getSession().getAttribute("thePure");
+//        SimpleCharacterizationEditBean editBean =
+//                (SimpleCharacterizationEditBean) request.getSession().getAttribute("theEditChar");
+        request.setAttribute("anchor", "result");
+
+        SynthesisPurityBean purityBean = this.findMatchPurityBean(achar, simplePurityBean);
+        simplePurityBean.transferTableNumbersToPurityBean(purityBean);
+
+//		if (request.getParameter("removeColumn") != null) {
+//			int columnToRemove = Integer.parseInt(request
+//					.getParameter("removeColumn"));
+//			findingBean.removeColumn(columnToRemove);
+//			this.checkOpenForms(achar, theForm, request);
+//			return mapping.findForward("inputForm");
+//		} else if (request.getParameter("removeRow") != null) {
+//			int rowToRemove = Integer.parseInt(request
+//					.getParameter("removeRow"));
+//			findingBean.removeRow(rowToRemove);
+//			this.checkOpenForms(achar, theForm, request);
+//			return mapping.findForward("inputForm");
+//		}
+        int existingNumberOfColumns = purityBean.getColumnHeaders().size();
+        int existingNumberOfRows = purityBean.getRows().size();
+
+        if (existingNumberOfColumns > purityBean.getNumberOfColumns()) {
+//			ActionMessages msgs = new ActionMessages();
+//			ActionMessage msg = new ActionMessage(
+//					"message.addCharacterization.removeMatrixColumn");
+//			msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
+//			saveMessages(request, msgs);
+//
+
+//			findingBean.setNumberOfColumns(existingNumberOfColumns);
+//			//this.checkOpenForms(achar, theForm, request);
+//			return mapping.getInputForward();
+        }
+        if (existingNumberOfRows > purityBean.getNumberOfRows()) {
+//			ActionMessages msgs = new ActionMessages();
+//			ActionMessage msg = new ActionMessage(
+//					"message.addCharacterization.removeMatrixRow");
+//			msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
+//			saveMessages(request, msgs);
+//			findingBean.setNumberOfRows(existingNumberOfRows);
+//			this.checkOpenForms(achar, theForm, request);
+//			return mapping.getInputForward();
+        }
+
+        purityBean.updateMatrix(purityBean.getNumberOfColumns(),
+                purityBean.getNumberOfRows());
+
+        InitSynthesisSetup.getInstance().persistPurificationDropdowns(request, achar);
+
+
+        simplePurityBean.transferFromPurityBean(request, purityBean);
+        simplePurityBean.setColumnHeaders(purityBean.getColumnHeaders());
+        simplePurityBean.setDefaultValuesForNullHeaders();
+
+        request.setAttribute("anchor", "submitFinding");
+
+        //this.checkOpenForms(achar, theForm, request);
+        // set columnHeaders in the session so jsp can check duplicate columns
+        request.getSession().setAttribute("columnHeaders",
+                purityBean.getColumnHeaders());
+        //return mapping.findForward("inputForm");
+
+        return simplePurityBean;
+    }
+
+    protected SynthesisPurityBean findMatchPurityBean(SynthesisPurificationBean achar,
+                                               SimplePurityBean simplePurityBean)
+            throws Exception {
+
+
+        List<SynthesisPurityBean> findingBeans = achar.getPurityBeans();
+        if (findingBeans == null)
+            throw new Exception("Current purification has no finding matching input finding id: " + simplePurityBean.getId());
+
+        for (SynthesisPurityBean finding : findingBeans) {
+            if (finding.getDomain() != null) {
+                Long id = finding.getDomain().getId();
+                if (id == null && simplePurityBean.getId() == 0 || //could be a new finding bean added when saving a file
+                        id != null && id.longValue() == simplePurityBean.getId()) {
+//                    achar.setTheFinding(finding);
+                    return finding;
+                }
+            }
+        }
+
+        if (simplePurityBean.getId() <= 0) {//new finding
+            SynthesisPurityBean newBean = new SynthesisPurityBean();
+//            achar.setTheFinding(newBean);
+            return newBean;
+        }
+
+        throw new Exception("Current purification has no finding matching input finding id: " + simplePurityBean.getId());
+    }
 }

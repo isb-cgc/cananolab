@@ -136,7 +136,7 @@ public class SynthesisMaterialServices {
      * @return SimpleSynthesisMaterial Bean with new file id included
      */
     @POST
-    @Path("/saveFile")
+    @Path("/saveFileSingle")
     @Produces ("application/json")
     public Response saveFile(@Context HttpServletRequest httpRequest, SimpleSynthesisMaterialBean simpleSynthesisMaterialBean) {
         try {
