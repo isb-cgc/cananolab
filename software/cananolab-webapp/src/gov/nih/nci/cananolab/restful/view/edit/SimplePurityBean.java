@@ -17,11 +17,13 @@ public class SimplePurityBean {
 
     List<SimplePurityRowBean> purityRows = new ArrayList<SimplePurityRowBean>();
     List<SimpleFileBean> files = new ArrayList<SimpleFileBean>();
-    File fileBeingEdited;
+    File theFile; //file being edited
     Long id;
+
     int numberOfColumns = 0;
     int numberOfRows = 0;
     private List<ColumnHeader> columnHeaders = new ArrayList<ColumnHeader>();
+    boolean dirty = false;
 
 //    String createdBy;
 //    Date createdDate;
@@ -86,12 +88,12 @@ public class SimplePurityBean {
         return files;
     }
 
-    public File getFileBeingEdited(){
-        return this.fileBeingEdited;
+    public File getTheFile(){
+        return this.theFile;
     }
 
-    public void setFileBeingEdited(File fileBeingEdited) {
-        this.fileBeingEdited = fileBeingEdited;
+    public void setTheFile(File fileBeingEdited) {
+        this.theFile = fileBeingEdited;
     }
 
     public void transferFromPurityBean(SynthesisPurityBean purityBean, String sampleId){
@@ -180,4 +182,31 @@ public class SimplePurityBean {
         purityBean.setNumberOfColumns(this.numberOfColumns);
         purityBean.setNumberOfRows(this.numberOfRows);
     }
+
+    public boolean isDirty() {
+        return dirty;
+    }
+
+    public void setDirty(boolean dirty) {
+        this.dirty = dirty;
+    }
+
+
+    public int getNumberOfColumns() {
+        return numberOfColumns;
+    }
+
+    public void setNumberOfColumns(int numberOfColumns) {
+        this.numberOfColumns = numberOfColumns;
+    }
+
+
+    public int getNumberOfRows() {
+        return numberOfRows;
+    }
+
+    public void setNumberOfRows(int numberOfRows) {
+        this.numberOfRows = numberOfRows;
+    }
+
 }
