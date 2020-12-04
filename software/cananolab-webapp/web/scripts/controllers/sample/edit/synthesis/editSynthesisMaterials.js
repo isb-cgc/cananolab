@@ -206,13 +206,22 @@ var app = angular.module('angularApp')
   $scope.uploadFile = function() {
     console.log('i am uploading')
     var fd = new FormData(); // create new form data object //
-    fd.append('file', $scope.fileObject);
+    fd.append('myFile', $scope.fileObject);
+    fd.append('urlExternal', false);
+    fd.append('type', 'image');
+    fd.append('title', 'title');
     $http.post('/caNanoLab/rest/core/uploadFile', fd, { withCredentials: false, headers: { 'Content-Type': undefined }, transformRequest: angular.identity }).
       success(function (data, status, headers, config) {
         $scope.uploadComplete = true;
         if ($scope.fileFormIndex==-1) {
           $scope.currentFile['uri'] = data['fileName']
           $scope.fileArray.push($scope.currentFile);
+          console.log($scope.material)
+          $http.post('/caNanoLab/rest/synthesisMaterial/saveFile', $scope.material).
+          success(function(data) {
+            console.log('done')
+          })
+
         }
         else {
           console.log('change existing file')
@@ -224,6 +233,7 @@ var app = angular.module('angularApp')
         $scope.fileErrorMessage = 'Error Uploading File';
       });
   };
+
 
   // save inherent function //
   $scope.saveInherentFunction = function (i) {
