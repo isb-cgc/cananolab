@@ -422,7 +422,12 @@ var app = angular.module('angularApp')
                 return false;
             }        	
         	
-        	 $http({method: 'GET', url: '/caNanoLab/rest/publication/getPubmedPublication?pubmedId=' + $scope.publicationForm.pubMedId}).
+        	 $http({
+			 method: 'GET', 
+			 url: '/caNanoLab/rest/publication/getPubmedPublication?pubmedId=' + $scope.publicationForm.pubMedId,
+			 headers: { 'my-header': 'my-header-value', 'Accept':'application/json, text/plain'},
+			 transformResponse: angular.identity
+		 }).
              success(function(data, status, headers, config) {
             	 $scope.publicationId = data;
                  
