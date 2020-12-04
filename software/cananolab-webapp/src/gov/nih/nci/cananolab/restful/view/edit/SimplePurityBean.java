@@ -15,7 +15,7 @@ import javax.servlet.http.HttpServletRequest;
 
 public class SimplePurityBean {
 
-    List<SimplePurityRowBean> purityRows = new ArrayList<SimplePurityRowBean>();
+    List<SimplePurityRowBean> rows = new ArrayList<SimplePurityRowBean>();
     List<SimpleFileBean> files = new ArrayList<SimpleFileBean>();
     File theFile; //file being edited
     Long id;
@@ -44,12 +44,12 @@ public class SimplePurityBean {
 //        this.createdDate = date;
 //    }
 
-    public List<SimplePurityRowBean> getPurityRows() {
-        return purityRows;
+    public List<SimplePurityRowBean> getRows() {
+        return rows;
     }
 
-    public void setPurityRows(List<SimplePurityRowBean> purityRows) {
-        this.purityRows = purityRows;
+    public void setRows(List<SimplePurityRowBean> rows) {
+        this.rows = rows;
     }
 
     public Long getId() {
@@ -141,24 +141,24 @@ public class SimplePurityBean {
 //        this.columnHeaders= purityBean.getColumnHeaders();
 
         List<PurityRow> beanRows = purityBean.getRows();
-        this.purityRows.clear();
+        this.rows.clear();
 
         if (beanRows != null) {
             for (PurityRow beanRow : beanRows) {
                 SimplePurityRowBean aRow = new SimplePurityRowBean();
                 aRow.transferFromRow(beanRow);
 
-                this.purityRows.add(aRow);
+                this.rows.add(aRow);
             }
         }
     }
 
     protected void transferRowsToPurityBean(SynthesisPurityBean purityBean) {
-        if (this.purityRows == null) return;
+        if (this.rows == null) return;
         if (purityBean == null) return;
 
         purityBean.getRows().clear();
-        for (SimplePurityRowBean simpleRow : this.purityRows) {
+        for (SimplePurityRowBean simpleRow : this.rows) {
             PurityRow rowBean = new PurityRow();
             simpleRow.transferToRow(rowBean);
             purityBean.getRows().add(rowBean);
