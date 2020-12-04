@@ -208,6 +208,9 @@ public class CoreServices
 				MultivaluedMap<String, String> headers = inputPart.getHeaders();
 				fileName = parseFileName(headers);
 				fileInputStream = inputPart.getBody(InputStream.class,null);
+				if( fileName != null ){
+					break;
+				}
 			}
 
 			protocolBO.saveFile(fileInputStream,fileName,httpRequest);
