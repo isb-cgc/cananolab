@@ -335,7 +335,7 @@ public class SynthesisPurificationBO extends BaseAnnotationBO {
         //Columns
 //        purityBean.setColumnHeaders(simplePurityBean.getColumnHeaders());
         purityBean.setColumnHeaders(columnHeaders);
-        List<SimplePurityRowBean> simplePurityRowBeans = simplePurityBean.getPurityRows();
+        List<SimplePurityRowBean> simplePurityRowBeans = simplePurityBean.getRows();
         Set<PurityDatumCondition> datumSet = new HashSet<PurityDatumCondition>();
 
 //        for(int columnNumber = 1; columnNumber<purityBean.getColumnHeaders().size(); columnNumber++){

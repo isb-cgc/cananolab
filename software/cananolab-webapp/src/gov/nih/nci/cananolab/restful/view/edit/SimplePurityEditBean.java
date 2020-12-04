@@ -61,10 +61,10 @@ int numberOfRows = 0;
         for(SimplePurityBean purityBean: purificationBean.getPurityBeans()){
 
             HashMap<String, Set<DataAndConditions>> rowSets = new HashMap<String, Set<DataAndConditions>>();
-            int rowCount = purityBean.getPurityRows().size();
-            numberOfRows = purityBean.getPurityRows().size();
+            int rowCount = purityBean.getRows().size();
+            numberOfRows = purityBean.getRows().size();
 
-            for(SimplePurityRowBean rowBean: purityBean.getPurityRows()){
+            for(SimplePurityRowBean rowBean: purityBean.getRows()){
                 HashMap<Integer, String> rowMap = new HashMap<Integer, String>();
                 int j=1;
                 for(SimplePurityCell cell: rowBean.getCells()){
