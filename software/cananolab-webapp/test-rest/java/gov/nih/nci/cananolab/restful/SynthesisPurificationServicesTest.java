@@ -346,7 +346,7 @@ public class SynthesisPurificationServicesTest {
                 newPurityRow.addCell(newCellDatum);
                 newPurityRow.addCell(newCellCondition);
                 rowBeans.add(newPurityRow);
-                newPurity.setPurityRows(rowBeans);
+                newPurity.setRows(rowBeans);
 
                 existingBean.getPurityBeans().add(newPurity);
 

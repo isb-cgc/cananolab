@@ -194,7 +194,7 @@ public class SimpleSynthesisPurificationBean {
         setCreatedDate(synthesisPurification.getCreatedDate());
         setAnalysis(synthesisPurification.getAnalysis());
         setYield(synthesisPurification.getYield());
-        if (synBean.getPurityBeans() != null) {
+        if ((synBean.getPurityBeans() != null) && (synBean.getPurityBeans().size()>0)) {
             purityBeans = new ArrayList<SimplePurityBean>();
             columnHeaders = synBean.getPurityBeans().get(0).getColumnHeaders();
             for (SynthesisPurityBean purityBean : synBean.getPurityBeans()) {

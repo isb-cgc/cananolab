@@ -132,7 +132,10 @@ public class SynthesisManager {
 
     public List<String> getDatumNameOptions(HttpServletRequest request, String characterizationType,
                                             String characterizationName, String assayType) throws Exception {
-        SortedSet<String> names = InitCharacterizationSetup.getInstance()
+//        SortedSet<String> names = InitCharacterizationSetup.getInstance()
+//                .getDatumNamesByCharName(request,
+//                        characterizationType, characterizationName, assayType);
+        SortedSet<String> names = InitSynthesisSetup.getInstance()
                 .getDatumNamesByCharName(request,
                         characterizationType, characterizationName, assayType);
         // add other datum names stored in the session for the char
