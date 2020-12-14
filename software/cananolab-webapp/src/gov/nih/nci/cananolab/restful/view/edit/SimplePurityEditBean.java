@@ -58,23 +58,25 @@ int numberOfRows = 0;
         columnCount = columnHeaders.size();
         numberOfColumns = columnHeaders.size();
         HashSet<HashMap<Integer, String>> rowSet = new HashSet<HashMap<Integer, String>>();
-        for(SimplePurityBean purityBean: purificationBean.getPurityBeans()){
+        if(purificationBean.getPurityBeans()!=null) {
+            for (SimplePurityBean purityBean : purificationBean.getPurityBeans()) {
 
-            HashMap<String, Set<DataAndConditions>> rowSets = new HashMap<String, Set<DataAndConditions>>();
-            int rowCount = purityBean.getRows().size();
-            numberOfRows = purityBean.getRows().size();
+                HashMap<String, Set<DataAndConditions>> rowSets = new HashMap<String, Set<DataAndConditions>>();
+                int rowCount = purityBean.getRows().size();
+                numberOfRows = purityBean.getRows().size();
 
-            for(SimplePurityRowBean rowBean: purityBean.getRows()){
-                HashMap<Integer, String> rowMap = new HashMap<Integer, String>();
-                int j=1;
-                for(SimplePurityCell cell: rowBean.getCells()){
-                    rowMap.put(cell.columnOrder, cell.value);
-                    j++;
+                for (SimplePurityRowBean rowBean : purityBean.getRows()) {
+                    HashMap<Integer, String> rowMap = new HashMap<Integer, String>();
+                    int j = 1;
+                    for (SimplePurityCell cell : rowBean.getCells()) {
+                        rowMap.put(cell.columnOrder, cell.value);
+                        j++;
+                    }
+                    rowSet.add(rowMap);
                 }
-                rowSet.add(rowMap);
+
+
             }
-
-
         }
         //Need to build a data object with all of the values for each column -
         //  - so need to have a hash of values attached to that column by Name?

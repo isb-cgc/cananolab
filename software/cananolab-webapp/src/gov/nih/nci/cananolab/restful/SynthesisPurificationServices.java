@@ -3,7 +3,7 @@ package gov.nih.nci.cananolab.restful;
 import gov.nih.nci.cananolab.domain.common.Instrument;
 import gov.nih.nci.cananolab.domain.common.Technique;
 import gov.nih.nci.cananolab.exception.ExperimentConfigException;
-import gov.nih.nci.cananolab.restful.sample.CharacterizationBO;
+
 import gov.nih.nci.cananolab.restful.sample.ExperimentConfigManager;
 import gov.nih.nci.cananolab.restful.synthesis.SynthesisManager;
 import gov.nih.nci.cananolab.restful.synthesis.SynthesisPurificationBO;
@@ -16,6 +16,7 @@ import gov.nih.nci.cananolab.system.applicationservice.CaNanoLabApplicationServi
 import gov.nih.nci.cananolab.system.applicationservice.client.ApplicationServiceProvider;
 import gov.nih.nci.cananolab.util.Constants;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.DefaultValue;
@@ -147,10 +148,30 @@ public class SynthesisPurificationServices {
         //TODO write
         try {
         SynthesisManager synthesisMgr = (SynthesisManager) SpringApplicationContext.getBean(httpRequest, "synthesisManager");
-        List<String> names = synthesisMgr.getColumnNameOptionsByType(httpRequest, columnType, purfType, purfName, assayType);
+//        List<String> names = synthesisMgr.getColumnNameOptionsByType(httpRequest, columnType, purfType, purfName, assayType);
+            List<String> names = synthesisMgr.getColumnNameOptionsByType(httpRequest, columnType, purfType, "purity", assayType);
         return Response.ok(names).header("Access-Control-Allow-Credentials", "true")
                 .header("Access-Control-Allow-Origin", "*").header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS")
                 .header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization").build();
+        } catch (Exception e) {
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
+                    .entity(CommonUtil.wrapErrorMessageInList(e.getMessage())).build();
+        }
+    }
+
+    @GET
+    @Path("/getColumnNameOptionsByType")
+    @Produces ("application/json")
+    public Response getColumnNameOptionsByType(@Context HttpServletRequest httpRequest,
+                                               @DefaultValue("") @QueryParam("columnType") String columnType,
+                                               @DefaultValue("") @QueryParam("assayType")String assayType) {
+        //TODO write
+        try {
+            SynthesisManager synthesisMgr = (SynthesisManager) SpringApplicationContext.getBean(httpRequest, "synthesisManager");
+            List<String> names = synthesisMgr.getColumnNameOptionsByType(httpRequest, columnType, "","purity",assayType);
+            return Response.ok(names).header("Access-Control-Allow-Credentials", "true")
+                    .header("Access-Control-Allow-Origin", "*").header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS")
+                    .header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization").build();
         } catch (Exception e) {
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
                     .entity(CommonUtil.wrapErrorMessageInList(e.getMessage())).build();
@@ -347,7 +368,7 @@ public class SynthesisPurificationServices {
     @GET
     @Path("/findTechniqueByType")
     @Produces ("application/json")
-    public Technique findTechniqueByType(@QueryParam("type") String type) throws ExperimentConfigException
+    public Technique findTechniqueByType(@QueryParam("techniqueType") String type) throws ExperimentConfigException
     {
         Technique technique = null;
         try {
@@ -466,25 +487,25 @@ public class SynthesisPurificationServices {
 
     }
 
-    @POST
-    @Path("/newFinding")
-    @Produces("application/json")
-    public Response newFindingTemplate(@Context HttpServletRequest httpRequest, SimpleFindingBean purityBean){
-        try {
-            CharacterizationBO characterizationBO =
-                    (CharacterizationBO) SpringApplicationContext.getBean(httpRequest, "characterizationBO");
-
-            SimpleFindingBean simpleFindingBean = characterizationBO.drawNewMatrix(httpRequest, purityBean);
-
-            return Response.ok(simpleFindingBean).header("Access-Control-Allow-Credentials", "true")
-                    .header("Access-Control-Allow-Origin", "*").header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS")
-                    .header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization").build();
-
-       }catch (Exception e){
-            return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
-                    .entity(CommonUtil.wrapErrorMessageInList(e.getMessage())).build();
-        }
-    }
+//    @POST
+//    @Path("/newFinding")
+//    @Produces("application/json")
+//    public Response newFindingTemplate(@Context HttpServletRequest httpRequest, SimpleFindingBean purityBean){
+//        try {
+//            CharacterizationBO characterizationBO =
+//                    (CharacterizationBO) SpringApplicationContext.getBean(httpRequest, "characterizationBO");
+//
+//            SimpleFindingBean simpleFindingBean = characterizationBO.drawNewMatrix(httpRequest, purityBean);
+//
+//            return Response.ok(simpleFindingBean).header("Access-Control-Allow-Credentials", "true")
+//                    .header("Access-Control-Allow-Origin", "*").header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS")
+//                    .header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization").build();
+//
+//       }catch (Exception e){
+//            return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
+//                    .entity(CommonUtil.wrapErrorMessageInList(e.getMessage())).build();
+//        }
+//    }
 
     @POST
     @Path("/newPurity")
@@ -537,28 +558,28 @@ public class SynthesisPurificationServices {
         }
     }
 
-    @POST
-    @Path("/setColumnOrder")
-    @Produces ("application/json")
-    public Response setColumnOrder(@Context HttpServletRequest httpRequest, SimpleFindingBean simpleFinding)
-    {
-        logger.debug("In setColumnOrder");
-
-        if (!SpringSecurityUtil.isUserLoggedIn())
-            return Response.status(Response.Status.UNAUTHORIZED).entity(Constants.MSG_SESSION_INVALID).build();
-
-        try {
-            CharacterizationBO characterizationBO =
-                    (CharacterizationBO) SpringApplicationContext.getBean(httpRequest, "characterizationBO");
-
-            SimpleFindingBean simpleFindingBean = characterizationBO.updateColumnOrder(httpRequest, simpleFinding);
-
-            return Response.ok(simpleFindingBean).header("Access-Control-Allow-Credentials", "true")
-                    .header("Access-Control-Allow-Origin", "*").header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS")
-                    .header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization").build();
-        } catch (Exception e) {
-            return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
-                    .entity(CommonUtil.wrapErrorMessageInList(e.getMessage())).build();
-        }
-    }
+//    @POST
+//    @Path("/setColumnOrder")
+//    @Produces ("application/json")
+//    public Response setColumnOrder(@Context HttpServletRequest httpRequest, SimpleFindingBean simpleFinding)
+//    {
+//        logger.debug("In setColumnOrder");
+//
+//        if (!SpringSecurityUtil.isUserLoggedIn())
+//            return Response.status(Response.Status.UNAUTHORIZED).entity(Constants.MSG_SESSION_INVALID).build();
+//
+//        try {
+//            CharacterizationBO characterizationBO =
+//                    (CharacterizationBO) SpringApplicationContext.getBean(httpRequest, "characterizationBO");
+//
+//            SimpleFindingBean simpleFindingBean = characterizationBO.updateColumnOrder(httpRequest, simpleFinding);
+//
+//            return Response.ok(simpleFindingBean).header("Access-Control-Allow-Credentials", "true")
+//                    .header("Access-Control-Allow-Origin", "*").header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS")
+//                    .header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization").build();
+//        } catch (Exception e) {
+//            return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
+//                    .entity(CommonUtil.wrapErrorMessageInList(e.getMessage())).build();
+//        }
+//    }
 }
