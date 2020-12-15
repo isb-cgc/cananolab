@@ -354,7 +354,8 @@ public class SynthesisPurificationServices {
             ExperimentConfigManager experimentMgr =
                     (ExperimentConfigManager) SpringApplicationContext.getBean(httpRequest, "experimentConfigManager");
 
-            List<Instrument> types = experimentMgr.getInstrumentsByType(httpRequest, techniqueType);
+//            List<Instrument> types = experimentMgr.getInstrumentsByType(httpRequest, techniqueType);
+            List<String> types = experimentMgr.getInstrumentTypesByTechniqueType(httpRequest, techniqueType);
 
             return Response.ok(types).header("Access-Control-Allow-Credentials", "true")
                     .header("Access-Control-Allow-Origin", "*").header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS")
