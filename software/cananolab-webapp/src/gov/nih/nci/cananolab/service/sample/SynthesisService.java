@@ -76,4 +76,6 @@ public interface SynthesisService extends BaseService {
     void deleteSfeInherentFunction(Long sampleId, SynthesisFunctionalizationElement element, SfeInherentFunction function)throws SynthesisException;
 
     public PurityColumnHeader getColumnHeaderById(Long id) throws SynthesisException;
+
+    public SynthesisPurity findPurityById(Long purityId) throws SynthesisException;
     }

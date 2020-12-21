@@ -333,7 +333,7 @@ public class SynthesisPurificationBO extends BaseAnnotationBO {
         purity.setFiles(files);
 
         //Columns
-//        purityBean.setColumnHeaders(simplePurityBean.getColumnHeaders());
+        purityBean.setColumnHeaders(simplePurityBean.getColumnHeaders());
         purityBean.setColumnHeaders(columnHeaders);
         List<SimplePurityRowBean> simplePurityRowBeans = simplePurityBean.getRows();
         Set<PurityDatumCondition> datumSet = new HashSet<PurityDatumCondition>();
@@ -491,6 +491,30 @@ public class SynthesisPurificationBO extends BaseAnnotationBO {
      */
     public List<String> createPurity(SimpleSynthesisPurificationBean editBean, HttpServletRequest httpRequest) {
         //TODO write
+        List<String> msgs = new ArrayList<String>();
+        try {
+            SynthesisPurificationBean synthesisPurificationBean = transferSimplePurification(editBean, httpRequest);
+            List<SimplePurityBean> purityBeans = editBean.getPurityBeans();
+            if((purityBeans!=null)&&(purityBeans.size()>0)){
+                for(SimplePurityBean bean: purityBeans){
+                    if (bean.getId()==null){
+                        //create a new purity
+                        SynthesisPurityBean purityBean= transferSimplePurity(bean,editBean.getColumnHeaders(),httpRequest);
+                        synthesisService.saveSynthesisPurity(purityBean,synthesisPurificationBean);
+                    } else {
+                        //check if edit needed
+                       if(bean.isDirty()){
+                           //TODO edit data
+                       }
+
+                    }
+                }
+            }
+        }
+        catch (SynthesisException e) {
+            msgs.add("Error editing purity");
+            return msgs;
+        }
         return null;
     }
 

@@ -11,6 +11,7 @@ import gov.nih.nci.cananolab.exception.NoAccessException;
 import gov.nih.nci.cananolab.exception.SynthesisException;
 import gov.nih.nci.cananolab.security.enums.SecureClassesEnum;
 import gov.nih.nci.cananolab.security.service.SpringSecurityAclService;
+import gov.nih.nci.cananolab.system.applicationservice.ApplicationException;
 import gov.nih.nci.cananolab.system.applicationservice.CaNanoLabApplicationService;
 import gov.nih.nci.cananolab.system.applicationservice.client.ApplicationServiceProvider;
 import gov.nih.nci.cananolab.system.query.hibernate.HQLCriteria;
@@ -38,6 +39,8 @@ public class SynthesisHelper
 
     public SynthesisHelper() {
     }
+
+
 
     public PurityColumnHeader findPurityColumnHeaderById(Long id, String fullClassName) throws Exception{
 //        if (!springSecurityAclService.currentUserHasReadPermission(id, SecureClassesEnum.SAMPLE.getClazz()) &&
@@ -479,6 +482,19 @@ public class SynthesisHelper
 
         return null;
 
+    }
+
+    public SynthesisPurity getPurityById(Long purityId) throws Exception {
+        SynthesisPurity synthesisPurity;
+        CaNanoLabApplicationService appService = (CaNanoLabApplicationService) ApplicationServiceProvider.getApplicationService();
+        DetachedCriteria crit = DetachedCriteria.forClass(SynthesisPurity.class);
+        crit.add(Property.forName("id").eq(purityId));
+        List results = appService.query(crit);
+        if(!results.isEmpty()){
+            synthesisPurity = (SynthesisPurity)results.get(0);
+            return synthesisPurity;
+        }
+        return null;
     }
 
     public Set<PurityDatumCondition> getPurityDatumByPurity(Long purityId) throws Exception{

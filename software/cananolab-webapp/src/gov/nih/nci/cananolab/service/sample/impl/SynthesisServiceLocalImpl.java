@@ -310,7 +310,17 @@ public class SynthesisServiceLocalImpl extends BaseServiceLocalImpl implements S
         }
     }
 
+public SynthesisPurity findPurityById(Long purityId) throws SynthesisException{
+        try{
+            SynthesisPurity purity = synthesisHelper.getPurityById(purityId);
+            return  purity;
+        }
+        catch (Exception e) {
+            String err = "Error finding purity by ID: " + purityId;
+            throw new SynthesisException(err, e);
+        }
 
+}
 
     public SynthesisBean findSynthesisBySampleId(Long sampleId) throws SynthesisException {
         SynthesisBean synthesisBean = null;
