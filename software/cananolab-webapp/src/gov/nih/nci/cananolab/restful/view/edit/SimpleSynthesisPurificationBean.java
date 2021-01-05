@@ -1,5 +1,6 @@
 package gov.nih.nci.cananolab.restful.view.edit;
 
+import gov.nih.nci.cananolab.domain.common.File;
 import gov.nih.nci.cananolab.domain.common.Instrument;
 import gov.nih.nci.cananolab.domain.common.PurificationConfig;
 
@@ -36,10 +37,66 @@ public class SimpleSynthesisPurificationBean {
     private String designMethodDescription;
     private String analysis;
     private Float yield;
-    private List<SimplePurityBean> purityBeans;
+    private List<SimplePurityBean> simplePurityBeans;
     private List<SimplePurificationConfigBean> purificationConfigBeans;
     private SimplePurityEditBean editBean = new SimplePurityEditBean();
     private List<ColumnHeader> columnHeaders = new ArrayList<ColumnHeader>();
+    private List<SimplePurityRowBean> rows;
+    private List<SimpleFileBean> files = new ArrayList<SimpleFileBean>();
+    private File theFile; //file being edited
+    private int numberOfColumns;
+    private int numberOfRows;
+    private boolean dirty;
+
+    public boolean getDirty(){
+        return dirty;
+    }
+
+    public void setDirty(boolean dirt){
+        dirty=dirt;
+    }
+
+    public List<SimpleFileBean> getFiles() {
+        return files;
+    }
+
+    public void setFiles(List<SimpleFileBean> files) {
+        this.files = files;
+    }
+
+    public File getTheFile() {
+        return theFile;
+    }
+
+    public void setTheFile(File theFile) {
+        this.theFile = theFile;
+    }
+
+    public int getNumberOfColumns() {
+        return numberOfColumns;
+    }
+
+    public void setNumberOfColumns(int numberOfColumns) {
+        this.numberOfColumns = numberOfColumns;
+    }
+
+    public int getNumberOfRows() {
+        return numberOfRows;
+    }
+
+    public void setNumberOfRows(int numberOfRows) {
+        this.numberOfRows = numberOfRows;
+    }
+
+
+
+    public List<SimplePurityRowBean> getRows() {
+        return rows;
+    }
+
+    public void setRows(List<SimplePurityRowBean> inRows){
+        rows = inRows;
+    }
 
     public List<String> getDatumConditionValueTypeLookup() {
         return datumConditionValueTypeLookup;
@@ -89,11 +146,11 @@ public class SimpleSynthesisPurificationBean {
     }
 
     public List<SimplePurityBean> getPurityBeans() {
-        return purityBeans;
+        return simplePurityBeans;
     }
 
     public void setPurityBeans(List<SimplePurityBean> purityBeans) {
-        this.purityBeans = purityBeans;
+        this.simplePurityBeans = purityBeans;
     }
 
     public List<String> getErrors() {
@@ -195,17 +252,18 @@ public class SimpleSynthesisPurificationBean {
         setAnalysis(synthesisPurification.getAnalysis());
         setYield(synthesisPurification.getYield());
         if ((synBean.getPurityBeans() != null) && (synBean.getPurityBeans().size()>0)) {
-            purityBeans = new ArrayList<SimplePurityBean>();
+            simplePurityBeans = new ArrayList<SimplePurityBean>();
             columnHeaders = synBean.getPurityBeans().get(0).getColumnHeaders();
             for (SynthesisPurityBean purityBean : synBean.getPurityBeans()) {
                 SimplePurityBean simplePurityBean = new SimplePurityBean();
                 simplePurityBean.transferFromPurityBean(purityBean, sampleId);
-                purityBeans.add(simplePurityBean);
-
-
+                simplePurityBeans.add(simplePurityBean);
             }
 
         }
+
+        //*** Testing SimpleRowBean**//
+
 
         editBean.transferPurificationToPurificationEdit(this);
 
