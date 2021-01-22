@@ -50,6 +50,9 @@ public class SimplePurityBean {
 
     public void setRows(List<SimplePurityRowBean> rows) {
         this.rows = rows;
+        if(rows!=null) {
+            this.numberOfRows = rows.size();
+        }
     }
 
     public Long getId() {
@@ -63,6 +66,9 @@ public class SimplePurityBean {
 
     public void setColumnHeaders(List<ColumnHeader> columnHeaders) {
         this.columnHeaders = columnHeaders;
+        if(columnHeaders!=null){
+            numberOfColumns=columnHeaders.size();
+        }
     }
 
     public List<ColumnHeader> getColumnHeaders() {

@@ -85,7 +85,8 @@ public class SynthesisPurityBean
             for( PurityDatumCondition datum : data )
             {
                 // add datum column
-                ColumnHeader datumColumn = new ColumnHeader( datum );
+                ColumnHeader datumColumn = new ColumnHeader( datum.getColumnHeader() );
+//                PurityColumnHeader datumColumn = datum.getColumnHeader();
                 if( ! columnHeaders.contains( datumColumn ) )
                 {
                     if(datumColumn.getCreatedDate()==null){

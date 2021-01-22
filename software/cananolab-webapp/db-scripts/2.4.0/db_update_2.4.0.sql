@@ -52,6 +52,11 @@ alter table `canano`.`chemical_association`
         foreign key (`composition_pk_id`)
             references `canano`.`composition` (`composition_pk_id`) on delete cascade;
 
+insert into acl_class
+(id,class)
+VALUES (18, 'gov.nih.nci.cananolab.dto.particle.synthesis.SynthesisBean');
+
+
 #Pending due to mismatched data
 # alter table `canano`.`nanomaterial_entity`
 #     add constraint `fk_ne_entry_comp`

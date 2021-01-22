@@ -193,7 +193,7 @@ public class SynthesisBO extends BaseAnnotationBO {
             session.setAttribute(SynthesisBean.FUNCTIONALIZATION_SELECTION,
                     synthesisBean.getSynthesisFunctionalizationBeanList());
             session.setAttribute(SynthesisBean.PURIFICATION_SELECTION,
-                    synthesisBean.getSynthesisFunctionalizationBeanList());
+                    synthesisBean.getSynthesisPurificationBeanList());
         }
 
         // retain action messages from send redirects

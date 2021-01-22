@@ -41,7 +41,7 @@ public class SimpleSynthesisPurificationBean {
     private List<SimplePurificationConfigBean> purificationConfigBeans;
     private SimplePurityEditBean editBean = new SimplePurityEditBean();
     private List<ColumnHeader> columnHeaders = new ArrayList<ColumnHeader>();
-    private List<SimplePurityRowBean> rows;
+//    private List<SimplePurityRowBean> rows;
     private List<SimpleFileBean> files = new ArrayList<SimpleFileBean>();
     private File theFile; //file being edited
     private int numberOfColumns;
@@ -90,13 +90,13 @@ public class SimpleSynthesisPurificationBean {
 
 
 
-    public List<SimplePurityRowBean> getRows() {
-        return rows;
-    }
-
-    public void setRows(List<SimplePurityRowBean> inRows){
-        rows = inRows;
-    }
+//    public List<SimplePurityRowBean> getRows() {
+//        return rows;
+//    }
+//
+//    public void setRows(List<SimplePurityRowBean> inRows){
+//        rows = inRows;
+//    }
 
     public List<String> getDatumConditionValueTypeLookup() {
         return datumConditionValueTypeLookup;
