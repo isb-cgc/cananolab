@@ -9,6 +9,7 @@ import java.util.List;
 
 public class SimplePurityRowBean {
 	List<SimplePurityCell> cells = new ArrayList<SimplePurityCell>();
+	Integer rowNumber;
 
 	public List<SimplePurityCell> getCells() {
 		return cells;
@@ -25,10 +26,19 @@ public class SimplePurityRowBean {
 	public void removeCell(SimplePurityCell cell){
 		cells.remove(cell);
 	}
-	
+
+	public Integer getRowNumber() {
+		return rowNumber;
+	}
+
+	public void setRowNumber(Integer rowNumber) {
+		this.rowNumber = rowNumber;
+	}
+
 	public void transferFromRow(PurityRow beanRow) {
 		if (beanRow == null) return;
-		
+
+		rowNumber = beanRow.getRowNumber();
 		List<PurityTableCell> cells = beanRow.getCells();
 		this.cells.clear();
 		if (cells == null) return;
@@ -45,6 +55,8 @@ public class SimplePurityRowBean {
 		if (rowBean == null) return;
 		
 		rowBean.getCells().clear();
+
+
 		
 		for (SimplePurityCell cell : cells) {
 			PurityTableCell cellBean = new PurityTableCell();

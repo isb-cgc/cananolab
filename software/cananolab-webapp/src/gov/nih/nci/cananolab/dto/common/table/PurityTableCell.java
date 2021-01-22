@@ -30,6 +30,10 @@ public class PurityTableCell {
 
 	// FR# 26194, matrix column order.
 	Integer columnOrder;
+
+
+
+	Integer rowNumber;
 	Date createdDate;
 	String createdBy;
 	Long columnId;
@@ -55,6 +59,7 @@ public class PurityTableCell {
 		this.id=condition.getId();
 		this.createdBy= condition.getCreatedBy();
 		this.columnId= condition.getColumnId();
+		this.rowNumber = condition.getRowNumber();
 	}
 
 	/**
@@ -134,5 +139,13 @@ public class PurityTableCell {
 
 	public Long getColumnId(){
 		return columnId;
+	}
+
+	public Integer getRowNumber() {
+		return rowNumber;
+	}
+
+	public void setRowNumber(Integer rowNumber) {
+		this.rowNumber = rowNumber;
 	}
 }

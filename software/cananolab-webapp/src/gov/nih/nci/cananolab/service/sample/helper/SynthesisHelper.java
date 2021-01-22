@@ -273,7 +273,8 @@ public class SynthesisHelper
         crit.setFetchMode("files.keywordCollection", FetchMode.JOIN);
         crit.setFetchMode("purities", FetchMode.JOIN);
         crit.setFetchMode("purities.purityDatumCollection", FetchMode.JOIN);
-        crit.setFetchMode("purities.purityDatumCollection.conditionCollection", FetchMode.JOIN);
+        crit.setFetchMode("purities.purityDatumCollection.columnHeader", FetchMode.JOIN);
+//        crit.setFetchMode("purities.purityDatumCollection.conditionCollection", FetchMode.JOIN);
         crit.setFetchMode("purities.files", FetchMode.JOIN);
         crit.setFetchMode("purities.files.keywordCollection", FetchMode.JOIN);
         crit.setFetchMode("purificationConfigs", FetchMode.JOIN);

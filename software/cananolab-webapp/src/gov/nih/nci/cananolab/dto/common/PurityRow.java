@@ -20,6 +20,7 @@ import java.util.List;
  */
 public class PurityRow {
 	private List<PurityTableCell> cells = new ArrayList<PurityTableCell>();
+	private Integer rowNumber;
 
 	public PurityRow() {
 	}
@@ -28,12 +29,27 @@ public class PurityRow {
 		return cells;
 	}
 
+	public Integer getRowNumber() {
+		return rowNumber;
+	}
+
+	public void setRowNumber(Integer rowNumber) {
+		this.rowNumber = rowNumber;
+	}
+
 	public void setCells(List<PurityTableCell> cells) {
 		this.cells = cells;
+		if(cells!=null){
+			rowNumber = cells.get(0).getRowNumber();
+		}
+
 	}
 
 	public void addCell(PurityTableCell cell){
 		cells.add(cell);
+		if(rowNumber==null){
+			rowNumber=cell.getRowNumber();
+		}
 	}
 
 	public void removeCell(PurityTableCell cell){

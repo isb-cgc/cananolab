@@ -14,7 +14,7 @@ public class SimplePurityCell {
 //	Date createdDate;
 //	String createdBy;
 	String operand;
-
+	Integer rowNumber;
 
 
 	Long columnId;
@@ -24,6 +24,7 @@ public class SimplePurityCell {
 		value = cell.getValue();
 		datumOrCondition = cell.getDatumOrCondition();
 		columnOrder = cell.getColumnOrder();
+		rowNumber = cell.getRowNumber();
 		operand = cell.getOperand();
 //		createdDate = cell.getCreatedDate();
 		id = cell.getId();
@@ -38,6 +39,7 @@ public class SimplePurityCell {
 		cell.setOperand(operand);
 		cell.setId(id);
 		cell.setColumnId(columnId);
+		cell.setRowNumber(rowNumber);
 //		cell.setCreatedDate(createdDate);
 //		cell.setCreatedBy(createdBy);
 	}
@@ -95,5 +97,13 @@ public class SimplePurityCell {
 
 	public void setColumnId(Long columnId) {
 		this.columnId = columnId;
+	}
+
+	public Integer getRowNumber() {
+		return rowNumber;
+	}
+
+	public void setRowNumber(Integer rowNumber) {
+		this.rowNumber = rowNumber;
 	}
 }
