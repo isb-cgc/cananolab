@@ -218,6 +218,7 @@ public class SynthesisPurityBean
                             condition = conditionMap.get( theHeader ).get( i );
                         }
                         row.getCells().add( new PurityTableCell( condition ) );
+                        row.setRowNumber(condition.getRowNumber());
 //                    }
                 }
                 rows.add( row );

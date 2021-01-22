@@ -54,6 +54,7 @@ int numberOfRows = 0;
             i++;
         }
         colHeaders.setValues(colTitles);
+
         dataAndConditions.add(colHeaders);
         columnCount = columnHeaders.size();
         numberOfColumns = columnHeaders.size();
@@ -67,12 +68,19 @@ int numberOfRows = 0;
 
                 for (SimplePurityRowBean rowBean : purityBean.getRows()) {
                     HashMap<Integer, String> rowMap = new HashMap<Integer, String>();
-                    int j = 1;
+                    HashSet<String> values = new HashSet<String>();
+                    DataAndConditions datumRow = new DataAndConditions();
+
                     for (SimplePurityCell cell : rowBean.getCells()) {
                         rowMap.put(cell.columnOrder, cell.value);
-                        j++;
+                        values.add(cell.value);
+
                     }
                     rowSet.add(rowMap);
+                    datumRow.setValues(values);
+                    datumRow.setName("Row " + rowBean.getRowNumber());
+                    dataAndConditions.add(datumRow);
+
                 }
 
 
@@ -80,16 +88,18 @@ int numberOfRows = 0;
         }
         //Need to build a data object with all of the values for each column -
         //  - so need to have a hash of values attached to that column by Name?
-        for (int k=0; k<columnCount;k++){
-            DataAndConditions datumRow = new DataAndConditions();
-            datumRow.setName(columnMap.get(k+1));
-            HashSet<String> values = new HashSet<String>();
-            for(HashMap<Integer,String> row : rowSet){
-                values.add(row.get(k+1));
-            }
-            datumRow.setValues(values);
-            dataAndConditions.add(datumRow);
-        }
+//        for (int k=0; k<columnCount;k++){
+//            DataAndConditions datumRow = new DataAndConditions();
+////            datumRow.setName(columnMap.get(k+1));
+//            HashSet<String> values = new HashSet<String>();
+//            for(HashMap<Integer,String> row : rowSet){
+//                values.add(row.get(k+1));
+//            }
+//            datumRow.setValues(values);
+//            dataAndConditions.add(datumRow);
+//        }
+
+
 
 
     }

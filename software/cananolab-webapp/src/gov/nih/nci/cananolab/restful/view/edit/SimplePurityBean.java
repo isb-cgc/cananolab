@@ -108,7 +108,6 @@ public class SimplePurityBean {
         this.setId(purityBean.getDomain().getId());
         this.transferRowsFromPurityBean(purityBean);
         this.transferFilesFromPurityBean(purityBean, sampleId);
-
     }
 
     public void transferFilesFromPurityBean(SynthesisPurityBean purityBean,String sampleId){
