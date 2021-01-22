@@ -164,7 +164,7 @@ public class SynthesisHelper
         crit.setFetchMode("synthesisPurifications.protocol.file.keywordCollection", FetchMode.JOIN);
         crit.setFetchMode("synthesisPurifications.purities", FetchMode.JOIN);
         crit.setFetchMode("synthesisPurifications.purities.purityDatumCollection", FetchMode.JOIN);
-        crit.setFetchMode("synthesisPurifications.purities.purityDatumCollection.conditionCollection", FetchMode.JOIN);
+        crit.setFetchMode("synthesisPurifications.purities.purityDatumCollection.columnHeader",FetchMode.JOIN);
         crit.setFetchMode("synthesisPurifications.purities.files", FetchMode.JOIN);
         crit.setFetchMode("synthesisPurifications.purities.files.keywordCollection", FetchMode.JOIN);
         crit.setFetchMode("synthesisPurifications.purificationConfigs", FetchMode.JOIN);

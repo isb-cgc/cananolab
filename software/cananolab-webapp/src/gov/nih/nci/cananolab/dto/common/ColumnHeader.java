@@ -10,11 +10,13 @@ package gov.nih.nci.cananolab.dto.common;
 
 import gov.nih.nci.cananolab.domain.common.Condition;
 import gov.nih.nci.cananolab.domain.common.Datum;
+import gov.nih.nci.cananolab.domain.common.PurityColumnHeader;
 import gov.nih.nci.cananolab.domain.common.PurityDatumCondition;
 import gov.nih.nci.cananolab.dto.particle.synthesis.SynthesisPurityBean;
 import gov.nih.nci.cananolab.util.StringUtils;
 
 import java.util.Date;
+import java.util.StringTokenizer;
 
 /**
  * View bean representing a column header in a matrix column
@@ -69,6 +71,15 @@ public class ColumnHeader {
 
 	public ColumnHeader() {
 
+	}
+
+	public ColumnHeader(PurityColumnHeader columnHeader) {
+		this.columnName = columnHeader.getName();
+		this.conditionProperty = columnHeader.getProperty();
+		this.valueType = columnHeader.getValueType();
+		this.valueUnit = columnHeader.getValueUnit();
+		this.createdDate = columnHeader.getCreatedDate();
+		this.createdBy = columnHeader.getCreatedBy();
 	}
 
 	public String getColumnName() {
@@ -204,6 +215,12 @@ public class ColumnHeader {
 
 	public void setCreatedDate(Date createdDate) {
 		this.createdDate = createdDate;
+	}
+
+	public String getCreatedBy() { return createdBy;}
+
+	public void setCreatedBy(String createdBy){
+		this.createdBy = createdBy;
 	}
 
     @Override

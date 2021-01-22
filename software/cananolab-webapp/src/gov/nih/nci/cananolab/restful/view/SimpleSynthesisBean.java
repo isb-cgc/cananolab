@@ -241,6 +241,9 @@ public class SimpleSynthesisBean {
 
 //                        Map<String, List<Object>> oneCharResult = new HashMap<String, List<Object>>();
                         purificationPurity.put("dataId", purityBean.getDomain().getId());
+                        List<ColumnHeader>  colHeaders = purityBean.getColumnHeaders();
+                        purificationPurity.put("Column Headers", colHeaders);
+
                         List<Object> dataCondition = transferPurityResultsDataAndCondition(purityBean);
                         if (dataCondition != null && dataCondition.size() > 0){
 //                            oneCharResult.put("Data and Conditions", dataCondition);

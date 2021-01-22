@@ -39,6 +39,11 @@ public class PurityDatumCondition implements Serializable {
     private String type;
 
     private Long purityPkId;
+
+    private int rowNumber;
+
+    PurityColumnHeader columnHeader;
+
     private SynthesisPurity purity;
 
     public SynthesisPurity getPurity() {
@@ -226,6 +231,20 @@ public class PurityDatumCondition implements Serializable {
         if(type.equals("datum")||type.equals("condition")){
         this.type = type;}
         else throw new Exception("Column type must be either datum or condition");
+    }
+
+    public int getRowNumber(){
+        return rowNumber;
+    }
+
+    public void setRowNumber(int rowNumber1){
+        this.rowNumber = rowNumber1;
+    }
+
+    public PurityColumnHeader getColumnHeader(){ return columnHeader;}
+
+    public void setColumnHeader(PurityColumnHeader columnHeader1){
+        this.columnHeader = columnHeader1;
     }
 
     /**

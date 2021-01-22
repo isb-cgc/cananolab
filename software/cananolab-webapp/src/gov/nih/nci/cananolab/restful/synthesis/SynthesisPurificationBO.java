@@ -510,6 +510,16 @@ public class SynthesisPurificationBO extends BaseAnnotationBO {
                     }
                 }
             }
+//            List<SimplePurityRowBean> rows = editBean.getRows();
+//            List<ColumnHeader> headers = editBean.getColumnHeaders();
+//            if((rows!=null) && (headers!=null)){
+//                //convert rows into purities
+//                SimplePurityBean newBean = new SimplePurityBean();
+//                newBean.setRows(rows);
+//                newBean.setColumnHeaders(headers);
+//                SynthesisPurityBean purityBean = transferSimplePurity(newBean, headers, httpRequest);
+//                synthesisService.saveSynthesisPurity(purityBean, synthesisPurificationBean);
+//            }
         }
         catch (SynthesisException e) {
             msgs.add("Error editing purity");

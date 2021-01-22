@@ -776,6 +776,13 @@ L-->
 		   timeToLiveSeconds="100000"
 		   overflowToDisk="true"/>
 
+	<cache name="gov.nih.nci.cananolab.domain.common.PurityColumnHeader"
+		   maxElementsInMemory="500"
+		   eternal="false"
+		   timeToIdleSeconds="1800"
+		   timeToLiveSeconds="100000"
+		   overflowToDisk="true"/>
+
 	<cache name="gov.nih.nci.cananolab.domain.common.Supplier"
 		   maxElementsInMemory="500"
 		   eternal="false"
