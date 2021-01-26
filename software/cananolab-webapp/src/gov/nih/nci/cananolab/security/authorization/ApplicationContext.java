@@ -164,7 +164,7 @@ public abstract class ApplicationContext {
 	/**
 	 * Indicate the version of CSM where application's authorization schema is hosted.
 	 */
-	private String csmVersion;
+//	private String csmVersion;
 	
 	public ApplicationContext(){
 
@@ -363,13 +363,13 @@ public abstract class ApplicationContext {
 		 	.toHashCode();
 	 }
 
-	public String getCsmVersion() {
-		return csmVersion;
-	}
-
-	public void setCsmVersion(String csmVersion) {
-		this.csmVersion = csmVersion;
-	}	 
+//	public String getCsmVersion() {
+//		return csmVersion;
+//	}
+//
+//	public void setCsmVersion(String csmVersion) {
+//		this.csmVersion = csmVersion;
+//	}
 	 
 	
 }
