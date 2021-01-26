@@ -45,19 +45,19 @@ data-source add \
 end-if
 
 #csmupt datasource configuration
-if (outcome != success) of /subsystem=datasources/data-source=csmupt:read-resource
-data-source add \
-    --name=csmupt \
-    --driver-name=mysql \
-    --connection-url=@database.url@ \
-    --jndi-name=java:/csmupt \
-    --user-name=@database.user@ \
-    --password=@database.password@ \
-    --use-ccm=true \
-    --max-pool-size=100 \
-    --blocking-timeout-wait-millis=5000 
+#if (outcome != success) of /subsystem=datasources/data-source=csmupt:read-resource
+#data-source add \
+#    --name=csmupt \
+#    --driver-name=mysql \
+#    --connection-url=@database.url@ \
+#    --jndi-name=java:/csmupt \
+#    --user-name=@database.user@ \
+#    --password=@database.password@ \
+#    --use-ccm=true \
+#    --max-pool-size=100 \
+#    --blocking-timeout-wait-millis=5000
 #data-source enable --name=csmupt
-end-if
+#end-if
 
 ##############################################################
 #               CSM Login Module                             
@@ -72,13 +72,13 @@ end-if
 
 # csmupt login module configuration
 
-if (outcome == success) of /subsystem=security/security-domain=csmupt:read-resource
-	/subsystem=security/security-domain=csmupt:remove
-end-if
+#if (outcome == success) of /subsystem=security/security-domain=csmupt:read-resource
+#	/subsystem=security/security-domain=csmupt:remove
+#end-if
 
-if (outcome == success) of /subsystem=security/security-domain=csmupt/authentication=classic:read-resource 
-   /subsystem=security/security-domain=csmupt/authentication=classic:remove()
-end-if
+#if (outcome == success) of /subsystem=security/security-domain=csmupt/authentication=classic:read-resource
+#   /subsystem=security/security-domain=csmupt/authentication=classic:remove()
+#end-if
 
 if (outcome != success) of /subsystem=logging/size-rotating-file-handler=CANANOLAB:read-resource
 	/subsystem=logging:write-attribute(name=use-deployment-logging-config, value=false)
