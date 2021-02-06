@@ -10,8 +10,9 @@ public class PurityColumnHeader {
     private String valueUnit;
     private String createdBy;
     private Date createdDate;
-    private int columnOrder;
+    private Integer columnOrder;
     private Float constantValue;
+    private String columnType;
 
     public Long getId() {
         return id;
@@ -69,11 +70,11 @@ public class PurityColumnHeader {
         this.createdDate = createdDate;
     }
 
-    public int getColumnOrder() {
+    public Integer getColumnOrder() {
         return columnOrder;
     }
 
-    public void setColumnOrder(int columnOrder) {
+    public void setColumnOrder(Integer columnOrder) {
         this.columnOrder = columnOrder;
     }
 
@@ -83,5 +84,13 @@ public class PurityColumnHeader {
 
     public void setConstantValue(Float constantValue) {
         this.constantValue = constantValue;
+    }
+
+    public String getColumnType() {
+        return columnType;
+    }
+
+    public void setColumnType(String columnType) {
+        this.columnType = columnType;
     }
 }

@@ -34,7 +34,7 @@ public class SynthesisPurityBean
     public static final String CONDITION_TYPE = "condition";
     private List<PurityRow> rows = new ArrayList<PurityRow>();
     private List<FileBean> files = new ArrayList<FileBean>();
-    private List<ColumnHeader> columnHeaders = new ArrayList<ColumnHeader>();
+//    private List<ColumnHeader> columnHeaders = new ArrayList<ColumnHeader>();
     private List<PurityColumnHeader> purityColumnHeaders = new ArrayList<PurityColumnHeader>();
     private int numberOfColumns;
     private int numberOfRows;
@@ -47,19 +47,14 @@ public class SynthesisPurityBean
     {
     }
 
-
-    public SynthesisPurityBean( SynthesisPurity synthesisPurity, List<ColumnHeader> inputColumnHeaders)
-    {
-        //TODO rewrite?
+    public SynthesisPurityBean(SynthesisPurity synthesisPurity){
         domain = synthesisPurity;
         id = synthesisPurity.getId();
-
         List<PurityDatumCondition> data = null;
-        if( synthesisPurity.getPurityDatumCollection() != null )
-        {
+        if(synthesisPurity.getPurityDatumCollection()!=null){
             data = new ArrayList<PurityDatumCondition>( synthesisPurity.getPurityDatumCollection() );
             Collections.sort( data, new Comparators.PurityDatumDateComparator() );
-            setColumnHeaders(inputColumnHeaders);
+            addColumnHeaders(data);
         }
 
         if( synthesisPurity.getFiles() != null
@@ -78,21 +73,21 @@ public class SynthesisPurityBean
             // get data matrix column headers and generate a map based
             // on headers.
 
-            Map<ColumnHeader, List<PurityDatumCondition>> conditionMap = new HashMap<ColumnHeader, List<PurityDatumCondition>>();
-
+//            Map<ColumnHeader, List<PurityDatumCondition>> conditionMap = new HashMap<ColumnHeader, List<PurityDatumCondition>>();
+            Map<PurityColumnHeader, List<PurityDatumCondition>> conditionMap = new HashMap<PurityColumnHeader, List<PurityDatumCondition>>();
 
             List<PurityDatumCondition> conditionList = new ArrayList<PurityDatumCondition>();
             for( PurityDatumCondition datum : data )
             {
                 // add datum column
-                ColumnHeader datumColumn = new ColumnHeader( datum.getColumnHeader() );
-//                PurityColumnHeader datumColumn = datum.getColumnHeader();
-                if( ! columnHeaders.contains( datumColumn ) )
+//                ColumnHeader datumColumn = new ColumnHeader( datum.getColumnHeader() );
+                PurityColumnHeader datumColumn = datum.getColumnHeader();
+                if( ! purityColumnHeaders.contains( datumColumn ) )
                 {
                     if(datumColumn.getCreatedDate()==null){
                         datumColumn.setCreatedDate(new Date());
                     }
-                    columnHeaders.add( datumColumn );
+                    purityColumnHeaders.add( datumColumn );
                 }
                 if( conditionMap.get( datumColumn ) != null )
                 {
@@ -104,71 +99,16 @@ public class SynthesisPurityBean
                     conditionMap.put( datumColumn, conditionList );
                 }
                 conditionList.add( datum );
-                // add condition columns
-//                if( datum.getConditionCollection() != null )
-//                {
-//                    List<PurityDatumCondition> conditions = new ArrayList<PurityDatumCondition>( datum
-//                            .getConditionCollection() );
-//                    Collections.sort( conditions,
-//                            new Comparators.PurityConditionDateComparator() );
-//                    for( PurityDatumCondition condition : conditions )
-//                    {
-//                        ColumnHeader conditionColumn = new ColumnHeader(
-//                                condition );
-//                        if( ! columnHeaders.contains( conditionColumn ) )
-//                        {
-//                            if(conditionColumn.getCreatedDate()==null){
-//                                conditionColumn.setCreatedDate(new Date());
-//                            }
-//                            columnHeaders.add( conditionColumn );
-//                        }
-//                        if( conditionMap.get( conditionColumn ) != null )
-//                        {
-//                            conditionList = conditionMap.get( conditionColumn );
-//                        }
-//                        else
-//                        {
-//                            conditionList = new ArrayList<PurityDatumCondition>();
-//                            conditionMap.put( conditionColumn, conditionList );
-//                        }
-//                        // in case of copied Finding, ids are all null before
-//                        // persisting
-//                        if( condition.getId() != null )
-//                        {
-//                            if( ! conditionList.contains( condition ) )
-//                            {
-//                                conditionList.add( condition );
-//                            }
-//                        }
-//                        // use created_by field that contains the original ID to
-//                        // test whether condition is already in the list
-//                        else
-//                        {
-//                            boolean existed = false;
-//                            for( PurityDatumCondition cond : conditionList )
-//                            {
-//                                if( cond.getCreatedBy().equals(
-//                                        condition.getCreatedBy() ) )
-//                                {
-//                                    existed = true;
-//                                    break;
-//                                }
-//                            }
-//                            if( ! existed )
-//                            {
-//                                conditionList.add( condition );
-//                            }
-//                        }
-//                    }
-//                }
             }
             // sort column headers by created date and set column orders
-            setupColumnOrder();
+//            setupColumnOrder();
 
             int numRows = - 1;
             // iterate through all datum columns and find the biggest list size
             // as the number of rows
-            for( Map.Entry<ColumnHeader, List<PurityDatumCondition>> entry : conditionMap
+//            for( Map.Entry<ColumnHeader, List<PurityDatumCondition>> entry : conditionMap
+//                    .entrySet() )
+            for( Map.Entry<PurityColumnHeader, List<PurityDatumCondition>> entry : conditionMap
                     .entrySet() )
             {
                 int numData = entry.getValue().size();
@@ -177,48 +117,37 @@ public class SynthesisPurityBean
                     numRows = numData;
                 }
             }
-            // iterate through all condition columns and find the biggest list
-            // size as the number of rows
-            for( Map.Entry<ColumnHeader, List<PurityDatumCondition>> entry : conditionMap
-                    .entrySet() )
-            {
-                int numConditions = entry.getValue().size();
-                if( numConditions > numRows )
-                {
-                    numRows = numConditions;
-                }
-            }
+//            for( Map.Entry<PurityColumnHeader, List<PurityDatumCondition>> entry : conditionMap
+//                    .entrySet() )
+////                for( Map.Entry<ColumnHeader, List<PurityDatumCondition>> entry : conditionMap
+////                        .entrySet() )
+//            {
+//                int numConditions = entry.getValue().size();
+//                if( numConditions > numRows )
+//                {
+//                    numRows = numConditions;
+//                }
+//            }
             numberOfRows = numRows;
-            numberOfColumns = columnHeaders.size();
+//            numberOfColumns = columnHeaders.size();
+            numberOfColumns = purityColumnHeaders.size();
 
             for( int i = 0; i < numberOfRows; i++ )
             {
                 PurityRow row = new PurityRow();
                 for( int j = 0; j < numberOfColumns; j++ )
                 {
-                    ColumnHeader theHeader = columnHeaders.get( j );
-//                    if( theHeader.getColumnType()
-//                            .equals( SynthesisPurityBean.DATUM_TYPE ) )
-//                    {
-//                        PurityDatumCondition datum = new PurityDatumCondition();
-//                        if( conditionMap.get( theHeader ) != null
-//                                && conditionMap.get( theHeader ).size() > i )
-//                        {
-//                            datum = conditionMap.get( theHeader ).get( i );
-//                        }
-//                        row.getCells().add( new PurityTableCell( datum ) );
-//                    }
-//                    else if( theHeader.getColumnType().equals(
-//                            SynthesisPurityBean.CONDITION_TYPE ) )
-//                    {
-                        PurityDatumCondition condition = new PurityDatumCondition();
-                        if( conditionMap.get( theHeader ) != null
-                                && conditionMap.get( theHeader ).size() > i )
-                        {
-                            condition = conditionMap.get( theHeader ).get( i );
-                        }
-                        row.getCells().add( new PurityTableCell( condition ) );
-                        row.setRowNumber(condition.getRowNumber());
+
+                    PurityColumnHeader theHeader = purityColumnHeaders.get(j);
+
+                    PurityDatumCondition condition = new PurityDatumCondition();
+                    if( conditionMap.get( theHeader ) != null
+                            && conditionMap.get( theHeader ).size() > i )
+                    {
+                        condition = conditionMap.get( theHeader ).get( i );
+                    }
+                    row.getCells().add( new PurityTableCell( condition ) );
+                    row.setRowNumber(condition.getRowNumber());
 //                    }
                 }
                 rows.add( row );
@@ -226,6 +155,126 @@ public class SynthesisPurityBean
             updateColumnOrder();
         }
     }
+
+
+//    public SynthesisPurityBean( SynthesisPurity synthesisPurity, List<ColumnHeader> inputColumnHeaders)
+//    {
+//        //TODO rewrite?
+//        domain = synthesisPurity;
+//        id = synthesisPurity.getId();
+//
+//        List<PurityDatumCondition> data = null;
+//        if( synthesisPurity.getPurityDatumCollection() != null )
+//        {
+//            data = new ArrayList<PurityDatumCondition>( synthesisPurity.getPurityDatumCollection() );
+//            Collections.sort( data, new Comparators.PurityDatumDateComparator() );
+//            setColumnHeaders(inputColumnHeaders);
+//        }
+//
+//        if( synthesisPurity.getFiles() != null
+//                && ! synthesisPurity.getFiles().isEmpty() )
+//        {
+//            for( File file : synthesisPurity.getFiles() )
+//            {
+//                files.add( new FileBean( file ) );
+//            }
+//            Collections.sort( files, new Comparators.FileBeanDateComparator() );
+//        }
+//
+//        // generate matrix
+//        if( data != null && ! data.isEmpty() )
+//        {
+//            // get data matrix column headers and generate a map based
+//            // on headers.
+//
+////            Map<ColumnHeader, List<PurityDatumCondition>> conditionMap = new HashMap<ColumnHeader, List<PurityDatumCondition>>();
+//            Map<PurityColumnHeader, List<PurityDatumCondition>> conditionMap = new HashMap<PurityColumnHeader, List<PurityDatumCondition>>();
+//
+//            List<PurityDatumCondition> conditionList = new ArrayList<PurityDatumCondition>();
+//            for( PurityDatumCondition datum : data )
+//            {
+//                // add datum column
+////                ColumnHeader datumColumn = new ColumnHeader( datum.getColumnHeader() );
+//                PurityColumnHeader datumColumn = datum.getColumnHeader();
+////                PurityColumnHeader datumColumn = datum.getColumnHeader();
+////                if( ! columnHeaders.contains( datumColumn ) )
+////                {
+////                    if(datumColumn.getCreatedDate()==null){
+////                        datumColumn.setCreatedDate(new Date());
+////                    }
+////                    columnHeaders.add( datumColumn );
+////                }
+//                if( ! purityColumnHeaders.contains( datumColumn ) )
+//                {
+//                    if(datumColumn.getCreatedDate()==null){
+//                        datumColumn.setCreatedDate(new Date());
+//                    }
+//                    purityColumnHeaders.add( datumColumn );
+//                }
+//                if( conditionMap.get( datumColumn ) != null )
+//                {
+//                    conditionList = conditionMap.get( datumColumn );
+//                }
+//                else
+//                {
+//                    conditionList = new ArrayList<PurityDatumCondition>();
+//                    conditionMap.put( datumColumn, conditionList );
+//                }
+//                conditionList.add( datum );
+//
+//            }
+//            // sort column headers by created date and set column orders
+//            setupColumnOrder();
+//
+//            int numRows = - 1;
+//            // iterate through all datum columns and find the biggest list size
+//            // as the number of rows
+//            for( Map.Entry<ColumnHeader, List<PurityDatumCondition>> entry : conditionMap
+//                    .entrySet() )
+//            {
+//                int numData = entry.getValue().size();
+//                if( numData > numRows )
+//                {
+//                    numRows = numData;
+//                }
+//            }
+//            // iterate through all condition columns and find the biggest list
+//            // size as the number of rows
+//                for( Map.Entry<ColumnHeader, List<PurityDatumCondition>> entry : conditionMap
+//                        .entrySet() )
+//            {
+//                int numConditions = entry.getValue().size();
+//                if( numConditions > numRows )
+//                {
+//                    numRows = numConditions;
+//                }
+//            }
+//            numberOfRows = numRows;
+////            numberOfColumns = columnHeaders.size();
+//            numberOfColumns = purityColumnHeaders.size();
+//
+//            for( int i = 0; i < numberOfRows; i++ )
+//            {
+//                PurityRow row = new PurityRow();
+//                for( int j = 0; j < numberOfColumns; j++ )
+//                {
+//                    ColumnHeader theHeader = columnHeaders.get( j );
+//
+//                        PurityDatumCondition condition = new PurityDatumCondition();
+//                        if( conditionMap.get( theHeader ) != null
+//                                && conditionMap.get( theHeader ).size() > i )
+//                        {
+//                            condition = conditionMap.get( theHeader ).get( i );
+//                        }
+//                        row.getCells().add( new PurityTableCell( condition ) );
+//                        row.setRowNumber(condition.getRowNumber());
+////                    }
+//                }
+//                rows.add( row );
+//            }
+//            updateColumnOrder();
+//        }
+//    }
 
 
 
@@ -265,15 +314,30 @@ public class SynthesisPurityBean
         rows.remove(row);
     }
 
-    public List<ColumnHeader> getColumnHeaders()
-    {
-        return columnHeaders;
+//    public List<ColumnHeader> getColumnHeaders()
+//    {
+//        return columnHeaders;
+//    }
+//
+//    public void setColumnHeaders( List<ColumnHeader> columnHeaders )
+//    {
+//        if(columnHeaders!=null) {
+//            this.columnHeaders = columnHeaders;
+//        }
+//    }
+
+    private void addColumnHeader(PurityDatumCondition datum){
+        PurityColumnHeader header = datum.getColumnHeader();
+        header.setColumnType(datum.getType());
+        if (!purityColumnHeaders.contains(header)){
+            purityColumnHeaders.add(header);
+        }
+
     }
 
-    public void setColumnHeaders( List<ColumnHeader> columnHeaders )
-    {
-        if(columnHeaders!=null) {
-            this.columnHeaders = columnHeaders;
+    private void addColumnHeaders(List<PurityDatumCondition> data){
+        for(PurityDatumCondition datumCondition: data){
+            addColumnHeader(datumCondition);
         }
     }
 
@@ -301,13 +365,18 @@ public class SynthesisPurityBean
     {
         this.numberOfColumns = numberOfColumns;
         this.numberOfRows = numberOfRows;
-        List<ColumnHeader> newColumns = new ArrayList<ColumnHeader>();
-        if( columnHeaders.size() <= numberOfColumns )
+//        List<ColumnHeader> newColumns = new ArrayList<ColumnHeader>();
+        List<PurityColumnHeader> newColumns = new ArrayList<PurityColumnHeader>();
+//        if( columnHeaders.size() <= numberOfColumns )
+            if( purityColumnHeaders.size() <= numberOfColumns )
         {
-            newColumns.addAll( columnHeaders );
-            for( int i = columnHeaders.size(); i < numberOfColumns; i++ )
+//            newColumns.addAll( columnHeaders );
+//            for( int i = columnHeaders.size(); i < numberOfColumns; i++ )
+                newColumns.addAll( purityColumnHeaders );
+            for( int i = purityColumnHeaders.size(); i < numberOfColumns; i++ )
             {
-                newColumns.add( new ColumnHeader() );
+//                newColumns.add( new ColumnHeader() );
+                newColumns.add( new PurityColumnHeader() );
             }
         }
         // remove the columnHeaders from the end
@@ -315,7 +384,8 @@ public class SynthesisPurityBean
         {
             for( int i = 0; i < numberOfColumns; i++ )
             {
-                newColumns.add( columnHeaders.get( i ) );
+//                newColumns.add( columnHeaders.get( i ) );
+                newColumns.add( purityColumnHeaders.get( i ) );
             }
         }
 
@@ -359,14 +429,16 @@ public class SynthesisPurityBean
             }
             row.setCells( newCells );
         }
-        columnHeaders = new ArrayList<ColumnHeader>( newColumns );
+//        columnHeaders = new ArrayList<ColumnHeader>( newColumns );
+        purityColumnHeaders = new ArrayList<PurityColumnHeader>( newColumns );
         rows = new ArrayList<PurityRow>();
         rows.addAll( newRows );
     }
 
     public void removeColumn( int colIndex )
     {
-        columnHeaders.remove( colIndex );
+//        columnHeaders.remove( colIndex );
+        purityColumnHeaders.remove( colIndex );
         for( int i = 0; i < rows.size(); i++ )
         {
             List<PurityTableCell> cells = rows.get( i ).getCells();
@@ -436,8 +508,10 @@ public class SynthesisPurityBean
             int cInd = 0;
             for( PurityTableCell cell : row.getCells() )
             {
-                ColumnHeader columnHeader = columnHeaders.get( cInd );
-                if( SynthesisPurityBean.DATUM_TYPE.equals( columnHeader.getColumnType() ) )
+//                ColumnHeader columnHeader = columnHeaders.get( cInd );
+                PurityColumnHeader columnHeader = purityColumnHeaders.get( cInd );
+//                if( SynthesisPurityBean.DATUM_TYPE.equals( columnHeader.getColumnType() ) )
+                    if( SynthesisPurityBean.DATUM_TYPE.equals( columnHeader.getColumnType() ) )
                 {
 
                     try
@@ -449,7 +523,8 @@ public class SynthesisPurityBean
                         errorFlag = true;
                         ArrayList<String> errorData = new ArrayList<>();
                         errorData.add( cell.getValue() );
-                        errorData.add( columnHeader.getColumnName() );
+//                        errorData.add( columnHeader.getColumnName() );
+                        errorData.add(columnHeader.getName());
                         errorData.add( e.getMessage() );
                         errorDataArray.add( errorData );
                     }
@@ -471,7 +546,8 @@ public class SynthesisPurityBean
 
             for( PurityTableCell cell : row.getCells() )
             {
-                ColumnHeader columnHeader = columnHeaders.get( cInd );
+//                ColumnHeader columnHeader = columnHeaders.get( cInd );
+                PurityColumnHeader columnHeader = purityColumnHeaders.get( cInd );
 
                 if( SynthesisPurityBean.DATUM_TYPE.equals( columnHeader.getColumnType() ) )
                 {
@@ -503,7 +579,8 @@ public class SynthesisPurityBean
 //                    }
                     datum.setValueType( columnHeader.getValueType() );
                     datum.setValueUnit( columnHeader.getValueUnit() );
-                    datum.setName( columnHeader.getColumnName() );
+//                    datum.setName( columnHeader.getColumnName() );
+                    datum.setName( columnHeader.getName() );
                     rowConditions.add( datum );
                     if( datum.getId() != null && datum.getId() <= 0 )
                     {
@@ -554,8 +631,10 @@ public class SynthesisPurityBean
                     }
                     condition.setValueType( columnHeader.getValueType() );
                     condition.setValueUnit( columnHeader.getValueUnit() );
-                    condition.setName( columnHeader.getColumnName() );
-                    condition.setProperty( columnHeader.getConditionProperty() );
+//                    condition.setName( columnHeader.getColumnName() );
+                    condition.setName( columnHeader.getName() );
+//                    condition.setProperty( columnHeader.getConditionProperty() );
+                    condition.setProperty( columnHeader.getProperty() );
                     rowConditions.add( condition );
                     if( condition.getId() != null && condition.getId() <= 0 )
                     {
@@ -800,11 +879,18 @@ public class SynthesisPurityBean
     public void setupColumnOrder()
     {
         // sort columnHeaders by createdDate and set column orders
-        Collections.sort( columnHeaders,
-                new Comparators.ColumnHeaderCreatedDateComparator() );
-        for( int i = 0; i < columnHeaders.size(); i++ )
+//        Collections.sort( columnHeaders,
+//                new Comparators.ColumnHeaderCreatedDateComparator() );
+//        for( int i = 0; i < columnHeaders.size(); i++ )
+//        {
+//            columnHeaders.get( i ).setColumnOrder( i + 1 );
+//        }
+
+        Collections.sort( purityColumnHeaders,
+                new Comparators.PurityColumnHeaderCreatedDateComparator() );
+        for( int i = 0; i < purityColumnHeaders.size(); i++ )
         {
-            columnHeaders.get( i ).setColumnOrder( i + 1 );
+            purityColumnHeaders.get( i ).setColumnOrder( i + 1 );
         }
     }
 
@@ -820,14 +906,17 @@ public class SynthesisPurityBean
                 int cInd = 0;
                 for( PurityTableCell cell : row.getCells() )
                 {
-                    ColumnHeader columnHeader = columnHeaders.get( cInd++ );
+//                    ColumnHeader columnHeader = columnHeaders.get( cInd++ );
+                    PurityColumnHeader columnHeader = purityColumnHeaders.get( cInd++ );
                     cell.setColumnOrder( columnHeader.getColumnOrder() );
                 }
                 Collections.sort( row.getCells(), cellComparator );
 
             }
-            Collections.sort( columnHeaders,
-                    new Comparators.ColumnHeaderComparator() );
+//            Collections.sort( columnHeaders,
+//                    new Comparators.ColumnHeaderComparator() );
+            Collections.sort( purityColumnHeaders,
+                    new Comparators.PurityColumnHeaderComparator() );
 
             // update created_date based on column order
             // update the created date regardless whether created date already
@@ -838,7 +927,8 @@ public class SynthesisPurityBean
                 int cInd = 0;
                 for( PurityTableCell cell : row.getCells() )
                 {
-                    ColumnHeader columnHeader = columnHeaders.get( cInd );
+//                    ColumnHeader columnHeader = columnHeaders.get( cInd );
+                    PurityColumnHeader columnHeader = purityColumnHeaders.get( cInd );
                     if( gov.nih.nci.cananolab.dto.particle.synthesis.SynthesisPurityBean.DATUM_TYPE.equals( columnHeader
                             .getColumnType() ) )
                     {

@@ -177,7 +177,7 @@ public class SynthesisPurificationBO extends BaseAnnotationBO {
             for (SimplePurityBean sPurityBean : simplePurityBeans) {
 
                 SynthesisPurityBean purityBean = transferSimplePurity(sPurityBean,
-                        sSynPurificationBean.getColumnHeaders(), httpRequest);
+                        httpRequest);
 
 //                purityBean.getDomain().setSynthesisPurificationId(sSynPurificationBean.getId());
                 purityBean.getDomain().setSynthesisPurification(purification);
@@ -299,12 +299,11 @@ public class SynthesisPurificationBO extends BaseAnnotationBO {
      * Transfer from SimplePurityBean to SynthesisPurityBean
      *
      * @param simplePurityBean
-     * @param columnHeaders
      * @param httpRequest
      * @return
      */
     private SynthesisPurityBean transferSimplePurity(SimplePurityBean simplePurityBean,
-                                                     List<ColumnHeader> columnHeaders, HttpServletRequest httpRequest) {
+                                                      HttpServletRequest httpRequest) {
         SynthesisPurityBean purityBean = new SynthesisPurityBean();
         SynthesisPurity purity = new SynthesisPurity();
 
@@ -333,8 +332,9 @@ public class SynthesisPurificationBO extends BaseAnnotationBO {
         purity.setFiles(files);
 
         //Columns
-        purityBean.setColumnHeaders(simplePurityBean.getColumnHeaders());
-        purityBean.setColumnHeaders(columnHeaders);
+//        purityBean.setColumnHeaders(simplePurityBean.getColumnHeaders());
+//        purityBean.setColumnHeaders(columnHeaders);
+        purityBean.setPurityColumnHeaders(simplePurityBean.getColumnHeaders());
         List<SimplePurityRowBean> simplePurityRowBeans = simplePurityBean.getRows();
         Set<PurityDatumCondition> datumSet = new HashSet<PurityDatumCondition>();
 
@@ -358,7 +358,7 @@ public class SynthesisPurificationBO extends BaseAnnotationBO {
                 }
 //                    }
             }
-            PurityRow newRow = createPurityRow(currentDatumCell, currentConditionCells, purityBean.getColumnHeaders());
+            PurityRow newRow = createPurityRow(currentDatumCell, currentConditionCells, purityBean.getPurityColumnHeaders());
             purityBean.addRow(newRow);
         }
 
@@ -366,7 +366,8 @@ public class SynthesisPurificationBO extends BaseAnnotationBO {
 
 
         purityBean.setNumberOfRows(purityBean.getRows().size());
-        purityBean.setNumberOfColumns(purityBean.getColumnHeaders().size());
+//        purityBean.setNumberOfColumns(purityBean.getColumnHeaders().size());
+        purityBean.setNumberOfColumns(purityBean.getPurityColumnHeaders().size());
         for (PurityRow row : purityBean.getRows()) {
             List<PurityTableCell> cells = row.getCells();
             PurityDatumCondition newDatum = new PurityDatumCondition();
@@ -404,7 +405,7 @@ public class SynthesisPurificationBO extends BaseAnnotationBO {
     }
 
     private PurityRow createPurityRow(SimplePurityCell currentDatumCell, List<SimplePurityCell> currentConditionCells
-            , List<ColumnHeader> columnHeaders) {
+            , List<PurityColumnHeader> columnHeaders) {
 
 
 //TODO assign new createddate createdby to newly created row
@@ -430,12 +431,20 @@ public class SynthesisPurificationBO extends BaseAnnotationBO {
             datumCondition.setOperand(sConditionCell.getOperand());
             conditionCell.setColumnId(sConditionCell.getColumnId());
             datumCondition.setColumnId(sConditionCell.getColumnId());
-            for (ColumnHeader header : columnHeaders) {
+//            for (ColumnHeader header : columnHeaders) {
+//                if (header.getColumnOrder().equals(conditionCell.getColumnOrder())) {
+//                    datumCondition.setName(header.getColumnName());
+//                    datumCondition.setValueType(header.getValueType());
+//                    datumCondition.setValueUnit(header.getValueUnit());
+//                    datumCondition.setProperty(header.getConditionProperty());
+//                }
+//            }
+            for (PurityColumnHeader header : columnHeaders) {
                 if (header.getColumnOrder().equals(conditionCell.getColumnOrder())) {
-                    datumCondition.setName(header.getColumnName());
+                    datumCondition.setName(header.getName());
                     datumCondition.setValueType(header.getValueType());
                     datumCondition.setValueUnit(header.getValueUnit());
-                    datumCondition.setProperty(header.getConditionProperty());
+                    datumCondition.setProperty(header.getProperty());
                 }
             }
             conditionSet.add(datumCondition);
@@ -460,14 +469,20 @@ public class SynthesisPurificationBO extends BaseAnnotationBO {
         datum.setOperand(currentDatumCell.getOperand());
         datumCell.setColumnId(currentDatumCell.getColumnId());
         datum.setColumnId(currentDatumCell.getColumnId());
-        for (ColumnHeader header : columnHeaders) {
+//        for (ColumnHeader header : columnHeaders) {
+//            if (header.getColumnOrder().equals(currentDatumCell.getColumnOrder())) {
+//                datum.setName(header.getColumnName());
+//                datum.setValueType(header.getValueType());
+//                datum.setValueUnit(header.getValueUnit());
+//            }
+//        }
+        for (PurityColumnHeader header : columnHeaders) {
             if (header.getColumnOrder().equals(currentDatumCell.getColumnOrder())) {
-                datum.setName(header.getColumnName());
+                datum.setName(header.getName());
                 datum.setValueType(header.getValueType());
                 datum.setValueUnit(header.getValueUnit());
             }
         }
-
 
 //        datum.setConditionCollection(conditionSet);
 //        for(PurityDatumCondition condition:datum.getConditionCollection()){
@@ -499,7 +514,7 @@ public class SynthesisPurificationBO extends BaseAnnotationBO {
                 for(SimplePurityBean bean: purityBeans){
                     if (bean.getId()==null){
                         //create a new purity
-                        SynthesisPurityBean purityBean= transferSimplePurity(bean,editBean.getColumnHeaders(),httpRequest);
+                        SynthesisPurityBean purityBean= transferSimplePurity(bean,httpRequest);
                         synthesisService.saveSynthesisPurity(purityBean,synthesisPurificationBean);
                     } else {
                         //check if edit needed
@@ -615,7 +630,7 @@ public class SynthesisPurificationBO extends BaseAnnotationBO {
                 purityBean.getNumberOfRows());
 
         simplePurity.transferFromPurityBean(request, purityBean);
-        simplePurity.setColumnHeaders(purityBean.getColumnHeaders());
+        simplePurity.setColumnHeaders(purityBean.getPurityColumnHeaders());
         simplePurity.setDefaultValuesForNullHeaders();
 
 //		request.setAttribute("anchor", "submitFinding");
@@ -880,7 +895,7 @@ public class SynthesisPurificationBO extends BaseAnnotationBO {
 //			this.checkOpenForms(achar, theForm, request);
 //			return mapping.findForward("inputForm");
 //		}
-        int existingNumberOfColumns = purityBean.getColumnHeaders().size();
+        int existingNumberOfColumns = purityBean.getPurityColumnHeaders().size();
         int existingNumberOfRows = purityBean.getRows().size();
 
         if (existingNumberOfColumns > purityBean.getNumberOfColumns()) {
@@ -913,7 +928,7 @@ public class SynthesisPurificationBO extends BaseAnnotationBO {
 
 
         simplePurityBean.transferFromPurityBean(request, purityBean);
-        simplePurityBean.setColumnHeaders(purityBean.getColumnHeaders());
+        simplePurityBean.setColumnHeaders(purityBean.getPurityColumnHeaders());
         simplePurityBean.setDefaultValuesForNullHeaders();
 
         request.setAttribute("anchor", "submitFinding");
@@ -921,7 +936,7 @@ public class SynthesisPurificationBO extends BaseAnnotationBO {
         //this.checkOpenForms(achar, theForm, request);
         // set columnHeaders in the session so jsp can check duplicate columns
         request.getSession().setAttribute("columnHeaders",
-                purityBean.getColumnHeaders());
+                purityBean.getPurityColumnHeaders());
         //return mapping.findForward("inputForm");
 
         return simplePurityBean;

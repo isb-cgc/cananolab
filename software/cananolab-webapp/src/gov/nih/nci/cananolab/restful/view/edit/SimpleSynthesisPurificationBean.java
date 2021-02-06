@@ -4,6 +4,7 @@ import gov.nih.nci.cananolab.domain.common.File;
 import gov.nih.nci.cananolab.domain.common.Instrument;
 import gov.nih.nci.cananolab.domain.common.PurificationConfig;
 
+import gov.nih.nci.cananolab.domain.common.PurityColumnHeader;
 import gov.nih.nci.cananolab.domain.particle.SynthesisPurification;
 import gov.nih.nci.cananolab.domain.particle.SynthesisPurity;
 import gov.nih.nci.cananolab.dto.common.ColumnHeader;
@@ -40,7 +41,8 @@ public class SimpleSynthesisPurificationBean {
     private List<SimplePurityBean> simplePurityBeans;
     private List<SimplePurificationConfigBean> purificationConfigBeans;
     private SimplePurityEditBean editBean = new SimplePurityEditBean();
-    private List<ColumnHeader> columnHeaders = new ArrayList<ColumnHeader>();
+//    private List<ColumnHeader> columnHeaders = new ArrayList<ColumnHeader>();
+//    private List<PurityColumnHeader> columnHeaders = new ArrayList<PurityColumnHeader>();
 //    private List<SimplePurityRowBean> rows;
     private List<SimpleFileBean> files = new ArrayList<SimpleFileBean>();
     private File theFile; //file being edited
@@ -127,14 +129,20 @@ public class SimpleSynthesisPurificationBean {
         this.purificationConfigBeans = purificationConfigBeans;
     }
 
-    public List<ColumnHeader> getColumnHeaders() {
-        return columnHeaders;
-    }
+//    public List<ColumnHeader> getColumnHeaders() {
+//        return columnHeaders;
+//    }
 
-    public void setColumnHeaders(List<ColumnHeader> columnHeaders) {
-        this.columnHeaders = columnHeaders;
-    }
+//    public List<PurityColumnHeader> getColumnHeaders() {
+//        return columnHeaders;
+//    }
 
+//    public void setColumnHeaders(List<ColumnHeader> columnHeaders) {
+//        this.columnHeaders = columnHeaders;
+//    }
+//    public void setColumnHeaders(List<PurityColumnHeader> columnHeaders) {
+//        this.columnHeaders = columnHeaders;
+//    }
 
 
     public List<SimplePurificationConfigBean> getSimpleExperimentBeans() {
@@ -253,7 +261,8 @@ public class SimpleSynthesisPurificationBean {
         setYield(synthesisPurification.getYield());
         if ((synBean.getPurityBeans() != null) && (synBean.getPurityBeans().size()>0)) {
             simplePurityBeans = new ArrayList<SimplePurityBean>();
-            columnHeaders = synBean.getPurityBeans().get(0).getColumnHeaders();
+//            columnHeaders = synBean.getPurityBeans().get(0).getColumnHeaders();
+//            columnHeaders = synBean.getPurityBeans().get(0).getPurityColumnHeaders();
             for (SynthesisPurityBean purityBean : synBean.getPurityBeans()) {
                 SimplePurityBean simplePurityBean = new SimplePurityBean();
                 simplePurityBean.transferFromPurityBean(purityBean, sampleId);

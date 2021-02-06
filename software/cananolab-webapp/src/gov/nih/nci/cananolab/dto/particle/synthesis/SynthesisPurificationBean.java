@@ -36,7 +36,7 @@ public class SynthesisPurificationBean extends BaseSynthesisEntityBean {
     private List<SynthesisPurityBean> purityBeans = new ArrayList<SynthesisPurityBean>();
     private List<PurificationConfigBean> purificationConfigs = new ArrayList<>();
     private ProtocolBean protocolBean = new ProtocolBean();
-    private List<ColumnHeader> columnHeaders = new ArrayList<ColumnHeader>();
+//    private List<ColumnHeader> columnHeaders = new ArrayList<ColumnHeader>();
     private Date createdDate = new Date();
     private String createdBy = new String();
 
@@ -74,25 +74,26 @@ public class SynthesisPurificationBean extends BaseSynthesisEntityBean {
         for(SynthesisPurity purity:purification.getPurities()){
 //            SynthesisPurityBean purityBean = new SynthesisPurityBean(purity);
             if(purity.getId()!=null) {
-                SynthesisPurityBean purityBean = new SynthesisPurityBean(purity,null);
+                SynthesisPurityBean purityBean = new SynthesisPurityBean(purity);
                 purityBean.getDomain().setSynthesisPurification(purification);
-                if (columnHeaders.size() < purityBean.getColumnHeaders().size()) {
-                    columnHeaders = purityBean.getColumnHeaders();
-                }
+//                if (columnHeaders.size() < purityBean.getColumnHeaders().size()) {
+//                    columnHeaders = purityBean.getColumnHeaders();
+//                }
                 purityBeans.add(purityBean);
             }
         }
 
         for(SynthesisPurity purity:purification.getPurities()){
             if(purity.getId()==null){
-                SynthesisPurityBean purityBean = new SynthesisPurityBean(purity, columnHeaders);
+//                SynthesisPurityBean purityBean = new SynthesisPurityBean(purity, columnHeaders);
+                SynthesisPurityBean purityBean = new SynthesisPurityBean(purity);
                 purityBeans.add(purityBean);
             }
         }
 
-        for(SynthesisPurityBean purityBean: purityBeans){
-            purityBean.setColumnHeaders(columnHeaders);
-        }
+//        for(SynthesisPurityBean purityBean: purityBeans){
+//            purityBean.setColumnHeaders(columnHeaders);
+//        }
         for(PurificationConfig config: purification.getPurificationConfigs()){
             PurificationConfigBean pureBean = new PurificationConfigBean(config);
             purificationConfigs.add(pureBean);

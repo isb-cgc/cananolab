@@ -1,6 +1,7 @@
 package gov.nih.nci.cananolab.restful.view.edit;
 
 import gov.nih.nci.cananolab.domain.common.File;
+import gov.nih.nci.cananolab.domain.common.PurityColumnHeader;
 import gov.nih.nci.cananolab.domain.particle.SynthesisPurity;
 import gov.nih.nci.cananolab.dto.common.ColumnHeader;
 import gov.nih.nci.cananolab.dto.common.FileBean;
@@ -22,7 +23,8 @@ public class SimplePurityBean {
 
     int numberOfColumns = 0;
     int numberOfRows = 0;
-    private List<ColumnHeader> columnHeaders = new ArrayList<ColumnHeader>();
+//    private List<ColumnHeader> columnHeaders = new ArrayList<ColumnHeader>();
+    private List<PurityColumnHeader> columnHeaders = new ArrayList<PurityColumnHeader>();
     boolean dirty = false;
 
 //    String createdBy;
@@ -64,14 +66,14 @@ public class SimplePurityBean {
     }
 
 
-    public void setColumnHeaders(List<ColumnHeader> columnHeaders) {
+    public void setColumnHeaders(List<PurityColumnHeader> columnHeaders) {
         this.columnHeaders = columnHeaders;
         if(columnHeaders!=null){
             numberOfColumns=columnHeaders.size();
         }
     }
 
-    public List<ColumnHeader> getColumnHeaders() {
+    public List<PurityColumnHeader> getColumnHeaders() {
         return this.columnHeaders;
     }
 
@@ -108,6 +110,7 @@ public class SimplePurityBean {
         this.setId(purityBean.getDomain().getId());
         this.transferRowsFromPurityBean(purityBean);
         this.transferFilesFromPurityBean(purityBean, sampleId);
+        this.setColumnHeaders(purityBean.getPurityColumnHeaders());
     }
 
     public void transferFilesFromPurityBean(SynthesisPurityBean purityBean,String sampleId){
@@ -171,9 +174,18 @@ public class SimplePurityBean {
     }
     public void setDefaultValuesForNullHeaders() {
         int headerIdx = 1;
-        for (ColumnHeader header : this.columnHeaders) {
-            if (header.getColumnName() == null || header.getColumnName().length() == 0) {
-                header.setColumnName("Column "  + headerIdx);
+//        for (ColumnHeader header : this.columnHeaders) {
+//            if (header.getColumnName() == null || header.getColumnName().length() == 0) {
+//                header.setColumnName("Column "  + headerIdx);
+//                header.setColumnOrder(headerIdx);
+//            }
+//
+//            headerIdx++;
+//        }
+
+        for (PurityColumnHeader header : this.columnHeaders) {
+            if (header.getName() == null || header.getName().length() == 0) {
+                header.setName("Column "  + headerIdx);
                 header.setColumnOrder(headerIdx);
             }
 
