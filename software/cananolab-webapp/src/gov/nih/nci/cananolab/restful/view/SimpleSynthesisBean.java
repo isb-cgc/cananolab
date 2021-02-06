@@ -1,5 +1,6 @@
 package gov.nih.nci.cananolab.restful.view;
 
+import gov.nih.nci.cananolab.domain.common.PurityColumnHeader;
 import gov.nih.nci.cananolab.domain.particle.SmeInherentFunction;
 import gov.nih.nci.cananolab.dto.common.ColumnHeader;
 import gov.nih.nci.cananolab.dto.common.FileBean;
@@ -241,7 +242,8 @@ public class SimpleSynthesisBean {
 
 //                        Map<String, List<Object>> oneCharResult = new HashMap<String, List<Object>>();
                         purificationPurity.put("dataId", purityBean.getDomain().getId());
-                        List<ColumnHeader>  colHeaders = purityBean.getColumnHeaders();
+//                        List<ColumnHeader>  colHeaders = purityBean.getColumnHeaders();
+                        List<PurityColumnHeader>  colHeaders = purityBean.getPurityColumnHeaders();
                         purificationPurity.put("Column Headers", colHeaders);
 
                         List<Object> dataCondition = transferPurityResultsDataAndCondition(purityBean);
@@ -328,13 +330,15 @@ public class SimpleSynthesisBean {
         if (rows == null || rows.size() == 0)
             return rowsOfTable;
 
-        List<ColumnHeader>  colHeaders = purityBean.getColumnHeaders();
+//        List<ColumnHeader>  colHeaders = purityBean.getColumnHeaders();
+        List<PurityColumnHeader>  colHeaders = purityBean.getPurityColumnHeaders();
         int colSize = colHeaders.size();
 
         List<String> rowVals = new ArrayList<String>();
-        for (ColumnHeader colHeader : colHeaders) {
-            String colTitle = colHeader.getDisplayName();
-
+//        for (ColumnHeader colHeader : colHeaders) {
+        for (PurityColumnHeader colHeader : colHeaders) {
+//            String colTitle = colHeader.getDisplayName();
+            String colTitle = colHeader.getName();
             logger.debug("==Header: " + colTitle);
             rowVals.add(colTitle);
         }

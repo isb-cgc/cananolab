@@ -15,6 +15,7 @@ import gov.nih.nci.cananolab.domain.common.Instrument;
 import gov.nih.nci.cananolab.domain.common.Protocol;
 import gov.nih.nci.cananolab.domain.common.Publication;
 
+import gov.nih.nci.cananolab.domain.common.PurityColumnHeader;
 import gov.nih.nci.cananolab.domain.common.PurityDatumCondition;
 import gov.nih.nci.cananolab.domain.particle.Characterization;
 import gov.nih.nci.cananolab.domain.particle.Sample;
@@ -724,9 +725,30 @@ public class Comparators {
 		}
 	}
 
+	public static class PurityColumnHeaderComparator implements
+			Comparator<PurityColumnHeader> {
+		public int compare(PurityColumnHeader header1, PurityColumnHeader header2) {
+			if (header1.getColumnOrder() != null
+					&& header2.getColumnOrder() != null) {
+				return header1.getColumnOrder().compareTo(
+						header2.getColumnOrder());
+			} else {
+				return header1.getCreatedDate().compareTo(
+						header2.getCreatedDate());
+			}
+		}
+	}
+
 	public static class ColumnHeaderCreatedDateComparator implements
 			Comparator<ColumnHeader> {
 		public int compare(ColumnHeader header1, ColumnHeader header2) {
+			return header1.getCreatedDate().compareTo(header2.getCreatedDate());
+		}
+	}
+
+	public static class PurityColumnHeaderCreatedDateComparator implements
+			Comparator<PurityColumnHeader> {
+		public int compare(PurityColumnHeader header1, PurityColumnHeader header2) {
 			return header1.getCreatedDate().compareTo(header2.getCreatedDate());
 		}
 	}
