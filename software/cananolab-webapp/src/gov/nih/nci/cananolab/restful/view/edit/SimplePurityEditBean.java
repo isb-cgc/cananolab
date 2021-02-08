@@ -101,14 +101,14 @@ public class SimplePurityEditBean {
 
     }
 
-    public void transferTableNumbersToEditBean(SynthesisPurityBean findingBean) {
-        if (findingBean == null) {
-            return;
-        }
-
-        findingBean.setNumberOfColumns(this.numberOfColumns);
-        findingBean.setNumberOfRows(this.numberOfRows);
-    }
+//    public void transferTableNumbersToEditBean(SynthesisPurityBean findingBean) {
+//        if (findingBean == null) {
+//            return;
+//        }
+//
+//        findingBean.setNumberOfColumns(this.numberOfColumns);
+//        findingBean.setNumberOfRows(this.numberOfRows);
+//    }
 
 
 }
