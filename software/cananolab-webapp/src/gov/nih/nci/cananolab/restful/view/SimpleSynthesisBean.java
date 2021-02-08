@@ -15,6 +15,7 @@ import gov.nih.nci.cananolab.dto.particle.synthesis.SynthesisMaterialBean;
 import gov.nih.nci.cananolab.dto.particle.synthesis.SynthesisMaterialElementBean;
 import gov.nih.nci.cananolab.dto.particle.synthesis.SynthesisPurificationBean;
 import gov.nih.nci.cananolab.dto.particle.synthesis.SynthesisPurityBean;
+import gov.nih.nci.cananolab.restful.view.edit.SimplePurityBean;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -247,10 +248,15 @@ public class SimpleSynthesisBean {
                         purificationPurity.put("Column Headers", colHeaders);
 
                         List<Object> dataCondition = transferPurityResultsDataAndCondition(purityBean);
+
                         if (dataCondition != null && dataCondition.size() > 0){
 //                            oneCharResult.put("Data and Conditions", dataCondition);
 
                             purificationPurity.put("Data and Conditions",dataCondition);}
+                        List<Object> purityResults = transferPurityFindings(purityBean);
+                        if(purityResults != null && purityResults.size()>0){
+                            purificationPurity.put("Purification Findings", purityResults);
+                        }
 
                         if (purityBean.getFiles()!=null){
                             fileList=addFiles(purityBean.getFiles());
@@ -307,6 +313,10 @@ public class SimpleSynthesisBean {
             if (dataCondition != null && dataCondition.size() > 0)
                 oneCharResult.put("Data and Conditions", dataCondition);
 
+            List<Object> purityFindings = transferPurityFindings(purityBean);
+            if (purityFindings != null && purityFindings.size() > 0)
+                oneCharResult.put("Purity Findings", purityFindings);
+
             List<Object> files = transferPurityResultsFiles(purityBean);
             if (files != null && files.size() > 0)
                 oneCharResult.put("Files", files);
@@ -318,6 +328,12 @@ public class SimpleSynthesisBean {
 //        charBeanMap.put("Characterization Results", charResults);
 //        SimpleCharacterizationUnitBean aUnit = new SimpleCharacterizationUnitBean("Characterization Results", charResults);
 //        charBeanUnits.add(aUnit);
+    }
+
+    protected List transferPurityFindings(SynthesisPurityBean purityBean){
+        SimplePurityBean simplePurityBean = new SimplePurityBean();
+        simplePurityBean.transferFromPurityBean(purityBean, sampleId.toString());
+        return simplePurityBean.getRows();
     }
 
     protected List transferPurityResultsDataAndCondition(SynthesisPurityBean purityBean) {
