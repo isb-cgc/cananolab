@@ -789,7 +789,7 @@ public class SynthesisPurificationBO extends BaseAnnotationBO {
         try {
             SynthesisPurificationBean synBean = synthesisService.findSynthesisPurificationById(new Long(sampleId),
                     new Long(dataId));
-            assignColumnHeadersForPurification(synBean);
+//            assignColumnHeadersForPurification(synBean);
             form.setSynthesisPurificationBean(synBean);
             this.setDataAndConditionLookup(httpRequest, sampleId);
 

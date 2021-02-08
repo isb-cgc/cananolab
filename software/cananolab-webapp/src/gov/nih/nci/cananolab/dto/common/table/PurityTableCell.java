@@ -60,6 +60,7 @@ public class PurityTableCell {
 		this.createdBy= condition.getCreatedBy();
 		this.columnId= condition.getColumnId();
 		this.rowNumber = condition.getRowNumber();
+		this.columnOrder = condition.getColumnHeader().getColumnOrder();
 	}
 
 	/**
