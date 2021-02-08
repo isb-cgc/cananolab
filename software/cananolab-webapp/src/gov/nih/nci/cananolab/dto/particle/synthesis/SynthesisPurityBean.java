@@ -56,6 +56,7 @@ public class SynthesisPurityBean
             Collections.sort( data, new Comparators.PurityDatumDateComparator() );
             addColumnHeaders(data);
         }
+        numberOfColumns = purityColumnHeaders.size();
 
         if( synthesisPurity.getFiles() != null
                 && ! synthesisPurity.getFiles().isEmpty() )
@@ -130,7 +131,7 @@ public class SynthesisPurityBean
 //            }
             numberOfRows = numRows;
 //            numberOfColumns = columnHeaders.size();
-            numberOfColumns = purityColumnHeaders.size();
+
 
             for( int i = 0; i < numberOfRows; i++ )
             {
@@ -146,13 +147,15 @@ public class SynthesisPurityBean
                     {
                         condition = conditionMap.get( theHeader ).get( i );
                     }
+                    PurityTableCell cell = new PurityTableCell( condition );
+
                     row.getCells().add( new PurityTableCell( condition ) );
                     row.setRowNumber(condition.getRowNumber());
 //                    }
                 }
                 rows.add( row );
             }
-            updateColumnOrder();
+//            updateColumnOrder();
         }
     }
 
