@@ -149,6 +149,7 @@ public class SimplePurityBean {
 //        this.columnHeaders= purityBean.getColumnHeaders();
 
         List<PurityRow> beanRows = purityBean.getRows();
+        numberOfRows = beanRows.size();
         this.rows.clear();
 
         if (beanRows != null) {

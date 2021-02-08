@@ -40,7 +40,7 @@ public class SimpleSynthesisPurificationBean {
     private Float yield;
     private List<SimplePurityBean> simplePurityBeans;
     private List<SimplePurificationConfigBean> purificationConfigBeans;
-    private SimplePurityEditBean editBean = new SimplePurityEditBean();
+//    private SimplePurityEditBean editBean = new SimplePurityEditBean();
 //    private List<ColumnHeader> columnHeaders = new ArrayList<ColumnHeader>();
 //    private List<PurityColumnHeader> columnHeaders = new ArrayList<PurityColumnHeader>();
 //    private List<SimplePurityRowBean> rows;
@@ -112,22 +112,22 @@ public class SimpleSynthesisPurificationBean {
     SimpleTechniqueAndInstrument techniqueInstruments = new SimpleTechniqueAndInstrument();
 
 
-    public SimplePurityEditBean getEditBean() {
-        return editBean;
-    }
+//    public SimplePurityEditBean getEditBean() {
+//        return editBean;
+//    }
 
-    public void setEditBean(SimplePurityEditBean editBean) {
-        this.editBean = editBean;
-    }
+//    public void setEditBean(SimplePurityEditBean editBean) {
+//        this.editBean = editBean;
+//    }
 
 
-    public List<SimplePurificationConfigBean> getPurificationConfigBeans() {
-        return purificationConfigBeans;
-    }
-
-    public void setPurificationConfigBeans(List<SimplePurificationConfigBean> purificationConfigBeans) {
-        this.purificationConfigBeans = purificationConfigBeans;
-    }
+//    public List<SimplePurificationConfigBean> getPurificationConfigBeans() {
+//        return purificationConfigBeans;
+//    }
+//
+//    public void setPurificationConfigBeans(List<SimplePurificationConfigBean> purificationConfigBeans) {
+//        this.purificationConfigBeans = purificationConfigBeans;
+//    }
 
 //    public List<ColumnHeader> getColumnHeaders() {
 //        return columnHeaders;
@@ -274,7 +274,7 @@ public class SimpleSynthesisPurificationBean {
         //*** Testing SimpleRowBean**//
 
 
-        editBean.transferPurificationToPurificationEdit(this);
+//        editBean.transferPurificationToPurificationEdit(this);
 
         if (synBean != null) {
             simpleProtocol = new SimpleProtocol();
