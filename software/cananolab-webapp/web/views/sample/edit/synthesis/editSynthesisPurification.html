@@ -1,5 +1,5 @@
 <button ng-click="tempShow=!tempShow">debug</button>
-<div style="width:800px;">
+<div style="width:800px;" ng-if="tempShow">
   <B>Purification Copy</B> - {{purificationCopy}} <br /><br />
   <B>Purification</B> - {{purification}} <br /><br />
   <B>Material Element</B> - {{materialElement}}<br /><br />
@@ -244,7 +244,7 @@
         <button ng-click="addNewFinding()" ng-disabled="updateFinding" class="btn btn-canano-primary btn-canano-xs">Add</button>
       </td>
     </tr>
-    <tr ng-repeat="finding in purification.editBean">
+    <tr ng-repeat="finding in purification.purityBeans">
       <td colspan="2">
         <table class="editTableWithGrid" width="95%" align="center" ng-if="purification.purityBeans.length">
           <tbody>
@@ -263,13 +263,13 @@
               </td>
             </tr>
             <tr ng-if="finding.columnHeaders.length">
-              <td>Purity Rows - {{finding.rows}}
+              <td>
                 <table class="summaryViewWithGrid" width="95%" align="center">
                   <tbody>
                     <tr>
                       <td class="cellLabel" ng-repeat="header in finding.columnHeaders"
-                        ng-bind-html="header.displayName">
-                        {{header.displayName}}
+                        ng-bind-html="header.name">
+                        {{header.name}}
                       </td>
                     </tr>
                     <tr ng-repeat="row in finding.rows">
@@ -338,7 +338,7 @@
                     </tr>
                     <tr>
                       <td ng-repeat="cell in currentFinding.columnHeaders" class="cellLabel"
-                        ng-bind-html="cell.displayName"></td>
+                        ng-bind-html="cell.name"></td>
                     </tr>
                     <tr>
                       <td ng-repeat="cell in currentFinding.columnHeaders">
@@ -353,7 +353,7 @@
               </td>
             </tr>
             <tr>
-              <td colspan="2">{{currentFinding}}
+              <td colspan="2">
                 <table class="promptbox" width="85%" align="center" id="matrix"
                   ng-if="currentFinding.columnHeaders.length">
                   <tbody>
@@ -365,7 +365,7 @@
                     <tr>
                       <td ng-repeat="cell in currentFinding.columnHeaders" class="cellLabel"><a
                           ng-click="openColumnForm(cell)" href=""
-                          ng-bind-html="cell.displayName">{{cell.displayName}}</a></td>
+                          ng-bind-html="cell.name">{{cell.name}}</a></td>
                     </tr>
                     <tr ng-if="columnForm">
                       <td colspan="{{currentFinding.columnHeaders.length}}">
@@ -395,8 +395,8 @@
                               <label for="columnName">Column Name *</label>
                             </td>
                             <td>
-                              <select ng-hide="loader" ng-model="findingsColumn.columnName"
-                                ng-init="findingsColumn.columnName=findingsColumn.columnName" ng-change="onColumnNameDropdownChange()">
+                              <select ng-hide="loader" ng-model="findingsColumn.name"
+                                ng-init="findingsColumn.name=findingsColumn.name" ng-change="onColumnNameDropdownChange()">
                           
                                 <!--
                           															<select ng-model="findingsColumn.columnName" data-ng-options="option for option in columnNameLookup" ng-change="onColumnNameDropdownChange()"> -->
@@ -405,7 +405,7 @@
                           
                               </select>
 
-                              <div id="promptCategory" ng-if="findingsColumn.columnName=='other'">{{localForm}}
+                              <div id="promptCategory" ng-if="findingsColumn.name=='other'">{{localForm}}
                                 <table cellspacing="5" cellpadding="0" border="0" width="100%" class="promptbox"
                                   summary="layout">
                                   <tbody>
@@ -423,11 +423,11 @@
                                     <tr>
                                       <td style="text-align: right">
                                         <button type="button" class="btn btn-canano-primary btn-canano-xs"
-                                          ng-click="findingsColumn.columnName=localForm.otherCategoryText; columnNameLookup.push(localForm.otherCategoryText);"
+                                          ng-click="findingsColumn.name=localForm.otherCategoryText; columnNameLookup.push(localForm.otherCategoryText);"
                                           ng-disabled='localForm.otherCategoryText.length < 1 || localForm.otherCategoryText === undefined '>Add</button>
 
                                         <button type="button" class="btn btn-canano-default btn-canano-xs"
-                                          ng-click="findingsColumn.columnName='';">Cancel</button>
+                                          ng-click="findingsColumn.name='';">Cancel</button>
 
                                       </td>
                                     </tr>
@@ -564,7 +564,7 @@
               <td>
                 
                 <button
-                  ng-disabled="!findingsColumn.columnType||columnNameLookup.indexOf(findingsColumn.columnName)==-1"
+                  ng-disabled="!findingsColumn.columnType||columnNameLookup.indexOf(findingsColumn.name)==-1"
                   ng-click="saveColumnForm()" class="btn btn-canano-primary btn-canano-xs">
                   Save
                 </button>
