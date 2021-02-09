@@ -369,7 +369,7 @@ var app = angular.module('angularApp')
 
 
 // Finding section code //    
-    $http({ method: 'GET', url: 'rest/synthesisPurification/getDatumNumberModifier?columnName=Number%20Modifier' }).
+    $http({ method: 'GET', url: 'rest/synthesisPurification/getDatumNumberModifier?name=Number%20Modifier' }).
       success(function (data, status) {
         $scope.operands = data;
         if (data.includes("other")) {
@@ -462,7 +462,7 @@ var app = angular.module('angularApp')
       $scope.columnForm = 1;
 
       $scope.findingsColumnCopyForRestore = {
-        "columnName": "Column 1",
+        "name": "Column 1",
         "conditionProperty": null,
         "valueType": null,
         "valueUnit": null,
@@ -959,7 +959,7 @@ var app = angular.module('angularApp')
             curCell.value = $scope.findingsColumn.constantValue;
           }
         };
-        var headerName = $scope.findingsColumn.columnName;
+        var headerName = $scope.findingsColumn.name;
 
         if ($scope.findingsColumn.valueType != null) {
           headerName = headerName + ' (' + $scope.findingsColumn.valueType + ')';
@@ -1031,7 +1031,7 @@ var app = angular.module('angularApp')
 
     // gets column value unit options based on  name and condition //
     $scope.getColumnValueUnitOptions = function () {
-      $http({ method: 'GET', url: '/caNanoLab/rest/synthesisPurification/getColumnValueUnitOptions?columnName=' + $scope.findingsColumn.columnName + '&conditionProperty=' + $scope.findingsColumn.conditionProperty }).
+      $http({ method: 'GET', url: '/caNanoLab/rest/synthesisPurification/getColumnValueUnitOptions?name=' + $scope.findingsColumn.name + '&conditionProperty=' + $scope.findingsColumn.conditionProperty }).
         success(function (data, status, headers, config) {
           $scope.valueUnitsLookup = data;
           $scope.loader = false;
@@ -1044,7 +1044,7 @@ var app = angular.module('angularApp')
     // called when columnType dropdown is changed on column form //
     $scope.onColumnNameDropdownChange = function () {
       $scope.getColumnValueUnitOptions();
-      $http({ method: 'GET', url: '/caNanoLab/rest/synthesisPurification/getConditionPropertyOptions?columnName=' + $scope.findingsColumn.columnName }).
+      $http({ method: 'GET', url: '/caNanoLab/rest/synthesisPurification/getConditionPropertyOptions?name=' + $scope.findingsColumn.name }).
         success(function (data, status, headers, config) {
           $scope.conditionTypeLookup = data;
           $scope.loader = false;
@@ -1434,7 +1434,7 @@ var app = angular.module('angularApp')
     $scope.disableColumn = function (option) {
       for (var x = 0; x < $scope.currentFinding.columnHeaders.length; x++) {
         var col = $scope.currentFinding.columnHeaders[x];
-        if (col.columnName == option) {
+        if (col.name == option) {
           return 1;
           break;
         };
