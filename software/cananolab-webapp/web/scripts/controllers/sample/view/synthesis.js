@@ -4,7 +4,7 @@
 var app = angular.module('angularApp')
 
 
-app.controller('SynthesisCtrl', function (sampleService,utilsService,navigationService, groupService, $rootScope,$scope,$http,$location,$filter,$routeParams) {
+app.controller('SynthesisCtrl', function (sampleService, utilsService, navigationService, groupService, $rootScope, $scope, $http, $location, $filter, $routeParams) {
     $rootScope.tabs = navigationService.get();
     $rootScope.groups = groupService.getGroups.data.get();
     $scope.sampleData = sampleService.sampleData;
@@ -15,11 +15,10 @@ app.controller('SynthesisCtrl', function (sampleService,utilsService,navigationS
         $scope.isAdvancedSearch = 1;
     };
 
-    $scope.goBack = function() {
+    $scope.goBack = function () {
         if ($scope.isAdvancedSearch) {
             $location.path("/advancedSampleSearch").replace();
-        }
-        else {
+        } else {
             $location.path("/sampleResults").replace();
         }
         $location.search('sampleId', null);
@@ -29,36 +28,38 @@ app.controller('SynthesisCtrl', function (sampleService,utilsService,navigationS
         $scope.sampleId.data = $routeParams.sampleId;
     };
 
-    $scope.select = function(tab) {
+    $scope.select = function (tab) {
         console.log("SOMETHING HERE")
-        var size = 3, key;
-        for (var x=0; x<size;x++) {
-            if (tab>=0) {
-                if (x==tab){
-                    $scope['show'+x]=false;                
+        var size = 3,
+            key;
+        for (var x = 0; x < size; x++) {
+            if (tab >= 0) {
+                if (x == tab) {
+                    $scope['show' + x] = false;
+                } else {
+                    $scope['show' + x] = true;
                 }
-                else {
-                    $scope['show'+x]=true;
-                } 
-            }    
-            else {
-                $scope['show'+x]=false;
-            }      
+            } else {
+                $scope['show' + x] = false;
+            }
         }
-    }; 
+    };
 
-    $scope.getValueOfField = function(val) {
+    $scope.getValueOfField = function (val) {
         if (val) {
             return val
-        }
-        else {
+        } else {
             return 'N/A'
         }
     }
 
     $scope.loader = true;
-    $http({method: 'GET', url: '/caNanoLab/rest/synthesis/summaryView?sampleId=' + $scope.sampleId.data}).
-    success(function(data, status, headers, config) {
+    $http({
+        method: 'GET',
+        url: '/caNanoLab/rest/synthesis/summaryView?sampleId=' + $scope.sampleId.data
+    }).
+    then(function (data, status, headers, config) {
+        data = data['data']
         $scope.sampleName = sampleService.sampleName($scope.sampleId.data);
         $scope.materials = data.synthesisMaterials;
         $scope.functionalizations = data.synthesisFunctionalization;
@@ -79,7 +80,7 @@ app.controller('SynthesisCtrl', function (sampleService,utilsService,navigationS
         // $scope.synthesisEmpty = utilsService.isHashEmpty(data.synthesisentity);
     });
 
-    $scope.editSynthesisMaterials = function() {
-        
+    $scope.editSynthesisMaterials = function () {
+
     }
 });
