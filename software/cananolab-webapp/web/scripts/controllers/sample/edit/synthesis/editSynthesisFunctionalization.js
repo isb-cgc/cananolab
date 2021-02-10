@@ -18,25 +18,38 @@ var app = angular.module('angularApp')
     $scope.fileId = null;
 
     // initial setup for dropdowns //
-    $http({ method: 'GET', url: `/caNanoLab/rest/synthesisFunctionalization/setup?sampleId=${$scope.sampleId}` }).
-      success(function (data, status, headers, config) {
-        $scope.dropdowns = data;
-        $scope.loader = false;
-      }).error(function (data, status, headers, config) {
-      });
+    $http({
+      method: 'GET',
+      url: `/caNanoLab/rest/synthesisFunctionalization/setup?sampleId=${$scope.sampleId}`
+    }).
+    then(function (data, status, headers, config) {
+      data = data['data']
+      $scope.dropdowns = data;
+      $scope.loader = false;
+    }).catch(function (data, status, headers, config) {
+      data = data['data']
+    });
 
     // function to return edit data for functionalization //
     if ($scope.dataId == -1) {
-      $scope.functionalization = { "sampleId": $scope.sampleId, "functionalizationElements": [], "description": "" };
-    }
-    else {
-      $http({ method: 'GET', url: `/caNanoLab/rest/synthesisFunctionalization/edit?sampleId=${$scope.sampleId}&dataId=${$scope.dataId}` }).
-        success(function (data, status, headers, config) {
-          $scope.functionalization = data;
-          $scope.functionalizationCopy = angular.copy($scope.functionalization);
-          $scope.loader = false;
-        }).error(function (data, status, headers, config) {
-        });
+      $scope.functionalization = {
+        "sampleId": $scope.sampleId,
+        "functionalizationElements": [],
+        "description": ""
+      };
+    } else {
+      $http({
+        method: 'GET',
+        url: `/caNanoLab/rest/synthesisFunctionalization/edit?sampleId=${$scope.sampleId}&dataId=${$scope.dataId}`
+      }).
+      then(function (data, status, headers, config) {
+        data = data['data']
+        $scope.functionalization = data;
+        $scope.functionalizationCopy = angular.copy($scope.functionalization);
+        $scope.loader = false;
+      }).catch(function (data, status, headers, config) {
+        data = data['data']
+      });
     };
 
     // cancel file //
@@ -58,12 +71,21 @@ var app = angular.module('angularApp')
     // delete for functionalization //
     $scope.deleteFunctionalization = function () {
       if (confirm("Are you sure you want to delete?")) {
-        $http({ method: 'POST', url: '/caNanoLab/rest/synthesisFunctionalization/delete', data: $scope.functionalization }).
-          success(function (data, status, headers, config) {
-            $location.search({ 'message': 'Synthesis Functionalization successfully deleted.', 'sampleId': $scope.sampleId }).path('/editSynthesis').replace();
-          }).
-          error(function (data, status, headers, config) {
-          });
+        $http({
+          method: 'POST',
+          url: '/caNanoLab/rest/synthesisFunctionalization/delete',
+          data: $scope.functionalization
+        }).
+        then(function (data, status, headers, config) {
+          data = data['data']
+          $location.search({
+            'message': 'Synthesis Functionalization successfully deleted.',
+            'sampleId': $scope.sampleId
+          }).path('/editSynthesis').replace();
+        }).
+        catch(function (data, status, headers, config) {
+          data = data['data']
+        });
       };
     };
 
@@ -83,16 +105,13 @@ var app = angular.module('angularApp')
       if ($scope.fileId) { // file is existing //
         if ($scope.currentFile.uriExternal) { // file is external //
           saveButtonDisabled = !$scope.currentFile.externalUrl || !$scope.currentFile.type || !$scope.currentFile.title ? true : false;
-        }
-        else { // file is internal. Do not have to check file //
+        } else { // file is internal. Do not have to check file //
           saveButtonDisabled = !$scope.currentFile.title || !$scope.currentFile.type ? true : false;
         };
-      }
-      else { // file is new //
+      } else { // file is new //
         if ($scope.currentFile.uriExternal) { // file is external //
           saveButtonDisabled = !$scope.currentFile.externalUrl || !$scope.currentFile.type || !$scope.currentFile.title ? true : false;
-        }
-        else { // file is internal. Do not have to check file //
+        } else { // file is internal. Do not have to check file //
           saveButtonDisabled = !$scope.currentFile.title || !$scope.currentFile.type || !$scope.fileObject ? true : false;
         };
       };
@@ -128,17 +147,22 @@ var app = angular.module('angularApp')
         $scope.fileFormIndex = index;
         $scope.fileId = file['id'];
         $scope.currentFile = {
-          "uri": file.uri, "uriExternal": file.uriExternal,
-          "externalUrl": file.externalUrl, "type": file.type,
-          "title": file.title, "description": file.description
+          "uri": file.uri,
+          "uriExternal": file.uriExternal,
+          "externalUrl": file.externalUrl,
+          "type": file.type,
+          "title": file.title,
+          "description": file.description
         }; // //
         console.log($scope.currentFile)
-      }
-      else {
+      } else {
         $scope.currentFile = {
-          "uri": "", "uriExternal": false,
-          "externalUrl": null, "type": "",
-          "title": "", "description": ""
+          "uri": "",
+          "uriExternal": false,
+          "externalUrl": null,
+          "type": "",
+          "title": "",
+          "description": ""
         }; // //
         $scope.fileFormIndex = index;
       };
@@ -149,9 +173,11 @@ var app = angular.module('angularApp')
       if (index != -1) {
         $scope.inherentFunction = angular.copy(inherentFunction);
         $scope.inherentFunctionFormIndex = index;
-      }
-      else {
-        $scope.inherentFunction = { "description": null, "type": null }
+      } else {
+        $scope.inherentFunction = {
+          "description": null,
+          "type": null
+        }
         $scope.inherentFunctionFormIndex = index;
       };
     };
@@ -161,8 +187,7 @@ var app = angular.module('angularApp')
       if (index != -1) {
         $scope.functionalizationElement = angular.copy(me);
         $scope.functionalizationElementFormIndex = index;
-      }
-      else {
+      } else {
         $scope.functionalizationElementFormIndex = -1;
         $scope.functionalizationElement = {};
       };
@@ -192,8 +217,7 @@ var app = angular.module('angularApp')
           };
         });
 
-      }
-      else {
+      } else {
         console.log('just save. No new file or no file at all')
       }
     };
@@ -203,14 +227,22 @@ var app = angular.module('angularApp')
       console.log('i am uploading')
       var fd = new FormData(); // create new form data object //
       fd.append('file', $scope.fileObject);
-      $http.post('/caNanoLab/rest/core/uploadFile', fd, { withCredentials: false, headers: { 'Content-Type': undefined }, transformRequest: angular.identity }).
-        success(function (data, status, headers, config) {
-          $scope.uploadComplete = true;
-        }).
-        error(function (data, status, headers, config) {
-          $scope.uploadError = true;
-          $scope.fileErrorMessage = 'Error Uploading File';
-        });
+      $http.post('/caNanoLab/rest/core/uploadFile', fd, {
+        withCredentials: false,
+        headers: {
+          'Content-Type': undefined
+        },
+        transformRequest: angular.identity
+      }).
+      then(function (data, status, headers, config) {
+        data = data['data']
+        $scope.uploadComplete = true;
+      }).
+      catch(function (data, status, headers, config) {
+        data = data['data']
+        $scope.uploadError = true;
+        $scope.fileErrorMessage = 'Error Uploading File';
+      });
     };
 
     // save inherent function //
@@ -220,8 +252,7 @@ var app = angular.module('angularApp')
           $scope.functionalizationElement['inherentFunctionList'] = [];
         };
         $scope.functionalizationElement.inherentFunctionList.push($scope.inherentFunction)
-      }
-      else {
+      } else {
         $scope.functionalizationElement.inherentFunctionList[$scope.inherentFunctionFormIndex] = $scope.inherentFunction;
       }
       $scope.inherentFunctionFormIndex = null;
@@ -231,8 +262,7 @@ var app = angular.module('angularApp')
     $scope.saveFunctionalizationElement = function (me) {
       if ($scope.functionalizationElementFormIndex == -1) {
         $scope.functionalization.functionalizationElements.push($scope.functionalizationElement)
-      }
-      else {
+      } else {
         $scope.functionalization['functionalizationElements'][$scope.functionalizationElementFormIndex] = me;
       }
       $scope.functionalizationElementFormIndex = null;
@@ -243,20 +273,29 @@ var app = angular.module('angularApp')
       // $scope.fileFunctionalization = angular.copy($scope.functionalization);
       // $scope.fileFunctionalization['fileBeingEdited'] = { "uri": $scope.somefile.name, "title": "test", "type": "document", "uriExternal": false };
       // $http({ method: 'POST', url: '/caNanoLab/rest/synthesisFunctionalization/saveFile', data: $scope.fileFunctionalization }).
-      //   success(function (data, status, headers, config) {
+      //   then(function (data, status, headers, config) { data=data['data']
       //     $location.search({ 'message': 'Synthesis Functionalization successfully saved.', 'sampleId': $scope.sampleId }).path('/editSynthesis').replace();
       //   }).
-      //   error(function (data, status, headers, config) {
+      //   catch(function (data, status, headers, config) { data=data['data']
       //     console.log('fail')
       //   });
 
-      $http({ method: 'POST', url: '/caNanoLab/rest/synthesisFunctionalization/submit', data: $scope.functionalization }).
-        success(function (data, status, headers, config) {
-          $location.search({ 'message': 'Synthesis Functionalization successfully saved.', 'sampleId': $scope.sampleId }).path('/editSynthesis').replace();
-        }).
-        error(function (data, status, headers, config) {
-          console.log('fail')
-        });
+      $http({
+        method: 'POST',
+        url: '/caNanoLab/rest/synthesisFunctionalization/submit',
+        data: $scope.functionalization
+      }).
+      then(function (data, status, headers, config) {
+        data = data['data']
+        $location.search({
+          'message': 'Synthesis Functionalization successfully saved.',
+          'sampleId': $scope.sampleId
+        }).path('/editSynthesis').replace();
+      }).
+      catch(function (data, status, headers, config) {
+        data = data['data']
+        console.log('fail')
+      });
     };
 
     // sets external url to true or false for current file //

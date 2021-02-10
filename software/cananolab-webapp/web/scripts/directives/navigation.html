@@ -1,111 +1,128 @@
                   <table cellspacing="0" cellpadding="0" width="160px" id="sideMenu">
-                        <tr ng-hide="navTree">
-                           <td class="subMenuPrimaryTitle">
-                              RELATED LINKS
-                           </td>
-                        </tr>
-                        <tr ng-show="navTree">
-                           <td class="subMenuPrimaryTitle">
-                              NAVIGATION TREE
-                           </td>
-                        </tr>   
-                        <tr ng-repeat="button in buttons" ng-if="!button.alternativeUrl">
-                           <td ng-class="{'subMenuSecondaryTitleSelectedSample': url==button.url||url==button.alternativeUrl, 'subMenuSecondaryTitleSample':url!=button.url}"
-                            ng-click="testClick(button.url)">
-                              {{button.name}}
-                           </td>
-                        </tr>
-                        <tr ng-show="navTree">
-                           <td class="subMenuFill" height="50">
-                              &nbsp;
-                           </td>
-                        </tr>
+                     <tr ng-hide="navTree">
+                        <td class="subMenuPrimaryTitle">
+                           RELATED LINKS
+                        </td>
+                     </tr>
+                     <tr ng-show="navTree">
+                        <td class="subMenuPrimaryTitle">
+                           NAVIGATION TREE
+                        </td>
+                     </tr>
+                     <tr ng-repeat="button in buttons" ng-if="!button.alternativeUrl">
+                        <td ng-class="{'subMenuSecondaryTitleSelectedSample': url==button.url||url==button.alternativeUrl, 'subMenuSecondaryTitleSample':url!=button.url}"
+                           ng-click="testClick(button.url)">
+                           {{button.name}}
+                        </td>
+                     </tr>
+                     <tr ng-show="navTree">
+                        <td class="subMenuFill" height="50">
+                           &nbsp;
+                        </td>
+                     </tr>
 
-                        
-                        <tr>
-                           <td class="subMenuPrimarySubTitle" scope="col">NCI</td>
-                        </tr>
-                        <tr>
-                              <td class="subMenuSecondaryTitle" tabindex="0"
-                                 onclick="openWindow('https://wiki.nci.nih.gov/display/caNanoLab', '', '800', '800')"><a class="subMenuSecondary">caNanoLab Wiki</a></td>
-                           </tr>
-                           <tr>
-                              <td class="subMenuSecondaryTitle" tabindex="0"
-                                 onclick="openWindow('https://wiki.nci.nih.gov/display/icr/isa-tab-nano', '', '800', '800')"><a class="subMenuSecondary">ISA-TAB-Nano Wiki</a></td>
-                           </tr>                           
-                                               
-                        <tr>
-                           <td class="subMenuSecondaryTitle" tabindex="0"
-                              onclick="openWindow('https://cbiit.nci.nih.gov/', '', '800', '800')"><a class="subMenuSecondary">NCI CBIIT Home</a></td>
-                        </tr>
-                        <tr>
-                           <td class="subMenuSecondaryTitle" tabindex="0"
-                              onclick="openWindow('https://nanolab.cancer.gov/', '', '800', '800')"><a class="subMenuSecondary">NCL Home</a></td>
-                        </tr>
-                        <tr>
-                           <td class="subMenuSecondaryTitle" tabindex="0"
-                              onclick="openWindow('http://nano.cancer.gov', '', '800', '800')"><a class="subMenuSecondary">NCI Nano Alliance
+
+                     <tr>
+                        <td class="subMenuPrimarySubTitle" scope="col">NCI</td>
+                     </tr>
+                     <tr>
+                        <td class="subMenuSecondaryTitle" tabindex="0"
+                           onclick="openWindow('https://wiki.nci.nih.gov/display/caNanoLab', '', '800', '800')"><a
+                              class="subMenuSecondary">caNanoLab Wiki</a></td>
+                     </tr>
+                     <tr>
+                        <td class="subMenuSecondaryTitle" tabindex="0"
+                           onclick="openWindow('https://wiki.nci.nih.gov/display/icr/isa-tab-nano', '', '800', '800')">
+                           <a class="subMenuSecondary">ISA-TAB-Nano Wiki</a></td>
+                     </tr>
+
+                     <tr>
+                        <td class="subMenuSecondaryTitle" tabindex="0"
+                           onclick="openWindow('https://cbiit.nci.nih.gov/', '', '800', '800')"><a
+                              class="subMenuSecondary">NCI CBIIT Home</a></td>
+                     </tr>
+                     <tr>
+                        <td class="subMenuSecondaryTitle" tabindex="0"
+                           onclick="openWindow('https://nanolab.cancer.gov/', '', '800', '800')"><a
+                              class="subMenuSecondary">NCL Home</a></td>
+                     </tr>
+                     <tr>
+                        <td class="subMenuSecondaryTitle" tabindex="0"
+                           onclick="openWindow('http://nano.cancer.gov', '', '800', '800')"><a
+                              class="subMenuSecondary">NCI Nano Alliance
                               Home</a>
-                           </td>
-                        </tr>
-                        <tr>
-                           <td class="subMenuSecondaryTitle" tabindex="0"
-                              onclick="openWindow('https://www.cancer.gov', '', '800', '800')"><a class="subMenuSecondary">NCI Home</a></td>
-                        </tr>
-                        <tr>
-                           <td class="subMenuSecondaryTitle" tabindex="0"
-                              onclick="openWindow('https://wiki.nci.nih.gov/display/ICR/Nanotechnology+Working+Group', '', '800', '800')"><a class="subMenuSecondary">Nanotechnology Working Group</a></td>
-                        </tr>
-                        <tr>
-                           <td class="subMenuSecondaryTitle" tabindex="0"
-                              onclick="openWindow('https://nciphub.org/groups/cananolabcuration', '', '800', '800')"><a class="subMenuSecondary">NCIP HUB</a></td>
-                        </tr>
-                        <tr>
-                           <td class="subMenuFill">&nbsp;</td>
-                        </tr>
-                        <tr>
-                           <td class="subMenuPrimarySubTitle">EXTERNAL &nbsp;<a class="sideMenuLink" href="html/cananoDisclaimer.html" target="new">Disclaimer</a></td>
-                        </tr>
-                        <tr>
-                           <td class="subMenuSecondaryTitle" tabindex="0"
-                              onclick="openWindow('http://oregonstate.edu/nbi/', '', '800', '800')"><a class="subMenuSecondary">NBI</a></td>
-                        </tr>
-                        <tr>
-                           <td class="subMenuSecondaryTitle" tabindex="0"
-                              onclick="openWindow('http://nanoparticlelibrary.net/index.asp', '', '800', '800')"><a class="subMenuSecondary">NIOSH NIL</a></td>
-                        </tr>
-                        <tr>
-                           <td class="subMenuSecondaryTitle" tabindex="0"
-                              onclick="openWindow('http://www.internano.org', '', '800', '800')"><a class="subMenuSecondary">InterNano</a></td>
-                        </tr>
-                        <tr>
-                           <td class="subMenuSecondaryTitle" tabindex="0"
-                              onclick="openWindow('http://www.nanohub.org/home', '', '800', '800')"><a class="subMenuSecondary">nanoHUB</a></td>
-                        </tr>
-                        <tr>
-                           <td class="subMenuSecondaryTitle" tabindex="0"
-                              onclick="openWindow('http://www.safenano.org', '', '800', '800')"><a class="subMenuSecondary">SAFENANO</a></td>
-                        </tr>
-                        <tr>
-                           <td class="subMenuSecondaryTitle" tabindex="0"
-                              onclick="openWindow('https://www.oecd.org/sti/nano/', '', '800', '800')"><a class="subMenuSecondary">OECD</a></td>
-                        </tr>
-                        <tr>
-                           <td class="subMenuSecondaryTitle" tabindex="0"
-                              onclick="openWindow('https://enanomapper.net/', '', '800', '800')"><a class="subMenuSecondary">eNanoMapper</a></td>
-                        </tr>
-                        <tr>
-                           <td class="subMenuSecondaryTitle" tabindex="0"
-                              onclick="openWindow('https://www.nanomaterialregistry.org', '', '800', '800')"><a class="subMenuSecondary">Nanomaterial Registry</a></td>
-                        </tr>
-                        <tr>
-                           <td class="subMenuFill">&nbsp;</td>
-                        </tr>
-                        <tr>
-                           <td class="groups">
-                              <div ng-repeat="(key,val) in groups">Logged in as {{key}}
-                                 <br /> <br /> Associated Groups: <div ng-repeat="item in val">{{item}}</div>
-                              </div>
-                           </td>
-                        </tr>
-                     </table>
+                        </td>
+                     </tr>
+                     <tr>
+                        <td class="subMenuSecondaryTitle" tabindex="0"
+                           onclick="openWindow('https://www.cancer.gov', '', '800', '800')"><a
+                              class="subMenuSecondary">NCI Home</a></td>
+                     </tr>
+                     <tr>
+                        <td class="subMenuSecondaryTitle" tabindex="0"
+                           onclick="openWindow('https://wiki.nci.nih.gov/display/ICR/Nanotechnology+Working+Group', '', '800', '800')">
+                           <a class="subMenuSecondary">Nanotechnology Working Group</a></td>
+                     </tr>
+                     <tr>
+                        <td class="subMenuSecondaryTitle" tabindex="0"
+                           onclick="openWindow('https://nciphub.org/groups/cananolabcuration', '', '800', '800')"><a
+                              class="subMenuSecondary">NCIP HUB</a></td>
+                     </tr>
+                     <tr>
+                        <td class="subMenuFill">&nbsp;</td>
+                     </tr>
+                     <tr>
+                        <td class="subMenuPrimarySubTitle">EXTERNAL &nbsp;<a class="sideMenuLink"
+                              href="html/cananoDisclaimer.html" target="new">Disclaimer</a></td>
+                     </tr>
+                     <tr>
+                        <td class="subMenuSecondaryTitle" tabindex="0"
+                           onclick="openWindow('http://oregonstate.edu/nbi/', '', '800', '800')"><a
+                              class="subMenuSecondary">NBI</a></td>
+                     </tr>
+                     <tr>
+                        <td class="subMenuSecondaryTitle" tabindex="0"
+                           onclick="openWindow('http://nanoparticlelibrary.net/index.asp', '', '800', '800')"><a
+                              class="subMenuSecondary">NIOSH NIL</a></td>
+                     </tr>
+                     <tr>
+                        <td class="subMenuSecondaryTitle" tabindex="0"
+                           onclick="openWindow('http://www.internano.org', '', '800', '800')"><a
+                              class="subMenuSecondary">InterNano</a></td>
+                     </tr>
+                     <tr>
+                        <td class="subMenuSecondaryTitle" tabindex="0"
+                           onclick="openWindow('http://www.nanohub.org/home', '', '800', '800')"><a
+                              class="subMenuSecondary">nanoHUB</a></td>
+                     </tr>
+                     <tr>
+                        <td class="subMenuSecondaryTitle" tabindex="0"
+                           onclick="openWindow('http://www.safenano.org', '', '800', '800')"><a
+                              class="subMenuSecondary">SAFENANO</a></td>
+                     </tr>
+                     <tr>
+                        <td class="subMenuSecondaryTitle" tabindex="0"
+                           onclick="openWindow('https://www.oecd.org/sti/nano/', '', '800', '800')"><a
+                              class="subMenuSecondary">OECD</a></td>
+                     </tr>
+                     <tr>
+                        <td class="subMenuSecondaryTitle" tabindex="0"
+                           onclick="openWindow('https://enanomapper.net/', '', '800', '800')"><a
+                              class="subMenuSecondary">eNanoMapper</a></td>
+                     </tr>
+                     <tr>
+                        <td class="subMenuSecondaryTitle" tabindex="0"
+                           onclick="openWindow('https://www.nanomaterialregistry.org', '', '800', '800')"><a
+                              class="subMenuSecondary">Nanomaterial Registry</a></td>
+                     </tr>
+                     <tr>
+                        <td class="subMenuFill">&nbsp;</td>
+                     </tr>
+                     <tr>
+                        <td class="groups">
+                           <div ng-repeat="(key,val) in groups">Logged in as {{key}}
+                              <br /> <br /> Associated Groups: <div ng-repeat="item in val">{{item}}</div>
+                           </div>
+                        </td>
+                     </tr>
+                  </table>
