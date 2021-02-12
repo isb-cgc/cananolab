@@ -70,6 +70,11 @@ var app = angular.module('angularApp', [
   'angularFileUpload'
 ]);
 
+app.config(['$locationProvider', function ($locationProvider) {
+  $locationProvider.hashPrefix('');
+}]);
+
+
 app.factory('testInterceptor', testInterceptor);
 
 app.config(function ($routeProvider, $httpProvider) {
