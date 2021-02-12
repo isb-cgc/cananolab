@@ -28,7 +28,7 @@
 
   <tabset justified="true">
     <tab heading="All" ng-click="select(-1)"></tab>
-    <tab ng-repeat="p in masterPublicationCategories" heading="{{p}}" ng-click="select({{$index}})"></tab>
+    <tab ng-repeat="p in masterPublicationCategories" heading="{{p}}" ng-click="select($index)"></tab>
   </tabset>
 </div>
 <div class="summaryBorder">
