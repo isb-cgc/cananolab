@@ -1,6 +1,6 @@
 'use strict';
 var app = angular.module('angularApp')
-  .controller('MainCtrl', function (sampleService, publicationService, protocolService, navigationService, groupService, $rootScope, $scope, $location, $http, $route, $cookieStore, $window, $cookies) {
+  .controller('MainCtrl', function (sampleService, publicationService, protocolService, navigationService, groupService, $rootScope, $scope, $location, $http, $route, $cookies, $window) {
 
     if ($rootScope.loggedInUser && $rootScope.loggedInUser.length > 0 && $rootScope.loggedInUser != 'anonymousUser')
       $scope.loginShow = 0;
