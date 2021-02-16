@@ -65,7 +65,7 @@ public class SynthesisManager {
         String valueName = columnName;
 
         if (!StringUtils.isEmpty(conditionProperty)) {
-            if (!conditionProperty.equalsIgnoreCase("null")) //quick fix
+            if (!conditionProperty.equalsIgnoreCase("null") && !conditionProperty.equalsIgnoreCase("undefined")) //quick fix
                 valueName = conditionProperty;
         }
 
