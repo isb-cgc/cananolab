@@ -539,7 +539,7 @@
         $scope.columnForm = 1;
 
         $scope.findingsColumnCopyForRestore = {
-          "name": "Column 1",
+          "columnName": "Column 1",
           "conditionProperty": null,
           "valueType": null,
           "valueUnit": null,
@@ -1108,7 +1108,7 @@
       $scope.getColumnValueUnitOptions = function () {
         $http({
           method: 'GET',
-          url: '/caNanoLab/rest/synthesisPurification/getColumnValueUnitOptions?name=' + $scope.findingsColumn.name + '&conditionProperty=' + $scope.findingsColumn.conditionProperty
+          url: '/caNanoLab/rest/synthesisPurification/getColumnValueUnitOptions?columnName=' + $scope.findingsColumn.name + '&conditionProperty=' + $scope.findingsColumn.conditionProperty
         }).
         then(function (data, status, headers, config) {
           data = data['data']
@@ -1126,7 +1126,7 @@
         $scope.getColumnValueUnitOptions();
         $http({
           method: 'GET',
-          url: '/caNanoLab/rest/synthesisPurification/getConditionPropertyOptions?name=' + $scope.findingsColumn.name
+          url: '/caNanoLab/rest/synthesisPurification/getConditionPropertyOptions?columnName=' + $scope.findingsColumn.name
         }).
         then(function (data, status, headers, config) {
           data = data['data']
