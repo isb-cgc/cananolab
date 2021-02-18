@@ -464,14 +464,14 @@ public class CompositionServiceLocalImpl extends BaseServiceLocalImpl implements
 		Boolean canDelete = this.checkChemicalAssociationBeforeDelete(entity);
 		if (!canDelete) {
 			throw new ChemicalAssociationViolationException(
-					"The nanomaterial entity is used in a chemical association.  Please delete the chemcial association first before deleting the nanomaterial entity.");
+					"The nanomaterial entity is used in a chemical association.  Please delete the chemical association first before deleting the nanomaterial entity.");
 		}
 		try {
 			CaNanoLabApplicationService appService = (CaNanoLabApplicationService) ApplicationServiceProvider
 					.getApplicationService();
 			appService.delete(entity);
 		} catch (Exception e) {
-			String err = "Error deleting nanomaterial entity " + entity.getId();
+			String err = "Error deleting nanomaterial entity " + entity.getId()+ ". ";
 			logger.error(err, e);
 			throw new CompositionException(err, e);
 		}
@@ -485,14 +485,14 @@ public class CompositionServiceLocalImpl extends BaseServiceLocalImpl implements
 		Boolean canDelete = this.checkChemicalAssociationBeforeDelete(entity.getSampleComposition(), entity);
 		if (!canDelete) {
 			throw new ChemicalAssociationViolationException("The functionalizing entity " + entity.getName()
-					+ " is used in a chemical association.  Please delete the chemcial association first before deleting the functionalizing entity.");
+					+ " is used in a chemical association.  Please delete the chemical association first before deleting the functionalizing entity.");
 		}
 		try {
 			CaNanoLabApplicationService appService = (CaNanoLabApplicationService) ApplicationServiceProvider
 					.getApplicationService();
 			appService.delete(entity);
 		} catch (Exception e) {
-			String err = "Error deleting functionalizing entity " + entity.getId();
+			String err = "Error deleting functionalizing entity " + entity.getId() + ". ";
 			logger.error(err, e);
 			throw new CompositionException(err, e);
 		}
@@ -561,6 +561,9 @@ public class CompositionServiceLocalImpl extends BaseServiceLocalImpl implements
 			for (ChemicalAssociation assoc : assocSet) {
 				if (assocElement.equals(assoc.getAssociatedElementA())
 						|| assocElement.equals(assoc.getAssociatedElementB())) {
+					return false;
+				}
+				if(assocElement.getId().equals(assoc.getAssociatedElementA().getId())|| assocElement.getId().equals(assoc.getAssociatedElementB().getId())){
 					return false;
 				}
 			}
