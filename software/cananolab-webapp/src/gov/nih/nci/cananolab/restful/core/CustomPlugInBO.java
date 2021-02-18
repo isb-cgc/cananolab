@@ -1,6 +1,6 @@
 /*L
- *  Copyright SAIC
- *  Copyright SAIC-Frederick
+ *  Copyright Leidos
+ *  Copyright Leidos Biomedical
  *
  *  Distributed under the OSI-approved BSD 3-Clause License.
  *  See http://ncip.github.com/cananolab/LICENSE.txt for details.
@@ -10,15 +10,10 @@ package gov.nih.nci.cananolab.restful.core;
 
 import gov.nih.nci.cananolab.restful.sample.InitCharacterizationSetup;
 import gov.nih.nci.cananolab.util.SampleConstants;
-
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Properties;
-
 import javax.servlet.ServletContext;
-import javax.servlet.ServletException;
-
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Component;
 import org.springframework.web.context.ServletContextAware;
@@ -47,71 +42,70 @@ public class CustomPlugInBO implements ServletContextAware { //implements PlugIn
 		logger.info("Entering CustomPlugIn.init()");
 		try {
 			// set default lookup valules in the servlet context
-			ServletContext appContext = actionServlet;//actionServlet.getServletContext();
-			InitSetup.getInstance().getDefaultLookupTable(appContext);
+            InitSetup.getInstance().getDefaultLookupTable(actionServlet);
 			InitSetup
 					.getInstance()
-					.getDefaultTypesByReflection(appContext,
+					.getDefaultTypesByReflection(actionServlet,
 							"defaultFunctionalizingEntityTypes",
 							"gov.nih.nci.cananolab.domain.particle.FunctionalizingEntity");
-			InitSetup.getInstance().getDefaultTypesByReflection(appContext,
+			InitSetup.getInstance().getDefaultTypesByReflection(actionServlet,
 					"defaultNanomaterialEntityTypes",
 					"gov.nih.nci.cananolab.domain.particle.NanomaterialEntity");
-			InitSetup.getInstance().getDefaultTypesByReflection(appContext,
+			InitSetup.getInstance().getDefaultTypesByReflection(actionServlet,
 					"defaultFunctionTypes",
 					"gov.nih.nci.cananolab.domain.particle.Function");
-			InitSetup.getInstance().getDefaultTypesByReflection(appContext,
+			InitSetup.getInstance().getDefaultTypesByReflection(actionServlet,
 					"defaultTargetTypes",
 					"gov.nih.nci.cananolab.domain.function.Target");
 			InitSetup
 					.getInstance()
-					.getDefaultTypesByReflection(appContext,
+					.getDefaultTypesByReflection(actionServlet,
 							"defaultChemicalAssociationTypes",
 							"gov.nih.nci.cananolab.domain.particle.ChemicalAssociation");
 
-			InitSetup.getInstance().getDefaultTypesByLookup(appContext,
+			InitSetup.getInstance().getDefaultTypesByLookup(actionServlet,
 					"speciesTypes", "species", "type");
-			InitSetup.getInstance().getDefaultTypesByLookup(appContext,
+			InitSetup.getInstance().getDefaultTypesByLookup(actionServlet,
 					"wallTypes", "carbon nanotube", "wallType");
 
 			InitCharacterizationSetup.getInstance()
-					.getDefaultCharacterizationTypes(appContext);
+					.getDefaultCharacterizationTypes(actionServlet);
 			// For PubChem data sources drop-down list.
-			appContext.setAttribute("pubChemDataSources",
+			actionServlet.setAttribute("pubChemDataSources",
 					SampleConstants.PUBCHEM_DS_LIST);
 
-			InitSetup.getInstance().setStaticOptions(appContext);
+			InitSetup.getInstance().setStaticOptions(actionServlet);
 
 			// InitSecuritySetup.getInstance().setupDefaultCSM();
 
 			// load mapping for data availability
-			InitSetup.getInstance().getDefaultTypesByLookup(appContext,
+			InitSetup.getInstance().getDefaultTypesByLookup(actionServlet,
 					"MINChar", "MINChar", "entity");
-			InitSetup.getInstance().getLookupByName(appContext,
+			InitSetup.getInstance().getLookupByName(actionServlet,
 					"caNano2MINChar", "caNano2MINChar");
 			InitSetup
 					.getInstance()
 					.getDefaultTypesByReflection(
-							appContext,
+                            actionServlet,
 							"physicoChars",
 							"gov.nih.nci.cananolab.domain.characterization.physical.PhysicoChemicalCharacterization");
 			InitSetup
 					.getInstance()
-					.getDefaultTypesByReflection(appContext, "invitroChars",
+					.getDefaultTypesByReflection(actionServlet, "invitroChars",
 							"gov.nih.nci.cananolab.domain.characterization.invitro.InvitroCharacterization");
 
 			InitSetup
 					.getInstance()
-					.getDefaultTypesByReflection(appContext, "invivoChars",
+					.getDefaultTypesByReflection(actionServlet, "invivoChars",
 							"gov.nih.nci.cananolab.domain.characterization.invivo.InvivoCharacterization");
 
 			InitSetup
 					.getInstance()
-					.getDefaultTypesByReflection(appContext, "chemicalAssocs",
+					.getDefaultTypesByReflection(actionServlet, "chemicalAssocs",
 							"gov.nih.nci.cananolab.domain.particle.ChemicalAssociation");
 
 			//obtain online help url from properties file
-			appContext.setAttribute("webHelp", getWikiHelpUrl());
+			actionServlet.setAttribute("webHelp", getWikiHelpUrl());
 
 		} catch (Exception e) {
 			this.logger.error("Servlet initialization error", e);
@@ -133,11 +127,9 @@ public class CustomPlugInBO implements ServletContextAware { //implements PlugIn
 			
 				FileInputStream in = new FileInputStream(wikihelpPropertiesFileName);
 				wikihelpProperties.load(in);
-				} 
-			catch (FileNotFoundException e) {
-				e.printStackTrace();			
-			} catch (IOException e) {
-				e.printStackTrace();			
+				}
+			catch (IOException e) {
+				e.printStackTrace();
 			}
 			wikiSiteBegin =  wikihelpProperties.getProperty(wikiSiteBeginKey);
 		}

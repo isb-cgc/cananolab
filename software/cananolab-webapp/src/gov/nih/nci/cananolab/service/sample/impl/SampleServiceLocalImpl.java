@@ -1,6 +1,6 @@
 /*L
- *  Copyright SAIC
- *  Copyright SAIC-Frederick
+ *  Copyright Leidos
+ *  Copyright Leidos Biomedical
  *
  *  Distributed under the OSI-approved BSD 3-Clause License.
  *  See http://ncip.github.com/cananolab/LICENSE.txt for details.
@@ -21,13 +21,11 @@ import gov.nih.nci.cananolab.domain.particle.FunctionalizingEntity;
 import gov.nih.nci.cananolab.domain.particle.NanomaterialEntity;
 import gov.nih.nci.cananolab.domain.particle.Sample;
 import gov.nih.nci.cananolab.domain.particle.SampleComposition;
-import gov.nih.nci.cananolab.dto.common.AccessibilityBean;
 import gov.nih.nci.cananolab.dto.common.ExperimentConfigBean;
 import gov.nih.nci.cananolab.dto.common.FileBean;
 import gov.nih.nci.cananolab.dto.common.FindingBean;
 import gov.nih.nci.cananolab.dto.common.PointOfContactBean;
 import gov.nih.nci.cananolab.dto.common.PublicationBean;
-import gov.nih.nci.cananolab.dto.common.SecuredDataBean;
 import gov.nih.nci.cananolab.dto.particle.AdvancedSampleBean;
 import gov.nih.nci.cananolab.dto.particle.AdvancedSampleSearchBean;
 import gov.nih.nci.cananolab.dto.particle.SampleBasicBean;
@@ -55,13 +53,11 @@ import gov.nih.nci.cananolab.service.sample.CompositionService;
 import gov.nih.nci.cananolab.service.sample.SampleService;
 import gov.nih.nci.cananolab.service.sample.helper.AdvancedSampleServiceHelper;
 import gov.nih.nci.cananolab.service.sample.helper.SampleServiceHelper;
-import gov.nih.nci.cananolab.service.security.UserBean;
 import gov.nih.nci.cananolab.system.applicationservice.CaNanoLabApplicationService;
 import gov.nih.nci.cananolab.util.Comparators;
 import gov.nih.nci.cananolab.util.Constants;
-import gov.nih.nci.system.client.ApplicationServiceProvider;
-import gov.nih.nci.system.query.hibernate.HQLCriteria;
-
+import gov.nih.nci.cananolab.system.applicationservice.client.ApplicationServiceProvider;
+import gov.nih.nci.cananolab.system.query.hibernate.HQLCriteria;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -72,7 +68,6 @@ import java.util.Map;
 import java.util.Set;
 import java.util.SortedSet;
 import java.util.TreeSet;
-
 import org.apache.log4j.Logger;
 import org.hibernate.FetchMode;
 import org.hibernate.criterion.CriteriaSpecification;
@@ -80,8 +75,6 @@ import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Property;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import org.springframework.transaction.annotation.Propagation;
-import org.springframework.transaction.annotation.Transactional;
 
 /**
  * Service methods involving samples
@@ -117,8 +110,6 @@ public class SampleServiceLocalImpl extends BaseServiceLocalImpl implements Samp
 
 	/**
 	 * Persist a new sample or update an existing canano sample
-	 *
-	 * @param sample
 	 *
 	 * @throws SampleException
 	 *             , DuplicateEntriesException
@@ -167,11 +158,10 @@ public class SampleServiceLocalImpl extends BaseServiceLocalImpl implements Samp
 			if (newSample) {
 				springSecurityAclService.saveDefaultAccessForNewObject(sample.getId(), SecureClassesEnum.SAMPLE.getClazz());
 			}
-		} catch (NoAccessException e) {
+		} catch (NoAccessException | DuplicateEntriesException e) {
 			throw e;
-		} catch (DuplicateEntriesException e) {
-			throw e;
-		} catch (Exception e) {
+		}
+        catch (Exception e) {
 			logger.error("Error in saving the sample. ", e);
 			throw new SampleException("Error in saving the sample. ", e);
 		}
@@ -267,7 +257,6 @@ public class SampleServiceLocalImpl extends BaseServiceLocalImpl implements Samp
 	 * @param otherFunctionTypes
 	 * @param characterizationClassNames
 	 * @param wordList
-	 * @param samplePointOfContacts
 	 * @return
 	 * @throws SampleException
 	 */
@@ -281,14 +270,13 @@ public class SampleServiceLocalImpl extends BaseServiceLocalImpl implements Samp
 			String[] otherCharacterizationTypes, String[] wordList)
 			throws SampleException {
 		try {
-			List<String> sampleIds = sampleServiceHelper.findSampleIdsBy(sampleName,
-					samplePointOfContact, nanomaterialEntityClassNames,
-					otherNanomaterialEntityTypes,
-					functionalizingEntityClassNames,
-					otherFunctionalizingEntityTypes, functionClassNames,
-					otherFunctionTypes, characterizationClassNames,
-					otherCharacterizationTypes, wordList);
-			return sampleIds;
+            return sampleServiceHelper.findSampleIdsBy(sampleName,
+                    samplePointOfContact, nanomaterialEntityClassNames,
+                    otherNanomaterialEntityTypes,
+                    functionalizingEntityClassNames,
+                    otherFunctionalizingEntityTypes, functionClassNames,
+                    otherFunctionTypes, characterizationClassNames,
+                    otherCharacterizationTypes, wordList);
 		} catch (Exception e) {
 			String err = "Problem finding samples with the given search parameters. " + e.getMessage();
 			logger.error(err, e);
@@ -507,8 +495,7 @@ public class SampleServiceLocalImpl extends BaseServiceLocalImpl implements Samp
 	public int getNumberOfPublicSamplesForJob() throws SampleException
 	{
 		try {
-			int count = sampleServiceHelper.getNumberOfPublicSamplesForJob();
-			return count;
+            return sampleServiceHelper.getNumberOfPublicSamplesForJob();
 		} catch (Exception e) {
 			String err = "Error finding counts of public samples. " + e.getMessage();
 			logger.error(err, e);
@@ -520,11 +507,10 @@ public class SampleServiceLocalImpl extends BaseServiceLocalImpl implements Samp
 	public int getNumberOfPublicSampleSources() throws SampleException
 	{
 		try {
-			int count = sampleServiceHelper.getNumberOfPublicSampleSources();
-			return count;
+            return sampleServiceHelper.getNumberOfPublicSampleSources();
 		} catch (Exception e) {
-			String err = "Error finding counts of public sample sources. " + e.getMessage();;
-			logger.error(err, e);
+			String err = "Error finding counts of public sample sources. " + e.getMessage();
+            logger.error(err, e);
 			throw new SampleException(err, e);
 
 		}
@@ -533,11 +519,10 @@ public class SampleServiceLocalImpl extends BaseServiceLocalImpl implements Samp
 	public int getNumberOfPublicSampleSourcesForJob() throws SampleException
 	{
 		try {
-			int count = sampleServiceHelper.getNumberOfPublicSampleSourcesForJob();
-			return count;
+            return sampleServiceHelper.getNumberOfPublicSampleSourcesForJob();
 		} catch (Exception e) {
-			String err = "Error finding counts of public sample sources. " + e.getMessage();;
-			logger.error(err, e);
+			String err = "Error finding counts of public sample sources. " + e.getMessage();
+            logger.error(err, e);
 			throw new SampleException(err, e);
 
 		}
@@ -550,8 +535,8 @@ public class SampleServiceLocalImpl extends BaseServiceLocalImpl implements Samp
 			PointOfContact poc = sampleServiceHelper.findPointOfContactById(pocId);
 			pocBean = new PointOfContactBean(poc);
 		} catch (Exception e) {
-			String err = "Problem finding point of contact for the given id. " + e.getMessage();;
-			logger.error(err, e);
+			String err = "Problem finding point of contact for the given id. " + e.getMessage();
+            logger.error(err, e);
 			throw new PointOfContactException(err, e);
 		}
 		return pocBean;
@@ -657,11 +642,10 @@ public class SampleServiceLocalImpl extends BaseServiceLocalImpl implements Samp
 			SampleBean newSampleBean0 = new SampleBean(newSample0);
 			// save the sample to get an ID before saving associations
 			saveSample(newSampleBean0);
-		} catch (NotExistException e) {
+		} catch (NotExistException | DuplicateEntriesException e) {
 			throw e;
-		} catch (DuplicateEntriesException e) {
-			throw e;
-		} catch (Exception e) {
+		}
+        catch (Exception e) {
 			String err = "Error in loading the original sample " + originalSampleName + ". " + e.getMessage();
 			logger.error(err, e);
 			throw new SampleException(err, e);
@@ -1170,14 +1154,13 @@ public class SampleServiceLocalImpl extends BaseServiceLocalImpl implements Samp
 			String[] otherCharacterizationTypes, String[] wordList)
 			throws SampleException {
 		try {
-			List<Sample> samples = sampleServiceHelper.findSamplesBy(sampleName,
-					samplePointOfContact, nanomaterialEntityClassNames,
-					otherNanomaterialEntityTypes,
-					functionalizingEntityClassNames,
-					otherFunctionalizingEntityTypes, functionClassNames,
-					otherFunctionTypes, characterizationClassNames,
-					otherCharacterizationTypes, wordList);
-			return samples;
+            return sampleServiceHelper.findSamplesBy(sampleName,
+                    samplePointOfContact, nanomaterialEntityClassNames,
+                    otherNanomaterialEntityTypes,
+                    functionalizingEntityClassNames,
+                    otherFunctionalizingEntityTypes, functionClassNames,
+                    otherFunctionTypes, characterizationClassNames,
+                    otherCharacterizationTypes, wordList);
 		} catch (Exception e) {
 			String err = "Problem finding samples with the given search parameters. " + e.getMessage();
 			logger.error(err, e);

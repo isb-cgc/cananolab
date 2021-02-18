@@ -1,24 +1,5 @@
 package gov.nih.nci.cananolab.restful.sample;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Date;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-
-import javax.servlet.ServletContext;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
-
-import org.apache.log4j.Logger;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.stereotype.Component;
-import org.springframework.transaction.annotation.Propagation;
-import org.springframework.transaction.annotation.Transactional;
-
 import gov.nih.nci.cananolab.domain.common.File;
 import gov.nih.nci.cananolab.domain.common.Keyword;
 import gov.nih.nci.cananolab.domain.function.ImagingFunction;
@@ -54,11 +35,26 @@ import gov.nih.nci.cananolab.security.utils.SpringSecurityUtil;
 import gov.nih.nci.cananolab.service.curation.CurationService;
 import gov.nih.nci.cananolab.service.sample.CompositionService;
 import gov.nih.nci.cananolab.service.sample.SampleService;
-import gov.nih.nci.cananolab.service.sample.helper.SampleServiceHelper;
 import gov.nih.nci.cananolab.ui.form.CompositionForm;
 import gov.nih.nci.cananolab.util.Constants;
 import gov.nih.nci.cananolab.util.DateUtils;
 import gov.nih.nci.cananolab.util.StringUtils;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Date;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import javax.servlet.ServletContext;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 @Transactional(readOnly=false, propagation=Propagation.REQUIRED)
 @Component("nanomaterialEntityBO")
@@ -80,14 +76,12 @@ public class NanomaterialEntityBO extends BaseAnnotationBO
 	
 	@Autowired
 	private UserDetailsService userDetailsService;
-	
+
 	/**
-	 * Add or update the data to database
-	 * 
-	 * @param mapping
-	 * @param form
+	 *  Add or update the data to database
+	 *
+	 * @param nanoBean
 	 * @param request
-	 * @param response
 	 * @return
 	 * @throws Exception
 	 */
@@ -304,10 +298,7 @@ public class NanomaterialEntityBO extends BaseAnnotationBO
 	/**
 	 * Set up the input form for adding new nanomaterial entity
 	 * 
-	 * @param mapping
-	 * @param form
 	 * @param request
-	 * @param response
 	 * @return
 	 * @throws Exception
 	 */
@@ -361,8 +352,8 @@ public class NanomaterialEntityBO extends BaseAnnotationBO
 		try {
 			entity = transferNanoMateriaEntityBean(nanoBean, request);
 			List<String> msgs =new ArrayList<String>();
+			//Trusting form set theComposingElement to element being edited
 			ComposingElementBean composingElement = entity.getTheComposingElement();
-//			ComposingElementBean composingElement = entity.getComposingElements().get(0);
 			composingElement.setupDomain(SpringSecurityUtil.getLoggedInUserName());
 //			entity.addComposingElement(composingElement);
 			
@@ -374,7 +365,9 @@ public class NanomaterialEntityBO extends BaseAnnotationBO
 				return nano;
 			}
 			msgs = this.saveEntity(request, sampleId, entity);
-			
+
+
+
 			compositionService.assignAccesses(composingElement.getDomain());
 
 			// return to setupUpdate to retrieve the correct entity from database
@@ -529,16 +522,15 @@ public class NanomaterialEntityBO extends BaseAnnotationBO
 			file.setTitle(fBean.getTitle());
 			file.setDescription(fBean.getDescription());
 			file.setUri(fBean.getUri());
+			file.setUriExternal(fBean.getUriExternal());
+			fileBean.setKeywordsStr(fBean.getKeywordsStr());
+			fileBean.setExternalUrl(fBean.getExternalUrl());
+			fileBean.setTheAccess(fBean.getTheAccess());
 			if(fBean.getId()!=null){
 				file.setId(fBean.getId());
 				file.setCreatedBy(fBean.getCreatedBy());
 				file.setCreatedDate(fBean.getCreatedDate());
 			}
-			file.setUriExternal(fBean.getUriExternal());
-			fileBean.setKeywordsStr(fBean.getKeywordsStr());
-			fileBean.setExternalUrl(fBean.getExternalUrl());
-			fileBean.setTheAccess(fBean.getTheAccess());
-
 			fileBean.setDomainFile(file);
 		}
 		bean.setTheFile(fileBean);
@@ -779,9 +771,9 @@ public class NanomaterialEntityBO extends BaseAnnotationBO
 	public SimpleNanomaterialEntityBean removeComposingElement(SimpleNanomaterialEntityBean nanoBean, HttpServletRequest request) throws Exception {
 		List<String> msgs = new ArrayList<String>();
 		NanomaterialEntityBean entity = transferNanoMateriaEntityBean(nanoBean, request);
+		//Trusting that form sets theComposingElement as the element being edited.
 		ComposingElementBean composingElement = entity.getTheComposingElement();
-//		ComposingElementBean composingElement = entity.getComposingElements().get(0);
-		//TODO  EH. what?  So it doesn't even check what composing element to remove?  I don't even....
+
 		
 		// check if composing element is associated with an association
 		SimpleNanomaterialEntityBean nano = new SimpleNanomaterialEntityBean();
@@ -793,6 +785,34 @@ public class NanomaterialEntityBO extends BaseAnnotationBO
 		entity.removeComposingElement(composingElement);
 		msgs = validateInputs(request, entity);
 		if (msgs.size()>0) {
+			nano.setErrors(msgs);
+			return nano;
+		}
+		this.saveEntity(request, nanoBean.getSampleId(), entity);
+		compositionService.removeAccesses(entity.getDomainEntity(), composingElement.getDomain());
+		this.checkOpenForms(entity, request);
+		return setupUpdate(nanoBean.getSampleId(), entity.getDomainEntity().getId().toString(), request);
+	}
+
+	public SimpleNanomaterialEntityBean removeComposingElement(SimpleNanomaterialEntityBean nanoBean, String composingElementId,HttpServletRequest request) throws Exception {
+		List<String> msgs = new ArrayList<String>();
+		NanomaterialEntityBean entity = transferNanoMateriaEntityBean(nanoBean, request);
+		ComposingElementBean composingElement = entity.getComposingElementById(composingElementId);
+//		ComposingElementBean composingElement = entity.getTheComposingElement();
+//		ComposingElementBean composingElement = entity.getComposingElements().get(0);
+		//TODO  EH. what?  So it doesn't even check what composing element to remove?  I don't even....
+
+		// check if composing element is associated with an association
+
+		if (!compositionService.checkChemicalAssociationBeforeDelete(entity
+				.getDomainEntity().getSampleComposition(), composingElement.getDomain())) {
+			throw new ChemicalAssociationViolationException(
+					"The composing element is used in a chemical association.  Please delete the chemcial association first before deleting the nanomaterial entity.");
+		}
+		entity.removeComposingElement(composingElement);
+		msgs = validateInputs(request, entity);
+		if (msgs.size()>0) {
+			SimpleNanomaterialEntityBean nano = new SimpleNanomaterialEntityBean();
 			nano.setErrors(msgs);
 			return nano;
 		}
@@ -854,6 +874,28 @@ public class NanomaterialEntityBO extends BaseAnnotationBO
 		NanomaterialEntityBean entity = transferNanoMateriaEntityBean(nanoBean, request); 
 
 		FileBean theFile = entity.getTheFile();
+		entity.removeFile(theFile);
+		entity.setTheFile(new FileBean());
+		// save nanomaterial entity
+		List<String> msgs = validateInputs(request, entity);
+		if (msgs.size()>0) {
+			SimpleNanomaterialEntityBean nano = new SimpleNanomaterialEntityBean();
+			nano.setErrors(msgs);
+			return nano;
+		}
+		this.saveEntity(request, nanoBean.getSampleId(), entity);
+		compositionService.removeAccesses(entity.getDomainEntity().getSampleComposition(), theFile.getDomainFile());
+		request.setAttribute("anchor", "file");
+		this.checkOpenForms(entity, request);
+		return setupUpdate(nanoBean.getSampleId(), entity.getDomainEntity().getId().toString(), request);
+	}
+
+	public SimpleNanomaterialEntityBean removeFile(SimpleNanomaterialEntityBean nanoBean, String fileId,
+												   HttpServletRequest request)
+			throws Exception {
+		NanomaterialEntityBean entity = transferNanoMateriaEntityBean(nanoBean, request);
+
+		FileBean theFile = entity.getFile(fileId);
 		entity.removeFile(theFile);
 		entity.setTheFile(new FileBean());
 		// save nanomaterial entity

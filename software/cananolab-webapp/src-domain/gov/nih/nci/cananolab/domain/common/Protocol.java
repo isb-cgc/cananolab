@@ -1,7 +1,5 @@
 package gov.nih.nci.cananolab.domain.common;
 
-import gov.nih.nci.cananolab.domain.particle.Characterization;
-
 import java.io.Serializable;
 /**
 	* The formal plan of an experiment or research activity, including the objective, rationale, design, materials and methods for the conduct of the study; intervention description, and method of data analysis
@@ -199,9 +197,8 @@ public class Protocol  implements Serializable
 	{
 		if(obj instanceof Protocol) 
 		{
-			Protocol c =(Protocol)obj; 			 
-			if(getId() != null && getId().equals(c.getId()))
-				return true;
+			Protocol c =(Protocol)obj;
+            return getId() != null && getId().equals(c.getId());
 		}
 		return false;
 	}

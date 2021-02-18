@@ -1,7 +1,8 @@
 package gov.nih.nci.cananolab.security.service;
 
+import gov.nih.nci.cananolab.security.enums.CaNanoRoleEnum;
+import gov.nih.nci.cananolab.util.StringUtils;
 import java.util.List;
-
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.acls.domain.GrantedAuthoritySid;
@@ -15,12 +16,6 @@ import org.springframework.security.acls.model.ObjectIdentity;
 import org.springframework.security.acls.model.Permission;
 import org.springframework.security.acls.model.Sid;
 import org.springframework.stereotype.Component;
-import org.springframework.transaction.annotation.Propagation;
-import org.springframework.transaction.annotation.Transactional;
-
-import gov.nih.nci.cananolab.security.dao.AclDao;
-import gov.nih.nci.cananolab.security.enums.CaNanoRoleEnum;
-import gov.nih.nci.cananolab.util.StringUtils;
 
 @Component("aclOperationService")
 //@Transactional(propagation=Propagation.REQUIRED)
@@ -85,7 +80,7 @@ public class AclOperationServiceImpl implements AclOperationService
 				int i = 0;
 				for (AccessControlEntry entry : entries)
 				{
-					String aclSid = "";
+					String aclSid;
 					if (entry.getSid() instanceof GrantedAuthoritySid)
 					{
 						GrantedAuthoritySid gaSid = (GrantedAuthoritySid) entry.getSid();
@@ -129,7 +124,7 @@ public class AclOperationServiceImpl implements AclOperationService
 		ObjectIdentity oi = new ObjectIdentityImpl(clazz, securedObjectId);
 		
 		//	Create or update the relevant ACL
-		MutableAcl acl = null;
+		MutableAcl acl;
 		try {
 			acl = (MutableAcl) aclService.readAclById(oi);
 		} catch (NotFoundException nfe) {
@@ -154,7 +149,7 @@ public class AclOperationServiceImpl implements AclOperationService
 		ObjectIdentity oi = new ObjectIdentityImpl(childClass, securedObjectId);
 		
 		//Create or update the relevant child object ACL
-		MutableAcl acl = null;
+		MutableAcl acl;
 		try {
 			acl = (MutableAcl) aclService.readAclById(oi);
 		} catch (NotFoundException nfe) {
@@ -181,7 +176,7 @@ public class AclOperationServiceImpl implements AclOperationService
 				int i = 0;
 				for (AccessControlEntry entry : entries)
 				{
-					String aclSid = "";
+					String aclSid;
 					if (entry.getSid() instanceof GrantedAuthoritySid)
 					{
 						GrantedAuthoritySid gaSid = (GrantedAuthoritySid) entry.getSid();

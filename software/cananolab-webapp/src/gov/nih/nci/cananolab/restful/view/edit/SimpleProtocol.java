@@ -10,24 +10,24 @@ public class SimpleProtocol {
 			//characterizationForm.map.achar.protocolBean.fileBean.domainFile.id
 			//characterizationForm.map.achar.protocolBean.fileBean.domainFile.uri
 	
-	long domainId;
-	long domainFileId;
+	Long domainId;
+	Long domainFileId;
 	String domainFileUri;
 	String displayName;
 	
-	public long getDomainId() {
+	public Long getDomainId() {
 		return domainId;
 	}
 
-	public void setDomainId(long domainId) {
+	public void setDomainId(Long domainId) {
 		this.domainId = domainId;
 	}
 
-	public long getDomainFileId() {
+	public Long getDomainFileId() {
 		return domainFileId;
 	}
 
-	public void setDomainFileId(long domainFileId) {
+	public void setDomainFileId(Long domainFileId) {
 		this.domainFileId = domainFileId;
 	}
 
@@ -61,6 +61,16 @@ public class SimpleProtocol {
 			domainFileUri = domainFile.getDomainFile().getUri();
 		}
 		displayName = protoBean.getDisplayName();
+	}
+
+	public void transferFromSimpleSubmitProtocol(SimpleSubmitProtocolBean simpleSubmitProtocolBean){
+		if(simpleSubmitProtocolBean == null) return;
+
+
+		domainId = simpleSubmitProtocolBean.getId();
+		domainFileId = simpleSubmitProtocolBean.getFileId();
+		domainFileUri = simpleSubmitProtocolBean.getUri();
+		displayName = simpleSubmitProtocolBean.getName();
 	}
 }
 

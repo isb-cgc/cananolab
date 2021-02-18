@@ -12,8 +12,8 @@ import gov.nih.nci.cananolab.util.Comparators;
 import gov.nih.nci.cananolab.util.Constants;
 import gov.nih.nci.cananolab.util.StringUtils;
 import gov.nih.nci.cananolab.util.TextMatchMode;
-import gov.nih.nci.system.client.ApplicationServiceProvider;
-import gov.nih.nci.system.query.hibernate.HQLCriteria;
+import gov.nih.nci.cananolab.system.applicationservice.client.ApplicationServiceProvider;
+import gov.nih.nci.cananolab.system.query.hibernate.HQLCriteria;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -306,8 +306,7 @@ public class PublicationServiceHelper
 	public int getNumberOfPublicPublicationsForJob() throws Exception
 	{
 		List<Long> publicData = aclDao.getIdsOfClassForSid(SecureClassesEnum.PUBLICATION.getClazz().getName(), CaNanoRoleEnum.ROLE_ANONYMOUS.toString());
-		int cnt = (publicData != null) ? publicData.size() : 0;
-		return cnt;
+        return (publicData != null) ? publicData.size() : 0;
 	}
 
 	public String[] findSampleNamesByPublicationId(String publicationId) throws Exception
@@ -618,6 +617,7 @@ public class PublicationServiceHelper
 		crit.add(Restrictions.isNull("digitalObjectId"));
 		List results = appService.query(crit);
 		Publication publication = null;
+		//TODO Why is this a for loop?  It never loops
 		for (int i = 0; i < results.size(); i++) {
 			publication = (Publication) results.get(i);
 			if (springSecurityAclService.currentUserHasReadPermission(publication.getId(), SecureClassesEnum.PUBLICATION.getClazz()) ||

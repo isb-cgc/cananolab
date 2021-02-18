@@ -41,8 +41,7 @@ public class PublicationImageCache {
 		}
 		
 		if (imageCaNanoCached != null && imageCaNanoCached.length > 0) {
-		 ByteArrayInputStream bis = new ByteArrayInputStream(imageCaNanoCached);
-		 return bis;
+            return new ByteArrayInputStream(imageCaNanoCached);
 		}
 		else {
 			synchronized(caNanoImageFailedTs) {
@@ -64,8 +63,7 @@ public class PublicationImageCache {
 		}
 		
 		if (imageTranspCached != null && imageTranspCached.length > 0) {
-		 ByteArrayInputStream bis = new ByteArrayInputStream(imageTranspCached);
-		 return bis;
+            return new ByteArrayInputStream(imageTranspCached);
 		}
 		else {
 			synchronized(transpImageFailedTs) {

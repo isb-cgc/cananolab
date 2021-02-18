@@ -23,9 +23,8 @@ public class Sterility extends InvitroCharacterization implements Serializable
 	{
 		if(obj instanceof Sterility) 
 		{
-			Sterility c =(Sterility)obj; 			 
-			if(getId() != null && getId().equals(c.getId()))
-				return true;
+			Sterility c =(Sterility)obj;
+            return getId() != null && getId().equals(c.getId());
 		}
 		return false;
 	}

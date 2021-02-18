@@ -1,6 +1,6 @@
 /*L
- *  Copyright SAIC
- *  Copyright SAIC-Frederick
+ *  Copyright Leidos
+ *  Copyright Leidos Biomedical
  *
  *  Distributed under the OSI-approved BSD 3-Clause License.
  *  See http://ncip.github.com/cananolab/LICENSE.txt for details.
@@ -41,7 +41,7 @@ import gov.nih.nci.cananolab.restful.view.SimpleAdvancedSearchSampleBean;
 import gov.nih.nci.cananolab.security.service.SpringSecurityAclService;
 import gov.nih.nci.cananolab.service.curation.CurationService;
 import gov.nih.nci.cananolab.service.sample.SampleService;
-import gov.nih.nci.cananolab.service.sample.impl.SampleExporter;
+import gov.nih.nci.cananolab.service.sample.exporter.SampleExporter;
 import gov.nih.nci.cananolab.util.DateUtils;
 import gov.nih.nci.cananolab.util.ExportUtils;
 
@@ -117,16 +117,13 @@ public class AdvancedSampleSearchBO extends BaseAnnotationBO
 		// save sample result set in session for printing.
 		//session.setAttribute("samplesResultList", sampleBeansPerPage);
 		//return mapping.findForward("success");
-		SimpleAdvancedSearchResultView resultView = transfertoSimpleSampleBeans(loadedSampleBeans, searchBean);
-		
-		return resultView;
+
+        return transfertoSimpleSampleBeans(loadedSampleBeans, searchBean);
 	}
 
 	/**
 	 * Export full advance sample search report in excel file.
 	 *
-	 * @param mapping
-	 * @param form
 	 * @param request
 	 * @param response
 	 * @return
@@ -154,7 +151,7 @@ public class AdvancedSampleSearchBO extends BaseAnnotationBO
 				samplesFullList = new ArrayList<AdvancedSampleBean>(sampleSearchResult.size());
 				for (AdvancedSampleBean sample : sampleSearchResult) {
 					String sampleId = sample.getSampleId();
-					AdvancedSampleBean loadedAdvancedSample = null;
+					AdvancedSampleBean loadedAdvancedSample;
 					loadedAdvancedSample = sampleService.findAdvancedSampleByAdvancedSearch(sampleId, searchBean);
 					samplesFullList.add(loadedAdvancedSample);
 				}
@@ -175,10 +172,7 @@ public class AdvancedSampleSearchBO extends BaseAnnotationBO
 	/**
 	 * Print current page advance sample search report.
 	 *
-	 * @param mapping
-	 * @param form
 	 * @param request
-	 * @param response
 	 * @return
 	 * @throws Exception
 	 */
@@ -221,9 +215,8 @@ public class AdvancedSampleSearchBO extends BaseAnnotationBO
 		// save sample result set in session for printing.
 		//session.setAttribute("samplesResultList", sampleBeansPerPage);
 		//return mapping.findForward("success");
-		SimpleAdvancedSearchResultView resultView = transfertoSimpleSampleBeans(loadedSampleBeans, searchBean);
-		
-		return resultView;
+
+        return transfertoSimpleSampleBeans(loadedSampleBeans, searchBean);
 	}
 
 	private List<AdvancedSampleBean> querySamples(HttpServletRequest request, AdvancedSampleSearchBean searchBean) throws Exception
@@ -249,7 +242,7 @@ public class AdvancedSampleSearchBO extends BaseAnnotationBO
 //			AdvancedSampleBean sampleBean = new AdvancedSampleBean(id);
 //			sampleBean.setSampleName(name);
 //			
-//			//TODO: Need to get access
+//
 //			service.loadAccessesForSampleBean(sampleBean);
 //			
 //			sampleBeans.add(sampleBean);
@@ -275,7 +268,7 @@ public class AdvancedSampleSearchBO extends BaseAnnotationBO
 //			if (i < sampleBeans.size()) {
 //				String sampleId = sampleBeans.get(i).getSampleId();
 //				
-//				//TODO: check on the query. Don't need much
+//
 //				
 //				AdvancedSampleBean loadedAdvancedSample = service
 //						.findAdvancedSampleByAdvancedSearch(sampleId,
@@ -339,9 +332,6 @@ public class AdvancedSampleSearchBO extends BaseAnnotationBO
 	/**
 	 * Get file name for exporting report as an Excel file.
 	 *
-	 * @param sampleName
-	 * @param viewType
-	 * @param subType
 	 * @return
 	 */
 	private static String getExportFileName() {
@@ -353,7 +343,6 @@ public class AdvancedSampleSearchBO extends BaseAnnotationBO
 	/**
 	 * Get view sample URL.
 	 *
-	 * @param sample
 	 * @return
 	 */
 	private static String getViewSampleURL(HttpServletRequest request) {

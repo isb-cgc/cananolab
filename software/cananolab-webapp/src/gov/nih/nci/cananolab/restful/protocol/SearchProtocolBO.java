@@ -18,7 +18,6 @@ import gov.nih.nci.cananolab.restful.core.BaseAnnotationBO;
 import gov.nih.nci.cananolab.restful.util.PropertyUtil;
 import gov.nih.nci.cananolab.restful.util.ProtocolUtil;
 import gov.nih.nci.cananolab.restful.view.SimpleSearchProtocolBean;
-import gov.nih.nci.cananolab.security.CananoUserDetails;
 import gov.nih.nci.cananolab.security.enums.SecureClassesEnum;
 import gov.nih.nci.cananolab.security.service.SpringSecurityAclService;
 import gov.nih.nci.cananolab.security.utils.SpringSecurityUtil;
@@ -68,8 +67,8 @@ public class SearchProtocolBO extends BaseAnnotationBO
 			}
 		}
 		// display 25 protocols at a time
-		List<ProtocolBean> protocolBeansPerPage = getProtocolsPerPage(protocolBeans, displayPage, Constants.DISPLAY_TAG_TABLE_SIZE,
-				request);
+		List<ProtocolBean> protocolBeansPerPage = getProtocolsPerPage(protocolBeans, displayPage,
+                request);
 
 		if (SpringSecurityUtil.isUserLoggedIn()) {
 			loadUserAccess(request, protocolBeansPerPage);
@@ -84,8 +83,7 @@ public class SearchProtocolBO extends BaseAnnotationBO
 		request.getSession().setAttribute("resultSize", new Integer(protocolBeans.size()));
 
 		//return protocolBeansPerPage;
-		List<SimpleSearchProtocolBean> simpleProtocolBeans = transfertoSimpleProtocolBeans(protocolBeansPerPage);
-		return simpleProtocolBeans;
+        return transfertoSimpleProtocolBeans(protocolBeansPerPage);
 	}
 
 	protected List<SimpleSearchProtocolBean> transfertoSimpleProtocolBeans(List<ProtocolBean> protocolBeansPerPage)
@@ -101,10 +99,10 @@ public class SearchProtocolBO extends BaseAnnotationBO
 		return simpleBeans;
 	}
 
-	private List<ProtocolBean> getProtocolsPerPage(List<ProtocolBean> protocolBeans, int page, int pageSize, HttpServletRequest request) throws Exception
+	private List<ProtocolBean> getProtocolsPerPage(List<ProtocolBean> protocolBeans, int page, HttpServletRequest request) throws Exception
 	{
 		List<ProtocolBean> protocolsPerPage = new ArrayList<ProtocolBean>();
-		for (int i = page * pageSize; i < (page + 1) * pageSize; i++)
+		for (int i = page * Constants.DISPLAY_TAG_TABLE_SIZE; i < (page + 1) * Constants.DISPLAY_TAG_TABLE_SIZE; i++)
 		{
 			if (i < protocolBeans.size()) {
 				ProtocolBean protocolBean = protocolBeans.get(i);
@@ -145,8 +143,7 @@ public class SearchProtocolBO extends BaseAnnotationBO
 			protocolAbbreviation = "*" + protocolAbbreviation + "*";
 		}
 
-		List<ProtocolBean> allProtocols = protocolService.findProtocolsBy(protocolType, protocolName, protocolAbbreviation, fileTitle);
-		return allProtocols;
+        return protocolService.findProtocolsBy(protocolType, protocolName, protocolAbbreviation, fileTitle);
 	}
 
 	private void loadUserAccess(HttpServletRequest request, List<ProtocolBean> protocolBeans) throws Exception

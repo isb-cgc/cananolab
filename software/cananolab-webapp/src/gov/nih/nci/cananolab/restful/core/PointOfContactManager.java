@@ -1,6 +1,6 @@
 /*L
- *  Copyright SAIC
- *  Copyright SAIC-Frederick
+ *  Copyright Leidos
+ *  Copyright Leidos Biomedical
  *
  *  Distributed under the OSI-approved BSD 3-Clause License.
  *  See http://ncip.github.com/cananolab/LICENSE.txt for details.
@@ -65,8 +65,7 @@ public class PointOfContactManager
 
 	public Organization getOrganizationByName(HttpServletRequest request, String name) throws Exception {
 		System.out.println("Getting data for org: " + name);
-		Organization org = sampleServiceHelper.findOrganizationByName(name);
-		return org;
+        return sampleServiceHelper.findOrganizationByName(name);
 	}
 
 	public PointOfContactBean getPointOfContactByNameAndOrg(HttpServletRequest request, String firstName,

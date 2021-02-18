@@ -1,6 +1,6 @@
 /*L
- *  Copyright SAIC
- *  Copyright SAIC-Frederick
+ *  Copyright Leidos
+ *  Copyright Leidos Biomedical
  *
  *  Distributed under the OSI-approved BSD 3-Clause License.
  *  See http://ncip.github.com/cananolab/LICENSE.txt for details.
@@ -10,9 +10,13 @@ package gov.nih.nci.cananolab.dto.common;
 
 import gov.nih.nci.cananolab.domain.common.Condition;
 import gov.nih.nci.cananolab.domain.common.Datum;
+import gov.nih.nci.cananolab.domain.common.PurityColumnHeader;
+import gov.nih.nci.cananolab.domain.common.PurityDatumCondition;
+import gov.nih.nci.cananolab.dto.particle.synthesis.SynthesisPurityBean;
 import gov.nih.nci.cananolab.util.StringUtils;
 
 import java.util.Date;
+import java.util.StringTokenizer;
 
 /**
  * View bean representing a column header in a matrix column
@@ -33,6 +37,7 @@ public class ColumnHeader {
 	// FR# 26194, matrix column order.
 	private Integer columnOrder;
 	private Date createdDate;
+	private String createdBy;
 
 	public ColumnHeader(Datum datum) {
 		this.columnName = datum.getName();
@@ -40,6 +45,7 @@ public class ColumnHeader {
 		this.valueUnit = datum.getValueUnit();
 		this.columnType = FindingBean.DATUM_TYPE;
 		this.createdDate = datum.getCreatedDate();
+		this.createdBy =  datum.getCreatedBy();
 //		this.operand = datum.getOperand();
 	}
 
@@ -50,10 +56,30 @@ public class ColumnHeader {
 		this.valueUnit = condition.getValueUnit();
 		this.columnType = FindingBean.CONDITION_TYPE;
 		this.createdDate = condition.getCreatedDate();
+		this.createdBy = condition.getCreatedBy();
+	}
+
+	public ColumnHeader(PurityDatumCondition condition) {
+		this.columnName = condition.getName();
+		this.conditionProperty = condition.getProperty();
+		this.valueType = condition.getValueType();
+		this.valueUnit = condition.getValueUnit();
+		this.columnType = condition.getType();
+		this.createdDate = condition.getCreatedDate();
+		this.createdBy = condition.getCreatedBy();
 	}
 
 	public ColumnHeader() {
 
+	}
+
+	public ColumnHeader(PurityColumnHeader columnHeader) {
+		this.columnName = columnHeader.getName();
+		this.conditionProperty = columnHeader.getProperty();
+		this.valueType = columnHeader.getValueType();
+		this.valueUnit = columnHeader.getValueUnit();
+		this.createdDate = columnHeader.getCreatedDate();
+		this.createdBy = columnHeader.getCreatedBy();
 	}
 
 	public String getColumnName() {
@@ -137,9 +163,8 @@ public class ColumnHeader {
 	public boolean equals(Object obj) {
 		if (obj instanceof ColumnHeader) {
 			ColumnHeader c = (ColumnHeader) obj;
-			if (getDisplayName().equals(c.getDisplayName())
-					&& this.getConstantValue().equals(c.getConstantValue()))
-				return true;
+            return getDisplayName().equals(c.getDisplayName())
+                    && this.getConstantValue().equals(c.getConstantValue());
 		}
 		return false;
 	}
@@ -190,6 +215,12 @@ public class ColumnHeader {
 
 	public void setCreatedDate(Date createdDate) {
 		this.createdDate = createdDate;
+	}
+
+	public String getCreatedBy() { return createdBy;}
+
+	public void setCreatedBy(String createdBy){
+		this.createdBy = createdBy;
 	}
 
     @Override

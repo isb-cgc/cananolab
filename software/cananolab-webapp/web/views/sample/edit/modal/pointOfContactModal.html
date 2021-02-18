@@ -175,19 +175,21 @@
 <div style="padding-top:20px;margin-left:38px;width:300px" ng-show="deleteBlock" class="message">
     Are you sure you wish to delete this contact?<br /><br />
     <div>
-        <button ng-disabled="loader" style="margin-right:50px !important;" ng-click="delete(1,1)" class="btn-canano btn-canano-danger btn-canano-sm">Yes</button>
-        <button ng-disabled="loader" style="margin-right:50px !important;" ng-click="delete(0,1)" class="btn-canano btn-canano-default btn-canano-modal">No</button>
+    <button ng-disabled="loader" style="margin-right:50px !important;" ng-click="delete(1,1)" class="btn-canano btn-canano-danger btn-canano-sm">Yes</button>
+    <button ng-disabled="loader" style="margin-right:50px !important;" ng-click="delete(0,1)" class="btn-canano btn-canano-default btn-canano-modal">No</button>
 </div>
 </div>
 
 </div>
 <div style="clear:both;"></div>
 <div class="modal-footer" role="form" aria-labelledby="actionLabel">
+
+
     <div style="float: left" id="action">
         <button ng-if="!poc.primaryContact && type!='add'" ng-click="delete()" class="btn-canano btn-canano-danger" ng-disabled="loader">Delete</button>
     </div>
     <div style="float: right">
-        <button ng-click="cancel()" class="btn-canano btn-canano-default btn-canano-modal" ng-disabled="loader">Cancel</button>
+        <button ng-click="cancel()" class="btn-canano btn-canano-default btn-canano-modal" ng-disabled="loader">Cancel</button>   
         <button ng-click="save()" class='btn-canano btn-canano-primary btn-canano-modal' ng-disabled="!poc.organization.name || loader">Save</button>
     </div>
 

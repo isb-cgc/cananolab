@@ -45,9 +45,8 @@ public class EnzymeInduction extends InvitroCharacterization implements Serializ
 	{
 		if(obj instanceof EnzymeInduction) 
 		{
-			EnzymeInduction c =(EnzymeInduction)obj; 			 
-			if(getId() != null && getId().equals(c.getId()))
-				return true;
+			EnzymeInduction c =(EnzymeInduction)obj;
+            return getId() != null && getId().equals(c.getId());
 		}
 		return false;
 	}

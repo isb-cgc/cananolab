@@ -1,6 +1,6 @@
 /*L
- *  Copyright SAIC
- *  Copyright SAIC-Frederick
+ *  Copyright Leidos
+ *  Copyright Leidos Biomedical
  *
  *  Distributed under the OSI-approved BSD 3-Clause License.
  *  See http://ncip.github.com/cananolab/LICENSE.txt for details.
@@ -12,7 +12,7 @@ import gov.nih.nci.cananolab.dto.admin.SitePreferenceBean;
 import gov.nih.nci.cananolab.dto.admin.VisitorCountBean;
 import gov.nih.nci.cananolab.exception.NoAccessException;
 import gov.nih.nci.cananolab.service.admin.AdminService;
-import gov.nih.nci.cananolab.service.security.UserBean;
+import gov.nih.nci.cananolab.security.service.UserBean;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -130,7 +130,7 @@ public class AdminServiceJDBCImpl extends JdbcDaoSupport implements AdminService
 	 * @throws Exception
 	 */
 	public SitePreferenceBean getSitePreference() throws Exception {
-		SitePreferenceBean result = null;
+		SitePreferenceBean result;
 		JdbcTemplate selectSite = this.getJdbcTemplate();
 		result = (SitePreferenceBean) selectSite.queryForObject(
 				SELECT_SITE_PREFERENCE, SITE_MAPPER);
@@ -165,7 +165,7 @@ public class AdminServiceJDBCImpl extends JdbcDaoSupport implements AdminService
 	 * @throws Exception
 	 */
 	public VisitorCountBean getVisitorCount() throws Exception {
-		VisitorCountBean result = null;
+		VisitorCountBean result;
 		JdbcTemplate selectSite = this.getJdbcTemplate();
 		result = (VisitorCountBean) selectSite.queryForObject(
 				SELECT_VISITOR_COUNT, COUNTE_MAPPER);

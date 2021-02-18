@@ -13,7 +13,7 @@ public class RestValidator {
 	
 	public static List<String> validate(Object object)  {
 		
-		String errorString = "";
+		StringBuilder errorString = new StringBuilder();
 		
 		List<String> errors = new ArrayList<String>(); 
 		
@@ -24,7 +24,9 @@ public class RestValidator {
 		
 		if (!constraintViolations.isEmpty()) {
 			for (ConstraintViolation<Object> violation : constraintViolations) {
-				errorString  += (errorString.length() < 1) ? violation.getPropertyPath() + " " + violation.getMessage() : " : " + violation.getPropertyPath() + " " + violation.getMessage();
+				errorString.append((errorString.length() < 1) ?
+						violation.getPropertyPath() + " " + violation.getMessage() :
+						" : " + violation.getPropertyPath() + " " + violation.getMessage());
 			
 				System.out.println(violation.getPropertyPath());
 				System.out.println(violation.getMessage());

@@ -1,6 +1,6 @@
 /*L
- *  Copyright SAIC
- *  Copyright SAIC-Frederick
+ *  Copyright Leidos
+ *  Copyright Leidos Biomedical
  *
  *  Distributed under the OSI-approved BSD 3-Clause License.
  *  See http://ncip.github.com/cananolab/LICENSE.txt for details.
@@ -9,14 +9,13 @@
 package gov.nih.nci.cananolab.util;
 
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.Serializable;
 import java.util.Properties;
-
-import javax.servlet.jsp.*;
+import javax.servlet.jsp.JspException;
+import javax.servlet.jsp.JspTagException;
+import javax.servlet.jsp.PageContext;
 import javax.servlet.jsp.tagext.Tag;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -208,15 +207,12 @@ public class ContextSensitiveHelpTag implements Tag, Serializable {
 						FileInputStream in = new FileInputStream(wikihelpPropertiesFileName);
 						wikihelpProperties.load(in);
 				
-						} 
-						catch (FileNotFoundException e) {
-							log.error("Caught exception finding file for properties: ", e);
-							e.printStackTrace();			
-						} catch (IOException e) {
-							log.error("Caught exception finding file for properties: ", e);
-							e.printStackTrace();			
 						}
-						theJavascript = wikihelpProperties.getProperty(myJavascriptKey);
+                        catch (IOException e) {
+                            log.error("Caught exception finding file for properties: ", e);
+                            e.printStackTrace();
+                        }
+                        theJavascript = wikihelpProperties.getProperty(myJavascriptKey);
 						theText = wikihelpProperties.getProperty(myKey);
 						theStyleClass = wikihelpProperties.getProperty(myStyleClass);
 						wikiSiteBegin =  wikihelpProperties.getProperty(wikiSiteBeginKey);
@@ -225,7 +221,7 @@ public class ContextSensitiveHelpTag implements Tag, Serializable {
 
 					// Default to 100 on an exception
 					catch (Exception e) {
-						System.err.println("Error loading system.properties file");
+						System.err.println("Error loading properties file");
 						e.printStackTrace();
 					}
 					theHref = "href=\"" + theJavascript + wikiSiteBegin + theTopic + "')\"";

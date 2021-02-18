@@ -1,6 +1,6 @@
 /*L
- *  Copyright SAIC
- *  Copyright SAIC-Frederick
+ *  Copyright Leidos
+ *  Copyright Leidos Biomedical
  *
  *  Distributed under the OSI-approved BSD 3-Clause License.
  *  See http://ncip.github.com/cananolab/LICENSE.txt for details.
@@ -14,14 +14,19 @@ import gov.nih.nci.cananolab.domain.common.File;
 import gov.nih.nci.cananolab.domain.common.Instrument;
 import gov.nih.nci.cananolab.domain.common.Protocol;
 import gov.nih.nci.cananolab.domain.common.Publication;
+
+import gov.nih.nci.cananolab.domain.common.PurityColumnHeader;
+import gov.nih.nci.cananolab.domain.common.PurityDatumCondition;
 import gov.nih.nci.cananolab.domain.particle.Characterization;
 import gov.nih.nci.cananolab.domain.particle.Sample;
+import gov.nih.nci.cananolab.domain.particle.SynthesisMaterialElement;
 import gov.nih.nci.cananolab.dto.common.ColumnHeader;
 import gov.nih.nci.cananolab.dto.common.ExperimentConfigBean;
 import gov.nih.nci.cananolab.dto.common.FileBean;
 import gov.nih.nci.cananolab.dto.common.FindingBean;
 import gov.nih.nci.cananolab.dto.common.PointOfContactBean;
-import gov.nih.nci.cananolab.dto.common.TableCell;
+import gov.nih.nci.cananolab.dto.common.table.PurityTableCell;
+import gov.nih.nci.cananolab.dto.common.table.TableCell;
 import gov.nih.nci.cananolab.dto.particle.characterization.CharacterizationBean;
 import gov.nih.nci.cananolab.dto.particle.composition.ChemicalAssociationBean;
 import gov.nih.nci.cananolab.dto.particle.composition.ComposingElementBean;
@@ -29,8 +34,12 @@ import gov.nih.nci.cananolab.dto.particle.composition.FunctionBean;
 import gov.nih.nci.cananolab.dto.particle.composition.FunctionalizingEntityBean;
 import gov.nih.nci.cananolab.dto.particle.composition.NanomaterialEntityBean;
 import gov.nih.nci.cananolab.dto.particle.composition.TargetBean;
+import gov.nih.nci.cananolab.dto.particle.synthesis.SynthesisFunctionalizationBean;
+import gov.nih.nci.cananolab.dto.particle.synthesis.SynthesisFunctionalizationElementBean;
+import gov.nih.nci.cananolab.dto.particle.synthesis.SynthesisMaterialBean;
+import gov.nih.nci.cananolab.dto.particle.synthesis.SynthesisMaterialElementBean;
+import gov.nih.nci.cananolab.dto.particle.synthesis.SynthesisPurificationBean;
 import gov.nih.nci.cananolab.restful.view.SimpleSearchSampleBean;
-
 import java.util.Comparator;
 import java.util.Date;
 
@@ -42,7 +51,9 @@ import java.util.Date;
  */
 
 public class Comparators {
-	public static class InstrumentDateComparator implements
+
+
+    public static class InstrumentDateComparator implements
 			Comparator<Instrument> {
 		public int compare(Instrument instrument1, Instrument instrument2) {
 			return instrument1.getCreatedDate().compareTo(
@@ -188,6 +199,199 @@ public class Comparators {
 		}
 	}
 
+	public static class SynthesisMaterialBeanTypeDataComparator implements Comparator<SynthesisMaterialBean>{
+    	public int compare(SynthesisMaterialBean entity1, SynthesisMaterialBean entity2){
+			if (entity1
+					.getDomainEntity()
+					.getClass()
+					.getCanonicalName()
+					.equals(entity2.getDomainEntity().getClass()
+							.getCanonicalName())) {
+				if (entity1.getDomainEntity().getCreatedDate()
+						.compareTo(entity2.getDomainEntity().getCreatedDate()) == 0) {
+					return entity1.getDomainEntity().getId()
+							.compareTo(entity2.getDomainEntity().getId());
+				} else {
+					return entity1
+							.getDomainEntity()
+							.getCreatedDate()
+							.compareTo(
+									entity2.getDomainEntity().getCreatedDate());
+				}
+			} else {
+				return entity1
+						.getDomainEntity()
+						.getClass()
+						.getCanonicalName()
+						.compareTo(
+								entity2.getDomainEntity().getClass()
+										.getCanonicalName());
+			}
+		}
+
+//        @Override
+//        public Comparator<SynthesisMaterialBean> reversed() {
+//            return null;
+//        }
+    }
+
+    public static class SynthesisMaterialElementTypeDataComparator implements Comparator<SynthesisMaterialElementBean>{
+    	public int compare(SynthesisMaterialElementBean entity1, SynthesisMaterialElementBean entity2){
+			if (entity1
+					.getDomainEntity()
+					.getClass()
+					.getCanonicalName()
+					.equals(entity2.getDomainEntity().getClass()
+							.getCanonicalName())) {
+				if (entity1.getDomainEntity().getCreatedDate()
+						.compareTo(entity2.getDomainEntity().getCreatedDate()) == 0) {
+					return entity1.getDomainEntity().getId()
+							.compareTo(entity2.getDomainEntity().getId());
+				} else {
+					return entity1
+							.getDomainEntity()
+							.getCreatedDate()
+							.compareTo(
+									entity2.getDomainEntity().getCreatedDate());
+				}
+			} else {
+				return entity1
+						.getDomainEntity()
+						.getClass()
+						.getCanonicalName()
+						.compareTo(
+								entity2.getDomainEntity().getClass()
+										.getCanonicalName());
+			}
+		}
+	}
+
+    public static class SynthesisFunctionalizationElementTypeDataComparator implements Comparator<SynthesisFunctionalizationElementBean>{
+    	public int compare(SynthesisFunctionalizationElementBean entity1, SynthesisFunctionalizationElementBean entity2){
+			if (entity1
+					.getDomainEntity()
+					.getClass()
+					.getCanonicalName()
+					.equals(entity2.getDomainEntity().getClass()
+							.getCanonicalName())) {
+				if (entity1.getDomainEntity().getCreatedDate()
+						.compareTo(entity2.getDomainEntity().getCreatedDate()) == 0) {
+					return entity1.getDomainEntity().getId()
+							.compareTo(entity2.getDomainEntity().getId());
+				} else {
+					return entity1
+							.getDomainEntity()
+							.getCreatedDate()
+							.compareTo(
+									entity2.getDomainEntity().getCreatedDate());
+				}
+			} else {
+				return entity1
+						.getDomainEntity()
+						.getClass()
+						.getCanonicalName()
+						.compareTo(
+								entity2.getDomainEntity().getClass()
+										.getCanonicalName());
+			}
+		}
+	}
+
+	public static class SynthesisFunctionalizationBeanTypeDataComparator implements Comparator<SynthesisFunctionalizationBean>{
+		public int compare(SynthesisFunctionalizationBean entity1, SynthesisFunctionalizationBean entity2){
+			if (entity1
+					.getDomainEntity()
+					.getClass()
+					.getCanonicalName()
+					.equals(entity2.getDomainEntity().getClass()
+							.getCanonicalName())) {
+				if (entity1.getDomainEntity().getCreatedDate()
+						.compareTo(entity2.getDomainEntity().getCreatedDate()) == 0) {
+					return entity1.getDomainEntity().getId()
+							.compareTo(entity2.getDomainEntity().getId());
+				} else {
+					return entity1
+							.getDomainEntity()
+							.getCreatedDate()
+							.compareTo(
+									entity2.getDomainEntity().getCreatedDate());
+				}
+			} else {
+				return entity1
+						.getDomainEntity()
+						.getClass()
+						.getCanonicalName()
+						.compareTo(
+								entity2.getDomainEntity().getClass()
+										.getCanonicalName());
+			}
+		}
+	}
+
+	public static class SynthesisPurificationBeanTypeDataComparator implements Comparator<SynthesisPurificationBean>{
+		public int compare(SynthesisPurificationBean entity1, SynthesisPurificationBean entity2){
+			if (entity1
+					.getDomainEntity()
+					.getClass()
+					.getCanonicalName()
+					.equals(entity2.getDomainEntity().getClass()
+							.getCanonicalName())) {
+				if (entity1.getDomainEntity().getCreatedDate()
+						.compareTo(entity2.getDomainEntity().getCreatedDate()) == 0) {
+					return entity1.getDomainEntity().getId()
+							.compareTo(entity2.getDomainEntity().getId());
+				} else {
+					return entity1
+							.getDomainEntity()
+							.getCreatedDate()
+							.compareTo(
+									entity2.getDomainEntity().getCreatedDate());
+				}
+			} else {
+				return entity1
+						.getDomainEntity()
+						.getClass()
+						.getCanonicalName()
+						.compareTo(
+								entity2.getDomainEntity().getClass()
+										.getCanonicalName());
+			}
+		}
+	}
+
+	public static class SFEBeanTypeComparator implements Comparator<SynthesisFunctionalizationElementBean>{
+		public int compare(SynthesisFunctionalizationElementBean entity1, SynthesisFunctionalizationElementBean entity2){
+			if (entity1
+					.getDomain()
+					.getClass()
+					.getCanonicalName()
+					.equals(entity2.getDomain().getClass()
+							.getCanonicalName())) {
+				if (entity1.getDomain().getCreatedDate()
+						.compareTo(entity2.getDomain().getCreatedDate()) == 0) {
+
+					return entity1.getDomain().getId()
+							.compareTo(entity2.getDomain().getId());
+				} else {
+					return entity1
+							.getDomain()
+							.getCreatedDate()
+							.compareTo(
+									entity2.getDomain().getCreatedDate());
+				}
+			} else {
+				return entity1
+						.getDomain()
+						.getClass()
+						.getCanonicalName()
+						.compareTo(
+								entity2.getDomain().getClass()
+										.getCanonicalName());
+			}
+		}
+	}
+
+
 	public static class FunctionalizingEntityBeanTypeDateComparator implements
 			Comparator<FunctionalizingEntityBean> {
 		public int compare(FunctionalizingEntityBean entity1,
@@ -256,9 +460,31 @@ public class Comparators {
 		}
 	}
 
+	public static class PurityDatumDateComparator implements Comparator<PurityDatumCondition>{
+		public int compare(PurityDatumCondition datum1, PurityDatumCondition datum2) {
+			//TODO compare on row and column number
+			if (datum1.getRowNumber() == datum2.getRowNumber()) {
+				Integer int1 = new Integer(datum1.getColumnHeader().getColumnOrder());
+				Integer int2 = new Integer(datum2.getColumnHeader().getColumnOrder());
+				return int1.compareTo(int2);
+			}
+			Integer int1 = datum1.getRowNumber();
+			Integer int2 = datum2.getRowNumber();
+			return int1.compareTo(int2);
+		}
+	}
+
 	public static class ConditionDateComparator implements
 			Comparator<Condition> {
 		public int compare(Condition condition1, Condition condition2) {
+			return condition1.getCreatedDate().compareTo(
+					condition2.getCreatedDate());
+		}
+	}
+
+	public static class PurityConditionDateComparator implements
+			Comparator<PurityDatumCondition> {
+		public int compare(PurityDatumCondition condition1, PurityDatumCondition condition2) {
 			return condition1.getCreatedDate().compareTo(
 					condition2.getCreatedDate());
 		}
@@ -499,9 +725,30 @@ public class Comparators {
 		}
 	}
 
+	public static class PurityColumnHeaderComparator implements
+			Comparator<PurityColumnHeader> {
+		public int compare(PurityColumnHeader header1, PurityColumnHeader header2) {
+			if (header1.getColumnOrder() != null
+					&& header2.getColumnOrder() != null) {
+				return header1.getColumnOrder().compareTo(
+						header2.getColumnOrder());
+			} else {
+				return header1.getCreatedDate().compareTo(
+						header2.getCreatedDate());
+			}
+		}
+	}
+
 	public static class ColumnHeaderCreatedDateComparator implements
 			Comparator<ColumnHeader> {
 		public int compare(ColumnHeader header1, ColumnHeader header2) {
+			return header1.getCreatedDate().compareTo(header2.getCreatedDate());
+		}
+	}
+
+	public static class PurityColumnHeaderCreatedDateComparator implements
+			Comparator<PurityColumnHeader> {
+		public int compare(PurityColumnHeader header1, PurityColumnHeader header2) {
 			return header1.getCreatedDate().compareTo(header2.getCreatedDate());
 		}
 	}
@@ -515,5 +762,28 @@ public class Comparators {
 				return cell1.getCreatedDate().compareTo(cell2.getCreatedDate());
 			}
 		}
+
+        @Override
+        public Comparator<TableCell> reversed() {
+            return null;
+        }
+    }
+
+	public static class PurityTableCellComparator implements Comparator<PurityTableCell> {
+		public int compare(PurityTableCell cell1, PurityTableCell cell2) {
+			if (cell1.getColumnOrder() != null
+					&& cell2.getColumnOrder() != null) {
+				return cell1.getColumnOrder().compareTo(cell2.getColumnOrder());
+			} else {
+				return cell1.getCreatedDate().compareTo(cell2.getCreatedDate());
+			}
+		}
+
+		@Override
+		public Comparator<PurityTableCell> reversed() {
+			return null;
+		}
 	}
+
+
 }

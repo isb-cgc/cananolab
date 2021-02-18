@@ -1,6 +1,6 @@
 /*L
- *  Copyright SAIC
- *  Copyright SAIC-Frederick
+ *  Copyright Leidos
+ *  Copyright Leidos Biomedical
  *
  *  Distributed under the OSI-approved BSD 3-Clause License.
  *  See http://ncip.github.com/cananolab/LICENSE.txt for details.
@@ -11,13 +11,11 @@ package gov.nih.nci.cananolab.service.protocol.impl;
 import gov.nih.nci.cananolab.domain.common.Protocol;
 import gov.nih.nci.cananolab.domain.particle.Characterization;
 import gov.nih.nci.cananolab.dto.common.ProtocolBean;
-import gov.nih.nci.cananolab.dto.common.SecuredDataBean;
 import gov.nih.nci.cananolab.exception.NoAccessException;
 import gov.nih.nci.cananolab.exception.ProtocolException;
 import gov.nih.nci.cananolab.security.AccessControlInfo;
 import gov.nih.nci.cananolab.security.CananoUserDetails;
 import gov.nih.nci.cananolab.security.dao.AclDao;
-import gov.nih.nci.cananolab.security.enums.AccessTypeEnum;
 import gov.nih.nci.cananolab.security.enums.CaNanoRoleEnum;
 import gov.nih.nci.cananolab.security.enums.SecureClassesEnum;
 import gov.nih.nci.cananolab.security.service.SpringSecurityAclService;
@@ -28,23 +26,18 @@ import gov.nih.nci.cananolab.service.protocol.helper.ProtocolServiceHelper;
 import gov.nih.nci.cananolab.system.applicationservice.CaNanoLabApplicationService;
 import gov.nih.nci.cananolab.util.Comparators;
 import gov.nih.nci.cananolab.util.Constants;
-import gov.nih.nci.system.client.ApplicationServiceProvider;
-
+import gov.nih.nci.cananolab.system.applicationservice.client.ApplicationServiceProvider;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
-
 import javax.servlet.http.HttpServletRequest;
-
 import org.apache.log4j.Logger;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Property;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import org.springframework.transaction.annotation.Propagation;
-import org.springframework.transaction.annotation.Transactional;
 
 /**
  * Local implementation of ProtocolService
@@ -199,8 +192,7 @@ public class ProtocolServiceLocalImpl extends BaseServiceLocalImpl implements Pr
 		try {
 			Protocol protocol = protocolServiceHelper.findProtocolBy(protocolType, protocolName, protocolVersion);
 			if (protocol != null) {
-				ProtocolBean protocolBean = loadProtocolBean(protocol);
-				return protocolBean;
+                return loadProtocolBean(protocol);
 			} else {
 				return null;
 			}
@@ -235,8 +227,7 @@ public class ProtocolServiceLocalImpl extends BaseServiceLocalImpl implements Pr
 
 	public int getNumberOfPublicProtocols() throws ProtocolException {
 		try {
-			int count = protocolServiceHelper.getNumberOfPublicProtocols();
-			return count;
+            return protocolServiceHelper.getNumberOfPublicProtocols();
 		} catch (Exception e) {
 			String err = "Error finding counts of public protocols.";
 			logger.error(err, e);
@@ -246,8 +237,7 @@ public class ProtocolServiceLocalImpl extends BaseServiceLocalImpl implements Pr
 
 	public int getNumberOfPublicProtocolsForJob() throws ProtocolException {
 		try {
-			int count = protocolServiceHelper.getNumberOfPublicProtocolsForJob();
-			return count;
+            return protocolServiceHelper.getNumberOfPublicProtocolsForJob();
 		} catch (Exception e) {
 			String err = "Error finding counts of public protocols.";
 			logger.error(err, e);
@@ -385,6 +375,25 @@ public class ProtocolServiceLocalImpl extends BaseServiceLocalImpl implements Pr
 		}
 		return protocolIds;
 	}
+
+	public List<ProtocolBean> findProtocolsByType(String type) throws ProtocolException
+	{
+		List<Protocol> protocols = new ArrayList<Protocol>();
+		List<ProtocolBean> protocolBeans = new ArrayList<ProtocolBean>();
+		try {
+			protocols = protocolServiceHelper.findProtocolsByType(type);
+			for (Protocol protocol : protocols) {
+				// don't need to load accessibility
+				ProtocolBean protocolBean = new ProtocolBean(protocol);
+				protocolBeans.add(protocolBean);
+			}
+			return protocolBeans;
+		} catch (Exception e) {
+			String error = "Error in retrieving protocols by Type";
+			throw new ProtocolException(error, e);
+		}
+
+	}
 	
 	@Override
 	public List<String> findProtocolIdsSharedWithUser(CananoUserDetails userDetails) throws ProtocolException
@@ -414,6 +423,22 @@ public class ProtocolServiceLocalImpl extends BaseServiceLocalImpl implements Pr
 		}
 		List<ProtocolBean> protocols = findProtocolsBy(protocolType, null, null, null);
 		request.getSession().setAttribute("characterizationProtocols", protocols);
+		return protocols;
+	}
+
+	public List<ProtocolBean> getSynthesisProtocols(HttpServletRequest request) throws Exception {
+		String protocolType = "synthesis";
+
+		List<ProtocolBean> protocols = findProtocolsBy(protocolType, null, null, null);
+		request.getSession().setAttribute("synthesisProtocols", protocols);
+		return protocols;
+	}
+
+	public List<ProtocolBean> getPurificationProtocols(HttpServletRequest request) throws Exception {
+		String protocolType = "purification";
+
+		List<ProtocolBean> protocols = findProtocolsByType(protocolType);
+		request.getSession().setAttribute("purificationProtocols", protocols);
 		return protocols;
 	}
 

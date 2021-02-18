@@ -1,13 +1,36 @@
-version: '2'
+version: '2.3'
 services:
   canano-wildfly:
     container_name: canano-wildfly
     build: .
+    depends_on:
+      canano-db:
+         condition: service_healthy
     ports:
-     - "8080:8080"
-    volumes:
-     - "/Users/einolfs/development/cananolabvolume:/usr/local/cananolab"
+      - "8080:8080"
+      - "19990:19990"
     environment:
-     nano_db: $nano_db
-     nano_user: $nano_user
-     nano_password: $nano_password       
+      nano_db: canano-db:3306/canano
+      nano_user: root
+      nano_password: password
+    networks:
+      - "nano-net"
+  canano-db:
+    container_name: canano-db
+    image: mariadb
+    environment:
+      MYSQL_ROOT_PASSWORD: password
+      MYSQL_DATABASE: canano
+    ports:
+      - "3306:3306"
+    networks:
+      - "nano-net"
+    healthcheck:
+      test: "mysqladmin ping -ppassword"
+      interval: 10s
+      timeout: 5s
+      retries: 30
+
+networks:
+  nano-net:
+    name: nano-net

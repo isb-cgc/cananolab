@@ -111,9 +111,8 @@ public class Solubility extends PhysicoChemicalCharacterization implements Seria
 	{
 		if(obj instanceof Solubility) 
 		{
-			Solubility c =(Solubility)obj; 			 
-			if(getId() != null && getId().equals(c.getId()))
-				return true;
+			Solubility c =(Solubility)obj;
+            return getId() != null && getId().equals(c.getId());
 		}
 		return false;
 	}

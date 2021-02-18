@@ -1,7 +1,5 @@
 package gov.nih.nci.cananolab.restful.view;
 
-import gov.nih.nci.cananolab.domain.common.Publication;
-
 /**
  * SimplePublicationBean to hold a subset of the data in
  * PublicationBean for display on web page.

@@ -1,6 +1,6 @@
 /*L
- *  Copyright SAIC
- *  Copyright SAIC-Frederick
+ *  Copyright Leidos
+ *  Copyright Leidos Biomedical
  *
  *  Distributed under the OSI-approved BSD 3-Clause License.
  *  See http://ncip.github.com/cananolab/LICENSE.txt for details.
@@ -20,13 +20,10 @@ import gov.nih.nci.cananolab.security.enums.SecureClassesEnum;
 import gov.nih.nci.cananolab.security.service.SpringSecurityAclService;
 import gov.nih.nci.cananolab.system.applicationservice.CaNanoLabApplicationService;
 import gov.nih.nci.cananolab.util.ClassUtils;
-import gov.nih.nci.system.client.ApplicationServiceProvider;
-import gov.nih.nci.system.query.hibernate.HQLCriteria;
-
+import gov.nih.nci.cananolab.system.applicationservice.client.ApplicationServiceProvider;
+import gov.nih.nci.cananolab.system.query.hibernate.HQLCriteria;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
-
 import org.apache.log4j.Logger;
 import org.hibernate.FetchMode;
 import org.hibernate.criterion.CriteriaSpecification;
@@ -53,7 +50,7 @@ public class CompositionServiceHelper
 	public Function findFunctionById(String funcId) throws Exception {
 		if (!springSecurityAclService.currentUserHasReadPermission(Long.valueOf(funcId), SecureClassesEnum.FUNCTION.getClazz()) &&
 			!springSecurityAclService.currentUserHasWritePermission(Long.valueOf(funcId), SecureClassesEnum.FUNCTION.getClazz())) {
-			new NoAccessException("User has no access to the function " + funcId);
+			throw new NoAccessException("User has no access to the function " + funcId);
 		}
 		CaNanoLabApplicationService appService = (CaNanoLabApplicationService) ApplicationServiceProvider.getApplicationService();
 
@@ -74,7 +71,7 @@ public class CompositionServiceHelper
 	{
 		if (!springSecurityAclService.currentUserHasReadPermission(Long.valueOf(ceId), SecureClassesEnum.COMPOSINGELEMENT.getClazz()) &&
 			!springSecurityAclService.currentUserHasWritePermission(Long.valueOf(ceId), SecureClassesEnum.COMPOSINGELEMENT.getClazz())) {
-			new NoAccessException("User has no access to the composing element " + ceId);
+			throw new NoAccessException("User has no access to the composing element " + ceId);
 		}
 		CaNanoLabApplicationService appService = (CaNanoLabApplicationService) ApplicationServiceProvider.getApplicationService();
 
@@ -120,7 +117,7 @@ public class CompositionServiceHelper
 	{
 		if (!springSecurityAclService.currentUserHasReadPermission(Long.valueOf(sampleId), SecureClassesEnum.SAMPLE.getClazz()) &&
 			!springSecurityAclService.currentUserHasWritePermission(Long.valueOf(sampleId), SecureClassesEnum.SAMPLE.getClazz())) {
-			new NoAccessException("User has no access to the sample " + sampleId);
+			throw new NoAccessException("User has no access to the sample " + sampleId);
 		}
 		SampleComposition composition = null;
 
@@ -167,7 +164,7 @@ public class CompositionServiceHelper
 		NanomaterialEntity entity = null;
 		if (!springSecurityAclService.currentUserHasReadPermission(Long.valueOf(sampleId), SecureClassesEnum.SAMPLE.getClazz()) &&
 			!springSecurityAclService.currentUserHasWritePermission(Long.valueOf(sampleId), SecureClassesEnum.SAMPLE.getClazz())) {
-			new NoAccessException("User has no access to the nanomaterial entity " + entityId);
+			throw new NoAccessException("User has no access to the nanomaterial entity " + entityId);
 		}
 		CaNanoLabApplicationService appService = (CaNanoLabApplicationService) ApplicationServiceProvider.getApplicationService();
 
@@ -195,7 +192,7 @@ public class CompositionServiceHelper
 	{
 		if (!springSecurityAclService.currentUserHasReadPermission(Long.valueOf(sampleId), SecureClassesEnum.SAMPLE.getClazz()) &&
 			!springSecurityAclService.currentUserHasWritePermission(Long.valueOf(sampleId), SecureClassesEnum.SAMPLE.getClazz())) {
-			new NoAccessException("User has no access to the functionalizing entity " + entityId);
+			throw new NoAccessException("User has no access to the functionalizing entity " + entityId);
 		}
 		FunctionalizingEntity entity = null;
 
@@ -225,7 +222,7 @@ public class CompositionServiceHelper
 	{
 		if (!springSecurityAclService.currentUserHasReadPermission(Long.valueOf(sampleId), SecureClassesEnum.SAMPLE.getClazz()) &&
 			!springSecurityAclService.currentUserHasWritePermission(Long.valueOf(sampleId), SecureClassesEnum.SAMPLE.getClazz())) {
-			new NoAccessException("User has no access to the chemical association " + assocId);
+			throw new NoAccessException("User has no access to the chemical association " + assocId);
 		}
 		ChemicalAssociation assoc = null;
 

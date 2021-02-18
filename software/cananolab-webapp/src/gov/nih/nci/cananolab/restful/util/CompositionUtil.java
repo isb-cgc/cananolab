@@ -176,5 +176,7 @@ public class CompositionUtil {
 			typeMap.put("fileTypes", new ArrayList<String>(types));
 		return typeMap;
 	}
+
+
 	}
 

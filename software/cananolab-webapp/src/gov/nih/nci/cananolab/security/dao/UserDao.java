@@ -6,24 +6,24 @@ import gov.nih.nci.cananolab.security.CananoUserDetails;
 
 public interface UserDao 
 {
-	public CananoUserDetails getUserByName(String username);
+	CananoUserDetails getUserByName(String username);
 	
-	public List<String> getUserGroups(String username);
+	List<String> getUserGroups(String username);
 
-	public List<String> getUserRoles(String username);
+	List<String> getUserRoles(String username);
 
-	public List<CananoUserDetails> getUsers(String likeStr);
+	List<CananoUserDetails> getUsers(String likeStr);
 
-	public int insertUser(CananoUserDetails user);
+	int insertUser(CananoUserDetails user);
 	
-	public int updateUser(CananoUserDetails user);
+	int updateUser(CananoUserDetails user);
 
-	public int insertUserAuthority(String userName, String authority);
+	int insertUserAuthority(String userName, String authority);
 	
-	public int resetPassword(String userName, String password);
+	int resetPassword(String userName, String password);
 	
-	public String readPassword(String userName);
+	String readPassword(String userName);
 	
-	public int deleteUserAssignedRoles(String username);
+	int deleteUserAssignedRoles(String username);
 
 }

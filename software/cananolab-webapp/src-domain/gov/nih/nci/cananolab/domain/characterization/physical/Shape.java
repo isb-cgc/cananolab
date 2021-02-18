@@ -155,9 +155,8 @@ public class Shape extends PhysicoChemicalCharacterization implements Serializab
 	{
 		if(obj instanceof Shape) 
 		{
-			Shape c =(Shape)obj; 			 
-			if(getId() != null && getId().equals(c.getId()))
-				return true;
+			Shape c =(Shape)obj;
+            return getId() != null && getId().equals(c.getId());
 		}
 		return false;
 	}

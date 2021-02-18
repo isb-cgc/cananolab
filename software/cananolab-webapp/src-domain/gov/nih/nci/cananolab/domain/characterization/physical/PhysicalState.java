@@ -45,9 +45,8 @@ public class PhysicalState extends PhysicoChemicalCharacterization implements Se
 	{
 		if(obj instanceof PhysicalState) 
 		{
-			PhysicalState c =(PhysicalState)obj; 			 
-			if(getId() != null && getId().equals(c.getId()))
-				return true;
+			PhysicalState c =(PhysicalState)obj;
+            return getId() != null && getId().equals(c.getId());
 		}
 		return false;
 	}

@@ -1,6 +1,6 @@
 /*L
- *  Copyright SAIC
- *  Copyright SAIC-Frederick
+ *  Copyright Leidos
+ *  Copyright Leidos Biomedical
  *
  *  Distributed under the OSI-approved BSD 3-Clause License.
  *  See http://ncip.github.com/cananolab/LICENSE.txt for details.
@@ -40,7 +40,7 @@ public class LongRunningProcess implements Runnable {
 				//
 				// don't return until the new thread is running.
 				//
-				while (false == this.isRunning()) {
+				while (!this.isRunning()) {
 					logger
 							.info("Trying to start a new thread for the long running process");
 				}

@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated Apr 3, 2019, 8:32:55 PM by Hibernate Tools 5.4.2.Final -->
+<hibernate-mapping package="gov.nih.nci.cananolab.domain.particle">
+    <class name="Synthesis" table="synthesis">
+        <id name="Id" column="synthesis_pk_id" type="long">
+        <generator class="hilo">
+            <param name="table">hibernate_unique_key</param>
+            <param name="column">next_hi</param>
+        </generator>
+<!--        <generator class="foreign">-->
+<!--            <param name="property">sample</param>-->
+<!--        </generator>-->
+
+
+        </id>
+        <!--the synthesis pk id is generated from the sample pk id
+        <one-to-one name="sample" class="Sample"  constrained="true"/>        -->
+        <many-to-one name="sample" class="Sample" column="sample_pk_id" unique="true" lazy="proxy"  not-null="true" cascade="all"/>
+        <set name="synthesisFunctionalizations" inverse="true">
+            <key>
+                <column name="synthesis_pk_id" not-null="true"/>
+            </key>
+            <one-to-many not-found="ignore" class="SynthesisFunctionalization"/>
+        </set>
+        <set name="synthesisMaterials" inverse="true">
+            <key>
+                <column name="synthesis_pk_id"/>
+            </key>
+            <one-to-many not-found="ignore" class="SynthesisMaterial"/>
+        </set>
+        <set name="synthesisPurifications" inverse="true">
+            <key>
+                <column name="synthesis_pk_id"/>
+            </key>
+            <one-to-many not-found="ignore" class="SynthesisPurification"/>
+        </set>
+    </class>
+</hibernate-mapping>

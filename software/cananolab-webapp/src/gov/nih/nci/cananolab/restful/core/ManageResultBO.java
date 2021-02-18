@@ -5,7 +5,7 @@ import gov.nih.nci.cananolab.security.CananoUserDetails;
 import gov.nih.nci.cananolab.security.utils.SpringSecurityUtil;
 import gov.nih.nci.cananolab.service.admin.impl.BatchOwnershipTransferProcess;
 import gov.nih.nci.cananolab.service.common.LongRunningProcess;
-import gov.nih.nci.cananolab.service.sample.impl.BatchDataAvailabilityProcess;
+import gov.nih.nci.cananolab.service.sample.BatchDataAvailabilityProcess;
 
 import java.util.ArrayList;
 import java.util.List;

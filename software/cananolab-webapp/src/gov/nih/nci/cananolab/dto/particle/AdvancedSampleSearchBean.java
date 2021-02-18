@@ -1,6 +1,6 @@
 /*L
- *  Copyright SAIC
- *  Copyright SAIC-Frederick
+ *  Copyright Leidos
+ *  Copyright Leidos Biomedical
  *
  *  Distributed under the OSI-approved BSD 3-Clause License.
  *  See http://ncip.github.com/cananolab/LICENSE.txt for details.
@@ -304,16 +304,19 @@ public class AdvancedSampleSearchBean {
 			}
 		}
 		for (CompositionQueryBean query : getCompositionQueries()) {
-			if (query.getCompositionType().equals("nanomaterial entity")) {
-				nanoEntityCount++;
-			} else if (query.getCompositionType().equals(
-					"functionalizing entity")) { 
-				funcEntityCount++;
-				
-			} else if (query.getCompositionType().equals("function")) {
-				funcCount++;
-				if (query.getOperand() == null || query.getOperand().length() == 0)
-					query.setOperand("contains");
+			switch (query.getCompositionType()) {
+				case "nanomaterial entity":
+					nanoEntityCount++;
+					break;
+				case "functionalizing entity":
+					funcEntityCount++;
+
+					break;
+				case "function":
+					funcCount++;
+					if (query.getOperand() == null || query.getOperand().length() == 0)
+						query.setOperand("contains");
+					break;
 			}
 			
 			String entType = query.getEntityType();

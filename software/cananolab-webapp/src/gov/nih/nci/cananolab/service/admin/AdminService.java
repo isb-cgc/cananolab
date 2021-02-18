@@ -1,6 +1,6 @@
 /*L
- *  Copyright SAIC
- *  Copyright SAIC-Frederick
+ *  Copyright Leidos
+ *  Copyright Leidos Biomedical
  *
  *  Distributed under the OSI-approved BSD 3-Clause License.
  *  See http://ncip.github.com/cananolab/LICENSE.txt for details.
@@ -10,7 +10,7 @@ package gov.nih.nci.cananolab.service.admin;
 
 import gov.nih.nci.cananolab.dto.admin.SitePreferenceBean;
 import gov.nih.nci.cananolab.dto.admin.VisitorCountBean;
-import gov.nih.nci.cananolab.service.security.UserBean;
+import gov.nih.nci.cananolab.security.service.UserBean;
 
 
 /**
@@ -22,7 +22,7 @@ public interface AdminService {
 	 * 
 	 * @throws Exception
 	 */
-	public SitePreferenceBean getSitePreference() throws Exception;
+    SitePreferenceBean getSitePreference() throws Exception;
 
 	/**
 	 * Save Site Preference, including site name and logo file name. 
@@ -32,8 +32,8 @@ public interface AdminService {
 	 * @return number of rows updated
 	 * @throws Exception
 	 */
-	public int updateSitePreference(SitePreferenceBean sitePreference,
-			UserBean user) throws Exception;
+    int updateSitePreference(SitePreferenceBean sitePreference,
+                             UserBean user) throws Exception;
 
 	/**
 	 * Increase Visitor Count
@@ -41,14 +41,14 @@ public interface AdminService {
 	 * @return number of rows updated
 	 * @throws Exception
 	 */
-	public int increaseVisitorCount() throws Exception;
+    int increaseVisitorCount() throws Exception;
 
 	/**
 	 * Get Visitor Count
 	 * 
 	 * @throws Exception
 	 */
-	public VisitorCountBean getVisitorCount() throws Exception;
+    VisitorCountBean getVisitorCount() throws Exception;
 
 	/**
 	 * Update Visitor Count
@@ -58,5 +58,5 @@ public interface AdminService {
 	 * @return number of rows updated
 	 * @throws Exception
 	 */
-	public int updatedVisitorCount(VisitorCountBean newCount, UserBean user) throws Exception;
+    int updatedVisitorCount(VisitorCountBean newCount, UserBean user) throws Exception;
 }

@@ -6,8 +6,6 @@ import gov.nih.nci.cananolab.dto.common.ColumnHeader;
 import gov.nih.nci.cananolab.dto.common.FileBean;
 import gov.nih.nci.cananolab.dto.common.FindingBean;
 import gov.nih.nci.cananolab.dto.common.Row;
-import gov.nih.nci.cananolab.security.utils.SpringSecurityUtil;
-import gov.nih.nci.cananolab.service.security.UserBean;
 
 import java.util.ArrayList;
 import java.util.List;

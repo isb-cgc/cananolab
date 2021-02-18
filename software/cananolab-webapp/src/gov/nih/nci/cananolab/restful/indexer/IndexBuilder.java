@@ -71,10 +71,10 @@ public class IndexBuilder
         		doc.add(new StringField("sampleKeywords", sampleFieldsBean.getSampleKeywords().get(i), Field.Store.YES));
         	}
         String fullSearchableText = sampleFieldsBean.getSampleName() + " " + sampleFieldsBean.getSamplePocName() + " " + sampleFieldsBean.getNanoEntityName() + " " + sampleFieldsBean.getNanoEntityDesc() + " " + sampleFieldsBean.getFuncEntityName() + " " + sampleFieldsBean.getFunction() + " " + sampleFieldsBean.getCharacterization();
-        String keywords = "";
+        StringBuilder keywords = new StringBuilder();
         for( int i = 0; i < sampleFieldsBean.getSampleKeywords().size(); i++){
         	String keyword = sampleFieldsBean.getSampleKeywords().get(i);
-        	keywords = keywords + " " + keyword;
+        	keywords.append(" ").append(keyword);
         }
         fullSearchableText = fullSearchableText + " " + keywords;
         doc.add(new TextField("content", fullSearchableText, Field.Store.NO));
@@ -127,28 +127,28 @@ public class IndexBuilder
         	}catch(ParseException e){
         		e.printStackTrace();
         	}
-        String keywords = "";
+        StringBuilder keywords = new StringBuilder();
         String fullSearchableText = pubFieldsBean.getSampleName() + " " + pubFieldsBean.getPubDesc() + " " + pubFieldsBean.getPubTitle() + " " + pubFieldsBean.getPubmedId() + " " + pubFieldsBean.getDoiId();
         if(pubFieldsBean.getPubKeywords()!=null){
 	        for(int i = 0; i < pubFieldsBean.getPubKeywords().size(); i++){
 	        	String keyword = pubFieldsBean.getPubKeywords().get(i);
-	        	keywords = keywords + " " + keyword;
+	        	keywords.append(" ").append(keyword);
 	        }
     	}
         fullSearchableText = fullSearchableText + " " + keywords;
-        String authors = "";
+        StringBuilder authors = new StringBuilder();
         if(pubFieldsBean.getAuthors()!=null){
 	        for ( int j = 0; j < pubFieldsBean.getAuthors().size(); j++){
 	        	String author = pubFieldsBean.getAuthors().get(j);
-	        	authors = authors + " " + author;
+	        	authors.append(" ").append(author);
 	        }
         }
         fullSearchableText = fullSearchableText + " " + authors;
-        String sampleNames = "";
+        StringBuilder sampleNames = new StringBuilder();
         if(pubFieldsBean.getSampleName()!=null){
         	for(int k = 0; k < pubFieldsBean.getSampleName().size(); k++){
         		String sampleName = pubFieldsBean.getSampleName().get(k);
-        		sampleNames = sampleNames + " " + sampleName;
+        		sampleNames.append(" ").append(sampleName);
         	}
         }
         fullSearchableText = fullSearchableText + " " + sampleNames;

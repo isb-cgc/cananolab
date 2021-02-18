@@ -60,10 +60,10 @@
                             <td style="text-align: right">
                             <button type="button" class="btn-canano btn-canano-primary btn-canano-xs" ng-click="chemAssociationForm.type=localForm.otherCategoryText; associationTypes.push(localForm.otherCategoryText);">
                                 Add
-                            </button> 
+                            </button>
                             <button type="button" class="btn-canano btn-canano-default btn-canano-xs" ng-click="chemAssociationForm.type='';">
                                 Cancel
-                            </button>                              
+                            </button>
                             </td>
                         </tr>
                         </tbody>
@@ -103,11 +103,11 @@
                             <td style="text-align: right">
                             <button type="button" class="btn-canano btn-canano-default btn-canano-xs" ng-click="chemAssociationForm.bondType=localForm.otherCategoryText1; bondTypes.push(localForm.otherCategoryText1);">
                                 Add
-                            </button> 
+                            </button>
 
                             <button type="button" class="btn-canano btn-canano-default btn-canano-xs" ng-click="chemAssociationForm.bondType='';">
                                 Cancel
-                            </button>                             
+                            </button>
                             </td>
                         </tr>
                         </tbody>
@@ -149,7 +149,7 @@
                                     ng-options="element.domainId as element.displayName for element in associatedElementsA">
                                 <option value=""></option>
                             </select>
-                        </div><br />  
+                        </div><br />
                         <div id="composingElementSelectA" ng-show="chemAssociationForm.associatedElementA.entityId != null && chemAssociationForm.associatedElementA.compositionType == 'nanomaterial entity'">
                             <label for="composingElementIdA">&nbsp;</label>
                             <select ng-model="chemAssociationForm.associatedElementA.composingElement.id" id="composingElementIdA" ng-options="element.id as element.type + ' (name: ' + element.name + ')' for element in composingElementsA">
@@ -213,7 +213,7 @@
                 <div class="form__action form__action--left">
                     <button type="button" class="btn-canano btn-canano-danger" ng-click="doDelete()" ng-if="chemAssociationId != null">
                         Delete
-                    </button>                       
+                    </button>
                 </div>
                 <div class="form__action form__action--right">
                     <input type="hidden" ng-model="chemAssociationForm.associationId">

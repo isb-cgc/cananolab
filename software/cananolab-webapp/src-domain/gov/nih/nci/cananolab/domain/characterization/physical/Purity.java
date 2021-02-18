@@ -23,9 +23,8 @@ public class Purity extends PhysicoChemicalCharacterization implements Serializa
 	{
 		if(obj instanceof Purity) 
 		{
-			Purity c =(Purity)obj; 			 
-			if(getId() != null && getId().equals(c.getId()))
-				return true;
+			Purity c =(Purity)obj;
+            return getId() != null && getId().equals(c.getId());
 		}
 		return false;
 	}

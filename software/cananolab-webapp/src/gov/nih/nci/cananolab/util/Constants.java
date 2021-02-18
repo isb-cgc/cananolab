@@ -1,6 +1,6 @@
 /*L
- *  Copyright SAIC
- *  Copyright SAIC-Frederick
+ *  Copyright Leidos
+ *  Copyright Leidos Biomedical
  *
  *  Distributed under the OSI-approved BSD 3-Clause License.
  *  See http://ncip.github.com/cananolab/LICENSE.txt for details.
@@ -171,4 +171,7 @@ public class Constants {
 	public static String MSG_SESSION_INVALID = "User session invalid. Session may have been expired";
 	
 	public static final String ROLE_PREFIX = "ROLE_";
+
+	public static final String DATUM = "datum";
+	public static final String CONDITION = "condition";
 }

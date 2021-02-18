@@ -1,6 +1,6 @@
 /*L
- *  Copyright SAIC
- *  Copyright SAIC-Frederick
+ *  Copyright Leidos
+ *  Copyright Leidos Biomedical
  *
  *  Distributed under the OSI-approved BSD 3-Clause License.
  *  See http://ncip.github.com/cananolab/LICENSE.txt for details.
@@ -43,10 +43,7 @@ public class CollaborationGroupBO  extends AbstractDispatchBO
 	/**
 	 * Handle edit sample request on sample search result page (curator view).
 	 *
-	 * @param mapping
-	 * @param form
 	 * @param request
-	 * @param response
 	 * @return
 	 * @throws Exception
 	 */
@@ -88,10 +85,7 @@ public class CollaborationGroupBO  extends AbstractDispatchBO
 	/**
 	 * Save or update collaboration group.
 	 *
-	 * @param mapping
-	 * @param form
 	 * @param request
-	 * @param response
 	 * @return
 	 * @throws Exception
 	 */

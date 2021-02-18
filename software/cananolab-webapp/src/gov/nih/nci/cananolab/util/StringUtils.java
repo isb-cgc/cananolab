@@ -1,6 +1,6 @@
 /*L
- *  Copyright SAIC
- *  Copyright SAIC-Frederick
+ *  Copyright Leidos
+ *  Copyright Leidos Biomedical
  *
  *  Distributed under the OSI-approved BSD 3-Clause License.
  *  See http://ncip.github.com/cananolab/LICENSE.txt for details.
@@ -178,8 +178,7 @@ public class StringUtils {
 			return null;
 		}
 		try {
-			Float floatNum = Float.parseFloat(floatStr);
-			return floatNum;
+			return Float.parseFloat(floatStr);
 		} catch (NumberFormatException e) {
 			logger.error("Error converting the given string to a float number",
 					e);
@@ -194,8 +193,7 @@ public class StringUtils {
 			return null;
 		}
 		try {
-			Long longNum = Long.parseLong(longStr);
-			return longNum;
+			return Long.parseLong(longStr);
 		} catch (NumberFormatException e) {
 			logger.error("Error converting the given string to a long number",
 					e);
@@ -236,17 +234,13 @@ public class StringUtils {
 				if (!Character.isDigit(theStr.charAt(i))) {
 					if (theStr.charAt(i) == ('.')) {
 						decimalCount++;
-						continue;
 					} else {
 						return false;
 					}
 				}
 			}
 
-			if (decimalCount == 1)
-				return true;
-			else
-				return false;
+            return decimalCount == 1;
 		}
 	}
 
@@ -306,9 +300,8 @@ public class StringUtils {
 	public static String getOneWordUpperCaseFirstLetter(String words) {
 		// remove space in words and make the first letter lower case.
 		String firstLetter = words.substring(0, 1);
-		String oneWord = words.replaceFirst(firstLetter,
+		return words.replaceFirst(firstLetter,
 				firstLetter.toUpperCase()).replace(" ", "");
-		return oneWord;
 	}
 	
 	/**
@@ -335,7 +328,6 @@ public class StringUtils {
 	 * Parse the text into an array of words using white space as delimiter.
 	 * Keeping words in quotes together.
 	 *
-	 * @param texts
 	 * @return
 	 */
 	public static List<String> parseToWords(String text) {
@@ -463,11 +455,7 @@ public class StringUtils {
 		// "^(?!.*(TEXT\\/VBSCRIPT|%uff1cscript%uff1e|WFXSSProbe|\\=\"|\\+and\\+|\\+select\\+|sys\\.dba\\_user|AVAK\\$\\(RETURN\\_CODE\\)OS|id\\||;vol\\||&#|%\\d+|\\>|\\<|\\.\\.\\\\|\\.\\.\\/|\\.ini|javascript\\:|\\/etc\\/passwd|\\/bin\\/id|\\\'|\\\"|background\\:expression)).*$";
 
 //		System.out.println(regex);
-		if (inputString.matches(regex)) {
-			return true;
-		} else {
-			return false;
-		}
+        return inputString.matches(regex);
 	}
 
 	/**
@@ -514,5 +502,21 @@ public class StringUtils {
 		List<String> list = new ArrayList<String>(Arrays.asList(oldArray));
 		list.remove(stringToRemove);
 		return list.toArray(new String[0]);
+	}
+
+	public static String getPubChemURL(String pubChemDS, Long pubChemId) {
+		StringBuffer sb = new StringBuffer(SampleConstants.PUBCHEM_URL);
+
+		if (SampleConstants.BIOASSAY.equals(pubChemDS)) {
+			sb.append(SampleConstants.BIOASSAY_ID);
+		} else if (SampleConstants.COMPOUND.equals(pubChemDS)) {
+			sb.append(SampleConstants.COMPOUND_ID);
+		} else if (SampleConstants.SUBSTANCE.equals(pubChemDS)) {
+			sb.append(SampleConstants.SUBSTANCE_ID);
+		}
+
+		sb.append('=').append(pubChemId);
+
+		return sb.toString();
 	}
 }

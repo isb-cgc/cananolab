@@ -68,7 +68,7 @@ public class SimpleAdvacedSampleCompositionBean {
 				String detailPage = gov.nih.nci.cananolab.restful.sample.InitCompositionSetup
 						.getInstance().getDetailPage(entityType,
 								"nanomaterialEntity");
-				System.out.println("**** Deatils Page *****"
+				System.out.println("**** Details Page *****"
 						+ detailPage);
 				nanoentitiy.put("detailsPage", detailPage);
 				if (detailPage.contains("Dendrimer")) {
@@ -197,8 +197,9 @@ public class SimpleAdvacedSampleCompositionBean {
 
 				files.put("fileId", file.getDomainFile().getId());
 				files.put("isImage", file.isImage());
-				files.put("ExternalURI", file.getDomainFile()
-						.getUriExternal().toString());
+//				files.put("ExternalURI", file.getDomainFile()
+//						.getUriExternal().toString());
+				files.put("ExternalURI", new Boolean(file.getDomainFile().getUriExternal()).toString());
 				files.put("Title", file.getDomainFile().getTitle());
 
 				files.put("URI", file.getDomainFile().getUri());
@@ -334,8 +335,9 @@ public class SimpleAdvacedSampleCompositionBean {
 				files.put("fileId", file.getDomainFile()
 						.getId());
 				files.put("isImage", file.isImage());
-				files.put("ExternalURI", file.getDomainFile()
-						.getUriExternal().toString());
+//				files.put("ExternalURI", file.getDomainFile()
+//						.getUriExternal().toString());
+				files.put("ExternalURI", new Boolean(file.getDomainFile().getUriExternal()).toString());
 				files.put("Title", file.getDomainFile()
 						.getTitle());
 

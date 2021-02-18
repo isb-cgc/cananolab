@@ -1,6 +1,6 @@
 /*L
- *  Copyright SAIC
- *  Copyright SAIC-Frederick
+ *  Copyright Leidos
+ *  Copyright Leidos Biomedical
  *
  *  Distributed under the OSI-approved BSD 3-Clause License.
  *  See http://ncip.github.com/cananolab/LICENSE.txt for details.
@@ -30,17 +30,14 @@ import gov.nih.nci.cananolab.util.Comparators;
 import gov.nih.nci.cananolab.util.Constants;
 import gov.nih.nci.cananolab.util.StringUtils;
 import gov.nih.nci.cananolab.util.TextMatchMode;
-import gov.nih.nci.system.client.ApplicationServiceProvider;
-
+import gov.nih.nci.cananolab.system.applicationservice.client.ApplicationServiceProvider;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-
 import org.apache.log4j.Logger;
 import org.hibernate.FetchMode;
 import org.hibernate.criterion.Conjunction;
@@ -128,19 +125,26 @@ public class AdvancedSampleServiceHelper
 						setSampleCriteria(searchBean, crit);
 						setCharacterizationCriteria(searchBean, crit);
 						setCompositionCriteriaBase(searchBean, crit);
-						
-						if (query.getCompositionType().equals("function")) {
-							DetachedCriteria subCrit = getFunctionSubquery(query,
-									"inherentFunction.", "function.", "id");
-							crit.add(Subqueries.exists(subCrit));
-						} else if (query.getCompositionType().equals("nanomaterial entity")) {
-							DetachedCriteria subCrit = getNanomaterialEntitySubquery(query,
-									"nanoEntity.", "id");
-							crit.add(Subqueries.exists(subCrit));
-						} else if (query.getCompositionType().equals("functionalizing entity")) {
-							DetachedCriteria subCrit = getFunctionalizingEntitySubquery(
-									query, "funcEntity.", "id");
-							crit.add(Subqueries.exists(subCrit));
+
+						switch (query.getCompositionType()) {
+							case "function": {
+								DetachedCriteria subCrit = getFunctionSubquery(query,
+										"inherentFunction.", "function.", "id");
+								crit.add(Subqueries.exists(subCrit));
+								break;
+							}
+							case "nanomaterial entity": {
+								DetachedCriteria subCrit = getNanomaterialEntitySubquery(query,
+										"nanoEntity.", "id");
+								crit.add(Subqueries.exists(subCrit));
+								break;
+							}
+							case "functionalizing entity": {
+								DetachedCriteria subCrit = getFunctionalizingEntitySubquery(
+										query, "funcEntity.", "id");
+								crit.add(Subqueries.exists(subCrit));
+								break;
+							}
 						}
 						
 						List results = appService.query(crit);
@@ -236,9 +240,8 @@ public class AdvancedSampleServiceHelper
 				
 				logger.debug("id is: " + id);
 				logger.debug("name is: " + name);
-				String sampleId = id;
-				
-				sampleIds.add(sampleId);
+
+                sampleIds.add(id);
 				
 				sampleIdNameMap.put(id, name);
 				
@@ -267,8 +270,7 @@ public class AdvancedSampleServiceHelper
 					String name = row[1].toString();
 					logger.debug("id is: " + id);
 					logger.debug("name is: " + name);
-					String sampleId = id;
-					sampleIds.add(sampleId);
+                    sampleIds.add(id);
 					
 					sampleIdNameMap.put(id, name);
 				}
@@ -287,19 +289,26 @@ public class AdvancedSampleServiceHelper
 						setSampleCriteria(searchBean, crit);
 						setCharacterizationCriteria(searchBean, crit);
 						setCompositionCriteriaBase(searchBean, crit);
-						
-						if (query.getCompositionType().equals("function")) {
-							DetachedCriteria subCrit = getFunctionSubquery(query,
-									"inherentFunction.", "function.", "id");
-							crit.add(Subqueries.exists(subCrit));
-						} else if (query.getCompositionType().equals("nanomaterial entity")) {
-							DetachedCriteria subCrit = getNanomaterialEntitySubquery(query,
-									"nanoEntity.", "id");
-							crit.add(Subqueries.exists(subCrit));
-						} else if (query.getCompositionType().equals("functionalizing entity")) {
-							DetachedCriteria subCrit = getFunctionalizingEntitySubquery(
-									query, "funcEntity.", "id");
-							crit.add(Subqueries.exists(subCrit));
+
+						switch (query.getCompositionType()) {
+							case "function": {
+								DetachedCriteria subCrit = getFunctionSubquery(query,
+										"inherentFunction.", "function.", "id");
+								crit.add(Subqueries.exists(subCrit));
+								break;
+							}
+							case "nanomaterial entity": {
+								DetachedCriteria subCrit = getNanomaterialEntitySubquery(query,
+										"nanoEntity.", "id");
+								crit.add(Subqueries.exists(subCrit));
+								break;
+							}
+							case "functionalizing entity": {
+								DetachedCriteria subCrit = getFunctionalizingEntitySubquery(
+										query, "funcEntity.", "id");
+								crit.add(Subqueries.exists(subCrit));
+								break;
+							}
 						}
 						
 						List results = appService.query(crit);
@@ -309,9 +318,8 @@ public class AdvancedSampleServiceHelper
 							String name = row[1].toString();
 							logger.debug("id is: " + id);
 							logger.debug("name is: " + name);
-							String sampleId = id;
-							//String sampleId = obj.toString();
-							subSampleIds.add(sampleId);
+                            //String sampleId = obj.toString();
+							subSampleIds.add(id);
 							
 							sampleIdNameMap.put(id, name);
 						}
@@ -336,9 +344,8 @@ public class AdvancedSampleServiceHelper
 						String name = row[1].toString();
 						logger.debug("id is: " + id);
 						logger.debug("name is: " + name);
-						String sampleId = id;
-						//String sampleId = obj.toString();
-						sampleIds.add(sampleId);
+                        //String sampleId = obj.toString();
+						sampleIds.add(id);
 						
 						sampleIdNameMap.put(id, name);
 					}
@@ -358,9 +365,8 @@ public class AdvancedSampleServiceHelper
 					String name = row[1].toString();
 					logger.debug("id is: " + id);
 					logger.debug("name is: " + name);
-					String sampleId = id;
-					//String sampleId = obj.toString();
-					sampleIds.add(sampleId);
+                    //String sampleId = obj.toString();
+					sampleIds.add(id);
 					sampleIdNameMap.put(id, name);
 				}
 			}
@@ -396,7 +402,6 @@ public class AdvancedSampleServiceHelper
 	 * Find sample details as an AdvancedSampleBean for the given sample name
 	 * and advanced search parameters
 	 * 
-	 * @param sampleName
 	 * @param searchBean
 	 * @return
 	 * @throws Exception
@@ -457,10 +462,9 @@ public class AdvancedSampleServiceHelper
 		List<Characterization> charas = findCharacterizationsBy(sampleId,
 				searchBean);
 		List<Datum> data = findDataBy(sample, searchBean);
-		AdvancedSampleBean advancedSampleBean = new AdvancedSampleBean(
-				sampleId, pocs, functions, nanoEntities, funcEntities, charas,
-				data, searchBean, sample);
-		return advancedSampleBean;
+        return new AdvancedSampleBean(
+                sampleId, pocs, functions, nanoEntities, funcEntities, charas,
+                data, searchBean, sample);
 	}
 
 	private List<Characterization> findCharacterizationsBy(String sampleId,
@@ -518,8 +522,7 @@ public class AdvancedSampleServiceHelper
 				}
 			}
 		}
-		Collections.sort(chars,
-				new Comparators.CharacterizationNameAssayTypeDateComparator());
+		chars.sort(new Comparators.CharacterizationNameAssayTypeDateComparator());
 		return chars;
 	}
 
@@ -542,21 +545,20 @@ public class AdvancedSampleServiceHelper
 			}
 		}
 		// default to or if only one query
-		Junction junction = (searchBean.getCharacterizationLogicalOperator()
-				.equals("or") || searchBean.getCharacterizationQueries().size() == 1) ? datumDisjunction
-				: datumConjunction;
-		return junction;
+        return (searchBean.getCharacterizationLogicalOperator()
+                .equals("or") || searchBean.getCharacterizationQueries().size() == 1) ? datumDisjunction
+                : datumConjunction;
 	}
 
 	private DetachedCriteria getDatumSubquery(
-			CharacterizationQueryBean charQuery, String projectionProperty) {
+			CharacterizationQueryBean charQuery) {
 		DetachedCriteria subCrit = DetachedCriteria.forClass(Datum.class,
 				"subCrit");
 		subCrit.setProjection(Projections.distinct(Property
-				.forName(projectionProperty)));
+				.forName("id")));
 		Criterion datumCrit = getDatumCriterion(charQuery);
 		subCrit.add(datumCrit);
-		subCrit.add(Restrictions.eqProperty("subCrit." + projectionProperty,
+		subCrit.add(Restrictions.eqProperty("subCrit." + "id",
 				"rootCrit.id"));
 		return subCrit;
 	}
@@ -629,7 +631,7 @@ public class AdvancedSampleServiceHelper
 				// criterion
 				if (!StringUtils.isEmpty(charQuery.getDatumName())) {
 					crit = DetachedCriteria.forClass(Datum.class, "rootCrit");
-					DetachedCriteria subCrit = getDatumSubquery(charQuery, "id");
+					DetachedCriteria subCrit = getDatumSubquery(charQuery);
 					crit.add(Subqueries.exists(subCrit));
 					crit
 							.setResultTransformer(CriteriaSpecification.DISTINCT_ROOT_ENTITY);
@@ -918,7 +920,7 @@ public class AdvancedSampleServiceHelper
 							.forClass(PointOfContact.class);
 					crit.createAlias("organization", "organization");
 					DetachedCriteria subCrit = getPointOfContactSubquery(query,
-							"", "", "id");
+							"", "");
 					crit.add(Subqueries.exists(subCrit));
 					crit.setFetchMode("organization", FetchMode.JOIN);
 					List results = appService.query(crit);
@@ -940,7 +942,7 @@ public class AdvancedSampleServiceHelper
 		String charClassName = ClassUtils
 				.getShortClassNameFromDisplayName(charQuery
 						.getCharacterizationName());
-		Criterion charCrit = null;
+		Criterion charCrit;
 		if (charClassName == null) {
 			Criterion otherCharCrit1 = Restrictions.eq(charAlias + "class",
 					"OtherCharacterization");
@@ -965,22 +967,31 @@ public class AdvancedSampleServiceHelper
 			Float datumValue = new Float(charQuery.getDatumValue());
 			charCrit = Restrictions.and(charCrit, Restrictions.eq(
 					"datum.valueUnit", charQuery.getDatumValueUnit()));
-			if (charQuery.getOperand().equals("=")
-					|| charQuery.getOperand().equals("is")) {
-				charCrit = Restrictions.and(charCrit, Expression.eq(
-						"datum.value", datumValue));
-			} else if (charQuery.getOperand().equals(">")) {
-				charCrit = Restrictions.and(charCrit, Expression.gt(
-						"datum.value", datumValue));
-			} else if (charQuery.getOperand().equals(">=")) {
-				charCrit = Restrictions.and(charCrit, Expression.ge(
-						"datum.value", datumValue));
-			} else if (charQuery.getOperand().equals("<")) {
-				charCrit = Restrictions.and(charCrit, Expression.lt(
-						"datum.value", datumValue));
-			} else if (charQuery.getOperand().equals("<=")) {
-				charCrit = Restrictions.and(charCrit, Expression.le(
-						"datum.value", datumValue));
+			switch (charQuery.getOperand()) {
+				case "=":
+					charCrit = Restrictions.and(charCrit, Expression.eq(
+							"datum.value", datumValue));
+					break;
+				case "is":
+					charCrit = Restrictions.and(charCrit, Expression.eq(
+							"datum.value", datumValue));
+					break;
+				case ">":
+					charCrit = Restrictions.and(charCrit, Expression.gt(
+							"datum.value", datumValue));
+					break;
+				case ">=":
+					charCrit = Restrictions.and(charCrit, Expression.ge(
+							"datum.value", datumValue));
+					break;
+				case "<":
+					charCrit = Restrictions.and(charCrit, Expression.lt(
+							"datum.value", datumValue));
+					break;
+				case "<=":
+					charCrit = Restrictions.and(charCrit, Expression.le(
+							"datum.value", datumValue));
+					break;
 			}
 			// ignore the bogus place holder entered for emtpy datum/condition
 			// cells
@@ -1049,52 +1060,51 @@ public class AdvancedSampleServiceHelper
 		for (CompositionQueryBean compQuery : searchBean
 				.getCompositionQueries()) {
 			// function
-			if (compQuery.getCompositionType().equals("function")) {
-				Criterion funcCrit = this.getFunctionCriterion(compQuery,
-						"inherentFunction.", "function.");
-				if (funcCrit != null) {
-					compDisjunction.add(funcCrit);
-					// only add to conjunction if there is only one query for
-					// the type
-					if (searchBean.getFuncCount() == 1) {
-						compConjunction.add(funcCrit);
+			switch (compQuery.getCompositionType()) {
+				case "function":
+					Criterion funcCrit = this.getFunctionCriterion(compQuery,
+							"inherentFunction.", "function.");
+					if (funcCrit != null) {
+						compDisjunction.add(funcCrit);
+						// only add to conjunction if there is only one query for
+						// the type
+						if (searchBean.getFuncCount() == 1) {
+							compConjunction.add(funcCrit);
+						}
 					}
-				}
-			}
-			// nanomaterial entity
-			else if (compQuery.getCompositionType().equals(
-					"nanomaterial entity")) {
-				Criterion nanoEntityCrit = getNanomaterialEntityCriterion(
-						compQuery, "nanoEntity.");
-				if (nanoEntityCrit != null) {
-					compDisjunction.add(nanoEntityCrit);
-					// only add to conjunction if there is only one query for
-					// the type
-					if (searchBean.getNanoEntityCount() == 1) {
-						compConjunction.add(nanoEntityCrit);
+					break;
+				// nanomaterial entity
+				case "nanomaterial entity":
+					Criterion nanoEntityCrit = getNanomaterialEntityCriterion(
+							compQuery, "nanoEntity.");
+					if (nanoEntityCrit != null) {
+						compDisjunction.add(nanoEntityCrit);
+						// only add to conjunction if there is only one query for
+						// the type
+						if (searchBean.getNanoEntityCount() == 1) {
+							compConjunction.add(nanoEntityCrit);
+						}
 					}
-				}
-			}
-			// functionalizing entity
-			else if (compQuery.getCompositionType().equals(
-					"functionalizing entity")) {
-				Criterion funcEntityCrit = getFunctionalizingEntityCriterion(
-						compQuery, "funcEntity.");
-				if (funcEntityCrit != null) {
-					compDisjunction.add(funcEntityCrit);
-					// only add to conjunction if there is only one query for
-					// the type
-					if (searchBean.getFuncEntityCount() == 1) {
-						compConjunction.add(funcEntityCrit);
+					break;
+				// functionalizing entity
+				case "functionalizing entity":
+					Criterion funcEntityCrit = getFunctionalizingEntityCriterion(
+							compQuery, "funcEntity.");
+					if (funcEntityCrit != null) {
+						compDisjunction.add(funcEntityCrit);
+						// only add to conjunction if there is only one query for
+						// the type
+						if (searchBean.getFuncEntityCount() == 1) {
+							compConjunction.add(funcEntityCrit);
+						}
 					}
-				}
+					break;
 			}
 		}
 		// default to or if only one query
-		Junction junction = (searchBean.getCompositionLogicalOperator().equals(
-				"or") || searchBean.getCompositionQueries().size() == 1) ? compDisjunction
-				: compConjunction;
-		return junction;
+        return (searchBean.getCompositionLogicalOperator().equals(
+                "or") || searchBean.getCompositionQueries().size() == 1) ? compDisjunction
+                : compConjunction;
 	}
 
 	/**
@@ -1131,10 +1141,9 @@ public class AdvancedSampleServiceHelper
 			}
 		}
 		// default to or if only one query
-		Junction junction = (searchBean.getCompositionLogicalOperator().equals(
-				"or") || searchBean.getCompositionQueries().size() == 1) ? compDisjunction
-				: compConjunction;
-		return junction;
+        return (searchBean.getCompositionLogicalOperator().equals(
+                "or") || searchBean.getCompositionQueries().size() == 1) ? compDisjunction
+                : compConjunction;
 	}
 
 	/**
@@ -1172,10 +1181,9 @@ public class AdvancedSampleServiceHelper
 			}
 		}
 		// default to or if only one query
-		Junction junction = (searchBean.getCompositionLogicalOperator().equals(
-				"or") || searchBean.getCompositionQueries().size() == 1) ? compDisjunction
-				: compConjunction;
-		return junction;
+        return (searchBean.getCompositionLogicalOperator().equals(
+                "or") || searchBean.getCompositionQueries().size() == 1) ? compDisjunction
+                : compConjunction;
 	}
 
 	/**
@@ -1213,10 +1221,9 @@ public class AdvancedSampleServiceHelper
 			}
 		}
 		// default to or if only one query
-		Junction junction = (searchBean.getCompositionLogicalOperator().equals(
-				"or") || searchBean.getCompositionQueries().size() == 1) ? compDisjunction
-				: compConjunction;
-		return junction;
+        return (searchBean.getCompositionLogicalOperator().equals(
+                "or") || searchBean.getCompositionQueries().size() == 1) ? compDisjunction
+                : compConjunction;
 	}
 
 	private Criterion getFunctionalizingEntityCriterion(
@@ -1235,7 +1242,7 @@ public class AdvancedSampleServiceHelper
 				.getShortClassNameFromDisplayName(compQuery.getEntityType());
 		Class clazz = ClassUtils.getFullClass("agentmaterial."
 				+ funcEntityClassName);
-		Criterion funcEntityCrit = null;
+		Criterion funcEntityCrit;
 		// other entity type
 		if (clazz == null) {
 			/*Criterion otherFuncCrit1 = Restrictions.eq(entityAlias + "class",
@@ -1305,7 +1312,7 @@ public class AdvancedSampleServiceHelper
 		String funcClassName = ClassUtils
 				.getShortClassNameFromDisplayName(compQuery.getEntityType());
 		Class clazz = ClassUtils.getFullClass("function." + funcClassName);
-		Criterion funcCrit, funcCrit1, funcCrit2 = null;
+		Criterion funcCrit, funcCrit1, funcCrit2;
 		// other function type
 		if (clazz == null) {
 			if (!functionAlias1.equals(functionAlias2)) {
@@ -1360,7 +1367,7 @@ public class AdvancedSampleServiceHelper
 				.getShortClassNameFromDisplayName(compQuery.getEntityType());
 		Class clazz = ClassUtils.getFullClass("nanomaterial."
 				+ nanoEntityClassName);
-		Criterion nanoEntityCrit = null;
+		Criterion nanoEntityCrit;
 		// other entity type
 		if (clazz == null) {
 			Criterion otherNanoCrit1 = Restrictions.eq(entityAlias + "class",
@@ -1385,7 +1392,6 @@ public class AdvancedSampleServiceHelper
 	/**
 	 * Set the disjunction used in point of contact queries
 	 * 
-	 * @param query
 	 * @return
 	 */
 	private Disjunction getPointOfContactDisjunction(
@@ -1405,7 +1411,7 @@ public class AdvancedSampleServiceHelper
 
 	private Disjunction getPointOfContactDisjunctionPerQuery(
 			SampleQueryBean query, String pocAlias, String otherPOCAlias) {
-		String pocCritStrs[] = null;
+		String[] pocCritStrs;
 		if (StringUtils.isEmpty(otherPOCAlias)) {
 			pocCritStrs = new String[] { pocAlias + "lastName",
 					pocAlias + "firstName", "organization.name" };
@@ -1434,7 +1440,6 @@ public class AdvancedSampleServiceHelper
 	 * Get the sample name junction used in sample queries
 	 * 
 	 * @param searchBean
-	 * @param crit
 	 * @return
 	 * @throws Exception
 	 */
@@ -1451,17 +1456,15 @@ public class AdvancedSampleServiceHelper
 				}
 			}
 		}
-		Junction junction = (searchBean.getSampleLogicalOperator().equals("or") || searchBean
-				.getSampleQueries().size() == 1) ? sampleDisjunction
-				: sampleConjunction;
-		return junction;
+        return (searchBean.getSampleLogicalOperator().equals("or") || searchBean
+                .getSampleQueries().size() == 1) ? sampleDisjunction
+                : sampleConjunction;
 	}
 
 	/**
 	 * Get the sample disjunction used in sample queries
 	 * 
 	 * @param searchBean
-	 * @param crit
 	 * @return
 	 * @throws Exception
 	 */
@@ -1493,10 +1496,9 @@ public class AdvancedSampleServiceHelper
 				}
 			}
 		}
-		Junction junction = (searchBean.getSampleLogicalOperator().equals("or") || searchBean
-				.getSampleQueries().size() == 1) ? sampleDisjunction
-				: sampleConjunction;
-		return junction;
+        return (searchBean.getSampleLogicalOperator().equals("or") || searchBean
+                .getSampleQueries().size() == 1) ? sampleDisjunction
+                : sampleConjunction;
 	}
 
 	/**
@@ -1514,24 +1516,22 @@ public class AdvancedSampleServiceHelper
 					Constants.STRING_OPERAND_CONTAINS)) {
 				nameMatchMode = new TextMatchMode("*" + query.getName() + "*");
 			}
-			Criterion sampleNameCrit = Restrictions.ilike("name", nameMatchMode
-					.getUpdatedText(), nameMatchMode.getMatchMode());
-			return sampleNameCrit;
+            return Restrictions.ilike("name", nameMatchMode
+                    .getUpdatedText(), nameMatchMode.getMatchMode());
 		} else {
 			return null;
 		}
 	}
 
 	private void setCharacterizationAndCriteria(
-			AdvancedSampleSearchBean searchBean, DetachedCriteria crit,
-			String projectionProperty) {
+			AdvancedSampleSearchBean searchBean, DetachedCriteria crit) {
 		if (searchBean.getCharacterizationQueries().isEmpty()) {
 			return;
 		}
 		for (CharacterizationQueryBean charQuery : searchBean
 				.getCharacterizationQueries()) {
 			DetachedCriteria subCrit = getCharacterizationSubquery(charQuery,
-					projectionProperty);
+					"sample.id");
 			crit.add(Subqueries.exists(subCrit));
 		}
 	}
@@ -1559,7 +1559,7 @@ public class AdvancedSampleServiceHelper
 					.add(getCharacterizationDisjunction(searchBean, crit,
 							"chara."));
 		} else {
-			setCharacterizationAndCriteria(searchBean, crit, "sample.id");
+			setCharacterizationAndCriteria(searchBean, crit);
 		}
 	}
 
@@ -1580,13 +1580,13 @@ public class AdvancedSampleServiceHelper
 		
 		if( searchBean.getCompositionLogicalOperator().equals("and") ) {
 			if (searchBean.getNanoEntityCount() > 1) {
-				setNanomaterialEntityAndCriteria(searchBean, crit, "id");
+				setNanomaterialEntityAndCriteria(searchBean, crit);
 			}
 			if (searchBean.getFuncEntityCount() > 1) {
-				setFunctionalizingEntityAndCriteria(searchBean, crit, "id");
+				setFunctionalizingEntityAndCriteria(searchBean, crit);
 			}
 			if (searchBean.getFuncCount() > 1) {
-				setFunctionAndCriteria(searchBean, crit, "id");
+				setFunctionAndCriteria(searchBean, crit);
 			}
 		}
 	}
@@ -1650,35 +1650,33 @@ public class AdvancedSampleServiceHelper
 	}
 
 	private void setFunctionalizingEntityAndCriteria(
-			AdvancedSampleSearchBean searchBean, DetachedCriteria crit,
-			String projectionProperty) throws Exception {
+			AdvancedSampleSearchBean searchBean, DetachedCriteria crit) throws Exception {
 		for (CompositionQueryBean query : searchBean.getCompositionQueries()) {
 			if (query.getCompositionType().equals("functionalizing entity")) {
 				DetachedCriteria subCrit = getFunctionalizingEntitySubquery(
-						query, "funcEntity.", projectionProperty);
+						query, "funcEntity.", "id");
 				crit.add(Subqueries.exists(subCrit));
 			}
 		}
 	}
 
 	private void setFunctionAndCriteria(AdvancedSampleSearchBean searchBean,
-			DetachedCriteria crit, String projectionProperty) throws Exception {
+										DetachedCriteria crit) throws Exception {
 		for (CompositionQueryBean query : searchBean.getCompositionQueries()) {
 			if (query.getCompositionType().equals("function")) {
 				DetachedCriteria subCrit = getFunctionSubquery(query,
-						"inherentFunction.", "function.", projectionProperty);
+						"inherentFunction.", "function.", "id");
 				crit.add(Subqueries.exists(subCrit));
 			}
 		}
 	}
 
 	private void setNanomaterialEntityAndCriteria(
-			AdvancedSampleSearchBean searchBean, DetachedCriteria crit,
-			String projectionProperty) throws Exception {
+			AdvancedSampleSearchBean searchBean, DetachedCriteria crit) throws Exception {
 		for (CompositionQueryBean query : searchBean.getCompositionQueries()) {
 			if (query.getCompositionType().equals("nanomaterial entity")) {
 				DetachedCriteria subCrit = getNanomaterialEntitySubquery(query,
-						"nanoEntity.", projectionProperty);
+						"nanoEntity.", "id");
 				crit.add(Subqueries.exists(subCrit));
 			}
 		}
@@ -1704,7 +1702,7 @@ public class AdvancedSampleServiceHelper
 	}
 
 	private DetachedCriteria getPointOfContactSubquery(SampleQueryBean query,
-			String pocAlias1, String pocAlias2, String projectionProperty) {
+													   String pocAlias1, String pocAlias2) {
 		DetachedCriteria subCrit = DetachedCriteria.forClass(
 				PointOfContact.class, "subCrit");
 		subCrit.createAlias("subCrit.organization", "organization",
@@ -1715,11 +1713,11 @@ public class AdvancedSampleServiceHelper
 		subCrit.add(pocDisjunction);
 		if (pocAlias1.equals(pocAlias2)) {
 			subCrit.add(Restrictions.eqProperty(
-					"subCrit." + projectionProperty, pocAlias1 + "id"));
+					"subCrit." + "id", pocAlias1 + "id"));
 		} else {
 			subCrit.add(Restrictions.or(Restrictions.eqProperty("subCrit."
-					+ projectionProperty, pocAlias1 + "id"), Restrictions
-					.eqProperty("subCrit." + projectionProperty, pocAlias2
+					+ "id", pocAlias1 + "id"), Restrictions
+					.eqProperty("subCrit." + "id", pocAlias2
 							+ "id")));
 		}
 		return subCrit;
@@ -1756,7 +1754,7 @@ public class AdvancedSampleServiceHelper
 			for (SampleQueryBean query : searchBean.getSampleQueries()) {
 				if (query.getNameType().equals("point of contact name")) {
 					DetachedCriteria subCrit = getPointOfContactSubquery(query,
-							"poc.", "otherPOC.", "id");
+							"poc.", "otherPOC.");
 					crit.add(Subqueries.exists(subCrit));
 				}
 			}

@@ -68,9 +68,8 @@ public class Dendrimer extends NanomaterialEntity implements Serializable
 	{
 		if(obj instanceof Dendrimer) 
 		{
-			Dendrimer c =(Dendrimer)obj; 			 
-			if(getId() != null && getId().equals(c.getId()))
-				return true;
+			Dendrimer c =(Dendrimer)obj;
+            return getId() != null && getId().equals(c.getId());
 		}
 		return false;
 	}

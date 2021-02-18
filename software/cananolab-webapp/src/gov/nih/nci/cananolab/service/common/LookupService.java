@@ -1,6 +1,6 @@
 /*L
- *  Copyright SAIC
- *  Copyright SAIC-Frederick
+ *  Copyright Leidos
+ *  Copyright Leidos Biomedical
  *
  *  Distributed under the OSI-approved BSD 3-Clause License.
  *  See http://ncip.github.com/cananolab/LICENSE.txt for details.
@@ -18,21 +18,16 @@ import gov.nih.nci.cananolab.domain.nanomaterial.OtherNanomaterialEntity;
 import gov.nih.nci.cananolab.exception.BaseException;
 import gov.nih.nci.cananolab.exception.CompositionException;
 import gov.nih.nci.cananolab.system.applicationservice.CaNanoLabApplicationService;
-import gov.nih.nci.system.client.ApplicationServiceProvider;
-
-import java.util.Collection;
+import gov.nih.nci.cananolab.system.applicationservice.client.ApplicationServiceProvider;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.SortedSet;
 import java.util.TreeSet;
-import java.util.Iterator;
-
 import org.apache.log4j.Logger;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Property;
-import org.springframework.stereotype.Component;
 
 
 /**
@@ -174,8 +169,6 @@ public class LookupService {
 			for (int i = 0; i < results.size(); i++) {
 				if (results.get(i) instanceof OtherFunction) {
 					types.add(((OtherFunction) results.get(i)).getType());
-				} else if (results.get(i) instanceof OtherNanomaterialEntity) {
-					types.add(((OtherNanomaterialEntity) results.get(i)).getType());
 				} else if (results.get(i) instanceof OtherNanomaterialEntity) {
 					types.add(((OtherNanomaterialEntity) results.get(i)).getType());
 				} else if (results.get(i) instanceof OtherFunctionalizingEntity) {

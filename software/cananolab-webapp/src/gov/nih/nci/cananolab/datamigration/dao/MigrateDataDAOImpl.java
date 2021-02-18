@@ -127,15 +127,13 @@ public class MigrateDataDAOImpl extends JdbcDaoSupport implements MigrateDataDAO
 	@Override
 	public List<CananoUserDetails> getUsersFromCSM()
 	{
-		List<CananoUserDetails> userList = getJdbcTemplate().query(GET_CSM_USERS_SQL, new CsmUserMapper());
-		return userList;
+        return getJdbcTemplate().query(GET_CSM_USERS_SQL, new CsmUserMapper());
 	}
 
 	@Override
 	public List<String> getCuratorUsersFromCSM()
 	{
-		List<String> userList = getJdbcTemplate().queryForList(GET_CSM_CURATORS_SQL, String.class);
-		return userList;
+        return getJdbcTemplate().queryForList(GET_CSM_CURATORS_SQL, String.class);
 	}
 	
 	@Override
@@ -148,10 +146,8 @@ public class MigrateDataDAOImpl extends JdbcDaoSupport implements MigrateDataDAO
 			sql = PROTOCOL_COUNT_SQL;
 		else if (dataType == SecureClassesEnum.PUBLICATION)
 			sql = PUBLICATION_COUNT_SQL;
-		
-		Long count = getJdbcTemplate().queryForObject(sql, Long.class);
 
-		return count;
+        return getJdbcTemplate().queryForObject(sql, Long.class);
 	}
 
 	@Override
@@ -164,10 +160,8 @@ public class MigrateDataDAOImpl extends JdbcDaoSupport implements MigrateDataDAO
 			sql = PUBLIC_PROTOCOL_COUNT_SQL;
 		else if (dataType == SecureClassesEnum.PUBLICATION)
 			sql = PUBLIC_PUBLICATION_COUNT_SQL;
-		
-		Long count = getJdbcTemplate().queryForObject(sql, Long.class);
 
-		return count;
+        return getJdbcTemplate().queryForObject(sql, Long.class);
 	}
 
 	@Override
@@ -183,10 +177,8 @@ public class MigrateDataDAOImpl extends JdbcDaoSupport implements MigrateDataDAO
 			sql = PUBLIC_PUBLICATION_SQL;
 		
 		Object[] params = new Object[] {Long.valueOf(rowMin), Long.valueOf(rowMax)};
-		
-		List<AbstractMap.SimpleEntry<Long, String>> dataPage= getJdbcTemplate().query(sql, params, new CSMDataMapper());
 
-		return dataPage;
+        return getJdbcTemplate().query(sql, params, new CSMDataMapper());
 	}
 	
 	@Override
@@ -202,10 +194,8 @@ public class MigrateDataDAOImpl extends JdbcDaoSupport implements MigrateDataDAO
 			sql = PUBLICATION_SQL;
 		
 		Object[] params = new Object[] {Long.valueOf(rowMin), Long.valueOf(rowMax)};
-		
-		List<AbstractMap.SimpleEntry<Long, String>> dataPage= getJdbcTemplate().query(sql, params, new CSMDataMapper());
 
-		return dataPage;
+        return getJdbcTemplate().query(sql, params, new CSMDataMapper());
 	}
 	
 	@Override
@@ -221,10 +211,8 @@ public class MigrateDataDAOImpl extends JdbcDaoSupport implements MigrateDataDAO
 			sql = FETCH_ACCESS_FOR_PUBLICATION_SQL;
 		
 		Object[] params = new Object[] {Integer.valueOf(5)};
-		
-		List<AbstractMap.SimpleEntry<Long, String>> dataAccessForUsers= getJdbcTemplate().query(sql, params, new CSMDataMapper());
 
-		return dataAccessForUsers;
+        return getJdbcTemplate().query(sql, params, new CSMDataMapper());
 	}
 	
 	@Override
@@ -240,10 +228,8 @@ public class MigrateDataDAOImpl extends JdbcDaoSupport implements MigrateDataDAO
 			sql = FETCH_ACCESS_FOR_PUBLICATION_SQL;
 		
 		Object[] params = new Object[] {Integer.valueOf(1)};
-		
-		List<AbstractMap.SimpleEntry<Long, String>> dataAccessForUsers= getJdbcTemplate().query(sql, params, new CSMDataMapper());
 
-		return dataAccessForUsers;
+        return getJdbcTemplate().query(sql, params, new CSMDataMapper());
 	}
 	
 	private static final class CSMDataMapper implements RowMapper
@@ -252,9 +238,8 @@ public class MigrateDataDAOImpl extends JdbcDaoSupport implements MigrateDataDAO
 		{
 			Long id = rs.getLong("ID");
 			String createdBy = rs.getString("USERNAME");
-			AbstractMap.SimpleEntry<Long, String> entry = new AbstractMap.SimpleEntry<Long, String>(id, createdBy);
-			
-			return entry;
+
+            return new SimpleEntry<Long, String>(id, createdBy);
 		}
 	}
 	
@@ -264,9 +249,8 @@ public class MigrateDataDAOImpl extends JdbcDaoSupport implements MigrateDataDAO
 		{
 			Long id = rs.getLong("UNQ_ID");
 			Long sampleId = rs.getLong("PARENT_ID");
-			AbstractMap.SimpleEntry<Long, Long> entry = new AbstractMap.SimpleEntry<Long, Long>(id, sampleId);
-			
-			return entry;
+
+            return new SimpleEntry<Long, Long>(id, sampleId);
 		}
 	}
 	
@@ -276,9 +260,8 @@ public class MigrateDataDAOImpl extends JdbcDaoSupport implements MigrateDataDAO
 		{
 			String key = rs.getString("KEYCOL");
 			String value = rs.getString("VALCOL");
-			AbstractMap.SimpleEntry<String, String> entry = new AbstractMap.SimpleEntry<String, String>(key, value);
-			
-			return entry;
+
+            return new SimpleEntry<String, String>(key, value);
 		}
 	}
 	
@@ -305,43 +288,37 @@ public class MigrateDataDAOImpl extends JdbcDaoSupport implements MigrateDataDAO
 	@Override
 	public Long getCharDataSize()
 	{
-		Long count = getJdbcTemplate().queryForObject(FETCH_CHARACTERIZATIONS_COUNT_SQL, Long.class);
 
-		return count;
+        return getJdbcTemplate().queryForObject(FETCH_CHARACTERIZATIONS_COUNT_SQL, Long.class);
 	}
 
 	@Override
 	public List<SimpleEntry<Long, Long>> getAllCharacterizations(long rowMin, long rowMax) 
 	{
 		Object[] params = new Object[] {Long.valueOf(rowMin), Long.valueOf(rowMax)};
-		
-		List<AbstractMap.SimpleEntry<Long, Long>> dataPage= getJdbcTemplate().query(FETCH_CHARACTERIZATIONS_PAGE_SQL, params, new ForeignKeyDataMapper());
 
-		return dataPage;
+        return getJdbcTemplate().query(FETCH_CHARACTERIZATIONS_PAGE_SQL, params, new ForeignKeyDataMapper());
 	}
 
 	@Override
 	public List<Long> getAllOrganizations()
 	{
-		List<Long> orgPkId= getJdbcTemplate().queryForList(FETCH_ALL_ORGANIZATIONS_SQL, Long.class);
 
-		return orgPkId;
+        return getJdbcTemplate().queryForList(FETCH_ALL_ORGANIZATIONS_SQL, Long.class);
 	}
 
 	@Override
 	public List<SimpleEntry<Long, Long>> getPOCsForOrgs()
 	{
-		List<AbstractMap.SimpleEntry<Long, Long>> dataPage= getJdbcTemplate().query(FETCH_ALL_POCS_FOR_ORGS_SQL, new ForeignKeyDataMapper());
 
-		return dataPage;
+        return getJdbcTemplate().query(FETCH_ALL_POCS_FOR_ORGS_SQL, new ForeignKeyDataMapper());
 	}
 	
 	@Override
 	public List<AbstractMap.SimpleEntry<String, String>> getUserPasswords()
 	{
-		List<AbstractMap.SimpleEntry<String, String>> userPwdList = getJdbcTemplate().query(FETCH_ALL_USER_PWDS_SQL, new KeyValueMapper());
 
-		return userPwdList;
+        return getJdbcTemplate().query(FETCH_ALL_USER_PWDS_SQL, new KeyValueMapper());
 	}
 	
 	@Override
@@ -350,8 +327,7 @@ public class MigrateDataDAOImpl extends JdbcDaoSupport implements MigrateDataDAO
 		logger.debug("Update password for : " + userName);
 		Object[] params = new Object[] {password, userName};
 
-		int status = getJdbcTemplate().update(UPDATE_PWD_SQL, params);
-		return status;
+        return getJdbcTemplate().update(UPDATE_PWD_SQL, params);
 	}
 
 }

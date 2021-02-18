@@ -23,9 +23,8 @@ public class Relaxivity extends PhysicoChemicalCharacterization implements Seria
 	{
 		if(obj instanceof Relaxivity) 
 		{
-			Relaxivity c =(Relaxivity)obj; 			 
-			if(getId() != null && getId().equals(c.getId()))
-				return true;
+			Relaxivity c =(Relaxivity)obj;
+            return getId() != null && getId().equals(c.getId());
 		}
 		return false;
 	}

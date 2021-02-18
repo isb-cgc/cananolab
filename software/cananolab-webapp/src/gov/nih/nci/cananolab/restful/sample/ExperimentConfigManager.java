@@ -1,6 +1,6 @@
 /*L
- *  Copyright SAIC
- *  Copyright SAIC-Frederick
+ *  Copyright Leidos
+ *  Copyright Leidos Biomedical
  *
  *  Distributed under the OSI-approved BSD 3-Clause License.
  *  See http://ncip.github.com/cananolab/LICENSE.txt for details.
@@ -8,6 +8,10 @@
 
 package gov.nih.nci.cananolab.restful.sample;
 
+import gov.nih.nci.cananolab.system.applicationservice.CaNanoLabApplicationService;
+import gov.nih.nci.cananolab.system.applicationservice.client.ApplicationServiceProvider;
+import gov.nih.nci.cananolab.system.query.hibernate.HQLCriteria;
+import gov.nih.nci.cananolab.util.ClassUtils;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.SortedSet;
@@ -38,7 +42,30 @@ import gov.nih.nci.cananolab.util.StringUtils;
 public class ExperimentConfigManager
 {
 
-	public ExperimentConfigBean resetTheExperimentConfig() {
+
+
+	public List<Instrument> getInstrumentsByType(HttpServletRequest httpRequest,String type) throws Exception {
+		List<Instrument> instruments = new ArrayList<Instrument>();
+		String fullClassName = null;
+		if (ClassUtils.getFullClass("Instrument") != null){
+			fullClassName = ClassUtils.getFullClass("Instrument").getName();
+		} else {
+			return null;
+		}
+		CaNanoLabApplicationService appService = (CaNanoLabApplicationService) ApplicationServiceProvider.getApplicationService();
+		String hql = "select distinct manufacturer, model_name from " + fullClassName + " anEntity where anEntity.type = " + type;
+
+		HQLCriteria crit = new HQLCriteria(hql);
+		List results = appService.query(crit);
+		for (int i = 0; i < results.size(); i++) {
+			Instrument instrument = (Instrument) results.get(i);
+			instruments.add(instrument);
+
+		}
+		return instruments;
+	}
+
+    public ExperimentConfigBean resetTheExperimentConfig() {
 //		DynaValidatorForm charForm = (DynaValidatorForm) (WebContextFactory
 //				.get().getSession().getAttribute("characterizationForm"));
 //		if (charForm == null) {
@@ -50,6 +77,26 @@ public class ExperimentConfigManager
 //		charBean.setTheExperimentConfig(newExperimentConfigBean);
 //		return newExperimentConfigBean;
 		return null;
+	}
+
+	public List<Instrument> getAllInstruments() throws Exception{
+		List<Instrument> instruments = new ArrayList<Instrument>();
+		String fullClassName = null;
+		if (ClassUtils.getFullClass("Instrument") != null){
+			fullClassName = ClassUtils.getFullClass("Instrument").getName();
+		} else {
+			return null;
+		}
+		CaNanoLabApplicationService appService = (CaNanoLabApplicationService) ApplicationServiceProvider.getApplicationService();
+		String hql = "select distinct type, manufacturer, model_name from " + fullClassName + " anEntity";
+		HQLCriteria crit = new HQLCriteria(hql);
+		List results = appService.query(crit);
+		for (int i = 0; i < results.size(); i++) {
+			Instrument instrument = (Instrument) results.get(i);
+			instruments.add(instrument);
+
+		}
+		return instruments;
 	}
 
 	public ExperimentConfigBean getExperimentConfigById(String id)

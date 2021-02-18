@@ -1,7 +1,5 @@
 package gov.nih.nci.cananolab.restful.view.edit;
 
-import gov.nih.nci.cananolab.restful.view.SimpleSampleBean;
-
 import java.util.Collection;
 
 public class SimpleSampleComposition {
@@ -9,8 +7,6 @@ public class SimpleSampleComposition {
 		Long id;
 		
 		Collection<SimpleNanomaterialEntityBean> nanomaterialEntityCollection;
-		
-		//SimpleSampleBean sample;
 		
 		Collection<SimpleChemicalAssociationBean> chemicalAssociationCollection;
 		

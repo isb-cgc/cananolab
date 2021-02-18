@@ -1,6 +1,6 @@
 /*L
- *  Copyright SAIC
- *  Copyright SAIC-Frederick
+ *  Copyright Leidos
+ *  Copyright Leidos Biomedical
  *
  *  Distributed under the OSI-approved BSD 3-Clause License.
  *  See http://ncip.github.com/cananolab/LICENSE.txt for details.
@@ -60,7 +60,7 @@ public class NanomaterialEntityBean extends BaseCompositionEntityBean {
 
 	private boolean withProperties = false;
 
-	private ComposingElementBean theComposingElement = new ComposingElementBean();
+
 
 	private String isPolymerized;
 
@@ -121,6 +121,15 @@ public class NanomaterialEntityBean extends BaseCompositionEntityBean {
 			Collections.sort(files, new Comparators.FileBeanDateComparator());
 		}
 		updateType();
+	}
+
+	public ComposingElementBean getComposingElementById(String composingElementId) {
+		for(ComposingElementBean elementBean:composingElements){
+			if (elementBean.getDomainId().equals(composingElementId)){
+				return elementBean;
+			}
+		}
+		return null;
 	}
 
 	public NanomaterialEntity getDomainCopy(String createdBy) {
@@ -341,13 +350,6 @@ public class NanomaterialEntityBean extends BaseCompositionEntityBean {
 		return withProperties;
 	}
 
-	public ComposingElementBean getTheComposingElement() {
-		return theComposingElement;
-	}
-
-	public void setTheComposingElement(ComposingElementBean theComposingElement) {
-		this.theComposingElement = theComposingElement;
-	}
 
 	// used for DWR ajax in bodySubmitChemicalAssociation.jsp
 	public String getDomainId() {
@@ -392,14 +394,14 @@ public class NanomaterialEntityBean extends BaseCompositionEntityBean {
 			if (StringUtils.isEmpty(isPolymerized)) {
 				liposome.setPolymerized(null);
 			} else {
-				liposome.setPolymerized(new Boolean(isPolymerized));
+				liposome.setPolymerized(Boolean.valueOf(isPolymerized));
 			}
 		}
 		if (emulsion != null) {
 			if (StringUtils.isEmpty(isPolymerized)) {
 				emulsion.setPolymerized(null);
 			} else {
-				emulsion.setPolymerized(new Boolean(isPolymerized));
+				emulsion.setPolymerized(Boolean.valueOf(isPolymerized));
 			}
 		}
 		if (dendrimer != null && dendrimer.getGeneration() != null
@@ -434,8 +436,22 @@ public class NanomaterialEntityBean extends BaseCompositionEntityBean {
 			if (StringUtils.isEmpty(isCrossLinked)) {
 				polymer.setCrossLinked(null);
 			} else {
-				polymer.setCrossLinked(new Boolean(isCrossLinked));
+				polymer.setCrossLinked(Boolean.valueOf(isCrossLinked));
 			}
 		}
 	}
+
+
+	//TODO This is evil and should be eliminated
+	private ComposingElementBean theComposingElement = new ComposingElementBean();
+
+
+	public ComposingElementBean getTheComposingElement() {
+		return theComposingElement;
+	}
+
+	public void setTheComposingElement(ComposingElementBean theComposingElement) {
+		this.theComposingElement = theComposingElement;
+	}
+
 }

@@ -4,7 +4,7 @@ import gov.nih.nci.cananolab.domain.particle.NanomaterialEntity;
 
 import java.io.Serializable;
 /**
-	* A suspension of liqid within another liquid or a dispersion consisting of two or more liquid phases.
+	* A suspension of liquid within another liquid or a dispersion consisting of two or more liquid phases.
 	**/
 
 public class Emulsion extends NanomaterialEntity implements Serializable
@@ -68,9 +68,8 @@ public class Emulsion extends NanomaterialEntity implements Serializable
 	{
 		if(obj instanceof Emulsion) 
 		{
-			Emulsion c =(Emulsion)obj; 			 
-			if(getId() != null && getId().equals(c.getId()))
-				return true;
+			Emulsion c =(Emulsion)obj;
+            return getId() != null && getId().equals(c.getId());
 		}
 		return false;
 	}

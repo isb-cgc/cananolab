@@ -1,29 +1,25 @@
 package gov.nih.nci.cananolab.restful;
 
-import static com.jayway.restassured.RestAssured.given;
-import static org.hamcrest.Matchers.hasItems;
-import static org.hamcrest.Matchers.equalToIgnoringCase;
-import static org.junit.Assert.*;
 import gov.nih.nci.cananolab.restful.util.RestTestLoginUtil;
-import gov.nih.nci.cananolab.restful.view.edit.SimpleComposingElementBean;
 import gov.nih.nci.cananolab.restful.view.edit.SimpleFileBean;
 import gov.nih.nci.cananolab.restful.view.edit.SimpleFunctionBean;
 import gov.nih.nci.cananolab.restful.view.edit.SimpleFunctionalizingEntityBean;
-import gov.nih.nci.cananolab.restful.view.edit.SimpleNanomaterialEntityBean;
-
+import io.restassured.response.Response;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.client.Entity;
 import javax.ws.rs.client.WebTarget;
-
 import org.junit.Test;
 
-import com.jayway.restassured.response.Response;
+import static io.restassured.RestAssured.given;
+import static org.hamcrest.Matchers.equalToIgnoringCase;
+import static org.hamcrest.Matchers.hasItems;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 public class FunctionalizingEntityServicesTest {
 
@@ -32,9 +28,9 @@ public class FunctionalizingEntityServicesTest {
 
 		Response res =
 				given().contentType("application/json")
-				.parameter("sampleId", "20917510").expect()
+				.params("sampleId", "20917510").expect()
 				.body("functionalizingEntityTypes", hasItems("Magnetic Particle","Monomer","Polymer","Quantum Dot","antibody","biopolymer","radioisotope","small molecule"))
-						.when().get("http://localhost:8080/caNanoLab/rest/functionalizingEntity/setup");
+						.when().get(RestTestLoginUtil.readTestUrlProperty() +  "caNanoLab/rest/functionalizingEntity/setup");
 
 		System.out.println(res.getBody().asString());
 		
@@ -42,16 +38,16 @@ public class FunctionalizingEntityServicesTest {
 	@Test
 	public void testEdit() {
 		
-		String jsessionId = RestTestLoginUtil.loginTest();
+		String jsessionId = RestTestLoginUtil.testLogin();
 		
 		Map<String, String> parameters = new HashMap<String, String>();
 		parameters.put("sampleId", "20917508");
 		parameters.put("dataId", "22719746");
 		Response res =
 				given().contentType("application/json").cookie("JSESSIONID=" + jsessionId)
-				.parameters(parameters).expect()
+				.params(parameters).expect()
 				.body("type", equalToIgnoringCase("small molecule"))
-						.when().get("http://localhost:8080/caNanoLab/rest/functionalizingEntity/edit");
+						.when().get(RestTestLoginUtil.readTestUrlProperty() +  "caNanoLab/rest/functionalizingEntity/edit");
 
 		System.out.println(res.getBody().asString());
 		RestTestLoginUtil.logoutTest();
@@ -68,13 +64,13 @@ public class FunctionalizingEntityServicesTest {
 		funcBean.setType("endosomolysis");
 		simpleFunc.setSimpleFunctionBean(funcBean);
 		
-		String jsessionId = RestTestLoginUtil.loginTest();
+		String jsessionId = RestTestLoginUtil.testLogin();
 
 		final Client aClient = ClientBuilder.newBuilder()
 		        .register(ObjectMapperProvider.class)
 		        .build();
 		
-		WebTarget webTarget = aClient.target("http://localhost:8080/caNanoLab/rest");
+		WebTarget webTarget = aClient.target(RestTestLoginUtil.readTestUrlProperty() +  "caNanoLab/rest");
 		webTarget.register(FunctionalizingEntityServices.class);
 		
 		WebTarget submitWebTarget = webTarget.path("functionalizingEntity").path("saveFunction");
@@ -104,13 +100,13 @@ public class FunctionalizingEntityServicesTest {
 		funcBean.setType("endosomolysis");
 		simpleFunc.setSimpleFunctionBean(funcBean);
 		
-		String jsessionId = RestTestLoginUtil.loginTest();
+		String jsessionId = RestTestLoginUtil.testLogin();
 
 		final Client aClient = ClientBuilder.newBuilder()
 		        .register(ObjectMapperProvider.class)
 		        .build();
 		
-		WebTarget webTarget = aClient.target("http://localhost:8080/caNanoLab/rest");
+		WebTarget webTarget = aClient.target(RestTestLoginUtil.readTestUrlProperty() +  "caNanoLab/rest");
 		webTarget.register(FunctionalizingEntityServices.class);
 		
 		WebTarget submitWebTarget = webTarget.path("functionalizingEntity").path("removeFunction");
@@ -144,13 +140,13 @@ public class FunctionalizingEntityServicesTest {
 		file.setSampleId("20917510");
 		simpleFunc.setFileBean(file);
 		
-		String jsessionId = RestTestLoginUtil.loginTest();
+		String jsessionId = RestTestLoginUtil.testLogin();
 
 		final Client aClient = ClientBuilder.newBuilder()
 		        .register(ObjectMapperProvider.class)
 		        .build();
 		
-		WebTarget webTarget = aClient.target("http://localhost:8080/caNanoLab/rest");
+		WebTarget webTarget = aClient.target(RestTestLoginUtil.readTestUrlProperty() +  "caNanoLab/rest");
 		webTarget.register(FunctionalizingEntityServices.class);
 		
 		WebTarget submitWebTarget = webTarget.path("functionalizingEntity").path("saveFile");
@@ -187,13 +183,13 @@ public class FunctionalizingEntityServicesTest {
 		simpleFunc.setFileBean(file);
 		simpleFunc.setFileList(fileList);
 		
-		String jsessionId = RestTestLoginUtil.loginTest();
+		String jsessionId = RestTestLoginUtil.testLogin();
 
 		final Client aClient = ClientBuilder.newBuilder()
 		        .register(ObjectMapperProvider.class)
 		        .build();
 		
-		WebTarget webTarget = aClient.target("http://localhost:8080/caNanoLab/rest");
+		WebTarget webTarget = aClient.target(RestTestLoginUtil.readTestUrlProperty() +  "caNanoLab/rest");
 		webTarget.register(FunctionalizingEntityServices.class);
 		
 		WebTarget submitWebTarget = webTarget.path("functionalizingEntity").path("removeFile");
@@ -236,13 +232,13 @@ public class FunctionalizingEntityServicesTest {
 		simpleFunc.setFunctionList(compList);
 		simpleFunc.setFileList(fileList);
 		
-		String jsessionId = RestTestLoginUtil.loginTest();
+		String jsessionId = RestTestLoginUtil.testLogin();
 
 		final Client aClient = ClientBuilder.newBuilder()
 		        .register(ObjectMapperProvider.class)
 		        .build();
 		
-		WebTarget webTarget = aClient.target("http://localhost:8080/caNanoLab/rest");
+		WebTarget webTarget = aClient.target(RestTestLoginUtil.readTestUrlProperty() +  "caNanoLab/rest");
 		webTarget.register(FunctionalizingEntityServices.class);
 		
 		WebTarget submitWebTarget = webTarget.path("functionalizingEntity").path("submit");
@@ -285,13 +281,13 @@ public class FunctionalizingEntityServicesTest {
 		simpleFunc.setFunctionList(compList);
 		simpleFunc.setFileList(fileList);
 				
-		String jsessionId = RestTestLoginUtil.loginTest();
+		String jsessionId = RestTestLoginUtil.testLogin();
 
 		final Client aClient = ClientBuilder.newBuilder()
 		        .register(ObjectMapperProvider.class)
 		        .build();
 		
-		WebTarget webTarget = aClient.target("http://localhost:8080/caNanoLab/rest");
+		WebTarget webTarget = aClient.target(RestTestLoginUtil.readTestUrlProperty() +  "caNanoLab/rest");
 		webTarget.register(FunctionalizingEntityServices.class);
 		
 		WebTarget submitWebTarget = webTarget.path("functionalizingEntity").path("delete");

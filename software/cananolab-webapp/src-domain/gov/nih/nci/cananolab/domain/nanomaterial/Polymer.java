@@ -90,9 +90,8 @@ public class Polymer extends NanomaterialEntity implements Serializable
 	{
 		if(obj instanceof Polymer) 
 		{
-			Polymer c =(Polymer)obj; 			 
-			if(getId() != null && getId().equals(c.getId()))
-				return true;
+			Polymer c =(Polymer)obj;
+            return getId() != null && getId().equals(c.getId());
 		}
 		return false;
 	}

@@ -1,6 +1,6 @@
 /*L
- *  Copyright SAIC
- *  Copyright SAIC-Frederick
+ *  Copyright Leidos
+ *  Copyright Leidos Biomedical
  *
  *  Distributed under the OSI-approved BSD 3-Clause License.
  *  See http://ncip.github.com/cananolab/LICENSE.txt for details.
@@ -32,8 +32,7 @@ public class AdvancedSampleDecorator extends TableDecorator {
 		sb.append(sampleName).append("</a>");
 		String link = sb.toString();
 
-		SortableName sortableLink = new SortableName(sampleName, link);
-		return sortableLink;
+        return new SortableName(sampleName, link);
 	}
 
 	public SortableName getViewSampleURL() {
@@ -46,7 +45,6 @@ public class AdvancedSampleDecorator extends TableDecorator {
 		sb.append(sampleName).append("</a>");
 		String link = sb.toString();
 
-		SortableName sortableLink = new SortableName(sampleName, link);
-		return sortableLink;
+        return new SortableName(sampleName, link);
 	}
 }

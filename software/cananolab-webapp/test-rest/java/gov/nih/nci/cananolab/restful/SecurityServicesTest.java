@@ -1,17 +1,18 @@
 package gov.nih.nci.cananolab.restful;
 
-import static org.junit.Assert.*;
-
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
 
-import org.glassfish.jersey.client.ClientConfig;
+import gov.nih.nci.cananolab.restful.util.RestTestLoginUtil;
 import org.junit.Before;
 import org.junit.Test;
 
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
+
 public class SecurityServicesTest {
 	
-	String urlbase = "http://localhost:8080/caNanoLab/rest/";
+	String urlbase = RestTestLoginUtil.readTestUrlProperty() +  "caNanoLab/rest/";
 	Client client; 
 
 	@Before

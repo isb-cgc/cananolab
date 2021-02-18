@@ -1,6 +1,6 @@
 /*L
- *  Copyright SAIC
- *  Copyright SAIC-Frederick
+ *  Copyright Leidos
+ *  Copyright Leidos Biomedical
  *
  *  Distributed under the OSI-approved BSD 3-Clause License.
  *  See http://ncip.github.com/cananolab/LICENSE.txt for details.
@@ -33,17 +33,13 @@ import gov.nih.nci.cananolab.service.BaseServiceLocalImpl;
 import gov.nih.nci.cananolab.service.sample.CompositionService;
 import gov.nih.nci.cananolab.service.sample.helper.CompositionServiceHelper;
 import gov.nih.nci.cananolab.system.applicationservice.CaNanoLabApplicationService;
-import gov.nih.nci.system.client.ApplicationServiceProvider;
-
+import gov.nih.nci.cananolab.system.applicationservice.client.ApplicationServiceProvider;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
-
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import org.springframework.transaction.annotation.Propagation;
-import org.springframework.transaction.annotation.Transactional;
 
 /**
  * Local implementation of CompositionService.
@@ -468,14 +464,14 @@ public class CompositionServiceLocalImpl extends BaseServiceLocalImpl implements
 		Boolean canDelete = this.checkChemicalAssociationBeforeDelete(entity);
 		if (!canDelete) {
 			throw new ChemicalAssociationViolationException(
-					"The nanomaterial entity is used in a chemical association.  Please delete the chemcial association first before deleting the nanomaterial entity.");
+					"The nanomaterial entity is used in a chemical association.  Please delete the chemical association first before deleting the nanomaterial entity.");
 		}
 		try {
 			CaNanoLabApplicationService appService = (CaNanoLabApplicationService) ApplicationServiceProvider
 					.getApplicationService();
 			appService.delete(entity);
 		} catch (Exception e) {
-			String err = "Error deleting nanomaterial entity " + entity.getId();
+			String err = "Error deleting nanomaterial entity " + entity.getId()+ ". ";
 			logger.error(err, e);
 			throw new CompositionException(err, e);
 		}
@@ -489,14 +485,14 @@ public class CompositionServiceLocalImpl extends BaseServiceLocalImpl implements
 		Boolean canDelete = this.checkChemicalAssociationBeforeDelete(entity.getSampleComposition(), entity);
 		if (!canDelete) {
 			throw new ChemicalAssociationViolationException("The functionalizing entity " + entity.getName()
-					+ " is used in a chemical association.  Please delete the chemcial association first before deleting the functionalizing entity.");
+					+ " is used in a chemical association.  Please delete the chemical association first before deleting the functionalizing entity.");
 		}
 		try {
 			CaNanoLabApplicationService appService = (CaNanoLabApplicationService) ApplicationServiceProvider
 					.getApplicationService();
 			appService.delete(entity);
 		} catch (Exception e) {
-			String err = "Error deleting functionalizing entity " + entity.getId();
+			String err = "Error deleting functionalizing entity " + entity.getId() + ". ";
 			logger.error(err, e);
 			throw new CompositionException(err, e);
 		}
@@ -565,6 +561,9 @@ public class CompositionServiceLocalImpl extends BaseServiceLocalImpl implements
 			for (ChemicalAssociation assoc : assocSet) {
 				if (assocElement.equals(assoc.getAssociatedElementA())
 						|| assocElement.equals(assoc.getAssociatedElementB())) {
+					return false;
+				}
+				if(assocElement.getId().equals(assoc.getAssociatedElementA().getId())|| assocElement.getId().equals(assoc.getAssociatedElementB().getId())){
 					return false;
 				}
 			}
@@ -858,7 +857,7 @@ public class CompositionServiceLocalImpl extends BaseServiceLocalImpl implements
 	 * "Error in assigning chemical association accessibility"; throw new
 	 * CompositionException(error, e); } }
 	 */
-
+//TODO assign and remove don't appear to do anything anymore.  Can be removed?
 	public void assignAccesses(SampleComposition comp, File file) throws CompositionException, NoAccessException {
 		try {
 			if (!springSecurityAclService.isOwnerOfObject(comp.getSample().getId(),

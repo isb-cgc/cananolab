@@ -11,7 +11,7 @@ public enum CaNanoRoleEnum
 	
 	private String roleName;
 	
-	private CaNanoRoleEnum(String roleName) {
+	CaNanoRoleEnum(String roleName) {
 		this.roleName = roleName;
 	}
 	

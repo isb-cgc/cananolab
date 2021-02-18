@@ -1,6 +1,6 @@
 /*L
- *  Copyright SAIC
- *  Copyright SAIC-Frederick
+ *  Copyright Leidos
+ *  Copyright Leidos Biomedical
  *
  *  Distributed under the OSI-approved BSD 3-Clause License.
  *  See http://ncip.github.com/cananolab/LICENSE.txt for details.
@@ -8,7 +8,7 @@
 
 package gov.nih.nci.cananolab.dto.common;
 
-import gov.nih.nci.cananolab.service.security.UserBean;
+import gov.nih.nci.cananolab.security.service.UserBean;
 
 
 public class AccessibilityBean {
@@ -93,9 +93,9 @@ public class AccessibilityBean {
 		if (roleName == null) {
 			return null;
 		} else if (roleName.equals(CSM_CURD_ROLE)) {
-			roleDisplayName = this.CURD_ROLE_DISPLAY_NAME;
+			roleDisplayName = CURD_ROLE_DISPLAY_NAME;
 		} else if (roleName.equals(CSM_READ_ROLE)) {
-			roleDisplayName = this.R_ROLE_DISPLAY_NAME;
+			roleDisplayName = R_ROLE_DISPLAY_NAME;
 		}
 		return roleDisplayName;
 	}
@@ -110,11 +110,9 @@ public class AccessibilityBean {
 					return true;
 				}
 			} else {
-				if (access.getUserBean().getLoginName().equals(
+				return access.getUserBean().getLoginName().equals(
 						getUserBean().getLoginName())
-						&& access.getRoleName().equals(getRoleName())) {
-					return true;
-				}
+						&& access.getRoleName().equals(getRoleName());
 			}
 		}
 		return false;

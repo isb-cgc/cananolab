@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated Apr 3, 2019, 8:32:55 PM by Hibernate Tools 5.4.2.Final -->
+<hibernate-mapping package="gov.nih.nci.cananolab.domain.common">
+
+    <class name="Supplier" table="supplier">
+        <id name="id" column="supplier_pk_id" type="long">
+       <generator class="hilo">
+            <param name="table">hibernate_unique_key</param>
+            <param name="column">next_hi</param>
+        </generator>
+        </id>
+
+        <property name="supplierName" column="supplier_name" type="string"/>
+        <property name="lot" column="lot" type="string"/>
+    </class>
+</hibernate-mapping>

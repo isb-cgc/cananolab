@@ -1,6 +1,6 @@
 /*L
- *  Copyright SAIC
- *  Copyright SAIC-Frederick
+ *  Copyright Leidos
+ *  Copyright Leidos Biomedical
  *
  *  Distributed under the OSI-approved BSD 3-Clause License.
  *  See http://ncip.github.com/cananolab/LICENSE.txt for details.
@@ -9,7 +9,6 @@
 package gov.nih.nci.cananolab.service.publication;
 
 import gov.nih.nci.cananolab.domain.common.Publication;
-import gov.nih.nci.cananolab.dto.common.AccessibilityBean;
 import gov.nih.nci.cananolab.dto.common.PublicationBean;
 import gov.nih.nci.cananolab.exception.NoAccessException;
 import gov.nih.nci.cananolab.exception.PublicationException;
@@ -31,42 +30,37 @@ public interface PublicationService extends BaseService {
 	/**
 	 * Persist a new publication or update an existing publication
 	 *
-	 * @param publication
-	 * @param sampleNames
-	 * @param fileData
-	 * @param authors
-	 *
 	 * @throws Exception
 	 */
-	public void savePublication(PublicationBean publicationBean)
+    void savePublication(PublicationBean publicationBean)
 			throws PublicationException, NoAccessException;
 
-	public PublicationBean findPublicationById(String publicationId,
-			Boolean loadAccessInfo) throws PublicationException,
+	PublicationBean findPublicationById(String publicationId,
+                                        Boolean loadAccessInfo) throws PublicationException,
 			NoAccessException;
 
-	public PublicationBean findPublicationByKey(String keyName,
-			Object keyValue, Boolean loadAccessInfo)
+	PublicationBean findPublicationByKey(String keyName,
+                                         Object keyValue, Boolean loadAccessInfo)
 			throws PublicationException, NoAccessException;
 
-	public List<PublicationBean> findPublicationsBySampleId(String sampleId)
+	List<PublicationBean> findPublicationsBySampleId(String sampleId)
 			throws PublicationException;
 
-	public int getNumberOfPublicPublications() throws PublicationException;
+	int getNumberOfPublicPublications() throws PublicationException;
 	
-	public int getNumberOfPublicPublicationsForJob() throws PublicationException;
+	int getNumberOfPublicPublicationsForJob() throws PublicationException;
 
-	public List<String> findPublicationIdsBy(String title, String category,
-			String sampleName, String[] researchAreas, String[] keywords,
-			String pubMedId, String digitalObjectId, String[] authors,
-			String[] nanomaterialEntityClassNames,
-			String[] otherNanomaterialEntityTypes,
-			String[] functionalizingEntityClassNames,
-			String[] otherFunctionalizingEntityTypes,
-			String[] functionClassNames, String[] otherFunctionTypes)
+	List<String> findPublicationIdsBy(String title, String category,
+                                      String sampleName, String[] researchAreas, String[] keywords,
+                                      String pubMedId, String digitalObjectId, String[] authors,
+                                      String[] nanomaterialEntityClassNames,
+                                      String[] otherNanomaterialEntityTypes,
+                                      String[] functionalizingEntityClassNames,
+                                      String[] otherFunctionalizingEntityTypes,
+                                      String[] functionClassNames, String[] otherFunctionTypes)
 			throws PublicationException;
 
-	public void deletePublication(Publication publication)
+	void deletePublication(Publication publication)
 			throws PublicationException, NoAccessException;
 
 	/**
@@ -76,31 +70,31 @@ public interface PublicationService extends BaseService {
 	 * @return
 	 * @throws PublicationException
 	 */
-	public PublicationBean getPublicationFromPubMedXML(String pubMedId)
+    PublicationBean getPublicationFromPubMedXML(String pubMedId)
 			throws PublicationException;
 
-	public PublicationBean findNonPubMedNonDOIPublication(
-			String publicationType, String title, String firstAuthorLastName,
-			String firstAuthorFirstName) throws PublicationException;
+	PublicationBean findNonPubMedNonDOIPublication(
+            String publicationType, String title, String firstAuthorLastName,
+            String firstAuthorFirstName) throws PublicationException;
 
-	public void removePublicationFromSample(String sampleName,
-			Publication publication) throws PublicationException,
+	void removePublicationFromSample(String sampleName,
+                                     Publication publication) throws PublicationException,
 			NoAccessException;
 
-	public void assignAccessibility(AccessControlInfo access,
-			Publication publication) throws PublicationException,
+	void assignAccessibility(AccessControlInfo access,
+                             Publication publication) throws PublicationException,
 			NoAccessException;
 
-	public void removeAccessibility(AccessControlInfo access,
-			Publication publication) throws PublicationException,
+	void removeAccessibility(AccessControlInfo access,
+                             Publication publication) throws PublicationException,
 			NoAccessException;
 
-	public List<String> findPublicationIdsByOwner(String currentOwner) throws PublicationException;
+	List<String> findPublicationIdsByOwner(String currentOwner) throws PublicationException;
 	
-	public List<String> findPublicationIdsSharedWithUser(CananoUserDetails userDetails) throws PublicationException;
+	List<String> findPublicationIdsSharedWithUser(CananoUserDetails userDetails) throws PublicationException;
 
-	public PublicationBean findPublicationByIdWorkspace(String id, boolean b)
+	PublicationBean findPublicationByIdWorkspace(String id, boolean b)
 			throws PublicationException;
 	
-	public PublicationServiceHelper getPublicationServiceHelper();
+	PublicationServiceHelper getPublicationServiceHelper();
 }

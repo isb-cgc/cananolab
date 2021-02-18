@@ -23,9 +23,8 @@ public class OxidativeStress extends InvitroCharacterization implements Serializ
 	{
 		if(obj instanceof OxidativeStress) 
 		{
-			OxidativeStress c =(OxidativeStress)obj; 			 
-			if(getId() != null && getId().equals(c.getId()))
-				return true;
+			OxidativeStress c =(OxidativeStress)obj;
+            return getId() != null && getId().equals(c.getId());
 		}
 		return false;
 	}

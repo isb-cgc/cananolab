@@ -1,29 +1,25 @@
 package gov.nih.nci.cananolab.restful;
 
-import static com.jayway.restassured.RestAssured.given;
-import static com.jayway.restassured.RestAssured.with;
-import static org.hamcrest.Matchers.equalTo;
-import static org.hamcrest.Matchers.arrayContaining;
-import static org.hamcrest.Matchers.hasItems;
 import gov.nih.nci.cananolab.restful.util.RestTestLoginUtil;
 import gov.nih.nci.cananolab.restful.view.edit.SimpleCharacterizationEditBean;
 import gov.nih.nci.cananolab.restful.view.edit.SimpleExperimentBean;
 import gov.nih.nci.cananolab.restful.view.edit.SimpleFindingBean;
 import gov.nih.nci.cananolab.restful.view.edit.SimpleInstrumentBean;
-
+import io.restassured.response.Response;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import javax.ws.rs.DefaultValue;
-import javax.ws.rs.QueryParam;
-
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.jayway.restassured.response.Response;
+
+import static io.restassured.RestAssured.given;
+import static io.restassured.RestAssured.with;
+import static org.hamcrest.Matchers.arrayContaining;
+import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.Matchers.hasItems;
 
 public class CharacterizationServicesTest {
 
@@ -37,15 +33,15 @@ public class CharacterizationServicesTest {
 
 	//@Test
 	public void testSetupEdit() {
-		String jsessionId = RestTestLoginUtil.loginTest();
+		String jsessionId = RestTestLoginUtil.testLogin();
 
 		Response res =
 				given().contentType("application/json").cookie("JSESSIONID=" + jsessionId)
-				.parameter("sampleId", "57442308").expect()
+				.params("sampleId", "57442308").expect()
 				.body("type", hasItems("physico-chemical characterization",
 						"in vitro characterization",
 						"ex vivo"))
-						.when().get("http://localhost:8080/caNanoLab/rest/characterization/setupEdit");
+						.when().get(RestTestLoginUtil.readTestUrlProperty() + "caNanoLab/rest/characterization/setupEdit");
 
 		System.out.println(res.getBody().asString());
 		
@@ -54,7 +50,7 @@ public class CharacterizationServicesTest {
 
 	@Test
 	public void testSetupAdd() {
-		String jsessionId = RestTestLoginUtil.loginTest();
+		String jsessionId = RestTestLoginUtil.testLogin();
 		
 		Map<String, String> params = new HashMap<String, String>();
 		params.put("sampleId", "69500928");
@@ -62,12 +58,12 @@ public class CharacterizationServicesTest {
 		
 		Response res =
 				given().contentType("application/json").cookie("JSESSIONID=" + jsessionId)
-				.parameters(params)
+				.params(params)
 				.expect()
 				.body("charTypesLookup", hasItems("physico-chemical characterization",
 						"in vitro characterization",
 						"ex vivo"))
-						.when().get("http://localhost:8080/caNanoLab/rest/characterization/setupAdd");
+						.when().get(RestTestLoginUtil.readTestUrlProperty() +  "caNanoLab/rest/characterization/setupAdd");
 
 		System.out.println(res.getBody().asString());
 		
@@ -76,9 +72,9 @@ public class CharacterizationServicesTest {
 
 	@Test
 	public void testSetupUpdate() {
-String jsessionId = RestTestLoginUtil.loginTest();
+String jsessionId = RestTestLoginUtil.testLogin();
 		
-// http://localhost:8080/caNanoLab/characterization.do?dispatch=setupUpdate&sampleId=69500928&charId=69599238&charClassName=MolecularWeight&charType=physico-chemical%20characterization
+// RestTestLoginUtil.readTestUrlProperty() +  "characterization.do?dispatch=setupUpdate&sampleId=69500928&charId=69599238&charClassName=MolecularWeight&charType=physico-chemical%20characterization
 		Map<String, String> params = new HashMap<String, String>();
 		params.put("sampleId", "69500928");
 		params.put("charId", "69599238");
@@ -87,10 +83,10 @@ String jsessionId = RestTestLoginUtil.loginTest();
 		
 		Response res =
 				given().contentType("application/json").cookie("JSESSIONID=" + jsessionId)
-				.parameters(params)
+				.params(params)
 				.expect()
 				.body("assayType", equalTo("molecular weight"))
-						.when().get("http://localhost:8080/caNanoLab/rest/characterization/setupUpdate");
+						.when().get(RestTestLoginUtil.readTestUrlProperty() +  "caNanoLab/rest/characterization/setupUpdate");
 
 		System.out.println(res.getBody().asString());
 		
@@ -101,15 +97,15 @@ String jsessionId = RestTestLoginUtil.loginTest();
 	
 	@Test
 	public void testGetCharNamesByCharType() {
-		String jsessionId = RestTestLoginUtil.loginTest();
+		String jsessionId = RestTestLoginUtil.testLogin();
 
 
 		Response res =
 				given().contentType("application/json").cookie("JSESSIONID=" + jsessionId)
-				.parameter("charType", "physico-chemical characterization")
+				.param("charType", "physico-chemical characterization")
 				.expect()
 				.body("", hasItems("molecular weight"))
-				.when().get("http://localhost:8080/caNanoLab/rest/characterization/getCharNamesByCharType");
+				.when().get(RestTestLoginUtil.readTestUrlProperty() +  "caNanoLab/rest/characterization/getCharNamesByCharType");
 
 		System.out.println(res.getBody().asString());
 
@@ -119,15 +115,15 @@ String jsessionId = RestTestLoginUtil.loginTest();
 	
 	@Test
 	public void testGetAssayTypesByCharName() {
-		String jsessionId = RestTestLoginUtil.loginTest();
+		String jsessionId = RestTestLoginUtil.testLogin();
 
 
 		Response res =
 				given().contentType("application/json").cookie("JSESSIONID=" + jsessionId)
-				.parameter("charName", "other_pc")
+				.param("charName", "other_pc")
 				.expect()
 				.body("", hasItems("chelation stability"))
-				.when().get("http://localhost:8080/caNanoLab/rest/characterization/getAssayTypesByCharName");
+				.when().get(RestTestLoginUtil.readTestUrlProperty() +  "caNanoLab/rest/characterization/getAssayTypesByCharName");
 
 		System.out.println(res.getBody().asString());
 
@@ -137,7 +133,7 @@ String jsessionId = RestTestLoginUtil.loginTest();
 	//@Test
 	public void testSaveExperimentConfigAdd() {
 		
-		String jsessionId = RestTestLoginUtil.loginTest();
+		String jsessionId = RestTestLoginUtil.testLogin();
 		Map<String, String> params = new HashMap<String, String>();
 		params.put("sampleId", "69500928");
 		params.put("charId", "69599238");
@@ -146,10 +142,10 @@ String jsessionId = RestTestLoginUtil.loginTest();
 		
 		Response res =
 				given().contentType("application/json").cookie("JSESSIONID=" + jsessionId)
-				.parameters(params)
+				.params(params)
 				.expect()
 				.body("assayType", equalTo("molecular weight"))
-						.when().get("http://localhost:8080/caNanoLab/rest/characterization/setupUpdate");
+						.when().get(RestTestLoginUtil.readTestUrlProperty() +  "caNanoLab/rest/characterization/setupUpdate");
 		
 		SimpleExperimentBean form = new SimpleExperimentBean();
 		form.setDisplayName("electron microprobe analysis(EMPA)");
@@ -167,12 +163,12 @@ String jsessionId = RestTestLoginUtil.loginTest();
 		
 		
 		
-		res = //with().parameters("sampleName", "SY-NCL-23-1")
+		res = //with().params("sampleName", "SY-NCL-23-1")
 		given() .contentType("application/json").cookie("JSESSIONID=" + jsessionId).body(form)
 		.expect().body("charTypesLookup", hasItems("physico-chemical characterization",
 				"in vitro characterization",
 				"ex vivo"))
-		.when().post("http://localhost:8080/caNanoLab/rest/characterization/saveExperimentConfig");
+		.when().post(RestTestLoginUtil.readTestUrlProperty() +  "caNanoLab/rest/characterization/saveExperimentConfig");
 		
 		System.out.println(res.getBody().asString());
 	}
@@ -180,7 +176,7 @@ String jsessionId = RestTestLoginUtil.loginTest();
 	//@Test
 	public void testRemoveExperimentConfig() {
 		
-		String jsessionId = RestTestLoginUtil.loginTest();
+		String jsessionId = RestTestLoginUtil.testLogin();
 		Map<String, String> params = new HashMap<String, String>();
 		params.put("sampleId", "69500928");
 		params.put("charId", "69599238");
@@ -189,10 +185,10 @@ String jsessionId = RestTestLoginUtil.loginTest();
 		
 		Response res =
 				given().contentType("application/json").cookie("JSESSIONID=" + jsessionId)
-				.parameters(params)
+				.params(params)
 				.expect()
 				.body("assayType", equalTo("molecular weight"))
-						.when().get("http://localhost:8080/caNanoLab/rest/characterization/setupUpdate");
+						.when().get(RestTestLoginUtil.readTestUrlProperty() +  "caNanoLab/rest/characterization/setupUpdate");
 		
 		
 //		"id":69632002,
@@ -235,12 +231,12 @@ String jsessionId = RestTestLoginUtil.loginTest();
 		
 		
 		
-		res = //with().parameters("sampleName", "SY-NCL-23-1")
+		res = //with().params("sampleName", "SY-NCL-23-1")
 		given() .contentType("application/json").cookie("JSESSIONID=" + jsessionId).body(form)
 		.expect().body("charTypesLookup", hasItems("physico-chemical characterization",
 				"in vitro characterization",
 				"ex vivo"))
-		.when().post("http://localhost:8080/caNanoLab/rest/characterization/removeExperimentConfig");
+		.when().post(RestTestLoginUtil.readTestUrlProperty() +  "caNanoLab/rest/characterization/removeExperimentConfig");
 		
 		
 		
@@ -251,10 +247,10 @@ String jsessionId = RestTestLoginUtil.loginTest();
 	public void testGetInstrumentTypesByTechniqueType() {
 		Response res =
 				with() //.contentType("application/json").cookie("JSESSIONID=" + jsessionId)
-				.parameters("techniqueType", "differential centrifugal sedimentation")
+				.params("techniqueType", "differential centrifugal sedimentation")
 				.expect()
 				.body("", hasItems("differential centrifugal sedimentation instrument"))
-				.when().get("http://localhost:8080/caNanoLab/rest/characterization/getInstrumentTypesByTechniqueType");
+				.when().get(RestTestLoginUtil.readTestUrlProperty() +  "caNanoLab/rest/characterization/getInstrumentTypesByTechniqueType");
 
 		System.out.println(res.getBody().asString());
 	}
@@ -262,7 +258,7 @@ String jsessionId = RestTestLoginUtil.loginTest();
 	@Test
 	public void testGetColumnNameOptionsDatum() {
 		
-		//String jsessionId = RestTestLoginUtil.loginTest();
+		//String jsessionId = RestTestLoginUtil.testLogin();
 		Map<String, String> params = new HashMap<String, String>();
 		params.put("columnType", "datum");
 		params.put("charType", "physico-chemical characterization");
@@ -272,10 +268,10 @@ String jsessionId = RestTestLoginUtil.loginTest();
 		//doesn't work for now
 		Response res =
 				given()//.contentType("application/json").cookie("JSESSIONID=" + jsessionId)
-				.parameters(params)
+				.params(params)
 				.expect()
 				.body("", hasItems("PDI", "other"))
-						.when().get("http://localhost:8080/caNanoLab/rest/characterization/getColumnNameOptionsByType");	
+						.when().get(RestTestLoginUtil.readTestUrlProperty() +  "caNanoLab/rest/characterization/getColumnNameOptionsByType");
 		
 		System.out.println(res.getBody().asString());
 	}
@@ -283,7 +279,7 @@ String jsessionId = RestTestLoginUtil.loginTest();
 	@Test
 	public void testGetColumnNameOptionsCondition() {
 		
-		//String jsessionId = RestTestLoginUtil.loginTest();
+		//String jsessionId = RestTestLoginUtil.testLogin();
 		Map<String, String> params = new HashMap<String, String>();
 		params.put("columnType", "condition");
 		params.put("charType", "physico-chemical characterization");
@@ -293,10 +289,10 @@ String jsessionId = RestTestLoginUtil.loginTest();
 		//doesn't work for now
 		Response res =
 				given()//.contentType("application/json").cookie("JSESSIONID=" + jsessionId)
-				.parameters(params)
+				.params(params)
 				.expect()
 				.body("", hasItems("photoacoustic excitation intensity", "other"))
-						.when().get("http://localhost:8080/caNanoLab/rest/characterization/getColumnNameOptionsByType");	
+						.when().get(RestTestLoginUtil.readTestUrlProperty() +  "caNanoLab/rest/characterization/getColumnNameOptionsByType");
 		
 		System.out.println(res.getBody().asString());
 
@@ -314,10 +310,10 @@ String jsessionId = RestTestLoginUtil.loginTest();
 		
 		Response res =
 				given()//.contentType("application/json").cookie("JSESSIONID=" + jsessionId)
-				.parameters(params)
+				.params(params)
 				.expect()
 				.body("", hasItems("day"))
-						.when().get("http://localhost:8080/caNanoLab/rest/characterization/getColumnValueUnitOptions");	
+						.when().get(RestTestLoginUtil.readTestUrlProperty() +  "caNanoLab/rest/characterization/getColumnValueUnitOptions");
 		
 		System.out.println(res.getBody().asString());
 	}
@@ -333,10 +329,10 @@ String jsessionId = RestTestLoginUtil.loginTest();
 		
 		Response res =
 				given()//.contentType("application/json").cookie("JSESSIONID=" + jsessionId)
-				.parameters(params)
+				.params(params)
 				.expect()
 				.body("", hasItems("time"))
-						.when().get("http://localhost:8080/caNanoLab/rest/characterization/getConditionPropertyOptions");	
+						.when().get(RestTestLoginUtil.readTestUrlProperty() +  "caNanoLab/rest/characterization/getConditionPropertyOptions");
 		
 		System.out.println(res.getBody().asString());
 	}
@@ -344,7 +340,7 @@ String jsessionId = RestTestLoginUtil.loginTest();
 	//@Test
 	public void testRemoveFinding() {
 		
-		String jsessionId = RestTestLoginUtil.loginTest();
+		String jsessionId = RestTestLoginUtil.testLogin();
 		Map<String, String> params = new HashMap<String, String>();
 		params.put("sampleId", "69500928");
 		params.put("charId", "69599238");
@@ -353,10 +349,10 @@ String jsessionId = RestTestLoginUtil.loginTest();
 		
 		Response res =
 				given().contentType("application/json").cookie("JSESSIONID=" + jsessionId)
-				.parameters(params)
+				.params(params)
 				.expect()
 				.body("assayType", equalTo("molecular weight"))
-						.when().get("http://localhost:8080/caNanoLab/rest/characterization/setupUpdate");
+						.when().get(RestTestLoginUtil.readTestUrlProperty() +  "caNanoLab/rest/characterization/setupUpdate");
 		
 		System.out.println(res.getBody().asString());
 		
@@ -380,12 +376,12 @@ String jsessionId = RestTestLoginUtil.loginTest();
 		SimpleFindingBean simpleFinding = new SimpleFindingBean();
 		simpleFinding.setFindingId(69533708);
 			
-		res = //with().parameters("sampleName", "SY-NCL-23-1")
+		res = //with().params("sampleName", "SY-NCL-23-1")
 		given() .contentType("application/json").cookie("JSESSIONID=" + jsessionId).body(simpleFinding)
 		.expect().body("charTypesLookup", hasItems("physico-chemical characterization",
 				"in vitro characterization",
 				"ex vivo"))
-		.when().post("http://localhost:8080/caNanoLab/rest/characterization/removeFinding");
+		.when().post(RestTestLoginUtil.readTestUrlProperty() +  "caNanoLab/rest/characterization/removeFinding");
 		
 		
 		
@@ -395,7 +391,7 @@ String jsessionId = RestTestLoginUtil.loginTest();
 	//@Test
 	public void testDelete() {
 		
-		String jsessionId = RestTestLoginUtil.loginTest();
+		String jsessionId = RestTestLoginUtil.testLogin();
 		Map<String, String> params = new HashMap<String, String>();
 		params.put("sampleId", "73367552");
 		params.put("charId", "77234176");
@@ -404,10 +400,10 @@ String jsessionId = RestTestLoginUtil.loginTest();
 		
 		Response res =
 				given().contentType("application/json").cookie("JSESSIONID=" + jsessionId)
-				.parameters(params)
+				.params(params)
 				.expect()
 				.body("name", equalTo("imaging"))
-						.when().get("http://localhost:8080/caNanoLab/rest/characterization/setupUpdate");
+						.when().get(RestTestLoginUtil.readTestUrlProperty() +  "caNanoLab/rest/characterization/setupUpdate");
 		
 		System.out.println(res.getBody().asString());
 
@@ -415,10 +411,10 @@ String jsessionId = RestTestLoginUtil.loginTest();
 		charEdit.setCharId(77234176);
 		charEdit.setParentSampleId(73367552);
 			
-		res = //with().parameters("sampleName", "SY-NCL-23-1")
+		res = //with().params("sampleName", "SY-NCL-23-1")
 		given() .contentType("application/json").cookie("JSESSIONID=" + jsessionId).body(charEdit)
 		.expect().body(arrayContaining("charsByAssayType")) //assertion incorrect!!! fix later
-		.when().post("http://localhost:8080/caNanoLab/rest/characterization/removedCharacterization");
+		.when().post(RestTestLoginUtil.readTestUrlProperty() +  "caNanoLab/rest/characterization/removedCharacterization");
 		
 		
 		

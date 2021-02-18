@@ -1,6 +1,6 @@
 /*L
- *  Copyright SAIC
- *  Copyright SAIC-Frederick
+ *  Copyright Leidos
+ *  Copyright Leidos Biomedical
  *
  *  Distributed under the OSI-approved BSD 3-Clause License.
  *  See http://ncip.github.com/cananolab/LICENSE.txt for details.
@@ -35,16 +35,22 @@ import javax.servlet.http.HttpServletRequest;
  *
  */
 public class InitSetup {
-
+	/**
+	 *
+	 */
 	private InitSetup() {
 	}
 
+	/**
+	 *
+	 * @return
+	 */
 	public static InitSetup getInstance() {
 		return new InitSetup();
 	}
 
 	/**
-	 * Queries and common_lookup table and creates a map in application context
+	 * Queries the common_lookup table and creates a map in application context
 	 *
 	 * @param appContext
 	 * @return
@@ -61,6 +67,7 @@ public class InitSetup {
 		}
 		return defaultLookupTable;
 	}
+
 
 	/**
 	 * Retrieve lookup Map from lookup table and store in the application
@@ -147,7 +154,6 @@ public class InitSetup {
 	 * @param request
 	 * @param sessionAttribute
 	 * @param lookupName
-	 * @param lookupAttribute
 	 * @param otherTypeAttribute
 	 * @aparam updateSession
 	 * @return
@@ -169,12 +175,21 @@ public class InitSetup {
 		return types;
 	}
 
+	public SortedSet<String> assignTypesToSession(ServletContext appContext, String contextAttribute, List<String> types){
+
+		SortedSet sortedTypes = new TreeSet();
+		for(String type:types){
+			sortedTypes.add(type);
+		}
+		appContext.setAttribute(contextAttribute, sortedTypes);
+		return sortedTypes;
+	}
+
 	/**
 	 * Retrieve default lookup values by reflection and store in the app context
 	 *
 	 * @param appContext
 	 * @param contextAttribute
-	 * @param lookupName
 	 * @param fullParentClassName
 	 * @return
 	 * @throws Exception
@@ -254,7 +269,16 @@ public class InitSetup {
 		return types;
 	}
 
-	// check whether the value is already stored in context
+	/**
+	 * check whether the value is already stored in context
+	 * @param request
+	 * @param lookupName
+	 * @param attribute
+	 * @param otherAttribute
+	 * @param value
+	 * @return
+	 * @throws BaseException
+	 */
 	private Boolean isLookupInContext(HttpServletRequest request,
 			String lookupName, String attribute, String otherAttribute,
 			String value) throws BaseException {
@@ -271,13 +295,19 @@ public class InitSetup {
 			if (defaultLookupTable.get(lookupName) != null) {
 				otherValues = defaultLookupTable.get(lookupName).get(otherAttribute);
 			}
-			if (otherValues != null && otherValues.contains(value)) {
-				return true;
-			}
+            return otherValues != null && otherValues.contains(value);
 		}
-		return false;
-	}
+    }
 
+	/**
+	 *
+	 * @param request
+	 * @param lookupName
+	 * @param attribute
+	 * @param otherAttribute
+	 * @param value
+	 * @throws BaseException
+	 */
 	public void persistLookup(HttpServletRequest request, String lookupName,
 			String attribute, String otherAttribute, String value)
 			throws BaseException {
@@ -296,6 +326,14 @@ public class InitSetup {
 		}
 	}
 
+	/**
+	 *
+	 * @param lookupName
+	 * @param lookupAttribute
+	 * @param otherTypeAttribute
+	 * @return
+	 * @throws Exception
+	 */
 	public List<LabelValueBean> getDefaultAndOtherTypesByLookupAsOptions(
 			String lookupName, String lookupAttribute, String otherTypeAttribute)
 			throws Exception {
@@ -337,6 +375,10 @@ public class InitSetup {
 		return lvBeans;
 	}
 
+	/**
+	 *
+	 * @param appContext
+	 */
 	public void setStaticOptions(ServletContext appContext) {
 		LabelValueBean[] booleanOptions = new LabelValueBean[] {
 				new LabelValueBean("true", "1"),
@@ -363,7 +405,11 @@ public class InitSetup {
 				new LabelValueBean("Ms.", "Ms.") };
 		appContext.setAttribute("titleOperands", titleOperands);
 	}
-	
+
+	/**
+	 *
+	 * @param appContext
+	 */
 	public void setPublicCountInContext(ServletContext appContext) {
 		PublicDataCountJob job=new PublicDataCountJob();
 		//job.queryPublicDataCounts();

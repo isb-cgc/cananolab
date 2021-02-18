@@ -1,29 +1,21 @@
 package gov.nih.nci.cananolab.restful;
 
-import static com.jayway.restassured.RestAssured.given;
-import static org.hamcrest.Matchers.containsString;
-import static org.hamcrest.Matchers.equalToIgnoringCase;
-import static org.hamcrest.Matchers.hasItems;
-import static org.junit.Assert.*;
 import gov.nih.nci.cananolab.restful.util.RestTestLoginUtil;
-import gov.nih.nci.cananolab.restful.view.edit.SimpleComposingElementBean;
 import gov.nih.nci.cananolab.restful.view.edit.SimpleFileBean;
-import gov.nih.nci.cananolab.restful.view.edit.SimpleNanomaterialEntityBean;
-
-import java.util.ArrayList;
+import io.restassured.response.Response;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
-
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.client.Entity;
 import javax.ws.rs.client.WebTarget;
-
 import org.junit.Test;
 
-import com.jayway.restassured.response.Response;
-import com.jayway.restassured.response.ValidatableResponse;
+import static io.restassured.RestAssured.given;
+import static org.hamcrest.Matchers.equalToIgnoringCase;
+import static org.hamcrest.Matchers.hasItems;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 public class CompositionFileServicesTest {
 	@Test
@@ -33,7 +25,7 @@ public class CompositionFileServicesTest {
 				given().contentType("application/json")
 				.expect()
 				.body("fileTypes", hasItems("document","graph","image","movie","spread sheet","txt"))
-						.when().get("http://localhost:8080/caNanoLab/rest/compositionFile/setup");
+						.when().get(RestTestLoginUtil.readTestUrlProperty() +  "caNanoLab/rest/compositionFile/setup");
 
 		System.out.println(res.getBody().asString());
 		
@@ -41,16 +33,16 @@ public class CompositionFileServicesTest {
 	@Test
 	public void testEdit() {
 		
-		String jsessionId = RestTestLoginUtil.loginTest();
+		String jsessionId = RestTestLoginUtil.testLogin();
 		
 		Map<String, String> parameters = new HashMap<String, String>();
 		parameters.put("sampleId", "57835522");
 		parameters.put("dataId", "73433125");
 		Response res =
 				given().contentType("application/json").cookie("JSESSIONID=" + jsessionId)
-				.parameters(parameters).expect()
+				.params(parameters).expect()
 				.body("type", equalToIgnoringCase("graph"))
-						.when().get("http://localhost:8080/caNanoLab/rest/compositionFile/edit");
+						.when().get(RestTestLoginUtil.readTestUrlProperty() +  "caNanoLab/rest/compositionFile/edit");
 
 		System.out.println(res.getBody().asString());
 		RestTestLoginUtil.logoutTest();
@@ -60,7 +52,7 @@ public class CompositionFileServicesTest {
 //	@Test
 //	public void testSubmit() {
 //		
-//		String jsessionId = RestTestLoginUtil.loginTest();
+//		String jsessionId = RestTestLoginUtil.testLogin();
 //		
 //		SimpleFileBean file = new SimpleFileBean();
 //		file.setType("movie");
@@ -71,7 +63,7 @@ public class CompositionFileServicesTest {
 //		Response res = 
 //				given() .contentType("application/json").cookie("JSESSIONID=" + jsessionId).body(file)				
 //				.expect().body("type", equalToIgnoringCase("movie"))
-//				.when().post("http://localhost:8080/caNanoLab/rest/compositionFile/submit");
+//				.when().post(RestTestLoginUtil.readTestUrlProperty() +  "caNanoLab/rest/compositionFile/submit");
 //		System.out.println(res.getBody().asString());
 //
 //		RestTestLoginUtil.logoutTest();
@@ -88,13 +80,13 @@ public class CompositionFileServicesTest {
 		file.setExternalUrl("http://www.cancer.gov");
 		file.setSampleId("20917510");
 		
-		String jsessionId = RestTestLoginUtil.loginTest();
+		String jsessionId = RestTestLoginUtil.testLogin();
 		
 		final Client aClient = ClientBuilder.newBuilder()
 		        .register(ObjectMapperProvider.class)
 		        .build();
 		
-		WebTarget webTarget = aClient.target("http://localhost:8080/caNanoLab/rest");
+		WebTarget webTarget = aClient.target(RestTestLoginUtil.readTestUrlProperty() +  "caNanoLab/rest");
 		webTarget.register(CompositionFileServices.class);
 		
 		WebTarget submitWebTarget = webTarget.path("compositionFile").path("submit");
@@ -123,13 +115,13 @@ public class CompositionFileServicesTest {
 		file.setExternalUrl("http://www.cancer.gov");
 		file.setSampleId("20917510");
 		
-		String jsessionId = RestTestLoginUtil.loginTest();
+		String jsessionId = RestTestLoginUtil.testLogin();
 		
 		final Client aClient = ClientBuilder.newBuilder()
 		        .register(ObjectMapperProvider.class)
 		        .build();
 		
-		WebTarget webTarget = aClient.target("http://localhost:8080/caNanoLab/rest");
+		WebTarget webTarget = aClient.target(RestTestLoginUtil.readTestUrlProperty() +  "caNanoLab/rest");
 		webTarget.register(CompositionFileServices.class);
 		
 		WebTarget submitWebTarget = webTarget.path("compositionFile").path("delete");

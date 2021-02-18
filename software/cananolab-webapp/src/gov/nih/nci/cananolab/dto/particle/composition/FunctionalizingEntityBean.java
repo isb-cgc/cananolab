@@ -1,6 +1,6 @@
 /*L
- *  Copyright SAIC
- *  Copyright SAIC-Frederick
+ *  Copyright Leidos
+ *  Copyright Leidos Biomedical
  *
  *  Distributed under the OSI-approved BSD 3-Clause License.
  *  See http://ncip.github.com/cananolab/LICENSE.txt for details.
@@ -352,7 +352,7 @@ public class FunctionalizingEntityBean extends BaseCompositionEntityBean {
 		if (displayNames.isEmpty()) {
 			return null;
 		}
-		return displayNames.toArray(new String[displayNames.size()]);
+		return displayNames.toArray(new String[0]);
 	}
 
 	public boolean isWithProperties() {
@@ -472,7 +472,7 @@ public class FunctionalizingEntityBean extends BaseCompositionEntityBean {
 	public String getPubChemLink() {
 		if (!StringUtils.isEmpty(pubChemId)
 				&& !StringUtils.isEmpty(pubChemDataSourceName)) {
-			pubChemLink = CompositionBean.getPubChemURL(pubChemDataSourceName,
+			pubChemLink = StringUtils.getPubChemURL(pubChemDataSourceName,
 					new Long(pubChemId));
 		}
 		return pubChemLink;

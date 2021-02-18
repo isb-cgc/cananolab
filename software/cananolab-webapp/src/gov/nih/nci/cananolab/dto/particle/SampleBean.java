@@ -1,6 +1,6 @@
 /*L
- *  Copyright SAIC
- *  Copyright SAIC-Frederick
+ *  Copyright Leidos
+ *  Copyright Leidos Biomedical
  *
  *  Distributed under the OSI-approved BSD 3-Clause License.
  *  See http://ncip.github.com/cananolab/LICENSE.txt for details.
@@ -13,16 +13,17 @@ import gov.nih.nci.cananolab.domain.common.PointOfContact;
 import gov.nih.nci.cananolab.domain.common.Publication;
 import gov.nih.nci.cananolab.domain.particle.Characterization;
 import gov.nih.nci.cananolab.domain.particle.Sample;
+import gov.nih.nci.cananolab.domain.particle.Synthesis;
 import gov.nih.nci.cananolab.dto.common.PointOfContactBean;
 import gov.nih.nci.cananolab.dto.common.PublicationBean;
 import gov.nih.nci.cananolab.dto.common.SecuredDataBean;
 import gov.nih.nci.cananolab.dto.particle.characterization.CharacterizationBean;
 import gov.nih.nci.cananolab.dto.particle.composition.CompositionBean;
+import gov.nih.nci.cananolab.dto.particle.synthesis.SynthesisBean;
 import gov.nih.nci.cananolab.util.ClassUtils;
 import gov.nih.nci.cananolab.util.Comparators;
 import gov.nih.nci.cananolab.util.Constants;
 import gov.nih.nci.cananolab.util.StringUtils;
-
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -58,6 +59,8 @@ public class SampleBean extends SecuredDataBean {
 
 	private String[] characterizationClassNames = new String[0];
 
+	private String[] synthesisClassNames = new String[0];
+
 	private PointOfContactBean primaryPOCBean = new PointOfContactBean();
 
 	private List<PointOfContactBean> otherPOCBeans = new ArrayList<PointOfContactBean>();
@@ -67,6 +70,8 @@ public class SampleBean extends SecuredDataBean {
 	private Boolean hasCharacterizations = false;
 
 	private Boolean hasPublications = false;
+
+	private Boolean hasSynthesis = false;
 
 	private Boolean hasDataAvailability = false;
 
@@ -123,6 +128,14 @@ public class SampleBean extends SecuredDataBean {
 				&& !sample.getPublicationCollection().isEmpty()) {
 			hasPublications = true;
 		}
+
+//		if (sample.getSynthesisCollection() != null && !sample.getSynthesisCollection().isEmpty()){
+//			hasSynthesis = true;
+//		}
+
+		if(sample.getSynthesis()!=null){
+			hasSynthesis=true;
+		}
 	}
 
 	public String getKeywordsStr() {
@@ -135,6 +148,14 @@ public class SampleBean extends SecuredDataBean {
 
 	public Sample getDomain() {
 		return domain;
+	}
+
+	public void setSynthesisClassNames(String[] synthesisClassNames) {
+		this.synthesisClassNames = synthesisClassNames;
+	}
+
+	public String[] getSynthesisClassNames(){
+		return this.synthesisClassNames;
 	}
 
 	public void setupDomain(String createdBy) {
@@ -274,6 +295,14 @@ public class SampleBean extends SecuredDataBean {
 		this.hasPublications = hasPublications;
 	}
 
+	public Boolean getHasSynthesis(){
+		return hasSynthesis;
+	}
+
+	public void setHasSynthesis(Boolean hasSynthesis){
+		this.hasSynthesis = hasSynthesis;
+	}
+
 	public Boolean getHasDataAvailability() {
 		return hasDataAvailability;
 	}
@@ -385,6 +414,15 @@ public class SampleBean extends SecuredDataBean {
 			copy.getSampleComposition().setSample(copy);
 			CompositionBean compBean = new CompositionBean(copy.getSampleComposition());
 			compBean.resetDomainCopy(createdBy, copy.getSampleComposition());
+		}
+
+		//copy synthesis
+//		Set<Synthesis> oldSynthesis = copy.getSynthesisCollection();
+		Synthesis oldSynthesis = copy.getSynthesis();
+		if(oldSynthesis!=null ){
+
+			SynthesisBean synthesisBean = new SynthesisBean(oldSynthesis);
+			synthesisBean.resetDomainCopy(createdBy, oldSynthesis, true);
 		}
 
 		// copy keyword

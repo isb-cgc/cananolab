@@ -1,8 +1,5 @@
 package gov.nih.nci.cananolab.domain.common;
 
-import gov.nih.nci.cananolab.domain.particle.Characterization;
-import gov.nih.nci.cananolab.domain.particle.Sample;
-
 import java.io.Serializable;
 /**
 	* 
@@ -244,9 +241,8 @@ public class PointOfContact  implements Serializable
 	{
 		if(obj instanceof PointOfContact) 
 		{
-			PointOfContact c =(PointOfContact)obj; 			 
-			if(getId() != null && getId().equals(c.getId()))
-				return true;
+			PointOfContact c =(PointOfContact)obj;
+            return getId() != null && getId().equals(c.getId());
 		}
 		return false;
 	}

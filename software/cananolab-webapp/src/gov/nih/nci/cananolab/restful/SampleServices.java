@@ -1,5 +1,26 @@
 package gov.nih.nci.cananolab.restful;
 
+import java.nio.charset.StandardCharsets;
+import java.util.List;
+import java.util.Map;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.ws.rs.DefaultValue;
+import javax.ws.rs.GET;
+import javax.ws.rs.POST;
+import javax.ws.rs.Path;
+import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
+import javax.ws.rs.core.Context;
+import javax.ws.rs.core.Response;
+import javax.xml.transform.OutputKeys;
+import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.stream.StreamResult;
+import javax.xml.transform.stream.StreamSource;
+
+import java.io.*;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonParser;
@@ -11,30 +32,47 @@ import gov.nih.nci.cananolab.dto.common.PublicationSummaryViewBean;
 import gov.nih.nci.cananolab.dto.particle.AdvancedSampleSearchBean;
 import gov.nih.nci.cananolab.dto.particle.characterization.CharacterizationSummaryViewBean;
 import gov.nih.nci.cananolab.dto.particle.composition.CompositionBean;
+import gov.nih.nci.cananolab.dto.particle.synthesis.SynthesisBean;
 import gov.nih.nci.cananolab.restful.bean.LabelValueBean;
 import gov.nih.nci.cananolab.restful.publication.PublicationBO;
 import gov.nih.nci.cananolab.restful.publication.PublicationManager;
-import gov.nih.nci.cananolab.restful.sample.*;
+import gov.nih.nci.cananolab.restful.sample.AdvancedSampleSearchBO;
+import gov.nih.nci.cananolab.restful.sample.CharacterizationBO;
+import gov.nih.nci.cananolab.restful.sample.CharacterizationManager;
+import gov.nih.nci.cananolab.restful.sample.CharacterizationResultManager;
+import gov.nih.nci.cananolab.restful.sample.CompositionBO;
+import gov.nih.nci.cananolab.restful.sample.SampleBO;
+import gov.nih.nci.cananolab.restful.sample.SearchSampleBO;
+import gov.nih.nci.cananolab.restful.synthesis.SynthesisBO;
 import gov.nih.nci.cananolab.restful.util.CommonUtil;
-import gov.nih.nci.cananolab.restful.view.*;
+import gov.nih.nci.cananolab.restful.view.SimpleAdvancedSearchResultView;
+import gov.nih.nci.cananolab.restful.view.SimpleCharacterizationSummaryViewBean;
+import gov.nih.nci.cananolab.restful.view.SimpleCharacterizationsByTypeBean;
+import gov.nih.nci.cananolab.restful.view.SimpleCompositionBean;
+import gov.nih.nci.cananolab.restful.view.SimplePublicationSummaryViewBean;
+import gov.nih.nci.cananolab.restful.view.SimpleSampleBean;
+import gov.nih.nci.cananolab.restful.view.SimpleSynthesisBean;
 import gov.nih.nci.cananolab.restful.view.edit.SampleEditGeneralBean;
 import gov.nih.nci.cananolab.restful.view.edit.SimplePointOfContactBean;
 import gov.nih.nci.cananolab.security.utils.SpringSecurityUtil;
 import gov.nih.nci.cananolab.service.protocol.ProtocolService;
-import gov.nih.nci.cananolab.service.protocol.impl.ProtocolServiceLocalImpl;
 import gov.nih.nci.cananolab.ui.form.CompositionForm;
 import gov.nih.nci.cananolab.ui.form.PublicationForm;
 import gov.nih.nci.cananolab.ui.form.SearchSampleForm;
+import gov.nih.nci.cananolab.ui.form.SynthesisForm;
 import gov.nih.nci.cananolab.util.Constants;
-import org.apache.log4j.Logger;
-import org.json.JSONObject;
-import org.json.XML;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.w3c.dom.Document;
-import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
-import org.xml.sax.InputSource;
-
+import java.io.BufferedReader;
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.io.StringReader;
+import java.io.StringWriter;
+import java.nio.charset.StandardCharsets;
+import java.util.List;
+import java.util.Map;
+import javax.json.Json;
+import javax.json.JsonBuilderFactory;
+import javax.json.JsonObject;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.ws.rs.*;
@@ -50,13 +88,14 @@ import javax.xml.transform.stream.StreamSource;
 import javax.xml.xpath.XPath;
 import javax.xml.xpath.XPathConstants;
 import javax.xml.xpath.XPathFactory;
-import java.io.*;
-import java.nio.charset.StandardCharsets;
-import java.util.List;
-import java.util.Map;
-import javax.json.Json;
-import javax.json.JsonBuilderFactory;
-import javax.json.JsonObject;
+import org.apache.log4j.Logger;
+import org.json.JSONObject;
+import org.json.XML;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.w3c.dom.Document;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
+import org.xml.sax.InputSource;
 
 @Path("/sample")
 public class SampleServices {
@@ -522,7 +561,7 @@ public class SampleServices {
 	@Path("/deletePOC")
 	@Produces("application/json")
 	 public Response deletePOC(@Context HttpServletRequest httpRequest, SimplePointOfContactBean simplePOCBean){
-		logger.debug("In deleteSample");
+		logger.debug("In deletePOC");
 		try {
 			SampleBO sampleBO = 
 					(SampleBO) SpringApplicationContext.getBean(httpRequest, "sampleBO");
@@ -576,7 +615,7 @@ public class SampleServices {
 	@Path("/submissionSetup")
 	@Produces("application/json")
 	 public Response submissionSetup(@Context HttpServletRequest httpRequest){
-		logger.debug("In edit Sample");
+		logger.debug("In submissionSetup");
 		
 		if (!SpringSecurityUtil.isUserLoggedIn()) {
 			logger.info("User not logged in");
@@ -604,7 +643,7 @@ public class SampleServices {
 	@Path("/getSampleNames")
 	@Produces("application/json")
 	 public Response getSampleNames(@Context HttpServletRequest httpRequest){
-		logger.debug("In getSortedSampleNames");
+		logger.debug("In getSampleNames");
 		try {
 
 			SampleBO sampleBO = (SampleBO) SpringApplicationContext.getBean(httpRequest, "sampleBO");
@@ -682,11 +721,12 @@ public class SampleServices {
 			SampleBO sampleBO = (SampleBO) SpringApplicationContext.getBean(httpRequest, "sampleBO");
 
 			String sampelName = sampleBO.getCurrentSampleNameInSession(httpRequest, sampleId);
+
 			JsonBuilderFactory factory = Json.createBuilderFactory(null);
 			JsonObject value = factory.createObjectBuilder()
 					.add("sampleName", sampelName).build();
+			
 			return 
-//					Response.ok(sampelName)
 					Response.ok(value)
 /*					.header("Access-Control-Allow-Credentials", "true")
 					.header("Access-Control-Allow-Origin", "*")
@@ -1172,11 +1212,31 @@ public class SampleServices {
         }
         catch( Exception e )
         {
-            e.printStackTrace();
+            logger.error("Error exporting characterization", e);
         }
 
         jasonData.append( ",\"characterization\": "  );
         jasonData.append( doIndent( gson.toJson(finalBean), indent * 4 ) );
+
+        //Synthesis
+		SynthesisBO synthesisBO;
+		SynthesisBean synthesisBean;
+		SimpleSynthesisBean simpleSynthesisBean=null;
+		SynthesisForm synthesisForm;
+		try{
+			synthesisForm = new SynthesisForm();
+			synthesisForm.setSampleId(sampleId);
+			synthesisBO = (SynthesisBO) SpringApplicationContext.getBean(httpRequest, "synthesisBO");
+			synthesisBean = synthesisBO.summaryView(synthesisForm, httpRequest);
+			simpleSynthesisBean = new SimpleSynthesisBean();
+			simpleSynthesisBean.transferSynthesisForSummaryView(synthesisBean);
+		} catch(Exception e){
+			logger.error("Error exporting synthesis", e);
+		}
+
+		jasonData.append(",\"synthesis\": ");
+		jasonData.append(doIndent(gson.toJson(simpleSynthesisBean), indent *4));
+
 
         // Publication
         PublicationBO publicationBO = null;
@@ -1192,6 +1252,7 @@ public class SampleServices {
         {
             e.printStackTrace();
         }
+
         jasonData.append( ",\"Publication\": " );
         jasonData.append( doIndent( gson.toJson(publicationView), indent * 4 ) );
 
@@ -1219,7 +1280,7 @@ public class SampleServices {
             transformer.setOutputProperty( OutputKeys.ENCODING, "UTF-8");
             transformer.setOutputProperty(OutputKeys.INDENT, "yes");
             transformer.transform(source, result);
-            return xmlFormat( writer.toString(), 4);
+            return xmlFormat( writer.toString());
         }
         catch (Exception e)
         {
@@ -1271,15 +1332,14 @@ public class SampleServices {
      * Format (indent etc.) XML
      *
      * @param xml
-     * @param indent  number of spaces per indent.
      * @return formatted xml
      */
-    private String xmlFormat( String xml, int indent ) {
+    private String xmlFormat(String xml) {
         try {
             // Turn xml string into a document
             Document document = DocumentBuilderFactory.newInstance()
                     .newDocumentBuilder()
-                    .parse(new InputSource(new ByteArrayInputStream(xml.getBytes( StandardCharsets.UTF_8 ))));
+                    .parse(new InputSource(new ByteArrayInputStream(xml.getBytes(StandardCharsets.UTF_8))));
 
             // Remove whitespaces outside tags
             document.normalize();
@@ -1295,7 +1355,7 @@ public class SampleServices {
 
             // Setup transformer options
             TransformerFactory transformerFactory = TransformerFactory.newInstance();
-            transformerFactory.setAttribute("indent-number", indent);
+            transformerFactory.setAttribute("indent-number", 4);
             Transformer transformer = transformerFactory.newTransformer();
             transformer.setOutputProperty(OutputKeys.ENCODING, "UTF-8");
             transformer.setOutputProperty(OutputKeys.OMIT_XML_DECLARATION, "yes");

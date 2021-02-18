@@ -1,6 +1,6 @@
 /*L
- *  Copyright SAIC
- *  Copyright SAIC-Frederick
+ *  Copyright Leidos
+ *  Copyright Leidos Biomedical
  *
  *  Distributed under the OSI-approved BSD 3-Clause License.
  *  See http://ncip.github.com/cananolab/LICENSE.txt for details.
@@ -61,7 +61,6 @@ public class PropertyUtils {
 	 * This doesn't work for the properties in a war file
 	 * 
 	 * @param propertyFileName
-	 * @param propertyName
 	 * @return property value
 	 */
 	public static boolean setProperty(String propertyFileName, String name,
@@ -91,6 +90,7 @@ public class PropertyUtils {
 					out.flush();
 					out.close();
 				} catch (Exception e) {
+					logger.error("Error setting property " + e);
 				}
 			}
 		}
@@ -103,8 +103,7 @@ public class PropertyUtils {
 	 * in classpath.
 	 * 
 	 * @param propertyFileName
-	 * @param reload
-	 */
+     */
 	protected static void loadProperty(String propertyFileName) {
 		InputStream istream = null;
 		properties = new Properties();
@@ -119,6 +118,7 @@ public class PropertyUtils {
 				try {
 					istream.close();
 				} catch (Exception e) {
+					logger.error("Error loading property "+ e);
 				}
 			}
 		}
@@ -126,7 +126,8 @@ public class PropertyUtils {
 	
 	protected static void loadPropertyCached(String propertyFileName) {
 		InputStream istream = null;
-		if (properties == null)
+		//Load properties if not already loaded
+		if (properties == null) {
 			properties = new Properties();
 		try {
 			istream = Thread.currentThread().getContextClassLoader()
@@ -139,9 +140,10 @@ public class PropertyUtils {
 				try {
 					istream.close();
 				} catch (Exception e) {
+					logger.error("Error loading cached property "+ e);
 				}
 			}
-		}
+		} }
 	}
 
 	/**
@@ -151,9 +153,8 @@ public class PropertyUtils {
 	 * @return file name of caNanolab property file.
 	 */
 	private static String getPropertyFileName(String propertyFileName) {
-		String fileName = Thread.currentThread().getContextClassLoader()
-				.getResource(propertyFileName).getPath();
 
-		return fileName;
+        return Thread.currentThread().getContextClassLoader()
+                .getResource(propertyFileName).getPath();
 	}
 }

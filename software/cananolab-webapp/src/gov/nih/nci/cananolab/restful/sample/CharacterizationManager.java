@@ -1,6 +1,6 @@
 /*L
- *  Copyright SAIC
- *  Copyright SAIC-Frederick
+ *  Copyright Leidos
+ *  Copyright Leidos Biomedical
  *
  *  Distributed under the OSI-approved BSD 3-Clause License.
  *  See http://ncip.github.com/cananolab/LICENSE.txt for details.
@@ -58,9 +58,8 @@ public class CharacterizationManager
 				.getCharNamesByCharType(request, characterizationType, characterizationService);
 		String[] charNameArray = new String[charNames.size()];
 		charNames.toArray(charNameArray);
-		
-		List<String> charNameList = new ArrayList<String>();
-		charNameList.addAll(charNames);
+
+		List<String> charNameList = new ArrayList<String>(charNames);
 		
 		return charNameList;
 	}
@@ -115,9 +114,8 @@ public class CharacterizationManager
 		InitSetup.getInstance().getDefaultAndOtherTypesByLookup(
 				request, "charNameAssays",
 				characterizationName, "assayType", "otherAssayType", true);
-		
-		List<String> types = new ArrayList<String>();
-		types.addAll(assayTypes);
+
+		List<String> types = new ArrayList<String>(assayTypes);
 		return types;
 	}
 
@@ -128,8 +126,7 @@ public class CharacterizationManager
 			String includePage = InitCharacterizationSetup.getInstance()
 					.getDetailPage(charType, charName);
 			if (includePage != null) {
-				String content = wctx.forwardToString(includePage);
-				return content;
+                return wctx.forwardToString(includePage);
 			} else {
 				return "";
 			}

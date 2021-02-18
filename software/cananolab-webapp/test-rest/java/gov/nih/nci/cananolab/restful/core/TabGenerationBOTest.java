@@ -2,6 +2,7 @@ package gov.nih.nci.cananolab.restful.core;
 
 import static org.junit.Assert.assertTrue;
 
+import gov.nih.nci.cananolab.restful.util.RestTestLoginUtil;
 import org.junit.After;
 import org.junit.Test;
 
@@ -20,14 +21,14 @@ public class TabGenerationBOTest {
 
 	@Test
 	public void testGetUrlBase() {
-		String url = "http://localhost:8080/caNanoLab/rest/caNanoLab/getTabs?homePage=true";
+		String url = "http://192.168.1.16:8090/caNanoLab/rest/caNanoLab/getTabs?homePage=true";
 		String urlbase = tabGen.getUrlBase(url);
-		assertTrue(urlbase.equals("http://localhost:8080/caNanoLab/"));
+		assertTrue(urlbase.equals("http://192.168.1.16:8090/caNanoLab/"));
 		
 		//multi occurrence in url
-		url = "http://localhost:8080/caNanoLab/rest/core/getTabs?homePage=true";
+		url = "http://192.168.1.16:8090/caNanoLab/rest/core/getTabs?homePage=true";
 		urlbase = tabGen.getUrlBase(url);
-		assertTrue(urlbase.equals("http://localhost:8080/caNanoLab/"));
+		assertTrue(urlbase.equals("http://192.168.1.16:8090/caNanoLab/"));
 		
 		url = null;
 		urlbase = tabGen.getUrlBase(url);

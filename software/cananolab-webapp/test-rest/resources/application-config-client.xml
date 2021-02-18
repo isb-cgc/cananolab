@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <!--L
-   Copyright SAIC
-   Copyright SAIC-Frederick
+   Copyright Leidos
+   Copyright Leidos Biomedical
 
    Distributed under the OSI-approved BSD 3-Clause License.
    See http://ncip.github.com/cananolab/LICENSE.txt for details.
@@ -25,9 +25,9 @@ L-->
 		</constructor-arg>
 	</bean>
 	
-	<bean id="Interceptor" class="gov.nih.nci.system.client.proxy.ApplicationServiceProxy" singleton="false">
+	<bean id="Interceptor" class="gov.nih.nci.cananolab.system.applicationservice.client.proxy.ApplicationServiceProxy" singleton="false">
 		<property name="proxyFactory">
-			<bean class="gov.nih.nci.system.client.proxy.ProxyHelperImpl" singleton="false"/>
+			<bean class="gov.nih.nci.cananolab.system.applicationservice.client.proxy.ProxyHelperImpl" singleton="false"/>
 		</property>
 	</bean>
 

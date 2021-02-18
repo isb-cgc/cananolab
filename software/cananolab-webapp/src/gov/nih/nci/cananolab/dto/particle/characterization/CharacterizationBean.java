@@ -1,6 +1,6 @@
 /*L
- *  Copyright SAIC
- *  Copyright SAIC-Frederick
+ *  Copyright Leidos
+ *  Copyright Leidos Biomedical
  *
  *  Distributed under the OSI-approved BSD 3-Clause License.
  *  See http://ncip.github.com/cananolab/LICENSE.txt for details.
@@ -54,8 +54,6 @@ public class CharacterizationBean {
 	private String description;
 
 	private String assayType;
-
-	private ExperimentConfigBean theExperimentConfig = new ExperimentConfigBean();
 
 	private FindingBean theFinding = new FindingBean();
 
@@ -127,7 +125,7 @@ public class CharacterizationBean {
 				findings.add(new FindingBean(finding));
 			}
 		}
-		Collections.sort(findings, new Comparators.FindingBeanDateComparator());
+		findings.sort(new Comparators.FindingBeanDateComparator());
 		if (chara.getProtocol() != null) {
 			protocolBean = new ProtocolBean(chara.getProtocol());
 		}
@@ -330,13 +328,6 @@ public class CharacterizationBean {
 		return experimentConfigs;
 	}
 
-	public ExperimentConfigBean getTheExperimentConfig() {
-		return theExperimentConfig;
-	}
-
-	public void setTheExperimentConfig(ExperimentConfigBean theExperimentConfig) {
-		this.theExperimentConfig = theExperimentConfig;
-	}
 
 	public void addExperimentConfig(ExperimentConfigBean experimentConfigBean) {
 		// if an old one exists, remove it first
@@ -590,6 +581,16 @@ public class CharacterizationBean {
 	public void setProtocolBean(ProtocolBean protocolBean) {
 		this.protocolBean = protocolBean;
 	}
-	
-	
+
+
+	//TODO this is evil
+	private ExperimentConfigBean theExperimentConfig = new ExperimentConfigBean();
+
+	public ExperimentConfigBean getTheExperimentConfig() {
+		return theExperimentConfig;
+	}
+
+	public void setTheExperimentConfig(ExperimentConfigBean theExperimentConfig) {
+		this.theExperimentConfig = theExperimentConfig;
+	}
 }

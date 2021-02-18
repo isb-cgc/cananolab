@@ -1,198 +1,202 @@
 package gov.nih.nci.cananolab.domain.common;
 
+import java.io.Serializable;
 import java.util.Collection;
 
-import java.io.Serializable;
 /**
-	* 
-	**/
+ *
+ **/
 
-public class Author  implements Serializable
-{
-	/**
-	* An attribute to allow serialization of the domain objects
-	*/
-	private static final long serialVersionUID = 1234567890L;
+public class Author implements Serializable {
+    /**
+     * An attribute to allow serialization of the domain objects
+     */
+    private static final long serialVersionUID = 1234567890L;
 
-	
-	/**
-	* 
-	**/
-	
-	private String createdBy;
-	/**
-	* Retrieves the value of the createdBy attribute
-	* @return createdBy
-	**/
 
-	public String getCreatedBy(){
-		return createdBy;
-	}
+    /**
+     *
+     **/
 
-	/**
-	* Sets the value of createdBy attribute
-	**/
+    private String createdBy;
+    /**
+     *
+     **/
 
-	public void setCreatedBy(String createdBy){
-		this.createdBy = createdBy;
-	}
-	
-	/**
-	* 
-	**/
-	
-	private java.util.Date createdDate;
-	/**
-	* Retrieves the value of the createdDate attribute
-	* @return createdDate
-	**/
+    private java.util.Date createdDate;
+    /**
+     *
+     **/
 
-	public java.util.Date getCreatedDate(){
-		return createdDate;
-	}
+    private String firstName;
+    /**
+     *
+     **/
 
-	/**
-	* Sets the value of createdDate attribute
-	**/
+    private Long id;
+    /**
+     *
+     **/
 
-	public void setCreatedDate(java.util.Date createdDate){
-		this.createdDate = createdDate;
-	}
-	
-	/**
-	* 
-	**/
-	
-	private String firstName;
-	/**
-	* Retrieves the value of the firstName attribute
-	* @return firstName
-	**/
+    private String initial;
+    /**
+     *
+     **/
 
-	public String getFirstName(){
-		return firstName;
-	}
+    private String lastName;
+    /**
+     * An associated gov.nih.nci.cananolab.domain.common.Publication object's collection
+     **/
 
-	/**
-	* Sets the value of firstName attribute
-	**/
+    private Collection<Publication> publicationCollection;
 
-	public void setFirstName(String firstName){
-		this.firstName = firstName;
-	}
-	
-	/**
-	* 
-	**/
-	
-	private Long id;
-	/**
-	* Retrieves the value of the id attribute
-	* @return id
-	**/
+    /**
+     * Retrieves the value of the createdBy attribute
+     *
+     * @return createdBy
+     **/
 
-	public Long getId(){
-		return id;
-	}
+    public String getCreatedBy() {
+        return createdBy;
+    }
 
-	/**
-	* Sets the value of id attribute
-	**/
+    /**
+     * Sets the value of createdBy attribute
+     **/
 
-	public void setId(Long id){
-		this.id = id;
-	}
-	
-	/**
-	* 
-	**/
-	
-	private String initial;
-	/**
-	* Retrieves the value of the initial attribute
-	* @return initial
-	**/
+    public void setCreatedBy(String createdBy) {
+        this.createdBy = createdBy;
+    }
 
-	public String getInitial(){
-		return initial;
-	}
+    /**
+     * Retrieves the value of the createdDate attribute
+     *
+     * @return createdDate
+     **/
 
-	/**
-	* Sets the value of initial attribute
-	**/
+    public java.util.Date getCreatedDate() {
+        return createdDate;
+    }
 
-	public void setInitial(String initial){
-		this.initial = initial;
-	}
-	
-	/**
-	* 
-	**/
-	
-	private String lastName;
-	/**
-	* Retrieves the value of the lastName attribute
-	* @return lastName
-	**/
+    /**
+     * Sets the value of createdDate attribute
+     **/
 
-	public String getLastName(){
-		return lastName;
-	}
+    public void setCreatedDate(java.util.Date createdDate) {
+        this.createdDate = createdDate;
+    }
 
-	/**
-	* Sets the value of lastName attribute
-	**/
+    /**
+     * Retrieves the value of the firstName attribute
+     *
+     * @return firstName
+     **/
 
-	public void setLastName(String lastName){
-		this.lastName = lastName;
-	}
-	
-	/**
-	* An associated gov.nih.nci.cananolab.domain.common.Publication object's collection 
-	**/
-			
-	private Collection<Publication> publicationCollection;
-	/**
-	* Retrieves the value of the publicationCollection attribute
-	* @return publicationCollection
-	**/
+    public String getFirstName() {
+        return firstName;
+    }
 
-	public Collection<Publication> getPublicationCollection(){
-		return publicationCollection;
-	}
+    /**
+     * Sets the value of firstName attribute
+     **/
 
-	/**
-	* Sets the value of publicationCollection attribute
-	**/
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
 
-	public void setPublicationCollection(Collection<Publication> publicationCollection){
-		this.publicationCollection = publicationCollection;
-	}
-		
-	/**
-	* Compares <code>obj</code> to it self and returns true if they both are same
-	*
-	* @param obj
-	**/
-	public boolean equals(Object obj)
-	{
-		if(obj instanceof Author) 
-		{
-			Author c =(Author)obj; 			 
-			if(getId() != null && getId().equals(c.getId()))
-				return true;
-		}
-		return false;
-	}
-		
-	/**
-	* Returns hash code for the primary key of the object
-	**/
-	public int hashCode()
-	{
-		if(getId() != null)
+    /**
+     * Retrieves the value of the id attribute
+     *
+     * @return id
+     **/
+
+    public Long getId() {
+        return id;
+    }
+
+    /**
+     * Sets the value of id attribute
+     **/
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    /**
+     * Retrieves the value of the initial attribute
+     *
+     * @return initial
+     **/
+
+    public String getInitial() {
+        return initial;
+    }
+
+    /**
+     * Sets the value of initial attribute
+     **/
+
+    public void setInitial(String initial) {
+        this.initial = initial;
+    }
+
+    /**
+     * Retrieves the value of the lastName attribute
+     *
+     * @return lastName
+     **/
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    /**
+     * Sets the value of lastName attribute
+     **/
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
+
+    /**
+     * Retrieves the value of the publicationCollection attribute
+     *
+     * @return publicationCollection
+     **/
+
+    public Collection<Publication> getPublicationCollection() {
+        return publicationCollection;
+    }
+
+    /**
+     * Sets the value of publicationCollection attribute
+     **/
+
+    public void setPublicationCollection(Collection<Publication> publicationCollection) {
+        this.publicationCollection = publicationCollection;
+    }
+
+    /**
+     * Compares <code>obj</code> to it self and returns true if they both are same
+     *
+     * @param obj
+     **/
+    public boolean equals(Object obj) {
+        if (obj instanceof Author) {
+            Author c = (Author) obj;
+            return getId() != null && getId().equals(c.getId());
+        }
+        return false;
+    }
+
+    /**
+     * Returns hash code for the primary key of the object
+     **/
+    public int hashCode() {
+		if (getId() != null) {
 			return getId().hashCode();
-		return 0;
-	}
-	
+		}
+        return 0;
+    }
+
 }

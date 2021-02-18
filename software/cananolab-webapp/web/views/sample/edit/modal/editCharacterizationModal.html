@@ -86,11 +86,10 @@
 <td>
                 <div class="input-group" style="width:350px;">
               <input type="text" readonly class="form-control" datepicker-popup="{{format}}" ng-model="data.characterizationDate" is-open="$parent.opened" min-date="minDate" max-date="'2050-06-22'" datepicker-options="dateOptions" date-disabled="disabled(date, mode)" ng-required="true" close-text="Close" />
-                    <span class="input-group-btn-canano">
+              <span class="input-group-btn-canano">
                 <button type="button" class="btn-canano btn-canano-default" ng-click="open($event)">
 
                     <img height="16" alt="images/calendar_icon_2.png" src="images/calendar_icon_2.png">
-
                 </button>
               </span>
             </div>
@@ -111,7 +110,7 @@
 <div style="clear:both;"></div>
 <div class="modal-footer">
     <button ng-click="cancel()" class="btn-canano btn-canano-warning btn-canano-modal" ng-disabled="loader">Cancel</button>
-    <button ng-if="!poc.primaryContact&&type!='add'" ng-click="delete()" class="btn-canano btn-canano-warning btn-canano-danger" ng-disabled="loader">Delete</button>
+    <button ng-if="!poc.primaryContact&&type!='add'" ng-click="delete()" class="btn-canano btn-canano-warning btn-canano-danger" ng-disabled="loader">Delete</button>    
     <button ng-click="save()" class='btn-canano btn-canano-primary btn-canano-modal' ng-disabled="loader">Submit</button>
 </div>
 

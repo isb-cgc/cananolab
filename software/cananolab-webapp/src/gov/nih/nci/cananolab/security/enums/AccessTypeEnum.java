@@ -8,7 +8,7 @@ public enum AccessTypeEnum
 	
 	private String accessType;
 	
-	private AccessTypeEnum(String accessType) {
+	AccessTypeEnum(String accessType) {
 		this.accessType = accessType;
 	}
 	

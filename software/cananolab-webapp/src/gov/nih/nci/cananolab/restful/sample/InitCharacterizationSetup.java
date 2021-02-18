@@ -1,6 +1,6 @@
 /*L
- *  Copyright SAIC
- *  Copyright SAIC-Frederick
+ *  Copyright Leidos
+ *  Copyright Leidos Biomedical
  *
  *  Distributed under the OSI-approved BSD 3-Clause License.
  *  See http://ncip.github.com/cananolab/LICENSE.txt for details.
@@ -298,6 +298,7 @@ public class InitCharacterizationSetup {
 	}
 
 	public String getDetailPage(String charType, String charName) {
+		//TODO does this work?  I can find no *Info.jsp in project
 		String charClassName = ClassUtils
 				.getShortClassNameFromDisplayName(charName);
 		String includePage = null;

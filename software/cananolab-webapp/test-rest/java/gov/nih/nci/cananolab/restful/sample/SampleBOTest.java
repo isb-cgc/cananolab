@@ -1,23 +1,19 @@
 package gov.nih.nci.cananolab.restful.sample;
 
-import static org.junit.Assert.*;
+import gov.nih.nci.cananolab.dto.particle.SampleBean;
+import gov.nih.nci.cananolab.restful.view.edit.SampleEditGeneralBean;
+import java.util.ArrayList;
+import java.util.TreeSet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+import org.junit.Test;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-import java.util.ArrayList;
-import java.util.TreeSet;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
-
-import gov.nih.nci.cananolab.dto.particle.SampleBean;
-import gov.nih.nci.cananolab.restful.view.edit.SampleEditGeneralBean;
-
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 //@RunWith(SpringJUnit4ClassRunner.class)
 ////@ContextConfiguration(locations = {"classpath:/applicationContext-strutsless.xml"})
@@ -51,7 +47,7 @@ public class SampleBOTest {
 		
 	}
 	
-	//@Test
+	@Test
 	public void testCreateNewSample() {
 
 		HttpServletRequest request = mock(HttpServletRequest.class);
@@ -69,6 +65,22 @@ public class SampleBOTest {
 			editBean.setSampleName("SY-Monday2");
 			editBean.setNewSampleName("CloneFromSY-Monday2");
 		} catch (Exception e) {
+			System.out.println(e.getMessage());
+		}
+	}
+
+	@Test
+	public void testDeleteSample(){
+		HttpServletRequest request = mock(HttpServletRequest.class);
+		HttpSession session = mock(HttpSession.class);
+
+		when(request.getSession()).thenReturn(session);
+
+		try{
+			String result = sampleBO.delete("44695553", request);
+			assertEquals("deleted", result);
+
+		}catch (Exception e){
 			System.out.println(e.getMessage());
 		}
 	}

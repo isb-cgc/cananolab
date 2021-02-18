@@ -1,6 +1,6 @@
 /*L
- *  Copyright SAIC
- *  Copyright SAIC-Frederick
+ *  Copyright Leidos
+ *  Copyright Leidos Biomedical
  *
  *  Distributed under the OSI-approved BSD 3-Clause License.
  *  See http://ncip.github.com/cananolab/LICENSE.txt for details.
@@ -16,9 +16,9 @@ import java.util.List;
 
 public interface CurationService
 {
-	public void submitDataForReview(DataReviewStatusBean dataReviewStatusBean) throws CurationException, NoAccessException;
+	void submitDataForReview(DataReviewStatusBean dataReviewStatusBean) throws CurationException, NoAccessException;
 
-	public List<DataReviewStatusBean> findDataPendingReview() throws CurationException, NoAccessException;
+	List<DataReviewStatusBean> findDataPendingReview() throws CurationException, NoAccessException;
 
-	public DataReviewStatusBean findDataReviewStatusBeanByDataId(String dataId) throws CurationException, NoAccessException;
+	DataReviewStatusBean findDataReviewStatusBeanByDataId(String dataId) throws CurationException, NoAccessException;
 }

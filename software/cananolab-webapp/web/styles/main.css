@@ -1953,4 +1953,114 @@ h1 {
     font-weight: 700;
 }
 
+#synthesis table .heading {
+  font-weight: bold;
+  color: #fff;
+  font-size: 100% !important;
+  background-color: #005518;
+  padding-left: 15px;
+  margin: 0px;
+  padding: 5px 0px 5px 15px;
+}
 
+#synthesis table .subHeading {
+  background-color: #005d7e !important;
+  margin: 0px;
+  color: #fff;
+  font-weight: bold;
+  font-size: 100% !important;
+  padding: 5px 0px 5px 15px;
+}
+#synthesis table td {
+  padding: 0px;
+}
+
+#synthesis table td .topLevel {
+  padding: 10px 0px 0px 15px;
+}
+
+#synthesis table td td {
+  font-size: 100%;
+  padding-right: 10px;
+}
+
+#synthesis table td td .label {
+  font-weight: bold;
+}
+
+#synthesis table td .topLevel td {
+  padding-bottom: 10px;
+}
+
+#synthesis table td .materials td {
+  padding-bottom: 10px;
+}
+
+#synthesis table td .materials table{
+  border:1px solid #ccc;
+  width:100%;
+  padding:5px 5px 5px 5px
+}
+
+#synthesis .inherentFunctions {
+    margin:0px 0px 10px 0px;
+}
+
+#synthesis .inherentFunctions table td{
+    padding:5px !important;
+}
+
+#synthesis .instruments td{
+  padding-left:6px !important;
+}
+
+.purifications div{
+    border:1px solid #ccc !important;
+    padding-bottom:10px !important;
+}
+.purifications table {
+    border:1px solid #ccc;   
+    padding:10px !important; 
+    margin:10px;
+    width:90%
+}
+.purifications table table{
+    border:1px solid #ccc;   
+    padding:10px !important; 
+    width:70%;
+}
+
+.purifications .techniqueTable {
+    border:1px solid #ccc;
+    background-color:#ccc;
+    color:#000;
+    font-size:100%;
+    font-weight:bold;
+    padding:5px;
+}
+
+.saveSynthesis button {
+    float:right;
+    margin-left:10px;
+}
+
+.editTableWithGrid.form {
+    background-color:#D3E4DE;
+}
+
+
+.synthesisFiles td {
+    padding-left:15px !important;
+}
+
+.fileErrorMessage {
+    padding-bottom:10px !important;
+}
+
+.fileErrorMessage div {
+    border:1px solid #f5c6cb;
+    background-color:#f8d7da;
+    padding:10px;
+    border-radius:3px;
+    color:#721c24;
+}

@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated Apr 3, 2019, 8:32:55 PM by Hibernate Tools 5.4.2.Final -->
+<hibernate-mapping package="gov.nih.nci.cananolab.domain.particle">
+    <class name="SynthesisFunctionalizationElement" table="synthesis_functionalization_element">
+        <id column="synthesis_functionalization_element_pk_id" name="id" type="long">
+            <generator class="hilo"/>
+        </id>
+        <property generated="never" lazy="false" name="activationMethod" type="string">
+            <column length="200" name="activation_method" not-null="true">
+                <comment>activation_method</comment>
+            </column>
+        </property>
+
+
+        <property generated="never" lazy="false" name="activationEffect" type="string">
+            <column length="200" name="activation_effect" not-null="true">
+                <comment>activation_effect</comment>
+            </column>
+        </property>
+
+
+        <property generated="never" lazy="false" name="createdBy" type="string">
+            <column length="200" name="created_by" not-null="true">
+                <comment>created_by</comment>
+            </column>
+        </property>
+        <property generated="never" lazy="false" name="createdDate" type="timestamp">
+            <column length="19" name="created_date" not-null="true">
+                <comment>created_date</comment>
+            </column>
+        </property>
+        <property generated="never" lazy="false" name="description" type="string">
+            <column length="65535" name="description">
+                <comment>description</comment>
+            </column>
+        </property>
+        <property generated="never" lazy="false" name="chemicalName" type="string">
+            <column length="200" name="chemical_name">
+                <comment>chemical_name</comment>
+            </column>
+        </property>
+        <property generated="never" lazy="false" name="value" type="float">
+            <column name="value" precision="22" scale="3">
+                <comment>value</comment>
+            </column>
+        </property>
+        <property generated="never" lazy="false" name="valueUnit" type="string">
+            <column length="200" name="value_unit">
+                <comment>value_unit</comment>
+            </column>
+        </property>
+        <property generated="never" lazy="false" name="molecularFormula" type="string">
+            <column length="2000" name="molecular_formula">
+                <comment>molecular_formula</comment>
+            </column>
+        </property>
+        <property generated="never" lazy="false" name="molecularFormulaType" type="string">
+            <column length="200" name="molecular_formula_type">
+                <comment>molecular_formula_type</comment>
+            </column>
+        </property>
+        <property generated="never" lazy="false" name="pubChemId" type="java.lang.Long">
+            <column name="pub_chem_id">
+                <comment>pub_chem_id</comment>
+            </column>
+        </property>
+        <property name="type" type="string">
+            <column name="type" not-null="true"/>
+        </property>
+        <property generated="never" lazy="false" name="pubChemDatasourceName" type="string">
+            <column length="200" name="pub_chem_datasource_name">
+                <comment>pub_chem_datasource_name</comment>
+            </column>
+        </property>
+        <many-to-one
+                class="SynthesisFunctionalization"
+                fetch="select" name="synthesisFunctionalization">
+            <column name="synthesis_functionalization_pk_id" not-null="true">
+                <comment>synthesis_functionalization_pk_id</comment>
+            </column>
+        </many-to-one>
+        <set name="files" table="synthesis_functionalization_element_file" lazy="false" inverse="false" cascade="all-delete-orphan">
+            <cache usage="read-write" />
+            <key column="synthesis_functionalization_element_pk_id" />
+            <many-to-many class="gov.nih.nci.cananolab.domain.common.File" column="file_pk_id" />
+        </set>
+
+        <set name="sfeInherentFunctions" inverse="true" cascade="all-delete-orphan">
+            <key>
+                <column name="synthesis_functionalization_element_pk_id"/>
+            </key>
+            <one-to-many not-found="ignore" class="SfeInherentFunction"/>
+        </set>
+    </class>
+</hibernate-mapping>

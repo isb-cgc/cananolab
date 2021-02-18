@@ -162,45 +162,45 @@ public class ProtocolBO extends BaseAnnotationBO
 		if(name == null||name == ""){
 			errors.add("Protocol Name is required.");
 		}
-		if(!InputValidationUtil.isTextFieldWhiteList(name)){
+		if(InputValidationUtil.isTextFieldWhiteList(name)){
 			errors.add(PropertyUtil.getProperty("protocol", "protocol.name.invalid"));
 		}
 		String type = protocol.getType();
 		if(type == null||type == ""){
 			errors.add("Protocol Type is required.");
 		}
-		if(!InputValidationUtil.isTextFieldWhiteList(type)){
+		if(InputValidationUtil.isTextFieldWhiteList(type)){
 			errors.add(PropertyUtil.getProperty("protocol", "protocol.type.invalid"));
 		}
 		String version = protocol.getVersion();
 		
-		if(!InputValidationUtil.isTextFieldWhiteList(version)){
+		if(InputValidationUtil.isTextFieldWhiteList(version)){
 			errors.add(PropertyUtil.getProperty("protocol", "protocol.version.invalid"));
 		}
 		String abbreviation = protocol.getAbbreviation();
 		
-		if(!InputValidationUtil.isTextFieldWhiteList(abbreviation)){
+		if(InputValidationUtil.isTextFieldWhiteList(abbreviation)){
 			errors.add(PropertyUtil.getProperty("protocol", "protocol.abbreviation.invalid"));
 		}
 		String title = protocolBean.getFileBean().getDomainFile().getTitle();
 		
-		if(!InputValidationUtil.isTextFieldWhiteList(title)){
+		if(InputValidationUtil.isTextFieldWhiteList(title)){
 			errors.add(PropertyUtil.getProperty("protocol", "protocol.title.invalid"));
 		}
 		String fileName = protocolBean.getFileBean().getDomainFile().getName();
 		
-		if(!InputValidationUtil.isTextFieldWhiteList(fileName)){
+		if(InputValidationUtil.isTextFieldWhiteList(fileName)){
 			errors.add(PropertyUtil.getProperty("protocol", "protocol.file.name.invalid"));
 		}
 		
 		
 		String uri = protocolBean.getFileBean().getDomainFile().getUri();
-		if(!InputValidationUtil.isTextFieldWhiteList(uri)){
+		if(InputValidationUtil.isTextFieldWhiteList(uri)){
 			errors.add(PropertyUtil.getProperty("protocol", "file.uri.invalid"));
 		}
 		
 		String externalUrl = protocolBean.getFileBean().getExternalUrl();
-		if(!InputValidationUtil.isUrlValid(externalUrl)){
+		if(InputValidationUtil.isUrlValid(externalUrl)){
 			errors.add("External URL is invalid");
 		}
 		
@@ -329,10 +329,8 @@ public class ProtocolBO extends BaseAnnotationBO
 	/**
 	 * Delete a protocol from Protocol update form
 	 * 
-	 * @param mapping
 	 * @param form
 	 * @param request
-	 * @param response
 	 * @return
 	 * @throws Exception
 	 */
@@ -426,7 +424,6 @@ public class ProtocolBO extends BaseAnnotationBO
 	/**
 	 * Delete a protocol from MyWorkSpace
 	 * 
-	 * @param mapping
 	 * @param protocolId
 	 * @param request
 	 * @return

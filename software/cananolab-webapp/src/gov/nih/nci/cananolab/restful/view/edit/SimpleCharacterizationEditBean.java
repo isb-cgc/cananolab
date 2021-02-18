@@ -279,15 +279,20 @@ public class SimpleCharacterizationEditBean
 		charNamesForCurrentType.addAll(charNames);
 		charNamesForCurrentType.add("other");
 		//Check char types and add appropriate other
-		if(charType.equals("physico-chemical characterization")){
-			charNamesForCurrentType.add("other_pc");
-		} else if (charType.equals("in vivo characterization")){
-			charNamesForCurrentType.add("other_vv");
-		} else if (charType.equals("in vitro characterization")){
-			charNamesForCurrentType.add("other_vt");
-		} else if (charType.equals("ex vivo")){
-			charNamesForCurrentType.add("other_ex_vv");
-		}
+        switch (charType) {
+            case "physico-chemical characterization":
+                charNamesForCurrentType.add("other_pc");
+                break;
+            case "in vivo characterization":
+                charNamesForCurrentType.add("other_vv");
+                break;
+            case "in vitro characterization":
+                charNamesForCurrentType.add("other_vt");
+                break;
+            case "ex vivo":
+                charNamesForCurrentType.add("other_ex_vv");
+                break;
+        }
 		
 
 		setProtocolLookup(request, charType, protocolService);
@@ -342,8 +347,7 @@ public class SimpleCharacterizationEditBean
 
 	/**
 	 * Currently it only transfter what's needed in "submit" / "update"
-	 * @param charBean
-	 */
+     */
 	public CharacterizationBean transferToCharacterizationBean(CharacterizationBean achar) 
 			throws Exception {
 		if (achar == null) 

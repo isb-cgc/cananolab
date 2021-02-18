@@ -1,14 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
-
 <!--L
-   Copyright SAIC
-   Copyright SAIC-Frederick
+   Copyright Leidos
+   Copyright Leidos Biomedical
 
    Distributed under the OSI-approved BSD 3-Clause License.
    See http://ncip.github.com/cananolab/LICENSE.txt for details.
 L-->
-
-<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
 <hibernate-mapping package="gov.nih.nci.cananolab.domain.common" auto-import="false">
 	<class name="Author" table="author" lazy="true" polymorphism="explicit">
 		<cache usage="read-write" />
@@ -28,7 +26,7 @@ L-->
 		<set name="publicationCollection" table="author_publication" lazy="true">
 			<cache usage="read-write" />
 			<key column="author_pk_id" />
-			<many-to-many class="gov.nih.nci.cananolab.domain.common.Publication" column="publication_pk_id" />
+			<many-to-many class="Publication" column="publication_pk_id" />
 		</set>
 	</class>
 </hibernate-mapping>

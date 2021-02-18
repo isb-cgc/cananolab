@@ -1,6 +1,6 @@
 /*L
- *  Copyright SAIC
- *  Copyright SAIC-Frederick
+ *  Copyright Leidos
+ *  Copyright Leidos Biomedical
  *
  *  Distributed under the OSI-approved BSD 3-Clause License.
  *  See http://ncip.github.com/cananolab/LICENSE.txt for details.
@@ -14,7 +14,6 @@ import gov.nih.nci.cananolab.exception.DataAvailabilityException;
 import gov.nih.nci.cananolab.exception.NoAccessException;
 import gov.nih.nci.cananolab.exception.SampleException;
 import gov.nih.nci.cananolab.exception.SecurityException;
-import gov.nih.nci.cananolab.service.security.SecurityService;
 
 import java.util.List;
 import java.util.Set;
@@ -25,36 +24,33 @@ public interface DataAvailabilityService {
 	 * find data availability for a sample
 	 *
 	 * @param sampleId
-	 * @param securityService
 	 * @return
 	 * @throws DataAvailabilityException
 	 * @throws NoAccessException
 	 * @throws SecurityException
 	 */
-	public Set<DataAvailabilityBean> findDataAvailabilityBySampleId(String sampleId) throws DataAvailabilityException, NoAccessException, SecurityException;
+    Set<DataAvailabilityBean> findDataAvailabilityBySampleId(String sampleId) throws DataAvailabilityException, NoAccessException, SecurityException;
 
 	/**
 	 * save data availability for the sample and persist to database table
 	 *
 	 * @param sampleBean
-	 * @param user
 	 * @return
 	 * @throws DataAvailabilityException
 	 */
 
-	public Set<DataAvailabilityBean> saveDataAvailability(SampleBean sampleBean)
+    Set<DataAvailabilityBean> saveDataAvailability(SampleBean sampleBean)
 			throws DataAvailabilityException, NoAccessException, SecurityException;
 
 	/**
 	 * save data availability for the sample and persist to database table
 	 *
 	 * @param sampleId
-	 * @param user
 	 * @return
 	 * @throws DataAvailabilityException
 	 * @throws SampleException
 	 */
-	public Set<DataAvailabilityBean> saveDataAvailability(String sampleId) throws DataAvailabilityException,
+    Set<DataAvailabilityBean> saveDataAvailability(String sampleId) throws DataAvailabilityException,
 			NoAccessException, SecurityException, SampleException;
 
 	/*
@@ -98,32 +94,29 @@ public interface DataAvailabilityService {
 	 * delete data availability for the sample from database table
 	 *
 	 * @param sampleId
-	 * @param securityService
 	 * @throws DataAvailabilityException
 	 * @throws NoAccessException
 	 * @throws SecurityException
 	 */
-	public void deleteDataAvailability(String sampleId) throws DataAvailabilityException, NoAccessException, SecurityException;
+    void deleteDataAvailability(String sampleId) throws DataAvailabilityException, NoAccessException, SecurityException;
 
 	/**
 	 *
 	 * @param sampleIds
-	 * @param securityService
 	 * @return number of samples that failed
 	 * @throws Exception
 	 */
-	public int saveBatchDataAvailability(List<String> sampleIds) throws Exception;
+    int saveBatchDataAvailability(List<String> sampleIds) throws Exception;
 
-	public void deleteBatchDataAvailability() throws Exception;
+	void deleteBatchDataAvailability() throws Exception;
 
 	/**
 	 *
 	 * @param sampleIds
-	 * @param securityService
 	 * @return number of samples that failed
 	 * @throws Exception
 	 */
-	public int deleteBatchDataAvailability(List<String> sampleIds) throws Exception;
+    int deleteBatchDataAvailability(List<String> sampleIds) throws Exception;
 
-	public List<String> findSampleIdsWithDataAvailability() throws Exception;
+	List<String> findSampleIdsWithDataAvailability() throws Exception;
 }
