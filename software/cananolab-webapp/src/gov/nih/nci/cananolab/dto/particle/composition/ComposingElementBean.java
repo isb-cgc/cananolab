@@ -1,6 +1,6 @@
 /*L
- *  Copyright SAIC
- *  Copyright SAIC-Frederick
+ *  Copyright Leidos
+ *  Copyright Leidos Biomedical
  *
  *  Distributed under the OSI-approved BSD 3-Clause License.
  *  See http://ncip.github.com/cananolab/LICENSE.txt for details.
@@ -136,7 +136,7 @@ public class ComposingElementBean {
 		if (displayNames.isEmpty()) {
 			return null;
 		}
-		return displayNames.toArray(new String[displayNames.size()]);
+		return displayNames.toArray(new String[0]);
 	}
 
 	// for dwr ajax in bodySubmitChemicalAssociation.jsp
@@ -227,7 +227,7 @@ public class ComposingElementBean {
 	public String getPubChemLink() {
 		if ((domain.getPubChemId() != null)
 				&& !StringUtils.isEmpty(domain.getPubChemDataSourceName())) {
-			pubChemLink = CompositionBean.getPubChemURL(domain
+			pubChemLink = StringUtils.getPubChemURL(domain
 					.getPubChemDataSourceName(), domain.getPubChemId());
 		}
 		return pubChemLink;

@@ -1,6 +1,6 @@
 /*L
- *  Copyright SAIC
- *  Copyright SAIC-Frederick
+ *  Copyright Leidos
+ *  Copyright Leidos Biomedical
  *
  *  Distributed under the OSI-approved BSD 3-Clause License.
  *  See http://ncip.github.com/cananolab/LICENSE.txt for details.
@@ -18,28 +18,28 @@ import gov.nih.nci.cananolab.security.AccessControlInfo;
 import gov.nih.nci.cananolab.service.BaseService;
 
 public interface CommunityService extends BaseService {
-	public void saveCollaborationGroup(CollaborationGroupBean collaborationGroup)
+	void saveCollaborationGroup(CollaborationGroupBean collaborationGroup)
 			throws CommunityException, NoAccessException,
 			DuplicateEntriesException;
 
-	public List<CollaborationGroupBean> findCollaborationGroups()
+	List<CollaborationGroupBean> findCollaborationGroups()
 			throws CommunityException;
 
-	public CollaborationGroupBean findCollaborationGroupById(String id)
+	CollaborationGroupBean findCollaborationGroupById(String id)
 			throws CommunityException;
 
-	public void deleteCollaborationGroup(
-			CollaborationGroupBean collaborationGroup)
+	void deleteCollaborationGroup(
+            CollaborationGroupBean collaborationGroup)
 			throws CommunityException, NoAccessException;
 
-	public void assignOwner(String collaborationGroupId, String ownerLogin)
+	void assignOwner(String collaborationGroupId, String ownerLogin)
 			throws CommunityException, NoAccessException;
 
-	public void assignAccessibility(AccessControlInfo access,
-			String collaborationGroupId) throws CommunityException,
+	void assignAccessibility(AccessControlInfo access,
+                             String collaborationGroupId) throws CommunityException,
 			NoAccessException;
 
-	public void removeAccessibility(AccessControlInfo access,
-			String collaborationGroupId) throws CommunityException,
+	void removeAccessibility(AccessControlInfo access,
+                             String collaborationGroupId) throws CommunityException,
 			NoAccessException;
 }

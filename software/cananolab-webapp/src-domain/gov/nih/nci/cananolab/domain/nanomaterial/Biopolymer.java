@@ -90,9 +90,8 @@ public class Biopolymer extends NanomaterialEntity implements Serializable
 	{
 		if(obj instanceof Biopolymer) 
 		{
-			Biopolymer c =(Biopolymer)obj; 			 
-			if(getId() != null && getId().equals(c.getId()))
-				return true;
+			Biopolymer c =(Biopolymer)obj;
+			return getId() != null && getId().equals(c.getId());
 		}
 		return false;
 	}

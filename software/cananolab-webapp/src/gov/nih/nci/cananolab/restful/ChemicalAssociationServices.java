@@ -107,7 +107,7 @@ public class ChemicalAssociationServices
 			List<SimpleComposingElementBean> simpleBeans = new ArrayList<SimpleComposingElementBean>();
 			for(ComposingElementBean compBean : beans){
 				SimpleComposingElementBean simpleBean = new SimpleComposingElementBean();
-				simpleBean.trasferSimpleComposingElementBean(compBean);
+				simpleBean.transferSimpleComposingElementBean(compBean);
 				simpleBeans.add(simpleBean);
 			}
 			return Response.ok(simpleBeans).header("Access-Control-Allow-Credentials", "true").header("Access-Control-Allow-Origin", "*").header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS").header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization").build();
@@ -160,7 +160,7 @@ public class ChemicalAssociationServices
 			return (errors == null || errors.size() == 0) ?
 					Response.ok(bean).build() : Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(errors).build();
 		} catch (Exception e) {
-			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(CommonUtil.wrapErrorMessageInList("Error while saving the File" + e.getMessage())).build();
+			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(CommonUtil.wrapErrorMessageInList("Error while saving the ChemAssoc File. " + e.getMessage())).build();
 		}
 	}
 

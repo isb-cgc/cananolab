@@ -1,15 +1,15 @@
 'use strict';
 var app = angular.module('angularApp')
 
-  .controller('AdvancedSampleSearchCtrl', function (sampleService,navigationService,groupService,$rootScope,$scope,$http,$location,$routeParams) {
+  .controller('AdvancedSampleSearchCtrl', function (sampleService, navigationService, groupService, $rootScope, $scope, $http, $location, $routeParams) {
     $scope.sampleData = sampleService.sampleData;
     $rootScope.tabs = navigationService.get();
-    $rootScope.groups = groupService.getGroups.data.get();   
+    $rootScope.groups = groupService.getGroups.data.get();
     $scope.isAdvancedSearch = 1;
     // define logical operators for each section and overall query //
-    $scope.defineSampleForm = function(reset) {
+    $scope.defineSampleForm = function (reset) {
       // setup object where all data is stored //
-      $scope.searchSampleForm = {};      
+      $scope.searchSampleForm = {};
 
       // define logical operators for overall form and 3 sections //
       $scope.searchSampleForm.sampleLogicalOperator = "and";
@@ -18,29 +18,27 @@ var app = angular.module('angularApp')
       $scope.searchSampleForm.logicalOperator = "and";
 
       //define array placeholders for samples, compositions and characterizations //
-    if ($routeParams.search) {
-      if (reset) {
-        $scope.searchSampleForm.sampleQueries = [];                
-        $scope.searchSampleForm.compositionQueries = [];                
-        $scope.searchSampleForm.characterizationQueries = [];                
-      }
-      else {
-        $scope.searchSampleForm.sampleQueries = sampleService.sampleQueries;   
-      $scope.searchSampleForm.compositionQueries = sampleService.compositionQueries;
-      $scope.searchSampleForm.characterizationQueries = sampleService.characterizationQueries;             
-      }
+      if ($routeParams.search) {
+        if (reset) {
+          $scope.searchSampleForm.sampleQueries = [];
+          $scope.searchSampleForm.compositionQueries = [];
+          $scope.searchSampleForm.characterizationQueries = [];
+        } else {
+          $scope.searchSampleForm.sampleQueries = sampleService.sampleQueries;
+          $scope.searchSampleForm.compositionQueries = sampleService.compositionQueries;
+          $scope.searchSampleForm.characterizationQueries = sampleService.characterizationQueries;
+        }
 
-    }
-    else {
-      $scope.searchSampleForm.sampleQueries = sampleService.sampleQueries;      
-      $scope.searchSampleForm.sampleQueries = [];
-      $scope.searchSampleForm.compositionQueries = sampleService.compositionQueries;      
-      $scope.searchSampleForm.compositionQueries = [];
-      $scope.searchSampleForm.characterizationQueries = sampleService.characterizationQueries;      
-      $scope.searchSampleForm.characterizationQueries = [];            
-    };  
+      } else {
+        $scope.searchSampleForm.sampleQueries = sampleService.sampleQueries;
+        $scope.searchSampleForm.sampleQueries = [];
+        $scope.searchSampleForm.compositionQueries = sampleService.compositionQueries;
+        $scope.searchSampleForm.compositionQueries = [];
+        $scope.searchSampleForm.characterizationQueries = sampleService.characterizationQueries;
+        $scope.searchSampleForm.characterizationQueries = [];
+      };
 
-      
+
       // setup initial objects where individual temporary objects will be stored //
       // on add or remove they get pushed or removed from the searchSampleForm //
       $scope.theSampleQuery = {};
@@ -50,7 +48,7 @@ var app = angular.module('angularApp')
       // define placeholder lists for characterization dropdowns //
       $scope.datumUnitOptionsList = [];
       $scope.datumNameList = [];
-      $scope.characterizationNameList = [];  
+      $scope.characterizationNameList = [];
 
       // define list for composition entity type dropdowns //
       $scope.entityTypes = [];
@@ -65,102 +63,111 @@ var app = angular.module('angularApp')
 
     // initial rest call to setup form dropdowns //
     $scope.loader = true;
-    $scope.$on('$viewContentLoaded', function(){
-      $http({method: 'GET', url: '/caNanoLab/rest/sample/setupAdvancedSearch'}).
-      success(function(data, status, headers, config) {
+    $scope.$on('$viewContentLoaded', function () {
+      $http({
+        method: 'GET',
+        url: '/caNanoLab/rest/sample/setupAdvancedSearch'
+      }).
+      then(function (data, status, headers, config) {
+        data = data['data']
         $scope.data = data;
         //$scope.searchSampleForm = data;
         $scope.loader = false;
       }).
-      error(function(data, status, headers, config) {
+      catch(function (data, status, headers, config) {
+        data = data['data']
         $scope.message = data;
         $scope.loader = false;
       });
-    });     
+    });
 
-//// Sample Criteria ////
+    //// Sample Criteria ////
 
     // called when adding a new sample or updating an existing one //
-    $scope.updateSampleCriteria = function() {
+    $scope.updateSampleCriteria = function () {
       if ($scope.isNewSample) {
-    	  $scope.theSampleQuery.type = 'SampleQueryBean';
+        $scope.theSampleQuery.type = 'SampleQueryBean';
         $scope.searchSampleForm.sampleQueries.push($scope.theSampleQuery);
-      }
-      else {
-        angular.copy($scope.theSampleQuery,$scope.currentSample);
+      } else {
+        angular.copy($scope.theSampleQuery, $scope.currentSample);
       }
       $scope.theSampleQuery = {};
-      $scope.isNewSample=true;
+      $scope.isNewSample = true;
     };
 
     // called when clicking edit on existing sample. Copies sample //
-    $scope.editSampleCriteria = function(sample) {
+    $scope.editSampleCriteria = function (sample) {
       $scope.currentSample = sample;
-      $scope.theSampleQuery = angular.copy(sample); 
-      $scope.isNewSample=false;
-    }; 
+      $scope.theSampleQuery = angular.copy(sample);
+      $scope.isNewSample = false;
+    };
 
     // removes sample from searchSampleForm //
-    $scope.removeSample = function() {
-      $scope.searchSampleForm.sampleQueries.splice($scope.searchSampleForm.sampleQueries.indexOf($scope.currentSample),1);
+    $scope.removeSample = function () {
+      $scope.searchSampleForm.sampleQueries.splice($scope.searchSampleForm.sampleQueries.indexOf($scope.currentSample), 1);
       $scope.theSampleQuery = {};
-      $scope.isNewSample = true;
-    };        
-
-    // resets sample criteria //
-    $scope.clearSampleQuery = function() {
-      $scope.theSampleQuery = {};
-      $scope.searchSampleForm.sampleQueries = []; 
       $scope.isNewSample = true;
     };
 
-//// Composition Criteria ////
+    // resets sample criteria //
+    $scope.clearSampleQuery = function () {
+      $scope.theSampleQuery = {};
+      $scope.searchSampleForm.sampleQueries = [];
+      $scope.isNewSample = true;
+    };
+
+    //// Composition Criteria ////
 
     // called when selecting composition type. populates composition entity dropdown //
-    $scope.setCompositionEntityOptions = function(editType) {
+    $scope.setCompositionEntityOptions = function (editType) {
       if (!editType) {
-        $scope.theCompositionQuery.entityType='';
+        $scope.theCompositionQuery.entityType = '';
       }
-      if ($scope.theCompositionQuery.compositionType=='nanomaterial entity') { $scope.entityTypes=$scope.data.nanomaterialEntityTypes };
-      if ($scope.theCompositionQuery.compositionType=='functionalizing entity') { $scope.entityTypes=$scope.data.functionalizingEntityTypes };
-      if ($scope.theCompositionQuery.compositionType=='function') { $scope.entityTypes=$scope.data.functionTypes };      
+      if ($scope.theCompositionQuery.compositionType == 'nanomaterial entity') {
+        $scope.entityTypes = $scope.data.nanomaterialEntityTypes
+      };
+      if ($scope.theCompositionQuery.compositionType == 'functionalizing entity') {
+        $scope.entityTypes = $scope.data.functionalizingEntityTypes
+      };
+      if ($scope.theCompositionQuery.compositionType == 'function') {
+        $scope.entityTypes = $scope.data.functionTypes
+      };
     }
 
     // called when adding a new composition or updating an existing one //
-    $scope.updateCompositionCriteria = function() {
+    $scope.updateCompositionCriteria = function () {
       if ($scope.isNewComposition) {
-    	  $scope.theCompositionQuery.type = 'CompositionQueryBean';
+        $scope.theCompositionQuery.type = 'CompositionQueryBean';
         $scope.searchSampleForm.compositionQueries.push($scope.theCompositionQuery);
-      }
-      else {
-        angular.copy($scope.theCompositionQuery,$scope.currentComposition);
+      } else {
+        angular.copy($scope.theCompositionQuery, $scope.currentComposition);
       }
       $scope.theCompositionQuery = {};
       $scope.entityTypes = [];
-      $scope.isNewComposition=true;
+      $scope.isNewComposition = true;
     };
 
     // called when clicking edit on existing composition. Copies composition //
-    $scope.editCompositionCriteria = function(composition) {
+    $scope.editCompositionCriteria = function (composition) {
       $scope.currentComposition = composition;
-      $scope.theCompositionQuery = angular.copy(composition); 
+      $scope.theCompositionQuery = angular.copy(composition);
       $scope.setCompositionEntityOptions('update');
-      $scope.isNewComposition=false;
-    }; 
+      $scope.isNewComposition = false;
+    };
 
     // removes composition from searchSampleForm //
-    $scope.removeComposition = function() {
-      $scope.searchSampleForm.compositionQueries.splice($scope.searchSampleForm.compositionQueries.indexOf($scope.currentComposition),1);
+    $scope.removeComposition = function () {
+      $scope.searchSampleForm.compositionQueries.splice($scope.searchSampleForm.compositionQueries.indexOf($scope.currentComposition), 1);
       $scope.theCompositionQuery = {};
       $scope.isNewComposition = true;
-    };        
+    };
 
     // resets composition criteria //
-    $scope.clearCompositionQuery = function() {
+    $scope.clearCompositionQuery = function () {
       $scope.theCompositionQuery = {};
-      $scope.searchSampleForm.compositionQueries = []; 
+      $scope.searchSampleForm.compositionQueries = [];
       $scope.isNewComposition = true;
-    };    
+    };
 
     // // resets overall form //
     // $scope.resetForm = function() {
@@ -169,136 +176,156 @@ var app = angular.module('angularApp')
     //   window.scope = $scope;
     // };
 
-//// Characterization Criteria ////
+    //// Characterization Criteria ////
 
     // called when selecting characterization type. populates characterization name dropdown //
-    $scope.setCharacterizationOptions = function(editType) {
+    $scope.setCharacterizationOptions = function (editType) {
       var charType = $scope.theCharacterizationQuery.characterizationType;
       $scope.loader = true;
-      $http({method: 'GET', url: '/caNanoLab/rest/sample/getDecoratedCharacterizationOptions?charType='+$scope.theCharacterizationQuery.characterizationType}).
-      success(function(data, status, headers, config) {
-        $scope.characterizationNameList = data;
-        $scope.loader = false;        
+      $http({
+        method: 'GET',
+        url: '/caNanoLab/rest/sample/getDecoratedCharacterizationOptions?charType=' + $scope.theCharacterizationQuery.characterizationType
       }).
-      error(function(data, status, headers, config) {
+      then(function (data, status, headers, config) {
+        data = data['data']
+        $scope.characterizationNameList = data;
+        $scope.loader = false;
+      }).
+      catch(function (data, status, headers, config) {
+        data = data['data']
         $scope.message = data;
-        $scope.loader = false;      
+        $scope.loader = false;
       });
       if (!editType) {
-        $scope.theCharacterizationQuery = {}; 
-        $scope.theCharacterizationQuery.characterizationType = charType;        
+        $scope.theCharacterizationQuery = {};
+        $scope.theCharacterizationQuery.characterizationType = charType;
       }
     };
 
     // called when selecting characterization name. populates datum name dropdown //
-    $scope.setDatumNameOptionsByCharName = function(editType) {
+    $scope.setDatumNameOptionsByCharName = function (editType) {
       $scope.loader = true;
-      $http({method: 'GET', url: '/caNanoLab/rest/sample/getDecoratedDatumOptions?charType='+$scope.theCharacterizationQuery.characterizationType+'&charName='+$scope.theCharacterizationQuery.characterizationName}).
-      success(function(data, status, headers, config) {
+      $http({
+        method: 'GET',
+        url: '/caNanoLab/rest/sample/getDecoratedDatumOptions?charType=' + $scope.theCharacterizationQuery.characterizationType + '&charName=' + $scope.theCharacterizationQuery.characterizationName
+      }).
+      then(function (data, status, headers, config) {
+        data = data['data']
         $scope.datumNameList = data;
         $scope.loader = false;
       }).
-      error(function(data, status, headers, config) {
+      catch(function (data, status, headers, config) {
+        data = data['data']
         $scope.message = data;
         $scope.loader = false;
-      });  
+      });
       if (!editType) {
         $scope.theCharacterizationQuery.datumName = '';
         $scope.theCharacterizationQuery.operand = '';
-        $scope.theCharacterizationQuery.datumValueUnit = '';        
-      }    
+        $scope.theCharacterizationQuery.datumValueUnit = '';
+      }
     };
 
 
     // called when selecting datum name. populates datum value unit options dropdown //
-    $scope.setDatumValueUnitOptions = function(editType) {
+    $scope.setDatumValueUnitOptions = function (editType) {
       if (!$scope.theCharacterizationQuery.datumName) {
         $scope.theCharacterizationQuery.operand = '';
       };
-      $http({method: 'GET', url: '/caNanoLab/rest/sample/getDatumUnitOptions?datumName='+$scope.theCharacterizationQuery.datumName}).
-      success(function(data, status, headers, config) {
+      $http({
+        method: 'GET',
+        url: '/caNanoLab/rest/sample/getDatumUnitOptions?datumName=' + $scope.theCharacterizationQuery.datumName
+      }).
+      then(function (data, status, headers, config) {
+        data = data['data']
         $scope.datumUnitOptionsList = data;
         $scope.loader = false;
       }).
-      error(function(data, status, headers, config) {
+      catch(function (data, status, headers, config) {
+        data = data['data']
         $scope.message = data;
         $scope.loader = false;
-      });   
+      });
       if (!editType) {
-        $scope.theCharacterizationQuery.datumValueUnit = '';         
-        $scope.theCharacterizationQuery.operand = '';         
+        $scope.theCharacterizationQuery.datumValueUnit = '';
+        $scope.theCharacterizationQuery.operand = '';
       }
     };
 
     // called when adding a new characterization or updating an existing one //
-    $scope.updateCharacterizationCriteria = function() {
+    $scope.updateCharacterizationCriteria = function () {
       if ($scope.isNewCharacterization) {
-    	  $scope.theCharacterizationQuery.type = 'CharacterizationQueryBean';
-           $scope.searchSampleForm.characterizationQueries.push($scope.theCharacterizationQuery);
-      }
-      else {
-        angular.copy($scope.theCharacterizationQuery,$scope.currentCharacterization);
+        $scope.theCharacterizationQuery.type = 'CharacterizationQueryBean';
+        $scope.searchSampleForm.characterizationQueries.push($scope.theCharacterizationQuery);
+      } else {
+        angular.copy($scope.theCharacterizationQuery, $scope.currentCharacterization);
       }
       $scope.theCharacterizationQuery = {};
       $scope.datumUnitOptionsList = [];
       $scope.datumNameList = [];
       $scope.characterizationNameList = [];
-      $scope.isNewCharacterization=true;
+      $scope.isNewCharacterization = true;
     };
 
     // called when clicking edit on existing characterization. Copies characterization //
-    $scope.editCharacterizationCriteria = function(characterization) {
+    $scope.editCharacterizationCriteria = function (characterization) {
       $scope.currentCharacterization = characterization;
-      $scope.theCharacterizationQuery = angular.copy(characterization); 
+      $scope.theCharacterizationQuery = angular.copy(characterization);
       $scope.setCharacterizationOptions('update');
       $scope.setDatumNameOptionsByCharName('update');
       $scope.setDatumValueUnitOptions('update');
-      $scope.isNewCharacterization=false;
-    }; 
+      $scope.isNewCharacterization = false;
+    };
 
     // removes characterization from searchSampleForm //
-    $scope.removeCharacterization = function() {
-      $scope.searchSampleForm.characterizationQueries.splice($scope.searchSampleForm.characterizationQueries.indexOf($scope.currentCharacterization),1);
+    $scope.removeCharacterization = function () {
+      $scope.searchSampleForm.characterizationQueries.splice($scope.searchSampleForm.characterizationQueries.indexOf($scope.currentCharacterization), 1);
       $scope.theCharacterizationQuery = {};
       $scope.isNewCharacterization = true;
-    };        
+    };
 
     // resets characterization criteria //
-    $scope.clearCharacterizationQuery = function() {
+    $scope.clearCharacterizationQuery = function () {
       $scope.theCharacterizationQuery = {};
       $scope.datumUnitOptionsList = [];
       $scope.datumNameList = [];
-      $scope.characterizationNameList = [];  
-      $scope.searchSampleForm.characterizationQueries = [];     
+      $scope.characterizationNameList = [];
+      $scope.searchSampleForm.characterizationQueries = [];
       $scope.isNewCharacterization = true;
-    };    
+    };
 
     // gets results from advanced search //
-    $scope.search = function() {
+    $scope.search = function () {
       $scope.loader = true;
-      $http({method: 'POST', url: '/caNanoLab/rest/sample/searchSampleAdvanced',data: $scope.searchSampleForm}).
-      success(function(data, status, headers, config) {
+      $http({
+        method: 'POST',
+        url: '/caNanoLab/rest/sample/searchSampleAdvanced',
+        data: $scope.searchSampleForm
+      }).
+      then(function (data, status, headers, config) {
+        data = data['data']
         $scope.sampleData.data = data;
         $scope.loader = false;
         $location.path("/advancedSampleResults").replace();
 
       }).
-      error(function(data, status, headers, config) {
+      catch(function (data, status, headers, config) {
+        data = data['data']
         // called asynchronously if an error occurs
         // or server returns response with an error status.
         // $rootScope.sampleData = data;
         $scope.loader = false;
         $scope.message = data;
-      }); 
+      });
     };
 
     // resets overall form //
-    $scope.resetForm = function() {
+    $scope.resetForm = function () {
       $scope.searchSampleForm = {};
-      $scope.searchSampleForm.sampleQueries = [];      
-      $scope.defineSampleForm(1);    
+      $scope.searchSampleForm.sampleQueries = [];
+      $scope.defineSampleForm(1);
       console.log($scope);
-      window.scope = $scope;      
+      window.scope = $scope;
     };
 
   });

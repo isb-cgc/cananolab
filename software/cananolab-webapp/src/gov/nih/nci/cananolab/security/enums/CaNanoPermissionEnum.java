@@ -11,7 +11,7 @@ public enum CaNanoPermissionEnum
 	
 	private String permValue;
 	
-	private CaNanoPermissionEnum(String permValue) {
+	CaNanoPermissionEnum(String permValue) {
 		this.permValue = permValue;
 	}
 	

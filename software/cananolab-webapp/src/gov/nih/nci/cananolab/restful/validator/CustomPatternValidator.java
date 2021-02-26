@@ -48,7 +48,7 @@ public class CustomPatternValidator implements ConstraintValidator<PatternMatchI
 	private String messageKey;
 
 	public void initialize(PatternMatchIfNotNullNotEmpty parameters) {
-		Pattern.Flag flags[] = parameters.flags();
+        Pattern.Flag[] flags = parameters.flags();
 		int intFlag = 0;
 		for ( Pattern.Flag flag : flags ) {
 			intFlag = intFlag | flag.getValue();

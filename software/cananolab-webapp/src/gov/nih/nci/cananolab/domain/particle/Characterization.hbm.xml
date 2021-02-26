@@ -1,14 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
-
 <!--L
-   Copyright SAIC
-   Copyright SAIC-Frederick
+   Copyright Leidos
+   Copyright Leidos Biomedical
 
    Distributed under the OSI-approved BSD 3-Clause License.
    See http://ncip.github.com/cananolab/LICENSE.txt for details.
 L-->
-
-<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!DOCTYPE hibernate-mapping PUBLIC  "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+		"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
 <hibernate-mapping package="gov.nih.nci.cananolab.domain.particle" auto-import="false">
 	<class name="Characterization" table="characterization" lazy="true" polymorphism="explicit">
 		<cache usage="read-write" />
@@ -39,7 +38,7 @@ L-->
 			<key column="characterization_pk_id" />
 			<one-to-many class="gov.nih.nci.cananolab.domain.common.Finding"/>
 		</set>
-		<many-to-one name="sample" class="gov.nih.nci.cananolab.domain.particle.Sample" column="sample_pk_id" lazy="proxy" />
+		<many-to-one name="sample" class="Sample" column="sample_pk_id" lazy="proxy" />
 		<subclass name="gov.nih.nci.cananolab.domain.characterization.OtherCharacterization" discriminator-value="OtherCharacterization">
 			<!-- Attributes mapping for the OtherCharacterization class -->
 			<property name="assayCategory" type="string" column="other_char_assay_category"/>

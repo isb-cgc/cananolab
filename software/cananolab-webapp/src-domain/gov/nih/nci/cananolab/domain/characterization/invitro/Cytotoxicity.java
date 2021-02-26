@@ -45,9 +45,8 @@ public class Cytotoxicity extends InvitroCharacterization implements Serializabl
 	{
 		if(obj instanceof Cytotoxicity) 
 		{
-			Cytotoxicity c =(Cytotoxicity)obj; 			 
-			if(getId() != null && getId().equals(c.getId()))
-				return true;
+			Cytotoxicity c =(Cytotoxicity)obj;
+            return getId() != null && getId().equals(c.getId());
 		}
 		return false;
 	}

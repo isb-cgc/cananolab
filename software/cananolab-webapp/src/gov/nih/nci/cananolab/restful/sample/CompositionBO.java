@@ -1,6 +1,6 @@
 /*L
- *  Copyright SAIC
- *  Copyright SAIC-Frederick
+ *  Copyright Leidos
+ *  Copyright Leidos Biomedical
  *
  *  Distributed under the OSI-approved BSD 3-Clause License.
  *  See http://ncip.github.com/cananolab/LICENSE.txt for details.
@@ -19,7 +19,7 @@ import gov.nih.nci.cananolab.security.service.SpringSecurityAclService;
 import gov.nih.nci.cananolab.service.curation.CurationService;
 import gov.nih.nci.cananolab.service.sample.CompositionService;
 import gov.nih.nci.cananolab.service.sample.SampleService;
-import gov.nih.nci.cananolab.service.sample.impl.CompositionExporter;
+import gov.nih.nci.cananolab.service.sample.exporter.CompositionExporter;
 import gov.nih.nci.cananolab.ui.form.CompositionForm;
 import gov.nih.nci.cananolab.util.ExportUtils;
 import gov.nih.nci.cananolab.util.StringUtils;
@@ -60,10 +60,8 @@ public class CompositionBO extends BaseAnnotationBO
 	/**
 	 * Handle Composition Summary Edit request.
 	 *
-	 * @param mapping
 	 * @param form
 	 * @param request
-	 * @param response
 	 * @return ActionForward
 	 * @throws Exception
 	 */
@@ -80,10 +78,8 @@ public class CompositionBO extends BaseAnnotationBO
 	/**
 	 * Handle Composition Summary View request.
 	 *
-	 * @param mapping
 	 * @param form
 	 * @param request
-	 * @param response
 	 * @return ActionForward
 	 * @throws Exception
 	 */
@@ -103,10 +99,8 @@ public class CompositionBO extends BaseAnnotationBO
 	/**
 	 * Handle Composition Summary Print request.
 	 *
-	 * @param mapping
 	 * @param form
 	 * @param request
-	 * @param response
 	 * @return ActionForward
 	 * @throws Exception
 	 */
@@ -139,7 +133,6 @@ public class CompositionBO extends BaseAnnotationBO
 	/**
 	 * Handle Composition Summary Export request.
 	 *
-	 * @param mapping
 	 * @param form
 	 * @param request
 	 * @param response
@@ -188,10 +181,8 @@ public class CompositionBO extends BaseAnnotationBO
 	 * Shared function for summaryView() and summaryPrint(). Prepare
 	 * CompositionBean for displaying based on SampleId and location.
 	 *
-	 * @param mapping
 	 * @param form
 	 * @param request
-	 * @param response
 	 * @return ActionForward
 	 * @throws Exception
 	 */

@@ -68,9 +68,8 @@ public class OtherCharacterization extends Characterization implements Serializa
 	{
 		if(obj instanceof OtherCharacterization) 
 		{
-			OtherCharacterization c =(OtherCharacterization)obj; 			 
-			if(getId() != null && getId().equals(c.getId()))
-				return true;
+			OtherCharacterization c =(OtherCharacterization)obj;
+            return getId() != null && getId().equals(c.getId());
 		}
 		return false;
 	}

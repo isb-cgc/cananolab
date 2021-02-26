@@ -55,7 +55,7 @@ public class AccessibilityManager
 		try {
 			List<CananoUserDetails> matchedUsers = userService.loadUsers(searchStr);
 
-			return matchedUsers.toArray(new CananoUserDetails[matchedUsers.size()]);
+			return matchedUsers.toArray(new CananoUserDetails[0]);
 		} 
 		catch (Exception e) {
 			logger.error("Problem getting user login names", e);
@@ -76,7 +76,7 @@ public class AccessibilityManager
 					if (groupName.toUpperCase().indexOf(upperSearchStr) >= 0)
 						matchGroupNames.add(groupName);
 				}
-			return matchGroupNames.toArray(new String[matchGroupNames.size()]);
+			return matchGroupNames.toArray(new String[0]);
 		} catch (Exception e) {
 			logger.error("Problem getting matched group names", e);
 			return null;

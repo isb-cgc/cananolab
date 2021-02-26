@@ -1,6 +1,6 @@
 /*L
- *  Copyright SAIC
- *  Copyright SAIC-Frederick
+ *  Copyright Leidos
+ *  Copyright Leidos Biomedical
  *
  *  Distributed under the OSI-approved BSD 3-Clause License.
  *  See http://ncip.github.com/cananolab/LICENSE.txt for details.
@@ -29,48 +29,55 @@ import javax.servlet.http.HttpServletRequest;
  */
 public interface ProtocolService extends BaseService {
 
-	public ProtocolBean findProtocolById(String protocolId)
+	ProtocolBean findProtocolById(String protocolId)
 			throws ProtocolException, NoAccessException;
+
+
 
 	/**
 	 * Persist a new protocol or update an existing protocol
 	 *
-	 * @param protocol
 	 * @throws Exception
 	 */
-	public void saveProtocol(ProtocolBean protocolBean)
+    void saveProtocol(ProtocolBean protocolBean)
 			throws ProtocolException, NoAccessException;
 
-	public List<ProtocolBean> findProtocolsBy(String protocolType,
-			String protocolName, String protocolAbbreviation, String fileTite)
+	List<ProtocolBean> findProtocolsBy(String protocolType,
+                                       String protocolName, String protocolAbbreviation, String fileTite)
 			throws ProtocolException;
 
-	public ProtocolBean findProtocolBy(String protocolType,
-			String protocolName, String protocolVersion)
+	ProtocolBean findProtocolBy(String protocolType,
+                                String protocolName, String protocolVersion)
 			throws ProtocolException, NoAccessException;
 
-	public int getNumberOfPublicProtocols() throws ProtocolException;
+	int getNumberOfPublicProtocols() throws ProtocolException;
 	
-	public int getNumberOfPublicProtocolsForJob() throws ProtocolException;
+	int getNumberOfPublicProtocolsForJob() throws ProtocolException;
 
-	public void deleteProtocol(Protocol protocol) throws ProtocolException,
+	void deleteProtocol(Protocol protocol) throws ProtocolException,
 			NoAccessException;
 
-	public void assignAccessibility(AccessControlInfo access, Protocol protocol)
+	void assignAccessibility(AccessControlInfo access, Protocol protocol)
 			throws ProtocolException, NoAccessException;
 
-	public void removeAccessibility(AccessControlInfo access, Protocol protocol)
+	void removeAccessibility(AccessControlInfo access, Protocol protocol)
 			throws ProtocolException, NoAccessException;
 
-	public List<String> findProtocolIdsByOwner(String currentOwner) throws ProtocolException;
-	
-	public List<String> findProtocolIdsSharedWithUser(CananoUserDetails userDetails) throws ProtocolException;
+	List<String> findProtocolIdsByOwner(String currentOwner) throws ProtocolException;
 
-	public ProtocolBean findWorkspaceProtocolById(String protocolId)
+	List<ProtocolBean> findProtocolsByType(String protocolType) throws ProtocolException;
+	
+	List<String> findProtocolIdsSharedWithUser(CananoUserDetails userDetails) throws ProtocolException;
+
+	ProtocolBean findWorkspaceProtocolById(String protocolId)
 			throws ProtocolException, NoAccessException;
 	
-	public ProtocolServiceHelper getHelper();
+	ProtocolServiceHelper getHelper();
 	
-	public List<ProtocolBean> getProtocolsByChar(HttpServletRequest request,
-			String characterizationType) throws Exception;
+	List<ProtocolBean> getProtocolsByChar(HttpServletRequest request,
+                                          String characterizationType) throws Exception;
+
+	List<ProtocolBean> getSynthesisProtocols(HttpServletRequest request) throws Exception;
+
+	List<ProtocolBean> getPurificationProtocols(HttpServletRequest request) throws Exception;
 }

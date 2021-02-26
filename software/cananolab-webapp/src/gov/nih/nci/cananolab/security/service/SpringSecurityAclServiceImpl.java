@@ -77,8 +77,7 @@ public class SpringSecurityAclServiceImpl implements SpringSecurityAclService
 	{
 		//TODO:test to see if isCurator check is also needed or hasPermission will handle checking against a user's
 		//Curator role also if user has the role.
-		boolean writePermission = permissionEvaluator.hasPermission(SpringSecurityUtil.getAuthentication(), securedObjectId, clazz.getName(), BasePermission.WRITE);
-		return writePermission;
+        return permissionEvaluator.hasPermission(SpringSecurityUtil.getAuthentication(), securedObjectId, clazz.getName(), BasePermission.WRITE);
 	}
 	
 	@Override
@@ -86,15 +85,13 @@ public class SpringSecurityAclServiceImpl implements SpringSecurityAclService
 	{
 		//TODO:test to see if isCurator check is also needed or hasPermission will handle checking against a user's
 		//Curator role also if user has the role -Curator has all privileges
-		boolean deletePermission = permissionEvaluator.hasPermission(SpringSecurityUtil.getAuthentication(), securedObjectId, clazz.getName(), BasePermission.DELETE);
-		return deletePermission;
+        return permissionEvaluator.hasPermission(SpringSecurityUtil.getAuthentication(), securedObjectId, clazz.getName(), BasePermission.DELETE);
 	}
 	
 	@Override
 	public boolean currentUserHasReadPermission(Long securedObjectId, Class clazz)
 	{
-		boolean readPermission = permissionEvaluator.hasPermission(SpringSecurityUtil.getAuthentication(), securedObjectId, clazz.getName(), BasePermission.READ);
-		return readPermission;
+        return permissionEvaluator.hasPermission(SpringSecurityUtil.getAuthentication(), securedObjectId, clazz.getName(), BasePermission.READ);
 	}
 	
 	@Override
@@ -284,17 +281,17 @@ public class SpringSecurityAclServiceImpl implements SpringSecurityAclService
 			accessControlData.addUserAccess(userAccess);
 			
 			StringBuffer permStr = new StringBuffer();
-			String roleDisplayName = "";
+			StringBuilder roleDisplayName = new StringBuilder();
 			for (int i = 0; i < userAccess.getRoleName().length(); i++)
 			{
 				if (userAccess.getRoleName().charAt(i) != '.')
 				{
 					permStr.append(userAccess.getRoleName().charAt(i));
-					roleDisplayName += CaNanoPermissionEnum.getFromStr(userAccess.getRoleName().charAt(i) + "").getPermValue() + " ";
+					roleDisplayName.append(CaNanoPermissionEnum.getFromStr(userAccess.getRoleName().charAt(i) + "").getPermValue()).append(" ");
 				}
 			}
 			userAccess.setRoleName(permStr.toString());
-			userAccess.setRoleDisplayName(roleDisplayName);
+			userAccess.setRoleDisplayName(roleDisplayName.toString());
 		}
 		
 		//add all the roles and only those groups to which the logged in user is a member of
@@ -307,17 +304,18 @@ public class SpringSecurityAclServiceImpl implements SpringSecurityAclService
 				accessControlData.addGroupAccess(groupAccess);
 				
 				StringBuffer permStr = new StringBuffer();
-				String roleDisplayName = "";
+				StringBuilder roleDisplayName = new StringBuilder();
 				for (int i = 0; i < groupAccess.getRoleName().length(); i++)
 				{
 					if (groupAccess.getRoleName().charAt(i) != '.')
 					{
 						permStr.append(groupAccess.getRoleName().charAt(i));
-						roleDisplayName += CaNanoPermissionEnum.getFromStr(groupAccess.getRoleName().charAt(i) + "").getPermValue() + " ";
+						roleDisplayName.append(CaNanoPermissionEnum.getFromStr(groupAccess.getRoleName().charAt(i) +
+								"").getPermValue()).append(" ");
 					}
 				}
 				groupAccess.setRoleName(permStr.toString());
-				groupAccess.setRoleDisplayName(roleDisplayName);
+				groupAccess.setRoleDisplayName(roleDisplayName.toString());
 			}
 		}
 	}

@@ -1,6 +1,6 @@
 /*L
- *  Copyright SAIC
- *  Copyright SAIC-Frederick
+ *  Copyright Leidos
+ *  Copyright Leidos Biomedical
  *
  *  Distributed under the OSI-approved BSD 3-Clause License.
  *  See http://ncip.github.com/cananolab/LICENSE.txt for details.
@@ -8,13 +8,13 @@
 
 package gov.nih.nci.cananolab.system.dao.orm;
 
-import gov.nih.nci.cananolab.system.dao.CaNanoLabORMDAO;
-import gov.nih.nci.system.dao.DAOException;
-import gov.nih.nci.system.dao.orm.WritableORMDAOImpl;
 
+
+import gov.nih.nci.cananolab.domain.particle.SynthesisPurification;
+import gov.nih.nci.cananolab.domain.particle.SynthesisPurity;
+import gov.nih.nci.cananolab.system.dao.DAOException;
 import java.io.Serializable;
 import java.util.List;
-
 import org.apache.log4j.Logger;
 import org.hibernate.JDBCException;
 import org.hibernate.SQLQuery;
@@ -22,7 +22,7 @@ import org.hibernate.Session;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Property;
 import org.hibernate.type.NullableType;
-import org.springframework.stereotype.Component;
+import org.springframework.orm.hibernate3.HibernateTemplate;
 
 /**
  * Modified the original ORMDAOImpl to contain generic CRUD operations. Removed
@@ -32,8 +32,7 @@ import org.springframework.stereotype.Component;
  *
  * @author Satish Patel, Dan Dumitru
  */
-public class CaNanoLabORMDAOImpl extends WritableORMDAOImpl implements CaNanoLabORMDAO
-{
+public class CaNanoLabORMDAOImpl extends WritableORMDAOImpl implements CaNanoLabORMDAO {
 	private static Logger log = Logger.getLogger(CaNanoLabORMDAOImpl.class.getName());
 
 
@@ -47,7 +46,8 @@ public class CaNanoLabORMDAOImpl extends WritableORMDAOImpl implements CaNanoLab
 	}
 
 	public void saveOrUpdate(Object t) {
-		getHibernateTemplate().saveOrUpdate(t);
+		HibernateTemplate hibernateTemplate = getHibernateTemplate();
+		hibernateTemplate.saveOrUpdate(t);
 	}
 
 	public void delete(Object t) {
@@ -85,8 +85,7 @@ public class CaNanoLabORMDAOImpl extends WritableORMDAOImpl implements CaNanoLab
 			for (int i = 0; i < columns.length; i++) {
 				query.addScalar(columns[i], (NullableType) columnTypes[i]);
 			}
-			List results = query.list();
-			return results;
+            return query.list();
 		} catch (JDBCException ex) {
 			log.error("JDBC Exception in CustomORMDAOImpl ", ex);
 			throw new DAOException("JDBC Exception in CustomORMDAOImpl ", ex);

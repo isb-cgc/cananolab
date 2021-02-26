@@ -1,32 +1,27 @@
 package gov.nih.nci.cananolab.restful;
 
-import static com.jayway.restassured.RestAssured.given;
-import static org.hamcrest.Matchers.equalToIgnoringCase;
-import static org.hamcrest.Matchers.containsString;
-import static org.hamcrest.Matchers.hasItems;
-import static org.junit.Assert.*;
-import gov.nih.nci.cananolab.dto.particle.composition.AssociatedElementBean;
 import gov.nih.nci.cananolab.restful.util.RestTestLoginUtil;
 import gov.nih.nci.cananolab.restful.view.edit.SimpleAssociatedElement;
 import gov.nih.nci.cananolab.restful.view.edit.SimpleChemicalAssociationBean;
 import gov.nih.nci.cananolab.restful.view.edit.SimpleFileBean;
-import gov.nih.nci.cananolab.restful.view.edit.SimpleFunctionBean;
-import gov.nih.nci.cananolab.restful.view.edit.SimpleFunctionalizingEntityBean;
-
+import io.restassured.response.Response;
+import io.restassured.response.ValidatableResponse;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.client.Entity;
 import javax.ws.rs.client.WebTarget;
-
 import org.junit.Test;
 
-import com.jayway.restassured.response.Response;
-import com.jayway.restassured.response.ValidatableResponse;
+import static io.restassured.RestAssured.given;
+import static org.hamcrest.Matchers.containsString;
+import static org.hamcrest.Matchers.equalToIgnoringCase;
+import static org.hamcrest.Matchers.hasItems;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 public class ChemicalAssociationServicesTest {
 
@@ -35,9 +30,9 @@ public class ChemicalAssociationServicesTest {
 
 		Response res =
 				given().contentType("application/json")
-				.parameter("sampleId", "20917508").expect()
+				.param("sampleId", "20917508").expect()
 				.body("chemicalAssociationTypes", hasItems("Association","attachment","encapsulation","entrapment","intercalation"))
-						.when().get("http://localhost:8080/caNanoLab/rest/chemicalAssociation/setup");
+						.when().get(RestTestLoginUtil.readTestUrlProperty() +  "caNanoLab/rest/chemicalAssociation/setup");
 
 		System.out.println(res.getBody().asString());
 		
@@ -45,16 +40,16 @@ public class ChemicalAssociationServicesTest {
 	@Test
 	public void testEdit() {
 		
-		String jsessionId = RestTestLoginUtil.loginTest();
+		String jsessionId = RestTestLoginUtil.testLogin();
 		
 		Map<String, String> parameters = new HashMap<String, String>();
 		parameters.put("sampleId", "20917508");
 		parameters.put("dataId", "59670528");
 		Response res =
 				given().contentType("application/json").cookie("JSESSIONID=" + jsessionId)
-				.parameters(parameters).expect()
+				.params(parameters).expect()
 				.body("type", equalToIgnoringCase("attachment"))
-						.when().get("http://localhost:8080/caNanoLab/rest/chemicalAssociation/edit");
+						.when().get(RestTestLoginUtil.readTestUrlProperty() +  "caNanoLab/rest/chemicalAssociation/edit");
 
 		System.out.println(res.getBody().asString());
 		RestTestLoginUtil.logoutTest();
@@ -63,14 +58,14 @@ public class ChemicalAssociationServicesTest {
 	@Test
 	public void testGetAssociatedElementOptions() {
 		
-		String jsessionId = RestTestLoginUtil.loginTest();
+		String jsessionId = RestTestLoginUtil.testLogin();
 		Map<String, String> parameters = new HashMap<String, String>();
 		parameters.put("compositionType", "nanomaterial entity");
 		this.testSetup();
 		ValidatableResponse res =
 				given().contentType("application/json").cookie("JSESSIONID=" + jsessionId)
 				.param("compositionType", "nanomaterial entity")
-						.when().post("http://localhost:8080/caNanoLab/rest/chemicalAssociation/getAssociatedElementOptions")
+						.when().post(RestTestLoginUtil.readTestUrlProperty() +  "caNanoLab/rest/chemicalAssociation/getAssociatedElementOptions")
 						.then().body(containsString("[]"));
 
 		RestTestLoginUtil.logoutTest();
@@ -80,13 +75,13 @@ public class ChemicalAssociationServicesTest {
 	@Test
 	public void testGetComposingElementsByNanomaterialEntityId() {
 		
-		String jsessionId = RestTestLoginUtil.loginTest();
+		String jsessionId = RestTestLoginUtil.testLogin();
 		Map<String, String> parameters = new HashMap<String, String>();
 		parameters.put("id", "21867783");
 		ValidatableResponse res =
 				given().contentType("application/json").cookie("JSESSIONID=" + jsessionId)
 				.queryParam("id", "21867783")
-						.when().post("http://localhost:8080/caNanoLab/rest/chemicalAssociation/getComposingElementsByNanomaterialEntityId")
+						.when().post(RestTestLoginUtil.readTestUrlProperty() +  "caNanoLab/rest/chemicalAssociation/getComposingElementsByNanomaterialEntityId")
 		.then().body(containsString("RNA"));
 		RestTestLoginUtil.logoutTest();
 		
@@ -118,13 +113,13 @@ public void testsaveFile() {
 	beanB.setEntityId("85196800");
 	bean.setAssociatedElementA(beanB);
 	
-	String jsessionId = RestTestLoginUtil.loginTest();
+	String jsessionId = RestTestLoginUtil.testLogin();
 
 	final Client aClient = ClientBuilder.newBuilder()
 	        .register(ObjectMapperProvider.class)
 	        .build();
 	
-	WebTarget webTarget = aClient.target("http://localhost:8080/caNanoLab/rest");
+	WebTarget webTarget = aClient.target(RestTestLoginUtil.readTestUrlProperty() +  "caNanoLab/rest");
 	webTarget.register(ChemicalAssociationServices.class);
 	
 	WebTarget submitWebTarget = webTarget.path("chemicalAssociation").path("saveFile");
@@ -171,13 +166,13 @@ public void testRemoveFile() {
 	bean.setAssociatedElementA(beanB);
 	bean.setFiles(list);
 	
-	String jsessionId = RestTestLoginUtil.loginTest();
+	String jsessionId = RestTestLoginUtil.testLogin();
 
 	final Client aClient = ClientBuilder.newBuilder()
 	        .register(ObjectMapperProvider.class)
 	        .build();
 	
-	WebTarget webTarget = aClient.target("http://localhost:8080/caNanoLab/rest");
+	WebTarget webTarget = aClient.target(RestTestLoginUtil.readTestUrlProperty() +  "caNanoLab/rest");
 	webTarget.register(ChemicalAssociationServices.class);
 	
 	WebTarget submitWebTarget = webTarget.path("chemicalAssociation").path("removeFile");
@@ -223,13 +218,13 @@ public void testSubmit() {
 	bean.setAssociatedElementA(beanB);
 	bean.setFiles(list);
 	
-	String jsessionId = RestTestLoginUtil.loginTest();
+	String jsessionId = RestTestLoginUtil.testLogin();
 
 	final Client aClient = ClientBuilder.newBuilder()
 	        .register(ObjectMapperProvider.class)
 	        .build();
 	
-	WebTarget webTarget = aClient.target("http://localhost:8080/caNanoLab/rest");
+	WebTarget webTarget = aClient.target(RestTestLoginUtil.readTestUrlProperty() +  "caNanoLab/rest");
 	webTarget.register(ChemicalAssociationServices.class);
 	
 	WebTarget submitWebTarget = webTarget.path("chemicalAssociation").path("submit");
@@ -276,13 +271,13 @@ public void testDelete() {
 	bean.setFiles(list);
 	
 			
-	String jsessionId = RestTestLoginUtil.loginTest();
+	String jsessionId = RestTestLoginUtil.testLogin();
 
 	final Client aClient = ClientBuilder.newBuilder()
 	        .register(ObjectMapperProvider.class)
 	        .build();
 	
-	WebTarget webTarget = aClient.target("http://localhost:8080/caNanoLab/rest");
+	WebTarget webTarget = aClient.target(RestTestLoginUtil.readTestUrlProperty() +  "caNanoLab/rest");
 	webTarget.register(ChemicalAssociationServices.class);
 	
 	WebTarget submitWebTarget = webTarget.path("chemicalAssociation").path("delete");

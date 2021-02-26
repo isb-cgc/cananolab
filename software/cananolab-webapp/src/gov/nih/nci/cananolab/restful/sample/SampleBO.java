@@ -1,6 +1,6 @@
 /*L
- *  Copyright SAIC
- *  Copyright SAIC-Frederick
+ *  Copyright Leidos
+ *  Copyright Leidos Biomedical
  *
  *  Distributed under the OSI-approved BSD 3-Clause License.
  *  See http://ncip.github.com/cananolab/LICENSE.txt for details.
@@ -18,7 +18,6 @@ import gov.nih.nci.cananolab.exception.NoAccessException;
 import gov.nih.nci.cananolab.exception.NotExistException;
 import gov.nih.nci.cananolab.exception.SampleException;
 import gov.nih.nci.cananolab.restful.core.BaseAnnotationBO;
-import gov.nih.nci.cananolab.restful.sample.InitSampleSetup;
 import gov.nih.nci.cananolab.restful.util.InputValidationUtil;
 import gov.nih.nci.cananolab.restful.util.PropertyUtil;
 import gov.nih.nci.cananolab.restful.view.SimpleSampleBean;
@@ -38,11 +37,9 @@ import gov.nih.nci.cananolab.security.utils.SpringSecurityUtil;
 import gov.nih.nci.cananolab.service.curation.CurationService;
 import gov.nih.nci.cananolab.service.sample.DataAvailabilityService;
 import gov.nih.nci.cananolab.service.sample.SampleService;
-import gov.nih.nci.cananolab.ui.form.CompositionForm;
 import gov.nih.nci.cananolab.ui.form.SampleForm;
 import gov.nih.nci.cananolab.util.Comparators;
 import gov.nih.nci.cananolab.util.StringUtils;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -53,12 +50,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.SortedSet;
-
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-
 import org.apache.commons.validator.EmailValidator;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -199,10 +194,7 @@ public class SampleBO extends BaseAnnotationBO {
 	/**
 	 * Handle view sample request on sample search result page (read-only view).
 	 * 
-	 * @param mapping
-	 * @param form
 	 * @param request
-	 * @param response
 	 * @return
 	 * @throws Exception
 	 */
@@ -343,36 +335,36 @@ public class SampleBO extends BaseAnnotationBO {
 		//this.userIsCurator = sampleBean.getUser().isCurator();
 		sampleEdit.setIsPublic(springSecurityAclService.checkObjectPublic(sampleBean.getDomain().getId(), SecureClassesEnum.SAMPLE.getClazz()));
 
-		logger.debug("Transferming POC");
+		logger.debug("Transfering POC");
 		sampleEdit.transferPointOfContactData(sampleBean);
-		logger.debug("Transferming POC");
+
 
 		sampleEdit.setKeywords(new ArrayList<String>(sampleBean.getKeywordSet()));
 
-		logger.debug("Transferming Access");
+		logger.debug("Transfering Access");
 		sampleEdit.transferAccessibilityData(sampleBean);
-		logger.debug("Done Transferming acess");
+
 
 		sampleEdit.transferDataAvailability(request, sampleBean, availableEntityNames);
 
-		logger.debug("Transferming lookup");
+		logger.debug("Transfering lookup");
 		setupLookups(request);
-		logger.debug("Done Transferming lookup");
-		logger.debug("Transferming GroupName");
+		logger.debug("Done Transfering lookup");
+		logger.debug("Transfering GroupName");
 		sampleEdit.setupGroupNamesForNewAccess(request, userService);
-		logger.debug("Done Transferming GroupName");
+		logger.debug("Done Transfering GroupName");
 
 		logger.debug("Transferming FilteredUsersParamForNewAccess");
 		setupFilteredUsersParamForNewAccess(request, sampleBean.getDomain().getCreatedBy(), sampleEdit);
 		logger.debug("Done Transferming FilteredUsersParamForNewAccess");
 
-		logger.debug("Transferming REview button");
+		logger.debug("Transfering REview button");
 		sampleEdit.setupReviewButton(request, curatorService, sampleBean, springSecurityAclService);
-		logger.debug("Done Transferming REview button");
+		logger.debug("Done Transfering REview button");
 
-		logger.debug("Transferming role map");
+		logger.debug("Transfering role map");
 		sampleEdit.setupRoleNameMap();
-		logger.debug("Done Transferming role map");
+		logger.debug("Done Transfering role map");
 
 	}
 
@@ -417,10 +409,7 @@ public class SampleBO extends BaseAnnotationBO {
 
 	/**
 	 * 
-	 * @param mapping
-	 * @param form
 	 * @param request
-	 * @param response
 	 * @return
 	 * @throws Exception
 	 */
@@ -448,7 +437,6 @@ public class SampleBO extends BaseAnnotationBO {
 
 	/**
 	 * 
-	 * @param mapping
 	 * @param form
 	 * @param request
 	 * @param response
@@ -475,7 +463,6 @@ public class SampleBO extends BaseAnnotationBO {
 	 * Retrieve all POCs and Groups for POC drop-down on sample edit page.
 	 * 
 	 * @param request
-	 * @param sampleOrg
 	 * @throws Exception
 	 */
 	private void setupLookups(HttpServletRequest request) throws Exception {
@@ -525,7 +512,6 @@ public class SampleBO extends BaseAnnotationBO {
 
 	/**
 	 * Find the "dirty" SimpleAccessBean from a list
-	 * @param accessList
 	 * @return
 	 */
 	protected SimpleAccessBean findDirtyAccess(Map<String, List<SimpleAccessBean>> accessMap) {
@@ -636,16 +622,16 @@ public class SampleBO extends BaseAnnotationBO {
 
 			request.getSession().setAttribute("theSample", sample);
 			simpleSampleBean.getErrors().add("User has no access to edit this sample");
-			simpleSampleBean.transferPointOfContactData(sample);;
-			return simpleSampleBean;
+			simpleSampleBean.transferPointOfContactData(sample);
+            return simpleSampleBean;
 		} catch (DuplicateEntriesException e) {
 			if (newSample)
 				simpleSampleBean.getPointOfContacts().clear();
 
 			request.getSession().setAttribute("theSample", sample);
 			simpleSampleBean.getErrors().add(PropertyUtil.getProperty("sample", "error.duplicateSample"));
-			simpleSampleBean.transferPointOfContactData(sample);;
-			return simpleSampleBean;
+			simpleSampleBean.transferPointOfContactData(sample);
+            return simpleSampleBean;
 			//return this.wrapErrorInEditBean(PropertyUtil.getProperty("sample", "error.duplicateSample"));
 		} catch (Exception e) {
 			if (newSample)
@@ -653,8 +639,8 @@ public class SampleBO extends BaseAnnotationBO {
 
 			request.getSession().setAttribute("theSample", sample);
 			simpleSampleBean.getErrors().add(e.getMessage());
-			simpleSampleBean.transferPointOfContactData(sample);;
-			return simpleSampleBean;
+			simpleSampleBean.transferPointOfContactData(sample);
+            return simpleSampleBean;
 		}
 
 		if (newSample)
@@ -668,7 +654,7 @@ public class SampleBO extends BaseAnnotationBO {
 
 	protected void determinePrimaryPOC(PointOfContactBean thePOC, SampleBean sample, boolean newSample)
 	{
-		if (newSample == true) {
+		if (newSample) {
 			if (sample.getDomain().getPrimaryPointOfContact() == null)
 				thePOC.setPrimaryStatus(true);
 		}
@@ -677,7 +663,6 @@ public class SampleBO extends BaseAnnotationBO {
 	/**
 	 * Delete a non-primary POC from a sample
 	 * 
-	 * @param simpleEditBean
 	 * @param request
 	 * @return
 	 * @throws Exception
@@ -774,15 +759,12 @@ public class SampleBO extends BaseAnnotationBO {
 		
 		request.getSession().removeAttribute("theSample");
 
-		String msg = PropertyUtil.getPropertyReplacingToken("sample", "message.deleteSample", "0", sampleName);
-
-		return msg;
+		return PropertyUtil.getPropertyReplacingToken("sample", "message.deleteSample", "0", sampleName);
 	}
 
 	/**
 	 * generate data availability for the sample
 	 * 
-	 * @param mapping
 	 * @param form
 	 * @param request
 	 * @param response
@@ -822,10 +804,7 @@ public class SampleBO extends BaseAnnotationBO {
 	 * update data availability for the sample. This is to support the "Regenerate" button
 	 * on Sample Edit page.
 	 * 
-	 * @param mapping
-	 * @param form
 	 * @param request
-	 * @param response
 	 * @return
 	 * @throws Exception
 	 */
@@ -847,10 +826,7 @@ public class SampleBO extends BaseAnnotationBO {
 	/**
 	 * delete data availability for the sample
 	 * 
-	 * @param mapping
-	 * @param form
 	 * @param request
-	 * @param response
 	 * @return
 	 * @throws Exception
 	 */
@@ -897,8 +873,7 @@ public class SampleBO extends BaseAnnotationBO {
 			}
 		}
 
-		SimpleSampleBean simpleBean = transferDataAvailabilityToSimpleSampleBean(sampleBean, request, availEntityNames);
-		return simpleBean;
+		return transferDataAvailabilityToSimpleSampleBean(sampleBean, request, availEntityNames);
 	}
 
 	protected SimpleSampleBean transferDataAvailabilityToSimpleSampleBean(SampleBean sampleBean, HttpServletRequest request, String[] availEntityNames)
@@ -922,7 +897,6 @@ public class SampleBO extends BaseAnnotationBO {
 
 	/**
 	 * Save access info for a sample
-	 * @param simpleAccess
 	 * @param request
 	 * @return
 	 * @throws Exception
@@ -1016,7 +990,7 @@ public class SampleBO extends BaseAnnotationBO {
 		SimpleOrganizationBean simpleOrg = simplePOC.getOrganization();
 		if (simpleOrg != null) {
 			String orgName = simpleOrg.getName();
-			if (orgName == null || !InputValidationUtil.isTextFieldWhiteList(orgName))
+			if (orgName == null || InputValidationUtil.isTextFieldWhiteList(orgName))
 				errors.add(PropertyUtil.getProperty("sample", "organization.name.invalid"));
 		} else
 			errors.add("Organization Name is a required field");
@@ -1024,22 +998,22 @@ public class SampleBO extends BaseAnnotationBO {
 		SimpleAddressBean addrBean = simplePOC.getAddress();
 		if (addrBean != null) {
 			String val = addrBean.getLine1();
-			if (val != null && val.length() > 0 && !InputValidationUtil.isTextFieldWhiteList(val))
+			if (val != null && val.length() > 0 && InputValidationUtil.isTextFieldWhiteList(val))
 				errors.add(PropertyUtil.getProperty("sample", "organization.address1.invalid"));
 
 			val = addrBean.getLine2();
-			if (val != null && val.length() > 0 && !InputValidationUtil.isTextFieldWhiteList(val))
+			if (val != null && val.length() > 0 && InputValidationUtil.isTextFieldWhiteList(val))
 				errors.add(PropertyUtil.getProperty("sample", "organization.address2.invalid"));
 			val = addrBean.getCity();
-			if (val != null && val.length() > 0 && !InputValidationUtil.isRelaxedAlphabetic(val))
+			if (val != null && val.length() > 0 && InputValidationUtil.isRelaxedAlphabetic(val))
 				errors.add(PropertyUtil.getProperty("sample", "organization.city.invalid"));
 
 			val = addrBean.getStateProvince();
-			if (val != null && val.length() > 0 && !InputValidationUtil.isRelaxedAlphabetic(val))
+			if (val != null && val.length() > 0 && InputValidationUtil.isRelaxedAlphabetic(val))
 				errors.add(PropertyUtil.getProperty("sample", "organization.state.invalid"));
 
 			val = addrBean.getCountry();
-			if (val != null && val.length() > 0 && !InputValidationUtil.isRelaxedAlphabetic(val))
+			if (val != null && val.length() > 0 && InputValidationUtil.isRelaxedAlphabetic(val))
 				errors.add(PropertyUtil.getProperty("sample", "organization.country.invalid"));
 
 			val = addrBean.getZip();
@@ -1048,15 +1022,15 @@ public class SampleBO extends BaseAnnotationBO {
 		}
 
 		String name = simplePOC.getFirstName();
-		if (name != null && name.length() > 0 && !InputValidationUtil.isRelaxedAlphabetic(name))
+		if (name != null && name.length() > 0 && InputValidationUtil.isRelaxedAlphabetic(name))
 			errors.add(PropertyUtil.getProperty("sample", "firstName.invalid"));
 
 		name = simplePOC.getLastName();
-		if (name != null && name.length() > 0 && !InputValidationUtil.isRelaxedAlphabetic(name))
+		if (name != null && name.length() > 0 && InputValidationUtil.isRelaxedAlphabetic(name))
 			errors.add(PropertyUtil.getProperty("sample", "lastName.invalid"));
 
 		name = simplePOC.getMiddleInitial();
-		if (name != null && name.length() > 0 && !InputValidationUtil.isRelaxedAlphabetic(name))
+		if (name != null && name.length() > 0 && InputValidationUtil.isRelaxedAlphabetic(name))
 			errors.add(PropertyUtil.getProperty("sample", "middleInitial.invalid"));
 
 		String phone = simplePOC.getPhoneNumber();
@@ -1072,7 +1046,7 @@ public class SampleBO extends BaseAnnotationBO {
 	}
 
 	protected String validateSampleName(String sampleName) {
-		return (!InputValidationUtil.isTextFieldWhiteList(sampleName)) ?
+		return (InputValidationUtil.isTextFieldWhiteList(sampleName)) ?
 				PropertyUtil.getProperty("sample", "cloningSample.name.invalid") : "";
 
 	}
@@ -1208,13 +1182,12 @@ public class SampleBO extends BaseAnnotationBO {
 			Collections.sort(names, new Comparators.SortableNameComparator());
 
 			if (!names.isEmpty()) {
-				nameArray = names.toArray(new String[names.size()]);
+				nameArray = names.toArray(new String[0]);
 			}
 		} catch (Exception e) {
 			logger.error("Problem getting matched sample names", e);
 		}
-		List<String> names = new ArrayList(Arrays.asList(nameArray));
-		return names;
+		return (List<String>) new ArrayList(Arrays.asList(nameArray));
 	}
 
 	@Override
@@ -1233,6 +1206,10 @@ public class SampleBO extends BaseAnnotationBO {
 			throw new Exception("Input sample id is null");
 
 		SampleBean sampleBean = (SampleBean) request.getSession().getAttribute("theSample");
+
+		if(sampleBean==null)
+			sampleBean = sampleService.findSampleById(sampleId, true);
+
 		if (sampleBean == null)
 			throw new Exception("No sample in session matching sample id: "  + sampleId);
 
@@ -1255,8 +1232,7 @@ public class SampleBO extends BaseAnnotationBO {
 		if (sampleId == null || sampleId.length() == 0)
 			return false;
 
-		boolean isEditable = springSecurityAclService.currentUserHasWritePermission(Long.valueOf(sampleId), SecureClassesEnum.SAMPLE.getClazz());		
-		return isEditable;
+		return springSecurityAclService.currentUserHasWritePermission(Long.valueOf(sampleId), SecureClassesEnum.SAMPLE.getClazz());
 
 	}
 
@@ -1283,9 +1259,7 @@ public class SampleBO extends BaseAnnotationBO {
 		sampleService.deleteSample(sampleBean.getDomain().getName());
 		request.getSession().removeAttribute("theSample");
 
-		String msg = PropertyUtil.getPropertyReplacingToken("sample", "message.deleteSample", "0", sampleName);
-
-		return msg;
+		return PropertyUtil.getPropertyReplacingToken("sample", "message.deleteSample", "0", sampleName);
 	}
 
 	@Override

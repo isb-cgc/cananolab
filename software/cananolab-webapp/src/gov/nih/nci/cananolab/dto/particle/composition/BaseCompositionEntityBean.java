@@ -1,6 +1,6 @@
 /*L
- *  Copyright SAIC
- *  Copyright SAIC-Frederick
+ *  Copyright Leidos
+ *  Copyright Leidos Biomedical
  *
  *  Distributed under the OSI-approved BSD 3-Clause License.
  *  See http://ncip.github.com/cananolab/LICENSE.txt for details.
@@ -8,6 +8,7 @@
 
 package gov.nih.nci.cananolab.dto.particle.composition;
 
+import gov.nih.nci.cananolab.domain.common.File;
 import gov.nih.nci.cananolab.dto.common.FileBean;
 import gov.nih.nci.cananolab.util.StringUtils;
 
@@ -51,6 +52,7 @@ public class BaseCompositionEntityBean {
 		}
 	}
 
+
 	public void removeFile(FileBean file) {
 		files.remove(file);
 	}
@@ -75,16 +77,17 @@ public class BaseCompositionEntityBean {
 		this.description = description;
 	}
 
-	public FileBean getTheFile() {
-		return theFile;
-	}
-
-	public void setTheFile(FileBean theFile) {
-		this.theFile = theFile;
-	}
-
 	public List<FileBean> getFiles() {
 		return files;
+	}
+
+	public FileBean getFile(String fileId){
+		for (FileBean file: files){
+			if (file.getDomainFile().getId().equals(fileId)){
+				return file;
+			}
+		}
+		return null;
 	}
 
 	public void setFiles(List<FileBean> files) {
@@ -117,5 +120,14 @@ public class BaseCompositionEntityBean {
 	
 	public String getName(){
 		return name;
+	}
+
+	//TODO This is evil and should be eliminated
+	public FileBean getTheFile() {
+		return theFile;
+	}
+
+	public void setTheFile(FileBean theFile) {
+		this.theFile = theFile;
 	}
 }

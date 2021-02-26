@@ -37,7 +37,9 @@ public class SimpleCompositionBean {
 	Map<String, Object> smallMolecule;
 
 	MultiMap chemicalassociation;
-	
+	Map<String, Object> association;
+	MultiMap compositionfile;
+	Map<String, Object> image;
 
 	public MultiMap getChemicalassociation() {
 		return chemicalassociation;
@@ -47,11 +49,13 @@ public class SimpleCompositionBean {
 		this.chemicalassociation = chemicalassociation;
 	}
 
-	Map<String, Object> association;
+	public List<String> getCompositionSections() {
+		return compositionSections;
+	}
 
-	MultiMap compositionfile;
-
-	
+	public void setCompositionSections(List<String> compositionSections) {
+		this.compositionSections = compositionSections;
+	}
 
 	public MultiMap getCompositionfile() {
 		return compositionfile;
@@ -61,18 +65,6 @@ public class SimpleCompositionBean {
 		this.compositionfile = compositionfile;
 	}
 
-	Map<String, Object> image;
-
-	
-	public MultiMap getNanomaterialentity() {
-		return nanomaterialentity;
-	}
-
-	public void setNanomaterialentity(MultiMap nanomaterialentity) {
-		this.nanomaterialentity = nanomaterialentity;
-	}
-
-	
 	public MultiMap getFunctionalizingentity() {
 		return functionalizingentity;
 	}
@@ -81,12 +73,12 @@ public class SimpleCompositionBean {
 		this.functionalizingentity = functionalizingentity;
 	}
 
-	public List<String> getCompositionSections() {
-		return compositionSections;
+	public MultiMap getNanomaterialentity() {
+		return nanomaterialentity;
 	}
 
-	public void setCompositionSections(List<String> compositionSections) {
-		this.compositionSections = compositionSections;
+	public void setNanomaterialentity(MultiMap nanomaterialentity) {
+		this.nanomaterialentity = nanomaterialentity;
 	}
 
 	public String getSampleName() {
@@ -127,7 +119,7 @@ public class SimpleCompositionBean {
 							String detailPage = gov.nih.nci.cananolab.restful.sample.InitCompositionSetup
 									.getInstance().getDetailPage(entityType,
 											"nanomaterialEntity");
-							System.out.println("**** Deatils Page *****"
+							System.out.println("**** Details Page *****"
 									+ detailPage);
 							nanoentitiy.put("detailsPage", detailPage);
 							if (detailPage.contains("Dendrimer")) {
@@ -256,8 +248,7 @@ public class SimpleCompositionBean {
 
 							files.put("fileId", file.getDomainFile().getId());
 							files.put("isImage", file.isImage());
-							files.put("ExternalURI", file.getDomainFile()
-									.getUriExternal().toString());
+							files.put("ExternalURI", new Boolean(file.getDomainFile().getUriExternal()).toString());
 							files.put("Title", file.getDomainFile().getTitle());
 
 							files.put("URI", file.getDomainFile().getUri());
@@ -286,7 +277,7 @@ public class SimpleCompositionBean {
 				Map<String, Object> function;
 
 				for (String entityType : compBean.getFuncEntityTypes()) {
-					function = new HashMap<String, Object>();
+//					function = new HashMap<String, Object>();
 
 					for (FunctionalizingEntityBean funcBean : compBean
 							.getType2FuncEntities().get(entityType)) {
@@ -401,8 +392,7 @@ public class SimpleCompositionBean {
 								files.put("fileId", file.getDomainFile()
 										.getId());
 								files.put("isImage", file.isImage());
-								files.put("ExternalURI", file.getDomainFile()
-										.getUriExternal().toString());
+								files.put("ExternalURI", new Boolean(file.getDomainFile().getUriExternal()).toString());
 								files.put("Title", file.getDomainFile()
 										.getTitle());
 
@@ -504,8 +494,7 @@ public class SimpleCompositionBean {
 								files.put("fileId", file.getDomainFile()
 										.getId());
 								files.put("isImage", file.isImage());
-								files.put("ExternalURI", file.getDomainFile()
-										.getUriExternal().toString());
+								files.put("ExternalURI", new Boolean(file.getDomainFile().getUriExternal()).toString());
 								files.put("Title", file.getDomainFile()
 										.getTitle());
 
@@ -543,8 +532,7 @@ public class SimpleCompositionBean {
 						comFile.put("dataId", file.getDomainFile().getId());
 						comFile.put("fileId", file.getDomainFile().getId());
 						comFile.put("isImage", file.isImage());
-						comFile.put("ExternalURI", file.getDomainFile()
-								.getUriExternal().toString());
+						files.put("ExternalURI", new Boolean(file.getDomainFile().getUriExternal()).toString());
 						comFile.put("Title", file.getDomainFile().getTitle());
 
 						comFile.put("URI", file.getDomainFile().getUri());

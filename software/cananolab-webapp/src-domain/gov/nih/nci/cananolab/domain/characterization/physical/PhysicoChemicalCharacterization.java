@@ -24,9 +24,8 @@ public class PhysicoChemicalCharacterization extends Characterization implements
 	{
 		if(obj instanceof PhysicoChemicalCharacterization) 
 		{
-			PhysicoChemicalCharacterization c =(PhysicoChemicalCharacterization)obj; 			 
-			if(getId() != null && getId().equals(c.getId()))
-				return true;
+			PhysicoChemicalCharacterization c =(PhysicoChemicalCharacterization)obj;
+            return getId() != null && getId().equals(c.getId());
 		}
 		return false;
 	}

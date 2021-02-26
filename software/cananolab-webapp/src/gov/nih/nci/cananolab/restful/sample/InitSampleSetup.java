@@ -1,6 +1,6 @@
 /*L
- *  Copyright SAIC
- *  Copyright SAIC-Frederick
+ *  Copyright Leidos
+ *  Copyright Leidos Biomedical
  *
  *  Distributed under the OSI-approved BSD 3-Clause License.
  *  See http://ncip.github.com/cananolab/LICENSE.txt for details.
@@ -8,7 +8,6 @@
 
 package gov.nih.nci.cananolab.restful.sample;
 
-import gov.nih.nci.cananolab.domain.particle.Sample;
 import gov.nih.nci.cananolab.dto.particle.SampleBean;
 import gov.nih.nci.cananolab.restful.core.InitSetup;
 import gov.nih.nci.cananolab.service.common.LookupService;
@@ -16,7 +15,6 @@ import gov.nih.nci.cananolab.service.sample.SampleService;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 import java.util.SortedSet;
 
 import javax.servlet.http.HttpServletRequest;
@@ -66,21 +64,19 @@ public class InitSampleSetup {
 	
 	public SortedSet<String> getDefaultTypesByReflection(HttpServletRequest request, String fullClassName) 
 	throws Exception {
-		SortedSet<String> defaultTypes = InitSetup.getInstance().getDefaultTypesByReflection(
-				request.getSession().getServletContext(), 
-				"defaultFunctionalizingEntityTypes", fullClassName);
-		
-		return defaultTypes;
+
+        return InitSetup.getInstance().getDefaultTypesByReflection(
+                request.getSession().getServletContext(),
+                "defaultFunctionalizingEntityTypes", fullClassName);
 	}
 	
 	public List<String> getFunctionTypes(HttpServletRequest request)
 			throws Exception {
 
-		List<String> sortedFormatted = new ArrayList<String>();
-		SortedSet<String> defaultTypes = InitSetup.getInstance().getDefaultTypesByReflection(
+        SortedSet<String> defaultTypes = InitSetup.getInstance().getDefaultTypesByReflection(
 				request.getSession().getServletContext(), 
 				"defaultFunctionTypes", "gov.nih.nci.cananolab.domain.particle.Function");
-		sortedFormatted.addAll(defaultTypes);
+        List<String> sortedFormatted = new ArrayList<String>(defaultTypes);
 
 		SortedSet<String> otherTypes = LookupService
 				.getAllOtherObjectTypes("gov.nih.nci.cananolab.domain.function.OtherFunction");
@@ -94,12 +90,11 @@ public class InitSampleSetup {
 	
 	public List<String> getNanomaterialEntityTypes(HttpServletRequest request)
 	throws Exception {
-		
-		List<String> sortedFormatted = new ArrayList<String>();
-		SortedSet<String> defaultTypes = InitSetup.getInstance().getDefaultTypesByReflection(
+
+        SortedSet<String> defaultTypes = InitSetup.getInstance().getDefaultTypesByReflection(
 				request.getSession().getServletContext(), 
 				"defaultNanomaterialEntityTypes", "gov.nih.nci.cananolab.domain.particle.NanomaterialEntity");
-		sortedFormatted.addAll(defaultTypes);
+        List<String> sortedFormatted = new ArrayList<String>(defaultTypes);
 		
 		SortedSet<String> otherTypes = LookupService
 				.getAllOtherObjectTypes("gov.nih.nci.cananolab.domain.nanomaterial.OtherNanomaterialEntity");
@@ -113,11 +108,10 @@ public class InitSampleSetup {
 	
 	public List<String> getFunctionalizingEntityTypes(HttpServletRequest request) 
 	throws Exception {
-		List<String> sortedFormatted = new ArrayList<String>();
-		SortedSet<String> defaultTypes = InitSetup.getInstance().getDefaultTypesByReflection(
+        SortedSet<String> defaultTypes = InitSetup.getInstance().getDefaultTypesByReflection(
 				request.getSession().getServletContext(), 
 				"defaultFunctionalizingEntityTypes", "gov.nih.nci.cananolab.domain.particle.FunctionalizingEntity");
-		sortedFormatted.addAll(defaultTypes);
+        List<String> sortedFormatted = new ArrayList<String>(defaultTypes);
 		
 		SortedSet<String> otherTypes = LookupService
 				.getAllOtherObjectTypes("gov.nih.nci.cananolab.domain.agentmaterial.OtherFunctionalizingEntity");

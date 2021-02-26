@@ -114,13 +114,13 @@
             <br />
             <div class="form__actions">
                 <div class="form__action form__action--left">
-                    <button class="btn-canano btn-canano-danger" type="button" value="Delete" ng-click="doDelete()" ng-if="nanoEntityId !== null">Delete</button>
+                    <button class="btn-canano btn-canano-danger" type="button" value="Delete" ng-click="doDelete()" ng-if="nanoEntityId !== null">Delete</button>                    
                 </div>
                 <div class="form__action form__action--right">
                     <input type="hidden" ng-model="nanoEntityForm.createdBy">
                     <input type="hidden" ng-model="nanoEntityForm.createdDate">
                     <button class="btn-canano btn-canano-danger" type="reset" value="Reset" ng-click="resetForm()">Reset</button>
-                    <button class="btn-canano btn-canano-primary"
+                    <button class="btn-canano btn-canano-primary" 
                             type="submit" 
                             ng-click="doSubmit()" 
                             ng-show="!addNewComposingElement">

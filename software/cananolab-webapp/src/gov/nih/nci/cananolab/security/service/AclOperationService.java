@@ -7,18 +7,19 @@ import org.springframework.security.acls.model.Permission;
 
 public interface AclOperationService
 {
-	public MutableAcl fetchAclForObject(Class clazz, Long securedObjectId);
-	public boolean isOwner(Long securedObjectId, Class clazz, String sid);
+	MutableAcl fetchAclForObject(Class clazz, Long securedObjectId);
+	boolean isOwner(Long securedObjectId, Class clazz, String sid);
 	
-	public void createAclAndGrantAccess(Long securedObjectId, Class clazz, String recipient, boolean principal, List<Permission> perms, boolean setOwner);
-	public void createAclForChildObject(Long parentObjectId, Class parentClass, Long securedObjectId, Class childClass);
+	void createAclAndGrantAccess(Long securedObjectId, Class clazz, String recipient, boolean principal,
+                                 List<Permission> perms, boolean setOwner);
+	void createAclForChildObject(Long parentObjectId, Class parentClass, Long securedObjectId, Class childClass);
 	
-	public void deleteAccessToSid(String sid, MutableAcl acl);
-	public void deletePermission(Long securedObjectId, Class clazz, String sid, boolean principal, Permission perm);
-    public void deleteAccessExceptPublicAndDefault(MutableAcl acl);
+	void deleteAccessToSid(String sid, MutableAcl acl);
+	void deletePermission(Long securedObjectId, Class clazz, String sid, boolean principal, Permission perm);
+    void deleteAccessExceptPublicAndDefault(MutableAcl acl);
     
-    public void deleteAcl(Long securedObjectId, Class clazz);
+    void deleteAcl(Long securedObjectId, Class clazz);
     
-    public void updateObjectOwner(Long securedObjectId, Class clazz, String sid);
+    void updateObjectOwner(Long securedObjectId, Class clazz, String sid);
     
 }

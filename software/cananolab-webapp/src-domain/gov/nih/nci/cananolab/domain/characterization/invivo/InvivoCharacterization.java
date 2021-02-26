@@ -24,9 +24,8 @@ public class InvivoCharacterization extends Characterization implements Serializ
 	{
 		if(obj instanceof InvivoCharacterization) 
 		{
-			InvivoCharacterization c =(InvivoCharacterization)obj; 			 
-			if(getId() != null && getId().equals(c.getId()))
-				return true;
+			InvivoCharacterization c =(InvivoCharacterization)obj;
+            return getId() != null && getId().equals(c.getId());
 		}
 		return false;
 	}

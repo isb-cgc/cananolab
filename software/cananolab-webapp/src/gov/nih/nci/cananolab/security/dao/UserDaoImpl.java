@@ -1,23 +1,19 @@
 package gov.nih.nci.cananolab.security.dao;
 
+import gov.nih.nci.cananolab.security.CananoUserDetails;
+import gov.nih.nci.cananolab.security.enums.CaNanoRoleEnum;
+import gov.nih.nci.cananolab.util.StringUtils;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-
 import javax.annotation.PostConstruct;
 import javax.sql.DataSource;
-
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.support.JdbcDaoSupport;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
-
-import gov.nih.nci.cananolab.security.CananoUserDetails;
-import gov.nih.nci.cananolab.security.enums.CaNanoRoleEnum;
-import gov.nih.nci.cananolab.util.StringUtils;
 
 @Component("userDao")
 public class UserDaoImpl extends JdbcDaoSupport implements UserDao 
@@ -38,7 +34,7 @@ public class UserDaoImpl extends JdbcDaoSupport implements UserDao
 	private static final String FETCH_USER_ROLES_SQL = "SELECT a.authority rolename FROM authorities a where a.username = ?";
 	
 	
-	private static final String FETCH_USER_GROUPS_SQL = "SELECT DISTINCT g.group_name FROM groups g LEFT JOIN group_members gm ON g.id = gm.group_id WHERE (g.created_by = ? OR gm.username = ?)";
+	private static final String FETCH_USER_GROUPS_SQL = "SELECT DISTINCT g.group_name FROM `groups` g LEFT JOIN group_members gm ON g.id = gm.group_id WHERE (g.created_by = ? OR gm.username = ?)";
 	private static final String FETCH_USERS_LIKE_SQL = "SELECT u.username, u.first_name, u.last_name, u.password, u.organization, u.department, " +
 												 	   "u.title, u.phone_number, u.email_id, u.enabled FROM users u " +
 												 	   "WHERE UPPER(username) LIKE ? OR UPPER(first_name) LIKE ? OR UPPER(last_name) LIKE ?";
@@ -133,8 +129,7 @@ public class UserDaoImpl extends JdbcDaoSupport implements UserDao
 										user.getOrganization(), user.getDepartment(), user.getTitle(), user.getPhoneNumber(),
 										user.getEmailId(), Integer.valueOf(enabled)};
 
-		int status = getJdbcTemplate().update(INSERT_USER_SQL, params);
-		return status;
+        return getJdbcTemplate().update(INSERT_USER_SQL, params);
 	}
 	
 	@Override
@@ -143,8 +138,7 @@ public class UserDaoImpl extends JdbcDaoSupport implements UserDao
 		logger.debug("Insert user authority: user = " + userName + ", authority = " + authority);
 		Object[] params = new Object[] {userName, authority};
 
-		int status = getJdbcTemplate().update(INSERT_USER_AUTHORITY_SQL, params);
-		return status;
+        return getJdbcTemplate().update(INSERT_USER_AUTHORITY_SQL, params);
 	}
 	
 	@Override
@@ -152,18 +146,16 @@ public class UserDaoImpl extends JdbcDaoSupport implements UserDao
 	{
 		logger.info("Reset password for user: " + userName);
 		Object[] params = new Object[] {password, userName};
-		
-		int status = getJdbcTemplate().update(RESET_PASSWORD_SQL, params);
-		return status;
+
+        return getJdbcTemplate().update(RESET_PASSWORD_SQL, params);
 	}
 	
 	@Override
 	public String readPassword(String userName)
 	{
 		logger.info("Read password for user : " + userName);
-		String currPassword = (String) getJdbcTemplate().queryForObject(FETCH_PASSWORD_SQL, new Object[] {userName}, String.class);
-		
-		return currPassword;
+
+        return (String) getJdbcTemplate().queryForObject(FETCH_PASSWORD_SQL, new Object[] {userName}, String.class);
 	}
 
 	@Override
@@ -175,9 +167,8 @@ public class UserDaoImpl extends JdbcDaoSupport implements UserDao
 		Object[] params = new Object[] {userDetails.getFirstName(), userDetails.getLastName(), userDetails.getOrganization(), 
 										userDetails.getDepartment(), userDetails.getTitle(), userDetails.getPhoneNumber(),
 										userDetails.getEmailId(), Integer.valueOf(enabled), userDetails.getUsername()};
-		
-		int status = getJdbcTemplate().update(UPDATE_USER_SQL, params);
-		return status;
+
+        return getJdbcTemplate().update(UPDATE_USER_SQL, params);
 	}
 	
 	@Override
@@ -187,8 +178,7 @@ public class UserDaoImpl extends JdbcDaoSupport implements UserDao
 	
 		Object[] params = new Object[] {username};
 
-		int status = getJdbcTemplate().update(DELETE_ROLES_SQL, params);
-		return status;
+        return getJdbcTemplate().update(DELETE_ROLES_SQL, params);
 	}
 	
 	private static final class UserMapper implements RowMapper

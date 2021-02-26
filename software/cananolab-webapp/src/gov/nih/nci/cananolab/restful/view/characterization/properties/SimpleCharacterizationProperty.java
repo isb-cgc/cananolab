@@ -48,7 +48,8 @@ public class SimpleCharacterizationProperty {
 		this.propertyDisplayName = propertyDisplayName;
 	}
 	
-	public void setLookups(HttpServletRequest request) throws Exception {;}
+	public void setLookups(HttpServletRequest request) throws Exception {
+    }
 	
 	public void transferFromPropertyBean(HttpServletRequest request, CharacterizationBean charBean, boolean needOptions) 
 			throws Exception {
@@ -56,7 +57,8 @@ public class SimpleCharacterizationProperty {
 		this.propertyDisplayName = StringUtils.getCamelCaseFormatInWords(this.propertyName);
 	}
 	
-	public void transferToPropertyBean(CharacterizationBean charBean) throws Exception {;}
+	public void transferToPropertyBean(CharacterizationBean charBean) throws Exception {
+    }
 	public List<String> getPropertyViewTitles() {return new ArrayList<String>();}
 	public List<String> getPropertyViewValues() {return new ArrayList<String>();}
 }

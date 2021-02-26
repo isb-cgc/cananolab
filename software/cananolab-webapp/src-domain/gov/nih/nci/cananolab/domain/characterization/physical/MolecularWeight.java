@@ -23,9 +23,8 @@ public class MolecularWeight extends PhysicoChemicalCharacterization implements 
 	{
 		if(obj instanceof MolecularWeight) 
 		{
-			MolecularWeight c =(MolecularWeight)obj; 			 
-			if(getId() != null && getId().equals(c.getId()))
-				return true;
+			MolecularWeight c =(MolecularWeight)obj;
+            return getId() != null && getId().equals(c.getId());
 		}
 		return false;
 	}

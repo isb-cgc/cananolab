@@ -1,8 +1,10 @@
 package gov.nih.nci.cananolab.restful;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
+import gov.nih.nci.cananolab.restful.util.RestTestLoginUtil;
 import gov.nih.nci.cananolab.restful.view.edit.SampleEditGeneralBean;
 import gov.nih.nci.cananolab.restful.view.edit.SimplePointOfContactBean;
 
@@ -13,6 +15,7 @@ import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.client.Entity;
 import javax.ws.rs.client.WebTarget;
+import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.Response;
 
 import org.junit.Before;
@@ -22,14 +25,17 @@ import org.junit.Test;
 
 public class SampleServicesTest {
 	
-	String urlbase = "http://localhost:8080/caNanoLab/rest/";
+	String urlbase = RestTestLoginUtil.readTestUrlProperty() +  "caNanoLab/rest/";
 	Client client; 
 
 	@Before
 	public void setUp() throws Exception {
 	
 		client = ClientBuilder.newClient();
+		RestTestLoginUtil.testLogin();
 	}
+
+
 
 	@Test
 	public void testSetup() {
@@ -50,7 +56,7 @@ public class SampleServicesTest {
 		String jsonString = client.target(urlbase)
 				.register(SampleServices.class)
 				.path("sample/getCharacterizationByType")
-				.queryParam("type", "ex vivo")
+				.queryParam("type", "toxicity")
 				.request("application/json")
 				.header("some-header", "true")
 				.get(String.class);
@@ -101,6 +107,7 @@ public class SampleServicesTest {
 				.get(String.class);
 
 		assertNotNull(jsonString);
+		assertTrue(jsonString.contains("NCL-23-1"));
 	}
 	
 	@Test
@@ -112,7 +119,7 @@ public class SampleServicesTest {
 		//Because "contains" operand is not set, exact name is needed;
 		form.setSampleName("SY-NCL-23-1");
 		
-		WebTarget webTarget = client.target("http://localhost:8080/caNanoLab/rest");
+		WebTarget webTarget = client.target(RestTestLoginUtil.readTestUrlProperty() +  "caNanoLab/rest");
 		webTarget.register(SampleServices.class);
 		
 		WebTarget searchSampleWebTarget = webTarget.path("sample").path("searchSample");
@@ -136,7 +143,7 @@ public class SampleServicesTest {
 	
 	@Test
 	public void testUpdateSample() {
-		WebTarget webTarget = client.target("http://localhost:8080/caNanoLab/rest");
+		WebTarget webTarget = client.target(RestTestLoginUtil.readTestUrlProperty() +  "caNanoLab/rest");
 		webTarget.register(SampleServices.class);
 		
 		WebTarget searchSampleWebTarget = webTarget.path("sample").path("updateSample");
@@ -162,7 +169,7 @@ public class SampleServicesTest {
 	@Test
 	public void testCopySample() {
 
-		WebTarget webTarget = client.target("http://localhost:8080/caNanoLab/rest");
+		WebTarget webTarget = client.target(RestTestLoginUtil.readTestUrlProperty() +  "caNanoLab/rest");
 		webTarget.register(SampleServices.class);
 		
 		WebTarget searchSampleWebTarget = webTarget.path("sample").path("copySample");
@@ -178,7 +185,7 @@ public class SampleServicesTest {
 		
 		assertNotNull(postResponse);
 		System.out.println("Status: " + postResponse.getStatus());
-		assertTrue(postResponse.getStatus() == 401);
+		assertEquals(401, postResponse.getStatus());
 		
 		postResponse.bufferEntity();
 		String json = (String) postResponse.readEntity(String.class);
@@ -210,7 +217,7 @@ public class SampleServicesTest {
 	@Test
 	public void testDeletePOC() {
 
-		WebTarget webTarget = client.target("http://localhost:8080/caNanoLab/rest");
+		WebTarget webTarget = client.target(RestTestLoginUtil.readTestUrlProperty() +  "caNanoLab/rest");
 		webTarget.register(SampleServices.class);
 		
 		WebTarget searchSampleWebTarget = webTarget.path("sample").path("deletePOC");
@@ -224,7 +231,7 @@ public class SampleServicesTest {
 		
 		assertNotNull(postResponse);
 		System.out.println("Status: " + postResponse.getStatus());
-		assertTrue(postResponse.getStatus() == 401);
+		assertEquals(401, postResponse.getStatus());
 		
 		postResponse.bufferEntity();
 		String json = (String) postResponse.readEntity(String.class);
@@ -234,7 +241,7 @@ public class SampleServicesTest {
 	@Test
 	public void testDeleteAccess() {
 
-		WebTarget webTarget = client.target("http://localhost:8080/caNanoLab/rest");
+		WebTarget webTarget = client.target(RestTestLoginUtil.readTestUrlProperty() +  "caNanoLab/rest");
 		webTarget.register(SampleServices.class);
 		
 		WebTarget searchSampleWebTarget = webTarget.path("sample").path("deleteAccess");
@@ -250,7 +257,7 @@ public class SampleServicesTest {
 		
 		assertNotNull(postResponse);
 		System.out.println("Status: " + postResponse.getStatus());
-		assertTrue(postResponse.getStatus() == 401);
+		assertEquals(401, postResponse.getStatus());
 		
 		postResponse.bufferEntity();
 		String json = (String) postResponse.readEntity(String.class);
@@ -259,7 +266,7 @@ public class SampleServicesTest {
 	@Test
 	public void testDeleteDataAvailability() {
 
-		WebTarget webTarget = client.target("http://localhost:8080/caNanoLab/rest");
+		WebTarget webTarget = client.target(RestTestLoginUtil.readTestUrlProperty() +  "caNanoLab/rest");
 		webTarget.register(SampleServices.class);
 		
 		WebTarget searchSampleWebTarget = webTarget.path("sample").path("deleteDataAvailability");
@@ -275,7 +282,7 @@ public class SampleServicesTest {
 		
 		assertNotNull(postResponse);
 		System.out.println("Status: " + postResponse.getStatus());
-		assertTrue(postResponse.getStatus() == 401);
+		assertEquals(401, postResponse.getStatus());
 		
 		postResponse.bufferEntity();
 		String json = (String) postResponse.readEntity(String.class);

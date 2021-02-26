@@ -1,16 +1,13 @@
 package gov.nih.nci.cananolab.restful;
 
 import gov.nih.nci.cananolab.dto.particle.composition.NanomaterialEntityBean;
-import gov.nih.nci.cananolab.restful.SpringApplicationContext;
 import gov.nih.nci.cananolab.restful.sample.NanomaterialEntityBO;
 import gov.nih.nci.cananolab.restful.util.CommonUtil;
 import gov.nih.nci.cananolab.restful.view.SimpleAdvacedSampleCompositionBean;
 import gov.nih.nci.cananolab.restful.view.edit.SimpleNanomaterialEntityBean;
 import gov.nih.nci.cananolab.security.utils.SpringSecurityUtil;
-
 import java.util.List;
 import java.util.Map;
-
 import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.DefaultValue;
 import javax.ws.rs.GET;
@@ -20,7 +17,6 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.Response;
-
 import org.apache.log4j.Logger;
 
 @Path("/nanomaterialEntity")
@@ -94,10 +90,15 @@ public class NanomaterialEntityServices {
 
 		}
 	}
-	
+
+	/**
+	 *
+	 * Deprecated as of 2.4.0.  Use @removeComposingElementById
+	 */
 	@POST
 	@Path("/removeComposingElement")
 	@Produces ("application/json")
+	@Deprecated
     public Response removeComposingElement(@Context HttpServletRequest httpRequest, SimpleNanomaterialEntityBean nanoBean) {
 				
 		try { 
@@ -117,7 +118,31 @@ public class NanomaterialEntityServices {
 
 		}
 	}
-	
+
+//	@POST
+//	@Path("/removeComposingElementById")
+//	@Produces ("application/json")
+//	public Response removeComposingElementById(@Context HttpServletRequest httpRequest, SimpleNanomaterialEntityBean nanoBean, String composingElementId) {
+//
+//		try {
+//			NanomaterialEntityBO nanomaterialEntityBO =
+//					(NanomaterialEntityBO) SpringApplicationContext.getBean(httpRequest, "nanomaterialEntityBO");
+//			if (!SpringSecurityUtil.isUserLoggedIn())
+//				return Response.status(Response.Status.UNAUTHORIZED)
+//						.entity("Session expired").build();
+//
+//			SimpleNanomaterialEntityBean nano = nanomaterialEntityBO.removeComposingElement(nanoBean, composingElementId,httpRequest);
+//			List<String> errors = nano.getErrors();
+//			return (errors == null || errors.size() == 0) ?
+//					Response.ok(nano).build() :
+//					Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(errors).build();
+//		} catch (Exception e) {
+//			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(CommonUtil.wrapErrorMessageInList("Error while removing the composing element" + e.getMessage())).build();
+//
+//		}
+//	}
+
+
 	@POST
 	@Path("/saveFile")
 	@Produces ("application/json")
@@ -140,11 +165,12 @@ public class NanomaterialEntityServices {
 						Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(errors).build();
 					
 		} catch (Exception e) {
-			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(CommonUtil.wrapErrorMessageInList("Error while saving the file" + e.getMessage())).build();
+			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(CommonUtil.wrapErrorMessageInList("Error while saving the NanoEntity file. " + e.getMessage())).build();
 
 		}
 	}
-	
+
+
 	@POST
 	@Path("/removeFile")
 	@Produces ("application/json")
@@ -166,6 +192,33 @@ public class NanomaterialEntityServices {
 					Response.ok(nano).build() :
 						Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(errors).build();
 					
+		} catch (Exception e) {
+			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(CommonUtil.wrapErrorMessageInList("Error while removing the file" + e.getMessage())).build();
+
+		}
+	}
+
+	@POST
+	@Path("/removeFile")
+	@Produces ("application/json")
+	public Response removeFile(@Context HttpServletRequest httpRequest,String fileId, SimpleNanomaterialEntityBean nanoBean) {
+
+		try {
+			NanomaterialEntityBO nanomaterialEntityBO =
+					(NanomaterialEntityBO) SpringApplicationContext.getBean(httpRequest, "nanomaterialEntityBO");
+			if (!SpringSecurityUtil.isUserLoggedIn())
+				return Response.status(Response.Status.UNAUTHORIZED)
+						.entity("Session expired").build();
+
+
+			SimpleNanomaterialEntityBean nano = nanomaterialEntityBO.removeFile(nanoBean,fileId, httpRequest);
+
+
+			List<String> errors = nano.getErrors();
+			return (errors == null || errors.size() == 0) ?
+					Response.ok(nano).build() :
+					Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(errors).build();
+
 		} catch (Exception e) {
 			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(CommonUtil.wrapErrorMessageInList("Error while removing the file" + e.getMessage())).build();
 

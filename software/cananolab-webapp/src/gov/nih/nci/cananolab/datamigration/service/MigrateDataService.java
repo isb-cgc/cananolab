@@ -4,22 +4,22 @@ import gov.nih.nci.cananolab.security.enums.SecureClassesEnum;
 
 public interface MigrateDataService
 {
-	public void migrateDefaultAccessDataFromCSMToSpring(SecureClassesEnum dataType);
+	void migrateDefaultAccessDataFromCSMToSpring(SecureClassesEnum dataType);
 	
-	public void migratePublicAccessDataFromCSMToSpring(SecureClassesEnum dataType);
+	void migratePublicAccessDataFromCSMToSpring(SecureClassesEnum dataType);
 	
-	public void migrateUserAccountsFromCSMToSpring() throws Exception;
+	void migrateUserAccountsFromCSMToSpring() throws Exception;
 
-	public void grantCuratorRoleToAccounts();
+	void grantCuratorRoleToAccounts();
 	
-	public void migrateRWDUserAccessFromCSMToSpring(SecureClassesEnum dataType);
+	void migrateRWDUserAccessFromCSMToSpring(SecureClassesEnum dataType);
 	
-	public void migrateReadUserAccessFromCSMToSpring(SecureClassesEnum dataType);
+	void migrateReadUserAccessFromCSMToSpring(SecureClassesEnum dataType);
 	
-	public void migrateCharacterizationAccessData();
+	void migrateCharacterizationAccessData();
 	
-	public void migrateOrganizationAccessData();
+	void migrateOrganizationAccessData();
 	
-	public void bcryptPasswords();
+	void bcryptPasswords();
 	
 }

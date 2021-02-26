@@ -6417,6 +6417,7 @@
 		if ( !view || !view.opener ) {
 			view = window;
 		}
+	} );
 
 		return view.getComputedStyle( elem );
 	};
@@ -7001,6 +7002,7 @@
 				num = parseFloat( val );
 				return extra === true || isFinite( num ) ? num || 0 : val;
 			}
+		},
 
 			return val;
 		}

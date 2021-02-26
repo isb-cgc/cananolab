@@ -25,7 +25,7 @@
 </ul>
 <tabset justified="true">
   <tab heading="All" ng-click="select(-1)"></tab>
-  <tab ng-repeat="item in data" heading="{{item.type}}" ng-click="select({{$index}})"></tab>
+  <tab ng-repeat="item in data" heading="{{item.type}}" ng-click="select($index)"></tab>
 </tabset>
 
 

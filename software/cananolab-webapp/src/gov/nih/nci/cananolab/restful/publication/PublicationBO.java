@@ -36,7 +36,6 @@ import gov.nih.nci.cananolab.restful.util.PropertyUtil;
 import gov.nih.nci.cananolab.restful.view.SimplePublicationSummaryViewBean;
 import gov.nih.nci.cananolab.restful.view.edit.SimpleSubmitPublicationBean;
 import gov.nih.nci.cananolab.security.AccessControlInfo;
-import gov.nih.nci.cananolab.security.CananoUserDetails;
 import gov.nih.nci.cananolab.security.enums.CaNanoRoleEnum;
 import gov.nih.nci.cananolab.security.enums.SecureClassesEnum;
 import gov.nih.nci.cananolab.security.service.SpringSecurityAclService;
@@ -45,9 +44,7 @@ import gov.nih.nci.cananolab.service.curation.CurationService;
 import gov.nih.nci.cananolab.service.publication.PublicationService;
 import gov.nih.nci.cananolab.service.publication.impl.PublicationExporter;
 import gov.nih.nci.cananolab.service.sample.SampleService;
-import gov.nih.nci.cananolab.service.sample.helper.SampleServiceHelper;
 import gov.nih.nci.cananolab.ui.form.PublicationForm;
-import gov.nih.nci.cananolab.restful.publication.InitPublicationSetup;
 import gov.nih.nci.cananolab.util.Comparators;
 import gov.nih.nci.cananolab.util.Constants;
 import gov.nih.nci.cananolab.util.DateUtils;
@@ -167,7 +164,7 @@ public class PublicationBO extends BaseAnnotationBO
 			if (otherSamples.length > 0) {
 				sampleNames.addAll(Arrays.asList(otherSamples));
 			}
-			publicationBean.setSampleNames(sampleNames.toArray(new String[sampleNames.size()]));
+			publicationBean.setSampleNames(sampleNames.toArray(new String[0]));
 		} else {
 			publicationBean.setFromSamplePage(false);
 		}
@@ -206,9 +203,7 @@ public class PublicationBO extends BaseAnnotationBO
 		PublicationBean pubBean =  new PublicationBean();
 		Publication pub = (Publication) pubBean.getDomainFile();
 		HashSet<Author> authorCollection = new HashSet<Author>();
-		for(int i=0;i<bean.getAuthors().size();i++){
-			authorCollection.add(bean.getAuthors().get(i));
-		}
+        authorCollection.addAll(bean.getAuthors());
 		pub.setCategory(bean.getCategory());
 		pub.setCreatedBy(bean.getCreatedBy());
 		pub.setStatus(bean.getStatus());
@@ -247,38 +242,38 @@ public class PublicationBO extends BaseAnnotationBO
 		if(category == null||category == ""){
 			errors.add("Publication Type is required.");
 		}
-		if(!InputValidationUtil.isTextFieldWhiteList(category)){
+		if(InputValidationUtil.isTextFieldWhiteList(category)){
 			errors.add(PropertyUtil.getProperty("publication", "publication.category.invalid"));
 		}
 		String status = publication.getStatus();
 		if(status == null||status == ""){
 			errors.add("Publication Status is required.");
 		}
-		if(!InputValidationUtil.isTextFieldWhiteList(status)){
+		if(InputValidationUtil.isTextFieldWhiteList(status)){
 			errors.add(PropertyUtil.getProperty("publication", "publication.status.invalid"));
 		}
 		String title = publication.getTitle();
 		if(title == null || title == ""){
 			errors.add("Title is required.");
 		}
-		if(!InputValidationUtil.isTextFieldWhiteList(title)){
+		if(InputValidationUtil.isTextFieldWhiteList(title)){
 			errors.add(PropertyUtil.getProperty("publication", "publication.title.invalid"));
 		}
 		String uri = publication.getUri();
-		if(!InputValidationUtil.isTextFieldWhiteList(uri)){
+		if(InputValidationUtil.isTextFieldWhiteList(uri)){
 			errors.add(PropertyUtil.getProperty("publication", "file.uri.invalid"));
 		}
 		for(int i=0;i<publicationBean.getAuthors().size();i++){
 			String firstName = publicationBean.getAuthors().get(i).getFirstName();
-			if(!InputValidationUtil.isRelaxedAlphabetic(firstName)){
+			if(InputValidationUtil.isRelaxedAlphabetic(firstName)){
 				errors.add(PropertyUtil.getProperty("publication", "publication.author.firstName.invalid"));
 			}
 			String lastName = publicationBean.getAuthors().get(i).getLastName();
-			if(!InputValidationUtil.isRelaxedAlphabetic(lastName)){
+			if(InputValidationUtil.isRelaxedAlphabetic(lastName)){
 				errors.add(PropertyUtil.getProperty("publication", "publication.author.lastName.invalid"));
 			}
 			String initial = publicationBean.getAuthors().get(i).getInitial();
-			if (!InputValidationUtil.isRelaxedAlphabetic(initial)){
+			if (InputValidationUtil.isRelaxedAlphabetic(initial)){
 				errors.add(PropertyUtil.getProperty("publication", "publication.author.initial.invalid"));
 			}
 		}
@@ -287,7 +282,7 @@ public class PublicationBO extends BaseAnnotationBO
 			errors.add(PropertyUtil.getProperty("publication", "publication.doi.invalid"));
 		}
 		String externalUrl = publicationBean.getExternalUrl();
-		if (!InputValidationUtil.isUrlValid(externalUrl)){
+		if (InputValidationUtil.isUrlValid(externalUrl)){
 			errors.add("External URL is invalid");
 		}
 		return errors;
@@ -310,10 +305,7 @@ public class PublicationBO extends BaseAnnotationBO
 	/**
 	 * Handle delete request from Sample -> Publication -> Edit page.
 	 * 
-	 * @param mapping
-	 * @param form
 	 * @param request
-	 * @param response
 	 * @return
 	 * @throws Exception
 	 */
@@ -334,10 +326,7 @@ public class PublicationBO extends BaseAnnotationBO
 	/**
 	 * Delete a publication from Publication update form
 	 * 
-	 * @param mapping
-	 * @param form
 	 * @param request
-	 * @param response
 	 * @return
 	 * @throws Exception
 	 */
@@ -466,11 +455,8 @@ public class PublicationBO extends BaseAnnotationBO
 	/**
 	 * Handle summary report print request.
 	 * 
-	 * @param mapping
-	 * @param form
 	 * @param request
-	 * @param response
-	 * @return 
+	 * @return
 	 * @return ActionForward
 	 * @throws Exception
 	 */
@@ -495,10 +481,7 @@ public class PublicationBO extends BaseAnnotationBO
 	/**
 	 * Handle summary report view request.
 	 * 
-	 * @param mapping
-	 * @param form
 	 * @param request
-	 * @param response
 	 * @return ActionForward
 	 * @throws Exception
 	 */
@@ -516,10 +499,7 @@ public class PublicationBO extends BaseAnnotationBO
 	/**
 	 * Handle summary report edit request.
 	 * 
-	 * @param mapping
-	 * @param form
 	 * @param request
-	 * @param response
 	 * @return ActionForward
 	 * @throws Exception
 	 */
@@ -544,8 +524,6 @@ public class PublicationBO extends BaseAnnotationBO
 	/**
 	 * Handle summary report export request.
 	 * 
-	 * @param mapping
-	 * @param form
 	 * @param request
 	 * @param response
 	 * @return ActionForward
@@ -576,10 +554,7 @@ public class PublicationBO extends BaseAnnotationBO
 	 * Shared function for summaryView(), summaryEdit(), summaryExport() and
 	 * summaryPrint().
 	 * 
-	 * @param mapping
-	 * @param form
 	 * @param request
-	 * @param response
 	 * @return ActionForward
 	 * @throws Exception
 	 */
@@ -704,11 +679,8 @@ public class PublicationBO extends BaseAnnotationBO
 			return true;
 		}
 		// doesn't require file if publication status is not "published"
-		if (!publication.getStatus().equalsIgnoreCase("published")) {
-			return true;
-		}
-		return false;
-	}
+        return !publication.getStatus().equalsIgnoreCase("published");
+    }
 
 	// private boolean validateResearchAreas(HttpServletRequest request,
 	// String[] researchAreas) throws Exception {
@@ -738,21 +710,20 @@ public class PublicationBO extends BaseAnnotationBO
 			title = title.substring(0, 10);
 		}
 
-		String fileName = this.getExportFileName(title, "detailView");
+		String fileName = this.getExportFileName(title);
 		ExportUtils.prepareReponseForExcel(response, fileName);
 		PublicationExporter.exportDetail(pubBean, response.getOutputStream());
 
 		return null;
 	}
 
-	private String getExportFileName(String titleName, String viewType) {
+	private String getExportFileName(String titleName) {
 		List<String> nameParts = new ArrayList<String>();
 		nameParts.add(titleName);
 		nameParts.add("Publication");
-		nameParts.add(viewType);
+		nameParts.add("detailView");
 		nameParts.add(DateUtils.convertDateToString(Calendar.getInstance().getTime()));
-		String exportFileName = StringUtils.join(nameParts, "_");
-		return exportFileName;
+		return StringUtils.join(nameParts, "_");
 	}
 
 	/**
@@ -760,8 +731,7 @@ public class PublicationBO extends BaseAnnotationBO
 	 * unselected types when user selected one type for print/export.
 	 * 
 	 * @param request
-	 * @param compBean
-	 */
+     */
 	private void filterType(HttpServletRequest request, PublicationSummaryViewBean summaryBean)
 	{
 		// 1. Restore all data first as bean might be filtered before.
@@ -888,7 +858,7 @@ public class PublicationBO extends BaseAnnotationBO
 		{
 			List<String> sampleNames = sampleService.findSampleNamesBy(searchStr);
 			Collections.sort(sampleNames, new Comparators.SortableNameComparator());
-			return sampleNames.toArray(new String[sampleNames.size()]);
+			return sampleNames.toArray(new String[0]);
 		} catch (Exception e) {
 			logger.error("Problem getting all sample names for publication submission \n", e);
 			return new String[] { "" };
@@ -898,7 +868,6 @@ public class PublicationBO extends BaseAnnotationBO
 	/**
 	 * Delete a publication from MyWorkspace
 	 * 
-	 * @param mapping
 	 * @param publicationId
 	 * @param request
 	 * @return

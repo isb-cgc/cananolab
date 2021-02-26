@@ -1,6 +1,6 @@
 /*L
- *  Copyright SAIC
- *  Copyright SAIC-Frederick
+ *  Copyright Leidos
+ *  Copyright Leidos Biomedical
  *
  *  Distributed under the OSI-approved BSD 3-Clause License.
  *  See http://ncip.github.com/cananolab/LICENSE.txt for details.
@@ -39,8 +39,7 @@ public class ProtocolDecorator extends TableDecorator {
 	public SortableName getViewName() {
 		ProtocolBean protocol = (ProtocolBean) getCurrentRowObject();
 		String protocolName = protocol.getDomain().getName();
-		SortableName sortableLink = new SortableName(protocolName);
-		return sortableLink;
+        return new SortableName(protocolName);
 	}
 
 	// per app scan, to filter out special characters

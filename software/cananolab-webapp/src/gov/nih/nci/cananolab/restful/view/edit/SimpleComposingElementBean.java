@@ -1,7 +1,5 @@
 package gov.nih.nci.cananolab.restful.view.edit;
 
-import gov.nih.nci.cananolab.domain.function.ImagingFunction;
-import gov.nih.nci.cananolab.domain.particle.Function;
 import gov.nih.nci.cananolab.dto.particle.composition.ComposingElementBean;
 import gov.nih.nci.cananolab.dto.particle.composition.FunctionBean;
 
@@ -120,7 +118,7 @@ public class SimpleComposingElementBean {
 	public void setSampleId(String sampleId) {
 		this.sampleId = sampleId;
 	}
-	public void trasferSimpleComposingElementBean(ComposingElementBean sBean) {
+	public void transferSimpleComposingElementBean(ComposingElementBean sBean) {
 
 		
 		this.setDescription(sBean.getDescription());

@@ -6,7 +6,7 @@ import gov.nih.nci.cananolab.dto.common.ExperimentConfigBean;
 import gov.nih.nci.cananolab.dto.common.FileBean;
 import gov.nih.nci.cananolab.dto.common.FindingBean;
 import gov.nih.nci.cananolab.dto.common.Row;
-import gov.nih.nci.cananolab.dto.common.TableCell;
+import gov.nih.nci.cananolab.dto.common.table.TableCell;
 import gov.nih.nci.cananolab.dto.particle.characterization.CharacterizationBean;
 import gov.nih.nci.cananolab.dto.particle.characterization.CharacterizationSummaryViewBean;
 import gov.nih.nci.cananolab.restful.view.characterization.properties.CharacterizationPropertyUtil;
@@ -107,9 +107,8 @@ public class SimpleCharacterizationSummaryViewBean {
 	
 	/**
 	 * Mimick the logic in bodySingleCharacterizationSummaryView.jsp
-	 * 
-	 * @param charObj
-	 */
+	 *
+     */
 	public List<SimpleCharacterizationUnitBean> tranferCharacterizationBeanData(HttpServletRequest request, 
 			CharacterizationBean charBean) {
 		if (charBean == null)

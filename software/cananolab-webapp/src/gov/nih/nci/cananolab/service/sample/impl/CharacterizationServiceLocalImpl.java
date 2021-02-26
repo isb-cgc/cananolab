@@ -1,6 +1,6 @@
 /*L
- *  Copyright SAIC
- *  Copyright SAIC-Frederick
+ *  Copyright Leidos
+ *  Copyright Leidos Biomedical
  *
  *  Distributed under the OSI-approved BSD 3-Clause License.
  *  See http://ncip.github.com/cananolab/LICENSE.txt for details.
@@ -32,22 +32,18 @@ import gov.nih.nci.cananolab.service.sample.helper.CharacterizationServiceHelper
 import gov.nih.nci.cananolab.system.applicationservice.CaNanoLabApplicationService;
 import gov.nih.nci.cananolab.util.Constants;
 import gov.nih.nci.cananolab.util.DateUtils;
-import gov.nih.nci.system.client.ApplicationServiceProvider;
-
+import gov.nih.nci.cananolab.system.applicationservice.client.ApplicationServiceProvider;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
-
 import org.apache.log4j.Logger;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Property;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import org.springframework.transaction.annotation.Propagation;
-import org.springframework.transaction.annotation.Transactional;
 
 /**
  * Service methods involving local characterizations
@@ -439,8 +435,7 @@ public class CharacterizationServiceLocalImpl extends BaseServiceLocalImpl imple
 
 	public int getNumberOfPublicCharacterizations(String characterizationClassName) throws CharacterizationException {
 		try {
-			int count = characterizationServiceHelper.getNumberOfPublicCharacterizations(characterizationClassName);
-			return count;
+            return characterizationServiceHelper.getNumberOfPublicCharacterizations(characterizationClassName);
 		} catch (Exception e) {
 			String err = "Error finding counts of public characterizations of type " + characterizationClassName;
 			logger.error(err, e);
@@ -451,8 +446,7 @@ public class CharacterizationServiceLocalImpl extends BaseServiceLocalImpl imple
 	
 	public int getNumberOfPublicCharacterizationsForJob(List<String> characterizationClassNames) throws CharacterizationException {
 		try {
-			int count = characterizationServiceHelper.getNumberOfPublicCharacterizationsForJob(characterizationClassNames);
-			return count;
+            return characterizationServiceHelper.getNumberOfPublicCharacterizationsForJob(characterizationClassNames);
 		} catch (Exception e) {
 			String err = "Error finding counts of public characterizations of type " + characterizationClassNames;
 			logger.error(err, e);

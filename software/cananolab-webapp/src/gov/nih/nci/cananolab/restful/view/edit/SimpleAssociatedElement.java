@@ -1,7 +1,5 @@
 package gov.nih.nci.cananolab.restful.view.edit;
 
-import gov.nih.nci.cananolab.domain.particle.ComposingElement;
-
 public class SimpleAssociatedElement {
 
 	String compositionType;

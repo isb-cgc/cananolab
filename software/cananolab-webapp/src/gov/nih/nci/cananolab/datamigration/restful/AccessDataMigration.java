@@ -17,7 +17,7 @@ import org.apache.log4j.Logger;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import gov.nih.nci.cananolab.datamigration.service.MigrateDataService;
-import gov.nih.nci.cananolab.datamigration.util.AESEncryption;
+import gov.nih.nci.cananolab.security.utils.AESEncryption;
 import gov.nih.nci.cananolab.restful.SpringApplicationContext;
 import gov.nih.nci.cananolab.security.enums.SecureClassesEnum;
 
@@ -66,13 +66,9 @@ public class AccessDataMigration
 		try {
 			MigrateDataService migrateDataService = (MigrateDataService) SpringApplicationContext.getBean(httpRequest, "migrateDataService");
 			asyncResponse.setTimeout(600000, TimeUnit.MILLISECONDS);
-            asyncResponse.setTimeoutHandler(new TimeoutHandler() {
-								                @Override
-								                public void handleTimeout(AsyncResponse asyncResponse) {
-								                    asyncResponse.resume(Response.status(Response.Status.SERVICE_UNAVAILABLE)
-								                            .entity("Operation time out.").build());
-								                }}
-                );
+            asyncResponse.setTimeoutHandler(asyncResponse1 -> asyncResponse1.resume(Response.status(Response.Status.SERVICE_UNAVAILABLE)
+					.entity("Operation time out.").build())
+			);
 
             migrateDataService.migrateDefaultAccessDataFromCSMToSpring(SecureClassesEnum.SAMPLE);
 			
@@ -102,13 +98,9 @@ public class AccessDataMigration
 		try {
 			MigrateDataService migrateDataService = (MigrateDataService) SpringApplicationContext.getBean(httpRequest, "migrateDataService");
 			asyncResponse.setTimeout(600000, TimeUnit.MILLISECONDS);
-            asyncResponse.setTimeoutHandler(new TimeoutHandler() {
-								                @Override
-								                public void handleTimeout(AsyncResponse asyncResponse) {
-								                    asyncResponse.resume(Response.status(Response.Status.SERVICE_UNAVAILABLE)
-								                            .entity("Operation time out.").build());
-								                }}
-                );
+            asyncResponse.setTimeoutHandler(asyncResponse1 -> asyncResponse1.resume(Response.status(Response.Status.SERVICE_UNAVAILABLE)
+					.entity("Operation time out.").build())
+			);
 			migrateDataService.migrateDefaultAccessDataFromCSMToSpring(SecureClassesEnum.PROTOCOL);
 			
 			migrateDataService.migratePublicAccessDataFromCSMToSpring(SecureClassesEnum.PROTOCOL);
@@ -137,13 +129,9 @@ public class AccessDataMigration
 		try {
 			MigrateDataService migrateDataService = (MigrateDataService) SpringApplicationContext.getBean(httpRequest, "migrateDataService");
 			asyncResponse.setTimeout(600000, TimeUnit.MILLISECONDS);
-            asyncResponse.setTimeoutHandler(new TimeoutHandler() {
-								                @Override
-								                public void handleTimeout(AsyncResponse asyncResponse) {
-								                    asyncResponse.resume(Response.status(Response.Status.SERVICE_UNAVAILABLE)
-								                            .entity("Operation time out.").build());
-								                }}
-                );
+            asyncResponse.setTimeoutHandler(asyncResponse1 -> asyncResponse1.resume(Response.status(Response.Status.SERVICE_UNAVAILABLE)
+					.entity("Operation time out.").build())
+			);
 			migrateDataService.migrateDefaultAccessDataFromCSMToSpring(SecureClassesEnum.PUBLICATION);
 			
 			migrateDataService.migratePublicAccessDataFromCSMToSpring(SecureClassesEnum.PUBLICATION);
@@ -172,13 +160,9 @@ public class AccessDataMigration
 		try {
 			MigrateDataService migrateDataService = (MigrateDataService) SpringApplicationContext.getBean(httpRequest, "migrateDataService");
 			asyncResponse.setTimeout(600000, TimeUnit.MILLISECONDS);
-            asyncResponse.setTimeoutHandler(new TimeoutHandler() {
-								                @Override
-								                public void handleTimeout(AsyncResponse asyncResponse) {
-								                    asyncResponse.resume(Response.status(Response.Status.SERVICE_UNAVAILABLE)
-								                            .entity("Operation time out.").build());
-								                }}
-                );
+            asyncResponse.setTimeoutHandler(asyncResponse1 -> asyncResponse1.resume(Response.status(Response.Status.SERVICE_UNAVAILABLE)
+					.entity("Operation time out.").build())
+			);
 			migrateDataService.migrateCharacterizationAccessData();
 			
 			String message = "All Access data migrated successfully for characterizations.";
@@ -201,13 +185,9 @@ public class AccessDataMigration
 		try {
 			MigrateDataService migrateDataService = (MigrateDataService) SpringApplicationContext.getBean(httpRequest, "migrateDataService");
 			asyncResponse.setTimeout(600000, TimeUnit.MILLISECONDS);
-            asyncResponse.setTimeoutHandler(new TimeoutHandler() {
-								                @Override
-								                public void handleTimeout(AsyncResponse asyncResponse) {
-								                    asyncResponse.resume(Response.status(Response.Status.SERVICE_UNAVAILABLE)
-								                            .entity("Operation time out.").build());
-								                }}
-                );
+            asyncResponse.setTimeoutHandler(asyncResponse1 -> asyncResponse1.resume(Response.status(Response.Status.SERVICE_UNAVAILABLE)
+					.entity("Operation time out.").build())
+			);
 			migrateDataService.migrateOrganizationAccessData();
 			
 			String message = "All Access data migrated successfully for Organizations and Point of Contacts.";
@@ -226,7 +206,7 @@ public class AccessDataMigration
 	@Produces ("application/json")
 	public Response encrypt(@Context HttpServletRequest httpRequest, @QueryParam("plaintxt") String decryptedString)
 	{
-		String encryptedString = "";
+		String encryptedString;
 		try {
 			AESEncryption aesencryption = new AESEncryption();
 			encryptedString = aesencryption.encrypt(decryptedString);
@@ -241,7 +221,7 @@ public class AccessDataMigration
 	@Produces ("application/json")
 	public Response decrypt(@Context HttpServletRequest httpRequest, @QueryParam("encryptedstr") String encryptedString)
 	{
-		String decryptedString = "";
+		String decryptedString;
 		try {
 			AESEncryption aesencryption = new AESEncryption();
 			decryptedString = aesencryption.decrypt(encryptedString);
@@ -256,7 +236,7 @@ public class AccessDataMigration
 	@Produces ("application/json")
 	public Response bcrypt(@Context HttpServletRequest httpRequest, @QueryParam("plaintxt") String plainText)
 	{
-		String encryptedString = "";
+		String encryptedString;
 		try {
 			BCryptPasswordEncoder bcrypt = (BCryptPasswordEncoder) SpringApplicationContext.getBean(httpRequest, "passwordEncoder");
 			encryptedString = bcrypt.encode(plainText);
@@ -272,7 +252,7 @@ public class AccessDataMigration
 	public Response bcryptPasswords(@Context HttpServletRequest httpRequest)
 	{
 		logger.info("Encrypt all the passowrds in users table.");
-		String message = "";
+		String message;
 		try
 		{
 			MigrateDataService migrateDataService = (MigrateDataService) SpringApplicationContext.getBean(httpRequest, "migrateDataService");

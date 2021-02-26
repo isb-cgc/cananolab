@@ -1,22 +1,24 @@
 package gov.nih.nci.cananolab.restful;
 
-import static org.junit.Assert.*;
-import gov.nih.nci.cananolab.service.sample.impl.BatchDataAvailabilityProcess;
+import gov.nih.nci.cananolab.restful.util.RestTestLoginUtil;
+import gov.nih.nci.cananolab.service.sample.BatchDataAvailabilityProcess;
 import gov.nih.nci.cananolab.ui.form.GenerateBatchDataAvailabilityForm;
-
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.client.Entity;
 import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.Response;
-
-import org.glassfish.jersey.client.ClientConfig;
 import org.junit.Before;
 import org.junit.Test;
 
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
+
+//import org.glassfish.jersey.client.ClientConfig;ClientConfig
+
 public class CurationServicesTest {
 
-	String urlbase = "http://localhost:8080/caNanoLab/rest/";
+	String urlbase = RestTestLoginUtil.readTestUrlProperty() +  "caNanoLab/rest/";
 	Client client; 
 
 	
@@ -51,7 +53,7 @@ public class CurationServicesTest {
 		        .register(ObjectMapperProvider.class)
 		        .build();
 		
-		WebTarget webTarget = aClient.target("http://localhost:8080/caNanoLab/rest");
+		WebTarget webTarget = aClient.target(RestTestLoginUtil.readTestUrlProperty() +  "caNanoLab/rest");
 		webTarget.register(CurationServices.class);
 		
 		WebTarget submitPublicationWebTarget = webTarget.path("curation").path("generateBatchDataAvailability");

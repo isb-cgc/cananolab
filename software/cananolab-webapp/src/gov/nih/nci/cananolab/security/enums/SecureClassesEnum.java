@@ -18,11 +18,12 @@ public enum SecureClassesEnum
 	FILE(gov.nih.nci.cananolab.dto.common.FileBean.class),
 	ORG(gov.nih.nci.cananolab.domain.common.Organization.class),
 	POC(gov.nih.nci.cananolab.domain.common.PointOfContact.class),
-	COLLABORATIONGRP(gov.nih.nci.cananolab.dto.common.CollaborationGroupBean.class);
+	COLLABORATIONGRP(gov.nih.nci.cananolab.dto.common.CollaborationGroupBean.class),
+	SYNTHESIS(gov.nih.nci.cananolab.dto.particle.synthesis.SynthesisBean.class);
 	
 	private Class clazz;
 	
-	private SecureClassesEnum(Class clazz) {
+	SecureClassesEnum(Class clazz) {
 		this.clazz = clazz;
 	}
 	

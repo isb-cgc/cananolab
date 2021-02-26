@@ -1,6 +1,6 @@
 /*L
- *  Copyright SAIC
- *  Copyright SAIC-Frederick
+ *  Copyright Leidos
+ *  Copyright Leidos Biomedical
  *
  *  Distributed under the OSI-approved BSD 3-Clause License.
  *  See http://ncip.github.com/cananolab/LICENSE.txt for details.
@@ -14,7 +14,6 @@ import gov.nih.nci.cananolab.domain.particle.Sample;
 import gov.nih.nci.cananolab.dto.common.PublicationBean;
 import gov.nih.nci.cananolab.exception.NoAccessException;
 import gov.nih.nci.cananolab.exception.PublicationException;
-import gov.nih.nci.cananolab.exception.SampleException;
 import gov.nih.nci.cananolab.security.AccessControlInfo;
 import gov.nih.nci.cananolab.security.CananoUserDetails;
 import gov.nih.nci.cananolab.security.dao.AclDao;
@@ -30,7 +29,7 @@ import gov.nih.nci.cananolab.service.sample.helper.SampleServiceHelper;
 import gov.nih.nci.cananolab.system.applicationservice.CaNanoLabApplicationService;
 import gov.nih.nci.cananolab.util.Comparators;
 import gov.nih.nci.cananolab.util.StringUtils;
-import gov.nih.nci.system.client.ApplicationServiceProvider;
+import gov.nih.nci.cananolab.system.applicationservice.client.ApplicationServiceProvider;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -43,8 +42,6 @@ import java.util.Set;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import org.springframework.transaction.annotation.Propagation;
-import org.springframework.transaction.annotation.Transactional;
 
 /**
  * Local implementation of PublicationService
@@ -72,10 +69,6 @@ public class PublicationServiceLocalImpl extends BaseServiceLocalImpl implements
 	/**
 	 * Persist a new publication or update an existing publication
 	 *
-	 * @param publication
-	 * @param sampleNames
-	 * @param fileData
-	 * @param authors
 	 * @throws Exception
 	 */
 	public void savePublication(PublicationBean publicationBean) throws PublicationException, NoAccessException
@@ -275,8 +268,7 @@ public class PublicationServiceLocalImpl extends BaseServiceLocalImpl implements
 
 	public int getNumberOfPublicPublications() throws PublicationException {
 		try {
-			int count = publicationServiceHelper.getNumberOfPublicPublications();
-			return count;
+            return publicationServiceHelper.getNumberOfPublicPublications();
 		} catch (Exception e) {
 			String err = "Error finding counts of public publication.";
 			logger.error(err, e);
@@ -286,8 +278,7 @@ public class PublicationServiceLocalImpl extends BaseServiceLocalImpl implements
 
 	public int getNumberOfPublicPublicationsForJob() throws PublicationException {
 		try {
-			int count = publicationServiceHelper.getNumberOfPublicPublicationsForJob();
-			return count;
+            return publicationServiceHelper.getNumberOfPublicPublicationsForJob();
 		} catch (Exception e) {
 			String err = "Error finding counts of public publication.";
 			logger.error(err, e);
@@ -298,9 +289,7 @@ public class PublicationServiceLocalImpl extends BaseServiceLocalImpl implements
 	/**
 	 * Remove sample-publication association for an existing publication.
 	 *
-	 * @param sampleId
 	 * @param publication
-	 * @param user
 	 * @throws PublicationException
 	 *             , NoAccessException
 	 */

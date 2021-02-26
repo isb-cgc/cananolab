@@ -1,6 +1,6 @@
 /*L
- *  Copyright SAIC
- *  Copyright SAIC-Frederick
+ *  Copyright Leidos
+ *  Copyright Leidos Biomedical
  *
  *  Distributed under the OSI-approved BSD 3-Clause License.
  *  See http://ncip.github.com/cananolab/LICENSE.txt for details.
@@ -21,7 +21,7 @@ import gov.nih.nci.cananolab.exception.DuplicateEntriesException;
 import gov.nih.nci.cananolab.exception.NoAccessException;
 import gov.nih.nci.cananolab.security.AccessControlInfo;
 import gov.nih.nci.cananolab.security.CananoUserDetails;
-import gov.nih.nci.cananolab.security.Group;
+import gov.nih.nci.cananolab.security.authorization.Group;
 import gov.nih.nci.cananolab.security.dao.AclDao;
 import gov.nih.nci.cananolab.security.enums.AccessTypeEnum;
 import gov.nih.nci.cananolab.security.enums.SecureClassesEnum;
@@ -31,7 +31,6 @@ import gov.nih.nci.cananolab.security.utils.SpringSecurityUtil;
 import gov.nih.nci.cananolab.service.BaseServiceLocalImpl;
 import gov.nih.nci.cananolab.service.community.CommunityService;
 import gov.nih.nci.cananolab.util.StringUtils;
-import gov.nih.nci.cananolab.security.service.CananoUserDetailsServiceImpl;
 
 @Component("communityService")
 public class CommunityServiceLocalImpl extends BaseServiceLocalImpl implements CommunityService

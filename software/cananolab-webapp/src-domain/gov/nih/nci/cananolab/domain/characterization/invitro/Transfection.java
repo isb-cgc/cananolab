@@ -45,9 +45,8 @@ public class Transfection extends InvitroCharacterization implements Serializabl
 	{
 		if(obj instanceof Transfection) 
 		{
-			Transfection c =(Transfection)obj; 			 
-			if(getId() != null && getId().equals(c.getId()))
-				return true;
+			Transfection c =(Transfection)obj;
+            return getId() != null && getId().equals(c.getId());
 		}
 		return false;
 	}

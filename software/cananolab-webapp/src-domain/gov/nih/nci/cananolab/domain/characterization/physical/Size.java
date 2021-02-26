@@ -23,9 +23,8 @@ public class Size extends PhysicoChemicalCharacterization implements Serializabl
 	{
 		if(obj instanceof Size) 
 		{
-			Size c =(Size)obj; 			 
-			if(getId() != null && getId().equals(c.getId()))
-				return true;
+			Size c =(Size)obj;
+            return getId() != null && getId().equals(c.getId());
 		}
 		return false;
 	}

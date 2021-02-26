@@ -55,7 +55,7 @@
     <tr ng-if="item.expand" ng-repeat-end>
     	<td colspan="5" class="columnOne">
     		<table class="table sample" width="100%" cellpadding="0" cellspacing="0">
-	
+
 	    		<tr>
 			        <th>Sample Name</th>
 			        <th>Primary Point of Contact</th>
@@ -81,7 +81,7 @@
 			        <td>
 			            <div ng-repeat="com in s.functions track by $index">{{com}}</div>
 			        </td>
-			        <td>	
+			        <td>
 			            <div ng-repeat="com in s.characterizations track by $index">{{com}}</div>
 			        </td>
 			        <td>
@@ -100,7 +100,7 @@
 		<td colspan="2">
 			<table class="subSubmissionView" summary="layout" align="center" width="85%">
 				<tbody>
-					<tr>	
+					<tr>
 						<th colspan="2">
 							Collaboration Group Information
 						</th>
@@ -112,7 +112,7 @@
 						<td>
 							<input name="name" size="30" value="" id="groupName" type="text" ng-model="collaborationGroup.name">
 						</td>
-					</tr>	
+					</tr>
 					<tr>
 						<td class="cellLabel" width="15%">
 							<label for="groupDescription">Description</label>
@@ -120,7 +120,7 @@
 						<td>
 							<textarea name="description" ng-model="collaborationGroup.description" cols="70" rows="5" id="groupDescription"></textarea>
 						</td>
-					</tr>	
+					</tr>
 					<tr>
 						<td class="cellLabel" id="userLabel" width="15%">
 							User
@@ -149,7 +149,7 @@
 								</table>
 							</div>
 						</td>
-					</tr>													
+					</tr>
 					<tr ng-show="userInfo">
 						<td colspan="2">
 							<div id="newUser" style="display: block;padding-left:85px;">
@@ -175,8 +175,8 @@
 														<img src="images/ajax-loader.gif" class="counts" id="loaderImg" style="display: none;" alt="load existing users" border="0">
 													</td>
 													<td valign="top" ng-show="showUsers">
-														
-														
+
+
 													<select data-ng-model="userInfoBean.recipient"
 														data-ng-options="key as val for (key,val) in userList" id="loginName"><option value=""></option>
 													</select>
@@ -198,19 +198,19 @@
 													</td>
 												</tr>
 											</tbody></table>
-										</div>								
+										</div>
 						</td>
 					</tr>
 					<tr ng-hide="userInfo">
 						<td >
 							<button class="btn-canano btn-canano-xs btn-canano-danger" ng-hide="hideRemoveGroupButton" ng-click="removeGroupCollaboration(item)">Delete</button>
 						<td ng-style="{'text-align':'right'}">
-						<button class="btn-canano btn-canano-xs btn-canano-default" ng-click="cancelGroupCollaboration(item)">Cancel</button>
-						<button class="btn-canano btn-canano-xs btn-canano-primary" ng-disabled="!collaborationGroup.name" ng-click="submit(item)">Submit</button>
+							<button class="btn-canano btn-canano-xs btn-canano-default" ng-click="cancelGroupCollaboration(item)">Cancel</button>
+							<button class="btn-canano btn-canano-xs btn-canano-primary" ng-disabled="!collaborationGroup.name" ng-click="submit(item)">Submit</button>
 						</td>
-					</tr>			
-				</tbody>	
-			</table>		
+					</tr>
+				</tbody>
+			</table>
 		</td>
 	</tr>
 

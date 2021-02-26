@@ -2,32 +2,32 @@ package gov.nih.nci.cananolab.security.dao;
 
 import java.util.List;
 
-import gov.nih.nci.cananolab.security.Group;
+import gov.nih.nci.cananolab.security.authorization.Group;
 
 public interface GroupDao
 {
-	public Group getGroupByName(String groupName);
+	Group getGroupByName(String groupName);
 	
-	public Group getGroupById(Long groupId);
+	Group getGroupById(Long groupId);
 	
-	public int insertGroup(Group newGroup);
+	int insertGroup(Group newGroup);
 	
-	public int inserGroupMember(Long groupId, String userName);
+	int inserGroupMember(Long groupId, String userName);
 	
-	public int updateGroup(Long groupId, String groupDesc);
+	int updateGroup(Long groupId, String groupDesc);
 
-    public int updateGroupWithName(Long groupId, String groupDesc, String groupName);
+    int updateGroupWithName(Long groupId, String groupDesc, String groupName);
 	
-	public List<String> getGroupMembers(Long groupId);
+	List<String> getGroupMembers(Long groupId);
 	
-	public int removeGroupMembers(Long groupId);
+	int removeGroupMembers(Long groupId);
 	
-	public int removeGroupMember(Long groupId, String userName);
+	int removeGroupMember(Long groupId, String userName);
 	
-	public int deleteGroup(Long groupId);
+	int deleteGroup(Long groupId);
 	
-	public List<Group> getGroupsWithMember(String username);
+	List<Group> getGroupsWithMember(String username);
 	
-	public List<Group> getAllGroups();
+	List<Group> getAllGroups();
 
 }

@@ -1,6 +1,6 @@
 /*L
- *  Copyright SAIC
- *  Copyright SAIC-Frederick
+ *  Copyright Leidos
+ *  Copyright Leidos Biomedical
  *
  *  Distributed under the OSI-approved BSD 3-Clause License.
  *  See http://ncip.github.com/cananolab/LICENSE.txt for details.
@@ -24,6 +24,7 @@ import gov.nih.nci.cananolab.domain.particle.FunctionalizingEntity;
 import gov.nih.nci.cananolab.domain.particle.NanomaterialEntity;
 import gov.nih.nci.cananolab.domain.particle.Sample;
 import gov.nih.nci.cananolab.domain.particle.SampleComposition;
+import gov.nih.nci.cananolab.domain.particle.Synthesis;
 import gov.nih.nci.cananolab.exception.NoAccessException;
 import gov.nih.nci.cananolab.security.dao.AclDao;
 import gov.nih.nci.cananolab.security.enums.CaNanoRoleEnum;
@@ -35,13 +36,17 @@ import gov.nih.nci.cananolab.util.Comparators;
 import gov.nih.nci.cananolab.util.Constants;
 import gov.nih.nci.cananolab.util.StringUtils;
 import gov.nih.nci.cananolab.util.TextMatchMode;
-import gov.nih.nci.security.authorization.domainobjects.User;
-import gov.nih.nci.system.client.ApplicationServiceProvider;
-import gov.nih.nci.system.query.hibernate.HQLCriteria;
-import gov.nih.nci.system.web.struts.action.Criteria;
-
-import java.util.*;
-
+import gov.nih.nci.cananolab.system.applicationservice.client.ApplicationServiceProvider;
+import gov.nih.nci.cananolab.system.query.hibernate.HQLCriteria;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Date;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+import java.util.SortedSet;
+import java.util.TreeSet;
 import org.apache.log4j.Logger;
 import org.hibernate.FetchMode;
 import org.hibernate.criterion.CriteriaSpecification;
@@ -54,9 +59,10 @@ import org.hibernate.criterion.ProjectionList;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Property;
 import org.hibernate.criterion.Restrictions;
-import org.hibernate.transform.Transformers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+
+//import gov.nih.nci.system.web.struts.action.Criteria;
 
 /**
  * Helper class providing implementations of search methods needed for both
@@ -115,10 +121,10 @@ public class SampleServiceHelper
 					CriteriaSpecification.LEFT_JOIN);
 			crit.createAlias("otherPoc.organization", "otherOrg",
 					CriteriaSpecification.LEFT_JOIN);
-			String critStrs[] = { "pointOfContact.lastName",
-					"pointOfContact.firstName", "pointOfContact.role",
-					"organization.name", "otherPoc.lastName",
-					"otherPoc.firstName", "otherOrg.name" };
+            String[] critStrs = {"pointOfContact.lastName",
+                    "pointOfContact.firstName", "pointOfContact.role",
+                    "organization.name", "otherPoc.lastName",
+                    "otherPoc.firstName", "otherOrg.name"};
 			for (String critStr : critStrs) {
 				Criterion pocCrit = Restrictions.ilike(critStr,
 						pocMatchMode.getUpdatedText(),
@@ -542,6 +548,20 @@ public class SampleServiceHelper
 		return storedChars;
 	}
 
+	public SortedSet<String> getStoredSynthesisClassNames(Sample sample){
+		SortedSet<String> storedSynthesis = new TreeSet<String>();
+		if(sample.getSynthesis() !=null){
+			//This should only have one element
+//			for (Synthesis synthesis: sample.getSynthesisCollection()){
+				storedSynthesis.add(ClassUtils.getShortClassName(sample.getSynthesis().getClass().getCanonicalName()));
+//			}
+		}
+		return storedSynthesis;
+	}
+
+
+
+	//TODO add Synthesis to all of the sample returns
 	public Sample findSampleByName(String sampleName) throws Exception {
 		Sample sample = null;
 		CaNanoLabApplicationService appService = (CaNanoLabApplicationService) ApplicationServiceProvider
@@ -573,6 +593,10 @@ public class SampleServiceHelper
 				"sampleComposition.functionalizingEntityCollection.functionCollection",
 				FetchMode.JOIN);
 		crit.setFetchMode("publicationCollection", FetchMode.JOIN);
+		crit.setFetchMode("synthesis", FetchMode.JOIN);
+		crit.setFetchMode("synthesis.synthesisMaterials", FetchMode.JOIN);
+		crit.setFetchMode("synthesis.synthesisFunctionalizations", FetchMode.JOIN);
+		crit.setFetchMode("synthesis.synthesisPurifications",FetchMode.JOIN);
 		crit.setResultTransformer(CriteriaSpecification.DISTINCT_ROOT_ENTITY);
 
 		List result = appService.query(crit);
@@ -648,9 +672,7 @@ public class SampleServiceHelper
 			Sample sample = (Sample) results.get(i);
 			Collection<PointOfContact> otherPOCs = sample
 					.getOtherPointOfContactCollection();
-			for (PointOfContact poc : otherPOCs) {
-				pointOfContacts.add(poc);
-			}
+            pointOfContacts.addAll(otherPOCs);
 		}
 		return pointOfContacts;
 	}
@@ -692,6 +714,10 @@ public class SampleServiceHelper
 				"sampleComposition.functionalizingEntityCollection.functionCollection",
 				FetchMode.JOIN);
 		crit.setFetchMode("publicationCollection", FetchMode.JOIN);
+		crit.setFetchMode("synthesis", FetchMode.JOIN);
+		crit.setFetchMode("synthesis.synthesisMaterials", FetchMode.JOIN);
+		crit.setFetchMode("synthesis.synthesisFunctionalizations", FetchMode.JOIN);
+		crit.setFetchMode("synthesis.synthesisPurifications",FetchMode.JOIN);
 		crit.setResultTransformer(CriteriaSpecification.DISTINCT_ROOT_ENTITY);
 
 		List result = appService.query(crit);
@@ -726,8 +752,7 @@ public class SampleServiceHelper
 	public int getNumberOfPublicSamplesForJob() throws Exception
 	{
 		List<Long> publicData = aclDao.getIdsOfClassForSid(SecureClassesEnum.SAMPLE.getClazz().getName(), CaNanoRoleEnum.ROLE_ANONYMOUS.toString());
-		int cnt = (publicData != null) ? publicData.size() : 0;
-		return cnt;
+        return (publicData != null) ? publicData.size() : 0;
 	}
 
 	public int getNumberOfPublicSampleSources() throws Exception
@@ -753,14 +778,12 @@ public class SampleServiceHelper
 	public int getNumberOfPublicSampleSourcesForJob() throws Exception
 	{
 		List<Long> publicData = aclDao.getIdsOfClassForSid(SecureClassesEnum.ORG.getClazz().getName(), CaNanoRoleEnum.ROLE_ANONYMOUS.toString());
-		int cnt = (publicData != null) ? publicData.size() : 0;
-		return cnt;
+        return (publicData != null) ? publicData.size() : 0;
 	}
 
 	public List<Long> getSampleAccessibleToACollabGrp(String groupName)
 	{
-		List<Long> collabGroupSamples = aclDao.getIdsOfClassForSid(SecureClassesEnum.SAMPLE.getClazz().getName(), groupName);
-		return collabGroupSamples;
+        return aclDao.getIdsOfClassForSid(SecureClassesEnum.SAMPLE.getClazz().getName(), groupName);
 	}
 
 	public String[] getSampleViewStrs(Sample sample) {
@@ -792,6 +815,7 @@ public class SampleServiceHelper
 		columns.add(StringUtils.join(
 				getStoredCharacterizationClassNames(sample),
 				Constants.VIEW_CLASSNAME_DELIMITER));
+		columns.add(StringUtils.join(getStoredSynthesisClassNames(sample), Constants.VIEW_CLASSNAME_DELIMITER));
 		return columns.toArray(new String[0]);
 	}
 
@@ -1036,10 +1060,10 @@ public class SampleServiceHelper
 					CriteriaSpecification.LEFT_JOIN);
 			crit.createAlias("otherPoc.organization", "otherOrg",
 					CriteriaSpecification.LEFT_JOIN);
-			String critStrs[] = { "pointOfContact.lastName",
-					"pointOfContact.firstName", "pointOfContact.role",
-					"organization.name", "otherPoc.lastName",
-					"otherPoc.firstName", "otherOrg.name" };
+            String[] critStrs = {"pointOfContact.lastName",
+                    "pointOfContact.firstName", "pointOfContact.role",
+                    "organization.name", "otherPoc.lastName",
+                    "otherPoc.firstName", "otherOrg.name"};
 			for (String critStr : critStrs) {
 				Criterion pocCrit = Restrictions.ilike(critStr,
 						pocMatchMode.getUpdatedText(),

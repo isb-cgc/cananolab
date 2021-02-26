@@ -4,6 +4,9 @@ import java.io.InputStream;
 import java.util.List;
 import java.util.Map;
 
+import javax.json.Json;
+import javax.json.JsonBuilderFactory;
+import javax.json.JsonObject;
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.Consumes;
@@ -38,6 +41,7 @@ import gov.nih.nci.cananolab.restful.workspace.WorkspaceManager;
 import gov.nih.nci.cananolab.security.CananoUserDetails;
 import gov.nih.nci.cananolab.security.utils.SpringSecurityUtil;
 import gov.nih.nci.cananolab.util.Constants;
+import org.springframework.web.bind.annotation.CrossOrigin;
 
 @Path("/core")
 public class CoreServices 
@@ -186,6 +190,7 @@ public class CoreServices
 		}
 	}
 
+	@CrossOrigin
 	@POST
 	@Path("/uploadFile")
 	@Consumes("multipart/form-data")
@@ -203,10 +208,31 @@ public class CoreServices
 				MultivaluedMap<String, String> headers = inputPart.getHeaders();
 				fileName = parseFileName(headers);
 				fileInputStream = inputPart.getBody(InputStream.class,null);
+				if( fileName != null ){
+					break;
+				}
 			}
 
 			protocolBO.saveFile(fileInputStream,fileName,httpRequest);
-			return Response.ok(fileName).header("Access-Control-Allow-Credentials", "true").header("Access-Control-Allow-Origin", "*").header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS").header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization").build();
+//			return Response.ok(fileName).header("Access-Control-Allow-Credentials", "true")
+//					.header("Access-Control-Allow-Origin", "*")
+//					.header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS")
+//					.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization").build();
+
+
+
+
+			JsonBuilderFactory factory = Json.createBuilderFactory(null);
+			JsonObject value = factory.createObjectBuilder()
+					.add("fileName", fileName).build();
+			return
+//					Response.ok(fileName)
+					Response.ok(value)
+/*					.header("Access-Control-Allow-Credentials", "true")
+					.header("Access-Control-Allow-Origin", "*")
+					.header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS")
+					.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization")
+*/					.build();
 		} catch (Exception e) {
 			logger.error(e.getMessage());
 			e.printStackTrace();

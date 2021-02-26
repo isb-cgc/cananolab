@@ -1,6 +1,6 @@
 /*L
- *  Copyright SAIC
- *  Copyright SAIC-Frederick
+ *  Copyright Leidos
+ *  Copyright Leidos Biomedical
  *
  *  Distributed under the OSI-approved BSD 3-Clause License.
  *  See http://ncip.github.com/cananolab/LICENSE.txt for details.
@@ -8,6 +8,16 @@
 
 package gov.nih.nci.cananolab.service;
 
+import gov.nih.nci.cananolab.domain.common.File;
+import gov.nih.nci.cananolab.domain.common.Keyword;
+import gov.nih.nci.cananolab.dto.common.FileBean;
+import gov.nih.nci.cananolab.exception.FileException;
+import gov.nih.nci.cananolab.exception.NoAccessException;
+import gov.nih.nci.cananolab.security.service.SpringSecurityAclService;
+import gov.nih.nci.cananolab.system.applicationservice.CaNanoLabApplicationService;
+import gov.nih.nci.cananolab.util.Constants;
+import gov.nih.nci.cananolab.util.PropertyUtils;
+import gov.nih.nci.cananolab.system.applicationservice.client.ApplicationServiceProvider;
 import java.io.BufferedOutputStream;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -17,23 +27,10 @@ import java.io.OutputStream;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
-
 import org.apache.log4j.Logger;
 import org.hibernate.FetchMode;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Property;
-
-import gov.nih.nci.cananolab.domain.common.File;
-import gov.nih.nci.cananolab.domain.common.Keyword;
-import gov.nih.nci.cananolab.dto.common.FileBean;
-import gov.nih.nci.cananolab.exception.FileException;
-import gov.nih.nci.cananolab.exception.NoAccessException;
-import gov.nih.nci.cananolab.security.enums.SecureClassesEnum;
-import gov.nih.nci.cananolab.security.service.SpringSecurityAclService;
-import gov.nih.nci.cananolab.system.applicationservice.CaNanoLabApplicationService;
-import gov.nih.nci.cananolab.util.Constants;
-import gov.nih.nci.cananolab.util.PropertyUtils;
-import gov.nih.nci.system.client.ApplicationServiceProvider;
 
 public abstract class BaseServiceLocalImpl implements BaseService
 {
@@ -146,19 +143,11 @@ public abstract class BaseServiceLocalImpl implements BaseService
 			if (file.exists()) {
 				return; // don't save again
 			}
-			OutputStream oStream = null;
-			try {
-				oStream = new BufferedOutputStream(new FileOutputStream(file));
+			try (OutputStream oStream = new BufferedOutputStream(new FileOutputStream(file))) {
 				oStream.write(fileContent);
 				oStream.flush();
-			} finally {
-				if (oStream != null) {
-					try {
-						oStream.close();
-					} catch (Exception e) {
-					}
-				}
 			}
+			//TODO report error
 		}
 
 		// save to the file system if fileData is not empty

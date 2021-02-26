@@ -1,6 +1,6 @@
 /*L
- *  Copyright SAIC
- *  Copyright SAIC-Frederick
+ *  Copyright Leidos
+ *  Copyright Leidos Biomedical
  *
  *  Distributed under the OSI-approved BSD 3-Clause License.
  *  See http://ncip.github.com/cananolab/LICENSE.txt for details.
@@ -13,6 +13,7 @@ package gov.nih.nci.cananolab.dto.common;
 
 import gov.nih.nci.cananolab.domain.common.Organization;
 import gov.nih.nci.cananolab.domain.common.PointOfContact;
+import gov.nih.nci.cananolab.security.CananoUserDetails;
 import gov.nih.nci.cananolab.util.StringUtils;
 
 import java.util.ArrayList;
@@ -26,7 +27,7 @@ import java.util.List;
  *
  */
 
-public class PointOfContactBean {
+public class PointOfContactBean implements Comparable{
 	private PointOfContact domain = new PointOfContact();
 	private String displayName = "";
 	private Boolean primaryStatus = true;
@@ -37,6 +38,20 @@ public class PointOfContactBean {
 
 	public PointOfContactBean(PointOfContact pointOfContact) {
 		domain = pointOfContact;
+	}
+
+
+	public int compareTo(PointOfContactBean pocBean) {
+		return this.getOrganizationDisplayName().toLowerCase().compareTo(pocBean.getOrganizationDisplayName().toLowerCase());
+	}
+
+	@Override
+	public int compareTo(Object o) {
+		int diff = 0;
+		if (o instanceof PointOfContactBean) {
+			return this.compareTo((PointOfContactBean) o);
+		}
+		return diff;
 	}
 
 	/**
@@ -161,8 +176,11 @@ public class PointOfContactBean {
 		}
 	}
 
+	//TODO Can this be removed?
 	public void resetDomainCopy(String createdBy, PointOfContact copy) {
 		// don't need to set point of contact because POCs are shared
 		// don't need to set organization because organizations are shared
 	}
+
+
 }

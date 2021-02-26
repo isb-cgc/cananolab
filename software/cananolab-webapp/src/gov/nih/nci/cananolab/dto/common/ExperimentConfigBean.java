@@ -1,6 +1,6 @@
 /*L
- *  Copyright SAIC
- *  Copyright SAIC-Frederick
+ *  Copyright Leidos
+ *  Copyright Leidos Biomedical
  *
  *  Distributed under the OSI-approved BSD 3-Clause License.
  *  See http://ncip.github.com/cananolab/LICENSE.txt for details.
@@ -41,9 +41,7 @@ public class ExperimentConfigBean {
 	public ExperimentConfigBean(ExperimentConfig config) {
 		domain = config;
 		if (config.getInstrumentCollection() != null) {
-			for (Instrument instrument : config.getInstrumentCollection()) {
-				instruments.add(instrument);
-			}
+			instruments.addAll(config.getInstrumentCollection());
 			Collections.sort(instruments,
 					new Comparators.InstrumentDateComparator());
 		}
@@ -186,7 +184,7 @@ public class ExperimentConfigBean {
 		if (displayNames.isEmpty()) {
 			return null;
 		}
-		return displayNames.toArray(new String[displayNames.size()]);
+		return displayNames.toArray(new String[0]);
 	}
 
 	public void resetDomainCopy(String createdBy, ExperimentConfig copy) {

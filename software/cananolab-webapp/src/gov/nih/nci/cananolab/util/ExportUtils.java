@@ -1,6 +1,6 @@
 /*L
- *  Copyright SAIC
- *  Copyright SAIC-Frederick
+ *  Copyright Leidos
+ *  Copyright Leidos Biomedical
  *
  *  Distributed under the OSI-approved BSD 3-Clause License.
  *  See http://ncip.github.com/cananolab/LICENSE.txt for details.
@@ -65,9 +65,8 @@ public class ExportUtils {
 		}
 		nameParts.add(DateUtils.convertDateToString(Calendar.getInstance()
 				.getTime()));
-		String exportFileName = StringUtils.join(nameParts, "_");
 
-		return exportFileName;
+        return StringUtils.join(nameParts, "_");
 	}
 
 	/**
@@ -144,12 +143,11 @@ public class ExportUtils {
 	public static int createImage(int rowIndex, short colIndex,
 			String filePath, HSSFWorkbook wb, HSSFSheet sheet,
 			HSSFPatriarch patriarch) throws IOException {
-		short topLeftCell = colIndex;
-		short bottomRightCell = (short) (colIndex + 7);
+        short bottomRightCell = (short) (colIndex + 7);
 		int topLeftRow = rowIndex + 1;
 		int bottomRightRow = rowIndex + 22;
 		HSSFClientAnchor anchor = new HSSFClientAnchor(0, 0, 0, 255,
-				topLeftCell, topLeftRow, bottomRightCell, bottomRightRow);
+                colIndex, topLeftRow, bottomRightCell, bottomRightRow);
 		anchor.setAnchorType(2); // 2 = Move but don't size with cells
 		patriarch.createPicture(anchor, loadPicture(filePath, wb));
 		rowIndex = bottomRightRow + 3;

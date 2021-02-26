@@ -1,6 +1,6 @@
 /*L
- *  Copyright SAIC
- *  Copyright SAIC-Frederick
+ *  Copyright Leidos
+ *  Copyright Leidos Biomedical
  *
  *  Distributed under the OSI-approved BSD 3-Clause License.
  *  See http://ncip.github.com/cananolab/LICENSE.txt for details.
@@ -92,16 +92,20 @@ public class WorkspaceManager extends BaseAnnotationBO
 		CananoUserDetails userDetails = SpringSecurityUtil.getPrincipal();
 
 		List<SimpleWorkspaceItem> items = null;
-		if (type.equals("sample")) {
-			items =  getSampleItems(request, userDetails);
-			simpleWorkspace.setSamples(items);
-		} else if (type.equals("protocol")) {
-			items = getProtocolItems(request, userDetails);
-			simpleWorkspace.setProtocols(items);
-		} else if (type.equals("publication")) {
-			items = getPublicationItems(request, userDetails);
-			simpleWorkspace.setPublications(items);
-		}
+        switch (type) {
+            case "sample":
+                items = getSampleItems(request, userDetails);
+                simpleWorkspace.setSamples(items);
+                break;
+            case "protocol":
+                items = getProtocolItems(request, userDetails);
+                simpleWorkspace.setProtocols(items);
+                break;
+            case "publication":
+                items = getPublicationItems(request, userDetails);
+                simpleWorkspace.setPublications(items);
+                break;
+        }
 
 		return simpleWorkspace;
 	}

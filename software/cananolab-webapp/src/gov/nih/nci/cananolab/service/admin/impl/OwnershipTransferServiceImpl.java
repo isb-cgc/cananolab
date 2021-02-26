@@ -1,6 +1,6 @@
 /*L
- *  Copyright SAIC
- *  Copyright SAIC-Frederick
+ *  Copyright Leidos
+ *  Copyright Leidos Biomedical
  *
  *  Distributed under the OSI-approved BSD 3-Clause License.
  *  See http://ncip.github.com/cananolab/LICENSE.txt for details.
@@ -47,20 +47,17 @@ import gov.nih.nci.cananolab.service.sample.SampleService;
 import gov.nih.nci.cananolab.system.applicationservice.CaNanoLabApplicationService;
 import gov.nih.nci.cananolab.util.Constants;
 import gov.nih.nci.cananolab.util.StringUtils;
-import gov.nih.nci.system.client.ApplicationServiceProvider;
-
+import gov.nih.nci.cananolab.system.applicationservice.client.ApplicationServiceProvider;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
-
 import org.apache.log4j.Logger;
 import org.hibernate.FetchMode;
 import org.hibernate.criterion.CriteriaSpecification;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Property;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Component;
 
@@ -515,8 +512,7 @@ public class OwnershipTransferServiceImpl implements OwnershipTransferService {
 		// if the existing createdBy is not the same as current owner but
 		// contains COPY and contains existing createdBy, replace with newOwner
 		if (existingOwner.startsWith(currentOwner)) {
-			String newCreatedBy = existingOwner.replaceFirst(currentOwner + ":", newOwner + ":");
-			return newCreatedBy;
+            return existingOwner.replaceFirst(currentOwner + ":", newOwner + ":");
 		}
 		return existingOwner;
 	}

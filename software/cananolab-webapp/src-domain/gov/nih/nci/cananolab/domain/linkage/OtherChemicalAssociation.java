@@ -4,7 +4,7 @@ import gov.nih.nci.cananolab.domain.particle.ChemicalAssociation;
 
 import java.io.Serializable;
 /**
-	* Any process of combining chemical entities that is dependent upon chemical forces which is dfferent than the one(s) previously specified or mentioned.
+	* Any process of combining chemical entities that is dependent upon chemical forces which is different than the one(s) previously specified or mentioned.
 	**/
 
 public class OtherChemicalAssociation extends ChemicalAssociation implements Serializable
@@ -46,9 +46,8 @@ public class OtherChemicalAssociation extends ChemicalAssociation implements Ser
 	{
 		if(obj instanceof OtherChemicalAssociation) 
 		{
-			OtherChemicalAssociation c =(OtherChemicalAssociation)obj; 			 
-			if(getId() != null && getId().equals(c.getId()))
-				return true;
+			OtherChemicalAssociation c =(OtherChemicalAssociation)obj;
+            return getId() != null && getId().equals(c.getId());
 		}
 		return false;
 	}

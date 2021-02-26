@@ -24,9 +24,8 @@ public class QuantumDot extends NanomaterialEntity implements Serializable
 	{
 		if(obj instanceof QuantumDot) 
 		{
-			QuantumDot c =(QuantumDot)obj; 			 
-			if(getId() != null && getId().equals(c.getId()))
-				return true;
+			QuantumDot c =(QuantumDot)obj;
+            return getId() != null && getId().equals(c.getId());
 		}
 		return false;
 	}

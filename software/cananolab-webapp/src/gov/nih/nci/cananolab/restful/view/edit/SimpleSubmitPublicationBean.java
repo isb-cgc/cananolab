@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import gov.nih.nci.cananolab.domain.common.Author;
-import gov.nih.nci.cananolab.dto.common.AccessibilityBean;
 import gov.nih.nci.cananolab.security.AccessControlInfo;
 
 

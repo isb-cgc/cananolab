@@ -10,7 +10,7 @@ software/cananolab-webapp/target/
 **/.DS_Store
 .classpath
 .project
-
+indexDir/*
 software/cananolab-webapp/.settings/*
 
 ## Ignore node modules ##
@@ -21,3 +21,21 @@ node_modules/
 \.settings/
 
 software/common/lib/globus/
+
+.idea/
+
+vpproject/
+
+software/cananolab-webapp/cananolab-web.iml
+
+
+software/common/lib/sdk/
+
+software/common/lib/caNanoLab-beans\.jar
+
+software/cananolab-webapp/ijbuild/
+
+
+software/cananolab-webapp/lib/caNanoLab-beans\.jar
+
+*.iml

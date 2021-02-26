@@ -1,6 +1,6 @@
 package gov.nih.nci.cananolab.restful.view.edit;
 
-import gov.nih.nci.cananolab.dto.common.TableCell;
+import gov.nih.nci.cananolab.dto.common.table.TableCell;
 
 import java.util.Date;
 

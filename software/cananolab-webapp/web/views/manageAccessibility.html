@@ -8,7 +8,7 @@
         <a href="#"
            onclick="confirmAddNew(['PointOfContact'], 'Access', 'Access', 'clearAccess(\'{{$parent.parentFormName}}\', \'{{$parent.dataType}}\')');"
            id="addAccess" style="display:block"><img
-                align="top" src="images/btn_add.gif" border="0" alt="add accessibility"/></a> -->
+                align="top" src="images/btn-canano_add.gif" border="0" alt="add accessibility"/></a> -->
         <button ng-click="$parent.accessForm = {}; $parent.addAccess=true; $parent.showAddAccessButton=false;$parent.accessForm.theAccess.recipient='';$parent.accessForm.theAccess.recipientDisplayName='';$parent.accessForm.theAccess.roleName='';" id="addAccess" class="btn-canano btn-canano-primary btn-canano-xs">Add</button>
     </td>
 </tr>
@@ -111,7 +111,7 @@
                         <input type="text" ng-model="accessForm.theAccess.recipient" value="" id="userName" ng-if="$parent.showAccessuser"></label>
                     </td>
                     <td>
-                        <button class="btn-canano btn-canano-primary btn-canano-xs"
+                        <button class="btn-canano btn-canano-primary btn-canano-xs" 
                                 id="browseIcon1" 
                                 ng-if="$parent.showCollaborationGroup && accessForm.theAccess.recipient != 'ROLE_ANONYMOUS'"
                                 ng-click="getCollabGroups();"
@@ -170,7 +170,7 @@
                 </tr>
                 <tr>
                     <td><button id="deleteAccess"
-                                class="btn-canano btn-canano-danger btn-canano-xs"
+                                class="btn-canano btn-canano-danger btn-canano-xs" 
                                 type="button"
                                 ng-click="removeAccessSection()"
                                 ng-if="accessExists == true"

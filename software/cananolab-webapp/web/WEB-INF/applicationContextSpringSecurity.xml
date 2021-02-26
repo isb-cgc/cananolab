@@ -57,6 +57,11 @@
 		<intercept-url pattern="/rest/protocol/download" access="permitAll" />
 		<intercept-url pattern="/rest/protocol/setup" access="permitAll" />
 		
+		<intercept-url pattern="/rest/synthesis/summaryView" access="permitAll()"/>
+		<intercept-url pattern="/rest/synthesisMaterial/setup" access="permitAll()"/>
+		<intercept-url pattern="/rest/synthesisPurification/setup" access="permitAll()"/>
+		<intercept-url pattern="/rest/synthesisFunctionalization/setup" access="permitAll()"/>
+		
 		<intercept-url pattern="/rest/curation/reviewData" access="hasRole('ROLE_CURATOR')" />
 		<intercept-url pattern="/rest/curation/generateBatchDataAvailability" access="hasRole('ROLE_CURATOR')" />
 		<intercept-url pattern="/rest/curation/manageResult" access="hasRole('ROLE_CURATOR')" />
@@ -104,7 +109,7 @@
 		</authentication-provider>
 	</authentication-manager>
 	
-	<beans:bean id="passwordEncoder" class="org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder">
-	</beans:bean>
+	<beans:bean id="passwordEncoder" class="org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder"/>
+
 
 </beans:beans>

@@ -1,14 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
-
 <!--L
-   Copyright SAIC
-   Copyright SAIC-Frederick
+   Copyright Leidos
+   Copyright Leidos Biomedical
 
    Distributed under the OSI-approved BSD 3-Clause License.
    See http://ncip.github.com/cananolab/LICENSE.txt for details.
 L-->
-
-<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
 <hibernate-mapping package="gov.nih.nci.cananolab.domain.particle" auto-import="false">
 	<class name="Function" table="nano_function" lazy="true" polymorphism="explicit">
 		<cache usage="read-write" />
@@ -24,8 +22,8 @@ L-->
 		<property name="createdDate" type="java.util.Date" column="created_date"/>
 		<property name="description" type="string" column="description"/>
 		<!-- Associations mapping for the Function class -->
-		<many-to-one name="functionalizingEntity" class="gov.nih.nci.cananolab.domain.particle.FunctionalizingEntity" column="functionalizing_entity_pk_id" lazy="proxy" />
-		<many-to-one name="composingElement" class="gov.nih.nci.cananolab.domain.particle.ComposingElement" column="composing_element_pk_id" lazy="proxy" />
+		<many-to-one name="functionalizingEntity" class="FunctionalizingEntity" column="functionalizing_entity_pk_id" lazy="proxy" />
+		<many-to-one name="composingElement" class="ComposingElement" column="composing_element_pk_id" lazy="proxy" />
 		<subclass name="gov.nih.nci.cananolab.domain.function.ImagingFunction" discriminator-value="ImagingFunction">
 			<!-- Attributes mapping for the ImagingFunction class -->
 			<property name="modality" type="string" column="imaging_function_modality"/>

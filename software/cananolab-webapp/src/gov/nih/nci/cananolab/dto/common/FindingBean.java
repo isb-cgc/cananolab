@@ -1,6 +1,6 @@
 /*L
- *  Copyright SAIC
- *  Copyright SAIC-Frederick
+ *  Copyright Leidos
+ *  Copyright Leidos Biomedical
  *
  *  Distributed under the OSI-approved BSD 3-Clause License.
  *  See http://ncip.github.com/cananolab/LICENSE.txt for details.
@@ -12,6 +12,7 @@ import gov.nih.nci.cananolab.domain.common.Condition;
 import gov.nih.nci.cananolab.domain.common.Datum;
 import gov.nih.nci.cananolab.domain.common.File;
 import gov.nih.nci.cananolab.domain.common.Finding;
+import gov.nih.nci.cananolab.dto.common.table.TableCell;
 import gov.nih.nci.cananolab.util.Comparators;
 import gov.nih.nci.cananolab.util.Constants;
 import gov.nih.nci.cananolab.util.DateUtils;
@@ -41,7 +42,7 @@ public class FindingBean
     private List<ColumnHeader> columnHeaders = new ArrayList<ColumnHeader>();
     private int numberOfColumns;
     private int numberOfRows;
-    private FileBean theFile = new FileBean();
+
     private int theFileIndex;
 
     public FindingBean()
@@ -584,11 +585,8 @@ public class FindingBean
         if( obj instanceof FindingBean )
         {
             FindingBean findingBean = (FindingBean) obj;
-            if( domain.getId() != null
-                    && domain.getId().equals( findingBean.getDomain().getId() ) )
-            {
-                return true;
-            }
+            return domain.getId() != null
+                    && domain.getId().equals(findingBean.getDomain().getId());
         }
         return false;
     }
@@ -605,15 +603,6 @@ public class FindingBean
         return 0;
     }
 
-    public FileBean getTheFile()
-    {
-        return theFile;
-    }
-
-    public void setTheFile( FileBean theFile )
-    {
-        this.theFile = theFile;
-    }
 
     public List<FileBean> getFiles()
     {
@@ -827,4 +816,16 @@ public class FindingBean
         }
     }
 
+    //TODO This is evil
+    private FileBean theFile = new FileBean();
+
+    public FileBean getTheFile()
+    {
+        return theFile;
+    }
+
+    public void setTheFile( FileBean theFile )
+    {
+        this.theFile = theFile;
+    }
 }

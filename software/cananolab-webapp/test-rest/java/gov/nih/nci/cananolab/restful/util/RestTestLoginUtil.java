@@ -1,23 +1,18 @@
 package gov.nih.nci.cananolab.restful.util;
 
-import static com.jayway.restassured.RestAssured.with;
-
-import java.util.Properties;
-
-import com.jayway.restassured.response.Response;
-
-import static com.jayway.restassured.RestAssured.given;
-import static com.jayway.restassured.RestAssured.with;
-import static org.hamcrest.Matchers.hasItems;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
-import gov.nih.nci.cananolab.restful.util.RestTestLoginUtil;
+import gov.nih.nci.cananolab.security.utils.SpringSecurityUtil;
 import gov.nih.nci.cananolab.util.PropertyUtils;
-import static com.jayway.restassured.RestAssured.expect;
+import io.restassured.RestAssured;
+import io.restassured.authentication.PreemptiveBasicAuthScheme;
+import io.restassured.response.Response;
+import java.util.HashMap;
+import java.util.Map;
 
-import org.junit.Test;
-
-import com.jayway.restassured.response.Response;
+//import static com.jayway.restassured.RestAssureded.expect;
+//import static com.jayway.restassured.RestAssured.with;
+import static io.restassured.RestAssured.expect;
+import static io.restassured.RestAssured.given;
+import static io.restassured.RestAssured.with;
 
 /**
  * 
@@ -34,34 +29,89 @@ public class RestTestLoginUtil {
 	 * 
 	 * @return
 	 */
-	public static String loginTest() {
+//	public static String loginTest() {
+//
+//		if (jsessionId == null) {
+//			String username = RestTestLoginUtil.readUserNameProperty();
+//			String pwd = RestTestLoginUtil.readPasswordProperty();
+//			System.out.println("User " + username + " " + pwd);
+//
+//			if (username == null || username.length() == 0 ||
+//					pwd == null || pwd.length() == 0)
+//				return null;
+//
+////			Response response = with().params("username", username, "password", pwd)
+////					.expect().statusCode(200).when().get(RestTestLoginUtil.readTestUrlProperty() + "caNanoLab/rest/security/login");
+//
+//			Response response = with().params("username", username, "password", pwd)
+//					.expect().statusCode(200).when().get(RestTestLoginUtil.readTestUrlProperty() + "caNanoLab/login");
+//
+//
+//			jsessionId = response.getCookie("JSESSIONID");
+//		}
+//		return jsessionId;
+//	}
 
-		if (jsessionId == null) {
+	public static String testLogin(){
+		if (jsessionId ==null){
 			String username = RestTestLoginUtil.readUserNameProperty();
 			String pwd = RestTestLoginUtil.readPasswordProperty();
-			
+			System.out.println("User " + username + " " + pwd);
+
 			if (username == null || username.length() == 0 ||
 					pwd == null || pwd.length() == 0)
 				return null;
-			
-			Response response = with().parameters("username", username, "password", pwd)
-					.expect().statusCode(200).when().get("http://localhost:8080/caNanoLab/rest/security/login");
 
+			Map<String, String> parameters = new HashMap<String, String>();
+			parameters.put("username", username);
+			parameters.put("password", pwd);
+
+			Response response = given().contentType("application/x-www-form-urlencoded").params(parameters).when().post(RestTestLoginUtil.readTestUrlProperty() +  "caNanoLab/login");
 			jsessionId = response.getCookie("JSESSIONID");
 		}
 		return jsessionId;
 	}
+
+	public static void testLogout(){
+		Response response = given().contentType("application/x-www-form-urlencoded").when().post(RestTestLoginUtil.readTestUrlProperty() +  "caNanoLab/logout");
+
+	}
+
+	public static void appServiceLogin(){
+//		$http({method: 'POST', url: 'login', headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+//		transformRequest: function(obj) {
+//			var str = [];
+//			for(var p in obj)
+//			str.push(encodeURIComponent(p) + "=" + encodeURIComponent(obj[p]));
+//			return str.join("&");
+//		}, data: $scope.bean}).
+	}
+
+//	public static void RestAssuredLogin(){
+//		String username = RestTestLoginUtil.readUserNameProperty();
+//		String pwd = RestTestLoginUtil.readPasswordProperty();
+//		System.out.println("User " + username + " " + pwd);
+//		RestAssured.baseURI = System.getProperty("baseurl");
+//		PreemptiveBasicAuthScheme authScheme = new PreemptiveBasicAuthScheme();
+//		authScheme.setUserName(username);
+//		authScheme.setPassword(pwd);
+//		RestAssured.authentication = authScheme;}
 	
 	public static void logoutTest() {
-		expect().statusCode(200).when().get("http://localhost:8080/caNanoLab/rest/security/logout");
+		expect().statusCode(200).when().get(RestTestLoginUtil.readTestUrlProperty() + "caNanoLab/rest/security/logout");
 		jsessionId = null;
 	}
 	
 	public static String readUserNameProperty() {
 		return PropertyUtils.getPropertyCached("local.properties", "user.name");
+//		return PropertyUtils.getPropertyCached("local.properties", "user.name");
 	}
+
 
 	public static String readPasswordProperty() {
 		return PropertyUtils.getPropertyCached("local.properties", "password");
+	}
+	public static String readTestUrlProperty() {
+		return PropertyUtils.getPropertyCached("local.properties", "test.url");
 	}
 }

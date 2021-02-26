@@ -39,9 +39,8 @@ public class Targeting extends InvitroCharacterization implements Serializable
 	{
 		if(obj instanceof Targeting) 
 		{
-			Targeting c =(Targeting)obj; 			 
-			if(getId() != null && getId().equals(c.getId()))
-				return true;
+			Targeting c =(Targeting)obj;
+            return getId() != null && getId().equals(c.getId());
 		}
 		return false;
 	}
