@@ -49,23 +49,14 @@ private static RequestSpecification specification;
         //Get login session
         String jsessionId = RestTestLoginUtil.testLogin();
 
-
-        PreemptiveBasicAuthScheme auth = new PreemptiveBasicAuthScheme();
-/*
-        auth.setUserName("lernerm");
-        auth.setPassword("lernerm");
-*/
-
         //Create spec for all test logins in this class
         specification = new RequestSpecBuilder()
-                .setContentType( ContentType.JSON)
-                .setBaseUri("http://192.168.1.16:8090/caNanoLab/rest/")
+                .setContentType(ContentType.JSON)
+                .setBaseUri("http://localhost:8080/caNanoLab/rest/")
                 .addFilter(new ResponseLoggingFilter())
                 .addFilter(new RequestLoggingFilter())
                 .setSessionId(jsessionId)
-               // .setAuth(auth)
                 .build();
-
 
     }
 
