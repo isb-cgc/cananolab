@@ -24,6 +24,7 @@ drop table if exists csm_password_history;
 drop table if exists synthesis_func_purification;
 drop table if exists purity_file;
 drop table if exists purity_datum_condition;
+drop table if exists purity_column_header;
 drop table if exists purity_datum;
 drop table if exists synthesis_file;
 drop table if exists synthesis_material_file;
@@ -293,43 +294,8 @@ CREATE TABLE `synthesis_purity`
     CONSTRAINT `FK_synthesis_purity_to purification` FOREIGN KEY (`synthesis_purification_pk_id`) REFERENCES `synthesis_purification` (`synthesis_purification_pk_id`)
 );
 
---
--- Table structure for table `purity_column_header`
---
 
-SET character_set_client = utf8;
-CREATE TABLE `purity_column_header`
-(
-    `column_pk_id`   bigint(20)   NOT NULL,
-    `name`           varchar(200) NOT NULL,
-    `property`       varchar(200)    DEFAULT NULL,
-    `value_type`     varchar(200)    DEFAULT NULL,
-    `value_unit`     varchar(200)    DEFAULT NULL,
-    `created_by`     varchar(200) NOT NULL,
-    `created_date`   datetime     NOT NULL,
-    `column_order`   INT(10)      NOT NULL,
-    `constant_value` DECIMAL(30, 10) DEFAULT NULL,
-    PRIMARY KEY (`column_pk_id`)
-);
 
-CREATE TABLE `purity_datum`
-(
-    `purity_datum_pk_id` bigint(20)      NOT NULL,
-    `name`               varchar(200)    NOT NULL COMMENT 'name',
-    `value`              decimal(30, 10) NOT NULL COMMENT 'value',
-    `value_type`         varchar(200) DEFAULT NULL COMMENT 'value_type',
-    `value_unit`         varchar(200) DEFAULT NULL COMMENT 'value_unit',
-    `created_by`         varchar(200)    NOT NULL COMMENT 'created_by',
-    `created_date`       datetime        NOT NULL COMMENT 'created_date',
-    `numberMod`          varchar(20)  DEFAULT '=' COMMENT 'numberMod',
-    `purity_pk_id`       bigint(200)     NOT NULL COMMENT 'purity_pk_id',
-    `column_pk_id`       bigint(20)      NOT NULL,
-    PRIMARY KEY (`purity_datum_pk_id`),
-    KEY `FK_purity_TO_purity_datum` (`purity_pk_id`),
-    KEY `FK_column_TO_purity_datum` (`column_pk_id`),
-    CONSTRAINT `FK_column_TO_purity_datum` FOREIGN KEY (`column_pk_id`) REFERENCES `purity_column_header` (`column_pk_id`),
-    CONSTRAINT `FK_purity_TO_purity_datum` FOREIGN KEY (`purity_pk_id`) REFERENCES `synthesis_purity` (`purity_pk_id`)
-);
 
 -- purity_file
 
@@ -372,28 +338,48 @@ CREATE TABLE `purification_config_instrument`
     CONSTRAINT `FK_purification_config_TO_purification_config_instrument` FOREIGN KEY (`purification_config_pk_id`) REFERENCES `purification_config` (`purification_config_pk_id`)
 );
 
+--
+-- Table structure for table `purity_column_header`
+--
+
+SET character_set_client = utf8;
+CREATE TABLE `purity_column_header`
+(
+    `column_pk_id`   bigint(20)   NOT NULL,
+    `name`           varchar(200) NOT NULL,
+    `property`       varchar(200)    DEFAULT NULL,
+    `value_type`     varchar(200)    DEFAULT NULL,
+    `value_unit`     varchar(200)    DEFAULT NULL,
+    `created_by`     varchar(200) NOT NULL,
+    `created_date`   datetime     NOT NULL,
+    `column_order`   INT(10)      NOT NULL,
+    `constant_value` DECIMAL(30, 10) DEFAULT NULL,
+    PRIMARY KEY (`column_pk_id`)
+);
 
 -- purity_datum_condition
 
 CREATE TABLE `purity_datum_condition`
 (
-    `purity_datum_pk_id` bigint(20)   NOT NULL COMMENT 'purity_datum_pk_id',
-    `condition_pk_id`    bigint(20)   NOT NULL COMMENT 'condition_pk_id',
-    `name`               varchar(200) NOT NULL,
-    `property`           varchar(200) DEFAULT NULL,
-    `value`              varchar(200) NOT NULL,
-    `value_unit`         varchar(200) DEFAULT NULL,
-    `value_type`         varchar(200) DEFAULT NULL,
-    `created_by`         varchar(200) NOT NULL,
-    `created_date`       datetime     NOT NULL,
+    `purity_datum_pk_id`     bigint(20)   NOT NULL COMMENT 'purity_datum_pk_id',
+    `condition_pk_id` bigint(20)   NOT NULL COMMENT 'condition_pk_id',
+    `row_number` int NOT NULL COMMENT 'row number',
+    `purity_pk_id`  bigint(20)  NOT NULL,
+    `name`            varchar(200) NOT NULL,
+    `property`        varchar(200) DEFAULT NULL,
+    `value`           varchar(200) NOT NULL,
+    `value_unit`      varchar(200) DEFAULT NULL,
+    `value_type`      varchar(200) DEFAULT NULL,
+    `created_by`      varchar(200) NOT NULL,
+    `created_date`    datetime     NOT NULL,
     `numberMod`          varchar(20)  DEFAULT '=' COMMENT 'numberMod',
-    `column_pk_id`       bigint(20)   NOT NULL,
+    `type`      varchar(20) DEFAULT NULL,
+    `column_pk_id`		 bigint(20)	NOT NULL,
     PRIMARY KEY (`condition_pk_id`),
-    KEY `FK_column_TO_purity_datum_condition` (`column_pk_id`),
-    CONSTRAINT `FK_purity_datum_TO_purity_datum_condition` FOREIGN KEY (`purity_datum_pk_id`) REFERENCES `purity_datum` (`purity_datum_pk_id`),
-    CONSTRAINT `FK_column_TO_purity_condition` FOREIGN KEY (`column_pk_id`) REFERENCES `purity_column_header` (`column_pk_id`)
-);
-
+    KEY `FK_column_TO_purity_datum_condition`(`column_pk_id`),
+    CONSTRAINT `FK_column_TO_purity_condition` FOREIGN KEY (`column_pk_id`) REFERENCES `purity_column_header` (`column_pk_id`),
+    CONSTRAINT `FK_purity_TO_pur_datum_condition` FOREIGN KEY (`purity_pk_id`) REFERENCES `synthesis_purity` (`purity_pk_id`)
+) ;
 
 
 insert into common_lookup

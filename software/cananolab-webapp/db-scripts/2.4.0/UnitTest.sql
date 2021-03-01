@@ -48,14 +48,13 @@ DROP TABLE IF EXISTS `solubility`;
 DROP TABLE IF EXISTS `characterization`;
 DROP TABLE IF EXISTS `common_lookup`;
 DROP TABLE IF EXISTS `composition_file`;
-
 DROP TABLE IF EXISTS `data_availability`;
 DROP TABLE IF EXISTS `data_review_status`;
 DROP TABLE IF EXISTS `databasechangelog`;
 DROP TABLE IF EXISTS `databasechangeloglock`;
 DROP TABLE IF EXISTS `dendrimer`;
 DROP TABLE IF EXISTS `emulsion`;
-drop table if exists `purity_datum_condition`;
+DROP TABLE IF EXISTS `purity_datum_condition`;
 DROP TABLE IF EXISTS `experiment_condition`;
 DROP TABLE IF EXISTS `favorite_data`;
 DROP TABLE IF EXISTS `keyword_file`;
@@ -65,7 +64,7 @@ DROP TABLE IF EXISTS `group_authorities`;
 DROP TABLE IF EXISTS `group_members`;
 DROP TABLE IF EXISTS `groups`;
 DROP TABLE IF EXISTS `hibernate_unique_key`;
-drop table if exists `purification_config_instrument`;
+DROP TABLE IF EXISTS `purification_config_instrument`;
 DROP TABLE IF EXISTS `instrument`;
 DROP TABLE IF EXISTS `instrument_to_review`;
 DROP TABLE IF EXISTS `keyword_sample`;
@@ -77,23 +76,24 @@ DROP TABLE IF EXISTS `nanomaterial_entity`;
 DROP TABLE IF EXISTS `composition`;
 DROP TABLE IF EXISTS `sample_publication`;
 DROP TABLE IF EXISTS `sample_other_poc`;
-drop table if exists `purity_file`;
-drop table if exists `purity_datum`;
-drop table if exists `synthesis_material_file`;
-drop table if exists `synthesis_functionalization_file`;
-drop table if exists `purification_config`;
-drop table if exists `synthesis_purity`;
-drop table if exists `synthesis_material_element_file`;
-drop table if exists `sme_inherent_function`;
-drop table if exists `synthesis_purification`;
-drop table if exists `synthesis_material_element`;
+DROP TABLE IF EXISTS `purity_file`;
+DROP TABLE IF EXISTS `purity_datum`;
+DROP TABLE IF EXISTS `purity_column_header`;
+DROP TABLE IF EXISTS `synthesis_material_file`;
+DROP TABLE IF EXISTS `synthesis_functionalization_file`;
+DROP TABLE IF EXISTS `purification_config`;
+DROP TABLE IF EXISTS `synthesis_purity`;
+DROP TABLE IF EXISTS `synthesis_material_element_file`;
+DROP TABLE IF EXISTS `sme_inherent_function`;
+DROP TABLE IF EXISTS `synthesis_purification`;
+DROP TABLE IF EXISTS `synthesis_material_element`;
 DROP TABLE IF EXISTS `supplier`;
-drop table if exists `synthesis_material`;
-drop table if exists `sfe_inherent_function`;
-drop table if exists `synthesis_functionalization_element_file`;
+DROP TABLE IF EXISTS `synthesis_material`;
+DROP TABLE IF EXISTS `sfe_inherent_function`;
+DROP TABLE IF EXISTS `synthesis_functionalization_element_file`;
 drop table IF exists `synthesis_functionalization_element`;
-drop table if exists `synthesis_functionalization`;
-drop table if exists `synthesis`;
+DROP TABLE IF EXISTS `synthesis_functionalization`;
+DROP TABLE IF EXISTS `synthesis`;
 DROP TABLE IF EXISTS `sample`;
 DROP TABLE IF EXISTS `point_of_contact`;
 DROP TABLE IF EXISTS `organization`;
@@ -153,7 +153,7 @@ UNLOCK TABLES;
 -- Table structure for table `acl_entry`
 --
 
-DROP TABLE IF EXISTS `acl_entry`;
+
 /*!40101 SET @saved_cs_client = @@character_set_client */;
 SET character_set_client = utf8;
 CREATE TABLE `acl_entry`
@@ -281,7 +281,7 @@ UNLOCK TABLES;
 -- Table structure for table `acl_object_identity`
 --
 
-DROP TABLE IF EXISTS `acl_object_identity`;
+
 /*!40101 SET @saved_cs_client = @@character_set_client */;
 SET character_set_client = utf8;
 CREATE TABLE `acl_object_identity`
@@ -342,7 +342,7 @@ UNLOCK TABLES;
 -- Table structure for table `acl_sid`
 --
 
-DROP TABLE IF EXISTS `acl_sid`;
+
 /*!40101 SET @saved_cs_client = @@character_set_client */;
 SET character_set_client = utf8;
 CREATE TABLE `acl_sid`
@@ -384,11 +384,111 @@ VALUES (1, 1, 'anonymousUser'),
     ENABLE KEYS */;
 UNLOCK TABLES;
 
+
+
+--
+-- Table structure for table `users`
+--
+
+
+/*!40101 SET @saved_cs_client = @@character_set_client */;
+SET character_set_client = utf8;
+CREATE TABLE `users`
+(
+    `username`     varchar(100) NOT NULL,
+    `password`     varchar(100) NOT NULL,
+    `first_name`   varchar(100) NOT NULL,
+    `last_name`    varchar(100) NOT NULL,
+    `organization` varchar(500) DEFAULT NULL,
+    `department`   varchar(100) DEFAULT NULL,
+    `title`        varchar(100) DEFAULT NULL,
+    `phone_number` varchar(100) DEFAULT NULL,
+    `email_id`     varchar(100) DEFAULT NULL,
+    `enabled`      varchar(1)   DEFAULT NULL,
+    PRIMARY KEY (`username`),
+    UNIQUE KEY `id_users_UNIQUE` (`username`)
+) ENGINE = InnoDB
+  DEFAULT CHARSET = latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `users`
+--
+
+LOCK TABLES `users` WRITE;
+/*!40000 ALTER TABLE `users`
+    DISABLE KEYS */;
+INSERT IGNORE INTO `users` (`username`, `password`, `first_name`, `last_name`, `organization`, `department`, `title`,
+                            `phone_number`, `email_id`, `enabled`)
+VALUES ('canano_admin', '$2a$10$c5XRfWd.OcuIEG3clJntF.EKrF8RBB4vhKStkVirxpqC9B0ryyakS', 'caNanoLab', 'Guest', '', '',
+        '', '', '', '1'),
+       ('canano_curator', '$2a$10$YS6y4fhLRH4uGq7mo2mjBOEu1Lsf3O90DUpnnxChBtcLE8Co0ICqq', 'caNanoLab', 'Guest', '', '',
+        '', '', '', '1'),
+       ('canano_guest', '$2a$10$2uNpjCXSrSFL2HhSHlsvhu2aFFj69/aCiHJ5Ka6KHn/2shNpIC2dW', 'caNanoLab', 'Guest', '', '',
+        '', '', '', '1'),
+       ('canano_res1', '$2a$10$4zZmhs.mF.b7LrjkpZqCFuANJt1UNpOeI8feAJIRwiN03YWlIRedm', 'caNanoLab', 'Guest', '', '', '',
+        '', '', '1'),
+       ('canano_res2', '$2a$10$MG1GG3rYlHFsB/fVnNOG3.c6N4x7sa9cCdcWaPg2TuRuFtBOhkDba', 'caNanoLab', 'Guest', '', '', '',
+        '', '', '1'),
+       ('guest1', '$2a$10$k/2Zg9sTcZvzMqUco1JI5O9qyfyA0QeQfgEYTvNAH8fFaaKLHFBFW', 'caNanoLab', 'Guest', '', '', '', '',
+        '', '1'),
+       ('guest2', '$2a$10$efSvHYCMRUf3rBxiGCz.5uX8X80g.VtzGPe84p6OiD7ZKbCXhCz0m', 'caNanoLab', 'Guest', '', '', '', '',
+        '', '1'),
+       ('guest3', '$2a$10$CGQ4cs.bzV5i6GSzn8wF3uCP2sdL5sIZsPlXAG5uW4Fl0GUrhkq5.', 'caNanoLab', 'Guest', '', '', '', '',
+        '', '1'),
+       ('guest4', '$2a$10$bbf0gBxkz6sZ85VRDTG.XOMTUmrKX6qNHhsj2C4wK.B/N9p5jhiWK', 'caNanoLab', 'Guest', '', '', '', '',
+        '', '1'),
+       ('guest5', '$2a$10$avCA1Z0vSJvGPWpuiNCnUu0iQDR1muwacsOttckeCWQ7vOilOnK.2', 'caNanoLab', 'Guest', '', '', '', '',
+        '', '1');
+/*!40000 ALTER TABLE `users`
+    ENABLE KEYS */;
+UNLOCK TABLES;
+
+
+--
+-- Table structure for table `authorities`
+--
+
+
+/*!40101 SET @saved_cs_client = @@character_set_client */;
+SET character_set_client = utf8;
+CREATE TABLE `authorities`
+(
+    `username`  varchar(100) NOT NULL,
+    `authority` varchar(100) NOT NULL,
+    UNIQUE KEY `ix_auth_username` (`username`, `authority`),
+    CONSTRAINT `fk_authorities_users` FOREIGN KEY (`username`) REFERENCES `users` (`username`)
+) ENGINE = InnoDB
+  DEFAULT CHARSET = latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `authorities`
+--
+
+LOCK TABLES `authorities` WRITE;
+/*!40000 ALTER TABLE `authorities`
+    DISABLE KEYS */;
+INSERT IGNORE INTO `authorities` (`username`, `authority`)
+VALUES ('canano_admin', 'ROLE_ADMIN'),
+       ('canano_curator', 'ROLE_CURATOR'),
+       ('canano_guest', 'ROLE_ANONYMOUS'),
+       ('canano_res1', 'ROLE_RESEARCHER'),
+       ('canano_res2', 'ROLE_RESEARCHER'),
+       ('guest1', 'ROLE_RESEARCHER'),
+       ('guest2', 'ROLE_RESEARCHER'),
+       ('guest3', 'ROLE_RESEARCHER'),
+       ('guest4', 'ROLE_RESEARCHER'),
+       ('guest5', 'ROLE_RESEARCHER');
+/*!40000 ALTER TABLE `authorities`
+    ENABLE KEYS */;
+UNLOCK TABLES;
+
 --
 -- Table structure for table `activation_method`
 --
 
-DROP TABLE IF EXISTS `activation_method`;
+
 /*!40101 SET @saved_cs_client = @@character_set_client */;
 SET character_set_client = utf8;
 CREATE TABLE `activation_method`
@@ -418,7 +518,7 @@ UNLOCK TABLES;
 -- Table structure for table `administration`
 --
 
-DROP TABLE IF EXISTS `administration`;
+
 /*!40101 SET @saved_cs_client = @@character_set_client */;
 SET character_set_client = utf8;
 CREATE TABLE `administration`
@@ -455,7 +555,7 @@ UNLOCK TABLES;
 -- Table structure for table `antibody`
 --
 
-DROP TABLE IF EXISTS `antibody`;
+
 /*!40101 SET @saved_cs_client = @@character_set_client */;
 SET character_set_client = utf8;
 CREATE TABLE `antibody`
@@ -487,7 +587,7 @@ UNLOCK TABLES;
 -- Table structure for table `associated_element`
 --
 
-DROP TABLE IF EXISTS `associated_element`;
+
 /*!40101 SET @saved_cs_client = @@character_set_client */;
 SET character_set_client = utf8;
 CREATE TABLE `associated_element`
@@ -535,7 +635,7 @@ UNLOCK TABLES;
 -- Table structure for table `author`
 --
 
-DROP TABLE IF EXISTS `author`;
+
 /*!40101 SET @saved_cs_client = @@character_set_client */;
 SET character_set_client = utf8;
 CREATE TABLE `author`
@@ -567,7 +667,7 @@ UNLOCK TABLES;
 -- Table structure for table `author_publication`
 --
 
-DROP TABLE IF EXISTS `author_publication`;
+
 /*!40101 SET @saved_cs_client = @@character_set_client */;
 SET character_set_client = utf8;
 CREATE TABLE `author_publication`
@@ -594,50 +694,12 @@ LOCK TABLES `author_publication` WRITE;
     ENABLE KEYS */;
 UNLOCK TABLES;
 
---
--- Table structure for table `authorities`
---
-
-DROP TABLE IF EXISTS `authorities`;
-/*!40101 SET @saved_cs_client = @@character_set_client */;
-SET character_set_client = utf8;
-CREATE TABLE `authorities`
-(
-    `username`  varchar(100) NOT NULL,
-    `authority` varchar(100) NOT NULL,
-    UNIQUE KEY `ix_auth_username` (`username`, `authority`),
-    CONSTRAINT `fk_authorities_users` FOREIGN KEY (`username`) REFERENCES `users` (`username`)
-) ENGINE = InnoDB
-  DEFAULT CHARSET = latin1;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `authorities`
---
-
-LOCK TABLES `authorities` WRITE;
-/*!40000 ALTER TABLE `authorities`
-    DISABLE KEYS */;
-INSERT IGNORE INTO `authorities` (`username`, `authority`)
-VALUES ('canano_admin', 'ROLE_ADMIN'),
-       ('canano_curator', 'ROLE_CURATOR'),
-       ('canano_guest', 'ROLE_ANONYMOUS'),
-       ('canano_res1', 'ROLE_RESEARCHER'),
-       ('canano_res2', 'ROLE_RESEARCHER'),
-       ('guest1', 'ROLE_RESEARCHER'),
-       ('guest2', 'ROLE_RESEARCHER'),
-       ('guest3', 'ROLE_RESEARCHER'),
-       ('guest4', 'ROLE_RESEARCHER'),
-       ('guest5', 'ROLE_RESEARCHER');
-/*!40000 ALTER TABLE `authorities`
-    ENABLE KEYS */;
-UNLOCK TABLES;
 
 --
 -- Table structure for table `biopolymer_f`
 --
 
-DROP TABLE IF EXISTS `biopolymer_f`;
+
 /*!40101 SET @saved_cs_client = @@character_set_client */;
 SET character_set_client = utf8;
 CREATE TABLE `biopolymer_f`
@@ -670,7 +732,7 @@ UNLOCK TABLES;
 -- Table structure for table `biopolymer_p`
 --
 
-DROP TABLE IF EXISTS `biopolymer_p`;
+
 /*!40101 SET @saved_cs_client = @@character_set_client */;
 SET character_set_client = utf8;
 CREATE TABLE `biopolymer_p`
@@ -703,7 +765,7 @@ UNLOCK TABLES;
 -- Table structure for table `carbon_nanotube`
 --
 
-DROP TABLE IF EXISTS `carbon_nanotube`;
+
 /*!40101 SET @saved_cs_client = @@character_set_client */;
 SET character_set_client = utf8;
 CREATE TABLE `carbon_nanotube`
@@ -737,7 +799,7 @@ UNLOCK TABLES;
 -- Table structure for table `characterization`
 --
 
-DROP TABLE IF EXISTS `characterization`;
+
 /*!40101 SET @saved_cs_client = @@character_set_client */;
 SET character_set_client = utf8;
 CREATE TABLE `characterization`
@@ -796,7 +858,7 @@ UNLOCK TABLES;
 -- Table structure for table `chemical_association`
 --
 
-DROP TABLE IF EXISTS `chemical_association`;
+
 /*!40101 SET @saved_cs_client = @@character_set_client */;
 SET character_set_client = utf8;
 CREATE TABLE `chemical_association`
@@ -843,7 +905,6 @@ UNLOCK TABLES;
 -- Table structure for table `chemical_association_file`
 --
 
-DROP TABLE IF EXISTS `chemical_association_file`;
 /*!40101 SET @saved_cs_client = @@character_set_client */;
 SET character_set_client = utf8;
 CREATE TABLE `chemical_association_file`
@@ -874,7 +935,7 @@ UNLOCK TABLES;
 -- Table structure for table `common_lookup`
 --
 
-DROP TABLE IF EXISTS `common_lookup`;
+
 /*!40101 SET @saved_cs_client = @@character_set_client */;
 SET character_set_client = utf8;
 CREATE TABLE `common_lookup`
@@ -3669,7 +3730,7 @@ UNLOCK TABLES;
 -- Table structure for table `composing_element`
 --
 
-DROP TABLE IF EXISTS `composing_element`;
+
 /*!40101 SET @saved_cs_client = @@character_set_client */;
 SET character_set_client = utf8;
 CREATE TABLE `composing_element`
@@ -3708,7 +3769,6 @@ UNLOCK TABLES;
 -- Table structure for table `composition`
 --
 
-DROP TABLE IF EXISTS `composition`;
 /*!40101 SET @saved_cs_client = @@character_set_client */;
 SET character_set_client = utf8;
 CREATE TABLE `composition`
@@ -3744,7 +3804,6 @@ UNLOCK TABLES;
 -- Table structure for table `composition_file`
 --
 
-DROP TABLE IF EXISTS `composition_file`;
 /*!40101 SET @saved_cs_client = @@character_set_client */;
 SET character_set_client = utf8;
 CREATE TABLE `composition_file`
@@ -3775,7 +3834,6 @@ UNLOCK TABLES;
 -- Table structure for table `data_availability`
 --
 
-DROP TABLE IF EXISTS `data_availability`;
 /*!40101 SET @saved_cs_client = @@character_set_client */;
 SET character_set_client = utf8;
 CREATE TABLE `data_availability`
@@ -3806,7 +3864,6 @@ UNLOCK TABLES;
 -- Table structure for table `data_review_status`
 --
 
-DROP TABLE IF EXISTS `data_review_status`;
 /*!40101 SET @saved_cs_client = @@character_set_client */;
 SET character_set_client = utf8;
 CREATE TABLE `data_review_status`
@@ -3837,7 +3894,6 @@ UNLOCK TABLES;
 -- Table structure for table `databasechangelog`
 --
 
-DROP TABLE IF EXISTS `databasechangelog`;
 /*!40101 SET @saved_cs_client = @@character_set_client */;
 SET character_set_client = utf8;
 CREATE TABLE `databasechangelog`
@@ -3871,7 +3927,6 @@ UNLOCK TABLES;
 -- Table structure for table `databasechangeloglock`
 --
 
-DROP TABLE IF EXISTS `databasechangeloglock`;
 /*!40101 SET @saved_cs_client = @@character_set_client */;
 SET character_set_client = utf8;
 CREATE TABLE `databasechangeloglock`
@@ -3902,7 +3957,6 @@ UNLOCK TABLES;
 -- Table structure for table `datum`
 --
 
-DROP TABLE IF EXISTS `datum`;
 /*!40101 SET @saved_cs_client = @@character_set_client */;
 SET character_set_client = utf8;
 CREATE TABLE `datum`
@@ -3955,7 +4009,6 @@ UNLOCK TABLES;
 -- Table structure for table `datum_condition`
 --
 
-DROP TABLE IF EXISTS `datum_condition`;
 /*!40101 SET @saved_cs_client = @@character_set_client */;
 SET character_set_client = utf8;
 CREATE TABLE `datum_condition`
@@ -3996,7 +4049,6 @@ UNLOCK TABLES;
 -- Table structure for table `dendrimer`
 --
 
-DROP TABLE IF EXISTS `dendrimer`;
 /*!40101 SET @saved_cs_client = @@character_set_client */;
 SET character_set_client = utf8;
 CREATE TABLE `dendrimer`
@@ -4026,7 +4078,6 @@ UNLOCK TABLES;
 -- Table structure for table `emulsion`
 --
 
-DROP TABLE IF EXISTS `emulsion`;
 /*!40101 SET @saved_cs_client = @@character_set_client */;
 SET character_set_client = utf8;
 CREATE TABLE `emulsion`
@@ -4056,7 +4107,6 @@ UNLOCK TABLES;
 -- Table structure for table `experiment_condition`
 --
 
-DROP TABLE IF EXISTS `experiment_condition`;
 /*!40101 SET @saved_cs_client = @@character_set_client */;
 SET character_set_client = utf8;
 CREATE TABLE `experiment_condition`
@@ -4105,7 +4155,6 @@ UNLOCK TABLES;
 -- Table structure for table `experiment_config`
 --
 
-DROP TABLE IF EXISTS `experiment_config`;
 /*!40101 SET @saved_cs_client = @@character_set_client */;
 SET character_set_client = utf8;
 CREATE TABLE `experiment_config`
@@ -4145,7 +4194,6 @@ UNLOCK TABLES;
 -- Table structure for table `experiment_config_instrument`
 --
 
-DROP TABLE IF EXISTS `experiment_config_instrument`;
 /*!40101 SET @saved_cs_client = @@character_set_client */;
 SET character_set_client = utf8;
 CREATE TABLE `experiment_config_instrument`
@@ -4181,7 +4229,6 @@ UNLOCK TABLES;
 -- Table structure for table `favorite_data`
 --
 
-DROP TABLE IF EXISTS `favorite_data`;
 /*!40101 SET @saved_cs_client = @@character_set_client */;
 SET character_set_client = utf8;
 CREATE TABLE `favorite_data`
@@ -4215,7 +4262,6 @@ UNLOCK TABLES;
 -- Table structure for table `file`
 --
 
-DROP TABLE IF EXISTS `file`;
 /*!40101 SET @saved_cs_client = @@character_set_client */;
 SET character_set_client = utf8;
 CREATE TABLE `file`
@@ -4279,7 +4325,6 @@ UNLOCK TABLES;
 -- Table structure for table `finding`
 --
 
-DROP TABLE IF EXISTS `finding`;
 /*!40101 SET @saved_cs_client = @@character_set_client */;
 SET character_set_client = utf8;
 CREATE TABLE `finding`
@@ -4313,7 +4358,6 @@ UNLOCK TABLES;
 -- Table structure for table `finding_file`
 --
 
-DROP TABLE IF EXISTS `finding_file`;
 /*!40101 SET @saved_cs_client = @@character_set_client */;
 SET character_set_client = utf8;
 CREATE TABLE `finding_file`
@@ -4346,7 +4390,6 @@ UNLOCK TABLES;
 -- Table structure for table `fullerene`
 --
 
-DROP TABLE IF EXISTS `fullerene`;
 /*!40101 SET @saved_cs_client = @@character_set_client */;
 SET character_set_client = utf8;
 CREATE TABLE `fullerene`
@@ -4379,7 +4422,6 @@ UNLOCK TABLES;
 -- Table structure for table `functionalizing_entity`
 --
 
-DROP TABLE IF EXISTS `functionalizing_entity`;
 /*!40101 SET @saved_cs_client = @@character_set_client */;
 SET character_set_client = utf8;
 CREATE TABLE `functionalizing_entity`
@@ -4415,7 +4457,6 @@ UNLOCK TABLES;
 -- Table structure for table `functionalizing_entity_file`
 --
 
-DROP TABLE IF EXISTS `functionalizing_entity_file`;
 /*!40101 SET @saved_cs_client = @@character_set_client */;
 SET character_set_client = utf8;
 CREATE TABLE `functionalizing_entity_file`
@@ -4446,7 +4487,6 @@ UNLOCK TABLES;
 -- Table structure for table `group_authorities`
 --
 
-DROP TABLE IF EXISTS `group_authorities`;
 /*!40101 SET @saved_cs_client = @@character_set_client */;
 SET character_set_client = utf8;
 CREATE TABLE `group_authorities`
@@ -4474,7 +4514,6 @@ UNLOCK TABLES;
 -- Table structure for table `group_members`
 --
 
-DROP TABLE IF EXISTS `group_members`;
 /*!40101 SET @saved_cs_client = @@character_set_client */;
 SET character_set_client = utf8;
 CREATE TABLE `group_members`
@@ -4506,7 +4545,6 @@ UNLOCK TABLES;
 -- Table structure for table `groups`
 --
 
-DROP TABLE IF EXISTS `groups`;
 /*!40101 SET @saved_cs_client = @@character_set_client */;
 SET character_set_client = utf8;
 CREATE TABLE `groups`
@@ -4536,7 +4574,6 @@ UNLOCK TABLES;
 -- Table structure for table `hibernate_unique_key`
 --
 
-DROP TABLE IF EXISTS `hibernate_unique_key`;
 /*!40101 SET @saved_cs_client = @@character_set_client */;
 SET character_set_client = utf8;
 CREATE TABLE `hibernate_unique_key`
@@ -4563,7 +4600,6 @@ UNLOCK TABLES;
 -- Table structure for table `instrument`
 --
 
-DROP TABLE IF EXISTS `instrument`;
 /*!40101 SET @saved_cs_client = @@character_set_client */;
 SET character_set_client = utf8;
 CREATE TABLE `instrument`
@@ -5391,7 +5427,6 @@ UNLOCK TABLES;
 -- Table structure for table `instrument_to_review`
 --
 
-DROP TABLE IF EXISTS `instrument_to_review`;
 /*!40101 SET @saved_cs_client = @@character_set_client */;
 SET character_set_client = utf8;
 CREATE TABLE `instrument_to_review`
@@ -5420,7 +5455,6 @@ UNLOCK TABLES;
 -- Table structure for table `keyword`
 --
 
-DROP TABLE IF EXISTS `keyword`;
 /*!40101 SET @saved_cs_client = @@character_set_client */;
 SET character_set_client = utf8;
 CREATE TABLE `keyword`
@@ -5447,7 +5481,6 @@ UNLOCK TABLES;
 -- Table structure for table `keyword_file`
 --
 
-DROP TABLE IF EXISTS `keyword_file`;
 /*!40101 SET @saved_cs_client = @@character_set_client */;
 SET character_set_client = utf8;
 CREATE TABLE `keyword_file`
@@ -5478,7 +5511,6 @@ UNLOCK TABLES;
 -- Table structure for table `keyword_sample`
 --
 
-DROP TABLE IF EXISTS `keyword_sample`;
 /*!40101 SET @saved_cs_client = @@character_set_client */;
 SET character_set_client = utf8;
 CREATE TABLE `keyword_sample`
@@ -5509,7 +5541,6 @@ UNLOCK TABLES;
 -- Table structure for table `liposome`
 --
 
-DROP TABLE IF EXISTS `liposome`;
 /*!40101 SET @saved_cs_client = @@character_set_client */;
 SET character_set_client = utf8;
 CREATE TABLE `liposome`
@@ -5541,7 +5572,6 @@ UNLOCK TABLES;
 -- Table structure for table `nano_function`
 --
 
-DROP TABLE IF EXISTS `nano_function`;
 /*!40101 SET @saved_cs_client = @@character_set_client */;
 SET character_set_client = utf8;
 CREATE TABLE `nano_function`
@@ -5588,7 +5618,6 @@ UNLOCK TABLES;
 -- Table structure for table `nanomaterial_entity`
 --
 
-DROP TABLE IF EXISTS `nanomaterial_entity`;
 /*!40101 SET @saved_cs_client = @@character_set_client */;
 SET character_set_client = utf8;
 CREATE TABLE `nanomaterial_entity`
@@ -5628,7 +5657,6 @@ UNLOCK TABLES;
 -- Table structure for table `nanomaterial_entity_file`
 --
 
-DROP TABLE IF EXISTS `nanomaterial_entity_file`;
 /*!40101 SET @saved_cs_client = @@character_set_client */;
 SET character_set_client = utf8;
 CREATE TABLE `nanomaterial_entity_file`
@@ -5659,7 +5687,6 @@ UNLOCK TABLES;
 -- Table structure for table `organization`
 --
 
-DROP TABLE IF EXISTS `organization`;
 /*!40101 SET @saved_cs_client = @@character_set_client */;
 SET character_set_client = utf8;
 CREATE TABLE `organization`
@@ -5956,7 +5983,6 @@ UNLOCK TABLES;
 -- Table structure for table `other_functionalizing_entity`
 --
 
-DROP TABLE IF EXISTS `other_functionalizing_entity`;
 /*!40101 SET @saved_cs_client = @@character_set_client */;
 SET character_set_client = utf8;
 CREATE TABLE `other_functionalizing_entity`
@@ -5985,7 +6011,6 @@ UNLOCK TABLES;
 -- Table structure for table `other_nanomaterial_entity`
 --
 
-DROP TABLE IF EXISTS `other_nanomaterial_entity`;
 /*!40101 SET @saved_cs_client = @@character_set_client */;
 SET character_set_client = utf8;
 CREATE TABLE `other_nanomaterial_entity`
@@ -6017,7 +6042,6 @@ UNLOCK TABLES;
 -- Table structure for table `physical_state`
 --
 
-DROP TABLE IF EXISTS `physical_state`;
 /*!40101 SET @saved_cs_client = @@character_set_client */;
 SET character_set_client = utf8;
 CREATE TABLE `physical_state`
@@ -6046,7 +6070,6 @@ UNLOCK TABLES;
 -- Table structure for table `point_of_contact`
 --
 
-DROP TABLE IF EXISTS `point_of_contact`;
 /*!40101 SET @saved_cs_client = @@character_set_client */;
 SET character_set_client = utf8;
 CREATE TABLE `point_of_contact`
@@ -6088,7 +6111,6 @@ UNLOCK TABLES;
 -- Table structure for table `polymer`
 --
 
-DROP TABLE IF EXISTS `polymer`;
 /*!40101 SET @saved_cs_client = @@character_set_client */;
 SET character_set_client = utf8;
 CREATE TABLE `polymer`
@@ -6119,7 +6141,6 @@ UNLOCK TABLES;
 -- Table structure for table `protocol`
 --
 
-DROP TABLE IF EXISTS `protocol`;
 /*!40101 SET @saved_cs_client = @@character_set_client */;
 SET character_set_client = utf8;
 CREATE TABLE `protocol`
@@ -6168,7 +6189,6 @@ UNLOCK TABLES;
 -- Table structure for table `publication`
 --
 
-DROP TABLE IF EXISTS `publication`;
 /*!40101 SET @saved_cs_client = @@character_set_client */;
 SET character_set_client = utf8;
 CREATE TABLE `publication`
@@ -6205,7 +6225,6 @@ UNLOCK TABLES;
 -- Table structure for table `purification_config`
 --
 
-DROP TABLE IF EXISTS `purification_config`;
 /*!40101 SET @saved_cs_client = @@character_set_client */;
 SET character_set_client = utf8;
 CREATE TABLE `purification_config`
@@ -6248,7 +6267,6 @@ UNLOCK TABLES;
 -- Table structure for table `purification_config_instrument`
 --
 
-DROP TABLE IF EXISTS `purification_config_instrument`;
 /*!40101 SET @saved_cs_client = @@character_set_client */;
 SET character_set_client = utf8;
 CREATE TABLE `purification_config_instrument`
@@ -6285,7 +6303,7 @@ UNLOCK TABLES;
 --
 -- Table structure for table `purity_column_header`
 --
-DROP TABLE IF EXISTS `purity_column_header`;
+
 /*!40101 SET @saved_cs_client = @@character_set_client */;
 SET character_set_client = utf8;
 CREATE TABLE `purity_column_header` (
@@ -6322,55 +6340,11 @@ INSERT IGNORE INTO `canano`.`purity_column_header` (
 /*!40000 ALTER TABLE `purity_column_header`
     ENABLE KEYS */;
 UNLOCK TABLES;
---
--- Table structure for table `purity_datum`
---
-#
-# DROP TABLE IF EXISTS `purity_datum`;
-# /*!40101 SET @saved_cs_client = @@character_set_client */;
-# SET character_set_client = utf8;
-# CREATE TABLE `purity_datum`
-# (
-#     `purity_datum_pk_id` bigint(20)      NOT NULL,
-#     `name`               varchar(200)    NOT NULL COMMENT 'name',
-#     `value`              decimal(30, 10) NOT NULL COMMENT 'value',
-#     `value_type`         varchar(200) DEFAULT NULL COMMENT 'value_type',
-#     `value_unit`         varchar(200) DEFAULT NULL COMMENT 'value_unit',
-#     `created_by`         varchar(200)    NOT NULL COMMENT 'created_by',
-#     `created_date`       datetime        NOT NULL COMMENT 'created_date',
-#     `numberMod`          varchar(20)  DEFAULT '=' COMMENT 'numberMod',
-#     `purity_pk_id`       bigint(200)  NOT NULL COMMENT 'purity_pk_id',
-#     `column_pk_id`		 bigint(20)	NOT NULL,
-#     PRIMARY KEY (`purity_datum_pk_id`),
-#     KEY `FK_purity_TO_purity_datum` (`purity_pk_id`),
-#     KEY `FK_column_TO_purity_datum`(`column_pk_id`),
-#     CONSTRAINT `FK_purity_TO_purity_datum` FOREIGN KEY (`purity_pk_id`) REFERENCES `synthesis_purity` (`purity_pk_id`),
-#     CONSTRAINT `FK_column_TO_purity_datum` FOREIGN KEY (`column_pk_id`) REFERENCES `purity_column_header` (`column_pk_id`)
-# ) ENGINE = InnoDB
-#   DEFAULT CHARSET = latin1;
-# /*!40101 SET character_set_client = @saved_cs_client */;
-#
-# --
-# -- Dumping data for table `purity_datum`
-# --
-#
-# LOCK TABLES `purity_datum` WRITE;
-# /*!40000 ALTER TABLE `purity_datum`
-#     DISABLE KEYS */;
-# INSERT IGNORE INTO `purity_datum` (`purity_datum_pk_id`, `name`, `value`, `value_type`, `value_unit`, `created_by`,
-#                                    `created_date`, `numberMod`, `purity_pk_id`, `column_pk_id`)
-# VALUES (1000, 'Purity datum 1', 55.00, 'purity', '%', 'canano_curator', '2019-12-06 12:15:00', '=', 1000, 1010),
-#        (1010, 'Purity datum 2', 57.10, 'purity', '%', 'canano_curator', '2019-12-06 12:15:00', '=', 1010, 1010),
-#        (1111, 'Purity datum 2', 123.00, 'purity', '%', 'canano_curator', '2019-12-06 12:15:00', '=', 1111,1010);
-# /*!40000 ALTER TABLE `purity_datum`
-#     ENABLE KEYS */;
-# UNLOCK TABLES;
 
 --
 -- Table structure for table `purity_datum_condition`
 --
 
-DROP TABLE IF EXISTS `purity_datum_condition`;
 /*!40101 SET @saved_cs_client = @@character_set_client */;
 SET character_set_client = utf8;
 CREATE TABLE `purity_datum_condition`
@@ -6431,7 +6405,6 @@ UNLOCK TABLES;
 -- Table structure for table `purity_file`
 --
 
-DROP TABLE IF EXISTS `purity_file`;
 /*!40101 SET @saved_cs_client = @@character_set_client */;
 SET character_set_client = utf8;
 CREATE TABLE `purity_file`
@@ -6463,7 +6436,6 @@ UNLOCK TABLES;
 -- Table structure for table `sample`
 --
 
-DROP TABLE IF EXISTS `sample`;
 /*!40101 SET @saved_cs_client = @@character_set_client */;
 SET character_set_client = utf8;
 CREATE TABLE `sample`
@@ -6503,7 +6475,6 @@ UNLOCK TABLES;
 -- Table structure for table `sample_other_poc`
 --
 
-DROP TABLE IF EXISTS `sample_other_poc`;
 /*!40101 SET @saved_cs_client = @@character_set_client */;
 SET character_set_client = utf8;
 CREATE TABLE `sample_other_poc`
@@ -6534,7 +6505,6 @@ UNLOCK TABLES;
 -- Table structure for table `sample_publication`
 --
 
-DROP TABLE IF EXISTS `sample_publication`;
 /*!40101 SET @saved_cs_client = @@character_set_client */;
 SET character_set_client = utf8;
 CREATE TABLE `sample_publication`
@@ -6564,7 +6534,6 @@ UNLOCK TABLES;
 -- Table structure for table `sfe_inherent_function`
 --
 
-DROP TABLE IF EXISTS `sfe_inherent_function`;
 /*!40101 SET @saved_cs_client = @@character_set_client */;
 SET character_set_client = utf8;
 CREATE TABLE `sfe_inherent_function`
@@ -6602,7 +6571,6 @@ UNLOCK TABLES;
 -- Table structure for table `shape`
 --
 
-DROP TABLE IF EXISTS `shape`;
 /*!40101 SET @saved_cs_client = @@character_set_client */;
 SET character_set_client = utf8;
 CREATE TABLE `shape`
@@ -6636,7 +6604,6 @@ UNLOCK TABLES;
 -- Table structure for table `small_molecule`
 --
 
-DROP TABLE IF EXISTS `small_molecule`;
 /*!40101 SET @saved_cs_client = @@character_set_client */;
 SET character_set_client = utf8;
 CREATE TABLE `small_molecule`
@@ -6665,7 +6632,6 @@ UNLOCK TABLES;
 -- Table structure for table `sme_inherent_function`
 --
 
-DROP TABLE IF EXISTS `sme_inherent_function`;
 /*!40101 SET @saved_cs_client = @@character_set_client */;
 SET character_set_client = utf8;
 CREATE TABLE `sme_inherent_function`
@@ -6702,7 +6668,6 @@ UNLOCK TABLES;
 -- Table structure for table `solubility`
 --
 
-DROP TABLE IF EXISTS `solubility`;
 /*!40101 SET @saved_cs_client = @@character_set_client */;
 SET character_set_client = utf8;
 CREATE TABLE `solubility`
@@ -6734,7 +6699,6 @@ UNLOCK TABLES;
 -- Table structure for table `supplier`
 --
 
-DROP TABLE IF EXISTS `supplier`;
 /*!40101 SET @saved_cs_client = @@character_set_client */;
 SET character_set_client = utf8;
 CREATE TABLE `supplier`
@@ -6766,7 +6730,6 @@ UNLOCK TABLES;
 -- Table structure for table `synthesis`
 --
 
-DROP TABLE IF EXISTS `synthesis`;
 /*!40101 SET @saved_cs_client = @@character_set_client */;
 SET character_set_client = utf8;
 CREATE TABLE `synthesis`
@@ -6800,7 +6763,6 @@ UNLOCK TABLES;
 -- Table structure for table `synthesis_functionalization`
 --
 
-DROP TABLE IF EXISTS `synthesis_functionalization`;
 /*!40101 SET @saved_cs_client = @@character_set_client */;
 SET character_set_client = utf8;
 CREATE TABLE `synthesis_functionalization`
@@ -6845,7 +6807,6 @@ UNLOCK TABLES;
 -- Table structure for table `synthesis_functionalization_element`
 --
 
-DROP TABLE IF EXISTS `synthesis_functionalization_element`;
 /*!40101 SET @saved_cs_client = @@character_set_client */;
 SET character_set_client = utf8;
 CREATE TABLE `synthesis_functionalization_element`
@@ -6908,7 +6869,6 @@ UNLOCK TABLES;
 -- Table structure for table `synthesis_functionalization_element_file`
 --
 
-DROP TABLE IF EXISTS `synthesis_functionalization_element_file`;
 /*!40101 SET @saved_cs_client = @@character_set_client */;
 SET character_set_client = utf8;
 CREATE TABLE `synthesis_functionalization_element_file`
@@ -6940,7 +6900,6 @@ UNLOCK TABLES;
 -- Table structure for table `synthesis_functionalization_file`
 --
 
-DROP TABLE IF EXISTS `synthesis_functionalization_file`;
 /*!40101 SET @saved_cs_client = @@character_set_client */;
 SET character_set_client = utf8;
 CREATE TABLE `synthesis_functionalization_file`
@@ -6970,7 +6929,6 @@ UNLOCK TABLES;
 -- Table structure for table `synthesis_material`
 --
 
-DROP TABLE IF EXISTS `synthesis_material`;
 /*!40101 SET @saved_cs_client = @@character_set_client */;
 SET character_set_client = utf8;
 CREATE TABLE `synthesis_material`
@@ -7015,7 +6973,6 @@ UNLOCK TABLES;
 -- Table structure for table `synthesis_material_element`
 --
 
-DROP TABLE IF EXISTS `synthesis_material_element`;
 /*!40101 SET @saved_cs_client = @@character_set_client */;
 SET character_set_client = utf8;
 CREATE TABLE `synthesis_material_element`
@@ -7070,7 +7027,6 @@ UNLOCK TABLES;
 -- Table structure for table `synthesis_material_element_file`
 --
 
-DROP TABLE IF EXISTS `synthesis_material_element_file`;
 /*!40101 SET @saved_cs_client = @@character_set_client */;
 SET character_set_client = utf8;
 CREATE TABLE `synthesis_material_element_file`
@@ -7102,7 +7058,6 @@ UNLOCK TABLES;
 -- Table structure for table `synthesis_material_file`
 --
 
-DROP TABLE IF EXISTS `synthesis_material_file`;
 /*!40101 SET @saved_cs_client = @@character_set_client */;
 SET character_set_client = utf8;
 CREATE TABLE `synthesis_material_file`
@@ -7136,7 +7091,6 @@ UNLOCK TABLES;
 -- Table structure for table `synthesis_purification`
 --
 
-DROP TABLE IF EXISTS `synthesis_purification`;
 /*!40101 SET @saved_cs_client = @@character_set_client */;
 SET character_set_client = utf8;
 CREATE TABLE `synthesis_purification`
@@ -7191,7 +7145,6 @@ UNLOCK TABLES;
 -- Table structure for table `synthesis_purity`
 --
 
-DROP TABLE IF EXISTS `synthesis_purity`;
 /*!40101 SET @saved_cs_client = @@character_set_client */;
 SET character_set_client = utf8;
 CREATE TABLE `synthesis_purity`
@@ -7231,7 +7184,6 @@ UNLOCK TABLES;
 -- Table structure for table `target`
 --
 
-DROP TABLE IF EXISTS `target`;
 /*!40101 SET @saved_cs_client = @@character_set_client */;
 SET character_set_client = utf8;
 CREATE TABLE `target`
@@ -7267,7 +7219,6 @@ UNLOCK TABLES;
 -- Table structure for table `technique`
 --
 
-DROP TABLE IF EXISTS `technique`;
 /*!40101 SET @saved_cs_client = @@character_set_client */;
 SET character_set_client = utf8;
 CREATE TABLE `technique`
@@ -7301,63 +7252,6 @@ VALUES (1000, 'Interim purification technique', 'InP', '2019-12-06 12:15:00', 's
     ENABLE KEYS */;
 UNLOCK TABLES;
 
---
--- Table structure for table `users`
---
-
-DROP TABLE IF EXISTS `users`;
-/*!40101 SET @saved_cs_client = @@character_set_client */;
-SET character_set_client = utf8;
-CREATE TABLE `users`
-(
-    `username`     varchar(100) NOT NULL,
-    `password`     varchar(100) NOT NULL,
-    `first_name`   varchar(100) NOT NULL,
-    `last_name`    varchar(100) NOT NULL,
-    `organization` varchar(500) DEFAULT NULL,
-    `department`   varchar(100) DEFAULT NULL,
-    `title`        varchar(100) DEFAULT NULL,
-    `phone_number` varchar(100) DEFAULT NULL,
-    `email_id`     varchar(100) DEFAULT NULL,
-    `enabled`      varchar(1)   DEFAULT NULL,
-    PRIMARY KEY (`username`),
-    UNIQUE KEY `id_users_UNIQUE` (`username`)
-) ENGINE = InnoDB
-  DEFAULT CHARSET = latin1;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `users`
---
-
-LOCK TABLES `users` WRITE;
-/*!40000 ALTER TABLE `users`
-    DISABLE KEYS */;
-INSERT IGNORE INTO `users` (`username`, `password`, `first_name`, `last_name`, `organization`, `department`, `title`,
-                            `phone_number`, `email_id`, `enabled`)
-VALUES ('canano_admin', '$2a$10$c5XRfWd.OcuIEG3clJntF.EKrF8RBB4vhKStkVirxpqC9B0ryyakS', 'caNanoLab', 'Guest', '', '',
-        '', '', '', '1'),
-       ('canano_curator', '$2a$10$YS6y4fhLRH4uGq7mo2mjBOEu1Lsf3O90DUpnnxChBtcLE8Co0ICqq', 'caNanoLab', 'Guest', '', '',
-        '', '', '', '1'),
-       ('canano_guest', '$2a$10$2uNpjCXSrSFL2HhSHlsvhu2aFFj69/aCiHJ5Ka6KHn/2shNpIC2dW', 'caNanoLab', 'Guest', '', '',
-        '', '', '', '1'),
-       ('canano_res1', '$2a$10$4zZmhs.mF.b7LrjkpZqCFuANJt1UNpOeI8feAJIRwiN03YWlIRedm', 'caNanoLab', 'Guest', '', '', '',
-        '', '', '1'),
-       ('canano_res2', '$2a$10$MG1GG3rYlHFsB/fVnNOG3.c6N4x7sa9cCdcWaPg2TuRuFtBOhkDba', 'caNanoLab', 'Guest', '', '', '',
-        '', '', '1'),
-       ('guest1', '$2a$10$k/2Zg9sTcZvzMqUco1JI5O9qyfyA0QeQfgEYTvNAH8fFaaKLHFBFW', 'caNanoLab', 'Guest', '', '', '', '',
-        '', '1'),
-       ('guest2', '$2a$10$efSvHYCMRUf3rBxiGCz.5uX8X80g.VtzGPe84p6OiD7ZKbCXhCz0m', 'caNanoLab', 'Guest', '', '', '', '',
-        '', '1'),
-       ('guest3', '$2a$10$CGQ4cs.bzV5i6GSzn8wF3uCP2sdL5sIZsPlXAG5uW4Fl0GUrhkq5.', 'caNanoLab', 'Guest', '', '', '', '',
-        '', '1'),
-       ('guest4', '$2a$10$bbf0gBxkz6sZ85VRDTG.XOMTUmrKX6qNHhsj2C4wK.B/N9p5jhiWK', 'caNanoLab', 'Guest', '', '', '', '',
-        '', '1'),
-       ('guest5', '$2a$10$avCA1Z0vSJvGPWpuiNCnUu0iQDR1muwacsOttckeCWQ7vOilOnK.2', 'caNanoLab', 'Guest', '', '', '', '',
-        '', '1');
-/*!40000 ALTER TABLE `users`
-    ENABLE KEYS */;
-UNLOCK TABLES;
 /*!40103 SET TIME_ZONE = @OLD_TIME_ZONE */;
 
 /*!40101 SET SQL_MODE = @OLD_SQL_MODE */;
