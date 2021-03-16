@@ -1053,13 +1053,14 @@ public SynthesisPurity findPurityById(Long purityId) throws SynthesisException{
             Set<PurificationConfig> oldConfigs = synthesisHelper.findConfigByPurificationId(purification.getId());
 
             Set<PurificationConfig> configs = purification.getPurificationConfigs();
-            for (PurificationConfig config : configs) {
-                if (!oldConfigs.contains(config)) {
-                    //TODO new config
-                    appService.saveOrUpdate(config);
+            if(configs != null) {
+                for (PurificationConfig config : configs) {
+                    if (!oldConfigs.contains(config)) {
+                        //TODO new config
+                        appService.saveOrUpdate(config);
+                    }
                 }
             }
-
 
 //        if(configs!=null){
 //            for(PurificationConfig config:configs){

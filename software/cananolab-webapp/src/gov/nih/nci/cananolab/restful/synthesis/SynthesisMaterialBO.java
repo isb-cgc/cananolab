@@ -85,9 +85,11 @@ public class SynthesisMaterialBO extends BaseAnnotationBO {
     public List<String> create(SimpleSynthesisMaterialBean synMatBean,
                                HttpServletRequest request)
             throws Exception {
-        List<String> msgs;
+        List<String> msgs = new ArrayList<String>() ;
         String sampleId = synMatBean.getSampleId();
-        SynthesisMaterialBean entityBean = transferSynthesisMaterialBean(synMatBean, request);
+        try {
+            SynthesisMaterialBean entityBean = transferSynthesisMaterialBean(synMatBean, request);
+
 //        SampleBean sampleBean = setupSampleById(sampleId, request);
 //        List<String> otherSampleNames = synMatBean.getOtherSampleNames();
         msgs = validateInputs(request, entityBean);
@@ -97,7 +99,10 @@ public class SynthesisMaterialBO extends BaseAnnotationBO {
         this.saveEntity(request, sampleId, entityBean);
         InitSynthesisSetup.getInstance().persistSynthesisMaterialDropdowns(
                 request, entityBean);
-
+        } catch (Exception e){
+            msgs.add("Error creating Synthesis Material");
+            return msgs;
+        }
 
 
         msgs.add("success");
