@@ -10,7 +10,6 @@ import gov.nih.nci.cananolab.domain.common.Technique;
 import gov.nih.nci.cananolab.domain.particle.Synthesis;
 import gov.nih.nci.cananolab.domain.particle.SynthesisPurification;
 import gov.nih.nci.cananolab.domain.particle.SynthesisPurity;
-import gov.nih.nci.cananolab.dto.common.ColumnHeader;
 import gov.nih.nci.cananolab.dto.common.FileBean;
 import gov.nih.nci.cananolab.dto.common.PointOfContactBean;
 import gov.nih.nci.cananolab.dto.common.ProtocolBean;
@@ -42,7 +41,10 @@ import gov.nih.nci.cananolab.service.protocol.ProtocolService;
 import gov.nih.nci.cananolab.service.sample.SampleService;
 import gov.nih.nci.cananolab.service.sample.SynthesisService;
 import gov.nih.nci.cananolab.ui.form.SynthesisForm;
+import gov.nih.nci.cananolab.util.Constants;
+import gov.nih.nci.cananolab.util.DateUtils;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.IllegalFormatConversionException;
@@ -60,10 +62,10 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 
-@Transactional(readOnly = false, propagation = Propagation.REQUIRED)
+@Transactional(propagation = Propagation.REQUIRED)
 @Component("synthesisPurificationBO")
 public class SynthesisPurificationBO extends BaseAnnotationBO {
-    //TODO write
+
     Logger logger = Logger.getLogger(SynthesisPurificationBO.class);
     @Autowired
     private SynthesisService synthesisService;
@@ -92,7 +94,7 @@ public class SynthesisPurificationBO extends BaseAnnotationBO {
      */
     public List<String> create(SimpleSynthesisPurificationBean purificationBean, HttpServletRequest httpRequest) throws Exception {
         //TODO write
-        List<String> msgs = new ArrayList<String>();
+        List<String> msgs;
         SynthesisPurificationBean synthesisPurificationBean = transferSimplePurification(purificationBean, httpRequest);
         msgs = validatePurification(httpRequest, synthesisPurificationBean);
 
@@ -336,7 +338,7 @@ public class SynthesisPurificationBO extends BaseAnnotationBO {
 //        purityBean.setColumnHeaders(columnHeaders);
         purityBean.setPurityColumnHeaders(simplePurityBean.getColumnHeaders());
         List<SimplePurityRowBean> simplePurityRowBeans = simplePurityBean.getRows();
-        Set<PurityDatumCondition> datumSet = new HashSet<PurityDatumCondition>();
+//        Set<PurityDatumCondition> datumSet = new HashSet<PurityDatumCondition>();
 
 //        for(int columnNumber = 1; columnNumber<purityBean.getColumnHeaders().size(); columnNumber++){
 //            ColumnHeader currentColumnHeader;
@@ -671,15 +673,98 @@ public class SynthesisPurificationBO extends BaseAnnotationBO {
      * @param httpRequest
      * @return
      */
-    public List<String> saveFile(SimpleSynthesisPurificationBean editBean, HttpServletRequest httpRequest) {
-        //TODO write
-        return null;
+    public SimpleSynthesisPurificationBean saveFile(SimpleSynthesisPurificationBean editBean, HttpServletRequest httpRequest)throws Exception {
+        SynthesisPurificationBean synthesisPurificationBean = transferSimplePurification(editBean, httpRequest);
+//        List<FileBean> fileList = synthesisPurificationBean.getFiles();
+
+
+        String timestamp = DateUtils.convertDateToString(new Date(), "yyyyMMdd_HH-mm-ss-SSS");
+
+        SampleBean sampleBean = setupSampleById(editBean.getSampleId(), httpRequest);
+        FileBean theNewFile = new FileBean(editBean.getTheFile());
+
+
+
+        //Determine the directory for saving the file
+        String internalUriPath = Constants.FOLDER_PARTICLE+'/'+sampleBean.getDomain().getName()+'/'+"synthesisMaterial";
+        theNewFile.setupDomainFile(internalUriPath,SpringSecurityUtil.getLoggedInUserName());
+
+
+        byte[] newFileData = (byte[]) httpRequest.getSession().getAttribute("newFileData");
+        if(!theNewFile.getDomainFile().getUriExternal()){
+            if(newFileData!=null){
+                theNewFile.setNewFileData((byte[]) httpRequest.getSession().getAttribute("newFileData"));
+                theNewFile.getDomainFile().setUri(Constants.FOLDER_PARTICLE + '/'
+                        + sampleBean.getDomain().getName() + '/' + "nanomaterialEntity"+ "/" + timestamp + "_"
+                        + theNewFile.getDomainFile().getName());
+            }else if(theNewFile.getDomainFile().getId()!=null){
+                theNewFile.getDomainFile().setUri(theNewFile.getDomainFile().getName());
+            }else{
+                theNewFile.getDomainFile().setUri(null);
+            }
+        }
+        synthesisPurificationBean.addFile(theNewFile);
+
+//
+//        // save entity to save file because inverse="false"
+        List<String> msgs = validateInputs(httpRequest, synthesisPurificationBean);
+        if (msgs.size()>0) {
+            SimpleSynthesisPurificationBean simpleSynPurBean = new SimpleSynthesisPurificationBean();
+            simpleSynPurBean.setErrors(msgs);
+            return simpleSynPurBean;
+        }
+        this.saveEntity(synthesisPurificationBean,editBean.getSampleId(),httpRequest );
+//        compositionService.assignAccesses(entity.getDomainEntity().getSampleComposition(), theFile.getDomainFile());
+
+        httpRequest.setAttribute("anchor", "file");
+        httpRequest.setAttribute("dataId", synthesisPurificationBean.getDomainEntity().getId().toString());
+        httpRequest.getSession().removeAttribute("newFileData");
+
+        return setupUpdate(editBean.getSampleId(), synthesisPurificationBean.getDomainEntity().getId().toString(), httpRequest);
+
     }
 
-    public List<String> savePurification(SimpleSynthesisPurificationBean editBean, HttpServletRequest httpRequest) {
-        //TODO write
-        return null;
+    private List<String> validateInputs(HttpServletRequest request, SynthesisPurificationBean entityBean) {
+        //todo write
+
+        List<String> msgs = new ArrayList<String>();
+        msgs = validateEntity(request, msgs, entityBean);
+        msgs = validatePurificationElements(request, msgs, entityBean);
+        msgs = validateFile(request, msgs, entityBean);
+
+        return msgs;
+
+
     }
+
+    private List<String> validateFile(HttpServletRequest request, List<String> msgs,
+                                      SynthesisPurificationBean entityBean) {
+        //ActionMessages msgs = new ActionMessages();
+        for (FileBean filebean : entityBean.getFiles()) {
+            msgs = validateFileBean(request, msgs, filebean);
+            if (msgs.size()>0) {
+                return msgs;
+            }
+        }
+        return msgs;
+    }
+
+    private List<String> validatePurificationElements(HttpServletRequest httpRequest, List<String> msgs, SynthesisPurificationBean synthesisPurificationBean){
+        //TODO write
+
+        return msgs;
+    }
+
+    private List<String> validateEntity(HttpServletRequest httpRequest, List<String> msgs, SynthesisPurificationBean synthesisPurificationBean){
+        //TODO write
+
+        return msgs;
+    }
+
+//    public List<String> savePurification(SimpleSynthesisPurificationBean editBean, HttpServletRequest httpRequest) {
+//        //TODO write
+//        return null;
+//    }
 
     /**
      * Add or edit a technique and instrument to a purification
@@ -863,13 +948,13 @@ public class SynthesisPurificationBO extends BaseAnnotationBO {
         //TODO write
     }
 
-    private void transferPurityRows() {
-        /**We will get a set of simple rows.  We need to transfer them to full rows
-         * with PurityDatums with Condition collections
-         * These will be held in PurityRoWs
-         */
-
-    }
+//    private void transferPurityRows() {
+//        /**We will get a set of simple rows.  We need to transfer them to full rows
+//         * with PurityDatums with Condition collections
+//         * These will be held in PurityRoWs
+//         */
+//
+//    }
 
     public SimplePurityBean drawMatrix(HttpServletRequest request, SimplePurityBean simplePurityBean)
             throws Exception {
