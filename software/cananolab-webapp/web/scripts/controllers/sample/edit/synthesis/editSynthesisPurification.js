@@ -216,7 +216,6 @@
           $scope.techniqueFormIndex = index;
         } else {
           $scope.technique = {
-            "type": null,
             "abbreviation": null,
             "description": null,
             "instruments": []
@@ -535,6 +534,7 @@
 
       // opens column form to change properties for column //
       $scope.openColumnForm = function (cell) {
+        console.log('this is the cell ' + cell);
         $scope.findingsColumn = cell;
         $scope.columnForm = 1;
 
