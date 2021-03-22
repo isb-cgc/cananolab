@@ -13,6 +13,24 @@ SET NAMES utf8;
 /*!40101 SET @OLD_SQL_MODE = @@SQL_MODE, SQL_MODE = 'NO_AUTO_VALUE_ON_ZERO' */;
 /*!40111 SET @OLD_SQL_NOTES = @@SQL_NOTES, SQL_NOTES = 0 */;
 
+drop table if exists csm_role_privilege;
+drop table if exists csm_user_group;
+drop table if exists csm_user_group_role_pg;
+drop table if exists csm_user_pe;
+drop table if exists csm_pg_pe;
+drop table if exists csm_privilege;
+drop table if exists csm_role;
+drop table if exists csm_group;
+drop table if exists csm_mapping;
+drop table if exists csm_protection_element;
+drop table if exists csm_protection_group;
+drop table if exists csm_user;
+drop table if exists csm_application;
+drop table if exists csm_configuration_props;
+drop table if exists csm_filter_clause;
+drop table if exists csm_password_history;
+
+
 DROP TABLE IF EXISTS `acl_entry`;
 DROP TABLE IF EXISTS `acl_object_identity`;
 DROP TABLE IF EXISTS `acl_class`;

@@ -152,7 +152,8 @@ public class SearchSampleBO extends AbstractDispatchBO {
 							.toArray(new String[0]));
 					sampleBean.setFunctionClassNames(sampleServiceHelper
 							.getStoredFunctionClassNames(sample).toArray(new String[0]));
-					sampleBean.setSynthesisClassNames(sampleServiceHelper.getStoredSynthesisClassNames(sample).toArray(new String[0]));
+					//TODO restore when Synthesis added to main
+//					sampleBean.setSynthesisClassNames(sampleServiceHelper.getStoredSynthesisClassNames(sample).toArray(new String[0]));
 					// get data availability for the samples
 					Set<DataAvailabilityBean> dataAvailability = dataAvailabilityServiceDAO.findDataAvailabilityBySampleId(sampleId + "");
 					// dataAvailabilityMapPerPage.put(sampleId,
@@ -350,7 +351,8 @@ public class SearchSampleBO extends AbstractDispatchBO {
 							.toArray(new String[0]));
 					sampleBean.setFunctionClassNames(sampleServiceHelper
 							.getStoredFunctionClassNames(sample).toArray(new String[0]));
-					sampleBean.setSynthesisClassNames(sampleServiceHelper.getStoredSynthesisClassNames(sample).toArray(new String[0]));
+					//TODO Restore when Synthesis is added to main
+//					sampleBean.setSynthesisClassNames(sampleServiceHelper.getStoredSynthesisClassNames(sample).toArray(new String[0]));
 					// get data availability for the samples
 					Set<DataAvailabilityBean> dataAvailability = dataAvailabilityServiceDAO.findDataAvailabilityBySampleId(sampleId);
 					// dataAvailabilityMapPerPage.put(sampleId,
