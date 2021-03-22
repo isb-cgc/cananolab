@@ -44,6 +44,7 @@ import gov.nih.nci.cananolab.ui.form.SynthesisForm;
 import gov.nih.nci.cananolab.util.Constants;
 import gov.nih.nci.cananolab.util.DateUtils;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -312,7 +313,19 @@ public class SynthesisPurificationBO extends BaseAnnotationBO {
         //id
         if ((simplePurityBean.getId() != null) && (simplePurityBean.getId() > 0)) {
             purity.setId(simplePurityBean.getId());
-//            purity.setCreatedBy(simplePurityBean.getCreatedBy());
+            try {
+                SynthesisPurity purityById = synthesisService.getHelper().getPurityById(simplePurityBean.getId());
+                purity.setCreatedBy(purityById.getCreatedBy());
+                purity.setCreatedDate(purityById.getCreatedDate());
+            }
+            catch (Exception e) {
+                e.printStackTrace();
+                //TODO turn into message for sending to front end
+            }
+        }else {
+            purity.setCreatedDate(Calendar.getInstance().getTime());
+            purity.setCreatedBy(SpringSecurityUtil.getPrincipal().getUsername());
+            //            purity.setCreatedBy(simplePurityBean.getCreatedBy());
 //            purity.setCreatedDate(simplePurityBean.getCreatedDate());
 //        }else {
 //            purity.setCreatedBy(simplePurityBean.getCreatedBy());
@@ -433,6 +446,9 @@ public class SynthesisPurificationBO extends BaseAnnotationBO {
             datumCondition.setOperand(sConditionCell.getOperand());
             conditionCell.setColumnId(sConditionCell.getColumnId());
             datumCondition.setColumnId(sConditionCell.getColumnId());
+            conditionCell.setRowNumber(sConditionCell.getRowNumber());
+            datumCondition.setRowNumber(sConditionCell.getRowNumber());
+            //TODO createdBy and createdDate?
 //            for (ColumnHeader header : columnHeaders) {
 //                if (header.getColumnOrder().equals(conditionCell.getColumnOrder())) {
 //                    datumCondition.setName(header.getColumnName());
@@ -447,6 +463,7 @@ public class SynthesisPurificationBO extends BaseAnnotationBO {
                     datumCondition.setValueType(header.getValueType());
                     datumCondition.setValueUnit(header.getValueUnit());
                     datumCondition.setProperty(header.getProperty());
+                    datumCondition.setColumnHeader(header);
                 }
             }
             conditionSet.add(datumCondition);
@@ -471,6 +488,7 @@ public class SynthesisPurificationBO extends BaseAnnotationBO {
         datum.setOperand(currentDatumCell.getOperand());
         datumCell.setColumnId(currentDatumCell.getColumnId());
         datum.setColumnId(currentDatumCell.getColumnId());
+        datum.setRowNumber(currentDatumCell.getRowNumber());
 //        for (ColumnHeader header : columnHeaders) {
 //            if (header.getColumnOrder().equals(currentDatumCell.getColumnOrder())) {
 //                datum.setName(header.getColumnName());
@@ -483,6 +501,8 @@ public class SynthesisPurificationBO extends BaseAnnotationBO {
                 datum.setName(header.getName());
                 datum.setValueType(header.getValueType());
                 datum.setValueUnit(header.getValueUnit());
+                datum.setProperty(header.getProperty());
+                datum.setColumnHeader(header);
             }
         }
 
