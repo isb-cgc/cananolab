@@ -693,7 +693,7 @@ public SynthesisPurity findPurityById(Long purityId) throws SynthesisException{
             }
 
 
-//TODO Enable when I get the other stuff lined up
+
             appService.saveOrUpdate(synthesisPurification);
 
             for (SynthesisPurityBean synthesisPurityBean : synthesisPurificationBean.getPurityBeans()) {
@@ -1189,7 +1189,7 @@ public SynthesisPurity findPurityById(Long purityId) throws SynthesisException{
         }
     }
 
-    private Synthesis createSynthesis(SampleBean sampleBean) throws SynthesisException, NoAccessException {
+    public Synthesis createSynthesis(SampleBean sampleBean) throws SynthesisException, NoAccessException {
 
         try {
             Synthesis synthesis = new Synthesis();

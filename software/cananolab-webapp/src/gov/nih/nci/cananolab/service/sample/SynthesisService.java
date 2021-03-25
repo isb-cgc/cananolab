@@ -52,6 +52,7 @@ public interface SynthesisService extends BaseService {
             , NoAccessException;
 
     SynthesisHelper getHelper();
+    Synthesis createSynthesis(SampleBean sampleBean) throws SynthesisException, NoAccessException ;
 
     void saveSynthesisFunctionalization(SampleBean sampleBean, SynthesisFunctionalizationBean synthesisFunctionalizationBean) throws SynthesisException, NoAccessException;
 

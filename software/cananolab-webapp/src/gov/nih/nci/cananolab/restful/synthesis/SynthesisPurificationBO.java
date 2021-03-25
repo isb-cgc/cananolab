@@ -7,6 +7,7 @@ import gov.nih.nci.cananolab.domain.common.PurificationConfig;
 import gov.nih.nci.cananolab.domain.common.PurityColumnHeader;
 import gov.nih.nci.cananolab.domain.common.PurityDatumCondition;
 import gov.nih.nci.cananolab.domain.common.Technique;
+import gov.nih.nci.cananolab.domain.particle.Sample;
 import gov.nih.nci.cananolab.domain.particle.Synthesis;
 import gov.nih.nci.cananolab.domain.particle.SynthesisPurification;
 import gov.nih.nci.cananolab.domain.particle.SynthesisPurity;
@@ -19,6 +20,7 @@ import gov.nih.nci.cananolab.dto.particle.SampleBean;
 import gov.nih.nci.cananolab.dto.particle.synthesis.SynthesisPurificationBean;
 import gov.nih.nci.cananolab.dto.particle.synthesis.SynthesisPurityBean;
 import gov.nih.nci.cananolab.exception.NoAccessException;
+import gov.nih.nci.cananolab.exception.SampleException;
 import gov.nih.nci.cananolab.exception.SynthesisException;
 import gov.nih.nci.cananolab.restful.core.BaseAnnotationBO;
 import gov.nih.nci.cananolab.restful.sample.InitSampleSetup;
@@ -40,6 +42,7 @@ import gov.nih.nci.cananolab.service.curation.CurationService;
 import gov.nih.nci.cananolab.service.protocol.ProtocolService;
 import gov.nih.nci.cananolab.service.sample.SampleService;
 import gov.nih.nci.cananolab.service.sample.SynthesisService;
+import gov.nih.nci.cananolab.service.sample.helper.SampleServiceHelper;
 import gov.nih.nci.cananolab.ui.form.SynthesisForm;
 import gov.nih.nci.cananolab.util.Constants;
 import gov.nih.nci.cananolab.util.DateUtils;
@@ -135,13 +138,28 @@ public class SynthesisPurificationBO extends BaseAnnotationBO {
         //Add parent object to domain
         Synthesis synthesis;
         try {
+
             synthesis = synthesisService.getHelper().findSynthesisBySampleId(sSynPurificationBean.getSampleId());
 //            purification.setSynthesisId(synthesis.getId());
-            purification.setSynthesis(synthesis);
+            if(synthesis != null) {
+                purification.setSynthesis(synthesis);
+            } else {
+                //New Synthesis
+                //TODO
+                SampleBean samplebean = sampleService.findSampleById(sSynPurificationBean.getSampleId(), true);
+                synthesis = synthesisService.createSynthesis(samplebean);
+                purification.setSynthesis(synthesis);
+            }
         }
         catch (SynthesisException e) {
             String err = "Unable to retrieve Synthesis attached to this Purification. ";
             throw new SynthesisException(err, e);
+        } catch (NoAccessException nae){
+            String err = "User does not have permission to add Synthesis to this sample. ";
+            throw new SynthesisException(err, nae);
+        } catch (SampleException se){
+            String err = "Issue retrieving sample for addition of synthesis element. ";
+            throw new SynthesisException(err, se);
         }
 
         //Set protocol
@@ -195,6 +213,7 @@ public class SynthesisPurificationBO extends BaseAnnotationBO {
         if (simpleExperimentBeans != null) {
             for (SimplePurificationConfigBean sExperimentBean : simpleExperimentBeans) {
                 PurificationConfig config = new PurificationConfig();
+                if(sExperimentBean.getTechniqueid()!=null){
                 Technique technique = new Technique();
                 technique.setId(sExperimentBean.getTechniqueid());
                 technique.setType(sExperimentBean.getTechniqueType());
@@ -202,7 +221,7 @@ public class SynthesisPurificationBO extends BaseAnnotationBO {
                 technique.setCreatedBy(purification.getCreatedBy());
                 technique.setCreatedDate(purification.getCreatedDate());
 
-                config.setTechnique(technique);
+                config.setTechnique(technique);}
                 config.setPurificationConfigPkId(sExperimentBean.getId());
                 config.setDescription(sExperimentBean.getDescription());
                 if ((config.getPurificationConfigPkId() != null) && (config.getPurificationConfigPkId() > 0)) {
