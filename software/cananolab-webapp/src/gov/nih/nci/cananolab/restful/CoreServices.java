@@ -208,7 +208,7 @@ public class CoreServices
 				MultivaluedMap<String, String> headers = inputPart.getHeaders();
 				fileName = parseFileName(headers);
 				fileInputStream = inputPart.getBody(InputStream.class,null);
-				if( fileName != null ){
+				if( fileName != null && fileName.length()>0){
 					break;
 				}
 			}
