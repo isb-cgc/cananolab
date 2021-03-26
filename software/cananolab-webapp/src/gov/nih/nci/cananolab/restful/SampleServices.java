@@ -81,6 +81,7 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.InputSource;
+import restful.view.SimpleSynthesisExportBean;
 
 
 @Path("/sample")
@@ -1221,7 +1222,9 @@ public class SampleServices {
 		}
 
 		jasonData.append(",\"synthesis\": ");
-		jasonData.append(doIndent(gson.toJson(simpleSynthesisBean), indent *4));
+		// Gson could not serialize a SimpleSynthesisBean to JSON
+		// jasonData.append(doIndent(gson.toJson(simpleSynthesisBean), indent *4));
+	    jasonData.append(doIndent(gson.toJson( new SimpleSynthesisExportBean( simpleSynthesisBean )), indent *4));
 
 
         // Publication

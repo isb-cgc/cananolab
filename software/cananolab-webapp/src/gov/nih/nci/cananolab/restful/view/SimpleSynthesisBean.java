@@ -68,8 +68,11 @@ public class SimpleSynthesisBean {
         this.synthesisSections = synthesisSections;
     }
 
+    public List<String> getSynthesisSections() {
+        return synthesisSections;
+    }
 
-    public void transferSynthesisForSummaryView(SynthesisBean synBean) {
+    public void transferSynthesisForSummaryView( SynthesisBean synBean) {
 
         sampleId = synBean.getDomain().getSample().getId();
         Map<String, Object> files;

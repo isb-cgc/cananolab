@@ -67,7 +67,6 @@ var app = angular.module('angularApp')
                 }
             }).
             then(function (res) {
-                data = data['data']
                 let a = (window).document.createElement('a');
                 a.href = (window).URL.createObjectURL(new Blob([JSON.stringify(res)], {
                     type: 'application/json'
@@ -79,9 +78,9 @@ var app = angular.module('angularApp')
                 $scope.loader = false;
             }).
             catch(function (res) {
-                data = data['data']
                 $scope.loader = false;
-                $scope.message = data;
+                console.error(res['data']);
+                $scope.message = 'Error retrieving JSON data from server.';
             });
         };
 
@@ -96,7 +95,7 @@ var app = angular.module('angularApp')
                 }
             }).
             then(function (res) {
-                data = data['data']
+                res = res['data']
                 let a = (window).document.createElement('a');
                 a.href = (window).URL.createObjectURL(new Blob([JSON.stringify(res)], {
                     type: 'application/json'
@@ -108,10 +107,11 @@ var app = angular.module('angularApp')
                 $scope.loader = false;
             }).
             catch(function (res) {
-                data = data['data']
+                res = res['data']
                 window.alert('ERROR: ' + res);
                 $scope.loader = false;
-                $scope.message = data;
+                console.error(res);
+                $scope.message = 'Error retrieving XML data from server.';
             });
         };
 
