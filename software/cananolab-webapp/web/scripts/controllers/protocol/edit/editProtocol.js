@@ -319,7 +319,9 @@ var app = angular.module('angularApp')
                     $timeout(function () {
                         //$scope.uploadResult.push(response.data);
                         //alert(response.data);
-                        $scope.protocolForm.uri = response.data;
+                        // $scope.protocolForm.uri = response.data;
+                        $scope.protocolForm.uri = $scope.selectedFiles[0].name;
+                        
                         $scope.doSubmitData();
                     });
                 }, function (response) {

@@ -1202,25 +1202,26 @@ public class SampleServices {
 
         jasonData.append( ",\"characterization\": "  );
         jasonData.append( doIndent( gson.toJson(finalBean), indent * 4 ) );
-
-        //Synthesis
-		SynthesisBO synthesisBO;
-		SynthesisBean synthesisBean;
-		SimpleSynthesisBean simpleSynthesisBean=null;
-		SynthesisForm synthesisForm;
-		try{
-			synthesisForm = new SynthesisForm();
-			synthesisForm.setSampleId(sampleId);
-			synthesisBO = (SynthesisBO) SpringApplicationContext.getBean(httpRequest, "synthesisBO");
-			synthesisBean = synthesisBO.summaryView(synthesisForm, httpRequest);
-			simpleSynthesisBean = new SimpleSynthesisBean();
-			simpleSynthesisBean.transferSynthesisForSummaryView(synthesisBean);
-		} catch(Exception e){
-			logger.error("Error exporting synthesis", e);
-		}
-
-		jasonData.append(",\"synthesis\": ");
-		jasonData.append(doIndent(gson.toJson(simpleSynthesisBean), indent *4));
+//TODO Add back when Synthesis added to main
+//        //Synthesis
+//		SynthesisBO synthesisBO;
+//		SynthesisBean synthesisBean;
+//		SimpleSynthesisBean simpleSynthesisBean=null;
+//		SynthesisForm synthesisForm;
+//		try{
+//			synthesisForm = new SynthesisForm();
+//			synthesisForm.setSampleId(sampleId);
+//			synthesisBO = (SynthesisBO) SpringApplicationContext.getBean(httpRequest, "synthesisBO");
+//			synthesisBean = synthesisBO.summaryView(synthesisForm, httpRequest);
+//			simpleSynthesisBean = new SimpleSynthesisBean();
+//			simpleSynthesisBean.transferSynthesisForSummaryView(synthesisBean);
+//		} catch(Exception e){
+//			logger.error("Error exporting synthesis", e);
+//		}
+//
+//		jasonData.append(",\"synthesis\": ");
+//		jasonData.append(doIndent(gson.toJson(simpleSynthesisBean), indent *4));
+//		jasonData.append(doIndent(gson.toJson( new SimpleSynthesisExportBean( simpleSynthesisBean )), indent *4));
 
 
         // Publication
