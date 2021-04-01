@@ -532,7 +532,8 @@ public class SimpleCompositionBean {
 						comFile.put("dataId", file.getDomainFile().getId());
 						comFile.put("fileId", file.getDomainFile().getId());
 						comFile.put("isImage", file.isImage());
-						files.put("ExternalURI", new Boolean(file.getDomainFile().getUriExternal()).toString());
+//						files.put("ExternalURI", new Boolean(file.getDomainFile().getUriExternal()).toString());
+						comFile.put("ExternalURI", new Boolean(file.getDomainFile().getUriExternal()).toString());
 						comFile.put("Title", file.getDomainFile().getTitle());
 
 						comFile.put("URI", file.getDomainFile().getUri());

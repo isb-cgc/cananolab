@@ -81,6 +81,8 @@ public class CompositionBean {
 		}
 		Collections.sort(chemicalAssociations,
 				new Comparators.ChemicalAssociationBeanTypeDateComparator());
+
+
 		if (comp.getFileCollection() != null) {
 			for (File file : comp.getFileCollection()) {
 				files.add(new FileBean(file));
