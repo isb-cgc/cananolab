@@ -446,9 +446,10 @@ public class SimpleSynthesisBean {
             techniqueMap.put("Description", desc);
             //put array of instruments
             List<String> instrumentNames = new ArrayList<String>();
+            if(configBean.getInstrumentDisplayNames()!=null){
             for (String instrumentDisplayName : configBean.getInstrumentDisplayNames()) {
                 instrumentNames.add(instrumentDisplayName);
-            }
+            }}
             techniqueMap.put("Instruments", instrumentNames);
             techiqueList.add(techniqueMap);
         }

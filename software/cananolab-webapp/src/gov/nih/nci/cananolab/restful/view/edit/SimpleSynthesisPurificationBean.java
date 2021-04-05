@@ -290,7 +290,7 @@ public class SimpleSynthesisPurificationBean {
             for (PurificationConfigBean purificationConfigBean : purificationConfigs) {
                 SimplePurificationConfigBean simpleExperimentBean = new SimplePurificationConfigBean();
                 simpleExperimentBean.setId(purificationConfigBean.getDomain().getPurificationConfigPkId());
-                simpleExperimentBean.setTechniqueDisplayName(purificationConfigBean.getTechniqueDisplayName());
+//                simpleExperimentBean.setTechniqueDisplayName(purificationConfigBean.getTechniqueDisplayName());
                 simpleExperimentBean.setDescription(purificationConfigBean.getDescription());
                 simpleExperimentBean.setTechniqueid(purificationConfigBean.getDomain().getTechnique().getId());
                 simpleExperimentBean.setTechniqueType(purificationConfigBean.getDomain().getTechnique().getType());

@@ -9,9 +9,20 @@ import gov.nih.nci.cananolab.domain.common.PurityColumnHeader;
 
 import gov.nih.nci.cananolab.domain.common.PurityDatumCondition;
 import gov.nih.nci.cananolab.domain.common.Supplier;
-import gov.nih.nci.cananolab.domain.particle.*;
+
+import gov.nih.nci.cananolab.domain.particle.Sample;
+import gov.nih.nci.cananolab.domain.particle.SfeInherentFunction;
+import gov.nih.nci.cananolab.domain.particle.SmeInherentFunction;
+import gov.nih.nci.cananolab.domain.particle.Synthesis;
+import gov.nih.nci.cananolab.domain.particle.SynthesisFunctionalization;
+import gov.nih.nci.cananolab.domain.particle.SynthesisFunctionalizationElement;
+import gov.nih.nci.cananolab.domain.particle.SynthesisMaterial;
+import gov.nih.nci.cananolab.domain.particle.SynthesisMaterialElement;
+import gov.nih.nci.cananolab.domain.particle.SynthesisPurification;
+import gov.nih.nci.cananolab.domain.particle.SynthesisPurity;
 import gov.nih.nci.cananolab.dto.common.FileBean;
 
+import gov.nih.nci.cananolab.dto.common.PurificationConfigBean;
 import gov.nih.nci.cananolab.dto.particle.SampleBean;
 
 
@@ -699,6 +710,8 @@ public SynthesisPurity findPurityById(Long purityId) throws SynthesisException{
             for (SynthesisPurityBean synthesisPurityBean : synthesisPurificationBean.getPurityBeans()) {
                 this.saveSynthesisPurity(synthesisPurityBean, synthesisPurificationBean);
             }
+
+
 
             for (FileBean fileBean : synthesisPurificationBean.getFiles()) {
                 fileUtils.writeFile(fileBean);

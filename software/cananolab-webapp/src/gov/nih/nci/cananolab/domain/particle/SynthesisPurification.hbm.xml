@@ -46,11 +46,18 @@
             <one-to-many class="gov.nih.nci.cananolab.domain.particle.SynthesisPurity"/>
         </set>
 
-        <set fetch="select" inverse="true" lazy="false"
-             name="purificationConfigs" table="purification_config">
-            <key>
-                <column name="synthesis_purification_pk_id"/>
-            </key>
+<!--        <set fetch="select" inverse="true" lazy="false"-->
+<!--             name="purificationConfigs" table="purification_config">-->
+<!--            <key>-->
+<!--                <column name="synthesis_purification_pk_id"/>-->
+<!--            </key>-->
+<!--            <one-to-many class="gov.nih.nci.cananolab.domain.common.PurificationConfig"/>-->
+<!--        </set>-->
+
+
+        <set name="purificationConfigs" lazy="false" cascade="delete">
+            <cache usage="read-write" />
+            <key column="synthesis_purification_pk_id" />
             <one-to-many class="gov.nih.nci.cananolab.domain.common.PurificationConfig"/>
         </set>
     </class>

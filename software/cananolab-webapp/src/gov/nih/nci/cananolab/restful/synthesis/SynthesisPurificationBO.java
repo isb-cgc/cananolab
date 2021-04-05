@@ -213,15 +213,16 @@ public class SynthesisPurificationBO extends BaseAnnotationBO {
         if (simpleExperimentBeans != null) {
             for (SimplePurificationConfigBean sExperimentBean : simpleExperimentBeans) {
                 PurificationConfig config = new PurificationConfig();
-                if(sExperimentBean.getTechniqueid()!=null){
-                Technique technique = new Technique();
-                technique.setId(sExperimentBean.getTechniqueid());
-                technique.setType(sExperimentBean.getTechniqueType());
-                technique.setAbbreviation(sExperimentBean.getAbbreviation());
-                technique.setCreatedBy(purification.getCreatedBy());
-                technique.setCreatedDate(purification.getCreatedDate());
+                if (sExperimentBean.getTechniqueid() != null) {
+                    Technique technique = new Technique();
+                    technique.setId(sExperimentBean.getTechniqueid());
+                    technique.setType(sExperimentBean.getTechniqueType());
+                    technique.setAbbreviation(sExperimentBean.getAbbreviation());
+                    technique.setCreatedBy(purification.getCreatedBy());
+                    technique.setCreatedDate(purification.getCreatedDate());
 
-                config.setTechnique(technique);}
+                    config.setTechnique(technique);
+                }
                 config.setPurificationConfigPkId(sExperimentBean.getId());
                 config.setDescription(sExperimentBean.getDescription());
                 if ((config.getPurificationConfigPkId() != null) && (config.getPurificationConfigPkId() > 0)) {
