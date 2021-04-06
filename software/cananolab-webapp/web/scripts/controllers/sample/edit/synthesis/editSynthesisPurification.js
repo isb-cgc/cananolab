@@ -136,6 +136,7 @@
         then(function (data, status, headers, config) {
           data = data['data']
           $scope.techniqueAbbreviationDesc = data;
+          $scope.technique['techniqueid'] = data['id'];
           $scope.loader = false;
         }).catch(function (data, status, headers, config) {
           data = data['data']
@@ -323,8 +324,11 @@
           $scope.purification['simpleExperimentBeans'].push($scope.technique)
         } else {
           $scope.purification['simpleExperimentBeans'][$scope.techniqueFormIndex] = technique;
+          console.log($scope.techniqueFormIndex, $scope.purification['simpleExperimentBeans'][$scope.techniqueFormIndex])
+
         }
         $scope.techniqueFormIndex = null;
+
       };
 
       // save instrument //
@@ -339,15 +343,7 @@
 
       // submit the entire synthesis material //
       $scope.savePurification = function () {
-        // $scope.fileMaterial = angular.copy($scope.material);
-        // $scope.fileMaterial['fileBeingEdited'] = { "uri": $scope.somefile.name, "title": "test", "type": "document", "uriExternal": false };
-        // $http({ method: 'POST', url: '/caNanoLab/rest/synthesisMaterial/saveFile', data: $scope.fileMaterial }).
-        //   then(function (data, status, headers, config) { data=data['data']
-        //     $location.search({ 'message': 'Synthesis Material successfully saved.', 'sampleId': $scope.sampleId }).path('/editSynthesis').replace();
-        //   }).
-        //   catch(function (data, status, headers, config) { data=data['data']
-        //     console.log('fail')
-        //   });
+        console.log($scope.purification)
 
         $http({
           method: 'POST',
