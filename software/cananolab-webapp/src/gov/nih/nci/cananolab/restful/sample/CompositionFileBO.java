@@ -1,5 +1,6 @@
 package gov.nih.nci.cananolab.restful.sample;
 
+import gov.nih.nci.cananolab.restful.SpringApplicationContext;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -136,7 +137,8 @@ public class CompositionFileBO extends BaseAnnotationBO
 			HttpServletRequest request)
 			throws Exception {
 		List<String> msgs = new ArrayList<String>();
-		CompositionBO compBO = new CompositionBO();
+		CompositionBO compBO = (CompositionBO) SpringApplicationContext.getBean(request, "compositionBO");
+//		CompositionBO compBO = new CompositionBO();
 		CompositionForm form = new CompositionForm();
 		form.setSampleId(bean.getSampleId());
 		CompositionBean comp = compBO.summaryView(form, request);

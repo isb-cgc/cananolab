@@ -525,6 +525,11 @@ public class CompositionServiceLocalImpl extends BaseServiceLocalImpl implements
 			List<File> fileList = compositionServiceHelper.findFilesByCompositionInfoId(comp.getSample().getId(),
 					comp.getId().toString(), "SampleComposition");
 			comp.setFileCollection(new HashSet<File>(fileList));
+			for(File fileIt: comp.getFileCollection()){
+				if (fileIt.getId().equals(file.getId())){
+					file = fileIt;
+				}
+			}
 			comp.getFileCollection().remove(file);
 			appService.saveOrUpdate(comp);
 		} catch (Exception e) {
