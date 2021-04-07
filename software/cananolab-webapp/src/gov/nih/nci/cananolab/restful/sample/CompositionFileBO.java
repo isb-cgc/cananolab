@@ -136,7 +136,8 @@ public class CompositionFileBO extends BaseAnnotationBO
 			HttpServletRequest request)
 			throws Exception {
 		List<String> msgs = new ArrayList<String>();
-		CompositionBO compBO = new CompositionBO();
+//		CompositionBO compBO = new CompositionBO();
+		CompositionBO compBO = (CompositionBO) SpringApplicationContext.getBean(request, "compositionBO");
 		CompositionForm form = new CompositionForm();
 		form.setSampleId(bean.getSampleId());
 		CompositionBean comp = compBO.summaryView(form, request);
