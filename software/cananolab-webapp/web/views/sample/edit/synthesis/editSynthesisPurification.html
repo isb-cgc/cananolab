@@ -1,13 +1,10 @@
 <button ng-click="tempShow=!tempShow">debug</button>
 <div style="width:800px;" ng-if="tempShow">
-  <B>Purification Copy</B> - {{purificationCopy}} <br /><br />
-  <B>Purification</B> - {{purification}} <br /><br />
-  <B>Material Element</B> - {{materialElement}}<br /><br />
-  <B>Technique</B> - {{technique}}<br /><br />
-  <B>Instrument</B> - {{instrument}}<br /><br />
-  <B>Instrument Types</B> - {{instrumentTypes}}<br /><Br />
-  <B>Abb/Desc</B> - {{techniqueAbbreviationDesc}}
-  <B>Current Finding</B> - {{currentFinding}}
+  <!-- <B>Purification Copy</B> - {{purificationCopy}} <br /><br /> -->
+  <!-- <B>Purification</B> - {{purification}} <br /><br /> -->
+
+  <B>Purification technique Copy</B> - {{purificationCopy['simpleExperimentBeans']}} <br /><br />
+  <B>Purification technique</B> - {{purification['simpleExperimentBeans']}} <br /><br />
 </div>
 
 <div class="spacer">
@@ -395,13 +392,13 @@
                               <label for="columnName">Column Name *</label>
                             </td>
                             <td>
-                              <select ng-hide="loader" ng-model="findingsColumn.name"
+                              <select data-ng-options="option for option in columnNameLookup" ng-hide="loader" ng-model="findingsColumn.name"
                                 ng-init="findingsColumn.name=findingsColumn.name" ng-change="onColumnNameDropdownChange()">
                           
                                 <!--
                           															<select ng-model="findingsColumn.columnName" data-ng-options="option for option in columnNameLookup" ng-change="onColumnNameDropdownChange()"> -->
                                 <option value=""></option>
-                                <option ng-repeat="option in columnNameLookup" ng-disabled="disableColumn(option)">{{option}}</option>
+                                <option ng-disabled="disableColumn(option)">{{option}}</option>
                           
                               </select>
 
