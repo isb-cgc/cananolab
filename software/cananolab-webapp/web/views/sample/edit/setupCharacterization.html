@@ -988,12 +988,12 @@
 															<label for="columnName">Column Name *</label>
 														</td>
 														<td>
-                                                            <select ng-hide="loader" ng-model="findingsColumn.columnName" ng-init="findingsColumn.columnName=findingsColumn.columnName" ng-change="onColumnNameDropdownChange()">
+                                                            <select data-ng-options="option for option in columnNameLookup"  ng-hide="loader" ng-model="findingsColumn.columnName" ng-init="findingsColumn.columnName=findingsColumn.columnName" ng-change="onColumnNameDropdownChange()">
 
 <!--
 															<select ng-model="findingsColumn.columnName" data-ng-options="option for option in columnNameLookup" ng-change="onColumnNameDropdownChange()"> -->
 															<option value=""></option>
-                                                            <option ng-repeat="option in columnNameLookup" ng-disabled="disableColumn(option)">{{option}}</option>
+                                                            <option  ng-disabled="disableColumn(option)">{{option}}</option>
 
 															</select>
 
