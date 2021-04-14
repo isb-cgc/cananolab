@@ -32,7 +32,7 @@
                 <td>
                     <!-- <div align="right" ng-if="access.groupName == 'Curator' || access.groupName == 'Public' && !$parent.user.curator" > -->
                     <div align="right" ng-if="access.recipient != 'ROLE_CURATOR' &&  $parent.isCurator.curator" >
-                        <button ng-click="$parent.accessForm.theAccess.recipient='';editGroupAccessSection('{{access.recipient}}','{{access.roleDisplayName}}');" class="btn-canano btn-canano-primary btn-canano-xs">Edit</button>
+                        <button ng-click="$parent.accessForm.theAccess.recipient='';editGroupAccessSection(access.recipient,access.roleDisplayName);" class="btn-canano btn-canano-primary btn-canano-xs">Edit</button>
                     </div>
                 </td>
             </tr>
@@ -62,7 +62,7 @@
                 </td>
                 <td>
                     <div align="right" ng-if="access.recipient != user.loginName">
-                        <button ng-click="$parent.accessForm.theAccess.recipient='';editUserAccessSection('{{access.recipient}}','{{access.roleDisplayName}}');" class="btn-canano btn-canano-primary btn-canano-xs">Edit</button>
+                        <button ng-click="$parent.accessForm.theAccess.recipient='';editUserAccessSection(access.recipient,access.roleDisplayName);" class="btn-canano btn-canano-primary btn-canano-xs">Edit</button>
                         </c:otherwise>
                     </div>
                 </td>
