@@ -10,8 +10,7 @@ package gov.nih.nci.cananolab.system.dao.orm;
 
 
 
-import gov.nih.nci.cananolab.domain.particle.SynthesisPurification;
-import gov.nih.nci.cananolab.domain.particle.SynthesisPurity;
+
 import gov.nih.nci.cananolab.system.dao.DAOException;
 import java.io.Serializable;
 import java.util.List;

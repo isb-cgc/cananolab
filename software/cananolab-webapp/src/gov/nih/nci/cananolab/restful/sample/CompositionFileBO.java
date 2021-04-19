@@ -23,6 +23,7 @@ import gov.nih.nci.cananolab.service.sample.SampleService;
 import gov.nih.nci.cananolab.ui.form.CompositionForm;
 import gov.nih.nci.cananolab.util.Constants;
 import gov.nih.nci.cananolab.util.DateUtils;
+import gov.nih.nci.cananolab.restful.sample.CompositionBO;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -137,8 +138,9 @@ public class CompositionFileBO extends BaseAnnotationBO
 			HttpServletRequest request)
 			throws Exception {
 		List<String> msgs = new ArrayList<String>();
-		CompositionBO compBO = (CompositionBO) SpringApplicationContext.getBean(request, "compositionBO");
 //		CompositionBO compBO = new CompositionBO();
+		CompositionBO compBO = (CompositionBO) SpringApplicationContext.getBean(request, "compositionBO");
+
 		CompositionForm form = new CompositionForm();
 		form.setSampleId(bean.getSampleId());
 		CompositionBean comp = compBO.summaryView(form, request);

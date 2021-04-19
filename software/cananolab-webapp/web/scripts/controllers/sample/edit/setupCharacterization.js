@@ -1260,6 +1260,7 @@ var app = angular.module('angularApp')
         };
 
         $scope.editFile = function (fileId) {
+            console.log('clicked')
             $scope.selectedFileName = '';
             for (var k = 0; k < $scope.currentFinding.files.length; ++k) {
 

@@ -22,11 +22,11 @@ node_modules/
 
 software/common/lib/globus/
 
-\.idea/
+.idea/
 
 vpproject/
 
-software/cananolab-webapp/cananolab-web\.iml
+software/cananolab-webapp/cananolab-web.iml
 
 
 software/common/lib/sdk/
