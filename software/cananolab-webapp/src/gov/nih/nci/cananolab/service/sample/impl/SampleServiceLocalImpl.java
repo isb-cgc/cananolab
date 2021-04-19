@@ -70,10 +70,12 @@ import java.util.SortedSet;
 import java.util.TreeSet;
 import org.apache.log4j.Logger;
 import org.hibernate.FetchMode;
+import org.hibernate.StaleStateException;
 import org.hibernate.criterion.CriteriaSpecification;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Property;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.orm.hibernate3.HibernateOptimisticLockingFailureException;
 import org.springframework.stereotype.Component;
 
 /**
@@ -929,6 +931,9 @@ public class SampleServiceLocalImpl extends BaseServiceLocalImpl implements Samp
 			appService.delete(sample);
 		} catch (NotExistException e) {
 			throw e;
+		} catch (HibernateOptimisticLockingFailureException e){
+//Batch update returned unexpected row count from update [0]; actual row count: 0; expected: 1
+			String debug = "Already deleted?";
 		} catch (Exception e) {
 			String err = "Error in deleting the sample " + sampleName + ". " + e.getMessage();
 			logger.error(err, e);
