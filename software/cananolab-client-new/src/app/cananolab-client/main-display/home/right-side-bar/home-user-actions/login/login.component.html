@@ -1,0 +1,40 @@
+<div class="right-side-bar-content">
+
+    <span class="m-1"><strong>No account is required to browse publicly available data.</strong></span>
+  <table class="ml-2">
+      <tr>
+          <td style="text-align: right;"
+
+          >
+              LOGIN ID
+          </td>
+          <td>
+              <input
+                  [(ngModel)]="user"
+                  type="text"
+              >
+          </td>
+      </tr>
+      <tr>
+          <td style="text-align: right;">
+              PASSWORD
+          </td>
+          <td>
+              <input
+                  [(ngModel)]="password"
+                  type="password"
+              >
+          </td>
+      </tr>
+      <tr>
+          <td> </td>
+          <td>
+              <button
+                  class="btn-canano-blue"
+                  (click)="onLoginClick()"
+
+              >Login</button>
+          </td>
+      </tr>
+  </table>
+</div>

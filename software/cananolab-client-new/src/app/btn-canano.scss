@@ -1,0 +1,51 @@
+@import "../app/app.component";
+@import '../app/cananolab-client/cananolab-client.component';
+
+.btn-canano{
+    @extend .btn;
+    outline: none;
+    color: #fff;
+}
+
+.btn-canano-sm{
+    @extend .btn-canano;
+    @extend .btn-sm;
+}
+
+.btn-canano-blue{
+    @extend .btn-canano;
+    @extend .canano-blue;
+}
+
+.btn-canano-green{
+    @extend .btn-canano;
+    @extend .canano-green;
+}
+
+.btn-canano-sm-blue{
+    @extend .btn-canano-sm;
+    @extend .canano-blue;
+}
+
+.btn-canano-sm-green{
+    @extend .btn-canano-sm;
+    @extend .btn-canano-green;
+}
+
+.canano-green{
+    background-color: $canano-green;
+
+    &:hover{
+        color: $canano-green;
+        background-color: #82ffa5;
+    }
+}
+
+.canano-blue{
+    background-color: $canano-blue;
+
+    &:hover{
+        color: $canano-blue;
+        background-color: #82fffe;
+    }
+}

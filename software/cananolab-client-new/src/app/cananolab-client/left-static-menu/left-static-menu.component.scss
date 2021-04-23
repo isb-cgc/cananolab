@@ -1,0 +1,49 @@
+@import "../../app.component";
+@import "../../btn-canano";
+@import "../cananolab-client.component";
+
+
+.left-menu-div{
+    width: $leftMenuWidth;
+    margin-right: $leftMenuMargin;
+}
+
+.left-menu-button{
+    @extend .d-block;
+    width: 100%;
+    margin: 1px 0 0 0;
+}
+
+.left-menu-button-blue{
+    @extend .left-menu-button;
+    @extend .btn-canano-sm-blue;
+}
+
+.left-menu-button-green{
+    @extend .left-menu-button;
+    @extend .btn-canano-sm-green;
+}
+
+.left-menu-heading{
+    background-color: $menuHeadingBackgroundColor;
+    color: #fff;
+    margin-top: 1px;
+    cursor: default;
+
+}
+
+.left-menu-top-heading{
+    @extend .left-menu-button;
+    @extend .rounded-0;
+    background-color: $canano-blue;
+    color: #fff;
+}
+
+a{
+    color: #fff;
+    font-size: small;
+    &:hover{
+        color: #aeeee9;
+        cursor: pointer;
+    }
+}

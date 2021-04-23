@@ -1,0 +1,27 @@
+<!----------------------------------------------------------------------------------------->
+<!----------------------            "Main Display Heading"         ------------------------>
+<!-----------   The blueish bar across the top of the Main Display ------------------------>
+<!-----------   Contains topic name, context sensitive Help link, and Glossary link  ------>
+<!----------------------------------------------------------------------------------------->
+
+
+<!-- The Main Menu Heading should not be shown for some Menu options, add them to this *ngIf.  -->
+<div *ngIf="currentMenuChoice !== topMenuItems.HOME"
+    class="main-display-heading"
+>
+
+    <span class="ml-1">{{currentMenuChoice}}</span>
+
+    <button
+        class="btn-canano float-right pt-0"
+        (click)="openHelpWindow('https://wiki.nci.nih.gov/display/caNanoLab/caNanoLab+Glossary')"
+    >Glossary
+    </button>
+
+    <button
+        class="btn-canano float-right pt-0"
+    (click)="openHelpWindow(helpUrl)"
+    >Help
+    </button>
+
+</div>

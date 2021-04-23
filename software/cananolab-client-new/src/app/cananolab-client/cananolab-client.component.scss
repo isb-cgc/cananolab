@@ -1,0 +1,13 @@
+$canano-green: #005518;
+$canano-blue: #02055a;
+$menuHeadingBackgroundColor: #005d7e;
+
+$leftMenuWidth: 160px;
+$leftMenuMargin: 2px;
+
+.parent-div{
+    /* keep the Query section and the Display section side by side.  */
+    display: -webkit-flex;
+    display: flex;
+    flex-direction: row;
+}

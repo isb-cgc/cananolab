@@ -1,0 +1,17 @@
+@import "../../../app.component";
+@import "../../../btn-canano";
+@import "../../cananolab-client.component";
+
+$mainDisplayHeadingHeight: 28px;
+
+.main-display-heading{
+   //  width: calc(100% - 30px);
+    // width: 1000px;
+    margin: 1px 0 0 1px;
+    padding: 0;
+    height: $mainDisplayHeadingHeight;
+    // height: 58px;
+    background-color: $menuHeadingBackgroundColor;
+    color: #fff;
+
+}
