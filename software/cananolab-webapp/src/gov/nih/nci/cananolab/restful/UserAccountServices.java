@@ -3,6 +3,9 @@ package gov.nih.nci.cananolab.restful;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.json.Json;
+import javax.json.JsonBuilderFactory;
+import javax.json.JsonObject;
 import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.DefaultValue;
 import javax.ws.rs.FormParam;
@@ -92,7 +95,15 @@ public class UserAccountServices
 			else
 				throw new Exception("Username and old/new passwords are required for resetting password.");
 			
-			return Response.ok("success").build();
+//			return Response.ok("success").build();
+
+
+			JsonBuilderFactory factory = Json.createBuilderFactory(null);
+			JsonObject value = factory.createObjectBuilder()
+					.add("status", "success").build();
+
+			return
+					Response.ok(value).build();
 		}
 		catch (Exception e) {
 			logger.error("Error in resetting password for account: ", e);
