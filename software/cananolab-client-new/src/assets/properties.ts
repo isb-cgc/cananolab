@@ -16,6 +16,6 @@ export let Properties = {
     CONFIG_FILE: 'configuration',
     CONFIG_COMPLETE: false, // @TODO Do not forget to implement checking for & updating this value
 
-    TEST_MODE: false
+    TEST_MODE: true
 
 }
