@@ -7,6 +7,20 @@
     color: #fff;
 }
 
+.btn-canano-disabled{
+    background-color: #ffc107;
+    cursor: not-allowed;
+
+    &:active{
+        cursor: not-allowed;
+    }
+
+    &:hover{
+        cursor: not-allowed;
+    }
+}
+
+
 .btn-canano-sm{
     @extend .btn-canano;
     @extend .btn-sm;

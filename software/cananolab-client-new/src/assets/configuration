@@ -1,0 +1,7 @@
+####################################################################
+## Will not contact the server, will only use hard coded test data
+## The default in properties.ts is false
+# TEST_MODE = true
+
+# DEV_MODE = true
+# TEST_CONF = true

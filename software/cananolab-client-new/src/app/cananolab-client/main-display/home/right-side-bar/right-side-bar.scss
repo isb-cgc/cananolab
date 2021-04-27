@@ -16,5 +16,9 @@
 }
 
 .right-side-bar{
-    //  width: 100%;
+    background-color: #ad0d9d;
+
+    //  min-width: 999px;
+    width: calc(100% - 3px);
+
 }

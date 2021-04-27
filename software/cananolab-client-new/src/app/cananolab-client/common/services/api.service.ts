@@ -2,13 +2,15 @@
 // -----------------    Access to the server will all go through this service        ------------------
 // ----------------------------------------------------------------------------------------------------
 
-import { Injectable } from '@angular/core';
+import { EventEmitter, Injectable } from '@angular/core';
 import { Properties } from '../../../../assets/properties';
 import { UtilService } from './util.service';
 import { Consts } from '../../../constants';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { timeout } from 'rxjs/operators';
+import { TestData } from '../../../testData';
+import { Observable, of } from 'rxjs';
 
 @Injectable( {
     providedIn: 'root'
@@ -19,11 +21,152 @@ export class ApiService{
 
     constructor( private httpClient: HttpClient, private utilService: UtilService,
                  private router: Router ){
+
         // If we don't have an API Url, set it to the same server as the client.
         if( (this.utilService.isNullOrUndefined( Properties.API_SERVER_URL )) || (Properties.API_SERVER_URL.length < 1) ){
             Properties.API_SERVER_URL = location.origin.toString();
         }
         console.log( 'MHL ApiService have URL: ', Properties.API_SERVER_URL );
+
+        // @TESTING
+        // console.log( 'MHL calling testRestCall()' );
+        // this.testRestCall();
+        // END TESTING
+
+    }
+
+    // @TESTING These kind of functions will call api services, not be a part of it
+    testRestCall(){
+        console.log( 'MHL 200 IN testRestCall' );
+
+        this.doGet( Consts.QUERY_GET_TABS, '' ).subscribe(
+            data => {
+                console.log( 'MHL *************** 201 testRestCall [' + Consts.QUERY_GET_TABS + '] data: ', data );
+            },
+            ( err ) => {
+                console.log( 'MHL XXXXXXXXXXXXXXXXXX 202 testRestCall [' + Consts.QUERY_GET_TABS + '] err: ', err.message );
+            }
+        );
+
+        console.log( 'MHL 210 LEAVING testRestCall [' + Consts.QUERY_GET_TABS + '] ' );
+    }
+
+    // END TESTING
+
+
+
+    postResults( queryType, data ){
+        switch( queryType ){
+
+        }
+
+    }
+
+    getResults( queryType, data ){
+        switch( queryType ){
+
+        }
+
+    }
+
+    /**
+     *
+     * @param queryType
+     * @param query
+     */
+    doPost( queryType, query ){
+        // return this.httpClient.post( simpleSearchUrl, query, options ).pipe( timeout( Properties.HTTP_TIMEOUT ) );
+
+        // Test mode, return hard coded test data
+        if( Properties.TEST_MODE ){
+            console.log( 'MHL Running doPost in TEST_MODE' );
+            return this.doTestPost( queryType, query );  // @FIXME Return this as a promise
+        }else{
+            let simpleSearchUrl = Properties.API_SERVER_URL + '/nbia-api/services/' + queryType;
+            if( Properties.DEBUG_CURL ){
+                let curl = 'curl -H \'Authorization:Bearer  ' + ' < AssessToken> ' + '\' -k \'' + Properties.API_SERVER_URL + '/nbia-api/services/' + queryType + '\' -d \'' + query + '\'';
+                console.log( 'doPost: ', curl );
+            }
+
+            let headers = null;
+
+            headers = new HttpHeaders( {
+                'Content-Type': 'application/x-www-form-urlencoded',
+                'Authorization': 'Bearer ' + ' < AssessToken> '
+            } );
+
+            let options;
+
+            // These are returned as text not JSON (which is the default return format).
+            if( queryType === Consts.API_ACCESS_TOKEN_URL
+            ){
+                options = {
+                    headers: headers,
+                    responseType: 'text' as 'text'
+                };
+            }else{
+                options = {
+                    headers: headers
+                };
+            }
+
+
+            return this.httpClient.post( simpleSearchUrl, query, options ).pipe( timeout( Properties.HTTP_TIMEOUT ) );
+
+        }
+    }
+
+    /**
+     * @TODO  call get results, or get error emitter, not return
+     *
+     * @param queryType
+     * @param query
+     */
+    doGet( queryType, query ): Observable<string>{
+        console.log( 'MHL ZZ IN doGet queryType: ', queryType );
+        console.log( 'MHL ZZ IN doGet query: ', query );
+        //   results = this.httpClient.get( getUrl, options ).pipe( timeout( Properties.HTTP_TIMEOUT ) );
+        //   return results;
+
+        if( Properties.TEST_MODE ){
+            console.log( 'MHL Running doGet in TEST_MODE CALLING doTestGet' );
+            return this.doTestGet( queryType, query );
+        }else{
+            let getUrl = Properties.API_SERVER_URL + '/' + queryType;
+
+            if( Properties.DEBUG_CURL ){
+                let curl = 'curl -H \'Authorization:Bearer  ' + ' < AssessToken> ' + '\' -k \'' + getUrl + '\'';
+                console.log( '001 doGet: ' + curl );
+            }
+
+            let headers = new HttpHeaders( {
+                'Content-Type': 'application/x-www-form-urlencoded',
+                'Authorization': 'Bearer ' + ' < AssessToken> '
+            } );
+
+            let options = {
+                headers: headers,
+                method: 'get',
+            };
+
+            let results;
+
+            console.log( 'MHL doGet [' + queryType + '] [' + query + ']: ', results );
+            results = this.httpClient.get( getUrl, options ).pipe( timeout( Properties.HTTP_TIMEOUT ) );
+
+            console.log( 'MHL results typeOf', typeof results );
+            // @TESTING can we look at the results before passing them a long
+            results.subscribe( d1 => {
+                    console.log( 'MHL 000 results: ', d1 );
+                },
+                e1 => {
+                    console.log( 'MHL ERROR 001 results: ', e1.message );
+                } );
+
+            return results;
+        }
+
+
     }
 
     /**
@@ -32,21 +175,32 @@ export class ApiService{
      * @param queryType
      * @param query
      */
-    doPost( queryType, query ) {
+    doTestPost( queryType, query ){
         // return this.httpClient.post( simpleSearchUrl, query, options ).pipe( timeout( Properties.HTTP_TIMEOUT ) );
     }
 
     /**
-     * @TODO
      *
-     * @param queryType
-     * @param query
+     *
+     * @param queryType  Ignored for now
+     * @param query  The JSON or Text that will be returned.
      */
-    doGet( queryType, query ) {
-        //   results = this.httpClient.get( getUrl, options ).pipe( timeout( Properties.HTTP_TIMEOUT ) );
-        //   return results;
-    }
+    doTestGet( queryType, query ): Observable<string>{
+        console.log( 'MHL doTestGet queryType: ', queryType );
+        console.log( 'MHL doTestGet query: ', query );
+       let retPromise = new Observable<string>( null );
 
+        switch( queryType ){
+            case Consts.QUERY_GET_TABS:
+                retPromise = of(TestData.QUERY_GET_TABS);
+                break;
+
+
+        }
+
+        console.log('MHL retPromise: ', retPromise);
+        return retPromise;
+    }
 
 
     /*
@@ -92,6 +246,8 @@ export class ApiService{
                     headers: headers
                 };
             }
+
+
             return this.httpClient.post( simpleSearchUrl, query, options ).pipe( timeout( Properties.HTTP_TIMEOUT ) );
         }
     */
@@ -103,13 +259,13 @@ export class ApiService{
 
     /**
      * Authenticates user with the server.
-     *
-     * @TODO This is still mostly a copy of NBIA - Still getting error.
+     * @FIXME This is still a lot like NBIA (BUT Still getting error).
      *
      * @param user
      * @param password
      */
     getAccessTokenFromServer( user, password ){
+        console.log('MHL getAccessTokenFromServer');
         if( this.currentlyGettingToken ){
             return;
         }
@@ -123,7 +279,7 @@ export class ApiService{
             let data = 'username=' + user + '&password=' + password;
 
             if( Properties.DEBUG_CURL ){
-                let curl = 'curl  -v -d  \'' + data + '\' ' + ' -X POST -k \'' + post_url + '\'';
+                let curl = 'curl  -v -d  \'' + data + '\' ' + ' -k \'' + post_url + '\'';
                 console.log( 'getAccessToken: ' + curl );
             }
 
@@ -134,11 +290,17 @@ export class ApiService{
                 };
 
             this.httpClient.post( post_url, data, options ).pipe( timeout( Properties.HTTP_TIMEOUT ) ).subscribe(
-                loginReturnData => {
+                ( loginReturnData ) => {
                     console.log( 'MHL loginReturnData: ', loginReturnData );
                 },
-                err => {
-                    console.error( 'Login error[' + err.status + ']: ', err.message );
+                // ERROR
+                ( err ) => {
+                    console.error( 'MHL Login error[' + err.status + ']post_url: ', post_url );
+                    console.error( 'MHL Login error[' + err.status + ']data: ', data );
+                    console.error( 'MHL Login error[' + err.status + ']options: ', options );
+                    console.error( 'MHL Login error[' + err.status + ']status: ', err.status );
+                    console.error( 'MHL Login error[' + err.status + ']message: ', err.message );
+                    console.error( 'MHL Login error[' + err.status + ']err: ', err );
                     alert( 'Login error[' + err.status + ']: ' +
                         '\n' + err.message );
                     this.currentlyGettingToken = false;

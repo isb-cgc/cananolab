@@ -1,6 +1,7 @@
 <!----------------------------------------------------------------------------------------->
 <!----------------------            "cananolab-client"             ------------------------>
 <!-----------           The top level UI component                                   ------>
+<!-----------           Contains these UI component:                                 ------>
 <!-----------               Header                                                   ------>
 <!-----------               Main Top Menu                                            ------>
 <!-----------               Navigation Menu                                          ------>
@@ -10,6 +11,9 @@
 <!-- -----  The top header with the "Keyword Search" box on the right ----- -->
 <canano-header></canano-header>
 
+<div *ngIf="properties.TEST_MODE">
+    <div class="alert alert-danger p-1 m-0" role="alert" >TEST MODE</div>
+</div>
 <!-- -----  The Top Main Menu  ----- -->
 <canano-top-main-menu></canano-top-main-menu>
 
@@ -24,7 +28,7 @@
             </canano-left-static-menu>
         </div>
 
-        <!-- -----  The Main Display where all the dynamic stuff heppens  ----- -->
+        <!-- -----  The Main Display where all the dynamic stuff happens  ----- -->
         <canano-main-display style="width: 100%;"></canano-main-display>
     </div>
 </div>

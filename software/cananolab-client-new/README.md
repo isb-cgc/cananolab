@@ -2,26 +2,26 @@
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 11.0.4.
 
-## Development server
+## Development test mode:
+- Set TEST_MODE = true in assets/configuration
+  - Add test data to TestData in src/app/testData.ts
+    - In the TestData object, add an entry which matches the name from its corresponding rest-call  in Consts src/app/constants.ts.
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
+-  Other test related `TODO`    
+   - Will soon have DEV mode which will bypass logging in
+     - Still need to get logging in working first
 
-## Code scaffolding
+### TODO
+-[ ] Update pre commit check script
+-[ ] Login
+-[ ] Rest calls - after login
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
-
-## Build
-
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory. Use the `--prod` flag for a production build.
-
-## Running unit tests
-
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
-
-## Running end-to-end tests
-
-Run `ng e2e` to execute the end-to-end tests via [Protractor](http://www.protractortest.org/).
-
-## Further help
-
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
+### Constants, Properties, and Configuration
+- assets/properties.ts
+  - values used by multiple component,services and/or classes
+  - Some values (defaults) in the properties.ts file can be over-ridden in the assets/configuration file 
+- assets/configuration.  
+  - These values can be changed on the server (unlike assets/properties.ts), does not require a server restart
+- constants
+  - constant values for rest calls
+  - other stuff I can't remember right now...  

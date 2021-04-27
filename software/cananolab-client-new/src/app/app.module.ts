@@ -31,6 +31,7 @@ import { FormsModule } from '@angular/forms';
 import { ApiService } from './cananolab-client/common/services/api.service';
 import { HttpClientModule } from '@angular/common/http';
 import { LeftNavigationMenuComponent } from './cananolab-client/left-navigation-menu/left-navigation-menu.component';
+import { TestComponent } from './cananolab-client/main-display/test/test.component';
 
 @NgModule({
   declarations: [
@@ -59,7 +60,8 @@ import { LeftNavigationMenuComponent } from './cananolab-client/left-navigation-
     HomeWhatsNewComponent,
     HomeKeepingUpWithCananolabComponent,
     LoginComponent,
-    LeftNavigationMenuComponent
+    LeftNavigationMenuComponent,
+    TestComponent
   ],
     imports: [
         BrowserModule,

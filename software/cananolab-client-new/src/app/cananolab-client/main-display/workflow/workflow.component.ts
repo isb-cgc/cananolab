@@ -15,6 +15,7 @@ export class WorkflowComponent implements OnInit {
   ngOnInit(): void {
   }
  onAreaClick( selection ){
+      console.log('MHL onAreaClick selection: ',selection );
     alert( 'Place holder for ' + selection)
  }
 }

@@ -5,11 +5,15 @@
 
 .home-div{
     width: 100%;
-    background-color: #fff;
-    //  border: solid #ff5600 5px;
+    background-color: #6aef45;
+    border: solid #ff5600 5px;
     display: -webkit-flex;
     display: flex;
     flex-direction: row;
+
+    /*
+class="d-block p-2 bg-primary text-white"
+ */
 }
 
 .welcomeTitle{
@@ -48,6 +52,7 @@
     /* constant: medium gray */
 }
 
+// This is a fixed width. It is the total width of the three images.
 .welcome{
     max-width: 596px;
 }

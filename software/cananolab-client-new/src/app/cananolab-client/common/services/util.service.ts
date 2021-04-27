@@ -33,4 +33,15 @@ export class UtilService {
         return new Promise( resolve => setTimeout( resolve, ms ) );
     }
 
+    isTrue( value ) {
+
+        if( typeof value === 'boolean' ){
+            return value;
+        }
+
+        let val = value.toUpperCase();
+        return (val === 'TRUE') || (val === 'YES') || (val === 'ON') || (val === '1') || (val === '');
+
+    }
+
 }

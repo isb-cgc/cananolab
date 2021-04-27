@@ -7,6 +7,8 @@
 // ----------               Static Left side Menu                                    ------
 // ----------------------------------------------------------------------------------------
 import { Component, OnInit } from '@angular/core';
+import { ConfigurationService } from './common/services/configuration.service';
+import { Properties } from '../../assets/properties';
 
 @Component({
   selector: 'canano-cananolab-client',
@@ -15,7 +17,14 @@ import { Component, OnInit } from '@angular/core';
 })
 export class CananolabClientComponent implements OnInit {
 
-  constructor() { }
+    properties = Properties;
+
+  constructor(private configurationService: ConfigurationService) {
+      // Read and set configuration from assets/configuration file
+      console.log('MHL X001 IN CananolabClientComponent Constructor');
+      this.configurationService.initConfiguration();
+
+  }
 
   ngOnInit(): void {
   }
