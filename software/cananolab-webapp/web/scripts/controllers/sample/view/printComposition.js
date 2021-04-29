@@ -1,8 +1,9 @@
 'use strict';
-angular.module('angularApp', [
+var app = angular.module('angularApp', [
         'ngRoute', 'ngSanitize', 'ngRoute'
     ])
-    .controller('PrintCompositionCtrl', function (utilsService, $rootScope, $scope, $http, $filter, $routeParams, sampleService) {
+
+app.controller('PrintCompositionCtrl', function (utilsService, $rootScope, $scope, $http, $filter, $routeParams, sampleService) {
         $scope.sampleId = utilsService.getParameterFromURL('sampleId');
 
         $scope.loader = true;
@@ -37,3 +38,12 @@ angular.module('angularApp', [
 
         });
     });
+
+    app.filter('newlines', function () {
+        return function (text) {
+            if (text && typeof (text) == 'string') {
+            return text.replace(/\n/g, '<br/>').replace(/&amp;apos;/g, "'").replace(/&gt;/g, ">").replace(/&lt;/g, "<").replace(/&quot;/g, '"')
+            }
+            return '';
+        }
+        });

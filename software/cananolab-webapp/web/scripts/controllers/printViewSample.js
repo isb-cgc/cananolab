@@ -51,3 +51,12 @@ var app = angular.module('angularApp')
     });
 
   });
+
+  app.filter('newlines', function () {
+    return function (text) {
+        if (text && typeof (text) == 'string') {
+        return text.replace(/\n/g, '<br/>').replace(/&amp;apos;/g, "'").replace(/&gt;/g, ">").replace(/&lt;/g, "<").replace(/&quot;/g, '"')
+        }
+        return '';
+    }
+    });
