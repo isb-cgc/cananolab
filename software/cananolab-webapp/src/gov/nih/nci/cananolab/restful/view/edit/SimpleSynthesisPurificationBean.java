@@ -296,7 +296,7 @@ public class SimpleSynthesisPurificationBean {
                 simpleExperimentBean.setTechniqueType(purificationConfigBean.getDomain().getTechnique().getType());
                 simpleExperimentBean.setAbbreviation(purificationConfigBean.getDomain().getTechnique().getAbbreviation());
                 List<SimpleInstrumentBean> simpleInstrumentBeans = new ArrayList<SimpleInstrumentBean>();
-                if (purificationConfigBean.getInstruments() != null) {
+                if (purificationConfigBean.getInstruments() != null && purificationConfigBean.getInstruments().size()>0) {
                     for (Instrument instrument : purificationConfigBean.getInstruments()) {
 
                             SimpleInstrumentBean simpleInstrumentBean = new SimpleInstrumentBean();
