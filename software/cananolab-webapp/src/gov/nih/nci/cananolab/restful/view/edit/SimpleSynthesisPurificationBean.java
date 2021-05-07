@@ -2,26 +2,16 @@ package gov.nih.nci.cananolab.restful.view.edit;
 
 import gov.nih.nci.cananolab.domain.common.File;
 import gov.nih.nci.cananolab.domain.common.Instrument;
-import gov.nih.nci.cananolab.domain.common.PurificationConfig;
 
-import gov.nih.nci.cananolab.domain.common.PurityColumnHeader;
 import gov.nih.nci.cananolab.domain.particle.SynthesisPurification;
-import gov.nih.nci.cananolab.domain.particle.SynthesisPurity;
-import gov.nih.nci.cananolab.dto.common.ColumnHeader;
-import gov.nih.nci.cananolab.dto.common.FileBean;
-import gov.nih.nci.cananolab.dto.common.FindingBean;
 import gov.nih.nci.cananolab.dto.common.PurificationConfigBean;
 import gov.nih.nci.cananolab.dto.particle.synthesis.SynthesisPurificationBean;
 import gov.nih.nci.cananolab.dto.particle.synthesis.SynthesisPurityBean;
-import gov.nih.nci.cananolab.restful.core.InitSetup;
 import gov.nih.nci.cananolab.restful.util.CommonUtil;
-import gov.nih.nci.cananolab.security.enums.SecureClassesEnum;
 import gov.nih.nci.cananolab.security.service.SpringSecurityAclService;
-import java.security.PrivateKey;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.Set;
 import java.util.SortedSet;
 import javax.servlet.http.HttpServletRequest;
 
@@ -34,7 +24,7 @@ public class SimpleSynthesisPurificationBean {
     private String createdBy;
     private Date createdDate;
     private String type;
-    private String methodName;
+    private String displayName;
     private String designMethodDescription;
     private String analysis;
     private Float yield;
@@ -217,12 +207,12 @@ public class SimpleSynthesisPurificationBean {
         this.type = type;
     }
 
-    public String getMethodName() {
-        return methodName;
+    public String getDisplayName() {
+        return displayName;
     }
 
-    public void setMethodName(String methodName) {
-        this.methodName = methodName;
+    public void setDisplayName(String displayName) {
+        this.displayName = displayName;
     }
 
     public String getDesignMethodDescription() {
@@ -259,6 +249,7 @@ public class SimpleSynthesisPurificationBean {
         setCreatedDate(synthesisPurification.getCreatedDate());
         setAnalysis(synthesisPurification.getAnalysis());
         setYield(synthesisPurification.getYield());
+        setDisplayName(synBean.getDisplayName());
         if ((synBean.getPurityBeans() != null) && (synBean.getPurityBeans().size()>0)) {
             simplePurityBeans = new ArrayList<SimplePurityBean>();
 //            columnHeaders = synBean.getPurityBeans().get(0).getColumnHeaders();

@@ -223,7 +223,7 @@ public class SimpleSynthesisBean {
                 for(SynthesisPurificationBean purificationBean:synBean.getSynthesisPurificationBeanList()){
                     purification = new HashMap<String, Object>();
 //                for(SynthesisPurificationBean purificationBean: synBean.getType2PurEntities().get(entityType)){
-                    purification.put("DisplayName", purificationBean.getDisplayName());
+                    purification.put("displayName", purificationBean.getDisplayName());
                     purification.put("dataId", purificationBean.getDomainEntity().getId());
                     purification.put("Type", purificationBean.getType());
                     purification.put("Description", purificationBean.getDescription());

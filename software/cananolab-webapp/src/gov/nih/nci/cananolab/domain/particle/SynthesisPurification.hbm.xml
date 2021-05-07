@@ -18,7 +18,7 @@
         <property name="type" type="string">
             <column length="200" name="type"/>
         </property>
-        <property name="methodName" type="string">
+        <property name="displayName" type="string">
             <column length="200" name="method_name"/>
         </property>
         <property

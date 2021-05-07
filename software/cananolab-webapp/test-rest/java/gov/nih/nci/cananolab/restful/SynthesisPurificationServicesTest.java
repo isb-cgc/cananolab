@@ -249,7 +249,7 @@ public class SynthesisPurificationServicesTest {
         try {
             //Testing submission of a brand new purification
             SimpleSynthesisPurificationBean newBean = new SimpleSynthesisPurificationBean();
-            newBean.setMethodName("I am a method name");
+            newBean.setDisplayName("I am a method name");
             newBean.setDesignMethodDescription("I am a description of a method design");
             newBean.setYield(new Float(12.85));
             newBean.setType("Interim Purification");
@@ -263,7 +263,7 @@ public class SynthesisPurificationServicesTest {
             //verify change was saved to database
             newBean = getSimpleSynthesisPurificationBean("1000", "1000");
             assertNotNull(newBean.getId());
-            assertEquals(newBean.getMethodName(),"I am a method name");
+            assertEquals(newBean.getDisplayName(),"I am a method name");
 
         }catch (Exception e){
             e.printStackTrace();
@@ -277,7 +277,7 @@ public class SynthesisPurificationServicesTest {
         try {
             //Testing submission of a brand new purification
             SimpleSynthesisPurificationBean editBean = getSimpleSynthesisPurificationBean("1000","1000");
-            editBean.setMethodName("I am a method name");
+            editBean.setDisplayName("I am a method name");
             editBean.setDesignMethodDescription("I am a description of a method design");
             editBean.setYield(new Float(12.85));
             editBean.setType("Interim Purification");
@@ -290,7 +290,7 @@ public class SynthesisPurificationServicesTest {
             //verify change was saved to database
             editBean = getSimpleSynthesisPurificationBean("1000", "1000");
             assertNotNull(editBean.getId());
-            assertEquals(editBean.getMethodName(),"I am a method name");
+            assertEquals(editBean.getDisplayName(),"I am a method name");
 
         }catch (Exception e){
             e.printStackTrace();
@@ -493,7 +493,7 @@ public class SynthesisPurificationServicesTest {
             int originalPurificationCount = synthesisBean.getSynthesisPurification().size();
             SimpleSynthesisPurificationBean purificationBean = new SimpleSynthesisPurificationBean();
             purificationBean.setDesignMethodDescription("New Purification");
-            purificationBean.setMethodName("Interim 1");
+            purificationBean.setDisplayName("Interim 1");
             purificationBean.setType("Interim Purification");
             purificationBean.setYield(new Float(92.0));
             purificationBean.setAnalysis("This purification step yielded results");
@@ -544,7 +544,7 @@ public class SynthesisPurificationServicesTest {
     public void testEditMethodName_Submit() {
         try {
             SimpleSynthesisPurificationBean synthesisPurificationBean = getSimpleSynthesisPurificationBean("1000", "1000");
-            synthesisPurificationBean.setMethodName("Test edit of method name");
+            synthesisPurificationBean.setDisplayName("Test edit of method name");
             Response response = given().spec(specification)
                     .body(synthesisPurificationBean).when().post("synthesisPurification/submit")
                     .then().statusCode(200).extract().response();
@@ -552,7 +552,7 @@ public class SynthesisPurificationServicesTest {
             assertNotNull(response);
             //verify change was saved to database
             synthesisPurificationBean = getSimpleSynthesisPurificationBean("1000", "1000");
-            assertTrue(synthesisPurificationBean.getMethodName().equals("Test edit of method name"));
+            assertTrue(synthesisPurificationBean.getDisplayName().equals("Test edit of method name"));
 
         }catch (Exception e){
             e.printStackTrace();

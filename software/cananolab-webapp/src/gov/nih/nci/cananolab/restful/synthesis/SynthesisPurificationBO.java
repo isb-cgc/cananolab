@@ -7,7 +7,6 @@ import gov.nih.nci.cananolab.domain.common.PurificationConfig;
 import gov.nih.nci.cananolab.domain.common.PurityColumnHeader;
 import gov.nih.nci.cananolab.domain.common.PurityDatumCondition;
 import gov.nih.nci.cananolab.domain.common.Technique;
-import gov.nih.nci.cananolab.domain.particle.Sample;
 import gov.nih.nci.cananolab.domain.particle.Synthesis;
 import gov.nih.nci.cananolab.domain.particle.SynthesisPurification;
 import gov.nih.nci.cananolab.domain.particle.SynthesisPurity;
@@ -42,7 +41,6 @@ import gov.nih.nci.cananolab.service.curation.CurationService;
 import gov.nih.nci.cananolab.service.protocol.ProtocolService;
 import gov.nih.nci.cananolab.service.sample.SampleService;
 import gov.nih.nci.cananolab.service.sample.SynthesisService;
-import gov.nih.nci.cananolab.service.sample.helper.SampleServiceHelper;
 import gov.nih.nci.cananolab.ui.form.SynthesisForm;
 import gov.nih.nci.cananolab.util.Constants;
 import gov.nih.nci.cananolab.util.DateUtils;
@@ -133,7 +131,7 @@ public class SynthesisPurificationBO extends BaseAnnotationBO {
             purification.setId(sSynPurificationBean.getId());
         }
         //Name
-        purification.setMethodName(sSynPurificationBean.getMethodName());
+        purification.setDisplayName(sSynPurificationBean.getDisplayName());
 
         //Add parent object to domain
         Synthesis synthesis;
@@ -178,7 +176,7 @@ public class SynthesisPurificationBO extends BaseAnnotationBO {
 
         //type
         purification.setType(sSynPurificationBean.getType());
-        purification.setMethodName(sSynPurificationBean.getMethodName());
+        purification.setDisplayName(sSynPurificationBean.getDisplayName());
         //source and date
         purification.setCreatedBy(sSynPurificationBean.getCreatedBy());
         purification.setCreatedDate(sSynPurificationBean.getCreatedDate());
