@@ -68,7 +68,10 @@
         then(function (data, status, headers, config) {
           data = data['data']
           $scope.purification = data;
-          $scope.purificationCopy = angular.copy($scope.purification);
+          if (!$scope.purification['purityBeans']) {
+            $scope.purification['purityBeans']=[];
+          };       
+          $scope.purificationCopy = angular.copy($scope.purification);   
           $scope.loader = false;
         }).catch(function (data, status, headers, config) {
           data = data['data']
@@ -1217,7 +1220,6 @@
         catch(function (data, status, headers, config) {
           data = data['data']
           $scope.loader = false;
-          alert(data[0]);
         });
         $scope.updateFinding = 0;
       };
