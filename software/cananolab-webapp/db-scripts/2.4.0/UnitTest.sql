@@ -7171,7 +7171,6 @@ LOCK TABLES `synthesis_purity` WRITE;
     DISABLE KEYS */;
 INSERT IGNORE INTO `synthesis_purity` (`purity_pk_id`, `synthesis_purification_pk_id`, `created_by`, `created_date`)
 VALUES (1000, 1000, 'canano_curator', '2019-12-06 12:15:00'),
-       (1010, 1001, 'canano_curator', '2020-10-06 12:15:00'),
        (1005, 1005, 'canano_curator', '2019-08-28 00:00:00'),
        (1100, 1000, 'canano_curator', '2021-02-05 15:50:00'),
        (1111, 1111, 'canano_curator', '2019-12-06 12:15:00'),

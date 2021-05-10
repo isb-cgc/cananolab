@@ -4,10 +4,12 @@ import gov.nih.nci.cananolab.domain.common.Instrument;
 import gov.nih.nci.cananolab.domain.common.Technique;
 import gov.nih.nci.cananolab.exception.ExperimentConfigException;
 
+import gov.nih.nci.cananolab.restful.sample.CharacterizationBO;
 import gov.nih.nci.cananolab.restful.sample.ExperimentConfigManager;
 import gov.nih.nci.cananolab.restful.synthesis.SynthesisManager;
 import gov.nih.nci.cananolab.restful.synthesis.SynthesisPurificationBO;
 import gov.nih.nci.cananolab.restful.util.CommonUtil;
+import gov.nih.nci.cananolab.restful.view.edit.SimpleCharacterizationEditBean;
 import gov.nih.nci.cananolab.restful.view.edit.SimpleFindingBean;
 import gov.nih.nci.cananolab.restful.view.edit.SimplePurityBean;
 import gov.nih.nci.cananolab.restful.view.edit.SimpleSynthesisPurificationBean;
@@ -312,14 +314,19 @@ public class SynthesisPurificationServices {
     @Path("createPurity")
     @Produces("application/json")
     public Response createPurity(@Context HttpServletRequest httpRequest, SimpleSynthesisPurificationBean editBean){
-//TODO write
+
         try {
             if (!SpringSecurityUtil.isUserLoggedIn())
                 return Response.status(Response.Status.UNAUTHORIZED).entity(Constants.MSG_SESSION_INVALID).build();
 
             SynthesisPurificationBO purificationBO = (SynthesisPurificationBO) SpringApplicationContext.getBean(httpRequest, "synthesisPurificationBO");
-            List<String> msgs = purificationBO.createPurity(editBean,httpRequest);
-            return Response.ok(msgs).header("Access-Control-Allow-Credentials", "true")
+            SimpleSynthesisPurificationBean simpleSynthesisPurificationBean = purificationBO.createPurity(editBean,httpRequest);
+
+            List<String> errors = simpleSynthesisPurificationBean.getErrors();
+            if (errors != null && errors.size() > 0) {
+                return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(errors).build();
+            }
+            return Response.ok(simpleSynthesisPurificationBean).header("Access-Control-Allow-Credentials", "true")
                     .header("Access-Control-Allow-Origin", "*").header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS")
                     .header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization").build();
         }catch (Exception e) {
@@ -332,7 +339,7 @@ public class SynthesisPurificationServices {
     @Path("deletePurity")
     @Produces("application/json")
     public Response deletePurity(@Context HttpServletRequest httpRequest, SimpleSynthesisPurificationBean editBean){
-//TODO write
+
         try {
             if (!SpringSecurityUtil.isUserLoggedIn())
                 return Response.status(Response.Status.UNAUTHORIZED).entity(Constants.MSG_SESSION_INVALID).build();
@@ -348,7 +355,38 @@ public class SynthesisPurificationServices {
         }
     }
 
+    @POST
+    @Path("/updatePurity")
+    @Produces ("application/json")
+    public Response updatePurity(@Context HttpServletRequest httpRequest, SimpleSynthesisPurificationBean purifcationEditBean)
+    {
+        logger.debug("In updatePurity");
 
+        if (!SpringSecurityUtil.isUserLoggedIn())
+        {
+            return Response.status( Response.Status.UNAUTHORIZED ).entity( Constants.MSG_SESSION_INVALID ).build();
+        }
+
+        try {
+            SynthesisPurificationBO purificationBO = (SynthesisPurificationBO) SpringApplicationContext.getBean(httpRequest, "synthesisPurificationBO");
+
+            SimpleSynthesisPurificationBean simpleSynthesisPurificationBean = purificationBO.createPurity(purifcationEditBean, httpRequest);
+            List<String> errors = simpleSynthesisPurificationBean.getErrors();
+            if (errors != null && errors.size() > 0) {
+                return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(errors).build();
+            }
+
+            return Response.ok(simpleSynthesisPurificationBean).header("Access-Control-Allow-Credentials", "true")
+                    .header("Access-Control-Allow-Origin", "*").header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS")
+                    .header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization").build();
+        } catch (Exception e) {
+            e.printStackTrace();
+
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
+                    .entity(CommonUtil.wrapErrorMessageInList(e.getMessage())).build();
+        }
+
+    }
 
     @GET
     @Path("/getInstrumentTypesByTechniqueType")

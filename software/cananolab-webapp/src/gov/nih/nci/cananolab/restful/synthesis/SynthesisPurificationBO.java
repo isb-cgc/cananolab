@@ -324,7 +324,7 @@ public class SynthesisPurificationBO extends BaseAnnotationBO {
      * @return
      */
     private SynthesisPurityBean transferSimplePurity(SimplePurityBean simplePurityBean,
-                                                      HttpServletRequest httpRequest) {
+                                                      HttpServletRequest httpRequest) throws SynthesisException {
         SynthesisPurityBean purityBean = new SynthesisPurityBean();
         SynthesisPurity purity = new SynthesisPurity();
 
@@ -438,35 +438,35 @@ public class SynthesisPurificationBO extends BaseAnnotationBO {
     }
 
     private PurityRow createPurityRow(SimplePurityCell currentDatumCell, List<SimplePurityCell> currentConditionCells
-            , List<PurityColumnHeader> columnHeaders) {
-
-
+            , List<PurityColumnHeader> columnHeaders) throws SynthesisException {
+        List<String> msgs = new ArrayList<String>();
+try {
 //TODO assign new createddate createdby to newly created row
-        PurityRow newRow = new PurityRow();
+    PurityRow newRow = new PurityRow();
 
-        //Loop through conditions first
-        Set<PurityDatumCondition> conditionSet = new HashSet<PurityDatumCondition>();
-        List<PurityTableCell> tableCells = new ArrayList<PurityTableCell>();
-        for (SimplePurityCell sConditionCell : currentConditionCells) {
-            PurityTableCell conditionCell = new PurityTableCell();
-            PurityDatumCondition datumCondition = new PurityDatumCondition();
-            conditionCell.setColumnOrder(sConditionCell.getColumnOrder());
-            conditionCell.setDatumOrCondition("condition");
+    //Loop through conditions first
+    Set<PurityDatumCondition> conditionSet = new HashSet<PurityDatumCondition>();
+    List<PurityTableCell> tableCells = new ArrayList<PurityTableCell>();
+    for (SimplePurityCell sConditionCell : currentConditionCells) {
+        PurityTableCell conditionCell = new PurityTableCell();
+        PurityDatumCondition datumCondition = new PurityDatumCondition();
+        conditionCell.setColumnOrder(sConditionCell.getColumnOrder());
+        conditionCell.setDatumOrCondition("condition");
 //            conditionCell.setCreatedBy(sConditionCell.getCreatedBy());
 //            datumCondition.setCreatedBy(sConditionCell.getCreatedBy());
 //            conditionCell.setCreatedDate(sConditionCell.getCreatedDate());
 //            datumCondition.setCreatedDate(sConditionCell.getCreatedDate());
-            conditionCell.setValue(sConditionCell.getValue());
-            datumCondition.setValue(sConditionCell.getValue());
-            conditionCell.setId(sConditionCell.getId());
-            datumCondition.setId(sConditionCell.getId());
-            conditionCell.setOperand(sConditionCell.getOperand());
-            datumCondition.setOperand(sConditionCell.getOperand());
-            conditionCell.setColumnId(sConditionCell.getColumnId());
-            datumCondition.setColumnId(sConditionCell.getColumnId());
-            conditionCell.setRowNumber(sConditionCell.getRowNumber());
-            datumCondition.setRowNumber(sConditionCell.getRowNumber());
-            //TODO createdBy and createdDate?
+        conditionCell.setValue(sConditionCell.getValue());
+        datumCondition.setValue(sConditionCell.getValue());
+        conditionCell.setId(sConditionCell.getId());
+        datumCondition.setId(sConditionCell.getId());
+        conditionCell.setOperand(sConditionCell.getOperand());
+        datumCondition.setOperand(sConditionCell.getOperand());
+        conditionCell.setColumnId(sConditionCell.getColumnId());
+        datumCondition.setColumnId(sConditionCell.getColumnId());
+        conditionCell.setRowNumber(sConditionCell.getRowNumber());
+        datumCondition.setRowNumber(sConditionCell.getRowNumber());
+        //TODO createdBy and createdDate?
 //            for (ColumnHeader header : columnHeaders) {
 //                if (header.getColumnOrder().equals(conditionCell.getColumnOrder())) {
 //                    datumCondition.setName(header.getColumnName());
@@ -475,38 +475,38 @@ public class SynthesisPurificationBO extends BaseAnnotationBO {
 //                    datumCondition.setProperty(header.getConditionProperty());
 //                }
 //            }
-            for (PurityColumnHeader header : columnHeaders) {
-                if (header.getColumnOrder().equals(conditionCell.getColumnOrder())) {
-                    datumCondition.setName(header.getName());
-                    datumCondition.setValueType(header.getValueType());
-                    datumCondition.setValueUnit(header.getValueUnit());
-                    datumCondition.setProperty(header.getProperty());
-                    datumCondition.setColumnHeader(header);
-                }
+        for (PurityColumnHeader header : columnHeaders) {
+            if (header.getColumnOrder().equals(conditionCell.getColumnOrder())) {
+                datumCondition.setName(header.getName());
+                datumCondition.setValueType(header.getValueType());
+                datumCondition.setValueUnit(header.getValueUnit());
+                datumCondition.setProperty(header.getProperty());
+                datumCondition.setColumnHeader(header);
             }
-            conditionSet.add(datumCondition);
-            conditionCell.setCondition(datumCondition);
-//            conditionCell.setPurityDatum(null);
-            tableCells.add(conditionCell);
         }
+        conditionSet.add(datumCondition);
+        conditionCell.setCondition(datumCondition);
+//            conditionCell.setPurityDatum(null);
+        tableCells.add(conditionCell);
+    }
 
-        PurityDatumCondition datum = new PurityDatumCondition();
-        PurityTableCell datumCell = new PurityTableCell();
-        datumCell.setColumnOrder(currentDatumCell.getColumnOrder());
-        datumCell.setDatumOrCondition("datum");
+    PurityDatumCondition datum = new PurityDatumCondition();
+    PurityTableCell datumCell = new PurityTableCell();
+    datumCell.setColumnOrder(currentDatumCell.getColumnOrder());
+    datumCell.setDatumOrCondition("datum");
 //        datumCell.setCreatedBy(currentDatumCell.getCreatedBy());
 //        datum.setCreatedBy(currentDatumCell.getCreatedBy());
 //        datumCell.setCreatedDate(currentDatumCell.getCreatedDate());
 //        datum.setCreatedDate(currentDatumCell.getCreatedDate());
-        datumCell.setValue(currentDatumCell.getValue());
-        datum.setValue(currentDatumCell.getValue());
-        datumCell.setId(currentDatumCell.getId());
-        datum.setId(currentDatumCell.getId());
-        datumCell.setOperand(currentDatumCell.getOperand());
-        datum.setOperand(currentDatumCell.getOperand());
-        datumCell.setColumnId(currentDatumCell.getColumnId());
-        datum.setColumnId(currentDatumCell.getColumnId());
-        datum.setRowNumber(currentDatumCell.getRowNumber());
+    datumCell.setValue(currentDatumCell.getValue());
+    datum.setValue(currentDatumCell.getValue());
+    datumCell.setId(currentDatumCell.getId());
+    datum.setId(currentDatumCell.getId());
+    datumCell.setOperand(currentDatumCell.getOperand());
+    datum.setOperand(currentDatumCell.getOperand());
+    datumCell.setColumnId(currentDatumCell.getColumnId());
+    datum.setColumnId(currentDatumCell.getColumnId());
+    datum.setRowNumber(currentDatumCell.getRowNumber());
 //        for (ColumnHeader header : columnHeaders) {
 //            if (header.getColumnOrder().equals(currentDatumCell.getColumnOrder())) {
 //                datum.setName(header.getColumnName());
@@ -514,26 +514,31 @@ public class SynthesisPurificationBO extends BaseAnnotationBO {
 //                datum.setValueUnit(header.getValueUnit());
 //            }
 //        }
-        for (PurityColumnHeader header : columnHeaders) {
-            if (header.getColumnOrder().equals(currentDatumCell.getColumnOrder())) {
-                datum.setName(header.getName());
-                datum.setValueType(header.getValueType());
-                datum.setValueUnit(header.getValueUnit());
-                datum.setProperty(header.getProperty());
-                datum.setColumnHeader(header);
-            }
+    for (PurityColumnHeader header : columnHeaders) {
+        if (header.getColumnOrder().equals(currentDatumCell.getColumnOrder())) {
+            datum.setName(header.getName());
+            datum.setValueType(header.getValueType());
+            datum.setValueUnit(header.getValueUnit());
+            datum.setProperty(header.getProperty());
+            datum.setColumnHeader(header);
         }
+    }
 
 //        datum.setConditionCollection(conditionSet);
 //        for(PurityDatumCondition condition:datum.getConditionCollection()){
 ////            condition.setPurityDatumPkId(datum.getId());
 //            condition.setPurityDatum(datum);
 //        }
-        datumCell.setCondition(datum);
+    datumCell.setCondition(datum);
 //        datumCell.setPurityDatum(datum);
-        tableCells.add(datumCell);
-        newRow.setCells(tableCells);
-        return newRow;
+    tableCells.add(datumCell);
+    newRow.setCells(tableCells);
+    return newRow;
+}
+catch(Exception e){
+    msgs.add("Error creating purity");
+    throw new SynthesisException("Error creating purity", e);
+}
 
     }
 
@@ -544,7 +549,7 @@ public class SynthesisPurificationBO extends BaseAnnotationBO {
      * @param httpRequest
      * @return
      */
-    public List<String> createPurity(SimpleSynthesisPurificationBean editBean, HttpServletRequest httpRequest) {
+    public SimpleSynthesisPurificationBean createPurity(SimpleSynthesisPurificationBean editBean, HttpServletRequest httpRequest)throws SynthesisException {
         //TODO write
         List<String> msgs = new ArrayList<String>();
         try {
@@ -575,12 +580,20 @@ public class SynthesisPurificationBO extends BaseAnnotationBO {
 //                SynthesisPurityBean purityBean = transferSimplePurity(newBean, headers, httpRequest);
 //                synthesisService.saveSynthesisPurity(purityBean, synthesisPurificationBean);
 //            }
+
+            //refresh synthesispurification bean
+            Long sampleId = new Long(editBean.getSampleId());
+            SynthesisPurificationBean purificationBean = synthesisService.findSynthesisPurificationById(sampleId, editBean.getId());
+            SimpleSynthesisPurificationBean simpleSynthesisPurificationBean = new SimpleSynthesisPurificationBean();
+            simpleSynthesisPurificationBean.transferSynthesisPurificationBeanToSimple(purificationBean, httpRequest,springSecurityAclService);
+            simpleSynthesisPurificationBean.setErrors(msgs);
+            return simpleSynthesisPurificationBean;
         }
-        catch (SynthesisException e) {
+        catch (SynthesisException | NoAccessException e) {
             msgs.add("Error editing purity");
-            return msgs;
+            throw new SynthesisException("Error creating purity", e);
         }
-        return null;
+
     }
 
     public SimplePurityBean createPurityTemplate(SimplePurityBean purityBean, HttpServletRequest httpRequest) {

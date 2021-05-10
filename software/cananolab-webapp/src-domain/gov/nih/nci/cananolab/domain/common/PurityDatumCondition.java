@@ -40,7 +40,7 @@ public class PurityDatumCondition implements Serializable {
 
     private Long purityPkId;
 
-    private int rowNumber;
+    private Integer rowNumber;
 
     PurityColumnHeader columnHeader;
 
@@ -237,7 +237,7 @@ public class PurityDatumCondition implements Serializable {
         return rowNumber;
     }
 
-    public void setRowNumber(int rowNumber1){
+    public void setRowNumber(Integer rowNumber1){
         this.rowNumber = rowNumber1;
     }
 

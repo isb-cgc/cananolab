@@ -543,7 +543,7 @@
           "valueType": null,
           "valueUnit": null,
           "columnType": null,
-          "displayName": "Column 1",
+          "name": "Column 1",
           "constantValue": "",
           "columnOrder": 1,
           "createdDate": null
@@ -1033,7 +1033,7 @@
           if ($scope.findingsColumn.valueType != null) {
             headerName = headerName + ' (' + $scope.findingsColumn.valueType + ')';
           }
-          $scope.currentFinding.columnHeaders[columnIndex].displayName = headerName;
+          $scope.currentFinding.columnHeaders[columnIndex].name = headerName;
 
         }
 
