@@ -5,9 +5,55 @@ $menuHeadingBackgroundColor: #005d7e;
 $leftMenuWidth: 160px;
 $leftMenuMargin: 2px;
 
+$borderColor: #3cddf0;
+
 .parent-div{
     /* keep the Query section and the Display section side by side.  */
     display: -webkit-flex;
     display: flex;
     flex-direction: row;
+}
+
+// @FIXME - These colors need variables
+.link-clicker{
+    cursor: pointer;
+    text-decoration: underline;
+    color: #333;
+
+    &:hover{
+        color: #a90101;
+        cursor: pointer;
+    }
+}
+
+/* unvisited link */
+a:link{
+    cursor: pointer;
+    text-decoration: underline;
+    color: #333;
+}
+
+/* visited link */
+a:visited{
+    cursor: pointer;
+    text-decoration: underline;
+    color: #333;
+}
+
+/* mouse over link */
+a:hover{
+    cursor: pointer;
+    text-decoration: underline;
+    color: #a90101;
+}
+
+/* selected link */
+a:active{
+    cursor: pointer;
+    text-decoration: underline;
+    color: #333;
+}
+
+.hide{
+    display: none;
 }

@@ -1,22 +1,23 @@
 import { Injectable } from '@angular/core';
 
-@Injectable({
-  providedIn: 'root'
-})
-export class UtilService {
+@Injectable( {
+    providedIn: 'root'
+} )
+export class UtilService{
 
     // Defaults if no height and width are provided.
     newWindowHeight = 800;
     newWindowWidth = 800;
 
-  constructor() { }
+    constructor(){
+    }
 
-    openWindow( pageURL, name, width = this.newWindowWidth, height  = this.newWindowHeight) {
+    openWindow( pageURL, name, width = this.newWindowWidth, height = this.newWindowHeight ){
         window.open( pageURL, name, 'alwaysRaised,dependent,toolbar,status,scrollbars,resizable,width=' + width + ',height=' + height );
     }
 
 
-    isNullOrUndefined( v ): boolean {
+    isNullOrUndefined( v ): boolean{
         let res = false;
         if( v == null ){
             res = true;
@@ -29,11 +30,30 @@ export class UtilService {
         }
         return res;
     }
-    sleep( ms ) {
+
+
+    isNullOrUndefinedOrEmpty( v ): boolean{
+        if( this.isNullOrUndefined( v ) ){
+            return true;
+        }
+
+        return this.isEmpty( v ); // CHECKME
+    }
+
+    isEmpty( obj ){
+        for( let key in obj ){
+            if( obj.hasOwnProperty( key ) ){
+                return false;
+            }
+        }
+        return true;
+    }
+
+    sleep( ms ){
         return new Promise( resolve => setTimeout( resolve, ms ) );
     }
 
-    isTrue( value ) {
+    isTrue( value ){
 
         if( typeof value === 'boolean' ){
             return value;

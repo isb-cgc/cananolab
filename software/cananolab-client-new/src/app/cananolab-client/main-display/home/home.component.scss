@@ -5,8 +5,7 @@
 
 .home-div{
     width: 100%;
-    background-color: #6aef45;
-    border: solid #ff5600 5px;
+    background-color: #fff;
     display: -webkit-flex;
     display: flex;
     flex-direction: row;
@@ -19,8 +18,9 @@ class="d-block p-2 bg-primary text-white"
 .welcomeTitle{
     padding: 8px;
     background-color: #ccc;
-    border-top: 1px solid #ccc /* constant: medium gray */;
-    font-weight: 700;
+    border-top: 1px solid #ccc;
+
+  //  font-weight: 700;
 
     /* for titles of sections inside the content area */
     font-family: arial, helvetica, verdana, sans-serif;
@@ -29,30 +29,14 @@ class="d-block p-2 bg-primary text-white"
 }
 
 .welcomeContent{
-    padding-right: 0.5em;
-    padding-left: 0.5em;
-    text-align: justify;
-
-    /* for the area below the title content of the home page */
-    font-family: arial, helvetica, verdana, sans-serif;
-    line-height: 1.5em;
+    padding: 4px;
     font-size: small;
-}
-
-.disclaimerTitle{
-    padding-left: 1em;
-    background-color: #ccc;
-    color: #000;
-    border-top: 1px solid #ccc /* constant: medium gray */;
-    font-weight: 700;
-
-    /* for titles of sections inside the content area */
-    font-family: arial, helvetica, verdana, sans-serif;
-
-    /* constant: medium gray */
+    color: black;
 }
 
 // This is a fixed width. It is the total width of the three images.
 .welcome{
-    max-width: 596px;
+   // max-width: 596px; // @FIXME - This should be a variable resulting from adding all the picture widths
+    max-width: 599px; // @FIXME - This should be a variable resulting from adding all the picture widths and subtracting 3
+    background-color: #fff;
 }

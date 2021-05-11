@@ -13,8 +13,8 @@ This project was generated with [Angular CLI](https://github.com/angular/angular
 
 ### TODO
 -[ ] Update pre commit check script
--[ ] Login
--[ ] Rest calls - after login
+-[X] Login
+-[X] Rest calls - after login
 
 ### Constants, Properties, and Configuration
 - assets/properties.ts

@@ -2,10 +2,6 @@
 @import "../../btn-canano";
 @import "../cananolab-client.component";
 
-.temp{
-    color: #005f5f;
-    background-color: #f0f;
-}
 .nav-menu-top-first-button{
     @extend .rounded-0;
     width: $leftMenuWidth;

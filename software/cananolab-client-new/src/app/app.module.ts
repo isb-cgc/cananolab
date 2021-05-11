@@ -32,6 +32,7 @@ import { ApiService } from './cananolab-client/common/services/api.service';
 import { HttpClientModule } from '@angular/common/http';
 import { LeftNavigationMenuComponent } from './cananolab-client/left-navigation-menu/left-navigation-menu.component';
 import { TestComponent } from './cananolab-client/main-display/test/test.component';
+import { BrowseCananolabComponent } from './cananolab-client/main-display/home/browse-cananolab/browse-cananolab.component';
 
 @NgModule({
   declarations: [
@@ -61,7 +62,8 @@ import { TestComponent } from './cananolab-client/main-display/test/test.compone
     HomeKeepingUpWithCananolabComponent,
     LoginComponent,
     LeftNavigationMenuComponent,
-    TestComponent
+    TestComponent,
+    BrowseCananolabComponent
   ],
     imports: [
         BrowserModule,

@@ -1,3 +1,7 @@
+// ----------------------------------------------------------------------------------------------------
+// -----------------               Right side bar of Home screen                     ------------------
+// ----------------------------------------------------------------------------------------------------
+
 @import "../../../../app.component";
 @import "../../../../btn-canano";
 @import "../../../cananolab-client.component";
@@ -12,13 +16,13 @@
 
 .right-side-bar-content{
     width: 100%;
-    border: solid #88bce2 1px;
+    // border: solid #88bce2 1px;
 }
 
 .right-side-bar{
-    background-color: #ad0d9d;
-
+    background-color: #fff;
+    font-size: small;
     //  min-width: 999px;
     width: calc(100% - 3px);
-
+    border: solid #88bce2 1px;
 }

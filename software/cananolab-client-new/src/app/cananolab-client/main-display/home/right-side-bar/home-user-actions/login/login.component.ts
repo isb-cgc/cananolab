@@ -21,6 +21,6 @@ export class LoginComponent implements OnInit{
       console.log('MHL User: ', this.user);
       console.log('MHL password: ', this.password);
 
-      this.apiService.getAccessTokenFromServer( this.user, this.password)
+      this.apiService.authenticateUser( this.user, this.password)
     }
 }

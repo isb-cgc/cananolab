@@ -1,0 +1,42 @@
+@import "../home.component";
+@import "../../../../app.component";
+@import "../../../../btn-canano";
+@import "../../../cananolab-client.component";
+
+.home-browse-cananolab-table{
+    border: solid $borderColor 1px;
+    background-color: #fff;
+}
+
+.home-browse-cananolab-table-td{
+    border: solid $borderColor 1px;
+    padding: 4px;
+    width: 70%;
+}
+
+.counts{
+    margin-left: 22px;
+    margin-right: auto;
+}
+
+.countsLink{
+    display: block;
+    margin-left: 22px;
+    margin-right: auto;
+}
+
+.home-page-left-td{
+    width: 5%;
+    border-bottom: solid $borderColor 1px;
+}
+
+.home-page-center-td{
+    padding: 8px;
+    border-bottom: solid $borderColor 1px;
+}
+
+.home-page-right-td{
+    background-color: #e507ff;
+    padding: 0 0 0 4px;
+    border: solid $borderColor 1px;
+}

@@ -1,6 +1,9 @@
 @import "../app/app.component";
 @import '../app/cananolab-client/cananolab-client.component';
 
+$disabled-button-text: #777;
+$disabled-button-background: #333;
+
 .btn-canano{
     @extend .btn;
     outline: none;
@@ -8,16 +11,23 @@
 }
 
 .btn-canano-disabled{
-    background-color: #ffc107;
-    cursor: not-allowed;
+    background-color: $disabled-button-background !important;
+    color: $disabled-button-text !important;
+    cursor: not-allowed !important;
+    /*
 
     &:active{
+        background-color: $disabled-button-background;
+        color: $disabled-button-text;
         cursor: not-allowed;
     }
 
     &:hover{
+        background-color: $disabled-button-background !important;
+        color: $disabled-button-text;
         cursor: not-allowed;
     }
+    */
 }
 
 

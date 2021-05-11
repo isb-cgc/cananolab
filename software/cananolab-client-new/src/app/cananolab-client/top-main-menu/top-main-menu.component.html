@@ -13,9 +13,9 @@
                 <button
                     [ngClass]="{
                         'btn-canano-disabled':! enableMenuArray[i],
-                         'temp': !enableMenuArray[i]
+                        'hide': ! visibleMenuArray[i]
                         }"
-                    class="nav-link  nav-menu-top-item"
+                    class="nav-link nav-menu-top-item"
                     (click)="onMenuSelect(item)"
                 >{{item}}</button>
             </li>

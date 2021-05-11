@@ -45,33 +45,54 @@ export class TopMainMenuService{
         for( let i = 0; i < this.topMenuKeysArray.length; i++ ){
             this.enableMenuArray[i] = true;
             this.visibleMenuArray[i] = true;
+/*
 
-            if( i === this.topMenuKeysArray.length - 3){
-                this.disableMenuItem(this.topMenuKeysArray[i]);
+            // /////////  TESTING ONLY   ///////// //
+            // @TESTING this sets a menu button to disabled
+            if( i === this.topMenuKeysArray.length - 2 ){
+                this.disableMenuItem( this.topMenuKeysArray[i] );
             }
+            // @TESTING this sets a menu button to hidden
+            if( i === this.topMenuKeysArray.length - 4 ){
+                this.hideMenuItem( this.topMenuKeysArray[i] );
+            }
+
+            // /////////  END TESTING ONLY   ///////// //
+*/
         }
 
-        console.log('MHL CALLING updateEnableMenu from TopMainMenuService');
+        // /////////  TESTING ONLY   ///////// //
+        // this.showOnlyMenuItems( [this.topMenuKeysArray[1], this.topMenuKeysArray[4]] );
+        // console.log( 'MHL this.topMenuKeysArray: ', this.topMenuKeysArray );
+        // /////////  END TESTING ONLY   ///////// //
+
         this.updateEnableMenu();
         this.updateVisibleMenu();
     }
 
+    /**
+     * We shouldn't need this.
+     */
+    clearEnableMenuArray(){
+        this.enableMenuArray = [];
+    }
+
+    /**
+     * This should be called anytime "this.enableMenuArray" might have changed.
+     * Tells subscribers that this is the new "enableMenuArray".
+     *
+     * The enableMenuArray determines if a particular menu item is disabled or enabled.
+     */
     updateEnableMenu(){
-        console.log('MHL TopMainMenuService.updateEnableMenu: ', this.enableMenuArray);
         this.enableTopMenuArrayEmitter.emit( this.enableMenuArray );
     }
 
+    /**
+     * To get enableMenuArray directly rather than subscribe.
+     */
     getEnableMenuArray(){
         return this.enableMenuArray;
     }
-
-    updateVisibleMenu(){
-        this.visibleMenuArrayEmitter.emit( this.visibleMenuArray );
-    }
-    getVisibleMenuArray(){
-        return this.visibleMenuArray;
-    }
-
 
 
     /**
@@ -80,7 +101,7 @@ export class TopMainMenuService{
      * @param menuItem The "key" of the Main Top Menu option to enable
      */
     enableMenuItem( menuItem ){
-      console.log('MHL 300 enableMenuItem: ', menuItem);
+        console.log( 'MHL 300 enableMenuItem: ', menuItem );
         this.enableMenuArray[this.getIndexByKey( menuItem )] = true;
         this.updateEnableMenu();
     }
@@ -92,10 +113,17 @@ export class TopMainMenuService{
      * @param menuItem The "key" of the Main Top Menu option to disable
      */
     disableMenuItem( menuItem ){
-        console.log('MHL 301a disableMenuItem[' + this.getIndexByKey( menuItem ) + ']: ', menuItem);
+        console.log( 'MHL 301a disableMenuItem[' + this.getIndexByKey( menuItem ) + ']: ', menuItem );
         this.enableMenuArray[this.getIndexByKey( menuItem )] = false;
         this.updateEnableMenu();
     }
+
+
+
+
+
+
+
 
     /**
      * Make an item visible in the Main Top Menu
@@ -103,9 +131,10 @@ export class TopMainMenuService{
      * @param menuItem The "key" of the Main Menu item to show in the menu
      */
     showMenuItem( menuItem ){
-        console.log('MHL 302 showMenuItem: ', menuItem);
+        console.log( 'MHL 302a showMenuItem: ', menuItem );
         this.visibleMenuArray[this.getIndexByKey( menuItem )] = true;
         this.updateVisibleMenu();
+        console.log( 'MHL 302b showMenuItem: ', menuItem );
     }
 
     /**
@@ -114,8 +143,8 @@ export class TopMainMenuService{
      *
      * @param menuItems
      */
-    showOnlyMenuItems( menuItems: [] ){
-        console.log('MHL 303 showOnlyMenuItems: ', menuItems);
+  //  showOnlyMenuItems( menuItems: [] ){
+    showOnlyMenuItems( menuItems ){
         this.hideAllMenuItems();
         for( let i = 0; i < menuItems.length; i++ ){
             this.visibleMenuArray[this.getIndexByKey( menuItems[i] )] = true;
@@ -128,10 +157,8 @@ export class TopMainMenuService{
      * @param menuItem
      */
     showOnlyMenuItem( menuItem ){
-        console.log('MHL 304 showOnlyMenuItem: ', menuItem);
-        this.hideAllMenuItems();
-        this.showMenuItem( menuItem );
-        this.updateVisibleMenu();
+        let temp = [menuItem];
+        this.showOnlyMenuItems( temp );
     }
 
 
@@ -141,7 +168,6 @@ export class TopMainMenuService{
      * @param menuItem The "key" of the Main Menu item to be removed from the menu
      */
     hideMenuItem( menuItem ){
-        console.log('MHL 305 hideMenuItem: ', menuItem);
         this.visibleMenuArray[this.getIndexByKey( menuItem )] = false;
         this.updateVisibleMenu();
     }
@@ -150,14 +176,22 @@ export class TopMainMenuService{
      * Set all the Main Top Menu enabled and NOT visible
      */
     hideAllMenuItems(){
-        console.log('MHL 306 hideAllMenuItems: ');
         for( let i = 0; i < this.topMenuKeysArray.length; i++ ){
             this.enableMenuArray[i] = true;
             this.visibleMenuArray[i] = false;
         }
         this.updateVisibleMenu();
-
     }
+
+    updateVisibleMenu(){
+        this.visibleMenuArrayEmitter.emit( this.visibleMenuArray );
+    }
+
+    getVisibleMenuArray(){
+        return this.visibleMenuArray;
+    }
+
+
 
     /**
      * Passes the new Top Main Menu selection on the Main Display
@@ -165,12 +199,13 @@ export class TopMainMenuService{
      * @param ms Top Main Menu selection
      */
     selectMenuItem( ms ){
-        console.log( 'MHL selectMenuItem: ', ms );
         this.mainDisplayService.setMenuSelection( ms );
     }
 
+
     /**
      * Returns the index of Main Top Menu option by its "key"
+     *
      * @param key
      */
     getIndexByKey( key ){

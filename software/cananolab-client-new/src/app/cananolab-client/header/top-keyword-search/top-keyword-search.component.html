@@ -1,4 +1,12 @@
 <span>
-<input type="text">
-<button class="btn-canano-sm-blue ml-1 mb-1" type="button">Search</button>
+<input
+    type="text"
+    [(ngModel)]="topKeyWordSearchText"
+>
+<button
+    class="btn-canano-sm-blue ml-1 mb-1"
+    type="button"
+    (click)="onTopKeyWordSearchClick()"
+>Search
+</button>
 </span>
