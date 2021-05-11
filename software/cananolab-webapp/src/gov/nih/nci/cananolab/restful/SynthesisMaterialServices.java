@@ -56,7 +56,7 @@ public class SynthesisMaterialServices {
     @GET
     @Path("/edit")
     @Produces ("application/json")
-    public Response edit(@Context HttpServletRequest httpRequest, @QueryParam("sampleId") String sampleId, @QueryParam("synMaterialId") String synMaterialId) {
+    public Response  edit(@Context HttpServletRequest httpRequest, @QueryParam("sampleId") String sampleId, @QueryParam("synMaterialId") String synMaterialId) {
 
         try {
             SynthesisMaterialBO synthesisMaterialBO =
@@ -138,7 +138,7 @@ public class SynthesisMaterialServices {
     @POST
     @Path("/saveFileSingle")
     @Produces ("application/json")
-    public Response saveFile(@Context HttpServletRequest httpRequest, SimpleSynthesisMaterialBean simpleSynthesisMaterialBean) {
+    public Response saveFile_ORIG(@Context HttpServletRequest httpRequest, SimpleSynthesisMaterialBean simpleSynthesisMaterialBean) {
         try {
             SynthesisMaterialBO synthesisMaterialBO = (SynthesisMaterialBO) SpringApplicationContext.getBean(httpRequest,"synthesisMaterialBO");
             if (!SpringSecurityUtil.isUserLoggedIn())
@@ -150,19 +150,66 @@ public class SynthesisMaterialServices {
                     Response.ok(synthesisMaterialBean).build() :
                     Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(errors).build();
         } catch (Exception e){
+            e.printStackTrace();
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(CommonUtil.wrapErrorMessageInList("Error while saving the Syn Mat File. " + e.getMessage())).build();
         }
     }
 
+
+    @POST
+    @Path("/testFile")
+    @Produces ("application/json")
+    public Response testFile(@Context HttpServletRequest httpRequest, SimpleFileBean fileBean) {
+        System.out.println( "MHL IN testFile( SimpleSynthesisMaterialBean, testFile" );
+        return Response.status(Response.Status.OK).entity(CommonUtil.wrapErrorMessageInList("Back from test rest call")).build();
+
+    }
+
+    @POST
+    @Path("/testFile2")
+    @Produces ("application/json")
+    public Response testFile2(@Context HttpServletRequest httpRequest, SimpleSynthesisMaterialBean simpleSynthesisMaterialBean, SimpleFileBean fileBean) {
+        System.out.println( "MHL IN testFile2( SimpleSynthesisMaterialBean, testFile" );
+        return Response.status(Response.Status.OK).entity(CommonUtil.wrapErrorMessageInList("Back from test rest call")).build();
+
+    }
+
+    @POST
+    @Path("/testSimpleSynthesisMaterialBeanAndSimpleFileBean")
+    @Produces ("application/json")
+    public Response testSimpleSynthesisMaterialBean(@Context HttpServletRequest httpRequest,
+                                                    SimpleSynthesisMaterialBean simpleSynthesisMaterialBean,
+                                                    SimpleFileBean fileBean) {
+        System.out.println( "MHL IN testFile( SimpleSynthesisMaterialBean, testSimpleSynthesisMaterialBean" );
+        return Response.status(Response.Status.OK).entity(CommonUtil.wrapErrorMessageInList("Back from test rest call")).build();
+    }
+
+
+
+    @POST
+    @Path("/testSimpleSynthesisMaterialBean")
+    @Produces ("application/json")
+    public Response testSimpleSynthesisMaterialBean(@Context HttpServletRequest httpRequest, SimpleSynthesisMaterialBean simpleSynthesisMaterialBean) {
+        System.out.println( "MHL IN testFile( SimpleSynthesisMaterialBean, testSimpleSynthesisMaterialBean" );
+        return Response.status(Response.Status.OK).entity(CommonUtil.wrapErrorMessageInList("Back from test rest call")).build();
+    }
+
+
+
+
     @POST
     @Path("/saveFile")
     @Produces ("application/json")
-    public Response saveFile(@Context HttpServletRequest httpRequest, SimpleSynthesisMaterialBean simpleSynthesisMaterialBean, SimpleFileBean fileBean) {
+    //    public Response saveFile(@Context HttpServletRequest httpRequest, SimpleSynthesisMaterialBean simpleSynthesisMaterialBean, SimpleFileBean fileBean) {
+
+    public Response saveFile(@Context HttpServletRequest httpRequest, SimpleSynthesisMaterialBean simpleSynthesisMaterialBean) {
         try {
             SynthesisMaterialBO synthesisMaterialBO = (SynthesisMaterialBO) SpringApplicationContext.getBean(httpRequest,"synthesisMaterialBO");
+
             if (!SpringSecurityUtil.isUserLoggedIn())
                 return Response.status(Response.Status.UNAUTHORIZED)
                         .entity(Constants.MSG_SESSION_INVALID).build();
+
             SimpleSynthesisMaterialBean synthesisMaterialBean = synthesisMaterialBO.saveFile(simpleSynthesisMaterialBean,httpRequest);
             List<String> errors = synthesisMaterialBean.getErrors();
             return (errors == null || errors.size() == 0) ?
@@ -293,3 +340,4 @@ public class SynthesisMaterialServices {
     }
 
 }
+

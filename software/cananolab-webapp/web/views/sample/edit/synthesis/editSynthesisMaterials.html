@@ -254,7 +254,6 @@
                 </tr>
                 <tr>
                     <td colspan="2">
-                        {{fileArray}}
                         <table class="editTableWithGrid" align="center" width="95%">
                             <tr>
                                 <td class="cellLabel">
@@ -289,8 +288,10 @@
                                 </td>
                             </tr>    
                             <tr ng-show="fileFormIndex!=null">
-                                <td colspan="4">{{currentFile}}, {{fileObject}}, {{fileFormIndex}}
+                                <td colspan="5">
                                     <table class="editTableWithGrid form" align="center" width="95%">
+
+
                                         <tr ng-if="fileErrorMessage">
                                             <td colspan="2" class="fileErrorMessage">
                                                 <div>
@@ -298,6 +299,7 @@
                                                 </div>
                                             </td>
                                         </tr>
+
                                         <tr>
                                             <td width="25%">
                                                 <input type="radio" ng-model="currentFile.uriExternal" ng-value="false" name="uriExternal">
@@ -314,7 +316,8 @@
                                             </td>
                                             <td>
                                                 <input type="file" id="uploadFile" file-model="fileObject" ng-show="!currentFile.uriExternal">
-                                                <input type="text" data-ng-model="currentFile.externalUrl" ng-if="currentFile.uriExternal" size="60">
+
+                                                    <input type="text" data-ng-model="currentFile.externalUrl" ng-if="currentFile.uriExternal" size="60">
                                             </td>
                                         </tr>
                                         <tr>

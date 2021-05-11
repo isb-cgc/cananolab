@@ -43,17 +43,21 @@ import gov.nih.nci.cananolab.security.utils.SpringSecurityUtil;
 import gov.nih.nci.cananolab.util.Constants;
 import org.springframework.web.bind.annotation.CrossOrigin;
 
+
+import java.io.ObjectOutputStream;
+import java.io.ByteArrayOutputStream;
+
 @Path("/core")
-public class CoreServices 
+public class CoreServices
 {
 	private static final Logger logger = Logger.getLogger(CoreServices.class);
-	
+
 	@GET
 	@Path("/initSetup")
 	@Produces ("application/json")
-	public Response initSetup(@Context HttpServletRequest httpRequest) 
+	public Response initSetup(@Context HttpServletRequest httpRequest)
 	{
-		System.out.println("In initSetup");		
+		System.out.println("In initSetup");
 
 		//		CustomPlugInBO customPlugInBO = (CustomPlugInBO)applicationContext.getBean("customPlugInBO");
 		ServletContext context = httpRequest.getSession(true).getServletContext();
@@ -77,7 +81,7 @@ public class CoreServices
 
 		TabGenerationBO tabGen = (TabGenerationBO) SpringApplicationContext.getBean(httpRequest, "tabGenerationBO");
 		SimpleTabsBean tabs = tabGen.getTabs(httpRequest, userDetails, homePage);
-		
+
 		return Response.ok(tabs).build();
 	}
 
@@ -85,12 +89,12 @@ public class CoreServices
 	@Path("/getCollaborationGroup")
 	@Produces ("application/json")
 	public Response getCollaborationGroup(@Context HttpServletRequest httpRequest,
-			@DefaultValue("") @QueryParam("searchStr") String searchStr)
+										  @DefaultValue("") @QueryParam("searchStr") String searchStr)
 	{
-		try { 
+		try {
 			AccessibilityManager accManager = (AccessibilityManager) SpringApplicationContext.getBean(httpRequest, "accessibilityManager");
 
-			if (!SpringSecurityUtil.isUserLoggedIn()) 
+			if (!SpringSecurityUtil.isUserLoggedIn())
 				return Response.status(Response.Status.UNAUTHORIZED).entity(Constants.MSG_SESSION_INVALID).build();
 
 			String[] value = accManager.getMatchedGroupNames(searchStr, httpRequest);
@@ -106,7 +110,7 @@ public class CoreServices
 	@Produces ("application/json")
 	public Response getAllWorkspaceItems(@Context HttpServletRequest httpRequest)
 	{
-		try { 
+		try {
 			WorkspaceManager manager = (WorkspaceManager) SpringApplicationContext.getBean(httpRequest, "workspaceManager");
 
 			if (!SpringSecurityUtil.isUserLoggedIn())
@@ -114,8 +118,8 @@ public class CoreServices
 
 			SimpleWorkspaceBean value = manager.getWorkspaceItems(httpRequest);
 			return (value.getErrors().size() == 0) ? Response.ok(value).build() :
-						Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(value.getErrors()).build();
-					//return Response.ok(value).header("Access-Control-Allow-Credentials", "true").header("Access-Control-Allow-Origin", "*").header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS").header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization").build();
+					Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(value.getErrors()).build();
+			//return Response.ok(value).header("Access-Control-Allow-Credentials", "true").header("Access-Control-Allow-Origin", "*").header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS").header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization").build();
 
 		} catch (Exception e) {
 			return Response.status(Response.Status.NOT_FOUND).entity("Problem getting the workspace items: "+ e.getMessage()).build();
@@ -125,10 +129,10 @@ public class CoreServices
 	@GET
 	@Path("/getWorkspaceItems")
 	@Produces ("application/json")
-	public Response getWorkspaceItems(@Context HttpServletRequest httpRequest, 
-			@DefaultValue("") @QueryParam("type") String type) 
-	{				
-		try { 
+	public Response getWorkspaceItems(@Context HttpServletRequest httpRequest,
+									  @DefaultValue("") @QueryParam("type") String type)
+	{
+		try {
 			WorkspaceManager manager = (WorkspaceManager) SpringApplicationContext.getBean(httpRequest, "workspaceManager");
 
 			if (!SpringSecurityUtil.isUserLoggedIn())
@@ -136,7 +140,7 @@ public class CoreServices
 
 			SimpleWorkspaceBean value = manager.getWorkspaceItems(httpRequest, type);
 			return (value.getErrors().size() == 0) ? Response.ok(value).build() :
-				Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(value.getErrors()).build();
+					Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(value.getErrors()).build();
 			//return Response.ok(value).header("Access-Control-Allow-Credentials", "true").header("Access-Control-Allow-Origin", "*").header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS").header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization").build();
 
 		} catch (Exception e) {
@@ -148,12 +152,12 @@ public class CoreServices
 	@Path("/getUsers")
 	@Produces ("application/json")
 	public Response getUsers(@Context HttpServletRequest httpRequest,
-			@DefaultValue("") @QueryParam("searchStr") String searchStr, @DefaultValue("") @QueryParam("dataOwner") String dataOwner)
+							 @DefaultValue("") @QueryParam("searchStr") String searchStr, @DefaultValue("") @QueryParam("dataOwner") String dataOwner)
 	{
-		try { 
+		try {
 			AccessibilityManager accManager = (AccessibilityManager) SpringApplicationContext.getBean(httpRequest, "accessibilityManager");
 
-			if (!SpringSecurityUtil.isUserLoggedIn()) 
+			if (!SpringSecurityUtil.isUserLoggedIn())
 				return Response.status(Response.Status.UNAUTHORIZED).entity(Constants.MSG_SESSION_INVALID).build();
 
 			Map<String, String> value = accManager.getMatchedUsers(dataOwner, searchStr, httpRequest);
@@ -168,12 +172,12 @@ public class CoreServices
 	@Path("/getOrganizationByName")
 	@Produces ("application/json")
 	public Response getOrganizationByName(@Context HttpServletRequest httpRequest,
-			@DefaultValue("") @QueryParam("organizationName") String organizationName)
+										  @DefaultValue("") @QueryParam("organizationName") String organizationName)
 	{
 		logger.info("In getOrganizationByName");
-		try { 
+		try {
 			PointOfContactManager manager = (PointOfContactManager) SpringApplicationContext.getBean(httpRequest, "pointOfContactManager");
-			
+
 			if (!SpringSecurityUtil.isUserLoggedIn())
 				return Response.status(Response.Status.UNAUTHORIZED).entity(Constants.MSG_SESSION_INVALID).build();
 
@@ -206,7 +210,7 @@ public class CoreServices
 
 			for (InputPart inputPart : parts) {
 				MultivaluedMap<String, String> headers = inputPart.getHeaders();
-				fileName = parseFileName(headers);
+				fileName = parseFileName( headers );
 				fileInputStream = inputPart.getBody(InputStream.class,null);
 				if( fileName != null && fileName.length()>0){
 					break;
@@ -214,13 +218,19 @@ public class CoreServices
 			}
 
 			protocolBO.saveFile(fileInputStream,fileName,httpRequest);
+			// httpRequest.getSession().getAttribute("newFileData") now has the file content
 //			return Response.ok(fileName).header("Access-Control-Allow-Credentials", "true")
 //					.header("Access-Control-Allow-Origin", "*")
 //					.header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS")
 //					.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization").build();
 
-
-
+			//	byte[] temp = httpRequest.getSession().getAttribute("newFileData");
+			ByteArrayOutputStream bos = new ByteArrayOutputStream();
+			ObjectOutputStream oos = new ObjectOutputStream(bos);
+			oos.writeObject(httpRequest.getSession().getAttribute("newFileData"));
+			oos.flush();
+			byte [] data = bos.toByteArray();
+			//	System.out.println("MHL httpRequest.getSession().getAttribute(\"newFileData\"): " + new String((Byte[])httpRequest.getSession().getAttribute("newFileData")));
 
 			JsonBuilderFactory factory = Json.createBuilderFactory(null);
 			JsonObject value = factory.createObjectBuilder()
@@ -248,7 +258,7 @@ public class CoreServices
 		for (String name : contentDispositionHeader) {
 			if ((name.trim().startsWith("filename"))) {
 				String[] tmp = name.split("=");
-				fileName = tmp[1].trim().replaceAll("\"","");	
+				fileName = tmp[1].trim().replaceAll("\"","");
 			}
 		}
 		return fileName;
@@ -260,7 +270,7 @@ public class CoreServices
 	@Produces ("application/json")
 	public Response getFavorites(@Context HttpServletRequest httpRequest, @QueryParam("id") Long id) {
 		try
-		{ 
+		{
 			FavoritesBO favorite = (FavoritesBO) SpringApplicationContext.getBean(httpRequest, "favoritesBO");
 
 			if (!SpringSecurityUtil.isUserLoggedIn())
@@ -281,7 +291,7 @@ public class CoreServices
 	public Response addFavorite(@Context HttpServletRequest httpRequest, FavoriteBean bean)
 	{
 		try
-		{ 
+		{
 			FavoritesBO favorite = (FavoritesBO) SpringApplicationContext.getBean(httpRequest, "favoritesBO");
 
 			if (!SpringSecurityUtil.isUserLoggedIn())
@@ -294,14 +304,14 @@ public class CoreServices
 			return Response.status(Response.Status.NOT_FOUND).entity("Problem adding the favorites : "+ e.getMessage()).build();
 		}
 	}
-	
+
 	@POST
 	@Path("/deleteFavorite")
 	@Produces ("application/json")
 	public Response deleteFavorite(@Context HttpServletRequest httpRequest, FavoriteBean bean)
 	{
 		try
-		{ 
+		{
 			FavoritesBO favorite = (FavoritesBO) SpringApplicationContext.getBean(httpRequest, "favoritesBO");
 
 			if (!SpringSecurityUtil.isUserLoggedIn())

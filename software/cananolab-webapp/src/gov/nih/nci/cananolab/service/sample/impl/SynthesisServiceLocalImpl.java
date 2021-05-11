@@ -95,7 +95,7 @@ public class SynthesisServiceLocalImpl extends BaseServiceLocalImpl implements S
                     }
                 }
                 catch (Exception e) {
-                    String err = "Problem saving Synthesis Functionalization MHL010";
+                    String err = "Problem saving Synthesis Functionalization";
                     logger.error(err, e);
                     throw new SynthesisException(err, e);
                 }
@@ -109,7 +109,7 @@ public class SynthesisServiceLocalImpl extends BaseServiceLocalImpl implements S
             throw e;
         }
         catch (Exception e) {
-            String err = "Problem saving Synthesis Functionalization MHL011";
+            String err = "Problem saving Synthesis Functionalization";
             logger.error(err, e);
             throw new SynthesisException(err, e);
         }
@@ -531,7 +531,7 @@ public SynthesisPurity findPurityById(Long purityId) throws SynthesisException{
             throw e;
         }
         catch (Exception e) {
-            String err = "Problem saving Synthesis Functionalization MHL012";
+            String err = "Problem saving Synthesis Functionalization";
             logger.error(err, e);
             throw new SynthesisException(err, e);
         }
@@ -594,7 +594,6 @@ public SynthesisPurity findPurityById(Long purityId) throws SynthesisException{
             //We'll be adding or updating the material in Synthesis
 
             //add material to synthesis
-
             for (FileBean fileBean : synthesisMaterialBean.getFiles()) {
                 fileUtils.prepareSaveFile(fileBean.getDomainFile());
             }
@@ -618,6 +617,7 @@ public SynthesisPurity findPurityById(Long purityId) throws SynthesisException{
                     synthesisMaterialBean.getSynthesisMaterialElements()) {
                 this.saveSynthesisMaterialElement(synthesisMaterial, synthesisMaterialElementBean);
             }
+
             for (FileBean fileBean : synthesisMaterialBean.getFiles()) {
                 fileUtils.writeFile(fileBean);
             }
