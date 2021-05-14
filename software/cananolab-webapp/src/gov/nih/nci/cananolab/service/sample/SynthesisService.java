@@ -27,6 +27,8 @@ public interface SynthesisService extends BaseService {
     void copyAndSaveSynthesisPurification(SynthesisPurificationBean entityBean, SampleBean oldSampleBean,
                                           SampleBean[] newSampleBeans) throws SynthesisException, NoAccessException;
 
+    void deleteColumnHeader(PurityColumnHeader header) throws NoAccessException, SynthesisException;
+
     void deleteSynthesis(Synthesis synthesis) throws SynthesisException, NoAccessException;
 
     void deleteSynthesisFunctionalization(Long sampleId, SynthesisFunctionalization synthesisFunctionalization) throws SynthesisException, NoAccessException;
@@ -35,6 +37,8 @@ public interface SynthesisService extends BaseService {
 
     void deleteSynthesisPurification(Long sampleId, SynthesisPurification synthesisPurification) throws SynthesisException,
             NoAccessException;
+
+    void deleteSynthesisPurity(Long sampleId, SynthesisPurification purification, SynthesisPurity purity) throws SynthesisException;
 
 
 //    SynthesisBean findSynthesisById(Long sampleId, Long dataId) throws SynthesisException, NoAccessException;

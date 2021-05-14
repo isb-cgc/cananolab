@@ -239,7 +239,80 @@ public class SimpleSynthesisPurificationBean {
         this.yield = yield;
     }
 
-    public void transferSynthesisPurificationBeanToSimple(SynthesisPurificationBean synBean, HttpServletRequest httpRequest, SpringSecurityAclService springSecurityAclService) {
+    public SimpleSynthesisPurificationBean(){}
+
+    public SimpleSynthesisPurificationBean(SynthesisPurificationBean synBean, String sampleId) {
+        SynthesisPurification synthesisPurification = synBean.getDomainEntity();
+        setSampleId(sampleId);
+        setId(synBean.getDomainEntity().getId());
+        setType(synBean.getType());
+        setDesignMethodDescription(synBean.getDescription());
+        setCreatedBy(synthesisPurification.getCreatedBy());
+        setCreatedDate(synthesisPurification.getCreatedDate());
+        setAnalysis(synthesisPurification.getAnalysis());
+        setYield(synthesisPurification.getYield());
+        setDisplayName(synBean.getDisplayName());
+        if ((synBean.getPurityBeans() != null) && (synBean.getPurityBeans().size()>0)) {
+            simplePurityBeans = new ArrayList<SimplePurityBean>();
+//            columnHeaders = synBean.getPurityBeans().get(0).getColumnHeaders();
+//            columnHeaders = synBean.getPurityBeans().get(0).getPurityColumnHeaders();
+            for (SynthesisPurityBean purityBean : synBean.getPurityBeans()) {
+                SimplePurityBean simplePurityBean = new SimplePurityBean();
+                simplePurityBean.transferFromPurityBean(purityBean, sampleId);
+                simplePurityBeans.add(simplePurityBean);
+            }
+
+        }
+
+        //*** Testing SimpleRowBean**//
+
+
+//        editBean.transferPurificationToPurificationEdit(this);
+
+        if (synBean != null) {
+            simpleProtocol = new SimpleProtocol();
+            simpleProtocol.transferFromProtocolBean(synBean.getProtocolBean());
+
+        }
+
+        //technique and instrument
+        List<SimplePurificationConfigBean> simpleExperimentBeans = new ArrayList<SimplePurificationConfigBean>();
+
+        List<PurificationConfigBean> purificationConfigs = synBean.getPurificationConfigs();
+        if (purificationConfigs != null) {
+            for (PurificationConfigBean purificationConfigBean : purificationConfigs) {
+                SimplePurificationConfigBean simpleExperimentBean = new SimplePurificationConfigBean();
+                simpleExperimentBean.setId(purificationConfigBean.getDomain().getPurificationConfigPkId());
+//                simpleExperimentBean.setTechniqueDisplayName(purificationConfigBean.getTechniqueDisplayName());
+                simpleExperimentBean.setDescription(purificationConfigBean.getDescription());
+                simpleExperimentBean.setTechniqueid(purificationConfigBean.getDomain().getTechnique().getId());
+                simpleExperimentBean.setTechniqueType(purificationConfigBean.getDomain().getTechnique().getType());
+                simpleExperimentBean.setAbbreviation(purificationConfigBean.getDomain().getTechnique().getAbbreviation());
+                List<SimpleInstrumentBean> simpleInstrumentBeans = new ArrayList<SimpleInstrumentBean>();
+                if (purificationConfigBean.getInstruments() != null && purificationConfigBean.getInstruments().size()>0) {
+                    for (Instrument instrument : purificationConfigBean.getInstruments()) {
+
+                        SimpleInstrumentBean simpleInstrumentBean = new SimpleInstrumentBean();
+                        simpleInstrumentBean.setManufacturer(instrument.getManufacturer());
+                        simpleInstrumentBean.setModelName(instrument.getModelName());
+                        simpleInstrumentBean.setType(instrument.getType());
+                        simpleInstrumentBean.setId(instrument.getId());
+                        simpleInstrumentBeans.add(simpleInstrumentBean);
+
+                    }
+                    simpleExperimentBean.setInstruments(simpleInstrumentBeans);
+                    simpleExperimentBeans.add(simpleExperimentBean);
+                }
+            }
+            setSimpleExperimentBeans(simpleExperimentBeans);
+
+        }
+
+    }
+
+
+
+    public void transferSynthesisPurificationBeanToSimple(SynthesisPurificationBean synBean, HttpServletRequest httpRequest) {
         SynthesisPurification synthesisPurification = synBean.getDomainEntity();
         setSampleId((String) httpRequest.getSession().getAttribute("sampleId"));
         setId(synBean.getDomainEntity().getId());
@@ -309,7 +382,7 @@ public class SimpleSynthesisPurificationBean {
 
     }
 
-    protected void setupLookups(HttpServletRequest request) {
+    public void setupLookups(HttpServletRequest request) {
         SortedSet<String> valueTypes = (SortedSet<String>)request.getSession().getAttribute("datumConditionValueTypes");
         if (valueTypes != null)
             this.datumConditionValueTypeLookup.addAll(valueTypes);

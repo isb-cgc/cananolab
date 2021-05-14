@@ -321,6 +321,25 @@ public class SynthesisServiceLocalImpl extends BaseServiceLocalImpl implements S
         }
     }
 
+    public void deleteColumnHeader(PurityColumnHeader header) throws NoAccessException, SynthesisException {
+        if (SpringSecurityUtil.getPrincipal() == null) {
+            throw new NoAccessException();
+        }
+        try{
+            CaNanoLabApplicationService appService = (CaNanoLabApplicationService) ApplicationServiceProvider
+                    .getApplicationService();
+//            List<SmeInherentFunction> functionList = synthesisHelper.findSmeFunctionByElementId(sampleId, element
+//            .getId(),"SynthesisMaterialElement");
+//            element.setSmeInherentFunctions(new HashSet<SmeInherentFunction>(functionList));
+//            element.getSmeInherentFunctions().remove(function);
+            appService.delete(header);
+        }catch (Exception e){
+            String err = "Error deleting purity column header " + header.getId();
+            logger.error(err, e);
+            throw new SynthesisException(err, e);
+        }
+    }
+
 public SynthesisPurity findPurityById(Long purityId) throws SynthesisException{
         try{
             SynthesisPurity purity = synthesisHelper.getPurityById(purityId);
@@ -707,6 +726,8 @@ public SynthesisPurity findPurityById(Long purityId) throws SynthesisException{
 
             appService.saveOrUpdate(synthesisPurification);
 
+            Long debug = synthesisPurification.getId();
+
             for (SynthesisPurityBean synthesisPurityBean : synthesisPurificationBean.getPurityBeans()) {
                 this.saveSynthesisPurity(synthesisPurityBean, synthesisPurificationBean);
             }
@@ -774,14 +795,25 @@ public SynthesisPurity findPurityById(Long purityId) throws SynthesisException{
             synthesisPurity.setSynthesisPurification(synthesisPurificationBean.getDomainEntity());
 
             Set<PurityDatumCondition> originalDatum = synthesisHelper.getPurityDatumByPurity(synthesisPurity.getId());
+//Need to save purity to get the ID for the dependents
+            appService.saveOrUpdate(synthesisPurity);
+
+            //Next need to save the column headers
+            HashMap<Integer, PurityColumnHeader> newHeaders = new HashMap<Integer, PurityColumnHeader>();
+            for (PurityColumnHeader header: synthesisPurityBean.getPurityColumnHeaders()){
+                PurityColumnHeader newHeader = createColumnHeader(header);
+                newHeaders.put(newHeader.getColumnOrder(), newHeader);
+            }
 
 
 
             for (PurityDatumCondition datum : synthesisPurity.getPurityDatumCollection()) {
+                datum.setColumnHeader(newHeaders.get(datum.getColumnHeader().getColumnOrder()));
                 if (datum.getId() == null) {
                     //create new datum
 //                    datum.setSynthesisPurity(synthesisPurity);
 //                    datum.setSynthesisPurity(synthesisPurity);
+                    datum.setPurity(synthesisPurity);
                     PurityDatumCondition newDatum = createDatum(datum);
 //                    datum.setId(newDatum.getId());
                 } else {
@@ -791,9 +823,9 @@ public SynthesisPurity findPurityById(Long purityId) throws SynthesisException{
             }
 
 
-            //TODO enable when I have everything aligned
-            appService.saveOrUpdate(synthesisPurity);
 
+
+            Long debug = synthesisPurity.getId();
 
             for (FileBean fileBean : synthesisPurityBean.getFiles()) {
                 fileUtils.writeFile(fileBean);
@@ -957,9 +989,9 @@ public SynthesisPurity findPurityById(Long purityId) throws SynthesisException{
         }
     }
 
-    private void deleteSynthesisPurity(Long sampleId, SynthesisPurification synthesisPurification,
+    public void deleteSynthesisPurity(Long sampleId, SynthesisPurification synthesisPurification,
                                        SynthesisPurity element) throws SynthesisException {
-        //TODO write
+
         if (element.getFiles() != null) {
             for (File file : element.getFiles()) {
                 deleteSynthesisPurityFile(element, file);
@@ -973,6 +1005,7 @@ public SynthesisPurity findPurityById(Long purityId) throws SynthesisException{
             }
 
         }
+        synthesisPurification.removePurity(element);
 
     }
 
@@ -1040,7 +1073,7 @@ public SynthesisPurity findPurityById(Long purityId) throws SynthesisException{
     }
 
     private void deletePurityDatumCondition(PurityDatumCondition element) throws SynthesisException {
-        //TODO write
+
         try {
             CaNanoLabApplicationService appService = (CaNanoLabApplicationService) ApplicationServiceProvider
                     .getApplicationService();
@@ -1110,6 +1143,8 @@ public SynthesisPurity findPurityById(Long purityId) throws SynthesisException{
                     (CaNanoLabApplicationService) ApplicationServiceProvider.getApplicationService();
 //Need to blank condition until we have a datum id
 
+            datum.setCreatedDate(new Date());
+            datum.setCreatedBy(SpringSecurityUtil.getLoggedInUserName() + ":" + Constants.AUTO_COPY_ANNOTATION_PREFIX);
             appService.saveOrUpdate(datum);
 //            Set<PurityDatumCondition> conditionHolder = datum.getConditionCollection();
 //            datum.setConditionCollection(null);
@@ -1172,6 +1207,8 @@ public SynthesisPurity findPurityById(Long purityId) throws SynthesisException{
         try {
             CaNanoLabApplicationService appService =
                     (CaNanoLabApplicationService) ApplicationServiceProvider.getApplicationService();
+            condition.setCreatedDate(new Date());
+            condition.setCreatedBy(SpringSecurityUtil.getLoggedInUserName() + ":" + Constants.AUTO_COPY_ANNOTATION_PREFIX);
             appService.saveOrUpdate(condition);
             return condition;
         }
@@ -1386,6 +1423,8 @@ public SynthesisPurity findPurityById(Long purityId) throws SynthesisException{
         try{
             CaNanoLabApplicationService appService =
                     (CaNanoLabApplicationService) ApplicationServiceProvider.getApplicationService();
+            header.setCreatedDate(new Date());
+            header.setCreatedBy(SpringSecurityUtil.getLoggedInUserName() + ":" + Constants.AUTO_COPY_ANNOTATION_PREFIX);
             appService.saveOrUpdate(header);
             return header;
         }

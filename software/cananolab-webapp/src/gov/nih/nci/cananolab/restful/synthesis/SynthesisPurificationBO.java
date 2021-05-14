@@ -16,6 +16,7 @@ import gov.nih.nci.cananolab.dto.common.ProtocolBean;
 import gov.nih.nci.cananolab.dto.common.PurityRow;
 import gov.nih.nci.cananolab.dto.common.table.PurityTableCell;
 import gov.nih.nci.cananolab.dto.particle.SampleBean;
+import gov.nih.nci.cananolab.dto.particle.synthesis.SynthesisBean;
 import gov.nih.nci.cananolab.dto.particle.synthesis.SynthesisPurificationBean;
 import gov.nih.nci.cananolab.dto.particle.synthesis.SynthesisPurityBean;
 import gov.nih.nci.cananolab.exception.NoAccessException;
@@ -25,6 +26,7 @@ import gov.nih.nci.cananolab.restful.core.BaseAnnotationBO;
 import gov.nih.nci.cananolab.restful.sample.InitSampleSetup;
 import gov.nih.nci.cananolab.restful.util.PropertyUtil;
 import gov.nih.nci.cananolab.restful.util.SynthesisUtil;
+import gov.nih.nci.cananolab.restful.view.SimpleSynthesisBean;
 import gov.nih.nci.cananolab.restful.view.edit.SimpleFileBean;
 import gov.nih.nci.cananolab.restful.view.edit.SimpleInstrumentBean;
 import gov.nih.nci.cananolab.restful.view.edit.SimpleProtocol;
@@ -327,7 +329,7 @@ public class SynthesisPurificationBO extends BaseAnnotationBO {
                                                       HttpServletRequest httpRequest) throws SynthesisException {
         SynthesisPurityBean purityBean = new SynthesisPurityBean();
         SynthesisPurity purity = new SynthesisPurity();
-
+        boolean newPurity = false;
         //id
         if ((simplePurityBean.getId() != null) && (simplePurityBean.getId() > 0)) {
             purity.setId(simplePurityBean.getId());
@@ -343,11 +345,7 @@ public class SynthesisPurificationBO extends BaseAnnotationBO {
         }else {
             purity.setCreatedDate(Calendar.getInstance().getTime());
             purity.setCreatedBy(SpringSecurityUtil.getPrincipal().getUsername());
-            //            purity.setCreatedBy(simplePurityBean.getCreatedBy());
-//            purity.setCreatedDate(simplePurityBean.getCreatedDate());
-//        }else {
-//            purity.setCreatedBy(simplePurityBean.getCreatedBy());
-//            purity.setCreatedDate(simplePurityBean.getCreatedDate());
+            newPurity = true;
         }
 
         //check for Files
@@ -364,6 +362,23 @@ public class SynthesisPurificationBO extends BaseAnnotationBO {
         purityBean.setFiles(fileBeans);
         purity.setFiles(files);
 
+
+        if(newPurity){
+            //the rows and columns come in order
+            int rowNumberTemp =1;
+            for (SimplePurityRowBean rowBean: simplePurityBean.getRows()){
+                rowBean.setRowNumber(rowNumberTemp++);
+                int columnOrderTemp=1;
+                {
+                    for(SimplePurityCell cell: rowBean.getCells()){
+                        cell.setColumnOrder(columnOrderTemp++);
+                    }
+                }
+            }
+        }
+
+
+
         //Columns
 //        purityBean.setColumnHeaders(simplePurityBean.getColumnHeaders());
 //        purityBean.setColumnHeaders(columnHeaders);
@@ -379,6 +394,7 @@ public class SynthesisPurificationBO extends BaseAnnotationBO {
 //                }
 //            }
         for (SimplePurityRowBean simplePurityRowBean : simplePurityRowBeans) {
+            int i =1;
             List<SimplePurityCell> simpleCells = simplePurityRowBean.getCells();
             SimplePurityCell currentDatumCell = new SimplePurityCell();
             List<SimplePurityCell> currentConditionCells = new ArrayList<SimplePurityCell>();
@@ -392,6 +408,9 @@ public class SynthesisPurificationBO extends BaseAnnotationBO {
 //                    }
             }
             PurityRow newRow = createPurityRow(currentDatumCell, currentConditionCells, purityBean.getPurityColumnHeaders());
+            if (newRow.getRowNumber()==null||newRow.getRowNumber()==0){
+                newRow.setRowNumber(i++);
+            }
             purityBean.addRow(newRow);
         }
 
@@ -408,14 +427,16 @@ public class SynthesisPurificationBO extends BaseAnnotationBO {
                 if (cell.getCondition() != null) {
                     newDatum = cell.getCondition();
                 }
-            }
+
 //            for(PurityTableCell cell: cells){
 //                if (cell.getCondition()!= null) {
 //                    newDatum.getConditionCollection().add(cell.getCondition());
 //                }
 //            }
-            newDatum.setPurity(purity);
-            purity.getPurityDatumCollection().add(newDatum);
+                newDatum.setPurity(purity);
+                purity.getPurityDatumCollection().add(newDatum);
+
+            }
         }
 
 
@@ -452,6 +473,7 @@ try {
         PurityDatumCondition datumCondition = new PurityDatumCondition();
         conditionCell.setColumnOrder(sConditionCell.getColumnOrder());
         conditionCell.setDatumOrCondition("condition");
+        datumCondition.setType("condition");
 //            conditionCell.setCreatedBy(sConditionCell.getCreatedBy());
 //            datumCondition.setCreatedBy(sConditionCell.getCreatedBy());
 //            conditionCell.setCreatedDate(sConditionCell.getCreatedDate());
@@ -494,6 +516,7 @@ try {
     PurityTableCell datumCell = new PurityTableCell();
     datumCell.setColumnOrder(currentDatumCell.getColumnOrder());
     datumCell.setDatumOrCondition("datum");
+    datum.setType("datum");
 //        datumCell.setCreatedBy(currentDatumCell.getCreatedBy());
 //        datum.setCreatedBy(currentDatumCell.getCreatedBy());
 //        datumCell.setCreatedDate(currentDatumCell.getCreatedDate());
@@ -550,7 +573,7 @@ catch(Exception e){
      * @return
      */
     public SimpleSynthesisPurificationBean createPurity(SimpleSynthesisPurificationBean editBean, HttpServletRequest httpRequest)throws SynthesisException {
-        //TODO write
+
         List<String> msgs = new ArrayList<String>();
         try {
             SynthesisPurificationBean synthesisPurificationBean = transferSimplePurification(editBean, httpRequest);
@@ -584,8 +607,9 @@ catch(Exception e){
             //refresh synthesispurification bean
             Long sampleId = new Long(editBean.getSampleId());
             SynthesisPurificationBean purificationBean = synthesisService.findSynthesisPurificationById(sampleId, editBean.getId());
-            SimpleSynthesisPurificationBean simpleSynthesisPurificationBean = new SimpleSynthesisPurificationBean();
-            simpleSynthesisPurificationBean.transferSynthesisPurificationBeanToSimple(purificationBean, httpRequest,springSecurityAclService);
+            SimpleSynthesisPurificationBean simpleSynthesisPurificationBean = new SimpleSynthesisPurificationBean(purificationBean,sampleId.toString());
+//            simpleSynthesisPurificationBean.transferSynthesisPurificationBeanToSimple(purificationBean, httpRequest);
+            simpleSynthesisPurificationBean.setupLookups(httpRequest);
             simpleSynthesisPurificationBean.setErrors(msgs);
             return simpleSynthesisPurificationBean;
         }
@@ -609,7 +633,7 @@ catch(Exception e){
      * @param httpRequest
      * @return
      */
-    public List<String> delete(SimpleSynthesisPurificationBean editBean, HttpServletRequest httpRequest) throws NoAccessException, SynthesisException {
+    public SimpleSynthesisBean delete(SimpleSynthesisPurificationBean editBean, HttpServletRequest httpRequest) throws NoAccessException, SynthesisException {
 
         List<String> msgs = new ArrayList<String>();
         SynthesisPurificationBean entityBean = transferSimplePurification(editBean, httpRequest);
@@ -619,8 +643,12 @@ catch(Exception e){
             String sampleId = editBean.getSampleId();
             synthesisService.deleteSynthesisPurification(new Long(sampleId), entityBean.getDomainEntity());
 
+            SynthesisBean synthesisBean = synthesisService.findSynthesisBySampleId(new Long(sampleId));
+            SimpleSynthesisBean simpleSynthesisBean = new SimpleSynthesisBean();
+            simpleSynthesisBean.transferSynthesisForSummaryView(synthesisBean);
+            
             msgs.add("success");
-            return msgs;
+            return simpleSynthesisBean;
         }
         catch (Exception e) {
             msgs.add("Error deleting purification");
@@ -649,6 +677,52 @@ catch(Exception e){
      */
     public List<String> deletePurity(SimpleSynthesisPurificationBean editBean, HttpServletRequest httpRequest) {
         //TODO write
+        return null;
+    }
+
+    public SimpleSynthesisPurificationBean deletePurity(SimplePurityBean editBean, HttpServletRequest httpRequest) {
+
+        try {
+
+        if(editBean.getId() !=null){
+            //Only need to delete from Database if it has been saved already
+
+                SynthesisPurity purity = synthesisService.getHelper().getPurityById(new Long(editBean.getId()));
+                SynthesisPurification purification = purity.getSynthesisPurification();
+                Long purificationId = purification.getId();
+                purification = synthesisService.getHelper().findSynthesisPurificationById( purificationId);
+                Synthesis synthesis = synthesisService.getHelper().findSynthesisById(purification.getSynthesisId());
+                Long sampleId = synthesis.getSample().getId();
+                synthesisService.deleteSynthesisPurity(sampleId,purification,purity);
+
+                purification = synthesisService.getHelper().findSynthesisPurificationById(sampleId, purificationId);
+                SynthesisPurificationBean purificationBean = new SynthesisPurificationBean(purification);
+                SimpleSynthesisPurificationBean simpleSynthesisPurificationBean = new SimpleSynthesisPurificationBean(purificationBean, sampleId.toString());
+//                SynthesisPurification purification = purity.getSynthesisPurification();
+//                Set<PurityDatumCondition> datumConditions = purity.getPurityDatumCollection();
+//                Set<PurityColumnHeader> columnHeaders = new HashSet<PurityColumnHeader>();
+//                for(PurityDatumCondition datumCondition: datumConditions){
+//                    PurityColumnHeader columnHeader = datumCondition.getColumnHeader();
+//                    deleteColumnHeader(columnHeader);
+//                    s
+//                }
+            return simpleSynthesisPurificationBean;
+
+        }
+        }
+            catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public List<String> deleteColumnHeader(PurityColumnHeader header){
+        try{
+            synthesisService.deleteColumnHeader(header);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+
         return null;
     }
 
@@ -931,9 +1005,8 @@ catch(Exception e){
 
             this.checkOpenForms(synBean, httpRequest);
             httpRequest.getSession().setAttribute("sampleId", sampleId);
-            SimpleSynthesisPurificationBean simpleSynthesisPurificationBean = new SimpleSynthesisPurificationBean();
-            simpleSynthesisPurificationBean.transferSynthesisPurificationBeanToSimple(synBean, httpRequest,
-                    springSecurityAclService);
+            SimpleSynthesisPurificationBean simpleSynthesisPurificationBean = new SimpleSynthesisPurificationBean(synBean, sampleId);
+//            simpleSynthesisPurificationBean.transferSynthesisPurificationBeanToSimple(synBean, httpRequest);
             return simpleSynthesisPurificationBean;
         }
         catch (IllegalFormatConversionException e) {

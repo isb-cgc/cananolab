@@ -162,7 +162,7 @@ public class SimplePurityBean {
         }
     }
 
-    protected void transferRowsToPurityBean(SynthesisPurityBean purityBean) {
+    public void transferRowsToPurityBean(SynthesisPurityBean purityBean) {
         if (this.rows == null) return;
         if (purityBean == null) return;
 

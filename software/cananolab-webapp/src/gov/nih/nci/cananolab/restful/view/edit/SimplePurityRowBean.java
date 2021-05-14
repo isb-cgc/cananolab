@@ -33,6 +33,9 @@ public class SimplePurityRowBean {
 
 	public void setRowNumber(Integer rowNumber) {
 		this.rowNumber = rowNumber;
+		for(SimplePurityCell cell:cells){
+			cell.setRowNumber(rowNumber);
+		}
 	}
 
 	public void transferFromRow(PurityRow beanRow) {
