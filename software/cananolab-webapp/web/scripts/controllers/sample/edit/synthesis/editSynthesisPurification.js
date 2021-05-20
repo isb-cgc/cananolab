@@ -9,6 +9,7 @@
       $scope.instrument = {}; // current instrument being edited //
       $scope.instrumentFormIndex = null; // current instrument being edited //
       $scope.techniqueFormIndex = null;
+      $scope.purityEdit = 0;
       $scope.fileFormIndex = null;
       $scope.sampleId = $location.search()['sampleId'];
       $scope.sampleName = '';
@@ -450,6 +451,7 @@
       // opens new finding dialog //
       $scope.addNewFinding = function () {
         var old = $location.hash();
+        $scope.purityEdit=0;
         $scope.currentFinding = {
           'columnHeaders': []
         };
@@ -464,6 +466,7 @@
 
       // open finding dialog with existing finding //
       $scope.updateExistingFinding = function (finding) {
+        $scope.purityEdit=1;
         var old = $location.hash();
         $scope.updateFinding = 1;
         $scope.currentFinding = finding;
@@ -1204,11 +1207,19 @@
           $scope.loader = false;
           return;
         }
+        $scope.purityUrl='/caNanoLab/rest/synthesisPurification/createPurity' 
+        $scope.purityData=$scope.purification;
+
+        if ($scope.purityEdit) {
+          delete $scope.purification.errors;
+          $scope.purityData = $scope.currentFinding;
+          $scope.purityUrl = '/caNanoLab/rest/synthesisPurification/updatePurity'
+        };
 
         $http({
           method: 'POST',
-          url: '/caNanoLab/rest/synthesisPurification/createPurity',
-          data: $scope.purification
+          url: $scope.purityUrl,
+          data: $scope.purityData
         }).
         then(function (data, status, headers, config) {
           data = data['data']
@@ -1230,7 +1241,7 @@
           $scope.loader = true;
           $http({
             method: 'POST',
-            url: '/caNanoLab/rest/synthesisPurification/removeFinding',
+            url: '/caNanoLab/rest/synthesisPurification/deletePurity',
             data: $scope.currentFinding
           }).
           then(function (data, status, headers, config) {
