@@ -779,7 +779,7 @@ public class SynthesisPurificationServices {
     @Produces("application/json")
     public Response updatePurification(@Context HttpServletRequest httpRequest,
                                        SimpleSynthesisPurificationBean purifcationEditBean) {
-        logger.debug("In updatePurity");
+        logger.debug("In updatePurification");
 
         if (!SpringSecurityUtil.isUserLoggedIn()) {
             return Response.status(Response.Status.UNAUTHORIZED).entity(Constants.MSG_SESSION_INVALID).build();
@@ -851,12 +851,12 @@ public class SynthesisPurificationServices {
         }
 
         try {
-            SynthesisPurificationBO characterizationBO =
+            SynthesisPurificationBO purificationBO =
                     (SynthesisPurificationBO) SpringApplicationContext.getBean(httpRequest, "synthesisPurificationBO");
 
-            SimplePurityBean simpleFindingBean = characterizationBO.drawMatrix(httpRequest, simplePurityBean);
+            purificationBO.updatePurity(httpRequest, simplePurityBean);
 
-            return Response.ok(simpleFindingBean).header("Access-Control-Allow-Credentials", "true")
+            return Response.ok(simplePurityBean).header("Access-Control-Allow-Credentials", "true")
                     .header("Access-Control-Allow-Origin", "*").header("Access-Control-Allow-Methods", "GET, POST, " +
                             "PUT, DELETE, OPTIONS")
                     .header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, " +

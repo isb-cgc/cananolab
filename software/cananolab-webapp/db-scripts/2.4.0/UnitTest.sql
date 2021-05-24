@@ -1059,7 +1059,7 @@ VALUES (1, 'asymmetrical flow field-flow fractionation with multi-angle laser li
        (99, 'platelet aggregation', 'datumName', 'is above threshold?'),
        (100, 'proliferation', 'datumName', '% of control'),
        (101, 'proliferation', 'datumName', 'ratio of cell line1 to cell line 2'),
-       (102, 'purity', 'datumName', '% purity for sample'),
+       (102, 'purity', 'datumName', 'percent purity'),
        (103, 'relaxivity', 'datumName', 'R1'),
        (104, 'relaxivity', 'datumName', 'R2'),
        (105, 'relaxivity', 'datumName', 'T1'),
@@ -1586,6 +1586,7 @@ VALUES (1, 'asymmetrical flow field-flow fractionation with multi-angle laser li
        (1093, 'functionalization', 'type', 'small molecule'),
        (1094, 'synthesis', 'otherMaterialType', 'reagent'),
        (1096, 'protocol', 'type', 'purification'),
+       (1097, 'percent purity', 'otherUnit', '%'),
        (13959168, 'technique', 'otherType', 'gel electrophoresis'),
        (13959169, 'gel electrophoresis', 'otherInstrument', 'fluorescence excitation device'),
        (13959170, 'gel electrophoresis', 'otherInstrument', 'cooled digital camera'),
@@ -6383,7 +6384,7 @@ VALUES (1000, 1,1000,'Synthesis condition 1', NULL, '42', 'g', 'observed', 'cana
        (1100,2,1000, 'Synthesis condition 2', NULL, '43', 'g', 'observed', 'canano_user', '2019-12-06 12:17:00','condition',2010),
        (1010,1,1000,'Purity datum 1',NULL, '55', '%',NULL,'canano_user', '2019-12-06 12:15:00','datum',2000),
        (1020, 2,1000,'Purity datum 2', NULL, '57.1','%',NULL,'canano_curator', '2019-12-06 12:15:00','datum',2000),
-       (1111, 2,1111,'datum_test', NULL, '84', 'mg', 'observed', 'canano_curator', '2019-12-06 12:15:00','condition',2030),
+       (1111, 1,1111,'datum_test', NULL, '84', 'mg', 'observed', 'canano_curator', '2019-12-06 12:15:00','condition',2030),
        (1120,1,1111,'Purity datum',NULL,'123.00','%',NULL,'canano_curator', '2019-12-06 12:15:00','datum',1010),
        (1130,1,1100,'datum test1',NULL,'98','%',NULL,'canano_curator','2021-02-05 14:50:00','datum',2040),
        (1140,1,1100,'condition 1-1',NULL,'98','%',NULL,'canano_curator','2021-02-05 14:50:00','condition',2050),
@@ -7171,8 +7172,7 @@ INSERT IGNORE INTO `synthesis_purity` (`purity_pk_id`, `synthesis_purification_p
 VALUES (1000, 1000, 'canano_curator', '2019-12-06 12:15:00'),
        (1005, 1005, 'canano_curator', '2019-08-28 00:00:00'),
        (1100, 1000, 'canano_curator', '2021-02-05 15:50:00'),
-       (1111, 1111, 'canano_curator', '2019-12-06 12:15:00'),
-       (1222, 1222, 'canano_curator', '2019-08-28 00:00:00');
+       (1111, 1111, 'canano_curator', '2019-12-06 12:15:00');
 /*!40000 ALTER TABLE `synthesis_purity`
     ENABLE KEYS */;
 UNLOCK TABLES;

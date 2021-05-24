@@ -53,7 +53,7 @@ public class SynthesisPurityBean
         List<PurityDatumCondition> data = null;
         if(synthesisPurity.getPurityDatumCollection()!=null){
             data = new ArrayList<PurityDatumCondition>( synthesisPurity.getPurityDatumCollection() );
-            Collections.sort( data, new Comparators.PurityDatumDateComparator() );
+//            Collections.sort( data, new Comparators.PurityDatumDateComparator() );
             addColumnHeaders(data);
         }
         numberOfColumns = purityColumnHeaders.size();
