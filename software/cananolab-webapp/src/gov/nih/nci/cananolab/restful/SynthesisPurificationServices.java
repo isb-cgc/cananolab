@@ -854,9 +854,10 @@ public class SynthesisPurificationServices {
             SynthesisPurificationBO purificationBO =
                     (SynthesisPurificationBO) SpringApplicationContext.getBean(httpRequest, "synthesisPurificationBO");
 
-            purificationBO.updatePurity(httpRequest, simplePurityBean);
+            SimplePurityBean newSimplePurityBean = purificationBO.drawMatrix(httpRequest, simplePurityBean);
+//            purificationBO.updatePurity(httpRequest, simplePurityBean);
 
-            return Response.ok(simplePurityBean).header("Access-Control-Allow-Credentials", "true")
+            return Response.ok(newSimplePurityBean).header("Access-Control-Allow-Credentials", "true")
                     .header("Access-Control-Allow-Origin", "*").header("Access-Control-Allow-Methods", "GET, POST, " +
                             "PUT, DELETE, OPTIONS")
                     .header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, " +

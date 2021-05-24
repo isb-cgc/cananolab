@@ -10,6 +10,7 @@ import gov.nih.nci.cananolab.domain.common.Technique;
 import gov.nih.nci.cananolab.domain.particle.Synthesis;
 import gov.nih.nci.cananolab.domain.particle.SynthesisPurification;
 import gov.nih.nci.cananolab.domain.particle.SynthesisPurity;
+import gov.nih.nci.cananolab.dto.common.ColumnHeader;
 import gov.nih.nci.cananolab.dto.common.FileBean;
 import gov.nih.nci.cananolab.dto.common.PointOfContactBean;
 import gov.nih.nci.cananolab.dto.common.ProtocolBean;
@@ -637,15 +638,7 @@ catch(Exception e){
             SynthesisPurityBean oldPurityBean = this.findMatchPurityBean(newSimplePurityBean);
 
 
-            //removing rows or columns is not allowed
-            if(newSimplePurityBean.getNumberOfColumns()!= oldPurityBean.getNumberOfColumns()){
-                //possibly just delete existing purity and start over
-                throw new SynthesisException("Error: cannot change the number of  columns during update");
-            }
-            if(newSimplePurityBean.getNumberOfRows()!= oldPurityBean.getNumberOfRows()){
-                //possibly just delete existing purity and start over
-                throw new SynthesisException("Error: cannot change the number of rows during update");
-            }
+
 
             //editing column headers
             oldPurityBean.setPurityColumnHeaders(newSimplePurityBean.getColumnHeaders());
@@ -670,6 +663,16 @@ catch(Exception e){
 //            Long sampleId = synthesis.getSample().getId();
 //            SimpleSynthesisPurificationBean newSimplePurificationBean = new SimpleSynthesisPurificationBean(purificationBean, sampleId.toString());
 //            return newSimplePurificationBean;
+
+            //removing rows or columns is not allowed
+            if(newSimplePurityBean.getNumberOfColumns()!= oldPurityBean.getNumberOfColumns()){
+                //possibly just delete existing purity and start over
+                throw new SynthesisException("Error: cannot change the number of  columns during update");
+            }
+            if(newSimplePurityBean.getNumberOfRows()!= oldPurityBean.getNumberOfRows()){
+                //possibly just delete existing purity and start over
+                throw new SynthesisException("Error: cannot change the number of rows during update");
+            }
 
 
         } catch (Exception e){
@@ -1140,77 +1143,27 @@ catch(Exception e){
     public SimplePurityBean drawMatrix(HttpServletRequest request, SimplePurityBean simplePurityBean)
             throws Exception {
 
-        SynthesisPurificationBean achar = (SynthesisPurificationBean) request.getSession().getAttribute("thePure");
-
-//        SimpleCharacterizationEditBean editBean =
-//                (SimpleCharacterizationEditBean) request.getSession().getAttribute("theEditChar");
-        request.setAttribute("anchor", "result");
+        //This is just a matrix redraw.  We are not saving to the database yet.
 
         SynthesisPurityBean oldPurityBean = this.findMatchPurityBean( simplePurityBean);
-        Long purificationId=  oldPurityBean.getDomain().getSynthesisPurificationId();
 
+        simplePurityBean.transferTableNumbersToPurityBean(oldPurityBean);
 
-//        simplePurityBean.transferTableNumbersToPurityBean(oldPurityBean);
+        //update matrix in bean, which will add or delete columns and rows
+        oldPurityBean.updateMatrix(oldPurityBean.getNumberOfColumns(),
+                oldPurityBean.getNumberOfRows());
 
-//		if (request.getParameter("removeColumn") != null) {
-//			int columnToRemove = Integer.parseInt(request
-//					.getParameter("removeColumn"));
-//			findingBean.removeColumn(columnToRemove);
-//			this.checkOpenForms(achar, theForm, request);
-//			return mapping.findForward("inputForm");
-//		} else if (request.getParameter("removeRow") != null) {
-//			int rowToRemove = Integer.parseInt(request
-//					.getParameter("removeRow"));
-//			findingBean.removeRow(rowToRemove);
-//			this.checkOpenForms(achar, theForm, request);
-//			return mapping.findForward("inputForm");
-//		}
-        int existingNumberOfColumns = oldPurityBean.getPurityColumnHeaders().size();
-        int existingNumberOfRows = oldPurityBean.getRows().size();
-
-
-        if (existingNumberOfColumns > simplePurityBean.getNumberOfColumns()) {
-//			ActionMessages msgs = new ActionMessages();
-//			ActionMessage msg = new ActionMessage(
-//					"message.addCharacterization.removeMatrixColumn");
-//			msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
-//			saveMessages(request, msgs);
-//
-
-//			findingBean.setNumberOfColumns(existingNumberOfColumns);
-//			//this.checkOpenForms(achar, theForm, request);
-//			return mapping.getInputForward();
-        }
-        if (existingNumberOfRows > simplePurityBean.getNumberOfRows()) {
-//			ActionMessages msgs = new ActionMessages();
-//			ActionMessage msg = new ActionMessage(
-//					"message.addCharacterization.removeMatrixRow");
-//			msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
-//			saveMessages(request, msgs);
-//			findingBean.setNumberOfRows(existingNumberOfRows);
-//			this.checkOpenForms(achar, theForm, request);
-//			return mapping.getInputForward();
-        }
-
-        oldPurityBean.updateMatrix(simplePurityBean.getNumberOfColumns(),
-                simplePurityBean.getNumberOfRows());
-
-        InitSynthesisSetup.getInstance().persistPurificationDropdowns(request, achar);
-
-
+        //pull the bean matrix back to the simple bean
         simplePurityBean.transferFromPurityBean(request, oldPurityBean);
-        simplePurityBean.setColumnHeaders(oldPurityBean.getPurityColumnHeaders());
+
+        //prep new column headers to receive data
         simplePurityBean.setDefaultValuesForNullHeaders();
 
-        request.setAttribute("anchor", "submitFinding");
-
-        //this.checkOpenForms(achar, theForm, request);
-        // set columnHeaders in the session so jsp can check duplicate columns
-        request.getSession().setAttribute("columnHeaders",
-                oldPurityBean.getPurityColumnHeaders());
-        //return mapping.findForward("inputForm");
-
         return simplePurityBean;
+
+
+
+
     }
 
     protected SynthesisPurityBean findMatchPurityBean(

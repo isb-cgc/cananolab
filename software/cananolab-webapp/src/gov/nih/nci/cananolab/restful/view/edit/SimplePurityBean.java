@@ -68,9 +68,9 @@ public class SimplePurityBean {
 
     public void setColumnHeaders(List<PurityColumnHeader> columnHeaders) {
         this.columnHeaders = columnHeaders;
-        if(columnHeaders!=null){
-            numberOfColumns=columnHeaders.size();
-        }
+//        if(columnHeaders!=null){
+//            numberOfColumns=columnHeaders.size();
+//        }
     }
 
     public List<PurityColumnHeader> getColumnHeaders() {
