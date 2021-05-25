@@ -6316,7 +6316,7 @@ CREATE TABLE `purity_column_header` (
   `created_by` varchar(200) NOT NULL,
   `created_date` datetime NOT NULL,
   `column_order` INT(10) NOT NULL,
-  `constant_value` DECIMAL(30,10) DEFAULT NULL,
+  `constant_value` varchar(200) DEFAULT NULL,
   PRIMARY KEY (`column_pk_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
@@ -6334,7 +6334,7 @@ INSERT IGNORE INTO `canano`.`purity_column_header` (
  VALUES (2000, 'Purity datum 1', 'purity', '%', 'canano_curator', '2020-07-20 16:08:15',0),
  (2010, 'Synthesis condition 1', 'observed', 'g', 'canano_curator', '2020-07-20 16:08:15',1),
  (1010, 'datum test', 'observed', 'mg', 'canano_curator', '2020-07-20 16:08:15',0),
- (2030, 'datum test 2', 'observed', 'mg', 'canano_curator', '2020-07-20 16:08:15',0),
+ (2030, 'datum test 2', 'observed', 'mg', 'canano_curator', '2020-07-20 16:08:15',1),
  (2040,'Purity datum 2','purity','%','canano_curator','2021-02-05 15:50:00',0),
  (2050,'Purity condition 2-1','mean','%','canano_curator','2021-02-05 15:50:00',1),
  (2060,'Purity condition 2-2','standard deviation','%','canano_curator','2021-02-05 15:50:00',2);

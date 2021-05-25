@@ -32,7 +32,7 @@
         <property name="columnOrder" type="int" generated="never" lazy="false">
             <column name="column_order" length="10" not-null="true"/>
         </property>
-        <property name="constantValue" type="float" generated="never" lazy="false">
+        <property name="constantValue" type="string" generated="never" lazy="false">
             <column name="constant_value" precision="30" scale="10"/>
         </property>
 

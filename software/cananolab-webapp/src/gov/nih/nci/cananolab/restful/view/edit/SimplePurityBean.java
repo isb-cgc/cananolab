@@ -111,6 +111,9 @@ public class SimplePurityBean {
         this.transferRowsFromPurityBean(purityBean);
         this.transferFilesFromPurityBean(purityBean, sampleId);
         this.setColumnHeaders(purityBean.getPurityColumnHeaders());
+        this.setNumberOfColumns(purityBean.getNumberOfColumns());
+        this.setNumberOfRows(purityBean.getNumberOfRows());
+
     }
 
     public void transferFilesFromPurityBean(SynthesisPurityBean purityBean,String sampleId){
@@ -127,6 +130,9 @@ public class SimplePurityBean {
         this.setId(purityBean.getDomain().getId());
         this.transferRowsFromPurityBean(purityBean);
         transferFilesFromPurityBean(request, purityBean.getFiles());
+        this.setColumnHeaders(purityBean.getPurityColumnHeaders());
+        this.setNumberOfColumns(purityBean.getNumberOfColumns());
+        this.setNumberOfRows(purityBean.getNumberOfRows());
     }
 
     private void transferFilesFromPurityBean(HttpServletRequest request, List<FileBean> files) {

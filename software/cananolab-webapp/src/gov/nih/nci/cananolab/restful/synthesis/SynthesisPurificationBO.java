@@ -623,7 +623,7 @@ catch(Exception e){
     }
 
 
-    public void updatePurity(HttpServletRequest httpServletRequest,SimplePurityBean newSimplePurityBean) throws Exception {
+    public SimplePurityBean updatePurity(HttpServletRequest httpServletRequest,SimplePurityBean newSimplePurityBean) throws Exception {
 /**
         Option: add rows, keep columns -
                 add column, keep rows -
@@ -664,15 +664,12 @@ catch(Exception e){
 //            SimpleSynthesisPurificationBean newSimplePurificationBean = new SimpleSynthesisPurificationBean(purificationBean, sampleId.toString());
 //            return newSimplePurificationBean;
 
-            //removing rows or columns is not allowed
-            if(newSimplePurityBean.getNumberOfColumns()!= oldPurityBean.getNumberOfColumns()){
-                //possibly just delete existing purity and start over
-                throw new SynthesisException("Error: cannot change the number of  columns during update");
-            }
-            if(newSimplePurityBean.getNumberOfRows()!= oldPurityBean.getNumberOfRows()){
-                //possibly just delete existing purity and start over
-                throw new SynthesisException("Error: cannot change the number of rows during update");
-            }
+            //return the updated simple purity
+            SynthesisPurityBean newPurityBean = this.findMatchPurityBean(newSimplePurityBean);
+            SimplePurityBean simplePurityBean = new SimplePurityBean();
+            simplePurityBean.transferFromPurityBean(httpServletRequest, newPurityBean);
+            return simplePurityBean;
+
 
 
         } catch (Exception e){
@@ -1143,9 +1140,15 @@ catch(Exception e){
     public SimplePurityBean drawMatrix(HttpServletRequest request, SimplePurityBean simplePurityBean)
             throws Exception {
 
+        if(simplePurityBean.getId()==null){
+            return drawNewMatrix(request, simplePurityBean);
+        }
+
+
         //This is just a matrix redraw.  We are not saving to the database yet.
 
         SynthesisPurityBean oldPurityBean = this.findMatchPurityBean( simplePurityBean);
+
 
         simplePurityBean.transferTableNumbersToPurityBean(oldPurityBean);
 
