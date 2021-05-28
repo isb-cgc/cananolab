@@ -55,6 +55,9 @@ public interface SynthesisService extends BaseService {
     SynthesisPurificationBean findSynthesisPurificationById(Long sampleId, Long dataId) throws SynthesisException
             , NoAccessException;
 
+    SynthesisPurificationBean findSynthesisPurificationById(Long dataId) throws SynthesisException
+            , NoAccessException;
+
     SynthesisHelper getHelper();
     Synthesis createSynthesis(SampleBean sampleBean) throws SynthesisException, NoAccessException ;
 

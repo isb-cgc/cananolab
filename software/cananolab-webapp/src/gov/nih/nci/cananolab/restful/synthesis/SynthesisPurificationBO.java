@@ -623,7 +623,7 @@ catch(Exception e){
     }
 
 
-    public SimplePurityBean updatePurity(HttpServletRequest httpServletRequest,SimplePurityBean newSimplePurityBean) throws Exception {
+    public List<String>  updatePurity(HttpServletRequest httpServletRequest,SimplePurityBean newSimplePurityBean) throws Exception {
 /**
         Option: add rows, keep columns -
                 add column, keep rows -
@@ -637,7 +637,7 @@ catch(Exception e){
         try {
             SynthesisPurityBean oldPurityBean = this.findMatchPurityBean(newSimplePurityBean);
 
-
+            List<String> msgs = new ArrayList<String>();
 
 
             //editing column headers
@@ -656,6 +656,10 @@ catch(Exception e){
             Long purificationId = oldPurityBean.getDomain().getSynthesisPurificationId();
             SynthesisPurification purification = synthesisService.getHelper().findSynthesisPurificationById(purificationId);
             SynthesisPurificationBean purificationBean = new SynthesisPurificationBean(purification);
+            purificationBean.getPurityBeans();
+
+
+
             synthesisService.saveSynthesisPurity(oldPurityBean, purificationBean);
 
 //            Long synthesisId = purificationBean.getDomainEntity().getSynthesisId();
@@ -668,8 +672,8 @@ catch(Exception e){
             SynthesisPurityBean newPurityBean = this.findMatchPurityBean(newSimplePurityBean);
             SimplePurityBean simplePurityBean = new SimplePurityBean();
             simplePurityBean.transferFromPurityBean(httpServletRequest, newPurityBean);
-            return simplePurityBean;
-
+//            return simplePurityBean;
+            return msgs;
 
 
         } catch (Exception e){
@@ -1082,6 +1086,24 @@ catch(Exception e){
         }
 
     }
+
+    public SimpleSynthesisPurificationBean setupUpdate(Long dataId,
+                                                       HttpServletRequest httpRequest) throws SynthesisException, NoAccessException {
+        SynthesisForm form = new SynthesisForm();
+        // set up other particles with the same primary point of contact
+//        InitSampleSetup.getInstance().getOtherSampleNames(httpRequest, sampleId, sampleService);
+
+
+            SynthesisPurificationBean synBean = synthesisService.findSynthesisPurificationById(
+                    new Long(dataId));
+            Synthesis synthesis = synBean.getDomainEntity().getSynthesis();
+            Long sampleId = synthesis.getSample().getId();
+
+            return setupUpdate(sampleId.toString(), dataId.toString(), httpRequest);
+
+    }
+
+
 
     public void assignColumnHeadersForPurification(SynthesisPurificationBean purification) throws SynthesisException {
         //checks each purity in the purification and retrieves the connected column headers

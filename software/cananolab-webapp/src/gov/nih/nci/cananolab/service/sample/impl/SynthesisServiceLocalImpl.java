@@ -23,6 +23,8 @@ import gov.nih.nci.cananolab.domain.particle.SynthesisPurity;
 import gov.nih.nci.cananolab.dto.common.FileBean;
 
 import gov.nih.nci.cananolab.dto.common.PurificationConfigBean;
+import gov.nih.nci.cananolab.dto.common.PurityRow;
+import gov.nih.nci.cananolab.dto.common.table.PurityTableCell;
 import gov.nih.nci.cananolab.dto.particle.SampleBean;
 
 
@@ -471,6 +473,30 @@ public SynthesisPurity findPurityById(Long purityId) throws SynthesisException{
         return synthesisHelper;
     }
 
+    public SynthesisPurificationBean findSynthesisPurificationById( Long dataId) throws NoAccessException, SynthesisException {
+        SynthesisPurificationBean spBean = null;
+        try {
+            SynthesisPurification synthesisPurification = synthesisHelper.findSynthesisPurificationById(
+                    dataId);
+            if (synthesisPurification != null) {
+                synthesisPurification.getSynthesisId();
+                Synthesis synthesis = synthesisHelper.findSynthesisById(synthesisPurification.getSynthesisId());
+                synthesisPurification.setSynthesis(synthesis);
+                spBean = new SynthesisPurificationBean(synthesisPurification);
+            }
+
+        }
+        catch (NoAccessException e) {
+            throw e;
+        }
+        catch (Exception e) {
+            String err = "Problem finding the synthesis purification entity by id: " + dataId;
+            logger.error(err, e);
+            throw new SynthesisException(err, e);
+        }
+        return spBean;
+    }
+
     public void saveSynthesisFunctionalization(SampleBean sampleBean,
                                                SynthesisFunctionalizationBean synthesisFunctionalizationBean) throws SynthesisException, NoAccessException {
 
@@ -639,6 +665,7 @@ public SynthesisPurity findPurityById(Long purityId) throws SynthesisException{
 
             for (FileBean fileBean : synthesisMaterialBean.getFiles()) {
                 fileUtils.writeFile(fileBean);
+
             }
 
         }
@@ -794,7 +821,7 @@ public SynthesisPurity findPurityById(Long purityId) throws SynthesisException{
 
             synthesisPurity.setSynthesisPurification(synthesisPurificationBean.getDomainEntity());
 
-            Set<PurityDatumCondition> originalDatum = synthesisHelper.getPurityDatumByPurity(synthesisPurity.getId());
+
 //Need to save purity to get the ID for the dependents
             appService.saveOrUpdate(synthesisPurity);
 
@@ -805,14 +832,29 @@ public SynthesisPurity findPurityById(Long purityId) throws SynthesisException{
                 newHeaders.put(newHeader.getColumnOrder(), newHeader);
             }
 
+            Set<PurityDatumCondition> originalDatum = synthesisHelper.getPurityDatumByPurity(synthesisPurity.getId());
+            HashMap<Long,PurityTableCell> cellHashMap = new HashMap<Long, PurityTableCell>();
+            List<PurityRow> rows =   synthesisPurityBean.getRows();
+            for(PurityRow row:rows){
+                List<PurityTableCell> cells = row.getCells();
+                for(PurityTableCell cell:cells){
+                    cellHashMap.put(cell.getId(), cell);
+                }
+            }
+            for(PurityDatumCondition condition: originalDatum){
+                PurityTableCell cell = cellHashMap.get(condition.getId());
+                if(cell!=null){
+                    condition = update(condition, cell);
+                }
 
+            }
+            synthesisPurity.setPurityDatumCollection(originalDatum);
 
-            for (PurityDatumCondition datum : synthesisPurity.getPurityDatumCollection()) {
+//            for (PurityDatumCondition datum : synthesisPurity.getPurityDatumCollection()) {
+                for (PurityDatumCondition datum : originalDatum) {
                 datum.setColumnHeader(newHeaders.get(datum.getColumnHeader().getColumnOrder()));
                 if (datum.getId() == null) {
                     //create new datum
-//                    datum.setSynthesisPurity(synthesisPurity);
-//                    datum.setSynthesisPurity(synthesisPurity);
                     datum.setPurity(synthesisPurity);
                     PurityDatumCondition newDatum = createDatum(datum);
 //                    datum.setId(newDatum.getId());
@@ -1177,7 +1219,8 @@ public SynthesisPurity findPurityById(Long purityId) throws SynthesisException{
             try {
                 appService
                         .load(PurityDatumCondition.class, datum.getId());
-                SynthesisPurity tempDatum = (SynthesisPurity)appService.getObject(PurityDatumCondition.class, "id", datum.getId());
+//                SynthesisPurity tempDatum = (SynthesisPurity)appService.getObject(PurityDatumCondition.class, "id", datum.getId());
+                PurityDatumCondition tempDatum = (PurityDatumCondition) appService.getObject(PurityDatumCondition.class, "id", datum.getId());
 
                 datum.setCreatedDate(tempDatum.getCreatedDate());
                 datum.setCreatedBy(tempDatum.getCreatedBy());
@@ -1486,6 +1529,15 @@ public SynthesisPurity findPurityById(Long purityId) throws SynthesisException{
             logger.error(err, e);
             throw new SynthesisException(err, e);
         }
+    }
+
+    public PurityDatumCondition update(PurityDatumCondition condition,PurityTableCell cell) {
+        condition.setColumnId( cell.getColumnId());
+        condition.setOperand(cell.getOperand());
+        condition.setValue(cell.getValue());
+        condition.setRowNumber(cell.getRowNumber());
+        condition.setValueType(cell.getDatumOrCondition());
+        return condition;
     }
 
     public int getNumberOfSuppliers() throws Exception {

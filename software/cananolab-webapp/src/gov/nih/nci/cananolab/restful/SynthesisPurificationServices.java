@@ -856,13 +856,22 @@ public class SynthesisPurificationServices {
                     (SynthesisPurificationBO) SpringApplicationContext.getBean(httpRequest, "synthesisPurificationBO");
 
 //            SimplePurityBean newSimplePurityBean = purificationBO.drawMatrix(httpRequest, simplePurityBean);
-            SimplePurityBean newSimplePurityBean = purificationBO.updatePurity(httpRequest, simplePurityBean);
+            List<String> msgs = purificationBO.updatePurity(httpRequest, simplePurityBean);
 
-            return Response.ok(newSimplePurityBean).header("Access-Control-Allow-Credentials", "true")
-                    .header("Access-Control-Allow-Origin", "*").header("Access-Control-Allow-Methods", "GET, POST, " +
-                            "PUT, DELETE, OPTIONS")
-                    .header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, " +
-                            "Authorization").build();
+            SimpleSynthesisPurificationBean synthesisPurificationBean = purificationBO.setupUpdate(
+                    simplePurityBean.getId(), httpRequest);
+            List<String> errors = synthesisPurificationBean.getErrors();
+            return (errors == null || errors.size() == 0) ?
+                    Response.ok(synthesisPurificationBean).build() :
+                    Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(errors).build();
+
+//            return Response.ok(msgs).header("Access-Control-Allow-Credentials", "true")
+//                    .header("Access-Control-Allow-Origin", "*").header("Access-Control-Allow-Methods", "GET, POST, " +
+//                            "PUT, DELETE, OPTIONS")
+//                    .header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, " +
+//                            "Authorization").build();
+
+
         }
         catch (Exception e) {
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
