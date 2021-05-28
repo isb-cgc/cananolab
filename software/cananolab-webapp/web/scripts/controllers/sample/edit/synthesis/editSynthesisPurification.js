@@ -965,7 +965,7 @@
             var hex = '%' + hexDigit0 + '%' + hexDigit1;
             let decoded = decode_utf8(hex);
             if (decoded === 'ERROR-ERROR') {
-              console.catch('ERROR ');
+              console.log('ERROR ');
               output = '';
               return output;
             }
@@ -1006,7 +1006,7 @@
           returnData = decodeURIComponent(s);
         } catch (e) {
           returnData = 'ERROR-ERROR'; // TODO  Make this a const
-          console.catch('ERROR: ', e);
+          console.log('ERROR: ', e);
         }
         return returnData;
       }
