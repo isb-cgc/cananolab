@@ -35,10 +35,10 @@ var app = angular.module('angularApp')
           "sampleIds": utilsService.sampleIdListStrings($scope.sampleData)
         }
       }).
-      then(function (res) {
+      then(function (data) {
         data = data['data']
         let a = (window).document.createElement('a');
-        a.href = (window).URL.createObjectURL(new Blob([JSON.stringify(res)], {
+        a.href = (window).URL.createObjectURL(new Blob([JSON.stringify(data)], {
           type: 'application/json'
         }));
         // Use epoch for unique file name
@@ -48,10 +48,10 @@ var app = angular.module('angularApp')
         (window).document.body.removeChild(a);
         $scope.loader = false;
       }).
-      catch(function (res) {
-        data = data['data']
+      catch(function (err) {
+        err = err['data']
         $scope.loader = false;
-        $scope.message = data;
+        $scope.message = err;
       });
     };
 
@@ -64,10 +64,10 @@ var app = angular.module('angularApp')
           "sampleIds": utilsService.sampleIdListStrings($scope.sampleData)
         }
       }).
-      then(function (res) {
+      then(function (data) {
         data = data['data']
         let a = (window).document.createElement('a');
-        a.href = (window).URL.createObjectURL(new Blob([res], {
+        a.href = (window).URL.createObjectURL(new Blob([data], {
           type: 'application/xml'
         }));
         // Use epoch for unique file name
@@ -77,10 +77,10 @@ var app = angular.module('angularApp')
         (window).document.body.removeChild(a);
         $scope.loader = false;
       }).
-      catch(function (res) {
-        data = data['data']
+      catch(function (err) {
+        err = err['data']
         $scope.loader = false;
-        $scope.message = data;
+        $scope.message = err;
       });
     };
 
