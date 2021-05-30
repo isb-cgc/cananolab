@@ -10,12 +10,14 @@ import gov.nih.nci.cananolab.domain.common.Technique;
 import gov.nih.nci.cananolab.domain.particle.Synthesis;
 import gov.nih.nci.cananolab.domain.particle.SynthesisPurification;
 import gov.nih.nci.cananolab.domain.particle.SynthesisPurity;
+import gov.nih.nci.cananolab.dto.common.ColumnHeader;
 import gov.nih.nci.cananolab.dto.common.FileBean;
 import gov.nih.nci.cananolab.dto.common.PointOfContactBean;
 import gov.nih.nci.cananolab.dto.common.ProtocolBean;
 import gov.nih.nci.cananolab.dto.common.PurityRow;
 import gov.nih.nci.cananolab.dto.common.table.PurityTableCell;
 import gov.nih.nci.cananolab.dto.particle.SampleBean;
+import gov.nih.nci.cananolab.dto.particle.synthesis.SynthesisBean;
 import gov.nih.nci.cananolab.dto.particle.synthesis.SynthesisPurificationBean;
 import gov.nih.nci.cananolab.dto.particle.synthesis.SynthesisPurityBean;
 import gov.nih.nci.cananolab.exception.NoAccessException;
@@ -25,6 +27,7 @@ import gov.nih.nci.cananolab.restful.core.BaseAnnotationBO;
 import gov.nih.nci.cananolab.restful.sample.InitSampleSetup;
 import gov.nih.nci.cananolab.restful.util.PropertyUtil;
 import gov.nih.nci.cananolab.restful.util.SynthesisUtil;
+import gov.nih.nci.cananolab.restful.view.SimpleSynthesisBean;
 import gov.nih.nci.cananolab.restful.view.edit.SimpleFileBean;
 import gov.nih.nci.cananolab.restful.view.edit.SimpleInstrumentBean;
 import gov.nih.nci.cananolab.restful.view.edit.SimpleProtocol;
@@ -327,7 +330,7 @@ public class SynthesisPurificationBO extends BaseAnnotationBO {
                                                       HttpServletRequest httpRequest) throws SynthesisException {
         SynthesisPurityBean purityBean = new SynthesisPurityBean();
         SynthesisPurity purity = new SynthesisPurity();
-
+        boolean newPurity = false;
         //id
         if ((simplePurityBean.getId() != null) && (simplePurityBean.getId() > 0)) {
             purity.setId(simplePurityBean.getId());
@@ -343,11 +346,7 @@ public class SynthesisPurificationBO extends BaseAnnotationBO {
         }else {
             purity.setCreatedDate(Calendar.getInstance().getTime());
             purity.setCreatedBy(SpringSecurityUtil.getPrincipal().getUsername());
-            //            purity.setCreatedBy(simplePurityBean.getCreatedBy());
-//            purity.setCreatedDate(simplePurityBean.getCreatedDate());
-//        }else {
-//            purity.setCreatedBy(simplePurityBean.getCreatedBy());
-//            purity.setCreatedDate(simplePurityBean.getCreatedDate());
+            newPurity = true;
         }
 
         //check for Files
@@ -364,6 +363,23 @@ public class SynthesisPurificationBO extends BaseAnnotationBO {
         purityBean.setFiles(fileBeans);
         purity.setFiles(files);
 
+
+        if(newPurity){
+            //the rows and columns come in order
+            int rowNumberTemp =1;
+            for (SimplePurityRowBean rowBean: simplePurityBean.getRows()){
+                rowBean.setRowNumber(rowNumberTemp++);
+                int columnOrderTemp=1;
+                {
+                    for(SimplePurityCell cell: rowBean.getCells()){
+                        cell.setColumnOrder(columnOrderTemp++);
+                    }
+                }
+            }
+        }
+
+
+
         //Columns
 //        purityBean.setColumnHeaders(simplePurityBean.getColumnHeaders());
 //        purityBean.setColumnHeaders(columnHeaders);
@@ -379,6 +395,7 @@ public class SynthesisPurificationBO extends BaseAnnotationBO {
 //                }
 //            }
         for (SimplePurityRowBean simplePurityRowBean : simplePurityRowBeans) {
+            int i =1;
             List<SimplePurityCell> simpleCells = simplePurityRowBean.getCells();
             SimplePurityCell currentDatumCell = new SimplePurityCell();
             List<SimplePurityCell> currentConditionCells = new ArrayList<SimplePurityCell>();
@@ -392,6 +409,9 @@ public class SynthesisPurificationBO extends BaseAnnotationBO {
 //                    }
             }
             PurityRow newRow = createPurityRow(currentDatumCell, currentConditionCells, purityBean.getPurityColumnHeaders());
+            if (newRow.getRowNumber()==null||newRow.getRowNumber()==0){
+                newRow.setRowNumber(i++);
+            }
             purityBean.addRow(newRow);
         }
 
@@ -408,14 +428,16 @@ public class SynthesisPurificationBO extends BaseAnnotationBO {
                 if (cell.getCondition() != null) {
                     newDatum = cell.getCondition();
                 }
-            }
+
 //            for(PurityTableCell cell: cells){
 //                if (cell.getCondition()!= null) {
 //                    newDatum.getConditionCollection().add(cell.getCondition());
 //                }
 //            }
-            newDatum.setPurity(purity);
-            purity.getPurityDatumCollection().add(newDatum);
+                newDatum.setPurity(purity);
+                purity.getPurityDatumCollection().add(newDatum);
+
+            }
         }
 
 
@@ -452,6 +474,7 @@ try {
         PurityDatumCondition datumCondition = new PurityDatumCondition();
         conditionCell.setColumnOrder(sConditionCell.getColumnOrder());
         conditionCell.setDatumOrCondition("condition");
+        datumCondition.setType("condition");
 //            conditionCell.setCreatedBy(sConditionCell.getCreatedBy());
 //            datumCondition.setCreatedBy(sConditionCell.getCreatedBy());
 //            conditionCell.setCreatedDate(sConditionCell.getCreatedDate());
@@ -494,6 +517,7 @@ try {
     PurityTableCell datumCell = new PurityTableCell();
     datumCell.setColumnOrder(currentDatumCell.getColumnOrder());
     datumCell.setDatumOrCondition("datum");
+    datum.setType("datum");
 //        datumCell.setCreatedBy(currentDatumCell.getCreatedBy());
 //        datum.setCreatedBy(currentDatumCell.getCreatedBy());
 //        datumCell.setCreatedDate(currentDatumCell.getCreatedDate());
@@ -550,7 +574,7 @@ catch(Exception e){
      * @return
      */
     public SimpleSynthesisPurificationBean createPurity(SimpleSynthesisPurificationBean editBean, HttpServletRequest httpRequest)throws SynthesisException {
-        //TODO write
+
         List<String> msgs = new ArrayList<String>();
         try {
             SynthesisPurificationBean synthesisPurificationBean = transferSimplePurification(editBean, httpRequest);
@@ -565,6 +589,7 @@ catch(Exception e){
                         //check if edit needed
                        if(bean.isDirty()){
                            //TODO edit data
+                           //Moved to updatePurity??
                        }
 
                     }
@@ -584,8 +609,9 @@ catch(Exception e){
             //refresh synthesispurification bean
             Long sampleId = new Long(editBean.getSampleId());
             SynthesisPurificationBean purificationBean = synthesisService.findSynthesisPurificationById(sampleId, editBean.getId());
-            SimpleSynthesisPurificationBean simpleSynthesisPurificationBean = new SimpleSynthesisPurificationBean();
-            simpleSynthesisPurificationBean.transferSynthesisPurificationBeanToSimple(purificationBean, httpRequest,springSecurityAclService);
+            SimpleSynthesisPurificationBean simpleSynthesisPurificationBean = new SimpleSynthesisPurificationBean(purificationBean,sampleId.toString());
+//            simpleSynthesisPurificationBean.transferSynthesisPurificationBeanToSimple(purificationBean, httpRequest);
+            simpleSynthesisPurificationBean.setupLookups(httpRequest);
             simpleSynthesisPurificationBean.setErrors(msgs);
             return simpleSynthesisPurificationBean;
         }
@@ -594,6 +620,65 @@ catch(Exception e){
             throw new SynthesisException("Error creating purity", e);
         }
 
+    }
+
+
+    public List<String>  updatePurity(HttpServletRequest httpServletRequest,SimplePurityBean newSimplePurityBean) throws Exception {
+/**
+        Option: add rows, keep columns -
+                add column, keep rows -
+                add rows, add columns -
+                delete rows, keep columns - disallowed
+                delete columns, keep rows - disallowed
+                delete rows, delete columns - disallowed
+                keep rows, columns, change data
+                keep rows, columns, change column headers - still enforce 1 datum.
+ **/
+        try {
+            SynthesisPurityBean oldPurityBean = this.findMatchPurityBean(newSimplePurityBean);
+
+            List<String> msgs = new ArrayList<String>();
+
+
+            //editing column headers
+            oldPurityBean.setPurityColumnHeaders(newSimplePurityBean.getColumnHeaders());
+
+            //editing row data
+            List<PurityRow> purityRows = new ArrayList<PurityRow>();
+            for(SimplePurityRowBean newRowBean: newSimplePurityBean.getRows()){
+                //turn into a PurityRowBean
+                PurityRow row = new PurityRow();
+                newRowBean.transferToRow(row);
+                purityRows.add(row);
+            }
+            oldPurityBean.setRows(purityRows);
+
+            Long purificationId = oldPurityBean.getDomain().getSynthesisPurificationId();
+            SynthesisPurification purification = synthesisService.getHelper().findSynthesisPurificationById(purificationId);
+            SynthesisPurificationBean purificationBean = new SynthesisPurificationBean(purification);
+            purificationBean.getPurityBeans();
+
+
+
+            synthesisService.saveSynthesisPurity(oldPurityBean, purificationBean);
+
+//            Long synthesisId = purificationBean.getDomainEntity().getSynthesisId();
+//            Synthesis synthesis = synthesisService.getHelper().findSynthesisById(synthesisId);
+//            Long sampleId = synthesis.getSample().getId();
+//            SimpleSynthesisPurificationBean newSimplePurificationBean = new SimpleSynthesisPurificationBean(purificationBean, sampleId.toString());
+//            return newSimplePurificationBean;
+
+            //return the updated simple purity
+            SynthesisPurityBean newPurityBean = this.findMatchPurityBean(newSimplePurityBean);
+            SimplePurityBean simplePurityBean = new SimplePurityBean();
+            simplePurityBean.transferFromPurityBean(httpServletRequest, newPurityBean);
+//            return simplePurityBean;
+            return msgs;
+
+
+        } catch (Exception e){
+            throw new SynthesisException("Error updating purity matrix", e);
+        }
     }
 
     public SimplePurityBean createPurityTemplate(SimplePurityBean purityBean, HttpServletRequest httpRequest) {
@@ -609,7 +694,7 @@ catch(Exception e){
      * @param httpRequest
      * @return
      */
-    public List<String> delete(SimpleSynthesisPurificationBean editBean, HttpServletRequest httpRequest) throws NoAccessException, SynthesisException {
+    public SimpleSynthesisBean delete(SimpleSynthesisPurificationBean editBean, HttpServletRequest httpRequest) throws NoAccessException, SynthesisException {
 
         List<String> msgs = new ArrayList<String>();
         SynthesisPurificationBean entityBean = transferSimplePurification(editBean, httpRequest);
@@ -619,8 +704,12 @@ catch(Exception e){
             String sampleId = editBean.getSampleId();
             synthesisService.deleteSynthesisPurification(new Long(sampleId), entityBean.getDomainEntity());
 
+            SynthesisBean synthesisBean = synthesisService.findSynthesisBySampleId(new Long(sampleId));
+            SimpleSynthesisBean simpleSynthesisBean = new SimpleSynthesisBean();
+            simpleSynthesisBean.transferSynthesisForSummaryView(synthesisBean);
+            
             msgs.add("success");
-            return msgs;
+            return simpleSynthesisBean;
         }
         catch (Exception e) {
             msgs.add("Error deleting purification");
@@ -649,6 +738,52 @@ catch(Exception e){
      */
     public List<String> deletePurity(SimpleSynthesisPurificationBean editBean, HttpServletRequest httpRequest) {
         //TODO write
+        return null;
+    }
+
+    public SimpleSynthesisPurificationBean deletePurity(SimplePurityBean editBean, HttpServletRequest httpRequest) {
+
+        try {
+
+        if(editBean.getId() !=null){
+            //Only need to delete from Database if it has been saved already
+
+                SynthesisPurity purity = synthesisService.getHelper().getPurityById(new Long(editBean.getId()));
+                SynthesisPurification purification = purity.getSynthesisPurification();
+                Long purificationId = purification.getId();
+                purification = synthesisService.getHelper().findSynthesisPurificationById( purificationId);
+                Synthesis synthesis = synthesisService.getHelper().findSynthesisById(purification.getSynthesisId());
+                Long sampleId = synthesis.getSample().getId();
+                synthesisService.deleteSynthesisPurity(sampleId,purification,purity);
+
+                purification = synthesisService.getHelper().findSynthesisPurificationById(sampleId, purificationId);
+                SynthesisPurificationBean purificationBean = new SynthesisPurificationBean(purification);
+                SimpleSynthesisPurificationBean simpleSynthesisPurificationBean = new SimpleSynthesisPurificationBean(purificationBean, sampleId.toString());
+//                SynthesisPurification purification = purity.getSynthesisPurification();
+//                Set<PurityDatumCondition> datumConditions = purity.getPurityDatumCollection();
+//                Set<PurityColumnHeader> columnHeaders = new HashSet<PurityColumnHeader>();
+//                for(PurityDatumCondition datumCondition: datumConditions){
+//                    PurityColumnHeader columnHeader = datumCondition.getColumnHeader();
+//                    deleteColumnHeader(columnHeader);
+//                    s
+//                }
+            return simpleSynthesisPurificationBean;
+
+        }
+        }
+            catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public List<String> deleteColumnHeader(PurityColumnHeader header){
+        try{
+            synthesisService.deleteColumnHeader(header);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+
         return null;
     }
 
@@ -931,9 +1066,8 @@ catch(Exception e){
 
             this.checkOpenForms(synBean, httpRequest);
             httpRequest.getSession().setAttribute("sampleId", sampleId);
-            SimpleSynthesisPurificationBean simpleSynthesisPurificationBean = new SimpleSynthesisPurificationBean();
-            simpleSynthesisPurificationBean.transferSynthesisPurificationBeanToSimple(synBean, httpRequest,
-                    springSecurityAclService);
+            SimpleSynthesisPurificationBean simpleSynthesisPurificationBean = new SimpleSynthesisPurificationBean(synBean, sampleId);
+//            simpleSynthesisPurificationBean.transferSynthesisPurificationBeanToSimple(synBean, httpRequest);
             return simpleSynthesisPurificationBean;
         }
         catch (IllegalFormatConversionException e) {
@@ -952,6 +1086,24 @@ catch(Exception e){
         }
 
     }
+
+    public SimpleSynthesisPurificationBean setupUpdate(Long dataId,
+                                                       HttpServletRequest httpRequest) throws SynthesisException, NoAccessException {
+        SynthesisForm form = new SynthesisForm();
+        // set up other particles with the same primary point of contact
+//        InitSampleSetup.getInstance().getOtherSampleNames(httpRequest, sampleId, sampleService);
+
+
+            SynthesisPurificationBean synBean = synthesisService.findSynthesisPurificationById(
+                    new Long(dataId));
+            Synthesis synthesis = synBean.getDomainEntity().getSynthesis();
+            Long sampleId = synthesis.getSample().getId();
+
+            return setupUpdate(sampleId.toString(), dataId.toString(), httpRequest);
+
+    }
+
+
 
     public void assignColumnHeadersForPurification(SynthesisPurificationBean purification) throws SynthesisException {
         //checks each purity in the purification and retrieves the connected column headers
@@ -1010,100 +1162,63 @@ catch(Exception e){
     public SimplePurityBean drawMatrix(HttpServletRequest request, SimplePurityBean simplePurityBean)
             throws Exception {
 
-        SynthesisPurificationBean achar = (SynthesisPurificationBean) request.getSession().getAttribute("thePure");
-//        SimpleCharacterizationEditBean editBean =
-//                (SimpleCharacterizationEditBean) request.getSession().getAttribute("theEditChar");
-        request.setAttribute("anchor", "result");
-
-        SynthesisPurityBean purityBean = this.findMatchPurityBean(achar, simplePurityBean);
-        simplePurityBean.transferTableNumbersToPurityBean(purityBean);
-
-//		if (request.getParameter("removeColumn") != null) {
-//			int columnToRemove = Integer.parseInt(request
-//					.getParameter("removeColumn"));
-//			findingBean.removeColumn(columnToRemove);
-//			this.checkOpenForms(achar, theForm, request);
-//			return mapping.findForward("inputForm");
-//		} else if (request.getParameter("removeRow") != null) {
-//			int rowToRemove = Integer.parseInt(request
-//					.getParameter("removeRow"));
-//			findingBean.removeRow(rowToRemove);
-//			this.checkOpenForms(achar, theForm, request);
-//			return mapping.findForward("inputForm");
-//		}
-        int existingNumberOfColumns = purityBean.getPurityColumnHeaders().size();
-        int existingNumberOfRows = purityBean.getRows().size();
-
-        if (existingNumberOfColumns > purityBean.getNumberOfColumns()) {
-//			ActionMessages msgs = new ActionMessages();
-//			ActionMessage msg = new ActionMessage(
-//					"message.addCharacterization.removeMatrixColumn");
-//			msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
-//			saveMessages(request, msgs);
-//
-
-//			findingBean.setNumberOfColumns(existingNumberOfColumns);
-//			//this.checkOpenForms(achar, theForm, request);
-//			return mapping.getInputForward();
-        }
-        if (existingNumberOfRows > purityBean.getNumberOfRows()) {
-//			ActionMessages msgs = new ActionMessages();
-//			ActionMessage msg = new ActionMessage(
-//					"message.addCharacterization.removeMatrixRow");
-//			msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
-//			saveMessages(request, msgs);
-//			findingBean.setNumberOfRows(existingNumberOfRows);
-//			this.checkOpenForms(achar, theForm, request);
-//			return mapping.getInputForward();
+        if(simplePurityBean.getId()==null){
+            return drawNewMatrix(request, simplePurityBean);
         }
 
-        purityBean.updateMatrix(purityBean.getNumberOfColumns(),
-                purityBean.getNumberOfRows());
 
-        InitSynthesisSetup.getInstance().persistPurificationDropdowns(request, achar);
+        //This is just a matrix redraw.  We are not saving to the database yet.
+
+        SynthesisPurityBean oldPurityBean = this.findMatchPurityBean( simplePurityBean);
 
 
-        simplePurityBean.transferFromPurityBean(request, purityBean);
-        simplePurityBean.setColumnHeaders(purityBean.getPurityColumnHeaders());
+        simplePurityBean.transferTableNumbersToPurityBean(oldPurityBean);
+
+        //update matrix in bean, which will add or delete columns and rows
+        oldPurityBean.updateMatrix(oldPurityBean.getNumberOfColumns(),
+                oldPurityBean.getNumberOfRows());
+
+        //pull the bean matrix back to the simple bean
+        simplePurityBean.transferFromPurityBean(request, oldPurityBean);
+
+        //prep new column headers to receive data
         simplePurityBean.setDefaultValuesForNullHeaders();
 
-        request.setAttribute("anchor", "submitFinding");
-
-        //this.checkOpenForms(achar, theForm, request);
-        // set columnHeaders in the session so jsp can check duplicate columns
-        request.getSession().setAttribute("columnHeaders",
-                purityBean.getPurityColumnHeaders());
-        //return mapping.findForward("inputForm");
-
         return simplePurityBean;
+
+
+
+
     }
 
-    protected SynthesisPurityBean findMatchPurityBean(SynthesisPurificationBean achar,
+    protected SynthesisPurityBean findMatchPurityBean(
                                                SimplePurityBean simplePurityBean)
             throws Exception {
 
 
-        List<SynthesisPurityBean> findingBeans = achar.getPurityBeans();
-        if (findingBeans == null)
-            throw new Exception("Current purification has no finding matching input finding id: " + simplePurityBean.getId());
+        SynthesisPurity oldPurity =  synthesisService.getHelper().getPurityById(simplePurityBean.getId());
+        if (oldPurity == null)
+            throw new Exception("Current purification has no finding matching input purity id: " + simplePurityBean.getId());
 
-        for (SynthesisPurityBean finding : findingBeans) {
-            if (finding.getDomain() != null) {
-                Long id = finding.getDomain().getId();
-                if (id == null && simplePurityBean.getId() == 0 || //could be a new finding bean added when saving a file
-                        id != null && id.longValue() == simplePurityBean.getId()) {
-//                    achar.setTheFinding(finding);
-                    return finding;
-                }
-            }
-        }
+//        for (SynthesisPurityBean finding : findingBeans) {
+//            if (finding.getDomain() != null) {
+//                Long id = finding.getDomain().getId();
+//                if (id == null && simplePurityBean.getId() == 0 || //could be a new finding bean added when saving a file
+//                        id != null && id.longValue() == simplePurityBean.getId()) {
+////                    achar.setTheFinding(finding);
+//                    return finding;
+//                }
+//            }
+//        }
 
         if (simplePurityBean.getId() <= 0) {//new finding
             SynthesisPurityBean newBean = new SynthesisPurityBean();
 //            achar.setTheFinding(newBean);
             return newBean;
         }
+        SynthesisPurityBean newBean = new SynthesisPurityBean(oldPurity);
+        return newBean;
 
-        throw new Exception("Current purification has no finding matching input finding id: " + simplePurityBean.getId());
     }
+
 }

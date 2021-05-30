@@ -245,6 +245,7 @@ public class PurityDatumCondition implements Serializable {
 
     public void setColumnHeader(PurityColumnHeader columnHeader1){
         this.columnHeader = columnHeader1;
+        this.columnId = columnHeader1.getId();
     }
 
     /**

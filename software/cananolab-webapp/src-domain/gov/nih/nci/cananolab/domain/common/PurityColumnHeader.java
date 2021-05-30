@@ -11,7 +11,7 @@ public class PurityColumnHeader {
     private String createdBy;
     private Date createdDate;
     private Integer columnOrder;
-    private Float constantValue;
+    private String constantValue;
     private String columnType;
 
     public Long getId() {
@@ -78,11 +78,11 @@ public class PurityColumnHeader {
         this.columnOrder = columnOrder;
     }
 
-    public Float getConstantValue() {
+    public String getConstantValue() {
         return constantValue;
     }
 
-    public void setConstantValue(Float constantValue) {
+    public void setConstantValue(String constantValue) {
         this.constantValue = constantValue;
     }
 

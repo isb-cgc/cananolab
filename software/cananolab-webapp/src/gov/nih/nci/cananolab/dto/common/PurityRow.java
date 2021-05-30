@@ -35,6 +35,9 @@ public class PurityRow {
 
 	public void setRowNumber(Integer rowNumber) {
 		this.rowNumber = rowNumber;
+		for(PurityTableCell cell:cells){
+			cell.setRowNumber(rowNumber);
+		}
 	}
 
 	public void setCells(List<PurityTableCell> cells) {

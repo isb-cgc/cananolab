@@ -208,6 +208,23 @@ public class SynthesisHelper
         return entity;
     }
 
+    public Synthesis findSynthesisById(Long synthesisId) throws Exception {
+        Synthesis synthesis =null;
+        CaNanoLabApplicationService appService = (CaNanoLabApplicationService) ApplicationServiceProvider.getApplicationService();
+        DetachedCriteria crit = DetachedCriteria.forClass(Synthesis.class);
+//        crit.createAlias("synthesis", "synthesis");
+        crit.add(Property.forName("id").eq(synthesisId));
+        crit.setFetchMode("sample", FetchMode.JOIN);
+
+        crit.setResultTransformer(CriteriaSpecification.DISTINCT_ROOT_ENTITY);
+        List result = appService.query(crit);
+        if (!result.isEmpty()){
+            synthesis = (Synthesis)result.get(0);
+            synthesis.getSample().setSynthesis(synthesis);
+        }
+        return synthesis;
+    }
+
     public List<String> getAllActivationMethods() throws Exception {
         CaNanoLabApplicationService appService = (CaNanoLabApplicationService) ApplicationServiceProvider.getApplicationService();
         HQLCriteria crit = new HQLCriteria("SELECT DISTINCT value  FROM gov.nih.nci.cananolab.domain.common.CommonLookup where name = 'activation method'");
@@ -264,6 +281,50 @@ public class SynthesisHelper
             throw new NoAccessException("User has no access to the synthesis purification entity " + entityId);
         }
 
+        return findSynthesisPurificationById(entityId);
+//        CaNanoLabApplicationService appService = (CaNanoLabApplicationService) ApplicationServiceProvider.getApplicationService();
+////        DetachedCriteria crit = DetachedCriteria.forClass(SynthesisPurification.class).add(
+////                Property.forName("id").eq(new Long(entityId)));
+//        DetachedCriteria crit = DetachedCriteria.forClass(SynthesisPurification.class).add(
+//                Property.forName("id").eq(new Long(entityId)));
+//        crit.setFetchMode("files", FetchMode.JOIN);
+//        crit.setFetchMode("files.keywordCollection", FetchMode.JOIN);
+//        crit.setFetchMode("purities", FetchMode.JOIN);
+//        crit.setFetchMode("purities.purityDatumCollection", FetchMode.JOIN);
+//        crit.setFetchMode("purities.purityDatumCollection.columnHeader", FetchMode.JOIN);
+////        crit.setFetchMode("purities.purityDatumCollection.conditionCollection", FetchMode.JOIN);
+//        crit.setFetchMode("purities.files", FetchMode.JOIN);
+//        crit.setFetchMode("purities.files.keywordCollection", FetchMode.JOIN);
+//        crit.setFetchMode("purificationConfigs", FetchMode.JOIN);
+//        crit.setFetchMode("purificationConfigs.technique", FetchMode.JOIN);
+//        crit.setFetchMode("purificationConfigs.instrumentCollection", FetchMode.JOIN);
+//        crit.setFetchMode("protocol", FetchMode.JOIN);
+//        crit.setFetchMode("protocol.file", FetchMode.JOIN);
+//        crit.setFetchMode("protocol.file.keywordCollection", FetchMode.JOIN);
+//
+////        crit.setFetchMode("synthesisPurifications", FetchMode.JOIN);
+////        crit.setFetchMode("synthesisPurifications.files", FetchMode.JOIN);
+////        crit.setFetchMode("synthesisPurifications.files.keywordCollection", FetchMode.JOIN);
+////        crit.setFetchMode("synthesisPurifications.purities", FetchMode.JOIN);
+////        crit.setFetchMode("synthesisPurifications.purities.purityDatumCollection", FetchMode.JOIN);
+////        crit.setFetchMode("synthesisPurifications.purities.purityDatumCollection.conditionCollection", FetchMode.JOIN);
+////        crit.setFetchMode("synthesisPurifications.purities.files", FetchMode.JOIN);
+////        crit.setFetchMode("synthesisPurifications.purities.files.keywordCollection", FetchMode.JOIN);
+////        crit.setFetchMode("synthesisPurifications.purificationConfigs", FetchMode.JOIN);
+////        crit.setFetchMode("synthesisPurifications.purificationConfigs.technique", FetchMode.JOIN);
+////        crit.setFetchMode("synthesisPurifications.purificationConfigs.instrumentCollection", FetchMode.JOIN);
+//        crit.setResultTransformer(CriteriaSpecification.DISTINCT_ROOT_ENTITY);
+//        List result = appService.query(crit);
+//        if (!result.isEmpty()) {
+//            entity = (SynthesisPurification) result.get(0);
+//        }
+//        return entity;
+    }
+
+    public SynthesisPurification findSynthesisPurificationById(Long entityId) throws Exception{
+        SynthesisPurification entity = null;
+
+
         CaNanoLabApplicationService appService = (CaNanoLabApplicationService) ApplicationServiceProvider.getApplicationService();
 //        DetachedCriteria crit = DetachedCriteria.forClass(SynthesisPurification.class).add(
 //                Property.forName("id").eq(new Long(entityId)));
@@ -302,8 +363,6 @@ public class SynthesisHelper
         }
         return entity;
     }
-
-
 
     public List<File> findFilesByMaterialId(Long synthesisId, Long synMatId, String className) throws Exception {
 //        if (!springSecurityAclService.currentUserHasReadPermission(Long.valueOf(sampleId), SecureClassesEnum.SAMPLE.getClazz()) &&

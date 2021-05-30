@@ -1059,7 +1059,7 @@ VALUES (1, 'asymmetrical flow field-flow fractionation with multi-angle laser li
        (99, 'platelet aggregation', 'datumName', 'is above threshold?'),
        (100, 'proliferation', 'datumName', '% of control'),
        (101, 'proliferation', 'datumName', 'ratio of cell line1 to cell line 2'),
-       (102, 'purity', 'datumName', '% purity for sample'),
+       (102, 'purity', 'datumName', 'percent purity'),
        (103, 'relaxivity', 'datumName', 'R1'),
        (104, 'relaxivity', 'datumName', 'R2'),
        (105, 'relaxivity', 'datumName', 'T1'),
@@ -1586,6 +1586,7 @@ VALUES (1, 'asymmetrical flow field-flow fractionation with multi-angle laser li
        (1093, 'functionalization', 'type', 'small molecule'),
        (1094, 'synthesis', 'otherMaterialType', 'reagent'),
        (1096, 'protocol', 'type', 'purification'),
+       (1097, 'percent purity', 'otherUnit', '%'),
        (13959168, 'technique', 'otherType', 'gel electrophoresis'),
        (13959169, 'gel electrophoresis', 'otherInstrument', 'fluorescence excitation device'),
        (13959170, 'gel electrophoresis', 'otherInstrument', 'cooled digital camera'),
@@ -6315,7 +6316,7 @@ CREATE TABLE `purity_column_header` (
   `created_by` varchar(200) NOT NULL,
   `created_date` datetime NOT NULL,
   `column_order` INT(10) NOT NULL,
-  `constant_value` DECIMAL(30,10) DEFAULT NULL,
+  `constant_value` varchar(200) DEFAULT NULL,
   PRIMARY KEY (`column_pk_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
@@ -6333,7 +6334,7 @@ INSERT IGNORE INTO `canano`.`purity_column_header` (
  VALUES (2000, 'Purity datum 1', 'purity', '%', 'canano_curator', '2020-07-20 16:08:15',0),
  (2010, 'Synthesis condition 1', 'observed', 'g', 'canano_curator', '2020-07-20 16:08:15',1),
  (1010, 'datum test', 'observed', 'mg', 'canano_curator', '2020-07-20 16:08:15',0),
- (2030, 'datum test 2', 'observed', 'mg', 'canano_curator', '2020-07-20 16:08:15',0),
+ (2030, 'datum test 2', 'observed', 'mg', 'canano_curator', '2020-07-20 16:08:15',1),
  (2040,'Purity datum 2','purity','%','canano_curator','2021-02-05 15:50:00',0),
  (2050,'Purity condition 2-1','mean','%','canano_curator','2021-02-05 15:50:00',1),
  (2060,'Purity condition 2-2','standard deviation','%','canano_curator','2021-02-05 15:50:00',2);
@@ -6349,7 +6350,6 @@ UNLOCK TABLES;
 SET character_set_client = utf8;
 CREATE TABLE `purity_datum_condition`
 (
-    `purity_datum_pk_id`     bigint(20)   NOT NULL COMMENT 'purity_datum_pk_id',
     `condition_pk_id` bigint(20)   NOT NULL COMMENT 'condition_pk_id',
     `row_number` int NOT NULL COMMENT 'row number',
     `purity_pk_id`  bigint(20)  NOT NULL,
@@ -6365,7 +6365,6 @@ CREATE TABLE `purity_datum_condition`
     `column_pk_id`		 bigint(20)	NOT NULL,
     PRIMARY KEY (`condition_pk_id`),
     KEY `FK_column_TO_purity_datum_condition`(`column_pk_id`),
- --   CONSTRAINT `FK_purity_datum_TO_purity_datum_condition` FOREIGN KEY (`purity_datum_pk_id`) REFERENCES `purity_datum` (`purity_datum_pk_id`),
     CONSTRAINT `FK_column_TO_purity_condition` FOREIGN KEY (`column_pk_id`) REFERENCES `purity_column_header` (`column_pk_id`),
     CONSTRAINT `FK_purity_TO_pur_datum_condition` FOREIGN KEY (`purity_pk_id`) REFERENCES `synthesis_purity` (`purity_pk_id`)
 ) ENGINE = InnoDB
@@ -6379,23 +6378,23 @@ CREATE TABLE `purity_datum_condition`
 LOCK TABLES `purity_datum_condition` WRITE;
 /*!40000 ALTER TABLE `purity_datum_condition`
     DISABLE KEYS */;
-INSERT IGNORE INTO `purity_datum_condition` (`purity_datum_pk_id`, `condition_pk_id`,`row_number`,`purity_pk_id`, `name`, `property`, `value`,
+INSERT IGNORE INTO `purity_datum_condition` (`condition_pk_id`,`row_number`,`purity_pk_id`, `name`, `property`, `value`,
                                              `value_unit`, `value_type`, `created_by`, `created_date`,`type`,`column_pk_id`)
-VALUES (1000,1000, 1,1000,'Synthesis condition 1', NULL, '42', 'g', 'observed', 'canano_user', '2019-12-06 12:15:00','condition',2010),
-       (1010,1100,2,1000, 'Synthesis condition 2', NULL, '43', 'g', 'observed', 'canano_user', '2019-12-06 12:17:00','condition',2010),
-       (1020,1010,1,1000,'Purity datum 1',NULL, '55', '%',NULL,'canano_user', '2019-12-06 12:15:00','datum',2000),
-       (1030,1020, 2,1000,'Purity datum 2', NULL, '57.1','%',NULL,'canano_curator', '2019-12-06 12:15:00','datum',2000),
-       (1111,1111, 2,1111,'datum_test', NULL, '84', 'mg', 'observed', 'canano_curator', '2019-12-06 12:15:00','condition',2030),
-       (1111,1120,1,1111,'Purity datum',NULL,'123.00','%',NULL,'canano_curator', '2019-12-06 12:15:00','datum',1010),
-       (2222,1130,1,1100,'datum test1',NULL,'98','%',NULL,'canano_curator','2021-02-05 14:50:00','datum',2040),
-       (2222,1140,1,1100,'condition 1-1',NULL,'98','%',NULL,'canano_curator','2021-02-05 14:50:00','condition',2050),
-       (2222,1150,1,1100,'condition 1-2',NULL,'0.5','%',NULL,'canano_curator','2021-02-05 14:50:00','condition',2060),
-       (2222,1160,2,1100,'datum test2',NULL,'97','%',NULL,'canano_curator','2021-02-05 15:10:00','datum',2040),
-       (2222,1170,2,1100,'condition 2-1',NULL,'96.5','%',NULL,'canano_curator','2021-02-05 15:10:00','condition',2050),
-       (2222,1180,2,1100,'condition 2-2',NULL,'0.7','%',NULL,'canano_curator','2021-02-05 15:10:00','condition',2060),
-       (2222,1190,3,1100,'datum test3',NULL,'98','%',NULL,'canano_curator','2021-02-05 15:15:00','datum',2040),
-       (2222,1200,3,1100,'condition 3-1',NULL,'98.4','%',NULL,'canano_curator','2021-02-05 15:15:00','condition',2050),
-       (2222,1210,3,1100,'condition 3-2',NULL,'0.6','%',NULL,'canano_curator','2021-02-05 15:15:00','condition',2060);
+VALUES (1000, 1,1000,'Synthesis condition 1', NULL, '42', 'g', 'observed', 'canano_user', '2019-12-06 12:15:00','condition',2010),
+       (1100,2,1000, 'Synthesis condition 2', NULL, '43', 'g', 'observed', 'canano_user', '2019-12-06 12:17:00','condition',2010),
+       (1010,1,1000,'Purity datum 1',NULL, '55', '%',NULL,'canano_user', '2019-12-06 12:15:00','datum',2000),
+       (1020, 2,1000,'Purity datum 2', NULL, '57.1','%',NULL,'canano_curator', '2019-12-06 12:15:00','datum',2000),
+       (1111, 1,1111,'datum_test', NULL, '84', 'mg', 'observed', 'canano_curator', '2019-12-06 12:15:00','condition',2030),
+       (1120,1,1111,'Purity datum',NULL,'123.00','%',NULL,'canano_curator', '2019-12-06 12:15:00','datum',1010),
+       (1130,1,1100,'datum test1',NULL,'98','%',NULL,'canano_curator','2021-02-05 14:50:00','datum',2040),
+       (1140,1,1100,'condition 1-1',NULL,'98','%',NULL,'canano_curator','2021-02-05 14:50:00','condition',2050),
+       (1150,1,1100,'condition 1-2',NULL,'0.5','%',NULL,'canano_curator','2021-02-05 14:50:00','condition',2060),
+       (1160,2,1100,'datum test2',NULL,'97','%',NULL,'canano_curator','2021-02-05 15:10:00','datum',2040),
+       (1170,2,1100,'condition 2-1',NULL,'96.5','%',NULL,'canano_curator','2021-02-05 15:10:00','condition',2050),
+       (1180,2,1100,'condition 2-2',NULL,'0.7','%',NULL,'canano_curator','2021-02-05 15:10:00','condition',2060),
+       (1190,3,1100,'datum test3',NULL,'98','%',NULL,'canano_curator','2021-02-05 15:15:00','datum',2040),
+       (1200,3,1100,'condition 3-1',NULL,'98.4','%',NULL,'canano_curator','2021-02-05 15:15:00','condition',2050),
+       (1210,3,1100,'condition 3-2',NULL,'0.6','%',NULL,'canano_curator','2021-02-05 15:15:00','condition',2060);
 
 /*!40000 ALTER TABLE `purity_datum_condition`
     ENABLE KEYS */;
@@ -7173,8 +7172,7 @@ INSERT IGNORE INTO `synthesis_purity` (`purity_pk_id`, `synthesis_purification_p
 VALUES (1000, 1000, 'canano_curator', '2019-12-06 12:15:00'),
        (1005, 1005, 'canano_curator', '2019-08-28 00:00:00'),
        (1100, 1000, 'canano_curator', '2021-02-05 15:50:00'),
-       (1111, 1111, 'canano_curator', '2019-12-06 12:15:00'),
-       (1222, 1222, 'canano_curator', '2019-08-28 00:00:00');
+       (1111, 1111, 'canano_curator', '2019-12-06 12:15:00');
 /*!40000 ALTER TABLE `synthesis_purity`
     ENABLE KEYS */;
 UNLOCK TABLES;
