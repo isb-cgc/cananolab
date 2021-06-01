@@ -364,19 +364,19 @@ public class SynthesisPurificationBO extends BaseAnnotationBO {
         purity.setFiles(files);
 
 
-        if(newPurity){
-            //the rows and columns come in order
-            int rowNumberTemp =1;
-            for (SimplePurityRowBean rowBean: simplePurityBean.getRows()){
-                rowBean.setRowNumber(rowNumberTemp++);
-                int columnOrderTemp=1;
-                {
-                    for(SimplePurityCell cell: rowBean.getCells()){
-                        cell.setColumnOrder(columnOrderTemp++);
-                    }
-                }
-            }
-        }
+//        if(newPurity){
+//            //the rows and columns come in order
+//            int rowNumberTemp =1;
+//            for (SimplePurityRowBean rowBean: simplePurityBean.getRows()){
+//                rowBean.setRowNumber(rowNumberTemp++);
+//                int columnOrderTemp=1;
+//                {
+//                    for(SimplePurityCell cell: rowBean.getCells()){
+//                        cell.setColumnOrder(columnOrderTemp++);
+//                    }
+//                }
+//            }
+//        }
 
 
 
