@@ -856,7 +856,9 @@ public class SynthesisPurificationServices {
                     (SynthesisPurificationBO) SpringApplicationContext.getBean(httpRequest, "synthesisPurificationBO");
 
 //            SimplePurityBean newSimplePurityBean = purificationBO.drawMatrix(httpRequest, simplePurityBean);
-            List<String> msgs = purificationBO.updatePurity(httpRequest, simplePurityBean);
+            if(simplePurityBean.getId()!=null) {
+                List<String> msgs = purificationBO.updatePurity(httpRequest, simplePurityBean);
+            }
 
             SimpleSynthesisPurificationBean synthesisPurificationBean = purificationBO.setupUpdate(
                     simplePurityBean.getId(), httpRequest);
