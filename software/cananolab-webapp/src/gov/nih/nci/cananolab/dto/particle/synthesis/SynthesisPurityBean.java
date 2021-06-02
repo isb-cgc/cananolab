@@ -379,7 +379,7 @@ public class SynthesisPurityBean
             {
 //               //Now tack all the new columns onto the matrix
                 PurityColumnHeader newColumnHeader = new PurityColumnHeader();
-                newColumnHeader.setColumnOrder(i);
+                newColumnHeader.setColumnOrder(i+1);
                 newColumns.add( newColumnHeader );
             }
         }
