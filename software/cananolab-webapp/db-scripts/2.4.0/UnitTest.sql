@@ -6317,6 +6317,7 @@ CREATE TABLE `purity_column_header` (
   `created_date` datetime NOT NULL,
   `column_order` INT(10) NOT NULL,
   `constant_value` varchar(200) DEFAULT NULL,
+  `column_type` varchar(200) NOT NULL,
   PRIMARY KEY (`column_pk_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
@@ -6330,14 +6331,15 @@ INSERT IGNORE INTO `canano`.`purity_column_header` (
  `value_unit`,
  `created_by`,
  `created_date`,
- `column_order`)
- VALUES (2000, 'Purity datum 1', 'purity', '%', 'canano_curator', '2020-07-20 16:08:15',1),
- (2010, 'Synthesis condition 1', 'observed', 'g', 'canano_curator', '2020-07-20 16:08:15',2),
- (1010, 'datum test', 'observed', 'mg', 'canano_curator', '2020-07-20 16:08:15',1),
- (2030, 'datum test 2', 'observed', 'mg', 'canano_curator', '2020-07-20 16:08:15',2),
- (2040,'Purity datum 2','purity','%','canano_curator','2021-02-05 15:50:00',1),
- (2050,'Purity condition 2-1','mean','%','canano_curator','2021-02-05 15:50:00',2),
- (2060,'Purity condition 2-2','standard deviation','%','canano_curator','2021-02-05 15:50:00',3);
+ `column_order`,
+ `column_type`)
+ VALUES (2000, 'Purity datum 1', 'purity', '%', 'canano_curator', '2020-07-20 16:08:15',1,'datum'),
+ (2010, 'Synthesis condition 1', 'observed', 'g', 'canano_curator', '2020-07-20 16:08:15',2,'condition'),
+ (1010, 'datum test', 'observed', 'mg', 'canano_curator', '2020-07-20 16:08:15',1,'datum'),
+ (2030, 'datum test 2', 'observed', 'mg', 'canano_curator', '2020-07-20 16:08:15',2,'condition'),
+ (2040,'Purity datum 2','purity','%','canano_curator','2021-02-05 15:50:00',1,'datum'),
+ (2050,'Purity condition 2-1','mean','%','canano_curator','2021-02-05 15:50:00',2,'condition'),
+ (2060,'Purity condition 2-2','standard deviation','%','canano_curator','2021-02-05 15:50:00',3,'condition');
 /*!40000 ALTER TABLE `purity_column_header`
     ENABLE KEYS */;
 UNLOCK TABLES;

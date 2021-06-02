@@ -437,8 +437,8 @@ public class SynthesisPurityBean
                 {
                     PurityTableCell cell = new PurityTableCell();
                     cell.setRowNumber(row.getRowNumber());
-                    cell.setColumnOrder(new Integer(j));
-                    PurityColumnHeader headerTemp = headerHashMap.get(j);
+                    cell.setColumnOrder(new Integer(j+1));
+                    PurityColumnHeader headerTemp = headerHashMap.get(j+1);
                     cell.setColumnId(headerTemp.getId());
                     cell.setDatumOrCondition(headerTemp.getColumnType());
                     if(cell.getValue()==null){

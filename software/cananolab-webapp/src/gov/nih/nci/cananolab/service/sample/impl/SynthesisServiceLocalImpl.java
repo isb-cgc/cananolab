@@ -912,10 +912,12 @@ public class SynthesisServiceLocalImpl extends BaseServiceLocalImpl implements S
 
             for (PurityTableCell cell : newCells) {
                 PurityDatumCondition datumCondition = new PurityDatumCondition();
-                //TODO temp measure until front end made consistent.
                 datumCondition.setColumnHeader(newHeaders.get(cell.getColumnOrder()));
                 datumCondition.setName(datumCondition.getColumnHeader().getName());
                 datumCondition.setType(datumCondition.getColumnHeader().getColumnType());
+                //TODO remove this duplicate or figure out what it should be
+                datumCondition.setValueType(datumCondition.getColumnHeader().getColumnType());
+                datumCondition.setValueUnit(datumCondition.getColumnHeader().getValueUnit());
                 datumCondition.setPurity(synthesisPurity);
                 datumCondition.setValue(cell.getValue());
                 datumCondition.setOperand(cell.getOperand());
