@@ -16,7 +16,7 @@ var app = angular.module('angularApp')
   $scope.synMaterialId = $location.search()['synMaterialId'];
   $scope.sampleName = sampleService.sampleName($scope.sampleId);
   $scope.fileId = null;
-  
+  $scope.otherSupplier='';  
 
   // initial setup for dropdowns //
     $http({
@@ -46,6 +46,13 @@ var app = angular.module('angularApp')
       }).catch(function (data, status, headers, config) {
         data = data['data']
       });
+  };
+
+  // add supplier to dropdown when selecting other //
+  $scope.addSupplier =function () {
+    $scope.dropdowns.supplierNames.push($scope.otherSupplier);
+    $scope.materialElement['supplier']['supplierName']=$scope.otherSupplier;
+    $scope.otherSupplier='';
   };
 
   // cancel file //

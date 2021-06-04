@@ -1,12 +1,3 @@
-<button ng-click="tempShow=!tempShow">debug</button>
-<div style="width:800px;" ng-if="tempShow">
-  <!-- <B>Purification Copy</B> - {{purificationCopy}} <br /><br /> -->
-  <!-- <B>Purification</B> - {{purification}} <br /><br /> -->
-
-  <B>Purification technique</B> - {{purification['purityBeans']}} <br /><br />
-  <B>Purification technique Copy</B> - {{purificationCopy['purityBeans']}} <br /><br />
-</div>
-
 <div class="spacer">
   <form novalidate="" class="ng-pristine ng-valid">
     <table class="contentTitle" width="100%" border="0" summary="layout">
@@ -180,7 +171,7 @@
                               </tr>
                             </table><br />
                           </div>
-                          <div class="inherentFunctions" ng-if="instrumentFormIndex!=null" ng-repeat="i in technique.instruments">
+                          <div class="inherentFunctions" ng-if="instrumentFormIndex!=null">
                             <table class="editTableWithGrid" align="center" width="95%">
                               <tr>
                                 <td width="15%"><label>Manufacturer</label></td>
@@ -197,7 +188,7 @@
                               <tr>
                                 <td width="15%"><label>Type</label></td>
                                 <td width="85%">
-                                  <select ng-model="instrument.type" ng-options="o as o for o in instrumentTypes"></select>
+                                  <select ng-model="instrument.type" ng-options="o as o for o in dropdowns.instruments"></select>
                                 </td>
                               </tr>
                               <tr>
