@@ -1857,25 +1857,6 @@ CREATE TABLE `canano`.`synthesis_purity`
 );
 
 
-
-create table purity_datum
-(
-    purity_datum_pk_id BIGINT          not null,
-    `name`             VARCHAR(200)    NOT NULL COMMENT 'name',
-    `value`            DECIMAL(30, 10) NOT NULL COMMENT 'value',
-    `value_type`       VARCHAR(200)    NULL COMMENT 'value_type',
-    `value_unit`       VARCHAR(200)    NULL COMMENT 'value_unit',
-    `created_by`       VARCHAR(200)    NOT NULL COMMENT 'created_by',
-    `created_date`     DATETIME        NOT NULL COMMENT 'created_date',
-    `numberMod`        VARCHAR(20)     NULL DEFAULT '=' COMMENT 'numberMod',
-    `purity_pk_id`     BIGINT(200)     NULL COMMENT 'purity_pk_id',
-    `file_pk_id`       BIGINT(20)      NULL COMMENT 'file_pk_id',
-    PRIMARY KEY (`purity_datum_pk_id`),
-    CONSTRAINT `FK_purity_TO_purity_datum` FOREIGN KEY (`purity_pk_id`) REFERENCES `synthesis_purity` (`purity_pk_id`),
-    CONSTRAINT `FK_file_TO_purity_datum` FOREIGN KEY (`file_pk_id`) REFERENCES `file` (`file_pk_id`)
-);
-
-
 -- purity_file
 
 CREATE TABLE `canano`.`purity_file`
@@ -1917,12 +1898,32 @@ CREATE TABLE `canano`.`purification_config_instrument`
 );
 
 
+
+/*!40101 SET @saved_cs_client = @@character_set_client */;
+SET character_set_client = utf8;
+CREATE TABLE `purity_column_header`
+(
+    `column_pk_id`   bigint(20)   NOT NULL,
+    `name`           varchar(200) NOT NULL,
+    `property`       varchar(200) DEFAULT NULL,
+    `value_type`     varchar(200) DEFAULT NULL,
+    `value_unit`     varchar(200) DEFAULT NULL,
+    `created_by`     varchar(200) NOT NULL,
+    `created_date`   datetime     NOT NULL,
+    `column_order`   INT(10)      NOT NULL,
+    `constant_value` varchar(200) DEFAULT NULL,
+    `column_type`    varchar(200) NOT NULL,
+    PRIMARY KEY (`column_pk_id`)
+) ENGINE = InnoDB
+  DEFAULT CHARSET = latin1;
+
 -- purity_datum_condition
 
 CREATE TABLE `purity_datum_condition`
 (
-    `datum_pk_id`     bigint(20)   NOT NULL COMMENT 'purity_datum_pk_id',
     `condition_pk_id` bigint(20)   NOT NULL COMMENT 'condition_pk_id',
+    `row_number`      int          NOT NULL COMMENT 'row number',
+    `purity_pk_id`    bigint(20)   NOT NULL,
     `name`            varchar(200) NOT NULL,
     `property`        varchar(200) DEFAULT NULL,
     `value`           varchar(200) NOT NULL,
@@ -1930,8 +1931,13 @@ CREATE TABLE `purity_datum_condition`
     `value_type`      varchar(200) DEFAULT NULL,
     `created_by`      varchar(200) NOT NULL,
     `created_date`    datetime     NOT NULL,
+    `numberMod`       varchar(20)  DEFAULT '=' COMMENT 'numberMod',
+    `type`            varchar(20)  DEFAULT NULL,
+    `column_pk_id`    bigint(20)   NOT NULL,
     PRIMARY KEY (`condition_pk_id`),
-    CONSTRAINT `FK_purity_datum_TO_purity_datum_condition` FOREIGN KEY (`datum_pk_id`) REFERENCES `purity_datum` (`purity_datum_pk_id`)
+    KEY `FK_column_TO_purity_datum_condition` (`column_pk_id`),
+    CONSTRAINT `FK_column_TO_purity_condition` FOREIGN KEY (`column_pk_id`) REFERENCES `purity_column_header` (`column_pk_id`),
+    CONSTRAINT `FK_purity_TO_pur_datum_condition` FOREIGN KEY (`purity_pk_id`) REFERENCES `synthesis_purity` (`purity_pk_id`)
 );
 /*!40101 SET character_set_client = @saved_cs_client */;
 

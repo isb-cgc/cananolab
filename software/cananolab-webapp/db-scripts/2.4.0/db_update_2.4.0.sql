@@ -1,5 +1,5 @@
 /*
- This script is for updating the current production database version 2.3.7
+ This script is for updating the current production database version 2.3.x
    to the structure needed to support 2.4.0
  */
 
@@ -354,6 +354,7 @@ CREATE TABLE `purity_column_header`
     `created_date`   datetime     NOT NULL,
     `column_order`   INT(10)      NOT NULL,
     `constant_value` varchar(200) DEFAULT NULL,
+    `column_type` varchar(200) NOT NULL,
     PRIMARY KEY (`column_pk_id`)
 );
 
