@@ -47,10 +47,10 @@ var app = angular.module('angularApp')
           "sampleIds": $scope.sampleId.data
         }
       }).
-      then(function (res) {
+      then(function (data) {
         data = data['data']
         let a = (window).document.createElement('a');
-        a.href = (window).URL.createObjectURL(new Blob([JSON.stringify(res)], {
+        a.href = (window).URL.createObjectURL(new Blob([JSON.stringify(data)], {
           type: 'application/json'
         }));
         a.download = 'caNanoLab_sample_data_' + $scope.sampleId.data + '.json';
@@ -59,9 +59,9 @@ var app = angular.module('angularApp')
         (window).document.body.removeChild(a);
         $scope.loader = false;
       }).
-      catch(function (res) {
+      catch(function (data) {
         data = data['data']
-        window.alert('ERROR: ' + res);
+        window.alert('ERROR: ' + data);
         $scope.loader = false;
         $scope.message = data;
       });
@@ -77,10 +77,10 @@ var app = angular.module('angularApp')
           "sampleIds": $scope.sampleId.data
         }
       }).
-      then(function (res) {
+      then(function (data) {
         data = data['data']
         let a = (window).document.createElement('a');
-        a.href = (window).URL.createObjectURL(new Blob([JSON.stringify(res)], {
+        a.href = (window).URL.createObjectURL(new Blob([JSON.stringify(data)], {
           type: 'application/json'
         }));
         a.download = 'caNanoLab_sample_data_' + $scope.sampleId.data + '.xml';
@@ -89,9 +89,9 @@ var app = angular.module('angularApp')
         (window).document.body.removeChild(a);
         $scope.loader = false;
       }).
-      catch(function (res) {
+      catch(function (data) {
         data = data['data']
-        window.alert('ERROR: ' + res);
+        window.alert('ERROR: ' + data);
         $scope.loader = false;
         $scope.message = data;
       });
