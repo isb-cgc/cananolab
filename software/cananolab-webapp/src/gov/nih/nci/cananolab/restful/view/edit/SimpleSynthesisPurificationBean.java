@@ -285,9 +285,11 @@ public class SimpleSynthesisPurificationBean {
                 simpleExperimentBean.setId(purificationConfigBean.getDomain().getPurificationConfigPkId());
 //                simpleExperimentBean.setTechniqueDisplayName(purificationConfigBean.getTechniqueDisplayName());
                 simpleExperimentBean.setDescription(purificationConfigBean.getDescription());
-                simpleExperimentBean.setTechniqueid(purificationConfigBean.getDomain().getTechnique().getId());
-                simpleExperimentBean.setTechniqueType(purificationConfigBean.getDomain().getTechnique().getType());
-                simpleExperimentBean.setAbbreviation(purificationConfigBean.getDomain().getTechnique().getAbbreviation());
+                if(purificationConfigBean.getDomain().getTechnique()!=null) {
+                    simpleExperimentBean.setTechniqueid(purificationConfigBean.getDomain().getTechnique().getId());
+                    simpleExperimentBean.setTechniqueType(purificationConfigBean.getDomain().getTechnique().getType());
+                    simpleExperimentBean.setAbbreviation(purificationConfigBean.getDomain().getTechnique().getAbbreviation());
+                }
                 List<SimpleInstrumentBean> simpleInstrumentBeans = new ArrayList<SimpleInstrumentBean>();
                 if (purificationConfigBean.getInstruments() != null && purificationConfigBean.getInstruments().size()>0) {
                     for (Instrument instrument : purificationConfigBean.getInstruments()) {
@@ -301,8 +303,9 @@ public class SimpleSynthesisPurificationBean {
 
                     }
                     simpleExperimentBean.setInstruments(simpleInstrumentBeans);
-                    simpleExperimentBeans.add(simpleExperimentBean);
+
                 }
+                simpleExperimentBeans.add(simpleExperimentBean);
             }
             setSimpleExperimentBeans(simpleExperimentBeans);
 

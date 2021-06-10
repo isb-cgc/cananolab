@@ -1,7 +1,6 @@
 package gov.nih.nci.cananolab.service.sample.impl;
 
-import gov.nih.nci.cananolab.domain.characterization.OtherCharacterization;
-import gov.nih.nci.cananolab.domain.common.Datum;
+
 import gov.nih.nci.cananolab.domain.common.File;
 import gov.nih.nci.cananolab.domain.common.Instrument;
 import gov.nih.nci.cananolab.domain.common.PurificationConfig;
@@ -22,7 +21,7 @@ import gov.nih.nci.cananolab.domain.particle.SynthesisPurification;
 import gov.nih.nci.cananolab.domain.particle.SynthesisPurity;
 import gov.nih.nci.cananolab.dto.common.FileBean;
 
-import gov.nih.nci.cananolab.dto.common.PurificationConfigBean;
+
 import gov.nih.nci.cananolab.dto.common.PurityRow;
 import gov.nih.nci.cananolab.dto.common.table.PurityTableCell;
 import gov.nih.nci.cananolab.dto.particle.SampleBean;
@@ -35,10 +34,9 @@ import gov.nih.nci.cananolab.dto.particle.synthesis.SynthesisMaterialBean;
 import gov.nih.nci.cananolab.dto.particle.synthesis.SynthesisMaterialElementBean;
 import gov.nih.nci.cananolab.dto.particle.synthesis.SynthesisPurificationBean;
 import gov.nih.nci.cananolab.dto.particle.synthesis.SynthesisPurityBean;
-import gov.nih.nci.cananolab.exception.CompositionException;
+
 import gov.nih.nci.cananolab.exception.NoAccessException;
-import gov.nih.nci.cananolab.exception.PointOfContactException;
-import gov.nih.nci.cananolab.exception.SampleException;
+
 import gov.nih.nci.cananolab.exception.SynthesisException;
 import gov.nih.nci.cananolab.security.enums.SecureClassesEnum;
 import gov.nih.nci.cananolab.security.service.SpringSecurityAclService;
@@ -50,7 +48,7 @@ import gov.nih.nci.cananolab.system.applicationservice.ApplicationException;
 import gov.nih.nci.cananolab.system.applicationservice.CaNanoLabApplicationService;
 import gov.nih.nci.cananolab.system.applicationservice.client.ApplicationServiceProvider;
 import gov.nih.nci.cananolab.system.query.hibernate.HQLCriteria;
-import gov.nih.nci.cananolab.util.Comparators;
+
 import gov.nih.nci.cananolab.util.Constants;
 import java.util.ArrayList;
 import java.util.Date;
@@ -58,20 +56,14 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-import java.util.SortedSet;
-import java.util.TreeSet;
-import java.util.function.LongToDoubleFunction;
-import net.sf.ehcache.management.sampled.SampledEhcacheMBeans;
-import net.sf.ehcache.management.sampled.SampledMBeanRegistrationProvider;
+
 import org.apache.log4j.Logger;
-import org.bouncycastle.util.test.Test;
-import org.hibernate.criterion.DetachedCriteria;
-import org.hibernate.criterion.Property;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
-import org.springframework.security.access.method.P;
+
 import org.springframework.stereotype.Component;
-import sun.tools.tree.ThisExpression;
+
 
 @Component("synthesisService")
 public class SynthesisServiceLocalImpl extends BaseServiceLocalImpl implements SynthesisService {
@@ -87,7 +79,7 @@ public class SynthesisServiceLocalImpl extends BaseServiceLocalImpl implements S
                                                       SampleBean oldSampleBean, SampleBean[] newSampleBeans) throws SynthesisException, NoAccessException {
         try {
             for (SampleBean sampleBean : newSampleBeans) {
-                SynthesisFunctionalizationBean copyBean = null;
+                SynthesisFunctionalizationBean copyBean ;
                 SynthesisFunctionalization copy = entityBean.getDomainCopy(SpringSecurityUtil.getLoggedInUserName());
                 try {
                     copyBean = new SynthesisFunctionalizationBean(copy);
@@ -121,7 +113,7 @@ public class SynthesisServiceLocalImpl extends BaseServiceLocalImpl implements S
                                              SampleBean[] newSampleBeans) throws SynthesisException, NoAccessException {
         try {
             for (SampleBean sampleBean : newSampleBeans) {
-                SynthesisMaterialBean copyBean = null;
+                SynthesisMaterialBean copyBean ;
                 SynthesisMaterial copy = entityBean.getDomainCopy(SpringSecurityUtil.getLoggedInUserName());
                 try {
                     copyBean = new SynthesisMaterialBean(copy);
@@ -157,7 +149,7 @@ public class SynthesisServiceLocalImpl extends BaseServiceLocalImpl implements S
             NoAccessException {
         try {
             for (SampleBean sampleBean : newSampleBeans) {
-                SynthesisPurificationBean copyBean = null;
+                SynthesisPurificationBean copyBean ;
                 SynthesisPurification copy = entityBean.getDomainCopy(SpringSecurityUtil.getLoggedInUserName(), true);
                 try {
                     copyBean = new SynthesisPurificationBean(copy);
@@ -485,7 +477,6 @@ public class SynthesisServiceLocalImpl extends BaseServiceLocalImpl implements S
             SynthesisPurification synthesisPurification = synthesisHelper.findSynthesisPurificationById(
                     dataId);
             if (synthesisPurification != null) {
-                synthesisPurification.getSynthesisId();
                 Synthesis synthesis = synthesisHelper.findSynthesisById(synthesisPurification.getSynthesisId());
                 synthesisPurification.setSynthesis(synthesis);
                 spBean = new SynthesisPurificationBean(synthesisPurification);
@@ -579,6 +570,7 @@ public class SynthesisServiceLocalImpl extends BaseServiceLocalImpl implements S
                 synthesis = createSynthesis(sampleBean);
             } else {
                 synthesis = sample.getSynthesis();
+                newSynthesis = false;
             }
             synthesisFunctionalization.setSynthesis(synthesis);
 
@@ -795,6 +787,7 @@ public class SynthesisServiceLocalImpl extends BaseServiceLocalImpl implements S
 
             Long debug = synthesisPurification.getId();
 
+            //TODO detect if a purity has been removed
             for (SynthesisPurityBean synthesisPurityBean : synthesisPurificationBean.getPurityBeans()) {
                 this.saveSynthesisPurity(synthesisPurityBean, synthesisPurificationBean);
             }
@@ -865,6 +858,7 @@ public class SynthesisServiceLocalImpl extends BaseServiceLocalImpl implements S
 //Need to save purity to get the ID for the dependents
             appService.saveOrUpdate(synthesisPurity);
 
+            //TODO detect if columnHeaders have been removed
             //Next need to save the column headers
             HashMap<Integer, PurityColumnHeader> newHeaders = new HashMap<Integer, PurityColumnHeader>();
             for (PurityColumnHeader header : synthesisPurityBean.getPurityColumnHeaders()) {
@@ -872,6 +866,7 @@ public class SynthesisServiceLocalImpl extends BaseServiceLocalImpl implements S
                 newHeaders.put(newHeader.getColumnOrder(), newHeader);
             }
 
+            //TODO detect if datum have been removed
             //Update existing PurityDatumCondition
             Set<PurityDatumCondition> originalDatum = synthesisHelper.getPurityDatumByPurity(synthesisPurity.getId());
             HashMap<Long, PurityTableCell> cellHashMap = new HashMap<Long, PurityTableCell>();
@@ -890,7 +885,7 @@ public class SynthesisServiceLocalImpl extends BaseServiceLocalImpl implements S
             for (PurityDatumCondition condition : originalDatum) {
                 PurityTableCell cell = cellHashMap.get(condition.getId());
                 if (cell != null) {
-                    condition = update(condition, cell);
+                    update(condition, cell);
                 }
 
             }
@@ -1076,9 +1071,8 @@ public class SynthesisServiceLocalImpl extends BaseServiceLocalImpl implements S
 
     public PurityColumnHeader getColumnHeaderById(Long id) throws SynthesisException {
         try {
-            PurityColumnHeader columnHeader = synthesisHelper.findPurityColumnHeaderById(id, "PurityColumnHeader");
+            return synthesisHelper.findPurityColumnHeaderById(id, "PurityColumnHeader");
 
-            return columnHeader;
 
         }
         catch (Exception e) {
@@ -1157,7 +1151,7 @@ public class SynthesisServiceLocalImpl extends BaseServiceLocalImpl implements S
 
         }
         catch (Exception e) {
-            String err = "Error deleting Purity Datum Condtion " + element.getId();
+            String err = "Error deleting Purity Datum Condition " + element.getId();
             logger.error(err, e);
             throw new SynthesisException(err, e);
         }
