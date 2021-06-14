@@ -1,6 +1,7 @@
 package gov.nih.nci.cananolab.restful;
 
 
+import com.github.underscore.lodash.U;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonParser;
@@ -81,8 +82,6 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.InputSource;
-import restful.view.SimpleSynthesisExportBean;
-
 
 @Path("/sample")
 public class SampleServices {
@@ -1204,27 +1203,26 @@ public class SampleServices {
 
         jasonData.append( ",\"characterization\": "  );
         jasonData.append( doIndent( gson.toJson(finalBean), indent * 4 ) );
-
-        //Synthesis
-		SynthesisBO synthesisBO;
-		SynthesisBean synthesisBean;
-		SimpleSynthesisBean simpleSynthesisBean=null;
-		SynthesisForm synthesisForm;
-		try{
-			synthesisForm = new SynthesisForm();
-			synthesisForm.setSampleId(sampleId);
-			synthesisBO = (SynthesisBO) SpringApplicationContext.getBean(httpRequest, "synthesisBO");
-			synthesisBean = synthesisBO.summaryView(synthesisForm, httpRequest);
-			simpleSynthesisBean = new SimpleSynthesisBean();
-			simpleSynthesisBean.transferSynthesisForSummaryView(synthesisBean);
-		} catch(Exception e){
-			logger.error("Error exporting synthesis", e);
-		}
-
-		jasonData.append(",\"synthesis\": ");
-		// Gson could not serialize a SimpleSynthesisBean to JSON
-		// jasonData.append(doIndent(gson.toJson(simpleSynthesisBean), indent *4));
-	    jasonData.append(doIndent(gson.toJson( new SimpleSynthesisExportBean( simpleSynthesisBean )), indent *4));
+//TODO Add back when Synthesis added to main
+//        //Synthesis
+//		SynthesisBO synthesisBO;
+//		SynthesisBean synthesisBean;
+//		SimpleSynthesisBean simpleSynthesisBean=null;
+//		SynthesisForm synthesisForm;
+//		try{
+//			synthesisForm = new SynthesisForm();
+//			synthesisForm.setSampleId(sampleId);
+//			synthesisBO = (SynthesisBO) SpringApplicationContext.getBean(httpRequest, "synthesisBO");
+//			synthesisBean = synthesisBO.summaryView(synthesisForm, httpRequest);
+//			simpleSynthesisBean = new SimpleSynthesisBean();
+//			simpleSynthesisBean.transferSynthesisForSummaryView(synthesisBean);
+//		} catch(Exception e){
+//			logger.error("Error exporting synthesis", e);
+//		}
+//
+//		jasonData.append(",\"synthesis\": ");
+//		jasonData.append(doIndent(gson.toJson(simpleSynthesisBean), indent *4));
+//		jasonData.append(doIndent(gson.toJson( new SimpleSynthesisExportBean( simpleSynthesisBean )), indent *4));
 
 
         // Publication
@@ -1252,112 +1250,23 @@ public class SampleServices {
 
 
     /**
-     * Convert (formatted) JSON to XML
+     * Convert JSON to XML
      *
      * @param jsonText
      * @return  Formatted XML
      */
-    private String jsonToXml( String jsonText ) {
+	private String jsonToXml( String jsonText ) {
         try {
-            jsonText = jsonText.replaceAll( "\\\\u00[0-1][1-9a-fA-F]", " " );
-            JSONObject jso = new JSONObject( cleanJson(jsonText) );
-            String xml = XML.toString(jso, "caNanoLabXml");
-            StreamSource source = new StreamSource(new StringReader(xml));
-            StringWriter writer = new StringWriter();
-            StreamResult result = new StreamResult(writer);
-            Transformer transformer = TransformerFactory.newInstance().newTransformer();
-            transformer.setOutputProperty( OutputKeys.ENCODING, "UTF-8");
-            transformer.setOutputProperty(OutputKeys.INDENT, "yes");
-            transformer.transform(source, result);
-            return xmlFormat( writer.toString());
+			String xml = U.jsonToXml(jsonText);
+			// System.out.println("gov.nih.nci.cananolab.restful.SampleServices.jsonToXml: " + xml );
+			return xml;
         }
         catch (Exception e)
         {
-            System.err.println( "Error converting JSON to XML: " + cleanJson(jsonText) );
-            // e.printStackTrace();
+            System.err.println( "Error converting JSON to XML");
+            e.printStackTrace();
             return null;
         }
     }
 
-
-    /**
-     * Some JSON elements do not translate cleanly to XML
-     *
-     * @param json
-     * @return modified JSON String
-     *
-     * @TODO Character reference "&#x2" is an invalid XML character.
-     */
-    private String cleanJson( String json){
-	    StringBuilder cleanData = new StringBuilder(  );
-        try
-        {
-            BufferedReader bufReader = new BufferedReader(new StringReader(json));
-            String line;
-
-            while( (line=bufReader.readLine()) != null )
-            {
-                if(line.matches("^\\s*\\\"[^:]+\\s.*:.*\\[")){
-                    String pattern = "^(.*):.*";
-                    String temp = line.replaceAll(pattern, "$1");
-                    pattern = "^(\\s*)(.*)";
-                    String data = temp.replaceAll( pattern, "$2");
-                    temp = temp.replaceAll( pattern, "$1" + data.replaceAll( " ", "_" ));
-                    line = temp  + ": [";
-                }
-                cleanData.append( line );
-                cleanData.append( "\n" );
-            }
-        }
-        catch( IOException e )
-        {
-            e.printStackTrace();
-        }
-        return cleanData.toString();
-    }
-
-
-    /**
-     * Format (indent etc.) XML
-     *
-     * @param xml
-     * @return formatted xml
-     */
-    private String xmlFormat(String xml) {
-        try {
-            // Turn xml string into a document
-            Document document = DocumentBuilderFactory.newInstance()
-                    .newDocumentBuilder()
-                    .parse(new InputSource(new ByteArrayInputStream(xml.getBytes( StandardCharsets.UTF_8 ))));
-
-            // Remove whitespaces outside tags
-            document.normalize();
-            XPath xPath = XPathFactory.newInstance().newXPath();
-            NodeList nodeList = (NodeList) xPath.evaluate("//text()[normalize-space()='']",
-                    document,
-                    XPathConstants.NODESET);
-
-            for (int i = 0; i < nodeList.getLength(); ++i) {
-                Node node = nodeList.item(i);
-                node.getParentNode().removeChild(node);
-            }
-
-            // Setup transformer options
-            TransformerFactory transformerFactory = TransformerFactory.newInstance();
-            transformerFactory.setAttribute("indent-number", 4);
-            Transformer transformer = transformerFactory.newTransformer();
-            transformer.setOutputProperty(OutputKeys.ENCODING, "UTF-8");
-            transformer.setOutputProperty(OutputKeys.OMIT_XML_DECLARATION, "yes");
-            transformer.setOutputProperty(OutputKeys.INDENT, "yes");
-
-            // Return the formatted xml string
-            StringWriter stringWriter = new StringWriter();
-            transformer.transform(new DOMSource(document), new StreamResult(stringWriter));
-            return stringWriter.toString();
-        }
-        catch (Exception e)
-        {
-            throw new RuntimeException(e);
-        }
-    }
 }
