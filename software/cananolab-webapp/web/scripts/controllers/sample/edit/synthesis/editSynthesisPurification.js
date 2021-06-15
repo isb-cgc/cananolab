@@ -5,7 +5,7 @@
       $scope.dropdowns = {};
       $scope.currentFile = {}; // current file being edited //
       $scope.fileArray = [];
-      $scope.technique = {}; // current inherent being edited //
+      $scope.technique = []; // current inherent being edited //
       $scope.instrument = {}; // current instrument being edited //
       $scope.instrumentFormIndex = null; // current instrument being edited //
       $scope.techniqueFormIndex = null;
@@ -17,6 +17,7 @@
       $scope.sampleName = sampleService.sampleName($scope.sampleId);
       $scope.fileId = null;
       $scope.operands = ['='];
+      $scope.otherInstrumentType='';  
 
       /* csv upload */
       var csvColumnMaxCount = 25; // Maximum number of columns allowed
@@ -78,6 +79,14 @@
           data = data['data']
         });
       };
+
+      // add supplier to dropdown when selecting other //
+      
+      $scope.addType =function (otherInstrumentType) {
+        $scope.instrumentTypes.push(otherInstrumentType);
+        $scope.instrument.type=otherInstrumentType;
+        $scope.otherInstrumentType='';
+      };      
 
       // cancel file //
       $scope.cancelFile = function () {
@@ -218,6 +227,7 @@
         console.log(index)
         if (index != -1) {
           $scope.technique = angular.copy(technique);
+          $scope.technique['instruments']=[];
           $scope.techniqueFormIndex = index;
         } else {
           $scope.technique = {
@@ -338,7 +348,7 @@
       // save instrument //
       $scope.saveInstrument = function (instrument) {
         if ($scope.instrumentFormIndex == -1) {
-          $scope.technique.push($scope.instrument)
+          $scope.technique['instruments'].push($scope.instrument)
         } else {
           $scope.technique.instruments[$scope.instrumentFormIndex] = instrument;
         }
