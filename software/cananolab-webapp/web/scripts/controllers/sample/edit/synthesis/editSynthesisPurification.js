@@ -227,7 +227,9 @@
         console.log(index)
         if (index != -1) {
           $scope.technique = angular.copy(technique);
-          $scope.technique['instruments']=[];
+          if (!$scope.technique['instruments']) {
+            $scope.technique['instruments']=[];
+          }
           $scope.techniqueFormIndex = index;
         } else {
           $scope.technique = {
