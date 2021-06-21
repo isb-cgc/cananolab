@@ -23,7 +23,9 @@ import gov.nih.nci.cananolab.dto.particle.synthesis.SynthesisPurityBean;
 import gov.nih.nci.cananolab.exception.NoAccessException;
 import gov.nih.nci.cananolab.exception.SampleException;
 import gov.nih.nci.cananolab.exception.SynthesisException;
+import gov.nih.nci.cananolab.restful.SpringApplicationContext;
 import gov.nih.nci.cananolab.restful.core.BaseAnnotationBO;
+import gov.nih.nci.cananolab.restful.sample.ExperimentConfigManager;
 import gov.nih.nci.cananolab.restful.sample.InitSampleSetup;
 import gov.nih.nci.cananolab.restful.util.PropertyUtil;
 import gov.nih.nci.cananolab.restful.util.SynthesisUtil;
@@ -223,6 +225,37 @@ public class SynthesisPurificationBO extends BaseAnnotationBO {
                     technique.setCreatedDate(purification.getCreatedDate());
 
                     config.setTechnique(technique);
+                } else {
+                    //TODO see if there is a matching technique for this listed type
+
+                    ExperimentConfigManager experimentMgr =
+                            (ExperimentConfigManager) SpringApplicationContext.getBean(httpRequest, "experimentConfigManager");
+
+                    List<Technique> techniqueList = experimentMgr.getTechniquesByType(sExperimentBean.getTechniqueType());
+                    if(techniqueList.size()==1){
+                        config.setTechnique(techniqueList.get(0));
+                    } else {
+                        //check for matches with other fields
+
+                        for(Technique tempTech:techniqueList){
+                            if(tempTech.getAbbreviation().equals(sExperimentBean.getAbbreviation())){
+                                config.setTechnique(tempTech);
+                                break;
+                            }
+                        }
+                        if(config.getTechnique()==null){
+                            //There was no match in existing so need to create a new technique
+                            Technique technique = new Technique();
+                            technique.setType(sExperimentBean.getTechniqueType());
+                            technique.setAbbreviation(sExperimentBean.getAbbreviation());
+//                            technique.setCreatedBy(purification.getCreatedBy());
+//                            technique.setCreatedDate(purification.getCreatedDate());
+
+                            config.setTechnique(technique);
+                        }
+
+                    }
+
                 }
                 config.setPurificationConfigPkId(sExperimentBean.getId());
                 config.setDescription(sExperimentBean.getDescription());

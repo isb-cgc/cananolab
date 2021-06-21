@@ -2,9 +2,7 @@ package gov.nih.nci.cananolab.domain.common;
 
 import gov.nih.nci.cananolab.domain.particle.SynthesisPurity;
 import java.io.Serializable;
-import java.util.Collection;
 import java.util.Date;
-import org.apache.poi.hssf.record.formula.functions.If;
 
 
 /**
