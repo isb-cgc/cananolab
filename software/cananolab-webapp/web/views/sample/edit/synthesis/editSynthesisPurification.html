@@ -375,7 +375,7 @@
                     <tr ng-if="columnForm">
                       <td colspan="{{currentFinding.columnHeaders.length}}">
                         <table class="subSubmissionView" width="100%" align="center" id="matrix"
-                          ng-if="currentFinding.columnHeaders.length">
+                          ng-if="currentFinding.columnHeaders.length" width="600px;">
                           <tr>
                             <td colspan="2">
                               <h3 style="margin:0px;padding:0px;">Column Definitions</h3>At least one column must be of
@@ -408,7 +408,9 @@
                                 <option value=""></option>
                                 <option ng-disabled="disableColumn(option)">{{option}}</option>
                           
-                              </select>
+                              </select><br />
+                              <span style="font-style: italic; font-size: 0.8em;">Combination of column name and column value type must be unique.</span>
+
 
                               <div id="promptCategory" ng-if="findingsColumn.name=='other'">
                                 <table cellspacing="5" cellpadding="0" border="0" width="100%" class="promptbox"
@@ -482,7 +484,9 @@
                             <td><select ng-hide="loader" ng-model="findingsColumn.valueType"
                                 data-ng-options="option for option in purification.datumConditionValueTypeLookup">
                                 <option value=""></option>
-                              </select>
+                              </select><br />
+                              <span style="font-style: italic; font-size: 0.8em;">Combination of column name and column value type must be unique.</span>
+
                               <div id="promptCategory" ng-if="findingsColumn.valueType=='other'">
                                 <table cellspacing="5" cellpadding="0" border="0" width="100%" class="promptbox"
                                   summary="layout">

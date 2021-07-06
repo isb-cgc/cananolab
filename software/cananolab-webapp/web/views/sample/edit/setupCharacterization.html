@@ -967,7 +967,7 @@
 										</tr>
 										<tr ng-if="columnForm">
 											<td colspan="{{currentFinding.columnHeaders.length}}">
-												<table class="subSubmissionView" width="100%" align="center" id="matrix" ng-if="currentFinding.columnHeaders.length">
+												<table class="subSubmissionView" width="600px" align="center" id="matrix" ng-if="currentFinding.columnHeaders.length">
 													<tr>
 														<td colspan="2"><h3 style="margin:0px;padding:0px;">Column Definitions</h3>At least one column must be of type Datum.</td>
 													</tr>
@@ -995,7 +995,9 @@
 															<option value=""></option>
                                                             <option  ng-disabled="disableColumn(option)">{{option}}</option>
 
-															</select>
+															</select><br />
+															<span style="font-style: italic; font-size: 0.8em;">Combination of column name and column value type must be unique.</span>
+
 
 					<div id="promptCategory" ng-if="findingsColumn.columnName=='other'">
                          <table cellspacing="5" cellpadding="0" border="0" width="100%" class="promptbox" summary="layout">
@@ -1059,7 +1061,9 @@
 													</tr>
 													<tr>
 														<td><label for="valueType">Column Value Type</label></td>
-														<td><select ng-hide="loader" ng-model="findingsColumn.valueType" data-ng-options="option for option in data.datumConditionValueTypeLookup"><option value=""></option></select>
+														<td><select ng-hide="loader" ng-model="findingsColumn.valueType" data-ng-options="option for option in data.datumConditionValueTypeLookup"><option value=""></option></select><br />
+															<span style="font-style: italic; font-size: 0.8em;">Combination of column name and column value type must be unique.</span>
+
 					<div id="promptCategory" ng-if="findingsColumn.valueType=='other'">
                          <table cellspacing="5" cellpadding="0" border="0" width="100%" class="promptbox" summary="layout">
                              <tbody>
