@@ -248,8 +248,8 @@ public class SynthesisPurificationBO extends BaseAnnotationBO {
                             Technique technique = new Technique();
                             technique.setType(sExperimentBean.getTechniqueType());
                             technique.setAbbreviation(sExperimentBean.getAbbreviation());
-//                            technique.setCreatedBy(purification.getCreatedBy());
-//                            technique.setCreatedDate(purification.getCreatedDate());
+                            technique.setCreatedBy(purification.getCreatedBy());
+                            technique.setCreatedDate(purification.getCreatedDate());
 
                             config.setTechnique(technique);
                         }

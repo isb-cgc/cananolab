@@ -9,6 +9,7 @@ import gov.nih.nci.cananolab.domain.common.PurityColumnHeader;
 import gov.nih.nci.cananolab.domain.common.PurityDatumCondition;
 import gov.nih.nci.cananolab.domain.common.Supplier;
 
+import gov.nih.nci.cananolab.domain.common.Technique;
 import gov.nih.nci.cananolab.domain.particle.Sample;
 import gov.nih.nci.cananolab.domain.particle.SfeInherentFunction;
 import gov.nih.nci.cananolab.domain.particle.SmeInherentFunction;
@@ -1187,6 +1188,11 @@ public class SynthesisServiceLocalImpl extends BaseServiceLocalImpl implements S
                 for (PurificationConfig config : configs) {
                     if (!oldConfigs.contains(config)) {
                         //TODO new config
+                        if(config.getTechnique().getId()==null){
+                            //New technique
+                            appService.saveOrUpdate(config.getTechnique());
+
+                        }
                         appService.saveOrUpdate(config);
                     }
                 }
@@ -1487,7 +1493,21 @@ public class SynthesisServiceLocalImpl extends BaseServiceLocalImpl implements S
         }
     }
 
-    public PurificationConfig createTechniqueRecord(PurificationConfig technique) throws SynthesisException {
+    public PurificationConfig createPurificationConfigRecord(PurificationConfig config) throws SynthesisException {
+        try {
+            CaNanoLabApplicationService appService =
+                    (CaNanoLabApplicationService) ApplicationServiceProvider.getApplicationService();
+            appService.saveOrUpdate(config);
+            return config;
+        }
+        catch (Exception e) {
+            String err = "Problem saving new Technique ";
+            logger.error(err, e);
+            throw new SynthesisException(err, e);
+        }
+    }
+
+    public Technique createTechniqueRecord(Technique technique) throws SynthesisException {
         try {
             CaNanoLabApplicationService appService =
                     (CaNanoLabApplicationService) ApplicationServiceProvider.getApplicationService();

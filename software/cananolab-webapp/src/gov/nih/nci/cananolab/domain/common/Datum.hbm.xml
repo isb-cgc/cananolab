@@ -32,7 +32,7 @@
 		</set>
 		<many-to-one class="Finding"
 			column="finding_pk_id" lazy="proxy" name="finding" />
-		<many-to-one class="File"
-			column="file_pk_id" lazy="proxy" name="file" />
+<!--		<many-to-one class="File"-->
+<!--			column="file_pk_id" lazy="proxy" name="file" />-->
 	</class>
 </hibernate-mapping>
