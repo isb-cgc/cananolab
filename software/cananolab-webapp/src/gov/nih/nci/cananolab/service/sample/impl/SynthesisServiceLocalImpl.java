@@ -52,6 +52,7 @@ import gov.nih.nci.cananolab.system.query.hibernate.HQLCriteria;
 
 import gov.nih.nci.cananolab.util.Constants;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -1183,17 +1184,37 @@ public class SynthesisServiceLocalImpl extends BaseServiceLocalImpl implements S
 
             Set<PurificationConfig> oldConfigs = synthesisHelper.findConfigByPurificationId(purification.getId());
 
+            if(oldConfigs==null){
+                oldConfigs = new HashSet<PurificationConfig>();
+            }
             Set<PurificationConfig> configs = purification.getPurificationConfigs();
-            if (configs != null) {
+            if (configs != null ) {
                 for (PurificationConfig config : configs) {
                     if (!oldConfigs.contains(config)) {
                         //TODO new config
                         if(config.getTechnique().getId()==null){
                             //New technique
                             appService.saveOrUpdate(config.getTechnique());
-
                         }
                         appService.saveOrUpdate(config);
+                    }
+                }
+                for(PurificationConfig oldConfig: oldConfigs){
+                    //check if a config has been removed
+                    if(!configs.contains(oldConfig)){
+                        appService.delete(oldConfig);
+                    }
+                    for (PurificationConfig config:configs){
+                        //check if any instuments have been deleted
+                        if(oldConfig.getPurificationConfigPkId()==config.getPurificationConfigPkId()) {
+                            Set<Instrument> newInstruments = (Set<Instrument>) config.getInstrumentCollection();
+                            Set<Instrument> oldInstruments = (Set<Instrument>) oldConfig.getInstrumentCollection();
+                            for(Instrument instrument: oldInstruments){
+                                if(!newInstruments.contains(instrument)){
+                                    appService.delete(instrument);
+                                }
+                            }
+                        }
                     }
                 }
             }
