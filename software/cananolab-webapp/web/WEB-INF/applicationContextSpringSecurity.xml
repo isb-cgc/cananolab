@@ -41,6 +41,7 @@
 		<intercept-url pattern="/rest/sample/setupAdvancedSearch" access="permitAll" />
 		<intercept-url pattern="/rest/sample/searchSampleAdvanced" access="permitAll" />
 		<intercept-url pattern="/rest/sample/getDecoratedCharacterizationOptions" access="permitAll" />
+		<intercept-url pattern="/rest/sample/getDecoratedDatumOptions" access="permitAll" />
 		<intercept-url pattern="/rest/sample/fullSampleExportXmlAll" access="permitAll" />
 		<intercept-url pattern="/rest/sample/fullSampleExportJsonAll" access="permitAll" />
 		<intercept-url pattern="/rest/sample/fullSampleExportJson" access="permitAll" />
