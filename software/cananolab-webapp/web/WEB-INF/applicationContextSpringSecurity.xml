@@ -39,6 +39,7 @@
 		<intercept-url pattern="/rest/sample/characterizationView" access="permitAll" />
 		<intercept-url pattern="/rest/sample/setup" access="permitAll" />
 		<intercept-url pattern="/rest/sample/setupAdvancedSearch" access="permitAll" />
+		<intercept-url pattern="/rest/sample/searchSampleAdvanced" access="permitAll" />
 
 		<intercept-url pattern="/rest/sample/fullSampleExportXmlAll" access="permitAll" />
 		<intercept-url pattern="/rest/sample/fullSampleExportJsonAll" access="permitAll" />
