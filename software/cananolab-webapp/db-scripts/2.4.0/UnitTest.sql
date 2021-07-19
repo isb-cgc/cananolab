@@ -95,6 +95,7 @@ DROP TABLE IF EXISTS `sample_publication`;
 DROP TABLE IF EXISTS `sample_other_poc`;
 DROP TABLE IF EXISTS `purity_file`;
 DROP TABLE IF EXISTS `purity_datum`;
+DROP TABLE IF EXISTS `purity_datum_condition`;
 DROP TABLE IF EXISTS `purity_column_header`;
 DROP TABLE IF EXISTS `synthesis_material_file`;
 DROP TABLE IF EXISTS `synthesis_functionalization_file`;
@@ -333,19 +334,19 @@ INSERT IGNORE INTO `acl_object_identity` (`id`, `object_id_class`, `object_id_id
                                           `entries_inheriting`)
 VALUES (20001, 1, 1000, NULL, 3, 1),
        (20002, 16, 1000, NULL, 3, 1),
-       (20003, 17, 1000, 2, 3, 1),
+       (20003, 17, 1000, 20002, 3, 1),
        (20004, 1, 1005, NULL, 3, 1),
        (20005, 16, 1005, NULL, 3, 1),
-       (20006, 17, 1005, 5, 3, 1),
+       (20006, 17, 1005, 20005, 3, 1),
        (29008, 15, 65601536, NULL, 3, 1),
-       (29009, 16, 65568768, 9008, 3, 1),
+       (29009, 16, 65568768, 29008, 3, 1),
        (29010, 1, 65634304, NULL, 3, 1),
        (29011, 1, 65634305, NULL, 3, 1),
        (29012, 1, 65634306, NULL, 3, 1),
-       (29013, 8, 65961984, 9011, 3, 1),
-       (29014, 8, 65961985, 9012, 3, 1),
+       (29013, 8, 65961984, 29011, 3, 1),
+       (29014, 8, 65961985, 29012, 3, 1),
        (29015, 11, 66256896, NULL, 3, 1),
-       (29016, 8, 66420736, 1, 3, 1),
+       (29016, 8, 66420736, 20001, 3, 1),
        (29017, 11, 66584576, NULL, 3, 1),
        (29018, 11, 66584577, NULL, 3, 1),
        (29019, 11, 1111, NULL, 3, 1),
