@@ -180,6 +180,9 @@ public class InitSynthesisSetup {
                 "otherValueType", true);
 
         setExperimentConfigDropDowns(request);
+
+        InitSetup.getInstance().getDefaultAndOtherTypesByLookup(request,"fileTypes", "file", "type", "otherType", true);
+
     }
 
     public void setSynthesisPurityDropDowns(HttpServletRequest request, String sampleId) throws Exception{
