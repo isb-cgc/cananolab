@@ -4,10 +4,12 @@ import gov.nih.nci.cananolab.domain.common.File;
 import gov.nih.nci.cananolab.domain.common.Instrument;
 
 import gov.nih.nci.cananolab.domain.particle.SynthesisPurification;
+import gov.nih.nci.cananolab.dto.common.FileBean;
 import gov.nih.nci.cananolab.dto.common.PurificationConfigBean;
 import gov.nih.nci.cananolab.dto.particle.synthesis.SynthesisPurificationBean;
 import gov.nih.nci.cananolab.dto.particle.synthesis.SynthesisPurityBean;
 import gov.nih.nci.cananolab.restful.util.CommonUtil;
+import gov.nih.nci.cananolab.security.enums.SecureClassesEnum;
 import gov.nih.nci.cananolab.security.service.SpringSecurityAclService;
 import java.util.ArrayList;
 import java.util.Date;
@@ -241,7 +243,7 @@ public class SimpleSynthesisPurificationBean {
 
     public SimpleSynthesisPurificationBean(){}
 
-    public SimpleSynthesisPurificationBean(SynthesisPurificationBean synBean, String sampleId) {
+    public SimpleSynthesisPurificationBean(SynthesisPurificationBean synBean, String sampleId, SpringSecurityAclService springSecurityAclService) {
         SynthesisPurification synthesisPurification = synBean.getDomainEntity();
         setSampleId(sampleId);
         setId(synBean.getDomainEntity().getId());
@@ -308,14 +310,26 @@ public class SimpleSynthesisPurificationBean {
                 simpleExperimentBeans.add(simpleExperimentBean);
             }
             setSimpleExperimentBeans(simpleExperimentBeans);
+            if(synBean.getFiles()!=null){
+                List<SimpleFileBean> sfeFiles = new ArrayList<SimpleFileBean>();
+                for(FileBean file : synBean.getFiles()){
+                    SimpleFileBean simpleFileBean = new SimpleFileBean(file,this.getSampleId());
 
+                    boolean isPublic = springSecurityAclService.checkObjectPublic(Long.valueOf(getSampleId()), SecureClassesEnum.SAMPLE.getClazz());
+                    simpleFileBean.setIsPublic(false);
+                    sfeFiles.add(simpleFileBean);
+                }
+                setFiles(sfeFiles);
+            }
         }
+
+        //FileTypes
 
     }
 
 
 
-    public void transferSynthesisPurificationBeanToSimple(SynthesisPurificationBean synBean, HttpServletRequest httpRequest) {
+    public void transferSynthesisPurificationBeanToSimple(SynthesisPurificationBean synBean, HttpServletRequest httpRequest, SpringSecurityAclService springSecurityAclService) {
         SynthesisPurification synthesisPurification = synBean.getDomainEntity();
         setSampleId((String) httpRequest.getSession().getAttribute("sampleId"));
         setId(synBean.getDomainEntity().getId());

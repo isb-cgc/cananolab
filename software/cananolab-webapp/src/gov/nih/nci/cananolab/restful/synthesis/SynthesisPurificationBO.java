@@ -642,7 +642,7 @@ catch(Exception e){
             //refresh synthesispurification bean
             Long sampleId = new Long(editBean.getSampleId());
             SynthesisPurificationBean purificationBean = synthesisService.findSynthesisPurificationById(sampleId, editBean.getId());
-            SimpleSynthesisPurificationBean simpleSynthesisPurificationBean = new SimpleSynthesisPurificationBean(purificationBean,sampleId.toString());
+            SimpleSynthesisPurificationBean simpleSynthesisPurificationBean = new SimpleSynthesisPurificationBean(purificationBean,sampleId.toString(),springSecurityAclService);
 //            simpleSynthesisPurificationBean.transferSynthesisPurificationBeanToSimple(purificationBean, httpRequest);
             simpleSynthesisPurificationBean.setupLookups(httpRequest);
             simpleSynthesisPurificationBean.setErrors(msgs);
@@ -791,7 +791,7 @@ catch(Exception e){
 
                 purification = synthesisService.getHelper().findSynthesisPurificationById(sampleId, purificationId);
                 SynthesisPurificationBean purificationBean = new SynthesisPurificationBean(purification);
-                SimpleSynthesisPurificationBean simpleSynthesisPurificationBean = new SimpleSynthesisPurificationBean(purificationBean, sampleId.toString());
+                SimpleSynthesisPurificationBean simpleSynthesisPurificationBean = new SimpleSynthesisPurificationBean(purificationBean, sampleId.toString(),springSecurityAclService);
 //                SynthesisPurification purification = purity.getSynthesisPurification();
 //                Set<PurityDatumCondition> datumConditions = purity.getPurityDatumCollection();
 //                Set<PurityColumnHeader> columnHeaders = new HashSet<PurityColumnHeader>();
@@ -1099,7 +1099,7 @@ catch(Exception e){
 
             this.checkOpenForms(synBean, httpRequest);
             httpRequest.getSession().setAttribute("sampleId", sampleId);
-            SimpleSynthesisPurificationBean simpleSynthesisPurificationBean = new SimpleSynthesisPurificationBean(synBean, sampleId);
+            SimpleSynthesisPurificationBean simpleSynthesisPurificationBean = new SimpleSynthesisPurificationBean(synBean, sampleId,springSecurityAclService);
 //            simpleSynthesisPurificationBean.transferSynthesisPurificationBeanToSimple(synBean, httpRequest);
             return simpleSynthesisPurificationBean;
         }
