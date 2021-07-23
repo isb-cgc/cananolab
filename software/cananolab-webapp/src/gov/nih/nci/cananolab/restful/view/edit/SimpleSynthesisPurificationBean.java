@@ -243,7 +243,7 @@ public class SimpleSynthesisPurificationBean {
 
     public SimpleSynthesisPurificationBean(){}
 
-    public SimpleSynthesisPurificationBean(SynthesisPurificationBean synBean, String sampleId, SpringSecurityAclService springSecurityAclService) {
+    public SimpleSynthesisPurificationBean(SynthesisPurificationBean synBean, String sampleId, SpringSecurityAclService springSecurityAclService,HttpServletRequest httpRequest) {
         SynthesisPurification synthesisPurification = synBean.getDomainEntity();
         setSampleId(sampleId);
         setId(synBean.getDomainEntity().getId());
@@ -310,6 +310,8 @@ public class SimpleSynthesisPurificationBean {
                 simpleExperimentBeans.add(simpleExperimentBean);
             }
             setSimpleExperimentBeans(simpleExperimentBeans);
+
+            //FileTypes
             if(synBean.getFiles()!=null){
                 List<SimpleFileBean> sfeFiles = new ArrayList<SimpleFileBean>();
                 for(FileBean file : synBean.getFiles()){
@@ -322,8 +324,8 @@ public class SimpleSynthesisPurificationBean {
                 setFiles(sfeFiles);
             }
         }
+        this.setupLookups(httpRequest);
 
-        //FileTypes
 
     }
 

@@ -148,7 +148,9 @@ public class SynthesisUtil {
         //TODO column value type -
         //TODO column value unit - depends on name
 
-
+        types = (SortedSet<String>) session.getAttribute("fileTypes");
+        if (types != null)
+            typeMap.put("fileTypes", new ArrayList<String>(types));
 
 
         return typeMap;
