@@ -257,7 +257,20 @@ var app = angular.module('angularApp')
 
           }
         else {
-          console.log('change existing file')
+          $scope.currentFile['uri'] = data['fileName'];
+          $scope.material['fileElements'] = $scope.fileArray;
+          $scope.material['fileBeingEdited'] = $scope.fileArray[0];
+          $scope.fileArray[$scope.fileFormIndex]=$scope.currentFile;
+          
+          $http.post('/caNanoLab/rest/synthesisMaterial/saveFile', $scope.material).
+          then(function(data) {
+            data = data['data']
+            console.log('done')
+          }).
+              catch (function(data) {
+            console.log('caNanoLab/rest/synthesisMaterial/saveFile ERROR data: ', data);
+          });
+
         }
 
       }).
