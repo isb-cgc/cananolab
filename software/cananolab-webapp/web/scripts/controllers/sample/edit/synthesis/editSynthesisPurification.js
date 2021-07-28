@@ -73,7 +73,9 @@
           if (!$scope.purification['purityBeans']) {
             $scope.purification['purityBeans']=[];
           };       
-          $scope.purificationCopy = angular.copy($scope.purification);   
+          $scope.purificationCopy = angular.copy($scope.purification);  
+          $scope.fileArray = angular.copy($scope.purification.fileElements)
+
           $scope.loader = false;
         }).catch(function (data, status, headers, config) {
           data = data['data']
@@ -177,6 +179,9 @@
 
       // open the file edit form //
       $scope.openFileForm = function (index, parentIndex, file) {
+        $scope.uploadComplete = false;
+        $scope.uploadError = false;
+    
         $scope.fileObject = null;
         $('#uploadFile')[0].value = "";
         $scope.uploadError = null;
@@ -189,38 +194,36 @@
         // keywordsStr: abc
         // description: 123
         // myFile: (binary)
-
+        
         // uriExternal: false
         // type: document
         // title: title
         // keywordsStr: abc
         // description: 1234
         // myFile: (binary)
-
+    
         if (index != -1) {
           $scope.fileFormIndex = index;
           $scope.fileId = file['id'];
-          $scope.currentFile = {
-            "uri": file.uri,
-            "uriExternal": file.uriExternal,
-            "externalUrl": file.externalUrl,
-            "type": file.type,
-            "title": file.title,
-            "description": file.description
-          }; // //
+          $scope.currentFile = { 
+            "uri":file.uri, "uriExternal": file.uriExternal, 
+            "id":file.id,
+            "externalUrl":file.externalUrl,"type":file.type,
+            "title":file.title, "description":file.description }
+    
           console.log($scope.currentFile)
-        } else {
+        }
+        else {
           $scope.currentFile = {
-            "uri": "",
-            "uriExternal": false,
-            "externalUrl": null,
-            "type": "",
-            "title": "",
-            "description": ""
+            "uri": "", "uriExternal": false,
+            "externalUrl": null, "type": "",
+            "title": "", "description": "",
+            "id":""
           }; // //
           $scope.fileFormIndex = index;
         };
       };
+    
 
       // open the inherent function edit form //
       $scope.openTechniqueInstrumentsForm = function (index, parentIndex, technique) {
@@ -272,54 +275,93 @@
         });
       };
 
-      // save file //
-      $scope.saveFile = function () {
-        $scope.uploadComplete = false;
-        $scope.uploadError = false;
+    // save file //
+    $scope.saveFile = function () {
+      if ($scope.fileObject && !$scope.currentFile.uriExternal) {
+        $scope.uploadFile();
 
-        if ($scope.fileObject && !$scope.currentFile.uriExternal) {
-          $scope.uploadFile();
+        // watch upload complete //
+        $scope.$watch('uploadComplete', function () {
+          console.log($scope.uploadComplete)
 
-          // watch upload complete //
-          $scope.$watch('uploadComplete', function () {
-            if ($scope.uploadComplete) {
-              console.log('upload complete', $scope.uploadComplete)
-            };
-          });
+          if ($scope.uploadComplete) {
+            $scope.fileFormIndex = null;
+            console.log('upload complete. Add to file')
+          };
+        });
 
-          // watch upload error //
-          $scope.$watch('uploadError', function () {
-            if ($scope.uploadError) {
-              $scope.fileErrorMessage = 'Error Uploading File';
-            };
-          });
 
-        } else {
-          console.log('just save. No new file or no file at all')
-        }
-      };
 
-      // uploads file to server //
-      $scope.uploadFile = function () {
-        var fd = new FormData(); // create new form data object //
-        fd.append('file', $scope.fileObject);
-        $http.post('/caNanoLab/rest/core/uploadFile', fd, {
-          withCredentials: false,
-          headers: {
-            'Content-Type': undefined
-          },
-          transformRequest: angular.identity
-        }).
+        // watch upload error //
+        $scope.$watch('uploadError', function () {
+          if ($scope.uploadError) {
+            $scope.fileErrorMessage = 'Error Uploading File';
+          };
+        });
+
+      } else {
+        console.log('just save. No new file or no file at all')
+      }
+    };
+
+    // uploads file to server //
+    $scope.uploadFile = function() {
+      console.log('i am uploading')
+      var fd = new FormData(); // create new form data object //
+      fd.append('file', $scope.fileObject);
+  /*
+      fd.append('urlExternal', false);
+      fd.append('type', 'image');
+      fd.append('title', 'title');
+  */
+      $http.post('/caNanoLab/rest/core/uploadFile', fd, { withCredentials: false, headers: { 'Content-Type': undefined }, transformRequest: angular.identity }).
         then(function (data, status, headers, config) {
-          data = data['data']
-          $scope.uploadComplete = true;
+        data = data['data']
+        $scope.uploadComplete = true;
+          if ($scope.fileFormIndex==-1) {
+            $scope.currentFile['uri'] = data['fileName']
+            $scope.fileArray.push($scope.currentFile);
+            console.log('i am here on line 324')
+            $scope.purification['fileElements'] = $scope.fileArray;
+            $scope.purification['fileBeingEdited'] = $scope.fileArray[0];
+            console.log('i am here on line 327')
+
+            $http.post('/caNanoLab/rest/synthesisPurification/saveFile', $scope.purification).
+            then(function(data) {
+              data = data['data']
+              console.log('done')
+            }).
+                catch (function(data) {
+              console.log('caNanoLab/rest/synthesisPurification/saveFile ERROR data: ', data);
+            });
+  
+            }
+          else {
+            console.log('i am here on line 340')
+
+            $scope.currentFile['uri'] = data['fileName'];
+            $scope.purification['fileElements'] = $scope.fileArray;
+            $scope.purification['fileBeingEdited'] = $scope.fileArray[0];
+            $scope.fileArray[$scope.fileFormIndex]=$scope.currentFile;
+            
+            $http.post('/caNanoLab/rest/synthesisPurification/saveFile', $scope.purification).
+            then(function(data) {
+              data = data['data']
+              console.log('done')
+            }).
+                catch (function(data) {
+              console.log('caNanoLab/rest/synthesisPurification/saveFile ERROR data: ', data);
+            });          }
+  
         }).
         catch(function (data, status, headers, config) {
+          console.log('i am here on line 358')
+
           data = data['data']
           $scope.uploadError = true;
           $scope.fileErrorMessage = 'Error Uploading File';
         });
-      };
+    };
 
       // save inherent function //
       $scope.openTechniqueInstruments = function (i) {
@@ -359,8 +401,7 @@
 
       // submit the entire synthesis material //
       $scope.savePurification = function () {
-        console.log($scope.purification)
-
+  
         $http({
           method: 'POST',
           url: '/caNanoLab/rest/synthesisPurification/submit',
@@ -368,6 +409,20 @@
         }).
         then(function (data, status, headers, config) {
           data = data['data']
+          $scope.purification['fileElements'] = $scope.fileArray;
+          $scope.purification['fileBeingEdited'] = $scope.fileArray[0];
+  
+          $http({
+            method: 'POST',
+            url: '/caNanoLab/rest/synthesisPurification/saveFile',
+            data: [$scope.purification]
+          }).
+          then(function () {
+            data = data['data'];
+    
+          }).catch(function () {
+            data = data['data'];
+          })        
           $location.search({
             'message': 'Synthesis Purification successfully saved.',
             'sampleId': $scope.sampleId
@@ -1446,126 +1501,7 @@
         }
       };
 
-      $scope.saveFile = function () {
-        $scope.loader = true;
-        var index = 0;
-        $scope.upload = [];
-        if ($scope.selectedFiles != null && $scope.selectedFiles.length > 0) {
-          $scope.selectedFileName = $scope.selectedFiles[0].name;
-          $scope.upload[index] = $upload.upload({
-            url: uploadUrl,
-            method: 'POST',
-            headers: {
-              'my-header': 'my-header-value',
-              'Accept': 'application/json, text/plain'
-            },
-            data: $scope.fileForm,
-            file: $scope.selectedFiles[index],
-            transformResponse: angular.identity,
-            fileFormDataName: 'myFile'
-          });
-          $scope.upload[index].then(function (response) {
-            $timeout(function () {
-              //$scope.uploadResult.push(response.data);
-              //alert(response.data);
-              //$scope.nanoEntityForm = response.data;
-              $scope.saveFileData();
-              //$scope.loader = false;
-            });
-          }, function (response) {
-            $timeout(function () {
-              //only for IE 9
-              if (navigator.appVersion.indexOf("MSIE 9.") != -1) {
-                $scope.saveFileData();
-              }
-            });
-            if (response.status > 0) {
-              $scope.purification.errors = response.status + ': ' + response.data;
-              $scope.loader = false;
-            }
-          }, function (evt) {
-            // Math.min is to fix IE which reports 200% sometimes
-            // $scope.progress[index] = Math.min(100, parseInt(100.0 * evt.loaded / evt.total));
-          });
-          $scope.upload[index].xhr(function (xhr) {
-            //			xhr.upload.addEventListener('abort', function() {console.log('abort complete')}, false);
-          });
-        } else {
-          $scope.saveFileData();
-        }
-      };
 
-      $scope.saveFileData = function () {
-        $scope.loader = true;
-
-        var k = 0;
-        if ($scope.fileForm.id != null && $scope.fileForm.id != '') {
-          for (k = 0; k < $scope.currentFinding.files.length; ++k) {
-            var element = $scope.currentFinding.files[k];
-            if (element.id == $scope.fileForm.id) {
-              $scope.currentFinding.files[k] = $scope.fileForm;
-            }
-          }
-        }
-        /*            else {
-         $scope.files.push($scope.fileForm);
-         }
-         */
-        //$scope.currentFinding.files = $scope.files;
-
-        if ($scope.currentFinding.theFile == null) {
-          $scope.currentFinding.theFile = {};
-        }
-
-        $scope.currentFinding.theFile.externalUrl = $scope.fileForm.externalUrl;
-        if ($scope.selectedFileName != null && $scope.selectedFileName != '') {
-          $scope.currentFinding.theFile.uri = $scope.selectedFileName;
-        } else {
-          $scope.currentFinding.theFile.uri = $scope.fileForm.uri;
-        }
-        $scope.currentFinding.theFile.uriExternal = $scope.fileForm.uriExternal;
-        $scope.currentFinding.theFile.type = $scope.fileForm.type;
-        $scope.currentFinding.theFile.title = $scope.fileForm.title;
-        $scope.currentFinding.theFile.keywordsStr = $scope.fileForm.keywordsStr;
-        $scope.currentFinding.theFile.description = $scope.fileForm.description;
-        $scope.currentFinding.theFile.id = $scope.fileForm.id;
-        $scope.currentFinding.theFile.theAccess = $scope.fileForm.theAccess;
-        $scope.currentFinding.theFile.isPublic = $scope.fileForm.isPublic;
-        $scope.currentFinding.theFile.createdBy = $scope.fileForm.createdBy;
-        $scope.currentFinding.theFile.createdDate = $scope.fileForm.createdDate;
-
-        if ($scope.fileForm.id == null || $scope.fileForm.id == '') {
-          $scope.currentFinding.theFileIndex = -1;
-        } else {
-          $scope.currentFinding.theFileIndex = k - 1;
-        }
-
-        if ($scope.sampleId != null) {
-          $scope.currentFinding.theFile.sampleId = $scope.sampleId;
-        }
-
-        $scope.messages = [];
-        $http({
-          method: 'POST',
-          url: '/caNanoLab/rest/synthesisPurification/saveFile',
-          data: $scope.currentFinding
-        }).
-        then(function (data, status, headers, config) {
-          data = data['data']
-          $scope.currentFinding = data;
-          $scope.addNewFile = false;
-          $scope.loader = false;
-        }).
-        catch(function (data, status, headers, config) {
-          data = data['data']
-          // called asynchronously if an error occurs
-          // or server returns response with an error status.
-          // $rootScope.sampleData = data;
-          $scope.loader = false;
-          $scope.purification.errors = data;
-          $scope.addNewFile = true;
-        });
-      };
 
       $scope.getAddNewFile = function () {
         return $scope.addNewFile;
