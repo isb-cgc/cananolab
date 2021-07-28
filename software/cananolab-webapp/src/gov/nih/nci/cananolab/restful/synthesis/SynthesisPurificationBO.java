@@ -10,7 +10,6 @@ import gov.nih.nci.cananolab.domain.common.Technique;
 import gov.nih.nci.cananolab.domain.particle.Synthesis;
 import gov.nih.nci.cananolab.domain.particle.SynthesisPurification;
 import gov.nih.nci.cananolab.domain.particle.SynthesisPurity;
-import gov.nih.nci.cananolab.dto.common.ColumnHeader;
 import gov.nih.nci.cananolab.dto.common.FileBean;
 import gov.nih.nci.cananolab.dto.common.PointOfContactBean;
 import gov.nih.nci.cananolab.dto.common.ProtocolBean;
@@ -900,7 +899,7 @@ catch(Exception e){
         String timestamp = DateUtils.convertDateToString(new Date(), "yyyyMMdd_HH-mm-ss-SSS");
 
         SampleBean sampleBean = setupSampleById(editBean.getSampleId(), httpRequest);
-        FileBean theNewFile = new FileBean(editBean.getTheFile());
+        FileBean theNewFile = new FileBean(editBean.getFileBeingEdited());
 
 
 

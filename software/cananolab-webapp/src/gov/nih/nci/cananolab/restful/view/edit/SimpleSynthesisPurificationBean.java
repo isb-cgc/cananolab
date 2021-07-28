@@ -36,8 +36,8 @@ public class SimpleSynthesisPurificationBean {
 //    private List<ColumnHeader> columnHeaders = new ArrayList<ColumnHeader>();
 //    private List<PurityColumnHeader> columnHeaders = new ArrayList<PurityColumnHeader>();
 //    private List<SimplePurityRowBean> rows;
-    private List<SimpleFileBean> files = new ArrayList<SimpleFileBean>();
-    private File theFile; //file being edited
+    private List<SimpleFileBean> fileElements = new ArrayList<SimpleFileBean>();
+    private File fileBeingEdited; //file being edited
     private int numberOfColumns;
     private int numberOfRows;
     private boolean dirty;
@@ -50,20 +50,20 @@ public class SimpleSynthesisPurificationBean {
         dirty=dirt;
     }
 
-    public List<SimpleFileBean> getFiles() {
-        return files;
+    public List<SimpleFileBean> getFileElements() {
+        return fileElements;
     }
 
-    public void setFiles(List<SimpleFileBean> files) {
-        this.files = files;
+    public void setFileElements(List<SimpleFileBean> fileElements) {
+        this.fileElements = fileElements;
     }
 
-    public File getTheFile() {
-        return theFile;
+    public File getFileBeingEdited() {
+        return fileBeingEdited;
     }
 
-    public void setTheFile(File theFile) {
-        this.theFile = theFile;
+    public void setFileBeingEdited(File fileBeingEdited) {
+        this.fileBeingEdited = fileBeingEdited;
     }
 
     public int getNumberOfColumns() {
@@ -321,7 +321,7 @@ public class SimpleSynthesisPurificationBean {
                     simpleFileBean.setIsPublic(false);
                     sfeFiles.add(simpleFileBean);
                 }
-                setFiles(sfeFiles);
+                setFileElements(sfeFiles);
             }
         }
         this.setupLookups(httpRequest);
