@@ -658,155 +658,154 @@
 
     <table width="100%" align="center" class="submissionView" summary="layout">
       <tbody>
-        <tr>
-          <td width="10%"><label>Files</label></td>
-          <td width="90%">
-            <button type="button" class="btn-canano btn-canano-primary btn-canano-xs ng-click-active"
-              ng-click="openFileForm(-1, $parent.$index)">Add</button>
-          </td>
-        </tr>
-        <tr>
-          <td colspan="2" ng-show="material.fileElements.length">
-            <table class="editTableWithGrid" align="center" width="95%">
-              <tr>
-                <td class="cellLabel">
-                  File Type
-                </td>
-                <td class="cellLabel">
-                  Title
-                </td>
-                <td class="cellLabel">
-                  Keywords
-                </td>
-                <td class="cellLabel" colspan="2">
-                  Description
-                </td>
-              </tr>
-              <tr class="synthesisFiles" ng-repeat="file in material.fileElements">
-                <td width="10%">
-                  {{file.type}}
-                </td>
-                <td width="20%">
-                  <a href="#" target="_blank"
-                    ng-href="{{file.urlExternal==true ? file.uri:'/caNanoLab/rest/sample/download?fileId='+file.id}}">{{file.title}}</a>
-                </td>
-                <td width="20%">
-                  {{file.keywordsStr}}
-                </td>
-                <td width="40%">
-                  {{file.description}}
-                </td>
-                <td width="10%">
+          <tr>
+              <td width="10%"><label>Files</label></td>
+              <td width="90%">
                   <button type="button" class="btn-canano btn-canano-primary btn-canano-xs ng-click-active"
-                    ng-click="openFileForm($index, $parent.$index, file)">Edit</button>
-                </td>
-              </tr>
-              <tr ng-show="fileFormIndex!=null">
-                <td colspan="4">{{currentFile}}, {{fileObject}}
-                  <table class="editTableWithGrid form" align="center" width="95%">
-                    <tr ng-if="fileErrorMessage">
-                      <td colspan="2" class="fileErrorMessage">
-                        <div>
-                          {{fileErrorMessage}}
-                        </div>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td width="25%">
-                        <input type="radio" ng-model="currentFile.uriExternal" ng-value="false" name="uriExternal">
-                        <label for="external0">Upload</label>
-                      </td>
-                      <td width="75%">
-                        <input type="radio" ng-model="currentFile.uriExternal" ng-value="true" name="uriExternal">
-                        <label for="external0">Enter File URL</label>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td class="cellLabel">
-                        <span ng-bind-html="currentFile.uriExternal ? 'External URL':'File'">Label</span>*
-                      </td>
-                      <td>
-                        <input type="file" id="uploadFile" file-model="fileObject" ng-show="!currentFile.uriExternal">
-                        <input type="text" data-ng-model="currentFile.externalUrl" ng-if="currentFile.uriExternal"
-                          size="60">
-                      </td>
-                    </tr>
-                    <tr>
-                      <td class="cellLabel">
-                        File Type*
-                      </td>
-                      <td>
-                        <select ng-model="currentFile.type" ng-options="o as o for o in dropdowns.fileTypes">
-                        </select>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td class="cellLabel">
-                        File Title*
-                      </td>
-                      <td>
-                        <input type="text" name="title" data-ng-model="currentFile.title" size="60">
-                      </td>
-                    </tr>
-                    <tr>
-                      <td class="cellLabel">
-                        Keywords
-                      </td>
-                      <td>
-                        <textarea data-ng-model="currentFile.keywordsStr" cols="60" rows="3" id="fileKeywords"
-                          class="ng-valid ng-dirty"></textarea><br />
-                        <em>(one word per line)</em>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td class="cellLabel">
-                        Description
-                      </td>
-                      <td>
-                        <textarea ng-model="currentFile.description" cols="60" rows="3" id="fileDescription"
-                          class="ng-valid ng-dirty"></textarea>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td colspan="2" class="saveSynthesis">
-                        <button class="btn-canano btn-canano-default btn-canano-xs" ng-click="cancelFile()">Cancel</button>
-                        <button class="btn-canano btn-canano-primary btn-canano-xs" ng-disabled="getFileConditions()"
-                          ng-click="saveFile()">Save File</button>
+                      ng-click="openFileForm(-1, $parent.$index)">Add</button>
+              </td>
+          </tr>
+          <tr>
+              <td colspan="2">
+                  <table class="editTableWithGrid" align="center" width="95%">
+                      <tr>
+                          <td class="cellLabel">
+                              File Type
+                          </td>
+                          <td class="cellLabel">
+                              Title
+                          </td>
+                          <td class="cellLabel">
+                              Keywords
+                          </td>
+                          <td class="cellLabel" colspan="2">
+                              Description
+                          </td>
+                      </tr>
+                      <tr class="synthesisFiles" ng-repeat="file in fileArray">
+                          <td width="10%">
+                              {{file.type}}
+                          </td>
+                          <td width="20%">
+                              <a href="#" target="_blank" ng-href="{{file.urlExternal==true ? file.uri:'/caNanoLab/rest/sample/download?fileId='+file.id}}">{{file.title}}</a>
+                          </td>
+                          <td width="20%">
+                              {{file.keywordsStr}}
+                          </td>
+                          <td width="40%">
+                              {{file.description}}
+                          </td>
+                          <td width="10%">
+                              <button type="button" class="btn-canano btn-canano-primary btn-canano-xs ng-click-active"
+                                  ng-click="openFileForm($index, $parent.$index, file)">Edit</button>
+                          </td>
+                      </tr>    
+                      <tr ng-show="fileFormIndex!=null">
+                          <td colspan="5">
+                              <table class="editTableWithGrid form" align="center" width="95%">
 
-                      </td>
-                    </tr>
+
+                                  <tr ng-if="fileErrorMessage">
+                                      <td colspan="2" class="fileErrorMessage">
+                                          <div>
+                                              {{fileErrorMessage}}
+                                          </div>
+                                      </td>
+                                  </tr>
+
+                                  <tr>
+                                      <td width="25%">
+                                          <input type="radio" ng-model="currentFile.uriExternal" ng-value="false" name="uriExternal">
+                                          <label for="external0">Upload</label>
+                                      </td>
+                                      <td width="75%">
+                                          <input type="radio" ng-model="currentFile.uriExternal" ng-value="true" name="uriExternal">
+                                          <label for="external0">Enter File URL</label>
+                                      </td>
+                                  </tr>
+                                  <tr>
+                                      <td class="cellLabel">
+                                          <span ng-bind-html="currentFile.uriExternal ? 'External URL':'File'">Label</span>*
+                                      </td>
+                                      <td>
+                                          <input type="file" id="uploadFile" file-model="fileObject" ng-show="!currentFile.uriExternal">
+
+                                              <input type="text" data-ng-model="currentFile.externalUrl" ng-if="currentFile.uriExternal" size="60">
+                                      </td>
+                                  </tr>
+                                  <tr>
+                                      <td class="cellLabel"> 
+                                          File Type*
+                                      </td>
+                                      <td>
+                                          <select ng-model="currentFile.type" ng-options="o as o for o in dropdowns.fileTypes">
+                                          </select>
+                                      </td>
+                                  </tr>
+                                  <tr>
+                                      <td class="cellLabel">
+                                          File Title*
+                                      </td>
+                                      <td>
+                                          <input type="text" name="title" data-ng-model="currentFile.title" size="60">
+                                      </td>
+                                  </tr>
+                                  <tr>
+                                      <td class="cellLabel">
+                                          Keywords
+                                      </td>
+                                      <td>
+                                          <textarea data-ng-model="currentFile.keywordsStr" cols="60" rows="3" id="fileKeywords" class="ng-valid ng-dirty"></textarea><br />
+                                          <em>(one word per line)</em>
+                                      </td>
+                                  </tr>
+                                  <tr>
+                                      <td class="cellLabel">
+                                          Description
+                                      </td>
+                                      <td>
+                                          <textarea ng-model="currentFile.description" cols="60" rows="3" id="fileDescription" class="ng-valid ng-dirty"></textarea>
+                                      </td>
+                                  </tr>
+                                  <tr>
+                                      <td colspan="2" class="saveSynthesis">
+                                          <button class="btn-canano btn-canano-default btn-canano-xs" ng-click="cancelFile()">Cancel</button>
+                                          <button class="btn-canano btn-canano-primary btn-canano-xs" ng-disabled="getFileConditions()" ng-click="saveFile()">Save File</button>
+
+                                      </td>
+                                  </tr>
+                              </table>
+                          </td>
+                      </tr>
+
                   </table>
-                </td>
-              </tr>
-
-            </table>
-          </td>
-        </tr>
-        <!-- <tr ng-repeat="file in material.files">
-                    <td>
-                        {{file.type}}
-                    </td>
-                    <td>
-                        <a href="#" target="_blank" ng-href="file.uri">{{file.title}}</a>
-                    </td>
-                    <td>
-                        {{file.keywordsStr}}
-                    </td>
-                    <td>
-                        {{file.description}}
-                    </td>
-                </tr>
-                <tr ng-show="fileFormIndex!=null">
-                    <td colspan="4">
-                        <table class="editTableWithGrid" align="center" width="95%">
-                            <tr>
-                                <td>some file</td>
-                            </tr>
-                        </table>
-                    </td>
-                </tr> -->
+              </td>
+          </tr>
+          <!-- <tr ng-repeat="file in material.files">
+              <td>
+                  {{file.type}}
+              </td>
+              <td>
+                  <a href="#" target="_blank" ng-href="file.uri">{{file.title}}</a>
+              </td>
+              <td>
+                  {{file.keywordsStr}}
+              </td>
+              <td>
+                  {{file.description}}
+              </td>
+          </tr>
+          <tr ng-show="fileFormIndex!=null">
+              <td colspan="4">
+                  <table class="editTableWithGrid" align="center" width="95%">
+                      <tr>
+                          <td>some file</td>
+                      </tr>
+                  </table>
+              </td>
+          </tr> -->
       </tbody>
-    </table>
+  </table>
 
     <br>
     <div class="form__actions">
