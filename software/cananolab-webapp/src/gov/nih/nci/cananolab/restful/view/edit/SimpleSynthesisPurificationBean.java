@@ -37,7 +37,7 @@ public class SimpleSynthesisPurificationBean {
 //    private List<PurityColumnHeader> columnHeaders = new ArrayList<PurityColumnHeader>();
 //    private List<SimplePurityRowBean> rows;
     private List<SimpleFileBean> fileElements = new ArrayList<SimpleFileBean>();
-    private File fileBeingEdited; //file being edited
+    private SimpleFileBean fileBeingEdited; //file being edited
     private int numberOfColumns;
     private int numberOfRows;
     private boolean dirty;
@@ -58,11 +58,11 @@ public class SimpleSynthesisPurificationBean {
         this.fileElements = fileElements;
     }
 
-    public File getFileBeingEdited() {
+    public SimpleFileBean getFileBeingEdited() {
         return fileBeingEdited;
     }
 
-    public void setFileBeingEdited(File fileBeingEdited) {
+    public void setFileBeingEdited(SimpleFileBean fileBeingEdited) {
         this.fileBeingEdited = fileBeingEdited;
     }
 
