@@ -429,9 +429,10 @@ public class NanomaterialEntityBO extends BaseAnnotationBO
 			comp.setValue(sBean.getValue());
 			comp.setValueUnit(sBean.getValueUnit());
 			funclist = sBean.getInherentFunction();
+			func = new FunctionBean();
 			if(funclist!= null){
 				for(int j=0;j<funclist.size();j++){
-				func = new FunctionBean();
+//				func = new FunctionBean();
 				img.setModality((String) funclist.get(j).get("modality"));
 				func.setType((String) funclist.get(j).get("type"));
 				func.setDescription((String) funclist.get(j).get("description"));
@@ -463,13 +464,14 @@ public class NanomaterialEntityBO extends BaseAnnotationBO
 		//setting up composing elements if there exists composingElements
 		List<SimpleComposingElementBean> list = nanoBean.getComposingElements();
 
-		func = new FunctionBean();
+
 		img = new ImagingFunction();
-		hash = new HashSet<Function>();
+
 
 //		List<ComposingElementBean> compList = new ArrayList<ComposingElementBean>();
 		if(list!=null){
 		for(SimpleComposingElementBean simpleComp : list){
+			hash = new HashSet<Function>();
 			compBean = new ComposingElementBean();
 			comp = new ComposingElement();
 			comp.setDescription(simpleComp.getDescription());
@@ -487,6 +489,7 @@ public class NanomaterialEntityBO extends BaseAnnotationBO
 			funclist = simpleComp.getInherentFunction();
 			if(funclist!= null){
 				for(int j=0;j<funclist.size();j++){
+					func = new FunctionBean();
 					img.setModality((String) funclist.get(j).get("modality"));
 					func.setType((String) funclist.get(j).get("type"));
 					func.setDescription((String) funclist.get(j).get("description"));
@@ -507,7 +510,7 @@ public class NanomaterialEntityBO extends BaseAnnotationBO
 			}
 			comp.setInherentFunctionCollection(hash);
 			coll.add(comp);
-			compBean.setTheFunction(func);
+//			compBean.setTheFunction(func);
 			compBean.setDomain(comp);
 			compList.add(compBean);
 		}
