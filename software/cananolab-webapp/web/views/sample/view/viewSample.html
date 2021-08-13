@@ -1,6 +1,5 @@
 <div class="spacer">
   <div ng-class="{formFocus:loader}">
-
     <table border="0" class="contentTitle" summary="layout" width="100%">
       <tr>
         <th align="left" scope="col"><!-- {{data}}
@@ -20,7 +19,8 @@
     </table>
  <div class="backButtonNote">* Please use the back button located above. The browser back button will not function properly.</div>   
 
-
+ {{$rootScope}}<br />test
+ {{$scope}}
  <ul class="liNav">
     <li><a href="#/sample?sampleId={{sampleId.data}}">General Info</a></li>
     <li><a href="#/composition?sampleId={{sampleId.data}}">Composition</a></li>

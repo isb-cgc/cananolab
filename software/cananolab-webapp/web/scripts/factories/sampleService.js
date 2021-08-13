@@ -33,6 +33,7 @@ app.factory("sampleService", function ($http) {
 		},
 		simpleDialog: function () {},
 		sampleQueries: [],
+		isAdvanced: false,
 		compositionQueries: [],
 		characterizationQueries: [],
 		sampleName: function (sampleId) {
