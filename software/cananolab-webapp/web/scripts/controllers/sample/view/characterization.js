@@ -72,8 +72,8 @@ app.controller('CharacterizationCtrl', function (sampleService, utilsService, na
   $scope.print = function () {
     window.open('views/sample/view/printCharacterization.html?sampleId=' + $scope.sampleId.data)
   }
-  $scope.popImage = function (imgSrc, imgId) {
-    utilsService.popImage(imgSrc, imgId);
+  $scope.popImage = function (url,imgSrc, imgId) {
+    utilsService.popImage(url+imgSrc, imgId);
   }
 
 });
