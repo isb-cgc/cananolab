@@ -322,7 +322,12 @@ public class SimpleCharacterizationSummaryViewBean {
 			rowVals = new ArrayList<String>();
 			List<TableCell> cells = aRow.getCells();
 			for (TableCell cell : cells) {
-				rowVals.add(cell.getValue());
+				if(cell.getOperand().equals("=")) {
+					rowVals.add(cell.getValue());
+				} else
+				{
+					rowVals.add(cell.getOperand()+cell.getValue());
+				}
 			}
 			
 			if (rowVals.size() == colSize) 
