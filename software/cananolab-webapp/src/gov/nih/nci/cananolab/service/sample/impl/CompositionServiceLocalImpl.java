@@ -37,6 +37,8 @@ import gov.nih.nci.cananolab.system.applicationservice.client.ApplicationService
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
+
+import org.apache.log4j.Hierarchy;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
