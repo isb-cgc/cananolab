@@ -40,6 +40,7 @@ import gov.nih.nci.cananolab.util.Constants;
 import gov.nih.nci.cananolab.util.DateUtils;
 import gov.nih.nci.cananolab.util.StringUtils;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collection;
 import java.util.Date;
 import java.util.HashSet;
@@ -424,11 +425,17 @@ public class NanomaterialEntityBO extends BaseAnnotationBO
 				comp.setId(simpleCompBean.getId());
 				comp.setCreatedBy(simpleCompBean.getCreatedBy());
 				comp.setCreatedDate(simpleCompBean.getCreatedDate());
-			}  else {
+			}  else if ((nanoBean.getId()!=null)&&(nanoBean.getId()>0)){
 				//TODO see if there is a way to grab user directly
 				comp.setCreatedBy(nanoBean.getCreatedBy());
 				comp.setCreatedDate(nanoBean.getCreatedDate());
+			} else {
+				String currentUser = SpringSecurityUtil.getLoggedInUserName();
+				comp.setCreatedBy(currentUser);
+				comp.setCreatedDate(Calendar.getInstance().getTime());
 			}
+
+
 			comp.setMolecularFormula(simpleCompBean.getMolecularFormula());
 			comp.setMolecularFormulaType(simpleCompBean.getMolecularFormulaType());
 			comp.setValue(simpleCompBean.getValue());
@@ -487,8 +494,17 @@ public class NanomaterialEntityBO extends BaseAnnotationBO
 			comp.setName(simpleComp.getName());
 			comp.setPubChemDataSourceName(simpleComp.getPubChemDataSourceName());
 			comp.setPubChemId(simpleComp.getPubChemId());
-			if(simpleComp.getId()!=null && simpleComp.getId()>0) {
+//			if(simpleComp.getId()!=null && simpleComp.getId()>0) {
+//				comp.setId(simpleComp.getId());
+//			}
+			if((simpleComp.getId()!=null)&&(simpleComp.getId()>0)){
 				comp.setId(simpleComp.getId());
+				comp.setCreatedBy(simpleComp.getCreatedBy());
+				comp.setCreatedDate(simpleComp.getCreatedDate());
+			}  else {
+				//TODO see if there is a way to grab user directly
+				comp.setCreatedBy(nanoBean.getCreatedBy());
+				comp.setCreatedDate(nanoBean.getCreatedDate());
 			}
 			comp.setCreatedBy(simpleComp.getCreatedBy());
 			comp.setCreatedDate(simpleComp.getCreatedDate());

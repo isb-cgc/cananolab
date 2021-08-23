@@ -34,10 +34,13 @@ import gov.nih.nci.cananolab.service.sample.CompositionService;
 import gov.nih.nci.cananolab.service.sample.helper.CompositionServiceHelper;
 import gov.nih.nci.cananolab.system.applicationservice.CaNanoLabApplicationService;
 import gov.nih.nci.cananolab.system.applicationservice.client.ApplicationServiceProvider;
+
+import java.util.Calendar;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 
+import gov.nih.nci.cananolab.util.Constants;
 import org.apache.log4j.Hierarchy;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -75,6 +78,12 @@ public class CompositionServiceLocalImpl extends BaseServiceLocalImpl implements
 					.getApplicationService();
 			NanomaterialEntity entity = entityBean.getDomainEntity();
 			logger.debug("NanomaterialEntity " + entity.getCreatedBy());
+			String currentUser = SpringSecurityUtil.getLoggedInUserName() ;
+			if((entity.getId()==null)||!(entity.getId()>0) ){
+				entity.setCreatedBy(currentUser);
+				entity.setCreatedDate(Calendar.getInstance().getTime());
+			}
+			entity.setCreatedBy(currentUser);
 			Boolean newEntity = true;
 			Boolean newComp = true;
 			if (entity.getId() != null) {
