@@ -11,7 +11,8 @@ var app = angular.module('angularApp')
             'role': ''
         };
         $scope.organizations = $scope.sampleData.organizationNamesForUser;
-        $scope.organizations.push('[other]');
+
+
         $scope.roles = $scope.sampleData.contactRoles;
         $scope.roles.push('[other]');
         $scope.message = message;
@@ -20,6 +21,22 @@ var app = angular.module('angularApp')
         $scope.type = type;
         /* Initialize master for poc */
         $scope.master = angular.copy($scope.poc);
+
+        // Maybe we have some "[other]"s, so we will remove them here.
+        $scope.cleanExtraOthers = function () {
+            let i = $scope.organizations.length;
+            while (i >= 0) {
+                if ($scope.organizations[i] === '[other]') {
+                    $scope.organizations.splice(i, 1);
+                    i--;
+                }
+                i--;
+            }
+            // Add it back here at the bottom
+            $scope.organizations.push('[other]');
+        }
+        $scope.cleanExtraOthers();
+
 
         // Fired when organization or role are changed, used when user selects other //
         $scope.organizationDropdownChanged = function () {
@@ -36,7 +53,8 @@ var app = angular.module('angularApp')
                     $scope.roleOther = true;
                 } else {
                     $scope.roleOther = false;
-                };
+                }
+                ;
             } else {
                 $scope.otherRow = false;
             }
@@ -57,15 +75,13 @@ var app = angular.module('angularApp')
                         method: 'POST',
                         url: '/caNanoLab/rest/sample/deletePOC',
                         data: $scope.poc
-                    }).
-                    then(function (data, status, headers, config) {
+                    }).then(function (data, status, headers, config) {
                         data = data['data']
                         $scope.sampleData = data;
                         $scope.sampleData.message = "Point of contact deleted";
 
                         $modalInstance.close($scope.sampleData);
-                    }).
-                    catch(function (data, status, headers, config) {
+                    }).catch(function (data, status, headers, config) {
                         data = data['data']
                         $scope.loader = false;
                         $modalInstance.close($scope.sampleData);
@@ -75,8 +91,10 @@ var app = angular.module('angularApp')
                 // this is no button. close the block //
                 else {
                     $scope.deleteBlock = false;
-                };
-            };
+                }
+                ;
+            }
+            ;
         };
 
         $scope.savePoc = function () {
@@ -94,14 +112,14 @@ var app = angular.module('angularApp')
                     $scope.sampleData.pointOfContacts = [];
                 }
                 $scope.sampleData.pointOfContacts.push(sampleService.pocData);
-            };
+            }
+            ;
 
             $http({
                 method: 'POST',
                 url: '/caNanoLab/rest/sample/savePOC',
                 data: $scope.sampleData
-            }).
-            then(function (data, status, headers, config) {
+            }).then(function (data, status, headers, config) {
                 data = data['data']
                 $scope.sampleData.pointOfContacts = data.pointOfContacts;
                 $scope.master = angular.copy($scope.sampleData);
@@ -110,15 +128,15 @@ var app = angular.module('angularApp')
                 $scope.sampleData.message = "Point of contact saved";
                 $modalInstance.close($scope.sampleData);
 
-            }).
-            catch(function (data, status, headers, config) {
+            }).catch(function (data, status, headers, config) {
                 data = data['data']
                 $scope.loader = false;
                 $scope.sampleData.errors = data;
                 // remove if add and there is an error //
                 if ($scope.type == 'add') {
                     $scope.sampleData.pointOfContacts.pop();
-                };
+                }
+                ;
                 // alert("fail");
                 // $scope.sampleData = data;
 
