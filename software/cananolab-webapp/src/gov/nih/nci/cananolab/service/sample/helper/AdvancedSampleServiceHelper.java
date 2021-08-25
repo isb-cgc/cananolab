@@ -965,8 +965,10 @@ public class AdvancedSampleServiceHelper
 		// datum value
 		if (!StringUtils.isEmpty(charQuery.getDatumValue())) {
 			Float datumValue = new Float(charQuery.getDatumValue());
-			charCrit = Restrictions.and(charCrit, Restrictions.eq(
-					"datum.valueUnit", charQuery.getDatumValueUnit()));
+			if(!(charQuery.getDatumValueUnit().isEmpty())) {
+				charCrit = Restrictions.and(charCrit, Restrictions.eq(
+						"datum.valueUnit", charQuery.getDatumValueUnit()));
+			}
 			switch (charQuery.getOperand()) {
 				case "=":
 					charCrit = Restrictions.and(charCrit, Expression.eq(
