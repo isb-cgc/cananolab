@@ -98,8 +98,8 @@ app.controller('EditCharacterizationCtrl', function (sampleService, utilsService
 		window.open('views/sample/view/printCharacterization.html?sampleId=' + $scope.sampleId.data + '&sampleName=' + $scope.sampleData.data[0].sampleName)
 	};
 
-	$scope.popImage = function (imgSrc, imgId) {
-		utilsService.popImage(imgSrc, imgId);
+	$scope.popImage = function (url,imgSrc, imgId) {
+		utilsService.popImage(url+imgSrc, imgId);
 	};
 
 });

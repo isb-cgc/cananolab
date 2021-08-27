@@ -5,7 +5,7 @@ app.factory("utilsService", function () {
 	return {
 		popImage: function (imgSrc, imgId) {
 			// pops up image and resizes window //
-
+			console.log(imgSrc,imgId)
 			var popImg = new Image();
 			popImg.src = imgSrc;
 			if (imgWindow != null && imgWindow.open) {
