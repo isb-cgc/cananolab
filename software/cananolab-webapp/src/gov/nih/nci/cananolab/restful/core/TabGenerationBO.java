@@ -125,16 +125,7 @@ public class TabGenerationBO {
 			tabWithLink[1] =  urlBase + "#/myFavorites";
             tabs.add(tabWithLink);
 			
-//			tabWithLink = new String[2];
-//			tabWithLink[0] = "HELP";
-//			tabWithLink[1] = "https://wiki.nci.nih.gov/display/caNanoLab/caNanoLab+User%27s+Guide";
-//			tabs.add(tabWithLink);
-//			
-//			tabWithLink = new String[2];
-//			tabWithLink[0] = "GLOSSARY";
-//			tabWithLink[1] = "https://wiki.nci.nih.gov/display/caNanoLab/caNanoLab+Glossary";
-//			tabs.add(tabWithLink);
-			
+
 			if (userDetails.isAdmin())
 			{
 				tabWithLink = new String[2];
