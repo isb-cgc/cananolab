@@ -457,8 +457,10 @@ public class NanomaterialEntityBO extends BaseAnnotationBO {
                         function =  new TherapeuticFunction();
                     } else if (functionBean.getType().contains("imaging")){
                         function = new ImagingFunction();
+                        ((ImagingFunction) function).setModality(img.getModality());
                     } else {
                         function = new OtherFunction();
+                         ((OtherFunction) function).setType(functionBean.getType());
                     }
 
 
@@ -542,8 +544,10 @@ public class NanomaterialEntityBO extends BaseAnnotationBO {
                             function =  new TherapeuticFunction();
                         } else if (functionBean.getType().contains("imaging")){
                             function = new ImagingFunction();
+                            ((ImagingFunction) function).setModality(img.getModality());
                         } else {
                             function = new OtherFunction();
+                            ((OtherFunction) function).setType(functionBean.getType());
                         }
                         function.setDescription((String) funclist.get(j).get("description"));
                         if (new Long((String) funclist.get(j).get("id")) > 0) {
