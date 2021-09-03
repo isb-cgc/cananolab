@@ -386,7 +386,7 @@ public class NanomaterialEntityBO extends BaseAnnotationBO {
             SimpleNanomaterialEntityBean nanoBean, HttpServletRequest request) {
         NanomaterialEntityBean nanomaterialEntityBean = new NanomaterialEntityBean();
         NanomaterialEntity nanoEntity = null;
-
+        String currentUser = SpringSecurityUtil.getLoggedInUserName();
         Collection<ComposingElement> coll = new HashSet<ComposingElement>();
         Collection<File> filecoll = new HashSet<File>();
         //setting up sampleComposition
@@ -430,7 +430,6 @@ public class NanomaterialEntityBO extends BaseAnnotationBO {
                 comp.setCreatedBy(nanoBean.getCreatedBy());
                 comp.setCreatedDate(nanoBean.getCreatedDate());
             } else {
-                String currentUser = SpringSecurityUtil.getLoggedInUserName();
                 comp.setCreatedBy(currentUser);
                 comp.setCreatedDate(Calendar.getInstance().getTime());
             }
@@ -474,8 +473,8 @@ public class NanomaterialEntityBO extends BaseAnnotationBO {
                         function.setCreatedBy((String) funclist.get(j).get("createdBy"));
                         function.setCreatedDate(new Date((Long) funclist.get(j).get("createdDate")));
                     } else {
-                        function.setCreatedBy(nanoBean.getCreatedBy());
-                        function.setCreatedDate(nanoBean.getCreatedDate());
+                        function.setCreatedBy(currentUser);
+                        function.setCreatedDate(Calendar.getInstance().getTime());
                     }
                     functionBean.setDomainFunction(function);
                     hash.add(function);
@@ -520,8 +519,8 @@ public class NanomaterialEntityBO extends BaseAnnotationBO {
                     comp.setCreatedDate(simpleComp.getCreatedDate());
                 } else {
                     //TODO see if there is a way to grab user directly
-                    comp.setCreatedBy(nanoBean.getCreatedBy());
-                    comp.setCreatedDate(nanoBean.getCreatedDate());
+                    comp.setCreatedBy(currentUser);
+                    comp.setCreatedDate(Calendar.getInstance().getTime());
                 }
                 comp.setCreatedBy(simpleComp.getCreatedBy());
                 comp.setCreatedDate(simpleComp.getCreatedDate());
@@ -556,8 +555,8 @@ public class NanomaterialEntityBO extends BaseAnnotationBO {
                             function.setCreatedBy((String) funclist.get(j).get("createdBy"));
                             function.setCreatedDate(new Date((Long) funclist.get(j).get("createdDate")));
                         } else {
-                            function.setCreatedBy(nanoBean.getCreatedBy());
-                            function.setCreatedDate(nanoBean.getCreatedDate());
+                            function.setCreatedBy(currentUser);
+                            function.setCreatedDate(Calendar.getInstance().getTime());
                         }
                         hash.add(function);
                         functionBean.setDomainFunction(function);
@@ -658,6 +657,8 @@ public class NanomaterialEntityBO extends BaseAnnotationBO {
                     fullerene.setSampleComposition(sampleComp);
                 } else {
                     fullerene.setSampleComposition(null);
+                    fullerene.setCreatedBy(currentUser);
+                    fullerene.setCreatedDate(Calendar.getInstance().getTime());
                 }
             }
             fullerene.setComposingElementCollection(coll);
@@ -678,6 +679,8 @@ public class NanomaterialEntityBO extends BaseAnnotationBO {
                     den.setSampleComposition(sampleComp);
                 } else {
                     den.setSampleComposition(null);
+                    den.setCreatedBy(currentUser);
+                    den.setCreatedDate(Calendar.getInstance().getTime());
                 }
             }
             den.setComposingElementCollection(coll);
@@ -700,6 +703,8 @@ public class NanomaterialEntityBO extends BaseAnnotationBO {
                     bio.setSampleComposition(sampleComp);
                 } else {
                     bio.setSampleComposition(null);
+                    bio.setCreatedBy(currentUser);
+                    bio.setCreatedDate(Calendar.getInstance().getTime());
                 }
             }
             bio.setComposingElementCollection(coll);
@@ -723,6 +728,8 @@ public class NanomaterialEntityBO extends BaseAnnotationBO {
                     lipo.setSampleComposition(sampleComp);
                 } else {
                     lipo.setSampleComposition(null);
+                    lipo.setCreatedBy(currentUser);
+                    lipo.setCreatedDate(Calendar.getInstance().getTime());
                 }
             }
             lipo.setComposingElementCollection(coll);
@@ -745,6 +752,8 @@ public class NanomaterialEntityBO extends BaseAnnotationBO {
                     em.setSampleComposition(sampleComp);
                 } else {
                     em.setSampleComposition(null);
+                    em.setCreatedBy(currentUser);
+                    em.setCreatedDate(Calendar.getInstance().getTime());
                 }
             }
             em.setComposingElementCollection(coll);
@@ -769,6 +778,8 @@ public class NanomaterialEntityBO extends BaseAnnotationBO {
                     poly.setSampleComposition(sampleComp);
                 } else {
                     poly.setSampleComposition(null);
+                    poly.setCreatedBy(currentUser);
+                    poly.setCreatedDate(Calendar.getInstance().getTime());
                 }
             }
             poly.setComposingElementCollection(coll);
@@ -797,6 +808,8 @@ public class NanomaterialEntityBO extends BaseAnnotationBO {
                     ctube.setSampleComposition(sampleComp);
                 } else {
                     ctube.setSampleComposition(null);
+                    ctube.setCreatedBy(currentUser);
+                    ctube.setCreatedDate(Calendar.getInstance().getTime());
                 }
             }
             ctube.setComposingElementCollection(coll);
@@ -815,6 +828,8 @@ public class NanomaterialEntityBO extends BaseAnnotationBO {
 
                 } else
                     nanoEntity.setSampleComposition(null);
+                    nanoEntity.setCreatedBy(currentUser);
+                    nanoEntity.setCreatedDate(Calendar.getInstance().getTime());
             }
             nanoEntity.setComposingElementCollection(coll);
 
