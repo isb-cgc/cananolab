@@ -33,7 +33,7 @@ public class UserAccountServices
 
 	@GET
 	@Path("/read")
-	@Produces ("application/json")
+	@Produces ({"application/json", "text/plain"})
 	public Response readUserAccount(@Context HttpServletRequest httpRequest, @DefaultValue("") @QueryParam("username") String username)
 	{
 		try
@@ -78,7 +78,7 @@ public class UserAccountServices
 
 	@POST
 	@Path("/resetpwd")
-	@Produces ("application/json")
+	@Produces ({"application/json", "text/plain"})
 	public Response resetPassword(@Context HttpServletRequest httpRequest,
 			@FormParam("oldpassword") String oldpassword, @FormParam("newpassword") String newpassword, @FormParam("username") String username)
 	{
@@ -97,13 +97,13 @@ public class UserAccountServices
 			
 //			return Response.ok("success").build();
 
-
 			JsonBuilderFactory factory = Json.createBuilderFactory(null);
 			JsonObject value = factory.createObjectBuilder()
 					.add("status", "success").build();
 
 			return
 					Response.ok(value).build();
+
 		}
 		catch (Exception e) {
 			logger.error("Error in resetting password for account: ", e);

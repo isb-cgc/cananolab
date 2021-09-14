@@ -18,7 +18,7 @@ public class SynthesisPurification implements Serializable {
 	private Long synthesisId;
 	private Protocol protocol;
 	private String type;
-	private String methodName;
+	private String displayName;
 	private String designMethodDescription;
 	private String analysis;
 	private String createdBy;
@@ -50,13 +50,13 @@ public class SynthesisPurification implements Serializable {
 	}
 
 	public SynthesisPurification(Long id, Long synthesisId, Protocol protocol,
-								 String type, String methodName, String designMethodDescription, String createdBy,
+								 String type, String displayName, String designMethodDescription, String createdBy,
 								 Date createdDate, Set<SynthesisPurity> purities, Set<PurificationConfig> purificationConfigs, Float yield, String analysis) {
 		this.id = id;
 		this.synthesisId = synthesisId;
 		this.protocol = protocol;
 		this.type = type;
-		this.methodName = methodName;
+		this.displayName = displayName;
 		this.designMethodDescription = designMethodDescription;
 		this.createdBy = createdBy;
 		this.createdDate = createdDate;
@@ -98,12 +98,12 @@ public class SynthesisPurification implements Serializable {
 		this.type = type;
 	}
 
-	public String getMethodName() {
-		return this.methodName;
+	public String getDisplayName() {
+		return this.displayName;
 	}
 
-	public void setMethodName(String methodName) {
-		this.methodName = methodName;
+	public void setDisplayName(String displayName) {
+		this.displayName = displayName;
 	}
 
 	public String getDesignMethodDescription() {

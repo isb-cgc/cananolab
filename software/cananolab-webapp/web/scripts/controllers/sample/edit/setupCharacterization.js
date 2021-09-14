@@ -580,7 +580,7 @@ var app = angular.module('angularApp')
 
                 // Did we get a parse error
                 if (csvDataObj === null) {
-                    console.catch('CSV import parse error: ', csvImportError);
+                    console.log('CSV import parse error: ', csvImportError);
                     alert('CSV import parse error: ' + csvImportError);
                     return;
                 }
@@ -629,7 +629,7 @@ var app = angular.module('angularApp')
 
             // If at least one entry is too long, set error and return false
             if (biggestLine > csvMaxLenOfEntry) {
-                console.catch('ERROR line(s) too long (' + biggestLine + ')');
+                console.log('ERROR line(s) too long (' + biggestLine + ')');
                 csvImportError = 'line(s) too long (' + biggestLine + ')';
                 return false;
             }
@@ -887,7 +887,7 @@ var app = angular.module('angularApp')
                     var hex = '%' + hexDigit0 + '%' + hexDigit1;
                     let decoded = decode_utf8(hex);
                     if (decoded === 'ERROR-ERROR') {
-                        console.catch('ERROR ');
+                        console.log('ERROR ');
                         output = '';
                         return output;
                     }
@@ -928,7 +928,7 @@ var app = angular.module('angularApp')
                 returnData = decodeURIComponent(s);
             } catch (e) {
                 returnData = 'ERROR-ERROR'; // TODO  Make this a const
-                console.catch('ERROR: ', e);
+                console.log('ERROR: ', e);
             }
             return returnData;
         }

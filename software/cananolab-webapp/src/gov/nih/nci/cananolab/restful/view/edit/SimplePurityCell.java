@@ -1,7 +1,6 @@
 package gov.nih.nci.cananolab.restful.view.edit;
 
 import gov.nih.nci.cananolab.dto.common.table.PurityTableCell;
-import gov.nih.nci.cananolab.dto.common.table.TableCell;
 import java.util.Date;
 
 public class SimplePurityCell {
@@ -11,8 +10,8 @@ public class SimplePurityCell {
 	//private Datum datum = new Datum();
 	//private Condition condition = new Condition();
 	Integer columnOrder;
-//	Date createdDate;
-//	String createdBy;
+	Date createdDate;
+	String createdBy;
 	String operand;
 	Integer rowNumber;
 
@@ -26,10 +25,10 @@ public class SimplePurityCell {
 		columnOrder = cell.getColumnOrder();
 		rowNumber = cell.getRowNumber();
 		operand = cell.getOperand();
-//		createdDate = cell.getCreatedDate();
+		createdDate = cell.getCreatedDate();
 		id = cell.getId();
 		columnId = cell.getColumnId();
-//		createdBy = cell.getCreatedBy();
+		createdBy = cell.getCreatedBy();
 	}
 	
 	public void transferToTableCell(PurityTableCell cell) {
@@ -40,8 +39,8 @@ public class SimplePurityCell {
 		cell.setId(id);
 		cell.setColumnId(columnId);
 		cell.setRowNumber(rowNumber);
-//		cell.setCreatedDate(createdDate);
-//		cell.setCreatedBy(createdBy);
+		cell.setCreatedDate(createdDate);
+		cell.setCreatedBy(createdBy);
 	}
 	
 	public String getValue() {
@@ -62,12 +61,12 @@ public class SimplePurityCell {
 	public void setColumnOrder(Integer columnOrder) {
 		this.columnOrder = columnOrder;
 	}
-//	public Date getCreatedDate() {
-//		return createdDate;
-//	}
-//	public void setCreatedDate(Date createdDate) {
-//		this.createdDate = createdDate;
-//	}
+	public Date getCreatedDate() {
+		return createdDate;
+	}
+	public void setCreatedDate(Date createdDate) {
+		this.createdDate = createdDate;
+	}
 	
 	public String getOperand() {
 		return operand;
@@ -83,13 +82,13 @@ public class SimplePurityCell {
 		return id;
 	}
 
-//	public String getCreatedBy() {
-//		return createdBy;
-//	}
-//
-//	public void setCreatedBy(String createdBy) {
-//		this.createdBy = createdBy;
-//	}
+	public String getCreatedBy() {
+		return createdBy;
+	}
+
+	public void setCreatedBy(String createdBy) {
+		this.createdBy = createdBy;
+	}
 
 	public Long getColumnId() {
 		return columnId;

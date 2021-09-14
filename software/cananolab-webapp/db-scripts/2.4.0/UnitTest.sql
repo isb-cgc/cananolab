@@ -30,7 +30,6 @@ drop table if exists csm_configuration_props;
 drop table if exists csm_filter_clause;
 drop table if exists csm_password_history;
 
-
 DROP TABLE IF EXISTS `acl_entry`;
 DROP TABLE IF EXISTS `acl_object_identity`;
 DROP TABLE IF EXISTS `acl_class`;
@@ -96,6 +95,7 @@ DROP TABLE IF EXISTS `sample_publication`;
 DROP TABLE IF EXISTS `sample_other_poc`;
 DROP TABLE IF EXISTS `purity_file`;
 DROP TABLE IF EXISTS `purity_datum`;
+DROP TABLE IF EXISTS `purity_datum_condition`;
 DROP TABLE IF EXISTS `purity_column_header`;
 DROP TABLE IF EXISTS `synthesis_material_file`;
 DROP TABLE IF EXISTS `synthesis_functionalization_file`;
@@ -162,7 +162,8 @@ VALUES (13, 'gov.nih.nci.cananolab.domain.common.Author'),
        (5, 'gov.nih.nci.cananolab.dto.particle.composition.FunctionalizingEntityBean'),
        (6, 'gov.nih.nci.cananolab.dto.particle.composition.FunctionBean'),
        (3, 'gov.nih.nci.cananolab.dto.particle.composition.NanomaterialEntityBean'),
-       (1, 'gov.nih.nci.cananolab.dto.particle.SampleBean');
+       (1, 'gov.nih.nci.cananolab.dto.particle.SampleBean'),
+       (18, 'gov.nih.nci.cananolab.dto.particle.synthesis.SynthesisBean');
 /*!40000 ALTER TABLE `acl_class`
     ENABLE KEYS */;
 UNLOCK TABLES;
@@ -203,94 +204,94 @@ LOCK TABLES `acl_entry` WRITE;
     DISABLE KEYS */;
 INSERT IGNORE INTO `acl_entry` (`id`, `acl_object_identity`, `ace_order`, `sid`, `mask`, `granting`, `audit_success`,
                                 `audit_failure`)
-VALUES (1, 1, 0, 3, 1, 1, 0, 0),
-       (2, 1, 1, 3, 2, 1, 0, 0),
-       (3, 1, 2, 3, 8, 1, 0, 0),
-       (4, 1, 3, 13, 1, 1, 0, 0),
-       (5, 1, 4, 13, 2, 1, 0, 0),
-       (6, 1, 5, 13, 8, 1, 0, 0),
-       (7, 1, 6, 14, 1, 1, 0, 0),
-       (15, 1, 7, 12, 1, 1, 0, 0),
-       (189281, 9008, 0, 12, 1, 1, 0, 0),
-       (189291, 9010, 0, 3, 1, 1, 0, 0),
-       (189292, 9010, 1, 3, 2, 1, 0, 0),
-       (189293, 9010, 2, 3, 8, 1, 0, 0),
-       (189294, 9010, 3, 13, 1, 1, 0, 0),
-       (189295, 9010, 4, 13, 2, 1, 0, 0),
-       (189296, 9010, 5, 13, 8, 1, 0, 0),
-       (189297, 9010, 6, 14, 1, 1, 0, 0),
-       (189307, 9011, 0, 3, 1, 1, 0, 0),
-       (189308, 9011, 1, 3, 2, 1, 0, 0),
-       (189309, 9011, 2, 3, 8, 1, 0, 0),
-       (189310, 9011, 3, 13, 1, 1, 0, 0),
-       (189311, 9011, 4, 13, 2, 1, 0, 0),
-       (189312, 9011, 5, 13, 8, 1, 0, 0),
-       (189313, 9011, 6, 14, 1, 1, 0, 0),
-       (189323, 9012, 0, 3, 1, 1, 0, 0),
-       (189324, 9012, 1, 3, 2, 1, 0, 0),
-       (189325, 9012, 2, 3, 8, 1, 0, 0),
-       (189326, 9012, 3, 13, 1, 1, 0, 0),
-       (189327, 9012, 4, 13, 2, 1, 0, 0),
-       (189328, 9012, 5, 13, 8, 1, 0, 0),
-       (189329, 9012, 6, 14, 1, 1, 0, 0),
-       (189353, 9015, 0, 3, 1, 1, 0, 0),
-       (189354, 9015, 1, 3, 2, 1, 0, 0),
-       (189355, 9015, 2, 3, 8, 1, 0, 0),
-       (189356, 9015, 3, 13, 1, 1, 0, 0),
-       (189357, 9015, 4, 13, 2, 1, 0, 0),
-       (189358, 9015, 5, 13, 8, 1, 0, 0),
-       (189359, 9015, 6, 14, 1, 1, 0, 0),
-       (189360, 9015, 7, 12, 1, 1, 0, 0),
-       (189370, 9017, 0, 3, 1, 1, 0, 0),
-       (189371, 9017, 1, 3, 2, 1, 0, 0),
-       (189372, 9017, 2, 3, 8, 1, 0, 0),
-       (189373, 9017, 3, 13, 1, 1, 0, 0),
-       (189374, 9017, 4, 13, 2, 1, 0, 0),
-       (189375, 9017, 5, 13, 8, 1, 0, 0),
-       (189376, 9017, 6, 14, 1, 1, 0, 0),
-       (189386, 9018, 0, 3, 1, 1, 0, 0),
-       (189387, 9018, 1, 3, 2, 1, 0, 0),
-       (189388, 9018, 2, 3, 8, 1, 0, 0),
-       (189389, 9018, 3, 13, 1, 1, 0, 0),
-       (189390, 9018, 4, 13, 2, 1, 0, 0),
-       (189391, 9018, 5, 13, 8, 1, 0, 0),
-       (189392, 9018, 6, 14, 1, 1, 0, 0),
-       (189400, 4, 0, 3, 1, 1, 0, 0),
-       (189401, 4, 1, 3, 2, 1, 0, 0),
-       (189402, 4, 2, 3, 8, 1, 0, 0),
-       (189403, 4, 3, 13, 1, 1, 0, 0),
-       (189404, 4, 4, 13, 2, 1, 0, 0),
-       (189405, 4, 5, 13, 8, 1, 0, 0),
-       (189406, 4, 6, 14, 1, 1, 0, 0),
-       (189407, 4, 7, 12, 1, 1, 0, 0),
-       (189417,9021,0,3,1,1,0,0),
-       (189418,9021,1,3,2,1,0,0),
-       (189419,9021,2,3,8,1,0,0),
-       (189420,9021,3,13,1,1,0,0),
-       (189421,9021,4,13,2,1,0,0),
-       (189422,9021,5,13,8,1,0,0),
-       (189423,9021,6,14,1,1,0,0),
-       (189433,9022,0,3,1,1,0,0),
-       (189434,9022,1,3,2,1,0,0),
-       (189435,9022,2,3,8,1,0,0),
-       (189436,9022,3,13,1,1,0,0),
-       (189437,9022,4,13,2,1,0,0),
-       (189438,9022,5,13,8,1,0,0),
-       (189439,9022,6,14,1,1,0,0),
-       (189440,9019,0,3,1,1,0,0),
-       (189441,9019,1,3,2,1,0,0),
-       (189442,9019,2,3,8,1,0,0),
-       (189443,9019,3,13,1,1,0,0),
-       (189444,9019,4,13,2,1,0,0),
-       (189445,9019,5,13,8,1,0,0),
-       (189446,9019,6,14,1,1,0,0),
-       (189447,9020,0,3,1,1,0,0),
-       (189448,9020,1,3,2,1,0,0),
-       (189449,9020,2,3,8,1,0,0),
-       (189450,9020,3,13,1,1,0,0),
-       (189451,9020,4,13,2,1,0,0),
-       (189452,9020,5,13,8,1,0,0),
-       (189453,9020,6,14,1,1,0,0);
+VALUES (1, 20001, 0, 3, 1, 1, 0, 0),
+       (2, 20001, 1, 3, 2, 1, 0, 0),
+       (3, 20001, 2, 3, 8, 1, 0, 0),
+       (4, 20001, 3, 13, 1, 1, 0, 0),
+       (5, 20001, 4, 13, 2, 1, 0, 0),
+       (6, 20001, 5, 13, 8, 1, 0, 0),
+       (7, 20001, 6, 14, 1, 1, 0, 0),
+       (15, 20001, 7, 12, 1, 1, 0, 0),
+       (189281, 29008, 0, 12, 1, 1, 0, 0),
+       (189291, 29010, 0, 3, 1, 1, 0, 0),
+       (189292, 29010, 1, 3, 2, 1, 0, 0),
+       (189293, 29010, 2, 3, 8, 1, 0, 0),
+       (189294, 29010, 3, 13, 1, 1, 0, 0),
+       (189295, 29010, 4, 13, 2, 1, 0, 0),
+       (189296, 29010, 5, 13, 8, 1, 0, 0),
+       (189297, 29010, 6, 14, 1, 1, 0, 0),
+       (189307, 29011, 0, 3, 1, 1, 0, 0),
+       (189308, 29011, 1, 3, 2, 1, 0, 0),
+       (189309, 29011, 2, 3, 8, 1, 0, 0),
+       (189310, 29011, 3, 13, 1, 1, 0, 0),
+       (189311, 29011, 4, 13, 2, 1, 0, 0),
+       (189312, 29011, 5, 13, 8, 1, 0, 0),
+       (189313, 29011, 6, 14, 1, 1, 0, 0),
+       (189323, 29012, 0, 3, 1, 1, 0, 0),
+       (189324, 29012, 1, 3, 2, 1, 0, 0),
+       (189325, 29012, 2, 3, 8, 1, 0, 0),
+       (189326, 29012, 3, 13, 1, 1, 0, 0),
+       (189327, 29012, 4, 13, 2, 1, 0, 0),
+       (189328, 29012, 5, 13, 8, 1, 0, 0),
+       (189329, 29012, 6, 14, 1, 1, 0, 0),
+       (189353, 29015, 0, 3, 1, 1, 0, 0),
+       (189354, 29015, 1, 3, 2, 1, 0, 0),
+       (189355, 29015, 2, 3, 8, 1, 0, 0),
+       (189356, 29015, 3, 13, 1, 1, 0, 0),
+       (189357, 29015, 4, 13, 2, 1, 0, 0),
+       (189358, 29015, 5, 13, 8, 1, 0, 0),
+       (189359, 29015, 6, 14, 1, 1, 0, 0),
+       (189360, 29015, 7, 12, 1, 1, 0, 0),
+       (189370, 29017, 0, 3, 1, 1, 0, 0),
+       (189371, 29017, 1, 3, 2, 1, 0, 0),
+       (189372, 29017, 2, 3, 8, 1, 0, 0),
+       (189373, 29017, 3, 13, 1, 1, 0, 0),
+       (189374, 29017, 4, 13, 2, 1, 0, 0),
+       (189375, 29017, 5, 13, 8, 1, 0, 0),
+       (189376, 29017, 6, 14, 1, 1, 0, 0),
+       (189386, 29018, 0, 3, 1, 1, 0, 0),
+       (189387, 29018, 1, 3, 2, 1, 0, 0),
+       (189388, 29018, 2, 3, 8, 1, 0, 0),
+       (189389, 29018, 3, 13, 1, 1, 0, 0),
+       (189390, 29018, 4, 13, 2, 1, 0, 0),
+       (189391, 29018, 5, 13, 8, 1, 0, 0),
+       (189392, 29018, 6, 14, 1, 1, 0, 0),
+       (189400, 20004, 0, 3, 1, 1, 0, 0),
+       (189401, 20004, 1, 3, 2, 1, 0, 0),
+       (189402, 20004, 2, 3, 8, 1, 0, 0),
+       (189403, 20004, 3, 13, 1, 1, 0, 0),
+       (189404, 20004, 4, 13, 2, 1, 0, 0),
+       (189405, 20004, 5, 13, 8, 1, 0, 0),
+       (189406, 20004, 6, 14, 1, 1, 0, 0),
+       (189407,20004, 7, 12, 1, 1, 0, 0),
+       (189417,29021,0,3,1,1,0,0),
+       (189418,29021,1,3,2,1,0,0),
+       (189419,29021,2,3,8,1,0,0),
+       (189420,29021,3,13,1,1,0,0),
+       (189421,29021,4,13,2,1,0,0),
+       (189422,29021,5,13,8,1,0,0),
+       (189423,29021,6,14,1,1,0,0),
+       (189433,29022,0,3,1,1,0,0),
+       (189434,29022,1,3,2,1,0,0),
+       (189435,29022,2,3,8,1,0,0),
+       (189436,29022,3,13,1,1,0,0),
+       (189437,29022,4,13,2,1,0,0),
+       (189438,29022,5,13,8,1,0,0),
+       (189439,29022,6,14,1,1,0,0),
+       (189440,29019,0,3,1,1,0,0),
+       (189441,29019,1,3,2,1,0,0),
+       (189442,29019,2,3,8,1,0,0),
+       (189443,29019,3,13,1,1,0,0),
+       (189444,29019,4,13,2,1,0,0),
+       (189445,29019,5,13,8,1,0,0),
+       (189446,29019,6,14,1,1,0,0),
+       (189447,29020,0,3,1,1,0,0),
+       (189448,29020,1,3,2,1,0,0),
+       (189449,29020,2,3,8,1,0,0),
+       (189450,29020,3,13,1,1,0,0),
+       (189451,29020,4,13,2,1,0,0),
+       (189452,29020,5,13,8,1,0,0),
+       (189453,29020,6,14,1,1,0,0);
 /*!40000 ALTER TABLE `acl_entry`
     ENABLE KEYS */;
 UNLOCK TABLES;
@@ -331,27 +332,27 @@ LOCK TABLES `acl_object_identity` WRITE;
     DISABLE KEYS */;
 INSERT IGNORE INTO `acl_object_identity` (`id`, `object_id_class`, `object_id_identity`, `parent_object`, `owner_sid`,
                                           `entries_inheriting`)
-VALUES (1, 1, 1000, NULL, 3, 1),
-       (2, 16, 1000, NULL, 3, 1),
-       (3, 17, 1000, 2, 3, 1),
-       (4, 1, 1005, NULL, 3, 1),
-       (5, 16, 1005, NULL, 3, 1),
-       (6, 17, 1005, 5, 3, 1),
-       (9008, 15, 65601536, NULL, 3, 1),
-       (9009, 16, 65568768, 9008, 3, 1),
-       (9010, 1, 65634304, NULL, 3, 1),
-       (9011, 1, 65634305, NULL, 3, 1),
-       (9012, 1, 65634306, NULL, 3, 1),
-       (9013, 8, 65961984, 9011, 3, 1),
-       (9014, 8, 65961985, 9012, 3, 1),
-       (9015, 11, 66256896, NULL, 3, 1),
-       (9016, 8, 66420736, 1, 3, 1),
-       (9017, 11, 66584576, NULL, 3, 1),
-       (9018, 11, 66584577, NULL, 3, 1),
-       (9019, 11, 1111, NULL, 3, 1),
-       (9020, 11, 66945024, NULL, 3, 1),
-       (9021,11,66945025,NULL,3,1),
-       (9022,11,66945026,NULL,3,1);
+VALUES (20001, 1, 1000, NULL, 3, 1),
+       (20002, 16, 1000, NULL, 3, 1),
+       (20003, 17, 1000, 20002, 3, 1),
+       (20004, 1, 1005, NULL, 3, 1),
+       (20005, 16, 1005, NULL, 3, 1),
+       (20006, 17, 1005, 20005, 3, 1),
+       (29008, 15, 65601536, NULL, 3, 1),
+       (29009, 16, 65568768, 29008, 3, 1),
+       (29010, 1, 65634304, NULL, 3, 1),
+       (29011, 1, 65634305, NULL, 3, 1),
+       (29012, 1, 65634306, NULL, 3, 1),
+       (29013, 8, 65961984, 29011, 3, 1),
+       (29014, 8, 65961985, 29012, 3, 1),
+       (29015, 11, 66256896, NULL, 3, 1),
+       (29016, 8, 66420736, 20001, 3, 1),
+       (29017, 11, 66584576, NULL, 3, 1),
+       (29018, 11, 66584577, NULL, 3, 1),
+       (29019, 11, 1111, NULL, 3, 1),
+       (29020, 11, 66945024, NULL, 3, 1),
+       (29021,11,66945025,NULL,3,1),
+       (29022,11,66945026,NULL,3,1);
 /*!40000 ALTER TABLE `acl_object_identity`
     ENABLE KEYS */;
 UNLOCK TABLES;
@@ -1077,7 +1078,7 @@ VALUES (1, 'asymmetrical flow field-flow fractionation with multi-angle laser li
        (99, 'platelet aggregation', 'datumName', 'is above threshold?'),
        (100, 'proliferation', 'datumName', '% of control'),
        (101, 'proliferation', 'datumName', 'ratio of cell line1 to cell line 2'),
-       (102, 'purity', 'datumName', '% purity for sample'),
+       (102, 'purity', 'datumName', 'percent purity'),
        (103, 'relaxivity', 'datumName', 'R1'),
        (104, 'relaxivity', 'datumName', 'R2'),
        (105, 'relaxivity', 'datumName', 'T1'),
@@ -1604,6 +1605,7 @@ VALUES (1, 'asymmetrical flow field-flow fractionation with multi-angle laser li
        (1093, 'functionalization', 'type', 'small molecule'),
        (1094, 'synthesis', 'otherMaterialType', 'reagent'),
        (1096, 'protocol', 'type', 'purification'),
+       (1097, 'percent purity', 'otherUnit', '%'),
        (13959168, 'technique', 'otherType', 'gel electrophoresis'),
        (13959169, 'gel electrophoresis', 'otherInstrument', 'fluorescence excitation device'),
        (13959170, 'gel electrophoresis', 'otherInstrument', 'cooled digital camera'),
@@ -6333,7 +6335,8 @@ CREATE TABLE `purity_column_header` (
   `created_by` varchar(200) NOT NULL,
   `created_date` datetime NOT NULL,
   `column_order` INT(10) NOT NULL,
-  `constant_value` DECIMAL(30,10) DEFAULT NULL,
+  `constant_value` varchar(200) DEFAULT NULL,
+  `column_type` varchar(200) NOT NULL,
   PRIMARY KEY (`column_pk_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
@@ -6347,14 +6350,15 @@ INSERT IGNORE INTO `canano`.`purity_column_header` (
  `value_unit`,
  `created_by`,
  `created_date`,
- `column_order`)
- VALUES (2000, 'Purity datum 1', 'purity', '%', 'canano_curator', '2020-07-20 16:08:15',0),
- (2010, 'Synthesis condition 1', 'observed', 'g', 'canano_curator', '2020-07-20 16:08:15',1),
- (1010, 'datum test', 'observed', 'mg', 'canano_curator', '2020-07-20 16:08:15',0),
- (2030, 'datum test 2', 'observed', 'mg', 'canano_curator', '2020-07-20 16:08:15',0),
- (2040,'Purity datum 2','purity','%','canano_curator','2021-02-05 15:50:00',0),
- (2050,'Purity condition 2-1','mean','%','canano_curator','2021-02-05 15:50:00',1),
- (2060,'Purity condition 2-2','standard deviation','%','canano_curator','2021-02-05 15:50:00',2);
+ `column_order`,
+ `column_type`)
+ VALUES (2000, 'Purity datum 1', 'purity', '%', 'canano_curator', '2020-07-20 16:08:15',1,'datum'),
+ (2010, 'Synthesis condition 1', 'observed', 'g', 'canano_curator', '2020-07-20 16:08:15',2,'condition'),
+ (1010, 'datum test', 'observed', 'mg', 'canano_curator', '2020-07-20 16:08:15',1,'datum'),
+ (2030, 'datum test 2', 'observed', 'mg', 'canano_curator', '2020-07-20 16:08:15',2,'condition'),
+ (2040,'Purity datum 2','purity','%','canano_curator','2021-02-05 15:50:00',1,'datum'),
+ (2050,'Purity condition 2-1','mean','%','canano_curator','2021-02-05 15:50:00',2,'condition'),
+ (2060,'Purity condition 2-2','standard deviation','%','canano_curator','2021-02-05 15:50:00',3,'condition');
 /*!40000 ALTER TABLE `purity_column_header`
     ENABLE KEYS */;
 UNLOCK TABLES;
@@ -6367,7 +6371,6 @@ UNLOCK TABLES;
 SET character_set_client = utf8;
 CREATE TABLE `purity_datum_condition`
 (
-    `purity_datum_pk_id`     bigint(20)   NOT NULL COMMENT 'purity_datum_pk_id',
     `condition_pk_id` bigint(20)   NOT NULL COMMENT 'condition_pk_id',
     `row_number` int NOT NULL COMMENT 'row number',
     `purity_pk_id`  bigint(20)  NOT NULL,
@@ -6383,7 +6386,6 @@ CREATE TABLE `purity_datum_condition`
     `column_pk_id`		 bigint(20)	NOT NULL,
     PRIMARY KEY (`condition_pk_id`),
     KEY `FK_column_TO_purity_datum_condition`(`column_pk_id`),
- --   CONSTRAINT `FK_purity_datum_TO_purity_datum_condition` FOREIGN KEY (`purity_datum_pk_id`) REFERENCES `purity_datum` (`purity_datum_pk_id`),
     CONSTRAINT `FK_column_TO_purity_condition` FOREIGN KEY (`column_pk_id`) REFERENCES `purity_column_header` (`column_pk_id`),
     CONSTRAINT `FK_purity_TO_pur_datum_condition` FOREIGN KEY (`purity_pk_id`) REFERENCES `synthesis_purity` (`purity_pk_id`)
 ) ENGINE = InnoDB
@@ -6397,23 +6399,23 @@ CREATE TABLE `purity_datum_condition`
 LOCK TABLES `purity_datum_condition` WRITE;
 /*!40000 ALTER TABLE `purity_datum_condition`
     DISABLE KEYS */;
-INSERT IGNORE INTO `purity_datum_condition` (`purity_datum_pk_id`, `condition_pk_id`,`row_number`,`purity_pk_id`, `name`, `property`, `value`,
+INSERT IGNORE INTO `purity_datum_condition` (`condition_pk_id`,`row_number`,`purity_pk_id`, `name`, `property`, `value`,
                                              `value_unit`, `value_type`, `created_by`, `created_date`,`type`,`column_pk_id`)
-VALUES (1000,1000, 1,1000,'Synthesis condition 1', NULL, '42', 'g', 'observed', 'canano_user', '2019-12-06 12:15:00','condition',2010),
-       (1010,1100,2,1000, 'Synthesis condition 2', NULL, '43', 'g', 'observed', 'canano_user', '2019-12-06 12:17:00','condition',2010),
-       (1020,1010,1,1000,'Purity datum 1',NULL, '55', '%',NULL,'canano_user', '2019-12-06 12:15:00','datum',2000),
-       (1030,1020, 2,1000,'Purity datum 2', NULL, '57.1','%',NULL,'canano_curator', '2019-12-06 12:15:00','datum',2000),
-       (1111,1111, 2,1111,'datum_test', NULL, '84', 'mg', 'observed', 'canano_curator', '2019-12-06 12:15:00','condition',2030),
-       (1111,1120,1,1111,'Purity datum',NULL,'123.00','%',NULL,'canano_curator', '2019-12-06 12:15:00','datum',1010),
-       (2222,1130,1,1100,'datum test1',NULL,'98','%',NULL,'canano_curator','2021-02-05 14:50:00','datum',2040),
-       (2222,1140,1,1100,'condition 1-1',NULL,'98','%',NULL,'canano_curator','2021-02-05 14:50:00','condition',2050),
-       (2222,1150,1,1100,'condition 1-2',NULL,'0.5','%',NULL,'canano_curator','2021-02-05 14:50:00','condition',2060),
-       (2222,1160,2,1100,'datum test2',NULL,'97','%',NULL,'canano_curator','2021-02-05 15:10:00','datum',2040),
-       (2222,1170,2,1100,'condition 2-1',NULL,'96.5','%',NULL,'canano_curator','2021-02-05 15:10:00','condition',2050),
-       (2222,1180,2,1100,'condition 2-2',NULL,'0.7','%',NULL,'canano_curator','2021-02-05 15:10:00','condition',2060),
-       (2222,1190,3,1100,'datum test3',NULL,'98','%',NULL,'canano_curator','2021-02-05 15:15:00','datum',2040),
-       (2222,1200,3,1100,'condition 3-1',NULL,'98.4','%',NULL,'canano_curator','2021-02-05 15:15:00','condition',2050),
-       (2222,1210,3,1100,'condition 3-2',NULL,'0.6','%',NULL,'canano_curator','2021-02-05 15:15:00','condition',2060);
+VALUES (1000, 1,1000,'Synthesis condition 1', NULL, '42', 'g', 'observed', 'canano_user', '2019-12-06 12:15:00','condition',2010),
+       (1100,2,1000, 'Synthesis condition 2', NULL, '43', 'g', 'observed', 'canano_user', '2019-12-06 12:17:00','condition',2010),
+       (1010,1,1000,'Purity datum 1',NULL, '55', '%',NULL,'canano_user', '2019-12-06 12:15:00','datum',2000),
+       (1020, 2,1000,'Purity datum 2', NULL, '57.1','%',NULL,'canano_curator', '2019-12-06 12:15:00','datum',2000),
+       (1111, 1,1111,'datum_test', NULL, '84', 'mg', 'observed', 'canano_curator', '2019-12-06 12:15:00','condition',2030),
+       (1120,1,1111,'Purity datum',NULL,'123.00','%',NULL,'canano_curator', '2019-12-06 12:15:00','datum',1010),
+       (1130,1,1100,'datum test1',NULL,'98','%',NULL,'canano_curator','2021-02-05 14:50:00','datum',2040),
+       (1140,1,1100,'condition 1-1',NULL,'98','%',NULL,'canano_curator','2021-02-05 14:50:00','condition',2050),
+       (1150,1,1100,'condition 1-2',NULL,'0.5','%',NULL,'canano_curator','2021-02-05 14:50:00','condition',2060),
+       (1160,2,1100,'datum test2',NULL,'97','%',NULL,'canano_curator','2021-02-05 15:10:00','datum',2040),
+       (1170,2,1100,'condition 2-1',NULL,'96.5','%',NULL,'canano_curator','2021-02-05 15:10:00','condition',2050),
+       (1180,2,1100,'condition 2-2',NULL,'0.7','%',NULL,'canano_curator','2021-02-05 15:10:00','condition',2060),
+       (1190,3,1100,'datum test3',NULL,'98','%',NULL,'canano_curator','2021-02-05 15:15:00','datum',2040),
+       (1200,3,1100,'condition 3-1',NULL,'98.4','%',NULL,'canano_curator','2021-02-05 15:15:00','condition',2050),
+       (1210,3,1100,'condition 3-2',NULL,'0.6','%',NULL,'canano_curator','2021-02-05 15:15:00','condition',2060);
 
 /*!40000 ALTER TABLE `purity_datum_condition`
     ENABLE KEYS */;
@@ -6445,7 +6447,7 @@ LOCK TABLES `purity_file` WRITE;
 /*!40000 ALTER TABLE `purity_file`
     DISABLE KEYS */;
 INSERT IGNORE INTO `purity_file` (`purity_pk_id`, `file_pk_id`)
-VALUES (1002, 1333);
+VALUES (1005, 1333);
 /*!40000 ALTER TABLE `purity_file`
     ENABLE KEYS */;
 UNLOCK TABLES;
@@ -7189,11 +7191,9 @@ LOCK TABLES `synthesis_purity` WRITE;
     DISABLE KEYS */;
 INSERT IGNORE INTO `synthesis_purity` (`purity_pk_id`, `synthesis_purification_pk_id`, `created_by`, `created_date`)
 VALUES (1000, 1000, 'canano_curator', '2019-12-06 12:15:00'),
-       (1010, 1001, 'canano_curator', '2020-10-06 12:15:00'),
        (1005, 1005, 'canano_curator', '2019-08-28 00:00:00'),
        (1100, 1000, 'canano_curator', '2021-02-05 15:50:00'),
-       (1111, 1111, 'canano_curator', '2019-12-06 12:15:00'),
-       (1222, 1222, 'canano_curator', '2019-08-28 00:00:00');
+       (1111, 1111, 'canano_curator', '2019-12-06 12:15:00');
 /*!40000 ALTER TABLE `synthesis_purity`
     ENABLE KEYS */;
 UNLOCK TABLES;

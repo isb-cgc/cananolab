@@ -25,7 +25,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-
+import javax.persistence.criteria.CriteriaBuilder;
 
 
 public class SynthesisPurityBean
@@ -53,7 +53,7 @@ public class SynthesisPurityBean
         List<PurityDatumCondition> data = null;
         if(synthesisPurity.getPurityDatumCollection()!=null){
             data = new ArrayList<PurityDatumCondition>( synthesisPurity.getPurityDatumCollection() );
-            Collections.sort( data, new Comparators.PurityDatumDateComparator() );
+//            Collections.sort( data, new Comparators.PurityDatumDateComparator() );
             addColumnHeaders(data);
         }
         numberOfColumns = purityColumnHeaders.size();
@@ -368,18 +368,19 @@ public class SynthesisPurityBean
     {
         this.numberOfColumns = numberOfColumns;
         this.numberOfRows = numberOfRows;
-//        List<ColumnHeader> newColumns = new ArrayList<ColumnHeader>();
+
         List<PurityColumnHeader> newColumns = new ArrayList<PurityColumnHeader>();
-//        if( columnHeaders.size() <= numberOfColumns )
+
             if( purityColumnHeaders.size() <= numberOfColumns )
         {
-//            newColumns.addAll( columnHeaders );
-//            for( int i = columnHeaders.size(); i < numberOfColumns; i++ )
+            //add all the current column headers to the matrix
                 newColumns.addAll( purityColumnHeaders );
             for( int i = purityColumnHeaders.size(); i < numberOfColumns; i++ )
             {
-//                newColumns.add( new ColumnHeader() );
-                newColumns.add( new PurityColumnHeader() );
+//               //Now tack all the new columns onto the matrix
+                PurityColumnHeader newColumnHeader = new PurityColumnHeader();
+                newColumnHeader.setColumnOrder(i+1);
+                newColumns.add( newColumnHeader );
             }
         }
         // remove the columnHeaders from the end
@@ -387,18 +388,31 @@ public class SynthesisPurityBean
         {
             for( int i = 0; i < numberOfColumns; i++ )
             {
-//                newColumns.add( columnHeaders.get( i ) );
+                //only add the columns up the input count
+                //so - if we had 3 columns and the column count passed in is 2
+                //the only add the first 2 columns to the new column set
                 newColumns.add( purityColumnHeaders.get( i ) );
             }
         }
 
+        //build header map to be able to retrieve for each cell (below)
+        HashMap<Integer, PurityColumnHeader> headerHashMap = new HashMap<Integer, PurityColumnHeader>();
+        for(PurityColumnHeader header: newColumns){
+            headerHashMap.put(header.getColumnOrder(), header);
+
+        }
+
+
         List<PurityRow> newRows = new ArrayList<PurityRow>();
         if( rows.size() <= numberOfRows )
         {
+            //add all the old rows to the set
             newRows.addAll( rows );
-            for( int i = rows.size(); i < numberOfRows; i++ )
+            for( int i = rows.size(); i < numberOfRows; i++)
             {
-                newRows.add( new PurityRow() );
+                PurityRow row = new PurityRow();
+                row.setRowNumber(new Integer(i+1));
+                newRows.add( row );
             }
         }
         // remove the rows from the end
@@ -409,6 +423,8 @@ public class SynthesisPurityBean
                 newRows.add( rows.get( i ) );
             }
         }
+
+
         for( int i = 0; i < numberOfRows; i++ )
         {
             PurityRow row = newRows.get( i );
@@ -419,7 +435,16 @@ public class SynthesisPurityBean
                 newCells.addAll( cells );
                 for( int j = cells.size(); j < numberOfColumns; j++ )
                 {
-                    newCells.add( new PurityTableCell() );
+                    PurityTableCell cell = new PurityTableCell();
+                    cell.setRowNumber(row.getRowNumber());
+                    cell.setColumnOrder(new Integer(j+1));
+                    PurityColumnHeader headerTemp = headerHashMap.get(j+1);
+                    cell.setColumnId(headerTemp.getId());
+                    cell.setDatumOrCondition(headerTemp.getColumnType());
+                    if(cell.getValue()==null){
+                        cell.setValue(headerTemp.getConstantValue());
+                    }
+                    newCells.add( cell );
                 }
             }
             // remove the columnHeaders from the end
@@ -432,7 +457,7 @@ public class SynthesisPurityBean
             }
             row.setCells( newCells );
         }
-//        columnHeaders = new ArrayList<ColumnHeader>( newColumns );
+
         purityColumnHeaders = new ArrayList<PurityColumnHeader>( newColumns );
         rows = new ArrayList<PurityRow>();
         rows.addAll( newRows );

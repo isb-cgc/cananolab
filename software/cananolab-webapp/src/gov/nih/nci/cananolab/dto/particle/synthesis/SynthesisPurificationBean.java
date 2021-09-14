@@ -61,7 +61,7 @@ public class SynthesisPurificationBean extends BaseSynthesisEntityBean {
 
         this.domain=purification;
         this.domainId=purification.getId();
-        this.displayName = purification.getMethodName();
+        this.displayName = purification.getDisplayName();
         this.type = purification.getType();
         this.description = purification.getDesignMethodDescription();
         this.createdBy = purification.getCreatedBy();
@@ -156,7 +156,7 @@ public class SynthesisPurificationBean extends BaseSynthesisEntityBean {
 
 
     public void setUpDomainEntity(String username) throws Exception{
-        //todo write
+
         logger.debug("in SynthesisPurificationBean.setUpDomainEntity");
 
         if(domain.getId() !=null && domain.getId()==0){

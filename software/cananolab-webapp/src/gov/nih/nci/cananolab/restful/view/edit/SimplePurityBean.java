@@ -68,9 +68,9 @@ public class SimplePurityBean {
 
     public void setColumnHeaders(List<PurityColumnHeader> columnHeaders) {
         this.columnHeaders = columnHeaders;
-        if(columnHeaders!=null){
-            numberOfColumns=columnHeaders.size();
-        }
+//        if(columnHeaders!=null){
+//            numberOfColumns=columnHeaders.size();
+//        }
     }
 
     public List<PurityColumnHeader> getColumnHeaders() {
@@ -111,6 +111,9 @@ public class SimplePurityBean {
         this.transferRowsFromPurityBean(purityBean);
         this.transferFilesFromPurityBean(purityBean, sampleId);
         this.setColumnHeaders(purityBean.getPurityColumnHeaders());
+        this.setNumberOfColumns(purityBean.getNumberOfColumns());
+        this.setNumberOfRows(purityBean.getNumberOfRows());
+
     }
 
     public void transferFilesFromPurityBean(SynthesisPurityBean purityBean,String sampleId){
@@ -127,6 +130,9 @@ public class SimplePurityBean {
         this.setId(purityBean.getDomain().getId());
         this.transferRowsFromPurityBean(purityBean);
         transferFilesFromPurityBean(request, purityBean.getFiles());
+        this.setColumnHeaders(purityBean.getPurityColumnHeaders());
+        this.setNumberOfColumns(purityBean.getNumberOfColumns());
+        this.setNumberOfRows(purityBean.getNumberOfRows());
     }
 
     private void transferFilesFromPurityBean(HttpServletRequest request, List<FileBean> files) {
@@ -162,7 +168,7 @@ public class SimplePurityBean {
         }
     }
 
-    protected void transferRowsToPurityBean(SynthesisPurityBean purityBean) {
+    public void transferRowsToPurityBean(SynthesisPurityBean purityBean) {
         if (this.rows == null) return;
         if (purityBean == null) return;
 

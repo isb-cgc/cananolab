@@ -46,6 +46,8 @@ var app = angular.module('angularApp')
         data = data['data']
         $scope.functionalization = data;
         $scope.functionalizationCopy = angular.copy($scope.functionalization);
+        $scope.fileArray = angular.copy($scope.functionalization.fileElements)
+
         $scope.loader = false;
       }).catch(function (data, status, headers, config) {
         data = data['data']
@@ -119,54 +121,52 @@ var app = angular.module('angularApp')
     };
 
     // open the file edit form //
-    $scope.openFileForm = function (index, parentIndex, file) {
-      $scope.uploadComplete = false;
-      $scope.uploadError = false;
+  // open the file edit form //
+  $scope.openFileForm = function (index, parentIndex, file) {
+    $scope.uploadComplete = false;
+    $scope.uploadError = false;
 
-      $scope.fileObject = null;
-      $('#uploadFile')[0].value = "";
-      $scope.uploadError = null;
-      $scope.fileId = null;
-      $scope.fileErrorMessage = null;
-      // uriExternal: true
-      // externalUrl: https://google.com/fake.txt
-      // type: document
-      // title: test
-      // keywordsStr: abc
-      // description: 123
-      // myFile: (binary)
+    $scope.fileObject = null;
+    $('#uploadFile')[0].value = "";
+    $scope.uploadError = null;
+    $scope.fileId = null;
+    $scope.fileErrorMessage = null;
+    // uriExternal: true
+    // externalUrl: https://google.com/fake.txt
+    // type: document
+    // title: test
+    // keywordsStr: abc
+    // description: 123
+    // myFile: (binary)
+    
+    // uriExternal: false
+    // type: document
+    // title: title
+    // keywordsStr: abc
+    // description: 1234
+    // myFile: (binary)
 
-      // uriExternal: false
-      // type: document
-      // title: title
-      // keywordsStr: abc
-      // description: 1234
-      // myFile: (binary)
+    if (index != -1) {
+      $scope.fileFormIndex = index;
+      $scope.fileId = file['id'];
+      $scope.currentFile = { 
+        "uri":file.uri, "uriExternal": file.uriExternal, 
+        "id":file.id,
+        "externalUrl":file.externalUrl,"type":file.type,
+        "title":file.title, "description":file.description }
 
-      if (index != -1) {
-        $scope.fileFormIndex = index;
-        $scope.fileId = file['id'];
-        $scope.currentFile = {
-          "uri": file.uri,
-          "uriExternal": file.uriExternal,
-          "externalUrl": file.externalUrl,
-          "type": file.type,
-          "title": file.title,
-          "description": file.description
-        }; // //
-        console.log($scope.currentFile)
-      } else {
-        $scope.currentFile = {
-          "uri": "",
-          "uriExternal": false,
-          "externalUrl": null,
-          "type": "",
-          "title": "",
-          "description": ""
-        }; // //
-        $scope.fileFormIndex = index;
-      };
+      console.log($scope.currentFile)
+    }
+    else {
+      $scope.currentFile = {
+        "uri": "", "uriExternal": false,
+        "externalUrl": null, "type": "",
+        "title": "", "description": "",
+        "id":""
+      }; // //
+      $scope.fileFormIndex = index;
     };
+  };
 
     // open the inherent function edit form //
     $scope.openInherentFunctionForm = function (index, parentIndex, inherentFunction) {
@@ -223,27 +223,59 @@ var app = angular.module('angularApp')
     };
 
     // uploads file to server //
-    $scope.uploadFile = function () {
+    $scope.uploadFile = function() {
       console.log('i am uploading')
       var fd = new FormData(); // create new form data object //
       fd.append('file', $scope.fileObject);
-      $http.post('/caNanoLab/rest/core/uploadFile', fd, {
-        withCredentials: false,
-        headers: {
-          'Content-Type': undefined
-        },
-        transformRequest: angular.identity
-      }).
-      then(function (data, status, headers, config) {
+  /*
+      fd.append('urlExternal', false);
+      fd.append('type', 'image');
+      fd.append('title', 'title');
+  */
+      $http.post('/caNanoLab/rest/core/uploadFile', fd, { withCredentials: false, headers: { 'Content-Type': undefined }, transformRequest: angular.identity }).
+        then(function (data, status, headers, config) {
         data = data['data']
         $scope.uploadComplete = true;
-      }).
-      catch(function (data, status, headers, config) {
-        data = data['data']
-        $scope.uploadError = true;
-        $scope.fileErrorMessage = 'Error Uploading File';
-      });
+          if ($scope.fileFormIndex==-1) {
+            $scope.currentFile['uri'] = data['fileName']
+            $scope.fileArray.push($scope.currentFile);
+  
+            $scope.functionalization['fileElements'] = $scope.fileArray;
+            $scope.functionalization['fileBeingEdited'] = $scope.fileArray[0];
+  
+            $http.post('/caNanoLab/rest/synthesisFunctionalization/saveFile', $scope.functionalization).
+            then(function(data) {
+              data = data['data']
+              console.log('done')
+            }).
+                catch (function(data) {
+              console.log('caNanoLab/rest/synthesisFunctionalization/saveFile ERROR data: ', data);
+            });
+  
+            }
+          else {
+            $scope.currentFile['uri'] = data['fileName'];
+            $scope.functionalization['fileElements'] = $scope.fileArray;
+            $scope.functionalization['fileBeingEdited'] = $scope.fileArray[0];
+            $scope.fileArray[$scope.fileFormIndex]=$scope.currentFile;
+            
+            $http.post('/caNanoLab/rest/synthesisFunctionalization/saveFile', $scope.functionalization).
+            then(function(data) {
+              data = data['data']
+              console.log('done')
+            }).
+                catch (function(data) {
+              console.log('caNanoLab/rest/synthesisFunctionalization/saveFile ERROR data: ', data);
+            });          }
+  
+        }).
+        catch(function (data, status, headers, config) {
+          data = data['data']
+          $scope.uploadError = true;
+          $scope.fileErrorMessage = 'Error Uploading File';
+        });
     };
+  
 
     // save inherent function //
     $scope.saveInherentFunction = function (i) {
@@ -268,6 +300,8 @@ var app = angular.module('angularApp')
       $scope.functionalizationElementFormIndex = null;
     };
 
+
+    
     // submit the entire synthesis functionalization //
     $scope.saveFunctionalization = function () {
       // $scope.fileFunctionalization = angular.copy($scope.functionalization);
@@ -287,6 +321,20 @@ var app = angular.module('angularApp')
       }).
       then(function (data, status, headers, config) {
         data = data['data']
+        $scope.functionalization['fileElements'] = $scope.fileArray;
+        $scope.functionalization['fileBeingEdited'] = $scope.fileArray[0];
+
+        $http({
+          method: 'POST',
+          url: '/caNanoLab/rest/synthesisFunctionalization/saveFile',
+          data: [$scope.functionalization]
+        }).
+        then(function () {
+          data = data['data'];
+  
+        }).catch(function () {
+          data = data['data'];
+        })        
         $location.search({
           'message': 'Synthesis Functionalization successfully saved.',
           'sampleId': $scope.sampleId
@@ -297,6 +345,8 @@ var app = angular.module('angularApp')
         console.log('fail')
       });
     };
+
+
 
     // sets external url to true or false for current file //
     $scope.setFileType = (fileType) => {

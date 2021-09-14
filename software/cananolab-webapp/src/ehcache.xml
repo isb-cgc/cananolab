@@ -769,89 +769,88 @@ L-->
 		timeToLiveSeconds="100000"
 		overflowToDisk="true"/>
 
-	<!--TODO Restore when Synthesis added to main -->
-<!--	<cache name="gov.nih.nci.cananolab.domain.common.PurityDatumCondition"-->
-<!--		   maxElementsInMemory="500"-->
-<!--		   eternal="false"-->
-<!--		   timeToIdleSeconds="1800"-->
-<!--		   timeToLiveSeconds="100000"-->
-<!--		   overflowToDisk="true"/>-->
+	<cache name="gov.nih.nci.cananolab.domain.common.PurityDatumCondition"
+		   maxElementsInMemory="500"
+		   eternal="false"
+		   timeToIdleSeconds="1800"
+		   timeToLiveSeconds="100000"
+		   overflowToDisk="true"/>
 
-<!--	<cache name="gov.nih.nci.cananolab.domain.common.PurityColumnHeader"-->
-<!--		   maxElementsInMemory="500"-->
-<!--		   eternal="false"-->
-<!--		   timeToIdleSeconds="1800"-->
-<!--		   timeToLiveSeconds="100000"-->
-<!--		   overflowToDisk="true"/>-->
+	<cache name="gov.nih.nci.cananolab.domain.common.PurityColumnHeader"
+		   maxElementsInMemory="500"
+		   eternal="false"
+		   timeToIdleSeconds="1800"
+		   timeToLiveSeconds="100000"
+		   overflowToDisk="true"/>
 
-<!--	<cache name="gov.nih.nci.cananolab.domain.common.Supplier"-->
-<!--		   maxElementsInMemory="500"-->
-<!--		   eternal="false"-->
-<!--		   timeToIdleSeconds="1800"-->
-<!--		   timeToLiveSeconds="100000"-->
-<!--		   overflowToDisk="true"/>-->
+	<cache name="gov.nih.nci.cananolab.domain.common.Supplier"
+		   maxElementsInMemory="500"
+		   eternal="false"
+		   timeToIdleSeconds="1800"
+		   timeToLiveSeconds="100000"
+		   overflowToDisk="true"/>
 
-<!--	<cache name="gov.nih.nci.cananolab.domain.common.PurificationConfig"-->
-<!--		   maxElementsInMemory="500"-->
-<!--		   eternal="false"-->
-<!--		   timeToIdleSeconds="1800"-->
-<!--		   timeToLiveSeconds="100000"-->
-<!--		   overflowToDisk="true"/>-->
+	<cache name="gov.nih.nci.cananolab.domain.common.PurificationConfig"
+		   maxElementsInMemory="500"
+		   eternal="false"
+		   timeToIdleSeconds="1800"
+		   timeToLiveSeconds="100000"
+		   overflowToDisk="true"/>
 
-<!--	<cache name="gov.nih.nci.cananolab.domain.particle.SynthesisPurity"-->
-<!--		   maxElementsInMemory="500"-->
-<!--		   eternal="false"-->
-<!--		   timeToIdleSeconds="1800"-->
-<!--		   timeToLiveSeconds="100000"-->
-<!--		   overflowToDisk="true"/>-->
+	<cache name="gov.nih.nci.cananolab.domain.particle.SynthesisPurity"
+		   maxElementsInMemory="500"
+		   eternal="false"
+		   timeToIdleSeconds="1800"
+		   timeToLiveSeconds="100000"
+		   overflowToDisk="true"/>
 
-<!--	<cache name="gov.nih.nci.cananolab.domain.particle.SfeInherentFunction"-->
-<!--		   maxElementsInMemory="500"-->
-<!--		   eternal="false"-->
-<!--		   timeToIdleSeconds="1800"-->
-<!--		   timeToLiveSeconds="100000"-->
-<!--		   overflowToDisk="true"/>-->
+	<cache name="gov.nih.nci.cananolab.domain.particle.SfeInherentFunction"
+		   maxElementsInMemory="500"
+		   eternal="false"
+		   timeToIdleSeconds="1800"
+		   timeToLiveSeconds="100000"
+		   overflowToDisk="true"/>
 
-<!--	<cache name="gov.nih.nci.cananolab.domain.particle.SmeInherentFunction"-->
-<!--		   maxElementsInMemory="500"-->
-<!--		   eternal="false"-->
-<!--		   timeToIdleSeconds="1800"-->
-<!--		   timeToLiveSeconds="100000"-->
-<!--		   overflowToDisk="true"/>-->
+	<cache name="gov.nih.nci.cananolab.domain.particle.SmeInherentFunction"
+		   maxElementsInMemory="500"
+		   eternal="false"
+		   timeToIdleSeconds="1800"
+		   timeToLiveSeconds="100000"
+		   overflowToDisk="true"/>
 
-<!--	<cache name="gov.nih.nci.cananolab.domain.particle.Synthesis"-->
-<!--		   maxElementsInMemory="500"-->
-<!--		   eternal="false"-->
-<!--		   timeToIdleSeconds="1800"-->
-<!--		   timeToLiveSeconds="100000"-->
-<!--		   overflowToDisk="true"/>-->
+	<cache name="gov.nih.nci.cananolab.domain.particle.Synthesis"
+		   maxElementsInMemory="500"
+		   eternal="false"
+		   timeToIdleSeconds="1800"
+		   timeToLiveSeconds="100000"
+		   overflowToDisk="true"/>
 
-<!--	<cache name="gov.nih.nci.cananolab.domain.particle.SynthesisFunctionalization"-->
-<!--		   maxElementsInMemory="500"-->
-<!--		   eternal="false"-->
-<!--		   timeToIdleSeconds="1800"-->
-<!--		   timeToLiveSeconds="100000"-->
-<!--		   overflowToDisk="true"/>-->
+	<cache name="gov.nih.nci.cananolab.domain.particle.SynthesisFunctionalization"
+		   maxElementsInMemory="500"
+		   eternal="false"
+		   timeToIdleSeconds="1800"
+		   timeToLiveSeconds="100000"
+		   overflowToDisk="true"/>
 
-<!--	<cache name="gov.nih.nci.cananolab.domain.particle.SynthesisMaterialElement"-->
-<!--		   maxElementsInMemory="500"-->
-<!--		   eternal="false"-->
-<!--		   timeToIdleSeconds="1800"-->
-<!--		   timeToLiveSeconds="100000"-->
-<!--		   overflowToDisk="true"/>-->
+	<cache name="gov.nih.nci.cananolab.domain.particle.SynthesisMaterialElement"
+		   maxElementsInMemory="500"
+		   eternal="false"
+		   timeToIdleSeconds="1800"
+		   timeToLiveSeconds="100000"
+		   overflowToDisk="true"/>
 
-<!--	<cache name="gov.nih.nci.cananolab.domain.particle.SynthesisMaterial"-->
-<!--		   maxElementsInMemory="500"-->
-<!--		   eternal="false"-->
-<!--		   timeToIdleSeconds="1800"-->
-<!--		   timeToLiveSeconds="100000"-->
-<!--		   overflowToDisk="true"/>-->
+	<cache name="gov.nih.nci.cananolab.domain.particle.SynthesisMaterial"
+		   maxElementsInMemory="500"
+		   eternal="false"
+		   timeToIdleSeconds="1800"
+		   timeToLiveSeconds="100000"
+		   overflowToDisk="true"/>
 
-<!--	<cache name="gov.nih.nci.cananolab.domain.particle.SynthesisPurification"-->
-<!--		   maxElementsInMemory="500"-->
-<!--		   eternal="false"-->
-<!--		   timeToIdleSeconds="1800"-->
-<!--		   timeToLiveSeconds="100000"-->
-<!--		   overflowToDisk="true"/>-->
+	<cache name="gov.nih.nci.cananolab.domain.particle.SynthesisPurification"
+		   maxElementsInMemory="500"
+		   eternal="false"
+		   timeToIdleSeconds="1800"
+		   timeToLiveSeconds="100000"
+		   overflowToDisk="true"/>
 
 </ehcache>

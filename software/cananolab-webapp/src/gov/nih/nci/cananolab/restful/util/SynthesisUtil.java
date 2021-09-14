@@ -135,7 +135,9 @@ public class SynthesisUtil {
         if (types!=null)
             typeMap.put("instruments", new ArrayList<String>(types));
 
-
+        types = (SortedSet<String>) session.getServletContext().getAttribute("manufacturers");
+        if(types!=null)
+            typeMap.put("manufacturers", new ArrayList<String>(types));
 
         //TODO column type - datum or condition
         types = (SortedSet<String>) session.getAttribute("datumConditionValueTypes");
@@ -146,7 +148,9 @@ public class SynthesisUtil {
         //TODO column value type -
         //TODO column value unit - depends on name
 
-
+        types = (SortedSet<String>) session.getAttribute("fileTypes");
+        if (types != null)
+            typeMap.put("fileTypes", new ArrayList<String>(types));
 
 
         return typeMap;

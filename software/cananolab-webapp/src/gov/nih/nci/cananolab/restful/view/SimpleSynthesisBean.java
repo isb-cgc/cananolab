@@ -68,8 +68,11 @@ public class SimpleSynthesisBean {
         this.synthesisSections = synthesisSections;
     }
 
+    public List<String> getSynthesisSections() {
+        return synthesisSections;
+    }
 
-    public void transferSynthesisForSummaryView(SynthesisBean synBean) {
+    public void transferSynthesisForSummaryView( SynthesisBean synBean) {
 
         sampleId = synBean.getDomain().getSample().getId();
         Map<String, Object> files;
@@ -220,7 +223,7 @@ public class SimpleSynthesisBean {
                 for(SynthesisPurificationBean purificationBean:synBean.getSynthesisPurificationBeanList()){
                     purification = new HashMap<String, Object>();
 //                for(SynthesisPurificationBean purificationBean: synBean.getType2PurEntities().get(entityType)){
-                    purification.put("DisplayName", purificationBean.getDisplayName());
+                    purification.put("displayName", purificationBean.getDisplayName());
                     purification.put("dataId", purificationBean.getDomainEntity().getId());
                     purification.put("Type", purificationBean.getType());
                     purification.put("Description", purificationBean.getDescription());
@@ -443,9 +446,10 @@ public class SimpleSynthesisBean {
             techniqueMap.put("Description", desc);
             //put array of instruments
             List<String> instrumentNames = new ArrayList<String>();
+            if(configBean.getInstrumentDisplayNames()!=null){
             for (String instrumentDisplayName : configBean.getInstrumentDisplayNames()) {
                 instrumentNames.add(instrumentDisplayName);
-            }
+            }}
             techniqueMap.put("Instruments", instrumentNames);
             techiqueList.add(techniqueMap);
         }

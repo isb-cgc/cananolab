@@ -33,6 +33,9 @@ public class SimplePurityRowBean {
 
 	public void setRowNumber(Integer rowNumber) {
 		this.rowNumber = rowNumber;
+		for(SimplePurityCell cell:cells){
+			cell.setRowNumber(rowNumber);
+		}
 	}
 
 	public void transferFromRow(PurityRow beanRow) {
@@ -50,18 +53,18 @@ public class SimplePurityRowBean {
 		}
 	}
 	
-	public void transferToRow(PurityRow rowBean) {
+	public void transferToRow(PurityRow purityRow) {
 		if (this.cells == null) return;
-		if (rowBean == null) return;
+		if (purityRow == null) return;
 		
-		rowBean.getCells().clear();
+		purityRow.getCells().clear();
 
 
-		
+		purityRow.setRowNumber(this.getRowNumber());
 		for (SimplePurityCell cell : cells) {
 			PurityTableCell cellBean = new PurityTableCell();
 			cell.transferToTableCell(cellBean);
-			rowBean.getCells().add(cellBean);
+			purityRow.getCells().add(cellBean);
 		}
 	}
 }

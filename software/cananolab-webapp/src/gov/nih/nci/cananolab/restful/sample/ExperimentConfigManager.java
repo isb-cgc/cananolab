@@ -8,6 +8,7 @@
 
 package gov.nih.nci.cananolab.restful.sample;
 
+import gov.nih.nci.cananolab.domain.common.Technique;
 import gov.nih.nci.cananolab.system.applicationservice.CaNanoLabApplicationService;
 import gov.nih.nci.cananolab.system.applicationservice.client.ApplicationServiceProvider;
 import gov.nih.nci.cananolab.system.query.hibernate.HQLCriteria;
@@ -20,6 +21,8 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.directwebremoting.WebContext;
 import org.directwebremoting.WebContextFactory;
+import org.hibernate.criterion.DetachedCriteria;
+import org.hibernate.criterion.Property;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -203,5 +206,26 @@ public class ExperimentConfigManager
 //		return theExperimentConfig;
 		
 		return null;
+	}
+
+	public List<Technique> getTechniquesByType(String type){
+		try {
+		CaNanoLabApplicationService appService =
+				(CaNanoLabApplicationService) ApplicationServiceProvider.getApplicationService();
+		DetachedCriteria crit = DetachedCriteria.forClass(Technique.class)
+				.add(Property.forName("type").eq(new String(type)).ignoreCase());
+		List results = appService.query(crit);
+			Technique technique = null;
+		List<Technique> techniques = new ArrayList<Technique>() ;
+
+		for (int i = 0; i < results.size(); i++) {
+			technique = (Technique) results.get(i);
+			techniques.add(technique);
+		}
+		return techniques;
+	} catch (Exception e){
+			//TODO do a better exception
+			return null;
+		}
 	}
 }

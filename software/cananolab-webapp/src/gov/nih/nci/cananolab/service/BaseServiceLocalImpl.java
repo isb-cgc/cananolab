@@ -25,6 +25,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.Collection;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import org.apache.log4j.Logger;
@@ -152,11 +153,11 @@ public abstract class BaseServiceLocalImpl implements BaseService
 
 		// save to the file system if fileData is not empty
 		public void writeFile(FileBean fileBean) throws Exception {
-			if (fileBean.getNewFileData() != null) {
+			 if (fileBean.getNewFileData() != null) {
 				String rootPath = PropertyUtils.getProperty(Constants.CANANOLAB_PROPERTY, "fileRepositoryDir");
 				String fullFileName = rootPath + "/" + fileBean.getDomainFile().getUri();
-				writeFile(fileBean.getNewFileData(), fullFileName);
-			}
+				 writeFile(fileBean.getNewFileData(), fullFileName);
+			 }
 		}
 
 		/**
@@ -167,6 +168,11 @@ public abstract class BaseServiceLocalImpl implements BaseService
 		 */
 		public void prepareSaveFile(File file) throws Exception {
 			CaNanoLabApplicationService appService = (CaNanoLabApplicationService) ApplicationServiceProvider.getApplicationService();
+			if(file.getCreatedDate() == null)
+			{
+				file.setCreatedDate( new Date());
+			}
+
 			if (file.getId() != null) {
 				File dbFile = (File) appService.get(File.class, file.getId());
 				if (dbFile != null) {

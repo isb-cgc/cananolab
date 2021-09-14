@@ -85,9 +85,11 @@ public class SynthesisMaterialBO extends BaseAnnotationBO {
     public List<String> create(SimpleSynthesisMaterialBean synMatBean,
                                HttpServletRequest request)
             throws Exception {
-        List<String> msgs;
+        List<String> msgs = new ArrayList<String>() ;
         String sampleId = synMatBean.getSampleId();
-        SynthesisMaterialBean entityBean = transferSynthesisMaterialBean(synMatBean, request);
+        try {
+            SynthesisMaterialBean entityBean = transferSynthesisMaterialBean(synMatBean, request);
+
 //        SampleBean sampleBean = setupSampleById(sampleId, request);
 //        List<String> otherSampleNames = synMatBean.getOtherSampleNames();
         msgs = validateInputs(request, entityBean);
@@ -97,7 +99,10 @@ public class SynthesisMaterialBO extends BaseAnnotationBO {
         this.saveEntity(request, sampleId, entityBean);
         InitSynthesisSetup.getInstance().persistSynthesisMaterialDropdowns(
                 request, entityBean);
-
+        } catch (Exception e){
+            msgs.add("Error creating Synthesis Material");
+            return msgs;
+        }
 
 
         msgs.add("success");
@@ -578,7 +583,6 @@ public class SynthesisMaterialBO extends BaseAnnotationBO {
 
     public SimpleSynthesisMaterialBean saveFile(SimpleSynthesisMaterialBean simpleSynthesisMaterialBean,
                                                 HttpServletRequest httpRequest) throws Exception{
-
         SynthesisMaterialBean synthesisMaterialBean = transferSynthesisMaterialBean(simpleSynthesisMaterialBean, httpRequest);
         List<FileBean> fileList = synthesisMaterialBean.getFiles();
 
@@ -587,8 +591,6 @@ public class SynthesisMaterialBO extends BaseAnnotationBO {
 
         SampleBean sampleBean = setupSampleById(simpleSynthesisMaterialBean.getSampleId(), httpRequest);
         FileBean theNewFile = new FileBean(simpleSynthesisMaterialBean.getFileBeingEdited());
-
-
 
         //Determine the directory for saving the file
         String internalUriPath = Constants.FOLDER_PARTICLE+'/'+sampleBean.getDomain().getName()+'/'+"synthesisMaterial";
@@ -610,14 +612,14 @@ public class SynthesisMaterialBO extends BaseAnnotationBO {
         }
         synthesisMaterialBean.addFile(theNewFile);
 
-//
-//        // save entity to save file because inverse="false"
+        // save entity to save file because inverse="false"
         List<String> msgs = validateInputs(httpRequest, synthesisMaterialBean);
         if (msgs.size()>0) {
             SimpleSynthesisMaterialBean simpleSynMatBean = new SimpleSynthesisMaterialBean();
             simpleSynMatBean.setErrors(msgs);
             return simpleSynMatBean;
         }
+
         this.saveEntity(httpRequest,simpleSynthesisMaterialBean.getSampleId(), synthesisMaterialBean);
 //        compositionService.assignAccesses(entity.getDomainEntity().getSampleComposition(), theFile.getDomainFile());
 
@@ -626,7 +628,6 @@ public class SynthesisMaterialBO extends BaseAnnotationBO {
         httpRequest.getSession().removeAttribute("newFileData");
 
         return setupUpdate(simpleSynthesisMaterialBean.getSampleId(), synthesisMaterialBean.getDomainEntity().getId().toString(), httpRequest);
-
 
     }
 

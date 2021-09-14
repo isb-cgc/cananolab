@@ -1,6 +1,8 @@
 package gov.nih.nci.cananolab.restful.view.edit;
 
-import gov.nih.nci.cananolab.domain.particle.*;
+import gov.nih.nci.cananolab.domain.particle.SfeInherentFunction;
+import gov.nih.nci.cananolab.domain.particle.SynthesisFunctionalization;
+import gov.nih.nci.cananolab.domain.particle.SynthesisFunctionalizationElement;
 import gov.nih.nci.cananolab.dto.common.FileBean;
 import gov.nih.nci.cananolab.dto.common.ProtocolBean;
 import gov.nih.nci.cananolab.dto.particle.synthesis.SynthesisFunctionalizationBean;

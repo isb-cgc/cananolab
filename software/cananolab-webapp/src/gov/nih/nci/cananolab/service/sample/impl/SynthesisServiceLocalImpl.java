@@ -1,7 +1,6 @@
 package gov.nih.nci.cananolab.service.sample.impl;
 
-import gov.nih.nci.cananolab.domain.characterization.OtherCharacterization;
-import gov.nih.nci.cananolab.domain.common.Datum;
+
 import gov.nih.nci.cananolab.domain.common.File;
 import gov.nih.nci.cananolab.domain.common.Instrument;
 import gov.nih.nci.cananolab.domain.common.PurificationConfig;
@@ -9,6 +8,9 @@ import gov.nih.nci.cananolab.domain.common.PurityColumnHeader;
 
 import gov.nih.nci.cananolab.domain.common.PurityDatumCondition;
 import gov.nih.nci.cananolab.domain.common.Supplier;
+
+
+import gov.nih.nci.cananolab.domain.common.Technique;
 
 import gov.nih.nci.cananolab.domain.particle.Sample;
 import gov.nih.nci.cananolab.domain.particle.SfeInherentFunction;
@@ -22,6 +24,9 @@ import gov.nih.nci.cananolab.domain.particle.SynthesisPurification;
 import gov.nih.nci.cananolab.domain.particle.SynthesisPurity;
 import gov.nih.nci.cananolab.dto.common.FileBean;
 
+
+import gov.nih.nci.cananolab.dto.common.PurityRow;
+import gov.nih.nci.cananolab.dto.common.table.PurityTableCell;
 import gov.nih.nci.cananolab.dto.particle.SampleBean;
 
 
@@ -32,10 +37,9 @@ import gov.nih.nci.cananolab.dto.particle.synthesis.SynthesisMaterialBean;
 import gov.nih.nci.cananolab.dto.particle.synthesis.SynthesisMaterialElementBean;
 import gov.nih.nci.cananolab.dto.particle.synthesis.SynthesisPurificationBean;
 import gov.nih.nci.cananolab.dto.particle.synthesis.SynthesisPurityBean;
-import gov.nih.nci.cananolab.exception.CompositionException;
+
 import gov.nih.nci.cananolab.exception.NoAccessException;
-import gov.nih.nci.cananolab.exception.PointOfContactException;
-import gov.nih.nci.cananolab.exception.SampleException;
+
 import gov.nih.nci.cananolab.exception.SynthesisException;
 import gov.nih.nci.cananolab.security.enums.SecureClassesEnum;
 import gov.nih.nci.cananolab.security.service.SpringSecurityAclService;
@@ -47,28 +51,23 @@ import gov.nih.nci.cananolab.system.applicationservice.ApplicationException;
 import gov.nih.nci.cananolab.system.applicationservice.CaNanoLabApplicationService;
 import gov.nih.nci.cananolab.system.applicationservice.client.ApplicationServiceProvider;
 import gov.nih.nci.cananolab.system.query.hibernate.HQLCriteria;
-import gov.nih.nci.cananolab.util.Comparators;
+
 import gov.nih.nci.cananolab.util.Constants;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-import java.util.SortedSet;
-import java.util.TreeSet;
-import java.util.function.LongToDoubleFunction;
-import net.sf.ehcache.management.sampled.SampledEhcacheMBeans;
-import net.sf.ehcache.management.sampled.SampledMBeanRegistrationProvider;
+
 import org.apache.log4j.Logger;
-import org.bouncycastle.util.test.Test;
-import org.hibernate.criterion.DetachedCriteria;
-import org.hibernate.criterion.Property;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
-import org.springframework.security.access.method.P;
+
 import org.springframework.stereotype.Component;
-//import sun.tools.tree.ThisExpression;
+
 
 @Component("synthesisService")
 public class SynthesisServiceLocalImpl extends BaseServiceLocalImpl implements SynthesisService {
@@ -84,7 +83,7 @@ public class SynthesisServiceLocalImpl extends BaseServiceLocalImpl implements S
                                                       SampleBean oldSampleBean, SampleBean[] newSampleBeans) throws SynthesisException, NoAccessException {
         try {
             for (SampleBean sampleBean : newSampleBeans) {
-                SynthesisFunctionalizationBean copyBean = null;
+                SynthesisFunctionalizationBean copyBean ;
                 SynthesisFunctionalization copy = entityBean.getDomainCopy(SpringSecurityUtil.getLoggedInUserName());
                 try {
                     copyBean = new SynthesisFunctionalizationBean(copy);
@@ -94,7 +93,7 @@ public class SynthesisServiceLocalImpl extends BaseServiceLocalImpl implements S
                     }
                 }
                 catch (Exception e) {
-                    String err = "Problem saving Synthesis Functionalization MHL010";
+                    String err = "Problem saving Synthesis Functionalization";
                     logger.error(err, e);
                     throw new SynthesisException(err, e);
                 }
@@ -108,7 +107,7 @@ public class SynthesisServiceLocalImpl extends BaseServiceLocalImpl implements S
             throw e;
         }
         catch (Exception e) {
-            String err = "Problem saving Synthesis Functionalization MHL011";
+            String err = "Problem saving Synthesis Functionalization";
             logger.error(err, e);
             throw new SynthesisException(err, e);
         }
@@ -118,7 +117,7 @@ public class SynthesisServiceLocalImpl extends BaseServiceLocalImpl implements S
                                              SampleBean[] newSampleBeans) throws SynthesisException, NoAccessException {
         try {
             for (SampleBean sampleBean : newSampleBeans) {
-                SynthesisMaterialBean copyBean = null;
+                SynthesisMaterialBean copyBean ;
                 SynthesisMaterial copy = entityBean.getDomainCopy(SpringSecurityUtil.getLoggedInUserName());
                 try {
                     copyBean = new SynthesisMaterialBean(copy);
@@ -154,7 +153,7 @@ public class SynthesisServiceLocalImpl extends BaseServiceLocalImpl implements S
             NoAccessException {
         try {
             for (SampleBean sampleBean : newSampleBeans) {
-                SynthesisPurificationBean copyBean = null;
+                SynthesisPurificationBean copyBean ;
                 SynthesisPurification copy = entityBean.getDomainCopy(SpringSecurityUtil.getLoggedInUserName(), true);
                 try {
                     copyBean = new SynthesisPurificationBean(copy);
@@ -179,6 +178,26 @@ public class SynthesisServiceLocalImpl extends BaseServiceLocalImpl implements S
         }
         catch (Exception e) {
             String err = "Problem saving Synthesis Purification";
+            logger.error(err, e);
+            throw new SynthesisException(err, e);
+        }
+    }
+
+    public void deleteColumnHeader(PurityColumnHeader header) throws NoAccessException, SynthesisException {
+        if (SpringSecurityUtil.getPrincipal() == null) {
+            throw new NoAccessException();
+        }
+        try {
+            CaNanoLabApplicationService appService = (CaNanoLabApplicationService) ApplicationServiceProvider
+                    .getApplicationService();
+//            List<SmeInherentFunction> functionList = synthesisHelper.findSmeFunctionByElementId(sampleId, element
+//            .getId(),"SynthesisMaterialElement");
+//            element.setSmeInherentFunctions(new HashSet<SmeInherentFunction>(functionList));
+//            element.getSmeInherentFunctions().remove(function);
+            appService.delete(header);
+        }
+        catch (Exception e) {
+            String err = "Error deleting purity column header " + header.getId();
             logger.error(err, e);
             throw new SynthesisException(err, e);
         }
@@ -320,17 +339,25 @@ public class SynthesisServiceLocalImpl extends BaseServiceLocalImpl implements S
         }
     }
 
-public SynthesisPurity findPurityById(Long purityId) throws SynthesisException{
-        try{
-            SynthesisPurity purity = synthesisHelper.getPurityById(purityId);
-            return  purity;
-        }
-        catch (Exception e) {
-            String err = "Error finding purity by ID: " + purityId;
-            throw new SynthesisException(err, e);
-        }
+    public void deleteSynthesisPurity(Long sampleId, SynthesisPurification synthesisPurification,
+                                      SynthesisPurity element) throws SynthesisException {
 
-}
+        if (element.getFiles() != null) {
+            for (File file : element.getFiles()) {
+                deleteSynthesisPurityFile(element, file);
+            }
+
+        }
+        if (element.getPurityDatumCollection() != null) {
+            //delete datum
+            for (PurityDatumCondition purityDatumCondition : element.getPurityDatumCollection()) {
+                deletePurityDatum(sampleId, element, purityDatumCondition);
+            }
+
+        }
+        synthesisPurification.removePurity(element);
+
+    }
 
     public SynthesisBean findSynthesisBySampleId(Long sampleId) throws SynthesisException {
         SynthesisBean synthesisBean = null;
@@ -447,8 +474,62 @@ public SynthesisPurity findPurityById(Long purityId) throws SynthesisException{
         return spBean;
     }
 
+    public SynthesisPurificationBean findSynthesisPurificationById(Long dataId) throws NoAccessException,
+            SynthesisException {
+        SynthesisPurificationBean spBean = null;
+        try {
+            SynthesisPurification synthesisPurification = synthesisHelper.findSynthesisPurificationById(
+                    dataId);
+            if (synthesisPurification != null) {
+                Synthesis synthesis = synthesisHelper.findSynthesisById(synthesisPurification.getSynthesisId());
+                synthesisPurification.setSynthesis(synthesis);
+                spBean = new SynthesisPurificationBean(synthesisPurification);
+            }
+
+        }
+        catch (NoAccessException e) {
+            throw e;
+        }
+        catch (Exception e) {
+            String err = "Problem finding the synthesis purification entity by id: " + dataId;
+            logger.error(err, e);
+            throw new SynthesisException(err, e);
+        }
+        return spBean;
+    }
+
     public SynthesisHelper getHelper() {
         return synthesisHelper;
+    }
+
+    public Synthesis createSynthesis(SampleBean sampleBean) throws SynthesisException, NoAccessException {
+
+        try {
+            Synthesis synthesis = new Synthesis();
+            synthesis.setSample(sampleBean.getDomain());
+
+            CaNanoLabApplicationService appService =
+                    (CaNanoLabApplicationService) ApplicationServiceProvider.getApplicationService();
+
+            appService.saveOrUpdate(synthesis);
+            // save default access
+            springSecurityAclService.saveDefaultAccessForNewObject(synthesis.getId(),
+                    SecureClassesEnum.SYNTHESIS.getClazz());
+
+            return synthesis;
+        }
+        catch (ApplicationException e) {
+            logger.error("Error in saving the synthesis. ", e);
+            throw new SynthesisException("Error in saving the synthesis. ", e);
+        }
+        catch (NoAccessException e) {
+            logger.error("User does not have access to edit synthesis ", e);
+            throw e;
+        }
+        catch (Exception e) {
+            logger.error("Error in saving the synthesis. ", e);
+            throw new SynthesisException("Error in saving the synthesis. ", e);
+        }
     }
 
     public void saveSynthesisFunctionalization(SampleBean sampleBean,
@@ -473,16 +554,17 @@ public SynthesisPurity findPurityById(Long purityId) throws SynthesisException{
                 newEntity = false;
             }
 
-            if( ! newEntity ) {
+            if (!newEntity) {
                 //Make doubly sure that the entity hasn't been left cached in memory but already removed from database
                 try {
                     appService
-                            .load( SynthesisFunctionalization.class,
-                                    synthesisFunctionalizationBean.getDomainEntity().getId() );
-                } catch( Exception e ) {
+                            .load(SynthesisFunctionalization.class,
+                                    synthesisFunctionalizationBean.getDomainEntity().getId());
+                }
+                catch (Exception e) {
                     String err = "Object doesn't exist in the database anymore.  Please log in again.";
-                    logger.error( err );
-                    throw new SynthesisException( err, e );
+                    logger.error(err);
+                    throw new SynthesisException(err, e);
                 }
             }
 
@@ -492,6 +574,7 @@ public SynthesisPurity findPurityById(Long purityId) throws SynthesisException{
                 synthesis = createSynthesis(sampleBean);
             } else {
                 synthesis = sample.getSynthesis();
+                newSynthesis = false;
             }
             synthesisFunctionalization.setSynthesis(synthesis);
 
@@ -530,7 +613,7 @@ public SynthesisPurity findPurityById(Long purityId) throws SynthesisException{
             throw e;
         }
         catch (Exception e) {
-            String err = "Problem saving Synthesis Functionalization MHL012";
+            String err = "Problem saving Synthesis Functionalization";
             logger.error(err, e);
             throw new SynthesisException(err, e);
         }
@@ -593,7 +676,6 @@ public SynthesisPurity findPurityById(Long purityId) throws SynthesisException{
             //We'll be adding or updating the material in Synthesis
 
             //add material to synthesis
-
             for (FileBean fileBean : synthesisMaterialBean.getFiles()) {
                 fileUtils.prepareSaveFile(fileBean.getDomainFile());
             }
@@ -617,8 +699,10 @@ public SynthesisPurity findPurityById(Long purityId) throws SynthesisException{
                     synthesisMaterialBean.getSynthesisMaterialElements()) {
                 this.saveSynthesisMaterialElement(synthesisMaterial, synthesisMaterialElementBean);
             }
+
             for (FileBean fileBean : synthesisMaterialBean.getFiles()) {
                 fileUtils.writeFile(fileBean);
+
             }
 
         }
@@ -703,12 +787,15 @@ public SynthesisPurity findPurityById(Long purityId) throws SynthesisException{
             }
 
 
-//TODO Enable when I get the other stuff lined up
             appService.saveOrUpdate(synthesisPurification);
 
+            Long debug = synthesisPurification.getId();
+
+            //TODO detect if a purity has been removed
             for (SynthesisPurityBean synthesisPurityBean : synthesisPurificationBean.getPurityBeans()) {
                 this.saveSynthesisPurity(synthesisPurityBean, synthesisPurificationBean);
             }
+
 
             for (FileBean fileBean : synthesisPurificationBean.getFiles()) {
                 fileUtils.writeFile(fileBean);
@@ -748,7 +835,8 @@ public SynthesisPurity findPurityById(Long purityId) throws SynthesisException{
 
 
                 try {
-                    SynthesisPurity tempPure = (SynthesisPurity)appService.getObject(SynthesisPurity.class, "id", synthesisPurityBean.getDomain().getId());
+                    SynthesisPurity tempPure = (SynthesisPurity) appService.getObject(SynthesisPurity.class, "id",
+                            synthesisPurityBean.getDomain().getId());
 
                     synthesisPurity.setCreatedDate(tempPure.getCreatedDate());
                     synthesisPurity.setCreatedBy(tempPure.getCreatedBy());
@@ -760,7 +848,7 @@ public SynthesisPurity findPurityById(Long purityId) throws SynthesisException{
                 }
             } else {
                 synthesisPurity.setCreatedDate(new Date());
-                synthesisPurity.setCreatedBy(SpringSecurityUtil.getLoggedInUserName() + ":" + Constants.AUTO_COPY_ANNOTATION_PREFIX);
+                synthesisPurity.setCreatedBy(SpringSecurityUtil.getLoggedInUserName());
             }
 
             for (FileBean fileBean : synthesisPurityBean.getFiles()) {
@@ -770,15 +858,49 @@ public SynthesisPurity findPurityById(Long purityId) throws SynthesisException{
 
             synthesisPurity.setSynthesisPurification(synthesisPurificationBean.getDomainEntity());
 
+
+//Need to save purity to get the ID for the dependents
+            appService.saveOrUpdate(synthesisPurity);
+
+            //TODO detect if columnHeaders have been removed
+            //Next need to save the column headers
+            HashMap<Integer, PurityColumnHeader> newHeaders = new HashMap<Integer, PurityColumnHeader>();
+            for (PurityColumnHeader header : synthesisPurityBean.getPurityColumnHeaders()) {
+                PurityColumnHeader newHeader = createColumnHeader(header);
+                newHeaders.put(newHeader.getColumnOrder(), newHeader);
+            }
+
+            //TODO detect if datum have been removed
+            //Update existing PurityDatumCondition
             Set<PurityDatumCondition> originalDatum = synthesisHelper.getPurityDatumByPurity(synthesisPurity.getId());
+            HashMap<Long, PurityTableCell> cellHashMap = new HashMap<Long, PurityTableCell>();
+            List<PurityTableCell> newCells = new ArrayList<PurityTableCell>();
+            List<PurityRow> rows = synthesisPurityBean.getRows();
+            for (PurityRow row : rows) {
+                List<PurityTableCell> cells = row.getCells();
+                for (PurityTableCell cell : cells) {
+                    if (cell.getId() != null) {
+                        cellHashMap.put(cell.getId(), cell);
+                    } else {
+                        newCells.add(cell);
+                    }
+                }
+            }
+            for (PurityDatumCondition condition : originalDatum) {
+                PurityTableCell cell = cellHashMap.get(condition.getId());
+                if (cell != null) {
+                    update(condition, cell);
+                }
 
+            }
+            synthesisPurity.setPurityDatumCollection(originalDatum);
 
-
-            for (PurityDatumCondition datum : synthesisPurity.getPurityDatumCollection()) {
+//            for (PurityDatumCondition datum : synthesisPurity.getPurityDatumCollection()) {
+            for (PurityDatumCondition datum : originalDatum) {
+                datum.setColumnHeader(newHeaders.get(datum.getColumnHeader().getColumnOrder()));
                 if (datum.getId() == null) {
                     //create new datum
-//                    datum.setSynthesisPurity(synthesisPurity);
-//                    datum.setSynthesisPurity(synthesisPurity);
+                    datum.setPurity(synthesisPurity);
                     PurityDatumCondition newDatum = createDatum(datum);
 //                    datum.setId(newDatum.getId());
                 } else {
@@ -787,10 +909,25 @@ public SynthesisPurity findPurityById(Long purityId) throws SynthesisException{
 
             }
 
+            for (PurityTableCell cell : newCells) {
+                PurityDatumCondition datumCondition = new PurityDatumCondition();
+                datumCondition.setColumnHeader(newHeaders.get(cell.getColumnOrder()));
+                datumCondition.setName(datumCondition.getColumnHeader().getName());
+                datumCondition.setType(datumCondition.getColumnHeader().getColumnType());
+                //TODO remove this duplicate or figure out what it should be
+                datumCondition.setValueType(datumCondition.getColumnHeader().getColumnType());
+                datumCondition.setValueUnit(datumCondition.getColumnHeader().getValueUnit());
+                datumCondition.setPurity(synthesisPurity);
+                datumCondition.setValue(cell.getValue());
+                datumCondition.setOperand(cell.getOperand());
+                datumCondition.setRowNumber(cell.getRowNumber());
+                datumCondition.setCreatedDate(new Date());
+                datumCondition.setCreatedBy(SpringSecurityUtil.getLoggedInUserName());
+                saveCondition(datumCondition);
+            }
 
-            //TODO enable when I have everything aligned
-            appService.saveOrUpdate(synthesisPurity);
 
+            Long debug = synthesisPurity.getId();
 
             for (FileBean fileBean : synthesisPurityBean.getFiles()) {
                 fileUtils.writeFile(fileBean);
@@ -936,6 +1073,31 @@ public SynthesisPurity findPurityById(Long purityId) throws SynthesisException{
 
     }
 
+    public PurityColumnHeader getColumnHeaderById(Long id) throws SynthesisException {
+        try {
+            return synthesisHelper.findPurityColumnHeaderById(id, "PurityColumnHeader");
+
+
+        }
+        catch (Exception e) {
+            String err = "Problem fetching Purity Column Header ";
+            logger.error(err, e);
+            throw new SynthesisException(err, e);
+        }
+    }
+
+    public SynthesisPurity findPurityById(Long purityId) throws SynthesisException {
+        try {
+            SynthesisPurity purity = synthesisHelper.getPurityById(purityId);
+            return purity;
+        }
+        catch (Exception e) {
+            String err = "Error finding purity by ID: " + purityId;
+            throw new SynthesisException(err, e);
+        }
+
+    }
+
     private void deleteSynthesisFunctionalizationElementFile(Long sampleId, SynthesisFunctionalizationElement element
             , File file) throws SynthesisException {
         try {
@@ -952,25 +1114,6 @@ public SynthesisPurity findPurityById(Long purityId) throws SynthesisException{
             logger.error(err, e);
             throw new SynthesisException(err, e);
         }
-    }
-
-    private void deleteSynthesisPurity(Long sampleId, SynthesisPurification synthesisPurification,
-                                       SynthesisPurity element) throws SynthesisException {
-        //TODO write
-        if (element.getFiles() != null) {
-            for (File file : element.getFiles()) {
-                deleteSynthesisPurityFile(element, file);
-            }
-
-        }
-        if (element.getPurityDatumCollection() != null) {
-            //delete datum
-            for (PurityDatumCondition purityDatumCondition : element.getPurityDatumCollection()) {
-                deletePurityDatum(sampleId, element, purityDatumCondition);
-            }
-
-        }
-
     }
 
     private void deleteSynthesisMaterialFile(SynthesisMaterial synthesisMaterial, File file) throws NoAccessException
@@ -1012,7 +1155,7 @@ public SynthesisPurity findPurityById(Long purityId) throws SynthesisException{
 
         }
         catch (Exception e) {
-            String err = "Error deleting Purity Datum Condtion " + element.getId();
+            String err = "Error deleting Purity Datum Condition " + element.getId();
             logger.error(err, e);
             throw new SynthesisException(err, e);
         }
@@ -1036,25 +1179,6 @@ public SynthesisPurity findPurityById(Long purityId) throws SynthesisException{
         }
     }
 
-    private void deletePurityDatumCondition(PurityDatumCondition element) throws SynthesisException {
-        //TODO write
-        try {
-            CaNanoLabApplicationService appService = (CaNanoLabApplicationService) ApplicationServiceProvider
-                    .getApplicationService();
-//            List<SmeInherentFunction> functionList = synthesisHelper.findSmeFunctionByElementId(sampleId, element
-//            .getId(),"SynthesisMaterialElement");
-//            element.setSmeInherentFunctions(new HashSet<SmeInherentFunction>(functionList));
-//            element.getSmeInherentFunctions().remove(function);
-            appService.delete(element);
-
-        }
-        catch (Exception e) {
-            String err = "Error deleting Purity Datum " + element.getId();
-            logger.error(err, e);
-            throw new SynthesisException(err, e);
-        }
-    }
-
     private void savePurificationConfig(SynthesisPurification purification) throws Exception {
         try {
             CaNanoLabApplicationService appService = (CaNanoLabApplicationService) ApplicationServiceProvider
@@ -1062,14 +1186,40 @@ public SynthesisPurity findPurityById(Long purityId) throws SynthesisException{
 
             Set<PurificationConfig> oldConfigs = synthesisHelper.findConfigByPurificationId(purification.getId());
 
+            if(oldConfigs==null){
+                oldConfigs = new HashSet<PurificationConfig>();
+            }
             Set<PurificationConfig> configs = purification.getPurificationConfigs();
-            for (PurificationConfig config : configs) {
-                if (!oldConfigs.contains(config)) {
-                    //TODO new config
-                    appService.saveOrUpdate(config);
+            if (configs != null ) {
+                for (PurificationConfig config : configs) {
+                    if (!oldConfigs.contains(config)) {
+                        //TODO new config
+                        if(config.getTechnique().getId()==null){
+                            //New technique
+                            appService.saveOrUpdate(config.getTechnique());
+                        }
+                        appService.saveOrUpdate(config);
+                    }
+                }
+                for(PurificationConfig oldConfig: oldConfigs){
+                    //check if a config has been removed
+                    if(!configs.contains(oldConfig)){
+                        appService.delete(oldConfig);
+                    }
+                    for (PurificationConfig config:configs){
+                        //check if any instuments have been deleted
+                        if(oldConfig.getPurificationConfigPkId()==config.getPurificationConfigPkId()) {
+                            Set<Instrument> newInstruments = (Set<Instrument>) config.getInstrumentCollection();
+                            Set<Instrument> oldInstruments = (Set<Instrument>) oldConfig.getInstrumentCollection();
+                            for(Instrument instrument: oldInstruments){
+                                if(!newInstruments.contains(instrument)){
+                                    appService.delete(instrument);
+                                }
+                            }
+                        }
+                    }
                 }
             }
-
 
 //        if(configs!=null){
 //            for(PurificationConfig config:configs){
@@ -1100,12 +1250,46 @@ public SynthesisPurity findPurityById(Long purityId) throws SynthesisException{
         }
     }
 
+    public PurityColumnHeader createColumnHeader(PurityColumnHeader header) throws SynthesisException {
+        try {
+            CaNanoLabApplicationService appService =
+                    (CaNanoLabApplicationService) ApplicationServiceProvider.getApplicationService();
+            header.setCreatedDate(new Date());
+            header.setCreatedBy(SpringSecurityUtil.getLoggedInUserName() + ":" + Constants.AUTO_COPY_ANNOTATION_PREFIX);
+            appService.saveOrUpdate(header);
+            return header;
+        }
+        catch (Exception e) {
+            String err = "Problem saving new Purity Column Header ";
+            logger.error(err, e);
+            throw new SynthesisException(err, e);
+        }
+    }
+
+    public PurityDatumCondition update(PurityDatumCondition condition, PurityTableCell cell) {
+        condition.setColumnId(cell.getColumnId());
+        condition.setOperand(cell.getOperand());
+        condition.setValue(cell.getValue());
+        condition.setRowNumber(cell.getRowNumber());
+        condition.setValueType(cell.getDatumOrCondition());
+        return condition;
+    }
+
+//    private Supplier createSupplierRecord(HashMap<String,String> supplierMap) throws SynthesisException {
+//        Supplier supplier = new Supplier();
+//        supplier.setLot(supplierMap.get("Lot"));
+//        supplier.setSupplierName(supplierMap.get("supplierMap"));
+//        return createSupplierRecord(supplier);
+//    }
+
     private PurityDatumCondition createDatum(PurityDatumCondition datum) throws SynthesisException {
         try {
             CaNanoLabApplicationService appService =
                     (CaNanoLabApplicationService) ApplicationServiceProvider.getApplicationService();
 //Need to blank condition until we have a datum id
 
+            datum.setCreatedDate(new Date());
+            datum.setCreatedBy(SpringSecurityUtil.getLoggedInUserName() + ":" + Constants.AUTO_COPY_ANNOTATION_PREFIX);
             appService.saveOrUpdate(datum);
 //            Set<PurityDatumCondition> conditionHolder = datum.getConditionCollection();
 //            datum.setConditionCollection(null);
@@ -1138,7 +1322,10 @@ public SynthesisPurity findPurityById(Long purityId) throws SynthesisException{
             try {
                 appService
                         .load(PurityDatumCondition.class, datum.getId());
-                SynthesisPurity tempDatum = (SynthesisPurity)appService.getObject(PurityDatumCondition.class, "id", datum.getId());
+//                SynthesisPurity tempDatum = (SynthesisPurity)appService.getObject(PurityDatumCondition.class, "id",
+//                datum.getId());
+                PurityDatumCondition tempDatum =
+                        (PurityDatumCondition) appService.getObject(PurityDatumCondition.class, "id", datum.getId());
 
                 datum.setCreatedDate(tempDatum.getCreatedDate());
                 datum.setCreatedBy(tempDatum.getCreatedBy());
@@ -1161,70 +1348,6 @@ public SynthesisPurity findPurityById(Long purityId) throws SynthesisException{
             String err = "Problem saving PurityDatumCondition ";
             logger.error(err, e);
             throw new SynthesisException(err, e);
-        }
-    }
-
-    private PurityDatumCondition createCondition(PurityDatumCondition condition) throws SynthesisException {
-        try {
-            CaNanoLabApplicationService appService =
-                    (CaNanoLabApplicationService) ApplicationServiceProvider.getApplicationService();
-            appService.saveOrUpdate(condition);
-            return condition;
-        }
-        catch (Exception e) {
-            String err = "Problem saving new Condition ";
-            logger.error(err, e);
-            throw new SynthesisException(err, e);
-        }
-    }
-
-//    private Supplier createSupplierRecord(HashMap<String,String> supplierMap) throws SynthesisException {
-//        Supplier supplier = new Supplier();
-//        supplier.setLot(supplierMap.get("Lot"));
-//        supplier.setSupplierName(supplierMap.get("supplierMap"));
-//        return createSupplierRecord(supplier);
-//    }
-
-    private PurityDatumCondition saveCondition(PurityDatumCondition condition) throws SynthesisException {
-        try {
-            CaNanoLabApplicationService appService = (CaNanoLabApplicationService) ApplicationServiceProvider.getApplicationService();
-            appService.saveOrUpdate(condition);
-            return condition;
-        }
-        catch (Exception e) {
-            String err = "Problem saving PurityDatumCondition ";
-            logger.error(err, e);
-            throw new SynthesisException(err, e);
-        }
-    }
-
-    private Synthesis createSynthesis(SampleBean sampleBean) throws SynthesisException, NoAccessException {
-
-        try {
-            Synthesis synthesis = new Synthesis();
-            synthesis.setSample(sampleBean.getDomain());
-
-            CaNanoLabApplicationService appService =
-                    (CaNanoLabApplicationService) ApplicationServiceProvider.getApplicationService();
-
-            appService.saveOrUpdate(synthesis);
-            // save default access
-            springSecurityAclService.saveDefaultAccessForNewObject(synthesis.getId(),
-                    SecureClassesEnum.SYNTHESIS.getClazz());
-
-            return synthesis;
-        }
-        catch (ApplicationException e) {
-            logger.error("Error in saving the synthesis. ", e);
-            throw new SynthesisException("Error in saving the synthesis. ", e);
-        }
-        catch (NoAccessException e) {
-            logger.error("User does not have access to edit synthesis ", e);
-            throw e;
-        }
-        catch (Exception e) {
-            logger.error("Error in saving the synthesis. ", e);
-            throw new SynthesisException("Error in saving the synthesis. ", e);
         }
     }
 
@@ -1322,9 +1445,8 @@ public SynthesisPurity findPurityById(Long purityId) throws SynthesisException{
             }
 
 
-
             appService.saveOrUpdate(synthesisFunctionalizationElement);
-            for(SfeInherentFunction function:synthesisFunctionalizationElement.getSfeInherentFunctions()){
+            for (SfeInherentFunction function : synthesisFunctionalizationElement.getSfeInherentFunctions()) {
                 function.setSynthesisFunctionalizationElement(synthesisFunctionalizationElement);
                 appService.saveOrUpdate(function);
             }
@@ -1364,6 +1486,22 @@ public SynthesisPurity findPurityById(Long purityId) throws SynthesisException{
 //        }
 //    }
 
+    private PurityDatumCondition createCondition(PurityDatumCondition condition) throws SynthesisException {
+        try {
+            CaNanoLabApplicationService appService =
+                    (CaNanoLabApplicationService) ApplicationServiceProvider.getApplicationService();
+            condition.setCreatedDate(new Date());
+            condition.setCreatedBy(SpringSecurityUtil.getLoggedInUserName() + ":" + Constants.AUTO_COPY_ANNOTATION_PREFIX);
+            appService.saveOrUpdate(condition);
+            return condition;
+        }
+        catch (Exception e) {
+            String err = "Problem saving new Condition ";
+            logger.error(err, e);
+            throw new SynthesisException(err, e);
+        }
+    }
+
     public Instrument createInstrumentRecord(Instrument instrument) throws SynthesisException {
         try {
             CaNanoLabApplicationService appService =
@@ -1378,35 +1516,21 @@ public SynthesisPurity findPurityById(Long purityId) throws SynthesisException{
         }
     }
 
-    public PurityColumnHeader createColumnHeader(PurityColumnHeader header) throws SynthesisException {
-        try{
+    public PurificationConfig createPurificationConfigRecord(PurificationConfig config) throws SynthesisException {
+        try {
             CaNanoLabApplicationService appService =
                     (CaNanoLabApplicationService) ApplicationServiceProvider.getApplicationService();
-            appService.saveOrUpdate(header);
-            return header;
+            appService.saveOrUpdate(config);
+            return config;
         }
         catch (Exception e) {
-            String err = "Problem saving new Purity Column Header ";
+            String err = "Problem saving new Technique ";
             logger.error(err, e);
             throw new SynthesisException(err, e);
         }
     }
 
-    public PurityColumnHeader getColumnHeaderById(Long id) throws SynthesisException {
-        try {
-            PurityColumnHeader columnHeader = synthesisHelper.findPurityColumnHeaderById(id, "PurityColumnHeader");
-
-                return columnHeader;
-
-        }
-        catch (Exception e) {
-            String err = "Problem fetching Purity Column Header ";
-            logger.error(err, e);
-            throw new SynthesisException(err, e);
-        }
-    }
-
-    public PurificationConfig createTechniqueRecord(PurificationConfig technique) throws SynthesisException {
+    public Technique createTechniqueRecord(Technique technique) throws SynthesisException {
         try {
             CaNanoLabApplicationService appService =
                     (CaNanoLabApplicationService) ApplicationServiceProvider.getApplicationService();
@@ -1415,6 +1539,25 @@ public SynthesisPurity findPurityById(Long purityId) throws SynthesisException{
         }
         catch (Exception e) {
             String err = "Problem saving new Technique ";
+            logger.error(err, e);
+            throw new SynthesisException(err, e);
+        }
+    }
+
+    private void deletePurityDatumCondition(PurityDatumCondition element) throws SynthesisException {
+
+        try {
+            CaNanoLabApplicationService appService = (CaNanoLabApplicationService) ApplicationServiceProvider
+                    .getApplicationService();
+//            List<SmeInherentFunction> functionList = synthesisHelper.findSmeFunctionByElementId(sampleId, element
+//            .getId(),"SynthesisMaterialElement");
+//            element.setSmeInherentFunctions(new HashSet<SmeInherentFunction>(functionList));
+//            element.getSmeInherentFunctions().remove(function);
+            appService.delete(element);
+
+        }
+        catch (Exception e) {
+            String err = "Error deleting Purity Datum " + element.getId();
             logger.error(err, e);
             throw new SynthesisException(err, e);
         }
@@ -1460,5 +1603,19 @@ public SynthesisPurity findPurityById(Long purityId) throws SynthesisException{
     @Override
     public SpringSecurityAclService getSpringSecurityAclService() {
         return springSecurityAclService;
+    }
+
+    private PurityDatumCondition saveCondition(PurityDatumCondition condition) throws SynthesisException {
+        try {
+            CaNanoLabApplicationService appService =
+                    (CaNanoLabApplicationService) ApplicationServiceProvider.getApplicationService();
+            appService.saveOrUpdate(condition);
+            return condition;
+        }
+        catch (Exception e) {
+            String err = "Problem saving PurityDatumCondition ";
+            logger.error(err, e);
+            throw new SynthesisException(err, e);
+        }
     }
 }

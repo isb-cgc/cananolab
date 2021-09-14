@@ -180,6 +180,9 @@ public class InitSynthesisSetup {
                 "otherValueType", true);
 
         setExperimentConfigDropDowns(request);
+
+        InitSetup.getInstance().getDefaultAndOtherTypesByLookup(request,"fileTypes", "file", "type", "otherType", true);
+
     }
 
     public void setSynthesisPurityDropDowns(HttpServletRequest request, String sampleId) throws Exception{
@@ -191,12 +194,14 @@ public class InitSynthesisSetup {
     public void setExperimentConfigDropDowns(HttpServletRequest request)
             throws Exception {
         // instrument manufacturers and techniques
-        InitSetup.getInstance().getDefaultAndOtherTypesByLookup(request,
+        SortedSet<String> manufacturers = InitSetup.getInstance().getDefaultAndOtherTypesByLookup(request,
                 "manufacturers", "instrument", "manufacturer",
                 "otherManufacturer", true);
+        InitSetup.getInstance().assignTypesToSession(request.getServletContext(), "manufacturers",new ArrayList<String>(manufacturers) );
 
-        InitSetup.getInstance().getDefaultAndOtherTypesByLookup(request,
+        SortedSet<String> techniqueTypes = InitSetup.getInstance().getDefaultAndOtherTypesByLookup(request,
                 "techniqueTypes", "technique", "type", "otherType", true);
+        InitSetup.getInstance().assignTypesToSession(request.getServletContext(), "techniqueTypes", new ArrayList<String>(techniqueTypes));
 
 //        InitSetup.getInstance().getDefaultAndOtherTypesByLookup(request, "instrumentTypes", "instrument", "type", "otherType", true);
 

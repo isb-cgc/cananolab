@@ -1,5 +1,5 @@
 /*
- This script is for updating the current production database version 2.3.7
+ This script is for updating the current production database version 2.3.x
    to the structure needed to support 2.4.0
  */
 
@@ -353,7 +353,8 @@ CREATE TABLE `purity_column_header`
     `created_by`     varchar(200) NOT NULL,
     `created_date`   datetime     NOT NULL,
     `column_order`   INT(10)      NOT NULL,
-    `constant_value` DECIMAL(30, 10) DEFAULT NULL,
+    `constant_value` varchar(200) DEFAULT NULL,
+    `column_type` varchar(200) NOT NULL,
     PRIMARY KEY (`column_pk_id`)
 );
 
@@ -361,7 +362,6 @@ CREATE TABLE `purity_column_header`
 
 CREATE TABLE `purity_datum_condition`
 (
-    `purity_datum_pk_id`     bigint(20)   NOT NULL COMMENT 'purity_datum_pk_id',
     `condition_pk_id` bigint(20)   NOT NULL COMMENT 'condition_pk_id',
     `row_number` int NOT NULL COMMENT 'row number',
     `purity_pk_id`  bigint(20)  NOT NULL,
@@ -468,7 +468,8 @@ VALUES (1010, 'pubchem', 'dataSource', 'Compound'),
        (1092, 'functionalization', 'type', 'biopolymer'),
        (1093, 'functionalization', 'type', 'small molecule'),
        (1094, 'synthesis', 'materialType', 'reagent'),
-       (1096, 'protocol', 'type', 'purification');
+       (1096, 'protocol', 'type', 'purification'),
+       (1097, 'percent purity', 'otherUnit', '%');
 
 UPDATE `canano`.`users`
 SET `first_name` = 'canano',

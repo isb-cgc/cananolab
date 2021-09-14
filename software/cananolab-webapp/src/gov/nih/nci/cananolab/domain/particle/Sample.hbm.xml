@@ -36,8 +36,9 @@ L-->
 			<one-to-many
 				class="Characterization" />
 		</set>
-<!-- TODO Restore when Synthesis is added to main -->
-<!--		<one-to-one name="synthesis" cascade="all" class="Synthesis" property-ref="sample"/>-->
+<!--		<many-to-one name="synthesis" class="Synthesis" column="sample_pk_id" unique="true" not-null="true" cascade="all"/>-->
+
+		<one-to-one name="synthesis" cascade="all" class="Synthesis" property-ref="sample"/>
 
 		<one-to-one name="sampleComposition" cascade="all" class="SampleComposition" property-ref="sample" />
 		<set name="publicationCollection" table="sample_publication" inverse="false"

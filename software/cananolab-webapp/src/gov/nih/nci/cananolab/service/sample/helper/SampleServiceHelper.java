@@ -24,7 +24,7 @@ import gov.nih.nci.cananolab.domain.particle.FunctionalizingEntity;
 import gov.nih.nci.cananolab.domain.particle.NanomaterialEntity;
 import gov.nih.nci.cananolab.domain.particle.Sample;
 import gov.nih.nci.cananolab.domain.particle.SampleComposition;
-//import gov.nih.nci.cananolab.domain.particle.Synthesis;
+import gov.nih.nci.cananolab.domain.particle.Synthesis;
 import gov.nih.nci.cananolab.exception.NoAccessException;
 import gov.nih.nci.cananolab.security.dao.AclDao;
 import gov.nih.nci.cananolab.security.enums.CaNanoRoleEnum;
@@ -548,7 +548,6 @@ public class SampleServiceHelper
 		return storedChars;
 	}
 
-	//TODO Restore when Synthesis is added to main
 	public SortedSet<String> getStoredSynthesisClassNames(Sample sample){
 		SortedSet<String> storedSynthesis = new TreeSet<String>();
 		if(sample.getSynthesis() !=null){
@@ -594,10 +593,10 @@ public class SampleServiceHelper
 				"sampleComposition.functionalizingEntityCollection.functionCollection",
 				FetchMode.JOIN);
 		crit.setFetchMode("publicationCollection", FetchMode.JOIN);
-//		crit.setFetchMode("synthesis", FetchMode.JOIN);
-//		crit.setFetchMode("synthesis.synthesisMaterials", FetchMode.JOIN);
-//		crit.setFetchMode("synthesis.synthesisFunctionalizations", FetchMode.JOIN);
-//		crit.setFetchMode("synthesis.synthesisPurifications",FetchMode.JOIN);
+		crit.setFetchMode("synthesis", FetchMode.JOIN);
+		crit.setFetchMode("synthesis.synthesisMaterials", FetchMode.JOIN);
+		crit.setFetchMode("synthesis.synthesisFunctionalizations", FetchMode.JOIN);
+		crit.setFetchMode("synthesis.synthesisPurifications",FetchMode.JOIN);
 		crit.setResultTransformer(CriteriaSpecification.DISTINCT_ROOT_ENTITY);
 
 		List result = appService.query(crit);
@@ -816,8 +815,7 @@ public class SampleServiceHelper
 		columns.add(StringUtils.join(
 				getStoredCharacterizationClassNames(sample),
 				Constants.VIEW_CLASSNAME_DELIMITER));
-		//TODO Restore when Synthesis added to main
-//		columns.add(StringUtils.join(getStoredSynthesisClassNames(sample), Constants.VIEW_CLASSNAME_DELIMITER));
+		columns.add(StringUtils.join(getStoredSynthesisClassNames(sample), Constants.VIEW_CLASSNAME_DELIMITER));
 		return columns.toArray(new String[0]);
 	}
 

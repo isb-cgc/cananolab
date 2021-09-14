@@ -972,6 +972,38 @@ public class SampleServices {
         }
     }
 
+	/**
+	 * Build one Pbublication string as JSON
+	 *
+	 * @param httpRequest
+	 * @param publicationId
+	 * @param indent
+	 * @return
+	 */
+	private String buildPubJson( HttpServletRequest httpRequest, String publicationId, int indent )
+	{
+		StringBuilder jasonData = new StringBuilder( "{\n    \"publication\":\n    " );
+		try
+		{
+			PublicationManager pubManager = (PublicationManager) SpringApplicationContext.getBean( httpRequest, "publicationManager" );
+			Gson gson = new GsonBuilder().setPrettyPrinting().create();
+
+			PublicationForm form = new PublicationForm();
+			PublicationBean pubBean = new PublicationBean();
+			form.setPublicationBean( pubBean );
+			pubManager.retrievePubMedInfo( publicationId, form, httpRequest );
+
+			jasonData.append( doIndent( gson.toJson( pubBean ), indent * 4 ) );
+			jasonData.append( "\n}\n" );
+			return jasonData.toString();
+		}
+		catch( Exception e )
+		{
+			e.printStackTrace();
+			return e.getMessage();
+		}
+	}
+
     /**
      * Export one Sample as XML
      *
@@ -1060,38 +1092,6 @@ public class SampleServices {
         return jsonData.toString();
     }
 
-
-    /**
-     * Build one Pbublication string as JSON
-     *
-     * @param httpRequest
-     * @param publicationId
-     * @param indent
-     * @return
-     */
-    private String buildPubJson( HttpServletRequest httpRequest, String publicationId, int indent )
-    {
-        StringBuilder jasonData = new StringBuilder( "{\n    \"publication\":\n    " );
-        try
-        {
-            PublicationManager pubManager = (PublicationManager) SpringApplicationContext.getBean( httpRequest, "publicationManager" );
-            Gson gson = new GsonBuilder().setPrettyPrinting().create();
-
-            PublicationForm form = new PublicationForm();
-            PublicationBean pubBean = new PublicationBean();
-            form.setPublicationBean( pubBean );
-            pubManager.retrievePubMedInfo( publicationId, form, httpRequest );
-
-            jasonData.append( doIndent( gson.toJson( pubBean ), indent * 4 ) );
-            jasonData.append( "\n}\n" );
-            return jasonData.toString();
-        }
-        catch( Exception e )
-        {
-            e.printStackTrace();
-            return e.getMessage();
-        }
-    }
 
 
     // This does not work, the Autowired protocolService is null
@@ -1203,26 +1203,26 @@ public class SampleServices {
 
         jasonData.append( ",\"characterization\": "  );
         jasonData.append( doIndent( gson.toJson(finalBean), indent * 4 ) );
-//TODO Add back when Synthesis added to main
-//        //Synthesis
-//		SynthesisBO synthesisBO;
-//		SynthesisBean synthesisBean;
-//		SimpleSynthesisBean simpleSynthesisBean=null;
-//		SynthesisForm synthesisForm;
-//		try{
-//			synthesisForm = new SynthesisForm();
-//			synthesisForm.setSampleId(sampleId);
-//			synthesisBO = (SynthesisBO) SpringApplicationContext.getBean(httpRequest, "synthesisBO");
-//			synthesisBean = synthesisBO.summaryView(synthesisForm, httpRequest);
-//			simpleSynthesisBean = new SimpleSynthesisBean();
-//			simpleSynthesisBean.transferSynthesisForSummaryView(synthesisBean);
-//		} catch(Exception e){
-//			logger.error("Error exporting synthesis", e);
-//		}
-//
-//		jasonData.append(",\"synthesis\": ");
+
+       //Synthesis
+		SynthesisBO synthesisBO;
+		SynthesisBean synthesisBean;
+		SimpleSynthesisBean simpleSynthesisBean=null;
+		SynthesisForm synthesisForm;
+		try{
+			synthesisForm = new SynthesisForm();
+			synthesisForm.setSampleId(sampleId);
+			synthesisBO = (SynthesisBO) SpringApplicationContext.getBean(httpRequest, "synthesisBO");
+			synthesisBean = synthesisBO.summaryView(synthesisForm, httpRequest);
+			simpleSynthesisBean = new SimpleSynthesisBean();
+			simpleSynthesisBean.transferSynthesisForSummaryView(synthesisBean);
+		} catch(Exception e){
+			logger.error("Error exporting synthesis", e);
+		}
+
+		jasonData.append(",\"synthesis\": ");
 //		jasonData.append(doIndent(gson.toJson(simpleSynthesisBean), indent *4));
-//		jasonData.append(doIndent(gson.toJson( new SimpleSynthesisExportBean( simpleSynthesisBean )), indent *4));
+		jasonData.append(doIndent(gson.toJson( new restful.view.SimpleSynthesisExportBean( simpleSynthesisBean )), indent *4));
 
 
         // Publication

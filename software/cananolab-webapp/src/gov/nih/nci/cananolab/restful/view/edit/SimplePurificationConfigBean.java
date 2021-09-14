@@ -6,7 +6,7 @@ import java.util.List;
 public class SimplePurificationConfigBean {
 
     Long techniqueid;
-    String techniqueDisplayName;
+//    String techniqueDisplayName;
     String techniqueType;
     String abbreviation;
     String description;
@@ -31,13 +31,13 @@ public class SimplePurificationConfigBean {
         this.techniqueid = techniqueid;
     }
 
-    public String getTechniqueDisplayName() {
-        return techniqueDisplayName;
-    }
-
-    public void setTechniqueDisplayName(String techniqueDisplayName) {
-        this.techniqueDisplayName = techniqueDisplayName;
-    }
+//    public String getTechniqueDisplayName() {
+//        return techniqueDisplayName;
+//    }
+//
+//    public void setTechniqueDisplayName(String techniqueDisplayName) {
+//        this.techniqueDisplayName = techniqueDisplayName;
+//    }
 
     public String getTechniqueType() {
         return techniqueType;

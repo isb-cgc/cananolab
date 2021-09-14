@@ -31,6 +31,41 @@ public class SimpleSynthesisMaterialBean {
     private String createdBy;
     private Date date;
 
+/*
+
+    // MHL Testing
+    private String uri;
+    public String getUri() {
+        return uri;
+    }
+    public void setUri( String uri ) {
+        this.uri = uri;
+    }
+    private String externalUrl;
+    public String getExternalUrl() {
+        return externalUrl;
+    }
+    public void setExternalUrl( String externalUrl ) {
+        this.externalUrl = externalUrl;
+    }
+    private String uriExternal;
+    public String getUriExternal() {
+        return uriExternal;
+    }
+    public void setUriExternal( String uriExternal ) {
+        this.uriExternal = uriExternal;
+    }
+    private String title;
+    public String getTitle() {
+        return title;
+    }
+    public void setTitle( String title ) {
+        this.title = title;
+    }
+    // MHL END Test code
+*/
+
+
     //Passed in from front end when a file is being manipulated
     SimpleFileBean fileBeingEdited;
     SimpleSynthesisMaterialElementBean materialElementBeingEdited;
