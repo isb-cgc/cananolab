@@ -104,8 +104,6 @@ public class UserAccountServices
 			return
 					Response.ok(value).build();
 
-
-
 		}
 		catch (Exception e) {
 			logger.error("Error in resetting password for account: ", e);

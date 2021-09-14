@@ -1,9 +1,9 @@
 'use strict';
-angular.module('angularApp', [
+var app = angular.module('angularApp', [
     'ngRoute', 'ngSanitize', 'ngRoute'
   ])
 
-  .controller('PrintCharacterizationCtrl', function (utilsService, $rootScope, $scope, $http, $location, $filter, sampleService) {
+  app.controller('PrintCharacterizationCtrl', function (utilsService, $rootScope, $scope, $http, $location, $filter, sampleService) {
     // $scope.sampleId = $routeParams.sampleId;
     // Displays left hand nav for samples section. navTree shows nav and navDetail is page index //
     $scope.sampleId = utilsService.getParameterFromURL('sampleId');
@@ -28,3 +28,12 @@ angular.module('angularApp', [
     });
 
   });
+
+  app.filter('newlines', function () {
+    return function (text) {
+        if (text && typeof (text) == 'string') {
+        return text.replace(/\n/g, '<br/>').replace(/&amp;apos;/g, "'").replace(/&gt;/g, ">").replace(/&lt;/g, "<").replace(/&quot;/g, '"')
+        }
+        return '';
+    }
+    });

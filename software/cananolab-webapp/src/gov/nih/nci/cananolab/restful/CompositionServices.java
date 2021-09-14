@@ -1,5 +1,8 @@
 package gov.nih.nci.cananolab.restful;
 
+import javax.json.Json;
+import javax.json.JsonBuilderFactory;
+import javax.json.JsonObject;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.ws.rs.DefaultValue;
@@ -40,7 +43,13 @@ public class CompositionServices {
 			return Response.ok(view).build();
 
 		} catch (Exception e) {
-			return Response.ok("Error while viewing the composition results" +e).build();
+			JsonBuilderFactory factory = Json.createBuilderFactory(null);
+			JsonObject value = factory.createObjectBuilder()
+					.add("status", "Error while viewing the composition results").build();
+
+			return
+					Response.ok(value).build();
+//			return Response.ok("Error while viewing the composition results" +e).build();
 		}
 	}
 	
@@ -62,7 +71,13 @@ public class CompositionServices {
 
 			return Response.ok(view).build();
 		} catch (Exception e) {
-			return Response.ok("Error while printing the file").build();
+			JsonBuilderFactory factory = Json.createBuilderFactory(null);
+			JsonObject value = factory.createObjectBuilder()
+					.add("status", "Error while printing the file").build();
+
+			return
+					Response.ok(value).build();
+//			return Response.ok("Error while printing the file").build();
 		}
 	}
 
@@ -82,6 +97,7 @@ public class CompositionServices {
 
 			return Response.ok("").build();
 		} catch (Exception e) {
+			//TODO - Test the front end. Does the Angular accept this?
 			return Response.ok("Error while exporting the file").build();
 		}
 	}

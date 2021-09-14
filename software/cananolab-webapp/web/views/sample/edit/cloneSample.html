@@ -1,105 +1,107 @@
 <div class='spacer'>
-      <div ng-class="{formFocus:loader}">
+    <div ng-class="{formFocus:loader}">
 
 <table class="contentTitle" width="100%" border="0" summary="layout">
-    <tbody><tr>
-        <td scope="col" align="left">
-            <h1>Copy Sample</h1>
-        </td>
-        <td align="right" width="30%">
-            <a class="helpText" href="javascript:openHelpWindow('https://wiki.nci.nih.gov/display/caNanoLab/Managing+Samples+in+caNanoLab#ManagingSamplesincaNanoLab-CopySample')">Help</a>
-            &nbsp;
-            <a class="helpText" href="javascript:openHelpWindow('https://wiki.nci.nih.gov/display/caNanoLab/caNanoLab+Glossary')">Glossary</a>
-            &nbsp;
-        </td>
-    </tr>
-    </tbody>
+  <tbody><tr>
+      <td scope="col" align="left">
+          <h1>Copy Sample</h1>
+      </td>
+      <td align="right" width="30%">
+          <a class="helpText" href="javascript:openHelpWindow('https://wiki.nci.nih.gov/display/caNanoLab/Managing+Samples+in+caNanoLab#ManagingSamplesincaNanoLab-CopySample')">Help</a>
+          &nbsp;
+          <a class="helpText" href="javascript:openHelpWindow('https://wiki.nci.nih.gov/display/caNanoLab/caNanoLab+Glossary')">Glossary</a>
+          &nbsp;
+      </td>
+  </tr>
+  </tbody>
 </table>
 <br />
 <form name="sampleForm" id="cloneSampleForm" novalidate>
 <span style="font-family:Arial,Helvetica,sans-serif;font-size:16px;color:red;align-content: center;">
-    <ul>
-        <li ng-repeat="message in messages">
-            {{message}}
-        </li>
-    </ul>
+  <ul>
+      <li ng-repeat="message in messages">
+          {{message}}
+      </li>
+  </ul>
 </span>
 <table width="100%" align="center" class="submissionView" summary="layout">
-    <tr>
-        <td>
-            <table>
-                <tr>
-                    <td class="cellLabel" width="150">
-                        <label for="cloningSampleName">Existing <br>Sample *</label>
-                    </td>
-                    <td>
-                        <input type="text" ng-disabled="loader" ng-model="cloneForm.sampleName" size="50" value="" id="cloningSampleName">
-                    </td>
-                    <td colspan="2">
-                        <a href ng-disabled="loader" ng-click="showSearchSampleTable=true;searchSamples();"><img
-                                ng-src="images/icon_browse.jpg" align="middle"
-                                alt="search existing samples" border="0" /></a>
-                    </td>
-                </tr>
-                <tr>
-                    <td class="cellLabel" valign="top">
-                        <label for="newSampleName">New Sample <br>Name *</label>
-                    </td>
-                    <td colspan="2" valign="top">
-                        <input type="text" ng-disabled="loader" ng-model="cloneForm.newSampleName" size="50" value="" id="newSampleName">
-                    </td>
-                </tr>
-            </table>
-        </td>
-        <td width="40%">
-            <table class="invisibleTable" summary="layout" ng-show="showSearchSampleTable">
-                <tr>
-                    <td>
-                        <img ng-src="images/ajax-loader.gif" border="0" class="counts" ng-if="loader"
-                             id="loaderImg" alt="load existing samples">
-                        <select ng-disabled="loader" id="matchedSampleSelect" ng-model="matchedSampleSelect" size="5" ng-change="updateCloningSample()">
-                            <option ng-repeat="option in sampleResults track by $index" value="{{option}}">
-                                {{option}}
-                            </option>
-                        </select>
-                    </td>
-                </tr>
-            </table>
-        </td>
-    </tr>
+
+  <tr>
+      <td>
+          <table>
+              <tr>
+                  <td class="cellLabel" width="150">
+                      <label for="cloningSampleName">Existing <br>Sample *</label>
+                  </td>
+                  <td>
+                      <input type="text" ng-disabled="loader" ng-model="cloneForm.sampleName" size="50" value="" id="cloningSampleName">
+                  </td>
+                  <td colspan="2">
+                      <a href ng-disabled="loader" ng-click="showSearchSampleTable=true;searchSamples();"><img
+                              ng-src="images/icon_browse.jpg" align="middle"
+                              alt="search existing samples" border="0" /></a>
+                  </td>
+              </tr>
+              <tr>
+                  <td class="cellLabel" valign="top">
+                      <label for="newSampleName">New Sample <br>Name *</label>
+                  </td>
+                  <td colspan="2" valign="top">
+                      <input type="text" ng-disabled="loader" ng-model="cloneForm.newSampleName" size="50" value="" id="newSampleName">
+                  </td>
+              </tr>
+          </table>
+      </td>
+      <td width="40%">
+          <table class="invisibleTable" summary="layout" ng-show="showSearchSampleTable">
+              <tr>
+                  <td>
+                      <img ng-src="images/ajax-loader.gif" border="0" class="counts" ng-if="loader"
+                           id="loaderImg" alt="load existing samples">
+                      <select ng-disabled="loader" id="matchedSampleSelect" ng-model="matchedSampleSelect" size="5" ng-change="updateCloningSample()">
+                          <option ng-repeat="option in sampleResults track by $index" value="{{option}}">
+                              {{option}}
+                          </option>
+                      </select>
+                  </td>
+              </tr>
+          </table>
+      </td>
+  </tr>
+
 </table>
 <br>
 <table width="100%" class="invisibleTable" summary="layout">
-    <tbody>
-        <tr>
-            <td align="right">
-              <!--   <input type="reset" ng-disabled="loader" value="Reset" ng-click="cloneForm = {};showSearchSampleTable=false;" id="resetButton">
-                &nbsp;
-                <input type="button" ng-disabled="loader"  value="Submit" ng-click="doSubmit();" styleid="submitButton"> -->
-                <button class="btn-canano btn-canano-danger" 
-                    ng-disabled="loader" 
-                    type="reset" ng-click="cloneForm = {};showSearchSampleTable=false;" 
-                    id="resetButton"
-                    >
-                    Reset
-                </button>
-                <button class="btn-canano btn-canano-primary" 
-                        ng-disabled="loader" 
-                        type="submit"
-                         ng-click="doSubmit();"
-                         >
-                     Submit
-                 </button>
-            </td>
-        </tr>
-    </tbody>
+  <tbody>
+      <tr>
+          <td align="right">
+            <!--   <input type="reset" ng-disabled="loader" value="Reset" ng-click="cloneForm = {};showSearchSampleTable=false;" id="resetButton">
+              &nbsp;
+              <input type="button" ng-disabled="loader"  value="Submit" ng-click="doSubmit();" styleid="submitButton"> -->
+              <button class="btn-canano btn-canano-danger" 
+                  ng-disabled="loader" 
+                  type="reset" ng-click="cloneForm = {};showSearchSampleTable=false;" 
+                  id="resetButton"
+                  >
+                  Reset
+              </button>
+              <button class="btn-canano btn-canano-primary" 
+                      ng-disabled="loader" 
+                      type="submit"
+                       ng-click="doSubmit();"
+                       >
+                   Submit
+               </button>
+          </td>
+      </tr>
+  </tbody>
 </table>
 </form>
 </div>
 </div>
 <div id="loader" ng-show="loader">
-    <div id="loaderText">
-        Loading
-    </div>
-    <div id="loaderGraphic"></div>
+  <div id="loaderText">
+      Loading
+  </div>
+  <div id="loaderGraphic"></div>
 </div>

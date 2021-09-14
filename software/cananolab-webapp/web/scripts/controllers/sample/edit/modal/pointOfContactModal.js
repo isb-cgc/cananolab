@@ -11,7 +11,7 @@ var app = angular.module('angularApp')
             'role': ''
         };
         $scope.organizations = $scope.sampleData.organizationNamesForUser;
-        $scope.organizations.push('[other]');
+
         $scope.roles = $scope.sampleData.contactRoles;
         $scope.roles.push('[other]');
         $scope.message = message;
@@ -20,6 +20,21 @@ var app = angular.module('angularApp')
         $scope.type = type;
         /* Initialize master for poc */
         $scope.master = angular.copy($scope.poc);
+
+        // Maybe we have some "[other]"s, so we will remove them here.
+        $scope.cleanExtraOthers = function () {
+            let i = $scope.organizations.length;
+            while (i >= 0) {
+                if ($scope.organizations[i] === '[other]') {
+                    $scope.organizations.splice(i, 1);
+                    i--;
+                }
+                i--;
+            }
+            // Add it back here at the bottom
+            $scope.organizations.push('[other]');
+        }
+        $scope.cleanExtraOthers();
 
         // Fired when organization or role are changed, used when user selects other //
         $scope.organizationDropdownChanged = function () {
