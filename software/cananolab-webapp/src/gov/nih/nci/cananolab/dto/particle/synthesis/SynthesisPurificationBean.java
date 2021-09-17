@@ -7,6 +7,7 @@ import gov.nih.nci.cananolab.domain.particle.SynthesisMaterialElement;
 import gov.nih.nci.cananolab.domain.particle.SynthesisPurification;
 import gov.nih.nci.cananolab.domain.particle.SynthesisPurity;
 import gov.nih.nci.cananolab.dto.common.ColumnHeader;
+import gov.nih.nci.cananolab.dto.common.FileBean;
 import gov.nih.nci.cananolab.dto.common.ProtocolBean;
 import gov.nih.nci.cananolab.dto.common.PurificationConfigBean;
 
@@ -39,6 +40,7 @@ public class SynthesisPurificationBean extends BaseSynthesisEntityBean {
 //    private List<ColumnHeader> columnHeaders = new ArrayList<ColumnHeader>();
     private Date createdDate = new Date();
     private String createdBy = new String();
+    private List<FileBean> files = new ArrayList<FileBean>() ;
 
 
     public Date getCreatedDate() {
@@ -55,6 +57,23 @@ public class SynthesisPurificationBean extends BaseSynthesisEntityBean {
 
     public void setCreatedBy(String createdBy) {
         this.createdBy = createdBy;
+    }
+
+
+    public List<FileBean> getFiles() {
+        return files;
+    }
+
+    public void setFiles(List<FileBean> files) {
+        this.files = files;
+    }
+
+    public void addFile(FileBean file){
+        this.files.add(file);
+    }
+
+    public void removeFile(FileBean file){
+        this.files.remove(file);
     }
 
     public SynthesisPurificationBean(SynthesisPurification purification){

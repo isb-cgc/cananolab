@@ -34,6 +34,7 @@ drop table if exists purification_config;
 drop table if exists synthesis_purity;
 drop table if exists synthesis_material_element_file;
 drop table if exists sme_inherent_function;
+drop table if exists purification_file;
 drop table if exists synthesis_purification;
 drop table if exists synthesis_material_element;
 drop table if exists synthesis_material;
@@ -294,8 +295,17 @@ CREATE TABLE `synthesis_purity`
     CONSTRAINT `FK_synthesis_purity_to purification` FOREIGN KEY (`synthesis_purification_pk_id`) REFERENCES `synthesis_purification` (`synthesis_purification_pk_id`)
 );
 
+-- purification_file
 
-
+CREATE TABLE 'purification_file'
+(
+    `synthesis_purification_pk_id` bigint(200) NOT NULL COMMENT 'synthesis_purification_pk_id',
+    `file_pk_id`   bigint(20)  NOT NULL COMMENT 'file_pk_id',
+    PRIMARY KEY (`synthesis_purification_pk_id`, `file_pk_id`),
+    KEY `FK_file_TO_purification_file` (`file_pk_id`),
+    CONSTRAINT `FK_file_TO_purification_file` FOREIGN KEY (`file_pk_id`) REFERENCES `file` (`file_pk_id`),
+    CONSTRAINT `FK_purification_TO_purification_file` FOREIGN KEY (`synthesis_purification_pk_id`) REFERENCES `synthesis_purification` (`synthesis_purification_pk_id`)
+    );
 
 -- purity_file
 

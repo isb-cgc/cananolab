@@ -782,9 +782,17 @@ public class SynthesisPurityBean
         files.add( index, file );
     }
 
+    public void addFile(FileBean file){
+        this.files.add(file);
+    }
+
     public void removeFile( int index )
     {
         files.remove( index );
+    }
+
+    public void removeFile(FileBean file){
+        this.files.remove(file);
     }
 
     public int getTheFileIndex()

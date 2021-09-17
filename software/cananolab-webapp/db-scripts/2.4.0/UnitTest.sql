@@ -93,6 +93,7 @@ DROP TABLE IF EXISTS `nanomaterial_entity`;
 DROP TABLE IF EXISTS `composition`;
 DROP TABLE IF EXISTS `sample_publication`;
 DROP TABLE IF EXISTS `sample_other_poc`;
+DROP TABLE IF EXISTS `purification_file`;
 DROP TABLE IF EXISTS `purity_file`;
 DROP TABLE IF EXISTS `purity_datum`;
 DROP TABLE IF EXISTS `purity_datum_condition`;
@@ -6420,6 +6421,21 @@ VALUES (1000, 1,1000,'Synthesis condition 1', NULL, '42', 'g', 'observed', 'cana
 /*!40000 ALTER TABLE `purity_datum_condition`
     ENABLE KEYS */;
 UNLOCK TABLES;
+
+--
+-- Table structure for table `purification_file`
+--
+
+CREATE TABLE `purification_file`
+(
+    `synthesis_purification_pk_id` bigint(200) NOT NULL COMMENT 'synthesis_purification_pk_id',
+    `file_pk_id`   bigint(20)  NOT NULL COMMENT 'file_pk_id',
+    PRIMARY KEY (`synthesis_purification_pk_id`, `file_pk_id`),
+    KEY `FK_file_TO_purification_file` (`file_pk_id`),
+    CONSTRAINT `FK_file_TO_purification_file` FOREIGN KEY (`file_pk_id`) REFERENCES `file` (`file_pk_id`),
+    CONSTRAINT `FK_purification_TO_purification_file` FOREIGN KEY (`synthesis_purification_pk_id`) REFERENCES `synthesis_purification` (`synthesis_purification_pk_id`)
+);
+
 
 --
 -- Table structure for table `purity_file`

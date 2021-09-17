@@ -60,5 +60,15 @@
             <key column="synthesis_purification_pk_id" />
             <one-to-many class="gov.nih.nci.cananolab.domain.common.PurificationConfig"/>
         </set>
+
+
+        <set fetch="select" lazy="false" name="files" sort="unsorted" table="purification_file">
+            <key>
+                <column name="synthesis_purification_pk_id" not-null="true"/>
+            </key>
+            <many-to-many entity-name="gov.nih.nci.cananolab.domain.common.File" unique="false">
+                <column name="file_pk_id" not-null="true"/>
+            </many-to-many>
+        </set>
     </class>
 </hibernate-mapping>
