@@ -15,10 +15,10 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 
 public class SimplePurityBean {
-
+    List<String> errors;
     List<SimplePurityRowBean> rows = new ArrayList<SimplePurityRowBean>();
     List<SimpleFileBean> files = new ArrayList<SimpleFileBean>();
-    File theFile; //file being edited
+    File fileBeingEdited; //file being edited
     Long id;
 
     int numberOfColumns = 0;
@@ -45,6 +45,14 @@ public class SimplePurityBean {
 //    public void setCreatedDate(Date date){
 //        this.createdDate = date;
 //    }
+
+    public List<String> getErrors() {
+        return errors;
+    }
+
+    public void setErrors(List<String> errors) {
+        this.errors = errors;
+    }
 
     public List<SimplePurityRowBean> getRows() {
         return rows;
@@ -96,12 +104,12 @@ public class SimplePurityBean {
         return files;
     }
 
-    public File getTheFile(){
-        return this.theFile;
+    public File getFileBeingEdited(){
+        return this.fileBeingEdited;
     }
 
-    public void setTheFile(File fileBeingEdited) {
-        this.theFile = fileBeingEdited;
+    public void setFileBeingEdited(File fileBeingEdited) {
+        this.fileBeingEdited = fileBeingEdited;
     }
 
     public void transferFromPurityBean(SynthesisPurityBean purityBean, String sampleId){
