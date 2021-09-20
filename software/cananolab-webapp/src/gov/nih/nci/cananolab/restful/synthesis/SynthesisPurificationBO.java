@@ -312,6 +312,27 @@ public class SynthesisPurificationBO extends BaseAnnotationBO {
         return new ArrayList<String>();
     }
 
+
+    private List<String> savePurity(SynthesisPurificationBean synthesisPurificationBean, SynthesisPurityBean purityBean, HttpServletRequest httpServletRequest)throws Exception{
+        List<String> msgs = new ArrayList<String>();
+        CananoUserDetails userDetails = SpringSecurityUtil.getPrincipal();
+        boolean newEntity = true;
+
+        String internalURL = "";
+        try {
+            purityBean.setupDomain(internalURL,userDetails.getUsername());
+
+            if (purityBean.getDomain().getId() != null) {
+                newEntity = false;
+            }
+        }        catch (ClassCastException ex) {
+
+            synthesisService.saveSynthesisPurity(purityBean,synthesisPurificationBean);
+
+        }
+
+        return msgs;
+    }
     /**
      * Save changes to an existing purification
      *
@@ -884,6 +905,49 @@ catch(Exception e){
         return this.userDetailsService;
     }
 
+
+    public SimplePurityBean savePurityFile(SimplePurityBean editBean, SimpleSynthesisPurificationBean purificationBean, HttpServletRequest httpRequest)throws Exception{
+        String timestamp = DateUtils.convertDateToString(new Date(), "yyyyMMdd_HH-mm-ss-SSS");
+        SynthesisPurityBean synthesisPurityBean = transferSimplePurity(editBean, httpRequest);
+        SynthesisPurificationBean synthesisPurificationBean = transferSimplePurification(purificationBean, httpRequest);
+        FileBean theNewFile = new FileBean(editBean.getFileBeingEdited());
+        SampleBean sampleBean = setupSampleById(purificationBean.getSampleId(), httpRequest);
+        //Determine the directory for saving the file
+        String internalUriPath = Constants.FOLDER_PARTICLE+'/'+sampleBean.getDomain().getName()+'/'+"synthesisPurity";
+        theNewFile.setupDomainFile(internalUriPath,SpringSecurityUtil.getLoggedInUserName());
+
+        byte[] newFileData = (byte[]) httpRequest.getSession().getAttribute("newFileData");
+        if(!theNewFile.getDomainFile().getUriExternal()){
+            if(newFileData!=null){
+                theNewFile.setNewFileData((byte[]) httpRequest.getSession().getAttribute("newFileData"));
+                theNewFile.getDomainFile().setUri(Constants.FOLDER_PARTICLE + '/'
+                        + sampleBean.getDomain().getName() + '/' + "synthesisPurification"+ "/" + timestamp + "_"
+                        + theNewFile.getDomainFile().getName());
+            }else if(theNewFile.getDomainFile().getId()!=null){
+                theNewFile.getDomainFile().setUri(theNewFile.getDomainFile().getName());
+            }else{
+                theNewFile.getDomainFile().setUri(null);
+            }
+        }
+        synthesisPurityBean.addFile(theNewFile);
+
+
+        List<String> msgs = validateInputs(httpRequest, synthesisPurityBean);
+        if (msgs.size()>0) {
+            SimplePurityBean simplePurityBean = new SimplePurityBean();
+            simplePurityBean.setErrors(msgs);
+            return simplePurityBean;
+        }
+        this.savePurity(synthesisPurificationBean,synthesisPurityBean,httpRequest );
+
+        httpRequest.setAttribute("anchor", "file");
+        httpRequest.setAttribute("dataId", synthesisPurityBean.getDomain().getId().toString());
+        httpRequest.getSession().removeAttribute("newFileData");
+
+        SimplePurityBean newSimplePurityBean = new SimplePurityBean();
+        newSimplePurityBean.transferFromPurityBean(httpRequest, synthesisPurityBean);
+        return newSimplePurityBean;
+    }
     /**
      * add or edit a file on and existing purification
      *
@@ -904,7 +968,7 @@ catch(Exception e){
 
 
         //Determine the directory for saving the file
-        String internalUriPath = Constants.FOLDER_PARTICLE+'/'+sampleBean.getDomain().getName()+'/'+"synthesisMaterial";
+        String internalUriPath = Constants.FOLDER_PARTICLE+'/'+sampleBean.getDomain().getName()+'/'+"synthesisPurification";
         theNewFile.setupDomainFile(internalUriPath,SpringSecurityUtil.getLoggedInUserName());
 
 
@@ -913,7 +977,7 @@ catch(Exception e){
             if(newFileData!=null){
                 theNewFile.setNewFileData((byte[]) httpRequest.getSession().getAttribute("newFileData"));
                 theNewFile.getDomainFile().setUri(Constants.FOLDER_PARTICLE + '/'
-                        + sampleBean.getDomain().getName() + '/' + "nanomaterialEntity"+ "/" + timestamp + "_"
+                        + sampleBean.getDomain().getName() + '/' + "synthesisPurification"+ "/" + timestamp + "_"
                         + theNewFile.getDomainFile().getName());
             }else if(theNewFile.getDomainFile().getId()!=null){
                 theNewFile.getDomainFile().setUri(theNewFile.getDomainFile().getName());
@@ -955,8 +1019,33 @@ catch(Exception e){
 
     }
 
+    private List<String> validateInputs(HttpServletRequest request, SynthesisPurityBean entityBean) {
+        //todo write
+
+        List<String> msgs = new ArrayList<String>();
+//        msgs = validateEntity(request, msgs, entityBean);
+//        msgs = validatePurificationElements(request, msgs, entityBean);
+        msgs = validateFile(request, msgs, entityBean);
+
+        return msgs;
+
+
+    }
+
     private List<String> validateFile(HttpServletRequest request, List<String> msgs,
                                       SynthesisPurificationBean entityBean) {
+        //ActionMessages msgs = new ActionMessages();
+        for (FileBean filebean : entityBean.getFiles()) {
+            msgs = validateFileBean(request, msgs, filebean);
+            if (msgs.size()>0) {
+                return msgs;
+            }
+        }
+        return msgs;
+    }
+
+    private List<String> validateFile(HttpServletRequest request, List<String> msgs,
+                                      SynthesisPurityBean entityBean) {
         //ActionMessages msgs = new ActionMessages();
         for (FileBean filebean : entityBean.getFiles()) {
             msgs = validateFileBean(request, msgs, filebean);

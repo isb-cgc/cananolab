@@ -541,7 +541,6 @@ public class SynthesisPurificationServices {
     @Path("/removeFile")
     @Produces("application/json")
     public Response removeFile(@Context HttpServletRequest httpRequest, SimpleSynthesisPurificationBean editBean) {
-//TODO write
         try {
             if (!SpringSecurityUtil.isUserLoggedIn()) {
                 return Response.status(Response.Status.UNAUTHORIZED).entity(Constants.MSG_SESSION_INVALID).build();
@@ -566,13 +565,44 @@ public class SynthesisPurificationServices {
      *
      * @param httpRequest
      * @param editBean - SimpleSynthesisPurificationBean
+     * @return
+     */
+    @POST
+    @Path("/removePurityFile")
+    @Produces("application/json")
+    public Response removePurityFile(@Context HttpServletRequest httpRequest, SimpleSynthesisPurificationBean editBean) {
+        try {
+            if (!SpringSecurityUtil.isUserLoggedIn()) {
+                return Response.status(Response.Status.UNAUTHORIZED).entity(Constants.MSG_SESSION_INVALID).build();
+            }
+
+            SynthesisPurificationBO purificationBO =
+                    (SynthesisPurificationBO) SpringApplicationContext.getBean(httpRequest, "synthesisPurificationBO");
+            List<String> msgs = purificationBO.deleteFile(editBean, httpRequest);
+            return Response.ok(msgs).header("Access-Control-Allow-Credentials", "true")
+                    .header("Access-Control-Allow-Origin", "*").header("Access-Control-Allow-Methods", "GET, POST, " +
+                            "PUT, DELETE, OPTIONS")
+                    .header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, " +
+                            "Authorization").build();
+        }
+        catch (Exception e) {
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
+                    .entity(CommonUtil.wrapErrorMessageInList(e.getMessage())).build();
+        }
+    }
+
+
+    /**
+     *
+     * @param httpRequest
+     * @param editBean - SimpleSynthesisPurificationBean
      * @return - SimpleSynthesisPurificationBean
      */
     @POST
     @Path("/saveFile")
     @Produces("application/json")
     public Response saveFile(@Context HttpServletRequest httpRequest, SimpleSynthesisPurificationBean editBean) {
-//TODO write
+
         try {
             if (!SpringSecurityUtil.isUserLoggedIn()) {
                 return Response.status(Response.Status.UNAUTHORIZED).entity(Constants.MSG_SESSION_INVALID).build();
@@ -603,6 +633,49 @@ public class SynthesisPurificationServices {
                     .entity(CommonUtil.wrapErrorMessageInList(e.getMessage())).build();
         }
     }
+
+    /**
+     *
+     * @param httpRequest
+     * @return - SimpleSynthesisPurificationBean
+     */
+    @POST
+    @Path("/savePurityFile")
+    @Produces("application/json")
+    public Response savePurityFile(@Context HttpServletRequest httpRequest, SimpleSynthesisPurificationBean purificationBean) {
+
+        try {
+            if (!SpringSecurityUtil.isUserLoggedIn()) {
+                return Response.status(Response.Status.UNAUTHORIZED).entity(Constants.MSG_SESSION_INVALID).build();
+            }
+
+            SynthesisPurificationBO purificationBO =
+                    (SynthesisPurificationBO) SpringApplicationContext.getBean(httpRequest, "synthesisPurificationBO");
+
+
+            SimplePurityBean editBean = purificationBean.getPurityBeingEdited();
+            SimplePurityBean simplePurityBean = purificationBO.savePurityFile(editBean,purificationBean,
+                    httpRequest);
+            return Response.ok(simplePurityBean).header("Access-Control-Allow-Credentials", "true")
+                    .header("Access-Control-Allow-Origin", "*").header("Access-Control-Allow-Methods", "GET, POST, " +
+                            "PUT, DELETE, OPTIONS")
+                    .header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, " +
+                            "Authorization").build();
+
+
+//            List<String> msgs = purificationBO.saveFile(editBean,httpRequest);
+//            return Response.ok(msgs).header("Access-Control-Allow-Credentials", "true")
+//                    .header("Access-Control-Allow-Origin", "*").header("Access-Control-Allow-Methods", "GET, POST,
+//                    PUT, DELETE, OPTIONS")
+//                    .header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept,
+//                    Authorization").build();
+        }
+        catch (Exception e) {
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
+                    .entity(CommonUtil.wrapErrorMessageInList(e.getMessage())).build();
+        }
+    }
+
 
     /**
      *
