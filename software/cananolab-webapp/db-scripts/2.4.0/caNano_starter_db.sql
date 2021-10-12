@@ -106,7 +106,7 @@ CREATE TABLE `acl_class`
     UNIQUE KEY `unique_acl_class` (`class`)
 ) ENGINE = InnoDB
   AUTO_INCREMENT = 18
-  DEFAULT CHARSET = latin1;
+  DEFAULT CHARSET = utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 
@@ -127,7 +127,7 @@ CREATE TABLE `acl_sid`
     UNIQUE KEY `unique_acl_sid` (`sid`, `principal`)
 ) ENGINE = InnoDB
   AUTO_INCREMENT = 50
-  DEFAULT CHARSET = latin1;
+  DEFAULT CHARSET = utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 
@@ -155,7 +155,7 @@ CREATE TABLE `acl_object_identity`
     CONSTRAINT `fk_acl_object_identity_parent` FOREIGN KEY (`parent_object`) REFERENCES `acl_object_identity` (`id`)
 ) ENGINE = InnoDB
   AUTO_INCREMENT = 9008
-  DEFAULT CHARSET = latin1;
+  DEFAULT CHARSET = utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 
@@ -184,7 +184,7 @@ CREATE TABLE `acl_entry`
     CONSTRAINT `fk_acl_entry_object` FOREIGN KEY (`acl_object_identity`) REFERENCES `acl_object_identity` (`id`)
 ) ENGINE = InnoDB
   AUTO_INCREMENT = 189281
-  DEFAULT CHARSET = latin1;
+  DEFAULT CHARSET = utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 
@@ -206,7 +206,7 @@ CREATE TABLE `users`
     PRIMARY KEY (`username`),
     UNIQUE KEY `id_users_UNIQUE` (`username`)
 ) ENGINE = InnoDB
-  DEFAULT CHARSET = latin1;
+  DEFAULT CHARSET = utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -223,7 +223,7 @@ CREATE TABLE `authorities`
     UNIQUE KEY `ix_auth_username` (`username`, `authority`),
     CONSTRAINT `fk_authorities_users` FOREIGN KEY (`username`) REFERENCES `users` (`username`)
 ) ENGINE = InnoDB
-  DEFAULT CHARSET = latin1;
+  DEFAULT CHARSET = utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 
@@ -242,7 +242,7 @@ CREATE TABLE `activation_method`
     `activation_effect`       text,
     PRIMARY KEY (`activation_method_pk_id`)
 ) ENGINE = InnoDB
-  DEFAULT CHARSET = latin1;
+  DEFAULT CHARSET = utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -265,7 +265,7 @@ CREATE TABLE `administration`
     `updated_date`       datetime     DEFAULT NULL,
     PRIMARY KEY (`administration_id`)
 ) ENGINE = InnoDB
-  DEFAULT CHARSET = latin1;
+  DEFAULT CHARSET = utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -303,7 +303,7 @@ CREATE TABLE `associated_element`
     `pub_chem_id`              bigint(20)     DEFAULT NULL,
     PRIMARY KEY (`associated_element_pk_id`)
 ) ENGINE = InnoDB
-  DEFAULT CHARSET = latin1;
+  DEFAULT CHARSET = utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -324,7 +324,7 @@ CREATE TABLE `author`
     PRIMARY KEY (`author_pk_id`),
     UNIQUE KEY `author_pk_id` (`author_pk_id`)
 ) ENGINE = InnoDB
-  DEFAULT CHARSET = latin1;
+  DEFAULT CHARSET = utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 
@@ -345,7 +345,7 @@ CREATE TABLE `file`
     `is_uri_external` tinyint(4)   NOT NULL,
     PRIMARY KEY (`file_pk_id`)
 ) ENGINE = InnoDB
-  DEFAULT CHARSET = latin1;
+  DEFAULT CHARSET = utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -371,7 +371,7 @@ CREATE TABLE `publication`
     PRIMARY KEY (`publication_pk_id`),
     CONSTRAINT `FK_publication_lab_file` FOREIGN KEY (`publication_pk_id`) REFERENCES `file` (`file_pk_id`)
 ) ENGINE = InnoDB
-  DEFAULT CHARSET = latin1;
+  DEFAULT CHARSET = utf8;
 
 --
 -- Table structure for table `author_publication`
@@ -390,7 +390,7 @@ CREATE TABLE `author_publication`
     CONSTRAINT `FK_author_publication_author` FOREIGN KEY (`author_pk_id`) REFERENCES `author` (`author_pk_id`),
     CONSTRAINT `FK_author_publication_publication` FOREIGN KEY (`publication_pk_id`) REFERENCES `publication` (`publication_pk_id`)
 ) ENGINE = InnoDB
-  DEFAULT CHARSET = latin1;
+  DEFAULT CHARSET = utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 
@@ -410,7 +410,7 @@ CREATE TABLE `common_lookup`
     `value`               varchar(200) NOT NULL,
     PRIMARY KEY (`common_lookup_pk_id`)
 ) ENGINE = InnoDB
-  DEFAULT CHARSET = latin1;
+  DEFAULT CHARSET = utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 
@@ -431,7 +431,7 @@ CREATE TABLE `data_availability`
     `updated_date`          datetime     DEFAULT NULL,
     `updated_by`            varchar(200) DEFAULT NULL
 ) ENGINE = InnoDB
-  DEFAULT CHARSET = latin1;
+  DEFAULT CHARSET = utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -451,7 +451,7 @@ CREATE TABLE `data_review_status`
     `submitted_by`   varchar(200) NOT NULL,
     PRIMARY KEY (`data_id`)
 ) ENGINE = InnoDB
-  DEFAULT CHARSET = latin1;
+  DEFAULT CHARSET = utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -474,7 +474,7 @@ CREATE TABLE `databasechangelog`
     `LIQUIBASE`    varchar(10)  DEFAULT NULL,
     PRIMARY KEY (`ID`, `AUTHOR`, `FILENAME`)
 ) ENGINE = MyISAM
-  DEFAULT CHARSET = latin1;
+  DEFAULT CHARSET = utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -492,7 +492,7 @@ CREATE TABLE `databasechangeloglock`
     `LOCKEDBY`    varchar(255) DEFAULT NULL,
     PRIMARY KEY (`ID`)
 ) ENGINE = MyISAM
-  DEFAULT CHARSET = latin1;
+  DEFAULT CHARSET = utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -528,7 +528,7 @@ CREATE TABLE `experiment_condition`
     `created_date`    datetime     NOT NULL,
     PRIMARY KEY (`condition_pk_id`)
 ) ENGINE = InnoDB
-  DEFAULT CHARSET = latin1;
+  DEFAULT CHARSET = utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -551,7 +551,7 @@ CREATE TABLE `favorite_data`
     `description`         text,
     `protocol_file_title` varchar(200) DEFAULT NULL
 ) ENGINE = InnoDB
-  DEFAULT CHARSET = latin1;
+  DEFAULT CHARSET = utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -578,7 +578,7 @@ CREATE TABLE `functionalizing_entity`
     CONSTRAINT `FK_functionalizing_entity_activation_method` FOREIGN KEY (`activation_method_pk_id`) REFERENCES `activation_method` (`activation_method_pk_id`),
     CONSTRAINT `FK_functionalizing_entity_associated_element` FOREIGN KEY (`functionalizing_entity_pk_id`) REFERENCES `associated_element` (`associated_element_pk_id`)
 ) ENGINE = InnoDB
-  DEFAULT CHARSET = latin1;
+  DEFAULT CHARSET = utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 
@@ -600,7 +600,7 @@ CREATE TABLE `biopolymer_f`
     KEY `biopolymer_pk_id_2` (`biopolymer_pk_id`),
     CONSTRAINT `FK_biopolymer_f_functionalizing_entity` FOREIGN KEY (`biopolymer_pk_id`) REFERENCES `functionalizing_entity` (`functionalizing_entity_pk_id`)
 ) ENGINE = InnoDB
-  DEFAULT CHARSET = latin1;
+  DEFAULT CHARSET = utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 
@@ -622,7 +622,7 @@ CREATE TABLE `antibody`
     KEY `antibody_pk_id_2` (`antibody_pk_id`),
     CONSTRAINT `FK_antibody_functionalizing_entity` FOREIGN KEY (`antibody_pk_id`) REFERENCES `functionalizing_entity` (`functionalizing_entity_pk_id`)
 ) ENGINE = InnoDB
-  DEFAULT CHARSET = latin1;
+  DEFAULT CHARSET = utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 
@@ -643,7 +643,7 @@ CREATE TABLE `functionalizing_entity_file`
     CONSTRAINT `FK_functionalizing_entity_file_file` FOREIGN KEY (`file_pk_id`) REFERENCES `file` (`file_pk_id`),
     CONSTRAINT `FK_functionalizing_entity_file_functionalizing_entity` FOREIGN KEY (`functionalizing_entity_pk_id`) REFERENCES `functionalizing_entity` (`functionalizing_entity_pk_id`)
 ) ENGINE = InnoDB
-  DEFAULT CHARSET = latin1;
+  DEFAULT CHARSET = utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 
@@ -664,7 +664,7 @@ CREATE TABLE `groups`
     UNIQUE KEY `group_name_UNIQUE` (`group_name`)
 ) ENGINE = InnoDB
   AUTO_INCREMENT = 5
-  DEFAULT CHARSET = latin1;
+  DEFAULT CHARSET = utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 
@@ -682,7 +682,7 @@ CREATE TABLE `group_authorities`
     KEY `fk_group_members_group_idx` (`group_id`),
     CONSTRAINT `fk_group_authorities_group` FOREIGN KEY (`group_id`) REFERENCES `groups` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE = InnoDB
-  DEFAULT CHARSET = latin1;
+  DEFAULT CHARSET = utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -704,7 +704,7 @@ CREATE TABLE `group_members`
     CONSTRAINT `fk_group_members_username` FOREIGN KEY (`username`) REFERENCES `users` (`username`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE = InnoDB
   AUTO_INCREMENT = 11
-  DEFAULT CHARSET = latin1;
+  DEFAULT CHARSET = utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -718,7 +718,7 @@ CREATE TABLE `hibernate_unique_key`
 (
     `next_hi` bigint(20) NOT NULL
 ) ENGINE = InnoDB
-  DEFAULT CHARSET = latin1;
+  DEFAULT CHARSET = utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -751,7 +751,7 @@ CREATE TABLE `instrument`
     `created_by`       varchar(200) NOT NULL,
     PRIMARY KEY (`instrument_pk_id`)
 ) ENGINE = InnoDB
-  DEFAULT CHARSET = latin1;
+  DEFAULT CHARSET = utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -769,7 +769,7 @@ CREATE TABLE `instrument_to_review`
     `instrument_type`         varchar(200) DEFAULT NULL,
     `description`             text
 ) ENGINE = InnoDB
-  DEFAULT CHARSET = latin1;
+  DEFAULT CHARSET = utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -785,7 +785,7 @@ CREATE TABLE `keyword`
     `name`          varchar(100) NOT NULL,
     PRIMARY KEY (`keyword_pk_id`)
 ) ENGINE = InnoDB
-  DEFAULT CHARSET = latin1;
+  DEFAULT CHARSET = utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -805,7 +805,7 @@ CREATE TABLE `keyword_file`
     CONSTRAINT `FK_keyword_file_file` FOREIGN KEY (`file_pk_id`) REFERENCES `file` (`file_pk_id`),
     CONSTRAINT `FK_keyword_file_keyword` FOREIGN KEY (`keyword_pk_id`) REFERENCES `keyword` (`keyword_pk_id`)
 ) ENGINE = InnoDB
-  DEFAULT CHARSET = latin1;
+  DEFAULT CHARSET = utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 
@@ -832,7 +832,7 @@ CREATE TABLE `organization`
     UNIQUE KEY `name` (`name`),
     UNIQUE KEY `organization_pk_id` (`organization_pk_id`)
 ) ENGINE = InnoDB
-  DEFAULT CHARSET = latin1;
+  DEFAULT CHARSET = utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 
@@ -859,7 +859,7 @@ CREATE TABLE `point_of_contact`
     KEY `organization_pk_id` (`organization_pk_id`),
     CONSTRAINT `FK_point_of_contact_organization` FOREIGN KEY (`organization_pk_id`) REFERENCES `organization` (`organization_pk_id`)
 ) ENGINE = InnoDB
-  DEFAULT CHARSET = latin1;
+  DEFAULT CHARSET = utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -882,7 +882,7 @@ CREATE TABLE `sample`
     KEY `primary_contact_pk_id` (`primary_contact_pk_id`),
     CONSTRAINT `FK_sample_point_of_contact` FOREIGN KEY (`primary_contact_pk_id`) REFERENCES `point_of_contact` (`poc_pk_id`)
 ) ENGINE = InnoDB
-  DEFAULT CHARSET = latin1;
+  DEFAULT CHARSET = utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 
@@ -902,7 +902,7 @@ CREATE TABLE `composition`
     KEY `particle_sample_pk_id` (`sample_pk_id`),
     CONSTRAINT `FK_composition_sample` FOREIGN KEY (`sample_pk_id`) REFERENCES `sample` (`sample_pk_id`)
 ) ENGINE = InnoDB
-  DEFAULT CHARSET = latin1;
+  DEFAULT CHARSET = utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -932,7 +932,7 @@ CREATE TABLE `chemical_association`
     CONSTRAINT `FK_chemical_association_associated_element_b` FOREIGN KEY (`associated_element_b_pk_id`) REFERENCES `associated_element` (`associated_element_pk_id`),
     CONSTRAINT `fk_ca_entry_comp` FOREIGN KEY (`composition_pk_id`) REFERENCES `composition` (`composition_pk_id`) ON DELETE CASCADE
 ) ENGINE = InnoDB
-  DEFAULT CHARSET = latin1;
+  DEFAULT CHARSET = utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -952,7 +952,7 @@ CREATE TABLE `chemical_association_file`
     CONSTRAINT `FK_chemical_association_file_chemical_association` FOREIGN KEY (`chemical_association_pk_id`) REFERENCES `chemical_association` (`chemical_association_pk_id`),
     CONSTRAINT `FK_chemical_association_file_file` FOREIGN KEY (`file_pk_id`) REFERENCES `file` (`file_pk_id`)
 ) ENGINE = InnoDB
-  DEFAULT CHARSET = latin1;
+  DEFAULT CHARSET = utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 --
 -- Table structure for table `nanomaterial_entity`
@@ -973,7 +973,7 @@ CREATE TABLE `nanomaterial_entity`
     KEY `composition_pk_id` (`composition_pk_id`),
     CONSTRAINT `FK_nanomaterial_entity_composition` FOREIGN KEY (`composition_pk_id`) REFERENCES `composition` (`composition_pk_id`)
 ) ENGINE = InnoDB
-  DEFAULT CHARSET = latin1;
+  DEFAULT CHARSET = utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -992,7 +992,7 @@ CREATE TABLE `liposome`
     KEY `liposome_pk_id` (`liposome_pk_id`),
     CONSTRAINT `FK_liposome_nanomaterial_entity` FOREIGN KEY (`liposome_pk_id`) REFERENCES `nanomaterial_entity` (`nanomaterial_entity_pk_id`)
 ) ENGINE = InnoDB
-  DEFAULT CHARSET = latin1;
+  DEFAULT CHARSET = utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 
@@ -1013,7 +1013,7 @@ CREATE TABLE `biopolymer_p`
     KEY `biopolymer_pk_id` (`biopolymer_pk_id`),
     CONSTRAINT `FK_biopolymer_p_nanomaterial_entity` FOREIGN KEY (`biopolymer_pk_id`) REFERENCES `nanomaterial_entity` (`nanomaterial_entity_pk_id`)
 ) ENGINE = InnoDB
-  DEFAULT CHARSET = latin1;
+  DEFAULT CHARSET = utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 
@@ -1037,7 +1037,7 @@ CREATE TABLE `carbon_nanotube`
     KEY `carbon_nanotube_pk_id` (`carbon_nanotube_pk_id`),
     CONSTRAINT `FK_carbon_nanotube_nanomaterial_entity` FOREIGN KEY (`carbon_nanotube_pk_id`) REFERENCES `nanomaterial_entity` (`nanomaterial_entity_pk_id`)
 ) ENGINE = InnoDB
-  DEFAULT CHARSET = latin1;
+  DEFAULT CHARSET = utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 
@@ -1057,7 +1057,7 @@ CREATE TABLE `dendrimer`
     KEY `dendrimer_pk_id` (`dendrimer_pk_id`),
     CONSTRAINT `FK_dendrimer_nanomaterial_entity` FOREIGN KEY (`dendrimer_pk_id`) REFERENCES `nanomaterial_entity` (`nanomaterial_entity_pk_id`)
 ) ENGINE = InnoDB
-  DEFAULT CHARSET = latin1;
+  DEFAULT CHARSET = utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -1076,7 +1076,7 @@ CREATE TABLE `emulsion`
     KEY `emulsion_pk_id` (`emulsion_pk_id`),
     CONSTRAINT `FK_emulsion_nanomaterial_entity` FOREIGN KEY (`emulsion_pk_id`) REFERENCES `nanomaterial_entity` (`nanomaterial_entity_pk_id`)
 ) ENGINE = InnoDB
-  DEFAULT CHARSET = latin1;
+  DEFAULT CHARSET = utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 
@@ -1097,7 +1097,7 @@ CREATE TABLE `fullerene`
     KEY `fullerene_pk_id` (`fullerene_pk_id`),
     CONSTRAINT `FK_fullerene_nanomaterial_entity` FOREIGN KEY (`fullerene_pk_id`) REFERENCES `nanomaterial_entity` (`nanomaterial_entity_pk_id`)
 ) ENGINE = InnoDB
-  DEFAULT CHARSET = latin1;
+  DEFAULT CHARSET = utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 
@@ -1119,7 +1119,7 @@ CREATE TABLE `composing_element`
     CONSTRAINT `FK_composing_element_associated_element` FOREIGN KEY (`composing_element_pk_id`) REFERENCES `associated_element` (`associated_element_pk_id`),
     CONSTRAINT `FK_composing_element_nanoparticle_entity` FOREIGN KEY (`nanomaterial_entity_pk_id`) REFERENCES `nanomaterial_entity` (`nanomaterial_entity_pk_id`)
 ) ENGINE = InnoDB
-  DEFAULT CHARSET = latin1;
+  DEFAULT CHARSET = utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 
@@ -1148,7 +1148,7 @@ CREATE TABLE `nano_function`
     CONSTRAINT `FK_function_composing_element` FOREIGN KEY (`composing_element_pk_id`) REFERENCES `composing_element` (`composing_element_pk_id`),
     CONSTRAINT `FK_function_functionalizing_entity` FOREIGN KEY (`functionalizing_entity_pk_id`) REFERENCES `functionalizing_entity` (`functionalizing_entity_pk_id`)
 ) ENGINE = InnoDB
-  DEFAULT CHARSET = latin1;
+  DEFAULT CHARSET = utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 
@@ -1169,7 +1169,7 @@ CREATE TABLE `nanomaterial_entity_file`
     CONSTRAINT `FK_nanomaterial_entity_file_file` FOREIGN KEY (`file_pk_id`) REFERENCES `file` (`file_pk_id`),
     CONSTRAINT `FK_nanomaterial_entity_file_nanomaterial_entity` FOREIGN KEY (`nanomaterial_entity_pk_id`) REFERENCES `nanomaterial_entity` (`nanomaterial_entity_pk_id`)
 ) ENGINE = InnoDB
-  DEFAULT CHARSET = latin1;
+  DEFAULT CHARSET = utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 
@@ -1189,7 +1189,7 @@ CREATE TABLE `other_functionalizing_entity`
     KEY `other_func_entity_pk_id` (`other_func_entity_pk_id`),
     CONSTRAINT `FK_other_functionalizing_entity_functionalizing_entity` FOREIGN KEY (`other_func_entity_pk_id`) REFERENCES `functionalizing_entity` (`functionalizing_entity_pk_id`)
 ) ENGINE = InnoDB
-  DEFAULT CHARSET = latin1;
+  DEFAULT CHARSET = utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -1207,7 +1207,7 @@ CREATE TABLE `other_nanomaterial_entity`
     KEY `other_nanoparticle_entity_pk_id` (`other_nanomaterial_entity_pk_id`),
     CONSTRAINT `FK_other_nanomaterial_entity_nanomaterial_entity` FOREIGN KEY (`other_nanomaterial_entity_pk_id`) REFERENCES `nanomaterial_entity` (`nanomaterial_entity_pk_id`)
 ) ENGINE = InnoDB
-  DEFAULT CHARSET = latin1;
+  DEFAULT CHARSET = utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 
@@ -1229,7 +1229,7 @@ CREATE TABLE `polymer`
     KEY `polymer_pk_id` (`polymer_pk_id`),
     CONSTRAINT `FK_polymer_nanomaterial_entity` FOREIGN KEY (`polymer_pk_id`) REFERENCES `nanomaterial_entity` (`nanomaterial_entity_pk_id`)
 ) ENGINE = InnoDB
-  DEFAULT CHARSET = latin1;
+  DEFAULT CHARSET = utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -1253,7 +1253,7 @@ CREATE TABLE `protocol`
     KEY `FK_protocol_file` (`file_pk_id`),
     CONSTRAINT `FK_protocol_file` FOREIGN KEY (`file_pk_id`) REFERENCES `file` (`file_pk_id`)
 ) ENGINE = InnoDB
-  DEFAULT CHARSET = latin1;
+  DEFAULT CHARSET = utf8;
 
 
 
@@ -1290,7 +1290,7 @@ CREATE TABLE `characterization`
     CONSTRAINT `FK_characterization_protocol` FOREIGN KEY (`protocol_pk_id`) REFERENCES `protocol` (`protocol_pk_id`),
     CONSTRAINT `FK_characterization_sample` FOREIGN KEY (`sample_pk_id`) REFERENCES `sample` (`sample_pk_id`)
 ) ENGINE = InnoDB
-  DEFAULT CHARSET = latin1;
+  DEFAULT CHARSET = utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 
@@ -1309,7 +1309,7 @@ CREATE TABLE `physical_state`
     KEY `physical_state_pk_id` (`physical_state_pk_id`),
     CONSTRAINT `FK_physical_state_characterization` FOREIGN KEY (`physical_state_pk_id`) REFERENCES `characterization` (`characterization_pk_id`)
 ) ENGINE = InnoDB
-  DEFAULT CHARSET = latin1;
+  DEFAULT CHARSET = utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 
@@ -1329,7 +1329,7 @@ CREATE TABLE `finding`
     KEY `characterization_pk_id` (`characterization_pk_id`),
     CONSTRAINT `FK_finding_characterization` FOREIGN KEY (`characterization_pk_id`) REFERENCES `characterization` (`characterization_pk_id`)
 ) ENGINE = InnoDB
-  DEFAULT CHARSET = latin1;
+  DEFAULT CHARSET = utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 
@@ -1358,7 +1358,7 @@ CREATE TABLE `datum`
     CONSTRAINT `FK_datum_file` FOREIGN KEY (`file_pk_id`) REFERENCES `file` (`file_pk_id`),
     CONSTRAINT `FK_datum_finding` FOREIGN KEY (`finding_pk_id`) REFERENCES `finding` (`finding_pk_id`)
 ) ENGINE = InnoDB
-  DEFAULT CHARSET = latin1;
+  DEFAULT CHARSET = utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -1378,7 +1378,7 @@ CREATE TABLE `datum_condition`
     CONSTRAINT `FK_datum_condition_datum` FOREIGN KEY (`datum_pk_id`) REFERENCES `datum` (`datum_pk_id`),
     CONSTRAINT `FK_datum_condition_experiment_condition` FOREIGN KEY (`condition_pk_id`) REFERENCES `experiment_condition` (`condition_pk_id`)
 ) ENGINE = InnoDB
-  DEFAULT CHARSET = latin1;
+  DEFAULT CHARSET = utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 
@@ -1399,7 +1399,7 @@ CREATE TABLE `finding_file`
     CONSTRAINT `FK_finding_file_file` FOREIGN KEY (`file_pk_id`) REFERENCES `file` (`file_pk_id`),
     CONSTRAINT `FK_finding_file_finding` FOREIGN KEY (`finding_pk_id`) REFERENCES `finding` (`finding_pk_id`)
 ) ENGINE = InnoDB
-  DEFAULT CHARSET = latin1;
+  DEFAULT CHARSET = utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 
@@ -1420,7 +1420,7 @@ CREATE TABLE `keyword_sample`
     CONSTRAINT `FK_keyword_sample_keyword` FOREIGN KEY (`keyword_pk_id`) REFERENCES `keyword` (`keyword_pk_id`),
     CONSTRAINT `FK_keyword_sample_sample` FOREIGN KEY (`sample_pk_id`) REFERENCES `sample` (`sample_pk_id`)
 ) ENGINE = InnoDB
-  DEFAULT CHARSET = latin1;
+  DEFAULT CHARSET = utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 
@@ -1442,7 +1442,7 @@ CREATE TABLE `composition_file`
     CONSTRAINT `FK_composition_file_composition` FOREIGN KEY (`composition_pk_id`) REFERENCES `composition` (`composition_pk_id`),
     CONSTRAINT `FK_composition_file_file` FOREIGN KEY (`file_pk_id`) REFERENCES `file` (`file_pk_id`)
 ) ENGINE = InnoDB
-  DEFAULT CHARSET = latin1;
+  DEFAULT CHARSET = utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 
@@ -1464,7 +1464,7 @@ CREATE TABLE `sample_other_poc`
     CONSTRAINT `FK_sample_other_poc_point_of_contact` FOREIGN KEY (`poc_pk_id`) REFERENCES `point_of_contact` (`poc_pk_id`),
     CONSTRAINT `FK_sample_other_poc_sample` FOREIGN KEY (`sample_pk_id`) REFERENCES `sample` (`sample_pk_id`)
 ) ENGINE = InnoDB
-  DEFAULT CHARSET = latin1;
+  DEFAULT CHARSET = utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 
@@ -1484,7 +1484,7 @@ CREATE TABLE `sample_publication`
     CONSTRAINT `FK_sample_publication_publication` FOREIGN KEY (`publication_pk_id`) REFERENCES `publication` (`publication_pk_id`),
     CONSTRAINT `FK_sample_publication_sample` FOREIGN KEY (`sample_pk_id`) REFERENCES `sample` (`sample_pk_id`)
 ) ENGINE = InnoDB
-  DEFAULT CHARSET = latin1;
+  DEFAULT CHARSET = utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 
@@ -1508,7 +1508,7 @@ CREATE TABLE `shape`
     KEY `shape_pk_id` (`shape_pk_id`),
     CONSTRAINT `FK_shape_characterization` FOREIGN KEY (`shape_pk_id`) REFERENCES `characterization` (`characterization_pk_id`)
 ) ENGINE = InnoDB
-  DEFAULT CHARSET = latin1;
+  DEFAULT CHARSET = utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 
@@ -1527,7 +1527,7 @@ CREATE TABLE `small_molecule`
     KEY `small_molecule_pk_id` (`small_molecule_pk_id`),
     CONSTRAINT `FK_small_molecule_functionalizing_entity` FOREIGN KEY (`small_molecule_pk_id`) REFERENCES `functionalizing_entity` (`functionalizing_entity_pk_id`)
 ) ENGINE = InnoDB
-  DEFAULT CHARSET = latin1;
+  DEFAULT CHARSET = utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 
@@ -1549,7 +1549,7 @@ CREATE TABLE `solubility`
     KEY `solubility_pk_id` (`solubility_pk_id`),
     CONSTRAINT `FK_solubility_characterization` FOREIGN KEY (`solubility_pk_id`) REFERENCES `characterization` (`characterization_pk_id`)
 ) ENGINE = InnoDB
-  DEFAULT CHARSET = latin1;
+  DEFAULT CHARSET = utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 
@@ -1576,7 +1576,7 @@ CREATE TABLE `target`
     KEY `targeting_function_pk_id` (`targeting_function_pk_id`),
     CONSTRAINT `FK_target_function` FOREIGN KEY (`targeting_function_pk_id`) REFERENCES `nano_function` (`function_pk_id`) ON DELETE CASCADE
 ) ENGINE = InnoDB
-  DEFAULT CHARSET = latin1;
+  DEFAULT CHARSET = utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 
@@ -1596,7 +1596,7 @@ CREATE TABLE `technique`
     `created_by`      varchar(200) NOT NULL,
     PRIMARY KEY (`technique_pk_id`)
 ) ENGINE = InnoDB
-  DEFAULT CHARSET = latin1;
+  DEFAULT CHARSET = utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 
@@ -1621,7 +1621,7 @@ CREATE TABLE `experiment_config`
     CONSTRAINT `FK_experiment_config_characterization` FOREIGN KEY (`characterization_pk_id`) REFERENCES `characterization` (`characterization_pk_id`),
     CONSTRAINT `FK_experiment_config_technique` FOREIGN KEY (`technique_pk_id`) REFERENCES `technique` (`technique_pk_id`)
 ) ENGINE = InnoDB
-  DEFAULT CHARSET = latin1;
+  DEFAULT CHARSET = utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -1641,7 +1641,7 @@ CREATE TABLE `experiment_config_instrument`
     CONSTRAINT `FK_experiment_config_instrument_experiment_config` FOREIGN KEY (`experiment_config_pk_id`) REFERENCES `experiment_config` (`experiment_config_pk_id`),
     CONSTRAINT `FK_experiment_config_instrument_instrument` FOREIGN KEY (`instrument_pk_id`) REFERENCES `instrument` (`instrument_pk_id`)
 ) ENGINE = InnoDB
-  DEFAULT CHARSET = latin1;
+  DEFAULT CHARSET = utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 
@@ -1915,7 +1915,7 @@ CREATE TABLE `purity_column_header`
     `column_type`    varchar(200) NOT NULL,
     PRIMARY KEY (`column_pk_id`)
 ) ENGINE = InnoDB
-  DEFAULT CHARSET = latin1;
+  DEFAULT CHARSET = utf8;
 
 -- purity_datum_condition
 

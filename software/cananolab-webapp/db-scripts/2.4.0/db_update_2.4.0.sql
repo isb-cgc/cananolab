@@ -299,7 +299,7 @@ CREATE TABLE `synthesis_purity`
 
 CREATE TABLE 'purification_file'
 (
-    `synthesis_purification_pk_id` bigint(200) NOT NULL COMMENT 'synthesis_purification_pk_id',
+    `synthesis_purification_pk_id` bigint(20) NOT NULL COMMENT 'synthesis_purification_pk_id',
     `file_pk_id`   bigint(20)  NOT NULL COMMENT 'file_pk_id',
     PRIMARY KEY (`synthesis_purification_pk_id`, `file_pk_id`),
     KEY `FK_file_TO_purification_file` (`file_pk_id`),
@@ -311,7 +311,7 @@ CREATE TABLE 'purification_file'
 
 CREATE TABLE `purity_file`
 (
-    `purity_pk_id` bigint(200) NOT NULL COMMENT 'purity_pk_id',
+    `purity_pk_id` bigint(20) NOT NULL COMMENT 'purity_pk_id',
     `file_pk_id`   bigint(20)  NOT NULL COMMENT 'file_pk_id',
     PRIMARY KEY (`purity_pk_id`, `file_pk_id`),
     KEY `FK_file_TO_purity_file` (`file_pk_id`),
