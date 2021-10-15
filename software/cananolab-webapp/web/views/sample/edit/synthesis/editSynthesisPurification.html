@@ -289,7 +289,7 @@
             </tr>
             <tr>
               <td>
-                <ng-include src="'/caNanoLab/views/sample/view/manageFileView.html'"></ng-include>
+                <ng-include src="'/caNanoLab/views/sample/view/managePurificationFileView.html'"></ng-include>
               </td>
             </tr>
           </tbody>
@@ -614,7 +614,7 @@
 </tr>
 <tr>
   <td colspan="{{currentFinding.columnHeaders.length}}">
-    <ng-include src="'/caNanoLab/views/sample/edit/manageFileEdit.html'"></ng-include>
+    <ng-include src="'/caNanoLab/views/sample/edit/managePurifcationFileEdit.html'"></ng-include>
   </td>
 </tr>
 <tr>
@@ -661,7 +661,7 @@
           <tr>
               <td width="10%"><label>Files</label></td>
               <td width="90%">
-                  <button type="button" class="btn-canano btn-canano-primary btn-canano-xs ng-click-active"
+                  <button ng-disabled="!purification.simpleProtocol.displayName || !purification.type" type="button" class="btn-canano btn-canano-primary btn-canano-xs ng-click-active"
                       ng-click="openFileForm(-1, $parent.$index)">Add</button>
               </td>
           </tr>
