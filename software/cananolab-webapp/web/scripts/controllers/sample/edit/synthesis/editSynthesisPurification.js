@@ -330,6 +330,8 @@
             then(function(data) {
               data = data['data']
               console.log('done')
+              $scope.purification = data;
+              $scope.purificationCopy = angular.copy($scope.purification);
             }).
                 catch (function(data) {
               console.log('caNanoLab/rest/synthesisPurification/saveFile ERROR data: ', data);
@@ -348,6 +350,8 @@
             then(function(data) {
               data = data['data']
               console.log('done')
+              $scope.purification = data['data'];
+              $scope.purificationCopy = angular.copy($scope.purification);              
             }).
                 catch (function(data) {
               console.log('caNanoLab/rest/synthesisPurification/saveFile ERROR data: ', data);
