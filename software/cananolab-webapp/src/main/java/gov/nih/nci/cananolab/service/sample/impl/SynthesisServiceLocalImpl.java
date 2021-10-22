@@ -63,9 +63,11 @@ import java.util.Set;
 
 import org.apache.log4j.Logger;
 
+import org.apache.lucene.util.BroadWord;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 
+import org.springframework.orm.hibernate4.HibernateOptimisticLockingFailureException;
 import org.springframework.stereotype.Component;
 
 
@@ -244,15 +246,15 @@ public class SynthesisServiceLocalImpl extends BaseServiceLocalImpl implements S
     // TODO
     public void deleteSynthesisFunctionalization(Long sampleId,
                                                  SynthesisFunctionalization synthesisFunctionalization) throws SynthesisException, NoAccessException {
-/*
+
 
             if (SpringSecurityUtil.getPrincipal() == null) {
                 throw new NoAccessException();
             }
             try {
                 //Delete attached files
-                if(synthesisFunctionalization.getFileCollection()!= null){
-                    for(File file:synthesisFunctionalization.getFileCollection()){
+                if(synthesisFunctionalization.getFiles()!= null){
+                    for(File file:synthesisFunctionalization.getFiles()){
                         deleteSynthesisFunctionalizationFile(synthesisFunctionalization,file);
                     }
                 }
@@ -269,13 +271,19 @@ public class SynthesisServiceLocalImpl extends BaseServiceLocalImpl implements S
                 CaNanoLabApplicationService appService = (CaNanoLabApplicationService) ApplicationServiceProvider
                         .getApplicationService();
                 appService.delete(synthesisFunctionalization);
-            } catch (Exception e) {
+            } catch(HibernateOptimisticLockingFailureException e) {
+                //row count error - is OK since we just deleted.
+                //TODO
+                logger.info("Row count error on functionalization deletion");
+            }
+
+            catch (Exception e) {
                 String err = "Error deleting synthesis functionalization " + synthesisFunctionalization.getId();
                 logger.error(err, e);
                 throw new SynthesisException(err, e);
             }
 
-*/
+
     }
 
     public void deleteSynthesisMaterial(Long sampleId, SynthesisMaterial synthesisMaterial) throws SynthesisException

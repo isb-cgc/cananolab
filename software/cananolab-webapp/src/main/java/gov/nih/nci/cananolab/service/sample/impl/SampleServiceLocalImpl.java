@@ -21,6 +21,9 @@ import gov.nih.nci.cananolab.domain.particle.FunctionalizingEntity;
 import gov.nih.nci.cananolab.domain.particle.NanomaterialEntity;
 import gov.nih.nci.cananolab.domain.particle.Sample;
 import gov.nih.nci.cananolab.domain.particle.SampleComposition;
+import gov.nih.nci.cananolab.domain.particle.SmeInherentFunction;
+import gov.nih.nci.cananolab.domain.particle.SynthesisMaterial;
+import gov.nih.nci.cananolab.domain.particle.SynthesisMaterialElement;
 import gov.nih.nci.cananolab.dto.common.ExperimentConfigBean;
 import gov.nih.nci.cananolab.dto.common.FileBean;
 import gov.nih.nci.cananolab.dto.common.FindingBean;
@@ -34,6 +37,9 @@ import gov.nih.nci.cananolab.dto.particle.characterization.CharacterizationBean;
 import gov.nih.nci.cananolab.dto.particle.composition.ChemicalAssociationBean;
 import gov.nih.nci.cananolab.dto.particle.composition.FunctionalizingEntityBean;
 import gov.nih.nci.cananolab.dto.particle.composition.NanomaterialEntityBean;
+import gov.nih.nci.cananolab.dto.particle.synthesis.SmeInherentFunctionBean;
+import gov.nih.nci.cananolab.dto.particle.synthesis.SynthesisMaterialBean;
+import gov.nih.nci.cananolab.dto.particle.synthesis.SynthesisMaterialElementBean;
 import gov.nih.nci.cananolab.exception.DuplicateEntriesException;
 import gov.nih.nci.cananolab.exception.NoAccessException;
 import gov.nih.nci.cananolab.exception.NotExistException;
@@ -51,6 +57,7 @@ import gov.nih.nci.cananolab.service.publication.PublicationService;
 import gov.nih.nci.cananolab.service.sample.CharacterizationService;
 import gov.nih.nci.cananolab.service.sample.CompositionService;
 import gov.nih.nci.cananolab.service.sample.SampleService;
+import gov.nih.nci.cananolab.service.sample.SynthesisService;
 import gov.nih.nci.cananolab.service.sample.helper.AdvancedSampleServiceHelper;
 import gov.nih.nci.cananolab.service.sample.helper.SampleServiceHelper;
 import gov.nih.nci.cananolab.system.applicationservice.CaNanoLabApplicationService;
@@ -106,6 +113,9 @@ public class SampleServiceLocalImpl extends BaseServiceLocalImpl implements Samp
 	
 	@Autowired
 	private PublicationService publicationService;
+
+	@Autowired
+	private SynthesisService synthesisService;
 	
 	@Autowired
 	private AclDao aclDao;
@@ -668,6 +678,7 @@ public class SampleServiceLocalImpl extends BaseServiceLocalImpl implements Samp
 			saveClonedPOCs(newSampleBean);
 			saveClonedCharacterizations(origSample.getName(), newSampleBean);
 			saveClonedComposition(origSampleBean, newSampleBean);
+			saveClonedSynthesis(origSampleBean, newSampleBean);
 			saveClonedPublications(origSampleBean, newSampleBean);
 			saveSample(newSampleBean);
 			
@@ -705,6 +716,8 @@ public class SampleServiceLocalImpl extends BaseServiceLocalImpl implements Samp
 		}
 	}
 
+
+
 	private void saveClonedCharacterizations(String origSampleName,
 			SampleBean sampleBean) throws Exception {
 		if (sampleBean.getDomain().getCharacterizationCollection() != null) {
@@ -731,6 +744,56 @@ public class SampleServiceLocalImpl extends BaseServiceLocalImpl implements Samp
 			}
 		}
 	}
+
+	private void saveClonedSynthesis(SampleBean origSampleBean, SampleBean sampleBean) throws Exception {
+
+		if (sampleBean.getDomain().getSynthesis()!=null){
+			if(sampleBean.getDomain().getSynthesis().getSynthesisMaterials()!=null){
+				saveClonedSynthesisMaterials(origSampleBean, sampleBean);
+			}
+			if(sampleBean.getDomain().getSynthesis().getSynthesisFunctionalizations()!=null){
+				saveClonedSynthesisFunctionalization(origSampleBean, sampleBean);
+			}
+			if(sampleBean.getDomain().getSynthesis().getSynthesisPurifications()!=null){
+				saveClonedSynthesisPurification(origSampleBean, sampleBean);
+			}
+		}
+	}
+
+	private void saveClonedSynthesisMaterials(SampleBean origSampleBean, SampleBean sampleBean)throws Exception{
+		//TODO write
+
+		Collection<SynthesisMaterial> materials = sampleBean.getDomain().getSynthesis().getSynthesisMaterials();
+		for(SynthesisMaterial material:materials){
+			SynthesisMaterialBean materialBean = new SynthesisMaterialBean(material);
+			if(materialBean.getFiles()!=null){
+				for (FileBean fileBean : materialBean.getFiles()) {
+					fileUtils.updateClonedFileInfo(fileBean,
+							origSampleBean.getDomain().getName(), sampleBean.getDomain().getName());
+				}
+			}
+
+			if (material.getSynthesisMaterialElements()!=null){
+				for(SynthesisMaterialElement materialElement: material.getSynthesisMaterialElements()){
+					SynthesisMaterialElementBean materialElementBean = new SynthesisMaterialElementBean(materialElement);
+					if(materialElementBean.getFunctions()!=null){
+						for (SmeInherentFunctionBean function: materialElementBean.getFunctions()){
+							//TODO write
+						}
+					}
+				}
+			}
+		}
+	}
+
+	private void saveClonedSynthesisFunctionalization(SampleBean origSampleBean, SampleBean sampleBean){
+		//TODO write
+	}
+
+	private void saveClonedSynthesisPurification(SampleBean origSampleBean, SampleBean sampleBean){
+		//TODO write
+	}
+
 
 	private void saveClonedComposition(SampleBean origSampleBean, SampleBean sampleBean) throws Exception {
 		String origSampleName = origSampleBean.getDomain().getName();

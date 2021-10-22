@@ -23,7 +23,7 @@
                 fetch="select" inverse="true" lazy="false"
                 name="synthesisFunctionalizationElements"
                 sort="unsorted"
-                table="synthesis-functionalization-elements"
+                table="synthesis_functionalization_element"
                 cascade="all-delete-orphan">
 
             <key>

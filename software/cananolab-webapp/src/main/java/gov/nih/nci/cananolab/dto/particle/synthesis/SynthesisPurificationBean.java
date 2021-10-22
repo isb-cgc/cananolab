@@ -3,7 +3,10 @@ package gov.nih.nci.cananolab.dto.particle.synthesis;
 import gov.nih.nci.cananolab.domain.common.File;
 import gov.nih.nci.cananolab.domain.common.Instrument;
 import gov.nih.nci.cananolab.domain.common.PurificationConfig;
+import gov.nih.nci.cananolab.domain.common.PurityDatumCondition;
 import gov.nih.nci.cananolab.domain.common.Technique;
+import gov.nih.nci.cananolab.domain.particle.SfeInherentFunction;
+import gov.nih.nci.cananolab.domain.particle.SynthesisFunctionalizationElement;
 import gov.nih.nci.cananolab.domain.particle.SynthesisMaterialElement;
 import gov.nih.nci.cananolab.domain.particle.SynthesisPurification;
 import gov.nih.nci.cananolab.domain.particle.SynthesisPurity;
@@ -17,6 +20,7 @@ import gov.nih.nci.cananolab.util.Constants;
 import gov.nih.nci.cananolab.util.StringUtils;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collection;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
@@ -165,6 +169,21 @@ public class SynthesisPurificationBean extends BaseSynthesisEntityBean {
 
     public void resetDomainCopy(String createdBy, SynthesisPurification synthesisPurification) {
         //todo write
+        synthesisPurification.setId(null);
+        synthesisPurification.setSynthesisId(null);
+        synthesisPurification.setCreatedBy( createdBy + ":"
+                + Constants.AUTO_COPY_ANNOTATION_PREFIX );
+        Collection<SynthesisPurity> oldPurities = synthesisPurification.getPurities();
+        if( oldPurities == null || oldPurities.isEmpty() ) {
+            synthesisPurification.setPurities( null );
+        } else {
+            synthesisPurification.setPurities(new HashSet<SynthesisPurity>( oldPurities ) );
+            for(SynthesisPurity purity: synthesisPurification.getPurities()){
+                SynthesisPurityBean purityBean = new SynthesisPurityBean(purity);
+                purityBean.resetDomainCopy(createdBy, purity, true);
+
+            }
+        }
     }
 
     public List<SynthesisPurityBean> getPurityBeans() {

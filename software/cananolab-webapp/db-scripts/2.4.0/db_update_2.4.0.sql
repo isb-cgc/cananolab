@@ -286,7 +286,7 @@ CREATE TABLE `synthesis_functionalization_element_file`
 
 CREATE TABLE `synthesis_purity`
 (
-    `purity_pk_id`                 bigint(200)  NOT NULL COMMENT 'purity_pk_id',
+    `purity_pk_id`                 bigint(20)  NOT NULL COMMENT 'purity_pk_id',
     `synthesis_purification_pk_id` bigint(20)   NOT NULL COMMENT 'synthesis_purification_pk_id',
     `created_by`                   varchar(200) NOT NULL COMMENT 'created_by',
     `created_date`                 datetime     NOT NULL COMMENT 'created_date',

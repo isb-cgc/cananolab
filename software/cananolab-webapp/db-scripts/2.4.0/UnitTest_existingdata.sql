@@ -38,6 +38,7 @@ LOCK TABLES `authorities` WRITE;
     DISABLE KEYS */;
 INSERT IGNORE INTO `authorities` (`username`, `authority`)
 VALUES ('canano_admin', 'ROLE_ADMIN'),
+       ('canano_admin', 'ROLE_ANONYMOUS'),
        ('canano_curator', 'ROLE_CURATOR'),
        ('canano_guest', 'ROLE_ANONYMOUS'),
        ('canano_res1', 'ROLE_RESEARCHER'),

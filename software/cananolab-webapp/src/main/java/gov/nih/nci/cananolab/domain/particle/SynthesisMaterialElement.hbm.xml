@@ -54,7 +54,7 @@
             <many-to-many class="gov.nih.nci.cananolab.domain.common.File" column="file_pk_id" />
         </set>
 
-        <set name="smeInherentFunctions" inverse="true"  cascade="all-delete-orphan">
+        <set name="smeInherentFunctions" inverse="true" lazy="false"  cascade="all-delete-orphan">
             <key>
                 <column name="synthesis_material_element_pk_id"/>
             </key>

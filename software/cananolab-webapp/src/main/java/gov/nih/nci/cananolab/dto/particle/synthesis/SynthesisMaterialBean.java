@@ -97,6 +97,7 @@ public class SynthesisMaterialBean extends BaseSynthesisEntityBean {
     public void resetDomainCopy(String createdBy, SynthesisMaterial synthesisMaterialCopy) {
         //TODO write
         synthesisMaterialCopy.setId(null);
+        synthesisMaterialCopy.setSynthesisId(null);
         synthesisMaterialCopy.setCreatedBy(createdBy+":"+ Constants.AUTO_COPY_ANNOTATION_PREFIX);
         synthesisMaterialCopy.setProtocol(null);
         Collection<SynthesisMaterialElement> oldMaterialElements = synthesisMaterialCopy.getSynthesisMaterialElements();

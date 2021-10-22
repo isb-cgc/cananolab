@@ -18,19 +18,19 @@
         <!--the synthesis pk id is generated from the sample pk id
         <one-to-one name="sample" class="Sample"  constrained="true"/>        -->
         <many-to-one name="sample" class="Sample" column="sample_pk_id" unique="true" lazy="proxy"  not-null="true" cascade="all"/>
-        <set name="synthesisFunctionalizations" inverse="true">
+        <set name="synthesisFunctionalizations" inverse="true" lazy="false">
             <key>
                 <column name="synthesis_pk_id" not-null="true"/>
             </key>
             <one-to-many not-found="ignore" class="SynthesisFunctionalization"/>
         </set>
-        <set name="synthesisMaterials" inverse="true">
+        <set name="synthesisMaterials" inverse="true" lazy="false">
             <key>
                 <column name="synthesis_pk_id"/>
             </key>
             <one-to-many not-found="ignore" class="SynthesisMaterial"/>
         </set>
-        <set name="synthesisPurifications" inverse="true">
+        <set name="synthesisPurifications" inverse="true" lazy="false">
             <key>
                 <column name="synthesis_pk_id"/>
             </key>

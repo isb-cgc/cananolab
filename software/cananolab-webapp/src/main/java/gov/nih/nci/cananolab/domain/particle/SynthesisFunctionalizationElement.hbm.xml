@@ -87,7 +87,7 @@
             <many-to-many class="gov.nih.nci.cananolab.domain.common.File" column="file_pk_id" />
         </set>
 
-        <set name="sfeInherentFunctions" inverse="true" cascade="all-delete-orphan">
+        <set name="sfeInherentFunctions" inverse="true" lazy="false" cascade="all-delete-orphan">
             <key>
                 <column name="synthesis_functionalization_element_pk_id"/>
             </key>

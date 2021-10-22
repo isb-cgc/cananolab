@@ -1,8 +1,9 @@
 package gov.nih.nci.cananolab.domain.common;
 
+import java.io.Serializable;
 import java.util.Date;
 
-public class PurityColumnHeader {
+public class PurityColumnHeader implements Serializable {
     private Long id;
     private String name;
     private String property;
