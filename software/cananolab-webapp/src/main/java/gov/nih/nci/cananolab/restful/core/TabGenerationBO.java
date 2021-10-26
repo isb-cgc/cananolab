@@ -51,7 +51,7 @@ public class TabGenerationBO {
                 tabs.add(tabWithLink);
 			}
 			tabWithLink = new String[2];
-			tabWithLink[0] = "HELP";
+			tabWithLink[0] = "USER GUIDE";
 			tabWithLink[1] = "https://wiki.nci.nih.gov/x/14CUBg";
 			tabs.add(tabWithLink);
 			tabWithLink = new String[2];
