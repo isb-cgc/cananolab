@@ -982,6 +982,11 @@ public class SampleServiceLocalImpl extends BaseServiceLocalImpl implements Samp
 			}
 			sample.setSampleComposition(null);
 
+			if(sample.getSynthesis() !=null){
+				synthesisService.deleteSynthesis(sample.getSynthesis());
+			}
+			sample.setSynthesis(null);
+
 			// / / remove publication associations
 			if (sample.getPublicationCollection() != null) {
 				sample.setPublicationCollection(null);

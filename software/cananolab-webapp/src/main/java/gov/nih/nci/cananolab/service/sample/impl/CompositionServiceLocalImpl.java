@@ -733,6 +733,7 @@ public class CompositionServiceLocalImpl extends BaseServiceLocalImpl implements
 		try {
 			CaNanoLabApplicationService appService = (CaNanoLabApplicationService) ApplicationServiceProvider
 					.getApplicationService();
+			comp.setSample(null);
 			appService.delete(comp);
 		} catch (Exception e) {
 			String err = "Problem deleting composition by id: " + comp.getId();
