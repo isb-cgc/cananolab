@@ -70,6 +70,8 @@ RUN mkdir -p /local/content/caNanoLab \
     && mkdir -p /local/content/caNanoLab/config \
     && mkdir -p /opt/wildfly-8.2.1.Final/modules/com/mysql/main
 
+COPY resources/mysql-connector-java-5.1.26.jar /opt/wildfly-8.2.1.Final/modules/com/mysql/main
+
 ADD . /usr/local/cananolab
 
 
