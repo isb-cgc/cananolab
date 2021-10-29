@@ -183,6 +183,7 @@ public class SimpleSynthesisBean {
                     for (SynthesisFunctionalizationElementBean sfeBean: functionalizationBean.getSynthesisFunctionalizationElements()) {
                         functionalizationElement = new HashMap<String, Object>();
                         functionalizationElement.put("dataId", sfeBean.getDomain().getId());
+                        functionalizationElement.put("type", sfeBean.getType());
                         functionalizationElement.put("DisplayName", sfeBean.getDisplayName());
                         functionalizationElement.put("ChemicalName", sfeBean.getDomain().getChemicalName());
                         functionalizationElement.put("Description", sfeBean.getDescription());
