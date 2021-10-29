@@ -276,9 +276,12 @@
       };
 
     // save file //
-    $scope.saveFile = function () {
-      if ($scope.fileObject && !$scope.currentFile.uriExternal) {
-        $scope.uploadFile();
+    $scope.saveFile = function (purity) {
+      $scope.purification['purityBeingEdited']=$scope.currentFinding;
+      
+      if (($scope.fileObject || $scope.fileForm.uploadedFile) && !$scope.currentFile.uriExternal) {
+        console.log("I PASSED")
+        $scope.uploadFile(purity);
 
         // watch upload complete //
         $scope.$watch('uploadComplete', function () {
@@ -305,10 +308,16 @@
     };
 
     // uploads file to server //
-    $scope.uploadFile = function() {
+    $scope.uploadFile = function(purity) {
       console.log('i am uploading')
       var fd = new FormData(); // create new form data object //
-      fd.append('file', $scope.fileObject);
+      if (purity) {
+        fd.append('file', $scope.fileForm.uploadedFile);
+      }
+      else {
+        fd.append('file', $scope.fileObject);
+
+      };
   /*
       fd.append('urlExternal', false);
       fd.append('type', 'image');
@@ -1535,6 +1544,16 @@
 
         };
       };
+
+
+
+      $scope.openAddNewFile = function () {
+        $scope.addNewFile = true;
+        $scope.fileForm = {};
+
+        $scope.fileForm.uriExternal = 'false';
+        $scope.externalUrlEnabled = false;
+    }
 
 
       // end finding section code //

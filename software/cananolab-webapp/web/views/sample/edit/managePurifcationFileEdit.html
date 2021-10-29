@@ -1,4 +1,7 @@
-<table width="85%" class="subSubmissionView" align="center">{{purification}}
+<table width="85%" class="subSubmissionView" align="center">
+
+    {{fileForm}}<br /><br />
+    {{currentFinding}}
     <tbody><tr>
         <td class="cellLabel" width="15%">
             Files
@@ -68,17 +71,10 @@
                     </tr>
                     <tr>
                         <td colspan="2">
-                            <span id="load" style="display: block;" ng-show="fileForm.uriExternal=='false'">
-        						 <label for="uploadedFile" aria-label="Upload File"><input type="file" ng-model="fileForm.uploadedFile" size="60" value="" ng-file-select="onFileSelect($files)" id="uploadedFile"></label>
-        						<span ng-if="ie9">{{selectedFileName}}</span>
-				            </span>
-                            <span id="uploadedUri" ng-show="fileForm.uriExternal=='false' && fileForm.id != null">
-			                    <a href="rest/composition/download?fileId={{fileForm.id}}">{{fileForm.title}}</a>
-                            </span>
-                        
-			                <span id="link" ng-show="fileForm.uriExternal=='true'">
-                                <label for="externalUrl" aria-label="External URL"><input type="text" ng-model="fileForm.externalUrl" size="60" value="" id="externalUrl"></label>&nbsp;&nbsp;[<a class="disclaimerLink" href="html/cananoDisclaimer.html" target="new" id="pubExternalLink">Disclaimer</a>]
-					        </span>
+                            <input type="file" id="uploadFile" file-model="fileForm.uploadedFile" ng-show="fileForm.uriExternal=='false'">
+
+                            <input type="text" data-ng-model="fileForm.externalUrl" ng-if="fileForm.uriExternal=='true'" size="60">
+
                          
                         </td>
                     </tr>
@@ -88,16 +84,7 @@
                         </td>
                         <td>
                             <div id="fileTypePrompt">
-                                <select  ng-model="fileForm.type" id="fileType">
-                                    <option value="">
-                                    </option>
-                                    <option ng-repeat="type in $parent.fileTypes track by $index" value="{{type}}" ng-selected="{{type==fileForm.type}}">
-                                        {{type}}
-                                    </option>
-
-                                    <option value="other">
-                                        [other]
-                                    </option>
+                                <select ng-model="fileForm.type" ng-options="o as o for o in dropdowns.fileTypes">
                                 </select>
                                 <div ng-if="fileForm.type=='other'">
                                     <table cellspacing="5" cellpadding="0" border="0" width="100%" class="promptbox" summary="layout">
@@ -170,7 +157,7 @@
                                 <button 
                                     class="btn-canano btn-canano-primary btn-canano-xs promptButton" 
                                     type="button" 
-                                    ng-click="closeAddNewFile();saveFile();" 
+                                    ng-click="closeAddNewFile();saveFile('purity');" 
                                     >
                                     Save
                                 </button>
