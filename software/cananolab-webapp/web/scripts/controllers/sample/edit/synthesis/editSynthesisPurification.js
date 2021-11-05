@@ -328,6 +328,7 @@
         data = data['data']
         $scope.uploadComplete = true;
           if ($scope.fileFormIndex==-1) {
+            console.log($scope.currentFile)
             $scope.currentFile['uri'] = data['fileName']
             $scope.fileArray.push($scope.currentFile);
             console.log('i am here on line 324')
@@ -1550,7 +1551,7 @@
       $scope.openAddNewFile = function () {
         $scope.addNewFile = true;
         $scope.fileForm = {};
-
+        $scope.fileFormIndex=-1;
         $scope.fileForm.uriExternal = 'false';
         $scope.externalUrlEnabled = false;
     }
