@@ -16,7 +16,7 @@
         <many-to-one name="synthesis" class="Synthesis">
             <column name="synthesis_pk_id" not-null="true"/>
         </many-to-one>
-        <many-to-one name="protocol" class="gov.nih.nci.cananolab.domain.common.Protocol">
+        <many-to-one name="protocol" class="gov.nih.nci.cananolab.domain.common.Protocol" lazy="false">
             <column name="protocol_pk_id" />
         </many-to-one>
         <set
