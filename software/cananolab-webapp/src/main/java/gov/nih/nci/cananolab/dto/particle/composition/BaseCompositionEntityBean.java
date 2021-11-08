@@ -122,7 +122,6 @@ public class BaseCompositionEntityBean {
 		return name;
 	}
 
-	//TODO This is evil and should be eliminated
 	public FileBean getTheFile() {
 		return theFile;
 	}

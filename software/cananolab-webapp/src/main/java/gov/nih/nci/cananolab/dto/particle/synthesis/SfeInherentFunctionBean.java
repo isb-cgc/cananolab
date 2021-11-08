@@ -18,8 +18,11 @@ public class  SfeInherentFunctionBean {
     }
 
     public void resetDomainCopy(String createdBy, SfeInherentFunction function) {
-        //TODO write
+
+        function.setId(null);
     }
+
+
     public void setupDomain(){
         //TODO write
         if(domain ==null){

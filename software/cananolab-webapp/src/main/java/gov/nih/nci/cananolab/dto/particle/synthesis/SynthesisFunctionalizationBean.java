@@ -187,11 +187,11 @@ public class SynthesisFunctionalizationBean extends BaseSynthesisEntityBean {
     }
 
     public void resetDomainCopy( String createdBy, SynthesisFunctionalization copy ) {
+
+        copy.setCreatedBy( createdBy + ":"
+                + Constants.AUTO_COPY_ANNOTATION_PREFIX + ":" + copy.getId());
         copy.setId( null );
         copy.setSynthesisId(null);
-        copy.setCreatedBy( createdBy + ":"
-                + Constants.AUTO_COPY_ANNOTATION_PREFIX );
-
         Collection<SynthesisFunctionalizationElement> oldElements = copy.getSynthesisFunctionalizationElements();
         if( oldElements == null || oldElements.isEmpty() ) {
             copy.setSynthesisFunctionalizationElements( null );

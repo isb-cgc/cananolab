@@ -32,6 +32,7 @@ public class  SmeInherentFunctionBean {
 
     public void resetDomainCopy(String createdBy, SmeInherentFunctionBean functionBean) {
         //TODO write
+        functionBean.getDomain().setId(null);
     }
 
     public void setupDomain(){

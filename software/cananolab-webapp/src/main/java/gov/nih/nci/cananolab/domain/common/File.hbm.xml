@@ -26,6 +26,7 @@ L-->
 		<property name="type" type="string" column="file_type" />
 		<property name="uri" type="string" column="file_uri" />
 		<property name="uriExternal" type="boolean" column="is_uri_external" />
+		<property name="fileExtension" type="string" column="file_extension" />
 		<!-- Associations mapping for the File class -->
 		<set name="keywordCollection" table="keyword_file" lazy="false"
 			inverse="false"  cascade="all">

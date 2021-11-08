@@ -242,6 +242,12 @@ public class FileBean extends SecuredDataBean {
 		}
 		file.setTitle(sFileBean.getTitle());
 		file.setDescription(sFileBean.getDescription());
+		file.setName(sFileBean.getUri());
+		String extension="";
+		if(sFileBean.getUri().lastIndexOf(".")>0){
+			extension = sFileBean.getUri().substring(sFileBean.getUri().lastIndexOf("."));
+		}
+		file.setFileExtension(extension);
 		//TODO figure out what name is supposed to do.  Eliminate if "nothing"  file.setName(sFileBean.get);
 		file.setType(sFileBean.getType());
 		 if(sFileBean.getType().equals("image")){

@@ -168,11 +168,12 @@ public class SynthesisPurificationBean extends BaseSynthesisEntityBean {
     }
 
     public void resetDomainCopy(String createdBy, SynthesisPurification synthesisPurification) {
-        //todo write
+
+        synthesisPurification.setCreatedBy( createdBy + ":"
+                + Constants.AUTO_COPY_ANNOTATION_PREFIX +":"+ synthesisPurification.getId());
         synthesisPurification.setId(null);
         synthesisPurification.setSynthesisId(null);
-        synthesisPurification.setCreatedBy( createdBy + ":"
-                + Constants.AUTO_COPY_ANNOTATION_PREFIX );
+
         Collection<SynthesisPurity> oldPurities = synthesisPurification.getPurities();
         if( oldPurities == null || oldPurities.isEmpty() ) {
             synthesisPurification.setPurities( null );

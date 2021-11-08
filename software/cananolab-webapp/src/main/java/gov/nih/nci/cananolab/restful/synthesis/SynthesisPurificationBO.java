@@ -60,6 +60,7 @@ import java.util.Set;
 import java.util.TreeSet;
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
+import net.sf.ehcache.terracotta.TerracottaBootstrapCacheLoader;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -105,7 +106,11 @@ public class SynthesisPurificationBO extends BaseAnnotationBO {
         msgs = validatePurification(httpRequest, synthesisPurificationBean);
 
         if (msgs.size() > 0) {
-            return msgs;
+            String err="";
+            for(String message:msgs){
+                err = err+ message + ":";
+            }
+            throw new SynthesisException(err);
         }
 
         msgs = this.saveEntity(synthesisPurificationBean, purificationBean.getSampleId(), httpRequest);
@@ -222,7 +227,6 @@ public class SynthesisPurificationBO extends BaseAnnotationBO {
                     technique.setAbbreviation(sExperimentBean.getAbbreviation());
                     technique.setCreatedBy(purification.getCreatedBy());
                     technique.setCreatedDate(purification.getCreatedDate());
-
                     config.setTechnique(technique);
                 } else {
                     //TODO see if there is a matching technique for this listed type
@@ -296,6 +300,18 @@ public class SynthesisPurificationBO extends BaseAnnotationBO {
             purification.setPurificationConfigs(purificationConfigs);
         }
 
+        List<SimpleFileBean> sfileBeans = sSynPurificationBean.getFileElements();
+        Set<File> files = new HashSet<File>();
+        if((sfileBeans!=null)&&(sfileBeans.size()>0)){
+
+            for(SimpleFileBean simpleFileBean: sfileBeans){
+                FileBean fileBean = new FileBean(simpleFileBean);
+                if(fileBean.getDomainFile().getId()!=null) {
+                    files.add(fileBean.getDomainFile());
+                }
+            }
+            purification.setFiles(files);
+        }
 
         SynthesisPurificationBean synthesisPurificationBean = new SynthesisPurificationBean(purification);
         return synthesisPurificationBean;
@@ -315,7 +331,11 @@ public class SynthesisPurificationBO extends BaseAnnotationBO {
         if((synthesisPurificationBean.getType().equals(null))|| (synthesisPurificationBean.getType().length()==0)){
             msgs.add("Synthesis Purification requires a type Ex: Interim");
         }
-        if(synthesisPurificationBean.getDomainEntity().getYield().equals(null)){
+        if(synthesisPurificationBean.getProtocolBean().equals(null)){
+            msgs.add("Synthesis Purification requires a protocol");
+        }
+        Float yield = synthesisPurificationBean.getDomainEntity().getYield();
+        if(yield==null){
             msgs.add("Synthesis Purification requires a yield");
         }
 
