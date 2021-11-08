@@ -93,7 +93,7 @@ public class PublicationExporter {
 			PublicationSummaryViewBean summaryBean, HSSFWorkbook wb) {
 		HSSFRow row = null;
 		HSSFFont headerFont = wb.createFont();
-		headerFont.setBoldweight(HSSFFont.BOLDWEIGHT_BOLD);
+		headerFont.setBold(true);
 		HSSFCellStyle headerStyle = wb.createCellStyle();
 		headerStyle.setFont(headerFont);
 
@@ -212,7 +212,7 @@ public class PublicationExporter {
 	private static int setDetailSheet(PublicationBean aPub, HSSFWorkbook wb,
 			HSSFSheet sheet, HSSFPatriarch patriarch, int rowIndex) {
 		HSSFFont headerFont = wb.createFont();
-		headerFont.setBoldweight(HSSFFont.BOLDWEIGHT_BOLD);
+		headerFont.setBold(true);
 		HSSFCellStyle headerStyle = wb.createCellStyle();
 		headerStyle.setFont(headerFont);
 

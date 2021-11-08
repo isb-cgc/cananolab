@@ -66,7 +66,8 @@ public class SampleExporter {
 			List<AdvancedSampleBean> sampleBeans, String viewSampleUrl,
 			HSSFWorkbook wb) throws IOException {
 		HSSFFont headerFont = wb.createFont();
-		headerFont.setBoldweight(HSSFFont.BOLDWEIGHT_BOLD);
+//		headerFont.setBoldweight(HSSFFont.BOLDWEIGHT_BOLD);
+		headerFont.setBold(true);
 		HSSFCellStyle headerStyle = wb.createCellStyle();
 		headerStyle.setFont(headerFont);
 
@@ -88,7 +89,7 @@ public class SampleExporter {
 
 		// 3.Output each table row.
 		for (AdvancedSampleBean sampleBean : sampleBeans) {
-			rowIndex = outputRow(sampleBean, viewSampleUrl, sheet, hlinkStyle,
+			rowIndex = outputRow(wb, sampleBean, viewSampleUrl, sheet, hlinkStyle,
 					rowIndex);
 		}
 	}
@@ -149,12 +150,12 @@ public class SampleExporter {
 	 * @param sheet
 	 * @param rowIndex
 	 */
-	public static int outputRow(AdvancedSampleBean sampleBean,
+	public static int outputRow(HSSFWorkbook wb, AdvancedSampleBean sampleBean,
 			String viewSampleUrl, HSSFSheet sheet, HSSFCellStyle hlinkStyle,
 			int rowIndex) {
 		// 1. Output first column - Sample Name at index 0.
 		HSSFRow row = sheet.createRow(rowIndex++);
-		ExportUtils.createCell(row, 0, hlinkStyle, sampleBean.getDomainSample().getName(),
+		ExportUtils.createCell(wb, row, 0, hlinkStyle, sampleBean.getDomainSample().getName(),
 				getViewSampleURL(sampleBean, viewSampleUrl));
 
 		// 2. Output selected column(s) starting from index 1.

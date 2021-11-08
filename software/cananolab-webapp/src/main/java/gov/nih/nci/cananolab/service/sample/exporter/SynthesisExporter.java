@@ -115,7 +115,7 @@ public class SynthesisExporter {
                                 String pubChemDS = synthesisMaterialElement.getPubChemDatasourceName();
                                 stringBuilder.setLength(0);
                                 stringBuilder.append(pubChemID).append(' ');
-                                ExportUtils.createCell(row, 1, hlinkStyle, stringBuilder.toString(),
+                                ExportUtils.createCell(wb,row, 1, hlinkStyle, stringBuilder.toString(),
                                         StringUtils.getPubChemURL(pubChemDS, pubChemID));
                             }
 
@@ -170,7 +170,8 @@ public class SynthesisExporter {
 
     private static void outputSummarySheet(SynthesisBean synthesisBean, String downloadURL, HSSFWorkbook wb) {
         HSSFFont headerFont = wb.createFont();
-        headerFont.setBoldweight(HSSFFont.BOLDWEIGHT_BOLD);
+        headerFont.setBold(true);
+//        headerFont.setBoldweight(HSSFFont.BOLDWEIGHT_BOLD);
         HSSFCellStyle headerStyle = wb.createCellStyle();
         headerStyle.setFont(headerFont);
 

@@ -20,15 +20,20 @@ import java.util.List;
 
 import javax.servlet.http.HttpServletResponse;
 
+import jdk.nashorn.internal.runtime.regexp.joni.constants.internal.AnchorType;
+import org.apache.poi.common.usermodel.HyperlinkType;
 import org.apache.poi.hssf.usermodel.HSSFCell;
 import org.apache.poi.hssf.usermodel.HSSFCellStyle;
 import org.apache.poi.hssf.usermodel.HSSFClientAnchor;
+import org.apache.poi.hssf.usermodel.HSSFCreationHelper;
 import org.apache.poi.hssf.usermodel.HSSFHyperlink;
 import org.apache.poi.hssf.usermodel.HSSFPatriarch;
 import org.apache.poi.hssf.usermodel.HSSFRichTextString;
 import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.ss.usermodel.ClientAnchor;
+import org.apache.poi.ss.usermodel.CreationHelper;
 
 public class ExportUtils {
 
@@ -148,7 +153,8 @@ public class ExportUtils {
 		int bottomRightRow = rowIndex + 22;
 		HSSFClientAnchor anchor = new HSSFClientAnchor(0, 0, 0, 255,
                 colIndex, topLeftRow, bottomRightCell, bottomRightRow);
-		anchor.setAnchorType(2); // 2 = Move but don't size with cells
+//		anchor.setAnchorType(2); // 2 = Move but don't size with cells
+		anchor.setAnchorType(ClientAnchor.AnchorType.MOVE_DONT_RESIZE);
 		patriarch.createPicture(anchor, loadPicture(filePath, wb));
 		rowIndex = bottomRightRow + 3;
 
@@ -193,11 +199,13 @@ public class ExportUtils {
 	 * @param url String
 	 * @return HSSFCell
 	 */
-	public static HSSFCell createCell(HSSFRow row, int index,
+	public static HSSFCell createCell(HSSFWorkbook workbook, HSSFRow row, int index,
 			HSSFCellStyle cellStyle, String value, String url) {
 		HSSFCell cell = createCell(row, index, value);
 
-	    HSSFHyperlink link = new HSSFHyperlink(HSSFHyperlink.LINK_URL);
+//	    HSSFHyperlink link = new HSSFHyperlink(HSSFHyperlink.LINK_URL);
+
+		HSSFHyperlink link = workbook.getCreationHelper().createHyperlink(HyperlinkType.URL);
 	    link.setAddress(url);
 	    cell.setHyperlink(link);
 

@@ -232,7 +232,7 @@ public class CompositionExporter {
 		StringBuilder sb = new StringBuilder(downloadURL);
 		sb.append(file.getId());
 		if (file.getUriExternal()) {
-			ExportUtils.createCell(row, 1, hlinkStyle, file.getUri(), sb
+			ExportUtils.createCell(wb, row, 1, hlinkStyle, file.getUri(), sb
 					.toString());
 		} else if (fileBean.isImage()) {
 			ExportUtils.createCell(row, 1, file.getTitle());
@@ -252,7 +252,7 @@ public class CompositionExporter {
 				logger.error("Composition image file not exists: " + filePath);
 			}
 		} else {
-			ExportUtils.createCell(row, 1, hlinkStyle, file.getTitle(), sb
+			ExportUtils.createCell(wb,row, 1, hlinkStyle, file.getTitle(), sb
 					.toString());
 		}
 
@@ -311,7 +311,7 @@ public class CompositionExporter {
 				StringBuilder sb = new StringBuilder(downloadURL);
 				sb.append(file.getId());
 				if (file.getUriExternal()) {
-					ExportUtils.createCell(row, 1, hlinkStyle, file.getUri(),
+					ExportUtils.createCell(wb,row, 1, hlinkStyle, file.getUri(),
 							sb.toString());
 				} else if (fileBean.isImage()) {
 					ExportUtils.createCell(row, 1, file.getTitle());
@@ -332,7 +332,7 @@ public class CompositionExporter {
 								+ filePath);
 					}
 				} else {
-					ExportUtils.createCell(row, 1, hlinkStyle, file.getTitle(),
+					ExportUtils.createCell(wb,row, 1, hlinkStyle, file.getTitle(),
 							sb.toString());
 				}
 
@@ -515,7 +515,7 @@ public class CompositionExporter {
 						sb.setLength(0);
 						sb.append(pubChemId).append(' ');
 						sb.append('(').append(pubChemDs).append(')');
-						ExportUtils.createCell(row, 1, hlinkStyle, sb
+						ExportUtils.createCell(wb,row, 1, hlinkStyle, sb
 								.toString(), StringUtils
 								.getPubChemURL(pubChemDs, pubChemId));
 					}
@@ -803,7 +803,7 @@ public class CompositionExporter {
 								sb.setLength(0);
 								sb.append(pubChemId).append(' ');
 								sb.append('(').append(pubChemDs).append(')');
-								ExportUtils.createCell(row, 1, hlinkStyle, sb
+								ExportUtils.createCell(wb,row, 1, hlinkStyle, sb
 										.toString(), StringUtils
 										.getPubChemURL(pubChemDs, pubChemId));
 							}
@@ -1069,7 +1069,8 @@ public class CompositionExporter {
 	private static void outputSummarySheet(CompositionBean compBean,
 			String downloadURL, HSSFWorkbook wb) throws IOException {
 		HSSFFont headerFont = wb.createFont();
-		headerFont.setBoldweight(HSSFFont.BOLDWEIGHT_BOLD);
+//		headerFont.setBoldweight(HSSFFont.BOLDWEIGHT_BOLD);
+		headerFont.setBold(true);
 		HSSFCellStyle headerStyle = wb.createCellStyle();
 		headerStyle.setFont(headerFont);
 

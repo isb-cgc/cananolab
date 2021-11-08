@@ -25,9 +25,9 @@ import javax.xml.parsers.ParserConfigurationException;
 
 import org.apache.log4j.Logger;
 import org.hibernate.SessionFactory;
-import org.jdom.Element;
-import org.jdom.JDOMException;
-import org.jdom.input.SAXBuilder;
+import org.jdom2.Element;
+import org.jdom2.JDOMException;
+import org.jdom2.input.SAXBuilder;
 import org.w3c.dom.DOMException;
 import org.w3c.dom.Document;
 import org.xml.sax.SAXException;
@@ -38,8 +38,8 @@ public class ApplicationSecurityConfigurationParser {
 	
 	private static final Logger log = Logger.getLogger(ApplicationSecurityConfigurationParser.class);
 
-	public static org.jdom.Document getConfigDocument() throws  Exception{
-		org.jdom.Document configDoc = null;
+	public static org.jdom2.Document getConfigDocument() throws  Exception{
+		org.jdom2.Document configDoc = null;
 		String configFilePath = System.getProperty("gov.nih.nci.security.configFile");
 		if (StringUtilities.isBlank(configFilePath))
 		{
@@ -66,8 +66,8 @@ public class ApplicationSecurityConfigurationParser {
 	    
 	}
 	
-	public static org.jdom.Document getConfigDocument(URL url) throws  Exception{
-		org.jdom.Document configDoc = null;
+	public static org.jdom2.Document getConfigDocument(URL url) throws  Exception{
+		org.jdom2.Document configDoc = null;
 	    SAXBuilder builder = new SAXBuilder();        
 	    try
 		{
@@ -158,7 +158,7 @@ public class ApplicationSecurityConfigurationParser {
 
 	public static String getAuthorizationManagerClass(String applicationContextName) throws  Exception,  Exception{
 		String authorizationProviderClassName = null;
-		org.jdom.Document configDocument;
+		org.jdom2.Document configDocument;
 		
 		configDocument = getConfigDocument();
 		Element securityConfig = configDocument.getRootElement();
@@ -182,7 +182,7 @@ public class ApplicationSecurityConfigurationParser {
 
 	public static String getAuthorizationManagerClass(String applicationContextName, URL url) throws  Exception,  Exception{
 		String authorizationProviderClassName = null;
-		org.jdom.Document configDocument;
+		org.jdom2.Document configDocument;
 		
 		configDocument = getConfigDocument(url);
 		Element securityConfig = configDocument.getRootElement();
@@ -210,7 +210,7 @@ public class ApplicationSecurityConfigurationParser {
 		String lockoutTime = null;
 		String allowedLoginTime = null;
 		String allowedAttempts = null;
-		org.jdom.Document configDocument;
+		org.jdom2.Document configDocument;
 	
 		configDocument = getConfigDocument();
 		Element securityConfig = configDocument.getRootElement();
@@ -254,7 +254,7 @@ public class ApplicationSecurityConfigurationParser {
 	public static SessionFactory getApplicationSessionFactoryFromHotInitialization(String applicationContextName) throws  Exception{
 		
 		SessionFactory sf = null;
-		org.jdom.Document configDocument = (org.jdom.Document) getConfigDocument();
+		org.jdom2.Document configDocument = (org.jdom2.Document) getConfigDocument();
 		Element securityConfig = configDocument.getRootElement();
 		Element applicationList = securityConfig.getChild("application-list");
 		List applications = applicationList.getChildren("application");

@@ -123,7 +123,8 @@ public class CharacterizationExporter {
 			CharacterizationSummaryViewBean summaryBean, String downloadURL,
 			HSSFWorkbook wb) throws IOException {
 		HSSFFont headerFont = wb.createFont();
-		headerFont.setBoldweight(HSSFFont.BOLDWEIGHT_BOLD);
+		headerFont.setBold(true);
+//		headerFont.setBoldweight(HSSFFont.BOLDWEIGHT_BOLD);
 		HSSFCellStyle headerStyle = wb.createCellStyle();
 		headerStyle.setFont(headerFont);
 
@@ -494,7 +495,7 @@ public class CharacterizationExporter {
 				StringBuilder sb = new StringBuilder(downloadURL);
 				sb.append(file.getId());
 				if (file.getUriExternal()) {
-					ExportUtils.createCell(row, 1, hlinkStyle, file.getUri(),
+					ExportUtils.createCell(wb,row, 1, hlinkStyle, file.getUri(),
 							sb.toString());
 				} else if (fileBean.isImage()) {
 					ExportUtils.createCell(row, 1, file.getTitle());
@@ -515,7 +516,7 @@ public class CharacterizationExporter {
 								+ filePath);
 					}
 				} else {
-					ExportUtils.createCell(row, 1, hlinkStyle, file.getTitle(),
+					ExportUtils.createCell(wb,row, 1, hlinkStyle, file.getTitle(),
 							sb.toString());
 				}
 
