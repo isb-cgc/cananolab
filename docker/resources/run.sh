@@ -18,7 +18,6 @@ cp wikihelp.properties /local/content/caNanoLab/config
 
 /opt/wildfly-8.2.1.Final/bin/jboss-cli.sh --file=/local/content/caNanoLab/artifacts/caNanoLab_modules.cli
 /opt/wildfly-8.2.1.Final/bin/jboss-cli.sh --file=/local/content/caNanoLab/artifacts/caNanoLab_setup.cli
-/opt/wildfly-8.2.1.Final/bin/jboss-cli.sh --file=/usr/local/cananolab/software/cananolab-webapp/db-scripts/2.4.0/caNano_Update_mysql.cli
 
 cp /local/content/caNanoLab/artifacts/caNanoLab.war /opt/wildfly-8.2.1.Final/standalone/deployments
 echo "DEPLOYED"
