@@ -5,7 +5,7 @@ else
   cp -R /tmp/cananolab /usr/local  
   echo "Moving Repo to /usr/local"
   # run db stuff #
-  cd software/cananolab-webapp/db-scripts
+  cd /usr/local/cananolab/software/cananolab-webapp/db-scripts/
   latestDir=$(ls -da */ | tail -1)
   cd $latestDir
   #mysql -hcanano-db -uroot -ppassword "canano" < "caNano_starter_db.sql"
@@ -16,7 +16,7 @@ fi
 
 # pull up to date code #
 echo "entering cananolab directory"
-cd cananolab
+cd /usr/local/cananolab
 echo "pulling latest code from github"
 git checkout synthesis
 git pull 
