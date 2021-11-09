@@ -34,7 +34,6 @@ RUN mkdir -p /local/content/caNanoLab \
 COPY entrypoint/run.sh /usr/bin/
 COPY resources/standalone-full.xml /opt/wildfly-8.2.1.Final/standalone/configuration/standalone-full.xml
 COPY resources/module.xml /opt/wildfly-8.2.1.Final/modules/com/mysql/main
-COPY resources/mysql-connector-java-8.0.18.jar /opt/wildfly-8.2.1.Final/modules/com/mysql/main 
 COPY resources/run.sh /opt/wildfly-8.2.1.Final/bin
 
 EXPOSE 8080 19990
