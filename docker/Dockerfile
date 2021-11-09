@@ -19,6 +19,7 @@ RUN wget http://archive.apache.org/dist/ant/binaries/apache-ant-1.9.9-bin.tar.gz
 RUN git clone https://github.com/CBIIT/cananolab
 WORKDIR /tmp/cananolab
 RUN git checkout synthesis
+RUN git pull
 
 ENV PATH=/opt/apache-maven/bin:/opt/apache-ant-1.9.9/bin:$PATH
 ENV JAVA_HOME=/usr/lib/jvm/java-1.8.0-openjdk
