@@ -29,6 +29,10 @@ if (outcome != success) of /subsystem=datasources/jdbc-driver=mysql:read-resourc
 	) {allow-resource-service-restart=true}
 end-if
 
+if (outcome == success) of /subsystem=datasources/data-source=caNanoLab:read-resource
+  data-source remove --name=caNanoLab
+end-if
+
 #caNanoLab datasource configuration
 if (outcome != success) of /subsystem=datasources/data-source=caNanoLab:read-resource
 data-source add \
@@ -44,6 +48,9 @@ data-source add \
 #data-source enable --name=caNanoLab
 end-if
 
+if (outcome == success) of /subsystem=datasources/data-source=csmupt:read-resource
+  data-source remove --name=csmupt
+end-if
 
 ##############################################################
 #               CSM Login Module                             
