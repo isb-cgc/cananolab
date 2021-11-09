@@ -30,7 +30,7 @@ L-->
 	<property name="classes.dir" location="${basedir}/build/WEB-INF/classes"/>
 	<property name="lib.dir" location="${basedir}/build/WEB-INF/lib"/>
 <!--	<property name="globus.dir" location="../cananolab-client/lib/globus"/>-->
-	<property name="db.dir" location="../cananolab-db/lib"/>
+	<property name="db.dir" location="${basedir}/lib"/>
 
 	<property name="test.dir" value="test-rest"/>
 	<property name="test.src.dir" value="${test.dir}/java"/>
