@@ -7337,7 +7337,7 @@ INSERT IGNORE INTO `users` (`username`, `password`, `first_name`, `last_name`, `
                             `phone_number`, `email_id`, `enabled`)
 VALUES ('canano_admin', '$2a$10$c5XRfWd.OcuIEG3clJntF.EKrF8RBB4vhKStkVirxpqC9B0ryyakS', 'caNanoLab', 'Guest', '', '',
         '', '', '', '1'),
-       ('canano_curator', '$2a$10$YS6y4fhLRH4uGq7mo2mjBOEu1Lsf3O90DUpnnxChBtcLE8Co0ICqq', 'caNanoLab', 'Guest', '', '',
+       ('canano_curator', '$2a$10$EblZqNptyYvcLm/VwDCVAuBjzZOI7khzdyGPBr08PpIi0na624b8.', 'CGC', 'Guest', '', '',
         '', '', '', '1'),
        ('canano_guest', '$2a$10$2uNpjCXSrSFL2HhSHlsvhu2aFFj69/aCiHJ5Ka6KHn/2shNpIC2dW', 'caNanoLab', 'Guest', '', '',
         '', '', '', '1'),
