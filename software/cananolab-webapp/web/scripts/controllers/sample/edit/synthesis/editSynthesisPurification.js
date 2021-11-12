@@ -277,7 +277,12 @@
 
     // save file //
     $scope.saveFile = function (purity) {
-      $scope.purification['purityBeingEdited']=$scope.currentFinding;
+      if (purity) { 
+        $scope.purification['purityBeingEdited']=$scope.currentFinding; 
+      }
+      else {
+        $scope.purification['purityBeingEdited']=null;
+      }
       
       if (($scope.fileObject || $scope.fileForm.uploadedFile) && !$scope.currentFile.uriExternal) {
         console.log("I PASSED")
@@ -325,6 +330,8 @@
   */
       $http.post('/caNanoLab/rest/core/uploadFile', fd, { withCredentials: false, headers: { 'Content-Type': undefined }, transformRequest: angular.identity }).
         then(function (data, status, headers, config) {
+        var saveFileLocation = 'saveFile';
+        if (purity) { saveFileLocation='savePurityFile' };
         data = data['data']
         $scope.uploadComplete = true;
           if ($scope.fileFormIndex==-1) {
@@ -336,7 +343,7 @@
             $scope.purification['fileBeingEdited'] = $scope.fileArray[0];
             console.log('i am here on line 327')
 
-            $http.post('/caNanoLab/rest/synthesisPurification/saveFile', $scope.purification).
+            $http.post('/caNanoLab/rest/synthesisPurification/'+saveFileLocation, $scope.purification).
             then(function(data) {
               data = data['data']
               console.log('done')
@@ -356,7 +363,7 @@
             $scope.purification['fileBeingEdited'] = $scope.fileArray[0];
             $scope.fileArray[$scope.fileFormIndex]=$scope.currentFile;
             
-            $http.post('/caNanoLab/rest/synthesisPurification/saveFile', $scope.purification).
+            $http.post('/caNanoLab/rest/synthesisPurification/'+saveFileLocation, $scope.purification).
             then(function(data) {
               data = data['data']
               console.log('done')
