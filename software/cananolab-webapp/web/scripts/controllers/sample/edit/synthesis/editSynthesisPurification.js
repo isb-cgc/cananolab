@@ -18,7 +18,7 @@
       $scope.fileId = null;
       $scope.operands = ['='];
       $scope.otherInstrumentType='';  
-
+      $scope.fObject = null;
       /* csv upload */
       var csvColumnMaxCount = 25; // Maximum number of columns allowed
       var csvMaxNumberOfLines = 5000; // Maximum number of rows allowed
@@ -272,6 +272,7 @@
 
     // save file //
     $scope.saveFile = function (purity) {
+      
       if (purity) { 
         $scope.purification['purityBeingEdited']=$scope.currentFinding; 
       }
@@ -279,7 +280,7 @@
         $scope.purification['purityBeingEdited']=null;
       }
       
-      if (($scope.fileObject || $scope.fileForm.uploadedFile) && !$scope.currentFile.uriExternal) {
+      if (($scope.fileObject || $scope.fileForm.uploadedFile) && (!$scope.currentFile.uriExternal||!$scope.fileForm.uriExternal)) {
         console.log("I PASSED")
         $scope.uploadFile(purity);
 
@@ -326,25 +327,29 @@
       $http.post('/caNanoLab/rest/core/uploadFile', fd, { withCredentials: false, headers: { 'Content-Type': undefined }, transformRequest: angular.identity }).
         then(function (data, status, headers, config) {
         var saveFileLocation = 'saveFile';
-        if (purity) { saveFileLocation='savePurityFile' };
+        if (purity) { 
+          saveFileLocation='savePurityFile' 
+          delete $scope.fileForm.uploadedFile;
+        };
         data = data['data']
         $scope.uploadComplete = true;
           if ($scope.fileFormIndex==-1) {
-            console.log($scope.currentFile)
+            $scope.currentFile = purity?$scope.fileForm:$scope.currentFile;
             $scope.currentFile['uri'] = data['fileName']
-            if (purity) {
-              console.log($scope.fileForm.uploadedFile)
-              $scope.fileArray.push($scope.fileForm.uploadedFile);
+            if (purity) { 
+              $scope.currentFinding.files.push($scope.currentFile) 
             }
             else {
               $scope.fileArray.push($scope.currentFile);
-            }
-            console.log('i am here on line 324')
+            };
+            
             $scope.purification['fileElements'] = $scope.fileArray;
-            console.log($scope.fileArray)
-            //$scope.purification['fileBeingEdited'] = $scope.fileArray[0];
-            $scope.purification['fileBeingEdited'] = $scope.fileArray[$scope.fileArray.length-1];
-            console.log('i am here on line 327')
+            if (purity) { 
+              $scope.purification['fileBeingEdited'] = $scope.currentFinding.files[$scope.currentFinding.files.length-1];
+            }
+            else {
+              $scope.purification['fileBeingEdited'] = $scope.fileArray[$scope.fileArray.length-1];
+            };
 
             $http.post('/caNanoLab/rest/synthesisPurification/'+saveFileLocation, $scope.purification).
             then(function(data) {
@@ -1561,6 +1566,8 @@
       $scope.openAddNewFile = function () {
         $scope.addNewFile = true;
         $scope.fileForm = {};
+        $scope.fileObject = null;
+
         $scope.fileFormIndex=-1;
         $scope.fileForm.uriExternal = 'false';
         $scope.externalUrlEnabled = false;
