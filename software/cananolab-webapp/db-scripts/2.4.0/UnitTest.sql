@@ -6534,6 +6534,9 @@ CREATE TABLE `sample_other_poc`
 LOCK TABLES `sample_other_poc` WRITE;
 /*!40000 ALTER TABLE `sample_other_poc`
     DISABLE KEYS */;
+INSERT IGNORE INTO `sample_other_poc` (`sample_pk_id`, `poc_pk_id`)
+VALUES (1000, 65568768),
+       (1005, 65568768);
 /*!40000 ALTER TABLE `sample_other_poc`
     ENABLE KEYS */;
 UNLOCK TABLES;
