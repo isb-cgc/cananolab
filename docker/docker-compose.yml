@@ -9,6 +9,8 @@ services:
     ports:
       - "8080:8080"
       - "19990:19990"
+    volumes:
+      - "/Users/mi/cananolab:/usr/local/cananolab"
     environment:
       nano_db: canano-db:3306/canano
       nano_user: root
@@ -33,4 +35,4 @@ services:
 
 networks:
   nano-net:
-    name: nano-net
+#    name: nano-net

@@ -16,10 +16,6 @@ RUN wget http://archive.apache.org/dist/ant/binaries/apache-ant-1.9.9-bin.tar.gz
     && tar xvfz apache-ant-1.9.9-bin.tar.gz \
     && mv apache-ant-1.9.9 /opt
 
-RUN git clone https://github.com/isb-cgc/cananolab
-WORKDIR /tmp/cananolab
-RUN git checkout synthesis
-
 ENV PATH=/opt/apache-maven/bin:/opt/apache-ant-1.9.9/bin:$PATH
 ENV JAVA_HOME=/usr/lib/jvm/java-1.8.0-openjdk
 ENV JBOSS_HOME=/opt/wildfly-8.2.1.Final

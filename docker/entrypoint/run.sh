@@ -1,25 +1,25 @@
 #!/bin/sh
-if [ -d "/usr/local/cananolab/software" ]; then
-        echo "Skipping cananolab install"
-else
+#if [ -d "/usr/local/cananolab/software" ]; then
+#        echo "Skipping cananolab install"
+#else
   cp -R /tmp/cananolab /usr/local  
   echo "Moving Repo to /usr/local"
   # run db stuff #
   cd /usr/local/cananolab/software/cananolab-webapp/db-scripts/
   latestDir=$(ls -da */ | tail -1)
   cd $latestDir
-  #mysql -hcanano-db -uroot -ppassword "canano" < "caNano_starter_db.sql"
+  mysql -hcanano-db -uroot -ppassword "canano" < "caNano_starter_db.sql"
   #mysql -hcanano-db -uroot -ppassword "canano" < "Synthesis_Example_Docker_Data.sql"
-  mysql -hcanano-db -uroot -ppassword "canano" < "UnitTest.sql"
+#  mysql -hcanano-db -uroot -ppassword "canano" < "UnitTest.sql"
 
-fi
+#fi
 
 # pull up to date code #
 echo "entering cananolab directory"
 cd /usr/local/cananolab
-echo "pulling latest code from github"
-git checkout synthesis
-git pull 
+#echo "pulling latest code from github"
+#git checkout synthesis
+#git pull
 
 JBOSS_HOME=/opt/wildfly-8.2.1.Final
 JBOSS_CLI=$JBOSS_HOME/bin/jboss-cli.sh
