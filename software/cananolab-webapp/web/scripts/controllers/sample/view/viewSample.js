@@ -33,6 +33,7 @@ var app = angular.module('angularApp')
             $location.path("/sampleResults").replace();
           }
         }
+
         $location.search('sampleId', null);
       }
     };

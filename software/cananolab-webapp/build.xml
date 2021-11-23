@@ -15,7 +15,9 @@ L-->
 
 	<property file="build.properties"/>
 	<property file="project.properties"/>
-	<property name="src.dir" location="${basedir}/src"/>
+	<property name="src-cfg" location="${basedir}/src/main/config"/>
+	<property name="src-resources" location="${basedir}/src/main/resources"/>
+	<property name="src.dir" location="${basedir}/src/main/java"/>
 	<property name="domainsrc.dir" location="${basedir}/src-domain"/>
 	<property name="webroot.dir" location="${basedir}/web"/>
 	<property name="image.dir" location="${webroot.dir}/images"/>
@@ -28,7 +30,7 @@ L-->
 	<property name="classes.dir" location="${basedir}/build/WEB-INF/classes"/>
 	<property name="lib.dir" location="${basedir}/build/WEB-INF/lib"/>
 <!--	<property name="globus.dir" location="../cananolab-client/lib/globus"/>-->
-	<property name="db.dir" location="../cananolab-db/lib"/>
+	<property name="db.dir" location="${basedir}/lib"/>
 
 	<property name="test.dir" value="test-rest"/>
 	<property name="test.src.dir" value="${test.dir}/java"/>
@@ -139,20 +141,20 @@ L-->
 
 		<!--copy properties files -->
 		<copy todir="${build.dir}/WEB-INF/classes">
-			<fileset dir="${src.dir}">
+			<fileset dir="${src-cfg}">
 				<include name="**/*.properties"/>
 				<exclude name="caNanoLab.properties"/>
 			</fileset>
 		</copy>
 
 		<copy overwrite="true" tofile="${build.dir}/WEB-INF/classes/caNanoLab.properties"
-			  file="${src.dir}/caNanoLab.properties.template">
+			  file="${src-cfg}/caNanoLab.properties.template">
 			<!-- replace tokens with values from build properties -->
 			<filterset refid="properties.filterset"/>
 		</copy>
 
 		<copy todir="${build.dir}/WEB-INF/classes">
-			<fileset dir="${src.dir}/gov/nih/nci/cananolab/resources">
+			<fileset dir="${src-resources}">
 				<include name="**/*.properties"/>
 			</fileset>
 		</copy>
@@ -165,9 +167,16 @@ L-->
 			</fileset>
 		</copy>
 
-		<!--copy xml files -->
+		<!--copy hibernate xml files -->
 		<copy todir="${build.dir}/WEB-INF/classes">
 			<fileset dir="${src.dir}">
+				<include name="**/*.xml"/>
+			</fileset>
+		</copy>
+
+		<!--copy config xml files -->
+		<copy todir="${build.dir}/WEB-INF/classes">
+			<fileset dir="${src-cfg}">
 				<include name="**/*.xml"/>
 			</fileset>
 		</copy>
@@ -347,7 +356,7 @@ L-->
 	<target name="jar:helpers" depends="compile">
 		<!-- caNanoLab.properties -->
 		<copy overwrite="true" tofile="${build.dir}/WEB-INF/classes/caNanoLab.properties"
-			  file="${src.dir}/caNanoLab.properties.template">
+			  file="/src/main/config/caNanoLab.properties.template">
 			<!-- replace tokens with values from build properties -->
 			<filterset refid="properties.filterset"/>
 		</copy>
@@ -369,7 +378,7 @@ L-->
 
 	<target name="jar:endNote" depends="clean, compile">
 		<copy todir="${build.dir}/WEB-INF/classes">
-			<fileset dir="${src.dir}">
+			<fileset dir="${src-cfg}">
 				<include name="**/*.properties"/>
 				<exclude name="caNanoLab.properties"/>
 			</fileset>
