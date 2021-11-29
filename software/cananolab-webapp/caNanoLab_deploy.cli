@@ -1,7 +1,8 @@
 
 #caNanoLab Wildfly deploy scripts
 
-connect localhost:@client.port@
+#connect localhost:@client.port@
+connect localhost:19990
 
 ##############################################################
 #              Deploy War Files                            
