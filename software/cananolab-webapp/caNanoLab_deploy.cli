@@ -14,4 +14,4 @@ end-if
 #undeploy uptEAR.ear
 #end-if
 
-deploy --force /local/content/caNanoLab/artifacts/caNanoLab.war
+deploy --force @file.repository.dir@/caNanoLab/artifacts/caNanoLab.war
