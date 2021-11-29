@@ -1,6 +1,6 @@
 #caNanoLab Wildfly setup scripts
 
-connect localhost:19990
+connect localhost:@client.port@
 
 ##############################################################
 #             System Properties                      
