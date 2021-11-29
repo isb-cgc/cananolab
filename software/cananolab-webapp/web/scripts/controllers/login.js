@@ -14,9 +14,9 @@ var app = angular.module('angularApp')
     //TODO:Comment to remove CSM
     //$rootScope.groups = groupService.getGroups.data.get();   
     $scope.came_from = $routeParams.came_from;
-    $scope.loginDo = function () {
+     $scope.loginDo = function () {
       if (!$scope.password || !$scope.loginId) {
-        $scope.authErrors = "Username and Password are required";
+        $scope.authErrors = "Username and Password are required.";
       } else {
         $scope.bean = {
           "username": $scope.loginId,
@@ -32,6 +32,8 @@ var app = angular.module('angularApp')
             var str = [];
             for (var p in obj)
               str.push(encodeURIComponent(p) + "=" + encodeURIComponent(obj[p]));
+
+
             return str.join("&");
           },
           data: $scope.bean

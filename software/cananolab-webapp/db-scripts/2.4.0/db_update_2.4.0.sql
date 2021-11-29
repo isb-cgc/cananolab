@@ -1,5 +1,5 @@
 /*
- This script is for updating the current production database version 2.3.7
+ This script is for updating the current production database version 2.3.x
    to the structure needed to support 2.4.0
  */
 
@@ -34,6 +34,7 @@ drop table if exists purification_config;
 drop table if exists synthesis_purity;
 drop table if exists synthesis_material_element_file;
 drop table if exists sme_inherent_function;
+drop table if exists purification_file;
 drop table if exists synthesis_purification;
 drop table if exists synthesis_material_element;
 drop table if exists synthesis_material;
@@ -285,7 +286,7 @@ CREATE TABLE `synthesis_functionalization_element_file`
 
 CREATE TABLE `synthesis_purity`
 (
-    `purity_pk_id`                 bigint(200)  NOT NULL COMMENT 'purity_pk_id',
+    `purity_pk_id`                 bigint(20)  NOT NULL COMMENT 'purity_pk_id',
     `synthesis_purification_pk_id` bigint(20)   NOT NULL COMMENT 'synthesis_purification_pk_id',
     `created_by`                   varchar(200) NOT NULL COMMENT 'created_by',
     `created_date`                 datetime     NOT NULL COMMENT 'created_date',
@@ -294,14 +295,23 @@ CREATE TABLE `synthesis_purity`
     CONSTRAINT `FK_synthesis_purity_to purification` FOREIGN KEY (`synthesis_purification_pk_id`) REFERENCES `synthesis_purification` (`synthesis_purification_pk_id`)
 );
 
+-- purification_file
 
-
+CREATE TABLE 'purification_file'
+(
+    `synthesis_purification_pk_id` bigint(20) NOT NULL COMMENT 'synthesis_purification_pk_id',
+    `file_pk_id`   bigint(20)  NOT NULL COMMENT 'file_pk_id',
+    PRIMARY KEY (`synthesis_purification_pk_id`, `file_pk_id`),
+    KEY `FK_file_TO_purification_file` (`file_pk_id`),
+    CONSTRAINT `FK_file_TO_purification_file` FOREIGN KEY (`file_pk_id`) REFERENCES `file` (`file_pk_id`),
+    CONSTRAINT `FK_purification_TO_purification_file` FOREIGN KEY (`synthesis_purification_pk_id`) REFERENCES `synthesis_purification` (`synthesis_purification_pk_id`)
+    );
 
 -- purity_file
 
 CREATE TABLE `purity_file`
 (
-    `purity_pk_id` bigint(200) NOT NULL COMMENT 'purity_pk_id',
+    `purity_pk_id` bigint(20) NOT NULL COMMENT 'purity_pk_id',
     `file_pk_id`   bigint(20)  NOT NULL COMMENT 'file_pk_id',
     PRIMARY KEY (`purity_pk_id`, `file_pk_id`),
     KEY `FK_file_TO_purity_file` (`file_pk_id`),
@@ -353,7 +363,8 @@ CREATE TABLE `purity_column_header`
     `created_by`     varchar(200) NOT NULL,
     `created_date`   datetime     NOT NULL,
     `column_order`   INT(10)      NOT NULL,
-    `constant_value` DECIMAL(30, 10) DEFAULT NULL,
+    `constant_value` varchar(200) DEFAULT NULL,
+    `column_type` varchar(200) NOT NULL,
     PRIMARY KEY (`column_pk_id`)
 );
 
@@ -361,7 +372,6 @@ CREATE TABLE `purity_column_header`
 
 CREATE TABLE `purity_datum_condition`
 (
-    `purity_datum_pk_id`     bigint(20)   NOT NULL COMMENT 'purity_datum_pk_id',
     `condition_pk_id` bigint(20)   NOT NULL COMMENT 'condition_pk_id',
     `row_number` int NOT NULL COMMENT 'row number',
     `purity_pk_id`  bigint(20)  NOT NULL,
@@ -468,7 +478,8 @@ VALUES (1010, 'pubchem', 'dataSource', 'Compound'),
        (1092, 'functionalization', 'type', 'biopolymer'),
        (1093, 'functionalization', 'type', 'small molecule'),
        (1094, 'synthesis', 'materialType', 'reagent'),
-       (1096, 'protocol', 'type', 'purification');
+       (1096, 'protocol', 'type', 'purification'),
+       (1097, 'percent purity', 'otherUnit', '%');
 
 UPDATE `canano`.`users`
 SET `first_name` = 'canano',

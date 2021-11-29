@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated Apr 3, 2019, 8:32:55 PM by Hibernate Tools 5.4.2.Final -->
+<hibernate-mapping package="gov.nih.nci.cananolab.domain.particle">
+    <class name="SynthesisMaterial" table="synthesis_material">
+        <id column="synthesis_material_pk_id" name="id" type="long">
+            <generator class="hilo"/>
+        </id>
+        <property generated="never" lazy="false" name="createdBy" type="string">
+            <column length="200" name="created_by" not-null="true"/>
+        </property>
+        <property generated="never" lazy="false" name="createdDate" type="timestamp">
+            <column length="19" name="created_date" not-null="true"/>
+        </property>
+        <property generated="never" lazy="false" name="description" type="string">
+            <column length="65535" name="description"/>
+        </property>
+        <many-to-one class="gov.nih.nci.cananolab.domain.common.Protocol"
+                     fetch="select" name="protocol"  lazy="false" >
+            <column name="protocol_pk_id"/>
+        </many-to-one>
+        <many-to-one class="Synthesis"
+                     fetch="select" name="synthesis">
+            <column name="synthesis_pk_id" not-null="true"/>
+        </many-to-one>
+        <set fetch="select" inverse="true" lazy="false"
+             name="synthesisMaterialElements" sort="unsorted" table="synthesis_material_element" cascade="all-delete-orphan">
+            <key>
+                <column name="synthesis_material_pk_id" not-null="true"/>
+            </key>
+            <one-to-many class="SynthesisMaterialElement"/>
+        </set>
+        <set name="fileCollection" table="synthesis_material_file" lazy="false" inverse="false" cascade="all-delete-orphan">
+            <cache usage="read-write" />
+            <key column="synthesis_material_pk_id"/>
+            <many-to-many class="gov.nih.nci.cananolab.domain.common.File" column="file_pk_id" />
+        </set>
+    </class>
+</hibernate-mapping>

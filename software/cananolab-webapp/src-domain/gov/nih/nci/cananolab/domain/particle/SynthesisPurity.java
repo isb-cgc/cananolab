@@ -72,6 +72,14 @@ public class SynthesisPurity implements Serializable {
 		this.files = files;
 	}
 
+	public void addFile(File file){
+		this.files.add(file);
+	}
+
+	public void removeFile(File file){
+		this.files.remove(file);
+	}
+
 	public Set<PurityDatumCondition> getPurityDatumCollection() {
 		return this.purityDatumCollection;
 	}

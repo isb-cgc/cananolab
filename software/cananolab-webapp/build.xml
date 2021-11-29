@@ -15,7 +15,9 @@ L-->
 
 	<property file="build.properties"/>
 	<property file="project.properties"/>
-	<property name="src.dir" location="${basedir}/src"/>
+	<property name="src-cfg" location="${basedir}/src/main/config"/>
+	<property name="src-resources" location="${basedir}/src/main/resources"/>
+	<property name="src.dir" location="${basedir}/src/main/java"/>
 	<property name="domainsrc.dir" location="${basedir}/src-domain"/>
 	<property name="webroot.dir" location="${basedir}/web"/>
 	<property name="image.dir" location="${webroot.dir}/images"/>
@@ -23,12 +25,13 @@ L-->
 	<property name="domainbuild.dir" location="${basedir}/domainbuild"/>
 	<property name="common.dir" location="${basedir}/../common"/>
 	<property name="commonlib.dir" location="${basedir}/lib"/>
-	<property name="dist.dir" location="${basedir}/target/dist"/>
+	<property name="target.dir" location="${basedir}/target"/>
+	<property name="dist.dir" location="${target.dir}/dist"/>
 	<property name="common.dist.dir" location="${dist.dir}/common"/>
 	<property name="classes.dir" location="${basedir}/build/WEB-INF/classes"/>
 	<property name="lib.dir" location="${basedir}/build/WEB-INF/lib"/>
 <!--	<property name="globus.dir" location="../cananolab-client/lib/globus"/>-->
-	<property name="db.dir" location="../cananolab-db/lib"/>
+	<property name="db.dir" location="${basedir}/lib"/>
 
 	<property name="test.dir" value="test-rest"/>
 	<property name="test.src.dir" value="${test.dir}/java"/>
@@ -74,6 +77,8 @@ L-->
 
 	<target name="clean">
 		<delete dir="${dist.dir}"/>
+		<delete dir="${target.dir}/classes"/>
+		<delete dir="${target.dir}/test-classes"/>
 		<delete dir="${common.dist.dir}"/>
 		<delete dir="${build.dir}"/>
 		<delete dir="${domainbuild.dir}"/>
@@ -90,8 +95,8 @@ L-->
 		<filterset id="properties.filterset">
 			<filter token="FILE_REPOSITORY_DIR" value="${file.repository.dir}"/>
 			<filter token="ADMIN_EMAIL" value="${admin.email}"/>
-			<filter token="ONLINE_HELP_URL" value="${online.help.url}"/>
-			<filter token="USE_LDAP" value="${ldap.authentication.enabled}"/>
+<!--			<filter token="ONLINE_HELP_URL" value="${online.help.url}"/>-->
+<!--			<filter token="USE_LDAP" value="${ldap.authentication.enabled}"/>-->
 		</filterset>
 	</target>
 
@@ -139,20 +144,20 @@ L-->
 
 		<!--copy properties files -->
 		<copy todir="${build.dir}/WEB-INF/classes">
-			<fileset dir="${src.dir}">
+			<fileset dir="${src-cfg}">
 				<include name="**/*.properties"/>
 				<exclude name="caNanoLab.properties"/>
 			</fileset>
 		</copy>
 
 		<copy overwrite="true" tofile="${build.dir}/WEB-INF/classes/caNanoLab.properties"
-			  file="${src.dir}/caNanoLab.properties.template">
+			  file="${src-cfg}/caNanoLab.properties.template">
 			<!-- replace tokens with values from build properties -->
 			<filterset refid="properties.filterset"/>
 		</copy>
 
 		<copy todir="${build.dir}/WEB-INF/classes">
-			<fileset dir="${src.dir}/gov/nih/nci/cananolab/resources">
+			<fileset dir="${src-resources}">
 				<include name="**/*.properties"/>
 			</fileset>
 		</copy>
@@ -165,9 +170,16 @@ L-->
 			</fileset>
 		</copy>
 
-		<!--copy xml files -->
+		<!--copy hibernate xml files -->
 		<copy todir="${build.dir}/WEB-INF/classes">
 			<fileset dir="${src.dir}">
+				<include name="**/*.xml"/>
+			</fileset>
+		</copy>
+
+		<!--copy config xml files -->
+		<copy todir="${build.dir}/WEB-INF/classes">
+			<fileset dir="${src-cfg}">
 				<include name="**/*.xml"/>
 			</fileset>
 		</copy>
@@ -231,29 +243,29 @@ L-->
 				<filter token="database.password" value="${database.password}"/>
 			</filterset>
 		</copy>
-		<if>
-			<!--if use LDAP authentication, replace ldap tokens from build properties -->
-			<equals arg1="${ldap.authentication.enabled}" arg2="true"/>
-			<then>
-				<echo message="Using LDAP authenication"/>
-				<copy overwrite="true" tofile="${common.dist.dir}/login-config.xml"
-					  file="${common.dir}/resources/jboss-conf/login-config-ldap.xml">
-					<filterset>
-						<filter token="ldap.host.url" value="${ldap.host.url}"/>
-						<filter token="ldap.searchable.base" value="${ldap.searchable.base}"/>
-						<filter token="ldap.userId.label" value="${ldap.userId.label}"/>
-					</filterset>
-				</copy>
-			</then>
-			<!--if use database authentication, replace database tokens from build properties -->
-			<else>
+<!--		<if>-->
+<!--			&lt;!&ndash;if use LDAP authentication, replace ldap tokens from build properties &ndash;&gt;-->
+<!--			<equals arg1="${ldap.authentication.enabled}" arg2="true"/>-->
+<!--			<then>-->
+<!--				<echo message="Using LDAP authenication"/>-->
+<!--				<copy overwrite="true" tofile="${common.dist.dir}/login-config.xml"-->
+<!--					  file="${common.dir}/resources/jboss-conf/login-config-ldap.xml">-->
+<!--					<filterset>-->
+<!--						<filter token="ldap.host.url" value="${ldap.host.url}"/>-->
+<!--						<filter token="ldap.searchable.base" value="${ldap.searchable.base}"/>-->
+<!--						<filter token="ldap.userId.label" value="${ldap.userId.label}"/>-->
+<!--					</filterset>-->
+<!--				</copy>-->
+<!--			</then>-->
+<!--			&lt;!&ndash;if use database authentication, replace database tokens from build properties &ndash;&gt;-->
+<!--			<else>-->
 				<copy overwrite="true" tofile="${common.dist.dir}/login-config.xml"
 					  file="${common.dir}/resources/jboss-conf/login-config-db.xml">
 					<!-- replace tokens with values from build properties -->
 					<filterset refid="db.filterset"/>
 				</copy>
-			</else>
-		</if>
+<!--			</else>-->
+<!--		</if>-->
 		<!-- the following is UPT specific -->
 		<!-- copy UPT required config files -->
 		<!--		<copy overwrite="true" tofile="${common.dist.dir}/ApplicationSecurityConfig.xml" file="${common.dir}/resources/jboss-conf/ApplicationSecurityConfig.xml">-->
@@ -305,13 +317,22 @@ L-->
 				<filter token="database.user" value="${database.user}"/>
 				<filter token="database.password" value="${database.password}"/>
 				<filter token="logLevel" value="${logLevel}"/>
+				<filter token="file.repository.dir" value="${file.repository.dir}"/>
 			</filterset>
 		</copy>
 
 		<copy overwrite="true" tofile="${common.dist.dir}/caNanoLab_modules.cli"
-			  file="${basedir}/caNanoLab_modules.cli"></copy>
+			  file="${basedir}/caNanoLab_modules.cli">
+			<filterset>
+				<filter token="file.repository.dir" value="${file.repository.dir}"/>
+			</filterset>
+		</copy>
 		<copy overwrite="true" tofile="${common.dist.dir}/caNanoLab_deploy.cli"
-			  file="${basedir}/caNanoLab_deploy.cli"></copy>
+			  file="${basedir}/caNanoLab_deploy.cli">
+			<filterset>
+				<filter token="file.repository.dir" value="${file.repository.dir}"/>
+			</filterset>
+		</copy>
 
 	</target>
 
@@ -332,22 +353,28 @@ L-->
 		<!--		<copy todir="${jboss.conf.dir}/csmconfig" overwrite="true" file="${common.dist.dir}/csmupt.csm.new.hibernate.cfg.xml"/>-->
 		<!--		<copy todir="${jboss.conf.dir}/csmconfig" overwrite="true" file="${common.dist.dir}/csmupt423.csm.new.hibernate.cfg.xml"/>-->
 
-		<copy todir="${jboss.lib.dir}" overwrite="true">
-			<fileset dir="${common.dist.dir}">
-				<include name="mysql-connector-java*.jar"/>
-			</fileset>
-		</copy>
+<!--		<copy todir="${jboss.lib.dir}" overwrite="true">-->
+<!--			<fileset dir="${common.dist.dir}">-->
+<!--				<include name="mysql-connector-java*.jar"/>-->
+<!--			</fileset>-->
+<!--		</copy>-->
 
 	</target>
 
 	<target name="deploy_local" depends="dist">
-		<copy file="${dist.dir}/caNanoLab.war" todir="${jboss.deploy.dir}" overwrite="true"/>
+		<copy file="${dist.dir}/caNanoLab.war" todir="${jboss.artifacts.dir}" overwrite="true"/>
+		<copy file="${dist.dir}/common/caNanoLab_modules.cli" todir="${jboss.artifacts.dir}" overwrite="true"/>
+		<copy file="${dist.dir}/common/caNanoLab_setup.cli" todir="${jboss.artifacts.dir}" overwrite="true"/>
+		<copy file="${dist.dir}/common/caNanoLab_deploy.cli" todir="${jboss.artifacts.dir}" overwrite="true"/>
+		<copy file="${commonlib.dir}/mysql-connector-java-8.0.18.jar" todir="${jboss.artifacts.dir}" overwrite="true"/>
+		<copy file="${commonlib.dir}/bcprov-jdk15on-1.66.jar" todir="${jboss.artifacts.dir}" overwrite="true"/>
+		<copy file="${dist.dir}/common/wikihelp.properties" todir="${jboss.help.dir}" overwrite="true"/>
 	</target>
 
 	<target name="jar:helpers" depends="compile">
 		<!-- caNanoLab.properties -->
 		<copy overwrite="true" tofile="${build.dir}/WEB-INF/classes/caNanoLab.properties"
-			  file="${src.dir}/caNanoLab.properties.template">
+			  file="/src/main/config/caNanoLab.properties.template">
 			<!-- replace tokens with values from build properties -->
 			<filterset refid="properties.filterset"/>
 		</copy>
@@ -369,7 +396,7 @@ L-->
 
 	<target name="jar:endNote" depends="clean, compile">
 		<copy todir="${build.dir}/WEB-INF/classes">
-			<fileset dir="${src.dir}">
+			<fileset dir="${src-cfg}">
 				<include name="**/*.properties"/>
 				<exclude name="caNanoLab.properties"/>
 			</fileset>
