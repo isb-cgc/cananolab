@@ -16,7 +16,7 @@ end-if
 
 ## /system-property=gov.nih.nci.cananolab.wikihelpProperties:add(value=/local/content/caNanoLab/config/wikihelp.properties)
 
-/system-property=gov.nih.nci.cananolab.wikihelpProperties:add(value=@file.repository.dir@/caNanoLab/config/wikihelp.properties)
+/system-property=gov.nih.nci.cananolab.wikihelpProperties:add(value=@file.repository.dir@/config/wikihelp.properties)
 
 
 ##############################################################
