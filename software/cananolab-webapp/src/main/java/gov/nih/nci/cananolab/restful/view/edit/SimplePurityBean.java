@@ -18,7 +18,7 @@ public class SimplePurityBean {
     List<String> errors;
     List<SimplePurityRowBean> rows = new ArrayList<SimplePurityRowBean>();
     List<SimpleFileBean> files = new ArrayList<SimpleFileBean>();
-    File fileBeingEdited; //file being edited
+    SimpleFileBean fileBeingEdited; //file being edited
     Long id;
 
     int numberOfColumns = 0;
@@ -104,11 +104,11 @@ public class SimplePurityBean {
         return files;
     }
 
-    public File getFileBeingEdited(){
+    public SimpleFileBean getFileBeingEdited(){
         return this.fileBeingEdited;
     }
 
-    public void setFileBeingEdited(File fileBeingEdited) {
+    public void setFileBeingEdited(SimpleFileBean fileBeingEdited) {
         this.fileBeingEdited = fileBeingEdited;
     }
 

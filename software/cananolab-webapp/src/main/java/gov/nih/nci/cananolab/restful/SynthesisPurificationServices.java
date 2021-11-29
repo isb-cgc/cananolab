@@ -602,9 +602,14 @@ public class SynthesisPurificationServices {
             SynthesisPurificationBO purificationBO =
                     (SynthesisPurificationBO) SpringApplicationContext.getBean(httpRequest, "synthesisPurificationBO");
 
+            SimpleSynthesisPurificationBean simpleSynthesisPurificationBean = null;
+//            if(editBean.getPurityBeingEdited()!=null){
+//                 simpleSynthesisPurificationBean = purificationBO.savePurityFile(editBean.getPurityBeingEdited(), editBean, httpRequest);
+//            }else
+//            {             simpleSynthesisPurificationBean = purificationBO.saveFile(editBean,
+//                    httpRequest);
+//            }
 
-            SimpleSynthesisPurificationBean simpleSynthesisPurificationBean = purificationBO.saveFile(editBean,
-                    httpRequest);
             return Response.ok(simpleSynthesisPurificationBean).header("Access-Control-Allow-Credentials", "true")
                     .header("Access-Control-Allow-Origin", "*").header("Access-Control-Allow-Methods", "GET, POST, " +
                             "PUT, DELETE, OPTIONS")
@@ -639,9 +644,9 @@ public class SynthesisPurificationServices {
 
 
             SimplePurityBean editBean = purificationBean.getPurityBeingEdited();
-            SimplePurityBean simplePurityBean = purificationBO.savePurityFile(editBean,purificationBean,
+            SimpleSynthesisPurificationBean simpleSynthesisPurificationBean = purificationBO.savePurityFile(purificationBean,
                     httpRequest);
-            return Response.ok(simplePurityBean).header("Access-Control-Allow-Credentials", "true")
+            return Response.ok(simpleSynthesisPurificationBean).header("Access-Control-Allow-Credentials", "true")
                     .header("Access-Control-Allow-Origin", "*").header("Access-Control-Allow-Methods", "GET, POST, " +
                             "PUT, DELETE, OPTIONS")
                     .header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, " +

@@ -838,7 +838,11 @@ public class SynthesisServiceLocalImpl extends BaseServiceLocalImpl implements S
                 //Get the purification by id from database
                 Long test1 = synthesisPurity.getSynthesisPurificationId();
                 Long test2 = synthesisPurificationBean.getDomainEntity().getId();
-                if (!test1.equals(test2)) {
+                if(test1==null){
+                    synthesisPurity.setSynthesisPurification(synthesisPurificationBean.getDomainEntity());
+                }
+
+               else if( !test1.equals(test2)){
                     //something has gone wrong and the material does not attach to the correct synthesis
                     throw new SynthesisException("element does not match purification", new Exception());
                 }
@@ -863,10 +867,12 @@ public class SynthesisServiceLocalImpl extends BaseServiceLocalImpl implements S
 
             for (FileBean fileBean : synthesisPurityBean.getFiles()) {
                 fileUtils.prepareSaveFile(fileBean.getDomainFile());
+                fileUtils.writeFile(fileBean);
+                synthesisPurity.addFile(fileBean.getDomainFile());
             }
 
 
-            synthesisPurity.setSynthesisPurification(synthesisPurificationBean.getDomainEntity());
+//            synthesisPurity.setSynthesisPurification(synthesisPurificationBean.getDomainEntity());
 
 
 //Need to save purity to get the ID for the dependents
