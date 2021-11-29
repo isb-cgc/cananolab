@@ -14,7 +14,9 @@ if (outcome == success) of /system-property=gov.nih.nci.cananolab.wikihelpProper
 	/system-property=gov.nih.nci.cananolab.wikihelpProperties:remove
 end-if
 
-/system-property=gov.nih.nci.cananolab.wikihelpProperties:add(value=/local/content/caNanoLab/config/wikihelp.properties)
+## /system-property=gov.nih.nci.cananolab.wikihelpProperties:add(value=/local/content/caNanoLab/config/wikihelp.properties)
+
+/system-property=gov.nih.nci.cananolab.wikihelpProperties:add(value=@file.repository.dir@/caNanoLab/config/wikihelp.properties)
 
 
 ##############################################################
@@ -48,13 +50,14 @@ data-source add \
 #data-source enable --name=caNanoLab
 end-if
 
+##############################################################
+#               CSM Login Module        - obsolete. Remove if present
+##############################################################
+
 if (outcome == success) of /subsystem=datasources/data-source=csmupt:read-resource
   data-source remove --name=csmupt
 end-if
 
-##############################################################
-#               CSM Login Module                             
-##############################################################
 if (outcome == success) of /subsystem=security/security-domain=caNanoLab:read-resource
 	/subsystem=security/security-domain=caNanoLab:remove
 end-if
@@ -63,7 +66,9 @@ if (outcome == success) of /subsystem=security/security-domain=caNanoLab/authent
    /subsystem=security/security-domain=caNanoLab/authentication=classic:remove()
 end-if
 
-
+########################################################################
+#   LOGGING
+######################################################################
 
 if (outcome != success) of /subsystem=logging/size-rotating-file-handler=CANANOLAB:read-resource
 	/subsystem=logging:write-attribute(name=use-deployment-logging-config, value=false)

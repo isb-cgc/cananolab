@@ -3,7 +3,7 @@
 connect localhost:19990
 
 ### Database driver module
-module add --name=com.mysql --resources=/local/content/caNanoLab/artifacts/mysql-connector-java-8.0.18.jar --dependencies=javax.api,javax.transaction.api
+module add --name=com.mysql --resources=/@file.repository.dir@/caNanoLab/artifacts/mysql-connector-java-8.0.18.jar --dependencies=javax.api,javax.transaction.api
 
 ###  BounyCastle
-module add --name=org.bouncycastle --resources=/local/content/caNanoLab/artifacts/bcprov-jdk15on-1.66.jar --dependencies=javax.api
+module add --name=org.bouncycastle --resources=@file.repository.dir@/caNanoLab/artifacts/bcprov-jdk15on-1.66.jar --dependencies=javax.api
