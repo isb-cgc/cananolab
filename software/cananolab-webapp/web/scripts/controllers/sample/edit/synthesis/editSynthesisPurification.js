@@ -412,7 +412,19 @@
 
         }
         $scope.techniqueFormIndex = null;
-
+        $http({
+          method: 'POST',
+          url: '/caNanoLab/rest/synthesisPurification/saveTechniqueAndInstrument',
+          data: $scope.purification
+        }).
+        then(function (data, status, headers, config) {
+          data = data['data']
+          $scope.loader = false;
+        }).
+        catch(function (data, status, headers, config) {
+          data = data['data']
+          $scope.loader = false;
+        });        
       };
 
       // save instrument //
