@@ -11,7 +11,9 @@ cp /usr/local/cananolab/docker/resources/standalone-full.xml /opt/wildfly-8.2.1.
 cp caNanoLab.war /local/content/caNanoLab/artifacts
 cd /usr/local/cananolab/software/cananolab-webapp/lib/sdk
 
-cp  bcprov-jdk15on-1.66.jar csmapi* mysql-connector-java-8.0.18.jar /local/content/caNanoLab/artifacts
+cp  bcprov-jdk15on-1.66.jar csmapi*  /local/content/caNanoLab/artifacts
+cd /usr/local/cananolab/software/cananolab-webapp/lib
+cp mysql-connector-java-8.0.18.jar /local/content/caNanoLab/artifacts
 cd /usr/local/cananolab/software/cananolab-webapp/target/dist/common
 cp caNanoLab_modules.cli caNanoLab_setup.cli caNanoLab_deploy.cli /local/content/caNanoLab/artifacts
 cp wikihelp.properties /local/content/caNanoLab/config
