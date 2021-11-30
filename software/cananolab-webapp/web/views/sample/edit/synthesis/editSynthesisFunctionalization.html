@@ -118,11 +118,19 @@
                                                 <td width="10%">
                                                     <label>PubChem Data Source</label>
                                                 </td>
-                                                <td width="90%" colspan="3">
+                                                <td width="40%">
                                                     <select ng-model="functionalizationElement.pubChemDataSource"
                                                         ng-options="o as o for o in dropdowns.pubChemDataSources">
                                                     </select>
                                                 </td>
+                                                <td width="10%">
+                                                    <label>PubChem Data Id</label>
+                                                </td>  
+                                                <td width="40%">
+                                                    <input type="text" size="35"
+                                                        value="{{functionalizationElement.pubChemID}}"
+                                                        data-ng-model="functionalizationElement.pubChemID">
+                                                </td>                                                                                              
                                             </tr>
                                             <tr>
                                                 <td width="10%"><label>Amount</label></td>
