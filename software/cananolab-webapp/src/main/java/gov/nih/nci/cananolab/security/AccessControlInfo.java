@@ -2,6 +2,7 @@ package gov.nih.nci.cananolab.security;
 
 //import org.codehaus.jackson.annotate.JsonIgnoreProperties;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import gov.nih.nci.cananolab.security.enums.AccessTypeEnum;
 
@@ -13,6 +14,7 @@ public class AccessControlInfo
 	private String accessType;
 	private String roleName = "";
 	private String roleDisplayName = "";
+	private boolean principal = false;
 	//private List<String> perms = new ArrayList<String>();
 	
 	//private List<BasePermission> permissions = new ArrayList<BasePermission>();
@@ -48,12 +50,14 @@ public class AccessControlInfo
 	public void setRoleName(String roleName) {
 		this.roleName = roleName;
 	}
-	
+
+
 	public boolean isPrincipal()
 	{
 		return AccessTypeEnum.USER.getAccessType().equals(this.accessType);
 	}
-	
+
+
 	/*public List<String> getPerms() {
 		return perms;
 	}
