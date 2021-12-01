@@ -318,6 +318,7 @@ L-->
 				<filter token="database.password" value="${database.password}"/>
 				<filter token="logLevel" value="${logLevel}"/>
 				<filter token="file.repository.dir" value="${file.repository.dir}"/>
+				<filter token="client.port" value="${client.port}"/>
 			</filterset>
 		</copy>
 
@@ -325,12 +326,14 @@ L-->
 			  file="${basedir}/caNanoLab_modules.cli">
 			<filterset>
 				<filter token="file.repository.dir" value="${file.repository.dir}"/>
+				<filter token="client.port" value="${client.port}"/>
 			</filterset>
 		</copy>
 		<copy overwrite="true" tofile="${common.dist.dir}/caNanoLab_deploy.cli"
 			  file="${basedir}/caNanoLab_deploy.cli">
 			<filterset>
 				<filter token="file.repository.dir" value="${file.repository.dir}"/>
+				<filter token="client.port" value="${client.port}"/>
 			</filterset>
 		</copy>
 
