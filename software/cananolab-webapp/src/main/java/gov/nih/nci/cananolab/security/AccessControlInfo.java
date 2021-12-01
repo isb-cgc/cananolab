@@ -1,7 +1,8 @@
 package gov.nih.nci.cananolab.security;
 
-import org.codehaus.jackson.annotate.JsonIgnoreProperties;
+//import org.codehaus.jackson.annotate.JsonIgnoreProperties;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import gov.nih.nci.cananolab.security.enums.AccessTypeEnum;
 
 @JsonIgnoreProperties(ignoreUnknown = true)

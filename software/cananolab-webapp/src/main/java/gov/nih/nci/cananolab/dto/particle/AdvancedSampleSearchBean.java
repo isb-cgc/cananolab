@@ -8,6 +8,7 @@
 
 package gov.nih.nci.cananolab.dto.particle;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import gov.nih.nci.cananolab.dto.BaseQueryBean;
 import gov.nih.nci.cananolab.util.StringUtils;
 
@@ -18,7 +19,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import org.codehaus.jackson.annotate.JsonIgnoreProperties;
+//import org.codehaus.jackson.annotate.JsonIgnoreProperties;
 
 /**
  * information needed for the advanced sample search form

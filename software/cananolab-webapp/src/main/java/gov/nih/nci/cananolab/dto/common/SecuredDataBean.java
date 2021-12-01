@@ -8,10 +8,11 @@
 
 package gov.nih.nci.cananolab.dto.common;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.codehaus.jackson.annotate.JsonIgnore;
+//import org.codehaus.jackson.annotate.JsonIgnore;
 
 import gov.nih.nci.cananolab.security.AccessControlInfo;
 

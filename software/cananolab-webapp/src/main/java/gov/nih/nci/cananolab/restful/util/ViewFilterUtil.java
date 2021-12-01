@@ -1,16 +1,21 @@
 package gov.nih.nci.cananolab.restful.util;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.ObjectWriter;
+import com.fasterxml.jackson.databind.ser.FilterProvider;
+import com.fasterxml.jackson.databind.ser.impl.SimpleBeanPropertyFilter;
+import com.fasterxml.jackson.databind.ser.impl.SimpleFilterProvider;
 import java.util.List;
 
 import org.apache.log4j.Logger;
 
 import org.apache.log4j.Logger;
-import org.codehaus.jackson.map.ObjectMapper;
-import org.codehaus.jackson.map.ObjectWriter;
-import org.codehaus.jackson.map.annotate.JsonFilter;
-import org.codehaus.jackson.map.ser.FilterProvider;
-import org.codehaus.jackson.map.ser.impl.SimpleBeanPropertyFilter;
-import org.codehaus.jackson.map.ser.impl.SimpleFilterProvider;
+//import org.codehaus.jackson.map.ObjectMapper;
+//import org.codehaus.jackson.map.ObjectWriter;
+//import org.codehaus.jackson.map.annotate.JsonFilter;
+//import org.codehaus.jackson.map.ser.FilterProvider;
+//import org.codehaus.jackson.map.ser.impl.SimpleBeanPropertyFilter;
+//import org.codehaus.jackson.map.ser.impl.SimpleFilterProvider;
 
 
 public class ViewFilterUtil {
@@ -34,10 +39,10 @@ public class ViewFilterUtil {
 		if (filterName == null)
 			throw new Exception("filterName can't be null");
 		
-		ObjectMapper mapper = new ObjectMapper();  
-	    FilterProvider filters = new SimpleFilterProvider()  
+		ObjectMapper mapper = new ObjectMapper();
+	    FilterProvider filters = new SimpleFilterProvider()
 	      .addFilter(filterName,   
-	          SimpleBeanPropertyFilter.filterOutAllExcept(includeFieldNames));  
+	          SimpleBeanPropertyFilter.filterOutAllExcept(includeFieldNames));
 	    return mapper.writer(filters);  
 		
 	}
