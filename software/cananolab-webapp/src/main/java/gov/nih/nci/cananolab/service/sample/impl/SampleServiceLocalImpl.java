@@ -22,8 +22,12 @@ import gov.nih.nci.cananolab.domain.particle.NanomaterialEntity;
 import gov.nih.nci.cananolab.domain.particle.Sample;
 import gov.nih.nci.cananolab.domain.particle.SampleComposition;
 import gov.nih.nci.cananolab.domain.particle.SmeInherentFunction;
+import gov.nih.nci.cananolab.domain.particle.SynthesisFunctionalization;
+import gov.nih.nci.cananolab.domain.particle.SynthesisFunctionalizationElement;
 import gov.nih.nci.cananolab.domain.particle.SynthesisMaterial;
 import gov.nih.nci.cananolab.domain.particle.SynthesisMaterialElement;
+import gov.nih.nci.cananolab.domain.particle.SynthesisPurification;
+import gov.nih.nci.cananolab.domain.particle.SynthesisPurity;
 import gov.nih.nci.cananolab.dto.common.ExperimentConfigBean;
 import gov.nih.nci.cananolab.dto.common.FileBean;
 import gov.nih.nci.cananolab.dto.common.FindingBean;
@@ -38,8 +42,12 @@ import gov.nih.nci.cananolab.dto.particle.composition.ChemicalAssociationBean;
 import gov.nih.nci.cananolab.dto.particle.composition.FunctionalizingEntityBean;
 import gov.nih.nci.cananolab.dto.particle.composition.NanomaterialEntityBean;
 import gov.nih.nci.cananolab.dto.particle.synthesis.SmeInherentFunctionBean;
+import gov.nih.nci.cananolab.dto.particle.synthesis.SynthesisFunctionalizationBean;
+import gov.nih.nci.cananolab.dto.particle.synthesis.SynthesisFunctionalizationElementBean;
 import gov.nih.nci.cananolab.dto.particle.synthesis.SynthesisMaterialBean;
 import gov.nih.nci.cananolab.dto.particle.synthesis.SynthesisMaterialElementBean;
+import gov.nih.nci.cananolab.dto.particle.synthesis.SynthesisPurificationBean;
+import gov.nih.nci.cananolab.dto.particle.synthesis.SynthesisPurityBean;
 import gov.nih.nci.cananolab.exception.DuplicateEntriesException;
 import gov.nih.nci.cananolab.exception.NoAccessException;
 import gov.nih.nci.cananolab.exception.NotExistException;
@@ -747,7 +755,9 @@ public class SampleServiceLocalImpl extends BaseServiceLocalImpl implements Samp
 
 	private void saveClonedSynthesis(SampleBean origSampleBean, SampleBean sampleBean) throws Exception {
 
+
 		if (sampleBean.getDomain().getSynthesis()!=null){
+			synthesisService.createSynthesis(sampleBean);
 			if(sampleBean.getDomain().getSynthesis().getSynthesisMaterials()!=null){
 				saveClonedSynthesisMaterials(origSampleBean, sampleBean);
 			}
@@ -761,7 +771,6 @@ public class SampleServiceLocalImpl extends BaseServiceLocalImpl implements Samp
 	}
 
 	private void saveClonedSynthesisMaterials(SampleBean origSampleBean, SampleBean sampleBean)throws Exception{
-		//TODO write
 
 		Collection<SynthesisMaterial> materials = sampleBean.getDomain().getSynthesis().getSynthesisMaterials();
 		for(SynthesisMaterial material:materials){
@@ -773,25 +782,58 @@ public class SampleServiceLocalImpl extends BaseServiceLocalImpl implements Samp
 				}
 			}
 
+			synthesisService.saveSynthesisMaterial(sampleBean, materialBean);
 			if (material.getSynthesisMaterialElements()!=null){
 				for(SynthesisMaterialElement materialElement: material.getSynthesisMaterialElements()){
 					SynthesisMaterialElementBean materialElementBean = new SynthesisMaterialElementBean(materialElement);
-					if(materialElementBean.getFunctions()!=null){
-						for (SmeInherentFunctionBean function: materialElementBean.getFunctions()){
-							//TODO write
-						}
-					}
+//					if(materialElementBean.getFunctions()!=null){
+//						for (SmeInherentFunctionBean function: materialElementBean.getFunctions()){
+//							//TODO write
+//							synthesisService.saveSynthesisMaterialElement(material, function);
+//						}
+//					}
+					synthesisService.saveSynthesisMaterialElement(material, materialElementBean);
 				}
 			}
 		}
 	}
 
-	private void saveClonedSynthesisFunctionalization(SampleBean origSampleBean, SampleBean sampleBean){
-		//TODO write
+	private void saveClonedSynthesisFunctionalization(SampleBean origSampleBean, SampleBean sampleBean) throws Exception {
+		Collection<SynthesisFunctionalization> functionalizations = sampleBean.getDomain().getSynthesis().getSynthesisFunctionalizations();
+		for(SynthesisFunctionalization functionalization: functionalizations){
+			SynthesisFunctionalizationBean functionalizationBean = new SynthesisFunctionalizationBean(functionalization);
+			if(functionalizationBean.getFiles()!=null){
+				for (FileBean fileBean : functionalizationBean.getFiles()) {
+					fileUtils.updateClonedFileInfo(fileBean,
+							origSampleBean.getDomain().getName(), sampleBean.getDomain().getName());
+				}
+			}
+
+			synthesisService.saveSynthesisFunctionalization(sampleBean, functionalizationBean);
+			for(SynthesisFunctionalizationElement functionalizationElement: functionalization.getSynthesisFunctionalizationElements()){
+				SynthesisFunctionalizationElementBean functionalizationElementBean = new SynthesisFunctionalizationElementBean(functionalizationElement);
+				synthesisService.saveSynthesisFunctionalizationElement(functionalization, functionalizationElementBean);
+			}
+		}
 	}
 
-	private void saveClonedSynthesisPurification(SampleBean origSampleBean, SampleBean sampleBean){
-		//TODO write
+	private void saveClonedSynthesisPurification(SampleBean origSampleBean, SampleBean sampleBean) throws Exception {
+		Collection<SynthesisPurification> purifications = sampleBean.getDomain().getSynthesis().getSynthesisPurifications();
+		for(SynthesisPurification purification: purifications){
+			SynthesisPurificationBean purificationBean = new SynthesisPurificationBean(purification);
+			if(purification.getFiles()!=null){
+				for (FileBean fileBean : purificationBean.getFiles()) {
+					fileUtils.updateClonedFileInfo(fileBean,
+							origSampleBean.getDomain().getName(), sampleBean.getDomain().getName());
+				}
+			}
+
+			synthesisService.saveSynthesisPurification(sampleBean, purificationBean);
+			for(SynthesisPurity purity: purification.getPurities()){
+				SynthesisPurityBean purityBean = new SynthesisPurityBean(purity);
+				synthesisService.saveSynthesisPurity(purityBean, purificationBean);
+			}
+		}
 	}
 
 

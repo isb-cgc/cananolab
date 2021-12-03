@@ -604,13 +604,14 @@ public class SynthesisServiceLocalImpl extends BaseServiceLocalImpl implements S
                 fileUtils.prepareSaveFile(fileBean.getDomainFile());
             }
             //save
+            appService.saveOrUpdate(synthesisFunctionalization);
 
             for (SynthesisFunctionalizationElementBean synthesisFunctionalizationElementBean :
                     synthesisFunctionalizationBean.getSynthesisFunctionalizationElements()) {
                 this.saveSynthesisFunctionalizationElement(synthesisFunctionalization,
                         synthesisFunctionalizationElementBean);
             }
-            appService.saveOrUpdate(synthesisFunctionalization);
+
 
             for (FileBean fileBean : synthesisFunctionalizationBean.getFiles()) {
                 fileUtils.writeFile(fileBean);
@@ -702,9 +703,11 @@ public class SynthesisServiceLocalImpl extends BaseServiceLocalImpl implements S
             }
 
             appService.saveOrUpdate(synthesisMaterial);
+            synthesisMaterialBean.setDomainEntity(synthesisMaterial);
 
             for (SynthesisMaterialElementBean synthesisMaterialElementBean :
                     synthesisMaterialBean.getSynthesisMaterialElements()) {
+                synthesisMaterialElementBean.getDomainEntity().setSynthesisMaterial(synthesisMaterial);
                 this.saveSynthesisMaterialElement(synthesisMaterial, synthesisMaterialElementBean);
             }
 

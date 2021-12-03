@@ -123,13 +123,21 @@ public class SynthesisFunctionalizationBO extends BaseAnnotationBO {
         Synthesis synthesis;
         try{
             synthesis = synthesisService.getHelper().findSynthesisBySampleId(synFuncBean.getSampleId());
-            functionalization.setSynthesis(synthesis);
+            if(synthesis!=null) {
+                functionalization.setSynthesis(synthesis);
+            }
+            else {
+                SampleBean sampleBean = sampleService.findSampleById(synFuncBean.getSampleId(), true);
+                synthesis = synthesisService.createSynthesis(sampleBean);
+                functionalization.setSynthesis(synthesis);
+            }
 
         }
         catch (Exception e) {
             e.printStackTrace();
             logger.error(e);
         }
+
 
         //Set files for domain and bean
         FileBean fileBean;

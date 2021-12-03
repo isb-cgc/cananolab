@@ -16,6 +16,7 @@ import gov.nih.nci.cananolab.dto.particle.synthesis.SynthesisBean;
 import gov.nih.nci.cananolab.dto.particle.synthesis.SynthesisMaterialBean;
 import gov.nih.nci.cananolab.dto.particle.synthesis.SynthesisMaterialElementBean;
 import gov.nih.nci.cananolab.exception.NoAccessException;
+import gov.nih.nci.cananolab.exception.SampleException;
 import gov.nih.nci.cananolab.exception.SynthesisException;
 import gov.nih.nci.cananolab.restful.core.BaseAnnotationBO;
 import gov.nih.nci.cananolab.restful.sample.InitSampleSetup;
@@ -113,7 +114,7 @@ public class SynthesisMaterialBO extends BaseAnnotationBO {
 
 
     private SynthesisMaterialBean transferSynthesisMaterialBean(SimpleSynthesisMaterialBean synMatBean,
-                                                                HttpServletRequest request){
+                                                                HttpServletRequest request) throws SynthesisException {
         //Transfer from the simple front-end bean to a full bean
         //TODO write
         SynthesisMaterialBean bean = new SynthesisMaterialBean();
@@ -140,15 +141,35 @@ public class SynthesisMaterialBO extends BaseAnnotationBO {
 
         //Add parent object to domain
         Synthesis synthesis;
-        try{
-            synthesis = synthesisService.getHelper().findSynthesisBySampleId(synMatBean.getSampleId());
-            material.setSynthesis(synthesis);
+        try {
 
+            synthesis = synthesisService.getHelper().findSynthesisBySampleId(synMatBean.getSampleId());
+//            purification.setSynthesisId(synthesis.getId());
+            if (synthesis != null) {
+                material.setSynthesis(synthesis);
+            } else {
+                //New Synthesis
+                //TODO
+                SampleBean samplebean = sampleService.findSampleById(synMatBean.getSampleId(), true);
+                synthesis = synthesisService.createSynthesis(samplebean);
+                material.setSynthesis(synthesis);
+            }
         }
-        catch (Exception e) {
-            e.printStackTrace();
-            logger.error(e);
+        catch (SynthesisException e) {
+            String err = "Unable to retrieve Synthesis attached to this Purification. ";
+            throw new SynthesisException(err, e);
         }
+        catch (NoAccessException nae) {
+            String err = "User does not have permission to add Synthesis to this sample. ";
+            throw new SynthesisException(err, nae);
+        }
+        catch (SampleException se) {
+            String err = "Issue retrieving sample for addition of synthesis element. ";
+            throw new SynthesisException(err, se);
+        }
+
+
+
 
         //Set files for domain and bean
         FileBean fileBean;

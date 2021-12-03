@@ -109,7 +109,7 @@ public class SynthesisMaterialElementBean extends BaseSynthesisEntityBean {
     }
 
     public void setupDomain(String loggedInUserName) throws Exception{
-        //TODO write - this will set up empty domain for new Element
+        // this will set up empty domain for new Element
 
         if(domain == null){
             domain = new SynthesisMaterialElement();

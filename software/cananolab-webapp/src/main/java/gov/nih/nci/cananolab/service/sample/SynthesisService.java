@@ -7,7 +7,9 @@ import gov.nih.nci.cananolab.domain.particle.*;
 import gov.nih.nci.cananolab.dto.particle.SampleBean;
 import gov.nih.nci.cananolab.dto.particle.synthesis.SynthesisBean;
 import gov.nih.nci.cananolab.dto.particle.synthesis.SynthesisFunctionalizationBean;
+import gov.nih.nci.cananolab.dto.particle.synthesis.SynthesisFunctionalizationElementBean;
 import gov.nih.nci.cananolab.dto.particle.synthesis.SynthesisMaterialBean;
+import gov.nih.nci.cananolab.dto.particle.synthesis.SynthesisMaterialElementBean;
 import gov.nih.nci.cananolab.dto.particle.synthesis.SynthesisPurificationBean;
 import gov.nih.nci.cananolab.dto.particle.synthesis.SynthesisPurityBean;
 import gov.nih.nci.cananolab.exception.NoAccessException;
@@ -59,7 +61,8 @@ public interface SynthesisService extends BaseService {
             , NoAccessException;
 
     SynthesisHelper getHelper();
-    Synthesis createSynthesis(SampleBean sampleBean) throws SynthesisException, NoAccessException ;
+
+    Synthesis createSynthesis(SampleBean sampleBean) throws SynthesisException, NoAccessException;
 
     void saveSynthesisFunctionalization(SampleBean sampleBean, SynthesisFunctionalizationBean synthesisFunctionalizationBean) throws SynthesisException, NoAccessException;
 
@@ -77,13 +80,20 @@ public interface SynthesisService extends BaseService {
 
     void deleteSynthesisMaterialElement(Long sampleId, SynthesisMaterial synthesisMaterial, SynthesisMaterialElement element) throws NoAccessException, SynthesisException;
 
-    void deleteSmeInherentFunction(Long sampleId, SynthesisMaterialElement element, SmeInherentFunction function)throws SynthesisException;
+    void deleteSmeInherentFunction(Long sampleId, SynthesisMaterialElement element, SmeInherentFunction function) throws SynthesisException;
 
     void deleteSynthesisFunctionalizationElement(Long sampleId, SynthesisFunctionalization synthesisFunctionalization, SynthesisFunctionalizationElement element) throws NoAccessException, SynthesisException;
 
-    void deleteSfeInherentFunction(Long sampleId, SynthesisFunctionalizationElement element, SfeInherentFunction function)throws SynthesisException;
+    void deleteSfeInherentFunction(Long sampleId, SynthesisFunctionalizationElement element, SfeInherentFunction function) throws SynthesisException;
 
     public PurityColumnHeader getColumnHeaderById(Long id) throws SynthesisException;
 
     public SynthesisPurity findPurityById(Long purityId) throws SynthesisException;
-    }
+
+    void saveSynthesisMaterialElement(SynthesisMaterial material,
+                                      SynthesisMaterialElementBean synthesisMaterialElementBean) throws SynthesisException;
+
+    void saveSynthesisFunctionalizationElement(SynthesisFunctionalization functionalization,
+                                               SynthesisFunctionalizationElementBean synthesisFunctionalizationElementBean) throws SynthesisException;
+
+}

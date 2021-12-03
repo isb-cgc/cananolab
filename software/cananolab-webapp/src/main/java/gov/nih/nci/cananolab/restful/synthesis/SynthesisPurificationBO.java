@@ -189,7 +189,6 @@ public class SynthesisPurificationBO extends BaseAnnotationBO {
                 purification.setSynthesis(synthesis);
             } else {
                 //New Synthesis
-                //TODO
                 SampleBean samplebean = sampleService.findSampleById(sSynPurificationBean.getSampleId(), true);
                 synthesis = synthesisService.createSynthesis(samplebean);
                 purification.setSynthesis(synthesis);
