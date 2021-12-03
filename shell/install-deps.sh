@@ -81,30 +81,6 @@ fi
 echo "Installing pip3..."
 curl --silent https://bootstrap.pypa.io/get-pip.py | python3
 
-# Install our primary python libraries
-# If we're not on CircleCI, or we are but the lib directory isn't there (cache miss), install lib
-if [ -z "${CI}" ] || [ ! -d "lib" ]; then
-    echo "Installing Python Libraries..."
-    pip3 install -r ${HOMEROOT}/requirements.txt -t ${HOMEROOT}/lib --upgrade --only-binary all
-else
-    echo "Using restored cache for Python Libraries"
-fi
-
-if [ -z "${CI}" ]; then
-    echo "Installing responses library for unit tests, but not for deployment..."
-    pip3 install -q responses -t ${HOMEROOT}/lib --only-binary all
-fi
-
-if [ "$DEBUG" = "True" ] && [ "$DEBUG_TOOLBAR" = "True" ]; then
-    echo "Installing Django Debug Toolbar for local dev..."
-    pip3 install -q django-debug-toolbar -t ${HOMEROOT}/lib --only-binary all
-fi
-
-if [ "$IS_DEV" = "True" ]; then
-    echo "Installing GitPython for local dev version display..."
-    pip3 install -q gitpython -t ${HOMEROOT}/lib --only-binary all
-fi
-
 echo "Libraries Installed"
 
 # Install Google Cloud SDK

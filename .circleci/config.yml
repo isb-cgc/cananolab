@@ -82,7 +82,7 @@ jobs:
       TZ: "/usr/share/zoneinfo/America/Los_Angeles"
     working_directory: ~/canano
     docker:
-      - image: cimg/openjdk:17.0.0
+      - image: cimg/openjdk:8.0
       - image: circleci/mysql:5.7
         environment:
           MYSQL_ROOT_HOST: "%"
@@ -121,7 +121,7 @@ jobs:
     environment:
       TZ: "/usr/share/zoneinfo/America/Los_Angeles"
     docker:
-      - image: cimg/openjdk:17.0.0
+      - image: cimg/openjdk:8.0
     working_directory: ~/canano
     steps:
       - restore_cache:
