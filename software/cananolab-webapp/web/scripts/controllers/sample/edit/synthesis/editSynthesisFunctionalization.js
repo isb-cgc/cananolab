@@ -354,4 +354,9 @@ var app = angular.module('angularApp')
     };
 
     $scope.setPageTitle = () => $scope.synFunctionalizationId == -1 ? `Add ${$scope.sampleName.name} Synthesis - Functionalization` : `Edit ${$scope.sampleName.name} Synthesis - Functionalization`;
+
+    // resets form //
+    $scope.resetForm = function() {
+      $scope.functionalization = angular.copy($scope.functionalizationCopy);
+    };
   });
