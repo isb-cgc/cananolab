@@ -868,12 +868,16 @@ public class SynthesisServiceLocalImpl extends BaseServiceLocalImpl implements S
                 synthesisPurity.setCreatedBy(SpringSecurityUtil.getLoggedInUserName());
             }
 
-            for (FileBean fileBean : synthesisPurityBean.getFiles()) {
+//            for (FileBean fileBean : synthesisPurityBean.getFiles()) {
+//                fileUtils.prepareSaveFile(fileBean.getDomainFile());
+////                fileUtils.writeFile(fileBean);
+//                synthesisPurity.addFile(fileBean.getDomainFile());
+//            }
+
+           FileBean fileBean= synthesisPurityBean.getFileBeingEdited();
                 fileUtils.prepareSaveFile(fileBean.getDomainFile());
                 fileUtils.writeFile(fileBean);
                 synthesisPurity.addFile(fileBean.getDomainFile());
-            }
-
 
 //            synthesisPurity.setSynthesisPurification(synthesisPurificationBean.getDomainEntity());
 
@@ -950,9 +954,9 @@ public class SynthesisServiceLocalImpl extends BaseServiceLocalImpl implements S
 
             Long debug = synthesisPurity.getId();
 
-            for (FileBean fileBean : synthesisPurityBean.getFiles()) {
-                fileUtils.writeFile(fileBean);
-            }
+//            for (FileBean fileBean : synthesisPurityBean.getFiles()) {
+//                fileUtils.writeFile(fileBean);
+//            }
         }
         catch (Exception e) {
             String err = "Problem saving Synthesis Purity ";

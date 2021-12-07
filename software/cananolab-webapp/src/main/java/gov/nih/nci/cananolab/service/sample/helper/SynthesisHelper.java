@@ -321,7 +321,7 @@ public class SynthesisHelper
 //        return entity;
     }
 
-    public SynthesisPurification findSynthesisPurificationById(Long entityId) throws Exception{
+    public SynthesisPurification findSynthesisPurificationById(Long entityId) throws Exception {
         SynthesisPurification entity = null;
 
 

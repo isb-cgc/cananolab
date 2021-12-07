@@ -17,6 +17,7 @@ import gov.nih.nci.cananolab.dto.common.PurityRow;
 import gov.nih.nci.cananolab.dto.common.table.PurityTableCell;
 import gov.nih.nci.cananolab.dto.particle.SampleBean;
 import gov.nih.nci.cananolab.dto.particle.synthesis.SynthesisBean;
+import gov.nih.nci.cananolab.dto.particle.synthesis.SynthesisMaterialBean;
 import gov.nih.nci.cananolab.dto.particle.synthesis.SynthesisPurificationBean;
 import gov.nih.nci.cananolab.dto.particle.synthesis.SynthesisPurityBean;
 import gov.nih.nci.cananolab.exception.NoAccessException;
@@ -36,6 +37,7 @@ import gov.nih.nci.cananolab.restful.view.edit.SimplePurificationConfigBean;
 import gov.nih.nci.cananolab.restful.view.edit.SimplePurityBean;
 import gov.nih.nci.cananolab.restful.view.edit.SimplePurityCell;
 import gov.nih.nci.cananolab.restful.view.edit.SimplePurityRowBean;
+import gov.nih.nci.cananolab.restful.view.edit.SimpleSynthesisMaterialBean;
 import gov.nih.nci.cananolab.restful.view.edit.SimpleSynthesisPurificationBean;
 import gov.nih.nci.cananolab.security.CananoUserDetails;
 import gov.nih.nci.cananolab.security.enums.SecureClassesEnum;
@@ -60,6 +62,7 @@ import java.util.Set;
 import java.util.TreeSet;
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
+import org.apache.commons.io.FileUtils;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -168,8 +171,7 @@ public class SynthesisPurificationBO extends BaseAnnotationBO {
      */
     private SynthesisPurificationBean transferSimplePurification(SimpleSynthesisPurificationBean sSynPurificationBean
             , HttpServletRequest httpRequest) throws SynthesisException {
-        //TODO write;
-        //id
+
 
         SynthesisPurification purification = new SynthesisPurification();
 
@@ -445,6 +447,7 @@ public class SynthesisPurificationBO extends BaseAnnotationBO {
             catch (Exception e) {
                 e.printStackTrace();
                 //TODO turn into message for sending to front end
+
             }
         } else {
             purity.setCreatedDate(Calendar.getInstance().getTime());
@@ -458,9 +461,11 @@ public class SynthesisPurificationBO extends BaseAnnotationBO {
         List<FileBean> fileBeans = new ArrayList<FileBean>();
         if (sfileBeans != null) {
             for (SimpleFileBean simpleFileBean : sfileBeans) {
-                FileBean fileBean = new FileBean(simpleFileBean);
-                files.add(fileBean.getDomainFile());
-                fileBeans.add(fileBean);
+                if(simpleFileBean.getId()!=null) {
+                    FileBean fileBean = new FileBean(simpleFileBean);
+                    files.add(fileBean.getDomainFile());
+                    fileBeans.add(fileBean);
+                }
             }
         }
         purityBean.setFiles(fileBeans);
@@ -566,7 +571,7 @@ public class SynthesisPurificationBO extends BaseAnnotationBO {
             , List<PurityColumnHeader> columnHeaders) throws SynthesisException {
         List<String> msgs = new ArrayList<String>();
         try {
-//TODO assign new createddate createdby to newly created row
+
             PurityRow newRow = new PurityRow();
 
             //Loop through conditions first
@@ -695,6 +700,7 @@ public class SynthesisPurificationBO extends BaseAnnotationBO {
                         if (bean.isDirty()) {
                             //TODO edit data
                             //Moved to updatePurity??
+                            updatePurity(httpRequest, editBean.getPurityBeingEdited());
                         }
 
                     }
@@ -728,11 +734,12 @@ public class SynthesisPurificationBO extends BaseAnnotationBO {
             throw new SynthesisException("Error creating purity", e);
         }
 
+
     }
 
     public SimplePurityBean createPurityTemplate(SimplePurityBean purityBean, HttpServletRequest httpRequest) {
         SimplePurityBean simplePurityBean = new SimplePurityBean();
-        //TODO
+
         return simplePurityBean;
     }
 
@@ -784,9 +791,32 @@ public class SynthesisPurificationBO extends BaseAnnotationBO {
      * @param httpRequest
      * @return
      */
-    public List<String> deleteFile(SimpleSynthesisPurificationBean editBean, HttpServletRequest httpRequest) {
-        //TODO write
-        return null;
+    public SimpleSynthesisPurificationBean deleteFile(SimpleSynthesisPurificationBean editBean, HttpServletRequest httpRequest) throws SynthesisException {
+
+        try {
+            SynthesisPurificationBean entityBean = transferSimplePurification(editBean, httpRequest);
+
+            FileBean theFile = entityBean.getFile(editBean.getFileBeingEdited().getId());
+            entityBean.removeFile(theFile);
+
+            List<String> msgs = validateInputs(httpRequest, entityBean);
+            if (msgs.size() > 0) {
+                SimpleSynthesisPurificationBean synPure = new SimpleSynthesisPurificationBean();
+                synPure.setErrors(msgs);
+                return synPure;
+            }
+            this.saveEntity(entityBean, editBean.getSampleId(), httpRequest);
+            httpRequest.setAttribute("anchor", "file");
+            this.checkOpenForms(entityBean, httpRequest);
+            return setupUpdate(editBean.getSampleId(), entityBean.getDomainEntity().getId().toString()
+                    , httpRequest);
+        } catch (SynthesisException s){
+            throw s;
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+            throw new SynthesisException("Unable to delete File",e);
+        }
     }
 
     /**
@@ -796,10 +826,7 @@ public class SynthesisPurificationBO extends BaseAnnotationBO {
      * @param httpRequest
      * @return
      */
-    public List<String> deletePurity(SimpleSynthesisPurificationBean editBean, HttpServletRequest httpRequest) {
-        //TODO write
-        return null;
-    }
+
 
     public SimpleSynthesisPurificationBean deletePurity(SimplePurityBean editBean, HttpServletRequest httpRequest) {
 
@@ -847,9 +874,21 @@ public class SynthesisPurificationBO extends BaseAnnotationBO {
      * @return
      */
     public List<String> deleteTechniqueAndEquipment(SimpleSynthesisPurificationBean editBean,
-                                                    HttpServletRequest httpRequest) {
+                                                    HttpServletRequest httpRequest) throws SynthesisException {
         //TODO write
-        return null;
+       List<String> msgs = new ArrayList<String>();
+        try {
+            if (editBean.getId() != null) {
+                Set<PurificationConfig> config = synthesisService.getHelper().findConfigByPurificationId(new Long(editBean.getId()));
+            }
+        } catch (SynthesisException s){
+            throw s;
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+            throw new SynthesisException("Unable to delete technique", e);
+        }
+        return msgs;
     }
 
     public SimplePurityBean drawMatrix(HttpServletRequest request, SimplePurityBean simplePurityBean)
@@ -997,7 +1036,7 @@ public class SynthesisPurificationBO extends BaseAnnotationBO {
     }
 
     private List<String> validateInputs(HttpServletRequest request, SynthesisPurificationBean entityBean) {
-        //todo write
+
 
         List<String> msgs = new ArrayList<String>();
         msgs = validateEntity(request, msgs, entityBean);
@@ -1086,10 +1125,7 @@ public class SynthesisPurificationBO extends BaseAnnotationBO {
         InitSynthesisSetup.getInstance().setSynthesisPurityDropDowns(request, sampleId);
     }
 
-//    public List<String> savePurification(SimpleSynthesisPurificationBean editBean, HttpServletRequest httpRequest) {
-//        //TODO write
-//        return null;
-//    }
+
 
     /**
      * Crafts the lookups for the purification web form
@@ -1115,21 +1151,25 @@ public class SynthesisPurificationBO extends BaseAnnotationBO {
                                                           HttpServletRequest httpRequest) throws Exception {
         String timestamp = DateUtils.convertDateToString(new Date(), "yyyyMMdd_HH-mm-ss-SSS");
         SimplePurityBean editBean = purificationBean.getPurityBeingEdited();
+        editBean.setFileBeingEdited(purificationBean.getFileBeingEdited());
+        SampleBean sampleBean = setupSampleById(purificationBean.getSampleId(), httpRequest);
+
         FileBean theNewFile;
         if(editBean.getFileBeingEdited()!=null) {
             theNewFile = new FileBean(editBean.getFileBeingEdited());
+
         }
-        else if(purificationBean.getFileBeingEdited()!=null){
-            theNewFile = new FileBean(purificationBean.getFileBeingEdited());
-            editBean.setFileBeingEdited(purificationBean.getFileBeingEdited());
-            purificationBean.setFileBeingEdited(null);
-        }
+//        else if(purificationBean.getFileBeingEdited()!=null){
+//            theNewFile = new FileBean(purificationBean.getFileBeingEdited());
+//            editBean.setFileBeingEdited(purificationBean.getFileBeingEdited());
+//            purificationBean.setFileBeingEdited(null);
+//        }
         else{
             String err = "No file passed in";
             throw new SynthesisException(err);
         }
-        SampleBean sampleBean = setupSampleById(purificationBean.getSampleId(), httpRequest);
-        //Determine the directory for saving the file
+//        SampleBean sampleBean = setupSampleById(purificationBean.getSampleId(), httpRequest);
+//        //Determine the directory for saving the file
         String internalUriPath = Constants.FOLDER_PARTICLE+'/'+sampleBean.getDomain().getName()+'/'+"synthesisPurity";
         byte[] newFileData = (byte[]) httpRequest.getSession().getAttribute("newFileData");
         theNewFile.setNewFileData(newFileData);
@@ -1150,7 +1190,8 @@ public class SynthesisPurificationBO extends BaseAnnotationBO {
         SynthesisPurityBean synthesisPurityBean = transferSimplePurity(editBean, httpRequest);
         SynthesisPurificationBean synthesisPurificationBean = transferSimplePurification(purificationBean, httpRequest);
 
-        synthesisPurityBean.addFile(theNewFile);
+//        synthesisPurityBean.addFile(theNewFile);
+        synthesisPurityBean.setFileBeingEdited(theNewFile);
 
 
 
@@ -1183,7 +1224,7 @@ public class SynthesisPurificationBO extends BaseAnnotationBO {
     }
 
     private List<String> validateInputs(HttpServletRequest request, SynthesisPurityBean entityBean) {
-        //todo write
+
 
         List<String> msgs = new ArrayList<String>();
 //        msgs = validateEntity(request, msgs, entityBean);
@@ -1241,9 +1282,100 @@ public class SynthesisPurificationBO extends BaseAnnotationBO {
      * @return
      */
     public List<String> saveTechniqueAndEquipment(SimpleSynthesisPurificationBean editBean,
-                                                  HttpServletRequest httpRequest) {
-        //TODO write
-        return null;
+                                                  HttpServletRequest httpRequest) throws Exception {
+        List<String> msgs = new ArrayList<String>();
+        try{
+        SynthesisPurification purification = synthesisService.getHelper().findSynthesisPurificationById(editBean.getId());
+
+        List<SimplePurificationConfigBean> simpleExperimentBeans = editBean.getSimpleExperimentBeans();
+        Set<PurificationConfig> purificationConfigs = new HashSet<PurificationConfig>();
+        if (simpleExperimentBeans != null) {
+            for (SimplePurificationConfigBean sExperimentBean : simpleExperimentBeans) {
+                PurificationConfig config = new PurificationConfig();
+                if (sExperimentBean.getTechniqueid() != null) {
+                    Technique technique = new Technique();
+                    technique.setId(sExperimentBean.getTechniqueid());
+                    technique.setType(sExperimentBean.getTechniqueType());
+                    technique.setAbbreviation(sExperimentBean.getAbbreviation());
+                    technique.setCreatedBy(purification.getCreatedBy());
+                    technique.setCreatedDate(purification.getCreatedDate());
+                    config.setTechnique(technique);
+                } else {
+                    ExperimentConfigManager experimentMgr =
+                            (ExperimentConfigManager) SpringApplicationContext.getBean(httpRequest,
+                                    "experimentConfigManager");
+
+                    List<Technique> techniqueList =
+                            experimentMgr.getTechniquesByType(sExperimentBean.getTechniqueType());
+                    if (techniqueList.size() == 1) {
+                        config.setTechnique(techniqueList.get(0));
+                    } else {
+                        //check for matches with other fields
+
+                        for (Technique tempTech : techniqueList) {
+                            if (tempTech.getAbbreviation().equals(sExperimentBean.getAbbreviation())) {
+                                config.setTechnique(tempTech);
+                                break;
+                            }
+                        }
+                        if (config.getTechnique() == null) {
+                            //There was no match in existing so need to create a new technique
+                            Technique technique = new Technique();
+                            technique.setType(sExperimentBean.getTechniqueType());
+                            technique.setAbbreviation(sExperimentBean.getAbbreviation());
+                            technique.setCreatedBy(purification.getCreatedBy());
+                            technique.setCreatedDate(purification.getCreatedDate());
+
+                            config.setTechnique(technique);
+                        }
+
+                    }
+
+                }
+                config.setPurificationConfigPkId(sExperimentBean.getId());
+                config.setDescription(sExperimentBean.getDescription());
+                if ((config.getPurificationConfigPkId() != null) && (config.getPurificationConfigPkId() > 0)) {
+                    config.setPurificationConfigPkId(sExperimentBean.getId());
+                    //TODO get created date and by from database
+                    config.setCreatedBy(purification.getCreatedBy());
+                    config.setCreatedDate(purification.getCreatedDate());
+
+                } else {
+                    //TODO might need to fix if purification not set
+                    config.setCreatedBy(purification.getCreatedBy());
+                    config.setCreatedDate(purification.getCreatedDate());
+                }
+                //Technique
+                if (sExperimentBean.getInstruments() != null) {
+                    Set<Instrument> instrumentSet = new HashSet<Instrument>();
+                    for (SimpleInstrumentBean simpleInstrumentBean : sExperimentBean.getInstruments()) {
+                        Instrument instrument = new Instrument();
+                        if ((simpleInstrumentBean.getId() != null) && (simpleInstrumentBean.getId() > 0)) {
+                            instrument.setId(simpleInstrumentBean.getId());
+                            instrument.setCreatedBy(purification.getCreatedBy());
+                            instrument.setCreatedDate(purification.getCreatedDate());
+                        } else {
+                            //TODO might need to fix if purification not set
+                            instrument.setCreatedDate(purification.getCreatedDate());
+                            instrument.setCreatedBy(purification.getCreatedBy());
+                        }
+                        instrument.setManufacturer(simpleInstrumentBean.getManufacturer());
+                        instrument.setModelName(simpleInstrumentBean.getModelName());
+                        instrument.setType(simpleInstrumentBean.getType());
+                        instrumentSet.add(instrument);
+                    }
+                    config.setInstrumentCollection(instrumentSet);
+                }
+
+                purificationConfigs.add(config);
+            }
+            purification.setPurificationConfigs(purificationConfigs);
+
+        }}catch (Exception e){
+            msgs.add("Unable to save Technique and instrument");
+
+        }
+        return msgs;
     }
 
     /**
@@ -1319,9 +1451,7 @@ public class SynthesisPurificationBO extends BaseAnnotationBO {
 
     }
 
-    public void setupView() {
-        //TODO write
-    }
+
 
 //    private void transferPurityRows() {
 //        /**We will get a set of simple rows.  We need to transfer them to full rows
@@ -1331,7 +1461,7 @@ public class SynthesisPurificationBO extends BaseAnnotationBO {
 //
 //    }
 
-    public SimplePurityBean updatePurity(HttpServletRequest httpServletRequest, SimplePurityBean newSimplePurityBean) throws Exception {
+    public SimplePurityBean updatePurity(HttpServletRequest httpServletRequest, SimplePurityBean newSimplePurityBean) throws SynthesisException {
 /**
  Option: add rows, keep columns -
  add column, keep rows -
