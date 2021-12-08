@@ -1,6 +1,7 @@
 package gov.nih.nci.cananolab.domain.particle;
 // Generated Apr 3, 2019, 8:32:55 PM by Hibernate Tools 5.4.2.Final
 
+import gov.nih.nci.cananolab.domain.common.File;
 import gov.nih.nci.cananolab.domain.common.Protocol;
 
 import gov.nih.nci.cananolab.domain.common.PurificationConfig;
@@ -18,7 +19,7 @@ public class SynthesisPurification implements Serializable {
 	private Long synthesisId;
 	private Protocol protocol;
 	private String type;
-	private String methodName;
+	private String displayName;
 	private String designMethodDescription;
 	private String analysis;
 	private String createdBy;
@@ -26,6 +27,7 @@ public class SynthesisPurification implements Serializable {
 	private Float yield;
 	private Set<SynthesisPurity> purities = new HashSet<SynthesisPurity>(0);
 	private Set<PurificationConfig> purificationConfigs = new HashSet<PurificationConfig>(0);
+	private Set<File> files = new HashSet<File>(0);
     private Synthesis synthesis;
 
     public Synthesis getSynthesis() {
@@ -50,18 +52,19 @@ public class SynthesisPurification implements Serializable {
 	}
 
 	public SynthesisPurification(Long id, Long synthesisId, Protocol protocol,
-								 String type, String methodName, String designMethodDescription, String createdBy,
-								 Date createdDate, Set<SynthesisPurity> purities, Set<PurificationConfig> purificationConfigs, Float yield, String analysis) {
+								 String type, String displayName, String designMethodDescription, String createdBy,
+								 Date createdDate, Set<SynthesisPurity> purities, Set<PurificationConfig> purificationConfigs, Set<File> files,Float yield, String analysis) {
 		this.id = id;
 		this.synthesisId = synthesisId;
 		this.protocol = protocol;
 		this.type = type;
-		this.methodName = methodName;
+		this.displayName = displayName;
 		this.designMethodDescription = designMethodDescription;
 		this.createdBy = createdBy;
 		this.createdDate = createdDate;
 		this.purities = purities;
 		this.purificationConfigs = purificationConfigs;
+		this.files = files;
 		this.yield = yield;
 		this.analysis = analysis;
 	}
@@ -98,12 +101,12 @@ public class SynthesisPurification implements Serializable {
 		this.type = type;
 	}
 
-	public String getMethodName() {
-		return this.methodName;
+	public String getDisplayName() {
+		return this.displayName;
 	}
 
-	public void setMethodName(String methodName) {
-		this.methodName = methodName;
+	public void setDisplayName(String displayName) {
+		this.displayName = displayName;
 	}
 
 	public String getDesignMethodDescription() {
@@ -166,4 +169,21 @@ public class SynthesisPurification implements Serializable {
 		this.analysis = analysis;
 	}
 
+	public Set<File> getFiles() {
+		return files;
+	}
+
+	public void setFiles(Set<File> files) {
+		this.files = files;
+	}
+
+	public Set<File> addFile(File file){
+    	this.files.add(file);
+    	return files;
+	}
+
+	public Set<File> removeFile(File file){
+    	this.files.remove(file);
+    	return files;
+	}
 }

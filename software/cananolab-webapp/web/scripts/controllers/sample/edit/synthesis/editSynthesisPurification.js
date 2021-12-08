@@ -5,10 +5,11 @@
       $scope.dropdowns = {};
       $scope.currentFile = {}; // current file being edited //
       $scope.fileArray = [];
-      $scope.technique = {}; // current inherent being edited //
+      $scope.technique = []; // current inherent being edited //
       $scope.instrument = {}; // current instrument being edited //
       $scope.instrumentFormIndex = null; // current instrument being edited //
       $scope.techniqueFormIndex = null;
+      $scope.purityEdit = 0;
       $scope.fileFormIndex = null;
       $scope.sampleId = $location.search()['sampleId'];
       $scope.sampleName = '';
@@ -16,7 +17,8 @@
       $scope.sampleName = sampleService.sampleName($scope.sampleId);
       $scope.fileId = null;
       $scope.operands = ['='];
-
+      $scope.otherInstrumentType='';  
+      $scope.fObject = null;
       /* csv upload */
       var csvColumnMaxCount = 25; // Maximum number of columns allowed
       var csvMaxNumberOfLines = 5000; // Maximum number of rows allowed
@@ -35,11 +37,6 @@
         $anchorScroll();
         $location.hash(old);
       };
-      // $scope.dummyData = { "errors": null, "sampleId": "1000", "id": 1000, "simpleProtocol": { "domainId": 66256896, "domainFileId": 66289664, "domainFileUri": "protocols/20200110_12-52-36-363_2020 Holiday & Pay Calendar.pdf", "displayName": "Synthesis Test Protocol (STP), version 1.0" }, "createdBy": "canano_user", "createdDate": 1575652500000, "type": "Interim Purification", "methodName": null, "designMethodDescription": "Test entry for synthesis purification", "analysis": "Analysis for synth 1", "yield": 84.7, "purityBeans": [{ "columnHeaders": [], "purityRows": [], "files": [{ "uriExternal": false, "uri": "https://evs.nci.nih.gov/ftp1/CTCAE/CTCAE_5.0/NCIt_CTCAE_5.0.xlsx", "type": "Excel", "title": "Synthesis File", "description": "dummy row for testing of synthesis", "keywordsStr": "", "id": 1333, "createdBy": "canano_curator", "createdDate": 1575652500000, "sampleId": "1000", "errors": null, "externalUrl": null, "theAccess": { "recipient": null, "recipientDisplayName": null, "accessType": null, "roleName": "", "roleDisplayName": "", "principal": false }, "isPublic": false }], "fileBeingEdited": null, "id": 1002, "createdBy": "canano_curator", "createdDate": 1566964800000 }, { "columnHeaders": [{ "columnName": "Purity datum 1", "conditionProperty": null, "valueType": "purity", "valueUnit": "%", "columnType": "purity datum", "displayName": "Purity datum 1<br>(purity,%)", "constantValue": "", "columnOrder": 1, "createdDate": 1575652500000 }, { "columnName": "Synthesis condition 1", "conditionProperty": "", "valueType": "observed", "valueUnit": "g", "columnType": "condition", "displayName": "Synthesis condition 1<br>(observed,g)", "constantValue": "", "columnOrder": 2, "createdDate": 1575652500000 }], "purityRows": [{ "cells": [{ "id": 1000, "value": "55.0", "datumOrCondition": "datum", "columnOrder": 1, "createdDate": 1575652500000, "createdBy": "canano_curator", "operand": "=" }, { "id": 1000, "value": "42", "datumOrCondition": "condition", "columnOrder": 2, "createdDate": 1575652500000, "createdBy": "canano_user", "operand": "=" }] }], "files": [], "fileBeingEdited": null, "id": 1000, "createdBy": "canano_curator", "createdDate": 1575652500000 }], "simpleExperimentBeans": [{ "openTechniqueInstrumentsFormniqueid": 1000, "techniqueDisplayName": "Interim purification technique(InP)", "techniqueType": "Interim purification technique", "abbreviation": "InP", "description": "Configuration for synthesis purification", "id": 1000, "dirty": false, "instruments": [{ "manufacturer": "Biome", "modelName": "Test Scale", "type": "scale", "id": 1000 }] }, { "techniqueid": 1000, "techniqueDisplayName": "Interim purification technique(InP)", "techniqueType": "Interim purification technique", "abbreviation": "InP", "description": "Configuration for purification 2", "id": 1001, "dirty": false, "instruments": [{ "manufacturer": "Invitrogen", "modelName": "Countess", "type": "cytometer", "id": 44793856 }, { "manufacturer": "Agilent", "modelName": "1200", "type": "HPLC system", "id": 62914561 }] }] }
-      // $scope.dummyData2 = { "errors": null, "sampleId": "1000", "id": 1000, "simpleProtocol": { "domainId": 66256896, "domainFileId": 66289664, "domainFileUri": "protocols/20200110_12-52-36-363_2020 Holiday & Pay Calendar.pdf", "displayName": "Synthesis Test Protocol (STP), version 1.0" }, "createdBy": "canano_user", "createdDate": 1575652500000, "type": "Interim Purification", "methodName": null, "designMethodDescription": "Test entry for synthesis purification", "analysis": "Analysis for synth 1", "yield": 84.7, "purityBeans": [{ "columnHeaders": [], "purityRows": [], "files": [{ "uriExternal": false, "uri": "https://evs.nci.nih.gov/ftp1/CTCAE/CTCAE_5.0/NCIt_CTCAE_5.0.xlsx", "type": "Excel", "title": "Synthesis File", "description": "dummy row for testing of synthesis", "keywordsStr": "", "id": 1333, "createdBy": "canano_curator", "createdDate": 1575652500000, "sampleId": "1000", "errors": null, "externalUrl": null, "theAccess": { "recipient": null, "recipientDisplayName": null, "accessType": null, "roleName": "", "roleDisplayName": "", "principal": false }, "isPublic": false }], "fileBeingEdited": null, "id": 1002, "createdBy": "canano_curator", "createdDate": 1566964800000 }, { "columnHeaders": [{ "columnName": "Purity datum 1", "conditionProperty": null, "valueType": "purity", "valueUnit": "%", "columnType": "purity datum", "displayName": "Purity datum 1<br>(purity,%)", "constantValue": "", "columnOrder": 1, "createdDate": 1575652500000 }, { "columnName": "Synthesis condition 1", "conditionProperty": "", "valueType": "observed", "valueUnit": "g", "columnType": "condition", "displayName": "Synthesis condition 1<br>(observed,g)", "constantValue": "", "columnOrder": 2, "createdDate": 1575652500000 }], "purityRows": [{ "cells": [{ "id": 1000, "value": "55.0", "datumOrCondition": "datum", "columnOrder": 1, "createdDate": 1575652500000, "createdBy": "canano_curator", "operand": "=" }, { "id": 1000, "value": "42", "datumOrCondition": "condition", "columnOrder": 2, "createdDate": 1575652500000, "createdBy": "canano_user", "operand": "=" }] }], "files": [], "fileBeingEdited": null, "id": 1000, "createdBy": "canano_curator", "createdDate": 1575652500000 }], "simpleExperimentBeans": [{ "techniqueid": 1000, "techniqueDisplayName": "Interim purification technique(InP)", "techniqueType": "Interim purification technique", "abbreviation": "InP", "description": "Configuration for synthesis purification", "id": 1000, "dirty": false, "instruments": [{ "manufacturer": "Biome", "modelName": "Test Scale", "type": "scale", "id": 1000 }] }, { "techniqueid": 1000, "techniqueDisplayName": "Interim purification technique(InP)", "techniqueType": "Interim purification technique", "abbreviation": "InP", "description": "Configuration for purification 2", "id": 1001, "dirty": false, "instruments": [{ "manufacturer": "Invitrogen", "modelName": "Countess", "type": "cytometer", "id": 44793856 }, { "manufacturer": "Agilent", "modelName": "1200", "type": "HPLC system", "id": 62914561 }] }] }
-      // $scope.dummyData3 = { "errors": null, "sampleId": "1000", "id": 1000, "simpleProtocol": { "domainId": null, "domainFileId": null, "domainFileUri": null, "displayName": "" }, "createdBy": "canano_user", "createdDate": 1575652500000, "type": "Final Purification", "methodName": null, "designMethodDescription": "This is a new save", "analysis": "This is a new analysis", "yield": 6969, "purityBeans": [{ "columnHeaders": [{ "columnName": "Purity datum 1", "conditionProperty": null, "valueType": "purity", "valueUnit": "%", "columnType": "purity datum", "displayName": "Purity datum 1<br>(purity,%)", "constantValue": "", "columnOrder": 1, "createdDate": 1575652500000 }, { "columnName": "Synthesis condition 1", "conditionProperty": "", "valueType": "observed", "valueUnit": "g", "columnType": "condition", "displayName": "Synthesis condition 1<br>(observed,g)", "constantValue": "", "columnOrder": 2, "createdDate": 1575652500000 }], "purityRows": [{ "cells": [{ "value": "55.0", "datumOrCondition": "datum", "columnOrder": 1, "createdDate": 1575652500000, "operand": "=" }, { "value": "42", "datumOrCondition": "condition", "columnOrder": 2, "createdDate": 1575652500000, "operand": "=" }] }, { "cells": [{ "value": "51.0", "datumOrCondition": "datum", "columnOrder": 1, "createdDate": 1575652500000, "operand": "=" }, { "value": "1000", "datumOrCondition": "condition", "columnOrder": 2, "createdDate": 1575652500000, "operand": "=" }] }], "files": [], "fileBeingEdited": null, "id": 1000, "createdBy": "canano_curator", "createdDate": 1575652500000 }, { "columnHeaders": [], "purityRows": [], "files": [{ "uriExternal": false, "uri": "https://evs.nci.nih.gov/ftp1/CTCAE/CTCAE_5.0/NCIt_CTCAE_5.0.xlsx", "type": "Excel", "title": "Synthesis File", "description": "dummy row for testing of synthesis", "keywordsStr": "", "id": 1000, "createdBy": "canano_curator", "createdDate": 1575652500000, "sampleId": "1000", "errors": null, "externalUrl": null, "theAccess": { "recipient": null, "recipientDisplayName": null, "accessType": null, "roleName": "", "roleDisplayName": "", "principal": false }, "isPublic": false }], "fileBeingEdited": null, "id": 1002, "createdBy": "canano_curator", "createdDate": 1566964800000 }], "simpleExperimentBeans": [{ "techniqueid": 1001, "techniqueDisplayName": "This is an edited technique", "techniqueType": "Interim purification technique", "abbreviation": "InP", "description": "Edited Configuartion Desc", "id": 1001, "dirty": true, "instruments": [{ "manufacturer": "Abbott", "modelName": "SomeModel", "type": "sometype", "id": 44793856 }, { "manufacturer": "Agilent", "modelName": "1200", "type": "HPLC system", "id": 62914561 }] }, { "techniqueid": 1000, "techniqueDisplayName": "Interim purification technique(InP)", "techniqueType": "Interim purification technique", "abbreviation": "InP", "description": "Configuration for synthesissadsdsadsd purification", "id": 1000, "dirty": false, "instruments": [{ "manufacturer": "Biome", "modelName": "Test Scale", "type": "scale", "id": 1000 }] }] }
-      // $scope.dummyData4 = { "errors": null, "sampleId": "1000", "id": 1000, "simpleProtocol": { "domainId": null, "domainFileId": null, "domainFileUri": null, "displayName": "" }, "createdBy": "canano_user", "createdDate": 1575652500000, "type": "Final Purification", "methodName": null, "designMethodDescription": "This is a new save", "analysis": "This is a new analysis", "yield": 6969, "purityBeans": [{ "columnHeaders": [{ "columnName": "Purity datum 1", "conditionProperty": null, "valueType": "purity", "valueUnit": "%", "columnType": "purity datum", "displayName": "Purity datum 1<br>(purity,%)", "constantValue": "", "columnOrder": 1, "createdDate": 1575652500000 }, { "columnName": "Synthesis condition 1", "conditionProperty": "", "valueType": "observed", "valueUnit": "g", "columnType": "condition", "displayName": "Synthesis condition 1<br>(observed,g)", "constantValue": "", "columnOrder": 2, "createdDate": 1575652500000 }], "purityRows": [{ "cells": [{ "value": "55.0", "datumOrCondition": "datum", "columnOrder": 1, "createdDate": 1575652500000, "operand": "=" }, { "value": "42", "datumOrCondition": "condition", "columnOrder": 2, "createdDate": 1575652500000, "operand": "=" }] }, { "cells": [{ "value": "51.0", "datumOrCondition": "datum", "columnOrder": 1, "createdDate": 1575652500000, "operand": "=" }, { "value": "1000", "datumOrCondition": "condition", "columnOrder": 2, "createdDate": 1575652500000, "operand": "=" }] }], "files": [], "fileBeingEdited": null, "id": 1000, "createdBy": "canano_curator", "createdDate": 1575652500000 }, { "columnHeaders": [], "purityRows": [], "files": [{ "uriExternal": false, "uri": "https://evs.nci.nih.gov/ftp1/CTCAE/CTCAE_5.0/NCIt_CTCAE_5.0.xlsx", "type": "Excel", "title": "Synthesis File", "description": "dummy row for testing of synthesis", "keywordsStr": "", "id": 1000, "createdBy": "canano_curator", "createdDate": 1575652500000, "sampleId": "1000", "errors": null, "externalUrl": null, "theAccess": { "recipient": null, "recipientDisplayName": null, "accessType": null, "roleName": "", "roleDisplayName": "", "principal": false }, "isPublic": false }], "fileBeingEdited": null, "id": 1002, "createdBy": "canano_curator", "createdDate": 1566964800000 }], "simpleExperimentBeans": [{ "techniqueid": 1001, "techniqueDisplayName": "This is an edited technique", "techniqueType": "Interim purification technique", "abbreviation": "InP", "description": "Edited Configuartion Desc", "id": 1001, "dirty": true, "instruments": [{ "manufacturer": "Abbott", "modelName": "SomeModel", "type": "sometype", "id": 44793856 }, { "manufacturer": "Agilent", "modelName": "1200", "type": "HPLC system", "id": 62914561 }] }, { "techniqueid": 1000, "techniqueDisplayName": "Interim purification technique(InP)", "techniqueType": "Interim purification technique", "abbreviation": "InP", "description": "Configuration for synthesissadsdsadsd purification", "id": 1000, "dirty": false, "instruments": [{ "manufacturer": "Biome", "modelName": "Test Scale", "type": "scale", "id": 1000 }] }] }
-      // $scope.dummyData5 = { "errors": null, "sampleId": "1000", "id": 1000, "simpleProtocol": { "domainId": null, "domainFileId": null, "domainFileUri": null, "displayName": "" }, "createdBy": "canano_user", "createdDate": 1575652500000, "type": "Final Purification", "methodName": null, "designMethodDescription": "This is a new save", "analysis": "This is a new analysis", "yield": 6969, "purityBeans": [{ "columnHeaders": [{ "columnName": "Purity datum 1", "conditionProperty": null, "valueType": "purity", "valueUnit": "%", "columnType": "purity datum", "displayName": "Purity datum 1<br>(purity,%)", "constantValue": "", "columnOrder": 1, "createdDate": 1575652500000 }, { "columnName": "Synthesis condition 1", "conditionProperty": "", "valueType": "observed", "valueUnit": "g", "columnType": "condition", "displayName": "Synthesis condition 1<br>(observed,g)", "constantValue": "", "columnOrder": 2, "createdDate": 1575652500000 }], "purityRows": [{ "cells": [{ "value": "55.0", "datumOrCondition": "datum", "columnOrder": 1, "createdDate": 1575652500000, "operand": "=" }, { "value": "42", "datumOrCondition": "condition", "columnOrder": 2, "createdDate": 1575652500000, "operand": "=" }] }, { "cells": [{ "value": "51.0", "datumOrCondition": "datum", "columnOrder": 1, "createdDate": 1575652500000, "operand": "=" }, { "value": "1000", "datumOrCondition": "condition", "columnOrder": 2, "createdDate": 1575652500000, "operand": "=" }] }], "files": [], "fileBeingEdited": null, "id": 1000, "createdBy": "canano_curator", "createdDate": 1575652500000 }, { "columnHeaders": [], "purityRows": [], "files": [{ "uriExternal": false, "uri": "https://evs.nci.nih.gov/ftp1/CTCAE/CTCAE_5.0/NCIt_CTCAE_5.0.xlsx", "type": "Excel", "title": "Synthesis File", "description": "dummy row for testing of synthesis", "keywordsStr": "", "id": 1000, "createdBy": "canano_curator", "createdDate": 1575652500000, "sampleId": "1000", "errors": null, "externalUrl": null, "theAccess": { "recipient": null, "recipientDisplayName": null, "accessType": null, "roleName": "", "roleDisplayName": "", "principal": false }, "isPublic": false }], "fileBeingEdited": null, "id": 1002, "createdBy": "canano_curator", "createdDate": 1566964800000 }], "simpleExperimentBeans": [{ "techniqueid": 1001, "techniqueDisplayName": "This is an edited technique", "techniqueType": "Interim purification technique", "abbreviation": "InP", "description": "Edited Configuartion Desc", "id": 1001, "dirty": true, "instruments": [{ "manufacturer": "Abbott", "modelName": "SomeModel", "type": "sometype", "id": 44793856 }, { "manufacturer": "Agilent", "modelName": "1200", "type": "HPLC system", "id": 62914561 }] }, { "techniqueid": 1000, "techniqueDisplayName": "Interim purification technique(InP)", "techniqueType": "Interim purification technique", "abbreviation": "InP", "description": "Configuration for synthesissadsdsadsd purification", "id": 1000, "dirty": false, "instruments": [{ "manufacturer": "Biome", "modelName": "Test Scale", "type": "scale", "id": 1000 }] }] }
 
       // initial setup for dropdowns //
       $http({
@@ -54,12 +51,14 @@
         data = data['data']
       });
 
-      // function to return edit data for material //
+      // function to return edit data for purification //
       if ($scope.dataId == -1) {
         $scope.purification = {
           "sampleId": $scope.sampleId,
-          "designMethodDescription": ""
+          "designMethodDescription": "",
+          "purityBeans":[]
         };
+        $scope.purificationCopy = angular.copy($scope.purification);
       } else {
         $http({
           method: 'GET',
@@ -68,12 +67,25 @@
         then(function (data, status, headers, config) {
           data = data['data']
           $scope.purification = data;
-          $scope.purificationCopy = angular.copy($scope.purification);
+          if (!$scope.purification['purityBeans']) {
+            $scope.purification['purityBeans']=[];
+          };       
+          $scope.purificationCopy = angular.copy($scope.purification);  
+          $scope.fileArray = angular.copy($scope.purification.fileElements)
+
           $scope.loader = false;
         }).catch(function (data, status, headers, config) {
           data = data['data']
         });
       };
+
+      // add supplier to dropdown when selecting other //
+      
+      $scope.addType =function (otherInstrumentType) {
+        $scope.instrumentTypes.push(otherInstrumentType);
+        $scope.instrument.type=otherInstrumentType;
+        $scope.otherInstrumentType='';
+      };      
 
       // cancel file //
       $scope.cancelFile = function () {
@@ -91,18 +103,18 @@
         $scope.instrumentFormIndex = null;
       };
 
-      // delete for material //
+      // delete for purification //
       $scope.deletePurification = function () {
         if (confirm("Are you sure you want to delete?")) {
           $http({
             method: 'POST',
-            url: '/caNanoLab/rest/synthesisMaterial/delete',
-            data: $scope.material
+            url: '/caNanoLab/rest/synthesisPurification/deletePurification',
+            data: $scope.purification
           }).
           then(function (data, status, headers, config) {
             data = data['data']
             $location.search({
-              'message': 'Synthesis Material successfully deleted.',
+              'message': 'Synthesis Purification successfully deleted.',
               'sampleId': $scope.sampleId
             }).path('/editSynthesis').replace();
           }).
@@ -122,11 +134,6 @@
         $scope.technique['instruments'].splice(index, 1);
       };
 
-      // delete material element //
-      $scope.deleteMaterialElement = function (me, index) {
-        $scope.material.materialElements.splice(index, 1)
-      };
-
       // gets abbreviation and desc for technique //
       $scope.getAbbreviationDescForTechnique = function () {
         $http({
@@ -136,6 +143,7 @@
         then(function (data, status, headers, config) {
           data = data['data']
           $scope.techniqueAbbreviationDesc = data;
+          $scope.technique['techniqueid'] = data['id'];
           $scope.loader = false;
         }).catch(function (data, status, headers, config) {
           data = data['data']
@@ -163,6 +171,9 @@
 
       // open the file edit form //
       $scope.openFileForm = function (index, parentIndex, file) {
+        $scope.uploadComplete = false;
+        $scope.uploadError = false;
+    
         $scope.fileObject = null;
         $('#uploadFile')[0].value = "";
         $scope.uploadError = null;
@@ -175,48 +186,48 @@
         // keywordsStr: abc
         // description: 123
         // myFile: (binary)
-
+        
         // uriExternal: false
         // type: document
         // title: title
         // keywordsStr: abc
         // description: 1234
         // myFile: (binary)
-
+    
         if (index != -1) {
           $scope.fileFormIndex = index;
           $scope.fileId = file['id'];
-          $scope.currentFile = {
-            "uri": file.uri,
-            "uriExternal": file.uriExternal,
-            "externalUrl": file.externalUrl,
-            "type": file.type,
-            "title": file.title,
-            "description": file.description
-          }; // //
+          $scope.currentFile = { 
+            "uri":file.uri, "uriExternal": file.uriExternal, 
+            "id":file.id,
+            "externalUrl":file.externalUrl,"type":file.type,
+            "title":file.title, "description":file.description }
+    
           console.log($scope.currentFile)
-        } else {
+        }
+        else {
           $scope.currentFile = {
-            "uri": "",
-            "uriExternal": false,
-            "externalUrl": null,
-            "type": "",
-            "title": "",
-            "description": ""
+            "uri": "", "uriExternal": false,
+            "externalUrl": null, "type": "",
+            "title": "", "description": "",
+            "id":""
           }; // //
           $scope.fileFormIndex = index;
         };
       };
+    
 
       // open the inherent function edit form //
       $scope.openTechniqueInstrumentsForm = function (index, parentIndex, technique) {
         console.log(index)
         if (index != -1) {
           $scope.technique = angular.copy(technique);
+          if (!$scope.technique['instruments']) {
+            $scope.technique['instruments']=[];
+          }
           $scope.techniqueFormIndex = index;
         } else {
           $scope.technique = {
-            "type": null,
             "abbreviation": null,
             "description": null,
             "instruments": []
@@ -256,54 +267,127 @@
         });
       };
 
-      // save file //
-      $scope.saveFile = function () {
-        $scope.uploadComplete = false;
-        $scope.uploadError = false;
+    // save file //
+    $scope.saveFile = function (purity) {
+      
+      if (purity) { 
+        $scope.purification['purityBeingEdited']=$scope.currentFinding; 
+      }
+      else {
+        $scope.purification['purityBeingEdited']=null;
+      }
+      
+      if (($scope.fileObject || $scope.fileForm.uploadedFile) && (!$scope.currentFile.uriExternal||!$scope.fileForm.uriExternal)) {
+        console.log("I PASSED")
+        $scope.uploadFile(purity);
 
-        if ($scope.fileObject && !$scope.currentFile.uriExternal) {
-          $scope.uploadFile();
+        // watch upload complete //
+        $scope.$watch('uploadComplete', function () {
+          console.log($scope.uploadComplete)
 
-          // watch upload complete //
-          $scope.$watch('uploadComplete', function () {
-            if ($scope.uploadComplete) {
-              console.log('upload complete', $scope.uploadComplete)
-            };
-          });
+          if ($scope.uploadComplete) {
+            $scope.fileFormIndex = null;
+            console.log('upload complete. Add to file')
+          };
+        });
 
-          // watch upload error //
-          $scope.$watch('uploadError', function () {
-            if ($scope.uploadError) {
-              $scope.fileErrorMessage = 'Error Uploading File';
-            };
-          });
 
-        } else {
-          console.log('just save. No new file or no file at all')
-        }
-      };
 
-      // uploads file to server //
-      $scope.uploadFile = function () {
-        var fd = new FormData(); // create new form data object //
+        // watch upload error //
+        $scope.$watch('uploadError', function () {
+          if ($scope.uploadError) {
+            $scope.fileErrorMessage = 'Error Uploading File';
+          };
+        });
+
+      } else {
+        console.log('just save. No new file or no file at all')
+      }
+    };
+
+    // uploads file to server //
+    $scope.uploadFile = function(purity) {
+      console.log('i am uploading')
+      var fd = new FormData(); // create new form data object //
+      if (purity) {
+        fd.append('file', $scope.fileForm.uploadedFile);
+      }
+      else {
         fd.append('file', $scope.fileObject);
-        $http.post('/caNanoLab/rest/core/uploadFile', fd, {
-          withCredentials: false,
-          headers: {
-            'Content-Type': undefined
-          },
-          transformRequest: angular.identity
-        }).
+
+      };
+  /*
+      fd.append('urlExternal', false);
+      fd.append('type', 'image');
+      fd.append('title', 'title');
+  */
+      $http.post('/caNanoLab/rest/core/uploadFile', fd, { withCredentials: false, headers: { 'Content-Type': undefined }, transformRequest: angular.identity }).
         then(function (data, status, headers, config) {
-          data = data['data']
-          $scope.uploadComplete = true;
+        var saveFileLocation = 'saveFile';
+        if (purity) { 
+          saveFileLocation='savePurityFile' 
+          delete $scope.fileForm.uploadedFile;
+        };
+        data = data['data']
+        $scope.uploadComplete = true;
+          if ($scope.fileFormIndex==-1) {
+            $scope.currentFile = purity?$scope.fileForm:$scope.currentFile;
+            $scope.currentFile['uri'] = data['fileName']
+            if (purity) { 
+              $scope.currentFinding.files.push($scope.currentFile) 
+            }
+            else {
+              $scope.fileArray.push($scope.currentFile);
+            };
+            
+            $scope.purification['fileElements'] = $scope.fileArray;
+            if (purity) { 
+              $scope.purification['fileBeingEdited'] = $scope.currentFinding.files[$scope.currentFinding.files.length-1];
+            }
+            else {
+              $scope.purification['fileBeingEdited'] = $scope.fileArray[$scope.fileArray.length-1];
+            };
+
+            $http.post('/caNanoLab/rest/synthesisPurification/'+saveFileLocation, $scope.purification).
+            then(function(data) {
+              data = data['data']
+              console.log('done')
+              $scope.purification = data;
+              $scope.purificationCopy = angular.copy($scope.purification);
+            }).
+                catch (function(data) {
+              console.log('caNanoLab/rest/synthesisPurification/saveFile ERROR data: ', data);
+            });
+  
+            }
+          else {
+            console.log('i am here on line 340')
+
+            $scope.currentFile['uri'] = data['fileName'];
+            $scope.purification['fileElements'] = $scope.fileArray;
+            $scope.purification['fileBeingEdited'] = $scope.fileArray[$scope.fileArray.length-1];
+            $scope.fileArray[$scope.fileFormIndex]=$scope.currentFile;
+            
+            $http.post('/caNanoLab/rest/synthesisPurification/'+saveFileLocation, $scope.purification).
+            then(function(data) {
+              data = data['data']
+              console.log('done')
+              $scope.purification = data['data'];
+              $scope.purificationCopy = angular.copy($scope.purification);              
+            }).
+                catch (function(data) {
+              console.log('caNanoLab/rest/synthesisPurification/saveFile ERROR data: ', data);
+            });          }
+  
         }).
         catch(function (data, status, headers, config) {
+          console.log('i am here on line 358')
+
           data = data['data']
           $scope.uploadError = true;
           $scope.fileErrorMessage = 'Error Uploading File';
         });
-      };
+    };
 
       // save inherent function //
       $scope.openTechniqueInstruments = function (i) {
@@ -324,32 +408,38 @@
           $scope.purification['simpleExperimentBeans'].push($scope.technique)
         } else {
           $scope.purification['simpleExperimentBeans'][$scope.techniqueFormIndex] = technique;
+          console.log($scope.techniqueFormIndex, $scope.purification['simpleExperimentBeans'][$scope.techniqueFormIndex])
+
         }
         $scope.techniqueFormIndex = null;
+        $http({
+          method: 'POST',
+          url: '/caNanoLab/rest/synthesisPurification/saveTechniqueAndInstrument',
+          data: $scope.purification
+        }).
+        then(function (data, status, headers, config) {
+          data = data['data']
+          $scope.loader = false;
+        }).
+        catch(function (data, status, headers, config) {
+          data = data['data']
+          $scope.loader = false;
+        });        
       };
 
       // save instrument //
       $scope.saveInstrument = function (instrument) {
         if ($scope.instrumentFormIndex == -1) {
-          $scope.technique.push($scope.instrument)
+          $scope.technique['instruments'].push($scope.instrument)
         } else {
           $scope.technique.instruments[$scope.instrumentFormIndex] = instrument;
         }
         $scope.instrumentFormIndex = null;
       };
 
-      // submit the entire synthesis material //
+      // submit the entire synthesis purification //
       $scope.savePurification = function () {
-        // $scope.fileMaterial = angular.copy($scope.material);
-        // $scope.fileMaterial['fileBeingEdited'] = { "uri": $scope.somefile.name, "title": "test", "type": "document", "uriExternal": false };
-        // $http({ method: 'POST', url: '/caNanoLab/rest/synthesisMaterial/saveFile', data: $scope.fileMaterial }).
-        //   then(function (data, status, headers, config) { data=data['data']
-        //     $location.search({ 'message': 'Synthesis Material successfully saved.', 'sampleId': $scope.sampleId }).path('/editSynthesis').replace();
-        //   }).
-        //   catch(function (data, status, headers, config) { data=data['data']
-        //     console.log('fail')
-        //   });
-
+  
         $http({
           method: 'POST',
           url: '/caNanoLab/rest/synthesisPurification/submit',
@@ -357,6 +447,20 @@
         }).
         then(function (data, status, headers, config) {
           data = data['data']
+          $scope.purification['fileElements'] = $scope.fileArray;
+          $scope.purification['fileBeingEdited'] = $scope.fileArray[$scope.fileArray.length-1];
+  
+          $http({
+            method: 'POST',
+            url: '/caNanoLab/rest/synthesisPurification/saveFile',
+            data: [$scope.purification]
+          }).
+          then(function () {
+            data = data['data'];
+    
+          }).catch(function () {
+            data = data['data'];
+          })        
           $location.search({
             'message': 'Synthesis Purification successfully saved.',
             'sampleId': $scope.sampleId
@@ -375,61 +479,6 @@
 
       $scope.setPageTitle = () => $scope.dataId == -1 ? `Add ${$scope.sampleName.name} Synthesis - Purification` : `Edit ${$scope.sampleName.name} Synthesis - Purification`;
 
-
-
-      $scope.testSave = () => {
-        // $scope.fileMaterial = angular.copy($scope.material);
-        // $scope.fileMaterial['fileBeingEdited'] = { "uri": $scope.somefile.name, "title": "test", "type": "document", "uriExternal": false };
-        // $http({ method: 'POST', url: '/caNanoLab/rest/synthesisMaterial/saveFile', data: $scope.fileMaterial }).
-        //   then(function (data, status, headers, config) { data=data['data']
-        //     $location.search({ 'message': 'Synthesis Material successfully saved.', 'sampleId': $scope.sampleId }).path('/editSynthesis').replace();
-        //   }).
-        //   catch(function (data, status, headers, config) { data=data['data']
-        //     console.log('fail')
-        //   });
-
-        $http({
-          method: 'POST',
-          url: '/caNanoLab/rest/synthesisPurification/savePurification',
-          data: $scope.dummyData
-        }).
-        then(function (data, status, headers, config) {
-          data = data['data']
-          console.log(data)
-          // $location.search({ 'message': 'Synthesis Material successfully saved.', 'sampleId': $scope.sampleId }).path('/editSynthesis').replace();
-        }).
-        catch(function (data, status, headers, config) {
-          data = data['data']
-          console.log('fail')
-        });
-      };
-
-      $scope.testSave2 = () => {
-        // $scope.fileMaterial = angular.copy($scope.material);
-        // $scope.fileMaterial['fileBeingEdited'] = { "uri": $scope.somefile.name, "title": "test", "type": "document", "uriExternal": false };
-        // $http({ method: 'POST', url: '/caNanoLab/rest/synthesisMaterial/saveFile', data: $scope.fileMaterial }).
-        //   then(function (data, status, headers, config) { data=data['data']
-        //     $location.search({ 'message': 'Synthesis Material successfully saved.', 'sampleId': $scope.sampleId }).path('/editSynthesis').replace();
-        //   }).
-        //   catch(function (data, status, headers, config) { data=data['data']
-        //     console.log('fail')
-        //   });
-
-        $http({
-          method: 'POST',
-          url: '/caNanoLab/rest/synthesisPurification/savePurification',
-          data: $scope.dummyData3
-        }).
-        then(function (data, status, headers, config) {
-          data = data['data']
-          console.log(data)
-          // $location.search({ 'message': 'Synthesis Material successfully saved.', 'sampleId': $scope.sampleId }).path('/editSynthesis').replace();
-        }).
-        catch(function (data, status, headers, config) {
-          data = data['data']
-          console.log('fail')
-        });
-      };
 
 
 
@@ -452,6 +501,7 @@
       // opens new finding dialog //
       $scope.addNewFinding = function () {
         var old = $location.hash();
+        $scope.purityEdit=0;
         $scope.currentFinding = {
           'columnHeaders': []
         };
@@ -466,6 +516,7 @@
 
       // open finding dialog with existing finding //
       $scope.updateExistingFinding = function (finding) {
+        $scope.purityEdit=1;
         var old = $location.hash();
         $scope.updateFinding = 1;
         $scope.currentFinding = finding;
@@ -535,6 +586,7 @@
 
       // opens column form to change properties for column //
       $scope.openColumnForm = function (cell) {
+        console.log('this is the cell ' + cell);
         $scope.findingsColumn = cell;
         $scope.columnForm = 1;
 
@@ -544,7 +596,7 @@
           "valueType": null,
           "valueUnit": null,
           "columnType": null,
-          "displayName": "Column 1",
+          "name": "Column 1",
           "constantValue": "",
           "columnOrder": 1,
           "createdDate": null
@@ -963,7 +1015,7 @@
             var hex = '%' + hexDigit0 + '%' + hexDigit1;
             let decoded = decode_utf8(hex);
             if (decoded === 'ERROR-ERROR') {
-              console.catch('ERROR ');
+              console.log('ERROR ');
               output = '';
               return output;
             }
@@ -1004,7 +1056,7 @@
           returnData = decodeURIComponent(s);
         } catch (e) {
           returnData = 'ERROR-ERROR'; // TODO  Make this a const
-          console.catch('ERROR: ', e);
+          console.log('ERROR: ', e);
         }
         return returnData;
       }
@@ -1034,7 +1086,7 @@
           if ($scope.findingsColumn.valueType != null) {
             headerName = headerName + ' (' + $scope.findingsColumn.valueType + ')';
           }
-          $scope.currentFinding.columnHeaders[columnIndex].displayName = headerName;
+          $scope.currentFinding.columnHeaders[columnIndex].name = headerName;
 
         }
 
@@ -1167,7 +1219,6 @@
 
       // saves finding info //
       $scope.saveFindingInfo = function () {
-
         $scope.loader = true;
         if ($scope.isNewFinding) {
           $scope.purification.purityBeans.push($scope.currentFinding);
@@ -1205,11 +1256,19 @@
           $scope.loader = false;
           return;
         }
+        $scope.purityUrl='/caNanoLab/rest/synthesisPurification/createPurity' 
+        $scope.purityData=$scope.purification;
+
+        if ($scope.purityEdit) {
+          delete $scope.purification.errors;
+          $scope.purityData = $scope.currentFinding;
+          $scope.purityUrl = '/caNanoLab/rest/synthesisPurification/updatePurity'
+        };
 
         $http({
           method: 'POST',
-          url: '/caNanoLab/rest/synthesisPurification/createPurity',
-          data: $scope.purification
+          url: $scope.purityUrl,
+          data: $scope.purityData
         }).
         then(function (data, status, headers, config) {
           data = data['data']
@@ -1221,7 +1280,6 @@
         catch(function (data, status, headers, config) {
           data = data['data']
           $scope.loader = false;
-          alert(data[0]);
         });
         $scope.updateFinding = 0;
       };
@@ -1232,7 +1290,7 @@
           $scope.loader = true;
           $http({
             method: 'POST',
-            url: '/caNanoLab/rest/synthesisPurification/removeFinding',
+            url: '/caNanoLab/rest/synthesisPurification/deletePurity',
             data: $scope.currentFinding
           }).
           then(function (data, status, headers, config) {
@@ -1303,7 +1361,7 @@
       };
 
       // reset form //
-      $scope.reset = function () {
+      $scope.resetForm = function () {
         $scope.purification = angular.copy($scope.purificationCopy);
         $scope.domainFileUri = "";
         $scope.updateExperimentConfig = 0;
@@ -1425,126 +1483,7 @@
         }
       };
 
-      $scope.saveFile = function () {
-        $scope.loader = true;
-        var index = 0;
-        $scope.upload = [];
-        if ($scope.selectedFiles != null && $scope.selectedFiles.length > 0) {
-          $scope.selectedFileName = $scope.selectedFiles[0].name;
-          $scope.upload[index] = $upload.upload({
-            url: uploadUrl,
-            method: 'POST',
-            headers: {
-              'my-header': 'my-header-value',
-              'Accept': 'application/json, text/plain'
-            },
-            data: $scope.fileForm,
-            file: $scope.selectedFiles[index],
-            transformResponse: angular.identity,
-            fileFormDataName: 'myFile'
-          });
-          $scope.upload[index].then(function (response) {
-            $timeout(function () {
-              //$scope.uploadResult.push(response.data);
-              //alert(response.data);
-              //$scope.nanoEntityForm = response.data;
-              $scope.saveFileData();
-              //$scope.loader = false;
-            });
-          }, function (response) {
-            $timeout(function () {
-              //only for IE 9
-              if (navigator.appVersion.indexOf("MSIE 9.") != -1) {
-                $scope.saveFileData();
-              }
-            });
-            if (response.status > 0) {
-              $scope.purification.errors = response.status + ': ' + response.data;
-              $scope.loader = false;
-            }
-          }, function (evt) {
-            // Math.min is to fix IE which reports 200% sometimes
-            // $scope.progress[index] = Math.min(100, parseInt(100.0 * evt.loaded / evt.total));
-          });
-          $scope.upload[index].xhr(function (xhr) {
-            //			xhr.upload.addEventListener('abort', function() {console.log('abort complete')}, false);
-          });
-        } else {
-          $scope.saveFileData();
-        }
-      };
 
-      $scope.saveFileData = function () {
-        $scope.loader = true;
-
-        var k = 0;
-        if ($scope.fileForm.id != null && $scope.fileForm.id != '') {
-          for (k = 0; k < $scope.currentFinding.files.length; ++k) {
-            var element = $scope.currentFinding.files[k];
-            if (element.id == $scope.fileForm.id) {
-              $scope.currentFinding.files[k] = $scope.fileForm;
-            }
-          }
-        }
-        /*            else {
-         $scope.files.push($scope.fileForm);
-         }
-         */
-        //$scope.currentFinding.files = $scope.files;
-
-        if ($scope.currentFinding.theFile == null) {
-          $scope.currentFinding.theFile = {};
-        }
-
-        $scope.currentFinding.theFile.externalUrl = $scope.fileForm.externalUrl;
-        if ($scope.selectedFileName != null && $scope.selectedFileName != '') {
-          $scope.currentFinding.theFile.uri = $scope.selectedFileName;
-        } else {
-          $scope.currentFinding.theFile.uri = $scope.fileForm.uri;
-        }
-        $scope.currentFinding.theFile.uriExternal = $scope.fileForm.uriExternal;
-        $scope.currentFinding.theFile.type = $scope.fileForm.type;
-        $scope.currentFinding.theFile.title = $scope.fileForm.title;
-        $scope.currentFinding.theFile.keywordsStr = $scope.fileForm.keywordsStr;
-        $scope.currentFinding.theFile.description = $scope.fileForm.description;
-        $scope.currentFinding.theFile.id = $scope.fileForm.id;
-        $scope.currentFinding.theFile.theAccess = $scope.fileForm.theAccess;
-        $scope.currentFinding.theFile.isPublic = $scope.fileForm.isPublic;
-        $scope.currentFinding.theFile.createdBy = $scope.fileForm.createdBy;
-        $scope.currentFinding.theFile.createdDate = $scope.fileForm.createdDate;
-
-        if ($scope.fileForm.id == null || $scope.fileForm.id == '') {
-          $scope.currentFinding.theFileIndex = -1;
-        } else {
-          $scope.currentFinding.theFileIndex = k - 1;
-        }
-
-        if ($scope.sampleId != null) {
-          $scope.currentFinding.theFile.sampleId = $scope.sampleId;
-        }
-
-        $scope.messages = [];
-        $http({
-          method: 'POST',
-          url: '/caNanoLab/rest/synthesisPurification/saveFile',
-          data: $scope.currentFinding
-        }).
-        then(function (data, status, headers, config) {
-          data = data['data']
-          $scope.currentFinding = data;
-          $scope.addNewFile = false;
-          $scope.loader = false;
-        }).
-        catch(function (data, status, headers, config) {
-          data = data['data']
-          // called asynchronously if an error occurs
-          // or server returns response with an error status.
-          // $rootScope.sampleData = data;
-          $scope.loader = false;
-          $scope.purification.errors = data;
-          $scope.addNewFile = true;
-        });
-      };
 
       $scope.getAddNewFile = function () {
         return $scope.addNewFile;
@@ -1574,6 +1513,18 @@
 
         };
       };
+
+
+
+      $scope.openAddNewFile = function () {
+        $scope.addNewFile = true;
+        $scope.fileForm = {};
+        $scope.fileObject = null;
+
+        $scope.fileFormIndex=-1;
+        $scope.fileForm.uriExternal = 'false';
+        $scope.externalUrlEnabled = false;
+    }
 
 
       // end finding section code //
