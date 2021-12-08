@@ -297,7 +297,7 @@ CREATE TABLE `synthesis_purity`
 
 -- purification_file
 
-CREATE TABLE 'purification_file'
+CREATE TABLE `purification_file`
 (
     `synthesis_purification_pk_id` bigint(20) NOT NULL COMMENT 'synthesis_purification_pk_id',
     `file_pk_id`   bigint(20)  NOT NULL COMMENT 'file_pk_id',

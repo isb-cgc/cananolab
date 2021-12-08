@@ -222,12 +222,21 @@ L-->
 	</target>
 
 	<target name="dist" depends="war">
-		<!-- copy database jdbc driver from maven repository-->
+		<!-- copy database jdbc driver from common lib-->
 		<copy todir="${common.dist.dir}" overwrite="true">
 			<restrict>
 				<fileset refid="compiletime.dependency.fileset"/>
 				<!--  **/mysql-connector-java-*.jar didn't work, but **\mysql-connector-java-*.jar works-->
 				<rsel:name name="**mysql-connector-java-*.jar"/>
+			</restrict>
+			<mapper classpathref="maven-ant-tasks.classpath" type="flatten"/>
+		</copy>
+
+		<!-- copy bouncy castle from common lib-->
+		<copy todir="${common.dist.dir}" overwrite="true">
+			<restrict>
+				<fileset refid="compiletime.dependency.fileset"/>
+				<rsel:name name="**bcprov*.jar"/>
 			</restrict>
 			<mapper classpathref="maven-ant-tasks.classpath" type="flatten"/>
 		</copy>
