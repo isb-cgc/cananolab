@@ -121,12 +121,12 @@ public class Datum implements java.io.Serializable {
 		this.finding = finding;
 	}
 
-	public File getFile() {
-		return this.file;
-	}
-
-	public void setFile(File file) {
-		this.file = file;
-	}
+//	public File getFile() {
+//		return this.file;
+//	}
+//
+//	public void setFile(File file) {
+//		this.file = file;
+//	}
 
 }
