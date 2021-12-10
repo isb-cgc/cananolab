@@ -367,12 +367,24 @@ var app = angular.module('angularApp')
       if (confirm("Are you sure you want to delete?")) {
         for (var x=0; x<$scope.fileArray.length; x++) {
           if ($scope.fileArray[x].id==id) {
-            console.log($scope.fileArray[x].id,x, id)
+            $scope.functionalization.fileBeingEdited=$scope.fileArray[x];
             $scope.fileArray.splice(x,1);
           };
         }; 
         $scope.fileFormIndex=null;
         $scope.functionalization.fileElements = $scope.fileArray;
+        $http({
+          method: 'POST',
+          url: '/caNanoLab/rest/synthesisFunctionalization/removeFile',
+          data: $scope.functionalization
+        }).
+        then(function (data, status, headers, config) {
+          data = data['data'];
+          $scope.fileArray=angular.copy($scope.functionalization.fileElements);
+        }).
+        catch(function (data, status, headers, config) {
+          data = data['data']
+        });         
       };      
     };
   });

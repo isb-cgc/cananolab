@@ -768,7 +768,12 @@
                                       </td>
                                   </tr>
                                   <tr>
-                                      <td colspan="2" class="saveSynthesis">
+                                    <td>
+                                      <button type="button" class="btn-canano btn-canano-danger btn-canano-xs" ng-click="removeFile(currentFile.id);" id="deleteFile" ng-show="currentFile.id!=null">
+                                          Delete
+                                      </button>     
+                                  </td>                                    
+                                      <td class="saveSynthesis">
                                           <button class="btn-canano btn-canano-default btn-canano-xs" ng-click="cancelFile()">Cancel</button>
                                           <button class="btn-canano btn-canano-primary btn-canano-xs" ng-disabled="getFileConditions()" ng-click="saveFile()">Save File</button>
 

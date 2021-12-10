@@ -254,7 +254,9 @@ var app = angular.module('angularApp')
           $http.post('/caNanoLab/rest/synthesisMaterial/saveFile', $scope.material).
           then(function(data) {
             data = data['data']
-            console.log('done')
+            console.log('done');
+            $scope.fileArray=angular.copy(data['fileElements']);
+
           }).
               catch (function(data) {
             console.log('caNanoLab/rest/synthesisMaterial/saveFile ERROR data: ', data);
@@ -375,4 +377,30 @@ var app = angular.module('angularApp')
   };
 
   $scope.setPageTitle = () => $scope.synMaterialId == -1 ? `Add ${$scope.sampleName.name} Synthesis - Material` : `Edit ${$scope.sampleName.name} Synthesis - Material`;
+
+    // removes file //
+    $scope.removeFile = function(id) {
+      if (confirm("Are you sure you want to delete?")) {
+        for (var x=0; x<$scope.fileArray.length; x++) {
+          if ($scope.fileArray[x].id==id) {
+            $scope.material.fileBeingEdited=$scope.fileArray[x];
+            $scope.fileArray.splice(x,1);
+          };
+        };       
+        $scope.fileFormIndex=null;
+        $scope.material.fileElements = $scope.fileArray;
+        $http({
+          method: 'POST',
+          url: '/caNanoLab/rest/synthesisMaterial/removeFile',
+          data: $scope.material
+        }).
+        then(function (data, status, headers, config) {
+          data = data['data'];
+          $scope.fileArray=angular.copy($scope.material.fileElements);
+        }).
+        catch(function (data, status, headers, config) {
+          data = data['data']
+        });          
+      };      
+    };  
 });
