@@ -2,9 +2,7 @@ package gov.nih.nci.cananolab.domain.common;
 
 import gov.nih.nci.cananolab.domain.particle.SynthesisPurity;
 import java.io.Serializable;
-import java.util.Collection;
 import java.util.Date;
-import org.apache.poi.hssf.record.formula.functions.If;
 
 
 /**
@@ -40,7 +38,7 @@ public class PurityDatumCondition implements Serializable {
 
     private Long purityPkId;
 
-    private int rowNumber;
+    private Integer rowNumber;
 
     PurityColumnHeader columnHeader;
 
@@ -237,7 +235,7 @@ public class PurityDatumCondition implements Serializable {
         return rowNumber;
     }
 
-    public void setRowNumber(int rowNumber1){
+    public void setRowNumber(Integer rowNumber1){
         this.rowNumber = rowNumber1;
     }
 
@@ -245,6 +243,7 @@ public class PurityDatumCondition implements Serializable {
 
     public void setColumnHeader(PurityColumnHeader columnHeader1){
         this.columnHeader = columnHeader1;
+        this.columnId = columnHeader1.getId();
     }
 
     /**

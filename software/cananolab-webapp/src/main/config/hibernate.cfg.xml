@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--L
+   Copyright Leidos
+   Copyright Leidos Biomedical
+
+   Distributed under the OSI-approved BSD 3-Clause License.
+   See http://ncip.github.com/cananolab/LICENSE.txt for details.
+L-->
+
+<!DOCTYPE hibernate-configuration PUBLIC "-//Hibernate/Hibernate Configuration DTD 3.0//EN" "http://www.hibernate.org/dtd/hibernate-configuration-3.0.dtd">
+<hibernate-configuration>
+	<session-factory>
+
+		<!-- Properties for the session factory -->
+		<property name="connection.datasource">java:/caNanoLab</property>
+		<property name="dialect">org.hibernate.dialect.MySQLDialect</property>
+		<property name="max_fetch_depth">1</property>
+		<property name="cglib.use_reflection_optimizer">false</property>
+		<property name="jdbc.batch_versioned_data">true</property>
+		<property name="jdbc.use_streams_for_binary">true</property>
+		<property name="cache.use_query_cache">false</property>
+		<property name="cache.provider_class">org.hibernate.cache.EhCacheProvider</property>
+		<property name="hibernate.cache.region.factory_class">net.sf.ehcache.hibernate.SingletonEhCacheRegionFactory</property>
+		<property name="connection.driver_class">com.mysql.jdbc.Driver</property>
+
+		<!-- For debugging set this to true and enable next two lines -->
+<!--		<property name="hibernate.show_sql">true</property>-->
+<!--		<property name="format_sql">true</property>-->
+<!--        <property name="use_sql_comments">true</property>-->
+
+
+
+        <!-- Mapped Resources -->
+		<mapping resource="gov/nih/nci/cananolab/domain/common/Finding.hbm.xml" />
+		<mapping resource="gov/nih/nci/cananolab/domain/common/Keyword.hbm.xml" />
+		<mapping resource="gov/nih/nci/cananolab/domain/common/Instrument.hbm.xml" />
+		<mapping resource="gov/nih/nci/cananolab/domain/common/Condition.hbm.xml" />
+		<mapping resource="gov/nih/nci/cananolab/domain/common/Technique.hbm.xml" />
+		<mapping resource="gov/nih/nci/cananolab/domain/common/Datum.hbm.xml" />
+		<mapping resource="gov/nih/nci/cananolab/domain/common/Author.hbm.xml" />
+		<mapping resource="gov/nih/nci/cananolab/domain/common/Organization.hbm.xml" />
+		<mapping resource="gov/nih/nci/cananolab/domain/common/CommonLookup.hbm.xml" />
+		<mapping resource="gov/nih/nci/cananolab/domain/common/PointOfContact.hbm.xml" />
+		<mapping resource="gov/nih/nci/cananolab/domain/common/Protocol.hbm.xml" />
+		<mapping resource="gov/nih/nci/cananolab/domain/common/ExperimentConfig.hbm.xml" />
+		<mapping resource="gov/nih/nci/cananolab/domain/common/File.hbm.xml" />
+		<mapping resource="gov/nih/nci/cananolab/domain/function/Target.hbm.xml" />
+		<mapping resource="gov/nih/nci/cananolab/domain/particle/AssociatedElement.hbm.xml" />
+		<mapping resource="gov/nih/nci/cananolab/domain/particle/Sample.hbm.xml" />
+		<mapping resource="gov/nih/nci/cananolab/domain/particle/SampleComposition.hbm.xml" />
+		<mapping resource="gov/nih/nci/cananolab/domain/particle/ActivationMethod.hbm.xml" />
+		<mapping resource="gov/nih/nci/cananolab/domain/particle/Characterization.hbm.xml" />
+		<mapping resource="gov/nih/nci/cananolab/domain/particle/NanomaterialEntity.hbm.xml" />
+		<mapping resource="gov/nih/nci/cananolab/domain/particle/Function.hbm.xml" />
+		<mapping resource="gov/nih/nci/cananolab/domain/particle/ChemicalAssociation.hbm.xml" />
+		<mapping resource="gov/nih/nci/cananolab/domain/common/Favorite.hbm.xml" />
+        <mapping resource="gov/nih/nci/cananolab/domain/common/PurificationConfig.hbm.xml"/>
+        <mapping resource="gov/nih/nci/cananolab/domain/particle/SfeInherentFunction.hbm.xml"/>
+        <mapping resource="gov/nih/nci/cananolab/domain/particle/SmeInherentFunction.hbm.xml"/>
+        <mapping resource="gov/nih/nci/cananolab/domain/particle/Synthesis.hbm.xml"/>
+        <mapping resource="gov/nih/nci/cananolab/domain/particle/SynthesisFunctionalization.hbm.xml"/>
+        <mapping resource="gov/nih/nci/cananolab/domain/particle/SynthesisFunctionalizationElement.hbm.xml"/>
+        <mapping resource="gov/nih/nci/cananolab/domain/particle/SynthesisMaterial.hbm.xml"/>
+        <mapping resource="gov/nih/nci/cananolab/domain/particle/SynthesisMaterialElement.hbm.xml"/>
+        <mapping resource="gov/nih/nci/cananolab/domain/particle/SynthesisPurification.hbm.xml"/>
+        <mapping resource="gov/nih/nci/cananolab/domain/common/Supplier.hbm.xml"/>
+		<mapping resource="gov/nih/nci/cananolab/domain/particle/SynthesisPurity.hbm.xml"/>
+		<mapping resource="gov/nih/nci/cananolab/domain/common/PurityDatumCondition.hbm.xml"/>
+		<mapping resource="gov/nih/nci/cananolab/domain/common/PurityColumnHeader.hbm.xml"/>
+    </session-factory>
+</hibernate-configuration>
+

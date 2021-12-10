@@ -1,11 +1,12 @@
 package gov.nih.nci.cananolab.domain.common;
 
 import gov.nih.nci.cananolab.domain.particle.SynthesisPurification;
+import java.io.Serializable;
 import java.util.Collection;
 import java.util.Date;
 import java.util.Objects;
 
-public class PurificationConfig {
+public class PurificationConfig implements Serializable {
     private Long purificationConfigPkId;
     private String description;
     private String createdBy;

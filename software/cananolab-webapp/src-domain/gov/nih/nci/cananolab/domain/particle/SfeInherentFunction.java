@@ -1,9 +1,10 @@
 package gov.nih.nci.cananolab.domain.particle;
 
+import java.io.Serializable;
 import java.util.Objects;
 
 
-public class SfeInherentFunction {
+public class SfeInherentFunction implements Serializable {
     private Long sfeInherentFunctionPkId;
     private SynthesisFunctionalizationElement synthesisFunctionalizationElement;
     private String type;

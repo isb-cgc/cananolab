@@ -1,10 +1,3 @@
-<button ng-click="tempShow=!tempShow">debug</button>
-<div style="width:800px;" ng-show="tempShow">
-<B>Material Copy</B> - {{materialCopy}} <br /><br />
-<B>Material</B> - {{material}} <br /><br />
-<B>Material Element</B> - {{materialElement}}<br /><br />
-</div>
-
 <div class="spacer">
     <form novalidate="" class="ng-pristine ng-valid">
         <table class="contentTitle" width="100%" border="0" summary="layout">
@@ -119,15 +112,21 @@
                                                     <td width="10%">
                                                         <label>PubChem Data Source</label>
                                                     </td>
-                                                    <td width="90%" colspan="3">
+                                                    <td width="40%">
                                                         <select ng-model="materialElement.pubChemDataSource" ng-options="o as o for o in dropdowns.pubChemDataSources">
                                                         </select>
                                                     </td>
+                                                    <td width="10%">
+                                                        <label>PubChem ID</label>
+                                                    </td>        
+                                                    <td width="40%">
+                                                        <input type="text" size="35" value="{{materialElement.pubChemId}}" data-ng-model="materialElement.pubChemId">
+                                                    </td>                                                                                                
                                                 </tr>
                                                 <tr>
                                                     <td width="10%"><label>Amount</label></td>
                                                     <td width="40%">
-                                                        <input type="text" value="12" data-ng-model="materialElement.value">
+                                                        <input type="number" value="12" data-ng-model="materialElement.value">
                                                     </td>
                                                     <td width="10%"><label>Amount Unit</label></td>
                                                     <td width="40%">
@@ -157,6 +156,24 @@
                                                     <td width="10%"><label>Lot</label></td>
                                                     <td width="40%">
                                                         <input type="text" value="{{materialElement.supplier.lot}}" data-ng-model="materialElement.supplier.lot">
+                                                    </td>
+                                                </tr>
+
+                                                <tr ng-show="materialElement['supplier']['supplierName']=='other'">
+                                                    <td colspan="4">
+                                                        <table cellspacing="5" cellpadding="0" border="0" width="100%" class="promptbox" summary="layout">
+                                                            <tr>
+                                                                <td>
+                                                                    <label>Other Supplier</label>
+                                                                    <input type="text" value="" data-ng-model="otherSupplier">
+                                                                </td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td>
+                                                                    <button ng-disabled="otherSupplier==''" type="button" class="btn-canano btn-canano-primary btn-canano-xs" ng-click="addSupplier()">Add</button>
+                                                                </td>
+                                                            </tr>
+                                                        </table>
                                                     </td>
                                                 </tr>
                                                 <tr>
@@ -254,7 +271,6 @@
                 </tr>
                 <tr>
                     <td colspan="2">
-                        {{fileArray}}
                         <table class="editTableWithGrid" align="center" width="95%">
                             <tr>
                                 <td class="cellLabel">
@@ -289,8 +305,10 @@
                                 </td>
                             </tr>    
                             <tr ng-show="fileFormIndex!=null">
-                                <td colspan="4">{{currentFile}}, {{fileObject}}, {{fileFormIndex}}
+                                <td colspan="5">
                                     <table class="editTableWithGrid form" align="center" width="95%">
+
+
                                         <tr ng-if="fileErrorMessage">
                                             <td colspan="2" class="fileErrorMessage">
                                                 <div>
@@ -298,6 +316,7 @@
                                                 </div>
                                             </td>
                                         </tr>
+
                                         <tr>
                                             <td width="25%">
                                                 <input type="radio" ng-model="currentFile.uriExternal" ng-value="false" name="uriExternal">
@@ -314,7 +333,8 @@
                                             </td>
                                             <td>
                                                 <input type="file" id="uploadFile" file-model="fileObject" ng-show="!currentFile.uriExternal">
-                                                <input type="text" data-ng-model="currentFile.externalUrl" ng-if="currentFile.uriExternal" size="60">
+
+                                                    <input type="text" data-ng-model="currentFile.externalUrl" ng-if="currentFile.uriExternal" size="60">
                                             </td>
                                         </tr>
                                         <tr>
