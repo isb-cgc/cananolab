@@ -1549,6 +1549,8 @@
         }).
         then(function (data, status, headers, config) {
           data = data['data'];
+          $scope.purifucation = data;
+          $scope.purificationCopy = angular.copy($scope.purification);                 
           $scope.fileArray=angular.copy($scope.purification.fileElements);
         }).
         catch(function (data, status, headers, config) {

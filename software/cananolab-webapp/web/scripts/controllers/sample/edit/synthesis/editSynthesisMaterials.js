@@ -396,6 +396,8 @@ var app = angular.module('angularApp')
         }).
         then(function (data, status, headers, config) {
           data = data['data'];
+          $scope.material = data;
+          $scope.materialCopy = angular.copy($scope.material);          
           $scope.fileArray=angular.copy($scope.material.fileElements);
         }).
         catch(function (data, status, headers, config) {

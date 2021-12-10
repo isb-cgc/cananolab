@@ -380,6 +380,8 @@ var app = angular.module('angularApp')
         }).
         then(function (data, status, headers, config) {
           data = data['data'];
+          $scope.functionalization = data;
+          $scope.functionalizationCopy = angular.copy($scope.functionalization);
           $scope.fileArray=angular.copy($scope.functionalization.fileElements);
         }).
         catch(function (data, status, headers, config) {
