@@ -13,7 +13,19 @@ apt-get install -y --force-yes unzip libffi-dev libssl-dev git ruby g++ curl dos
 apt-get install -y --force-yes libmysqlclient-dev build-essential
 apt-get install -y --force-yes mysql-client
 
-echo "<<Install Wildfly, Maeven, Ant>>"
+wget http://archive.apache.org/dist/ant/binaries/apache-ant-1.9.9-bin.tar.gz \
+    && tar xvfz apache-ant-1.9.9-bin.tar.gz \
+    && mv apache-ant-1.9.9 /opt
+
+wget https://archive.apache.org/dist/maven/maven-3/3.5.3/binaries/apache-maven-3.5.3-bin.tar.gz \
+    && tar xvfz apache-maven-3.5.3-bin.tar.gz \
+    && mv apache-maven-3.5.3 /opt \
+    && ln -s /opt/apache-maven-3.5.3 /opt/apache-maven
+
+#sudo gcloud auth activate-service-account --key-file ${HOMEROOT}/${SECURE_LOCAL_PATH}/${GOOGLE_APPLICATION_CREDENTIALS}
+#sudo gcloud config set project "${GCLOUD_PROJECT_ID}"
+#sudo gsutil cp "gs://${GCLOUD_BUCKET_DEV_SQL}/${JAR_FOLDER}" ${HOMEROOT}/lib/${JAR_FOLDER}
+
 
 echo "Libraries Installed"
 

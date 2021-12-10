@@ -1,11 +1,4 @@
-mkdir ./json
-mkdir ./txt
-
-gsutil cp "gs://${DEPLOYMENT_BUCKET}/${WEBAPP_APP_YAML}" ./app.yaml
-gsutil cp "gs://${DEPLOYMENT_BUCKET}/${ENV_FILE}" ./.env
-gsutil cp "gs://${DEPLOYMENT_BUCKET}/${WEBAPP_RUNTIME_SA_KEY}" ./privatekey.json
-
-# Pack staged files for caching
-echo "Packing JSON and text files for caching into deployment..."
-cp --verbose *.json ./json
-cp --verbose *.txt ./txt
+gsutil cp "gs://${DEPLOYMENT_BUCKET}/${WEBAPP_APP_YAML}" ./cananolab-webapp/src/main/appengine/app.yaml
+gsutil cp "gs://${DEPLOYMENT_BUCKET}/${ENV_FILE}" ./cananolab-webapp/.env
+gsutil cp "gs://${DEPLOYMENT_BUCKET}/${WEBAPP_RUNTIME_SA_KEY}" ./cananolab-webapp/privatekey.json
+gsutil cp "gs://${DEPLOYMENT_BUCKET}/${BUILD_PROPS_FILE}" ./cananolab-webapp/build.properties
