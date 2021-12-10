@@ -1,3 +1,7 @@
+if [ -n "$CI" ]; then
+    export HOME=/home/circleci/${CIRCLE_PROJECT_REPONAME}
+fi
+
 apt-get update -qq
 
 # Install and update apt-get info
@@ -22,9 +26,25 @@ wget https://archive.apache.org/dist/maven/maven-3/3.5.3/binaries/apache-maven-3
     && mv apache-maven-3.5.3 /opt \
     && ln -s /opt/apache-maven-3.5.3 /opt/apache-maven
 
+mkdir -p /local/content/caNanoLab \
+    && mkdir -p /local/content/caNanoLab/artifacts \
+    && mkdir -p /local/content/caNanoLab/config \
+    && mkdir -p /opt/wildfly-8.2.1.Final/modules/com/mysql/main
+
 #sudo gcloud auth activate-service-account --key-file ${HOMEROOT}/${SECURE_LOCAL_PATH}/${GOOGLE_APPLICATION_CREDENTIALS}
 #sudo gcloud config set project "${GCLOUD_PROJECT_ID}"
 #sudo gsutil cp "gs://${GCLOUD_BUCKET_DEV_SQL}/${JAR_FOLDER}" ${HOMEROOT}/lib/${JAR_FOLDER}
+
+cd ${HOME}/software/cananolab-webapp/
+ant dist
+cp caNanoLab.war /local/content/caNanoLab/artifacts
+cd ${HOME}/software/cananolab-webapp/lib/sdk
+cp  bcprov-jdk15on-1.66.jar csmapi*  /local/content/caNanoLab/artifacts
+cd ${HOME}/software/cananolab-webapp/lib
+cp mysql-connector-java-8.0.18.jar /local/content/caNanoLab/artifacts
+cd ${HOME}/cananolab-webapp/target/dist/common
+cp caNanoLab_modules.cli caNanoLab_setup.cli caNanoLab_deploy.cli /local/content/caNanoLab/artifacts
+cp wikihelp.properties /local/content/caNanoLab/config
 
 
 echo "Libraries Installed"
