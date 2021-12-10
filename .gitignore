@@ -17,7 +17,7 @@ software/cananolab-webapp/.settings/*
 
 node_modules/
 
-software/cananolab-webapp/src/main/appengine/app.yaml
+app.yaml
 
 \.settings/
 
