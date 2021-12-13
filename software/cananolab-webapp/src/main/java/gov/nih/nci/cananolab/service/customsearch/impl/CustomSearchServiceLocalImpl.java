@@ -5,7 +5,8 @@ import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Propagation;
@@ -22,7 +23,7 @@ import gov.nih.nci.cananolab.service.customsearch.helper.CustomSearchServiceHelp
 @Component("customSearchService")
 public class CustomSearchServiceLocalImpl extends BaseServiceLocalImpl implements CustomSearchService
 {
-	private static Logger logger = Logger.getLogger(CustomSearchServiceLocalImpl.class);
+	private static Logger logger = LogManager.getLogger(CustomSearchServiceLocalImpl.class);
 	
 	@Autowired
 	private CustomSearchServiceHelper customSearchServiceHelper;

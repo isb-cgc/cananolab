@@ -12,7 +12,7 @@ import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.Response;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
 
 import gov.nih.nci.cananolab.restful.sample.CharacterizationBO;
 import gov.nih.nci.cananolab.restful.sample.CharacterizationManager;
@@ -28,11 +28,12 @@ import gov.nih.nci.cananolab.restful.view.edit.SimpleExperimentBean;
 import gov.nih.nci.cananolab.restful.view.edit.SimpleFindingBean;
 import gov.nih.nci.cananolab.security.utils.SpringSecurityUtil;
 import gov.nih.nci.cananolab.util.Constants;
+import org.apache.logging.log4j.Logger;
 
 @Path("/characterization")
 public class CharacterizationServices
 {
-	private static final Logger logger = Logger.getLogger(CharacterizationServices.class);
+	private static final Logger logger = LogManager.getLogger(CharacterizationServices.class);
 
 	@GET
 	@Path("/setupEdit")

@@ -10,7 +10,8 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.Iterator;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 /**
  * Class to support sample search view. It has exactly what needs to be
@@ -21,7 +22,7 @@ import org.apache.log4j.Logger;
  */
 public class SimpleSearchSampleBean {
 
-	private Logger logger = Logger.getLogger(SimpleSearchSampleBean.class);
+	private Logger logger = LogManager.getLogger(SimpleSearchSampleBean.class);
 
 	long sampleId;
 	String sampleName;

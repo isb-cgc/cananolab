@@ -147,7 +147,8 @@ import javax.security.auth.login.LoginException;
 
 import net.sf.ehcache.config.ConfigurationHelper;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.apache.lucene.queries.FilterClause;
 import org.hibernate.SessionFactory;
 
@@ -167,7 +168,7 @@ public class AuthorizationManagerImpl implements UserProvisioningManager {
 	 */
 	private AuthorizationDAO authorizationDAO;
 
-	static final Logger log = Logger.getLogger(AuthorizationManagerImpl.class.getName());
+	static final Logger log = LogManager.getLogger(AuthorizationManagerImpl.class.getName());
 	
 	/**
 	 * The application context object for the given application

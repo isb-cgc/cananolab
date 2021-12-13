@@ -8,7 +8,8 @@ import gov.nih.nci.cananolab.system.applicationservice.client.ApplicationService
 import java.util.ArrayList;
 import java.util.List;
 import javax.servlet.http.HttpServletRequest;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.hibernate.criterion.Criterion;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Expression;
@@ -19,7 +20,7 @@ import org.springframework.stereotype.Component;
 @Component("favoritesServiceHelper")
 public class FavoritesServiceHelper
 {
-	private static Logger logger = Logger.getLogger(ProtocolServiceHelper.class);
+	private static Logger logger = LogManager.getLogger(ProtocolServiceHelper.class);
 
 	public FavoriteBean findFavouritesById(String dataId, String loginName)
 	{

@@ -12,7 +12,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 /**
  * Class to hold publication data and it's associated samples' basic info (sampleId and sampleName currently)
@@ -21,7 +22,7 @@ import org.apache.log4j.Logger;
  *
  */
 public class SimplePublicationWithSamplesBean {
-	private static Logger logger = Logger.getLogger(SimplePublicationWithSamplesBean.class);
+	private static Logger logger = LogManager.getLogger(SimplePublicationWithSamplesBean.class);
 
 	String id;
 	String type;

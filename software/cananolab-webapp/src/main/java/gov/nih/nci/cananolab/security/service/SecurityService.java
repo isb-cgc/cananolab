@@ -44,7 +44,8 @@ import java.util.SortedSet;
 import java.util.TreeSet;
 
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.hibernate.Hibernate;
 
 /**
@@ -55,7 +56,7 @@ import org.hibernate.Hibernate;
  *
  */
 public class SecurityService {
-	private Logger logger = Logger.getLogger(SecurityService.class);
+	private Logger logger = LogManager.getLogger(SecurityService.class);
 
 	private AuthenticationManager authenticationManager = null;
 

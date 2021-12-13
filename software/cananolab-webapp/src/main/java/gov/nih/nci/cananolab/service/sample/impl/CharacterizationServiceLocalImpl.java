@@ -38,7 +38,8 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Property;
 import org.hibernate.criterion.Restrictions;
@@ -54,7 +55,7 @@ import org.springframework.stereotype.Component;
 @Component("characterizationService")
 public class CharacterizationServiceLocalImpl extends BaseServiceLocalImpl implements CharacterizationService 
 {
-	private static Logger logger = Logger.getLogger(CharacterizationServiceLocalImpl.class);
+	private static Logger logger = LogManager.getLogger(CharacterizationServiceLocalImpl.class);
 	
 	@Autowired
 	private SpringSecurityAclService springSecurityAclService;

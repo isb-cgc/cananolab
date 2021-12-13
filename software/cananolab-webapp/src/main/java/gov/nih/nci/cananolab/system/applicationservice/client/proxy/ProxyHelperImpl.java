@@ -13,7 +13,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import org.aopalliance.intercept.MethodInvocation;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.hibernate.Hibernate;
 import org.hibernate.criterion.DetachedCriteria;
 import org.springframework.aop.framework.Advised;
@@ -24,7 +25,7 @@ import org.springframework.aop.framework.Advised;
  */
 public class ProxyHelperImpl implements ProxyHelper
 {
-	private static Logger log = Logger.getLogger(ProxyHelperImpl.class.getName());
+	private static Logger log = LogManager.getLogger(ProxyHelperImpl.class.getName());
 	
 	public Object convertToProxy(ApplicationService as, Object obj) 
 	{

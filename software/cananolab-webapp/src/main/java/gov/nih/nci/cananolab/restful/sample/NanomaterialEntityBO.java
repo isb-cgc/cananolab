@@ -53,7 +53,8 @@ import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Component;
@@ -63,7 +64,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
 @Component("nanomaterialEntityBO")
 public class NanomaterialEntityBO extends BaseAnnotationBO {
-    private static Logger logger = Logger.getLogger(NanomaterialEntityBO.class);
+    private static Logger logger = LogManager.getLogger(NanomaterialEntityBO.class);
 
     @Autowired
     private CompositionService compositionService;

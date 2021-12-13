@@ -2,7 +2,8 @@ package gov.nih.nci.cananolab.restful.useraccount;
 
 import java.util.List;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Component;
@@ -18,7 +19,7 @@ import gov.nih.nci.cananolab.security.utils.SpringSecurityUtil;
 @Component("userAccountBO")
 public class UserAccountBO
 {
-	protected Logger logger = Logger.getLogger(UserAccountBO.class);
+	protected Logger logger = LogManager.getLogger(UserAccountBO.class);
 	
 	@Autowired
 	private UserDetailsService userDetailsService;

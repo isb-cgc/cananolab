@@ -25,7 +25,8 @@ import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Propagation;
@@ -35,7 +36,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Component("collaborationGroupBO")
 public class CollaborationGroupBO  extends AbstractDispatchBO
 {
-	private Logger logger = Logger.getLogger(CollaborationGroupBO.class);
+	private Logger logger = LogManager.getLogger(CollaborationGroupBO.class);
 	
 	@Autowired
 	private CommunityService communityService;

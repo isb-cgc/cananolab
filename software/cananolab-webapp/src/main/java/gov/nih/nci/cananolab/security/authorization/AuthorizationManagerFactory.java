@@ -105,9 +105,8 @@ import java.net.URL;
 
 
 
-import org.apache.log4j.Logger;
-
-
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 
 /**
@@ -116,7 +115,7 @@ import org.apache.log4j.Logger;
  */
 public class AuthorizationManagerFactory {
 
-	private static final Logger log = Logger.getLogger(AuthorizationManagerFactory.class);
+	private static final Logger log = LogManager.getLogger(AuthorizationManagerFactory.class);
 	
 	public AuthorizationManagerFactory(){
 

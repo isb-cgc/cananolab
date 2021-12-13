@@ -12,16 +12,17 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.Response;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
 
 import gov.nih.nci.cananolab.security.CananoUserDetails;
 import gov.nih.nci.cananolab.security.enums.CaNanoRoleEnum;
 import gov.nih.nci.cananolab.security.utils.SpringSecurityUtil;
+import org.apache.logging.log4j.Logger;
 
 @Path("/security")
 public class SecurityServices
 {
-	private static final Logger logger = Logger.getLogger(SecurityServices.class);
+	private static final Logger logger = LogManager.getLogger(SecurityServices.class);
 		
 	@GET
 	@Path("/getUserGroups")

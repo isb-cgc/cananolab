@@ -40,7 +40,8 @@ import java.util.Set;
 import java.util.SortedSet;
 import javax.annotation.PostConstruct;
 import javax.sql.DataSource;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.BatchPreparedStatementSetter;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -58,7 +59,7 @@ import org.springframework.stereotype.Component;
 @Component("dataAvailabilityServiceDAO")
 public class DataAvailabilityServiceJDBCImpl extends JdbcDaoSupport implements DataAvailabilityService
 {
-	private static Logger logger = Logger.getLogger(DataAvailabilityServiceJDBCImpl.class);
+	private static Logger logger = LogManager.getLogger(DataAvailabilityServiceJDBCImpl.class);
 	
 	@Autowired
 	private SampleServiceHelper sampleServiceHelper;

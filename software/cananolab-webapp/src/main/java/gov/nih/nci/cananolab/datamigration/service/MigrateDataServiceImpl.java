@@ -4,7 +4,8 @@ import java.util.AbstractMap;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.acls.domain.BasePermission;
 import org.springframework.security.acls.model.Permission;
@@ -25,7 +26,7 @@ import gov.nih.nci.cananolab.security.utils.AESEncryption;
 @Component("migrateDataService")
 public class MigrateDataServiceImpl implements MigrateDataService
 {
-	protected Logger logger = Logger.getLogger(MigrateDataServiceImpl.class);
+	protected Logger logger = LogManager.getLogger(MigrateDataServiceImpl.class);
 
 	private int pageSize = 200;
 

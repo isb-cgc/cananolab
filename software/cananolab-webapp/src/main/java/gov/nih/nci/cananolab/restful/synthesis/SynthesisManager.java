@@ -10,7 +10,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.SortedSet;
 import javax.servlet.http.HttpServletRequest;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Propagation;
@@ -20,7 +21,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Component("synthesisManager")
 public class SynthesisManager {
 
-    private final static Logger logger = Logger.getLogger(SynthesisManager.class);
+    private final static Logger logger = LogManager.getLogger(SynthesisManager.class);
 
     @Autowired
     private SynthesisService synthesisService;

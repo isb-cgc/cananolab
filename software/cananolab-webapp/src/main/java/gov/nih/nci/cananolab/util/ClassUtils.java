@@ -29,7 +29,8 @@ import java.util.Map;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 import java.util.jar.JarInputStream;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 /**
  * Utility class to handle domain class manipulations
@@ -45,7 +46,7 @@ public class ClassUtils {
 	 * @return
 	 * @throws Exception
 	 */
-	protected static Logger logger = Logger.getLogger(ClassUtils.class);
+	protected static Logger logger = LogManager.getLogger(ClassUtils.class);
 
 	public static Collection<Class> getDomainClasses() throws Exception {
 		logger.debug("In ClassUtils.getDomainClasses");

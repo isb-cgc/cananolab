@@ -25,13 +25,14 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.Response;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Property;
 
 @Path("/synthesisPurification")
 public class SynthesisPurificationServices {
-    private static final Logger logger = Logger.getLogger(SynthesisPurificationServices.class);
+    private static final Logger logger = LogManager.getLogger(SynthesisPurificationServices.class);
 
     /**
      *

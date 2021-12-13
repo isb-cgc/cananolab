@@ -25,7 +25,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.SortedSet;
 import java.util.TreeSet;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Property;
 
@@ -38,7 +39,7 @@ import org.hibernate.criterion.Property;
  *
  */
 public class LookupService {
-	private static Logger logger = Logger.getLogger(LookupService.class);
+	private static Logger logger = LogManager.getLogger(LookupService.class);
 
 	/**
 	 * get all lookup name, attribute, values and stored it in a map of map of

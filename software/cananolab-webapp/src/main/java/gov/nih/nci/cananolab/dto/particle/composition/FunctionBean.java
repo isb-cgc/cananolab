@@ -25,7 +25,8 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 /**
  *
@@ -53,7 +54,7 @@ public class FunctionBean {
 
 	private TargetBean theTarget = new TargetBean();
 	
-	protected Logger logger = Logger.getLogger(FunctionBean.class);
+	protected Logger logger = LogManager.getLogger(FunctionBean.class);
 
 	public FunctionBean() {
 	}

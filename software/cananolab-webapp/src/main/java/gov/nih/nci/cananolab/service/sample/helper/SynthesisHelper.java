@@ -20,7 +20,8 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.hibernate.FetchMode;
 import org.hibernate.criterion.CriteriaSpecification;
 import org.hibernate.criterion.DetachedCriteria;
@@ -31,7 +32,7 @@ import org.springframework.stereotype.Component;
 @Component("synthesisHelper")
 public class SynthesisHelper
 {
-    private static Logger logger = Logger.getLogger(SynthesisHelper.class);
+    private static Logger logger = LogManager.getLogger(SynthesisHelper.class);
 
 
     @Autowired

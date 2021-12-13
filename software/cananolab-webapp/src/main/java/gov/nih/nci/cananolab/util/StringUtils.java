@@ -19,7 +19,8 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.apache.commons.lang.StringEscapeUtils;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 /**
  * This class contains a set of utilities for converting Strings to other
@@ -30,7 +31,7 @@ import org.apache.log4j.Logger;
  */
 
 public class StringUtils {
-	private static Logger logger = Logger.getLogger(StringUtils.class);
+	private static Logger logger = LogManager.getLogger(StringUtils.class);
 
 	public static boolean isImgFileExt(String fileName) {
 		if (isEmpty(fileName)) {

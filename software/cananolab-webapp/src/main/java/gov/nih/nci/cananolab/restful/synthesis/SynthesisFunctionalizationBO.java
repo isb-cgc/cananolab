@@ -27,8 +27,9 @@ import gov.nih.nci.cananolab.ui.form.SynthesisForm;
 import gov.nih.nci.cananolab.util.Constants;
 import gov.nih.nci.cananolab.util.DateUtils;
 import gov.nih.nci.cananolab.util.StringUtils;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
 
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Component;
@@ -44,7 +45,7 @@ import java.util.*;
 @Component("synthesisFunctionalizationBO")
 public class SynthesisFunctionalizationBO extends BaseAnnotationBO {
 
-    Logger logger = Logger.getLogger(SynthesisFunctionalizationBO.class);
+    Logger logger = LogManager.getLogger(SynthesisFunctionalizationBO.class);
 
 
     @Autowired
@@ -214,7 +215,7 @@ public class SynthesisFunctionalizationBO extends BaseAnnotationBO {
                 synthesisFunctionalizationElement.setChemicalName(sSFEBean.getChemicalName());
                 synthesisFunctionalizationElement.setMolecularFormula(sSFEBean.getMolecularFormula());
                 synthesisFunctionalizationElement.setMolecularFormulaType(sSFEBean.getMolecularFormulaType());
-                synthesisFunctionalizationElement.setPubChemId(sSFEBean.getPubChemId());
+                synthesisFunctionalizationElement.setPubChemId(sSFEBean.getPubChemID());
                 synthesisFunctionalizationElement.setPubChemDatasourceName(sSFEBean.getPubChemDataSource());
                 synthesisFunctionalizationElement.setValue(sSFEBean.getValue());
                 synthesisFunctionalizationElement.setValueUnit(sSFEBean.getValueUnit());

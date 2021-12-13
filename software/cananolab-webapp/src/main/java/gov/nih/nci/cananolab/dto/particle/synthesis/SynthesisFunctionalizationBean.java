@@ -11,11 +11,12 @@ import gov.nih.nci.cananolab.util.Constants;
 
 import java.util.*;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 
 public class SynthesisFunctionalizationBean extends BaseSynthesisEntityBean {
-    Logger logger = Logger.getLogger( "SynthesisFunctionalizationBean.class" );
+    Logger logger = LogManager.getLogger( "SynthesisFunctionalizationBean.class" );
     private SynthesisFunctionalization domainEntity;
     private boolean withProperties = false;
     private ProtocolBean protocolBean = new ProtocolBean();

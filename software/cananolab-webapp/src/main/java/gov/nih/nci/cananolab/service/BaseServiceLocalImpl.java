@@ -28,14 +28,15 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.hibernate.FetchMode;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Property;
 
 public abstract class BaseServiceLocalImpl implements BaseService
 {
-	protected Logger logger = Logger.getLogger(BaseServiceLocalImpl.class);
+	protected Logger logger = LogManager.getLogger(BaseServiceLocalImpl.class);
 	protected FileUtils fileUtils = new FileUtils();
 	
 	public abstract SpringSecurityAclService getSpringSecurityAclService();
