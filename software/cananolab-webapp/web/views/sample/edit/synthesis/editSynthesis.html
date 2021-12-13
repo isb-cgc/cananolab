@@ -215,9 +215,19 @@
                                             <tr>
                                                 <td width="10%" class="label">Inherent Functions</td>
                                                 <td width="90%" class="inherentFunctions">
-                                                    <span ng-if="!fe.Functions.length">N/A</span>
-                                                    <div ng-repeat="iFun in fe.Functions" class="inherentFunctions">
-                                                        {{iFun}}
+                                                    <span ng-if="!fe.InherentFunctions.length">N/A</span>
+                                                    <div ng-repeat="iFun in fe.InherentFunctions"
+                                                        class="inherentFunctions">
+                                                        <table cellpadding="0" cellspacing="0">
+                                                            <tr>
+                                                                <td width="15%" class="label">Type</td>
+                                                                <td width="85%">{{iFun.FunctionType}}</td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td width="15%" class="label">Description</td>
+                                                                <td width="85%">{{iFun.FunctionDescription}}</td>
+                                                            </tr>
+                                                        </table>
                                                     </div>
                                                 </td>
                                             </tr>
