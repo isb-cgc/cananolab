@@ -191,13 +191,25 @@ public class SimpleSynthesisBean {
                         functionalizationElement.put("AmountUnit", sfeBean.getDomain().getValueUnit());
                         functionalizationElement.put("MolecularFormula",sfeBean.getDomain().getMolecularFormula());
                         functionalizationElement.put("MolecularFormulaType", sfeBean.getDomain().getMolecularFormulaType());
-                        functionalizationElement.put("Functions", sfeBean.getFunctionDisplayNames());
+//                        functionalizationElement.put("Functions", sfeBean.getFunctionDisplayNames());
                         functionalizationElement.put("pubChemID", sfeBean.getDomain().getPubChemId());
                         functionalizationElement.put("pubChemLink", sfeBean.getPubChemLink());
                         functionalizationElement.put("pubChemDataSourceName", sfeBean.getDomain().getPubChemDatasourceName());
                         functionalizationElement.put("activationEffect", sfeBean.getDomain().getActivationEffect());
                         functionalizationElement.put("activationMethod", sfeBean.getDomain().getActivationMethod());
+                        List<Map<String, Object>> functions = new ArrayList<Map<String, Object>>();
+                        for(SfeInherentFunction sfe: sfeBean.getDomainEntity().getSfeInherentFunctions()){
+                            HashMap<String,Object> functionElement = new HashMap<String, Object>();
+                            SfeInherentFunctionBean sfifBean = new SfeInherentFunctionBean(sfe);
+                            functionElement.put("FunctionDescription", sfifBean.getDescription());
+                            functionElement.put("FunctionType", sfifBean.getType());
+                            functionElement.put("FunctionDisplayName", sfifBean.getDisplayName());
+                            functionElement.put("FunctionId", sfifBean.getDomain().getId());
 
+
+                            functions.add(functionElement);
+                        }
+                        functionalizationElement.put("InherentFunctions", functions);
                         functionalizationElements.add(functionalizationElement);
                     }
                     funcEntity.put("FunctionalizationElements", functionalizationElements);
