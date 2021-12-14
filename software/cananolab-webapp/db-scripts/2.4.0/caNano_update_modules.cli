@@ -3,7 +3,7 @@
 connect localhost:19990
 
 ### Database driver module
-module remove --name=com.mysql
+### module remove --name=com.mysql
 module add --name=com.mysql --resources=/local/content/caNanoLab/artifacts/mysql-connector-java-8.0.18.jar --dependencies=javax.api,javax.transaction.api
 
 ###  BouncyCastle

@@ -120,6 +120,10 @@ public class InitSynthesisSetup {
                 "pubchemDataSource", "pubchem", "data source",
                 "otherDataSource", true);
 
+        InitSetup.getInstance().getDefaultAndOtherTypesByLookup(request,
+                "activationMethods", "activation method", "type", "otherType",
+                true);
+
         InitSetup.getInstance().getDefaultAndOtherTypesByLookup(request,"amountUnits", "material", "value_unit", "otherValueUnit", true);
 
         InitSetup.getInstance().getDefaultAndOtherTypesByLookup(request,"formulaTypes", "molecular formula", "type", "otherType", true);

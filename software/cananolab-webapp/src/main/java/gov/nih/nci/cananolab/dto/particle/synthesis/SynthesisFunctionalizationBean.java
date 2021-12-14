@@ -1,8 +1,9 @@
 package gov.nih.nci.cananolab.dto.particle.synthesis;
 
 import gov.nih.nci.cananolab.domain.common.File;
-import gov.nih.nci.cananolab.domain.common.PointOfContact;
-import gov.nih.nci.cananolab.domain.particle.*;
+import gov.nih.nci.cananolab.domain.particle.SfeInherentFunction;
+import gov.nih.nci.cananolab.domain.particle.SynthesisFunctionalization;
+import gov.nih.nci.cananolab.domain.particle.SynthesisFunctionalizationElement;
 import gov.nih.nci.cananolab.dto.common.FileBean;
 import gov.nih.nci.cananolab.dto.common.ProtocolBean;
 import gov.nih.nci.cananolab.util.ClassUtils;

@@ -54,17 +54,14 @@ import gov.nih.nci.cananolab.system.query.hibernate.HQLCriteria;
 
 import gov.nih.nci.cananolab.util.Constants;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import org.apache.logging.log4j.LogManager;
-
 import org.apache.logging.log4j.Logger;
-import org.apache.lucene.util.BroadWord;
+import org.hibernate.StaleStateException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 
@@ -235,6 +232,7 @@ public class SynthesisServiceLocalImpl extends BaseServiceLocalImpl implements S
         try {
             CaNanoLabApplicationService appService = (CaNanoLabApplicationService) ApplicationServiceProvider
                     .getApplicationService();
+
             appService.delete(synthesis);
         }
         catch (Exception e) {
@@ -244,11 +242,11 @@ public class SynthesisServiceLocalImpl extends BaseServiceLocalImpl implements S
         }
     }
 
-    // TODO
-    public void deleteSynthesisFunctionalization(Long sampleId,
-                                                 SynthesisFunctionalization synthesisFunctionalization) throws SynthesisException, NoAccessException {
 
+    public List<String> deleteSynthesisFunctionalization(Long sampleId,
+                                                         SynthesisFunctionalization synthesisFunctionalization) throws SynthesisException, NoAccessException {
 
+        List<String> msgs = new ArrayList<String>();
             if (SpringSecurityUtil.getPrincipal() == null) {
                 throw new NoAccessException();
             }
@@ -259,6 +257,7 @@ public class SynthesisServiceLocalImpl extends BaseServiceLocalImpl implements S
                         deleteSynthesisFunctionalizationFile(synthesisFunctionalization,file);
                     }
                 }
+                synthesisFunctionalization.setFiles(null);
 
                 //Delete attached functionalization elements
                 if(synthesisFunctionalization.getSynthesisFunctionalizationElements() !=null){
@@ -267,22 +266,31 @@ public class SynthesisServiceLocalImpl extends BaseServiceLocalImpl implements S
                         deleteSynthesisFunctionalizationElement(sampleId, synthesisFunctionalization,element);
                     }
                 }
+                synthesisFunctionalization.setSynthesisFunctionalizationElements(null);
 
 
                 CaNanoLabApplicationService appService = (CaNanoLabApplicationService) ApplicationServiceProvider
                         .getApplicationService();
+
                 appService.delete(synthesisFunctionalization);
-            } catch(HibernateOptimisticLockingFailureException e) {
+            } catch(StaleStateException e) {
                 //row count error - is OK since we just deleted.
                 //TODO
+                msgs.add("Row count error on functionalization deletion");
+                logger.info("Row count error on functionalization deletion");
+            } catch(HibernateOptimisticLockingFailureException e){
+                //TODO
+                msgs.add("Row count error on functionalization deletion");
                 logger.info("Row count error on functionalization deletion");
             }
 
             catch (Exception e) {
                 String err = "Error deleting synthesis functionalization " + synthesisFunctionalization.getId();
+                msgs.add("Error deleting synthesis functionalization " + synthesisFunctionalization.getId());
                 logger.error(err, e);
                 throw new SynthesisException(err, e);
             }
+            return msgs;
 
 
     }
@@ -1069,6 +1077,7 @@ public class SynthesisServiceLocalImpl extends BaseServiceLocalImpl implements S
                     deleteSfeInherentFunction(sampleId, element, function);
                 }
             }
+//            synthesisFunctionalization.getSynthesisFunctionalizationElements().remove(element);
             appService.delete(element);
         }
         catch (Exception e) {
