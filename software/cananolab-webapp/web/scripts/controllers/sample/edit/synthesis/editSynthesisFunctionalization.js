@@ -26,6 +26,7 @@ var app = angular.module('angularApp')
       data = data['data']
       $scope.dropdowns = data;
       $scope.loader = false;
+      $scope.dropdowns['activationMethods'].push('other');
     }).catch(function (data, status, headers, config) {
       data = data['data']
     });
