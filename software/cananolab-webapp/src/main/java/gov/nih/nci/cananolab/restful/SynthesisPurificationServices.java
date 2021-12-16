@@ -612,8 +612,9 @@ public class SynthesisPurificationServices {
 //            if(editBean.getPurityBeingEdited()!=null){
 //                 simpleSynthesisPurificationBean = purificationBO.savePurityFile(editBean.getPurityBeingEdited(), editBean, httpRequest);
 //            }else
-//            {             simpleSynthesisPurificationBean = purificationBO.saveFile(editBean,
-//                    httpRequest);
+//            {
+            simpleSynthesisPurificationBean = purificationBO.saveFile(editBean,
+                    httpRequest);
 //            }
 
             return Response.ok(simpleSynthesisPurificationBean).header("Access-Control-Allow-Credentials", "true")
