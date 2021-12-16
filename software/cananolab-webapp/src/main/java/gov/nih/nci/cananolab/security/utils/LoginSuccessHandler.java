@@ -7,13 +7,14 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 
 public class LoginSuccessHandler implements AuthenticationSuccessHandler
 {
-	protected Logger logger = Logger.getLogger(LoginSuccessHandler.class);
+	protected Logger logger = LogManager.getLogger(LoginSuccessHandler.class);
 
 	@Override
 	public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response,

@@ -48,7 +48,8 @@ import java.util.List;
 import java.util.Set;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Component;
@@ -64,7 +65,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Component("characterizationBO")
 public class CharacterizationBO extends BaseAnnotationBO {
 	
-	private Logger logger = Logger.getLogger(CharacterizationBO.class);
+	private Logger logger = LogManager.getLogger(CharacterizationBO.class);
 	
 	@Autowired
 	private CharacterizationService characterizationService;

@@ -12,7 +12,8 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Propagation;
@@ -22,7 +23,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Component("accessibilityManager")
 public class AccessibilityManager
 {
-	private Logger logger = Logger.getLogger(AccessibilityManager.class);
+	private Logger logger = LogManager.getLogger(AccessibilityManager.class);
 	
 	@Autowired
 	private UserService userService;

@@ -3,7 +3,8 @@ package gov.nih.nci.cananolab.restful.util;
 import java.io.InputStream;
 import java.util.Properties;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 /**
  * 
@@ -12,7 +13,7 @@ import org.apache.log4j.Logger;
  */
 public class PropertyUtil {
 	
-	private static Logger logger = Logger.getLogger(PropertyUtil.class);
+	private static Logger logger = LogManager.getLogger(PropertyUtil.class);
 	
 	private static final String APPLICATION_PROPERTY_FILE = "application.properties";
 	private static final String COMMUNITY_PROPERTY_FILE = "community.properties";

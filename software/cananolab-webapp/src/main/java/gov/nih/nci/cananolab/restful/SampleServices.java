@@ -59,12 +59,13 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.Response;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 
 @Path("/sample")
 public class SampleServices {
-    private static final Logger logger = Logger.getLogger(SampleServices.class);
+    private static final Logger logger = LogManager.getLogger(SampleServices.class);
     private String spc = "                                                                                                                                            ";
 
     @Autowired

@@ -55,7 +55,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import org.apache.commons.validator.EmailValidator;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Component;
@@ -73,7 +74,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Component("sampleBO")
 public class SampleBO extends BaseAnnotationBO {
 
-	private static Logger logger = Logger.getLogger(SampleBO.class);
+	private static Logger logger = LogManager.getLogger(SampleBO.class);
 
 	@Autowired
 	private DataAvailabilityService dataAvailabilityServiceDAO;

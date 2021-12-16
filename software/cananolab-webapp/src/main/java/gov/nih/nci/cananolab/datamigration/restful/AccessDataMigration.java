@@ -13,7 +13,8 @@ import javax.ws.rs.container.TimeoutHandler;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.Response;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import gov.nih.nci.cananolab.datamigration.service.MigrateDataService;
@@ -24,7 +25,7 @@ import gov.nih.nci.cananolab.security.enums.SecureClassesEnum;
 @Path("/datamigration")
 public class AccessDataMigration 
 {
-	private static final Logger logger = Logger.getLogger(AccessDataMigration.class);
+	private static final Logger logger = LogManager.getLogger(AccessDataMigration.class);
 
 	@GET
 	@Path("/migrateuseraccounts")

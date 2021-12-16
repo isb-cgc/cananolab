@@ -2,7 +2,8 @@ package gov.nih.nci.cananolab.security.service;
 
 import java.util.List;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -13,7 +14,7 @@ import gov.nih.nci.cananolab.util.StringUtils;
 @Component("groupService")
 public class GroupServiceImpl implements GroupService
 {
-	protected Logger logger = Logger.getLogger(GroupServiceImpl.class);
+	protected Logger logger = LogManager.getLogger(GroupServiceImpl.class);
 	
 	@Autowired
 	private GroupDao groupDao;

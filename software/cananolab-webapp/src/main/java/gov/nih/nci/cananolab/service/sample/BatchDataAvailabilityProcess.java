@@ -13,7 +13,8 @@ import gov.nih.nci.cananolab.util.ClassUtils;
 
 import java.util.List;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 /**
  * This class handles batch data availability generation in a thread
@@ -28,7 +29,7 @@ public class BatchDataAvailabilityProcess extends LongRunningProcess {
 
 	private DataAvailabilityService dataAvailabilityService;
 	private String batchOption;
-	private Logger logger = Logger.getLogger(BatchDataAvailabilityProcess.class);
+	private Logger logger = LogManager.getLogger(BatchDataAvailabilityProcess.class);
 	private List<String> sampleIds = null; // sample Ids that need to run batch
 
 	/**

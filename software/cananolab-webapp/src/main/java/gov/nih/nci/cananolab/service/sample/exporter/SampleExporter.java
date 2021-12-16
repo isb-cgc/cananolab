@@ -19,7 +19,8 @@ import java.io.OutputStream;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.apache.poi.hssf.usermodel.HSSFCellStyle;
 import org.apache.poi.hssf.usermodel.HSSFFont;
 import org.apache.poi.hssf.usermodel.HSSFRow;
@@ -34,7 +35,7 @@ import org.apache.poi.hssf.util.HSSFColor;
  *
  */
 public class SampleExporter {
-	private static Logger logger = Logger.getLogger(SampleExporter.class);
+	private static Logger logger = LogManager.getLogger(SampleExporter.class);
 
 	/**
 	 * Export advance sample summary report as Excel spread sheet.

@@ -10,7 +10,7 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.Response;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
 
 import gov.nih.nci.cananolab.dto.common.DataReviewStatusBean;
 import gov.nih.nci.cananolab.restful.core.ManageResultBO;
@@ -21,10 +21,11 @@ import gov.nih.nci.cananolab.security.utils.SpringSecurityUtil;
 import gov.nih.nci.cananolab.service.common.LongRunningProcess;
 import gov.nih.nci.cananolab.ui.form.GenerateBatchDataAvailabilityForm;
 import gov.nih.nci.cananolab.util.Constants;
+import org.apache.logging.log4j.Logger;
 
 @Path("/curation")
 public class CurationServices {
-	private static final Logger logger = Logger.getLogger(CurationServices.class);
+	private static final Logger logger = LogManager.getLogger(CurationServices.class);
 
 	@GET
 	@Path("/reviewData")

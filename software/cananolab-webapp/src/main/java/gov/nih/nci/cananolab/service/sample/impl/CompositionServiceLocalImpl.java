@@ -41,8 +41,9 @@ import java.util.HashSet;
 import java.util.List;
 
 import gov.nih.nci.cananolab.util.Constants;
-import org.apache.log4j.Hierarchy;
-import org.apache.log4j.Logger;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -54,7 +55,7 @@ import org.springframework.stereotype.Component;
  */
 @Component("compositionService")
 public class CompositionServiceLocalImpl extends BaseServiceLocalImpl implements CompositionService {
-	private static Logger logger = Logger.getLogger(CompositionServiceLocalImpl.class);
+	private static Logger logger = LogManager.getLogger(CompositionServiceLocalImpl.class);
 
 	@Autowired
 	private SpringSecurityAclService springSecurityAclService;

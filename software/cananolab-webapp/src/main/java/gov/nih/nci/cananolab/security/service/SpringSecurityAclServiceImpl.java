@@ -5,7 +5,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.PermissionEvaluator;
 import org.springframework.security.acls.domain.BasePermission;
@@ -30,7 +31,7 @@ import gov.nih.nci.cananolab.util.StringUtils;
 @Component("springSecurityAclService")
 public class SpringSecurityAclServiceImpl implements SpringSecurityAclService
 {
-	private static Logger logger = Logger.getLogger(AclOperationServiceImpl.class);
+	private static Logger logger = LogManager.getLogger(AclOperationServiceImpl.class);
 
 	@Autowired
 	private AclOperationService aclOperationService;

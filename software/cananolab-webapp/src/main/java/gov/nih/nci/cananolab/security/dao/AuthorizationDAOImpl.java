@@ -171,6 +171,7 @@ import java.util.regex.Pattern;
 import javax.security.auth.Subject;
 import javax.security.auth.login.LoginException;
 
+import org.apache.logging.log4j.Logger;
 import org.hibernate.Criteria;
 import org.hibernate.HibernateException;
 import org.hibernate.PropertyValueException;
@@ -184,7 +185,7 @@ import org.hibernate.exception.ConstraintViolationException;
 import org.hibernate.exception.GenericJDBCException;
 
 import org.apache.commons.configuration.DataConfiguration;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
 
 
 /**
@@ -193,12 +194,12 @@ import org.apache.log4j.Logger;
  */
 public class AuthorizationDAOImpl implements AuthorizationDAO {
 
-	static final Logger log = Logger.getLogger(AuthorizationDAOImpl.class.getName());
+	static final Logger log = LogManager.getLogger(AuthorizationDAOImpl.class.getName());
 
 	/**
 	 * auditLog is an instance of Logger , which is used for Audit Logging
 	 */
-	private static final Logger auditLog = Logger.getLogger("CSM.Audit.Logging.Event.Authorization");
+	private static final Logger auditLog = LogManager.getLogger("CSM.Audit.Logging.Event.Authorization");
 
 
 	private SessionFactory sf = null;

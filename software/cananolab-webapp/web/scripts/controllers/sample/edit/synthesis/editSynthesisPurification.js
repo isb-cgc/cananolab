@@ -353,6 +353,8 @@
               data = data['data']
               console.log('done')
               $scope.purification = data;
+              $scope.fileArray=angular.copy(data['fileElements']);
+
               $scope.purificationCopy = angular.copy($scope.purification);
             }).
                 catch (function(data) {
@@ -1528,4 +1530,32 @@
 
 
       // end finding section code //
+
+    // removes file //
+    $scope.removeFile = function(id) {
+      if (confirm("Are you sure you want to delete?")) {
+        for (var x=0; x<$scope.fileArray.length; x++) {
+          if ($scope.fileArray[x].id==id) {
+            $scope.purification.fileBeingEdited=$scope.fileArray[x];
+            $scope.fileArray.splice(x,1);
+          };
+        }; 
+        $scope.fileFormIndex=null;
+        $scope.purification.fileElements = $scope.fileArray;
+        $http({
+          method: 'POST',
+          url: '/caNanoLab/rest/synthesisPurification/removeFile',
+          data: $scope.purification
+        }).
+        then(function (data, status, headers, config) {
+          data = data['data'];
+          $scope.purifucation = data;
+          $scope.purificationCopy = angular.copy($scope.purification);                 
+          $scope.fileArray=angular.copy($scope.purification.fileElements);
+        }).
+        catch(function (data, status, headers, config) {
+          data = data['data']
+        });          
+      };      
+    };        
     });

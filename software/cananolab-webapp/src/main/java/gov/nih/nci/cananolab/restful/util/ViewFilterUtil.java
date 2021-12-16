@@ -7,9 +7,10 @@ import com.fasterxml.jackson.databind.ser.impl.SimpleBeanPropertyFilter;
 import com.fasterxml.jackson.databind.ser.impl.SimpleFilterProvider;
 import java.util.List;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 //import org.codehaus.jackson.map.ObjectMapper;
 //import org.codehaus.jackson.map.ObjectWriter;
 //import org.codehaus.jackson.map.annotate.JsonFilter;
@@ -19,7 +20,7 @@ import org.apache.log4j.Logger;
 
 
 public class ViewFilterUtil {
-	private static Logger logger = Logger.getLogger(ViewFilterUtil.class);
+	private static Logger logger = LogManager.getLogger(ViewFilterUtil.class);
 	
 	/**
 	 * Get an inclusive jackson object writer for writing a set of named fields of an object

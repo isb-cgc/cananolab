@@ -3,13 +3,12 @@
 connect localhost:19990
 
 ### Database driver module
-module remove --name=com.mysql
+### module remove --name=com.mysql
 module add --name=com.mysql --resources=/local/content/caNanoLab/artifacts/mysql-connector-java-8.0.18.jar --dependencies=javax.api,javax.transaction.api
-
 
 ###  BouncyCastle
 module remove --name=org.bouncycastle
-module add --name=org.bouncycastle --resources=/local/content/caNanoLab/artifacts/bcprov-jdk15on-1.66.jar --dependencies=javax.api
+module add --name=org.bouncycastle --resources=/local/content/caNanoLab/artifacts/bcprov-jdk15on-1.69.jar --dependencies=javax.api
 
 ### CSM security module
 module remove --name=gov.nih.nci.security

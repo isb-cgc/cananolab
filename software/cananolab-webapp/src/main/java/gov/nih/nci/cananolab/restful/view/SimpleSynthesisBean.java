@@ -1,12 +1,14 @@
 package gov.nih.nci.cananolab.restful.view;
 
 import gov.nih.nci.cananolab.domain.common.PurityColumnHeader;
+import gov.nih.nci.cananolab.domain.particle.SfeInherentFunction;
 import gov.nih.nci.cananolab.domain.particle.SmeInherentFunction;
 import gov.nih.nci.cananolab.dto.common.ColumnHeader;
 import gov.nih.nci.cananolab.dto.common.FileBean;
 import gov.nih.nci.cananolab.dto.common.PurificationConfigBean;
 import gov.nih.nci.cananolab.dto.common.PurityRow;
 import gov.nih.nci.cananolab.dto.common.table.PurityTableCell;
+import gov.nih.nci.cananolab.dto.particle.synthesis.SfeInherentFunctionBean;
 import gov.nih.nci.cananolab.dto.particle.synthesis.SmeInherentFunctionBean;
 import gov.nih.nci.cananolab.dto.particle.synthesis.SynthesisBean;
 import gov.nih.nci.cananolab.dto.particle.synthesis.SynthesisFunctionalizationBean;
@@ -20,7 +22,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 public class SimpleSynthesisBean {
 //    Long id;
@@ -32,7 +35,7 @@ public class SimpleSynthesisBean {
     Long sampleId;
 
     List<String> errors;
-    private Logger logger = Logger.getLogger(SimpleSynthesisBean.class);
+    private Logger logger = LogManager.getLogger(SimpleSynthesisBean.class);
 //    public MultiMap getSynthesisMaterials() {
 //        return synthesisMaterials;
 //    }
@@ -191,13 +194,25 @@ public class SimpleSynthesisBean {
                         functionalizationElement.put("AmountUnit", sfeBean.getDomain().getValueUnit());
                         functionalizationElement.put("MolecularFormula",sfeBean.getDomain().getMolecularFormula());
                         functionalizationElement.put("MolecularFormulaType", sfeBean.getDomain().getMolecularFormulaType());
-                        functionalizationElement.put("Functions", sfeBean.getFunctionDisplayNames());
+//                        functionalizationElement.put("Functions", sfeBean.getFunctionDisplayNames());
                         functionalizationElement.put("pubChemID", sfeBean.getDomain().getPubChemId());
                         functionalizationElement.put("pubChemLink", sfeBean.getPubChemLink());
                         functionalizationElement.put("pubChemDataSourceName", sfeBean.getDomain().getPubChemDatasourceName());
                         functionalizationElement.put("activationEffect", sfeBean.getDomain().getActivationEffect());
                         functionalizationElement.put("activationMethod", sfeBean.getDomain().getActivationMethod());
+                        List<Map<String, Object>> functions = new ArrayList<Map<String, Object>>();
+                        for(SfeInherentFunction sfe: sfeBean.getDomainEntity().getSfeInherentFunctions()){
+                            HashMap<String,Object> functionElement = new HashMap<String, Object>();
+                            SfeInherentFunctionBean sfifBean = new SfeInherentFunctionBean(sfe);
+                            functionElement.put("FunctionDescription", sfifBean.getDescription());
+                            functionElement.put("FunctionType", sfifBean.getType());
+                            functionElement.put("FunctionDisplayName", sfifBean.getDisplayName());
+                            functionElement.put("FunctionId", sfifBean.getDomain().getId());
 
+
+                            functions.add(functionElement);
+                        }
+                        functionalizationElement.put("InherentFunctions", functions);
                         functionalizationElements.add(functionalizationElement);
                     }
                     funcEntity.put("FunctionalizationElements", functionalizationElements);

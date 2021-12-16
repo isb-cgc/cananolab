@@ -25,7 +25,8 @@ import java.util.SortedSet;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.directwebremoting.WebContext;
 import org.directwebremoting.WebContextFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,7 +38,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Component("characterizationManager")
 public class CharacterizationManager
 {
-	private final static Logger logger = Logger.getLogger(CharacterizationManager.class);
+	private final static Logger logger = LogManager.getLogger(CharacterizationManager.class);
 	
 	@Autowired
 	private CharacterizationService characterizationService;

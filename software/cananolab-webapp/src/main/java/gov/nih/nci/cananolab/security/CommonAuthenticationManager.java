@@ -132,8 +132,8 @@ import javax.security.auth.login.LoginContext;
 import javax.security.auth.login.LoginException;
 import javax.security.auth.spi.LoginModule;
 
-import org.apache.log4j.Logger;
-
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 
 /**
@@ -151,8 +151,8 @@ import org.apache.log4j.Logger;
  */
 public class CommonAuthenticationManager implements AuthenticationManager{
 
-	private static final Logger log = Logger.getLogger(CommonAuthenticationManager.class);
-	private static final Logger auditLog = Logger.getLogger("CSM.Audit.Logging.Event.Authentication");
+	private static final Logger log = LogManager.getLogger(CommonAuthenticationManager.class);
+	private static final Logger auditLog = LogManager.getLogger("CSM.Audit.Logging.Event.Authentication");
 
 
 	private String applicationContextName = null;

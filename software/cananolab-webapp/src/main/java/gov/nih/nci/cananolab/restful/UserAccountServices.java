@@ -17,7 +17,7 @@ import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.Response;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
 
 import gov.nih.nci.cananolab.restful.useraccount.UserAccountBO;
 import gov.nih.nci.cananolab.restful.util.CommonUtil;
@@ -25,11 +25,12 @@ import gov.nih.nci.cananolab.security.CananoUserDetails;
 import gov.nih.nci.cananolab.security.utils.SpringSecurityUtil;
 import gov.nih.nci.cananolab.util.Constants;
 import gov.nih.nci.cananolab.util.StringUtils;
+import org.apache.logging.log4j.Logger;
 
 @Path("/useraccount")
 public class UserAccountServices 
 {
-	private static final Logger logger = Logger.getLogger(UserAccountServices.class);
+	private static final Logger logger = LogManager.getLogger(UserAccountServices.class);
 
 	@GET
 	@Path("/read")

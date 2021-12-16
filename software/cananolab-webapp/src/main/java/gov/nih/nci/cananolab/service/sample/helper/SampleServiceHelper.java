@@ -47,7 +47,8 @@ import java.util.List;
 import java.util.Set;
 import java.util.SortedSet;
 import java.util.TreeSet;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.hibernate.FetchMode;
 import org.hibernate.criterion.CriteriaSpecification;
 import org.hibernate.criterion.Criterion;
@@ -74,7 +75,7 @@ import org.springframework.stereotype.Component;
 @Component("sampleServiceHelper")
 public class SampleServiceHelper
 {
-	private static Logger logger = Logger.getLogger(SampleServiceHelper.class);
+	private static Logger logger = LogManager.getLogger(SampleServiceHelper.class);
 
 	@Autowired
 	private AclDao aclDao;

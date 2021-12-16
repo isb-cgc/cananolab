@@ -1,5 +1,6 @@
 
 <div class="spacer">
+
     <form novalidate="" class="ng-pristine ng-valid">
         <table class="contentTitle" width="100%" border="0" summary="layout">
             <tbody>
@@ -133,9 +134,58 @@
                                                 </td>                                                                                              
                                             </tr>
                                             <tr>
+                                                <td width="10%">
+                                                    <label>Activation Method</label>
+                                                </td>
+                                                <td width="40%">
+                                                    <div id="feaMethodPrompt">
+                                                        <select ng-model="functionalizationElement.activationMethod"
+                                                            ng-options="o as o for o in dropdowns.activationMethods">                                  
+                                                        </select>
+                                                        <div ng-if="functionalizationElement.activationMethod=='other'">
+                                                            <table cellspacing="5" cellpadding="0" border="0" width="100%" class="promptbox" summary="layout">
+                                                                <tbody>
+                                                                <tr>
+                                                                    <td class="cellLabel">
+                                                                        <label for="textFile" category="">New Activation Method:</label>
+                                                                    </td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td>
+                                                                        <input type="text" id="textFile" ng-model='localForm.otherCategoryText' class="promptbox">
+                                                                    </td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td style="text-align: right">
+                                        
+                                                                                <button type="button" class="btn-canano btn-canano-primary btn-canano-xs" ng-click="functionalizationElement.activationMethod=localForm.otherCategoryText; dropdowns.activationMethods.push(localForm.otherCategoryText);">
+                                                                                    Add
+                                                                                </button>   
+                                        
+                                                                                <button type="button" class="btn-canano btn-canano-default btn-canano-xs" ng-click="functionalizationElement.activationMethodType='';">
+                                                                                    Cancel
+                                                                                </button>                                                             
+                                                                    </td>
+                                                                </tr>
+                                                                </tbody>
+                                                            </table>
+                                                        </div>
+                                                    </div>
+                                                </td>                                             
+                                                <td width="10%">
+                                                    <label>Activation Effect</label>
+                                                </td>  
+                                                <td width="40%">
+                                                    <input type="text" size="35"
+                                                        value="{{functionalizationElement.activationEffect}}"
+                                                        data-ng-model="functionalizationElement.activationEffect">
+                                                </td>                                                                                              
+                                            </tr>                                            
+                                            
+                                            <tr>
                                                 <td width="10%"><label>Amount</label></td>
                                                 <td width="40%">
-                                                    <input type="text" value="12" data-ng-model="functionalizationElement.value">
+                                                    <input type="number" value="12" data-ng-model="functionalizationElement.value">
                                                 </td>
                                                 <td width="10%"><label>Amount Unit</label></td>
                                                 <td width="40%">
@@ -374,7 +424,12 @@
                                             </td>
                                         </tr>
                                         <tr>
-                                            <td colspan="2" class="saveSynthesis">
+                                            <td>
+                                                <button type="button" class="btn-canano btn-canano-danger btn-canano-xs" ng-click="removeFile(currentFile.id);" id="deleteFile" ng-show="fileFormIndex!=-1">
+                                                    Delete
+                                                </button>     
+                                            </td>
+                                            <td class="saveSynthesis">
                                                 <button class="btn-canano btn-canano-default btn-canano-xs" ng-click="cancelFile()">Cancel</button>
                                                 <button class="btn-canano btn-canano-primary btn-canano-xs" ng-disabled="getFileConditions()" ng-click="saveFile()">Save File</button>
 

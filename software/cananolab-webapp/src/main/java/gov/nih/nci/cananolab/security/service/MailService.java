@@ -20,11 +20,12 @@ import javax.mail.Transport;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 
 public class MailService {
-	private static Logger logger = Logger.getLogger(MailService.class);
+	private static Logger logger = LogManager.getLogger(MailService.class);
 
 	private static final String CANANOLAB_USER_MAILING_LIST = "CANANOLAB-USERS-L@LIST.NIH.GOV";
 	private static final String MAILING_LIST="LISTSERV@LIST.NIH.GOV";

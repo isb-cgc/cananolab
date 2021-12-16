@@ -3,7 +3,8 @@ package gov.nih.nci.cananolab.security.service;
 import gov.nih.nci.cananolab.security.enums.CaNanoRoleEnum;
 import gov.nih.nci.cananolab.util.StringUtils;
 import java.util.List;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.acls.domain.GrantedAuthoritySid;
 import org.springframework.security.acls.domain.ObjectIdentityImpl;
@@ -21,7 +22,7 @@ import org.springframework.stereotype.Component;
 //@Transactional(propagation=Propagation.REQUIRED)
 public class AclOperationServiceImpl implements AclOperationService
 {
-	private static Logger logger = Logger.getLogger(AclOperationServiceImpl.class);
+	private static Logger logger = LogManager.getLogger(AclOperationServiceImpl.class);
 
 	@Autowired
 	private MutableAclService aclService;

@@ -14,7 +14,8 @@ package gov.nih.nci.cananolab.system.dao.orm;
 import gov.nih.nci.cananolab.system.dao.DAOException;
 import java.io.Serializable;
 import java.util.List;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.hibernate.JDBCException;
 import org.hibernate.SQLQuery;
 import org.hibernate.Session;
@@ -32,7 +33,7 @@ import org.springframework.orm.hibernate3.HibernateTemplate;
  * @author Satish Patel, Dan Dumitru
  */
 public class CaNanoLabORMDAOImpl extends WritableORMDAOImpl implements CaNanoLabORMDAO {
-	private static Logger log = Logger.getLogger(CaNanoLabORMDAOImpl.class.getName());
+	private static Logger log = LogManager.getLogger(CaNanoLabORMDAOImpl.class.getName());
 
 
 	public Object load(Class domainClass, Serializable id) {

@@ -25,13 +25,14 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.collections.MultiMap;
 import org.apache.commons.collections.map.MultiValueMap;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 public class SimpleCharacterizationSummaryViewBean {
 	
 	long parentSampleId;
 	
-	private Logger logger = Logger.getLogger(SimpleCharacterizationSummaryViewBean.class);
+	private Logger logger = LogManager.getLogger(SimpleCharacterizationSummaryViewBean.class);
 	
 	List<SimpleCharacterizationsByTypeBean> charByTypeBeans = new ArrayList<SimpleCharacterizationsByTypeBean>();
 	List<String> errors = new ArrayList<String>();

@@ -14,7 +14,7 @@ import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.Response;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
 
 import gov.nih.nci.cananolab.dto.common.DataReviewStatusBean;
 import gov.nih.nci.cananolab.dto.common.ProtocolBean;
@@ -26,11 +26,12 @@ import gov.nih.nci.cananolab.restful.view.edit.SimpleSubmitProtocolBean;
 import gov.nih.nci.cananolab.security.utils.SpringSecurityUtil;
 import gov.nih.nci.cananolab.ui.form.SearchProtocolForm;
 import gov.nih.nci.cananolab.util.Constants;
+import org.apache.logging.log4j.Logger;
 
 @Path("/protocol")
 public class ProtocolServices
 {
-	private static final Logger logger = Logger.getLogger(ProtocolServices.class);
+	private static final Logger logger = LogManager.getLogger(ProtocolServices.class);
 
 	@GET
 	@Path("/setup")

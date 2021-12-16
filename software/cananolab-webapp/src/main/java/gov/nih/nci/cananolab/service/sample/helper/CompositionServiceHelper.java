@@ -24,7 +24,8 @@ import gov.nih.nci.cananolab.system.applicationservice.client.ApplicationService
 import gov.nih.nci.cananolab.system.query.hibernate.HQLCriteria;
 import java.util.ArrayList;
 import java.util.List;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.hibernate.FetchMode;
 import org.hibernate.criterion.CriteriaSpecification;
 import org.hibernate.criterion.DetachedCriteria;
@@ -41,7 +42,7 @@ import org.springframework.stereotype.Component;
 @Component("compositionServiceHelper")
 public class CompositionServiceHelper
 {
-	private static Logger logger = Logger.getLogger(CompositionServiceHelper.class);
+	private static Logger logger = LogManager.getLogger(CompositionServiceHelper.class);
 	
 	@Autowired
 	private SpringSecurityAclService springSecurityAclService;

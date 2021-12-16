@@ -15,7 +15,8 @@ import gov.nih.nci.cananolab.service.publication.PublicationService;
 import gov.nih.nci.cananolab.service.sample.CharacterizationService;
 import gov.nih.nci.cananolab.service.sample.SampleService;
 import gov.nih.nci.cananolab.util.DateUtils;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
 import org.springframework.scheduling.quartz.QuartzJobBean;
@@ -28,7 +29,7 @@ import org.springframework.scheduling.quartz.QuartzJobBean;
  */
 public class PublicDataCountJob extends QuartzJobBean
 {
-	private static Logger logger = Logger.getLogger(PublicDataCountJob.class.getName());
+	private static Logger logger = LogManager.getLogger(PublicDataCountJob.class.getName());
 	
 	private static PublicDataCountBean dataCounts;
 

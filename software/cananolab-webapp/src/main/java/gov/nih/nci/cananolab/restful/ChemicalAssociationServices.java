@@ -14,7 +14,7 @@ import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.Response;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
 
 import gov.nih.nci.cananolab.dto.particle.composition.BaseCompositionEntityBean;
 import gov.nih.nci.cananolab.dto.particle.composition.ComposingElementBean;
@@ -26,11 +26,12 @@ import gov.nih.nci.cananolab.restful.view.edit.SimpleChemicalAssociationBean;
 import gov.nih.nci.cananolab.restful.view.edit.SimpleComposingElementBean;
 import gov.nih.nci.cananolab.security.utils.SpringSecurityUtil;
 import gov.nih.nci.cananolab.util.Constants;
+import org.apache.logging.log4j.Logger;
 
 @Path("/chemicalAssociation")
 public class ChemicalAssociationServices
 {
-	private static final Logger logger = Logger.getLogger(ChemicalAssociationServices.class);
+	private static final Logger logger = LogManager.getLogger(ChemicalAssociationServices.class);
 
 	@GET
 	@Path("/setup")

@@ -20,7 +20,8 @@ import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MultivaluedMap;
 import javax.ws.rs.core.Response;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.jboss.resteasy.plugins.providers.multipart.InputPart;
 import org.jboss.resteasy.plugins.providers.multipart.MultipartInput;
 
@@ -50,7 +51,7 @@ import java.io.ByteArrayOutputStream;
 @Path("/core")
 public class CoreServices
 {
-	private static final Logger logger = Logger.getLogger(CoreServices.class);
+	private static final Logger logger = LogManager.getLogger(CoreServices.class);
 
 	@GET
 	@Path("/initSetup")

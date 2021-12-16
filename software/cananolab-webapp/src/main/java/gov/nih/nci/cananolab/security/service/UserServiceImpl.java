@@ -8,7 +8,8 @@ import gov.nih.nci.cananolab.util.StringUtils;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;
@@ -17,7 +18,7 @@ import org.springframework.stereotype.Component;
 @Component("userService")
 public class UserServiceImpl implements UserService
 {
-	protected Logger logger = Logger.getLogger(UserServiceImpl.class);
+	protected Logger logger = LogManager.getLogger(UserServiceImpl.class);
 	
 	@Autowired
 	private UserDao userDao;

@@ -29,7 +29,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.hibernate.FetchMode;
 import org.hibernate.criterion.CriteriaSpecification;
 import org.hibernate.criterion.DetachedCriteria;
@@ -46,7 +47,7 @@ import org.springframework.stereotype.Component;
 @Component("characterizationServiceHelper")
 public class CharacterizationServiceHelper
 {
-	private static Logger logger = Logger.getLogger(CharacterizationServiceHelper.class);
+	private static Logger logger = LogManager.getLogger(CharacterizationServiceHelper.class);
 	
 	@Autowired
 	private SpringSecurityAclService springSecurityAclService;

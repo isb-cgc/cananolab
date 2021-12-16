@@ -25,7 +25,8 @@ import java.util.Set;
 import java.util.SortedSet;
 import java.util.TreeSet;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.hibernate.FetchMode;
 import org.hibernate.criterion.CriteriaSpecification;
 import org.hibernate.criterion.Criterion;
@@ -48,7 +49,7 @@ import org.springframework.stereotype.Component;
 @Component("publicationServiceHelper")
 public class PublicationServiceHelper
 {
-	private Logger logger = Logger.getLogger(PublicationServiceHelper.class);
+	private Logger logger = LogManager.getLogger(PublicationServiceHelper.class);
 	
 	@Autowired
 	private SpringSecurityAclService springSecurityAclService;

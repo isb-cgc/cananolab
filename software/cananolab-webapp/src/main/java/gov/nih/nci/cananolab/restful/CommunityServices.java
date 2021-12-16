@@ -13,7 +13,7 @@ import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.Response;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
 
 import gov.nih.nci.cananolab.dto.common.CollaborationGroupBean;
 import gov.nih.nci.cananolab.restful.community.CollaborationGroupBO;
@@ -24,11 +24,12 @@ import gov.nih.nci.cananolab.security.AccessControlInfo;
 import gov.nih.nci.cananolab.security.utils.SpringSecurityUtil;
 import gov.nih.nci.cananolab.util.Constants;
 import gov.nih.nci.cananolab.util.StringUtils;
+import org.apache.logging.log4j.Logger;
 
 @Path("/community")
 public class CommunityServices
 {	
-	private static final Logger logger = Logger.getLogger(CommunityServices.class);
+	private static final Logger logger = LogManager.getLogger(CommunityServices.class);
 	
 	@GET
 	@Path("/getCollaborationGroups")

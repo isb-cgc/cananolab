@@ -21,7 +21,8 @@ import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.hibernate.Hibernate;
 import org.springframework.aop.framework.Advised;
 
@@ -35,7 +36,7 @@ public class CaNanoLabApplicationServiceImpl extends WritableApplicationServiceI
 {
 	private ClassCache classCache;
 
-	private static Logger logger = Logger.getLogger(CaNanoLabApplicationServiceImpl.class.getName());
+	private static Logger logger = LogManager.getLogger(CaNanoLabApplicationServiceImpl.class.getName());
 
 	public CaNanoLabApplicationServiceImpl(ClassCache classCache) {
 		super(classCache);

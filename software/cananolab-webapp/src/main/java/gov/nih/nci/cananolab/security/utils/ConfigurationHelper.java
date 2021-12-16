@@ -34,7 +34,8 @@ import org.apache.commons.configuration.DatabaseConfiguration;
 import org.apache.commons.configuration.event.ConfigurationErrorListener;
 import org.apache.commons.configuration.event.ConfigurationListener;
 import org.apache.commons.lang.StringUtils;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.hibernate.SessionFactory;
 
 import org.hibernate.impl.SessionFactoryImpl;
@@ -57,7 +58,7 @@ public class ConfigurationHelper {
         private static DataConfiguration dataConfig = null;
         private static ConfigurationHelper configHelper= null;
         private static final String CSM_CONTEXT_NAME = "csmupt";
-        private static final Logger log = Logger.getLogger(ConfigurationHelper.class);
+        private static final Logger log = LogManager.getLogger(ConfigurationHelper.class);
         
         
 		private ConfigurationHelper(String applicationContextName)

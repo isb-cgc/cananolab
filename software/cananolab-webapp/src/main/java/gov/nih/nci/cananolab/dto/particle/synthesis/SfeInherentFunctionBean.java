@@ -24,7 +24,7 @@ public class  SfeInherentFunctionBean {
 
 
     public void setupDomain(){
-        //TODO write
+
         if(domain ==null){
             domain = new SfeInherentFunction();
         }

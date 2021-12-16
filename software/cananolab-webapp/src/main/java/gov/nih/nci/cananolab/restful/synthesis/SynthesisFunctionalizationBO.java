@@ -27,8 +27,17 @@ import gov.nih.nci.cananolab.ui.form.SynthesisForm;
 import gov.nih.nci.cananolab.util.Constants;
 import gov.nih.nci.cananolab.util.DateUtils;
 import gov.nih.nci.cananolab.util.StringUtils;
-import org.apache.log4j.Logger;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.IllegalFormatConversionException;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import org.apache.logging.log4j.LogManager;
 
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Component;
@@ -38,13 +47,13 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
-import java.util.*;
+
 
 @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
 @Component("synthesisFunctionalizationBO")
 public class SynthesisFunctionalizationBO extends BaseAnnotationBO {
 
-    Logger logger = Logger.getLogger(SynthesisFunctionalizationBO.class);
+    Logger logger = LogManager.getLogger(SynthesisFunctionalizationBO.class);
 
 
     @Autowired
@@ -214,7 +223,7 @@ public class SynthesisFunctionalizationBO extends BaseAnnotationBO {
                 synthesisFunctionalizationElement.setChemicalName(sSFEBean.getChemicalName());
                 synthesisFunctionalizationElement.setMolecularFormula(sSFEBean.getMolecularFormula());
                 synthesisFunctionalizationElement.setMolecularFormulaType(sSFEBean.getMolecularFormulaType());
-                synthesisFunctionalizationElement.setPubChemId(sSFEBean.getPubChemId());
+                synthesisFunctionalizationElement.setPubChemId(sSFEBean.getPubChemID());
                 synthesisFunctionalizationElement.setPubChemDatasourceName(sSFEBean.getPubChemDataSource());
                 synthesisFunctionalizationElement.setValue(sSFEBean.getValue());
                 synthesisFunctionalizationElement.setValueUnit(sSFEBean.getValueUnit());
@@ -427,9 +436,10 @@ public class SynthesisFunctionalizationBO extends BaseAnnotationBO {
         SynthesisFunctionalizationBean entityBean = transferSynthesisFunctionalizationBean(synthesisFunctionalizationBean, request);
         entityBean.setUpDomainEntity(SpringSecurityUtil.getLoggedInUserName());
         String sampleId = synthesisFunctionalizationBean.getSampleId();
-        synthesisService.deleteSynthesisFunctionalization(new Long(sampleId),entityBean.getDomainEntity());
+        msgs = synthesisService.deleteSynthesisFunctionalization(new Long(sampleId),entityBean.getDomainEntity());
 
-        msgs.add("success");
+        if(msgs.isEmpty()){
+        msgs.add("success");}
         return msgs;
     }
 

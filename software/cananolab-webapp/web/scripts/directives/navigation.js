@@ -22,10 +22,12 @@ var app = angular.module('angularApp')
       }, {
         'url': '/updatePublication',
         'name': 'PUBLICATION'
-      }, {
-        'url': '/editSynthesis',
-        'name': 'SYNTHESIS'
-      }, {
+      }
+      // , {
+      //   'url': '/editSynthesis',
+      //   'name': 'SYNTHESIS'
+      // }
+      , {
         'url': '/setupCharacterization',
         'alternativeUrl': '/editCharacterization',
         'name': 'CHARACTERIZATION'
@@ -78,10 +80,13 @@ var app = angular.module('angularApp')
       }, {
         'url': '/publication',
         'name': 'PUBLICATION'
-      }, {
-        'url': '/synthesis',
-        'name': 'SYNTHESIS'
-      }];
+      }
+      // ,{
+      //   'url': '/synthesis',
+      //   'name': 'SYNTHESIS'
+      // }
+    ];
+      
       $scope.testClick = function (uri) {
         console.log($location.search()['sampleId']);
         $location.path(uri).search({

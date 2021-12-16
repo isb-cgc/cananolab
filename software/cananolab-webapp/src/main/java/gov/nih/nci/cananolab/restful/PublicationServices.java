@@ -16,7 +16,7 @@ import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.Response;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
 
 import gov.nih.nci.cananolab.domain.common.Publication;
 import gov.nih.nci.cananolab.dto.common.DataReviewStatusBean;
@@ -35,10 +35,11 @@ import gov.nih.nci.cananolab.ui.form.PublicationForm;
 import gov.nih.nci.cananolab.ui.form.SearchPublicationForm;
 import gov.nih.nci.cananolab.util.Constants;
 import gov.nih.nci.cananolab.util.PropertyUtils;
+import org.apache.logging.log4j.Logger;
 
 @Path("/publication")
 public class PublicationServices {
-	private static final Logger logger = Logger.getLogger(PublicationServices.class);
+	private static final Logger logger = LogManager.getLogger(PublicationServices.class);
 
 	@GET
 	@Path("/summaryView")

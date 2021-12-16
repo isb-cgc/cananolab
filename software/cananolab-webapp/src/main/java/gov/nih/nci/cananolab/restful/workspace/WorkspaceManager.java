@@ -13,7 +13,8 @@ import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Component;
@@ -46,7 +47,7 @@ import gov.nih.nci.cananolab.util.StringUtils;
 @Component("workspaceManager")
 public class WorkspaceManager extends BaseAnnotationBO
 {
-	private static Logger logger = Logger.getLogger(WorkspaceManager.class);
+	private static Logger logger = LogManager.getLogger(WorkspaceManager.class);
 
 	@Autowired
 	private SpringSecurityAclService springSecurityAclService;

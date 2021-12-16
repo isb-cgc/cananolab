@@ -18,7 +18,7 @@ public class SimpleSynthesisFunctionalizationElementBean {
     private String molecularFormula;
     private String molecularFormulaType;
     private String pubChemDataSource;
-    private Long pubChemId;
+    private Long pubChemID;
     private String type;
     private Float value;
     private String valueUnit;
@@ -87,8 +87,8 @@ public class SimpleSynthesisFunctionalizationElementBean {
         return pubChemDataSource;
     }
 
-    public Long getPubChemId() {
-        return pubChemId;
+    public Long getPubChemID() {
+        return pubChemID;
     }
 
     public String getType() {
@@ -139,8 +139,8 @@ public class SimpleSynthesisFunctionalizationElementBean {
         this.pubChemDataSource = pubChemDatasourceName;
     }
 
-    public void setPubChemId(Long pubChemId) {
-        this.pubChemId = pubChemId;
+    public void setPubChemID(Long pubChemId) {
+        this.pubChemID = pubChemId;
     }
 
     public void setType(String type) {
@@ -167,7 +167,7 @@ public class SimpleSynthesisFunctionalizationElementBean {
                 ", molecularFormula='" + molecularFormula + '\'' +
                 ", molecularFormulaType='" + molecularFormulaType + '\'' +
                 ", pubChemDataSource='" + pubChemDataSource + '\'' +
-                ", pubChemId=" + pubChemId +
+                ", pubChemId=" + pubChemID +
                 ", type='" + type + '\'' +
                 ", value=" + value +
                 ", valueUnit='" + valueUnit + '\'' +

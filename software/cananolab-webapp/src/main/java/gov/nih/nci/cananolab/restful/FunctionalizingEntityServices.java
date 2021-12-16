@@ -23,14 +23,15 @@ import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.Response;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 @Path("/functionalizingEntity")
 public class FunctionalizingEntityServices {
 
-	private static final Logger logger = Logger.getLogger(FunctionalizingEntityServices.class);
+	private static final Logger logger = LogManager.getLogger(FunctionalizingEntityServices.class);
 	
 	@GET
 	@Path("/setup")
