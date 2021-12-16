@@ -116,6 +116,8 @@ jobs:
             - ./CONTRIBUTING.rst
             - ./package.json
             - ./my.conf.js
+            - ./app.yaml
+            - ./Dockerfile
   deploy_job:
     environment:
       TZ: "/usr/share/zoneinfo/America/Los_Angeles"
