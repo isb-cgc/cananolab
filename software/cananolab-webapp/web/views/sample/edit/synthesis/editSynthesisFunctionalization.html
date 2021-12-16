@@ -1,14 +1,6 @@
-<button ng-click="tempShow=!tempShow">debug</button>
-<div style="width:800px;" ng-show="tempShow">
-    <B>Functionalization Copy</B> - {{functionalization}} <br /><br />
-    <B>Functionalization</B> - {{functionalization}} <br /><br />
-    <B>Functionalization Element</B> - {{functionalizationElement}}<br /><br />
-    <B>Sample Id</B> - {{sampleId}}<br /><br />
-    <B>Data Id</B> - {{dataId}}<br /><br />
-    
-</div>
 
 <div class="spacer">
+
     <form novalidate="" class="ng-pristine ng-valid">
         <table class="contentTitle" width="100%" border="0" summary="layout">
             <tbody>
@@ -127,16 +119,73 @@
                                                 <td width="10%">
                                                     <label>PubChem Data Source</label>
                                                 </td>
-                                                <td width="90%" colspan="3">
+                                                <td width="40%">
                                                     <select ng-model="functionalizationElement.pubChemDataSource"
                                                         ng-options="o as o for o in dropdowns.pubChemDataSources">
                                                     </select>
                                                 </td>
+                                                <td width="10%">
+                                                    <label>PubChem Data Id</label>
+                                                </td>  
+                                                <td width="40%">
+                                                    <input type="text" size="35"
+                                                        value="{{functionalizationElement.pubChemID}}"
+                                                        data-ng-model="functionalizationElement.pubChemID">
+                                                </td>                                                                                              
                                             </tr>
+                                            <tr>
+                                                <td width="10%">
+                                                    <label>Activation Method</label>
+                                                </td>
+                                                <td width="40%">
+                                                    <div id="feaMethodPrompt">
+                                                        <select ng-model="functionalizationElement.activationMethod"
+                                                            ng-options="o as o for o in dropdowns.activationMethods">                                  
+                                                        </select>
+                                                        <div ng-if="functionalizationElement.activationMethod=='other'">
+                                                            <table cellspacing="5" cellpadding="0" border="0" width="100%" class="promptbox" summary="layout">
+                                                                <tbody>
+                                                                <tr>
+                                                                    <td class="cellLabel">
+                                                                        <label for="textFile" category="">New Activation Method:</label>
+                                                                    </td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td>
+                                                                        <input type="text" id="textFile" ng-model='localForm.otherCategoryText' class="promptbox">
+                                                                    </td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td style="text-align: right">
+                                        
+                                                                                <button type="button" class="btn-canano btn-canano-primary btn-canano-xs" ng-click="functionalizationElement.activationMethod=localForm.otherCategoryText; dropdowns.activationMethods.push(localForm.otherCategoryText);">
+                                                                                    Add
+                                                                                </button>   
+                                        
+                                                                                <button type="button" class="btn-canano btn-canano-default btn-canano-xs" ng-click="functionalizationElement.activationMethodType='';">
+                                                                                    Cancel
+                                                                                </button>                                                             
+                                                                    </td>
+                                                                </tr>
+                                                                </tbody>
+                                                            </table>
+                                                        </div>
+                                                    </div>
+                                                </td>                                             
+                                                <td width="10%">
+                                                    <label>Activation Effect</label>
+                                                </td>  
+                                                <td width="40%">
+                                                    <input type="text" size="35"
+                                                        value="{{functionalizationElement.activationEffect}}"
+                                                        data-ng-model="functionalizationElement.activationEffect">
+                                                </td>                                                                                              
+                                            </tr>                                            
+                                            
                                             <tr>
                                                 <td width="10%"><label>Amount</label></td>
                                                 <td width="40%">
-                                                    <input type="text" value="12" data-ng-model="functionalizationElement.value">
+                                                    <input type="number" value="12" data-ng-model="functionalizationElement.value">
                                                 </td>
                                                 <td width="10%"><label>Amount Unit</label></td>
                                                 <td width="40%">
@@ -273,7 +322,7 @@
                     </td>
                 </tr>
                 <tr>
-                    <td colspan="2" ng-show="functionalization.fileElements.length">
+                    <td colspan="2">
                         <table class="editTableWithGrid" align="center" width="95%">
                             <tr>
                                 <td class="cellLabel">
@@ -289,13 +338,12 @@
                                     Description
                                 </td>
                             </tr>
-                            <tr class="synthesisFiles" ng-repeat="file in functionalization.fileElements">
+                            <tr class="synthesisFiles" ng-repeat="file in fileArray">
                                 <td width="10%">
                                     {{file.type}}
                                 </td>
                                 <td width="20%">
-                                    <a href="#" target="_blank"
-                                        ng-href="{{file.urlExternal==true ? file.uri:'/caNanoLab/rest/sample/download?fileId='+file.id}}">{{file.title}}</a>
+                                    <a href="#" target="_blank" ng-href="{{file.urlExternal==true ? file.uri:'/caNanoLab/rest/sample/download?fileId='+file.id}}">{{file.title}}</a>
                                 </td>
                                 <td width="20%">
                                     {{file.keywordsStr}}
@@ -307,10 +355,12 @@
                                     <button type="button" class="btn-canano btn-canano-primary btn-canano-xs ng-click-active"
                                         ng-click="openFileForm($index, $parent.$index, file)">Edit</button>
                                 </td>
-                            </tr>
+                            </tr>    
                             <tr ng-show="fileFormIndex!=null">
-                                <td colspan="4">{{currentFile}}, {{fileObject}}
+                                <td colspan="5">
                                     <table class="editTableWithGrid form" align="center" width="95%">
+
+
                                         <tr ng-if="fileErrorMessage">
                                             <td colspan="2" class="fileErrorMessage">
                                                 <div>
@@ -318,37 +368,33 @@
                                                 </div>
                                             </td>
                                         </tr>
+
                                         <tr>
                                             <td width="25%">
-                                                <input type="radio" ng-model="currentFile.uriExternal" ng-value="false"
-                                                    name="uriExternal">
+                                                <input type="radio" ng-model="currentFile.uriExternal" ng-value="false" name="uriExternal">
                                                 <label for="external0">Upload</label>
                                             </td>
                                             <td width="75%">
-                                                <input type="radio" ng-model="currentFile.uriExternal" ng-value="true"
-                                                    name="uriExternal">
+                                                <input type="radio" ng-model="currentFile.uriExternal" ng-value="true" name="uriExternal">
                                                 <label for="external0">Enter File URL</label>
                                             </td>
                                         </tr>
                                         <tr>
                                             <td class="cellLabel">
-                                                <span
-                                                    ng-bind-html="currentFile.uriExternal ? 'External URL':'File'">Label</span>*
+                                                <span ng-bind-html="currentFile.uriExternal ? 'External URL':'File'">Label</span>*
                                             </td>
                                             <td>
-                                                <input type="file" id="uploadFile" file-model="fileObject"
-                                                    ng-show="!currentFile.uriExternal">
-                                                <input type="text" data-ng-model="currentFile.externalUrl"
-                                                    ng-if="currentFile.uriExternal" size="60">
+                                                <input type="file" id="uploadFile" file-model="fileObject" ng-show="!currentFile.uriExternal">
+
+                                                    <input type="text" data-ng-model="currentFile.externalUrl" ng-if="currentFile.uriExternal" size="60">
                                             </td>
                                         </tr>
                                         <tr>
-                                            <td class="cellLabel">
+                                            <td class="cellLabel"> 
                                                 File Type*
                                             </td>
                                             <td>
-                                                <select ng-model="currentFile.type"
-                                                    ng-options="o as o for o in dropdowns.fileTypes">
+                                                <select ng-model="currentFile.type" ng-options="o as o for o in dropdowns.fileTypes">
                                                 </select>
                                             </td>
                                         </tr>
@@ -357,8 +403,7 @@
                                                 File Title*
                                             </td>
                                             <td>
-                                                <input type="text" name="title" data-ng-model="currentFile.title"
-                                                    size="60">
+                                                <input type="text" name="title" data-ng-model="currentFile.title" size="60">
                                             </td>
                                         </tr>
                                         <tr>
@@ -366,8 +411,7 @@
                                                 Keywords
                                             </td>
                                             <td>
-                                                <textarea data-ng-model="currentFile.keywordsStr" cols="60" rows="3"
-                                                    id="fileKeywords" class="ng-valid ng-dirty"></textarea><br />
+                                                <textarea data-ng-model="currentFile.keywordsStr" cols="60" rows="3" id="fileKeywords" class="ng-valid ng-dirty"></textarea><br />
                                                 <em>(one word per line)</em>
                                             </td>
                                         </tr>
@@ -376,16 +420,18 @@
                                                 Description
                                             </td>
                                             <td>
-                                                <textarea ng-model="currentFile.description" cols="60" rows="3"
-                                                    id="fileDescription" class="ng-valid ng-dirty"></textarea>
+                                                <textarea ng-model="currentFile.description" cols="60" rows="3" id="fileDescription" class="ng-valid ng-dirty"></textarea>
                                             </td>
                                         </tr>
                                         <tr>
-                                            <td colspan="2" class="saveSynthesis">
-                                                <button class="btn-canano btn-canano-default btn-canano-xs"
-                                                    ng-click="cancelFile()">Cancel</button>
-                                                <button class="btn-canano btn-canano-primary btn-canano-xs" ng-disabled="getFileConditions()"
-                                                    ng-click="saveFile()">Save File</button>
+                                            <td>
+                                                <button type="button" class="btn-canano btn-canano-danger btn-canano-xs" ng-click="removeFile(currentFile.id);" id="deleteFile" ng-show="fileFormIndex!=-1">
+                                                    Delete
+                                                </button>     
+                                            </td>
+                                            <td class="saveSynthesis">
+                                                <button class="btn-canano btn-canano-default btn-canano-xs" ng-click="cancelFile()">Cancel</button>
+                                                <button class="btn-canano btn-canano-primary btn-canano-xs" ng-disabled="getFileConditions()" ng-click="saveFile()">Save File</button>
 
                                             </td>
                                         </tr>
@@ -396,7 +442,7 @@
                         </table>
                     </td>
                 </tr>
-                <!-- <tr ng-repeat="file in functionalization.files">
+                <!-- <tr ng-repeat="file in material.files">
                     <td>
                         {{file.type}}
                     </td>

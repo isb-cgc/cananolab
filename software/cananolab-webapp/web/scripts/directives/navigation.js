@@ -22,7 +22,12 @@ var app = angular.module('angularApp')
       }, {
         'url': '/updatePublication',
         'name': 'PUBLICATION'
-      }, {
+      }
+      // , {
+      //   'url': '/editSynthesis',
+      //   'name': 'SYNTHESIS'
+      // }
+      , {
         'url': '/setupCharacterization',
         'alternativeUrl': '/editCharacterization',
         'name': 'CHARACTERIZATION'
@@ -50,6 +55,18 @@ var app = angular.module('angularApp')
         'url': '/submitPublication',
         'alternativeUrl': '/updatePublication',
         'name': 'PUBLICATION'
+      }, {
+        'url': '/editSynthesisMaterials',
+        'alternativeUrl': '/editSynthesis',
+        'name': 'SYNTHESIS'
+      }, {
+        'url': '/editSynthesisFunctionalization',
+        'alternativeUrl': '/editSynthesis',
+        'name': 'SYNTHESIS'
+      }, {
+        'url': '/editSynthesisPurification',
+        'alternativeUrl': '/editSynthesis',
+        'name': 'SYNTHESIS'
       }];
       $scope.view = [{
         'url': '/sample',
@@ -63,7 +80,13 @@ var app = angular.module('angularApp')
       }, {
         'url': '/publication',
         'name': 'PUBLICATION'
-      }];
+      }
+      // ,{
+      //   'url': '/synthesis',
+      //   'name': 'SYNTHESIS'
+      // }
+    ];
+      
       $scope.testClick = function (uri) {
         console.log($location.search()['sampleId']);
         $location.path(uri).search({

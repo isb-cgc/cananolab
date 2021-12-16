@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated Apr 3, 2019, 8:32:55 PM by Hibernate Tools 5.4.2.Final -->
+<hibernate-mapping package="gov.nih.nci.cananolab.domain.particle">
+    <class name="SynthesisFunctionalization" table="synthesis_functionalization">
+        <id column="synthesis_functionalization_pk_id" name="id" type="long">
+            <generator class="hilo"/>
+        </id>
+        <!--        <property name="synthesisPkId" column="synthesis_pk_id"/>-->
+        <!--        <property name="protocolPkId" column="protocol_pk_id"/>-->
+        <property name="description" column="description" type="string"/>
+        <property name="createdDate" column="created_date" type="java.util.Date"/>
+        <property name="createdBy" column="created_by" type="string"/>
+<!--        <property name="type" column="type" type="string" not-null="true"/>-->
+        <many-to-one name="synthesis" class="Synthesis">
+            <column name="synthesis_pk_id" not-null="true"/>
+        </many-to-one>
+        <many-to-one name="protocol" class="gov.nih.nci.cananolab.domain.common.Protocol" lazy="false">
+            <column name="protocol_pk_id" />
+        </many-to-one>
+        <set
+                fetch="select" inverse="true" lazy="false"
+                name="synthesisFunctionalizationElements"
+                sort="unsorted"
+                table="synthesis_functionalization_element"
+                cascade="all-delete-orphan">
+
+            <key>
+                <column name="synthesis_functionalization_pk_id"/>
+            </key>
+
+            <one-to-many not-found="ignore" class="SynthesisFunctionalizationElement"/>
+        </set>
+        <set name="files" table="synthesis_functionalization_file" lazy="false" inverse="false" cascade="all-delete-orphan">
+            <cache usage="read-write" />
+            <key column="synthesis_functionalization_pk_id" />
+            <many-to-many class="gov.nih.nci.cananolab.domain.common.File" column="file_pk_id" />
+        </set>
+    </class>
+</hibernate-mapping>

@@ -1,8 +1,9 @@
 package gov.nih.nci.cananolab.domain.common;
 
+import java.io.Serializable;
 import java.util.Date;
 
-public class PurityColumnHeader {
+public class PurityColumnHeader implements Serializable {
     private Long id;
     private String name;
     private String property;
@@ -11,7 +12,7 @@ public class PurityColumnHeader {
     private String createdBy;
     private Date createdDate;
     private Integer columnOrder;
-    private Float constantValue;
+    private String constantValue;
     private String columnType;
 
     public Long getId() {
@@ -78,11 +79,11 @@ public class PurityColumnHeader {
         this.columnOrder = columnOrder;
     }
 
-    public Float getConstantValue() {
+    public String getConstantValue() {
         return constantValue;
     }
 
-    public void setConstantValue(Float constantValue) {
+    public void setConstantValue(String constantValue) {
         this.constantValue = constantValue;
     }
 

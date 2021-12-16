@@ -1,7 +1,8 @@
 
 #caNanoLab Wildfly deploy scripts
 
-connect localhost:19990
+connect localhost:@client.port@
+#connect localhost:9990
 
 ##############################################################
 #              Deploy War Files                            
@@ -14,4 +15,4 @@ end-if
 #undeploy uptEAR.ear
 #end-if
 
-deploy --force /local/content/caNanoLab/artifacts/caNanoLab.war
+deploy --force @file.repository.dir@/artifacts/caNanoLab.war

@@ -16,7 +16,7 @@
 		<repository>
 			<id>central</id>
 			<name>Central Repository</name>
-			<url>https://repo.maven.apache.org/maven2</url>
+			<url>https://repo1.maven.org/maven2</url>
 			<layout>default</layout>
 			<snapshots>
 				<enabled>false</enabled>
@@ -26,8 +26,8 @@
 
 	<properties>
 <!--		<spring.version>4.1.9.RELEASE</spring.version>-->
-		<spring.version>4.3.14.RELEASE</spring.version>
-		<spring.security.version>4.1.5.RELEASE</spring.security.version>
+		<spring.version>4.3.29.RELEASE</spring.version>
+		<spring.security.version>5.2.10.RELEASE</spring.security.version>
 		<compilerVersion>1.8</compilerVersion>
 		<maven.compiler.source>1.8</maven.compiler.source>
 		<maven.compiler.target>1.8</maven.compiler.target>
@@ -37,7 +37,7 @@
 		<dependency>
 			<groupId>mysql</groupId>
 			<artifactId>mysql-connector-java</artifactId>
-			<version>5.1.26</version>
+			<version>8.0.18</version>
 			<scope>provided</scope>
 		</dependency>
 		<dependency>
@@ -96,7 +96,7 @@
 		<dependency>
 			<groupId>org.apache.poi</groupId>
 			<artifactId>poi</artifactId>
-			<version>3.5-FINAL</version>
+			<version>3.17</version>
 		</dependency>
 		<dependency>
 			<groupId>displaytag</groupId>
@@ -127,7 +127,7 @@
 		<dependency>
 			<groupId>org.quartz-scheduler</groupId>
 			<artifactId>quartz</artifactId>
-			<version>2.2.2</version>
+			<version>2.3.2</version>
 		</dependency>
 
 		<dependency>
@@ -164,7 +164,7 @@
 			<artifactId>spring-context-support</artifactId>
 			<version>${spring.version}</version>
 		</dependency>
-		
+
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-jdbc</artifactId>
@@ -223,6 +223,13 @@
 			<scope>provided</scope>
 		</dependency>
 
+<!--		<dependency>-->
+<!--			<groupId>org.jboss.resteasy</groupId>-->
+<!--			<artifactId>resteasy-client</artifactId>-->
+<!--			<version>4.7.3.Final</version>-->
+<!--		</dependency>-->
+
+
 		<dependency>
 			<groupId>org.jboss.resteasy</groupId>
 			<artifactId>resteasy-jackson-provider</artifactId>
@@ -241,10 +248,16 @@
 			<scope>provided</scope>
 		</dependency>
 
+<!--		<dependency>-->
+<!--			<groupId>org.codehaus.jackson</groupId>-->
+<!--			<artifactId>jackson-mapper-asl</artifactId>-->
+<!--			<version>1.9.13</version>-->
+<!--		</dependency>-->
+
 		<dependency>
-			<groupId>org.codehaus.jackson</groupId>
-			<artifactId>jackson-mapper-asl</artifactId>
-			<version>1.9.13</version>
+			<groupId>com.fasterxml.jackson.core</groupId>
+			<artifactId>jackson-databind</artifactId>
+			<version>2.13.0</version>
 		</dependency>
 
 		<dependency>
@@ -299,7 +312,7 @@
 		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
-			<version>4.12</version>
+			<version>4.13.2</version>
 			<scope>test</scope>
 		</dependency>
 		<!-- https://mvnrepository.com/artifact/org.mockito/mockito-core -->
@@ -333,7 +346,7 @@
 		<dependency>
 			<groupId>org.bouncycastle</groupId>
 			<artifactId>bcprov-jdk15on</artifactId>
-			<version>1.47</version>
+			<version>1.69</version>
 		</dependency>
 
 		<dependency>
@@ -342,11 +355,17 @@
 			<version>3.18.1-GA</version>
 		</dependency>
 
-	<dependency>
-		<groupId>org.jdom</groupId>
-		<artifactId>jdom</artifactId>
-		<version>1.1</version>
-	</dependency>
+<!--	<dependency>-->
+<!--		<groupId>org.jdom</groupId>-->
+<!--		<artifactId>jdom</artifactId>-->
+<!--		<version>1.1</version>-->
+<!--	</dependency>-->
+
+		<dependency>
+			<groupId>org.jdom</groupId>
+			<artifactId>jdom2</artifactId>
+			<version>2.0.6</version>
+		</dependency>
 
 		<!-- For JSON to XML transform -->
 		<dependency>
@@ -354,6 +373,21 @@
 			<artifactId>underscore</artifactId>
 			<version>1.67</version>
 		</dependency>
+
+		<dependency>
+			<groupId>org.apache.logging.log4j</groupId>
+			<artifactId>log4j-core</artifactId>
+			<version>2.16.0</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-log4j12</artifactId>
+			<version>2.0.0-alpha5</version>
+			<scope>test</scope>
+		</dependency>
+
+
 
 	</dependencies>
 	<build>
