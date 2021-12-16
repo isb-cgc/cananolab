@@ -56,7 +56,7 @@ commands:
       - run:
           name: "Set tier-specific configuration file"
           command: |
-            sudo -E /bin/bash ./shell/pull_config.sh
+            sudo -E /bin/bash ./shell/pull-config.sh
             xargs -a deployment_config.txt -I{} echo "export {}" >> $BASH_ENV
 
   auth:
