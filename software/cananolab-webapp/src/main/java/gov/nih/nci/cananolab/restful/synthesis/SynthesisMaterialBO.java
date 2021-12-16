@@ -260,7 +260,7 @@ public class SynthesisMaterialBO extends BaseAnnotationBO {
 
 
                 //check supplier
-                //TODO this is clumsy.  Should probably be a simple bean
+
 //                Map<String, String> supplierMap = sSMEBean.getSupplierMap();
                 Supplier supplier = sSMEBean.getSupplier();
 //                if(supplierMap!=null) {
@@ -335,7 +335,7 @@ public class SynthesisMaterialBO extends BaseAnnotationBO {
     }
 
     private List<String> validateInputs(HttpServletRequest request, SynthesisMaterialBean entityBean) {
-        //todo write
+
 
         List<String> msgs = new ArrayList<String>();
         msgs = validateEntity(request, msgs, entityBean);
@@ -667,7 +667,7 @@ public class SynthesisMaterialBO extends BaseAnnotationBO {
 //            newElementBean.getDomainEntity().setSynthesisMaterial(entity.getDomainEntity());
             Supplier supplier = newElementBean.getSupplier();
 
-            if(supplier.getId()==null){
+            if((supplier !=null) && (supplier.getId()==null)){
                 //new supplier
                 supplier = saveSupplier(supplier);
             }

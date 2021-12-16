@@ -8,18 +8,15 @@
 
 package gov.nih.nci.cananolab.dto;
 
-import com.fasterxml.jackson.annotation.JsonSubTypes;
-import com.fasterxml.jackson.annotation.JsonSubTypes.Type;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+
 import gov.nih.nci.cananolab.dto.particle.CharacterizationQueryBean;
 import gov.nih.nci.cananolab.dto.particle.CompositionQueryBean;
 import gov.nih.nci.cananolab.dto.particle.SampleQueryBean;
+import org.codehaus.jackson.annotate.JsonSubTypes;
+import org.codehaus.jackson.annotate.JsonTypeInfo;
+import org.codehaus.jackson.annotate.JsonTypeName;
 
-//import org.codehaus.jackson.annotate.JsonSubTypes;
-//import org.codehaus.jackson.annotate.JsonSubTypes.Type;
-//import org.codehaus.jackson.annotate.JsonTypeInfo;
-//import org.codehaus.jackson.annotate.JsonTypeName;
+
 
 /**
  * Contains information about a basic query
@@ -34,9 +31,9 @@ include = JsonTypeInfo.As.PROPERTY, property = "type")
 //	@JsonSubTypes.Type(value = SampleQueryBean.class, name = "SampleQueryBean"),
 //	@JsonSubTypes.Type(value = CompositionQueryBean.class, name = "CompositionQueryBean"),
 //	@JsonSubTypes.Type(value = CharacterizationQueryBean.class, name = "CharacterizationQueryBean")
-@Type(value = SampleQueryBean.class, name = "SampleQueryBean"),
-@Type(value = CompositionQueryBean.class, name = "CompositionQueryBean"),
-@Type(value = CharacterizationQueryBean.class, name = "CharacterizationQueryBean")
+@JsonSubTypes.Type(value = SampleQueryBean.class, name = "SampleQueryBean"),
+		@JsonSubTypes.Type(value = CompositionQueryBean.class, name = "CompositionQueryBean"),
+		@JsonSubTypes.Type(value = CharacterizationQueryBean.class, name = "CharacterizationQueryBean")
 })
 @JsonTypeName("BaseQueryBean")
 public class BaseQueryBean {
