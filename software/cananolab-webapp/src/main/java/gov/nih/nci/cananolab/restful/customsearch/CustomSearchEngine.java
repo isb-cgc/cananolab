@@ -25,7 +25,8 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.hibernate.Criteria;
 import org.hibernate.FetchMode;
 import org.hibernate.criterion.DetachedCriteria;
@@ -36,7 +37,7 @@ import org.springframework.stereotype.Component;
 @Component("customSearchEngine")
 public class CustomSearchEngine
 {
-	private static Logger logger = Logger.getLogger(CustomSearchEngine.class);
+	private static Logger logger = LogManager.getLogger(CustomSearchEngine.class);
 	
 	private CaNanoLabApplicationService appService;
 	

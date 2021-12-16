@@ -1,8 +1,9 @@
 package gov.nih.nci.cananolab.dto.particle.synthesis;
 
 import gov.nih.nci.cananolab.domain.common.File;
-import gov.nih.nci.cananolab.domain.common.PointOfContact;
-import gov.nih.nci.cananolab.domain.particle.*;
+import gov.nih.nci.cananolab.domain.particle.SfeInherentFunction;
+import gov.nih.nci.cananolab.domain.particle.SynthesisFunctionalization;
+import gov.nih.nci.cananolab.domain.particle.SynthesisFunctionalizationElement;
 import gov.nih.nci.cananolab.dto.common.FileBean;
 import gov.nih.nci.cananolab.dto.common.ProtocolBean;
 import gov.nih.nci.cananolab.util.ClassUtils;
@@ -11,11 +12,12 @@ import gov.nih.nci.cananolab.util.Constants;
 
 import java.util.*;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 
 public class SynthesisFunctionalizationBean extends BaseSynthesisEntityBean {
-    Logger logger = Logger.getLogger( "SynthesisFunctionalizationBean.class" );
+    Logger logger = LogManager.getLogger( "SynthesisFunctionalizationBean.class" );
     private SynthesisFunctionalization domainEntity;
     private boolean withProperties = false;
     private ProtocolBean protocolBean = new ProtocolBean();

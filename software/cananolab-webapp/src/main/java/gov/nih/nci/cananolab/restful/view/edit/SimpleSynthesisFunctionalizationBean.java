@@ -140,7 +140,7 @@ public class SimpleSynthesisFunctionalizationBean {
                 sSynFuncElementBean.setValueUnit(synthesisFunctionalizationElement.getValueUnit());
                 sSynFuncElementBean.setCreatedDate(synthesisFunctionalizationElement.getCreatedDate());
                 sSynFuncElementBean.setCreatedBy(synthesisFunctionalizationElement.getCreatedBy());
-                sSynFuncElementBean.setPubChemId(synthesisFunctionalizationElement.getPubChemId());
+                sSynFuncElementBean.setPubChemID(synthesisFunctionalizationElement.getPubChemId());
                 sSynFuncElementBean.setPubChemDataSource(synthesisFunctionalizationElement.getPubChemDatasourceName());
 
                 sSynFuncElementBean.setActivationEffect(synthesisFunctionalizationElement.getActivationEffect());

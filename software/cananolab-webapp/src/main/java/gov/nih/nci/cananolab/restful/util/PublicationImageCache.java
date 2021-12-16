@@ -8,11 +8,12 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 
 public class PublicationImageCache {
-	private Logger logger = Logger.getLogger(PublicationImageCache.class);
+	private Logger logger = LogManager.getLogger(PublicationImageCache.class);
 	private byte[] imageCaNanoCached;
 	private byte[] imageTranspCached;
 	private transient boolean isCaNanoImageError;

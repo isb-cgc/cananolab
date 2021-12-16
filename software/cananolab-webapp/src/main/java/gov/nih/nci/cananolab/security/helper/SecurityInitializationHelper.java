@@ -7,16 +7,17 @@ import gov.nih.nci.cananolab.security.providers.GroupNameAuthenticationToken;
 
 //import org.acegisecurity.Authentication;
 //import org.acegisecurity.context.SecurityContextHolder;
+import org.apache.logging.log4j.Logger;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
 
 public class SecurityInitializationHelper 
 {
-	static final Logger log = Logger.getLogger(SecurityInitializationHelper.class.getName());
+	static final Logger log = LogManager.getLogger(SecurityInitializationHelper.class.getName());
 	private AuthorizationManager authorizationManager ;
 	private boolean instanceLevelSecurityEnabled;
 	private boolean attributeLevelSecurityEnabled;

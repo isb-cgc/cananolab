@@ -15,7 +15,8 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.hibernate.Criteria;
 import org.hibernate.HibernateException;
 import org.hibernate.JDBCException;
@@ -40,7 +41,7 @@ import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
  */
 public class ORMDAOImpl extends HibernateDaoSupport implements DAO 
 {
-	protected static Logger log = Logger.getLogger(DAO.class.getName());
+	protected static Logger log = LogManager.getLogger(DAO.class.getName());
 
 	private Configuration config;
 	private SecurityInitializationHelper securityHelper;

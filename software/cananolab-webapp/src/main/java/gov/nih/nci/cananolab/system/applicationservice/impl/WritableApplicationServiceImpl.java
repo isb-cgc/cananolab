@@ -15,15 +15,16 @@ import gov.nih.nci.cananolab.system.util.ClassCache;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
 import gov.nih.nci.cananolab.system.applicationservice.ApplicationException;
 import gov.nih.nci.cananolab.system.applicationservice.WritableApplicationService;
 import gov.nih.nci.cananolab.system.dao.WritableDAO;
+import org.apache.logging.log4j.Logger;
 
 
 public class WritableApplicationServiceImpl extends ApplicationServiceImpl implements WritableApplicationService
 {
-	private static Logger log = Logger.getLogger(WritableApplicationServiceImpl.class.getName());
+	private static Logger log = LogManager.getLogger(WritableApplicationServiceImpl.class.getName());
 	public WritableApplicationServiceImpl(ClassCache classCache) {
 		super(classCache);
 	}

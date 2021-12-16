@@ -13,17 +13,18 @@ import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.Response;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
 
 import gov.nih.nci.cananolab.dto.particle.composition.CompositionBean;
 import gov.nih.nci.cananolab.restful.sample.CompositionBO;
 import gov.nih.nci.cananolab.restful.view.SimpleCompositionBean;
 import gov.nih.nci.cananolab.ui.form.CompositionForm;
+import org.apache.logging.log4j.Logger;
 
 @Path("/composition")
 public class CompositionServices {
 
-	private static final Logger logger = Logger.getLogger(CompositionServices.class);
+	private static final Logger logger = LogManager.getLogger(CompositionServices.class);
 
 	@GET
 	@Path("/summaryView")

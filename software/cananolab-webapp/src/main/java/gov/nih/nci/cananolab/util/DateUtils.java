@@ -13,7 +13,8 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 /**
  * This class contains a set of utilities for manipulating dates
@@ -22,7 +23,7 @@ import org.apache.log4j.Logger;
  * 
  */
 public class DateUtils {
-	private static Logger logger = Logger.getLogger(DateUtils.class);
+	private static Logger logger = LogManager.getLogger(DateUtils.class);
 	public static Date addSecondsToCurrentDate(int seconds) {
 		// get a calendar with current time
 		Calendar cal = Calendar.getInstance();

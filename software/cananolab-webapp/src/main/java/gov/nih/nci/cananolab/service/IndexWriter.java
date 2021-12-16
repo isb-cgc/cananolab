@@ -1,6 +1,7 @@
 package gov.nih.nci.cananolab.service;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
 import org.springframework.scheduling.quartz.QuartzJobBean;
@@ -11,7 +12,7 @@ import gov.nih.nci.cananolab.restful.indexer.IndexBuilder;
 public class IndexWriter extends QuartzJobBean
 {
 
-	private static Logger logger = Logger.getLogger(IndexWriter.class.getName());
+	private static Logger logger = LogManager.getLogger(IndexWriter.class.getName());
 
 	private CustomSearchEngine customSearchEngine;
 

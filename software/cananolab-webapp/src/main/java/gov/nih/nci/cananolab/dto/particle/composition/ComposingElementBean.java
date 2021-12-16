@@ -19,7 +19,8 @@ import java.util.Calendar;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 /**
  * Represents the view bean for ComposingElement domain object
@@ -28,7 +29,7 @@ import org.apache.log4j.Logger;
  *
  */
 public class ComposingElementBean {
-	protected Logger logger = Logger.getLogger(ComposingElementBean.class);
+	protected Logger logger = LogManager.getLogger(ComposingElementBean.class);
 	
 	private ComposingElement domain = new ComposingElement();
 

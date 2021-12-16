@@ -83,7 +83,8 @@ import java.util.Map;
 import java.util.Set;
 import java.util.SortedSet;
 import java.util.TreeSet;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.hibernate.FetchMode;
 import org.hibernate.StaleStateException;
 import org.hibernate.criterion.CriteriaSpecification;
@@ -102,7 +103,7 @@ import org.springframework.stereotype.Component;
 @Component("sampleService")
 public class SampleServiceLocalImpl extends BaseServiceLocalImpl implements SampleService
 {
-	private static Logger logger = Logger.getLogger(SampleServiceLocalImpl.class);
+	private static Logger logger = LogManager.getLogger(SampleServiceLocalImpl.class);
 
 	@Autowired
 	private SampleServiceHelper sampleServiceHelper;

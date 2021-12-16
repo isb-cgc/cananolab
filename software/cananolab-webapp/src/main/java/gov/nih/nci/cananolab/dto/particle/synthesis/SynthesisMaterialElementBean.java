@@ -17,11 +17,12 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 
 public class SynthesisMaterialElementBean extends BaseSynthesisEntityBean {
-    Logger logger = Logger.getLogger("SynthesisMaterialElementBean.class");
+    Logger logger = LogManager.getLogger("SynthesisMaterialElementBean.class");
     private SynthesisMaterialElement domain;
     private List<SmeInherentFunctionBean> functions = new ArrayList<SmeInherentFunctionBean>();
 //    private List<FileBean> files = new ArrayList<FileBean>();

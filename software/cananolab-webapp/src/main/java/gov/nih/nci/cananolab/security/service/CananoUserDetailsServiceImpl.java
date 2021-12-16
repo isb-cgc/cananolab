@@ -1,6 +1,7 @@
 package gov.nih.nci.cananolab.security.service;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -18,7 +19,7 @@ import gov.nih.nci.cananolab.security.CananoUserDetails;
 public class CananoUserDetailsServiceImpl implements UserDetailsService
 {
 
-    protected Logger logger = Logger.getLogger(CananoUserDetailsServiceImpl.class);
+    protected Logger logger = LogManager.getLogger(CananoUserDetailsServiceImpl.class);
 	
 	@Autowired
 	private UserDao userDao;

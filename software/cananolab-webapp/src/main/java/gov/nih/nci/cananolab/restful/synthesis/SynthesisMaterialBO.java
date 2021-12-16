@@ -49,7 +49,8 @@ import java.util.Set;
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Component;
@@ -60,7 +61,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
 @Component("synthesisMaterialBO")
 public class SynthesisMaterialBO extends BaseAnnotationBO {
-    Logger logger = Logger.getLogger(SynthesisMaterialBO.class);
+    Logger logger = LogManager.getLogger(SynthesisMaterialBO.class);
 
     @Autowired
     private CurationService curationServiceDAO;

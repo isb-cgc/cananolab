@@ -63,7 +63,8 @@ import java.util.TreeSet;
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import org.apache.commons.io.FileUtils;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Component;
@@ -75,7 +76,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Component("synthesisPurificationBO")
 public class SynthesisPurificationBO extends BaseAnnotationBO {
 
-    Logger logger = Logger.getLogger(SynthesisPurificationBO.class);
+    Logger logger = LogManager.getLogger(SynthesisPurificationBO.class);
     @Autowired
     private SynthesisService synthesisService;
 

@@ -4,7 +4,8 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -13,7 +14,7 @@ import gov.nih.nci.cananolab.security.CananoUserDetails;
 
 public class SpringSecurityUtil
 {
-	private static Logger logger = Logger.getLogger(SpringSecurityUtil.class);
+	private static Logger logger = LogManager.getLogger(SpringSecurityUtil.class);
 	
 	public static boolean isUserLoggedIn()
 	{

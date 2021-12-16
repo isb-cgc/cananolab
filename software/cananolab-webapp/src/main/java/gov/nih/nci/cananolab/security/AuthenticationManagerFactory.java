@@ -99,7 +99,8 @@ package gov.nih.nci.cananolab.security;
 
 import gov.nih.nci.cananolab.security.utils.ConfigurationHelper;
 import org.apache.commons.configuration.AbstractConfiguration;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 
 /**
@@ -144,7 +145,7 @@ import org.apache.log4j.Logger;
 public class AuthenticationManagerFactory
 {
 
-	public static final Logger log = Logger.getLogger(AuthenticationManagerFactory.class);
+	public static final Logger log = LogManager.getLogger(AuthenticationManagerFactory.class);
 	/**
 	 * This methods instantiate an implementation of the {@link AuthenticationManager} and returns it to the calling method.
 	 * It reads the config file using the Application Context/Name provided as parameter. If an entry is found,

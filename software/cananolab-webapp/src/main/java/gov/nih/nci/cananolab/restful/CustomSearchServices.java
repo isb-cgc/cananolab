@@ -15,12 +15,13 @@ import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.Response;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 @Path("/customsearch")
 public class CustomSearchServices {
 
-	private static final Logger logger = Logger.getLogger(CustomSearchServices.class);
+	private static final Logger logger = LogManager.getLogger(CustomSearchServices.class);
 
 	@GET
 	@Path("/search")

@@ -7,7 +7,8 @@ import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.apache.lucene.analysis.standard.StandardAnalyzer;
 import org.apache.lucene.document.Document;
 import org.apache.lucene.index.DirectoryReader;
@@ -31,7 +32,7 @@ import gov.nih.nci.cananolab.util.StringUtils;
 @Component("customSearchServiceHelper")
 public class CustomSearchServiceHelper
 {
-	private static Logger logger = Logger.getLogger(CustomSearchServiceHelper.class);
+	private static Logger logger = LogManager.getLogger(CustomSearchServiceHelper.class);
 	
 	@Autowired
 	private SampleService sampleService;

@@ -24,7 +24,8 @@ import java.util.List;
 import java.util.Set;
 import java.util.SortedMap;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.apache.poi.hssf.usermodel.HSSFCell;
 import org.apache.poi.hssf.usermodel.HSSFCellStyle;
 import org.apache.poi.hssf.usermodel.HSSFFont;
@@ -49,7 +50,7 @@ public class PublicationExporter {
 	public static final String DESCRIPTION = "Description";
 	public static final String PUB_STATUS = "Publication Status";
 
-	private static Logger logger = Logger.getLogger(PublicationExporter.class);
+	private static Logger logger = LogManager.getLogger(PublicationExporter.class);
 
 	public static void exportDetail(PublicationBean aPub, OutputStream out)
 			throws Exception {

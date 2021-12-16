@@ -6,11 +6,12 @@ import gov.nih.nci.cananolab.util.StringUtils;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 public class BaseSynthesisEntityBean {
 
-    Logger logger = Logger.getLogger("BaseSynthesisEntityBean.class");
+    Logger logger = LogManager.getLogger("BaseSynthesisEntityBean.class");
     protected String description;
     protected String type, displayName;
     protected List<FileBean> files = new ArrayList<FileBean>();

@@ -10,7 +10,7 @@ import gov.nih.nci.cananolab.restful.view.edit.SimpleSynthesisFunctionalizationB
 import gov.nih.nci.cananolab.restful.view.edit.SimpleSynthesisMaterialBean;
 import gov.nih.nci.cananolab.security.utils.SpringSecurityUtil;
 import gov.nih.nci.cananolab.util.Constants;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.*;
@@ -19,10 +19,11 @@ import javax.ws.rs.core.Response;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
+import org.apache.logging.log4j.Logger;
 
 @Path("/synthesisFunctionalization")
 public class SynthesisFunctionalizationServices {
-    private static final Logger logger = Logger.getLogger(FunctionalizingEntityServices.class);
+    private static final Logger logger = LogManager.getLogger(FunctionalizingEntityServices.class);
 
     @GET
     @Path("/setup")

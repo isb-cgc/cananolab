@@ -20,10 +20,11 @@ import java.net.URL;
 import java.net.URLConnection;
 import java.util.List;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 public class TestConnectionPool {
-	private static Logger logger = Logger.getLogger(TestConnectionPool.class);
+	private static Logger logger = LogManager.getLogger(TestConnectionPool.class);
 
 	public void testPublicationService(String publicationType) {
 		try {

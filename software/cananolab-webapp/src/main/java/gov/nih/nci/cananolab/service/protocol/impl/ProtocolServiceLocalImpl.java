@@ -32,7 +32,8 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import javax.servlet.http.HttpServletRequest;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Property;
@@ -48,7 +49,7 @@ import org.springframework.stereotype.Component;
 @Component("protocolService")
 public class ProtocolServiceLocalImpl extends BaseServiceLocalImpl implements ProtocolService
 {
-	private static Logger logger = Logger.getLogger(ProtocolServiceLocalImpl.class);
+	private static Logger logger = LogManager.getLogger(ProtocolServiceLocalImpl.class);
 	
 	@Autowired
 	private SpringSecurityAclService springSecurityAclService;

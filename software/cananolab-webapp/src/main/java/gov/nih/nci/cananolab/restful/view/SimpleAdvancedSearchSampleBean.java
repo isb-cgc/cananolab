@@ -12,11 +12,12 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import org.apache.commons.beanutils.PropertyUtils;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 //import org.codehaus.jackson.annotate.JsonIgnore;
 
 public class SimpleAdvancedSearchSampleBean extends SimpleSearchSampleBean {
-	private Logger logger = Logger.getLogger(SimpleAdvancedSearchSampleBean.class);
+	private Logger logger = LogManager.getLogger(SimpleAdvancedSearchSampleBean.class);
 
 	@JsonIgnore
 	List<SimpleAdvancedResultCellBean> columns = new ArrayList<SimpleAdvancedResultCellBean>();

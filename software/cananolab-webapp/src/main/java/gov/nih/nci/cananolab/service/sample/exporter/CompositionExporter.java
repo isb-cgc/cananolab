@@ -40,7 +40,8 @@ import java.io.OutputStream;
 import java.util.Collection;
 import java.util.List;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.apache.poi.hssf.usermodel.HSSFCellStyle;
 import org.apache.poi.hssf.usermodel.HSSFFont;
 import org.apache.poi.hssf.usermodel.HSSFPatriarch;
@@ -56,7 +57,7 @@ import org.apache.poi.hssf.util.HSSFColor;
  *
  */
 public class CompositionExporter {
-	private static Logger logger = Logger.getLogger(CompositionExporter.class);
+	private static Logger logger = LogManager.getLogger(CompositionExporter.class);
 
 	private static String fileRoot = PropertyUtils.getProperty(
 			Constants.CANANOLAB_PROPERTY, Constants.FILE_REPOSITORY_DIR);

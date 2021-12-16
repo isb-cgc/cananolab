@@ -72,6 +72,9 @@ public class SynthesisUtil {
         if (types != null)
             typeMap.put("fileTypes", new ArrayList<String>(types));
 
+        types = (SortedSet<String>) session.getAttribute("activationMethods");
+        if(types !=null)
+            typeMap.put("activationMethods", new ArrayList<String>(types));
 
         Map<String,Object> newMap = reformatLocalSearchDropdownsInSessionForSynthesisMaterialElement(session);
         typeMap.putAll(newMap);

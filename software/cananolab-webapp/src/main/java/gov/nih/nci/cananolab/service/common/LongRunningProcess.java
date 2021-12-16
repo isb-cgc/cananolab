@@ -8,7 +8,8 @@
 
 package gov.nih.nci.cananolab.service.common;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 /**
  * This abstract class handles a long running process in a thread
@@ -17,7 +18,7 @@ import org.apache.log4j.Logger;
  *
  */
 public class LongRunningProcess implements Runnable {
-	private Logger logger = Logger.getLogger(LongRunningProcess.class);
+	private Logger logger = LogManager.getLogger(LongRunningProcess.class);
 	protected boolean complete = false;
 	protected boolean running = false;
 	protected String statusMessage = "Process has not been started";

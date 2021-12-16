@@ -10,10 +10,11 @@ package gov.nih.nci.cananolab.restful.protocol;
 
 import javax.servlet.http.HttpServletRequest;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
 
 import gov.nih.nci.cananolab.dto.common.ProtocolBean;
 import gov.nih.nci.cananolab.restful.core.InitSetup;
+import org.apache.logging.log4j.Logger;
 
 /**
  * This class sets up session level or servlet context level variables to be
@@ -24,7 +25,7 @@ import gov.nih.nci.cananolab.restful.core.InitSetup;
  */
 public class InitProtocolSetup
 {
-	Logger logger = Logger.getLogger(InitProtocolSetup.class);
+	Logger logger = LogManager.getLogger(InitProtocolSetup.class);
 
 	private InitProtocolSetup() {
 	}

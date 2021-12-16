@@ -15,7 +15,8 @@ import gov.nih.nci.cananolab.util.ClassUtils;
 
 import java.util.List;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 /**
  * This class handles batch ownership transfer in a thread
@@ -26,7 +27,7 @@ import org.apache.log4j.Logger;
 public class BatchOwnershipTransferProcess extends LongRunningProcess {
 	private OwnershipTransferService transferService;
 	private BaseService dataService;
-	private Logger logger = Logger
+	private Logger logger = LogManager
 			.getLogger(BatchOwnershipTransferProcess.class);
 	private List<String> dataIds = null; // data Ids that need to run batch
 	private String dataType;

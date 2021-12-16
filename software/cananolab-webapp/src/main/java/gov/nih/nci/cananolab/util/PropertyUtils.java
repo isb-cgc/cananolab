@@ -13,6 +13,7 @@ import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.Properties;
+import org.apache.logging.log4j.Logger;
 
 /**
  * This class is caNanoLab Util class. It will read user property file, and
@@ -23,7 +24,7 @@ import java.util.Properties;
  */
 public class PropertyUtils {
 
-	private static org.apache.log4j.Logger logger = org.apache.log4j.Logger
+	private static Logger logger = org.apache.logging.log4j.LogManager
 			.getLogger(PropertyUtils.class);
 
 	private static Properties properties = null;

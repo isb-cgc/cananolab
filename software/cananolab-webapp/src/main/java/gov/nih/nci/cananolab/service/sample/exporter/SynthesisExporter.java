@@ -10,7 +10,8 @@ import gov.nih.nci.cananolab.util.ExportUtils;
 import gov.nih.nci.cananolab.util.StringUtils;
 import java.util.List;
 import javax.servlet.ServletOutputStream;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.apache.poi.hssf.usermodel.HSSFCellStyle;
 import org.apache.poi.hssf.usermodel.HSSFFont;
 import org.apache.poi.hssf.usermodel.HSSFPatriarch;
@@ -20,7 +21,7 @@ import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.hssf.util.HSSFColor;
 
 public class SynthesisExporter {
-    public static Logger logger = Logger.getLogger(SynthesisExporter.class);
+    public static Logger logger = LogManager.getLogger(SynthesisExporter.class);
 
     public static void exportSummary(SynthesisBean synthesisBean, String downloadURL,
                                      ServletOutputStream outputStream) throws Exception {
