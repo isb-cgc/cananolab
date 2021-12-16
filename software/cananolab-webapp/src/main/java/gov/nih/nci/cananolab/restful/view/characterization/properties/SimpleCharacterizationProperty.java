@@ -13,11 +13,11 @@ import org.codehaus.jackson.annotate.JsonSubTypes;
 import org.codehaus.jackson.annotate.JsonTypeInfo;
 
 
-//@JsonTypeInfo(
-//use = JsonTypeInfo.Id.NAME,
-//include = JsonTypeInfo.As.PROPERTY,
-//defaultImpl = SimplePropertyDefault.class)
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME,property = "propertyName")
+@JsonTypeInfo(
+use = JsonTypeInfo.Id.NAME,
+include = JsonTypeInfo.As.PROPERTY,
+defaultImpl = SimplePropertyDefault.class)
+//@JsonTypeInfo(use = JsonTypeInfo.Id.NAME,property = "propertyName")
 @JsonSubTypes({
 @JsonSubTypes.Type(value = SimpleCytotoxicity.class, name = "SimpleCytotoxicity"),
 @JsonSubTypes.Type(value = SimpleEnzymeInduction.class, name = "SimpleEnzymeInduction"),
