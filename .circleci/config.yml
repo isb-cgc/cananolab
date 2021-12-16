@@ -64,7 +64,7 @@ commands:
       - run:
           name: "Service Account Auth and Project Settings"
           command: |
-            sudo -E /bin/bash ./shell/gcloud_authenticate.sh
+            sudo -E /bin/bash ./shell/gcloud-authentication.sh
 
   install_cloud_sdk:
     steps:
