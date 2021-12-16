@@ -95,6 +95,7 @@ jobs:
           command: |
             sudo -E /bin/bash ./shell/install-deps.sh
       - deployment_setup
+      - install_cloud_sdk
       - auth
       - deployment_config
       - run:
