@@ -93,7 +93,9 @@ public class SynthesisFunctionalizationBO extends BaseAnnotationBO {
         InitSynthesisSetup.getInstance().persistSynthesisFunctionalizationDropdowns(
                 request, entityBean);
 
-
+        for(SynthesisFunctionalizationElementBean elementBean: entityBean.getSynthesisFunctionalizationElements()){
+            InitSynthesisSetup.getInstance().persistSynthesisFunctionalizationElementDropdowns(request, elementBean);
+        }
 
         msgs.add("success");
         request.getSession().setAttribute("tab", "1");
