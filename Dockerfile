@@ -57,7 +57,5 @@ RUN mkdir -p /local/content
 ADD ./staged/* /local/content/
 ADD ./shell/run-wildfly.sh ./
 
-WORKDIR /opt/wildfly-8.2.1.Final/bin
-
 EXPOSE 8080 19990
 ENTRYPOINT ["./run-wildfly.sh"]
