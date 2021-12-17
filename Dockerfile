@@ -55,12 +55,7 @@ ENV PATH=/opt/apache-maven/bin:/opt/apache-ant-1.9.9/bin:$PATH
 RUN mkdir -p /local/content
 
 ADD ./staged/* /local/content/
-
-WORKDIR /opt/wildfly-8.2.1.Final/bin
-RUN ./standalone.sh --server-config=standalone-full.xml
-RUN ./jboss-cli.sh --file=content/caNanoLab/artifacts/caNanoLab_modules.cli
-RUN ./jboss-cli.sh --file=content/caNanoLab/artifacts/caNanoLab_setup.cli
-RUN ./jboss-cli.sh --file=content/caNanoLab/artifacts/caNanoLab_deploy.cli
+ADD ./shell/run-wildfly.sh ./
 
 EXPOSE 8080 19990
-ENTRYPOINT ["${JBOSS_HOME}/bin/${JBOSS_MODE}.sh", "-b", "0.0.0.0", "-bmanagement", "0.0.0.0", "-c", "${JBOSS_CONFIG}"]
+ENTRYPOINT ["./run-wildfly.sh"]
