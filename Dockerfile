@@ -46,10 +46,7 @@ RUN apt-get -y install unzip libffi-dev libssl-dev libmysqlclient-dev git ruby g
 
 RUN mkdir -p /local/content
 
-ADD ./staged/* /local/content/
-ADD ./shell/run-wildfly.sh /local/content/
-
-RUN ls -l
+COPY ./staged/* /local/content/
 
 WORKDIR /tmp
 RUN wget http://download.jboss.org/wildfly/8.2.1.Final/wildfly-8.2.1.Final.tar.gz \
