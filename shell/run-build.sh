@@ -37,4 +37,4 @@ cp wikihelp.properties ${CANANODIR}/config
 cp ${HOME}/shell/run-wildfly.sh ${HOME}/staged/
 chmod ug+x ${HOME}/staged/run-wildfly.sh
 
-less ${CANANODIR}/artifacts/*.cli
+cat ${CANANODIR}/artifacts/*.cli
