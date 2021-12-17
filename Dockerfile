@@ -44,6 +44,13 @@ RUN apt-get -y install libxml2-dev libxmlsec1-dev swig
 
 RUN apt-get -y install unzip libffi-dev libssl-dev libmysqlclient-dev git ruby g++ curl
 
+RUN mkdir -p /local/content
+
+ADD ./staged/* /local/content/
+ADD ./shell/run-wildfly.sh ./
+
+RUN ls -l
+
 WORKDIR /tmp
 RUN wget http://download.jboss.org/wildfly/8.2.1.Final/wildfly-8.2.1.Final.tar.gz \
     && tar xvfz wildfly-8.2.1.Final.tar.gz \
@@ -51,11 +58,6 @@ RUN wget http://download.jboss.org/wildfly/8.2.1.Final/wildfly-8.2.1.Final.tar.g
 
 ENV JBOSS_HOME=/opt/wildfly-8.2.1.Final
 ENV PATH=/opt/apache-maven/bin:/opt/apache-ant-1.9.9/bin:$PATH
-
-RUN mkdir -p /local/content
-
-ADD ./staged/* /local/content/
-ADD ./shell/run-wildfly.sh ./
 
 EXPOSE 8080 19990
 ENTRYPOINT ["./run-wildfly.sh"]
