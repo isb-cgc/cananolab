@@ -34,7 +34,7 @@ cd ${HOME}/software/cananolab-webapp/target/dist/common
 cp caNanoLab_modules.cli caNanoLab_setup.cli caNanoLab_deploy.cli ${CANANODIR}/artifacts
 cp wikihelp.properties ${CANANODIR}/config
 
-cp ${HOME}/software/cananolab-webapp/shell/run-wildfly.sh ${HOME}/staged/
+cp ${HOME}/shell/run-wildfly.sh ${HOME}/staged/
 chmod ug+x ${HOME}/staged/run-wildfly.sh
 
 ls -l ${HOME}/staged/
