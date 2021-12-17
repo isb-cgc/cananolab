@@ -33,3 +33,7 @@ cp mysql-connector-java-8.0.18.jar ${CANANODIR}/artifacts
 cd ${HOME}/software/cananolab-webapp/target/dist/common
 cp caNanoLab_modules.cli caNanoLab_setup.cli caNanoLab_deploy.cli ${CANANODIR}/artifacts
 cp wikihelp.properties ${CANANODIR}/config
+
+ls -l ${CANANODIR}
+ls -l ${CANANODIR}/artifacts
+ls -l ${CANANODIR}/config
