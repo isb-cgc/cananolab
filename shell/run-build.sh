@@ -27,7 +27,7 @@ cd ${HOME}/software/cananolab-webapp/
 ant dist
 cp -v ${HOME}/software/cananolab-webapp/target/dist/caNanoLab.war ${CANANODIR}/artifacts
 cd ${HOME}/software/cananolab-webapp/lib/sdk
-cp -v bcprov-jdk15on-1.66.jar csmapi*  ${CANANODIR}/artifacts
+cp -v bcprov-jdk15on-1.69.jar csmapi*  ${CANANODIR}/artifacts
 cd ${HOME}/software/cananolab-webapp/lib
 cp -v mysql-connector-java-8.0.18.jar ${CANANODIR}/artifacts
 cd ${HOME}/software/cananolab-webapp/target/dist/common
