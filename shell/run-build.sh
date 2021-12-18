@@ -25,14 +25,16 @@ mkdir -p ${CANANODIR} \
 
 cd ${HOME}/software/cananolab-webapp/
 ant dist
-cp ${HOME}/software/cananolab-webapp/target/dist/caNanoLab.war ${CANANODIR}/artifacts
+cp -v ${HOME}/software/cananolab-webapp/target/dist/caNanoLab.war ${CANANODIR}/artifacts
 cd ${HOME}/software/cananolab-webapp/lib/sdk
-cp  bcprov-jdk15on-1.66.jar csmapi*  ${CANANODIR}/artifacts
+cp -v bcprov-jdk15on-1.66.jar csmapi*  ${CANANODIR}/artifacts
 cd ${HOME}/software/cananolab-webapp/lib
-cp mysql-connector-java-8.0.18.jar ${CANANODIR}/artifacts
+cp -v mysql-connector-java-8.0.18.jar ${CANANODIR}/artifacts
 cd ${HOME}/software/cananolab-webapp/target/dist/common
-cp caNanoLab_modules.cli caNanoLab_setup.cli caNanoLab_deploy.cli ${CANANODIR}/artifacts
-cp wikihelp.properties ${CANANODIR}/config
+cp -v caNanoLab_modules.cli caNanoLab_setup.cli caNanoLab_deploy.cli ${CANANODIR}/artifacts
+cp -v wikihelp.properties ${CANANODIR}/config
 
-cp ${HOME}/shell/run-wildfly.sh ${HOME}/staged/
+ls -l ${CANANODIR}/artifacts
+
+cp -v ${HOME}/shell/run-wildfly.sh ${HOME}/staged/
 chmod ug+x ${HOME}/staged/run-wildfly.sh
