@@ -48,6 +48,8 @@ RUN mkdir -p /local/content
 
 COPY ./staged/* /local/content/
 
+RUN ls /local/content/
+
 WORKDIR /tmp
 RUN wget http://download.jboss.org/wildfly/8.2.1.Final/wildfly-8.2.1.Final.tar.gz \
     && tar xvfz wildfly-8.2.1.Final.tar.gz \
