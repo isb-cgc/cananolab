@@ -2,7 +2,7 @@
 
 export WILDFLY_BIN=/opt/wildfly-8.2.1.Final/bin
 
-${WILDFLY_BIN}/standalone.sh --server-config=standalone-full.xml -b 0.0.0.0 -bmanagement 0.0.0.0 > /tmp/null &
+${WILDFLY_BIN}/standalone.sh --server-config=standalone-full.xml -b 0.0.0.0 -bmanagement 0.0.0.0 &
 
 echo "Waiting while JBoss starts:"
 

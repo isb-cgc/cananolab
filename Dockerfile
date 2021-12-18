@@ -54,5 +54,5 @@ RUN wget http://download.jboss.org/wildfly/8.2.1.Final/wildfly-8.2.1.Final.tar.g
 ENV JBOSS_HOME=/opt/wildfly-8.2.1.Final
 ENV PATH=/opt/apache-maven/bin:/opt/apache-ant-1.9.9/bin:$PATH
 
-EXPOSE 8080 19990
+EXPOSE 8080 9990
 ENTRYPOINT ["/local/content/run-wildfly.sh"]
