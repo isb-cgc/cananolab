@@ -14,7 +14,7 @@ while [ $? -ne 0 ] && [ check_counter < MAX_CHECKS ]; do
   result=`./jboss-cli.sh -c --commands="read-attribute server-state" > out 2&1`
   echo "$result" | grep -q "running"
   check_counter = check_counter+1
-  sleep(6)
+  sleep 6
 done
 
 echo $?
