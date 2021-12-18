@@ -18,8 +18,6 @@ while [ $? -ne 0 ] && [ $counter -lt 5 ]; do
   sleep 6
 done
 
-ls -l /local/content/
-
 if [ $? -eq 0 ]; then
    echo "JBoss is now running - continuing setup and deployment."
   ${WILDFLY_BIN}/jboss-cli.sh --file=/local/content/caNanoLab/artifacts/caNanoLab_modules.cli

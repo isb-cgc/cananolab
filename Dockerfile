@@ -44,9 +44,7 @@ RUN apt-get -y install libxml2-dev libxmlsec1-dev swig
 
 RUN apt-get -y install unzip libffi-dev libssl-dev libmysqlclient-dev git ruby g++ curl
 
-RUN mkdir -p /local/content
-
-COPY ./staged/* /local/content/
+COPY ./staged /local/content/
 
 WORKDIR /tmp
 RUN wget http://download.jboss.org/wildfly/8.2.1.Final/wildfly-8.2.1.Final.tar.gz \
