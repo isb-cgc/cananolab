@@ -51,8 +51,6 @@ RUN wget http://download.jboss.org/wildfly/8.2.1.Final/wildfly-8.2.1.Final.tar.g
     && tar xvfz wildfly-8.2.1.Final.tar.gz \
     && mv wildfly-8.2.1.Final /opt
 
-COPY ./standalone-full.xml /opt/wildfly-8.2.1.Final/standalone/configuration/standalone-full.xml
-
 ENV JBOSS_HOME=/opt/wildfly-8.2.1.Final
 ENV PATH=/opt/apache-maven/bin:/opt/apache-ant-1.9.9/bin:$PATH
 
