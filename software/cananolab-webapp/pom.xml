@@ -265,6 +265,14 @@
 			<version>1</version>
 		</dependency>
 
+		<!-- https://mvnrepository.com/artifact/com.google.http-client/google-http-client-bom -->
+		<dependency>
+			<groupId>com.google.http-client</groupId>
+			<artifactId>google-http-client-bom</artifactId>
+			<version>1.40.1</version>
+			<type>pom</type>
+		</dependency>
+
 		<dependency>
 			<groupId>com.google.cloud.sql</groupId>
 			<artifactId>mysql-socket-factory-connector-j-8</artifactId>
