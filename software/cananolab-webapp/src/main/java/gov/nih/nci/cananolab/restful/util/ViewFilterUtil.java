@@ -1,16 +1,17 @@
 package gov.nih.nci.cananolab.restful.util;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.ObjectWriter;
-import com.fasterxml.jackson.databind.ser.FilterProvider;
-import com.fasterxml.jackson.databind.ser.impl.SimpleBeanPropertyFilter;
-import com.fasterxml.jackson.databind.ser.impl.SimpleFilterProvider;
+
 import java.util.List;
 
 import org.apache.logging.log4j.LogManager;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.codehaus.jackson.map.ObjectMapper;
+import org.codehaus.jackson.map.ObjectWriter;
+import org.codehaus.jackson.map.ser.FilterProvider;
+import org.codehaus.jackson.map.ser.impl.SimpleBeanPropertyFilter;
+import org.codehaus.jackson.map.ser.impl.SimpleFilterProvider;
 //import org.codehaus.jackson.map.ObjectMapper;
 //import org.codehaus.jackson.map.ObjectWriter;
 //import org.codehaus.jackson.map.annotate.JsonFilter;
@@ -31,7 +32,7 @@ public class ViewFilterUtil {
 	 * @return a Jackson ObjectWriter
 	 * @throws Exception
 	 */
-	public static ObjectWriter getInclusiveObjectWriter(String[] includeFieldNames, String filterName) 
+	public static ObjectWriter getInclusiveObjectWriter(String[] includeFieldNames, String filterName)
 	throws Exception {
 		
 		if (includeFieldNames == null)

@@ -1200,10 +1200,11 @@ public class SampleServices {
 			logger.error("Error exporting synthesis", e);
 		}
 
-		jasonData.append(",\"synthesis\": ");
+		if(simpleSynthesisBean!=null) {
+			jasonData.append(",\"synthesis\": ");
 //		jasonData.append(doIndent(gson.toJson(simpleSynthesisBean), indent *4));
-		jasonData.append(doIndent(gson.toJson( new SimpleSynthesisExportBean( simpleSynthesisBean )), indent *4));
-
+			jasonData.append(doIndent(gson.toJson(new SimpleSynthesisExportBean(simpleSynthesisBean)), indent * 4));
+		}
 
         // Publication
         PublicationBO publicationBO = null;

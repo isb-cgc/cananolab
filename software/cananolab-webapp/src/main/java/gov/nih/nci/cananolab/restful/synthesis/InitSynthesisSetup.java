@@ -6,6 +6,7 @@ import gov.nih.nci.cananolab.dto.common.ExperimentConfigBean;
 import gov.nih.nci.cananolab.dto.common.PointOfContactBean;
 import gov.nih.nci.cananolab.dto.particle.synthesis.SynthesisBean;
 import gov.nih.nci.cananolab.dto.particle.synthesis.SynthesisFunctionalizationBean;
+import gov.nih.nci.cananolab.dto.particle.synthesis.SynthesisFunctionalizationElementBean;
 import gov.nih.nci.cananolab.dto.particle.synthesis.SynthesisMaterialBean;
 import gov.nih.nci.cananolab.dto.particle.synthesis.SynthesisMaterialElementBean;
 import gov.nih.nci.cananolab.dto.particle.synthesis.SynthesisPurificationBean;
@@ -137,6 +138,14 @@ public class InitSynthesisSetup {
     public void persistSynthesisFunctionalizationDropdowns(HttpServletRequest request, SynthesisFunctionalizationBean synthesisFunctionalizationBean) throws BaseException {
         InitSetup.getInstance().persistLookup(request, "synthesis", "functionalizationType",
                 "otherType", "TEST_VALUE");
+
+    }
+
+    public void persistSynthesisFunctionalizationElementDropdowns(HttpServletRequest request,SynthesisFunctionalizationElementBean elementBean) throws BaseException {
+        InitSetup
+                .getInstance()
+                .persistLookup(request, "activation method", "type",
+                        "otherType", elementBean.getDomainEntity().getActivationMethod());
     }
 
 
@@ -144,8 +153,6 @@ public class InitSynthesisSetup {
 //TODO write
     }
 
-    public void persistSynthesisDropdowns(HttpServletRequest request, SynthesisBean synthesisBean) {
-    }
 
     public void setSynthesisMaterialElementDropDown(HttpServletRequest request, SynthesisMaterialElementBean elementBean) throws Exception {
         InitSetup.getInstance().getDefaultAndOtherTypesByLookup(request,

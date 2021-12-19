@@ -8,13 +8,14 @@
 
 package gov.nih.nci.cananolab.security.service;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import gov.nih.nci.cananolab.security.authorization.User;
 import gov.nih.nci.cananolab.util.StringUtils;
 
 
 import java.util.SortedSet;
 import java.util.TreeSet;
+import org.codehaus.jackson.annotate.JsonIgnore;
 
 //import org.codehaus.jackson.annotate.JsonIgnore;
 
