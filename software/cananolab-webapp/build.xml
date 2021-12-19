@@ -322,7 +322,7 @@ L-->
 		<copy overwrite="true" tofile="${common.dist.dir}/caNanoLab_setup.cli" file="${basedir}/caNanoLab_setup.cli">
 			<!-- replace tokens with values from build properties -->
 			<filterset id="db.filterset">
-				<filter token="database.url" value="${database.url}?enabledTLSProtocols=TLSv1.2&amp;serverTimezone=UTC"/>
+				<filter token="database.url" value="${database.url}&amp;serverTimezone=UTC"/>
 				<filter token="database.user" value="${database.user}"/>
 				<filter token="database.password" value="${database.password}"/>
 				<filter token="logLevel" value="${logLevel}"/>
