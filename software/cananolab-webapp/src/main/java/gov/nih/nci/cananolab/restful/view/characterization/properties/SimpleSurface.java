@@ -1,6 +1,6 @@
 package gov.nih.nci.cananolab.restful.view.characterization.properties;
 
-import com.fasterxml.jackson.annotation.JsonTypeName;
+
 import gov.nih.nci.cananolab.domain.characterization.physical.Surface;
 import gov.nih.nci.cananolab.dto.particle.characterization.CharacterizationBean;
 
@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
+import org.codehaus.jackson.annotate.JsonTypeName;
 
 //import org.codehaus.jackson.annotate.JsonTypeName;
 

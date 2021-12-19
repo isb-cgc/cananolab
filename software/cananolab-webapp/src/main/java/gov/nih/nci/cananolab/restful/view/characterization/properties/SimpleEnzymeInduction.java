@@ -1,6 +1,6 @@
 package gov.nih.nci.cananolab.restful.view.characterization.properties;
 
-import com.fasterxml.jackson.annotation.JsonTypeName;
+
 import gov.nih.nci.cananolab.domain.characterization.invitro.EnzymeInduction;
 import gov.nih.nci.cananolab.dto.particle.characterization.CharacterizationBean;
 import gov.nih.nci.cananolab.restful.core.InitSetup;
@@ -11,6 +11,7 @@ import java.util.List;
 import java.util.SortedSet;
 
 import javax.servlet.http.HttpServletRequest;
+import org.codehaus.jackson.annotate.JsonTypeName;
 
 //import org.codehaus.jackson.annotate.JsonTypeName;
 
