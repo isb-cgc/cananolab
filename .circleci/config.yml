@@ -121,6 +121,7 @@ jobs:
             - ./my.conf.js
             - ./app.yaml
             - ./Dockerfile
+            - ./standalone-full.xml
   deploy_job:
     environment:
       TZ: "/usr/share/zoneinfo/America/Los_Angeles"
