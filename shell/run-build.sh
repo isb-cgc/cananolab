@@ -25,6 +25,12 @@ mkdir -p ${CANANODIR} \
 
 cd ${HOME}/software/cananolab-webapp/
 ant dist
+
+if [[ "$?" -ne 0 ]] ; then
+  echo "<<<BUILD FAILED - CHECK THE BUILD LOGS>>>"
+  exit 1
+fi
+
 cp -v ${HOME}/software/cananolab-webapp/target/dist/caNanoLab.war ${CANANODIR}/artifacts
 cd ${HOME}/software/cananolab-webapp/lib/sdk
 cp -v csmapi* ${CANANODIR}/artifacts
