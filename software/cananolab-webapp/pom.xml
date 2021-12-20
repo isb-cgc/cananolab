@@ -252,6 +252,14 @@
 			<version>1</version>
 		</dependency>
 
+		<!-- https://mvnrepository.com/artifact/com.google.http-client/google-http-client-bom -->
+		<dependency>
+			<groupId>com.google.http-client</groupId>
+			<artifactId>google-http-client-bom</artifactId>
+			<version>1.40.1</version>
+			<type>pom</type>
+		</dependency>
+
 		<!-- https://mvnrepository.com/artifact/com.google.cloud.sql/mysql-socket-factory-connector-j-8 -->
 		<dependency>
 			<groupId>com.google.cloud.sql</groupId>
@@ -315,7 +323,6 @@
 			<version>3.0.0</version>
 			<scope>test</scope>
 		</dependency>
-
 
 		<!-- lucene dependencies -->
 		<dependency>
