@@ -263,30 +263,7 @@
 			<artifactId>javax.inject</artifactId>
 			<version>1</version>
 		</dependency>
-
-		<!-- https://mvnrepository.com/artifact/com.google.http-client/google-http-client-bom -->
-		<dependency>
-			<groupId>com.google.http-client</groupId>
-			<artifactId>google-http-client-bom</artifactId>
-			<version>1.39.2</version>
-			<type>pom</type>
-		</dependency>
-
-		<!-- https://mvnrepository.com/artifact/com.google.cloud.sql/jdbc-socket-factory-core -->
-		<dependency>
-			<groupId>com.google.cloud.sql</groupId>
-			<artifactId>jdbc-socket-factory-core</artifactId>
-			<version>1.4.1</version>
-		</dependency>
-
-		<!-- https://mvnrepository.com/artifact/com.google.oauth-client/google-oauth-client-bom -->
-		<dependency>
-			<groupId>com.google.oauth-client</groupId>
-			<artifactId>google-oauth-client-bom</artifactId>
-			<version>1.32.1</version>
-			<type>pom</type>
-		</dependency>
-
+		
 		<!-- https://mvnrepository.com/artifact/com.google.cloud.sql/mysql-socket-factory-connector-j-8 -->
 		<dependency>
 			<groupId>com.google.cloud.sql</groupId>
