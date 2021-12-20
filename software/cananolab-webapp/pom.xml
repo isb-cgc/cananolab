@@ -269,7 +269,7 @@
 			<groupId>com.google.cloud.sql</groupId>
 			<artifactId>mysql-socket-factory-connector-j-8</artifactId>
 			<version>1.4.1</version>
-			<scope>runtime</scope>
+			<scope>system</scope>
 		</dependency>
 
 		<dependency>
