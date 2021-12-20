@@ -7,11 +7,6 @@ connect localhost:@client.port@
 ### module remove --name=com.mysql
 module add --name=com.mysql --resources=@file.repository.dir@/artifacts/mysql-connector-java-8.0.18.jar --dependencies=javax.api,javax.transaction.api
 
-### JDBC Socket Connector
-### Comment out the module remove if doing a brand new install
-### module remove --name=com.google.sql
-module add --name=com.google.sql --resources=@file.repository.dir@/artifacts/mysql-socket-factory-connector-j-8-1.4.1-jar-with-dependencies.jar --dependencies=com.mysql
-
 ###  BouncyCastle
 ### Comment out the module remove if doing a brand new install
 #### module remove --name=org.bouncycastle

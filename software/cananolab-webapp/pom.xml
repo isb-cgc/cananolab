@@ -393,6 +393,14 @@
 			<type>pom</type>
 		</dependency>
 
+		<!-- https://mvnrepository.com/artifact/com.google.oauth-client/google-oauth-client-bom -->
+		<dependency>
+			<groupId>com.google.oauth-client</groupId>
+			<artifactId>google-oauth-client-bom</artifactId>
+			<version>1.32.1</version>
+			<type>pom</type>
+		</dependency>
+
 		<dependency>
 			<groupId>com.google.cloud.sql</groupId>
 			<artifactId>mysql-socket-factory-connector-j-8</artifactId>
