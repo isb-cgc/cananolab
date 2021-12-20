@@ -15,8 +15,6 @@ wget https://archive.apache.org/dist/maven/maven-3/3.5.3/binaries/apache-maven-3
     && mv apache-maven-3.5.3 /opt \
     && ln -s /opt/apache-maven-3.5.3 /opt/apache-maven
 
-cp -v ${HOME}/maven-settings.xml /opt/apache-maven-3.5.3/conf/settings.xml
-
 mkdir -p ${CANANODIR} \
     && mkdir -p ${CANANODIR}/artifacts \
     && mkdir -p ${CANANODIR}/config
