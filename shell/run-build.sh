@@ -24,6 +24,9 @@ mkdir -p ${CANANODIR} \
 #sudo gsutil cp "gs://${GCLOUD_BUCKET_DEV_SQL}/${JAR_FOLDER}" ${HOME}/lib/${JAR_FOLDER}
 
 cp -v ${HOME}/maven-settings.xml ${ANT_HOME}/etc/settings.xml
+cp -v ${HOME}/maven-settings.xml /opt/apache-maven/conf/settings.xml
+cp -v ${HOME}/maven-settings.xml ~/.m2/settings.xml
+cp -v ${HOME}/maven-settings.xml ~/.ant/settings.xml
 
 cd ${HOME}/software/cananolab-webapp/
 ant dist
