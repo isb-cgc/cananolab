@@ -10,10 +10,10 @@ wget http://archive.apache.org/dist/ant/binaries/apache-ant-1.9.9-bin.tar.gz \
 export ANT_HOME=/opt/apache-ant-1.9.9
 export PATH=${PATH}:${ANT_HOME}/bin
 
-wget https://archive.apache.org/dist/maven/maven-3/3.5.3/binaries/apache-maven-3.5.3-bin.tar.gz \
-    && tar xvfz apache-maven-3.5.3-bin.tar.gz \
-    && mv apache-maven-3.5.3 /opt \
-    && ln -s /opt/apache-maven-3.5.3 /opt/apache-maven
+wget https://archive.apache.org/dist/maven/maven-3/3.6.3/binaries/apache-maven-3.6.3-bin.tar.gz \
+    && tar xvfz apache-maven-3.6.3-bin.tar.gz \
+    && mv apache-maven-3.6.3 /opt \
+    && ln -s /opt/apache-maven-3.6.3 /opt/apache-maven
 
 mkdir -p ${CANANODIR} \
     && mkdir -p ${CANANODIR}/artifacts \
