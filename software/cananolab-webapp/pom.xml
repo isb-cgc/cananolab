@@ -264,13 +264,6 @@
 			<version>1</version>
 		</dependency>
 
-		<!-- https://mvnrepository.com/artifact/com.google.cloud.sql/mysql-socket-factory-connector-j-8 -->
-		<dependency>
-			<groupId>com.google.cloud.sql</groupId>
-			<artifactId>mysql-socket-factory-connector-j-8</artifactId>
-			<version>1.4.1</version>
-		</dependency>
-
 		<dependency>
 			<groupId>javax.ws.rs</groupId>
 			<artifactId>javax.ws.rs-api</artifactId>
