@@ -36,7 +36,7 @@
 			<groupId>mysql</groupId>
 			<artifactId>mysql-connector-java</artifactId>
 			<version>8.0.18</version>
-			<scope>runtime</scope>
+			<scope>provided</scope>
 		</dependency>
 		<dependency>
 			<groupId>javax.servlet</groupId>
@@ -269,7 +269,7 @@
 			<groupId>com.google.cloud.sql</groupId>
 			<artifactId>mysql-socket-factory-connector-j-8</artifactId>
 			<version>1.4.1</version>
-			<scope>provided</scope>
+			<scope>runtime</scope>
 		</dependency>
 
 		<dependency>
