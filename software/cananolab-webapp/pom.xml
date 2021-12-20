@@ -385,20 +385,19 @@
 			<scope>test</scope>
 		</dependency>
 
-		<!-- https://mvnrepository.com/artifact/com.google.http-client/google-http-client-bom -->
-		<dependency>
-			<groupId>com.google.http-client</groupId>
-			<artifactId>google-http-client-bom</artifactId>
-			<version>1.39.2</version>
-			<type>pom</type>
-		</dependency>
-
-
 		<!-- https://mvnrepository.com/artifact/com.google.oauth-client/google-oauth-client-bom -->
 		<dependency>
 			<groupId>com.google.oauth-client</groupId>
 			<artifactId>google-oauth-client-bom</artifactId>
-			<version>1.32.1</version>
+			<version>1.31.5</version>
+			<type>pom</type>
+		</dependency>
+
+		<!-- https://mvnrepository.com/artifact/org.junit/junit-bom -->
+		<dependency>
+			<groupId>org.junit</groupId>
+			<artifactId>junit-bom</artifactId>
+			<version>5.8.1</version>
 			<type>pom</type>
 		</dependency>
 
