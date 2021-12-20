@@ -379,6 +379,7 @@ L-->
 		<copy file="${dist.dir}/common/caNanoLab_setup.cli" todir="${jboss.artifacts.dir}" overwrite="true"/>
 		<copy file="${dist.dir}/common/caNanoLab_deploy.cli" todir="${jboss.artifacts.dir}" overwrite="true"/>
 		<copy file="${commonlib.dir}/mysql-connector-java-8.0.18.jar" todir="${jboss.artifacts.dir}" overwrite="true"/>
+		<copy file="${commonlib.dir}/mysql-socket-factory-connector-j-8-1.4.1-jar-with-dependencies.jar" todir="${jboss.artifacts.dir}" overwrite="true"/>
 		<copy file="${commonlib.dir}/bcprov-jdk15on-1.69.jar" todir="${jboss.artifacts.dir}" overwrite="true"/>
 		<copy file="${dist.dir}/common/wikihelp.properties" todir="${jboss.help.dir}" overwrite="true"/>
 	</target>

@@ -25,6 +25,7 @@ mkdir -p ${CANANODIR} \
 #sudo gcloud config set project "${GCLOUD_PROJECT_ID}"
 #sudo gsutil cp "gs://${GCLOUD_BUCKET_DEV_SQL}/${JAR_FOLDER}" ${HOME}/lib/${JAR_FOLDER}
 
+cp -v ${HOME}/mysql-socket-factory-connector-j-8-1.4.1-jar-with-dependencies.jar ${HOME}/software/cananolab-webapp/lib
 cd ${HOME}/software/cananolab-webapp/
 ant dist
 
@@ -37,7 +38,7 @@ cp -v ${HOME}/software/cananolab-webapp/target/dist/caNanoLab.war ${CANANODIR}/a
 cd ${HOME}/software/cananolab-webapp/lib/sdk
 cp -v csmapi* ${CANANODIR}/artifacts
 cd ${HOME}/software/cananolab-webapp/lib
-cp -v mysql-connector-java-8.0.18.jar bcprov-jdk15on-1.69.jar ${CANANODIR}/artifacts
+cp -v mysql-connector-java-8.0.18.jar bcprov-jdk15on-1.69.jar mysql-socket-factory-connector-j-8-1.4.1-jar-with-dependencies.jar ${CANANODIR}/artifacts
 cd ${HOME}/software/cananolab-webapp/target/dist/common
 cp -v caNanoLab_modules.cli caNanoLab_setup.cli caNanoLab_deploy.cli ${CANANODIR}/artifacts
 cp -v wikihelp.properties ${CANANODIR}/config
