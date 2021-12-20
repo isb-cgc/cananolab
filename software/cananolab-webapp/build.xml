@@ -8,7 +8,11 @@
    See http://ncip.github.com/cananolab/LICENSE.txt for details.
 L-->
 
-<project name="cananolab-webapp" default="dist" basedir="." xmlns:artifact="antlib:org.apache.maven.artifact.ant" xmlns:rsel="antlib:org.apache.tools.ant.types.resources.selectors">
+<project name="cananolab-webapp" default="dist" basedir="."
+		 xmlns:artifact="antlib:org.apache.maven.artifact.ant"
+		 xmlns:rsel="antlib:org.apache.tools.ant.types.resources.selectors"
+		 xmlns:resolver="antlib:org.apache.maven.resolver.ant"
+>
 	<description>
 		This is the build file for the caNanoLab webapp project.
 	</description>
@@ -61,6 +65,9 @@ L-->
 	</taskdef>
 
 	<taskdef resource="net/sf/antcontrib/antcontrib.properties" classpathref="common.classpath"/>
+
+	<taskdef uri="antlib:org.apache.maven.resolver.ant" resource="org/apache/maven/resolver/ant/antlib.xml"
+			 classpath="lib/maven-resolver-ant-tasks-1.4.0-uber.jar" />
 
 	<!-- maven ant task -->
 <!--	<path id="maven-ant-tasks.classpath" path="${common.dir}/lib/maven-ant-tasks-2.1.3.jar"/>-->
