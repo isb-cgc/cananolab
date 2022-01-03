@@ -30,7 +30,7 @@ import javax.persistence.criteria.CriteriaBuilder;
 
 public class SynthesisPurityBean
 {
-    public static final String DATUM_TYPE = "purity datum";
+    public static final String DATUM_TYPE = "datum";
     public static final String CONDITION_TYPE = "condition";
     private List<PurityRow> rows = new ArrayList<PurityRow>();
     private List<FileBean> files = new ArrayList<FileBean>();
@@ -662,7 +662,7 @@ public class SynthesisPurityBean
 //                    condition.setName( columnHeader.getColumnName() );
                     condition.setName( columnHeader.getName() );
 //                    condition.setProperty( columnHeader.getConditionProperty() );
-                    condition.setProperty( columnHeader.getProperty() );
+                    condition.setProperty( columnHeader.getConditionProperty() );
                     rowConditions.add( condition );
                     if( condition.getId() != null && condition.getId() <= 0 )
                     {

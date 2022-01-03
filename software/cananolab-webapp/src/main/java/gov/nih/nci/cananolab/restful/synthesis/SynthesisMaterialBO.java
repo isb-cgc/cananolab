@@ -675,10 +675,9 @@ public class SynthesisMaterialBO extends BaseAnnotationBO {
 
 
             List<SynthesisMaterialElementBean> synthesisMaterialElementBeans = entity.getSynthesisMaterialElements();
-            synthesisMaterialElementBeans.add(newElementBean);
+//            synthesisMaterialElementBeans.add(newElementBean);
             for (SynthesisMaterialElementBean synthesisMaterialElementBean : synthesisMaterialElementBeans) {
                 synthesisMaterialElementBean.setupDomain(SpringSecurityUtil.getLoggedInUserName());
-
             }
             List<String> msgs,msgs2 = new ArrayList<String>();
             msgs = validateInputs(httpServletRequest, entity);
