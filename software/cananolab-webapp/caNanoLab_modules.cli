@@ -1,4 +1,4 @@
-#caNanoLab Wildfly setup scripts
+# caNanoLab Wildfly setup scripts
 
 connect localhost:@client.port@
 

@@ -1,19 +1,18 @@
-#caNanoLab Wildfly setup scripts
+# caNanoLab Wildfly setup scripts
 
 connect localhost:@client.port@
-#connect localhost:19990
 
 ##############################################################
 #             System Properties                      
 ##############################################################
 
-if (outcome == success) of /system-property=gov.nih.nci.security.configFile:read-resource
-/system-property=gov.nih.nci.security.configFile:remove
-end-if
+# if (outcome == success) of /system-property=gov.nih.nci.security.configFile:read-resource
+#   /system-property=gov.nih.nci.security.configFile:remove
+# end-if
 
-if (outcome == success) of /system-property=gov.nih.nci.cananolab.wikihelpProperties:read-resource
-	/system-property=gov.nih.nci.cananolab.wikihelpProperties:remove
-end-if
+# if (outcome == success) of /system-property=gov.nih.nci.cananolab.wikihelpProperties:read-resource
+#	/system-property=gov.nih.nci.cananolab.wikihelpProperties:remove
+# end-if
 
 ## /system-property=gov.nih.nci.cananolab.wikihelpProperties:add(value=/local/content/caNanoLab/config/wikihelp.properties)
 
@@ -24,20 +23,20 @@ end-if
 #             Datasource Configuration                      
 ##############################################################
 
-if (outcome != success) of /subsystem=datasources/jdbc-driver=mysql:read-resource 
+# if (outcome != success) of /subsystem=datasources/jdbc-driver=mysql:read-resource
     /subsystem=datasources/jdbc-driver=mysql:add( \
     driver-name=mysql, \
     driver-module-name=com.mysql, \
     driver-xa-datasource-class-name=com.mysql.jdbc.Driver \
 	) {allow-resource-service-restart=true}
-end-if
+# end-if
 
-if (outcome == success) of /subsystem=datasources/data-source=caNanoLab:read-resource
-  data-source remove --name=caNanoLab
-end-if
+# if (outcome == success) of /subsystem=datasources/data-source=caNanoLab:read-resource
+#  data-source remove --name=caNanoLab
+# end-if
 
-#caNanoLab datasource configuration
-if (outcome != success) of /subsystem=datasources/data-source=caNanoLab:read-resource
+# caNanoLab datasource configuration
+# if (outcome != success) of /subsystem=datasources/data-source=caNanoLab:read-resource
 data-source add \
     --name=caNanoLab \
     --driver-name=mysql \
@@ -48,46 +47,26 @@ data-source add \
     --use-ccm=true \
     --max-pool-size=100 \
     --blocking-timeout-wait-millis=5000 
-#data-source enable --name=caNanoLab
-end-if
-
-##############################################################
-#               CSM Login Module        - obsolete. Remove if present
-##############################################################
-
-if (outcome == success) of /subsystem=datasources/data-source=csmupt:read-resource
-  data-source remove --name=csmupt
-end-if
-
-if (outcome == success) of /subsystem=security/security-domain=caNanoLab:read-resource
-	/subsystem=security/security-domain=caNanoLab:remove
-end-if
-
-if (outcome == success) of /subsystem=security/security-domain=caNanoLab/authentication=classic:read-resource 
-   /subsystem=security/security-domain=caNanoLab/authentication=classic:remove()
-end-if
+data-source enable --name=caNanoLab
+# end-if
 
 ########################################################################
 #   LOGGING
 ######################################################################
 
-if (outcome != success) of /subsystem=logging/size-rotating-file-handler=CANANOLAB:read-resource
+# if (outcome != success) of /subsystem=logging/size-rotating-file-handler=CANANOLAB:read-resource
 	/subsystem=logging:write-attribute(name=use-deployment-logging-config, value=false)
 	/subsystem=logging:write-attribute(name=add-logging-api-dependencies,value=true)
 	/subsystem=logging/size-rotating-file-handler=CANANOLAB:add(level=DEBUG, file={"relative-to"=>"jboss.server.log.dir", "path"=>"cananolab.log"}, append=false, autoflush=true)
 	/subsystem=logging/size-rotating-file-handler=CANANOLAB:write-attribute(name="formatter", value="%d [%t] %-5p [%c : %L] %m%n")
 	/subsystem=logging/size-rotating-file-handler=CANANOLAB:write-attribute(name="rotate-size", value="1m")
 	/subsystem=logging/size-rotating-file-handler=CANANOLAB:write-attribute(name="max-backup-index", value="10")
-end-if
+# end-if
 
 
-if (outcome != success) of /subsystem=logging/logger=gov.nih.nci.cananolab:read-resource
+# if (outcome != success) of /subsystem=logging/logger=gov.nih.nci.cananolab:read-resource
 	/subsystem=logging/logger=gov.nih.nci.cananolab:add(use-parent-handlers=false,handlers=["CANANOLAB", "CONSOLE"])
-end-if
-
-
+# end-if
 
 # Execute and reload
 reload
-
-
