@@ -44,8 +44,7 @@ data-source add \
     --password=@database.password@ \
     --use-ccm=true \
     --max-pool-size=100 \
-    --blocking-timeout-wait-millis=5000 
-data-source enable --name=caNanoLab
+    --blocking-timeout-wait-millis=5000
 end-if
 
 ########################################################################
