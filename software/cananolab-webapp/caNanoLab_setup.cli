@@ -45,7 +45,7 @@ data-source add \
     --use-ccm=true \
     --max-pool-size=100 \
     --blocking-timeout-wait-millis=5000 
-#data-source enable --name=caNanoLab
+data-source enable --name=caNanoLab
 end-if
 
 ########################################################################
