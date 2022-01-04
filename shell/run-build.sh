@@ -39,7 +39,7 @@ cp -v ${HOME}/software/cananolab-webapp/target/dist/caNanoLab.war ${CANANODIR}/a
 cd ${HOME}/software/cananolab-webapp/lib/sdk
 cp -v csmapi* ${CANANODIR}/artifacts
 cd ${HOME}/software/cananolab-webapp/lib
-cp -v mysql-connector-java-8.0.18.jar bcprov-jdk15on-1.69.jar ${CANANODIR}/artifacts
+cp -v mysql-connector*.jar mysql-socket*.jar bcprov*.jar ${CANANODIR}/artifacts
 cd ${HOME}/software/cananolab-webapp/target/dist/common
 cp -v caNanoLab_modules.cli caNanoLab_setup.cli caNanoLab_deploy.cli ${CANANODIR}/artifacts
 cp -v wikihelp.properties ${CANANODIR}/config
