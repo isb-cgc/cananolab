@@ -66,9 +66,3 @@ end-if
 
 # Execute and reload
 reload
-
-# Check datasources
-/subsystem=datasources:read-resource
-
-# Test database connection
-/subsystem=datasources/data-source=caNanoLab:test-connection-in-pool
