@@ -64,11 +64,11 @@ if (outcome != success) of /subsystem=logging/logger=gov.nih.nci.cananolab:read-
 	/subsystem=logging/logger=gov.nih.nci.cananolab:add(use-parent-handlers=false,handlers=["CANANOLAB", "CONSOLE"])
 end-if
 
+# Execute and reload
+reload
+
 # Check datasources
 /subsystem=datasources:read-resource
 
 # Test database connection
 /subsystem=datasources/data-source=caNanoLab:test-connection-in-pool
-
-# Execute and reload
-reload
