@@ -1,5 +1,4 @@
-
-#caNanoLab Wildfly deploy scripts
+# caNanoLab Wildfly deploy scripts
 
 connect localhost:@client.port@
 
@@ -7,11 +6,8 @@ connect localhost:@client.port@
 #              Deploy War Files                            
 ##############################################################
 
-# if (outcome == success) of /deployment=caNanoLab.war:read-resource
-# undeploy caNanoLab.war
-# end-if
-#if (outcome == success) of /deployment=uptEAR.ear:read-resource
-#undeploy uptEAR.ear
-#end-if
+if (outcome == success) of /deployment=caNanoLab.war:read-resource
+    undeploy caNanoLab.war
+end-if
 
 deploy --force @file.repository.dir@/artifacts/caNanoLab.war
