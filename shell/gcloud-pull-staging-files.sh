@@ -4,4 +4,4 @@ gsutil cp "gs://${DEPLOYMENT_BUCKET}/${BUILD_PROPERTIES}" ./software/cananolab-w
 gsutil cp "gs://${DEPLOYMENT_BUCKET}/standalone-full.xml" ./standalone-full.xml
 gsutil cp "gs://${DEPLOYMENT_BUCKET}/maven-settings.xml" ./
 mkdir jars
-gsutil cp "gs://${DEPLOYMENT_BUCKET}/jars/*" ./jars
+gsutil cp -r "gs://${DEPLOYMENT_BUCKET}/jars/" ./jars
