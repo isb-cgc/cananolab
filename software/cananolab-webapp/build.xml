@@ -9,7 +9,6 @@
 L-->
 
 <project name="cananolab-webapp" default="dist" basedir="."
-		 xmlns:artifact="antlib:org.apache.maven.artifact.ant"
 		 xmlns:rsel="antlib:org.apache.tools.ant.types.resources.selectors"
 		 xmlns:resolver="antlib:org.apache.maven.resolver.ant"
 >
@@ -452,7 +451,7 @@ L-->
 
 		<!-- copy dependency jars to WEB-INF/lib files  -->
 		<copy todir="${build.dir}/WEB-INF/lib">
-			<fileset refid="runtime.dependencies" />
+			<fileset dir="${deps.dir}/runtime"/>
 		</copy>
 
 		<!-- copy jars from common/lib -->
