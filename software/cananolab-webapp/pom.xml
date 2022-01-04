@@ -21,15 +21,6 @@
 				<enabled>false</enabled>
 			</snapshots>
 		</repository>
-		<repository>
-			<id>central2</id>
-			<name>Central Repository Second Entry</name>
-			<url>https://repo1.maven.org/maven2</url>
-			<layout>default</layout>
-			<snapshots>
-				<enabled>false</enabled>
-			</snapshots>
-		</repository>
 	</repositories>
 	<pluginRepositories>
 		<pluginRepository>
@@ -40,7 +31,6 @@
 			</snapshots>
 		</pluginRepository>
 	</pluginRepositories>
-
 	<properties>
 		<spring.version>4.3.29.RELEASE</spring.version>
 		<spring.security.version>5.2.10.RELEASE</spring.security.version>
