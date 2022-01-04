@@ -220,7 +220,7 @@ L-->
 
 		<!-- copy dependency jars to WEB-INF/lib files  -->
 		<copy todir="${build.dir}/WEB-INF/lib">
-			<fileset refid="runtime.dependencies"/>
+			<fileset dir="${deps.dir}/runtime"/>
 		</copy>
 
 		<!-- copy jars from common/lib -->
@@ -252,12 +252,12 @@ L-->
 	</target>
 
 	<target name="dist" depends="war">
-		<!-- copy database jdbc driver from common lib-->
+		<!-- copy database jdbc driver and socket factory to common dist-->
 		<copy todir="${common.dist.dir}" overwrite="true">
 			<restrict>
 				<fileset refid="compiletime.dependencies"/>
 				<!--  **/mysql-connector-java-*.jar didn't work, but **\mysql-connector-java-*.jar works-->
-				<rsel:name name="**mysql-connector-java-*.jar"/>
+				<rsel:name name="**mysql*.jar"/>
 			</restrict>
 		</copy>
 
