@@ -25,7 +25,8 @@ mkdir -p ${CANANODIR} \
 
 cp -v ${HOME}/maven-settings.xml ${ANT_HOME}/etc/settings.xml
 cp -v ${HOME}/maven-settings.xml /opt/apache-maven/conf/settings.xml
-cp -v ${HOME}/jars/* ${HOME}/software/cananolab-webapp/lib/
+cp -v ${HOME}/jars/*.jar ${HOME}/software/cananolab-webapp/lib/
+cp -v ${HOME}/jars/sdk/*.jar ${HOME}/software/cananolab-webapp/lib/sdk/
 
 cd ${HOME}/software/cananolab-webapp/
 ant dist
