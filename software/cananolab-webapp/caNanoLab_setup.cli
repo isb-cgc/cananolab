@@ -51,17 +51,26 @@ end-if
 #   LOGGING
 ######################################################################
 
-if (outcome != success) of /subsystem=logging/size-rotating-file-handler=CANANOLAB:read-resource
+# if (outcome != success) of /subsystem=logging/size-rotating-file-handler=CANANOLAB:read-resource
+#	/subsystem=logging:write-attribute(name=use-deployment-logging-config, value=false)
+#	/subsystem=logging:write-attribute(name=add-logging-api-dependencies,value=true)
+#	/subsystem=logging/size-rotating-file-handler=CANANOLAB:add(level=DEBUG, file={"relative-to"=>"jboss.server.log.dir", "path"=>"cananolab.log"}, append=false, autoflush=true)
+#	/subsystem=logging/size-rotating-file-handler=CANANOLAB:write-attribute(name="formatter", value="%d [%t] %-5p [%c : %L] %m%n")
+#	/subsystem=logging/size-rotating-file-handler=CANANOLAB:write-attribute(name="rotate-size", value="1m")
+#	/subsystem=logging/size-rotating-file-handler=CANANOLAB:write-attribute(name="max-backup-index", value="10")
+# end-if
+
+if (outcome != success) of /subsystem=logging/console-handler=CONSOLE:read-resource
 	/subsystem=logging:write-attribute(name=use-deployment-logging-config, value=false)
 	/subsystem=logging:write-attribute(name=add-logging-api-dependencies,value=true)
-	/subsystem=logging/size-rotating-file-handler=CANANOLAB:add(level=DEBUG, file={"relative-to"=>"jboss.server.log.dir", "path"=>"cananolab.log"}, append=false, autoflush=true)
-	/subsystem=logging/size-rotating-file-handler=CANANOLAB:write-attribute(name="formatter", value="%d [%t] %-5p [%c : %L] %m%n")
-	/subsystem=logging/size-rotating-file-handler=CANANOLAB:write-attribute(name="rotate-size", value="1m")
-	/subsystem=logging/size-rotating-file-handler=CANANOLAB:write-attribute(name="max-backup-index", value="10")
+	/subsystem=logging/console-handler=CONSOLE:add(level=DEBUG)
 end-if
 
+/subsystem=logging/console-handler=CONSOLE:write-attribute(name="formatter", value="%d [%t] %-5p [%c : %L] %m%n")
+/subsystem=logging/console-handler=CONSOLE:write-attribute(name="target", value="System.out")
+
 if (outcome != success) of /subsystem=logging/logger=gov.nih.nci.cananolab:read-resource
-	/subsystem=logging/logger=gov.nih.nci.cananolab:add(use-parent-handlers=false,handlers=["CANANOLAB", "CONSOLE"])
+	/subsystem=logging/logger=gov.nih.nci.cananolab:add(use-parent-handlers=false,handlers=["CONSOLE"])
 end-if
 
 # Execute and reload
