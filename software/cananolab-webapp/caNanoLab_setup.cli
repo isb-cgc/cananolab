@@ -65,8 +65,11 @@ if (outcome != success) of /subsystem=logging/console-handler=CANANO_CONSOLE:rea
     /subsystem=logging:write-attribute(name=add-logging-api-dependencies,value=true)
 	/subsystem=logging/console-handler=CANANO_CONSOLE:add(level=DEBUG)
     /subsystem=logging/console-handler=CANANO_CONSOLE:write-attribute(name="formatter", value="CANANO_CONSOLE %d [%t] %-5p [%c : %L] %m%n")
-    /subsystem=logging/console-handler=CANANO_CONSOLE:write-attribute(name="target", value="System.out")
+
 end-if
+
+/subsystem=logging/logger=stderr:add(use-parent-handlers="false", handlers=[CANANO_CONSOLE])
+/subsystem=logging/logger=stdout:add(use-parent-handlers="false", handlers=[CANANO_CONSOLE])
 
 /subsystem=logging/root-logger=ROOT:remove-handler=FILE
 /subsystem=logging/root-logger=ROOT:add-handler=CANANO_CONSOLE
