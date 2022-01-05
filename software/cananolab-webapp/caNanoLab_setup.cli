@@ -52,24 +52,22 @@ end-if
 ######################################################################
 
 # Set up a custom Conole handler
-if (outcome != success) of /subsystem=logging/console-handler=CANANO_CONSOLE:read-resource
-    /subsystem=logging:write-attribute(name=use-deployment-logging-config, value=false)
-    /subsystem=logging:write-attribute(name=add-logging-api-dependencies,value=true)
-	/subsystem=logging/console-handler=CANANO_CONSOLE:add(level=DEBUG)
-    /subsystem=logging/console-handler=CANANO_CONSOLE:write-attribute(name="formatter", value="CANANO_CONSOLE %d [%t] %-5p [%c : %L] %m%n")
-end-if
+/subsystem=logging:write-attribute(name=use-deployment-logging-config, value=false)
+/subsystem=logging:write-attribute(name=add-logging-api-dependencies,value=true)
+/subsystem=logging/console-handler=CONSOLE:write-attribute(name=level, value=DEBUG)
+/subsystem=logging/console-handler=CONSOLE:write-attribute(name="formatter", value="[caNano Console] %d [%t] %-5p [%c : %L] %m%n")
 
 # Point stdout and stderr to it
-/subsystem=logging/logger=stderr:add(use-parent-handlers="false", handlers=[CANANO_CONSOLE])
-/subsystem=logging/logger=stdout:add(use-parent-handlers="false", handlers=[CANANO_CONSOLE])
+/subsystem=logging/logger=stderr:add(use-parent-handlers="false", handlers=[CONSOLE])
+/subsystem=logging/logger=stdout:add(use-parent-handlers="false", handlers=[CONSOLE])
 
 # Pull the root logger off the File handler; file logging is useless in AppEngine
-/subsystem=logging/root-logger=ROOT:remove-handler(name=File)
-/subsystem=logging/root-logger=ROOT:add-handler(name=CANANO_CONSOLE)
+/subsystem=logging/root-logger=ROOT:remove-handler(name=FILE)
+/subsystem=logging/root-logger=ROOT:add-handler(name=CONSOLE)
 
 # Hook up our cananolab code to the custom console handler
 if (outcome != success) of /subsystem=logging/logger=gov.nih.nci.cananolab:read-resource
-	/subsystem=logging/logger=gov.nih.nci.cananolab:add(handlers=["CANANO_CONSOLE"])
+	/subsystem=logging/logger=gov.nih.nci.cananolab:add(handlers=["CONSOLE"])
 end-if
 
 # Execute and reload
