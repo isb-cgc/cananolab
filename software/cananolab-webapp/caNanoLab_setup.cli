@@ -51,7 +51,7 @@ end-if
 #   LOGGING
 ######################################################################
 
-# Set up a custom Conole handler
+# Adjust the console handler
 /subsystem=logging:write-attribute(name=use-deployment-logging-config, value=false)
 /subsystem=logging:write-attribute(name=add-logging-api-dependencies,value=true)
 /subsystem=logging/console-handler=CONSOLE:write-attribute(name=level, value=DEBUG)
@@ -63,9 +63,8 @@ end-if
 
 # Pull the root logger off the File handler; file logging is useless in AppEngine
 /subsystem=logging/root-logger=ROOT:remove-handler(name=FILE)
-/subsystem=logging/root-logger=ROOT:add-handler(name=CONSOLE)
 
-# Hook up our cananolab code to the custom console handler
+# Hook up our cananolab code to the console handler
 if (outcome != success) of /subsystem=logging/logger=gov.nih.nci.cananolab:read-resource
 	/subsystem=logging/logger=gov.nih.nci.cananolab:add(handlers=["CONSOLE"])
 end-if
