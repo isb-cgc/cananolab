@@ -46,4 +46,5 @@ cp -v caNanoLab_modules.cli caNanoLab_setup.cli caNanoLab_deploy.cli ${CANANODIR
 cp -v wikihelp.properties ${CANANODIR}/config
 
 cp -v ${HOME}/shell/run-wildfly.sh ${HOME}/staged/
+cp -v ${HOME}/.env ${HOME}/staged/
 chmod ug+x ${HOME}/staged/run-wildfly.sh
