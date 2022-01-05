@@ -60,15 +60,20 @@ end-if
 #	/subsystem=logging/size-rotating-file-handler=CANANOLAB:write-attribute(name="max-backup-index", value="10")
 # end-if
 
-if (outcome != success) of /subsystem=logging/console-handler=CONSOLE:read-resource
-	/subsystem=logging/console-handler=CONSOLE:add(level=DEBUG)
+/subsystem=logging/root-logger=ROOT:write-attribute(name=level, value=DEBUG)
+
+if (outcome != success) of /subsystem=logging/console-handler=CANANO_CONSOLE:read-resource
+    /subsystem=logging:write-attribute(name=use-deployment-logging-config, value=false)
+    /subsystem=logging:write-attribute(name=add-logging-api-dependencies,value=true)
+	/subsystem=logging/console-handler=CANANO_CONSOLE:add(level=DEBUG)
+    /subsystem=logging/console-handler=CANANO_CONSOLE:write-attribute(name="formatter", value="CANANO_CONSOLE %d [%t] %-5p [%c : %L] %m%n")
+    /subsystem=logging/console-handler=CANANO_CONSOLE:write-attribute(name="target", value="System.out")
 end-if
 
-/subsystem=logging/console-handler=CONSOLE:write-attribute(name="formatter", value="%d [%t] %-5p [%c : %L] %m%n")
-/subsystem=logging/console-handler=CONSOLE:write-attribute(name="target", value="System.out")
+
 
 if (outcome != success) of /subsystem=logging/logger=gov.nih.nci.cananolab:read-resource
-	/subsystem=logging/logger=gov.nih.nci.cananolab:add(use-parent-handlers=false,handlers=["CONSOLE"])
+	/subsystem=logging/logger=gov.nih.nci.cananolab:add(use-parent-handlers=false,handlers=["CANANO_CONSOLE"])
 end-if
 
 # Execute and reload
