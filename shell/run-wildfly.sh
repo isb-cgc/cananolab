@@ -1,6 +1,7 @@
 #!/bin/bash
 
 export $(cat /local/content/.env | grep -v ^# | xargs) 2> /dev/null
+echo "Wildfly Admin username is ${WILDFLY_ADMIN}"
 
 export WILDFLY_BIN=/opt/wildfly-8.2.1.Final/bin
 
