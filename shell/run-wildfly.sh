@@ -1,6 +1,6 @@
 #!/bin/bash
 
-export $(cat .env | grep -v ^# | xargs) 2> /dev/null
+export $(cat /local/content/.env | grep -v ^# | xargs) 2> /dev/null
 
 export WILDFLY_BIN=/opt/wildfly-8.2.1.Final/bin
 
@@ -20,7 +20,7 @@ while [ $? -ne 0 ] && [ $counter -lt 5 ]; do
   sleep 6
 done
 
-${WILDFLY_BIN}/add-user.sh -u ${WILDFLY_ADMIN} -p ${WILDFLY_ADMIN_PASSWORD}
+${WILDFLY_BIN}/add-user.sh ${WILDFLY_ADMIN} ${WILDFLY_ADMIN_PASSWORD}
 
 if [ $? -eq 0 ]; then
   echo "JBoss is now running - continuing setup and deployment."
