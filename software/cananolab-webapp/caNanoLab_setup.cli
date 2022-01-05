@@ -61,8 +61,6 @@ end-if
 # end-if
 
 if (outcome != success) of /subsystem=logging/console-handler=CONSOLE:read-resource
-	/subsystem=logging:write-attribute(name=use-deployment-logging-config, value=false)
-	/subsystem=logging:write-attribute(name=add-logging-api-dependencies,value=true)
 	/subsystem=logging/console-handler=CONSOLE:add(level=DEBUG)
 end-if
 
