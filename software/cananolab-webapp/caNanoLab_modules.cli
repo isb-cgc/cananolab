@@ -5,8 +5,7 @@ connect localhost:@client.port@
 ### Database driver module
 ### Comment out the module remove if doing a brand new install
 ### module remove --name=com.mysql
-module add --name=com.mysql --resources=@file.repository.dir@/artifacts/mysql-connector-java-8.0.18.jar --dependencies=javax.api,javax.transaction.api
-module add --name=com.mysql.socket --resources=@file.repository.dir@/artifacts/mysql-socket-factory-connector-j-8-1.4.1.jar --dependencies=javax.api,javax.transaction.api
+module add --name=com.mysql --resources=@file.repository.dir@/artifacts/mysql-socket-factory-connector-j-8-1.4.1-jar-with-driver-and-dependencies.jar --dependencies=javax.api,javax.transaction.api
 
 ###  BouncyCastle
 ### Comment out the module remove if doing a brand new install
