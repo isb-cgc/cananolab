@@ -1,7 +1,6 @@
 #!/bin/bash
 
 export $(cat /local/content/.env | grep -v ^# | xargs) 2> /dev/null
-echo "Wildfly Admin username is ${WILDFLY_ADMIN}"
 
 export WILDFLY_BIN=/opt/wildfly-8.2.1.Final/bin
 
@@ -21,10 +20,11 @@ while [ $? -ne 0 ] && [ $counter -lt 5 ]; do
   sleep 6
 done
 
-${WILDFLY_BIN}/add-user.sh ${WILDFLY_ADMIN} ${WILDFLY_ADMIN_PASSWORD}
-
 if [ $? -eq 0 ]; then
   echo "JBoss is now running - continuing setup and deployment."
+  echo "Adding admin console user."
+  echo "${WILDFLY_ADMIN} ${WILDFLY_ADMIN_PASSWORD}"
+  ${WILDFLY_BIN}/add-user.sh ${WILDFLY_ADMIN} ${WILDFLY_ADMIN_PASSWORD}
   echo "Adding BouncyCastle and JDBC driver to Wildfly"
   ${WILDFLY_BIN}/jboss-cli.sh --file=/local/content/caNanoLab/artifacts/caNanoLab_modules.cli
   echo "Setting up data sources"
