@@ -42,7 +42,7 @@ cp -v csmapi* ${CANANODIR}/artifacts
 cd ${HOME}/software/cananolab-webapp/lib
 cp -v mysql-connector*.jar mysql-socket*.jar bcprov*.jar ${CANANODIR}/artifacts
 cd ${HOME}/software/cananolab-webapp/target/dist/common
-cp -v caNanoLab_modules.cli caNanoLab_setup.cli caNanoLab_deploy.cli ${CANANODIR}/artifacts
+cp -v caNanoLab_modules.cli caNanoLab_checks.cli caNanoLab_setup.cli caNanoLab_deploy.cli ${CANANODIR}/artifacts
 cp -v wikihelp.properties ${CANANODIR}/config
 
 cp -v ${HOME}/shell/run-wildfly.sh ${HOME}/staged/
