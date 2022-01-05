@@ -2,16 +2,6 @@
 
 connect localhost:@client.port@
 
-##############################################
-# Checks
-##############################################
-
-# Check datasources and check connection
-/subsystem=datasources/data-source=caNanoLab:read-resource
-# if (outcome == success) of /subsystem=datasources/data-source=caNanoLab:read-resource
-#    /subsystem=datasources/data-source=caNanoLab:test-connection-in-pool
-# end-if
-
 ##############################################################
 #              Deploy War Files                            
 ##############################################################

@@ -1,0 +1,13 @@
+# caNanoLab Wildfly test/check scripts
+
+connect localhost:@client.port@
+
+##############################################
+# Checks
+##############################################
+
+# Check datasources and check connection
+batch
+/subsystem=datasources/data-source=caNanoLab:read-resource
+/subsystem=datasources/data-source=caNanoLab:test-connection-in-pool
+run-batch

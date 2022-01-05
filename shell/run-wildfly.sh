@@ -23,9 +23,14 @@ done
 ${WILDFLY_BIN}/add-user.sh -u ${WILDFLY_ADMIN} -p ${WILDFLY_ADMIN_PASSWORD}
 
 if [ $? -eq 0 ]; then
-   echo "JBoss is now running - continuing setup and deployment."
+  echo "JBoss is now running - continuing setup and deployment."
+  echo "Adding BouncyCastle and JDBC driver to Wildfly"
   ${WILDFLY_BIN}/jboss-cli.sh --file=/local/content/caNanoLab/artifacts/caNanoLab_modules.cli
+  echo "Setting up data sources"
   ${WILDFLY_BIN}/jboss-cli.sh --file=/local/content/caNanoLab/artifacts/caNanoLab_setup.cli
+  echo "Testing data source setup and connection"
+  ${WILDFLY_BIN}/jboss-cli.sh --file=/local/content/caNanoLab/artifacts/caNanoLab_checks.cli
+  echo "Deploying Wildfly"
   ${WILDFLY_BIN}/jboss-cli.sh --file=/local/content/caNanoLab/artifacts/caNanoLab_deploy.cli
 else
   echo "Didn't see JBoss start within 30 seconds!"
