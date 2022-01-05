@@ -61,6 +61,8 @@ end-if
 # end-if
 
 /subsystem=logging/root-logger=ROOT:write-attribute(name=level, value=DEBUG)
+/subsystem=logging/root-logger=ROOT:write-attribute(name="formatter", value="RROT LOGGER %d [%t] %-5p [%c : %L] %m%n")
+/subsystem=logging/root-logger=ROOT:write-attribute(name="target", value="System.out")
 
 if (outcome != success) of /subsystem=logging/console-handler=CANANO_CONSOLE:read-resource
     /subsystem=logging:write-attribute(name=use-deployment-logging-config, value=false)
@@ -70,10 +72,8 @@ if (outcome != success) of /subsystem=logging/console-handler=CANANO_CONSOLE:rea
     /subsystem=logging/console-handler=CANANO_CONSOLE:write-attribute(name="target", value="System.out")
 end-if
 
-
-
 if (outcome != success) of /subsystem=logging/logger=gov.nih.nci.cananolab:read-resource
-	/subsystem=logging/logger=gov.nih.nci.cananolab:add(use-parent-handlers=false,handlers=["CANANO_CONSOLE"])
+	/subsystem=logging/logger=gov.nih.nci.cananolab:add(handlers=["CANANO_CONSOLE"])
 end-if
 
 # Execute and reload
