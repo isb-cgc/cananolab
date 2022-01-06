@@ -11,4 +11,3 @@ module add --name=com.mysql --resources=@file.repository.dir@/artifacts/mysql-so
 ### Comment out the module remove if doing a brand new install
 #### module remove --name=org.bouncycastle
 module add --name=org.bouncycastle --resources=@file.repository.dir@/artifacts/bcprov-jdk15on-1.69.jar --dependencies=javax.api
-
