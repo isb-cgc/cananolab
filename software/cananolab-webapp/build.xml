@@ -79,7 +79,7 @@ L-->
 		<resolver:dependencies>
 			<resolver:pom refid="pom"/>
 		</resolver:dependencies>
-		<resolver:path refid="compiletime.dependencies.path" classpath="compile" />
+		<resolver:path refid="compiletime.dependencies.path" scopes="compile" />
 		<resolver:files refid="compiletime.dependencies" dir="${deps.dir}/compile" layout="{artifactId}-{version}.{extension}"/>
 	</resolver:resolve>
 
@@ -87,7 +87,7 @@ L-->
 		<resolver:dependencies>
 			<resolver:pom refid="pom"/>
 		</resolver:dependencies>
-		<resolver:path refid="runtime.dependencies.path" classpath="runtime" />
+		<resolver:path refid="runtime.dependencies.path" scopes="runtime" />
 		<resolver:files refid="runtime.dependencies" dir="${deps.dir}/runtime"  layout="{artifactId}-{version}.{extension}" />
 	</resolver:resolve>
 
