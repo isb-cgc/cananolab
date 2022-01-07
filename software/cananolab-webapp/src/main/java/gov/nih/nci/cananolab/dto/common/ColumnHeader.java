@@ -75,7 +75,7 @@ public class ColumnHeader {
 
 	public ColumnHeader(PurityColumnHeader columnHeader) {
 		this.columnName = columnHeader.getName();
-		this.conditionProperty = columnHeader.getProperty();
+		this.conditionProperty = columnHeader.getConditionProperty();
 		this.valueType = columnHeader.getValueType();
 		this.valueUnit = columnHeader.getValueUnit();
 		this.createdDate = columnHeader.getCreatedDate();

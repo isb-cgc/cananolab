@@ -612,7 +612,7 @@ public class SynthesisPurificationBO extends BaseAnnotationBO {
                         datumCondition.setName(header.getName());
                         datumCondition.setValueType(header.getValueType());
                         datumCondition.setValueUnit(header.getValueUnit());
-                        datumCondition.setProperty(header.getProperty());
+                        datumCondition.setProperty(header.getConditionProperty());
                         datumCondition.setColumnHeader(header);
                     }
                 }
@@ -653,7 +653,7 @@ public class SynthesisPurificationBO extends BaseAnnotationBO {
                     datum.setName(header.getName());
                     datum.setValueType(header.getValueType());
                     datum.setValueUnit(header.getValueUnit());
-                    datum.setProperty(header.getProperty());
+                    datum.setProperty(header.getConditionProperty());
                     datum.setColumnHeader(header);
                 }
             }
@@ -689,24 +689,33 @@ public class SynthesisPurificationBO extends BaseAnnotationBO {
         List<String> msgs = new ArrayList<String>();
         try {
             SynthesisPurificationBean synthesisPurificationBean = transferSimplePurification(editBean, httpRequest);
-            List<SimplePurityBean> purityBeans = editBean.getPurityBeans();
-            if ((purityBeans != null) && (purityBeans.size() > 0)) {
-                for (SimplePurityBean bean : purityBeans) {
-                    if (bean.getId() == null) {
-                        //create a new purity
-                        SynthesisPurityBean purityBean = transferSimplePurity(bean, httpRequest);
-                        synthesisService.saveSynthesisPurity(purityBean, synthesisPurificationBean);
-                    } else {
-                        //check if edit needed
-                        if (bean.isDirty()) {
-                            //TODO edit data
-                            //Moved to updatePurity??
-                            updatePurity(httpRequest, editBean.getPurityBeingEdited());
-                        }
-
-                    }
+            for(SynthesisPurityBean purityBean:synthesisPurificationBean.getPurityBeans()){
+                if(purityBean.getDomain().getId()==null){
+                    synthesisService.saveSynthesisPurity(purityBean, synthesisPurificationBean);
                 }
             }
+
+
+
+
+//            List<SimplePurityBean> purityBeans = editBean.getPurityBeans();
+//            if ((purityBeans != null) && (purityBeans.size() > 0)) {
+//                for (SimplePurityBean bean : purityBeans) {
+//                    if (bean.getId() == null) {
+//                        //create a new purity
+//                        SynthesisPurityBean purityBean = transferSimplePurity(bean, httpRequest);
+//                        synthesisService.saveSynthesisPurity(purityBean, synthesisPurificationBean);
+//                    } else {
+//                        //check if edit needed
+//                        if (bean.isDirty()) {
+//                            //TODO edit data
+//                            //Moved to updatePurity??
+//                            updatePurity(httpRequest, editBean.getPurityBeingEdited());
+//                        }
+//
+//                    }
+//                }
+//            }
 //            List<SimplePurityRowBean> rows = editBean.getRows();
 //            List<ColumnHeader> headers = editBean.getColumnHeaders();
 //            if((rows!=null) && (headers!=null)){
