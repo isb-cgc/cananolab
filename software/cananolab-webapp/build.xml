@@ -79,7 +79,7 @@ L-->
 		<resolver:dependencies>
 			<resolver:pom refid="pom"/>
 		</resolver:dependencies>
-		<resolver:path refid="compiletime.dependencies.path" scopes="compile" />
+		<resolver:path refid="compiletime.dependencies.path" classpath="compile" />
 		<resolver:files refid="compiletime.dependencies" dir="${deps.dir}/compile" layout="{artifactId}-{version}.{extension}"/>
 	</resolver:resolve>
 
