@@ -22,6 +22,7 @@ import gov.nih.nci.cananolab.domain.particle.SynthesisMaterial;
 import gov.nih.nci.cananolab.domain.particle.SynthesisMaterialElement;
 import gov.nih.nci.cananolab.domain.particle.SynthesisPurification;
 import gov.nih.nci.cananolab.domain.particle.SynthesisPurity;
+import gov.nih.nci.cananolab.dto.common.ColumnHeader;
 import gov.nih.nci.cananolab.dto.common.FileBean;
 
 
@@ -54,6 +55,7 @@ import gov.nih.nci.cananolab.system.query.hibernate.HQLCriteria;
 
 import gov.nih.nci.cananolab.util.Constants;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -183,7 +185,7 @@ public class SynthesisServiceLocalImpl extends BaseServiceLocalImpl implements S
         }
     }
 
-    public void deleteColumnHeader(PurityColumnHeader header) throws NoAccessException, SynthesisException {
+    public void deleteColumnHeader(PurityColumnHeader header) throws SynthesisException, NoAccessException {
         if (SpringSecurityUtil.getPrincipal() == null) {
             throw new NoAccessException();
         }
@@ -343,6 +345,7 @@ public class SynthesisServiceLocalImpl extends BaseServiceLocalImpl implements S
                     deleteSynthesisPurity(sampleId, synthesisPurification, element);
                 }
             }
+            synthesisPurification.setPurities(null);
 
 
             CaNanoLabApplicationService appService = (CaNanoLabApplicationService) ApplicationServiceProvider
@@ -350,29 +353,63 @@ public class SynthesisServiceLocalImpl extends BaseServiceLocalImpl implements S
             appService.delete(synthesisPurification);
         }
         catch (Exception e) {
-            String err = "Error deleting synthesis material " + synthesisPurification.getId();
+            String err = "Error deleting synthesis purification " + synthesisPurification.getId();
             logger.error(err, e);
             throw new SynthesisException(err, e);
         }
     }
 
     public void deleteSynthesisPurity(Long sampleId, SynthesisPurification synthesisPurification,
-                                      SynthesisPurity element) throws SynthesisException {
+                                      SynthesisPurity element) throws SynthesisException{
 
-        if (element.getFiles() != null) {
-            for (File file : element.getFiles()) {
-                deleteSynthesisPurityFile(element, file);
+        try {
+            if (element.getFiles() != null) {
+                for (File file : element.getFiles()) {
+                    deleteSynthesisPurityFile(element, file);
+                }
+
             }
 
-        }
-        if (element.getPurityDatumCollection() != null) {
-            //delete datum
-            for (PurityDatumCondition purityDatumCondition : element.getPurityDatumCollection()) {
-                deletePurityDatum(sampleId, element, purityDatumCondition);
+
+            if (element.getPurityDatumCollection() != null) {
+                Collection<PurityColumnHeader> deleteColumnHeaders= new ArrayList<PurityColumnHeader>();
+                //delete datum
+                for (PurityDatumCondition purityDatumCondition : element.getPurityDatumCollection()) {
+                    PurityColumnHeader columnHeader = purityDatumCondition.getColumnHeader();
+                    deletePurityDatum(sampleId, element, purityDatumCondition);
+                    deleteColumnHeaders.add(columnHeader);
+
+                }
+
+                for(PurityColumnHeader columnHeader: deleteColumnHeaders){
+                    deleteColumnHeader(columnHeader);
+                }
             }
 
+
+
+                CaNanoLabApplicationService appService = (CaNanoLabApplicationService) ApplicationServiceProvider
+                        .getApplicationService();
+                appService.delete(element);
+
+
+
+        } catch(SynthesisException syn){
+            throw syn;
+        } catch (NoAccessException nae){
+            String err = "User does not have access to delete purity " + element.getId();
+            logger.error(err, nae);
+            throw new SynthesisException(err, nae);
         }
-        synthesisPurification.removePurity(element);
+        catch (ApplicationException e) {
+            String err = "Application Exception when deleting purity " + element.getId();
+            logger.error(err, e);
+            throw new SynthesisException(err, e);
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+        }
+//        synthesisPurification.removePurity(element);
 
     }
 
@@ -853,6 +890,10 @@ public class SynthesisServiceLocalImpl extends BaseServiceLocalImpl implements S
                 if(test1==null){
                     synthesisPurity.setSynthesisPurification(synthesisPurificationBean.getDomainEntity());
                 }
+                if(synthesisPurificationBean.getDomainEntity().getId()==null){
+                    String err = "Saving purity when purification is not yet set";
+                    throw new SynthesisException(err);
+                }
 
                else if( !test1.equals(test2)){
                     //something has gone wrong and the material does not attach to the correct synthesis
@@ -884,15 +925,18 @@ public class SynthesisServiceLocalImpl extends BaseServiceLocalImpl implements S
 //            }
 
            FileBean fileBean= synthesisPurityBean.getFileBeingEdited();
+            if(fileBean!=null) {
                 fileUtils.prepareSaveFile(fileBean.getDomainFile());
                 fileUtils.writeFile(fileBean);
                 synthesisPurity.addFile(fileBean.getDomainFile());
+            }
 
 //            synthesisPurity.setSynthesisPurification(synthesisPurificationBean.getDomainEntity());
 
 
 //Need to save purity to get the ID for the dependents
             appService.saveOrUpdate(synthesisPurity);
+            synthesisPurityBean = new SynthesisPurityBean(synthesisPurity);
 
             //TODO detect if columnHeaders have been removed
             //Next need to save the column headers
@@ -951,6 +995,7 @@ public class SynthesisServiceLocalImpl extends BaseServiceLocalImpl implements S
                 //TODO remove this duplicate or figure out what it should be
                 datumCondition.setValueType(datumCondition.getColumnHeader().getColumnType());
                 datumCondition.setValueUnit(datumCondition.getColumnHeader().getValueUnit());
+                datumCondition.setProperty(datumCondition.getColumnHeader().getConditionProperty());
                 datumCondition.setPurity(synthesisPurity);
                 datumCondition.setValue(cell.getValue());
                 datumCondition.setOperand(cell.getOperand());
@@ -1184,10 +1229,13 @@ public class SynthesisServiceLocalImpl extends BaseServiceLocalImpl implements S
 
     }
 
-    private void deletePurityDatum(Long sampleId, SynthesisPurity element, PurityDatumCondition purityDatum) throws SynthesisException {
-        //TODO write
-        try {
+    private void deletePurityDatum(Long sampleId, SynthesisPurity purity, PurityDatumCondition element) throws SynthesisException {
 
+        try {
+            CaNanoLabApplicationService appService = (CaNanoLabApplicationService) ApplicationServiceProvider
+                    .getApplicationService();
+
+            appService.delete(element);
         }
         catch (Exception e) {
             String err = "Error deleting Purity Datum Condition " + element.getId();

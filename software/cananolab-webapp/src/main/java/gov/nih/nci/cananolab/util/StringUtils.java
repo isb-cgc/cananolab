@@ -520,4 +520,8 @@ public class StringUtils {
 
 		return sb.toString();
 	}
+
+	protected static void LoggerTest(String testText){
+		logger.debug(testText);
+	}
 }

@@ -20,7 +20,7 @@
         <property generated="never" lazy="false" name="name" type="string">
             <column length="200" name="name" not-null="true"/>
         </property>
-        <property generated="never" lazy="false" name="property" type="string">
+        <property generated="never" lazy="false" name="conditionProperty" type="string">
             <column length="200" name="property" not-null="true"/>
         </property>
         <property generated="never" lazy="false" name="valueType" type="string">

@@ -43,7 +43,7 @@ public class SynthesisMaterialBean extends BaseSynthesisEntityBean {
                 synthesisMaterialElements.add(new SynthesisMaterialElementBean(synthesisMaterialElement));
             }
         }
-        Collections.sort(synthesisMaterialElements, new Comparators.SynthesisMaterialElementTypeDataComparator());
+//        Collections.sort(synthesisMaterialElements, new Comparators.SynthesisMaterialElementTypeDataComparator());
         if (material.getProtocol() != null) {
             protocolBean = new ProtocolBean(material.getProtocol());
         }

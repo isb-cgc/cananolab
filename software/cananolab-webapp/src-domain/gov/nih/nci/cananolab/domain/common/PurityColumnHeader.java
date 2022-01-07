@@ -6,7 +6,7 @@ import java.util.Date;
 public class PurityColumnHeader implements Serializable {
     private Long id;
     private String name;
-    private String property;
+    private String conditionProperty;
     private String valueType;
     private String valueUnit;
     private String createdBy;
@@ -31,12 +31,12 @@ public class PurityColumnHeader implements Serializable {
         this.name = name;
     }
 
-    public String getProperty() {
-        return property;
+    public String getConditionProperty() {
+        return conditionProperty;
     }
 
-    public void setProperty(String property) {
-        this.property = property;
+    public void setConditionProperty(String property) {
+        this.conditionProperty = property;
     }
 
     public String getValueType() {
