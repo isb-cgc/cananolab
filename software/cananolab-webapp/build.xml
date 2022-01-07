@@ -149,8 +149,6 @@ L-->
 			<classpath refid="compiletime.dependencies.path"  />
 		</javac>
 	</target>
-
-
 	<target name="compile-beans" depends="init">
 		<echo message="*****************************************************"/>
 		<echo message="**   Compiling caNanoLab-beans.jar ...          		  **"/>
@@ -267,7 +265,6 @@ L-->
 				<rsel:name name="**bcprov*.jar"/>
 			</restrict>
 		</copy>
-
 
 		<!--copy mysql-ds.xml and replace database connection info-->
 		<copy overwrite="true" tofile="${common.dist.dir}/mysql-ds.xml"
@@ -512,8 +509,6 @@ L-->
 	<target name="junit" depends="compile-test">
 		<delete dir="${report.dir}" failonerror="true"/>
 		<mkdir dir="${report.dir}"/>
-
-
 		<junit printsummary="true" failureproperty="junit.failure" haltonfailure='false'>
 			<classpath>
 				<path refid="test.classpath"/>
