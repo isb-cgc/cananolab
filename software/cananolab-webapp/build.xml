@@ -85,10 +85,10 @@ L-->
 
 	<resolver:resolve>
 		<resolver:dependencies>
-			<resolver:pom refid="pom"/>
+			<resolver:pom refid="pom" />
 		</resolver:dependencies>
-		<resolver:path refid="runtime.dependencies.path" scopes="runtime" />
-		<resolver:files refid="runtime.dependencies" dir="${deps.dir}/runtime"  layout="{artifactId}-{version}.{extension}" />
+		<resolver:path refid="runtime.dependencies.path" classpath="runtime" />
+		<resolver:files refid="runtime.dependencies" dir="${deps.dir}/runtime"  layout="{artifactId}-{version}.{extension}" scopes="compile" />
 	</resolver:resolve>
 
 	<!-- maven ant task -->
