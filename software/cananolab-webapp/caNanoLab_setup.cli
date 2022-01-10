@@ -56,7 +56,7 @@ reload
 # Adjust the console handler
 /subsystem=logging:write-attribute(name=use-deployment-logging-config, value=false)
 /subsystem=logging:write-attribute(name=add-logging-api-dependencies,value=true)
-/subsystem=logging/console-handler=CONSOLE:write-attribute(name=level, value=DEBUG)
+#/subsystem=logging/console-handler=CONSOLE:write-attribute(name=level, value=DEBUG)
 /subsystem=logging/console-handler=CONSOLE:write-attribute(name="formatter", value="%d [%t] %-5p [%c : %L] %m%n")
 
 # Point stdout and stderr to it
