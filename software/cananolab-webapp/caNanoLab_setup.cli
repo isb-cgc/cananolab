@@ -2,6 +2,7 @@
 
 connect localhost:@client.port@
 
+batch
 ##############################################################
 #             System Properties                      
 ##############################################################
@@ -47,8 +48,6 @@ data-source add \
     --blocking-timeout-wait-millis=5000
 end-if
 
-reload
-
 ########################################################################
 #   LOGGING
 ######################################################################
@@ -73,5 +72,7 @@ if (outcome != success) of /subsystem=logging/logger=gov.nih.nci.cananolab:read-
 	/subsystem=logging/logger=gov.nih.nci.cananolab:add(handlers=["CONSOLE"])
 end-if
 
+
 # Execute and reload
-reload
+:reload
+run-batch
