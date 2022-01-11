@@ -354,6 +354,12 @@ L-->
 				<filter token="client.port" value="${client.port}"/>
 			</filterset>
 		</copy>
+		<copy overwrite="true" tofile="${common.dist.dir}/caNanoLab_logging.cli"
+			  file="${basedir}/caNanoLab_logging.cli">
+			<filterset>
+				<filter token="client.port" value="${client.port}"/>
+			</filterset>
+		</copy>
 		<copy overwrite="true" tofile="${common.dist.dir}/caNanoLab_checks.cli"
 			  file="${basedir}/caNanoLab_checks.cli">
 			<filterset>
@@ -406,6 +412,7 @@ L-->
 		<copy file="${dist.dir}/caNanoLab.war" todir="${jboss.artifacts.dir}" overwrite="true"/>
 		<copy file="${dist.dir}/common/caNanoLab_modules.cli" todir="${jboss.artifacts.dir}" overwrite="true"/>
 		<copy file="${dist.dir}/common/caNanoLab_checks.cli" todir="${jboss.artifacts.dir}" overwrite="true"/>
+		<copy file="${dist.dir}/common/caNanoLab_logging.cli" todir="${jboss.artifacts.dir}" overwrite="true"/>
 		<copy file="${dist.dir}/common/caNanoLab_setup.cli" todir="${jboss.artifacts.dir}" overwrite="true"/>
 		<copy file="${dist.dir}/common/caNanoLab_deploy.cli" todir="${jboss.artifacts.dir}" overwrite="true"/>
 		<copy file="${commonlib.dir}/mysql-connector-java-8.0.18.jar" todir="${jboss.artifacts.dir}" overwrite="true"/>
