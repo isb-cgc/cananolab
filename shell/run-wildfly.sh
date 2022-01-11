@@ -24,7 +24,7 @@ if [ $? -eq 0 ]; then
   echo "JBoss is now running - continuing setup and deployment."
   echo "Adding admin console user."
   ${WILDFLY_BIN}/add-user.sh -a -u "${WILDFLY_ADMIN}" -p "${WILDFLY_ADMIN_PASSWORD}" -g "admin"
-  echo "Adding BouncyCastle and JDBC driver to Wildfly"
+  echo "Adding BouncyCastle and JDBC driver to Wildfly and setting up logging"
   ${WILDFLY_BIN}/jboss-cli.sh --file=/local/content/caNanoLab/artifacts/caNanoLab_modules.cli
   echo "Setting up data sources"
   ${WILDFLY_BIN}/jboss-cli.sh --file=/local/content/caNanoLab/artifacts/caNanoLab_setup.cli
