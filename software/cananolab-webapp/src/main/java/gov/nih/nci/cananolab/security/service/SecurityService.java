@@ -47,6 +47,7 @@ import java.util.TreeSet;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.hibernate.Hibernate;
+import org.hibernate.type.StandardBasicTypes;
 
 /**
  * This class extends CSM API with convenient methods to query access control
@@ -484,7 +485,7 @@ public class SecurityService {
 					+ AccessibilityBean.CSM_READ_ROLE
 					+ "'" + " and protection_group_name='" + dataId + "'";
 			String[] columns = new String[] { "protection_group_name" };
-			Object[] columnTypes = new Object[] { Hibernate.STRING };
+			Object[] columnTypes = new Object[] { StandardBasicTypes.STRING };
 			List results = appService.directSQL(query, columns, columnTypes);
 			return !results.isEmpty();
 		} catch (Exception e) {
@@ -534,7 +535,7 @@ public class SecurityService {
 					+ AccessibilityBean.CSM_CURD_ROLE + "')";
 			String query = query1 + " union " + query2;
 			String[] columns = new String[] { "protection_group_name" };
-			Object[] columnTypes = new Object[] { Hibernate.STRING };
+			Object[] columnTypes = new Object[] { StandardBasicTypes.STRING };
 			List results = appService.directSQL(query, columns, columnTypes);
 			for (int i = 0; i < results.size(); i++) {
 				if (results.get(i) != null) {
@@ -605,8 +606,8 @@ public class SecurityService {
 			String query = query1 + " union " + query2;
 			String[] columns = new String[] { "protection_group_name",
 					"role_name" };
-			Object[] columnTypes = new Object[] { Hibernate.STRING,
-					Hibernate.STRING };
+			Object[] columnTypes = new Object[] { StandardBasicTypes.STRING,
+					StandardBasicTypes.STRING };
 			List results = appService.directSQL(query, columns, columnTypes);
 			for (int i = 0; i < results.size(); i++) {
 				if (results.get(i) != null) {
@@ -668,8 +669,8 @@ public class SecurityService {
 			CaNanoLabApplicationService appService = (CaNanoLabApplicationService) ApplicationServiceProvider
 					.getApplicationService();
 			String[] columns = new String[] { "login_name", "role_name" };
-			Object[] columnTypes = new Object[] { Hibernate.STRING,
-					Hibernate.STRING };
+			Object[] columnTypes = new Object[] { StandardBasicTypes.STRING,
+					StandardBasicTypes.STRING };
 			List results = appService.directSQL(query, columns, columnTypes);
 			for (int i = 0; i < results.size(); i++) {
 				Object[] row = (Object[]) results.get(i);
@@ -700,8 +701,8 @@ public class SecurityService {
 			CaNanoLabApplicationService appService = (CaNanoLabApplicationService) ApplicationServiceProvider
 					.getApplicationService();
 			String[] columns = new String[] { "group_name", "role_name" };
-			Object[] columnTypes = new Object[] { Hibernate.STRING,
-					Hibernate.STRING };
+			Object[] columnTypes = new Object[] { StandardBasicTypes.STRING,
+					StandardBasicTypes.STRING };
 			List results = appService.directSQL(query, columns, columnTypes);
 			for (int i = 0; i < results.size(); i++) {
 				Object[] row = (Object[]) results.get(i);
@@ -732,7 +733,7 @@ public class SecurityService {
 			CaNanoLabApplicationService appService = (CaNanoLabApplicationService) ApplicationServiceProvider
 					.getApplicationService();
 			String[] columns = new String[] { "role_name" };
-			Object[] columnTypes = new Object[] { Hibernate.STRING };
+			Object[] columnTypes = new Object[] { StandardBasicTypes.STRING };
 			List results = appService.directSQL(query, columns, columnTypes);
 			for (int i = 0; i < results.size(); i++) {
 				roleName = results.get(i).toString();
@@ -761,7 +762,7 @@ public class SecurityService {
 			CaNanoLabApplicationService appService = (CaNanoLabApplicationService) ApplicationServiceProvider
 					.getApplicationService();
 			String[] columns = new String[] { "role_name" };
-			Object[] columnTypes = new Object[] { Hibernate.STRING };
+			Object[] columnTypes = new Object[] { StandardBasicTypes.STRING };
 			List results = appService.directSQL(query, columns, columnTypes);
 			for (int i = 0; i < results.size(); i++) {
 				roleName = results.get(i).toString();

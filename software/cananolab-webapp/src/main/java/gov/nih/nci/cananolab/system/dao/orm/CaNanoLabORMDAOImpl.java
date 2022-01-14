@@ -21,7 +21,7 @@ import org.hibernate.SQLQuery;
 import org.hibernate.Session;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Property;
-import org.hibernate.type.NullableType;
+import org.hibernate.type.AbstractStandardBasicType;
 import org.springframework.orm.hibernate3.HibernateTemplate;
 
 /**
@@ -83,7 +83,7 @@ public class CaNanoLabORMDAOImpl extends WritableORMDAOImpl implements CaNanoLab
 		try {
 			SQLQuery query = session.createSQLQuery(directSQL);
 			for (int i = 0; i < columns.length; i++) {
-				query.addScalar(columns[i], (NullableType) columnTypes[i]);
+				query.addScalar(columns[i], (AbstractStandardBasicType) columnTypes[i]);
 			}
             return query.list();
 		} catch (JDBCException ex) {
