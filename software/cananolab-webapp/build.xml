@@ -354,12 +354,6 @@ L-->
 				<filter token="client.port" value="${client.port}"/>
 			</filterset>
 		</copy>
-		<copy overwrite="true" tofile="${common.dist.dir}/caNanoLab_logging.cli"
-			  file="${basedir}/caNanoLab_logging.cli">
-			<filterset>
-				<filter token="client.port" value="${client.port}"/>
-			</filterset>
-		</copy>
 		<copy overwrite="true" tofile="${common.dist.dir}/caNanoLab_checks.cli"
 			  file="${basedir}/caNanoLab_checks.cli">
 			<filterset>
