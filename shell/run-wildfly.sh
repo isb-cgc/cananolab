@@ -34,7 +34,8 @@ if [ $? -eq 0 ]; then
   echo "Testing data source setup and connection"
   ${JBOSS_CLI} --file=/local/content/caNanoLab/artifacts/caNanoLab_checks.cli
   echo "Deploying caNano WAR"
-  ${JBOSS_CLI} --file=/local/content/caNanoLab/artifacts/caNanoLab_deploy.cli
+  #${JBOSS_CLI} --file=/local/content/caNanoLab/artifacts/caNanoLab_deploy.cli
+  cp /local/content/caNanoLab/artifacts/caNanoLab.war /opt/wildfly-8.2.1.Final/standalone/deployments
 else
   echo "Didn't see JBoss start within 30 seconds!"
   exit 1
