@@ -25,6 +25,4 @@ batch
 # Hook up our cananolab code to the console handler
 /subsystem=logging/logger=gov.nih.nci.cananolab:add(handlers=["CONSOLE"])
 
-# Execute and reload
-:reload
 run-batch
