@@ -21,25 +21,41 @@ while [ $? -ne 0 ] && [ $counter -lt 5 ]; do
   sleep 6
 done
 
-if [ $? -eq 0 ]; then
-  echo "JBoss is now running - continuing setup and deployment:"
-  #echo "Adding admin console user."
-  #${WILDFLY_BIN}/add-user.sh -a -u "${WILDFLY_ADMIN}" -p "${WILDFLY_ADMIN_PASSWORD}" -g "admin"
-  echo "Adding BouncyCastle and JDBC driver to Wildfly"
-  ${JBOSS_CLI} --file=/local/content/caNanoLab/artifacts/caNanoLab_modules.cli
-  echo "Setting up logging and data sources."
-  ${JBOSS_CLI} --file=/local/content/caNanoLab/artifacts/caNanoLab_setup.cli
-  echo "Testing data source setup and connection"
-  ${JBOSS_CLI} --file=/local/content/caNanoLab/artifacts/caNanoLab_checks.cli
-  echo "Deploying caNano WAR"
-  #${JBOSS_CLI} --file=/local/content/caNanoLab/artifacts/caNanoLab_deploy.cli
-  cp /local/content/caNanoLab/artifacts/caNanoLab.war /opt/wildfly-8.2.1.Final/standalone/deployments
-else
+if [ $? -ne 0 ]; then
   echo "Didn't see JBoss start within 30 seconds!"
   exit 1
 fi
 
-echo "Restarting Wildfly"
+echo "JBoss is now running - continuing setup and deployment:"
+#echo "Adding admin console user."
+#${WILDFLY_BIN}/add-user.sh -a -u "${WILDFLY_ADMIN}" -p "${WILDFLY_ADMIN_PASSWORD}" -g "admin"
+echo "Adding BouncyCastle and JDBC driver to Wildfly"
+${JBOSS_CLI} --file=/local/content/caNanoLab/artifacts/caNanoLab_modules.cli
+echo "Setting up logging and data sources."
+${JBOSS_CLI} --file=/local/content/caNanoLab/artifacts/caNanoLab_setup.cli
+echo "Testing data source setup and connection"
+${JBOSS_CLI} --file=/local/content/caNanoLab/artifacts/caNanoLab_checks.cli
+echo "Deploying caNano WAR"
+${JBOSS_CLI} --file=/local/content/caNanoLab/artifacts/caNanoLab_deploy.cli
+
+result=`${JBOSS_CLI} -c --commands="deployment-info --name=caNanoLab.war"`
+counter=0
+echo "Deployment status: ${result}"
+echo "$result" | grep -q "OK"
+while [ $? -ne 0 ] && [ $counter -lt 5 ]; do
+  echo "Deployment isn't ready yet. Continuing to wait..."
+  result=`${JBOSS_CLI} -c --commands="deployment-info --name=caNanoLab.war"`
+  echo "$result" | grep -q "OK"
+  ((counter=counter+1))
+  sleep 6
+done
+
+if [ $? -ne 0 ]; then
+  echo "Didn't see caNano complete deployment within 30 seconds!"
+  exit 1
+fi
+
+echo "Deployment completed - restarting Wildfly"
 ${JBOSS_CLI} -c --controller=localhost:9990 ":shutdown"
 counter=0
 result=`${JBOSS_CLI} -c --commands="read-attribute server-state"`
