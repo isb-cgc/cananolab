@@ -41,5 +41,23 @@ fi
 
 echo "Restarting Wildfly"
 ${JBOSS_CLI} -c --controller=localhost:9990 ":shutdown"
+counter=0
+result=`${JBOSS_CLI} -c --commands="read-attribute server-state"`
+echo "JBoss status: ${result}"
+echo "$result" | grep -q "running"
+while [ $? -eq 0 ] && [ $counter -lt 5 ]; do
+  echo "JBoss is still running. Continuing to wait..."
+  result=`${WILDFLY_BIN}/jboss-cli.sh -c --commands="read-attribute server-state"`
+  echo "$result" | grep -q "running"
+  ((counter=counter+1))
+  sleep 6
+done
+
+if [ $? -eq 0 ]; then
+  echo "Wildfly failed to stop in time - exiting!"
+  exit 1
+else
+  echo "Wildfly has shut down - restarting"
+fi
 
 ${WILDFLY_BIN}/standalone.sh --server-config=standalone-full.xml -b 0.0.0.0 -bmanagement 0.0.0.0
