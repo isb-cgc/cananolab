@@ -2,8 +2,10 @@
 
 export $(cat /local/content/.env | grep -v ^# | xargs) 2> /dev/null
 
-export WILDFLY_BIN=/opt/wildfly-8.2.1.Final/bin
+export WILDFLY_HOME=/opt/wildfly-8.2.1.Final
+export WILDFLY_BIN=$WILDFLY_HOME/bin
 export JBOSS_CLI=$WILDFLY_BIN/jboss-cli.sh
+export WILDFLY_PID_FILE=$WILDFLY_HOME/standalone/tmp/wildfly.pid
 
 ${WILDFLY_BIN}/standalone.sh --server-config=standalone-full.xml -b 0.0.0.0 -bmanagement 0.0.0.0 &
 
@@ -45,6 +47,7 @@ echo "$result" | grep -q "OK"
 while [ $? -ne 0 ] && [ $counter -lt 5 ]; do
   echo "Deployment isn't ready yet. Continuing to wait..."
   result=`${JBOSS_CLI} -c --commands="deployment-info --name=caNanoLab.war"`
+  echo "Deployment status: ${result}"
   echo "$result" | grep -q "OK"
   ((counter=counter+1))
   sleep 6
@@ -53,23 +56,22 @@ done
 if [ $? -ne 0 ]; then
   echo "Didn't see caNano complete deployment within 30 seconds!"
   exit 1
+else
+  echo "Deployment status: ${result}"
 fi
 
 echo "Deployment completed - restarting Wildfly"
 ${JBOSS_CLI} -c --controller=localhost:9990 ":shutdown"
 counter=0
-result=`${JBOSS_CLI} -c --commands="read-attribute server-state"`
-echo "JBoss status: ${result}"
-echo "$result" | grep -q "running"
-while [ $? -eq 0 ] && [ $counter -lt 5 ]; do
+WILDFLY_PID=`ps -ef | grep wildfly | grep -v grep | awk '{print $2}'`
+while [ ! -z "${WILDFLY_PID}" ] && [ $counter -lt 5 ]; do
   echo "JBoss is still running. Continuing to wait..."
-  result=`${WILDFLY_BIN}/jboss-cli.sh -c --commands="read-attribute server-state"`
-  echo "$result" | grep -q "running"
+  WILDFLY_PID=`ps -ef | grep wildfly | grep -v grep | awk '{print $2}'`
   ((counter=counter+1))
   sleep 6
 done
 
-if [ $? -eq 0 ]; then
+if [ ! -z "${WILDFLY_PID}" ]; then
   echo "Wildfly failed to stop in time - exiting!"
   exit 1
 else
