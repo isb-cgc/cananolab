@@ -28,7 +28,7 @@ if [ $? -eq 0 ]; then
   echo "Adding BouncyCastle and JDBC driver to Wildfly"
   ${JBOSS_CLI} --file=/local/content/caNanoLab/artifacts/caNanoLab_modules.cli
   echo "Setting up logging and data sources."
-  ${JBOSS_CLI} --file=/local/content/caNanoLab/artifacts/caNawnoLab_setup.cli
+  ${JBOSS_CLI} --file=/local/content/caNanoLab/artifacts/caNanoLab_setup.cli
   echo "Testing data source setup and connection"
   ${JBOSS_CLI} --file=/local/content/caNanoLab/artifacts/caNanoLab_checks.cli
   echo "Deploying caNano WAR"
