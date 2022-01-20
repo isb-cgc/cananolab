@@ -80,10 +80,10 @@ fi
 echo "Deployment completed - restarting Wildfly"
 ${JBOSS_CLI} -c --controller=localhost:9990 ":shutdown"
 counter=0
-WILDFLY_PID=`ps -ef | grep wildfly | grep -v grep | awk '{print $2}'`
+WILDFLY_PID=`ps -ef | grep wildfly | grep -v grep | grep -v "run-wildfly.sh" | awk '{print $2}'`
 while [ ! -z "${WILDFLY_PID}" ] && [ $counter -lt 5 ]; do
   echo "JBoss is still running. Continuing to wait..."
-  WILDFLY_PID=`ps -ef | grep wildfly | grep -v grep | awk '{print $2}'`
+  WILDFLY_PID=`ps -ef | grep wildfly | grep -v grep | grep -v "run-wildfly.sh" |awk '{print $2}'`
   ((counter=counter+1))
   sleep 6
 done
