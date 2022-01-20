@@ -2,6 +2,8 @@
 
 export $(cat /local/content/.env | grep -v ^# | xargs) 2> /dev/null
 
+whoami
+
 export WILDFLY_HOME=/opt/wildfly-8.2.1.Final
 export WILDFLY_BIN=$WILDFLY_HOME/bin
 export JBOSS_CLI=$WILDFLY_BIN/jboss-cli.sh
@@ -47,16 +49,18 @@ while [ $? -ne 0 ] && [ $counter -lt 5 ]; do
   sleep 6
 done
 
+echo "Wildfly status: ${result}"
+
 if [ $? -ne 0 ]; then
   echo "Didn't see JBoss restart within 30 seconds!"
   exit 1
 fi
 
-echo "Testing data source setup and connection"
-${JBOSS_CLI} --file=/local/content/caNanoLab/artifacts/caNanoLab_checks.cli
+#echo "Testing data source setup and connection"
+#${JBOSS_CLI} --file=/local/content/caNanoLab/artifacts/caNanoLab_checks.cli
 echo "Deploying caNano WAR"
-# ${JBOSS_CLI} --file=/local/content/caNanoLab/artifacts/caNanoLab_deploy.cli
-cp -v /local/content/caNanoLab/artifacts/caNanoLab.war /opt/wildfly-8.2.1.Final/standalone/deployments
+${JBOSS_CLI} --file=/local/content/caNanoLab/artifacts/caNanoLab_deploy.cli
+#cp -v /local/content/caNanoLab/artifacts/caNanoLab.war /opt/wildfly-8.2.1.Final/standalone/deployments
 
 result=`${JBOSS_CLI} -c --commands="deployment-info --name=caNanoLab.war"`
 counter=0
@@ -65,17 +69,16 @@ echo "$result" | grep -q "OK"
 while [ $? -ne 0 ] && [ $counter -lt 5 ]; do
   echo "Deployment isn't ready yet. Continuing to wait..."
   result=`${JBOSS_CLI} -c --commands="deployment-info --name=caNanoLab.war"`
-  echo "Deployment status: ${result}"
   echo "$result" | grep -q "OK"
   ((counter=counter+1))
   sleep 6
 done
 
+echo "Deployment status: ${result}"
+
 if [ $? -ne 0 ]; thenz
   echo "Didn't see caNano complete deployment within 30 seconds!"
   exit 1
-else
-  echo "Deployment status: ${result}"
 fi
 
 echo "Deployment completed - restarting Wildfly"
