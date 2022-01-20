@@ -55,7 +55,8 @@ fi
 echo "Testing data source setup and connection"
 ${JBOSS_CLI} --file=/local/content/caNanoLab/artifacts/caNanoLab_checks.cli
 echo "Deploying caNano WAR"
-${JBOSS_CLI} --file=/local/content/caNanoLab/artifacts/caNanoLab_deploy.cli
+# ${JBOSS_CLI} --file=/local/content/caNanoLab/artifacts/caNanoLab_deploy.cli
+cp -v /local/content/caNanoLab/artifacts/caNanoLab.war /opt/wildfly-8.2.1.Final/standalone/deployments
 
 result=`${JBOSS_CLI} -c --commands="deployment-info --name=caNanoLab.war"`
 counter=0
@@ -70,7 +71,7 @@ while [ $? -ne 0 ] && [ $counter -lt 5 ]; do
   sleep 6
 done
 
-if [ $? -ne 0 ]; then
+if [ $? -ne 0 ]; thenz
   echo "Didn't see caNano complete deployment within 30 seconds!"
   exit 1
 else
