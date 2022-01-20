@@ -2,8 +2,6 @@
 
 export $(cat /local/content/.env | grep -v ^# | xargs) 2> /dev/null
 
-whoami
-
 export WILDFLY_HOME=/opt/wildfly-8.2.1.Final
 export WILDFLY_BIN=$WILDFLY_HOME/bin
 export JBOSS_CLI=$WILDFLY_BIN/jboss-cli.sh
@@ -39,7 +37,6 @@ ${JBOSS_CLI} --file=/local/content/caNanoLab/artifacts/caNanoLab_setup.cli
 
 counter=0
 result=`${JBOSS_CLI} -c --commands="read-attribute server-state"`
-echo "JBoss status: ${result}"
 echo "$result" | grep -q "running"
 while [ $? -ne 0 ] && [ $counter -lt 5 ]; do
   echo "JBoss isn't ready yet. Continuing to wait..."
@@ -59,8 +56,8 @@ fi
 #echo "Testing data source setup and connection"
 #${JBOSS_CLI} --file=/local/content/caNanoLab/artifacts/caNanoLab_checks.cli
 echo "Deploying caNano WAR"
-${JBOSS_CLI} --file=/local/content/caNanoLab/artifacts/caNanoLab_deploy.cli
-#cp -v /local/content/caNanoLab/artifacts/caNanoLab.war /opt/wildfly-8.2.1.Final/standalone/deployments
+#${JBOSS_CLI} --file=/local/content/caNanoLab/artifacts/caNanoLab_deploy.cli
+cp -v /local/content/caNanoLab/artifacts/caNanoLab.war /opt/wildfly-8.2.1.Final/standalone/deployments
 
 result=`${JBOSS_CLI} -c --commands="deployment-info --name=caNanoLab.war"`
 counter=0
@@ -87,7 +84,7 @@ counter=0
 WILDFLY_PID=`ps -ef | grep wildfly | grep -v grep | grep -v "run-wildfly.sh" | awk '{print $2}'`
 while [ ! -z "${WILDFLY_PID}" ] && [ $counter -lt 5 ]; do
   echo "JBoss is still running. Continuing to wait..."
-  WILDFLY_PID=`ps -ef | grep wildfly | grep -v grep | grep -v "run-wildfly.sh" |awk '{print $2}'`
+  WILDFLY_PID=`ps -ef | grep wildfly | grep -v grep | grep -v "run-wildfly.sh" | awk '{print $2}'`
   ((counter=counter+1))
   sleep 6
 done
@@ -95,8 +92,8 @@ done
 if [ ! -z "${WILDFLY_PID}" ]; then
   echo "Wildfly failed to stop in time - exiting!"
   exit 1
-else
-  echo "Wildfly has shut down - restarting"
 fi
+
+echo "Wildfly has shut down - restarting"
 
 ${WILDFLY_BIN}/standalone.sh --server-config=standalone-full.xml -b 0.0.0.0 -bmanagement 0.0.0.0
