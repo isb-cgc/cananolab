@@ -51,7 +51,6 @@ end-if
 #   LOGGING
 ######################################################################
 
-batch
 # Adjust the console handler
 /subsystem=logging:write-attribute(name=use-deployment-logging-config, value=false)
 /subsystem=logging:write-attribute(name=add-logging-api-dependencies,value=true)
@@ -70,6 +69,5 @@ batch
 # Hook up our cananolab code to the console handler
 /subsystem=logging/logger=gov.nih.nci.cananolab:add(handlers=["CONSOLE"])
 
-run-batch
-
 :reload
+

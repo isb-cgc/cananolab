@@ -5,7 +5,6 @@ export $(cat /local/content/.env | grep -v ^# | xargs) 2> /dev/null
 export WILDFLY_HOME=/opt/wildfly-8.2.1.Final
 export WILDFLY_BIN=$WILDFLY_HOME/bin
 export JBOSS_CLI=$WILDFLY_BIN/jboss-cli.sh
-export WILDFLY_PID_FILE=$WILDFLY_HOME/standalone/tmp/wildfly.pid
 
 ${WILDFLY_BIN}/standalone.sh --server-config=standalone-full.xml -b 0.0.0.0 -bmanagement 0.0.0.0 &
 
@@ -35,6 +34,7 @@ echo "Adding BouncyCastle and JDBC driver to Wildfly"
 ${JBOSS_CLI} --file=/local/content/caNanoLab/artifacts/caNanoLab_modules.cli
 echo "Setting up logging and data sources."
 ${JBOSS_CLI} --file=/local/content/caNanoLab/artifacts/caNanoLab_setup.cli
+sleep 10
 echo "Testing data source setup and connection"
 ${JBOSS_CLI} --file=/local/content/caNanoLab/artifacts/caNanoLab_checks.cli
 echo "Deploying caNano WAR"
