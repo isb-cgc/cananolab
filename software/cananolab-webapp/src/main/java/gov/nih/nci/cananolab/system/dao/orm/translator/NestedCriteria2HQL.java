@@ -500,7 +500,7 @@ public class NestedCriteria2HQL
 
 	private boolean checkClobAttribute(String objClassName)
 	{
-		PersistentClass pclass = cfg.getClassMapping(objClassName);
+		PersistentClass pclass = null; //cfg.getClassMapping(objClassName);
 
 		Iterator properties = pclass.getPropertyIterator();
 		while (properties.hasNext())
@@ -782,11 +782,11 @@ public class NestedCriteria2HQL
 	}
 	
 	private PersistentClass getPersistentClass(String objClassName){
-		PersistentClass pclass = cfg.getClassMapping(objClassName);
+		PersistentClass pclass = null; // cfg.getClassMapping(objClassName);
 		
 		if (pclass == null) {//might be dealing with an implicit class.  Check to see if we have a persistent subclass mapping we can use instead
 			
-			Iterator iter = cfg.getClassMappings();
+			Iterator iter = null; // cfg.getClassMappings();
 			Class objClass = null;
 			try {
 				objClass = Class.forName(objClassName);

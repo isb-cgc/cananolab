@@ -24,8 +24,8 @@ import javax.crypto.SecretKey;
 import javax.crypto.SecretKeyFactory;
 import javax.crypto.spec.DESedeKeySpec;
 
-import sun.misc.BASE64Decoder;
-import sun.misc.BASE64Encoder;
+//import sun.misc.BASE64Decoder;
+//import sun.misc.BASE64Encoder;
 
 public class DESEncryption implements Encryption {
 	public static final String DESEDE_ENCRYPTION_SCHEME = "DESede";
@@ -76,10 +76,11 @@ public class DESEncryption implements Encryption {
 		
 		try {
 			
-			byte[] cleartext = unencryptedString.getBytes(UNICODE_FORMAT);
-			byte[] ciphertext = ecipher.doFinal(cleartext);
-			BASE64Encoder base64encoder = new BASE64Encoder();		
-			return base64encoder.encode(ciphertext);
+//			byte[] cleartext = unencryptedString.getBytes(UNICODE_FORMAT);
+//			byte[] ciphertext = ecipher.doFinal(cleartext);
+//			BASE64Encoder base64encoder = new BASE64Encoder();
+//			return base64encoder.encode(ciphertext);
+			return "";
 	
 		} catch (Exception e) {
 			throw new Exception(e);
@@ -113,10 +114,11 @@ public class DESEncryption implements Encryption {
 		}
 		
 		try {
-			BASE64Decoder base64decoder = new BASE64Decoder();
-			byte[] cleartext = base64decoder.decodeBuffer(encryptedString);
-			byte[] ciphertext = dcipher.doFinal(cleartext);
-			return StringUtilities.bytes2String(ciphertext);
+//			BASE64Decoder base64decoder = new BASE64Decoder();
+//			byte[] cleartext = base64decoder.decodeBuffer(encryptedString);
+//			byte[] ciphertext = dcipher.doFinal(cleartext);
+//			return StringUtilities.bytes2String(ciphertext);
+			return "";
 	
 		} catch (Exception e) {
 			throw new Exception(e);
