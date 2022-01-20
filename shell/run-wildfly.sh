@@ -34,7 +34,24 @@ echo "Adding BouncyCastle and JDBC driver to Wildfly"
 ${JBOSS_CLI} --file=/local/content/caNanoLab/artifacts/caNanoLab_modules.cli
 echo "Setting up logging and data sources."
 ${JBOSS_CLI} --file=/local/content/caNanoLab/artifacts/caNanoLab_setup.cli
-sleep 10
+
+counter=0
+result=`${JBOSS_CLI} -c --commands="read-attribute server-state"`
+echo "JBoss status: ${result}"
+echo "$result" | grep -q "running"
+while [ $? -ne 0 ] && [ $counter -lt 5 ]; do
+  echo "JBoss isn't ready yet. Continuing to wait..."
+  result=`${WILDFLY_BIN}/jboss-cli.sh -c --commands="read-attribute server-state"`
+  echo "$result" | grep -q "running"
+  ((counter=counter+1))
+  sleep 6
+done
+
+if [ $? -ne 0 ]; then
+  echo "Didn't see JBoss restart within 30 seconds!"
+  exit 1
+fi
+
 echo "Testing data source setup and connection"
 ${JBOSS_CLI} --file=/local/content/caNanoLab/artifacts/caNanoLab_checks.cli
 echo "Deploying caNano WAR"
