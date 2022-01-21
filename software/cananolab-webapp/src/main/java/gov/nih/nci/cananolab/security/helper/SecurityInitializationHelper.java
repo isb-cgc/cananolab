@@ -23,13 +23,13 @@ public class SecurityInitializationHelper
 	private boolean attributeLevelSecurityEnabled;
 	private boolean securityEnabled;
 
-	public void addFilters(Configuration cfg) {
-		if(securityEnabled && instanceLevelSecurityEnabled && authorizationManager!=null)
-		{
-				InstanceLevelSecurityHelper.addFiltersForGroups(authorizationManager, cfg);
-				InstanceLevelSecurityHelper.addFilters(authorizationManager, cfg);
-		}
-	}
+//	public void addFilters(Configuration cfg) {
+//		if(securityEnabled && instanceLevelSecurityEnabled && authorizationManager!=null)
+//		{
+//				InstanceLevelSecurityHelper.addFiltersForGroups(authorizationManager, cfg);
+//				InstanceLevelSecurityHelper.addFilters(authorizationManager, cfg);
+//		}
+//	}
 
 	public void initializeFilters(Session session) {
 		if(securityEnabled && instanceLevelSecurityEnabled && authorizationManager!=null)
@@ -51,11 +51,11 @@ public class SecurityInitializationHelper
 					log.debug("groups.length(): " + groups.length);
 					
 
-					InstanceLevelSecurityHelper.initializeFiltersForGroups(groups,session,authorizationManager);					
+//					InstanceLevelSecurityHelper.initializeFiltersForGroups(groups,session,authorizationManager);
 				}
 				else if (auth!=null)
 				{
-					InstanceLevelSecurityHelper.initializeFilters(auth.getName(), session, authorizationManager);					
+//					InstanceLevelSecurityHelper.initializeFilters(auth.getName(), session, authorizationManager);
 				}
 			}
 		}

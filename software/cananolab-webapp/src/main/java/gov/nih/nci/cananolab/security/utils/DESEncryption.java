@@ -79,7 +79,7 @@ public class DESEncryption implements Encryption {
 //			byte[] ciphertext = ecipher.doFinal(cleartext);
 //			BASE64Encoder base64encoder = new BASE64Encoder();
 //			return base64encoder.encode(ciphertext);
-			return"";
+			return "";
 	
 		} catch (Exception e) {
 			throw new Exception(e);
@@ -117,7 +117,7 @@ public class DESEncryption implements Encryption {
 //			byte[] cleartext = base64decoder.decodeBuffer(encryptedString);
 //			byte[] ciphertext = dcipher.doFinal(cleartext);
 //			return StringUtilities.bytes2String(ciphertext);
-			return"";
+			return "";
 	
 		} catch (Exception e) {
 			throw new Exception(e);
