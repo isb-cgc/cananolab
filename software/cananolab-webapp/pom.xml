@@ -12,7 +12,6 @@
 	<artifactId>cananolab-web</artifactId>
 	<version>2.3.8</version>
 	<repositories>
-
 		<repository>
 			<id>central</id>
 			<name>Central Repository</name>
@@ -23,17 +22,24 @@
 			</snapshots>
 		</repository>
 	</repositories>
-
+	<pluginRepositories>
+		<pluginRepository>
+			<id>central</id>
+			<url>https://repo1.maven.org/maven2</url>
+			<snapshots>
+				<enabled>false</enabled>
+			</snapshots>
+		</pluginRepository>
+	</pluginRepositories>
 	<properties>
-<!--		<spring.version>4.1.9.RELEASE</spring.version>-->
 		<spring.version>4.3.29.RELEASE</spring.version>
 		<spring.security.version>5.2.10.RELEASE</spring.security.version>
+		<base.dir>/software/cananolab-webapp</base.dir>
 		<compilerVersion>1.8</compilerVersion>
 		<maven.compiler.source>1.8</maven.compiler.source>
 		<maven.compiler.target>1.8</maven.compiler.target>
 	</properties>
 	<dependencies>
-
 		<dependency>
 			<groupId>mysql</groupId>
 			<artifactId>mysql-connector-java</artifactId>
@@ -387,7 +393,12 @@
 			<scope>test</scope>
 		</dependency>
 
-
+		<dependency>
+			<groupId>com.google.cloud.sql</groupId>
+			<artifactId>mysql-socket-factory-connector-j-8</artifactId>
+			<version>1.4.1</version>
+			<scope>provided</scope>
+		</dependency>
 
 	</dependencies>
 	<build>

@@ -1,21 +1,18 @@
-#caNanoLab Wildfly setup scripts
+# caNanoLab Wildfly setup scripts
 
 connect localhost:@client.port@
-#connect localhost:19990
 
 ##############################################################
 #             System Properties                      
 ##############################################################
 
 if (outcome == success) of /system-property=gov.nih.nci.security.configFile:read-resource
-/system-property=gov.nih.nci.security.configFile:remove
+    /system-property=gov.nih.nci.security.configFile:remove
 end-if
 
 if (outcome == success) of /system-property=gov.nih.nci.cananolab.wikihelpProperties:read-resource
 	/system-property=gov.nih.nci.cananolab.wikihelpProperties:remove
 end-if
-
-## /system-property=gov.nih.nci.cananolab.wikihelpProperties:add(value=/local/content/caNanoLab/config/wikihelp.properties)
 
 /system-property=gov.nih.nci.cananolab.wikihelpProperties:add(value=@file.repository.dir@/config/wikihelp.properties)
 
@@ -24,7 +21,7 @@ end-if
 #             Datasource Configuration                      
 ##############################################################
 
-if (outcome != success) of /subsystem=datasources/jdbc-driver=mysql:read-resource 
+if (outcome != success) of /subsystem=datasources/jdbc-driver=mysql:read-resource
     /subsystem=datasources/jdbc-driver=mysql:add( \
     driver-name=mysql, \
     driver-module-name=com.mysql, \
@@ -47,47 +44,30 @@ data-source add \
     --password=@database.password@ \
     --use-ccm=true \
     --max-pool-size=100 \
-    --blocking-timeout-wait-millis=5000 
-#data-source enable --name=caNanoLab
-end-if
-
-##############################################################
-#               CSM Login Module        - obsolete. Remove if present
-##############################################################
-
-if (outcome == success) of /subsystem=datasources/data-source=csmupt:read-resource
-  data-source remove --name=csmupt
-end-if
-
-if (outcome == success) of /subsystem=security/security-domain=caNanoLab:read-resource
-	/subsystem=security/security-domain=caNanoLab:remove
-end-if
-
-if (outcome == success) of /subsystem=security/security-domain=caNanoLab/authentication=classic:read-resource 
-   /subsystem=security/security-domain=caNanoLab/authentication=classic:remove()
+    --blocking-timeout-wait-millis=5000
 end-if
 
 ########################################################################
 #   LOGGING
 ######################################################################
 
-if (outcome != success) of /subsystem=logging/size-rotating-file-handler=CANANOLAB:read-resource
-	/subsystem=logging:write-attribute(name=use-deployment-logging-config, value=false)
-	/subsystem=logging:write-attribute(name=add-logging-api-dependencies,value=true)
-	/subsystem=logging/size-rotating-file-handler=CANANOLAB:add(level=DEBUG, file={"relative-to"=>"jboss.server.log.dir", "path"=>"cananolab.log"}, append=false, autoflush=true)
-	/subsystem=logging/size-rotating-file-handler=CANANOLAB:write-attribute(name="formatter", value="%d [%t] %-5p [%c : %L] %m%n")
-	/subsystem=logging/size-rotating-file-handler=CANANOLAB:write-attribute(name="rotate-size", value="1m")
-	/subsystem=logging/size-rotating-file-handler=CANANOLAB:write-attribute(name="max-backup-index", value="10")
-end-if
+# Adjust the console handler
+/subsystem=logging:write-attribute(name=use-deployment-logging-config, value=false)
+/subsystem=logging:write-attribute(name=add-logging-api-dependencies,value=true)
+/subsystem=logging/console-handler=CONSOLE:write-attribute(name=autoflush, value=true)
+/subsystem=logging/console-handler=CONSOLE:write-attribute(name=level, value=INFO)
+/subsystem=logging/console-handler=CONSOLE:write-attribute(name="formatter", value="%d [%t] %-5p [%c : %L] %m%n")
 
+# Point stdout and stderr to it
+/subsystem=logging/logger=stderr:add(use-parent-handlers="false", handlers=[CONSOLE])
+/subsystem=logging/logger=stdout:add(use-parent-handlers="false", handlers=[CONSOLE])
 
-if (outcome != success) of /subsystem=logging/logger=gov.nih.nci.cananolab:read-resource
-	/subsystem=logging/logger=gov.nih.nci.cananolab:add(use-parent-handlers=false,handlers=["CANANOLAB", "CONSOLE"])
-end-if
+# Pull the root logger off the File handler; file logging is useless in AppEngine
+/subsystem=logging/root-logger=ROOT:remove-handler(name=FILE)
+/subsystem=logging/root-logger=ROOT:write-attribute(name=level, value=DEBUG)
 
+# Hook up our cananolab code to the console handler
+/subsystem=logging/logger=gov.nih.nci.cananolab:add(handlers=["CONSOLE"])
 
-
-# Execute and reload
-reload
-
+:reload
 

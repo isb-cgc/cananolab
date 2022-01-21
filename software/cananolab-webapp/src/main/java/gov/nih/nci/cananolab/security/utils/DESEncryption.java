@@ -75,7 +75,6 @@ public class DESEncryption implements Encryption {
 		}
 		
 		try {
-			
 //			byte[] cleartext = unencryptedString.getBytes(UNICODE_FORMAT);
 //			byte[] ciphertext = ecipher.doFinal(cleartext);
 //			BASE64Encoder base64encoder = new BASE64Encoder();

@@ -17,6 +17,7 @@ software/cananolab-webapp/.settings/*
 
 node_modules/
 
+app.yaml
 
 \.settings/
 
