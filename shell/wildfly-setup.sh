@@ -81,5 +81,3 @@ if [ ! -z "${WILDFLY_PID}" ]; then
   echo "Wildfly failed to stop in time!"
   exit 1
 fi
-
-}
