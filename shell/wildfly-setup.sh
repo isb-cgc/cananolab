@@ -81,12 +81,12 @@ fi
 echo "Deployment completed - stopping Wildfly"
 ${JBOSS_CLI} -c --controller=localhost:9990 ":shutdown"
 counter=0
-WILDFLY_PID=`ps -ef | grep wildfly | grep -v grep | grep -v "wildfly-setup.sh" | awk '{print $2}'`
+WILDFLY_PID=`ps -ef | grep wildfly | grep -v grep | grep -v "wildfly-setup.sh" | grep -v "start-wildfly.sh" | awk '{print $2}'`
 pids=`ps -ef | grep wildfly | grep -v grep | grep -v "wildfly-setup.sh"`
 echo "${pids}"
 while [ ! -z "${WILDFLY_PID}" ] && [ $counter -lt 5 ]; do
   echo "JBoss is still running. Continuing to wait..."
-  WILDFLY_PID=`ps -ef | grep wildfly | grep -v grep | grep -v "wildfly-setup.sh" | awk '{print $2}'`
+  WILDFLY_PID=`ps -ef | grep wildfly | grep -v grep | grep -v "wildfly-setup.sh" | grep -v "start-wildfly.sh" | awk '{print $2}'`
   pids=`ps -ef | grep wildfly | grep -v grep | grep -v "wildfly-setup.sh"`
   echo "${pids}"
   ((counter=counter+1))
