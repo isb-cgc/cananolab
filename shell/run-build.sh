@@ -45,6 +45,6 @@ cd ${HOME}/software/cananolab-webapp/target/dist/common
 cp -v *.cli ${CANANODIR}/artifacts
 cp -v wikihelp.properties ${CANANODIR}/config
 
-cp -v ${HOME}/shell/run-wildfly.sh ${HOME}/staged/
+cp -v ${HOME}/shell/*wildfly*.sh ${HOME}/staged/
 cp -v ${HOME}/.env ${HOME}/staged/
-chmod ug+x ${HOME}/staged/run-wildfly.sh
+chmod ug+x ${HOME}/staged/*wildfly*.sh

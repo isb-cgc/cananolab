@@ -57,4 +57,4 @@ ENV JBOSS_HOME=/opt/wildfly-8.2.1.Final
 ENV PATH=/opt/apache-maven/bin:/opt/apache-ant-1.9.9/bin:$PATH
 
 EXPOSE 8080 9990
-ENTRYPOINT ["/local/content/run-wildfly.sh"]
+ENTRYPOINT ["/local/content/start-wildfly.sh"]
