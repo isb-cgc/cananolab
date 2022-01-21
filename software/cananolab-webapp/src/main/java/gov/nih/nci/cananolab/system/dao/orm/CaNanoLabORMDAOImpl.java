@@ -79,7 +79,7 @@ public class CaNanoLabORMDAOImpl extends WritableORMDAOImpl implements CaNanoLab
 
 	public List directSQL(String directSQL, String[] columns,
 			Object[] columnTypes) throws DAOException {
-		Session session = getSession();
+		Session session = currentSession();
 		try {
 			SQLQuery query = session.createSQLQuery(directSQL);
 			for (int i = 0; i < columns.length; i++) {
