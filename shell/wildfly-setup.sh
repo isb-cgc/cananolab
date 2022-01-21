@@ -65,6 +65,7 @@ echo "$result" | grep -q "OK"
 while [ $? -ne 0 ] && [ $counter -lt 5 ]; do
   echo "Deployment isn't ready yet. Continuing to wait..."
   result=`${JBOSS_CLI} -c --commands="deployment-info --name=caNanoLab.war"`
+  echo "${result}"
   echo "$result" | grep -q "OK"
   ((counter=counter+1))
   sleep 6
@@ -81,9 +82,13 @@ echo "Deployment completed - stopping Wildfly"
 ${JBOSS_CLI} -c --controller=localhost:9990 ":shutdown"
 counter=0
 WILDFLY_PID=`ps -ef | grep wildfly | grep -v grep | grep -v "wildfly-setup.sh" | awk '{print $2}'`
+pids=`ps -ef | grep wildfly | grep -v grep | grep -v "wildfly-setup.sh"`
+echo "${pids}"
 while [ ! -z "${WILDFLY_PID}" ] && [ $counter -lt 5 ]; do
   echo "JBoss is still running. Continuing to wait..."
   WILDFLY_PID=`ps -ef | grep wildfly | grep -v grep | grep -v "wildfly-setup.sh" | awk '{print $2}'`
+  pids=`ps -ef | grep wildfly | grep -v grep | grep -v "wildfly-setup.sh"`
+  echo "${pids}"
   ((counter=counter+1))
   sleep 6
 done
