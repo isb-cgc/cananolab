@@ -27,6 +27,10 @@ function wait_for_server() {
   return $?
 }
 
+function check_for_wildfly() {
+  ps -ef | grep wildfly | grep -v grep | grep -v "wildfly-setup.sh" | grep -v "start-wildfly.sh" | awk '{print $2}'
+}
+
 echo "Waiting while Wildfly starts:"
 wait_for_server "read-attribute server-state" "running" "Wildfly"
 
@@ -65,14 +69,11 @@ fi
 echo "Deployment completed - stopping Wildfly"
 ${JBOSS_CLI} -c --controller=localhost:9990 ":shutdown"
 counter=0
-WILDFLY_PID=`ps -ef | grep wildfly | grep -v grep | grep -v "wildfly-setup.sh" | grep -v "start-wildfly.sh" | awk '{print $2}'`
-pids=`ps -ef | grep wildfly | grep -v grep | grep -v "wildfly-setup.sh"`
+WILDFLY_PID=check_for_wildfly
 echo "${pids}"
 while [ ! -z "${WILDFLY_PID}" ] && [ $counter -lt 5 ]; do
   echo "JBoss is still running. Continuing to wait..."
-  WILDFLY_PID=`ps -ef | grep wildfly | grep -v grep | grep -v "wildfly-setup.sh" | grep -v "start-wildfly.sh" | awk '{print $2}'`
-  pids=`ps -ef | grep wildfly | grep -v grep | grep -v "wildfly-setup.sh"`
-  echo "${pids}"
+  WILDFLY_PID=check_for_wildfly
   ((counter=counter+1))
   sleep 6
 done
@@ -81,3 +82,5 @@ if [ ! -z "${WILDFLY_PID}" ]; then
   echo "Wildfly failed to stop in time!"
   exit 1
 fi
+
+echo "Wildfly has stopped."
