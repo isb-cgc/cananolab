@@ -8,19 +8,27 @@ export JBOSS_CLI=$WILDFLY_BIN/jboss-cli.sh
 
 ${WILDFLY_BIN}/standalone.sh --server-config=standalone-full.xml -b 0.0.0.0 -bmanagement 0.0.0.0 &
 
-echo "Waiting while Wildfly starts:"
+function wait_for_server() {
+  COMMAND=$1
+  CHECK=$2
+  CHECK_FOR=$3
+  counter=0
+  result=`${JBOSS_CLI} -c --commands="${COMMAND}"`
+  echo "${CHECK_FOR} status: ${result}"
+  echo "$result" | grep -q "${CHECK}"
+  while [ $? -ne 0 ] && [ $counter -lt 5 ]; do
+    echo "${CHECK_FOR} isn't ready yet. Continuing to wait..."
+    result=`${WILDFLY_BIN}/jboss-cli.sh -c --commands="${COMMAND}"`
+    echo "$result" | grep -q "${CHECK}"
+    ((counter=counter+1))
+    sleep 6
+  done
+  echo "${CHECK_FOR} status: ${result}"
+  return $?
+}
 
-counter=0
-result=`${JBOSS_CLI} -c --commands="read-attribute server-state"`
-echo "Wildfly status: ${result}"
-echo "$result" | grep -q "running"
-while [ $? -ne 0 ] && [ $counter -lt 5 ]; do
-  echo "Wildfly isn't ready yet. Continuing to wait..."
-  result=`${WILDFLY_BIN}/jboss-cli.sh -c --commands="read-attribute server-state"`
-  echo "$result" | grep -q "running"
-  ((counter=counter+1))
-  sleep 6
-done
+echo "Waiting while Wildfly starts:"
+wait_for_server "read-attribute server-state" "running" "Wildfly"
 
 if [ $? -ne 0 ]; then
   echo "Didn't see Wildfly start within 30 seconds!"
@@ -35,43 +43,19 @@ ${JBOSS_CLI} --file=/local/content/caNanoLab/artifacts/caNanoLab_modules.cli
 echo "Setting up logging and data sources."
 ${JBOSS_CLI} --file=/local/content/caNanoLab/artifacts/caNanoLab_setup.cli
 
-counter=0
-result=`${JBOSS_CLI} -c --commands="read-attribute server-state"`
-echo "$result" | grep -q "running"
-while [ $? -ne 0 ] && [ $counter -lt 5 ]; do
-  echo "Wildfly isn't ready yet. Continuing to wait..."
-  result=`${WILDFLY_BIN}/jboss-cli.sh -c --commands="read-attribute server-state"`
-  echo "$result" | grep -q "running"
-  ((counter=counter+1))
-  sleep 6
-done
-
-echo "Wildfly status: ${result}"
+wait_for_server "read-attribute server-state" "running" "Wildfly"
 
 if [ $? -ne 0 ]; then
   echo "Didn't see Wildfly restart within 30 seconds!"
   exit 1
 fi
 
-#echo "Testing data source setup and connection"
+echo "Testing data source setup and connection"
 ${JBOSS_CLI} --file=/local/content/caNanoLab/artifacts/caNanoLab_checks.cli
 echo "Deploying caNano WAR"
 cp -v /local/content/caNanoLab/artifacts/caNanoLab.war /opt/wildfly-8.2.1.Final/standalone/deployments
 
-result=`${JBOSS_CLI} -c --commands="deployment-info --name=caNanoLab.war"`
-counter=0
-echo "Deployment status: ${result}"
-echo "$result" | grep -q "OK"
-while [ $? -ne 0 ] && [ $counter -lt 5 ]; do
-  echo "Deployment isn't ready yet. Continuing to wait..."
-  result=`${JBOSS_CLI} -c --commands="deployment-info --name=caNanoLab.war"`
-  echo "${result}"
-  echo "$result" | grep -q "OK"
-  ((counter=counter+1))
-  sleep 6
-done
-
-echo "Deployment status: ${result}"
+wait_for_server "deployment-info --name=caNanoLab.war" "OK" "Deployment"
 
 if [ $? -ne 0 ]; then
   echo "Didn't see caNano complete deployment within 30 seconds!"
@@ -97,3 +81,5 @@ if [ ! -z "${WILDFLY_PID}" ]; then
   echo "Wildfly failed to stop in time!"
   exit 1
 fi
+
+}
