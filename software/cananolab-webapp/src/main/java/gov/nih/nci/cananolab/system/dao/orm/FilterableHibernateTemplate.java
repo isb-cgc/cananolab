@@ -5,7 +5,7 @@ import gov.nih.nci.cananolab.security.helper.SecurityInitializationHelper;
 
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
-import org.springframework.orm.hibernate3.HibernateTemplate;
+import org.springframework.orm.hibernate5.HibernateTemplate;
 
 public class FilterableHibernateTemplate extends HibernateTemplate {
 

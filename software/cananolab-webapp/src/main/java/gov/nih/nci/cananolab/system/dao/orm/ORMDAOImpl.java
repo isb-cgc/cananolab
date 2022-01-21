@@ -26,9 +26,9 @@ import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Projections;
-import org.springframework.orm.hibernate3.HibernateCallback;
-import org.springframework.orm.hibernate3.HibernateTemplate;
-import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
+import org.springframework.orm.hibernate5.HibernateCallback;
+import org.springframework.orm.hibernate5.HibernateTemplate;
+import org.springframework.orm.hibernate5.support.HibernateDaoSupport;
 
 //import gov.nih.nci.system.dao.orm.translator.CQL2HQL;
 //import gov.nih.nci.system.query.cql.CQLQuery;
@@ -173,7 +173,7 @@ public class ORMDAOImpl extends HibernateDaoSupport implements DAO
 	{   log.info("Hibernate Callback Find Query :"+hql);
         return new HibernateCallback(){
 
-            public Object doInHibernate(Session session) throws HibernateException, SQLException {
+            public Object doInHibernate(Session session) throws HibernateException {
                 Query query = session.createQuery(hql);
                 query.setFirstResult(firstResult);
                 query.setMaxResults(maxResult);
@@ -191,7 +191,7 @@ public class ORMDAOImpl extends HibernateDaoSupport implements DAO
 	{log.info("Hibernate Callback Count Query :"+hql);
         return new HibernateCallback(){
 
-            public Object doInHibernate(Session session) throws HibernateException, SQLException {
+            public Object doInHibernate(Session session) throws HibernateException {
                 Query query = session.createQuery(hql);
                 query.setMaxResults(1);
 
@@ -208,7 +208,7 @@ public class ORMDAOImpl extends HibernateDaoSupport implements DAO
 	{
         return new HibernateCallback(){
 
-            public Object doInHibernate(Session session) throws HibernateException, SQLException {
+            public Object doInHibernate(Session session) throws HibernateException {
                 Criteria exeCriteria = criteria.getExecutableCriteria(session);
                 return exeCriteria.setProjection(Projections.rowCount()).uniqueResult();
             }
