@@ -53,7 +53,7 @@ L-->
 	<bean name="HibernateConfigHolder" class="gov.nih.nci.cananolab.system.dao.orm.HibernateConfigurationHolder" />
 
 	<bean name="SessionFactory" class="gov.nih.nci.cananolab.system.dao.orm.SessionFactoryBean">
-		<property name="configLocation" value="classpath:hibernate.cfg.xml" />
+		<property name="configLocation" value="hibernate.cfg.xml" />
 		<property name="configHolder" ref="HibernateConfigHolder" />
 		<property name="securityHelper" ref="SecurityInitializationHelper"/>
 		<property name="entityInterceptor">
@@ -71,18 +71,18 @@ L-->
 				</constructor-arg>
 			</bean>
 		</property>
-		<property name="eventListeners">
-			<map>
-				<!--
-				<entry key="pre-insert">
-					<bean class="org.hibernate.validator.event.ValidateEventListener" />
-				</entry>
-				<entry key="pre-update">
-					<bean class="org.hibernate.validator.event.ValidateEventListener" />
-				</entry>
-				-->
-			</map>
-		</property>
+<!--		<property name="eventListeners">-->
+<!--			<map>-->
+<!--				&lt;!&ndash;-->
+<!--				<entry key="pre-insert">-->
+<!--					<bean class="org.hibernate.validator.event.ValidateEventListener" />-->
+<!--				</entry>-->
+<!--				<entry key="pre-update">-->
+<!--					<bean class="org.hibernate.validator.event.ValidateEventListener" />-->
+<!--				</entry>-->
+<!--				&ndash;&gt;-->
+<!--			</map>-->
+<!--		</property>-->
 	</bean>
 
 	<bean name="SecurityInitializationHelper" class="gov.nih.nci.cananolab.security.helper.SecurityInitializationHelper">
@@ -96,7 +96,7 @@ L-->
 		-->
 	</bean>
 
-	<bean id="HibernateTransactionManager" class="org.springframework.orm.hibernate3.HibernateTransactionManager">
+	<bean id="HibernateTransactionManager" class="org.springframework.orm.hibernate5.HibernateTransactionManager">
 		<property name="sessionFactory" ref="SessionFactory" />
 	</bean>
 
