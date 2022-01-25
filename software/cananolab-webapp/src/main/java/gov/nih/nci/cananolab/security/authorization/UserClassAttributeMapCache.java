@@ -14,11 +14,8 @@ import gov.nih.nci.cananolab.security.AuthorizationManager;
 import gov.nih.nci.cananolab.security.utils.FileLoader;
 import gov.nih.nci.cananolab.security.utils.StringUtilities;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
+import java.util.stream.Collectors;
 
 import net.sf.ehcache.Cache;
 import net.sf.ehcache.CacheException;
@@ -27,6 +24,8 @@ import net.sf.ehcache.Element;
 
 import org.hibernate.SessionFactory;
 import org.springframework.dao.DataRetrievalFailureException;
+
+import javax.persistence.metamodel.EntityType;
 
 
 public class UserClassAttributeMapCache
@@ -113,9 +112,13 @@ public class UserClassAttributeMapCache
 		if(cache==null) initializeCache();
 		
 		String privilegeName = "READ";
-		Map map = sessionFactory.getAllClassMetadata();
-		Set set = map.keySet();
-		ArrayList list = new ArrayList(set);
+		List<String> allClassNames = new ArrayList<String>();
+		Set<EntityType<?>> entities = sessionFactory.getMetamodel().getEntities();
+		List<?> allClassMetadata = entities.stream()
+				.map(EntityType::getJavaType)
+				.filter(Objects::nonNull)
+				.collect(Collectors.toList());
+		ArrayList list = new ArrayList(allClassMetadata);
 
 		List<ClassAttributeMap> classAttributeMapList = new ArrayList<ClassAttributeMap>();
 			
@@ -148,9 +151,13 @@ public class UserClassAttributeMapCache
 		if(cache==null) initializeCache();
 				
 		String privilegeName = "READ";
-		Map map = sessionFactory.getAllClassMetadata();
-		Set set = map.keySet();
-		ArrayList list = new ArrayList(set);
+		List<String> allClassNames = new ArrayList<String>();
+		Set<EntityType<?>> entities = sessionFactory.getMetamodel().getEntities();
+		List<?> allClassMetadata = entities.stream()
+				.map(EntityType::getJavaType)
+				.filter(Objects::nonNull)
+				.collect(Collectors.toList());
+		ArrayList list = new ArrayList(allClassMetadata);
 		
 		for(int i=0;i<groupNames.length;i++)
 		{

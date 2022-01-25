@@ -52,38 +52,52 @@ L-->
 
 	<bean name="HibernateConfigHolder" class="gov.nih.nci.cananolab.system.dao.orm.HibernateConfigurationHolder" />
 
-	<bean name="SessionFactory" class="gov.nih.nci.cananolab.system.dao.orm.SessionFactoryBean">
-		<property name="configLocation" value="hibernate.cfg.xml" />
-		<property name="configHolder" ref="HibernateConfigHolder" />
-		<property name="securityHelper" ref="SecurityInitializationHelper"/>
-		<property name="entityInterceptor">
-			<bean class="gov.nih.nci.cananolab.security.GenericSecurityInterceptor">
-				<constructor-arg>
-					<list>
-						<bean class="org.hibernate.EmptyInterceptor"/>
-						<!--
-						<bean class="gov.nih.nci.security.authorization.attributeLevel.AttributeSecuritySessionInterceptor">
-							<constructor-arg value="false"/>
-						</bean>
-						-->
-						<!--<bean class="gov.nih.nci.logging.api.logger.hibernate.ObjectStateInterceptor"/>-->
-					</list>		
-				</constructor-arg>
-			</bean>
+	<bean name="SessionFactory" class="org.springframework.orm.hibernate5.LocalSessionFactoryBean">
+		<!--<propertyname="dataSource"ref="myDataSource"/>-->
+		<!--<propertyname="mappingResources">-->
+		<!--<list>-->
+		<!--<value>product.hbm.xml</value>-->
+		<!--</list>-->
+		<!--</property>-->
+		<property name="hibernateProperties">
+			<value>
+				hibernate.dialect=org.hibernate.dialect.MySQLDialect
+			</value>
 		</property>
-<!--		<property name="eventListeners">-->
-<!--			<map>-->
-<!--				&lt;!&ndash;-->
-<!--				<entry key="pre-insert">-->
-<!--					<bean class="org.hibernate.validator.event.ValidateEventListener" />-->
-<!--				</entry>-->
-<!--				<entry key="pre-update">-->
-<!--					<bean class="org.hibernate.validator.event.ValidateEventListener" />-->
-<!--				</entry>-->
-<!--				&ndash;&gt;-->
-<!--			</map>-->
-<!--		</property>-->
 	</bean>
+
+<!--	<bean name="SessionFactory" class="gov.nih.nci.cananolab.system.dao.orm.SessionFactoryBean">-->
+<!--		<property name="configLocation" value="hibernate.cfg.xml" />-->
+<!--		<property name="configHolder" ref="HibernateConfigHolder" />-->
+<!--		<property name="securityHelper" ref="SecurityInitializationHelper"/>-->
+<!--		<property name="entityInterceptor">-->
+<!--			<bean class="gov.nih.nci.cananolab.security.GenericSecurityInterceptor">-->
+<!--				<constructor-arg>-->
+<!--					<list>-->
+<!--						<bean class="org.hibernate.EmptyInterceptor"/>-->
+<!--						&lt;!&ndash;-->
+<!--						<bean class="gov.nih.nci.security.authorization.attributeLevel.AttributeSecuritySessionInterceptor">-->
+<!--							<constructor-arg value="false"/>-->
+<!--						</bean>-->
+<!--						&ndash;&gt;-->
+<!--						&lt;!&ndash;<bean class="gov.nih.nci.logging.api.logger.hibernate.ObjectStateInterceptor"/>&ndash;&gt;-->
+<!--					</list>		-->
+<!--				</constructor-arg>-->
+<!--			</bean>-->
+<!--		</property>-->
+<!--&lt;!&ndash;		<property name="eventListeners">&ndash;&gt;-->
+<!--&lt;!&ndash;			<map>&ndash;&gt;-->
+<!--&lt;!&ndash;				&lt;!&ndash;&ndash;&gt;-->
+<!--&lt;!&ndash;				<entry key="pre-insert">&ndash;&gt;-->
+<!--&lt;!&ndash;					<bean class="org.hibernate.validator.event.ValidateEventListener" />&ndash;&gt;-->
+<!--&lt;!&ndash;				</entry>&ndash;&gt;-->
+<!--&lt;!&ndash;				<entry key="pre-update">&ndash;&gt;-->
+<!--&lt;!&ndash;					<bean class="org.hibernate.validator.event.ValidateEventListener" />&ndash;&gt;-->
+<!--&lt;!&ndash;				</entry>&ndash;&gt;-->
+<!--&lt;!&ndash;				&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;			</map>&ndash;&gt;-->
+<!--&lt;!&ndash;		</property>&ndash;&gt;-->
+<!--	</bean>-->
 
 	<bean name="SecurityInitializationHelper" class="gov.nih.nci.cananolab.security.helper.SecurityInitializationHelper">
 		<property name="securityEnabled" value="false"/>

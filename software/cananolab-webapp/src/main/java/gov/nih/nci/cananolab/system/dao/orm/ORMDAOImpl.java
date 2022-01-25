@@ -11,10 +11,9 @@ import gov.nih.nci.cananolab.system.query.hibernate.HQLCriteria;
 import gov.nih.nci.cananolab.system.query.nestedcriteria.NestedCriteria;
 import gov.nih.nci.cananolab.system.query.nestedcriteria.NestedCriteriaPath;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
+import java.util.stream.Collectors;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.hibernate.Criteria;
@@ -29,6 +28,9 @@ import org.hibernate.criterion.Projections;
 import org.springframework.orm.hibernate5.HibernateCallback;
 import org.springframework.orm.hibernate5.HibernateTemplate;
 import org.springframework.orm.hibernate5.support.HibernateDaoSupport;
+
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.metamodel.EntityType;
 
 //import gov.nih.nci.system.dao.orm.translator.CQL2HQL;
 //import gov.nih.nci.system.query.cql.CQLQuery;
@@ -90,9 +92,15 @@ public class ORMDAOImpl extends HibernateDaoSupport implements DAO
     public List<String> getAllClassNames(){
     	
     	List<String> allClassNames = new ArrayList<String>();
-    	Map allClassMetadata = getSessionFactory().getAllClassMetadata();
+		Set<EntityType<?>> entities = getSessionFactory().getMetamodel().getEntities();
+		List<?> allClassMetadata = entities.stream()
+				.map(EntityType::getJavaType)
+				.filter(Objects::nonNull)
+				.collect(Collectors.toList());
+
+//		Map allClassMetadata = getSessionFactory().getAllClassMetadata();
     	
-    	for (Iterator iter = allClassMetadata.keySet().iterator() ; iter.hasNext(); ){		
+    	for (Iterator iter = allClassMetadata.iterator() ; iter.hasNext(); ){
     		allClassNames.add((String)iter.next());
     	}
     	
