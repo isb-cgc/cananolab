@@ -3,20 +3,34 @@ package gov.nih.nci.cananolab.domain.common;
 import java.io.Serializable;
 import java.util.Collection;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
 /**
  *
  **/
 
+@Entity
+@Table(name="finding")
 public class Finding implements Serializable {
     /**
      * An attribute to allow serialization of the domain objects
      */
     private static final long serialVersionUID = 1234567890L;
 
+    @Column(name="created_by")
     private String createdBy;
 
+    @Column(name="created_date")
     private java.util.Date createdDate;
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name="finding_pk_id")
     private Long id;
     /**
      * An associated gov.nih.nci.cananolab.domain.common.Datum object's collection
@@ -86,7 +100,7 @@ public class Finding implements Serializable {
     /**
      * Retrieves the value of the datumCollection attribute
      *
-     * @return datumCollection
+     .     * @return datumCollection
      **/
 
     public Collection<Datum> getDatumCollection() {
