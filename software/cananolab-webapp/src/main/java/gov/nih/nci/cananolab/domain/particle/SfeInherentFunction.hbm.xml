@@ -5,7 +5,7 @@
 <hibernate-mapping package="gov.nih.nci.cananolab.domain.particle">
     <class name="SfeInherentFunction" table="sfe_inherent_function">
         <id column="sfe_inherent_function_pk_id" name="id" type="long">
-            <generator class="hilo">
+            <generator class="increment">
                 <param name="table">hibernate_unique_key</param>
                 <param name="column">next_hi</param>
             </generator>

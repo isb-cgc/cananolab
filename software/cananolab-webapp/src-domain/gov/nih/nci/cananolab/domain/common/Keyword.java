@@ -26,11 +26,13 @@ import javax.persistence.Table;
 @Entity
 @Table(name="keyword")
 public class Keyword implements java.io.Serializable {
-	@id
+
+	@Id
 	@GeneratedValue
-	@column(name="keyword_pk_id")
+	@Column(name="keyword_pk_id")
 	private Long id;
-	@column(name="name")
+
+	@Column(name="name")
 	private String name;
 	private Set fileCollection = new HashSet(0);
 

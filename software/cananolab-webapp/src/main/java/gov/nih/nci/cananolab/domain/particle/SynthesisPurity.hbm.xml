@@ -5,7 +5,10 @@
 <hibernate-mapping package="gov.nih.nci.cananolab.domain.particle">
     <class name="gov.nih.nci.cananolab.domain.particle.SynthesisPurity" table="synthesis_purity"  dynamic-update="true">
         <id column="purity_pk_id" name="id" type="long">
-            <generator class="hilo"/>
+            <generator class="increment">
+                <param name="table">hibernate_unique_key</param>
+                <param name="column">next_hi</param>
+            </generator>
         </id>
         <property generated="never" lazy="false" name="createdDate" type="timestamp">
             <column length="19" name="created_date" not-null="true">

@@ -12,7 +12,7 @@ L-->
 	<class name="AssociatedElement" table="associated_element" lazy="true" polymorphism="explicit">
 		<cache usage="read-write" />
 		<id name="id" type="long" column="associated_element_pk_id">
-			<generator class="hilo">
+			<generator class="increment">
                           <param name="table">hibernate_unique_key</param>
                           <param name="column">next_hi</param>
                         </generator>
@@ -60,13 +60,13 @@ L-->
 				<property name="type" type="string" column="type"/>
 
 			</joined-subclass>
-			<joined-subclass name="gov.nih.nci.cananolab.domain.agentmaterial.Biopolymer" table="biopolymer_f" lazy="true">
-				<key column="biopolymer_pk_id" />
-				<!-- Attributes mapping for the Biopolymer class -->
-				<property name="sequence" type="string" column="sequence"/>
-				<property name="type" type="string" column="type"/>
+<!--			<joined-subclass name="gov.nih.nci.cananolab.domain.agentmaterial.Biopolymer" table="biopolymer_f" lazy="true">-->
+<!--				<key column="biopolymer_pk_id" />-->
+<!--				&lt;!&ndash; Attributes mapping for the Biopolymer class &ndash;&gt;-->
+<!--				<property name="sequence" type="string" column="sequence"/>-->
+<!--				<property name="type" type="string" column="type"/>-->
 
-			</joined-subclass>
+<!--			</joined-subclass>-->
 			<joined-subclass name="gov.nih.nci.cananolab.domain.agentmaterial.Antibody" table="antibody" lazy="true">
 				<key column="antibody_pk_id" />
 				<!-- Attributes mapping for the Antibody class -->

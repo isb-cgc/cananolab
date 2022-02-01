@@ -92,17 +92,18 @@ public class ORMDAOImpl extends HibernateDaoSupport implements DAO
     public List<String> getAllClassNames(){
     	
     	List<String> allClassNames = new ArrayList<String>();
+
 		Set<EntityType<?>> entities = getSessionFactory().getMetamodel().getEntities();
-		List<?> allClassMetadata = entities.stream()
+		List<?> classes = entities.stream()
 				.map(EntityType::getJavaType)
 				.filter(Objects::nonNull)
 				.collect(Collectors.toList());
 
 //		Map allClassMetadata = getSessionFactory().getAllClassMetadata();
     	
-    	for (Iterator iter = allClassMetadata.iterator() ; iter.hasNext(); ){
-    		allClassNames.add((String)iter.next());
-    	}
+//    	for (Iterator iter = classes.iterator() ; iter.hasNext(); ){
+//    		allClassNames.add((String)iter.next());
+//    	}
     	
     	return allClassNames;
     }
