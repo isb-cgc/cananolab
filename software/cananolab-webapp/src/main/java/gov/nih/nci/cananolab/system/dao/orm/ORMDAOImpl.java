@@ -16,12 +16,7 @@ import java.util.stream.Collectors;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.hibernate.Criteria;
-import org.hibernate.HibernateException;
-import org.hibernate.JDBCException;
-import org.hibernate.Query;
-import org.hibernate.Session;
-import org.hibernate.SessionFactory;
+import org.hibernate.*;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Projections;
@@ -93,17 +88,21 @@ public class ORMDAOImpl extends HibernateDaoSupport implements DAO
     	
     	List<String> allClassNames = new ArrayList<String>();
 
-		Set<EntityType<?>> entities = getSessionFactory().getMetamodel().getEntities();
-		List<?> classes = entities.stream()
-				.map(EntityType::getJavaType)
-				.filter(Objects::nonNull)
-				.collect(Collectors.toList());
+//		Set<EntityType<?>> entities = getSessionFactory().getMetamodel().getEntities();
+//		List<?> classes = entities.stream()
+//				.map(EntityType::getJavaType)
+//				.filter(Objects::nonNull)
+//				.collect(Collectors.toList());
 
-//		Map allClassMetadata = getSessionFactory().getAllClassMetadata();
-    	
-//    	for (Iterator iter = classes.iterator() ; iter.hasNext(); ){
-//    		allClassNames.add((String)iter.next());
-//    	}
+		Map allClassMetadata = getSessionFactory().getAllClassMetadata();
+    	Iterator iter = allClassMetadata.keySet().iterator();
+    	while (iter.hasNext()) {
+			allClassNames.add((String)iter.next());
+//			if (iter.getClass() != null) {
+//				allClassNames.add(iter.getClass().getCanonicalName());
+//			}
+//			iter.next();
+    	}
     	
     	return allClassNames;
     }

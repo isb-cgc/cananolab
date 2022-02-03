@@ -2,19 +2,10 @@ package gov.nih.nci.cananolab.domain.common;
 
 import java.io.Serializable;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Table;
-
 /**
 	* The formal plan of an experiment or research activity, including the objective, rationale, design, materials and methods for the conduct of the study; intervention description, and method of data analysis
 	**/
 
-@Entity
-@Table(name="protocol")
 public class Protocol  implements Serializable
 {
 	/**
@@ -27,7 +18,6 @@ public class Protocol  implements Serializable
 	* 
 	**/
 
-	@Column(name="protocol_abbreviation")
 	private String abbreviation;
 	/**
 	* Retrieves the value of the abbreviation attribute
@@ -50,7 +40,6 @@ public class Protocol  implements Serializable
 	* Indicates the person or authoritative body who brought the item into existence.
 	**/
 
-	@Column(name="created_by")
 	private String createdBy;
 	/**
 	* Retrieves the value of the createdBy attribute
@@ -73,7 +62,6 @@ public class Protocol  implements Serializable
 	* The date of the process by which something is brought into existence; having been brought into existence.
 	**/
 
-	@Column(name="created_date")
 	private java.util.Date createdDate;
 	/**
 	* Retrieves the value of the createdDate attribute
@@ -96,9 +84,6 @@ public class Protocol  implements Serializable
 	* One or more characters used to identify, name, or characterize the nature, properties, or contents of a thing.
 	**/
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name="protocol_pk_id")
 	private Long id;
 	/**
 	* Retrieves the value of the id attribute
@@ -121,7 +106,6 @@ public class Protocol  implements Serializable
 	* The words or language units by which a thing is known.
 	**/
 
-	@Column(name="protocol_name")
 	private String name;
 	/**
 	* Retrieves the value of the name attribute
@@ -144,7 +128,6 @@ public class Protocol  implements Serializable
 	* Something distinguishable as an identifiable class based on common qualities. Please refer to value domain Protocol
 	**/
 
-	@Column(name="protocol_type")
 	private String type;
 	/**
 	* Retrieves the value of the type attribute
@@ -167,7 +150,6 @@ public class Protocol  implements Serializable
 	* 
 	**/
 
-	@Column(name="protocol_version")
 	private String version;
 	/**
 	* Retrieves the value of the version attribute
@@ -190,7 +172,6 @@ public class Protocol  implements Serializable
 	* An associated gov.nih.nci.cananolab.domain.common.File object
 	**/
 
-	@Column(name="file")
 	private File file;
 	/**
 	* Retrieves the value of the file attribute

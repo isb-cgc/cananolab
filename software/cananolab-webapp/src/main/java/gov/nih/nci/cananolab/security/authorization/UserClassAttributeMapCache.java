@@ -112,17 +112,12 @@ public class UserClassAttributeMapCache
 		if(cache==null) initializeCache();
 		
 		String privilegeName = "READ";
-		List<String> allClassNames = new ArrayList<String>();
-		Set<EntityType<?>> entities = sessionFactory.getMetamodel().getEntities();
-		List<?> allClassMetadata = entities.stream()
-				.map(EntityType::getJavaType)
-				.filter(Objects::nonNull)
-				.collect(Collectors.toList());
-		ArrayList list = new ArrayList(allClassMetadata);
+
+		Map allClassMetadata = sessionFactory.getAllClassMetadata();
 
 		List<ClassAttributeMap> classAttributeMapList = new ArrayList<ClassAttributeMap>();
 			
-		Iterator iterator = list.iterator();
+		Iterator iterator = allClassMetadata.keySet().iterator();
 		while (iterator.hasNext())
 		{
 			String className = (String)iterator.next();
@@ -151,13 +146,8 @@ public class UserClassAttributeMapCache
 		if(cache==null) initializeCache();
 				
 		String privilegeName = "READ";
-		List<String> allClassNames = new ArrayList<String>();
-		Set<EntityType<?>> entities = sessionFactory.getMetamodel().getEntities();
-		List<?> allClassMetadata = entities.stream()
-				.map(EntityType::getJavaType)
-				.filter(Objects::nonNull)
-				.collect(Collectors.toList());
-		ArrayList list = new ArrayList(allClassMetadata);
+
+		Map allClassMetadata = sessionFactory.getAllClassMetadata();
 		
 		for(int i=0;i<groupNames.length;i++)
 		{
@@ -165,7 +155,7 @@ public class UserClassAttributeMapCache
 			
 			String groupName = groupNames[i];
 			
-			Iterator iterator = list.iterator();
+			Iterator iterator = allClassMetadata.keySet().iterator();
 			while (iterator.hasNext())
 			{
 				String className = (String)iterator.next();

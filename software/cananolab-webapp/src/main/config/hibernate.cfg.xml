@@ -12,15 +12,19 @@ L-->
 	<session-factory>
 
 		<!-- Properties for the session factory -->
-		<property name="hibernate.connection.datasource">java:/caNanoLab</property>
-		<property name="hibernate.dialect">org.hibernate.dialect.MySQLDialect</property>
+		<property name="connection.datasource">java:/caNanoLab</property>
+		<property name="dialect">org.hibernate.dialect.MySQLDialect</property>
 		<property name="max_fetch_depth">1</property>
 		<property name="cglib.use_reflection_optimizer">false</property>
 		<property name="jdbc.batch_versioned_data">true</property>
 		<property name="jdbc.use_streams_for_binary">true</property>
 		<property name="cache.use_query_cache">false</property>
+		<property name="hibernate.cache.use_second_level_cache">true</property>
 <!--		<property name="hibernate.cache.region.factory_class">net.sf.ehcache.hibernate.SingletonEhCacheRegionFactory</property>-->
-		<property name="hibernate.connection.driver_class">com.mysql.jdbc.Driver</property>
+		<property name="connection.driver_class">com.mysql.jdbc.Driver</property>
+
+		<property name="hibernate.cache.region.factory_class">org.hibernate.cache.ehcache.SingletonEhCacheRegionFactory</property>
+<!--		<property name="hibernate.cache.provider_class">net.sf.ehcache.hibernate.EhCacheProvider</property>-->
 
 		<!-- For debugging set this to true and enable next two lines -->
 <!--		<property name="hibernate.show_sql">true</property>-->
