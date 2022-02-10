@@ -51,64 +51,6 @@ L-->
 
 	<bean name="HibernateConfigHolder" class="gov.nih.nci.cananolab.system.dao.orm.HibernateConfigurationHolder" />
 
-<!--	<bean name="SessionFactory" class="org.springframework.orm.hibernate5.LocalSessionFactoryBean">-->
-<!--		&lt;!&ndash;<propertyname="dataSource"ref="myDataSource"/>&ndash;&gt;-->
-<!--&lt;!&ndash;		<property name="annotatedClasses">&ndash;&gt;-->
-<!--&lt;!&ndash;			<list>&ndash;&gt;-->
-<!--&lt;!&ndash;&lt;!&ndash;				<value>gov.nih.nci.cananolab.domain.common.Finding</value>&ndash;&gt;&ndash;&gt;-->
-<!--&lt;!&ndash;&lt;!&ndash;				<value>gov.nih.nci.cananolab.domain.common.Protocol</value>&ndash;&gt;&ndash;&gt;-->
-<!--&lt;!&ndash;			</list>&ndash;&gt;-->
-<!--&lt;!&ndash;		</property>&ndash;&gt;-->
-<!--		<property name="mappingResources">-->
-<!--			<list>-->
-<!--				<value>gov/nih/nci/cananolab/domain/common/Finding.hbm.xml</value>-->
-<!--				<value>gov/nih/nci/cananolab/domain/common/Keyword.hbm.xml</value>-->
-<!--				<value>gov/nih/nci/cananolab/domain/common/Instrument.hbm.xml</value>-->
-<!--				<value>gov/nih/nci/cananolab/domain/common/Condition.hbm.xml</value>-->
-<!--				<value>gov/nih/nci/cananolab/domain/common/Technique.hbm.xml</value>-->
-<!--				<value>gov/nih/nci/cananolab/domain/common/Datum.hbm.xml</value>-->
-<!--				<value>gov/nih/nci/cananolab/domain/common/Author.hbm.xml</value>-->
-<!--				<value>gov/nih/nci/cananolab/domain/common/Organization.hbm.xml</value>-->
-<!--				<value>gov/nih/nci/cananolab/domain/common/CommonLookup.hbm.xml</value>-->
-<!--				<value>gov/nih/nci/cananolab/domain/common/PointOfContact.hbm.xml</value>-->
-<!--				<value>gov/nih/nci/cananolab/domain/common/Protocol.hbm.xml</value>-->
-<!--				<value>gov/nih/nci/cananolab/domain/common/ExperimentConfig.hbm.xml</value>-->
-<!--				<value>gov/nih/nci/cananolab/domain/common/File.hbm.xml</value>-->
-<!--				<value>gov/nih/nci/cananolab/domain/function/Target.hbm.xml</value>-->
-<!--				<value>gov/nih/nci/cananolab/domain/particle/AssociatedElement.hbm.xml</value>-->
-
-<!--				<value>gov/nih/nci/cananolab/domain/particle/Sample.hbm.xml</value>-->
-<!--				<value>gov/nih/nci/cananolab/domain/particle/SampleComposition.hbm.xml</value>-->
-<!--				<value>gov/nih/nci/cananolab/domain/particle/ActivationMethod.hbm.xml</value>-->
-<!--				<value>gov/nih/nci/cananolab/domain/particle/Characterization.hbm.xml</value>-->
-<!--				<value>gov/nih/nci/cananolab/domain/particle/NanomaterialEntity.hbm.xml</value>-->
-<!--				<value>gov/nih/nci/cananolab/domain/particle/Function.hbm.xml</value>-->
-<!--				<value>gov/nih/nci/cananolab/domain/particle/ChemicalAssociation.hbm.xml</value>-->
-<!--				<value>gov/nih/nci/cananolab/domain/common/Favorite.hbm.xml</value>-->
-<!--				<value>gov/nih/nci/cananolab/domain/common/PurificationConfig.hbm.xml</value>-->
-<!--				<value>gov/nih/nci/cananolab/domain/particle/SfeInherentFunction.hbm.xml</value>-->
-<!--				<value>gov/nih/nci/cananolab/domain/particle/SmeInherentFunction.hbm.xml</value>-->
-<!--				<value>gov/nih/nci/cananolab/domain/particle/Synthesis.hbm.xml</value>-->
-<!--				<value>gov/nih/nci/cananolab/domain/particle/SynthesisFunctionalization.hbm.xml</value>-->
-<!--				<value>gov/nih/nci/cananolab/domain/particle/SynthesisFunctionalizationElement.hbm.xml</value>-->
-<!--				<value>gov/nih/nci/cananolab/domain/particle/SynthesisMaterial.hbm.xml</value>-->
-<!--				<value>gov/nih/nci/cananolab/domain/particle/SynthesisMaterialElement.hbm.xml</value>-->
-<!--				<value>gov/nih/nci/cananolab/domain/particle/SynthesisPurification.hbm.xml</value>-->
-<!--				<value>gov/nih/nci/cananolab/domain/common/Supplier.hbm.xml</value>-->
-<!--				<value>gov/nih/nci/cananolab/domain/particle/SynthesisPurity.hbm.xml</value>-->
-<!--				<value>gov/nih/nci/cananolab/domain/common/PurityDatumCondition.hbm.xml</value>-->
-<!--				<value>gov/nih/nci/cananolab/domain/common/PurityColumnHeader.hbm.xml</value>-->
-<!--			</list>-->
-<!--		</property>-->
-<!--		<property name="hibernateProperties">-->
-<!--			<value>-->
-<!--				hibernate.dialect=org.hibernate.dialect.MySQLDialect-->
-<!--				hibernate.connection.datasource=java:/caNanoLab-->
-<!--				hibernate.connection.driver_class=com.mysql.jdbc.Driver-->
-<!--			</value>-->
-<!--		</property>-->
-<!--	</bean>-->
-
 	<bean name="SessionFactory" class="gov.nih.nci.cananolab.system.dao.orm.SessionFactoryBean">
 		<property name="configLocation" value="hibernate.cfg.xml" />
 		<property name="configHolder" ref="HibernateConfigHolder" />

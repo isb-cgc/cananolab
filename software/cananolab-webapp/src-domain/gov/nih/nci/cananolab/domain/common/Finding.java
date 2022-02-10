@@ -86,7 +86,7 @@ public class Finding implements Serializable {
     /**
      * Retrieves the value of the datumCollection attribute
      *
-     .     * @return datumCollection
+     * @return datumCollection
      **/
 
     public Collection<Datum> getDatumCollection() {
