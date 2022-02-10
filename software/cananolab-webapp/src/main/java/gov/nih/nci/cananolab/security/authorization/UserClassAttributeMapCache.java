@@ -14,8 +14,11 @@ import gov.nih.nci.cananolab.security.AuthorizationManager;
 import gov.nih.nci.cananolab.security.utils.FileLoader;
 import gov.nih.nci.cananolab.security.utils.StringUtilities;
 import java.net.URL;
-import java.util.*;
-import java.util.stream.Collectors;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 import net.sf.ehcache.Cache;
 import net.sf.ehcache.CacheException;
@@ -24,6 +27,7 @@ import net.sf.ehcache.Element;
 
 import org.hibernate.SessionFactory;
 import org.springframework.dao.DataRetrievalFailureException;
+
 
 public class UserClassAttributeMapCache
 {
@@ -148,7 +152,7 @@ public class UserClassAttributeMapCache
 		Map map = sessionFactory.getAllClassMetadata();
 		Set set = map.keySet();
 		ArrayList list = new ArrayList(set);
-
+		
 		for(int i=0;i<groupNames.length;i++)
 		{
 			List<ClassAttributeMap> classAttributeMapList = new ArrayList<ClassAttributeMap>();
