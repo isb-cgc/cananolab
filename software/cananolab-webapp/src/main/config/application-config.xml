@@ -71,18 +71,6 @@ L-->
 				</constructor-arg>
 			</bean>
 		</property>
-		<property name="eventListeners">
-			<map>
-				<!--
-				<entry key="pre-insert">
-					<bean class="org.hibernate.validator.event.ValidateEventListener" />
-				</entry>
-				<entry key="pre-update">
-					<bean class="org.hibernate.validator.event.ValidateEventListener" />
-				</entry>
-				-->
-			</map>
-		</property>
 	</bean>
 
 	<bean name="SecurityInitializationHelper" class="gov.nih.nci.cananolab.security.helper.SecurityInitializationHelper">
