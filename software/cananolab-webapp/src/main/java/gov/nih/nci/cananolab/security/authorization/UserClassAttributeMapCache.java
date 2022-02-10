@@ -25,9 +25,6 @@ import net.sf.ehcache.Element;
 import org.hibernate.SessionFactory;
 import org.springframework.dao.DataRetrievalFailureException;
 
-import javax.persistence.metamodel.EntityType;
-
-
 public class UserClassAttributeMapCache
 {
 	//private static HashMap cache = new HashMap();
@@ -113,11 +110,13 @@ public class UserClassAttributeMapCache
 		
 		String privilegeName = "READ";
 
-		Map allClassMetadata = sessionFactory.getAllClassMetadata();
+		Map map = sessionFactory.getAllClassMetadata();
+		Set set = map.keySet();
+		ArrayList list = new ArrayList(set);
 
 		List<ClassAttributeMap> classAttributeMapList = new ArrayList<ClassAttributeMap>();
 			
-		Iterator iterator = allClassMetadata.keySet().iterator();
+		Iterator iterator = list.iterator();
 		while (iterator.hasNext())
 		{
 			String className = (String)iterator.next();
@@ -146,16 +145,17 @@ public class UserClassAttributeMapCache
 		if(cache==null) initializeCache();
 				
 		String privilegeName = "READ";
+		Map map = sessionFactory.getAllClassMetadata();
+		Set set = map.keySet();
+		ArrayList list = new ArrayList(set);
 
-		Map allClassMetadata = sessionFactory.getAllClassMetadata();
-		
 		for(int i=0;i<groupNames.length;i++)
 		{
 			List<ClassAttributeMap> classAttributeMapList = new ArrayList<ClassAttributeMap>();
 			
 			String groupName = groupNames[i];
 			
-			Iterator iterator = allClassMetadata.keySet().iterator();
+			Iterator iterator = list.iterator();
 			while (iterator.hasNext())
 			{
 				String className = (String)iterator.next();
