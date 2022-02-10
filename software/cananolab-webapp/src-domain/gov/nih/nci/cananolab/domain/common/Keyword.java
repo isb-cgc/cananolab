@@ -52,7 +52,7 @@ public class Keyword implements java.io.Serializable {
 		return this.fileCollection;
 	}
 
-	//	@ManyToMany(cascade = { CascadeType.ALL })
+//	@ManyToMany(cascade = { CascadeType.ALL })
 //	@JoinTable(name = "keyword_file", joinColumns = { @JoinColumn(name = "keyword_pk_id") }, inverseJoinColumns = { @JoinColumn(name = "file_pk_id") })
 	public void setFileCollection(Set fileCollection) {
 		this.fileCollection = fileCollection;
