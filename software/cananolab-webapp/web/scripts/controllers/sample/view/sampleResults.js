@@ -22,15 +22,14 @@ var app = angular.module('angularApp')
         $location.path("/sample").search({
           'sampleId': id
         }).replace();
-      };
-
+      }
     };
 
 
     $scope.exportJsonAll = function () {
       $scope.loader = true;
       $http({
-        method: 'GET',
+        method: 'POST',
         url: '/caNanoLab/rest/sample/fullSampleExportJsonAll',
         params: {
           "sampleIds": utilsService.sampleIdListStrings($scope.sampleData)
@@ -59,7 +58,7 @@ var app = angular.module('angularApp')
     $scope.exportXmlAll = function () {
       $scope.loader = true;
       $http({
-        method: 'GET',
+        method: 'POST',
         url: '/caNanoLab/rest/sample/fullSampleExportXmlAll',
         params: {
           "sampleIds": utilsService.sampleIdListStrings($scope.sampleData)

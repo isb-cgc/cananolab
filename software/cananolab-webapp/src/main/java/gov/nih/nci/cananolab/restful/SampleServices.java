@@ -867,7 +867,7 @@ public class SampleServices {
      * @param httpResponse
      * @param sampleIds
      */
-    @GET
+    @POST
     @Path("/fullSampleExportJsonAll")
     @Produces ("application/json")
     public Response fullSampleExportJsonAll(@Context HttpServletRequest httpRequest, @Context HttpServletResponse httpResponse,
@@ -895,7 +895,7 @@ public class SampleServices {
      * @param httpResponse
      * @param sampleIds  Comma separated list of Sample IDs
      */
-    @GET
+    @POST
     @Path("/fullSampleExportXmlAll")
     @Produces ("application/xml")
     public Response fullSampleExportXmlAll(@Context HttpServletRequest httpRequest, @Context HttpServletResponse httpResponse,

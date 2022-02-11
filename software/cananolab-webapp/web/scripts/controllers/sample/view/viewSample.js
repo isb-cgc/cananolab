@@ -46,7 +46,7 @@ var app = angular.module('angularApp')
     $scope.exportJson = function () {
       $scope.loader = true;
       $http({
-        method: 'GET',
+        method: 'POST',
         url: '/caNanoLab/rest/sample/fullSampleExportJsonAll',
         params: {
           "sampleIds": $scope.sampleId.data
@@ -76,7 +76,7 @@ var app = angular.module('angularApp')
     $scope.exportXml = function () {
       $scope.loader = true;
       $http({
-        method: 'GET',
+        method: 'POST',
         url: '/caNanoLab/rest/sample/fullSampleExportXmlAll',
         params: {
           "sampleIds": $scope.sampleId.data
