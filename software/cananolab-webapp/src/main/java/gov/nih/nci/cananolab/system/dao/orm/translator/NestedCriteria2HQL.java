@@ -500,6 +500,7 @@ public class NestedCriteria2HQL
 
 	private boolean checkClobAttribute(String objClassName)
 	{
+		// TODO: Does not seem used. Possible need to fix in future Hibernate update
 		PersistentClass pclass = null; //cfg.getClassMapping(objClassName);
 
 		Iterator properties = pclass.getPropertyIterator();
@@ -782,10 +783,12 @@ public class NestedCriteria2HQL
 	}
 	
 	private PersistentClass getPersistentClass(String objClassName){
+		// TODO: Does not seem used. Possible need to fix in future Hibernate update
 		PersistentClass pclass = null; // cfg.getClassMapping(objClassName);
 		
 		if (pclass == null) {//might be dealing with an implicit class.  Check to see if we have a persistent subclass mapping we can use instead
-			
+
+			// TODO: Does not seem used. Possible need to fix in future Hibernate update
 			Iterator iter = null; // cfg.getClassMappings();
 			Class objClass = null;
 			try {
