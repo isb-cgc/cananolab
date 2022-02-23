@@ -50,10 +50,8 @@ L-->
 
 	<bean name="HibernateConfigHolder" class="gov.nih.nci.cananolab.system.dao.orm.HibernateConfigurationHolder" />
 
-	<bean name="SessionFactory" class="gov.nih.nci.cananolab.system.dao.orm.SessionFactoryBean">
+	<bean name="SessionFactory" class="org.springframework.orm.hibernate5.LocalSessionFactoryBean">
 		<property name="configLocation" value="classpath:hibernate.cfg.xml" />
-		<property name="configHolder" ref="HibernateConfigHolder" />
-<!--		<property name="securityHelper" ref="SecurityInitializationHelper"/>-->
 		<property name="entityInterceptor">
 			<bean class="gov.nih.nci.cananolab.security.GenericSecurityInterceptor">
 				<constructor-arg>
@@ -68,18 +66,6 @@ L-->
 					</list>		
 				</constructor-arg>
 			</bean>
-		</property>
-		<property name="eventListeners">
-			<map>
-				<!--
-				<entry key="pre-insert">
-					<bean class="org.hibernate.validator.event.ValidateEventListener" />
-				</entry>
-				<entry key="pre-update">
-					<bean class="org.hibernate.validator.event.ValidateEventListener" />
-				</entry>
-				-->
-			</map>
 		</property>
 	</bean>
 

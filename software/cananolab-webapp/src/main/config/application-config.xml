@@ -52,15 +52,6 @@ L-->
 
 	<bean name="HibernateConfigHolder" class="gov.nih.nci.cananolab.system.dao.orm.HibernateConfigurationHolder" />
 
-<!--	<bean id="dataSource"-->
-<!--		  class="org.springframework.jdbc.datasource.DriverManagerDataSource">-->
-<!--		<property name="driverClassName" value="com.mysql.cj.jdbc.Driver" />-->
-<!--		<property name="url" value="jdbc:mysql://localhost:3306/canano"/>-->
-<!--&lt;!&ndash;		<property name="url" value="jdbc:mysql://localhost:3306/spring_jpa" />&ndash;&gt;-->
-<!--		<property name="username" value="root" />-->
-<!--		<property name="password" value="password" />-->
-<!--	</bean>-->
-
 	<bean id="jndiDataSource" class="org.springframework.jndi.JndiObjectFactoryBean">
 		<property name="expectedType" value="javax.sql.DataSource" />
 		<property name="lookupOnStartup" value="true" />
@@ -72,8 +63,6 @@ L-->
 	<bean name="SessionFactory" class="org.springframework.orm.hibernate5.LocalSessionFactoryBean">
 		<property name="configLocation" value="classpath:hibernate.cfg.xml" />
 		<property name="dataSource" ref="jndiDataSource" />
-<!--		<property name="configHolder" ref="HibernateConfigHolder" />-->
-<!--		<property name="securityHelper" ref="SecurityInitializationHelper"/>-->
 		<property name="entityInterceptor">
 			<bean class="gov.nih.nci.cananolab.security.GenericSecurityInterceptor">
 				<constructor-arg>
