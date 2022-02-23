@@ -5,7 +5,7 @@
 <hibernate-mapping package="gov.nih.nci.cananolab.domain.particle">
     <class name="SynthesisMaterialElement" table="synthesis_material_element">
         <id column="synthesis_material_element_pk_id" name="id" type="long">
-            <generator class="hilo"/>
+            <generator class="increment"/>
         </id>
         <many-to-one name="supplier"  class="gov.nih.nci.cananolab.domain.common.Supplier" lazy="false" column="supplier_pk_id" />
         <property generated="never" lazy="false" name="createdBy" type="string" >

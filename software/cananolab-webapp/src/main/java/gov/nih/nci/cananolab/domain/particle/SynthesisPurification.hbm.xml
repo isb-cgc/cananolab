@@ -5,7 +5,7 @@
 <hibernate-mapping package="gov.nih.nci.cananolab.domain.particle">
     <class name="SynthesisPurification" table="synthesis_purification">
         <id column="synthesis_purification_pk_id" name="id" type="long">
-            <generator class="hilo"/>
+            <generator class="increment"/>
         </id>
         <many-to-one class="gov.nih.nci.cananolab.domain.common.Protocol"
                      fetch="select" name="protocol"  lazy="false" >
