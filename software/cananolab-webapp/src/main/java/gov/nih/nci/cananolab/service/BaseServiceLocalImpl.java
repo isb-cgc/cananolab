@@ -8,6 +8,7 @@
 
 package gov.nih.nci.cananolab.service;
 
+import com.google.cloud.storage.*;
 import gov.nih.nci.cananolab.domain.common.File;
 import gov.nih.nci.cananolab.domain.common.Keyword;
 import gov.nih.nci.cananolab.dto.common.FileBean;
@@ -155,6 +156,27 @@ public abstract class BaseServiceLocalImpl implements BaseService
 		// save to the file system if fileData is not empty
 		public void writeFile(FileBean fileBean) throws Exception {
 			 if (fileBean.getNewFileData() != null) {
+
+				 try {
+					 Storage storage = StorageOptions.getDefaultInstance().getService();
+					 // List all your buckets
+//            Bucket bucket = storage.create(BucketInfo.of("mi-bucket"));
+//            System.out.print("Create bucket");
+//            Bucket bucket = storage.create(BucketInfo.of("mi-test-java-api-bucket"));
+					 System.out.println("My buckets:");
+					 for (Bucket bucket : storage.list().iterateAll()) {
+						 System.out.println(bucket);
+
+//                 List all blobs in the bucket
+						 System.out.println("Blobs in the bucket:");
+						 for (Blob blob : bucket.list().iterateAll()) {
+							 System.out.println(blob);
+						 }
+					 }
+				 }catch (Exception e) {
+
+				 }
+
 				String rootPath = PropertyUtils.getProperty(Constants.CANANOLAB_PROPERTY, "fileRepositoryDir");
 				String fullFileName = rootPath + "/" + fileBean.getDomainFile().getUri();
 				 writeFile(fileBean.getNewFileData(), fullFileName);
