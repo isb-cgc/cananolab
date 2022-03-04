@@ -107,7 +107,9 @@ public class PublicationServiceLocalImpl extends BaseServiceLocalImpl implements
 					newPub = false;
 				}
 			}
-			fileUtils.prepareSaveFile(publication);
+			// TODO Mi
+//			fileUtils.prepareSaveFile(publication);
+			fileUtils.testGCPBucket();
 			appService.saveOrUpdate(publication);
 
 			// save default accesses
