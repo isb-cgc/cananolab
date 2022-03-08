@@ -41,7 +41,8 @@ var app = angular.module('angularApp')
         $scope.sampleData.isPublic = false;
         $scope.accessForm.theAccess.accessType = 'group';
         $scope.accessExists = false;
-
+        $scope.isCreateSample = $location.path().indexOf('submitSample')!=-1 ? 1:0;
+        console.log($scope.isCreateSample)
         var editSampleData = {
             "editSampleData": {
                 "dirty": false
@@ -60,7 +61,7 @@ var app = angular.module('angularApp')
         $scope.exportJson = function () {
             $scope.loader = true;
             $http({
-                method: 'POST',
+                method: 'GET',
                 url: '/caNanoLab/rest/sample/fullSampleExportJsonAll',
                 params: {
                     "sampleIds": $scope.sampleId.data
@@ -88,7 +89,7 @@ var app = angular.module('angularApp')
         $scope.exportXml = function () {
             $scope.loader = true;
             $http({
-                method: 'POST',
+                method: 'GET',
                 url: '/caNanoLab/rest/sample/fullSampleExportXmlAll',
                 params: {
                     "sampleIds": $scope.sampleId.data
