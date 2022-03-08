@@ -21,28 +21,14 @@ FROM gcr.io/google-appengine/openjdk:8
 RUN apt-get update
 ENV DEBIAN_FRONTEND=noninteractive
 RUN apt-get install -y wget gnupg2
-RUN wget "http://repo.mysql.com/mysql-apt-config_0.8.22-1_all.deb" -P /tmp
 
-# install lsb-release (a dependency of mysql-apt-config), since dpkg doesn't
-# do dependency resolution
-RUN apt-get install -y lsb-release
-# add a debconf entry to select mysql-5.7 as the server version when we install
-# the mysql config package
-RUN echo "mysql-apt-config mysql-apt-config/select-server select mysql-5.7" | debconf-set-selections
-# having 'selected' mysql-5.7 for 'server', install the mysql config package
-RUN apt-key adv --keyserver keyserver.ubuntu.com --refresh-keys
-RUN dpkg --install /tmp/mysql-apt-config_0.8.22-1_all.deb
-
-# fetch the updated package metadata (in particular, mysql-server-5.7)
+# fetch the updated package metadata
 RUN apt-get update
-
-# aaaand now let's install mysql-server
-RUN apt-get install -y mysql-server
 
 RUN apt-get -y install build-essential
 RUN apt-get -y install libxml2-dev libxmlsec1-dev swig
 
-RUN apt-get -y install unzip libffi-dev libssl-dev libmysqlclient-dev git ruby g++ curl
+RUN apt-get -y install unzip libffi-dev libssl-dev git ruby g++ curl
 
 COPY ./staged /local/content/
 
