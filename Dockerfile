@@ -30,8 +30,7 @@ RUN apt-get install -y lsb-release
 # the mysql config package
 RUN echo "mysql-apt-config mysql-apt-config/select-server select mysql-5.7" | debconf-set-selections
 # having 'selected' mysql-5.7 for 'server', install the mysql config package
-RUN apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv 467B942D3A79BD29
-RUN apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv 8C718D3B5072E1F5
+RUN sudo apt-key adv --keyserver keyserver.ubuntu.com --refresh-keys
 RUN dpkg --install /tmp/mysql-apt-config_0.8.22-1_all.deb
 
 # fetch the updated package metadata (in particular, mysql-server-5.7)
