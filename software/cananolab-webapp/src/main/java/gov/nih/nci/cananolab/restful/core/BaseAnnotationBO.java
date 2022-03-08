@@ -8,6 +8,10 @@
 
 package gov.nih.nci.cananolab.restful.core;
 
+import com.google.cloud.storage.Blob;
+import com.google.cloud.storage.Bucket;
+import com.google.cloud.storage.Storage;
+import com.google.cloud.storage.StorageOptions;
 import gov.nih.nci.cananolab.domain.common.File;
 import gov.nih.nci.cananolab.dto.common.DataReviewStatusBean;
 import gov.nih.nci.cananolab.dto.common.FileBean;
@@ -122,30 +126,46 @@ public abstract class BaseAnnotationBO extends AbstractDispatchBO
 				return null;
 			}
 		}
-		String fileRoot = PropertyUtils.getProperty(Constants.CANANOLAB_PROPERTY, "fileRepositoryDir");
-		java.io.File dFile = new java.io.File(fileRoot + java.io.File.separator
-				+ fileBean.getDomainFile().getUri());
-				//+ "particles/composition.png");
-				
-		
-		
-		if (dFile.exists()) {
-			
-			ExportUtils.prepareReponseForImage(response, fileBean.getDomainFile().getUri());
 
-			try (InputStream in = new BufferedInputStream(new FileInputStream(dFile)); OutputStream out =
-					response.getOutputStream()) {
-				byte[] bytes = new byte[32768];
-				int numRead = 0;
-				while ((numRead = in.read(bytes)) > 0) {
-					out.write(bytes, 0, numRead);
-				}
+		try {
+			Storage storage = StorageOptions.getDefaultInstance().getService();
+			Bucket assetBucket = storage.get("isb-cgc-ca-nano-dev-cbiit-assets");
+			Blob blob = assetBucket.get("caNanoLab_from_Tracy/" + fileBean.getDomainFile().getUri());
 
+			if (blob.exists()) {
+				ExportUtils.prepareReponseForImage(response, fileBean.getDomainFile().getUri());
+
+				OutputStream out = response.getOutputStream();
+				blob.downloadTo(out);
 			}
-		} else {
+		}
+		catch (Exception e) {
 			String msg = PropertyUtil.getProperty("sample", "error.noFile");
 			throw new FileException("Target download file doesn't exist");
 		}
+
+//		String fileRoot = PropertyUtils.getProperty(Constants.CANANOLAB_PROPERTY, "fileRepositoryDir");
+//		java.io.File dFile = new java.io.File(fileRoot + java.io.File.separator
+//				+ fileBean.getDomainFile().getUri());
+				//+ "particles/composition.png");
+		
+//		if (dFile.exists()) {
+//
+//			ExportUtils.prepareReponseForImage(response, fileBean.getDomainFile().getUri());
+//
+//			try (InputStream in = new BufferedInputStream(new FileInputStream(dFile)); OutputStream out =
+//					response.getOutputStream()) {
+//				byte[] bytes = new byte[32768];
+//				int numRead = 0;
+//				while ((numRead = in.read(bytes)) > 0) {
+//					out.write(bytes, 0, numRead);
+//				}
+//
+//			}
+//		} else {
+//			String msg = PropertyUtil.getProperty("sample", "error.noFile");
+//			throw new FileException("Target download file doesn't exist");
+//		}
 		
 		return null;
 	}

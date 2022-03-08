@@ -153,12 +153,21 @@ public abstract class BaseServiceLocalImpl implements BaseService
 			//TODO report error
 		}
 
+		private void writeGCPFile(byte[] fileContent, String fileName) {
+			// TODO: open GCP connection
+			// Figure out blob path based on fileName
+			// Upload
+		}
+
 		// save to the file system if fileData is not empty
 		public void writeFile(FileBean fileBean) throws Exception {
 			 if (fileBean.getNewFileData() != null) {
-				String rootPath = PropertyUtils.getProperty(Constants.CANANOLAB_PROPERTY, "fileRepositoryDir");
-				String fullFileName = rootPath + "/" + fileBean.getDomainFile().getUri();
-				 writeFile(fileBean.getNewFileData(), fullFileName);
+//				String rootPath = PropertyUtils.getProperty(Constants.CANANOLAB_PROPERTY, "fileRepositoryDir");
+//				String fullFileName = rootPath + "/" + fileBean.getDomainFile().getUri();
+//				 writeFile(fileBean.getNewFileData(), fullFileName);
+
+				 // TODO: change to GCP blob path
+				writeGCPFile(fileBean.getNewFileData(), fileBean.getDomainFile().getUri());
 			 }
 		}
 
