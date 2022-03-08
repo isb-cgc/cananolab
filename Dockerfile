@@ -21,7 +21,7 @@ FROM gcr.io/google-appengine/openjdk:8
 RUN apt-get update
 ENV DEBIAN_FRONTEND=noninteractive
 RUN apt-get install -y wget gnupg2
-RUN wget "http://repo.mysql.com/mysql-apt-config_0.8.9-1_all.deb" -P /tmp
+RUN wget "http://repo.mysql.com/mysql-apt-config_0.8.22-1_all.deb" -P /tmp
 
 # install lsb-release (a dependency of mysql-apt-config), since dpkg doesn't
 # do dependency resolution
