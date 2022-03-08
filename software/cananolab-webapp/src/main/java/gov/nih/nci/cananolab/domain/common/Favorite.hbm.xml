@@ -11,7 +11,7 @@ L-->
 	<class name="FavoriteBean" table="favorite_data" lazy="true" polymorphism="explicit">
 		<cache usage="read-write" />
 		<id name="id" type="long" column="favorite_data_id">
-			<generator class="hilo">
+			<generator class="increment">
                           <param name="table">hibernate_unique_key</param>
                           <param name="column">next_hi</param>
                         </generator>

@@ -24,6 +24,7 @@ import java.util.List;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.hibernate.Hibernate;
+import org.hibernate.type.StandardBasicTypes;
 import org.springframework.aop.framework.Advised;
 
 /**
@@ -175,7 +176,7 @@ public class CaNanoLabApplicationServiceImpl extends WritableApplicationServiceI
 					+ "' and b.role_name='" + AccessibilityBean.CSM_READ_ROLE + "'";
 
 			String[] columns = new String[] { "protection_group_name" };
-			Object[] columnTypes = new Object[] { Hibernate.STRING };
+			Object[] columnTypes = new Object[] { StandardBasicTypes.STRING };
 			List results = directSQL(query, columns, columnTypes);
 			for (int i = 0; i < results.size(); i++) {
 				if (results.get(i) != null) {

@@ -113,6 +113,7 @@ public class UserClassAttributeMapCache
 		if(cache==null) initializeCache();
 		
 		String privilegeName = "READ";
+
 		Map map = sessionFactory.getAllClassMetadata();
 		Set set = map.keySet();
 		ArrayList list = new ArrayList(set);
@@ -151,7 +152,7 @@ public class UserClassAttributeMapCache
 		Map map = sessionFactory.getAllClassMetadata();
 		Set set = map.keySet();
 		ArrayList list = new ArrayList(set);
-		
+
 		for(int i=0;i<groupNames.length;i++)
 		{
 			List<ClassAttributeMap> classAttributeMapList = new ArrayList<ClassAttributeMap>();

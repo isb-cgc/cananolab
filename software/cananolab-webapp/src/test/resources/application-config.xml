@@ -9,14 +9,14 @@
 L-->
 
 <!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
-<beans default-lazy-init="false" default-dependency-check="none" default-autowire="no">
+<beans default-lazy-init="false" default-autowire="no">
 
-	<bean name="ApplicationServiceImpl" class="gov.nih.nci.cananolab.system.applicationservice.impl.CaNanoLabApplicationServiceImpl" singleton="true">
+	<bean name="ApplicationServiceImpl" class="gov.nih.nci.cananolab.system.applicationservice.impl.CaNanoLabApplicationServiceImpl">
 		<constructor-arg ref="ClassCache" index="0"/>
 	</bean>
 
 	<!-- Bean Definitions -->
-	<bean name="ClassCache" class="gov.nih.nci.cananolab.system.util.ClassCache" singleton="true">
+	<bean name="ClassCache" class="gov.nih.nci.cananolab.system.util.ClassCache">
 		<property name="daoList">
 			<list>
 				<!--  Add any DAO's here -->
@@ -36,24 +36,33 @@ L-->
 		</constructor-arg>
 	</bean>
 
+
 	<bean name="ORMDAO" class="gov.nih.nci.cananolab.system.dao.orm.CaNanoLabORMDAOImpl">
 		<property name="caseSensitive" value="false" />
 		<property name="resultCountPerQuery" value="10000" />
-<!--		<property name="securityHelper">-->
-<!--			<ref bean="SecurityInitializationHelper" />-->
-<!--		</property>-->
+		<property name="securityHelper">
+			<ref bean="SecurityInitializationHelper" />
+		</property>
 		<property name="sessionFactory" ref="SessionFactory" />
 		<property name="config">
 			<bean factory-bean="HibernateConfigHolder" factory-method="getConfiguration" />
 		</property>
 	</bean>
 
+
 	<bean name="HibernateConfigHolder" class="gov.nih.nci.cananolab.system.dao.orm.HibernateConfigurationHolder" />
 
-	<bean name="SessionFactory" class="gov.nih.nci.cananolab.system.dao.orm.SessionFactoryBean">
+	<bean id="jndiDataSource" class="org.springframework.jndi.JndiObjectFactoryBean">
+		<property name="expectedType" value="javax.sql.DataSource" />
+		<property name="lookupOnStartup" value="true" />
+		<property name="cache" value="true" />
+		<property name="proxyInterface" value="javax.sql.DataSource" />
+		<property name="jndiName" value="java:/caNanoLab" />
+	</bean>
+
+	<bean name="SessionFactory" class="org.springframework.orm.hibernate5.LocalSessionFactoryBean">
 		<property name="configLocation" value="classpath:hibernate.cfg.xml" />
-		<property name="configHolder" ref="HibernateConfigHolder" />
-<!--		<property name="securityHelper" ref="SecurityInitializationHelper"/>-->
+		<property name="dataSource" ref="jndiDataSource" />
 		<property name="entityInterceptor">
 			<bean class="gov.nih.nci.cananolab.security.GenericSecurityInterceptor">
 				<constructor-arg>
@@ -65,21 +74,9 @@ L-->
 						</bean>
 						-->
 						<!--<bean class="gov.nih.nci.logging.api.logger.hibernate.ObjectStateInterceptor"/>-->
-					</list>		
+					</list>
 				</constructor-arg>
 			</bean>
-		</property>
-		<property name="eventListeners">
-			<map>
-				<!--
-				<entry key="pre-insert">
-					<bean class="org.hibernate.validator.event.ValidateEventListener" />
-				</entry>
-				<entry key="pre-update">
-					<bean class="org.hibernate.validator.event.ValidateEventListener" />
-				</entry>
-				-->
-			</map>
 		</property>
 	</bean>
 
@@ -94,7 +91,7 @@ L-->
 		-->
 	</bean>
 
-	<bean id="HibernateTransactionManager" class="org.springframework.orm.hibernate3.HibernateTransactionManager">
+	<bean id="HibernateTransactionManager" class="org.springframework.orm.hibernate5.HibernateTransactionManager">
 		<property name="sessionFactory" ref="SessionFactory" />
 	</bean>
 
@@ -105,29 +102,30 @@ L-->
 		<property name="transactionAttributes">
 			<props>
 				<prop key="execute*">
-					PROPAGATION_REQUIRED,-gov.nih.nci.system.applicationservice.ApplicationException,-gov.nih.nci.system.dao.DAOException
+					PROPAGATION_REQUIRED,-gov.nih.nci.cananolab.system.applicationservice.ApplicationException,-gov.nih.nci.cananolab.system.dao.DAOException
 				</prop>
 				<prop key="save*">
-					PROPAGATION_REQUIRED,-gov.nih.nci.system.applicationservice.ApplicationException,-gov.nih.nci.system.dao.DAOException
+					PROPAGATION_REQUIRED,-gov.nih.nci.cananolab.system.applicationservice.ApplicationException,-gov.nih.nci.cananolab.system.dao.DAOException
 				</prop>
 				<prop key="delete*">
-					PROPAGATION_REQUIRED,-gov.nih.nci.system.applicationservice.ApplicationException,-gov.nih.nci.system.dao.DAOException
+					PROPAGATION_REQUIRED,-gov.nih.nci.cananolab.system.applicationservice.ApplicationException,-gov.nih.nci.cananolab.system.dao.DAOException
 				</prop>
 				<prop key="*">PROPAGATION_REQUIRED,readOnly</prop>
-			</props>			
+			</props>
 		</property>
 	</bean>
 
-	<bean id="ApplicationService" class="org.springframework.aop.framework.ProxyFactoryBean" singleton="true">
+	<bean id="ApplicationService" class="org.springframework.aop.framework.ProxyFactoryBean">
 		<property name="target" ref="ApplicationServiceImpl" />
 		<property name="interfaces" value="gov.nih.nci.cananolab.system.applicationservice.CaNanoLabApplicationService" />
-		<property name="interceptorNames">
+		<!-- <property name="interceptorNames">
 			<list>
 				<idref local="TxInterceptor" />
-				<!--<idref local="CLMInterceptor" />-->
+				<idref local="CLMInterceptor" />
 			</list>
-		</property>
+		</property> -->
 	</bean>
+
 
 	<!--<bean id="CLMInterceptor" class="gov.nih.nci.system.client.proxy.CLMProxy"/>-->
 </beans>

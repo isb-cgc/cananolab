@@ -9,7 +9,7 @@
 	<class lazy="true" name="Datum" polymorphism="explicit" table="datum">
 		<cache include="all" usage="read-write" />
 		<id column="datum_pk_id" name="id" type="long">
-			<generator class="hilo">
+			<generator class="increment">
 				<param name="table">hibernate_unique_key</param>
 				<param name="column">next_hi</param>
 			</generator>

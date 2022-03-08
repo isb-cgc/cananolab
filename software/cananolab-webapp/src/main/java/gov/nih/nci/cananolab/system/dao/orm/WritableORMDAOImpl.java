@@ -17,7 +17,7 @@ import java.util.List;
 import org.hibernate.HibernateException;
 import org.hibernate.Query;
 import org.hibernate.Session;
-import org.springframework.orm.hibernate3.HibernateCallback;
+import org.springframework.orm.hibernate5.HibernateCallback;
 import gov.nih.nci.cananolab.system.dao.WritableDAO;
 
 public class WritableORMDAOImpl extends ORMDAOImpl implements WritableDAO
@@ -112,7 +112,7 @@ public class WritableORMDAOImpl extends ORMDAOImpl implements WritableDAO
 	{
         return new HibernateCallback(){
 
-            public Object doInHibernate(Session session) throws HibernateException, SQLException {
+            public Object doInHibernate(Session session) throws HibernateException {
                 Query q = session.createQuery(hql);
                 int count = 0;
                 if(paramList!=null)

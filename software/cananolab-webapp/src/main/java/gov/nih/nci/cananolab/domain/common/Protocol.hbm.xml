@@ -11,7 +11,7 @@ L-->
 	<class name="Protocol" table="protocol" lazy="true" polymorphism="explicit">
 		<cache usage="read-write" />
 		<id name="id" type="long" column="protocol_pk_id">
-			<generator class="hilo">
+			<generator class="increment">
                           <param name="table">hibernate_unique_key</param>
                           <param name="column">next_hi</param>
                         </generator>

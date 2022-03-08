@@ -18,15 +18,11 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.hibernate.QueryException;
 import org.hibernate.criterion.DetachedCriteria;
-import org.hibernate.impl.CriteriaImpl;
+import org.hibernate.internal.CriteriaImpl;
 import gov.nih.nci.cananolab.system.applicationservice.ApplicationException;
 import gov.nih.nci.cananolab.system.applicationservice.ApplicationService;
 import gov.nih.nci.cananolab.system.applicationservice.client.proxy.ListProxy;
 import gov.nih.nci.cananolab.system.dao.orm.ORMDAOImpl;
-
-//import gov.nih.nci.cananolab.system.dao.orm.translator.gridCQL.CQL2ParameterizedHQL;
-//import gov.nih.nci.cananolab.system.dao.orm.translator.gridCQL.RoleNameResolver;
-//import gov.nih.nci.cananolab.system.query.cql.CQLQuery;
 
 /**
  * Implementation for the methods in the service layer

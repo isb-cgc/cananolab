@@ -51,11 +51,11 @@ public class SecurityInitializationHelper
 					log.debug("groups.length(): " + groups.length);
 					
 
-					InstanceLevelSecurityHelper.initializeFiltersForGroups(groups,session,authorizationManager);					
+					InstanceLevelSecurityHelper.initializeFiltersForGroups(groups,session,authorizationManager);
 				}
 				else if (auth!=null)
 				{
-					InstanceLevelSecurityHelper.initializeFilters(auth.getName(), session, authorizationManager);					
+					InstanceLevelSecurityHelper.initializeFilters(auth.getName(), session, authorizationManager);
 				}
 			}
 		}

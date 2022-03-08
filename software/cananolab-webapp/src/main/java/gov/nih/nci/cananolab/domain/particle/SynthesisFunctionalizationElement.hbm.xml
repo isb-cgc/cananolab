@@ -5,7 +5,7 @@
 <hibernate-mapping package="gov.nih.nci.cananolab.domain.particle">
     <class name="SynthesisFunctionalizationElement" table="synthesis_functionalization_element">
         <id column="synthesis_functionalization_element_pk_id" name="id" type="long">
-            <generator class="hilo"/>
+            <generator class="increment"/>
         </id>
         <property generated="never" lazy="false" name="activationMethod" type="string">
             <column length="200" name="activation_method" not-null="true">

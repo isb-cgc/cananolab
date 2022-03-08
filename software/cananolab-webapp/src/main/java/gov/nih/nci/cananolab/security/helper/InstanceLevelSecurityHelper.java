@@ -32,11 +32,11 @@ import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Property;
-import org.hibernate.engine.FilterDefinition;
+import org.hibernate.engine.spi.FilterDefinition;
 import org.hibernate.mapping.PersistentClass;
 import org.hibernate.type.LongType;
 import org.hibernate.type.StringType;
-
+import org.hibernate.type.StandardBasicTypes;
 
 public class InstanceLevelSecurityHelper
 {
@@ -56,17 +56,17 @@ public class InstanceLevelSecurityHelper
 		Hashtable<String, DetachedCriteria> userFilters=userFilterStoreHash.get(loginName);
 		if (userFilters!=null)
 		return userFilters.get(keyName);
-		
+
 		return null;
 	}
-	
+
 	public static DetachedCriteria  findObjectDetachedCriteriaForGroup(String keyName, String groupName)
 	{
 		Hashtable<String, DetachedCriteria> groupFilters=groupFilterStoreHash.get(groupName);
 		if (groupFilters!=null)
 			return groupFilters.get(keyName);
-		
-		return null; 
+
+		return null;
 	}
 	/**
 	 * 
@@ -89,13 +89,13 @@ public class InstanceLevelSecurityHelper
 
 	 * 						
 	 */
-	public static void addFiltersForGroups(AuthorizationManager authorizationManager, Configuration configuration, List<String> toKeepFilterNamesList)
-	{
-		//clean existing filters of configuration
-		cleanConfigurationFilters(configuration, toKeepFilterNamesList);
-		//add filters defined by CSM
-		addFiltersForGroups(authorizationManager, configuration);
-	}
+//	public static void addFiltersForGroups(AuthorizationManager authorizationManager, Configuration configuration, List<String> toKeepFilterNamesList)
+//	{
+//		//clean existing filters of configuration
+//		cleanConfigurationFilters(configuration, toKeepFilterNamesList);
+//		//add filters defined by CSM
+//		addFiltersForGroups(authorizationManager, configuration);
+//	}
 	
 	/**
 	 * This method injects the security filters which are created for this application. It retrieves a list of all the filters which have 
@@ -200,13 +200,13 @@ public class InstanceLevelSecurityHelper
 	 * 						and rest of the list will be ignored. 
 	 * 						
 	 */
-	public static void addFilters(AuthorizationManager authorizationManager,Configuration configuration, List<String> toKeepFilterNamesList)
-	{
-		//clean  existing filters of configuration
-		cleanConfigurationFilters(configuration, toKeepFilterNamesList);
-		//add filters defined by CSM
-		addFilters(authorizationManager, configuration);
-	}
+//	public static void addFilters(AuthorizationManager authorizationManager,Configuration configuration, List<String> toKeepFilterNamesList)
+//	{
+//		//clean  existing filters of configuration
+//		cleanConfigurationFilters(configuration, toKeepFilterNamesList);
+//		//add filters defined by CSM
+//		addFilters(authorizationManager, configuration);
+//	}
 	
 	
 	/**
@@ -607,28 +607,28 @@ public class InstanceLevelSecurityHelper
 	 * @param configuration Configuration to clean
 	 * @param toKeepFilterNamesList Name list of filters to keep
 	 */
-	private static void cleanConfigurationFilters (Configuration configuration, List<String> toKeepFilterNamesList)
-	{
-		// Add/Remove Non-CSM defined filters.
-		if(toKeepFilterNamesList==null||toKeepFilterNamesList.isEmpty())
-			configuration.getFilterDefinitions().clear();
-		else if(!toKeepFilterNamesList.contains("ALL"))
-			return;
-		else		
-		{
-			// Remove all except the specified Filters from Configuration.		
-			Map filterDefinitions = configuration.getFilterDefinitions();
-			Set keySet = filterDefinitions.keySet();
-			Iterator keySetIterator = keySet.iterator();
-			while(keySetIterator.hasNext()){
-				String key = (String)keySetIterator.next();
-				if(!toKeepFilterNamesList.contains(key)){
-					//Remove Filter from Configuration.
-					filterDefinitions.remove(key);
-				}
-			}
-		}
-	}
+//	private static void cleanConfigurationFilters (Configuration configuration, List<String> toKeepFilterNamesList)
+//	{
+//		// Add/Remove Non-CSM defined filters.
+//		if(toKeepFilterNamesList==null||toKeepFilterNamesList.isEmpty())
+//			configuration.getFilterDefinitions().clear();
+//		else if(!toKeepFilterNamesList.contains("ALL"))
+//			return;
+//		else
+//		{
+//			// Remove all except the specified Filters from Configuration.
+//			Map filterDefinitions = configuration.getFilterDefinitions();
+//			Set keySet = filterDefinitions.keySet();
+//			Iterator keySetIterator = keySet.iterator();
+//			while(keySetIterator.hasNext()){
+//				String key = (String)keySetIterator.next();
+//				if(!toKeepFilterNamesList.contains(key)){
+//					//Remove Filter from Configuration.
+//					filterDefinitions.remove(key);
+//				}
+//			}
+//		}
+//	}
 	
 	/**
 	 * Retrieve all CSM FilterClause from DB
@@ -655,8 +655,8 @@ public class InstanceLevelSecurityHelper
 		SessionFactory sf=configuration.buildSessionFactory();
 		Session session=sf.openSession();
 		Query query = session.createSQLQuery(sqlString);
-		query.setParameter(0, sqlParameterOne, Hibernate.STRING);
-		query.setParameter(1, sqlParameterTwo, Hibernate.STRING);
+		query.setParameter(0, sqlParameterOne, StandardBasicTypes.STRING);
+		query.setParameter(1, sqlParameterTwo, StandardBasicTypes.STRING);
 			
 		List results  = query.list();
 		for (Object peObj:results)

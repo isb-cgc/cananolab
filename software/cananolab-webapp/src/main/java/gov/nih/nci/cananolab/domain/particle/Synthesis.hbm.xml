@@ -5,7 +5,7 @@
 <hibernate-mapping package="gov.nih.nci.cananolab.domain.particle">
     <class name="Synthesis" table="synthesis">
         <id name="Id" column="synthesis_pk_id" type="long">
-        <generator class="hilo">
+        <generator class="increment">
             <param name="table">hibernate_unique_key</param>
             <param name="column">next_hi</param>
         </generator>
