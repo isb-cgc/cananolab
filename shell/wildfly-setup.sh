@@ -2,7 +2,7 @@
 
 export $(cat /local/content/.env | grep -v ^# | xargs) 2> /dev/null
 
-export WILDFLY_HOME=/opt/wildfly-8.2.1.Final
+export WILDFLY_HOME=/opt/wildfly-13.0.0.Final
 export WILDFLY_BIN=$WILDFLY_HOME/bin
 export JBOSS_CLI=$WILDFLY_BIN/jboss-cli.sh
 
@@ -65,7 +65,7 @@ fi
 echo "Testing data source setup and connection"
 ${JBOSS_CLI} --file=/local/content/caNanoLab/artifacts/caNanoLab_checks.cli
 echo "Deploying caNano WAR"
-cp -v /local/content/caNanoLab/artifacts/caNanoLab.war /opt/wildfly-8.2.1.Final/standalone/deployments
+cp -v /local/content/caNanoLab/artifacts/caNanoLab.war /opt/wildfly-13.0.0.Final/standalone/deployments
 
 wait_for_server "deployment-info --name=caNanoLab.war" "OK" "Deployment"
 
