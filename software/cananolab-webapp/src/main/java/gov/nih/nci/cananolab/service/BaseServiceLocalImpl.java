@@ -9,14 +9,20 @@
 package gov.nih.nci.cananolab.service;
 
 import com.google.cloud.storage.*;
+import com.google.cloud.storage.Blob;
+import com.google.cloud.storage.Bucket;
+import com.google.cloud.storage.Storage;
+import com.google.cloud.storage.StorageOptions;
 import gov.nih.nci.cananolab.domain.common.File;
 import gov.nih.nci.cananolab.domain.common.Keyword;
 import gov.nih.nci.cananolab.dto.common.FileBean;
 import gov.nih.nci.cananolab.exception.FileException;
 import gov.nih.nci.cananolab.exception.NoAccessException;
+import gov.nih.nci.cananolab.restful.util.PropertyUtil;
 import gov.nih.nci.cananolab.security.service.SpringSecurityAclService;
 import gov.nih.nci.cananolab.system.applicationservice.CaNanoLabApplicationService;
 import gov.nih.nci.cananolab.util.Constants;
+import gov.nih.nci.cananolab.util.ExportUtils;
 import gov.nih.nci.cananolab.util.PropertyUtils;
 import gov.nih.nci.cananolab.system.applicationservice.client.ApplicationServiceProvider;
 import java.io.BufferedOutputStream;
@@ -25,6 +31,8 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.Collection;
 import java.util.Date;
 import java.util.HashSet;
@@ -34,6 +42,8 @@ import org.apache.logging.log4j.Logger;
 import org.hibernate.FetchMode;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Property;
+import javax.servlet.http.HttpServletResponse;
+
 
 public abstract class BaseServiceLocalImpl implements BaseService
 {
@@ -153,10 +163,19 @@ public abstract class BaseServiceLocalImpl implements BaseService
 			//TODO report error
 		}
 
-		private void writeGCPFile(byte[] fileContent, String fileName) {
+		private void writeGCPFile(byte[] fileContent, String filePath) throws FileException {
 			// TODO: open GCP connection
 			// Figure out blob path based on fileName
 			// Upload
+			try {
+				Storage storage = StorageOptions.getDefaultInstance().getService();
+				BlobId blobId = BlobId.of("isb-cgc-ca-nano-dev-cbiit-assets", "caNanoLab_from_Tracy/" + filePath);
+				BlobInfo blobinfo = BlobInfo.newBuilder(blobId).build();
+				Blob blob = storage.create(blobinfo, fileContent);
+			} catch (Exception e) {
+				String msg = PropertyUtil.getProperty("sample", "error.noFile");
+				throw new FileException("Target uploadfile doesn't exist");
+			}
 		}
 
 		// save to the file system if fileData is not empty

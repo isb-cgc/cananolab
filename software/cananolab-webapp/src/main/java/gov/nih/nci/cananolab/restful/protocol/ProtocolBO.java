@@ -140,7 +140,10 @@ public class ProtocolBO extends BaseAnnotationBO
 			return msgs;
 		}
 		protocolBean.setupDomain(Constants.FOLDER_PROTOCOL, SpringSecurityUtil.getLoggedInUserName());
-		InitProtocolSetup.getInstance().persistProtocolDropdowns(request, protocolBean);
+
+		// TODO: Find out why this line is failing
+		// InitProtocolSetup.getInstance().persistProtocolDropdowns(request, protocolBean);
+
 		String timestamp = DateUtils.convertDateToString(new Date(),
 				"yyyyMMdd_HH-mm-ss-SSS");
 		byte[] newFileData = (byte[]) request.getSession().getAttribute("newFileData");
