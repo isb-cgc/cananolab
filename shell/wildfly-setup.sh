@@ -49,7 +49,7 @@ fi
 echo "Wildfly is now running - continuing setup and deployment:"
 # If this is a new database, uncomment these lines *once* to add an admin user
 #echo "Adding admin console user."
-#${WILDFLY_BIN}/add-user.sh -a -u "${WILDFLY_ADMIN}" -p "${WILDFLY_ADMIN_PASSWORD}" -g "admin"
+${WILDFLY_BIN}/add-user.sh -a -u "${WILDFLY_ADMIN}" -p "${WILDFLY_ADMIN_PASSWORD}" -g "admin"
 echo "Adding BouncyCastle and JDBC driver to Wildfly"
 ${JBOSS_CLI} --file=/local/content/caNanoLab/artifacts/caNanoLab_modules.cli
 echo "Setting up logging and data sources."
