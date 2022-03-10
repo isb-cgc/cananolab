@@ -1,6 +1,6 @@
 #!/bin/bash
 
-export WILDFLY_HOME=/opt/wildfly-8.2.1.Final
+export WILDFLY_HOME=/opt/wildfly-13.0.0.Final
 export WILDFLY_BIN=$WILDFLY_HOME/bin
 
 # Call the setup script which will ensure we have the right logging, modules, and run the deployment.
