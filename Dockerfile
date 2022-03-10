@@ -21,7 +21,6 @@ FROM gcr.io/google-appengine/openjdk:8
 RUN apt-get update
 ENV DEBIAN_FRONTEND=noninteractive
 RUN apt-get install -y wget gnupg2
-RUN wget "http://repo.mysql.com/mysql-apt-config_0.8.9-1_all.deb" -P /tmp
 
 # fetch the updated package metadata
 RUN apt-get update
