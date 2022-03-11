@@ -11,13 +11,13 @@ package gov.nih.nci.cananolab.restful.core;
 import com.google.cloud.storage.Blob;
 import com.google.cloud.storage.Bucket;
 import com.google.cloud.storage.Storage;
-import com.google.cloud.storage.StorageOptions;
 import gov.nih.nci.cananolab.domain.common.File;
 import gov.nih.nci.cananolab.dto.common.DataReviewStatusBean;
 import gov.nih.nci.cananolab.dto.common.FileBean;
 import gov.nih.nci.cananolab.dto.particle.SampleBean;
 import gov.nih.nci.cananolab.exception.FileException;
 import gov.nih.nci.cananolab.exception.NotExistException;
+import gov.nih.nci.cananolab.restful.util.GCPStorageUtil;
 import gov.nih.nci.cananolab.restful.util.InputValidationUtil;
 import gov.nih.nci.cananolab.restful.util.PropertyUtil;
 import gov.nih.nci.cananolab.security.AccessControlInfo;
@@ -34,9 +34,6 @@ import gov.nih.nci.cananolab.util.Constants;
 import gov.nih.nci.cananolab.util.ExportUtils;
 import gov.nih.nci.cananolab.util.PropertyUtils;
 import gov.nih.nci.cananolab.util.StringUtils;
-import java.io.BufferedInputStream;
-import java.io.FileInputStream;
-import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -128,9 +125,11 @@ public abstract class BaseAnnotationBO extends AbstractDispatchBO
 		}
 
 		try {
-			Storage storage = StorageOptions.getDefaultInstance().getService();
-			Bucket assetBucket = storage.get("isb-cgc-ca-nano-dev-cbiit-assets");
-			Blob blob = assetBucket.get("caNanoLab_from_Tracy/" + fileBean.getDomainFile().getUri());
+			Storage storage = GCPStorageUtil.getGCPStorageService();
+			String bucketPath = GCPStorageUtil.getGCPStorageBucketPath();
+			String folderPath = GCPStorageUtil.getGCPStorageRootFolderPath();
+			Bucket assetBucket = storage.get(bucketPath);
+			Blob blob = assetBucket.get(folderPath + "/" + fileBean.getDomainFile().getUri());
 
 			if (blob.exists()) {
 				ExportUtils.prepareReponseForImage(response, fileBean.getDomainFile().getUri());
@@ -143,29 +142,6 @@ public abstract class BaseAnnotationBO extends AbstractDispatchBO
 			String msg = PropertyUtil.getProperty("sample", "error.noFile");
 			throw new FileException("Target download file doesn't exist");
 		}
-
-//		String fileRoot = PropertyUtils.getProperty(Constants.CANANOLAB_PROPERTY, "fileRepositoryDir");
-//		java.io.File dFile = new java.io.File(fileRoot + java.io.File.separator
-//				+ fileBean.getDomainFile().getUri());
-				//+ "particles/composition.png");
-		
-//		if (dFile.exists()) {
-//
-//			ExportUtils.prepareReponseForImage(response, fileBean.getDomainFile().getUri());
-//
-//			try (InputStream in = new BufferedInputStream(new FileInputStream(dFile)); OutputStream out =
-//					response.getOutputStream()) {
-//				byte[] bytes = new byte[32768];
-//				int numRead = 0;
-//				while ((numRead = in.read(bytes)) > 0) {
-//					out.write(bytes, 0, numRead);
-//				}
-//
-//			}
-//		} else {
-//			String msg = PropertyUtil.getProperty("sample", "error.noFile");
-//			throw new FileException("Target download file doesn't exist");
-//		}
 		
 		return null;
 	}
@@ -181,6 +157,30 @@ public abstract class BaseAnnotationBO extends AbstractDispatchBO
 				throw new FileException("UriExternal file download can't be handled in downloadImage method");
 			}
 		}
+
+		// TODO Mi: rewrite with something like this:
+//
+//		try {
+//			Storage storage = GCPStorageUtil.getGCPStorageService();
+//			String bucketPath = GCPStorageUtil.getGCPStorageBucketPath();
+//			String folderPath = GCPStorageUtil.getGCPStorageRootFolderPath();
+//			Bucket assetBucket = storage.get(bucketPath);
+//			Blob blob = assetBucket.get(folderPath + "/" + fileBean.getDomainFile().getUri());
+//
+//			if (blob.exists()) {
+//				ExportUtils.prepareReponseForImage(response, fileBean.getDomainFile().getUri());
+//
+//				OutputStream out = response.getOutputStream();
+//				blob.downloadTo(out);
+//			}
+//		}
+//		catch (Exception e) {
+//			String msg = PropertyUtil.getProperty("sample", "error.noFile");
+//			throw new FileException("Target download file doesn't exist");
+//		}
+//
+//		return null;
+
 		String fileRoot = PropertyUtils.getProperty(
 				Constants.CANANOLAB_PROPERTY, "fileRepositoryDir");
 		java.io.File dFile = new java.io.File(fileRoot + java.io.File.separator
@@ -189,8 +189,7 @@ public abstract class BaseAnnotationBO extends AbstractDispatchBO
 
 		if (dFile.exists()) 
 			return dFile;
-		else 
-
+		else
 			throw new FileException(PropertyUtil.getProperty("sample", "error.noFile"));
 	}
 

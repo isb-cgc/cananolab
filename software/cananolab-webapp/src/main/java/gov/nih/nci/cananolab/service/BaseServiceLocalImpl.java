@@ -12,27 +12,17 @@ import com.google.cloud.storage.*;
 import com.google.cloud.storage.Blob;
 import com.google.cloud.storage.Bucket;
 import com.google.cloud.storage.Storage;
-import com.google.cloud.storage.StorageOptions;
 import gov.nih.nci.cananolab.domain.common.File;
 import gov.nih.nci.cananolab.domain.common.Keyword;
 import gov.nih.nci.cananolab.dto.common.FileBean;
 import gov.nih.nci.cananolab.exception.FileException;
 import gov.nih.nci.cananolab.exception.NoAccessException;
+import gov.nih.nci.cananolab.restful.util.GCPStorageUtil;
 import gov.nih.nci.cananolab.restful.util.PropertyUtil;
 import gov.nih.nci.cananolab.security.service.SpringSecurityAclService;
 import gov.nih.nci.cananolab.system.applicationservice.CaNanoLabApplicationService;
 import gov.nih.nci.cananolab.util.Constants;
-import gov.nih.nci.cananolab.util.ExportUtils;
-import gov.nih.nci.cananolab.util.PropertyUtils;
 import gov.nih.nci.cananolab.system.applicationservice.client.ApplicationServiceProvider;
-import java.io.BufferedOutputStream;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.util.Collection;
 import java.util.Date;
 import java.util.HashSet;
@@ -42,8 +32,6 @@ import org.apache.logging.log4j.Logger;
 import org.hibernate.FetchMode;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Property;
-import javax.servlet.http.HttpServletResponse;
-
 
 public abstract class BaseServiceLocalImpl implements BaseService
 {
@@ -111,105 +99,51 @@ public abstract class BaseServiceLocalImpl implements BaseService
 			if (file.getUri().startsWith("http")) {
 				return null;
 			}
-			String fileRoot = PropertyUtils.getProperty(Constants.CANANOLAB_PROPERTY, "fileRepositoryDir");
 
-			java.io.File fileObj = new java.io.File(fileRoot + java.io.File.separator + file.getUri());
-			long fileLength = fileObj.length();
-
-			// You cannot create an array using a long type.
-			// It needs to be an int type.
-			// Before converting to an int type, check
-			// to ensure that file is not larger than Integer.MAX_VALUE.
-			if (fileLength > Integer.MAX_VALUE) {
-				logger.error("The file is too big. Byte array can't be longer than Java Integer MAX_VALUE");
-				throw new FileException("The file is too big. Byte array can't be longer than Java Integer MAX_VALUE");
-			}
-
-			// Create the byte array to hold the data
-			byte[] fileData = new byte[(int) fileLength];
-
-			// Read in the bytes
-			InputStream is = new FileInputStream(fileObj);
-			int offset = 0;
-			int numRead = 0;
-			while (offset < fileData.length && (numRead = is.read(fileData, offset, fileData.length - offset)) >= 0) {
-				offset += numRead;
-			}
-
-			// Ensure all the bytes have been read in
-			if (offset < fileData.length) {
-				throw new FileException("Could not completely read file " + fileObj.getName());
-			}
-
-			// Close the input stream and return bytes
-			is.close();
-
-			return fileData;
-		}
-
-		private void writeFile(byte[] fileContent, String fullFileName) throws IOException {
-			String path = fullFileName.substring(0, fullFileName.lastIndexOf("/"));
-			java.io.File pathDir = new java.io.File(path);
-			if (!pathDir.exists())
-				pathDir.mkdirs();
-			java.io.File file = new java.io.File(fullFileName);
-			if (file.exists()) {
-				return; // don't save again
-			}
-			try (OutputStream oStream = new BufferedOutputStream(new FileOutputStream(file))) {
-				oStream.write(fileContent);
-				oStream.flush();
-			}
-			//TODO report error
-		}
-
-		private void writeGCPFile(byte[] fileContent, String filePath) throws FileException {
-			// TODO: open GCP connection
-			// Figure out blob path based on fileName
-			// Upload
 			try {
-				Storage storage = StorageOptions.getDefaultInstance().getService();
-				BlobId blobId = BlobId.of("isb-cgc-ca-nano-dev-cbiit-assets", "caNanoLab_from_Tracy/" + filePath);
+				Storage storage = GCPStorageUtil.getGCPStorageService();
+				String bucketPath = GCPStorageUtil.getGCPStorageBucketPath();
+				String folderPath = GCPStorageUtil.getGCPStorageRootFolderPath();
+				Bucket assetBucket = storage.get(bucketPath);
+				Blob blob = assetBucket.get(folderPath + "/" + file.getUri());
+
+				if (blob.exists()) {
+					return blob.getContent();
+				}
+
+				return null;
+			} catch (Exception e) {
+				logger.error("Cannot get file content due to exception: " + e.getMessage());
+				throw new FileException("Cannot get file content");
+			}
+		}
+
+		private void writeFile(byte[] fileContent, String filePath) throws FileException {
+			// Upload to GCP storage bucket as blob file
+			try {
+				if (fileContent.length == 0) {
+					throw new FileException("File content is empty");
+				}
+
+				Storage storage = GCPStorageUtil.getGCPStorageService();
+				String bucketPath = GCPStorageUtil.getGCPStorageBucketPath();
+				String folderPath = GCPStorageUtil.getGCPStorageRootFolderPath();
+				BlobId blobId = BlobId.of(bucketPath, folderPath + "/" + filePath);
 				BlobInfo blobinfo = BlobInfo.newBuilder(blobId).build();
-				Blob blob = storage.create(blobinfo, fileContent);
+				storage.create(blobinfo, fileContent);
+
 			} catch (Exception e) {
 				String msg = PropertyUtil.getProperty("sample", "error.noFile");
-				throw new FileException("Target uploadfile doesn't exist");
+				logger.error(msg);
+				throw new FileException("Target upload file doesn't exist");
 			}
 		}
 
 		// save to the file system if fileData is not empty
 		public void writeFile(FileBean fileBean) throws Exception {
 			 if (fileBean.getNewFileData() != null) {
-//				String rootPath = PropertyUtils.getProperty(Constants.CANANOLAB_PROPERTY, "fileRepositoryDir");
-//				String fullFileName = rootPath + "/" + fileBean.getDomainFile().getUri();
-//				 writeFile(fileBean.getNewFileData(), fullFileName);
-
-				 // TODO: change to GCP blob path
-				writeGCPFile(fileBean.getNewFileData(), fileBean.getDomainFile().getUri());
+				 writeFile(fileBean.getNewFileData(), fileBean.getDomainFile().getUri());
 			 }
-		}
-
-		public void testGCPBucket() throws Exception {
-			try {
-				Storage storage = StorageOptions.getDefaultInstance().getService();
-				// List all your buckets
-//            Bucket bucket = storage.create(BucketInfo.of("mi-bucket"));
-//            System.out.print("Create bucket");
-//            Bucket bucket = storage.create(BucketInfo.of("mi-test-java-api-bucket"));
-				System.out.println("My buckets:");
-				for (Bucket bucket : storage.list().iterateAll()) {
-					System.out.println(bucket);
-
-//                 List all blobs in the bucket
-					System.out.println("Blobs in the bucket:");
-					for (Blob blob : bucket.list().iterateAll()) {
-						System.out.println(blob);
-					}
-				}
-			}catch (Exception e) {
-
-			}
 		}
 
 		/**
