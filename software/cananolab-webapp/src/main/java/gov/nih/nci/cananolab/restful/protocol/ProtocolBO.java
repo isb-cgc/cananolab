@@ -141,7 +141,7 @@ public class ProtocolBO extends BaseAnnotationBO
 		}
 		protocolBean.setupDomain(Constants.FOLDER_PROTOCOL, SpringSecurityUtil.getLoggedInUserName());
 
-		// TODO: Find out why this line is failing
+		// TODO Mi: Find out why this line is failing
 		InitProtocolSetup.getInstance().persistProtocolDropdowns(request, protocolBean);
 
 		String timestamp = DateUtils.convertDateToString(new Date(),
