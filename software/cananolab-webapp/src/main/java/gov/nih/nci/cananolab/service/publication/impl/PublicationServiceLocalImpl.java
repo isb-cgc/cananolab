@@ -108,7 +108,6 @@ public class PublicationServiceLocalImpl extends BaseServiceLocalImpl implements
 				}
 			}
 
-			// TODO Mi fix this line
 			fileUtils.prepareSaveFile(publication);
 			appService.saveOrUpdate(publication);
 
