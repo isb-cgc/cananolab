@@ -7,8 +7,8 @@
     <class name="Supplier" table="supplier">
         <id name="id" column="supplier_pk_id" type="long">
        <generator class="increment">
-            <param name="table">hibernate_unique_key</param>
-            <param name="column">next_hi</param>
+
+
         </generator>
         </id>
 

@@ -12,8 +12,8 @@ L-->
 		<cache usage="read-write" />
 		<id name="id" type="long" column="nanomaterial_entity_pk_id">
 			<generator class="increment">
-                          <param name="table">hibernate_unique_key</param>
-                          <param name="column">next_hi</param>
+
+
                         </generator>
 		</id>
 		<discriminator column="discriminator" type="string"/>
