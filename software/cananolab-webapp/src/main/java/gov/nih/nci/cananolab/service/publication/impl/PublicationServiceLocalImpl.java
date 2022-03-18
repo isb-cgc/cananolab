@@ -107,6 +107,7 @@ public class PublicationServiceLocalImpl extends BaseServiceLocalImpl implements
 					newPub = false;
 				}
 			}
+
 			fileUtils.prepareSaveFile(publication);
 			appService.saveOrUpdate(publication);
 
