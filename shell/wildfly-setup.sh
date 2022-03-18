@@ -2,12 +2,18 @@
 
 export $(cat /local/content/.env | grep -v ^# | xargs) 2> /dev/null
 
-export WILDFLY_HOME=/opt/wildfly-8.2.1.Final
+export WILDFLY_HOME=/opt/wildfly-13.0.0.Final
 export WILDFLY_BIN=$WILDFLY_HOME/bin
 export JBOSS_CLI=$WILDFLY_BIN/jboss-cli.sh
 
 ${WILDFLY_BIN}/standalone.sh --server-config=standalone-full.xml -b 0.0.0.0 -bmanagement 0.0.0.0 &
 
+# Helper functions
+
+# Wait for something server-related.
+# $1 - the JBoss CLI command to perform eg. "read-attribute server-state"
+# $2 - the text to grep for in the command's result which indicates success
+# $3 - the text to use in the reporting echo statement
 function wait_for_server() {
   COMMAND=$1
   CHECK=$2
@@ -27,6 +33,7 @@ function wait_for_server() {
   return $?
 }
 
+# Check to see if wildfly's process is still running
 function check_for_wildfly() {
   ps -ef | grep wildfly | grep -v grep | grep -v "wildfly-setup.sh" | grep -v "start-wildfly.sh" | awk '{print $2}'
 }
@@ -40,6 +47,7 @@ if [ $? -ne 0 ]; then
 fi
 
 echo "Wildfly is now running - continuing setup and deployment:"
+# If this is a new database, uncomment these lines *once* to add an admin user
 #echo "Adding admin console user."
 #${WILDFLY_BIN}/add-user.sh -a -u "${WILDFLY_ADMIN}" -p "${WILDFLY_ADMIN_PASSWORD}" -g "admin"
 echo "Adding BouncyCastle and JDBC driver to Wildfly"
@@ -57,7 +65,7 @@ fi
 echo "Testing data source setup and connection"
 ${JBOSS_CLI} --file=/local/content/caNanoLab/artifacts/caNanoLab_checks.cli
 echo "Deploying caNano WAR"
-cp -v /local/content/caNanoLab/artifacts/caNanoLab.war /opt/wildfly-8.2.1.Final/standalone/deployments
+cp -v /local/content/caNanoLab/artifacts/caNanoLab.war /opt/wildfly-13.0.0.Final/standalone/deployments
 
 wait_for_server "deployment-info --name=caNanoLab.war" "OK" "Deployment"
 
@@ -66,6 +74,8 @@ if [ $? -ne 0 ]; then
   exit 1
 fi
 
+# We need to halt Wildfly here to start it in the main entrypoint process, so that the shell
+# which is running is that one and not this script.
 echo "Deployment completed - stopping Wildfly"
 ${JBOSS_CLI} -c --controller=localhost:9990 ":shutdown"
 counter=0
