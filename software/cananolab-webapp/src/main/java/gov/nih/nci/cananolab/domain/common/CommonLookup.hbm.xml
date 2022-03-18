@@ -12,9 +12,7 @@ L-->
 		<cache usage="read-write" />
 		<id name="id" type="long" column="common_lookup_pk_id">
 			<generator class="increment">
-
-
-                        </generator>
+			</generator>
 		</id>
 		<!-- Attributes mapping for the CommonLookup class -->
 		<property name="attribute" type="string" column="attribute"/>

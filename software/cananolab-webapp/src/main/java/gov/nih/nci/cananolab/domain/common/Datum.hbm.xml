@@ -10,8 +10,6 @@
 		<cache include="all" usage="read-write" />
 		<id column="datum_pk_id" name="id" type="long">
 			<generator class="increment">
-
-
 			</generator>
 		</id>
 		<!-- Attributes mapping for the Datum class -->

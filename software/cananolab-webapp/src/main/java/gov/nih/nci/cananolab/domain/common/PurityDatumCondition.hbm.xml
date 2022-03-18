@@ -10,8 +10,6 @@
 		<cache usage="read-write" />
 		<id name="id" type="long" column="condition_pk_id">
 			<generator class="increment">
-
-
 			</generator>
 		</id>
 		<!-- Attributes mapping for the Condition class -->

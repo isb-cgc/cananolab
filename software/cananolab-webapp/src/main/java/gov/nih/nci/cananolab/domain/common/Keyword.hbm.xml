@@ -12,9 +12,7 @@ L-->
 		<cache usage="read-write" />
 		<id name="id" type="long" column="keyword_pk_id">
 			<generator class="increment">
-
-
-                        </generator>
+			</generator>
 		</id>
 		<!-- Attributes mapping for the Keyword class -->
 		<property name="name" type="string" column="name"/>

@@ -16,8 +16,6 @@ L-->
 		<cache usage="read-write" />
 		<id name="id" type="long" column="sample_pk_id">
 			<generator class="increment">
-
-
 			</generator>
 		</id>
 		<!-- Attributes mapping for the Sample class -->

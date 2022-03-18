@@ -12,9 +12,7 @@ L-->
 		<cache usage="read-write" />
 		<id name="id" type="long" column="author_pk_id">
 			<generator class="increment">
-
-
-                        </generator>
+			</generator>
 		</id>
 		<!-- Attributes mapping for the Author class -->
 		<property name="createdBy" type="string" column="created_by"/>

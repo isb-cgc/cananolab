@@ -12,7 +12,7 @@ L-->
 		<cache usage="read-write" />
 		<id name="id" type="long" column="finding_pk_id">
 			<generator class="increment">
-                        </generator>
+			</generator>
 		</id>
 		<!-- Attributes mapping for the Finding class -->
 		<property name="createdBy" type="string" column="created_by"/>

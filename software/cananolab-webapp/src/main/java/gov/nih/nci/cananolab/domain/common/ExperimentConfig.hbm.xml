@@ -12,8 +12,6 @@ L-->
 		<cache usage="read-write" />
 		<id name="id" type="long" column="experiment_config_pk_id">
 			<generator class="increment">
-
-
 			</generator>
 		</id>
 		<!-- Attributes mapping for the ExperimentConfig class -->

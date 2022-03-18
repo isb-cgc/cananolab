@@ -6,10 +6,8 @@
 
     <class name="Supplier" table="supplier">
         <id name="id" column="supplier_pk_id" type="long">
-       <generator class="increment">
-
-
-        </generator>
+            <generator class="increment">
+            </generator>
         </id>
 
         <property name="supplierName" column="supplier_name" type="string"/>
