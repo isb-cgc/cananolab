@@ -24,8 +24,8 @@ import javax.crypto.SecretKey;
 import javax.crypto.SecretKeyFactory;
 import javax.crypto.spec.DESedeKeySpec;
 
-//import sun.misc.BASE64Decoder;
-//import sun.misc.BASE64Encoder;
+import sun.misc.BASE64Decoder;
+import sun.misc.BASE64Encoder;
 
 public class DESEncryption implements Encryption {
 	public static final String DESEDE_ENCRYPTION_SCHEME = "DESede";
@@ -43,7 +43,7 @@ public class DESEncryption implements Encryption {
 	private static String getKey() {
 		return "123CSM34567890ENCRYPTIONC3PR4KEY5678901234567890";
 	}
-	
+
 	public DESEncryption() {
 		super();
 	}
@@ -56,9 +56,9 @@ public class DESEncryption implements Encryption {
 		if (unencryptedString == null || unencryptedString.trim().length() == 0)
 			throw new IllegalArgumentException(
 					"unencrypted string was null or empty");
-	
+
 		Cipher ecipher;
-		Cipher dcipher;		
+		Cipher dcipher;
 		try {
 			byte[] keyAsBytes = getKey().getBytes(UNICODE_FORMAT);
 			keySpec = new DESedeKeySpec(keyAsBytes);
@@ -69,18 +69,18 @@ public class DESEncryption implements Encryption {
 			ecipher.init(Cipher.ENCRYPT_MODE, key);
 			AlgorithmParameters ap = ecipher.getParameters();
 			dcipher.init(Cipher.DECRYPT_MODE, key, ap);
-	
+
 		} catch (Exception e) {
 			throw new Exception(e);
 		}
-		
+
 		try {
-			
-//			byte[] cleartext = unencryptedString.getBytes(UNICODE_FORMAT);
-//			byte[] ciphertext = ecipher.doFinal(cleartext);
-//			BASE64Encoder base64encoder = new BASE64Encoder();
-//			return base64encoder.encode(ciphertext);
-			return "";
+
+			byte[] cleartext = unencryptedString.getBytes(UNICODE_FORMAT);
+			byte[] ciphertext = ecipher.doFinal(cleartext);
+			BASE64Encoder base64encoder = new BASE64Encoder();
+			return base64encoder.encode(ciphertext);
+
 		} catch (Exception e) {
 			throw new Exception(e);
 		}
@@ -94,7 +94,7 @@ public class DESEncryption implements Encryption {
 		if (encryptedString == null || encryptedString.trim().length() <= 0)
 			throw new IllegalArgumentException(
 					"encrypted string was null or empty");
-	
+
 		Cipher ecipher;
 		Cipher dcipher;
 		try {
@@ -107,17 +107,17 @@ public class DESEncryption implements Encryption {
 			ecipher.init(Cipher.ENCRYPT_MODE, key);
 			AlgorithmParameters ap = ecipher.getParameters();
 			dcipher.init(Cipher.DECRYPT_MODE, key, ap);
-	
+
 		} catch (Exception e) {
 			throw new Exception(e);
 		}
-		
+
 		try {
-//			BASE64Decoder base64decoder = new BASE64Decoder();
-//			byte[] cleartext = base64decoder.decodeBuffer(encryptedString);
-//			byte[] ciphertext = dcipher.doFinal(cleartext);
-//			return StringUtilities.bytes2String(ciphertext);
-			return "";
+			BASE64Decoder base64decoder = new BASE64Decoder();
+			byte[] cleartext = base64decoder.decodeBuffer(encryptedString);
+			byte[] ciphertext = dcipher.doFinal(cleartext);
+			return StringUtilities.bytes2String(ciphertext);
+
 		} catch (Exception e) {
 			throw new Exception(e);
 		}

@@ -25,7 +25,6 @@ public class GCPStorageUtil {
     }
 
     public static String getGCPStorageRootFolderPath() {
-        // TODO: replace with env var
         return System.getenv("GCP_STORAGE_ROOT_FOLDER_PATH");
     }
 }
