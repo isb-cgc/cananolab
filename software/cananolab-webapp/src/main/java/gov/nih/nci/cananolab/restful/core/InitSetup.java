@@ -311,7 +311,6 @@ public class InitSetup {
 	public void persistLookup(HttpServletRequest request, String lookupName,
 			String attribute, String otherAttribute, String value)
 			throws BaseException {
-		try {
 		if (value == null || value.length() == 0) {
 			return;
 		}
@@ -324,9 +323,6 @@ public class InitSetup {
 			return;
 		} else {
 			LookupService.saveOtherType(lookupName, otherAttribute, value);
-		}}
-		catch (Exception e) {
-			throw e;
 		}
 	}
 

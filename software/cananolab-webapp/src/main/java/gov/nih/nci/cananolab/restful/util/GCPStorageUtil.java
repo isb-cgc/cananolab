@@ -21,13 +21,11 @@ public class GCPStorageUtil {
     }
 
     public static String getGCPStorageBucketPath() {
-        // TODO: replace with env var
-        return "isb-cgc-ca-nano-dev-cbiit-assets";
+        return System.getenv("GCP_STORAGE_BUCKET_PATH");
     }
 
     public static String getGCPStorageRootFolderPath() {
         // TODO: replace with env var
-        return "caNanoLab_asset_files";
+        return System.getenv("GCP_STORAGE_ROOT_FOLDER_PATH");
     }
-
 }
