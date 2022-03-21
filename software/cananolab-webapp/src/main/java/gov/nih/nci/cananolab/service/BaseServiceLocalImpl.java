@@ -129,6 +129,10 @@ public abstract class BaseServiceLocalImpl implements BaseService
 				String bucketPath = GCPStorageUtil.getGCPStorageBucketPath();
 				String folderPath = GCPStorageUtil.getGCPStorageRootFolderPath();
 				BlobId blobId = BlobId.of(bucketPath, folderPath + "/" + filePath);
+
+				String blobFullPath = bucketPath + "/" + folderPath + "/" + filePath;
+				System.out.println("GCPStorage write blob path: " + blobFullPath);
+
 				BlobInfo blobinfo = BlobInfo.newBuilder(blobId).build();
 				storage.create(blobinfo, fileContent);
 
