@@ -32,7 +32,7 @@ public class GCPStorageUtil {
         return bucketPath;
     }
 
-    private static String printAllSystemVars() {
+    private static void printAllSystemVars() {
         String allVars = "";
         for (Map.Entry<String,String> entry : System.getenv().entrySet()) {
             allVars += String.format("Key: %s, value: %s\n", entry.getKey(), entry.getValue());
