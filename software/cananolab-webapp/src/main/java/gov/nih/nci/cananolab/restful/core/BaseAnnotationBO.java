@@ -115,7 +115,9 @@ public abstract class BaseAnnotationBO extends AbstractDispatchBO
 	//	String fileId = request.getParameter("fileId");
 	
 		FileBean fileBean = service.findFileById(fileId);
-		System.out.println("fileBean.getDomainFile().getUri()"+fileBean.getDomainFile().getUri());
+
+		String fileUri = fileBean.getDomainFile().getUri();
+		System.out.println("fileBean.getDomainFile().getUri()"+fileUri);
 
 		if (fileBean != null) {
 			if (fileBean.getDomainFile().getUriExternal()) {
@@ -129,9 +131,14 @@ public abstract class BaseAnnotationBO extends AbstractDispatchBO
 			String bucketPath = GCPStorageUtil.getGCPStorageBucketPath();
 			String folderPath = GCPStorageUtil.getGCPStorageRootFolderPath();
 			Bucket assetBucket = storage.get(bucketPath);
-			Blob blob = assetBucket.get(folderPath + "/" + fileBean.getDomainFile().getUri());
+			Blob blob = assetBucket.get(folderPath + "/" + fileUri);
+
+			String blobFullPath = bucketPath + "/" + folderPath + "/" + fileUri;
+			System.out.println("GCPStorage blob path: " + bucketPath + "/" + blobFullPath);
 
 			if (blob.exists()) {
+				System.out.println("GCPStorage found blob for requested file, downloading...");
+
 				ExportUtils.prepareReponseForImage(response, fileBean.getDomainFile().getUri());
 
 				OutputStream out = response.getOutputStream();
