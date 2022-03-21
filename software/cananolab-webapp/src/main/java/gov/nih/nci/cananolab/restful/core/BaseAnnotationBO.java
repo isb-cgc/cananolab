@@ -127,14 +127,14 @@ public abstract class BaseAnnotationBO extends AbstractDispatchBO
 		}
 
 		try {
-			Storage storage = GCPStorageUtil.getGCPStorageService();
 			String bucketPath = GCPStorageUtil.getGCPStorageBucketPath();
 			String folderPath = GCPStorageUtil.getGCPStorageRootFolderPath();
+			String blobFullPath = bucketPath + "/" + folderPath + "/" + fileUri;
+			System.out.println("GCPStorage downloadFile() blob path: " + bucketPath + "/" + blobFullPath);
+
+			Storage storage = GCPStorageUtil.getGCPStorageService();
 			Bucket assetBucket = storage.get(bucketPath);
 			Blob blob = assetBucket.get(folderPath + "/" + fileUri);
-
-			String blobFullPath = bucketPath + "/" + folderPath + "/" + fileUri;
-			System.out.println("GCPStorage blob path: " + bucketPath + "/" + blobFullPath);
 
 			if (blob.exists()) {
 				System.out.println("GCPStorage found blob for requested file, downloading...");

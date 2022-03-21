@@ -16,6 +16,7 @@ public class GCPStorageUtil {
             gcpStorageService = StorageOptions.getDefaultInstance().getService();
             return gcpStorageService;
         } catch (Exception e) {
+            System.out.println("ERROR: Cannot get GCP storage service");
             throw new FileException("Cannot get GCP storage service");
         }
     }

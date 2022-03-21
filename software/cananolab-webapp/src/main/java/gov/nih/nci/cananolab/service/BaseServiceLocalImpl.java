@@ -101,9 +101,12 @@ public abstract class BaseServiceLocalImpl implements BaseService
 			}
 
 			try {
-				Storage storage = GCPStorageUtil.getGCPStorageService();
 				String bucketPath = GCPStorageUtil.getGCPStorageBucketPath();
 				String folderPath = GCPStorageUtil.getGCPStorageRootFolderPath();
+				String blobFullPath = bucketPath + "/" + folderPath + "/" + file.getUri();
+				System.out.println("GCPStorage try to getFileContent() file path: " + blobFullPath);
+
+				Storage storage = GCPStorageUtil.getGCPStorageService();
 				Bucket assetBucket = storage.get(bucketPath);
 				Blob blob = assetBucket.get(folderPath + "/" + file.getUri());
 
@@ -125,13 +128,13 @@ public abstract class BaseServiceLocalImpl implements BaseService
 					throw new FileException("File content is empty");
 				}
 
-				Storage storage = GCPStorageUtil.getGCPStorageService();
 				String bucketPath = GCPStorageUtil.getGCPStorageBucketPath();
 				String folderPath = GCPStorageUtil.getGCPStorageRootFolderPath();
-				BlobId blobId = BlobId.of(bucketPath, folderPath + "/" + filePath);
-
 				String blobFullPath = bucketPath + "/" + folderPath + "/" + filePath;
-				System.out.println("GCPStorage write blob path: " + blobFullPath);
+				System.out.println("GCPStorage try to write blob path: " + blobFullPath);
+
+				Storage storage = GCPStorageUtil.getGCPStorageService();
+				BlobId blobId = BlobId.of(bucketPath, folderPath + "/" + filePath);
 
 				BlobInfo blobinfo = BlobInfo.newBuilder(blobId).build();
 				storage.create(blobinfo, fileContent);
