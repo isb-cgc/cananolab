@@ -34,7 +34,7 @@ public class GCPStorageUtil {
 
     private static void printAllSystemVars() {
         for (Map.Entry<String,String> entry : System.getenv().entrySet()) {
-            System.out.println(String.format("GCPStorageUtil SysVar Key: %s, Value: %s", entry.getKey(), entry.getValue());
+            System.out.println(String.format("GCPStorageUtil SysVar Key: %s, Value: %s", entry.getKey(), entry.getValue()));
         }
     }
 
