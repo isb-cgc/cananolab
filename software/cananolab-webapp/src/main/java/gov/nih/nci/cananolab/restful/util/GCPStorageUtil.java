@@ -27,6 +27,8 @@ public class GCPStorageUtil {
         String bucketPath = System.getenv("GCP_STORAGE_BUCKET_PATH");
         System.out.println("GCPStorageUtil get bucket path: " + bucketPath);
         if (bucketPath == "" || bucketPath == null) {
+            // Temporary to check if dev tier work
+            bucketPath = "isb-cgc-ca-nano-dev-cbiit-assets";
             printAllSystemVars();
         }
         return bucketPath;
@@ -42,6 +44,8 @@ public class GCPStorageUtil {
         String folderPath = System.getenv("GCP_STORAGE_ROOT_FOLDER_PATH");
         System.out.println("GCPStorageUtil get folder path: " + folderPath);
         if (folderPath == "" || folderPath == null) {
+            // Temporary to check if dev tier work
+            folderPath = "caNanoLab_asset_files";
             printAllSystemVars();
         }
         return folderPath;
