@@ -35,7 +35,7 @@ function wait_for_server() {
 
 # Check to see if wildfly's process is still running
 function check_for_wildfly() {
-  ps -ef | grep wildfly | grep -v grep | grep -v "wildfly-setup.sh" | grep -v "start-wildfly.sh" | awk '{print $2}'
+  ps -ef | grep wildfly | grep -v grep | grep -v setup | grep -v start | awk '{print $2}'
 
 }
 
@@ -75,6 +75,8 @@ if [ $? -ne 0 ]; then
   exit 1
 fi
 
+cp -v /opt/wildfly-13.0.0.Final/standalone/configuration/standalone-full.xml /local/content/caNanoLab/artifacts/
+
 # We need to halt Wildfly here to start it in the main entrypoint process, so that the shell
 # which is running is that one and not this script.
 echo "Deployment completed - stopping Wildfly"
@@ -89,7 +91,7 @@ while [ ! -z "${WILDFLY_PID}" ] && [ $counter -lt 5 ]; do
   sleep 6
 done
 
-ps -ef | grep wildfly | grep -v grep
+ps -ef | grep wildfly | grep -v grep | grep -v setup | grep -v start
 
 if [ ! -z "${WILDFLY_PID}" ]; then
   echo "Wildfly failed to stop in time!"
