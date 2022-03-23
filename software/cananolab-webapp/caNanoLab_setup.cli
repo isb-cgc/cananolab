@@ -59,7 +59,7 @@ end-if
 /subsystem=logging:write-attribute(name=add-logging-api-dependencies,value=true)
 /subsystem=logging/console-handler=CONSOLE:write-attribute(name=autoflush, value=true)
 /subsystem=logging/console-handler=CONSOLE:write-attribute(name=level, value=INFO)
-/subsystem=logging/console-handler=CONSOLE:write-attribute(name="formatter", value="%d [%t] %-5p [%c : %L] %m%n")
+/subsystem=logging/console-handler=CONSOLE:write-attribute(name="formatter", value="%d{HH:mm:ss,SSS} %-5p [%c] (%t) %m%n")
 
 # Point stdout and stderr to it
 /subsystem=logging/logger=stderr:add(use-parent-handlers="false", handlers=[CONSOLE])
@@ -73,4 +73,3 @@ end-if
 /subsystem=logging/logger=gov.nih.nci.cananolab:add(handlers=["CONSOLE"])
 
 :reload
-
