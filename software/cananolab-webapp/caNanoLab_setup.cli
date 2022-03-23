@@ -47,6 +47,9 @@ data-source add \
     --blocking-timeout-wait-millis=5000
 end-if
 
+# Unload the welcome page
+/subsystem=undertow/server=default-server/host=default-host/location=\/:remove()
+
 ########################################################################
 #   LOGGING
 ######################################################################
