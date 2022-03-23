@@ -40,7 +40,7 @@ public class InitSynthesisSetup {
 
     public String getDetailPage(String synthesisMaterial) {
         //TODO write
-        return "/caNanoLab/views/sample/composition/functionalizingEntity/SynthesisInfo.html";
+        return "/views/sample/composition/functionalizingEntity/SynthesisInfo.html";
     }
 
     public SortedSet<String> getPurificationNamesByType(HttpServletRequest httpServletRequest, String purfType, SynthesisService synthesisService) throws Exception {

@@ -66,7 +66,7 @@ var app = angular.module('angularApp')
     $scope.$on('$viewContentLoaded', function () {
       $http({
         method: 'GET',
-        url: '/caNanoLab/rest/sample/setupAdvancedSearch'
+        url: '/rest/sample/setupAdvancedSearch'
       }).
       then(function (data, status, headers, config) {
         data = data['data']
@@ -184,7 +184,7 @@ var app = angular.module('angularApp')
       $scope.loader = true;
       $http({
         method: 'GET',
-        url: '/caNanoLab/rest/sample/getDecoratedCharacterizationOptions?charType=' + $scope.theCharacterizationQuery.characterizationType
+        url: '/rest/sample/getDecoratedCharacterizationOptions?charType=' + $scope.theCharacterizationQuery.characterizationType
       }).
       then(function (data, status, headers, config) {
         data = data['data']
@@ -207,7 +207,7 @@ var app = angular.module('angularApp')
       $scope.loader = true;
       $http({
         method: 'GET',
-        url: '/caNanoLab/rest/sample/getDecoratedDatumOptions?charType=' + $scope.theCharacterizationQuery.characterizationType + '&charName=' + $scope.theCharacterizationQuery.characterizationName
+        url: '/rest/sample/getDecoratedDatumOptions?charType=' + $scope.theCharacterizationQuery.characterizationType + '&charName=' + $scope.theCharacterizationQuery.characterizationName
       }).
       then(function (data, status, headers, config) {
         data = data['data']
@@ -234,7 +234,7 @@ var app = angular.module('angularApp')
       };
       $http({
         method: 'GET',
-        url: '/caNanoLab/rest/sample/getDatumUnitOptions?datumName=' + $scope.theCharacterizationQuery.datumName
+        url: '/rest/sample/getDatumUnitOptions?datumName=' + $scope.theCharacterizationQuery.datumName
       }).
       then(function (data, status, headers, config) {
         data = data['data']
@@ -299,7 +299,7 @@ var app = angular.module('angularApp')
       $scope.loader = true;
       $http({
         method: 'POST',
-        url: '/caNanoLab/rest/sample/searchSampleAdvanced',
+        url: '/rest/sample/searchSampleAdvanced',
         data: $scope.searchSampleForm
       }).
       then(function (data, status, headers, config) {

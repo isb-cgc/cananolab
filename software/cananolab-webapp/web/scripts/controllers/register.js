@@ -15,10 +15,10 @@ angular.module('angularApp')
 		$scope.submitData = function (isValid) {
 			$scope.submitted = true;
 			if (isValid) {
-				//$http({method: 'POST', url: '/caNanoLab/rest/security/register', data: {"title":$scope.title,"firstName":$scope.firstName,"lastName":$scope.lastName,"email":$scope.email,"phone":$scope.phone,"organization":$scope.organization,"fax":$scope.fax,"comment":$scope.comment,"registerToUserList":$scope.registerToUserList}, headers: {'Content-Type':'application/json'}}).
+				//$http({method: 'POST', url: '/rest/security/register', data: {"title":$scope.title,"firstName":$scope.firstName,"lastName":$scope.lastName,"email":$scope.email,"phone":$scope.phone,"organization":$scope.organization,"fax":$scope.fax,"comment":$scope.comment,"registerToUserList":$scope.registerToUserList}, headers: {'Content-Type':'application/json'}}).
 				$http({
 					method: 'GET',
-					url: '/caNanoLab/rest/security/register',
+					url: '/rest/security/register',
 					params: {
 						"title": $scope.title,
 						"firstName": $scope.firstName,

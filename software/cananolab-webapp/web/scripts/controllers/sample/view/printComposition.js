@@ -9,7 +9,7 @@ app.controller('PrintCompositionCtrl', function (utilsService, $rootScope, $scop
         $scope.loader = true;
         $http({
             method: 'GET',
-            url: '/caNanoLab/rest/composition/summaryPrint?sampleId=' + $scope.sampleId
+            url: '/rest/composition/summaryPrint?sampleId=' + $scope.sampleId
         }).
         then(function (data, status, headers, config) {
             data = data['data']

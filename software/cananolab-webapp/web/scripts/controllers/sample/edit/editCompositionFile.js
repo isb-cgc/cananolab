@@ -27,17 +27,17 @@ var app = angular.module('angularApp')
         $scope.addNewFile = false;
         $scope.selectedFileName = '';
 
-        var uploadUrl = '/caNanoLab/rest/core/uploadFile';
+        var uploadUrl = '/rest/core/uploadFile';
         $scope.ie9 = false;
         if (navigator.appVersion.indexOf("MSIE 9.") != -1) {
-            uploadUrl = '/caNanoLab/uploadFile';
+            uploadUrl = '/uploadFile';
             $scope.ie9 = true;
         }
 
         $scope.$on('$viewContentLoaded', function () {
             $http({
                 method: 'GET',
-                url: '/caNanoLab/rest/compositionFile/setup?sampleId=' + $scope.sampleId
+                url: '/rest/compositionFile/setup?sampleId=' + $scope.sampleId
             }).
             then(function (data, status, headers, config) {
                 data = data['data']
@@ -58,7 +58,7 @@ var app = angular.module('angularApp')
                 $scope.loader = true;
                 $http({
                     method: 'GET',
-                    url: '/caNanoLab/rest/compositionFile/edit?sampleId=' + $scope.sampleId + '&dataId=' + $scope.compositionFileId
+                    url: '/rest/compositionFile/edit?sampleId=' + $scope.sampleId + '&dataId=' + $scope.compositionFileId
                 }).
                 then(function (data, status, headers, config) {
                     data = data['data']
@@ -187,7 +187,7 @@ var app = angular.module('angularApp')
 
                 $http({
                     method: 'POST',
-                    url: '/caNanoLab/rest/compositionFile/delete',
+                    url: '/rest/compositionFile/delete',
                     data: $scope.fileForm
                 }).
                 then(function (data, status, headers, config) {
@@ -268,7 +268,7 @@ var app = angular.module('angularApp')
 
             $http({
                 method: 'POST',
-                url: '/caNanoLab/rest/compositionFile/submit',
+                url: '/rest/compositionFile/submit',
                 data: $scope.fileForm
             }).
             then(function (data, status, headers, config) {

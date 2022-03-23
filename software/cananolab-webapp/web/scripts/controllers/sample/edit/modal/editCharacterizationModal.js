@@ -130,7 +130,7 @@ var app = angular.module('angularApp')
 
             $http({
                 method: 'GET',
-                url: '/caNanoLab/rest/characterization/setupEdit?sampleId=' + $scope.sampleId + '&charType=' + $scope.type
+                url: '/rest/characterization/setupEdit?sampleId=' + $scope.sampleId + '&charType=' + $scope.type
             }).
             then(function (data, status, headers, config) {
                 data = data['data']
@@ -148,7 +148,7 @@ var app = angular.module('angularApp')
             // run initial rest call to setup characterization add form //
             $http({
                 method: 'GET',
-                url: '/caNanoLab/rest/characterization/setupAdd?sampleId=' + $scope.sampleId + '&charType=' + $scope.type
+                url: '/rest/characterization/setupAdd?sampleId=' + $scope.sampleId + '&charType=' + $scope.type
             }).
             then(function (data, status, headers, config) {
                 data = data['data']
@@ -177,7 +177,7 @@ var app = angular.module('angularApp')
                 $scope.loader = true;
                 $http({
                     method: 'GET',
-                    url: '/caNanoLab/rest/characterization/getCharNamesByCharType?charType=' + $scope.data.type
+                    url: '/rest/characterization/getCharNamesByCharType?charType=' + $scope.data.type
                 }).
                 then(function (data, status, headers, config) {
                     data = data['data']
@@ -201,7 +201,7 @@ var app = angular.module('angularApp')
                 $scope.loader = true;
                 $http({
                     method: 'GET',
-                    url: '/caNanoLab/rest/characterization/getAssayTypesByCharName?charName=' + $scope.data.name
+                    url: '/rest/characterization/getAssayTypesByCharName?charName=' + $scope.data.name
                 }).
                 then(function (data, status, headers, config) {
                     data = data['data']

@@ -9,7 +9,7 @@ var app = angular.module('angularApp')
             $scope.loader = true;
             $http({
                 method: 'GET',
-                url: '/caNanoLab/rest/core/getFavorites'
+                url: '/rest/core/getFavorites'
             }).
             then(function (data, status, headers, config) {
                 data = data['data']
@@ -56,7 +56,7 @@ var app = angular.module('angularApp')
 
                 $http({
                     method: 'POST',
-                    url: '/caNanoLab/rest/core/deleteFavorite',
+                    url: '/rest/core/deleteFavorite',
                     data: $scope.favoriteBean
                 }).
                 then(function (data, status, headers, config) {

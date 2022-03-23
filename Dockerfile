@@ -40,7 +40,5 @@ RUN wget https://download.jboss.org/wildfly/13.0.0.Final/wildfly-13.0.0.Final.ta
 ENV JBOSS_HOME=/opt/wildfly-13.0.0.Final
 ENV PATH=/opt/apache-maven/bin:/opt/apache-ant-1.9.9/bin:$PATH
 
-RUN /local/content/wildfly-setup.sh
-
 EXPOSE 8080 9990
 ENTRYPOINT ["/local/content/start-wildfly.sh"]

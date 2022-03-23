@@ -255,7 +255,7 @@ public class InitCompositionSetup {
 
 	public String getDetailPage(String entityType, String parentPath)
 			throws Exception {
-        return "/caNanoLab/views/sample/composition/" + parentPath +"/"
+        return "/views/sample/composition/" + parentPath +"/"
                 + ClassUtils.getShortClassNameFromDisplayName(entityType)
                 + "Info.html";
 	}

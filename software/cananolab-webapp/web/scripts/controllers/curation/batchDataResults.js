@@ -9,7 +9,7 @@ var app = angular.module('angularApp')
             $scope.loader = true;
             $http({
                 method: 'GET',
-                url: '/caNanoLab/rest/curation/manageResult'
+                url: '/rest/curation/manageResult'
             }).
             then(function (data, status, headers, config) {
                 data = data['data']

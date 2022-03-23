@@ -52,19 +52,19 @@ var app = angular.module('angularApp')
         $scope.fileReaderSupported = window.FileReader != null && (window.FileAPI == null || FileAPI.html5 != false);
         $scope.selectedFileName = '';
 
-        var uploadUrl = '/caNanoLab/rest/core/uploadFile';
+        var uploadUrl = '/rest/core/uploadFile';
         $scope.ie9 = false;
         if (navigator.appVersion.indexOf("MSIE 9.") != -1) {
-            uploadUrl = '/caNanoLab/uploadFile';
+            uploadUrl = '/uploadFile';
             $scope.ie9 = true;
         }
 
         $scope.selectedFileName = '';
 
-        var uploadUrl = '/caNanoLab/rest/core/uploadFile';
+        var uploadUrl = '/rest/core/uploadFile';
         $scope.ie9 = false;
         if (navigator.appVersion.indexOf("MSIE 9.") != -1) {
-            uploadUrl = '/caNanoLab/uploadFile';
+            uploadUrl = '/uploadFile';
             $scope.ie9 = true;
         }
 
@@ -72,7 +72,7 @@ var app = angular.module('angularApp')
         $scope.loader = true;
         $http({
             method: 'GET',
-            url: '/caNanoLab/rest/publication/setup'
+            url: '/rest/publication/setup'
         }).
         then(function (data, status, headers, config) {
             data = data['data']
@@ -110,7 +110,7 @@ var app = angular.module('angularApp')
                 $scope.loader = true;
                 $http({
                     method: 'GET',
-                    url: '/caNanoLab/rest/publication/edit?publicationId=' + $scope.publicationId + '&sampleId=' + $scope.sampleId
+                    url: '/rest/publication/edit?publicationId=' + $scope.publicationId + '&sampleId=' + $scope.sampleId
                 }).
                 then(function (data, status, headers, config) {
                     data = data['data']
@@ -253,7 +253,7 @@ var app = angular.module('angularApp')
             $scope.loader = true;
             $http({
                 method: 'GET',
-                url: '/caNanoLab/rest/publication/getSamples?searchStr='
+                url: '/rest/publication/getSamples?searchStr='
             }).
             then(function (data, status, headers, config) {
                 data = data['data']
@@ -284,7 +284,7 @@ var app = angular.module('angularApp')
 
             $http({
                 method: 'POST',
-                url: '/caNanoLab/rest/publication/submitPublication',
+                url: '/rest/publication/submitPublication',
                 data: $scope.publicationForm
             }).
             then(function (data, status, headers, config) {
@@ -396,7 +396,7 @@ var app = angular.module('angularApp')
 
                 $http({
                     method: 'POST',
-                    url: '/caNanoLab/rest/publication/deletePublication',
+                    url: '/rest/publication/deletePublication',
                     data: $scope.publicationForm
                 }).
                 then(function (data, status, headers, config) {
@@ -442,7 +442,7 @@ var app = angular.module('angularApp')
 
             $http({
                 method: 'GET',
-                url: '/caNanoLab/rest/publication/getPubmedPublication?pubmedId=' + $scope.publicationForm.pubMedId,
+                url: '/rest/publication/getPubmedPublication?pubmedId=' + $scope.publicationForm.pubMedId,
                 headers: {
                     'my-header': 'my-header-value',
                     'Accept': 'application/json, text/plain'
@@ -477,7 +477,7 @@ var app = angular.module('angularApp')
         $scope.retrievePubMedData = function () {
             $http({
                 method: 'GET',
-                url: '/caNanoLab/rest/publication/retrievePubMedInfo?pubmedId=' + $scope.publicationForm.pubMedId
+                url: '/rest/publication/retrievePubMedInfo?pubmedId=' + $scope.publicationForm.pubMedId
             }).
             then(function (data, status, headers, config) {
                 data = data['data']
@@ -519,7 +519,7 @@ var app = angular.module('angularApp')
 
                 $http({
                     method: 'POST',
-                    url: '/caNanoLab/rest/publication/removeFromSample',
+                    url: '/rest/publication/removeFromSample',
                     data: $scope.publicationForm
                 }).
                 then(function (data, status, headers, config) {
@@ -545,7 +545,7 @@ var app = angular.module('angularApp')
 
             $http({
                 method: 'POST',
-                url: '/caNanoLab/rest/publication/submitForReview',
+                url: '/rest/publication/submitForReview',
                 data: $scope.reviewData
             }).
             then(function (data, status, headers, config) {
@@ -581,7 +581,7 @@ var app = angular.module('angularApp')
             $scope.loader = true;
             $http({
                 method: 'GET',
-                url: '/caNanoLab/rest/core/getCollaborationGroup?searchStr=' + $scope.accessForm.theAccess.recipient
+                url: '/rest/core/getCollaborationGroup?searchStr=' + $scope.accessForm.theAccess.recipient
             }).
             then(function (data, status, headers, config) {
                 data = data['data']
@@ -610,7 +610,7 @@ var app = angular.module('angularApp')
             $scope.loader = true;
             $http({
                 method: 'GET',
-                url: '/caNanoLab/rest/core/getUsers?searchStr=' + $scope.accessForm.theAccess.recipient
+                url: '/rest/core/getUsers?searchStr=' + $scope.accessForm.theAccess.recipient
             }).
             then(function (data, status, headers, config) {
                 data = data['data']
@@ -647,7 +647,7 @@ var app = angular.module('angularApp')
 
             $http({
                 method: 'POST',
-                url: '/caNanoLab/rest/publication/saveAccess',
+                url: '/rest/publication/saveAccess',
                 data: $scope.publicationForm
             }).
             then(function (data, status, headers, config) {
@@ -728,7 +728,7 @@ var app = angular.module('angularApp')
 
                 $http({
                     method: 'POST',
-                    url: '/caNanoLab/rest/publication/deleteAccess',
+                    url: '/rest/publication/deleteAccess',
                     data: $scope.publicationForm
                 }).
                 then(function (data, status, headers, config) {

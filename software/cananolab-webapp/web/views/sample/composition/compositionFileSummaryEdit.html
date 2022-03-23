@@ -4,7 +4,7 @@
         <th align="left" class="heading" style="padding: 0.5em;">
             composition file
             &nbsp;&nbsp;
-            <a href="/caNanoLab/#/editCompositionFile?sampleId={{sampleId.data}}&&sampleName={{sampleName.name}}" class="btn-canano btn-canano-primary btn-canano-xs" style="color:white;text-decoration: none;">
+            <a href="/#/editCompositionFile?sampleId={{sampleId.data}}&&sampleName={{sampleName.name}}" class="btn-canano btn-canano-primary btn-canano-xs" style="color:white;text-decoration: none;">
                 Add
             </a>
         </th>
@@ -18,7 +18,7 @@
                 <tr>
                     <td colspan="2">
                         <div style="margin-left:auto; margin-right:auto;text-align:right;width:99%; margin-top: 10px;">
-                            <a href="/caNanoLab/#/editCompositionFile?sampleId={{sampleId.data}}&&sampleName={{sampleName.name}}&&compositionFileId={{indFile.dataId}}" class="btn-canano btn-canano-primary btn-canano-xs" style="color:white;text-decoration: none;">
+                            <a href="/#/editCompositionFile?sampleId={{sampleId.data}}&&sampleName={{sampleName.name}}&&compositionFileId={{indFile.dataId}}" class="btn-canano btn-canano-primary btn-canano-xs" style="color:white;text-decoration: none;">
                                 Edit
                             </a>
 
@@ -36,21 +36,21 @@
                                 <td style="width:40em;">
                                             <span ng-if="indFile.ExternalURI == 'true'">
                                                     <a
-                                                            ng-href="/caNanoLab/rest/sample/download?fileId={{indFile.fileId}}">
+                                                            ng-href="/rest/sample/download?fileId={{indFile.fileId}}">
                                                         {{indFile.URI}}
                                                     </a>
-                                                    &nbsp;[<a class="disclaimerLink" href="/caNanoLab/html/cananoDisclaimer.html" target="new">Disclaimer</a>]
+                                                    &nbsp;[<a class="disclaimerLink" href="/html/cananoDisclaimer.html" target="new">Disclaimer</a>]
                                             </span>
                                             <span ng-if="indFile.isImage">
                                                 {{indFile.Title}}
                                                 <br />
-                                                <a href="" ng-click="popImage('/caNanoLab/rest/sample/downloadImage?fileId={{indFile.fileId}}', '{{indFile.fileId}}'); return false;">
-                                                    <img src="/caNanoLab/rest/sample/downloadImage?fileId={{indFile.fileId}}" border="0" width="150" alt="uploaded image">
+                                                <a href="" ng-click="popImage('/rest/sample/downloadImage?fileId={{indFile.fileId}}', '{{indFile.fileId}}'); return false;">
+                                                    <img src="/rest/sample/downloadImage?fileId={{indFile.fileId}}" border="0" width="150" alt="uploaded image">
                                                 </a>
                                             </span>
                                             <span ng-if="indFile.ExternalURI == 'false' && !indFile.isImage">
                                                 <a
-                                                        ng-href="/caNanoLab/rest/sample/download?fileId={{indFile.fileId}}">
+                                                        ng-href="/rest/sample/download?fileId={{indFile.fileId}}">
                                                     {{indFile.Title}} </a>
                                             </span>
                                 </td>

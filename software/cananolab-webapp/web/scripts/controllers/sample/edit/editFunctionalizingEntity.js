@@ -28,10 +28,10 @@ var app = angular.module('angularApp')
         $scope.addNewFile = false;
         $scope.selectedFileName = '';
 
-        var uploadUrl = '/caNanoLab/rest/core/uploadFile';
+        var uploadUrl = '/rest/core/uploadFile';
         $scope.ie9 = false;
         if (navigator.appVersion.indexOf("MSIE 9.") != -1) {
-            uploadUrl = '/caNanoLab/uploadFile';
+            uploadUrl = '/uploadFile';
             $scope.ie9 = true;
         }
 
@@ -55,7 +55,7 @@ var app = angular.module('angularApp')
 
             $http({
                 method: 'GET',
-                url: '/caNanoLab/rest/functionalizingEntity/setup?sampleId=' + $scope.sampleId
+                url: '/rest/functionalizingEntity/setup?sampleId=' + $scope.sampleId
             }).
             then(function (data, status, headers, config) {
                 data = data['data']
@@ -89,13 +89,13 @@ var app = angular.module('angularApp')
         $scope.showProperties = function () {
             if ($scope.funcEntityForm.type == 'biopolymer') {
                 $scope.withProperties = true;
-                $scope.detailsPage = '/caNanoLab/views/sample/composition/functionalizingentity/BiopolymerInfoEdit.html';
+                $scope.detailsPage = '/views/sample/composition/functionalizingentity/BiopolymerInfoEdit.html';
             } else if ($scope.funcEntityForm.type == 'antibody') {
                 $scope.withProperties = true;
-                $scope.detailsPage = '/caNanoLab/views/sample/composition/functionalizingentity/AntibodyInfoEdit.html';
+                $scope.detailsPage = '/views/sample/composition/functionalizingentity/AntibodyInfoEdit.html';
             } else if ($scope.funcEntityForm.type == 'small molecule') {
                 $scope.withProperties = true;
-                $scope.detailsPage = '/caNanoLab/views/sample/composition/functionalizingentity/SmallMoleculeInfoEdit.html';
+                $scope.detailsPage = '/views/sample/composition/functionalizingentity/SmallMoleculeInfoEdit.html';
             } else {
                 $scope.withProperties = false;
             }
@@ -107,7 +107,7 @@ var app = angular.module('angularApp')
 
                 $http({
                     method: 'GET',
-                    url: '/caNanoLab/rest/functionalizingEntity/edit?sampleId=' + $scope.sampleId + '&dataId=' + $scope.funcEntityId
+                    url: '/rest/functionalizingEntity/edit?sampleId=' + $scope.sampleId + '&dataId=' + $scope.funcEntityId
                 }).
                 then(function (data, status, headers, config) {
                     data = data['data']
@@ -149,7 +149,7 @@ var app = angular.module('angularApp')
 
             $http({
                 method: 'POST',
-                url: '/caNanoLab/rest/functionalizingEntity/submit',
+                url: '/rest/functionalizingEntity/submit',
                 data: $scope.funcEntityForm
             }).
             then(function (data, status, headers, config) {
@@ -180,7 +180,7 @@ var app = angular.module('angularApp')
 
                 $http({
                     method: 'POST',
-                    url: '/caNanoLab/rest/functionalizingEntity/delete',
+                    url: '/rest/functionalizingEntity/delete',
                     data: $scope.funcEntityForm
                 }).
                 then(function (data, status, headers, config) {
@@ -260,7 +260,7 @@ var app = angular.module('angularApp')
                 $scope.messages = [];
                 $http({
                     method: 'POST',
-                    url: '/caNanoLab/rest/functionalizingEntity/saveFunction',
+                    url: '/rest/functionalizingEntity/saveFunction',
                     data: $scope.funcEntityForm
                 }).
                 then(function (data, status, headers, config) {
@@ -344,7 +344,7 @@ var app = angular.module('angularApp')
                 $scope.loader = true;
                 $http({
                     method: 'POST',
-                    url: '/caNanoLab/rest/functionalizingEntity/removeFunction',
+                    url: '/rest/functionalizingEntity/removeFunction',
                     data: $scope.funcEntityForm
                 }).
                 then(function (data, status, headers, config) {
@@ -611,7 +611,7 @@ var app = angular.module('angularApp')
 
                 $http({
                     method: 'POST',
-                    url: '/caNanoLab/rest/functionalizingEntity/removeFile',
+                    url: '/rest/functionalizingEntity/removeFile',
                     data: $scope.funcEntityForm
                 }).
                 then(function (data, status, headers, config) {
@@ -730,7 +730,7 @@ var app = angular.module('angularApp')
             $scope.messages = [];
             $http({
                 method: 'POST',
-                url: '/caNanoLab/rest/functionalizingEntity/saveFile',
+                url: '/rest/functionalizingEntity/saveFile',
                 data: $scope.funcEntityForm
             }).
             then(function (data, status, headers, config) {
