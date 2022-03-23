@@ -133,8 +133,13 @@ public abstract class BaseAnnotationBO extends AbstractDispatchBO
 			System.out.println("GCPStorage downloadFile() blob path: " + blobFullPath);
 
 			Storage storage = GCPStorageUtil.getGCPStorageService();
+			System.out.println("GCPStorage downloadFile() got Storage service");
+
 			Bucket assetBucket = storage.get(bucketPath);
+			System.out.println("GCPStorage downloadFile() got bucket" + bucketPath);
+
 			Blob blob = assetBucket.get(folderPath + "/" + fileUri);
+			System.out.println("GCPStorage downloadFile() got blob: " + folderPath + "/" + fileUri);
 
 			if (blob.exists()) {
 				System.out.println("GCPStorage found blob for requested file, downloading...");
@@ -143,10 +148,13 @@ public abstract class BaseAnnotationBO extends AbstractDispatchBO
 
 				OutputStream out = response.getOutputStream();
 				blob.downloadTo(out);
+			} else {
+				System.out.println("GCPStorage downloadFile() blob does not exist");
 			}
 		}
 		catch (Exception e) {
 			String msg = PropertyUtil.getProperty("sample", "error.noFile");
+			System.out.println("GCPStorage downloadFile() throw exception: " + e.toString());
 			throw new FileException("Target download file doesn't exist");
 		}
 		
