@@ -50,14 +50,14 @@ var app = angular.module('angularApp')
 				$rootScope.modalOpen = false;
 				$http({
 					method: 'GET',
-					url: '/caNanoLab/rest/core/getTabs'
+					url: '/rest/core/getTabs'
 				}) // send heartbeat type call //
 			});
 
 		function logout() {
 			$http({
 				method: 'GET',
-				url: '/caNanoLab/logout'
+				url: '/logout'
 			}).
 			then(function (data, status, headers, config) {
 				data = data['data']
@@ -75,7 +75,7 @@ var app = angular.module('angularApp')
 			$rootScope.modalOpen = false;
 			$http({
 				method: 'GET',
-				url: '/caNanoLab/rest/core/getTabs'
+				url: '/rest/core/getTabs'
 			}) // send heartbeat type call //				
 		};
 	});

@@ -30,7 +30,7 @@ var app = angular.module('angularApp')
 
 
     // $scope.$on('$viewContentLoaded', function(){
-    //   $http({method: 'GET', url: '/caNanoLab/rest/publication/setup'}).
+    //   $http({method: 'GET', url: '/rest/publication/setup'}).
     //   then(function(data, status, headers, config) { data=data['data']
     //     $scope.data = data;
     //     $scope.researchArea = {};
@@ -65,7 +65,7 @@ var app = angular.module('angularApp')
 
     //   }
 
-    //   $http({method: 'POST', url: '/caNanoLab/rest/publication/searchPublication',data: $scope.searchPublicationForm}).
+    //   $http({method: 'POST', url: '/rest/publication/searchPublication',data: $scope.searchPublicationForm}).
     //   then(function(data, status, headers, config) { data=data['data']
     //     // $rootScope.sampleData = data;
     //     $scope.publicationData.data = data;

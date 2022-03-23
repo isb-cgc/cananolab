@@ -13,7 +13,7 @@ var app = angular.module('angularApp')
                 $scope.loader = true;
                 $http({
                     method: 'GET',
-                    url: '/caNanoLab/rest/useraccount/read?username=' + $scope.userTag
+                    url: '/rest/useraccount/read?username=' + $scope.userTag
                 }).
                 then(function (data, status, headers, config) {
                     data = data['data']
@@ -79,7 +79,7 @@ var app = angular.module('angularApp')
 
             $http({
                 method: 'POST',
-                url: '/caNanoLab/rest/useraccount/create',
+                url: '/rest/useraccount/create',
                 data: $scope.userForm
             }).
             then(function (data, status, headers, config) {
@@ -120,7 +120,7 @@ var app = angular.module('angularApp')
 
             $http({
                 method: 'POST',
-                url: '/caNanoLab/rest/useraccount/update',
+                url: '/rest/useraccount/update',
                 data: $scope.userForm
             }).
             then(function (data, status, headers, config) {
@@ -143,7 +143,7 @@ var app = angular.module('angularApp')
             $scope.resetPwd.username = $scope.userForm.username;
             $http({
                 method: 'POST',
-                url: '/caNanoLab/rest/useraccount/resetpwd',
+                url: '/rest/useraccount/resetpwd',
                 data: $scope.resetPwd,
                 transformRequest: function (obj) {
                     var str = [];

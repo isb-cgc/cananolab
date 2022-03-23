@@ -18,7 +18,7 @@ var app = angular.module('angularApp')
 
             $http({
                 method: 'GET',
-                url: '/caNanoLab/rest/useraccount/search',
+                url: '/rest/useraccount/search',
                 params: $scope.searchUserForm
             }).
             then(function (data, status, headers, config) {

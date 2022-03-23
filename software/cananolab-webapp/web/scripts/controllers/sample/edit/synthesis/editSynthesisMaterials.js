@@ -76,7 +76,7 @@ var app = angular.module('angularApp')
     if (confirm("Are you sure you want to delete?")) {
         $http({
           method: 'POST',
-          url: '/caNanoLab/rest/synthesisMaterial/delete',
+          url: '/rest/synthesisMaterial/delete',
           data: $scope.material
         }).
         then(function (data, status, headers, config) {
@@ -240,7 +240,7 @@ var app = angular.module('angularApp')
     fd.append('type', 'image');
     fd.append('title', 'title');
 */
-    $http.post('/caNanoLab/rest/core/uploadFile', fd, { withCredentials: false, headers: { 'Content-Type': undefined }, transformRequest: angular.identity }).
+    $http.post('/rest/core/uploadFile', fd, { withCredentials: false, headers: { 'Content-Type': undefined }, transformRequest: angular.identity }).
       then(function (data, status, headers, config) {
       data = data['data']
       $scope.uploadComplete = true;
@@ -251,7 +251,7 @@ var app = angular.module('angularApp')
           $scope.material['fileElements'] = $scope.fileArray;
           $scope.material['fileBeingEdited'] = $scope.fileArray[0];
 
-          $http.post('/caNanoLab/rest/synthesisMaterial/saveFile', $scope.material).
+          $http.post('/rest/synthesisMaterial/saveFile', $scope.material).
           then(function(data) {
             data = data['data']
             console.log('done');
@@ -269,7 +269,7 @@ var app = angular.module('angularApp')
           $scope.material['fileBeingEdited'] = $scope.fileArray[0];
           $scope.fileArray[$scope.fileFormIndex]=$scope.currentFile;
           
-          $http.post('/caNanoLab/rest/synthesisMaterial/saveFile', $scope.material).
+          $http.post('/rest/synthesisMaterial/saveFile', $scope.material).
           then(function(data) {
             data = data['data']
             console.log('done')
@@ -314,7 +314,7 @@ var app = angular.module('angularApp')
     $scope.material['materialElementBeingEdited']=me;
     $http({
       method: 'POST',
-      url: '/caNanoLab/rest/synthesisMaterial/saveSynthesisMaterialElement',
+      url: '/rest/synthesisMaterial/saveSynthesisMaterialElement',
       data: $scope.material
     }).
     then(function (data, status, headers, config) {
@@ -331,7 +331,7 @@ var app = angular.module('angularApp')
   $scope.saveMaterial = function () {
     // $scope.fileMaterial = angular.copy($scope.material);
     // $scope.fileMaterial['fileBeingEdited'] = { "uri": $scope.somefile.name, "title": "test", "type": "document", "uriExternal": false };
-    // $http({ method: 'POST', url: '/caNanoLab/rest/synthesisMaterial/saveFile', data: $scope.fileMaterial }).
+    // $http({ method: 'POST', url: '/rest/synthesisMaterial/saveFile', data: $scope.fileMaterial }).
       //   then(function (data, status, headers, config) { data=data['data']
     //     $location.search({ 'message': 'Synthesis Material successfully saved.', 'sampleId': $scope.sampleId }).path('/editSynthesis').replace();
     //   }).
@@ -341,7 +341,7 @@ var app = angular.module('angularApp')
 
       $http({
         method: 'POST',
-        url: '/caNanoLab/rest/synthesisMaterial/submit',
+        url: '/rest/synthesisMaterial/submit',
         data: $scope.material
       }).
       then(function (data, status, headers, config) {
@@ -352,7 +352,7 @@ var app = angular.module('angularApp')
 
         $http({
           method: 'POST',
-          url: '/caNanoLab/rest/synthesisMaterial/saveFile',
+          url: '/rest/synthesisMaterial/saveFile',
           data: [$scope.material]
         }).
         then(function () {
@@ -391,7 +391,7 @@ var app = angular.module('angularApp')
         $scope.material.fileElements = $scope.fileArray;
         $http({
           method: 'POST',
-          url: '/caNanoLab/rest/synthesisMaterial/removeFile',
+          url: '/rest/synthesisMaterial/removeFile',
           data: $scope.material
         }).
         then(function (data, status, headers, config) {

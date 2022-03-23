@@ -26,17 +26,17 @@ var app = angular.module('angularApp')
         $scope.externalUrlEnabled = false;
         $scope.addNewFile = false;
         $scope.selectedFileName = '';
-        var uploadUrl = '/caNanoLab/rest/core/uploadFile';
+        var uploadUrl = '/rest/core/uploadFile';
         $scope.ie9 = false;
         if (navigator.appVersion.indexOf("MSIE 9.") != -1) {
-            uploadUrl = '/caNanoLab/uploadFile';
+            uploadUrl = '/uploadFile';
             $scope.ie9 = true;
         }
 
-        var uploadUrl = '/caNanoLab/rest/core/uploadFile';
+        var uploadUrl = '/rest/core/uploadFile';
         $scope.ie9 = false;
         if (navigator.appVersion.indexOf("MSIE 9.") != -1) {
-            uploadUrl = '/caNanoLab/uploadFile';
+            uploadUrl = '/uploadFile';
             $scope.ie9 = true;
         }
 
@@ -45,7 +45,7 @@ var app = angular.module('angularApp')
             $scope.loader = true;
             $http({
                 method: 'GET',
-                url: '/caNanoLab/rest/chemicalAssociation/setup?sampleId=' + $scope.sampleId
+                url: '/rest/chemicalAssociation/setup?sampleId=' + $scope.sampleId
             }).
             then(function (data, status, headers, config) {
                 data = data['data']
@@ -72,7 +72,7 @@ var app = angular.module('angularApp')
 
                 $http({
                     method: 'GET',
-                    url: '/caNanoLab/rest/chemicalAssociation/edit?sampleId=' + $scope.sampleId + '&dataId=' + $scope.chemAssociationId
+                    url: '/rest/chemicalAssociation/edit?sampleId=' + $scope.sampleId + '&dataId=' + $scope.chemAssociationId
                 }).
                 then(function (data, status, headers, config) {
                     data = data['data']
@@ -117,7 +117,7 @@ var app = angular.module('angularApp')
 
                 $http({
                     method: 'POST',
-                    url: '/caNanoLab/rest/chemicalAssociation/getAssociatedElementOptions?compositionType=' + compositionType
+                    url: '/rest/chemicalAssociation/getAssociatedElementOptions?compositionType=' + compositionType
                 }).
                 then(function (data, status, headers, config) {
                     data = data['data']
@@ -171,7 +171,7 @@ var app = angular.module('angularApp')
 
                     $http({
                         method: 'POST',
-                        url: '/caNanoLab/rest/chemicalAssociation/getComposingElementsByNanomaterialEntityId?id=' + associatedElementId
+                        url: '/rest/chemicalAssociation/getComposingElementsByNanomaterialEntityId?id=' + associatedElementId
                     }).
                     then(function (data, status, headers, config) {
                         data = data['data']
@@ -208,7 +208,7 @@ var app = angular.module('angularApp')
 
             $http({
                 method: 'POST',
-                url: '/caNanoLab/rest/chemicalAssociation/submit',
+                url: '/rest/chemicalAssociation/submit',
                 data: $scope.chemAssociationForm
             }).
             then(function (data, status, headers, config) {
@@ -239,7 +239,7 @@ var app = angular.module('angularApp')
 
                 $http({
                     method: 'POST',
-                    url: '/caNanoLab/rest/chemicalAssociation/delete',
+                    url: '/rest/chemicalAssociation/delete',
                     data: $scope.chemAssociationForm
                 }).
                 then(function (data, status, headers, config) {
@@ -363,7 +363,7 @@ var app = angular.module('angularApp')
 
                 $http({
                     method: 'POST',
-                    url: '/caNanoLab/rest/chemicalAssociation/removeFile',
+                    url: '/rest/chemicalAssociation/removeFile',
                     data: $scope.chemAssociationForm
                 }).
                 then(function (data, status, headers, config) {
@@ -484,7 +484,7 @@ var app = angular.module('angularApp')
             $scope.messages = [];
             $http({
                 method: 'POST',
-                url: '/caNanoLab/rest/chemicalAssociation/saveFile',
+                url: '/rest/chemicalAssociation/saveFile',
                 data: $scope.chemAssociationForm
             }).
             then(function (data, status, headers, config) {

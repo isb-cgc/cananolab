@@ -47,7 +47,7 @@ var app = angular.module('angularApp')
       $scope.loader = true;
       $http({
         method: 'GET',
-        url: '/caNanoLab/rest/sample/fullSampleExportJsonAll',
+        url: '/rest/sample/fullSampleExportJsonAll',
         params: {
           "sampleIds": $scope.sampleId.data
         }
@@ -77,7 +77,7 @@ var app = angular.module('angularApp')
       $scope.loader = true;
       $http({
         method: 'GET',
-        url: '/caNanoLab/rest/sample/fullSampleExportXmlAll',
+        url: '/rest/sample/fullSampleExportXmlAll',
         params: {
           "sampleIds": $scope.sampleId.data
         }
@@ -117,7 +117,7 @@ var app = angular.module('angularApp')
       $scope.loader = true;
       $http({
         method: 'GET',
-        url: '/caNanoLab/rest/sample/view?sampleId=' + $scope.sampleId.data
+        url: '/rest/sample/view?sampleId=' + $scope.sampleId.data
       }).
       then(function (data, status, headers, config) {
         data = data['data']

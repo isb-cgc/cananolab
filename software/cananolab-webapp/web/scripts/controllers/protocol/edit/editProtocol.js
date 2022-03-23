@@ -49,10 +49,10 @@ var app = angular.module('angularApp')
         $scope.fileReaderSupported = window.FileReader != null && (window.FileAPI == null || FileAPI.html5 != false);
         $scope.selectedFileName = '';
 
-        var uploadUrl = '/caNanoLab/rest/core/uploadFile';
+        var uploadUrl = '/rest/core/uploadFile';
         $scope.ie9 = false;
         if (navigator.appVersion.indexOf("MSIE 9.") != -1) {
-            uploadUrl = '/caNanoLab/uploadFile';
+            uploadUrl = '/uploadFile';
             $scope.ie9 = true;
         }
 
@@ -60,7 +60,7 @@ var app = angular.module('angularApp')
         $scope.$on('$viewContentLoaded', function () {
             $http({
                 method: 'GET',
-                url: '/caNanoLab/rest/protocol/setup'
+                url: '/rest/protocol/setup'
             }).
             then(function (data, status, headers, config) {
                 data = data['data']
@@ -83,7 +83,7 @@ var app = angular.module('angularApp')
                 $scope.loader = true;
                 $http({
                     method: 'GET',
-                    url: '/caNanoLab/rest/protocol/edit?protocolId=' + $scope.protocolId
+                    url: '/rest/protocol/edit?protocolId=' + $scope.protocolId
                 }).
                 then(function (data, status, headers, config) {
                     data = data['data']
@@ -148,7 +148,7 @@ var app = angular.module('angularApp')
 
             $http({
                 method: 'POST',
-                url: '/caNanoLab/rest/protocol/submitProtocol',
+                url: '/rest/protocol/submitProtocol',
                 data: $scope.protocolForm
             }).
             then(function (data, status, headers, config) {
@@ -185,7 +185,7 @@ var app = angular.module('angularApp')
                 $scope.loader = true;
                 $http({
                     method: 'POST',
-                    url: '/caNanoLab/rest/protocol/deleteProtocol',
+                    url: '/rest/protocol/deleteProtocol',
                     data: $scope.protocolForm
                 }).
                 then(function (data, status, headers, config) {
@@ -222,7 +222,7 @@ var app = angular.module('angularApp')
 
             $http({
                 method: 'GET',
-                url: '/caNanoLab/rest/protocol/getProtocol?protocolType=' + $scope.protocolForm.type + '&protocolName=' + $scope.protocolForm.name + '&protocolVersion=' + $scope.protocolForm.version
+                url: '/rest/protocol/getProtocol?protocolType=' + $scope.protocolForm.type + '&protocolName=' + $scope.protocolForm.name + '&protocolVersion=' + $scope.protocolForm.version
             }).
             then(function (data, status, headers, config) {
                 data = data['data']
@@ -259,7 +259,7 @@ var app = angular.module('angularApp')
 
             $http({
                 method: 'POST',
-                url: '/caNanoLab/rest/protocol/submitForReview',
+                url: '/rest/protocol/submitForReview',
                 data: $scope.reviewData
             }).
             then(function (data, status, headers, config) {
@@ -357,7 +357,7 @@ var app = angular.module('angularApp')
             $scope.loader = true;
             $http({
                 method: 'GET',
-                url: '/caNanoLab/rest/core/getCollaborationGroup?searchStr=' + $scope.accessForm.theAccess.recipient
+                url: '/rest/core/getCollaborationGroup?searchStr=' + $scope.accessForm.theAccess.recipient
             }).
             then(function (data, status, headers, config) {
                 data = data['data']
@@ -385,7 +385,7 @@ var app = angular.module('angularApp')
             $scope.loader = true;
             $http({
                 method: 'GET',
-                url: '/caNanoLab/rest/core/getUsers?searchStr=' + $scope.accessForm.theAccess.recipient
+                url: '/rest/core/getUsers?searchStr=' + $scope.accessForm.theAccess.recipient
             }).
             then(function (data, status, headers, config) {
                 data = data['data']
@@ -426,7 +426,7 @@ var app = angular.module('angularApp')
 
             $http({
                 method: 'POST',
-                url: '/caNanoLab/rest/protocol/saveAccess',
+                url: '/rest/protocol/saveAccess',
                 data: $scope.protocolForm
             }).
             then(function (data, status, headers, config) {
@@ -510,7 +510,7 @@ var app = angular.module('angularApp')
 
                 $http({
                     method: 'POST',
-                    url: '/caNanoLab/rest/protocol/deleteAccess',
+                    url: '/rest/protocol/deleteAccess',
                     data: $scope.protocolForm
                 }).
                 then(function (data, status, headers, config) {

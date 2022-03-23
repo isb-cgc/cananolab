@@ -9,7 +9,7 @@
         <td align="right" width="30%">
         <a ng-disabled="loader" class="helpText" ng-click="print()" href="" target="_blank">Print</a>           
         <!-- <a class="helpText" ng-href="views/printPublication.html?sampleId={{sampleId.data}}" target="_blank">Print</a>  --> 
-        <a ng-disabled="loader" class="helpText" ng-href="/caNanoLab/rest/publication/summaryExport?sampleId={{sampleId.data}}&type=all">Export</a>         
+        <a ng-disabled="loader" class="helpText" ng-href="/rest/publication/summaryExport?sampleId={{sampleId.data}}&type=all">Export</a>
           <a class="helpText" href=
           "javascript:openHelpWindow('https://wiki.nci.nih.gov/display/caNanoLab/Managing+Publications+in+caNanoLab')">Help</a>   <a class=
           "helpText" href="javascript:openHelpWindow('https://wiki.nci.nih.gov/display/caNanoLab/caNanoLab+Glossary')">Glossary</a>  
@@ -42,7 +42,7 @@
                             <a name="{{type}}" class="anchorLink"><span
                                     class="summaryViewHeading">{{type}}</span> </a>
                                 &nbsp;&nbsp;
-                                <a href="/caNanoLab/#/submitPublication?sampleId={{sampleId.data}}&&type={{type}}&&sampleName={{sampleName.name}}" class="addlink"  ng-if="tabs.userLoggedIn"><button class="btn-canano btn-canano-primary btn-canano-xs">Add</button>
+                                <a href="/#/submitPublication?sampleId={{sampleId.data}}&&type={{type}}&&sampleName={{sampleName.name}}" class="addlink"  ng-if="tabs.userLoggedIn"><button class="btn-canano btn-canano-primary btn-canano-xs">Add</button>
 <!--                                     <img align="middle" src="images/btn-canano_add.gif" border="0" alt="add new {{type}}"> -->
                                 </a>
                         </th>

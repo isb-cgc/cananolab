@@ -10,7 +10,7 @@ var app = angular.module('angularApp')
     $scope.$on('$viewContentLoaded', function () {
       $http({
         method: 'GET',
-        url: '/caNanoLab/rest/sample/setup'
+        url: '/rest/sample/setup'
       }).
       then(function (data, status, headers, config) {
         data = data['data']
@@ -30,7 +30,7 @@ var app = angular.module('angularApp')
     $scope.setCharacterizationOptionsByCharType = function () {
       $http({
         method: 'GET',
-        url: '/caNanoLab/rest/sample/getCharacterizationByType',
+        url: '/rest/sample/getCharacterizationByType',
         params: {
           "type": $scope.searchSampleForm.characterizationType
         }
@@ -53,7 +53,7 @@ var app = angular.module('angularApp')
 
       $http({
         method: 'POST',
-        url: '/caNanoLab/rest/sample/searchSample',
+        url: '/rest/sample/searchSample',
         data: $scope.searchSampleForm
       }).
       then(function (data, status, headers, config) {

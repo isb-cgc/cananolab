@@ -70,7 +70,7 @@ var app = angular.module('angularApp')
                     $scope.loaderMessage = "Deleting";
                     $http({
                         method: 'POST',
-                        url: '/caNanoLab/rest/sample/deletePOC',
+                        url: '/rest/sample/deletePOC',
                         data: $scope.poc
                     }).
                     then(function (data, status, headers, config) {
@@ -113,7 +113,7 @@ var app = angular.module('angularApp')
 
             $http({
                 method: 'POST',
-                url: '/caNanoLab/rest/sample/savePOC',
+                url: '/rest/sample/savePOC',
                 data: $scope.sampleData
             }).
             then(function (data, status, headers, config) {

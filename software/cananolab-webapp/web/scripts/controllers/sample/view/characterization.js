@@ -52,7 +52,7 @@ app.controller('CharacterizationCtrl', function (sampleService, utilsService, na
   $scope.loader = true;
   $http({
     method: 'GET',
-    url: '/caNanoLab/rest/sample/characterizationView?sampleId=' + $scope.sampleId.data
+    url: '/rest/sample/characterizationView?sampleId=' + $scope.sampleId.data
   }).
   then(function (data, status, headers, config) {
     data = data['data']

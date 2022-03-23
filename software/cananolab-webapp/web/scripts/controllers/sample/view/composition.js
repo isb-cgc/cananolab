@@ -46,7 +46,7 @@ var app = angular.module('angularApp')
     $scope.loader = true;
     $http({
       method: 'GET',
-      url: '/caNanoLab/rest/composition/summaryView?sampleId=' + $scope.sampleId.data
+      url: '/rest/composition/summaryView?sampleId=' + $scope.sampleId.data
     }).
     then(function (data, status, headers, config) {
       data = data['data']

@@ -17,7 +17,7 @@ var app = angular.module('angularApp')
       $scope.isSearching = true;
       $http({
         method: 'GET',
-        url: '/caNanoLab/rest/customsearch/search?keyword=' + $scope.keyword_search_text
+        url: '/rest/customsearch/search?keyword=' + $scope.keyword_search_text
       }).
 
       then(function (data, status, headers, config) {

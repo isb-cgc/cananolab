@@ -13,7 +13,7 @@ angular.module('angularApp')
             $scope.loader = true;
             $http({
                 method: 'GET',
-                url: '/caNanoLab/rest/sample/getSampleNames'
+                url: '/rest/sample/getSampleNames'
             }).
             then(function (data, status, headers, config) {
                 data = data['data']
@@ -40,7 +40,7 @@ angular.module('angularApp')
 
             $http({
                 method: 'POST',
-                url: '/caNanoLab/rest/sample/copySample',
+                url: '/rest/sample/copySample',
                 data: $scope.cloneForm
             }).
             then(function (data, status, headers, config) {

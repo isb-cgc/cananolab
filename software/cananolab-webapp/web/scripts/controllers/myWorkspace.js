@@ -12,7 +12,7 @@ var app = angular.module('angularApp')
             $scope.loader = true;
             $http({
                 method: 'GET',
-                url: '/caNanoLab/rest/core/getWorkspaceItems?type=sample'
+                url: '/rest/core/getWorkspaceItems?type=sample'
             }).
             then(function (data, status, headers, config) {
                 data = data['data']
@@ -30,7 +30,7 @@ var app = angular.module('angularApp')
             $scope.loader = true;
             $http({
                 method: 'GET',
-                url: '/caNanoLab/rest/core/getWorkspaceItems?type=protocol'
+                url: '/rest/core/getWorkspaceItems?type=protocol'
             }).
             then(function (data, status, headers, config) {
                 data = data['data']
@@ -49,7 +49,7 @@ var app = angular.module('angularApp')
             $scope.loader = true;
             $http({
                 method: 'GET',
-                url: '/caNanoLab/rest/core/getWorkspaceItems?type=publication'
+                url: '/rest/core/getWorkspaceItems?type=publication'
             }).
             then(function (data, status, headers, config) {
                 data = data['data']
@@ -83,7 +83,7 @@ var app = angular.module('angularApp')
 
                 $http({
                     method: 'GET',
-                    url: '/caNanoLab/rest/sample/deleteSampleFromWorkspace',
+                    url: '/rest/sample/deleteSampleFromWorkspace',
                     params: {
                         "sampleId": sampleId
                     }
@@ -114,7 +114,7 @@ var app = angular.module('angularApp')
 
                 $http({
                     method: 'GET',
-                    url: '/caNanoLab/rest/protocol/deleteProtocolById',
+                    url: '/rest/protocol/deleteProtocolById',
                     params: {
                         "protocolId": protocolId
                     }
@@ -154,7 +154,7 @@ var app = angular.module('angularApp')
 
                 $http({
                     method: 'GET',
-                    url: '/caNanoLab/rest/publication/deletePublicationById',
+                    url: '/rest/publication/deletePublicationById',
                     params: {
                         "publicationId": publicationId
                     }

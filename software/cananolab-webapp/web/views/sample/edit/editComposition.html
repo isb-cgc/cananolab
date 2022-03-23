@@ -9,7 +9,7 @@
         <td align="right" width="30%">
         <a class="helpText" ng-click="print()" href="" target="_blank">Print</a>   
         <!-- <a class="helpText" ng-href="views/sample/composition/printComposition.html?sampleId={{sampleId.data}}" target="_blank">Print</a> -->
-        <a class="helpText" ng-href="/caNanoLab/rest/composition/summaryExport?sampleId={{sampleId.data}}&type=all">Export</a>
+        <a class="helpText" ng-href="/rest/composition/summaryExport?sampleId={{sampleId.data}}&type=all">Export</a>
 
    <a class="helpText" href="javascript:openHelpWindow('https://wiki.nci.nih.gov/display/caNanoLab/Managing+Sample+Composition+Annotations#ManagingSampleCompositionAnnotations-Composition')">Help</a> 
 
@@ -64,7 +64,7 @@
                 <jsp:param name="index" value="{{index}}" />
             </jsp:include> -->
 
-            <ng-include src="'/caNanoLab/views/sample/composition/nanomaterialEntity/nanoMaterialEntitySummaryEdit.html'"></ng-include>
+            <ng-include src="'/views/sample/composition/nanomaterialEntity/nanoMaterialEntitySummaryEdit.html'"></ng-include>
 
         </td>
     </tr>
@@ -80,7 +80,7 @@
                 <jsp:param name="index" value="{{index}}" />
             </jsp:include> -->
 
-            <ng-include src="'/caNanoLab/views/sample/composition/functionalizingentity/functionalizingEntitySummaryEdit.html'"></ng-include>
+            <ng-include src="'/views/sample/composition/functionalizingentity/functionalizingEntitySummaryEdit.html'"></ng-include>
 
         </td>
     </tr>
@@ -95,7 +95,7 @@
                 <jsp:param name="index" value="${index}" />
             </jsp:include> -->
 
-            <ng-include src="'/caNanoLab/views/sample/composition/ChemicalAssociationSummaryEdit.html'"></ng-include>
+            <ng-include src="'/views/sample/composition/ChemicalAssociationSummaryEdit.html'"></ng-include>
 
         </td>
     </tr>
@@ -110,7 +110,7 @@
                 <jsp:param name="index" value="${index}" />
             </jsp:include>  -->
 
-            <ng-include src="'/caNanoLab/views/sample/composition/compositionFileSummaryEdit.html'"></ng-include>
+            <ng-include src="'/views/sample/composition/compositionFileSummaryEdit.html'"></ng-include>
 
         </td>
     </tr>
