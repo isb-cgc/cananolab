@@ -36,6 +36,7 @@ function wait_for_server() {
 # Check to see if wildfly's process is still running
 function check_for_wildfly() {
   ps -ef | grep wildfly | grep -v grep | grep -v "wildfly-setup.sh" | grep -v "start-wildfly.sh" | awk '{print $2}'
+
 }
 
 echo "Waiting while Wildfly starts:"
@@ -87,6 +88,8 @@ while [ ! -z "${WILDFLY_PID}" ] && [ $counter -lt 5 ]; do
   ((counter=counter+1))
   sleep 6
 done
+
+ps -ef | grep wildfly | grep -v grep
 
 if [ ! -z "${WILDFLY_PID}" ]; then
   echo "Wildfly failed to stop in time!"
