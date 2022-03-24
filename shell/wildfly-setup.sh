@@ -83,7 +83,8 @@ echo "Deployment completed - stopping Wildfly"
 ${JBOSS_CLI} -c --controller=localhost:9990 ":shutdown"
 counter=0
 WILDFLY_PID=`check_for_wildfly`
-echo "WILDFLY_PID: ${WILDFLY_PID}"
+echo "WILDFLY_PID(s) seen:"
+echo "${WILDFLY_PID}"
 while [ ! -z "${WILDFLY_PID}" ] && [ $counter -lt 5 ]; do
   echo "JBoss is still running. Continuing to wait..."
   WILDFLY_PID=`check_for_wildfly`
@@ -91,10 +92,9 @@ while [ ! -z "${WILDFLY_PID}" ] && [ $counter -lt 5 ]; do
   sleep 6
 done
 
-echo "WILDFLY_PID: ${WILDFLY_PID}"
-
 if [ ! -z "${WILDFLY_PID}" ]; then
-  echo "Wildfly failed to stop in time!"
+  echo "Wildfly failed to stop in time! WILDFLY_PID(s) still seen:"
+  echo "${WILDFLY_PID}"
   exit 1
 fi
 
