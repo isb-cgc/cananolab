@@ -37,7 +37,7 @@ function wait_for_server() {
 
 # Check to see if wildfly's process is still running
 function check_for_wildfly() {
-  pids=$(ps -ef | grep wildfly | grep -v grep | grep -v setup | grep -v start | awk '{print $2}')
+  pids=$(ps -ef | grep wildfly | grep -v grep | grep -v "wildfly-setup.sh" | grep -v "start-wildfly.sh" | awk '{print $2}')
   echo "${pids}"
 }
 
