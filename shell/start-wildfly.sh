@@ -2,6 +2,8 @@
 
 export $(cat /local/content/.env | grep -v ^# | xargs) 2> /dev/null
 
+echo "Check to make sure GCP creds aren't coming through: ${GOOGLE_APPLICATION_CREDENTIALS}"
+
 export WILDFLY_HOME=/opt/wildfly-13.0.0.Final
 export WILDFLY_BIN=$WILDFLY_HOME/bin
 
