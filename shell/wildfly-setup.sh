@@ -2,8 +2,6 @@
 
 export $(cat /local/content/.env | grep -v ^# | xargs) 2> /dev/null
 
-echo "Check to make sure GCP creds aren't coming through: ${GOOGLE_APPLICATION_CREDENTIALS}"
-
 export WILDFLY_HOME=/opt/wildfly-13.0.0.Final
 export WILDFLY_BIN=$WILDFLY_HOME/bin
 export JBOSS_CLI=$WILDFLY_BIN/jboss-cli.sh
@@ -38,7 +36,6 @@ function wait_for_server() {
 # Check to see if wildfly's process is still running
 function check_for_wildfly() {
   ps -ef | grep wildfly | grep -v grep | grep -v setup | grep -v start | awk '{print $2}'
-
 }
 
 echo "Waiting while Wildfly starts:"
@@ -77,15 +74,13 @@ if [ $? -ne 0 ]; then
   exit 1
 fi
 
-cp -v /opt/wildfly-13.0.0.Final/standalone/configuration/standalone-full.xml /local/content/caNanoLab/artifacts/
-
 # We need to halt Wildfly here to start it in the main entrypoint process, so that the shell
 # which is running is that one and not this script.
 echo "Deployment completed - stopping Wildfly"
 ${JBOSS_CLI} -c --controller=localhost:9990 ":shutdown"
 counter=0
 WILDFLY_PID=check_for_wildfly
-echo "${pids}"
+echo "WILDFLY_PID: ${WILDFLY_PID}"
 while [ ! -z "${WILDFLY_PID}" ] && [ $counter -lt 5 ]; do
   echo "JBoss is still running. Continuing to wait..."
   WILDFLY_PID=check_for_wildfly
@@ -93,6 +88,8 @@ while [ ! -z "${WILDFLY_PID}" ] && [ $counter -lt 5 ]; do
   sleep 6
 done
 
+echo "WILDFLY_PID: ${WILDFLY_PID}"
+echo "Full list: "
 ps -ef | grep wildfly | grep -v grep | grep -v setup | grep -v start
 
 if [ ! -z "${WILDFLY_PID}" ]; then
