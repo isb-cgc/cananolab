@@ -26,6 +26,6 @@ public class AppPropertyUtil {
             }
         }
 
-        return isLoaded ? appProperties.getProperty(key) : "NotFound";
+        return isLoaded ? appProperties.getProperty(key) : "";
     }
 }
