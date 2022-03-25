@@ -24,9 +24,9 @@ public class DataReviewStatusBean {
 	private String reviewStatus;
 	private String reviewLink;
 
-	private final static String SAMPLE_LINK_PREFIX = "/caNanoLab/#/editSample?sampleId=";
-	private final static String PUBLICATION_LINK_PREFIX = "/caNanoLab/#/editPublication?publicationId=";
-	private final static String PROTOCOL_LINK_PREFIX = "/caNanoLab/#/editProtocol?protocolId=";
+	private final static String SAMPLE_LINK_PREFIX = "/#/editSample?sampleId=";
+	private final static String PUBLICATION_LINK_PREFIX = "/#/editPublication?publicationId=";
+	private final static String PROTOCOL_LINK_PREFIX = "/#/editProtocol?protocolId=";
 
 	public DataReviewStatusBean() {
 	}

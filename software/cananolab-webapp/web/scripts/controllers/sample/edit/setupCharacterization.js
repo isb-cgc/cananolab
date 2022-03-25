@@ -44,10 +44,10 @@ var app = angular.module('angularApp')
 
         $scope.disableChangeColumnOrder = false;
 
-        var uploadUrl = '/caNanoLab/rest/core/uploadFile';
+        var uploadUrl = '/rest/core/uploadFile';
         $scope.ie9 = false;
         if (navigator.appVersion.indexOf("MSIE 9.") != -1) {
-            uploadUrl = '/caNanoLab/uploadFile';
+            uploadUrl = '/uploadFile';
             $scope.ie9 = true;
         }
 
@@ -100,7 +100,7 @@ var app = angular.module('angularApp')
             $scope.saveButton = "Update";
             $http({
                 method: 'GET',
-                url: '/caNanoLab/rest/characterization/setupUpdate?sampleId=' + $scope.sampleId + '&charId=' + $scope.charId + '&charClassName=' + $scope.charClassName + '&charType=' + $scope.type
+                url: '/rest/characterization/setupUpdate?sampleId=' + $scope.sampleId + '&charId=' + $scope.charId + '&charClassName=' + $scope.charClassName + '&charType=' + $scope.type
             }).
             then(function (data, status, headers, config) {
                 data = data['data']
@@ -123,7 +123,7 @@ var app = angular.module('angularApp')
             $scope.saveButton = "Submit";
             $http({
                 method: 'GET',
-                url: '/caNanoLab/rest/characterization/setupAdd?sampleId=' + $scope.sampleId + '&charType=' + $scope.type
+                url: '/rest/characterization/setupAdd?sampleId=' + $scope.sampleId + '&charType=' + $scope.type
             }).
             then(function (data, status, headers, config) {
                 data = data['data']
@@ -174,7 +174,7 @@ var app = angular.module('angularApp')
             $scope.loader = true;
             $http({
                 method: 'GET',
-                url: '/caNanoLab/rest/characterization/getCharNamesByCharType?charType=' + $scope.data.type
+                url: '/rest/characterization/getCharNamesByCharType?charType=' + $scope.data.type
             }).
             then(function (data, status, headers, config) {
                 data = data['data']
@@ -194,7 +194,7 @@ var app = angular.module('angularApp')
             $scope.loader = true;
             $http({
                 method: 'GET',
-                url: '/caNanoLab/rest/characterization/getAssayTypesByCharName?charName=' + $scope.data.name
+                url: '/rest/characterization/getAssayTypesByCharName?charName=' + $scope.data.name
             }).
             then(function (data, status, headers, config) {
                 data = data['data']
@@ -209,7 +209,7 @@ var app = angular.module('angularApp')
             // gets property block //
             $http({
                 method: 'GET',
-                url: '/caNanoLab/rest/characterization/getCharProperties?charName=' + $scope.data.name
+                url: '/rest/characterization/getCharProperties?charName=' + $scope.data.name
             }).
             then(function (data, status, headers, config) {
                 data = data['data']
@@ -225,7 +225,7 @@ var app = angular.module('angularApp')
         $scope.techniqueTypeInstrumentDropdownChanged = function () {
             $http({
                 method: 'GET',
-                url: '/caNanoLab/rest/characterization/getInstrumentTypesByTechniqueType?techniqueType=' + $scope.techniqueInstrument.techniqueType
+                url: '/rest/characterization/getInstrumentTypesByTechniqueType?techniqueType=' + $scope.techniqueInstrument.techniqueType
             }).
             then(function (data, status, headers, config) {
                 data = data['data']
@@ -261,7 +261,7 @@ var app = angular.module('angularApp')
             $scope.techniqueInstrument = item;
             $http({
                 method: 'GET',
-                url: '/caNanoLab/rest/characterization/getInstrumentTypesByTechniqueType?techniqueType=' + $scope.techniqueInstrument.techniqueType
+                url: '/rest/characterization/getInstrumentTypesByTechniqueType?techniqueType=' + $scope.techniqueInstrument.techniqueType
             }).
             then(function (data, status, headers, config) {
                 data = data['data']
@@ -286,7 +286,7 @@ var app = angular.module('angularApp')
             $scope.techniqueInstrument.dirty = 1;
             $http({
                 method: 'POST',
-                url: '/caNanoLab/rest/characterization/saveExperimentConfig',
+                url: '/rest/characterization/saveExperimentConfig',
                 data: $scope.data
             }).
             then(function (data, status, headers, config) {
@@ -307,7 +307,7 @@ var app = angular.module('angularApp')
             $scope.loader = true;
             $http({
                 method: 'POST',
-                url: '/caNanoLab/rest/characterization/removeExperimentConfig',
+                url: '/rest/characterization/removeExperimentConfig',
                 data: $scope.techniqueInstrument
             }).
             then(function (data, status, headers, config) {
@@ -408,7 +408,7 @@ var app = angular.module('angularApp')
 
             $http({
                 method: 'POST',
-                url: '/caNanoLab/rest/characterization/updateDataConditionTable',
+                url: '/rest/characterization/updateDataConditionTable',
                 data: $scope.currentFinding
             }).
             then(function (data, status, headers, config) {
@@ -1011,7 +1011,7 @@ var app = angular.module('angularApp')
         $scope.onColumnTypeDropdownChange = function (newOpen) {
             $http({
                 method: 'GET',
-                url: '/caNanoLab/rest/characterization/getColumnNameOptionsByType?columnType=' + $scope.findingsColumn.columnType + '&charName=' + $scope.data.name + '&assayType=' + $scope.data.assayType
+                url: '/rest/characterization/getColumnNameOptionsByType?columnType=' + $scope.findingsColumn.columnType + '&charName=' + $scope.data.name + '&assayType=' + $scope.data.assayType
             }).
             then(function (data, status, headers, config) {
                 data = data['data']
@@ -1032,7 +1032,7 @@ var app = angular.module('angularApp')
         $scope.getColumnValueUnitOptions = function () {
             $http({
                 method: 'GET',
-                url: '/caNanoLab/rest/characterization/getColumnValueUnitOptions?columnName=' + $scope.findingsColumn.columnName + '&conditionProperty=' + $scope.findingsColumn.conditionProperty
+                url: '/rest/characterization/getColumnValueUnitOptions?columnName=' + $scope.findingsColumn.columnName + '&conditionProperty=' + $scope.findingsColumn.conditionProperty
             }).
             then(function (data, status, headers, config) {
                 data = data['data']
@@ -1050,7 +1050,7 @@ var app = angular.module('angularApp')
             $scope.getColumnValueUnitOptions();
             $http({
                 method: 'GET',
-                url: '/caNanoLab/rest/characterization/getConditionPropertyOptions?columnName=' + $scope.findingsColumn.columnName
+                url: '/rest/characterization/getConditionPropertyOptions?columnName=' + $scope.findingsColumn.columnName
             }).
             then(function (data, status, headers, config) {
                 data = data['data']
@@ -1070,7 +1070,7 @@ var app = angular.module('angularApp')
 
             $http({
                 method: 'POST',
-                url: '/caNanoLab/rest/characterization/setColumnOrder',
+                url: '/rest/characterization/setColumnOrder',
                 data: $scope.currentFinding
             }).
             then(function (data, status, headers, config) {
@@ -1132,7 +1132,7 @@ var app = angular.module('angularApp')
 
             $http({
                 method: 'POST',
-                url: '/caNanoLab/rest/characterization/saveFinding',
+                url: '/rest/characterization/saveFinding',
                 data: $scope.data
             }).
             then(function (data, status, headers, config) {
@@ -1156,7 +1156,7 @@ var app = angular.module('angularApp')
                 $scope.loader = true;
                 $http({
                     method: 'POST',
-                    url: '/caNanoLab/rest/characterization/removeFinding',
+                    url: '/rest/characterization/removeFinding',
                     data: $scope.currentFinding
                 }).
                 then(function (data, status, headers, config) {
@@ -1187,7 +1187,7 @@ var app = angular.module('angularApp')
             $scope.loader = true;
             $http({
                 method: 'POST',
-                url: '/caNanoLab/rest/characterization/saveCharacterization',
+                url: '/rest/characterization/saveCharacterization',
                 data: $scope.data
             }).
             then(function (data, status, headers, config) {
@@ -1210,7 +1210,7 @@ var app = angular.module('angularApp')
             $scope.loader = true;
             $http({
                 method: 'POST',
-                url: '/caNanoLab/rest/characterization/removeCharacterization',
+                url: '/rest/characterization/removeCharacterization',
                 data: $scope.data
             }).
             then(function (data, status, headers, config) {
@@ -1330,7 +1330,7 @@ var app = angular.module('angularApp')
 
                 $http({
                     method: 'POST',
-                    url: '/caNanoLab/rest/characterization/removeFile',
+                    url: '/rest/characterization/removeFile',
                     data: $scope.currentFinding
                 }).
                 then(function (data, status, headers, config) {
@@ -1451,7 +1451,7 @@ var app = angular.module('angularApp')
             $scope.messages = [];
             $http({
                 method: 'POST',
-                url: '/caNanoLab/rest/characterization/saveFile',
+                url: '/rest/characterization/saveFile',
                 data: $scope.currentFinding
             }).
             then(function (data, status, headers, config) {

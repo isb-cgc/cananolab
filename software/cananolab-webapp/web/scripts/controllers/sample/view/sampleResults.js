@@ -31,7 +31,7 @@ var app = angular.module('angularApp')
       $scope.loader = true;
       $http({
         method: 'GET',
-        url: '/caNanoLab/rest/sample/fullSampleExportJsonAll',
+        url: '/rest/sample/fullSampleExportJsonAll',
         params: {
           "sampleIds": utilsService.sampleIdListStrings($scope.sampleData)
         }
@@ -60,7 +60,7 @@ var app = angular.module('angularApp')
       $scope.loader = true;
       $http({
         method: 'GET',
-        url: '/caNanoLab/rest/sample/fullSampleExportXmlAll',
+        url: '/rest/sample/fullSampleExportXmlAll',
         params: {
           "sampleIds": utilsService.sampleIdListStrings($scope.sampleData)
         }
@@ -90,7 +90,7 @@ var app = angular.module('angularApp')
     $scope.openDataAvailability = function (sampleId) {
       $http({
         method: 'GET',
-        url: '/caNanoLab/rest/sample/viewDataAvailability',
+        url: '/rest/sample/viewDataAvailability',
         params: {
           "sampleId": sampleId
         }
@@ -164,7 +164,7 @@ var app = angular.module('angularApp')
 
       $http({
         method: 'POST',
-        url: '/caNanoLab/rest/core/addFavorite',
+        url: '/rest/core/addFavorite',
         data: $scope.favoriteBean
       }).
       then(function (data, status, headers, config) {

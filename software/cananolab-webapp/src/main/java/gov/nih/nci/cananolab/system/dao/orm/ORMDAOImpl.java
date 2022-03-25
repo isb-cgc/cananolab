@@ -107,7 +107,7 @@ public class ORMDAOImpl extends HibernateDaoSupport implements DAO
 		if(request.getIsCount() != null && request.getIsCount())
 		{
 			HibernateCallback callBack = getExecuteCountCriteriaHibernateCallback(obj);
-			Long rowCount = (Long)getHibernateTemplate().execute(callBack);
+			Long rowCount = (Long)getHibernateTemplate().executeWithNativeSession(callBack);
 			log.debug("DetachedCriteria ORMDAOImpl ===== count = " + rowCount);
 
 			rsp.setRowCount(Integer.valueOf(rowCount.intValue()));

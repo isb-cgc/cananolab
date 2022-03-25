@@ -10,7 +10,7 @@ var app = angular.module('angularApp')
         $scope.$on('$viewContentLoaded', function () {
             $http({
                 method: 'GET',
-                url: '/caNanoLab/rest/protocol/setup'
+                url: '/rest/protocol/setup'
             }).
             then(function (data, status, headers, config) {
                 data = data['data']
@@ -37,7 +37,7 @@ var app = angular.module('angularApp')
 
             $http({
                 method: 'POST',
-                url: '/caNanoLab/rest/protocol/searchProtocol',
+                url: '/rest/protocol/searchProtocol',
                 data: $scope.searchProtocolForm
             }).
             then(function (data, status, headers, config) {

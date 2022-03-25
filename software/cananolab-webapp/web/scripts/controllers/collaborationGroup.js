@@ -7,7 +7,7 @@ var app = angular.module('angularApp')
 		$scope.isCurator = false;
 		$http({
 			method: 'GET',
-			url: '/caNanoLab/rest/security/getUserGroups'
+			url: '/rest/security/getUserGroups'
 		}).
 		then(function (data, status, headers, config) {
 			data = data['data']
@@ -35,7 +35,7 @@ var app = angular.module('angularApp')
 			$scope.loader = true;
 			$http({
 				method: 'GET',
-				url: '/caNanoLab/rest/community/getCollaborationGroups'
+				url: '/rest/community/getCollaborationGroups'
 			}).
 			then(function (data, status, headers, config) {
 				data = data['data']
@@ -55,7 +55,7 @@ var app = angular.module('angularApp')
 			$scope.loaderText = "Loading";
 			$http({
 				method: 'GET',
-				url: '/caNanoLab/rest/community/setupNew'
+				url: '/rest/community/setupNew'
 			}).
 			then(function (data, status, headers, config) {
 				data = data['data']
@@ -80,7 +80,7 @@ var app = angular.module('angularApp')
 			$scope.loaderText = "Loading";
 			$http({
 				method: 'GET',
-				url: '/caNanoLab/rest/community/editCollaborationGroup?groupId=' + item.id
+				url: '/rest/community/editCollaborationGroup?groupId=' + item.id
 			}).
 			then(function (data, status, headers, config) {
 				data = data['data']
@@ -107,7 +107,7 @@ var app = angular.module('angularApp')
 			$scope.loaderText = "Deleting Collaboration Group";
 			$http({
 				method: 'POST',
-				url: '/caNanoLab/rest/community/deleteCollaborationGroups',
+				url: '/rest/community/deleteCollaborationGroups',
 				data: $scope.collaborationGroup
 			}).
 			then(function (data, status, headers, config) {
@@ -159,7 +159,7 @@ var app = angular.module('angularApp')
 			$scope.loaderText = "Editing User Info";
 			$http({
 				method: 'POST',
-				url: '/caNanoLab/rest/community/addUserAccess',
+				url: '/rest/community/addUserAccess',
 				data: $scope.theAccess
 			}).
 			then(function (data, status, headers, config) {
@@ -197,7 +197,7 @@ var app = angular.module('angularApp')
 			$scope.loaderText = "Deleting User Info";
 			$http({
 				method: 'POST',
-				url: '/caNanoLab/rest/community/deleteUserAccess',
+				url: '/rest/community/deleteUserAccess',
 				data: $scope.theAccess
 			}).
 			then(function (data, status, headers, config) {
@@ -229,7 +229,7 @@ var app = angular.module('angularApp')
 
 			$http({
 				method: 'POST',
-				url: '/caNanoLab/rest/community/addCollaborationGroups',
+				url: '/rest/community/addCollaborationGroups',
 				data: $scope.collaborationGroup
 			}).
 			then(function (data, status, headers, config) {
@@ -257,7 +257,7 @@ var app = angular.module('angularApp')
 		$scope.searchLoginName = function () {
 			$http({
 				method: 'GET',
-				url: '/caNanoLab/rest/core/getUsers?searchStr=' + $scope.userInfoBean.recipient + '&dataOwner='
+				url: '/rest/core/getUsers?searchStr=' + $scope.userInfoBean.recipient + '&dataOwner='
 			}).
 			then(function (data, status, headers, config) {
 				data = data['data']
@@ -280,7 +280,7 @@ var app = angular.module('angularApp')
 
 			$http({
 				method: 'GET',
-				url: '/caNanoLab/rest/community/getsamples?groupId=' + groupId
+				url: '/rest/community/getsamples?groupId=' + groupId
 			}).
 			then(function (data, status, headers, config) {
 				data = data['data']
@@ -300,7 +300,7 @@ var app = angular.module('angularApp')
 
 			$http({
 				method: 'GET',
-				url: '/caNanoLab/rest/sample/viewDataAvailability',
+				url: '/rest/sample/viewDataAvailability',
 				params: {
 					"sampleId": sampleId
 				}

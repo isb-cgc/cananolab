@@ -47,7 +47,7 @@ var app = angular.module('angularApp')
 
             } else {
                 if (row.fileId) {
-                    view_actions.link = '/caNanoLab/rest/protocol/download?fileId=' + row.fileId;
+                    view_actions.link = '/rest/protocol/download?fileId=' + row.fileId;
                     view_actions.actionType = 'View';
                     actionList.push(view_actions);
                 }
@@ -108,7 +108,7 @@ var app = angular.module('angularApp')
 
             $http({
                 method: 'POST',
-                url: '/caNanoLab/rest/core/addFavorite',
+                url: '/rest/core/addFavorite',
                 data: $scope.favoriteBean
             }).
             then(function (data, status, headers, config) {
@@ -145,7 +145,7 @@ var app = angular.module('angularApp')
 
             $http({
                 method: 'POST',
-                url: '/caNanoLab/rest/core/addFavorite',
+                url: '/rest/core/addFavorite',
                 data: $scope.favoriteBean
             }).
             then(function (data, status, headers, config) {
@@ -212,7 +212,7 @@ var app = angular.module('angularApp')
 
             $http({
                 method: 'POST',
-                url: '/caNanoLab/rest/core/addFavorite',
+                url: '/rest/core/addFavorite',
                 data: $scope.favoriteBean
             }).
             then(function (data, status, headers, config) {
@@ -235,7 +235,7 @@ var app = angular.module('angularApp')
             $scope.loader = true;
             $http({
                 method: 'GET',
-                url: '/caNanoLab/rest/sample/fullSampleExportJsonAll',
+                url: '/rest/sample/fullSampleExportJsonAll',
                 params: {
                     "sampleIds": utilsService.keyWordSampleIdListStrings($scope.keywordData)
                 }
@@ -265,7 +265,7 @@ var app = angular.module('angularApp')
             $scope.loader = true;
             $http({
                 method: 'GET',
-                url: '/caNanoLab/rest/sample/fullSampleExportXmlAll',
+                url: '/rest/sample/fullSampleExportXmlAll',
                 params: {
                     "sampleIds": utilsService.keyWordSampleIdListStrings($scope.keywordData)
                 }

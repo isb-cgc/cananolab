@@ -25,7 +25,7 @@ var app = angular.module('angularApp')
     $scope.$on('$viewContentLoaded', function () {
       $http({
         method: 'GET',
-        url: '/caNanoLab/rest/core/initSetup'
+        url: '/rest/core/initSetup'
       }).
       then(function (data, status, headers, config) {
         data = data['data']
@@ -52,7 +52,7 @@ var app = angular.module('angularApp')
       $scope.errorMessages = [];
       if ($scope.userActions == 1) {
         $scope.loginShow = 0;
-        window.location.href = "/caNanoLab/#/searchSample";
+        window.location.href = "/#/searchSample";
 
       } else if ($scope.userActions == 2) {
         $scope.loginShow = 1;
@@ -105,7 +105,7 @@ var app = angular.module('angularApp')
         }
         $http({
           method: 'POST',
-          url: '/caNanoLab/rest/security/resetPassword',
+          url: '/rest/security/resetPassword',
           data: bean
         }).
         then(function (data, status, headers, config) {
@@ -171,7 +171,7 @@ var app = angular.module('angularApp')
       if (type == 'samples') {
         $http({
           method: 'POST',
-          url: '/caNanoLab/rest/sample/searchSample',
+          url: '/rest/sample/searchSample',
           data: $scope.searchSampleForm
         }).
         then(function (data, status, headers, config) {
@@ -191,7 +191,7 @@ var app = angular.module('angularApp')
 
         $http({
           method: 'POST',
-          url: '/caNanoLab/rest/protocol/searchProtocol',
+          url: '/rest/protocol/searchProtocol',
           data: $scope.searchSampleForm
         }).
         then(function (data, status, headers, config) {
@@ -209,7 +209,7 @@ var app = angular.module('angularApp')
       if (type == 'publications') {
         $http({
           method: 'POST',
-          url: '/caNanoLab/rest/publication/searchPublication',
+          url: '/rest/publication/searchPublication',
           data: $scope.searchSampleForm
         }).
         then(function (data, status, headers, config) {

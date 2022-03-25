@@ -5,13 +5,13 @@ app.factory('groupService', function ($resource, $http) {
 	var that = this;
 	return {
 		getGroups: {
-			data: $resource('/caNanoLab/rest/security/getUserGroups')
+			data: $resource('/rest/security/getUserGroups')
 		},
 		isCurator: function (groups) {
 			that.curator = 0;
 			$http({
 				method: 'GET',
-				url: '/caNanoLab/rest/security/getUserGroups'
+				url: '/rest/security/getUserGroups'
 			}).
 			then(function (data, status, headers, config) {
 				data = data['data']
@@ -36,7 +36,7 @@ app.factory('groupService', function ($resource, $http) {
 			that.name = '';
 			$http({
 				method: 'GET',
-				url: '/caNanoLab/rest/security/getUserGroups'
+				url: '/rest/security/getUserGroups'
 			}).
 			then(function (data, status, headers, config) {
 				data = data['data']

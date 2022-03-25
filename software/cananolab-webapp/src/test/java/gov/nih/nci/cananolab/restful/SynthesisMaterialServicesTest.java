@@ -597,7 +597,7 @@ private static RequestSpecification specification;
                 .when().post("core/uploadFile")
                 .then().statusCode(200).extract().response();;
 
-//        var uploadUrl = '/caNanoLab/rest/core/uploadFile';
+//        var uploadUrl = '/rest/core/uploadFile';
 //        var fd = new FormData();
 //        fd.append('file', file);
 //        $http.post(uploadUrl, fd, {

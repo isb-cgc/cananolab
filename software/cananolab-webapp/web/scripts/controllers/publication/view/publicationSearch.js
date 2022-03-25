@@ -10,7 +10,7 @@ var app = angular.module('angularApp')
     $scope.$on('$viewContentLoaded', function () {
       $http({
         method: 'GET',
-        url: '/caNanoLab/rest/publication/setup'
+        url: '/rest/publication/setup'
       }).
       then(function (data, status, headers, config) {
         data = data['data']
@@ -49,7 +49,7 @@ var app = angular.module('angularApp')
 
       $http({
         method: 'POST',
-        url: '/caNanoLab/rest/publication/searchPublication',
+        url: '/rest/publication/searchPublication',
         data: $scope.searchPublicationForm
       }).
       then(function (data, status, headers, config) {

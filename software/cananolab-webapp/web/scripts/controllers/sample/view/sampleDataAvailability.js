@@ -25,7 +25,7 @@ var app = angular.module('angularApp')
                     // $scope.message = 'Point of contact deleted';
                     $http({
                         method: 'POST',
-                        url: '/caNanoLab/rest/sample/deleteDataAvailability',
+                        url: '/rest/sample/deleteDataAvailability',
                         data: $scope.sampleData
                     }).
                     then(function (data, status, headers, config) {
@@ -54,7 +54,7 @@ var app = angular.module('angularApp')
             $scope.loaderMessage = "Regenerating";
             $http({
                 method: 'GET',
-                url: '/caNanoLab/rest/sample/regenerateDataAvailability',
+                url: '/rest/sample/regenerateDataAvailability',
                 params: {
                     "sampleId": $scope.sampleId
                 }

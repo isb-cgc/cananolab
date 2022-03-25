@@ -119,7 +119,7 @@ describe("editUser spec ", function () {
             "credentialsNonExpired": true,
             "accountNonExpired": true
         };
-        httpBackend.when('GET', '/caNanoLab/rest/useraccount/read?username=test').respond(read);
+        httpBackend.when('GET', '/rest/useraccount/read?username=test').respond(read);
 
         editUserCtrl = $controller('EditUserCtrl', {
             navigationService: apiService,

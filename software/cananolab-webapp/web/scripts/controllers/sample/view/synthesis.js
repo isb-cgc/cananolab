@@ -56,7 +56,7 @@ app.controller('SynthesisCtrl', function (sampleService, utilsService, navigatio
     $scope.loader = true;
     $http({
         method: 'GET',
-        url: '/caNanoLab/rest/synthesis/summaryView?sampleId=' + $scope.sampleId.data
+        url: '/rest/synthesis/summaryView?sampleId=' + $scope.sampleId.data
     }).
     then(function (data, status, headers, config) {
         data = data['data']

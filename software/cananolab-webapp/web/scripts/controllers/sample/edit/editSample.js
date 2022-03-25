@@ -61,7 +61,7 @@ var app = angular.module('angularApp')
             $scope.loader = true;
             $http({
                 method: 'GET',
-                url: '/caNanoLab/rest/sample/fullSampleExportJsonAll',
+                url: '/rest/sample/fullSampleExportJsonAll',
                 params: {
                     "sampleIds": $scope.sampleId.data
                 }
@@ -89,7 +89,7 @@ var app = angular.module('angularApp')
             $scope.loader = true;
             $http({
                 method: 'GET',
-                url: '/caNanoLab/rest/sample/fullSampleExportXmlAll',
+                url: '/rest/sample/fullSampleExportXmlAll',
                 params: {
                     "sampleIds": $scope.sampleId.data
                 }
@@ -180,7 +180,7 @@ var app = angular.module('angularApp')
 
             $http({
                 method: 'GET',
-                url: '/caNanoLab/rest/sample/edit?sampleId=' + $scope.sampleId.data
+                url: '/rest/sample/edit?sampleId=' + $scope.sampleId.data
             }).
             then(function (data, status, headers, config, statusText) {
                 data = data['data']
@@ -222,7 +222,7 @@ var app = angular.module('angularApp')
             $scope.loader = true;
             $http({
                 method: 'GET',
-                url: '/caNanoLab/rest/sample/submissionSetup'
+                url: '/rest/sample/submissionSetup'
             }).
             then(function (data, status, headers, config, statusText) {
                 data = data['data']
@@ -294,7 +294,7 @@ var app = angular.module('angularApp')
 
                     $http({
                         method: 'GET',
-                        url: '/caNanoLab/rest/sample/deleteSample',
+                        url: '/rest/sample/deleteSample',
                         params: {
                             "sampleId": $scope.sampleData.sampleId
                         }
@@ -331,7 +331,7 @@ var app = angular.module('angularApp')
             $scope.loader = true;
             $http({
                 method: 'GET',
-                url: '/caNanoLab/rest/sample/submissionSetup'
+                url: '/rest/sample/submissionSetup'
             }).
             then(function (data, status, headers, config, statusText) {
                 data = data['data']
@@ -356,7 +356,7 @@ var app = angular.module('angularApp')
             $scope.loaderText = "Saving Sample";
             $http({
                 method: 'POST',
-                url: '/caNanoLab/rest/sample/submitSample',
+                url: '/rest/sample/submitSample',
                 data: $scope.sampleData
             }).
             then(function (data, status, headers, config) {
@@ -387,7 +387,7 @@ var app = angular.module('angularApp')
             $scope.loaderText = "Submitting sample for review";
             $http({
                 method: 'POST',
-                url: '/caNanoLab/rest/sample/submitForReview',
+                url: '/rest/sample/submitForReview',
                 data: $scope.reviewBean
             }).
             then(function (data, status, headers, config) {
@@ -407,7 +407,7 @@ var app = angular.module('angularApp')
             $scope.loaderText = "Saving Sample";
             $http({
                 method: 'POST',
-                url: '/caNanoLab/rest/sample/updateSample',
+                url: '/rest/sample/updateSample',
                 data: $scope.sampleData
             }).
             then(function (data, status, headers, config) {
@@ -480,7 +480,7 @@ var app = angular.module('angularApp')
 
             $http({
                 method: 'GET',
-                url: '/caNanoLab/rest/sample/regenerateDataAvailability',
+                url: '/rest/sample/regenerateDataAvailability',
                 params: {
                     "sampleId": sampleId
                 }
@@ -503,7 +503,7 @@ var app = angular.module('angularApp')
         $scope.openDataAvailability = function (sampleId) {
             $http({
                 method: 'GET',
-                url: '/caNanoLab/rest/sample/viewDataAvailability',
+                url: '/rest/sample/viewDataAvailability',
                 params: {
                     "sampleId": sampleId
                 }
@@ -553,7 +553,7 @@ var app = angular.module('angularApp')
             $scope.loader = true;
             $http({
                 method: 'GET',
-                url: '/caNanoLab/rest/core/getCollaborationGroup?searchStr=' + $scope.accessForm.theAccess.recipient
+                url: '/rest/core/getCollaborationGroup?searchStr=' + $scope.accessForm.theAccess.recipient
             }).
             then(function (data, status, headers, config) {
                 data = data['data']
@@ -580,7 +580,7 @@ var app = angular.module('angularApp')
             $scope.loader = true;
             $http({
                 method: 'GET',
-                url: '/caNanoLab/rest/core/getUsers?searchStr=' + $scope.accessForm.theAccess.recipient
+                url: '/rest/core/getUsers?searchStr=' + $scope.accessForm.theAccess.recipient
             }).
             then(function (data, status, headers, config) {
                 data = data['data']
@@ -615,7 +615,7 @@ var app = angular.module('angularApp')
 
             $http({
                 method: 'POST',
-                url: '/caNanoLab/rest/sample/saveAccess',
+                url: '/rest/sample/saveAccess',
                 data: $scope.sampleData
             }).
             then(function (data, status, headers, config) {
@@ -688,7 +688,7 @@ var app = angular.module('angularApp')
 
                 $http({
                     method: 'POST',
-                    url: '/caNanoLab/rest/sample/deleteAccess',
+                    url: '/rest/sample/deleteAccess',
                     data: $scope.sampleData
                 }).
                 then(function (data, status, headers, config) {

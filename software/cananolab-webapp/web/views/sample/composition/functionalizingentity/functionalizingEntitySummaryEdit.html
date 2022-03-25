@@ -4,7 +4,7 @@
         <th align="left"  class="heading" style="padding: 0.5em;">
             functionalizing entity 
             &nbsp;&nbsp;
-            <a href="/caNanoLab/#/editFunctionalizingEntity?sampleId={{sampleId.data}}&&type={{type}}&&sampleName={{sampleName.name}}" class="btn-canano btn-canano-primary btn-canano-xs" style="color:white;text-decoration: none;">
+            <a href="/#/editFunctionalizingEntity?sampleId={{sampleId.data}}&&type={{type}}&&sampleName={{sampleName.name}}" class="btn-canano btn-canano-primary btn-canano-xs" style="color:white;text-decoration: none;">
                 Add
             </a>
         </th>
@@ -21,7 +21,7 @@
                             <button ng-click="$parent.addAccess=true; $parent.showAddAccessButton=false;$parent.accessForm.theAccess.userBean.loginName='';$parent.accessForm.theAccess.groupName='';$parent.accessForm.theAccess.roleName='';" id="addNano" class="btn-canano btn-canano-primary btn-canano-xs">Edit</button>
                         </div> -->
                         <div style="margin-left:auto; margin-right:auto;text-align:right;width:99%; margin-top: 10px;">
-                            <a href="/caNanoLab/#/editFunctionalizingEntity?sampleId={{sampleId.data}}&&type={{type}}&&sampleName={{sampleName.name}}&&funcEntityId={{entityType.dataId}}" class="btn-canano btn-canano-primary btn-canano-xs" style="color:white;text-decoration: none;">
+                            <a href="/#/editFunctionalizingEntity?sampleId={{sampleId.data}}&&type={{type}}&&sampleName={{sampleName.name}}&&funcEntityId={{entityType.dataId}}" class="btn-canano btn-canano-primary btn-canano-xs" style="color:white;text-decoration: none;">
                                 Edit
                             </a>
 
@@ -121,7 +121,7 @@
                                     Function(s)
                                 </th>
                                 <td>
-                                    <ng-include src="'/caNanoLab/views/sample/composition/functionalizingentity/functionView.html'"></ng-include>
+                                    <ng-include src="'/views/sample/composition/functionalizingentity/functionView.html'"></ng-include>
                                 </td>
                             </tr>
                             <tr ng-if="entityType.ActivationMethod != ''">
@@ -144,7 +144,7 @@
                                     Files
                                 </th>
                                 <td>
-                                    <ng-include src="'/caNanoLab/views/sample/composition/fileView.html'"></ng-include>
+                                    <ng-include src="'/views/sample/composition/fileView.html'"></ng-include>
                                 </td>
                             </tr>
                         </table>

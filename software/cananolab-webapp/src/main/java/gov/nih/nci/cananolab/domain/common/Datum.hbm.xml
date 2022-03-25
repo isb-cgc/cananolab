@@ -10,8 +10,6 @@
 		<cache include="all" usage="read-write" />
 		<id column="datum_pk_id" name="id" type="long">
 			<generator class="increment">
-				<param name="table">hibernate_unique_key</param>
-				<param name="column">next_hi</param>
 			</generator>
 		</id>
 		<!-- Attributes mapping for the Datum class -->

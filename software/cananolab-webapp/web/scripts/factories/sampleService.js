@@ -40,7 +40,7 @@ app.factory("sampleService", function ($http) {
 			that.name = "";
 			$http({
 				method: 'GET',
-				url: '/caNanoLab/rest/sample/getCurrentSampleName?sampleId=' + sampleId
+				url: '/rest/sample/getCurrentSampleName?sampleId=' + sampleId
 			}).
 			then(function (data, status, headers, config) {
 				data = data['data']

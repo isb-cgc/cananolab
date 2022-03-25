@@ -50,7 +50,7 @@ var app = angular.module('angularApp')
       $scope.loader = true;
       $http({
         method: 'GET',
-        url: '/caNanoLab/rest/sample/view?sampleId=' + sampleId
+        url: '/rest/sample/view?sampleId=' + sampleId
       }).
       then(function (data, status, headers, config) {
         data = data['data']
@@ -69,7 +69,7 @@ var app = angular.module('angularApp')
       $scope.loader = true;
       $http({
         method: 'GET',
-        url: '/caNanoLab/rest/characterization/viewCharacterization?charId=' + charId
+        url: '/rest/characterization/viewCharacterization?charId=' + charId
       }).
       then(function (data, status, headers, config) {
         data = data['data']
@@ -89,7 +89,7 @@ var app = angular.module('angularApp')
       $scope.loader = true;
       $http({
         method: 'GET',
-        url: '/caNanoLab/rest/nanomaterialEntity/viewDetails?sampleId=' + sampleId + '&dataId=' + dataId
+        url: '/rest/nanomaterialEntity/viewDetails?sampleId=' + sampleId + '&dataId=' + dataId
       }).
       then(function (data, status, headers, config) {
         data = data['data']
@@ -108,7 +108,7 @@ var app = angular.module('angularApp')
       $scope.loader = true;
       $http({
         method: 'GET',
-        url: '/caNanoLab/rest/functionalizingEntity/viewDetails?sampleId=' + sampleId + '&dataId=' + dataId
+        url: '/rest/functionalizingEntity/viewDetails?sampleId=' + sampleId + '&dataId=' + dataId
       }).
       then(function (data, status, headers, config) {
         data = data['data']
@@ -128,7 +128,7 @@ var app = angular.module('angularApp')
     $scope.displaySample = function (sampleId) {
       $http({
         method: 'GET',
-        url: '/caNanoLab/rest/sample/isSampleEditable?sampleId=' + sampleId
+        url: '/rest/sample/isSampleEditable?sampleId=' + sampleId
       }).
       then(function (data, status, headers, config) {
         data = data['data']

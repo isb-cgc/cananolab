@@ -7,8 +7,6 @@
         <cache include="all" usage="read-write"/>
         <id column="column_pk_id" name="id" type="long">
             <generator class="increment">
-                <param name="table">hibernate_unique_key</param>
-                <param name="column">next_hi</param>
             </generator>
         </id>
         <property generated="never" lazy="false" name="createdBy" type="string">

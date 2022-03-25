@@ -27,6 +27,7 @@ cp -v ${HOME}/maven-settings.xml ${ANT_HOME}/etc/settings.xml
 cp -v ${HOME}/maven-settings.xml /opt/apache-maven/conf/settings.xml
 cp -v ${HOME}/jars/*.jar ${HOME}/software/cananolab-webapp/lib/
 cp -v ${HOME}/jars/sdk/*.jar ${HOME}/software/cananolab-webapp/lib/sdk/
+cp -v ${HOME}/.env ${HOME}/software/cananolab-webapp/web/WEB-INF/
 
 cd ${HOME}/software/cananolab-webapp/
 ant dist
@@ -47,4 +48,5 @@ cp -v wikihelp.properties ${CANANODIR}/config
 
 cp -v ${HOME}/shell/*wildfly*.sh ${HOME}/staged/
 cp -v ${HOME}/.env ${HOME}/staged/
+cp -v ${HOME}/standalone-full.xml ${HOME}/staged/
 chmod ug+x ${HOME}/staged/*wildfly*.sh

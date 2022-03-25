@@ -33,7 +33,7 @@ if (outcome == success) of /subsystem=datasources/data-source=caNanoLab:read-res
   data-source remove --name=caNanoLab
 end-if
 
-#caNanoLab datasource configuration
+# caNanoLab datasource configuration
 if (outcome != success) of /subsystem=datasources/data-source=caNanoLab:read-resource
 data-source add \
     --name=caNanoLab \
@@ -47,27 +47,29 @@ data-source add \
     --blocking-timeout-wait-millis=5000
 end-if
 
+# Unload the welcome page
+/subsystem=undertow/server=default-server/host=default-host/location=\/:remove()
+
 ########################################################################
 #   LOGGING
 ######################################################################
 
 # Adjust the console handler
-/subsystem=logging:write-attribute(name=use-deployment-logging-config, value=false)
-/subsystem=logging:write-attribute(name=add-logging-api-dependencies,value=true)
-/subsystem=logging/console-handler=CONSOLE:write-attribute(name=autoflush, value=true)
-/subsystem=logging/console-handler=CONSOLE:write-attribute(name=level, value=INFO)
-/subsystem=logging/console-handler=CONSOLE:write-attribute(name="formatter", value="%d [%t] %-5p [%c : %L] %m%n")
+# /subsystem=logging:write-attribute(name=use-deployment-logging-config, value=false)
+# /subsystem=logging:write-attribute(name=add-logging-api-dependencies,value=true)
+# /subsystem=logging/console-handler=CONSOLE:write-attribute(name=autoflush, value=true)
+# /subsystem=logging/console-handler=CONSOLE:write-attribute(name=level, value=INFO)
+# /subsystem=logging/console-handler=CONSOLE:write-attribute(name="formatter", value="%d{HH:mm:ss,SSS} %-5p [%c] (%t) %m%n")
 
 # Point stdout and stderr to it
-/subsystem=logging/logger=stderr:add(use-parent-handlers="false", handlers=[CONSOLE])
-/subsystem=logging/logger=stdout:add(use-parent-handlers="false", handlers=[CONSOLE])
+# /subsystem=logging/logger=stderr:add(use-parent-handlers="false", handlers=[CONSOLE])
+# /subsystem=logging/logger=stdout:add(use-parent-handlers="false", handlers=[CONSOLE])
 
 # Pull the root logger off the File handler; file logging is useless in AppEngine
-/subsystem=logging/root-logger=ROOT:remove-handler(name=FILE)
-/subsystem=logging/root-logger=ROOT:write-attribute(name=level, value=DEBUG)
+# /subsystem=logging/root-logger=ROOT:remove-handler(name=FILE)
+# /subsystem=logging/root-logger=ROOT:write-attribute(name=level, value=DEBUG)
 
 # Hook up our cananolab code to the console handler
-/subsystem=logging/logger=gov.nih.nci.cananolab:add(handlers=["CONSOLE"])
+# /subsystem=logging/logger=gov.nih.nci.cananolab:add(handlers=["CONSOLE"])
 
 :reload
-

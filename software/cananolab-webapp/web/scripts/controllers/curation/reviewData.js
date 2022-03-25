@@ -8,7 +8,7 @@ var app = angular.module('angularApp')
         $scope.$on('$viewContentLoaded', function () {
             $http({
                 method: 'GET',
-                url: '/caNanoLab/rest/curation/reviewData'
+                url: '/rest/curation/reviewData'
             }).
             then(function (data, status, headers, config) {
                 data = data['data']

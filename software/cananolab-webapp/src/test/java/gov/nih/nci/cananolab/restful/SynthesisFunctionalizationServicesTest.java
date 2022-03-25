@@ -322,7 +322,7 @@ public class SynthesisFunctionalizationServicesTest {
                 .contentType( "multipart/form-data" )
                 .multiPart( testUploadFile )
                 .when().
-                        post( "/caNanoLab/rest/core/uploadFile" );
+                        post( "/rest/core/uploadFile" );
 
 
         System.out.println( response.getStatusCode() );
