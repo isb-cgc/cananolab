@@ -15,7 +15,7 @@ var app = angular.module('angularApp')
       $scope.loader = true;
       $http({
         method: 'GET',
-        url: '/caNanoLab/rest/publication/searchById?id=' + $scope.id + '&type=' + $scope.type
+        url: '/rest/publication/searchById?id=' + $scope.id + '&type=' + $scope.type
       }).
       then(function (data, status, headers, config) {
         data = data['data']

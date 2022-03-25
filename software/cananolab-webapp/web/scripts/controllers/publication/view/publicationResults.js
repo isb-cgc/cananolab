@@ -62,7 +62,7 @@ var app = angular.module('angularApp')
 
       $http({
         method: 'POST',
-        url: '/caNanoLab/rest/core/addFavorite',
+        url: '/rest/core/addFavorite',
         data: $scope.favoriteBean
       }).
       then(function (data, status, headers, config) {

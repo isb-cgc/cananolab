@@ -149,7 +149,7 @@ public class TabGenerationBO {
 	protected String getUrlBase(String fullUrl) {
 		if (fullUrl == null || fullUrl.length() == 0)
 			return "";
-		String token = "/caNanoLab/";
+		String token = "/";
 		int end = fullUrl.indexOf(token) + token.length();
 		return fullUrl.substring(0, end);
 	}

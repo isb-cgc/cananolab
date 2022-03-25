@@ -34,7 +34,7 @@ L-->
 	<property name="common.dist.dir" location="${dist.dir}/common"/>
 	<property name="classes.dir" location="${basedir}/build/WEB-INF/classes"/>
 	<property name="lib.dir" location="${basedir}/build/WEB-INF/lib"/>
-<!--	<property name="globus.dir" location="../cananolab-client/lib/globus"/>-->
+	<!--	<property name="globus.dir" location="../cananolab-client/lib/globus"/>-->
 	<property name="db.dir" location="${basedir}/lib"/>
 
 	<property name="test.dir" value="test-rest"/>
@@ -92,17 +92,17 @@ L-->
 	</resolver:resolve>
 
 	<!-- maven ant task -->
-<!--	<path id="maven-ant-tasks.classpath" path="${common.dir}/lib/maven-ant-tasks-2.1.3.jar"/>-->
-<!--	<path id="maven-ant-tasks.classpath" path="${commonlib.dir}/maven-ant-tasks-2.1.3.jar"/>-->
-<!--	<typedef resource="org/apache/maven/artifact/ant/antlib.xml" uri="antlib:org.apache.maven.artifact.ant"-->
-<!--			 classpathref="maven-ant-tasks.classpath"/>-->
+	<!--	<path id="maven-ant-tasks.classpath" path="${common.dir}/lib/maven-ant-tasks-2.1.3.jar"/>-->
+	<!--	<path id="maven-ant-tasks.classpath" path="${commonlib.dir}/maven-ant-tasks-2.1.3.jar"/>-->
+	<!--	<typedef resource="org/apache/maven/artifact/ant/antlib.xml" uri="antlib:org.apache.maven.artifact.ant"-->
+	<!--			 classpathref="maven-ant-tasks.classpath"/>-->
 
 	<!--set up required dependencies jars for compile time and run time thru Maven -->
-<!--	<artifact:pom id="cananolab-webapp-pom" file="pom.xml"/>-->
-<!--	<artifact:dependencies pathId="runtime.dependency.classpath" filesetId="runtime.dependency.fileset"-->
-<!--						   pomRefId="cananolab-webapp-pom" useScope="runtime"/>-->
-<!--	<artifact:dependencies pathId="compiletime.dependency.classpath" filesetId="compiletime.dependency.fileset"-->
-<!--						   pomRefId="cananolab-webapp-pom" useScope="compile"/>-->
+	<!--	<artifact:pom id="cananolab-webapp-pom" file="pom.xml"/>-->
+	<!--	<artifact:dependencies pathId="runtime.dependency.classpath" filesetId="runtime.dependency.fileset"-->
+	<!--						   pomRefId="cananolab-webapp-pom" useScope="runtime"/>-->
+	<!--	<artifact:dependencies pathId="compiletime.dependency.classpath" filesetId="compiletime.dependency.fileset"-->
+	<!--						   pomRefId="cananolab-webapp-pom" useScope="compile"/>-->
 
 	<target name="clean">
 		<delete dir="${dist.dir}"/>
@@ -124,8 +124,8 @@ L-->
 		<filterset id="properties.filterset">
 			<filter token="FILE_REPOSITORY_DIR" value="${file.repository.dir}"/>
 			<filter token="ADMIN_EMAIL" value="${admin.email}"/>
-<!--			<filter token="ONLINE_HELP_URL" value="${online.help.url}"/>-->
-<!--			<filter token="USE_LDAP" value="${ldap.authentication.enabled}"/>-->
+			<!--			<filter token="ONLINE_HELP_URL" value="${online.help.url}"/>-->
+			<!--			<filter token="USE_LDAP" value="${ldap.authentication.enabled}"/>-->
 		</filterset>
 	</target>
 
@@ -168,7 +168,7 @@ L-->
 		</javac>
 	</target>
 
-    <target name="war" depends="clean, compile, jar:beano">
+	<target name="war" depends="clean, compile, jar:beano">
 
 		<!--copy properties files -->
 		<copy todir="${build.dir}/WEB-INF/classes">
@@ -276,29 +276,29 @@ L-->
 				<filter token="database.password" value="${database.password}"/>
 			</filterset>
 		</copy>
-<!--		<if>-->
-<!--			&lt;!&ndash;if use LDAP authentication, replace ldap tokens from build properties &ndash;&gt;-->
-<!--			<equals arg1="${ldap.authentication.enabled}" arg2="true"/>-->
-<!--			<then>-->
-<!--				<echo message="Using LDAP authenication"/>-->
-<!--				<copy overwrite="true" tofile="${common.dist.dir}/login-config.xml"-->
-<!--					  file="${common.dir}/resources/jboss-conf/login-config-ldap.xml">-->
-<!--					<filterset>-->
-<!--						<filter token="ldap.host.url" value="${ldap.host.url}"/>-->
-<!--						<filter token="ldap.searchable.base" value="${ldap.searchable.base}"/>-->
-<!--						<filter token="ldap.userId.label" value="${ldap.userId.label}"/>-->
-<!--					</filterset>-->
-<!--				</copy>-->
-<!--			</then>-->
-<!--			&lt;!&ndash;if use database authentication, replace database tokens from build properties &ndash;&gt;-->
-<!--			<else>-->
-				<copy overwrite="true" tofile="${common.dist.dir}/login-config.xml"
-					  file="${common.dir}/resources/jboss-conf/login-config-db.xml">
-					<!-- replace tokens with values from build properties -->
-					<filterset refid="db.filterset"/>
-				</copy>
-<!--			</else>-->
-<!--		</if>-->
+		<!--		<if>-->
+		<!--			&lt;!&ndash;if use LDAP authentication, replace ldap tokens from build properties &ndash;&gt;-->
+		<!--			<equals arg1="${ldap.authentication.enabled}" arg2="true"/>-->
+		<!--			<then>-->
+		<!--				<echo message="Using LDAP authenication"/>-->
+		<!--				<copy overwrite="true" tofile="${common.dist.dir}/login-config.xml"-->
+		<!--					  file="${common.dir}/resources/jboss-conf/login-config-ldap.xml">-->
+		<!--					<filterset>-->
+		<!--						<filter token="ldap.host.url" value="${ldap.host.url}"/>-->
+		<!--						<filter token="ldap.searchable.base" value="${ldap.searchable.base}"/>-->
+		<!--						<filter token="ldap.userId.label" value="${ldap.userId.label}"/>-->
+		<!--					</filterset>-->
+		<!--				</copy>-->
+		<!--			</then>-->
+		<!--			&lt;!&ndash;if use database authentication, replace database tokens from build properties &ndash;&gt;-->
+		<!--			<else>-->
+		<copy overwrite="true" tofile="${common.dist.dir}/login-config.xml"
+			  file="${common.dir}/resources/jboss-conf/login-config-db.xml">
+			<!-- replace tokens with values from build properties -->
+			<filterset refid="db.filterset"/>
+		</copy>
+		<!--			</else>-->
+		<!--		</if>-->
 		<!-- the following is UPT specific -->
 		<!-- copy UPT required config files -->
 		<!--		<copy overwrite="true" tofile="${common.dist.dir}/ApplicationSecurityConfig.xml" file="${common.dir}/resources/jboss-conf/ApplicationSecurityConfig.xml">-->
@@ -330,10 +330,10 @@ L-->
 		<!--copy overwrite="true" todir="${common.dist.dir}" file="${common.dir}/resources/security/uptEAR.ear" /-->
 
 		<!--copy csmapi-5.2.jar -->
-<!--		<copy overwrite="true" todir="${common.dist.dir}" file="${commonlib.dir}/sdk/csmapi-5.2.jar" />-->
+		<!--		<copy overwrite="true" todir="${common.dist.dir}" file="${commonlib.dir}/sdk/csmapi-5.2.jar" />-->
 
 		<!--copy bcprov-jdk15on-1.47.jar -->
-<!--		<copy overwrite="true" todir="${common.dist.dir}" file="${commonlib.dir}/sdk/bcprov-jdk15on-1.47.jar"/>-->
+		<!--		<copy overwrite="true" todir="${common.dist.dir}" file="${commonlib.dir}/sdk/bcprov-jdk15on-1.47.jar"/>-->
 
 		<copy overwrite="true" todir="${common.dist.dir}" file="${common.dir}/resources/help/wikihelp.properties"/>
 
@@ -394,11 +394,11 @@ L-->
 		<!--		<copy todir="${jboss.conf.dir}/csmconfig" overwrite="true" file="${common.dist.dir}/csmupt.csm.new.hibernate.cfg.xml"/>-->
 		<!--		<copy todir="${jboss.conf.dir}/csmconfig" overwrite="true" file="${common.dist.dir}/csmupt423.csm.new.hibernate.cfg.xml"/>-->
 
-<!--		<copy todir="${jboss.lib.dir}" overwrite="true">-->
-<!--			<fileset dir="${common.dist.dir}">-->
-<!--				<include name="mysql-connector-java*.jar"/>-->
-<!--			</fileset>-->
-<!--		</copy>-->
+		<!--		<copy todir="${jboss.lib.dir}" overwrite="true">-->
+		<!--			<fileset dir="${common.dist.dir}">-->
+		<!--				<include name="mysql-connector-java*.jar"/>-->
+		<!--			</fileset>-->
+		<!--		</copy>-->
 
 	</target>
 
@@ -465,11 +465,11 @@ L-->
 		<!--			</fileset>-->
 		<!--		</copy>-->
 
-<!--		<copy todir="${build.dir}/WEB-INF/lib">-->
-<!--			<fileset dir="${globus.dir}">-->
-<!--				<include name="**/log4*.jar"/>-->
-<!--			</fileset>-->
-<!--		</copy>-->
+		<!--		<copy todir="${build.dir}/WEB-INF/lib">-->
+		<!--			<fileset dir="${globus.dir}">-->
+		<!--				<include name="**/log4*.jar"/>-->
+		<!--			</fileset>-->
+		<!--		</copy>-->
 
 		<copy todir="${build.dir}/WEB-INF/lib">
 			<fileset dir="${db.dir}">

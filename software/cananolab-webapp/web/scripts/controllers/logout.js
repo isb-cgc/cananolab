@@ -4,7 +4,7 @@ var app = angular.module('angularApp')
 
 		$http({
 			method: 'GET',
-			url: '/caNanoLab/logout'
+			url: '/logout'
 		}).
 		then(function (data, status, headers, config) {
 			data = data['data']

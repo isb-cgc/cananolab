@@ -108,7 +108,7 @@
         if (confirm("Are you sure you want to delete?")) {
           $http({
             method: 'POST',
-            url: '/caNanoLab/rest/synthesisPurification/deletePurification',
+            url: '/rest/synthesisPurification/deletePurification',
             data: $scope.purification
           }).
           then(function (data, status, headers, config) {
@@ -321,7 +321,7 @@
       fd.append('type', 'image');
       fd.append('title', 'title');
   */
-      $http.post('/caNanoLab/rest/core/uploadFile', fd, { withCredentials: false, headers: { 'Content-Type': undefined }, transformRequest: angular.identity }).
+      $http.post('/rest/core/uploadFile', fd, { withCredentials: false, headers: { 'Content-Type': undefined }, transformRequest: angular.identity }).
         then(function (data, status, headers, config) {
         var saveFileLocation = 'saveFile';
         if (purity) { 
@@ -348,7 +348,7 @@
               $scope.purification['fileBeingEdited'] = $scope.fileArray[$scope.fileArray.length-1];
             };
 
-            $http.post('/caNanoLab/rest/synthesisPurification/'+saveFileLocation, $scope.purification).
+            $http.post('/rest/synthesisPurification/'+saveFileLocation, $scope.purification).
             then(function(data) {
               data = data['data']
               console.log('done')
@@ -370,7 +370,7 @@
             $scope.purification['fileBeingEdited'] = $scope.fileArray[$scope.fileArray.length-1];
             $scope.fileArray[$scope.fileFormIndex]=$scope.currentFile;
             
-            $http.post('/caNanoLab/rest/synthesisPurification/'+saveFileLocation, $scope.purification).
+            $http.post('/rest/synthesisPurification/'+saveFileLocation, $scope.purification).
             then(function(data) {
               data = data['data']
               console.log('done')
@@ -416,7 +416,7 @@
         $scope.techniqueFormIndex = null;
         $http({
           method: 'POST',
-          url: '/caNanoLab/rest/synthesisPurification/saveTechniqueAndInstrument',
+          url: '/rest/synthesisPurification/saveTechniqueAndInstrument',
           data: $scope.purification
         }).
         then(function (data, status, headers, config) {
@@ -444,7 +444,7 @@
   
         $http({
           method: 'POST',
-          url: '/caNanoLab/rest/synthesisPurification/submit',
+          url: '/rest/synthesisPurification/submit',
           data: $scope.purification
         }).
         then(function (data, status, headers, config) {
@@ -454,7 +454,7 @@
   
           $http({
             method: 'POST',
-            url: '/caNanoLab/rest/synthesisPurification/saveFile',
+            url: '/rest/synthesisPurification/saveFile',
             data: [$scope.purification]
           }).
           then(function () {
@@ -537,7 +537,7 @@
 
         $http({
           method: 'POST',
-          url: '/caNanoLab/rest/synthesisPurification/newPurity',
+          url: '/rest/synthesisPurification/newPurity',
           data: $scope.currentFinding
         }).
         then(function (data, status, headers, config) {
@@ -1141,7 +1141,7 @@
       $scope.onColumnTypeDropdownChange = function (newOpen) {
         $http({
           method: 'GET',
-          url: '/caNanoLab/rest/synthesisPurification/getColumnNameOptionsByType?columnType=' + $scope.findingsColumn.columnType + '&charName=' + $scope.purification.name + '&assayType=' + $scope.purification.assayType
+          url: '/rest/synthesisPurification/getColumnNameOptionsByType?columnType=' + $scope.findingsColumn.columnType + '&charName=' + $scope.purification.name + '&assayType=' + $scope.purification.assayType
         }).
         then(function (data, status, headers, config) {
           data = data['data']
@@ -1162,7 +1162,7 @@
       $scope.getColumnValueUnitOptions = function () {
         $http({
           method: 'GET',
-          url: '/caNanoLab/rest/synthesisPurification/getColumnValueUnitOptions?columnName=' + $scope.findingsColumn.name + '&conditionProperty=' + $scope.findingsColumn.conditionProperty
+          url: '/rest/synthesisPurification/getColumnValueUnitOptions?columnName=' + $scope.findingsColumn.name + '&conditionProperty=' + $scope.findingsColumn.conditionProperty
         }).
         then(function (data, status, headers, config) {
           data = data['data']
@@ -1180,7 +1180,7 @@
         $scope.getColumnValueUnitOptions();
         $http({
           method: 'GET',
-          url: '/caNanoLab/rest/synthesisPurification/getConditionPropertyOptions?columnName=' + $scope.findingsColumn.name
+          url: '/rest/synthesisPurification/getConditionPropertyOptions?columnName=' + $scope.findingsColumn.name
         }).
         then(function (data, status, headers, config) {
           data = data['data']
@@ -1200,7 +1200,7 @@
 
         $http({
           method: 'POST',
-          url: '/caNanoLab/rest/synthesisPurification/setColumnOrder',
+          url: '/rest/synthesisPurification/setColumnOrder',
           data: $scope.currentFinding
         }).
         then(function (data, status, headers, config) {
@@ -1258,13 +1258,13 @@
           $scope.loader = false;
           return;
         }
-        $scope.purityUrl='/caNanoLab/rest/synthesisPurification/createPurity' 
+        $scope.purityUrl='/rest/synthesisPurification/createPurity' 
         $scope.purityData=$scope.purification;
 
         if ($scope.purityEdit) {
           delete $scope.purification.errors;
           $scope.purityData = $scope.currentFinding;
-          $scope.purityUrl = '/caNanoLab/rest/synthesisPurification/updatePurity'
+          $scope.purityUrl = '/rest/synthesisPurification/updatePurity'
         };
 
         $http({
@@ -1292,7 +1292,7 @@
           $scope.loader = true;
           $http({
             method: 'POST',
-            url: '/caNanoLab/rest/synthesisPurification/deletePurity',
+            url: '/rest/synthesisPurification/deletePurity',
             data: $scope.currentFinding
           }).
           then(function (data, status, headers, config) {
@@ -1323,7 +1323,7 @@
         $scope.loader = true;
         $http({
           method: 'POST',
-          url: '/caNanoLab/rest/synthesisPurification/saveCharacterization',
+          url: '/rest/synthesisPurification/saveCharacterization',
           data: $scope.purification
         }).
         then(function (data, status, headers, config) {
@@ -1346,7 +1346,7 @@
         $scope.loader = true;
         $http({
           method: 'POST',
-          url: '/caNanoLab/rest/synthesisPurification/removeCharacterization',
+          url: '/rest/synthesisPurification/removeCharacterization',
           data: $scope.purification
         }).
         then(function (data, status, headers, config) {
@@ -1465,7 +1465,7 @@
 
           $http({
             method: 'POST',
-            url: '/caNanoLab/rest/synthesisPurification/removeFile',
+            url: '/rest/synthesisPurification/removeFile',
             data: $scope.currentFinding
           }).
           then(function (data, status, headers, config) {
@@ -1544,7 +1544,7 @@
         $scope.purification.fileElements = $scope.fileArray;
         $http({
           method: 'POST',
-          url: '/caNanoLab/rest/synthesisPurification/removeFile',
+          url: '/rest/synthesisPurification/removeFile',
           data: $scope.purification
         }).
         then(function (data, status, headers, config) {

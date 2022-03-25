@@ -33,7 +33,7 @@ RUN apt-get -y install unzip libffi-dev libssl-dev git ruby g++ curl
 COPY ./staged /local/content/
 
 WORKDIR /tmp
-RUN wget https://https://download.jboss.org/wildfly/13.0.0.Final/wildfly-13.0.0.Final.tar.gz \
+RUN wget https://download.jboss.org/wildfly/13.0.0.Final/wildfly-13.0.0.Final.tar.gz \
     && tar xvfz wildfly-13.0.0.Final.tar.gz \
     && mv wildfly-13.0.0.Final /opt
 

@@ -76,7 +76,7 @@ var app = angular.module('angularApp')
       if (confirm("Are you sure you want to delete?")) {
         $http({
           method: 'POST',
-          url: '/caNanoLab/rest/synthesisFunctionalization/delete',
+          url: '/rest/synthesisFunctionalization/delete',
           data: $scope.functionalization
         }).
         then(function (data, status, headers, config) {
@@ -233,7 +233,7 @@ var app = angular.module('angularApp')
       fd.append('type', 'image');
       fd.append('title', 'title');
   */
-      $http.post('/caNanoLab/rest/core/uploadFile', fd, { withCredentials: false, headers: { 'Content-Type': undefined }, transformRequest: angular.identity }).
+      $http.post('/rest/core/uploadFile', fd, { withCredentials: false, headers: { 'Content-Type': undefined }, transformRequest: angular.identity }).
         then(function (data, status, headers, config) {
         data = data['data']
         $scope.uploadComplete = true;
@@ -244,7 +244,7 @@ var app = angular.module('angularApp')
             $scope.functionalization['fileElements'] = $scope.fileArray;
             $scope.functionalization['fileBeingEdited'] = $scope.fileArray[0];
   
-            $http.post('/caNanoLab/rest/synthesisFunctionalization/saveFile', $scope.functionalization).
+            $http.post('/rest/synthesisFunctionalization/saveFile', $scope.functionalization).
             then(function(data) {
               data = data['data'];
               $scope.functionalization=data;
@@ -262,7 +262,7 @@ var app = angular.module('angularApp')
             $scope.functionalization['fileBeingEdited'] = $scope.fileArray[0];
             $scope.fileArray[$scope.fileFormIndex]=$scope.currentFile;
             
-            $http.post('/caNanoLab/rest/synthesisFunctionalization/saveFile', $scope.functionalization).
+            $http.post('/rest/synthesisFunctionalization/saveFile', $scope.functionalization).
             then(function(data) {
               data = data['data']
               console.log('done')
@@ -309,7 +309,7 @@ var app = angular.module('angularApp')
     $scope.saveFunctionalization = function () {
       // $scope.fileFunctionalization = angular.copy($scope.functionalization);
       // $scope.fileFunctionalization['fileBeingEdited'] = { "uri": $scope.somefile.name, "title": "test", "type": "document", "uriExternal": false };
-      // $http({ method: 'POST', url: '/caNanoLab/rest/synthesisFunctionalization/saveFile', data: $scope.fileFunctionalization }).
+      // $http({ method: 'POST', url: '/rest/synthesisFunctionalization/saveFile', data: $scope.fileFunctionalization }).
       //   then(function (data, status, headers, config) { data=data['data']
       //     $location.search({ 'message': 'Synthesis Functionalization successfully saved.', 'sampleId': $scope.sampleId }).path('/editSynthesis').replace();
       //   }).
@@ -319,7 +319,7 @@ var app = angular.module('angularApp')
 
       $http({
         method: 'POST',
-        url: '/caNanoLab/rest/synthesisFunctionalization/submit',
+        url: '/rest/synthesisFunctionalization/submit',
         data: $scope.functionalization
       }).
       then(function (data, status, headers, config) {
@@ -329,7 +329,7 @@ var app = angular.module('angularApp')
 
         $http({
           method: 'POST',
-          url: '/caNanoLab/rest/synthesisFunctionalization/saveFile',
+          url: '/rest/synthesisFunctionalization/saveFile',
           data: [$scope.functionalization]
         }).
         then(function () {
@@ -376,7 +376,7 @@ var app = angular.module('angularApp')
         $scope.functionalization.fileElements = $scope.fileArray;
         $http({
           method: 'POST',
-          url: '/caNanoLab/rest/synthesisFunctionalization/removeFile',
+          url: '/rest/synthesisFunctionalization/removeFile',
           data: $scope.functionalization
         }).
         then(function (data, status, headers, config) {

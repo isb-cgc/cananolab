@@ -37,10 +37,10 @@ var app = angular.module('angularApp')
         $scope.addNewFile = false;
         $scope.selectedFileName = '';
 
-        var uploadUrl = '/caNanoLab/rest/core/uploadFile';
+        var uploadUrl = '/rest/core/uploadFile';
         $scope.ie9 = false;
         if (navigator.appVersion.indexOf("MSIE 9.") != -1) {
-            uploadUrl = '/caNanoLab/uploadFile';
+            uploadUrl = '/uploadFile';
             $scope.ie9 = true;
         }
 
@@ -57,7 +57,7 @@ var app = angular.module('angularApp')
             $scope.loader = true;
             $http({
                 method: 'GET',
-                url: '/caNanoLab/rest/nanomaterialEntity/setup?sampleId=' + $scope.sampleId
+                url: '/rest/nanomaterialEntity/setup?sampleId=' + $scope.sampleId
             }).
             then(function (data, status, headers, config) {
                 data = data['data']
@@ -92,10 +92,10 @@ var app = angular.module('angularApp')
         $scope.showProperties = function () {
             if ($scope.nanoEntityForm.type == 'biopolymer') {
                 $scope.nanoEntityForm.withProperties = true;
-                $scope.detailsPage = '/caNanoLab/views/sample/composition/nanomaterialEntity/BiopolymerInfoEdit.html';
+                $scope.detailsPage = '/views/sample/composition/nanomaterialEntity/BiopolymerInfoEdit.html';
             } else if ($scope.nanoEntityForm.type == 'polymer') {
                 $scope.nanoEntityForm.withProperties = true;
-                $scope.detailsPage = '/caNanoLab/views/sample/composition/nanomaterialEntity/PolymerInfoEdit.html';
+                $scope.detailsPage = '/views/sample/composition/nanomaterialEntity/PolymerInfoEdit.html';
                 if (typeof ($scope.nanoEntityForm.domainEntity) != "undefined") {
                     if ($scope.nanoEntityForm.domainEntity.crossLinkDegree != null) {
                         $scope.nanoEntityForm.domainEntity.crossLinkDegree = $scope.nanoEntityForm.domainEntity.crossLinkDegree.toString();
@@ -106,7 +106,7 @@ var app = angular.module('angularApp')
                 }
             } else if ($scope.nanoEntityForm.type == 'carbon nanotube') {
                 $scope.nanoEntityForm.withProperties = true;
-                $scope.detailsPage = '/caNanoLab/views/sample/composition/nanomaterialEntity/CarbonNanotubeInfoEdit.html';
+                $scope.detailsPage = '/views/sample/composition/nanomaterialEntity/CarbonNanotubeInfoEdit.html';
                 if (typeof ($scope.nanoEntityForm.domainEntity) != "undefined") {
                     if ($scope.nanoEntityForm.domainEntity.averageLength != null) {
                         $scope.nanoEntityForm.domainEntity.averageLength = $scope.nanoEntityForm.domainEntity.averageLength.toString();
@@ -117,7 +117,7 @@ var app = angular.module('angularApp')
                 }
             } else if ($scope.nanoEntityForm.type == 'dendrimer') {
                 $scope.nanoEntityForm.withProperties = true;
-                $scope.detailsPage = '/caNanoLab/views/sample/composition/nanomaterialEntity/DendrimerInfoEdit.html';
+                $scope.detailsPage = '/views/sample/composition/nanomaterialEntity/DendrimerInfoEdit.html';
                 if (typeof ($scope.nanoEntityForm.domainEntity) != "undefined") {
                     if ($scope.nanoEntityForm.domainEntity.generation != null) {
                         $scope.nanoEntityForm.domainEntity.generation = $scope.nanoEntityForm.domainEntity.generation.toString(); //json returns float - so manually convert back to string
@@ -125,7 +125,7 @@ var app = angular.module('angularApp')
                 }
             } else if ($scope.nanoEntityForm.type == 'emulsion') {
                 $scope.nanoEntityForm.withProperties = true;
-                $scope.detailsPage = '/caNanoLab/views/sample/composition/nanomaterialEntity/EmulsionInfoEdit.html';
+                $scope.detailsPage = '/views/sample/composition/nanomaterialEntity/EmulsionInfoEdit.html';
                 if (typeof ($scope.nanoEntityForm.domainEntity) != "undefined") {
                     if ($scope.nanoEntityForm.domainEntity.isPolymerized != null) {
                         $scope.nanoEntityForm.domainEntity.isPolymerized = $scope.nanoEntityForm.domainEntity.isPolymerized.toString();
@@ -133,7 +133,7 @@ var app = angular.module('angularApp')
                 }
             } else if ($scope.nanoEntityForm.type == 'fullerene') {
                 $scope.nanoEntityForm.withProperties = true;
-                $scope.detailsPage = '/caNanoLab/views/sample/composition/nanomaterialEntity/FullereneInfoEdit.html';
+                $scope.detailsPage = '/views/sample/composition/nanomaterialEntity/FullereneInfoEdit.html';
                 if (typeof ($scope.nanoEntityForm.domainEntity) != "undefined") {
                     if ($scope.nanoEntityForm.domainEntity.averageDiameter != null) {
                         $scope.nanoEntityForm.domainEntity.averageDiameter = $scope.nanoEntityForm.domainEntity.averageDiameter.toString();
@@ -144,7 +144,7 @@ var app = angular.module('angularApp')
                 }
             } else if ($scope.nanoEntityForm.type == 'liposome') {
                 $scope.nanoEntityForm.withProperties = true;
-                $scope.detailsPage = '/caNanoLab/views/sample/composition/nanomaterialEntity/LiposomeInfoEdit.html';
+                $scope.detailsPage = '/views/sample/composition/nanomaterialEntity/LiposomeInfoEdit.html';
                 if (typeof ($scope.nanoEntityForm.domainEntity) != "undefined") {
                     if ($scope.nanoEntityForm.domainEntity.isPolymerized != null) {
                         $scope.nanoEntityForm.domainEntity.isPolymerized = $scope.nanoEntityForm.domainEntity.isPolymerized.toString();
@@ -160,7 +160,7 @@ var app = angular.module('angularApp')
                 $scope.loader = true;
                 $http({
                     method: 'GET',
-                    url: '/caNanoLab/rest/nanomaterialEntity/edit?sampleId=' + $scope.sampleId + '&dataId=' + $scope.nanoEntityId
+                    url: '/rest/nanomaterialEntity/edit?sampleId=' + $scope.sampleId + '&dataId=' + $scope.nanoEntityId
                 }).
                 then(function (data, status, headers, config) {
                     data = data['data']
@@ -204,7 +204,7 @@ var app = angular.module('angularApp')
             };
             $http({
                 method: 'POST',
-                url: '/caNanoLab/rest/nanomaterialEntity/submit',
+                url: '/rest/nanomaterialEntity/submit',
                 data: $scope.nanoEntityForm
             }).
             then(function (data, status, headers, config) {
@@ -235,7 +235,7 @@ var app = angular.module('angularApp')
 
                 $http({
                     method: 'POST',
-                    url: '/caNanoLab/rest/nanomaterialEntity/delete',
+                    url: '/rest/nanomaterialEntity/delete',
                     data: $scope.nanoEntityForm
                 }).
                 then(function (data, status, headers, config) {
@@ -354,7 +354,7 @@ var app = angular.module('angularApp')
 
                 $http({
                     method: 'POST',
-                    url: '/caNanoLab/rest/nanomaterialEntity/removeComposingElement',
+                    url: '/rest/nanomaterialEntity/removeComposingElement',
                     data: $scope.nanoEntityForm
                 }).
                 then(function (data, status, headers, config) {
@@ -426,7 +426,7 @@ var app = angular.module('angularApp')
             console.log($scope.nanoEntityForm)
             $http({
                 method: 'POST',
-                url: '/caNanoLab/rest/nanomaterialEntity/saveComposingElement',
+                url: '/rest/nanomaterialEntity/saveComposingElement',
                 data: $scope.nanoEntityForm
             }).
             then(function (data, status, headers, config) {
@@ -650,7 +650,7 @@ var app = angular.module('angularApp')
 
                 $http({
                     method: 'POST',
-                    url: '/caNanoLab/rest/nanomaterialEntity/removeFile',
+                    url: '/rest/nanomaterialEntity/removeFile',
                     data: $scope.nanoEntityForm
                 }).
                 then(function (data, status, headers, config) {
@@ -768,7 +768,7 @@ var app = angular.module('angularApp')
             $scope.messages = [];
             $http({
                 method: 'POST',
-                url: '/caNanoLab/rest/nanomaterialEntity/saveFile',
+                url: '/rest/nanomaterialEntity/saveFile',
                 data: $scope.nanoEntityForm
             }).
             then(function (data, status, headers, config) {
