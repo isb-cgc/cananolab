@@ -3,6 +3,7 @@ package gov.nih.nci.cananolab.restful.core;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
+import org.jboss.logging.Logger;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -16,6 +17,8 @@ import gov.nih.nci.cananolab.security.utils.SpringSecurityUtil;
 @Component("tabGenerationBO")
 public class TabGenerationBO {
 
+	private static Logger log = Logger.getLogger(TabGenerationBO.class.getName());
+
 	public SimpleTabsBean getTabs(HttpServletRequest httpRequest, CananoUserDetails userDetails, String homePage) {
 		
 		List<String[]> tabs = new ArrayList<String[]>();
@@ -25,7 +28,7 @@ public class TabGenerationBO {
 		homePage = homePage.trim().toLowerCase();
 		
 		String urlBase = "https://" + URI.create(httpRequest.getRequestURL().toString()).getHost() + "/";
-		System.out.println("urlBase: "+urlBase);
+		log.info("urlBase: "+urlBase);
 		
 		SimpleTabsBean tabsBean = new SimpleTabsBean();
 		tabsBean.setUserLoggedIn(SpringSecurityUtil.isUserLoggedIn());
