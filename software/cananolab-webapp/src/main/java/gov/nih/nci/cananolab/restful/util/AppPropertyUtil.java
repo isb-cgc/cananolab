@@ -3,12 +3,13 @@ package gov.nih.nci.cananolab.restful.util;
 import java.io.FileInputStream;
 import java.io.InputStream;
 import java.util.Properties;
-import org.jboss.logging.Logger;
+//import org.jboss.logging.Logger;
+import org.apache.logging.log4j.*;
 
 public class AppPropertyUtil {
     private static Properties appProperties;
     private static boolean isLoaded = false;
-    private static Logger logger = Logger.getLogger(AppPropertyUtil.class.getName());
+    private static Logger logger = LogManager.getLogger(AppPropertyUtil.class);
 
     public static String getAppProperty(String key) {
         if (!isLoaded) {

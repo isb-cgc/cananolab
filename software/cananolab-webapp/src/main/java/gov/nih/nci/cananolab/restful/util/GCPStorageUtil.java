@@ -3,14 +3,15 @@ package gov.nih.nci.cananolab.restful.util;
 import com.google.cloud.storage.Storage;
 import com.google.cloud.storage.StorageOptions;
 import gov.nih.nci.cananolab.exception.FileException;
-import org.jboss.logging.Logger;
+import org.apache.logging.log4j.*;
+//import org.jboss.logging.Logger;
 
 import java.util.Map;
 
 public class GCPStorageUtil {
     private static Storage gcpStorageService = null;
 
-    private static Logger logger = Logger.getLogger(GCPStorageUtil.class.getName());
+    private static Logger logger = LogManager.getLogger(GCPStorageUtil.class);
 
     public static Storage getGCPStorageService() throws Exception {
         if (gcpStorageService != null) {
