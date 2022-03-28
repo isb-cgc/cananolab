@@ -134,10 +134,8 @@ public abstract class BaseAnnotationBO extends AbstractDispatchBO
 
 			Storage storage = GCPStorageUtil.getGCPStorageService();
 			System.out.println("GCPStorage downloadFile() got Storage service");
-
 			Bucket assetBucket = storage.get(bucketPath);
 			System.out.println("GCPStorage downloadFile() got bucket" + bucketPath);
-
 			Blob blob = assetBucket.get(folderPath + "/" + fileUri);
 			System.out.println("GCPStorage downloadFile() got blob: " + folderPath + "/" + fileUri);
 
