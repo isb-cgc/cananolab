@@ -93,8 +93,9 @@ while [ ! -z "${WILDFLY_PID}" ] && [ $counter -lt 5 ]; do
 done
 
 if [ ! -z "${WILDFLY_PID}" ]; then
-  echo "Wildfly failed to stop in time! WILDFLY_PID(s) still seen:"
-  echo "${WILDFLY_PID}"
+  echo "[WARNING] Wildfly failed to stop in time! Processes still seen:"
+  ps -ef | grep wildfly | grep -v grep | grep -v "wildfly-setup.sh" | grep -v "start-wildfly.sh"
+  echo "[WARNING] This may cause problems when Wildfly is launched in the entrypoint script."
   exit 1
 fi
 
