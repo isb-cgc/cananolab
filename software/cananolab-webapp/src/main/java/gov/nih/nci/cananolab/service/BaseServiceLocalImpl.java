@@ -116,7 +116,7 @@ public abstract class BaseServiceLocalImpl implements BaseService
 
 				return null;
 			} catch (Exception e) {
-				logger.error("Cannot get file content due to exception: " + e.getMessage());
+				System.out.println("GCPStorage get file content ERROR: " + e.toString());
 				throw new FileException("Cannot get file content");
 			}
 		}
@@ -135,13 +135,16 @@ public abstract class BaseServiceLocalImpl implements BaseService
 
 				Storage storage = GCPStorageUtil.getGCPStorageService();
 				BlobId blobId = BlobId.of(bucketPath, folderPath + "/" + filePath);
+				System.out.println("GCPStorage write file - got blob");
 
 				BlobInfo blobinfo = BlobInfo.newBuilder(blobId).build();
+				System.out.println("GCPStorage write file - success build blob");
+				
 				storage.create(blobinfo, fileContent);
+				System.out.println("GCPStorage write file - success create storage for blob");
 
 			} catch (Exception e) {
-				String msg = PropertyUtil.getProperty("sample", "error.noFile");
-				logger.error(msg);
+				System.out.println("GCPStorage write file ERROR " + e.toString());
 				throw new FileException("Target upload file doesn't exist");
 			}
 		}

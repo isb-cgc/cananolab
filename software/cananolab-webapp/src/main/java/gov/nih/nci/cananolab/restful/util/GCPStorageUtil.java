@@ -28,8 +28,8 @@ public class GCPStorageUtil {
         System.out.println("GCPStorageUtil get bucket path: " + bucketPath);
         if (bucketPath == "" || bucketPath == null) {
             // Temporary to check if dev tier work
-            bucketPath = "isb-cgc-ca-nano-dev-cbiit-assets";
-            printAllSystemVars();
+            bucketPath = "isb-cgc-ca-nano-test-cbiit-assets";
+//            printAllSystemVars();
         }
         return bucketPath;
     }
@@ -46,7 +46,7 @@ public class GCPStorageUtil {
         if (folderPath == "" || folderPath == null) {
             // Temporary to check if dev tier work
             folderPath = "caNanoLab_asset_files";
-            printAllSystemVars();
+//            printAllSystemVars();
         }
         return folderPath;
     }
