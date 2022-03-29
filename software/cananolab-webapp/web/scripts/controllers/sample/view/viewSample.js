@@ -1,6 +1,6 @@
 'use strict';
 var app = angular.module('angularApp')
-  .controller('IndSampleCtrl', function (sampleService, navigationService, groupService, $rootScope, $scope, $http, $filter, $location, $routeParams) {
+  .controller('IndSampleCtrl', function (sampleService, navigationService, utilsService, groupService, $rootScope, $scope, $http, $filter, $location, $routeParams) {
     $rootScope.tabs = navigationService.get();
     $rootScope.groups = groupService.getGroups.data.get();
     $scope.sampleData = sampleService.sampleData;
@@ -45,11 +45,16 @@ var app = angular.module('angularApp')
 
     $scope.exportJson = function () {
       $scope.loader = true;
+
+      let postObject = new Object();
+      postObject.sampleIds = $scope.sampleId.data;
       $http({
-        method: 'GET',
         url: '/caNanoLab/rest/sample/fullSampleExportJsonAll',
-        params: {
-          "sampleIds": $scope.sampleId.data
+        dataType: 'json',
+        method: 'POST',
+        data: postObject,
+        headers: {
+          "Content-Type": "application/json"
         }
       }).
       then(function (data) {
@@ -75,11 +80,16 @@ var app = angular.module('angularApp')
 
     $scope.exportXml = function () {
       $scope.loader = true;
+
+      let postObject = new Object();
+      postObject.sampleIds = $scope.sampleId.data;
       $http({
-        method: 'GET',
         url: '/caNanoLab/rest/sample/fullSampleExportXmlAll',
-        params: {
-          "sampleIds": $scope.sampleId.data
+        dataType: 'json',
+        method: 'POST',
+        data: postObject,
+        headers: {
+          "Content-Type": "application/json"
         }
       }).
       then(function (data) {

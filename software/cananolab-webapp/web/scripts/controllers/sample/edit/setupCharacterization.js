@@ -627,12 +627,14 @@ var app = angular.module('angularApp')
                 }
             }
 
+/*  Do not do this check
             // If at least one entry is too long, set error and return false
             if (biggestLine > csvMaxLenOfEntry) {
                 console.log('ERROR line(s) too long (' + biggestLine + ')');
                 csvImportError = 'line(s) too long (' + biggestLine + ')';
                 return false;
             }
+*/
 
 
             // Send each line to csv validation function.

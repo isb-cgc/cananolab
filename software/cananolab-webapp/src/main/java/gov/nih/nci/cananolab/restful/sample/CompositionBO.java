@@ -91,8 +91,8 @@ public class CompositionBO extends BaseAnnotationBO
 
 		CompositionBean compBean = (CompositionBean) request.getSession()
 				.getAttribute("compBean");
+
 		setSummaryTab(request, compBean.getCompositionSections().size());
-		//return mapping.findForward("summaryView");
 		return compBean;
 	}
 
@@ -189,6 +189,7 @@ public class CompositionBO extends BaseAnnotationBO
 	private CompositionBean prepareSummary(CompositionForm form,
 			HttpServletRequest request)
 			throws Exception {
+
 		// Remove previous result from session.
 		HttpSession session = request.getSession();
 		session.removeAttribute(CompositionBean.CHEMICAL_SELECTION);
@@ -202,12 +203,10 @@ public class CompositionBO extends BaseAnnotationBO
 			throw new Exception("CompositionForm is null");
 		}
 		String sampleId = form.getSampleId();  //Sting(SampleConstants.SAMPLE_ID);
-		
 		SampleBean sampleBean = setupSampleById(sampleId, request);
 
 		CompositionBean compBean = compositionService.findCompositionBySampleId(sampleId);
 		form.setComp(compBean);
-
 		// Save result bean in session for later use - export/print.
 		session.setAttribute("compBean", compBean);
 		session.setAttribute("theSample", sampleBean); // for showing title.
