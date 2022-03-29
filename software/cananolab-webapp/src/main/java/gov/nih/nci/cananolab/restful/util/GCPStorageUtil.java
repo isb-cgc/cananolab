@@ -29,7 +29,7 @@ public class GCPStorageUtil {
         if (bucketPath == "" || bucketPath == null) {
             // Temporary to check if dev tier work
             bucketPath = "isb-cgc-ca-nano-test-cbiit-assets";
-            printAllSystemVars();
+//            printAllSystemVars();
         }
         return bucketPath;
     }
@@ -46,7 +46,7 @@ public class GCPStorageUtil {
         if (folderPath == "" || folderPath == null) {
             // Temporary to check if dev tier work
             folderPath = "caNanoLab_asset_files";
-            printAllSystemVars();
+//            printAllSystemVars();
         }
         return folderPath;
     }

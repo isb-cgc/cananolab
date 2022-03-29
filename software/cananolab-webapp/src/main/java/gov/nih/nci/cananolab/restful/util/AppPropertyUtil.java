@@ -22,7 +22,7 @@ public class AppPropertyUtil {
                 System.out.println("AppPropertyUtil.GetAppProperty() - Loaded properties successfully");
 
             } catch (Exception e) {
-                System.out.println("AppPropertyUtil.GetAppProperty() - Cannot load properties" + e.getMessage());
+                System.out.println("AppPropertyUtil.GetAppProperty() - Cannot load properties " + e.getMessage());
             }
         }
 
