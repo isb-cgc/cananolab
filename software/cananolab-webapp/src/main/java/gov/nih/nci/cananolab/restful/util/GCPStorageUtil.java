@@ -28,7 +28,7 @@ public class GCPStorageUtil {
         System.out.println("GCPStorageUtil get bucket path: " + bucketPath);
         if (bucketPath == "" || bucketPath == null) {
             // Temporary to check if dev tier work
-            bucketPath = "isb-cgc-ca-nano-test-cbiit-assets";
+            bucketPath = "isb-cgc-ca-nano-dev-cbiit-assets";
             printAllSystemVars();
         }
         return bucketPath;
