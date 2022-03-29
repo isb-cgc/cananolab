@@ -33,7 +33,6 @@ L-->
 	<property name="dist.dir" location="${target.dir}/dist"/>
 	<property name="common.dist.dir" location="${dist.dir}/common"/>
 	<property name="classes.dir" location="${basedir}/build/WEB-INF/classes"/>
-	<property name="secure.dir" location="${basedir}/build/WEB-INF/secure"/>
 	<property name="lib.dir" location="${basedir}/build/WEB-INF/lib"/>
 	<!--	<property name="globus.dir" location="../cananolab-client/lib/globus"/>-->
 	<property name="db.dir" location="${basedir}/lib"/>
@@ -120,7 +119,6 @@ L-->
 		<mkdir dir="${domainbuild.dir}"/>
 		<mkdir dir="${build.dir}"/>
 		<mkdir dir="${build.dir}/WEB-INF"/>
-		<mkdir dir="${build.dir}/WEB-INF/secure"/>
 		<mkdir dir="${build.dir}/WEB-INF/classes"/>
 		<mkdir dir="${build.dir}/WEB-INF/lib"/>
 		<filterset id="properties.filterset">
@@ -197,13 +195,14 @@ L-->
 			<fileset dir="${webroot.dir}">
 				<exclude name="**/*.mex"/>
 				<exclude name="**/WEB-INF/classes/**"/>
+				<exclude name="**/WEB-INF/.env"/>
 			</fileset>
 		</copy>
 
-		<!--copy secure files -->
-		<copy todir="${build.dir}/WEB-INF/secure">
-			<fileset dir="${secure.dir}">
-				<include name="**/*"/>
+		<!--copy env file -->
+		<copy todir="${build.dir}/WEB-INF/classes">
+			<fileset dir="${webroot.dir}/WEB-INF">
+				<include name=".env"/>
 			</fileset>
 		</copy>
 

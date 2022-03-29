@@ -27,7 +27,7 @@ cp -v ${HOME}/maven-settings.xml ${ANT_HOME}/etc/settings.xml
 cp -v ${HOME}/maven-settings.xml /opt/apache-maven/conf/settings.xml
 cp -v ${HOME}/jars/*.jar ${HOME}/software/cananolab-webapp/lib/
 cp -v ${HOME}/jars/sdk/*.jar ${HOME}/software/cananolab-webapp/lib/sdk/
-cp -v ${HOME}/.env ${HOME}/software/cananolab-webapp/web/WEB-INF/secure/
+cp -v ${HOME}/.env ${HOME}/software/cananolab-webapp/web/WEB-INF/
 
 cd ${HOME}/software/cananolab-webapp/
 ant dist
