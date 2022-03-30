@@ -11,12 +11,12 @@ public class AppPropertyUtil {
     public static String getAppProperty(String key) {
         if (!isLoaded) {
             try {
-                String envFilePath = System.getProperty("app.props.path") + ".env";
-                System.out.println("AppPropertyUtil.GetAppProperty() - env file path is " + envFilePath);
-
-                InputStream envFile = new FileInputStream(envFilePath);
-                appProperties = new Properties();
-                appProperties.load(envFile);
+                InputStream inputStream = AppPropertyUtil.class.getResourceAsStream("/.env");
+                System.out.println("AppPropertyUtil.GetAppProperty() - env file path is " + inputStream);
+                if (inputStream != null) {
+                    appProperties = new Properties();
+                    appProperties.load(inputStream);
+                }
 
                 isLoaded = true;
                 System.out.println("AppPropertyUtil.GetAppProperty() - Loaded properties successfully");

@@ -195,6 +195,14 @@ L-->
 			<fileset dir="${webroot.dir}">
 				<exclude name="**/*.mex"/>
 				<exclude name="**/WEB-INF/classes/**"/>
+				<exclude name="**/WEB-INF/.env"/>
+			</fileset>
+		</copy>
+
+		<!--copy env file -->
+		<copy todir="${build.dir}/WEB-INF/classes">
+			<fileset dir="${webroot.dir}/WEB-INF">
+				<include name=".env"/>
 			</fileset>
 		</copy>
 
