@@ -12,7 +12,7 @@ public class AppPropertyUtil {
         if (!isLoaded) {
             try {
                 //String envFilePath = System.getProperty("app.props.path") + ".env";
-                InputStream inputStream = AppPropertyUtil.class.getResourceAsStream(".env");
+                InputStream inputStream = AppPropertyUtil.class.getResourceAsStream("/.env");
                 System.out.println("AppPropertyUtil.GetAppProperty() - env file path is " + inputStream);
                 if (inputStream != null) {
                     appProperties = new Properties();
