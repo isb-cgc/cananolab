@@ -25,6 +25,8 @@ software/common/lib/globus/
 
 .idea/
 
+.env
+
 vpproject/
 
 software/cananolab-webapp/cananolab-web.iml
