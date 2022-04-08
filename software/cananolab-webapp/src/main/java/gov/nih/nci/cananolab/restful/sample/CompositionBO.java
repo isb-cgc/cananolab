@@ -85,6 +85,7 @@ public class CompositionBO extends BaseAnnotationBO
 	 */
 	public CompositionBean summaryView(CompositionForm form,
 		HttpServletRequest request) throws Exception {
+			System.out.println("MHL summaryView sampleId: " + form.getSampleId());
 			if( form == null ){
 				System.out.println("summaryView form==null");
 				return new CompositionBean();
