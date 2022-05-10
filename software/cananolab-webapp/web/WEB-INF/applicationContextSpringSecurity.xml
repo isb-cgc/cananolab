@@ -18,7 +18,9 @@
 	<beans:bean id="loginSuccessHandler" class="gov.nih.nci.cananolab.security.utils.LoginSuccessHandler" />
 	
 	<beans:bean id="loginFailureHandler" class="gov.nih.nci.cananolab.security.utils.LoginFailureHandler" />
-	
+
+	<beans:bean id="customLogoutHandler" class="gov.nih.nci.cananolab.security.utils.CustomLogoutSuccessHandler" />
+
 	<!-- This is where we configure Spring-Security -->
 	<http auto-config="true" use-expressions="true" >
 		<!--  access-denied-page="/auth/denied"> -->
@@ -95,7 +97,8 @@
 					password-parameter="password"
 		/>
 
-		<logout invalidate-session="true" logout-success-url="/index.html" /> 
+		<logout invalidate-session="true" success-handler-ref="customLogoutHandler" />
+<!--		<logout invalidate-session="true" logout-success-url="/index.html" /> -->
 		<!-- <logout-url="/rest/security/logout" />  -->
 		
 		<csrf disabled="true"/>
