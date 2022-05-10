@@ -54,14 +54,14 @@ public class FunctionBean {
 
 	private TargetBean theTarget = new TargetBean();
 	
-	protected Logger logger = LogManager.getLogger(FunctionBean.class);
+//	protected Logger logger = LogManager.getLogger(FunctionBean.class);
 
 	public FunctionBean() {
 	}
 
 	public FunctionBean(Function function) {
 		// when function is copied its id is intentionally set to null.
-		logger.debug("Entered FunctionBean(Function)");
+		// logger.debug("Entered FunctionBean(Function)");
 		if (function.getId() != null && function.getId() != 0) {
 			id = function.getId().toString();
 		}
@@ -114,20 +114,20 @@ public class FunctionBean {
 
 	public void setDomainFunction(Function domainFunction) {
 		this.domainFunction = domainFunction;
-		logger.debug("setDomainFunction(Function)");
+		// logger.debug("setDomainFunction(Function)");
 	}
 
 	public void setDescription(String description) {
 		this.description = description;
-		logger.debug("setDescription("+description+")");
+		// logger.debug("setDescription("+description+")");
 	}
 
 	public void setupDomainFunction(String createdBy, int index)
 			throws Exception {
-		logger.debug("setupDomainFunction("+createdBy+",index)");
+		// logger.debug("setupDomainFunction("+createdBy+",index)");
 		className = ClassUtils.getShortClassNameFromDisplayName(type);
 
-		logger.debug("created by: "+ createdBy);
+		// logger.debug("created by: "+ createdBy);
 		Class clazz = ClassUtils.getFullClass(className);
 		// special case for transfection as a function
 		if (clazz == null || className.equals("Transfection")) {
@@ -138,7 +138,7 @@ public class FunctionBean {
 				&& !clazz.getCanonicalName().equals(
 						domainFunction.getClass().getCanonicalName())) {
 			try {
-				logger.debug("domainFunction null");
+				// logger.debug("domainFunction null");
 				domainFunction = (Function) clazz.newInstance();
 			} catch (ClassCastException ex) {
 				String tmpType = type;
@@ -149,7 +149,7 @@ public class FunctionBean {
 
 		if (domainFunction instanceof ImagingFunction) {
 			domainFunction = imagingFunction;
-			logger.debug("ImagingFunction");
+			// logger.debug("ImagingFunction");
 		} else if (domainFunction instanceof TargetingFunction) {
 			if (((TargetingFunction) domainFunction).getTargetCollection() != null) {
 				((TargetingFunction) domainFunction).getTargetCollection()
@@ -167,16 +167,16 @@ public class FunctionBean {
 				i++;
 			}
 		} else if (domainFunction instanceof OtherFunction) {
-			logger.debug("OtherFunction");
+			// logger.debug("OtherFunction");
 			((OtherFunction) domainFunction).setType(type);
 		}
 		domainFunction.setDescription(description);
 
 		// updated created_date and created_by if id is null
 		if (domainFunction.getId() == null) {
-			logger.debug("Setting createdBy and createdate");
+			// logger.debug("Setting createdBy and createdate");
 			domainFunction.setCreatedBy(createdBy);
-			logger.debug("domainFunction.getCreatedBy() " + domainFunction.getCreatedBy());
+			// logger.debug("domainFunction.getCreatedBy() " + domainFunction.getCreatedBy());
 			// fix for MySQL database, which supports precision only up to
 			// seconds
 			domainFunction.setCreatedDate(DateUtils
@@ -188,7 +188,7 @@ public class FunctionBean {
 				|| !StringUtils.isEmpty(domainFunction.getCreatedBy())
 				&& domainFunction.getCreatedBy().contains(
 						Constants.AUTO_COPY_ANNOTATION_PREFIX)) {
-			logger.debug("FunctionBean createdBy contains copy");
+			// logger.debug("FunctionBean createdBy contains copy");
 			domainFunction.setCreatedBy(createdBy);
 		}
 	}

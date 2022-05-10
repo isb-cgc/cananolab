@@ -18,7 +18,7 @@ import org.springframework.stereotype.Component;
 @Component("groupDao")
 public class GroupDaoImpl extends JdbcDaoSupport implements GroupDao
 {
-	protected Logger logger = LogManager.getLogger(GroupDaoImpl.class);
+//	protected Logger logger = LogManager.getLogger(GroupDaoImpl.class);
 	
 	@Autowired
 	private DataSource dataSource;
@@ -45,7 +45,7 @@ public class GroupDaoImpl extends JdbcDaoSupport implements GroupDao
 	@Override
 	public Group getGroupByName(String groupName)
 	{
-		logger.debug("Fetching group by name: " + groupName);
+		// logger.debug("Fetching group by name: " + groupName);
 		
 		Group grp = null;
 		
@@ -62,7 +62,7 @@ public class GroupDaoImpl extends JdbcDaoSupport implements GroupDao
 	@Override
 	public Group getGroupById(Long groupid)
 	{
-		logger.debug("Fetching group : " + groupid);
+		// logger.debug("Fetching group : " + groupid);
 		
 		Group grp = null;
 		
@@ -107,7 +107,7 @@ public class GroupDaoImpl extends JdbcDaoSupport implements GroupDao
 	@Override
 	public List<String> getGroupMembers(Long groupId)
 	{
-		logger.debug("Fetching members of group ID: " + groupId);
+		// logger.debug("Fetching members of group ID: " + groupId);
 		
 		List<String> memberList = new ArrayList<String>();
 		
@@ -143,7 +143,7 @@ public class GroupDaoImpl extends JdbcDaoSupport implements GroupDao
 	@Override
 	public List<Group> getGroupsWithMember(String username)
 	{
-		logger.debug("Fetching groups with user: " + username + " as member.");
+		// logger.debug("Fetching groups with user: " + username + " as member.");
 		
 		List<Group> groups = new ArrayList<Group>();
 		
@@ -158,7 +158,7 @@ public class GroupDaoImpl extends JdbcDaoSupport implements GroupDao
 	@Override
 	public List<Group> getAllGroups()
 	{
-		logger.debug("Fetching all groups.");
+		// logger.debug("Fetching all groups.");
 
         return getJdbcTemplate().query(FETCH_ALL_GROUPS_SQL, new GroupMapper());
 	}

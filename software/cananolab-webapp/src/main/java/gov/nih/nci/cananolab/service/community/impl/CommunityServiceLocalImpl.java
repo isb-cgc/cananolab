@@ -211,7 +211,7 @@ public class CommunityServiceLocalImpl extends BaseServiceLocalImpl implements C
 
         } catch (Exception e) {
             String error = "Error assigning an owner to the collaboration group by Id " + collaborationGroupId;
-            logger.error(error, e);
+//            logger.error(error, e);
             throw new CommunityException(error, e);
         }
     }
@@ -248,7 +248,7 @@ public class CommunityServiceLocalImpl extends BaseServiceLocalImpl implements C
                 }
                 else {
                     String error = "User has no access to the collaboration group " + group.getGroupName();
-                    logger.info(error);
+//                    logger.info(error);
                 }
 
             } catch (Exception e) {

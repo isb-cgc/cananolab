@@ -19,7 +19,7 @@ import org.springframework.stereotype.Component;
 @Component("userDao")
 public class UserDaoImpl extends JdbcDaoSupport implements UserDao 
 {
-	protected Logger logger = LogManager.getLogger(UserDaoImpl.class);
+//	protected Logger logger = LogManager.getLogger(UserDaoImpl.class);
 	
 	@Autowired
 	private DataSource dataSource;
@@ -60,7 +60,7 @@ public class UserDaoImpl extends JdbcDaoSupport implements UserDao
 	@Override
 	public CananoUserDetails getUserByName(String username)
 	{
-		logger.debug("Fetching user details for user login: " + username);
+//		logger.debug("Fetching user details for user login: " + username);
 		
 		CananoUserDetails user = null;
 		
@@ -77,7 +77,7 @@ public class UserDaoImpl extends JdbcDaoSupport implements UserDao
 	@Override
 	public List<CananoUserDetails> getUsers(String likeStr)
 	{
-		logger.debug("Fetching user details with username like: " + likeStr);
+//		logger.debug("Fetching user details with username like: " + likeStr);
 		
 		List<CananoUserDetails> userList = new ArrayList<CananoUserDetails>();
 		
@@ -96,7 +96,7 @@ public class UserDaoImpl extends JdbcDaoSupport implements UserDao
 	@Override
 	public List<String> getUserGroups(String username)
 	{
-		logger.debug("Fetching all groups to which user belongs: " + username);
+//		logger.debug("Fetching all groups to which user belongs: " + username);
 		
 		List<String> userGroups = new ArrayList<String>();
 		if (!StringUtils.isEmpty(username))
@@ -110,7 +110,7 @@ public class UserDaoImpl extends JdbcDaoSupport implements UserDao
 	@Override
 	public List<String> getUserRoles(String username)
 	{
-		logger.debug("Fetching all roles assigned to user: " + username);
+//		logger.debug("Fetching all roles assigned to user: " + username);
 		
 		List<String> userRoles = new ArrayList<String>();
 		if (!StringUtils.isEmpty(username))
@@ -124,7 +124,7 @@ public class UserDaoImpl extends JdbcDaoSupport implements UserDao
 	@Override
 	public int insertUser(CananoUserDetails user)
 	{
-		logger.debug("Insert user : " + user);
+//		logger.debug("Insert user : " + user);
 		int enabled = (user.isEnabled()) ? 1 : 0;
 		Object[] params = new Object[] {user.getUsername(), user.getPassword(), user.getFirstName(), user.getLastName(),
 										user.getOrganization(), user.getDepartment(), user.getTitle(), user.getPhoneNumber(),
@@ -136,7 +136,7 @@ public class UserDaoImpl extends JdbcDaoSupport implements UserDao
 	@Override
 	public int insertUserAuthority(String userName, String authority)
 	{
-		logger.debug("Insert user authority: user = " + userName + ", authority = " + authority);
+//		logger.debug("Insert user authority: user = " + userName + ", authority = " + authority);
 		Object[] params = new Object[] {userName, authority};
 
         return getJdbcTemplate().update(INSERT_USER_AUTHORITY_SQL, params);
@@ -145,7 +145,7 @@ public class UserDaoImpl extends JdbcDaoSupport implements UserDao
 	@Override
 	public int resetPassword(String userName, String password)
 	{
-		logger.info("Reset password for user: " + userName);
+//		logger.info("Reset password for user: " + userName);
 		Object[] params = new Object[] {password, userName};
 
         return getJdbcTemplate().update(RESET_PASSWORD_SQL, params);
@@ -154,7 +154,7 @@ public class UserDaoImpl extends JdbcDaoSupport implements UserDao
 	@Override
 	public String readPassword(String userName)
 	{
-		logger.info("Read password for user : " + userName);
+//		logger.info("Read password for user : " + userName);
 
         return (String) getJdbcTemplate().queryForObject(FETCH_PASSWORD_SQL, new Object[] {userName}, String.class);
 	}
@@ -162,7 +162,7 @@ public class UserDaoImpl extends JdbcDaoSupport implements UserDao
 	@Override
 	public int updateUser(CananoUserDetails userDetails)
 	{
-		logger.info("Update user account for user: " + userDetails.getUsername());
+//		logger.info("Update user account for user: " + userDetails.getUsername());
 		int enabled = (userDetails.isEnabled()) ? 1 : 0;
 		
 		Object[] params = new Object[] {userDetails.getFirstName(), userDetails.getLastName(), userDetails.getOrganization(), 
@@ -175,7 +175,7 @@ public class UserDaoImpl extends JdbcDaoSupport implements UserDao
 	@Override
 	public int deleteUserAssignedRoles(String username)
 	{
-		logger.info("Delete all user assigned roles for :" + username);
+//		logger.info("Delete all user assigned roles for :" + username);
 	
 		Object[] params = new Object[] {username};
 

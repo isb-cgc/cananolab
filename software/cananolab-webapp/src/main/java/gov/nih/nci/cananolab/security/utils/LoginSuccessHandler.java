@@ -14,13 +14,13 @@ import org.springframework.security.web.authentication.AuthenticationSuccessHand
 
 public class LoginSuccessHandler implements AuthenticationSuccessHandler
 {
-	protected Logger logger = LogManager.getLogger(LoginSuccessHandler.class);
+//	protected Logger logger = LogManager.getLogger(LoginSuccessHandler.class);
 
 	@Override
 	public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response,
 										Authentication authentication) throws IOException, ServletException
 	{
-		logger.debug("Successfully authenticated user: " + authentication.getName());
+		// logger.debug("Successfully authenticated user: " + authentication.getName());
 		OutputStream out = response.getOutputStream();
 		out.write(authentication.getName().getBytes());	
 	}

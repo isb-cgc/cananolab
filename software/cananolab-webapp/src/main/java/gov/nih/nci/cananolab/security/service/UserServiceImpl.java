@@ -18,7 +18,7 @@ import org.springframework.stereotype.Component;
 @Component("userService")
 public class UserServiceImpl implements UserService
 {
-	protected Logger logger = LogManager.getLogger(UserServiceImpl.class);
+//	protected Logger logger = LogManager.getLogger(UserServiceImpl.class);
 	
 	@Autowired
 	private UserDao userDao;

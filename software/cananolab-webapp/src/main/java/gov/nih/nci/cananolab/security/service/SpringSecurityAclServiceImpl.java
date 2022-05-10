@@ -31,7 +31,7 @@ import gov.nih.nci.cananolab.util.StringUtils;
 @Component("springSecurityAclService")
 public class SpringSecurityAclServiceImpl implements SpringSecurityAclService
 {
-	private static Logger logger = LogManager.getLogger(AclOperationServiceImpl.class);
+//	private static Logger logger = LogManager.getLogger(AclOperationServiceImpl.class);
 
 	@Autowired
 	private AclOperationService aclOperationService;
@@ -45,7 +45,7 @@ public class SpringSecurityAclServiceImpl implements SpringSecurityAclService
 	@Override
 	public boolean checkObjectPublic(Long securedObjectId, Class clazz)
 	{
-		logger.debug("Checking if secure objectId: " + securedObjectId + " of class: " + clazz.getName() + " is Public.");
+		// logger.debug("Checking if secure objectId: " + securedObjectId + " of class: " + clazz.getName() + " is Public.");
 		MutableAcl acl = aclOperationService.fetchAclForObject(clazz, securedObjectId);
 		List<AccessControlEntry> entries = acl.getEntries();
 		if (entries != null)
@@ -66,10 +66,10 @@ public class SpringSecurityAclServiceImpl implements SpringSecurityAclService
 	@Override
 	public void retractObjectFromPublic(Long securedObjectId, Class clazz)
 	{
-		logger.debug("Retract public access to secure objectId: " + securedObjectId + " of class: " + clazz.getName());
+		// logger.debug("Retract public access to secure objectId: " + securedObjectId + " of class: " + clazz.getName());
 		MutableAcl acl = aclOperationService.fetchAclForObject(clazz, securedObjectId);
 		aclOperationService.deleteAccessToSid(CaNanoRoleEnum.ROLE_ANONYMOUS.toString(), acl);
-		logger.debug("Deleted public access for securedObject " + securedObjectId + " of class " + clazz.getName());
+		// logger.debug("Deleted public access for securedObject " + securedObjectId + " of class " + clazz.getName());
 		
 	}
 	
@@ -98,11 +98,11 @@ public class SpringSecurityAclServiceImpl implements SpringSecurityAclService
 	@Override
 	public void retractAccessToObjectForSid(Long securedObjectId, Class clazz, String sid)
 	{
-		logger.debug("Retract public access to secure objectId: " + securedObjectId + " of class: " + clazz.getName());
+		// logger.debug("Retract public access to secure objectId: " + securedObjectId + " of class: " + clazz.getName());
 		
 		MutableAcl acl = aclOperationService.fetchAclForObject(clazz, securedObjectId);
 		aclOperationService.deleteAccessToSid(sid, acl);
-		logger.debug("Deleted public access for securedObject " + securedObjectId + " of class " + clazz.getName());
+		// logger.debug("Deleted public access for securedObject " + securedObjectId + " of class " + clazz.getName());
 	}
 	
 	@Override
@@ -351,14 +351,14 @@ public class SpringSecurityAclServiceImpl implements SpringSecurityAclService
 	@Override
 	public void deleteAllAccessExceptPublicAndDefault(Long securedObjectId, Class clazz)
 	{
-		logger.debug("Delete all access to object except for Public and Default.");
+		// logger.debug("Delete all access to object except for Public and Default.");
 		MutableAcl acl = aclOperationService.fetchAclForObject(clazz, securedObjectId);
 		aclOperationService.deleteAccessExceptPublicAndDefault(acl);
 	}
 
 	@Override
 	public void updateObjectOwner(Long securedObjectId, Class clazz, String newOwner) {
-		logger.debug("Update owner of " + clazz + ": " + securedObjectId + " to new owner: " + newOwner);
+		// logger.debug("Update owner of " + clazz + ": " + securedObjectId + " to new owner: " + newOwner);
 		aclOperationService.updateObjectOwner(securedObjectId, clazz, newOwner);
 	}
 

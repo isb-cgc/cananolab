@@ -23,7 +23,7 @@ import gov.nih.nci.cananolab.security.enums.SecureClassesEnum;
 @Component("migrateDataDAO")
 public class MigrateDataDAOImpl extends JdbcDaoSupport implements MigrateDataDAO
 {
-	protected Logger logger = LogManager.getLogger(GroupDaoImpl.class);
+//	protected Logger logger = LogManager.getLogger(GroupDaoImpl.class);
 	
 	@Autowired
 	private DataSource dataSource;
@@ -325,7 +325,7 @@ public class MigrateDataDAOImpl extends JdbcDaoSupport implements MigrateDataDAO
 	@Override
 	public int updateEncryptedPassword(String userName, String password)
 	{
-		logger.debug("Update password for : " + userName);
+		// logger.debug("Update password for : " + userName);
 		Object[] params = new Object[] {password, userName};
 
         return getJdbcTemplate().update(UPDATE_PWD_SQL, params);

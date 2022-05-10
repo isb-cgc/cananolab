@@ -19,7 +19,7 @@ import gov.nih.nci.cananolab.security.utils.SpringSecurityUtil;
 @Component("userAccountBO")
 public class UserAccountBO
 {
-	protected Logger logger = LogManager.getLogger(UserAccountBO.class);
+//	protected Logger logger = LogManager.getLogger(UserAccountBO.class);
 	
 	@Autowired
 	private UserDetailsService userDetailsService;

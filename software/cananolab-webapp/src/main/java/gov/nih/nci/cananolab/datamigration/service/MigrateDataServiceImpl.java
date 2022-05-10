@@ -26,7 +26,7 @@ import gov.nih.nci.cananolab.security.utils.AESEncryption;
 @Component("migrateDataService")
 public class MigrateDataServiceImpl implements MigrateDataService
 {
-	protected Logger logger = LogManager.getLogger(MigrateDataServiceImpl.class);
+//	protected Logger logger = LogManager.getLogger(MigrateDataServiceImpl.class);
 
 	private int pageSize = 200;
 
@@ -45,7 +45,7 @@ public class MigrateDataServiceImpl implements MigrateDataService
 	@Override
 	public void migrateUserAccountsFromCSMToSpring() throws Exception
 	{
-		logger.info("Migrating all user accounts from CSM to Spring Security and granting Public role.");
+//		logger.info("Migrating all user accounts from CSM to Spring Security and granting Public role.");
 		AESEncryption aesEncryption = new AESEncryption();
 		
 		List<CananoUserDetails> csmUserList = migrateDataDAO.getUsersFromCSM();
@@ -67,35 +67,35 @@ public class MigrateDataServiceImpl implements MigrateDataService
 			userDetails.setPhoneNumber(aesEncryption.decrypt(csmUser.getPhoneNumber()));
 			userDetails.setEnabled(true);
 			int status = userDao.insertUser(userDetails);
-			logger.info("User account created for " + csmUser + " status = " + status);
+//			logger.info("User account created for " + csmUser + " status = " + status);
 
 			status = userDao.insertUserAuthority(csmUser.getUsername(), CaNanoRoleEnum.ROLE_ANONYMOUS.toString());
-			logger.info(csmUser + " granted Public role with status = " + status);
+//			logger.info(csmUser + " granted Public role with status = " + status);
 		}
 	}
 
 	@Override 
 	public void grantCuratorRoleToAccounts()
 	{
-		logger.info("Migrate users' Curator role from CSM to Spring Security.");
+//		logger.info("Migrate users' Curator role from CSM to Spring Security.");
 		List<String> csmUserList = migrateDataDAO.getCuratorUsersFromCSM();
 		for (String csmUser : csmUserList)
 		{
 			int status = userDao.insertUserAuthority(csmUser, CaNanoRoleEnum.ROLE_CURATOR.toString());
-			logger.info(csmUser + " granted Curator role with status = " + status);
+//			logger.info(csmUser + " granted Curator role with status = " + status);
 		}
 	}
 
 	@Override
 	public void migrateDefaultAccessDataFromCSMToSpring(SecureClassesEnum dataType)
 	{
-		logger.info("Starting default access control data transter for all : " + dataType.toString());
+//		logger.info("Starting default access control data transter for all : " + dataType.toString());
 		Long totalCount = migrateDataDAO.getDataSize(dataType);
 
 		// calculate the number of pages
 		double pageCount = totalCount / pageSize;
 		int pageCnt = Double.valueOf(pageCount).intValue() + 1;
-		logger.info("Total data size = " + totalCount + ", page count = " + pageCnt);
+//		logger.info("Total data size = " + totalCount + ", page count = " + pageCnt);
 		
 		List<Permission> rwdPerms = new ArrayList<Permission>();
 		rwdPerms.add(BasePermission.READ);
@@ -109,7 +109,7 @@ public class MigrateDataServiceImpl implements MigrateDataService
 		{
 			long rowMin = (i * pageSize) + 1 ;
 			long rowMax = (i == pageCnt - 1) ? totalCount : (i + 1) * pageSize;
-			logger.info("Transferring default access data for page = " + i + ", rowMin = " + rowMin + ", rowMax = " + rowMax);
+//			logger.info("Transferring default access data for page = " + i + ", rowMin = " + rowMin + ", rowMax = " + rowMax);
 			
 			List<AbstractMap.SimpleEntry<Long, String>> dataList = migrateDataDAO.getDataPage(rowMin, rowMax, dataType);
 			for (AbstractMap.SimpleEntry<Long, String> id : dataList)
@@ -128,21 +128,21 @@ public class MigrateDataServiceImpl implements MigrateDataService
 	@Override
 	public void migratePublicAccessDataFromCSMToSpring(SecureClassesEnum dataType)
 	{
-		logger.info("Starting public access control data transter for : " + dataType.toString());
+//		logger.info("Starting public access control data transter for : " + dataType.toString());
 		Long publicCount = migrateDataDAO.getPublicDataSize(dataType);
 
-		logger.info("Public sample data size = " + publicCount);
+//		logger.info("Public sample data size = " + publicCount);
 		
 		// calculate the number of pages
 		double pageCount = publicCount / pageSize;
 		int pageCnt = Double.valueOf(pageCount).intValue() + 1;
-		logger.info("Public data size = " + publicCount + ", page count = " + pageCnt);
+//		logger.info("Public data size = " + publicCount + ", page count = " + pageCnt);
 
 		for (int i = 0; i < pageCnt; i++)
 		{
 			long rowMin = (i * pageSize) + 1 ;
 			long rowMax = (i == pageCnt - 1) ? publicCount : (i + 1) * pageSize;
-			logger.info("Transferring public access data for page = " + i + ", rowMin = " + rowMin + ", rowMax = " + rowMax);
+//			logger.info("Transferring public access data for page = " + i + ", rowMin = " + rowMin + ", rowMax = " + rowMax);
 			
 			List<AbstractMap.SimpleEntry<Long, String>> publicIdDataList = migrateDataDAO.getPublicDataPage(rowMin, rowMax, dataType);
 			for (AbstractMap.SimpleEntry<Long, String> publicId : publicIdDataList)
@@ -155,11 +155,11 @@ public class MigrateDataServiceImpl implements MigrateDataService
 	@Override
 	public void migrateRWDUserAccessFromCSMToSpring(SecureClassesEnum dataType)
 	{
-		logger.info("Starting transfer of RWD access data for all users to Spring. " + dataType.toString());
+//		logger.info("Starting transfer of RWD access data for all users to Spring. " + dataType.toString());
 		List<AbstractMap.SimpleEntry<Long, String>> accessList = migrateDataDAO.getRWDAccessDataForUsers(dataType);
 		if (accessList != null)
 		{
-			logger.info("Size of RWD access data for " + dataType + " = " + accessList.size());
+//			logger.info("Size of RWD access data for " + dataType + " = " + accessList.size());
 			for (AbstractMap.SimpleEntry<Long, String> idUser : accessList)
 			{
 				springSecurityAclService.saveAccessForObject(idUser.getKey(), dataType.getClazz(), idUser.getValue(), true, "RWD");
@@ -170,11 +170,11 @@ public class MigrateDataServiceImpl implements MigrateDataService
 	@Override
 	public void migrateReadUserAccessFromCSMToSpring(SecureClassesEnum dataType)
 	{
-		logger.info("Starting transfer of Read access data for all users to Spring. " + dataType.toString());
+//		logger.info("Starting transfer of Read access data for all users to Spring. " + dataType.toString());
 		List<AbstractMap.SimpleEntry<Long, String>> accessList = migrateDataDAO.getReadAccessDataForUsers(dataType);
 		if (accessList != null)
 		{
-			logger.info("Size of Read access data for " + dataType + " = " + accessList.size());
+//			logger.info("Size of Read access data for " + dataType + " = " + accessList.size());
 			for (AbstractMap.SimpleEntry<Long, String> idUser : accessList)
 			{
 				springSecurityAclService.saveAccessForObject(idUser.getKey(), dataType.getClazz(), idUser.getValue(), true, "R");
@@ -185,27 +185,27 @@ public class MigrateDataServiceImpl implements MigrateDataService
 	@Override
 	public void migrateCharacterizationAccessData()
 	{
-		logger.info("Starting transfer of access data for characterizations.");
+//		logger.info("Starting transfer of access data for characterizations.");
 		
 		Long count = migrateDataDAO.getCharDataSize();
 
-		logger.info("Characterization data size = " + count);
+//		logger.info("Characterization data size = " + count);
 		
 		// calculate the number of pages
 		double pageCount = count / pageSize;
 		int pageCnt = Double.valueOf(pageCount).intValue() + 1;
-		logger.info("Characterization data size = " + count + ", page count = " + pageCnt);
+//		logger.info("Characterization data size = " + count + ", page count = " + pageCnt);
 
 		for (int i = 0; i < pageCnt; i++)
 		{
 			long rowMin = (i * pageSize) + 1 ;
 			long rowMax = (i == pageCnt - 1) ? count : (i + 1) * pageSize;
-			logger.info("Transferring characterization data for page = " + i + ", rowMin = " + rowMin + ", rowMax = " + rowMax);
+//			logger.info("Transferring characterization data for page = " + i + ", rowMin = " + rowMin + ", rowMax = " + rowMax);
 			
 			List<AbstractMap.SimpleEntry<Long, Long>> charList = migrateDataDAO.getAllCharacterizations(rowMin, rowMax);
 			if (charList != null)
 			{
-				logger.info("Size of charaterizations = " + charList.size());
+//				logger.info("Size of charaterizations = " + charList.size());
 				for (AbstractMap.SimpleEntry<Long, Long> charSample : charList)
 				{
 					springSecurityAclService.saveAccessForChildObject(charSample.getValue(), SecureClassesEnum.SAMPLE.getClazz(), charSample.getKey(), SecureClassesEnum.CHAR.getClazz());
@@ -217,12 +217,12 @@ public class MigrateDataServiceImpl implements MigrateDataService
 	@Override
 	public void migrateOrganizationAccessData()
 	{
-		logger.info("Starting transfer of access data for Organizations and Point of Contacts.");
+//		logger.info("Starting transfer of access data for Organizations and Point of Contacts.");
 
 		List<Long> orgPkIdList = migrateDataDAO.getAllOrganizations();
 		if (orgPkIdList != null)
 		{
-			logger.info("Size of organizations = " + orgPkIdList.size());
+//			logger.info("Size of organizations = " + orgPkIdList.size());
 			for (Long orgPkId : orgPkIdList)
 			{
 				springSecurityAclService.savePublicAccessForObject(orgPkId, SecureClassesEnum.ORG.getClazz());
@@ -232,19 +232,19 @@ public class MigrateDataServiceImpl implements MigrateDataService
 		List<AbstractMap.SimpleEntry<Long, Long>> orgPocIdList = migrateDataDAO.getPOCsForOrgs();
 		if (orgPocIdList != null)
 		{
-			logger.info("Size of POCs for organizations = " + orgPocIdList.size());
+//			logger.info("Size of POCs for organizations = " + orgPocIdList.size());
 			for (AbstractMap.SimpleEntry<Long, Long> orgPocId : orgPocIdList)
 			{
 				springSecurityAclService.saveAccessForChildObject(orgPocId.getValue(), SecureClassesEnum.ORG.getClazz(), orgPocId.getKey(), SecureClassesEnum.POC.getClazz());
 			}
 		}
-		logger.info("Organizations and Point of COntact access data migrated");
+//		logger.info("Organizations and Point of COntact access data migrated");
 	}
 	
 	@Override
 	public void bcryptPasswords()
 	{
-		logger.info("Start encyption of passwords in user table with BCrypt.");
+//		logger.info("Start encyption of passwords in user table with BCrypt.");
 		List<AbstractMap.SimpleEntry<String, String>> userPwdList = migrateDataDAO.getUserPasswords();
 		BCryptPasswordEncoder bcrypt = new BCryptPasswordEncoder();
 		
@@ -254,7 +254,7 @@ public class MigrateDataServiceImpl implements MigrateDataService
 			int status = migrateDataDAO.updateEncryptedPassword(userPwd.getKey(), value);
 		}
 		
-		logger.info("Encyption of passwords in user table with BCrypt completed.");
+//		logger.info("Encyption of passwords in user table with BCrypt completed.");
 	}
 
 }

@@ -13,6 +13,6 @@ import org.apache.logging.log4j.Logger;
 
 public class BaseServiceHelper
 {
-	protected Logger logger = LogManager.getLogger(BaseServiceHelper.class);
+//	protected Logger logger = LogManager.getLogger(BaseServiceHelper.class);
 	
 }

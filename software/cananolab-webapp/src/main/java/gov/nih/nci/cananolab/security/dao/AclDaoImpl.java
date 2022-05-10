@@ -16,7 +16,7 @@ import org.springframework.stereotype.Component;
 @Component("aclDao")
 public class AclDaoImpl extends NamedParameterJdbcDaoSupport implements AclDao
 {
-	protected Logger logger = LogManager.getLogger(AclDaoImpl.class);
+//	protected Logger logger = LogManager.getLogger(AclDaoImpl.class);
 	
 	@Autowired
 	private DataSource dataSource;
@@ -63,7 +63,7 @@ public class AclDaoImpl extends NamedParameterJdbcDaoSupport implements AclDao
 	@Override
 	public List<Long> getIdsOfClassForSid(String clazz, String sid)
 	{
-		logger.debug("Fetching class: " + clazz + " Ids accessible to: " + sid);
+//		logger.debug("Fetching class: " + clazz + " Ids accessible to: " + sid);
 		List<Long> idList = new ArrayList<Long>();
 		
 		if (!StringUtils.isEmpty(clazz) && !StringUtils.isEmpty(sid))
@@ -80,7 +80,7 @@ public class AclDaoImpl extends NamedParameterJdbcDaoSupport implements AclDao
 	@Override
 	public List<Long> getCountOfPublicCharacterization(String clazz, String sid, List<String> charNames)
 	{
-		logger.debug("Fetching list of public characterization IDs of class: " + charNames);
+//		logger.debug("Fetching list of public characterization IDs of class: " + charNames);
 		List<Long> idList = new ArrayList<Long>();
 		
 		if (!StringUtils.isEmpty(clazz) && !StringUtils.isEmpty(sid))
@@ -97,7 +97,7 @@ public class AclDaoImpl extends NamedParameterJdbcDaoSupport implements AclDao
 	@Override
 	public List<String> getIdsOfClassSharedWithSid(SecureClassesEnum classEnum, String loggedInUser, List<String> sids)
 	{
-		logger.debug("Fetching class: " + classEnum + " Ids Shared with: " + sids);
+//		logger.debug("Fetching class: " + classEnum + " Ids Shared with: " + sids);
 		List<String> idList = new ArrayList<String>();
 		
 		if (classEnum != null && !StringUtils.isEmpty(loggedInUser) && sids.size() > 0)
