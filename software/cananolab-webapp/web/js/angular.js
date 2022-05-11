@@ -5355,11 +5355,11 @@ function $AnchorScrollProvider() {
      <example module="anchorScrollOffsetExample" name="anchor-scroll-offset">
        <file name="index.html">
          <div class="fixed-header" ng-controller="headerCtrl">
-           <a href="" ng-click="gotoAnchor(x)" ng-repeat="x in [1,2,3,4,5]">
+           <a href="" ng-click="gotoAnchor(x)" ng-repeat="x in [1,2,3,4,5] track by $index">
              Go to anchor {{x}}
            </a>
          </div>
-         <div id="anchor{{x}}" class="anchor" ng-repeat="x in [1,2,3,4,5]">
+         <div id="anchor{{x}}" class="anchor" ng-repeat="x in [1,2,3,4,5] track by $index">
            Anchor {{x}} of 5
          </div>
        </file>
