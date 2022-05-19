@@ -17,7 +17,7 @@
             <th>Process Type</th>
             <th>Process Status</th>
         </tr>
-        <tr ng-repeat="result in data">
+        <tr ng-repeat="result in data track by $index">
             <td>
                 <div>{{result.processType}}</div>
             </td>
