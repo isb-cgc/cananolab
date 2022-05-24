@@ -272,6 +272,14 @@
                     </td>
                 </tr>
                 <tr>
+                    <td colspan="6">
+                        <input type="checkbox" ng-model="piiConfirmed">
+                        <label style="color: red"> The form may contain PII data. Please click the checkbox to confirm submission.
+                        </label>
+                        </input>
+                    </td>
+                </tr>
+                <tr>
                     <td ng-show="theAuthor.id != null || $scope.theAuthor.id != ''">
                        <!--  <input class="promptButton"
                                id="deleteAuthor" type="button" value="Delete"
@@ -284,7 +292,7 @@
                                    ng-click="addAuthor();" />
                             <input class="promptButton" type="button" value="Cancel"
                                    ng-click="addNewAuthor=false" /> -->
-                            <button class="btn-canano btn-canano-xs btn-canano-primary" type="button" ng-click="addAuthor();">Save</button>
+                            <button class="btn-canano btn-canano-xs btn-canano-primary" type="button" ng-disabled="!piiConfirmed" ng-click="addAuthor();">Save</button>
                             <button class="btn-canano btn-canano-xs btn-canano-default" type="button" ng-click="addNewAuthor=false" >Cancel</button>
                         </div>
                     </td>

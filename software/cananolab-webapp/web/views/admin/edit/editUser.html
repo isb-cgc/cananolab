@@ -124,10 +124,16 @@
       </tr></tbody>
 </table> -->
 
-         <div class="form__actions">
+
+    <input type="checkbox" ng-model="piiConfirmed">
+    <label style="color: red"> The form may contain PII data. Please click the checkbox to confirm submission.
+    </label>
+    </input>
+
+    <div class="form__actions">
             <div class="form__action__right">
                 <button ng-click="resetForm()" class='btn-canano btn-canano-danger'>Reset</button>
-                <button ng-click="doSubmitData()" ng-if="userTag == null" class='btn-canano btn-canano-primary'>Save</button>
+                <button ng-click="doSubmitData()" ng-disabled="!piiConfirmed" ng-if="userTag == null" class='btn-canano btn-canano-primary'>Save</button>
                 <button ng-click="doUpdateData()" ng-if="userTag != null" class='btn-canano btn-canano-primary'>Update</button>
             </div>
         </div>

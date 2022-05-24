@@ -170,6 +170,12 @@
             </tr>
 
         </tbody></table>
+
+        <input type="checkbox" ng-model="piiConfirmed">
+        <label style="color: red"> The form may contain PII data. Please click the checkbox to confirm submission.
+        </label>
+        </input>
+
         </fieldset>
     </div>
 <div style="padding-top:20px;margin-left:38px;width:300px" ng-show="deleteBlock" class="message">
@@ -190,7 +196,10 @@
     </div>
     <div style="float: right">
         <button ng-click="cancel()" class="btn-canano btn-canano-default btn-canano-modal" ng-disabled="loader">Cancel</button>   
-        <button ng-click="save()" class='btn-canano btn-canano-primary btn-canano-modal' ng-disabled="!poc.organization.name || loader">Save</button>
+        <button ng-click="save()" class='btn-canano btn-canano-primary btn-canano-modal'
+                ng-disabled="!poc.organization.name || loader || !piiConfirmed">
+            Save
+        </button>
     </div>
 
 </div>
