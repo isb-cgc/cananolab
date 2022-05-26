@@ -273,10 +273,24 @@
                 </tr>
                 <tr>
                     <td colspan="6">
-                        <input type="checkbox" ng-model="piiConfirmed">
-                        <label style="color: red"> The form may contain PII data. Please click the checkbox to confirm submission.
-                        </label>
-                        </input>
+                        <!-- Version 2 -->
+                        <div>
+                            <b>IMPORTANT</b>: Please only enter PUBLIC BUSINESS RELATED contact information into these fields (such as institutional
+                            points of contact used in public publications). DO NOT add private contact information here, as this information
+                            will be made available to the public viewing the system. We will contact you yearly via the email address you
+                            provide to ask if you would like to correct, update or delete this information. If you would like to update it
+                            earlier, please contact us via xxxx.
+                        </div>
+                        <div style="color: red">
+                            <input type="checkbox" ng-model="piiConfirmed">
+                            I have read and understood the message above.
+                            </input>
+                        </div>
+
+
+<!--                        <label style="color: red"><input type="checkbox" ng-model="piiConfirmed"> IMPORTANT: Please only enter PUBLIC BUSINESS RELATED contact information into these fields (such as institutional points of contact used in public publications). DO NOT add private contact information here, as this information will be made available to the public viewing the system. We will contact you yearly via the email address you provide to ask if you would like to correct, update or delete this information. If you would like to update it earlier, please contact us via xxxx.-->
+<!--                        </label>-->
+<!--                        </input>-->
                     </td>
                 </tr>
                 <tr>
