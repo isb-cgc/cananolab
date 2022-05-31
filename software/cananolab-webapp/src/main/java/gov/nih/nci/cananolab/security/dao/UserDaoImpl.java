@@ -6,6 +6,7 @@ import gov.nih.nci.cananolab.util.StringUtils;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.sql.DataSource;
@@ -43,8 +44,8 @@ public class UserDaoImpl extends JdbcDaoSupport implements UserDao
 	private static final String FETCH_ALL_USERS_SQL = "SELECT u.username, u.first_name, u.last_name, u.password, u.organization, u.department, " +
 												 	  "u.title, u.phone_number, u.email_id, u.enabled FROM users u";
 	
-	private static final String INSERT_USER_SQL = "insert into users(username, password, first_name, last_name, organization, department, title, phone_number, email_id, enabled) " +
-												  "values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+	private static final String INSERT_USER_SQL = "insert into users(username, password, first_name, last_name, organization, department, title, phone_number, email_id, enabled, updated_date) " +
+												  "values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 	
 	private static final String INSERT_USER_AUTHORITY_SQL = "INSERT INTO authorities(username, authority) values (?, ?)";
 	
@@ -126,9 +127,10 @@ public class UserDaoImpl extends JdbcDaoSupport implements UserDao
 	{
 //		logger.debug("Insert user : " + user);
 		int enabled = (user.isEnabled()) ? 1 : 0;
+		Date updatedDate = new Date();
 		Object[] params = new Object[] {user.getUsername(), user.getPassword(), user.getFirstName(), user.getLastName(),
 										user.getOrganization(), user.getDepartment(), user.getTitle(), user.getPhoneNumber(),
-										user.getEmailId(), Integer.valueOf(enabled)};
+										user.getEmailId(), Integer.valueOf(enabled), updatedDate};
 
         return getJdbcTemplate().update(INSERT_USER_SQL, params);
 	}
@@ -164,7 +166,7 @@ public class UserDaoImpl extends JdbcDaoSupport implements UserDao
 	{
 //		logger.info("Update user account for user: " + userDetails.getUsername());
 		int enabled = (userDetails.isEnabled()) ? 1 : 0;
-		
+		Date updatedDate = new Date();
 		Object[] params = new Object[] {userDetails.getFirstName(), userDetails.getLastName(), userDetails.getOrganization(), 
 										userDetails.getDepartment(), userDetails.getTitle(), userDetails.getPhoneNumber(),
 										userDetails.getEmailId(), Integer.valueOf(enabled), userDetails.getUsername()};

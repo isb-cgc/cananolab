@@ -425,6 +425,7 @@ CREATE TABLE `users`
     `phone_number` varchar(100) DEFAULT NULL,
     `email_id`     varchar(100) DEFAULT NULL,
     `enabled`      varchar(1)   DEFAULT NULL,
+    `updated_date` datetime     DEFAULT NULL,
     PRIMARY KEY (`username`),
     UNIQUE KEY `id_users_UNIQUE` (`username`)
 ) ENGINE = InnoDB
