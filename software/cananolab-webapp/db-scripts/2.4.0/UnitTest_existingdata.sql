@@ -167,7 +167,7 @@ LOCK TABLES `point_of_contact` WRITE;
 /*!40000 ALTER TABLE `point_of_contact`
     DISABLE KEYS */;
 INSERT IGNORE INTO `point_of_contact` (`poc_pk_id`, `role`, `first_name`, `last_name`, `middle_initial`, `phone`,
-                                       `email`, `created_date`, `created_by`, `organization_pk_id`)
+                                       `email`, `created_date`, `updated_date`, `created_by`, `organization_pk_id`)
 VALUES (1000, 'investigator', 'canano', 'curator', NULL, NULL, NULL, '2019-12-06 12:15:00', 'canano_curator', 1000),
        (1005, 'investigator', 'canano', 'curator', NULL, NULL, NULL, '2019-12-06 12:15:00', 'canano_curator', 1005),
        (65568768, '', 'Canano', 'Curator', '', '', '', '2020-01-08 19:07:58', 'canano_curator', 65601536);

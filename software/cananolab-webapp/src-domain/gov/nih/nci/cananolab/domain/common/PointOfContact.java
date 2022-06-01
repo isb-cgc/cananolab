@@ -56,7 +56,29 @@ public class PointOfContact  implements Serializable
 	public void setCreatedDate(java.util.Date createdDate){
 		this.createdDate = createdDate;
 	}
-	
+
+	/**
+	 *
+	 **/
+
+	private java.util.Date updatedDate;
+	/**
+	 * Retrieves the value of the updatedDate attribute
+	 * @return createdDate
+	 **/
+
+	public java.util.Date getUpdatedDate(){
+		return updatedDate;
+	}
+
+	/**
+	 * Sets the value of updatedDate attribute
+	 **/
+
+	public void setUpdatedDate(java.util.Date updatedDate){
+		this.updatedDate = updatedDate;
+	}
+
 	/**
 	* 
 	**/

@@ -668,6 +668,7 @@ CREATE TABLE `author`
     `initial`      varchar(10) DEFAULT NULL,
     `created_by`   varchar(200) NOT NULL,
     `created_date` datetime     NOT NULL,
+    `updated_date` datetime     DEFAULT NULL,
     PRIMARY KEY (`author_pk_id`),
     UNIQUE KEY `author_pk_id` (`author_pk_id`)
 ) ENGINE = InnoDB
@@ -6106,6 +6107,7 @@ CREATE TABLE `point_of_contact`
     `email`              varchar(200) DEFAULT NULL,
     `created_date`       datetime     NOT NULL,
     `created_by`         varchar(200) NOT NULL,
+    `updated_date`       datetime     NOT NULL,
     `organization_pk_id` bigint(20)   DEFAULT NULL,
     PRIMARY KEY (`poc_pk_id`),
     KEY `organization_pk_id` (`organization_pk_id`),
