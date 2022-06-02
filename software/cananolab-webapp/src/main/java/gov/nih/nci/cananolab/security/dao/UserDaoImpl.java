@@ -53,7 +53,7 @@ public class UserDaoImpl extends JdbcDaoSupport implements UserDao
 	
 	private static final String FETCH_PASSWORD_SQL = "SELECT password FROM users WHERE username = ?";
 	
-	private static final String UPDATE_USER_SQL = "UPDATE users SET first_name = ?, last_name = ?, organization = ?, department = ?, title = ?, phone_number = ?, email_id = ?, enabled = ? " +
+	private static final String UPDATE_USER_SQL = "UPDATE users SET first_name = ?, last_name = ?, organization = ?, department = ?, title = ?, phone_number = ?, email_id = ?, enabled = ?, updated_date = ? " +
 												  "WHERE username = ?";
 	
 	private static final String DELETE_ROLES_SQL = "DELETE FROM authorities WHERE username = ? AND authority != '" + CaNanoRoleEnum.ROLE_ANONYMOUS.toString() + "'";
@@ -169,7 +169,7 @@ public class UserDaoImpl extends JdbcDaoSupport implements UserDao
 		Date updatedDate = new Date();
 		Object[] params = new Object[] {userDetails.getFirstName(), userDetails.getLastName(), userDetails.getOrganization(), 
 										userDetails.getDepartment(), userDetails.getTitle(), userDetails.getPhoneNumber(),
-										userDetails.getEmailId(), Integer.valueOf(enabled), userDetails.getUsername()};
+										userDetails.getEmailId(), Integer.valueOf(enabled), updatedDate, userDetails.getUsername()};
 
         return getJdbcTemplate().update(UPDATE_USER_SQL, params);
 	}
