@@ -43,7 +43,7 @@
 		<dependency>
 			<groupId>mysql</groupId>
 			<artifactId>mysql-connector-java</artifactId>
-			<version>8.0.18</version>
+			<version>8.0.27</version>
 			<scope>provided</scope>
 		</dependency>
 		<dependency>
@@ -370,7 +370,7 @@
 		<dependency>
 			<groupId>org.javassist</groupId>
 			<artifactId>javassist</artifactId>
-			<version>3.18.1-GA</version>
+			<version>3.25.0-GA</version>
 		</dependency>
 
 <!--	<dependency>-->
