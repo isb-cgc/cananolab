@@ -44,8 +44,8 @@ public class UserDaoImpl extends JdbcDaoSupport implements UserDao
 	private static final String FETCH_ALL_USERS_SQL = "SELECT u.username, u.first_name, u.last_name, u.password, u.organization, u.department, " +
 												 	  "u.title, u.phone_number, u.email_id, u.enabled FROM users u";
 	
-	private static final String INSERT_USER_SQL = "insert into users(username, password, first_name, last_name, organization, department, title, phone_number, email_id, enabled, updated_date) " +
-												  "values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+	private static final String INSERT_USER_SQL = "insert into users(username, password, first_name, last_name, organization, department, title, phone_number, email_id, enabled) " +
+												  "values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 	
 	private static final String INSERT_USER_AUTHORITY_SQL = "INSERT INTO authorities(username, authority) values (?, ?)";
 	
@@ -53,7 +53,7 @@ public class UserDaoImpl extends JdbcDaoSupport implements UserDao
 	
 	private static final String FETCH_PASSWORD_SQL = "SELECT password FROM users WHERE username = ?";
 	
-	private static final String UPDATE_USER_SQL = "UPDATE users SET first_name = ?, last_name = ?, organization = ?, department = ?, title = ?, phone_number = ?, email_id = ?, enabled = ?, updated_date = ? " +
+	private static final String UPDATE_USER_SQL = "UPDATE users SET first_name = ?, last_name = ?, organization = ?, department = ?, title = ?, phone_number = ?, email_id = ?, enabled = ? " +
 												  "WHERE username = ?";
 	
 	private static final String DELETE_ROLES_SQL = "DELETE FROM authorities WHERE username = ? AND authority != '" + CaNanoRoleEnum.ROLE_ANONYMOUS.toString() + "'";

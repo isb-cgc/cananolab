@@ -19,19 +19,11 @@ public class Author implements Serializable {
      **/
 
     private String createdBy;
-
     /**
      *
      **/
 
     private java.util.Date createdDate;
-
-    /**
-     *
-     **/
-
-    private java.util.Date updatedDate;
-
     /**
      *
      **/
@@ -92,24 +84,6 @@ public class Author implements Serializable {
 
     public void setCreatedDate(java.util.Date createdDate) {
         this.createdDate = createdDate;
-    }
-
-    /**
-     * Retrieves the value of the updatedDate attribute
-     *
-     * @return updatedDate
-     **/
-
-    public java.util.Date getUpdatedDate() {
-        return updatedDate;
-    }
-
-    /**
-     * Sets the value of updatedDate attribute
-     **/
-
-    public void setUpdatedDate(java.util.Date updatedDate) {
-        this.updatedDate = updatedDate;
     }
 
     /**
@@ -219,9 +193,9 @@ public class Author implements Serializable {
      * Returns hash code for the primary key of the object
      **/
     public int hashCode() {
-		if (getId() != null) {
-			return getId().hashCode();
-		}
+        if (getId() != null) {
+            return getId().hashCode();
+        }
         return 0;
     }
 

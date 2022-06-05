@@ -108,7 +108,6 @@ public class PointOfContactBean implements Comparable{
 		if (domain.getId() == null) {
 			domain.setCreatedBy(createdBy);
 			domain.setCreatedDate(new Date());
-			domain.setUpdatedDate(new Date());
 		}
 		if (domain.getOrganization().getId() == null) {
 			domain.getOrganization().setCreatedBy(createdBy);

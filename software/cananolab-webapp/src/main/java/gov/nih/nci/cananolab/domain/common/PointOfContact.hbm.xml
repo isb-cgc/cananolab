@@ -17,7 +17,6 @@ L-->
 		<!-- Attributes mapping for the PointOfContact class -->
 		<property name="createdBy" type="string" column="created_by"/>
 		<property name="createdDate" type="java.util.Date" column="created_date"/>
-		<property name="updatedDate" type="java.util.Date" column="updated_date"/>
 		<property name="email" type="string" column="email"/>
 		<property name="firstName" type="string" column="first_name"/>
 		<property name="lastName" type="string" column="last_name"/>

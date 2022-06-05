@@ -2,9 +2,10 @@ package gov.nih.nci.cananolab.security;
 
 import gov.nih.nci.cananolab.security.enums.CaNanoRoleEnum;
 import gov.nih.nci.cananolab.util.StringUtils;
-
-import java.util.*;
-
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Iterator;
+import java.util.List;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -12,7 +13,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 public class CananoUserDetails implements UserDetails
 {
 	private static final long serialVersionUID = 2283492944205219618L;
-	
+
 	private String username;
 	private String firstName;
 	private String lastName;
@@ -23,17 +24,16 @@ public class CananoUserDetails implements UserDetails
 	private String password;
 	private String emailId;
 	private boolean enabled;		//active_flag
-	private Date updatedDate;
 	private List<String> roles;
-	
+
 	private List<String> groups;
-	
+
 	private  Collection<GrantedAuthority> authorities;
-	
+
 	public String getUsername() {
 		return username;
 	}
-	
+
 	public void setUsername(String username) {
 		this.username = username;
 	}
@@ -110,10 +110,6 @@ public class CananoUserDetails implements UserDetails
 		this.enabled = enabled;
 	}
 
-	public Date getUpdatedDate() { return updatedDate; }
-
-	public void setUpdatedDate(Date date) { this.updatedDate = date; }
-
 	public List<String> getRoles() {
 		return roles;
 	}
@@ -149,7 +145,7 @@ public class CananoUserDetails implements UserDetails
 			}
 		}
 	}
-	
+
 	public void addGroup(String groupName)
 	{
 		if (!StringUtils.isEmpty(groupName) && !this.groups.contains(groupName))
@@ -158,7 +154,7 @@ public class CananoUserDetails implements UserDetails
 			authorities.add(new SimpleGrantedAuthority(groupName));
 		}
 	}
-	
+
 	public void removeGroup(String groupName)
 	{
 		if (!StringUtils.isEmpty(groupName))
@@ -176,7 +172,7 @@ public class CananoUserDetails implements UserDetails
 			}
 		}
 	}
-	
+
 	public boolean belongsToGroup(String groupName)
 	{
 		return (this.groups != null) && this.groups.contains(groupName);
@@ -200,23 +196,23 @@ public class CananoUserDetails implements UserDetails
 		// TODO Auto-generated method stub
 		return true;
 	}
-	
+
 	public boolean isCurator() {
 		return isGranted(CaNanoRoleEnum.ROLE_CURATOR.toString());
 	}
-	
+
 	public boolean isResearcher() {
 		return isGranted(CaNanoRoleEnum.ROLE_RESEARCHER.toString());
 	}
-	
+
 	public boolean isPublic() {
 		return isGranted(CaNanoRoleEnum.ROLE_ANONYMOUS.toString());
 	}
-	
+
 	public boolean isAdmin() {
 		return isGranted(CaNanoRoleEnum.ROLE_ADMIN.toString());
 	}
-	
+
 	private boolean isGranted(String role)
 	{
 		Collection authorities = getAuthorities();
@@ -230,8 +226,8 @@ public class CananoUserDetails implements UserDetails
 		}
 
 		return false;
-    }
-	
+	}
+
 	public String getDisplayName()
 	{
 		String displayName = "";
@@ -246,7 +242,7 @@ public class CananoUserDetails implements UserDetails
 		}
 		return displayName;
 	}
-	
+
 	public boolean equals(Object obj)
 	{
 		boolean eq = false;
