@@ -35,7 +35,7 @@ import org.hibernate.criterion.Property;
 
 public abstract class BaseServiceLocalImpl implements BaseService
 {
-//	protected Logger logger = LogManager.getLogger(BaseServiceLocalImpl.class);
+	protected Logger logger = LogManager.getLogger(BaseServiceLocalImpl.class);
 	protected FileUtils fileUtils = new FileUtils();
 	
 	public abstract SpringSecurityAclService getSpringSecurityAclService();
@@ -180,7 +180,7 @@ public abstract class BaseServiceLocalImpl implements BaseService
 					file.setCreatedDate(dbFile.getCreatedDate());
 				} else {
 					String err = "Object doesn't exist in the database anymore.  Please log in again.";
-//					logger.error(err);
+					logger.error(err);
 					throw new FileException(err);
 				}
 			}

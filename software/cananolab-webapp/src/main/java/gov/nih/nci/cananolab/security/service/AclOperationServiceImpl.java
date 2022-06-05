@@ -22,7 +22,7 @@ import org.springframework.stereotype.Component;
 //@Transactional(propagation=Propagation.REQUIRED)
 public class AclOperationServiceImpl implements AclOperationService
 {
-//	private static Logger logger = LogManager.getLogger(AclOperationServiceImpl.class);
+	private static Logger logger = LogManager.getLogger(AclOperationServiceImpl.class);
 
 	@Autowired
 	private MutableAclService aclService;
@@ -46,7 +46,7 @@ public class AclOperationServiceImpl implements AclOperationService
 	@Override
 	public void deletePermission(Long securedObjectId, Class clazz, String recipient, boolean principal, Permission perm) 
 	{
-		// logger.debug("Remove the requested permission for the recipient.");
+		logger.debug("Remove the requested permission for the recipient.");
 		MutableAcl acl = fetchAclForObject(clazz, securedObjectId);
 
 		List<AccessControlEntry> entries = acl.getEntries();
@@ -65,9 +65,9 @@ public class AclOperationServiceImpl implements AclOperationService
 
 		aclService.updateAcl(acl);
 
-//		if (logger.isDebugEnabled()) {
-			// logger.debug("Deleted securedObject " + securedObjectId + " ACL permissions for recipient " + recipient);
-//		}
+		if (logger.isDebugEnabled()) {
+			logger.debug("Deleted securedObject " + securedObjectId + " ACL permissions for recipient " + recipient);
+		}
 	}
 	
 	@Override

@@ -14,7 +14,7 @@ import gov.nih.nci.cananolab.util.StringUtils;
 @Component("groupService")
 public class GroupServiceImpl implements GroupService
 {
-//	protected Logger logger = LogManager.getLogger(GroupServiceImpl.class);
+	protected Logger logger = LogManager.getLogger(GroupServiceImpl.class);
 	
 	@Autowired
 	private GroupDao groupDao;

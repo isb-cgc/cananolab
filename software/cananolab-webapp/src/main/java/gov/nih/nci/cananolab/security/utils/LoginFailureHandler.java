@@ -14,12 +14,12 @@ import org.springframework.security.web.authentication.AuthenticationFailureHand
 
 public class LoginFailureHandler implements AuthenticationFailureHandler
 {
-//	protected Logger logger = LogManager.getLogger(LoginFailureHandler.class);
+	protected Logger logger = LogManager.getLogger(LoginFailureHandler.class);
 
 	public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response, 
 										AuthenticationException ae) throws IOException, ServletException
 	{
-//		logger.error("Authentication failed for user: " + request.getParameter("username"), ae);
+		logger.error("Authentication failed for user: " + request.getParameter("username"), ae);
 		response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
 		OutputStream out = response.getOutputStream();
 		//out.write("Invalid login attempt. Please try again.".getBytes());

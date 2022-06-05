@@ -59,7 +59,7 @@ import org.springframework.stereotype.Component;
 @Component("dataAvailabilityServiceDAO")
 public class DataAvailabilityServiceJDBCImpl extends JdbcDaoSupport implements DataAvailabilityService
 {
-//	private static Logger logger = LogManager.getLogger(DataAvailabilityServiceJDBCImpl.class);
+	private static Logger logger = LogManager.getLogger(DataAvailabilityServiceJDBCImpl.class);
 	
 	@Autowired
 	private SampleServiceHelper sampleServiceHelper;
@@ -200,7 +200,7 @@ public class DataAvailabilityServiceJDBCImpl extends JdbcDaoSupport implements D
 				try {
 					deleteDataAvailability(sampleId);
 				} catch (Exception e) {
-					// logger.error("Error deleting data availablity metrics for sample: " + sampleId, e);
+					logger.error("Error deleting data availablity metrics for sample: " + sampleId, e);
 					i++;
 				}
 			}
@@ -264,8 +264,8 @@ public class DataAvailabilityServiceJDBCImpl extends JdbcDaoSupport implements D
 				}
 			} catch (Exception e) {
 				i++;
-				// logger.info("Error saving data availability for sample: "
-//						+ sampleId, e);
+				logger.info("Error saving data availability for sample: "
+						+ sampleId, e);
 			}
 		}
 		return i;

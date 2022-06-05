@@ -19,14 +19,14 @@ import gov.nih.nci.cananolab.security.CananoUserDetails;
 public class CananoUserDetailsServiceImpl implements UserDetailsService
 {
 
-//    protected Logger logger = LogManager.getLogger(CananoUserDetailsServiceImpl.class);
+    protected Logger logger = LogManager.getLogger(CananoUserDetailsServiceImpl.class);
 	
 	@Autowired
 	private UserDao userDao;
 	
 	public CananoUserDetails loadUserByUsername(String username) throws UsernameNotFoundException
 	{
-//		logger.debug("Loading user details: " + username);
+		logger.debug("Loading user details: " + username);
 
 		CananoUserDetails userDetails = null;
 		

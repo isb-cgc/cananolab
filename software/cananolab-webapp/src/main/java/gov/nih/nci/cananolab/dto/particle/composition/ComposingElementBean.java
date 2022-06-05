@@ -29,7 +29,7 @@ import org.apache.logging.log4j.Logger;
  *
  */
 public class ComposingElementBean {
-//	protected Logger logger = LogManager.getLogger(ComposingElementBean.class);
+	protected Logger logger = LogManager.getLogger(ComposingElementBean.class);
 	
 	private ComposingElement domain = new ComposingElement();
 
@@ -150,13 +150,13 @@ public class ComposingElementBean {
 	}
 
 	public void setupDomain(String createdBy) throws Exception {
-		// logger.debug("In ComposingElement.setupDomain");
+		logger.debug("In ComposingElement.setupDomain");
 		if (domain.getId() != null && domain.getId() == 0) {
 			domain.setId(null);
 		}
 		// updated created_date and created_by if id is null
 		if (domain.getId() == null) {
-			// logger.debug("call domain.setCreatedBy "+ createdBy);
+			logger.debug("call domain.setCreatedBy "+ createdBy);
 			domain.setCreatedBy(createdBy);
 			domain.setCreatedDate(Calendar.getInstance().getTime());
 		}
@@ -166,7 +166,7 @@ public class ComposingElementBean {
 				|| !StringUtils.isEmpty(domain.getCreatedBy())
 				&& domain.getCreatedBy().contains(
 						Constants.AUTO_COPY_ANNOTATION_PREFIX)) {
-			// logger.debug("call domain.setCreatedBy within copy "+ createdBy);
+			logger.debug("call domain.setCreatedBy within copy "+ createdBy);
 			domain.setCreatedBy(createdBy);
 		}
 		// update zero values defaulted from forms to null
@@ -185,15 +185,15 @@ public class ComposingElementBean {
 		// inherent functions are saved separated so need to setupDomainFunction
 		// here
 		for (FunctionBean functionBean : inherentFunctions) {
-			// logger.debug("call setupDomainFunction "+ createdBy);
+			logger.debug("call setupDomainFunction "+ createdBy);
 			functionBean.setupDomainFunction(createdBy, i);
-			// logger.debug("Back from setupDomainFunction " + functionBean.getDomainFunction().getCreatedBy());
+			logger.debug("Back from setupDomainFunction " + functionBean.getDomainFunction().getCreatedBy());
 //			domain.getInherentFunctionCollection().add(
 //					functionBean.getDomainFunction());
 			domain.addInherentFunction(functionBean.getDomainFunction());
 			i++;
 		}
-		// logger.debug("Final domain size "+ domain.getInherentFunctionCollection().size());
+		logger.debug("Final domain size "+ domain.getInherentFunctionCollection().size());
 	}
 
 	public FunctionBean getTheFunction() {
