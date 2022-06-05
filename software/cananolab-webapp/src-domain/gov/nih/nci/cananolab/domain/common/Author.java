@@ -193,9 +193,9 @@ public class Author implements Serializable {
      * Returns hash code for the primary key of the object
      **/
     public int hashCode() {
-        if (getId() != null) {
-            return getId().hashCode();
-        }
+		if (getId() != null) {
+			return getId().hashCode();
+		}
         return 0;
     }
 
