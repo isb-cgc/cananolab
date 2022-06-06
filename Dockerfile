@@ -39,11 +39,11 @@ RUN apt-get -y install unzip libffi-dev libssl-dev git ruby g++ curl
 COPY ./staged /local/content/
 
 WORKDIR /tmp
-RUN wget https://download.jboss.org/wildfly/13.0.0.Final/wildfly-13.0.0.Final.tar.gz \
-    && tar xvfz wildfly-13.0.0.Final.tar.gz \
-    && mv wildfly-13.0.0.Final /opt
+RUN wget https://download.jboss.org/wildfly/23.0.2.Final/wildfly-23.0.2.Final.tar.gz \
+    && tar xvfz wildfly-23.0.2.Final.tar.gz \
+    && mv wildfly-23.0.2.Final /opt
 
-ENV JBOSS_HOME=/opt/wildfly-13.0.0.Final
+ENV JBOSS_HOME=/opt/wildfly-23.0.2.Final
 ENV PATH=/opt/apache-maven/bin:/opt/apache-ant-1.9.9/bin:$PATH
 
 EXPOSE 8080 9990
