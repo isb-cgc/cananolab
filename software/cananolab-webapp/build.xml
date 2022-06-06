@@ -261,7 +261,6 @@ L-->
 		<copy todir="${common.dist.dir}" overwrite="true">
 			<restrict>
 				<fileset refid="compiletime.dependencies"/>
-				<!--  **/mysql-connector-java-*.jar didn't work, but **\mysql-connector-java-*.jar works-->
 				<rsel:name name="**mysql*.jar"/>
 			</restrict>
 		</copy>
@@ -398,16 +397,6 @@ L-->
 			</fileset>
 		</copy>
 		<copy todir="${jboss.conf.dir}" overwrite="true" file="${common.dist.dir}/login-config.xml"/>
-		<!--		<copy todir="${jboss.conf.dir}/csmconfig" overwrite="true" file="${common.dist.dir}/ApplicationSecurityConfig.xml"/>-->
-		<!--		<copy todir="${jboss.conf.dir}/csmconfig" overwrite="true" file="${common.dist.dir}/csmupt.csm.new.hibernate.cfg.xml"/>-->
-		<!--		<copy todir="${jboss.conf.dir}/csmconfig" overwrite="true" file="${common.dist.dir}/csmupt423.csm.new.hibernate.cfg.xml"/>-->
-
-		<!--		<copy todir="${jboss.lib.dir}" overwrite="true">-->
-		<!--			<fileset dir="${common.dist.dir}">-->
-		<!--				<include name="mysql-connector-java*.jar"/>-->
-		<!--			</fileset>-->
-		<!--		</copy>-->
-
 	</target>
 
 	<target name="deploy_local" depends="dist">
@@ -417,7 +406,7 @@ L-->
 		<copy file="${dist.dir}/common/caNanoLab_logging.cli" todir="${jboss.artifacts.dir}" overwrite="true"/>
 		<copy file="${dist.dir}/common/caNanoLab_setup.cli" todir="${jboss.artifacts.dir}" overwrite="true"/>
 		<copy file="${dist.dir}/common/caNanoLab_deploy.cli" todir="${jboss.artifacts.dir}" overwrite="true"/>
-		<copy file="${commonlib.dir}/mysql-connector-java-8.0.18.jar" todir="${jboss.artifacts.dir}" overwrite="true"/>
+		<copy file="${commonlib.dir}/mysql-socket-factory-connector-j-8-1.4.1-jar-with-driver-and-dependencies.jar" todir="${jboss.artifacts.dir}" overwrite="true"/>
 		<copy file="${commonlib.dir}/bcprov-jdk15on-1.69.jar" todir="${jboss.artifacts.dir}" overwrite="true"/>
 		<copy file="${dist.dir}/common/wikihelp.properties" todir="${jboss.help.dir}" overwrite="true"/>
 	</target>

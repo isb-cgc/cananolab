@@ -13,7 +13,7 @@ cd /usr/local/cananolab/software/cananolab-webapp/lib/sdk
 
 cp  bcprov-jdk15on-1.69.jar csmapi*  /local/content/caNanoLab/artifacts
 cd /usr/local/cananolab/software/cananolab-webapp/lib
-cp mysql-connector-java-8.0.18.jar /local/content/caNanoLab/artifacts
+cp mysql-socket-factory-connector-j-8-1.4.1-jar-with-driver-and-dependencies.jar /local/content/caNanoLab/artifacts
 cd /usr/local/cananolab/software/cananolab-webapp/target/dist/common
 cp caNanoLab_modules.cli caNanoLab_setup.cli caNanoLab_deploy.cli /local/content/caNanoLab/artifacts
 cp wikihelp.properties /local/content/caNanoLab/config
