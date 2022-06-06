@@ -50,9 +50,6 @@ end-if
 # Unload the welcome page
 /subsystem=undertow/server=default-server/host=default-host/location=\/:remove()
 
-# /subsystem=undertow/configuration=filter/rewrite=http-to-https:add(redirect="true",target="https://myhostname:8443%U")
-# /subsystem=undertow/server=default-server/host=default-host/filter-ref=http-to-https:add(predicate="equals(%p,8080)")
-
 ########################################################################
 #   LOGGING
 ######################################################################
