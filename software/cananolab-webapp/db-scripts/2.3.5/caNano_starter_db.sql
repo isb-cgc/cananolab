@@ -3226,7 +3226,7 @@ CREATE TABLE `csm_application` (
 
 LOCK TABLES `csm_application` WRITE;
 /*!40000 ALTER TABLE `csm_application` DISABLE KEYS */;
-INSERT INTO `csm_application` VALUES (1,'csmupt','CSM UPT Super Admin Application',0,0,'2015-11-17','jdbc:mysql://nano.nci.nih.gov:3634/canano','nanouser','Bq4UOQzh1r9Uf7cnX+8NVw==','org.hibernate.dialect.MySQLDialect','com.mysql.jdbc.Driver',''),(2,'caNanoLab','Application Description caNanoLab',0,0,'2015-11-17','jdbc:mysql://nano.nci.nih.gov:3634/canano','nanouser','Bq4UOQzh1r9Uf7cnX+8NVw==','org.hibernate.dialect.MySQLDialect','com.mysql.jdbc.Driver','csmupt52');
+INSERT INTO `csm_application` VALUES (1,'csmupt','CSM UPT Super Admin Application',0,0,'2015-11-17','jdbc:mysql://nano.nci.nih.gov:3634/canano','nanouser','Bq4UOQzh1r9Uf7cnX+8NVw==','org.hibernate.dialect.MySQLDialect','com.mysql.cj.jdbc.Driver',''),(2,'caNanoLab','Application Description caNanoLab',0,0,'2015-11-17','jdbc:mysql://nano.nci.nih.gov:3634/canano','nanouser','Bq4UOQzh1r9Uf7cnX+8NVw==','org.hibernate.dialect.MySQLDialect','com.mysql.jdbc.Driver','csmupt52');
 /*!40000 ALTER TABLE `csm_application` ENABLE KEYS */;
 UNLOCK TABLES;
 

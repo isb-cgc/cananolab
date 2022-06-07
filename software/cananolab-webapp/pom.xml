@@ -238,7 +238,7 @@
 		<dependency>
 			<groupId>org.jboss.resteasy</groupId>
 			<artifactId>resteasy-jaxrs</artifactId>
-			<version>3.0.10.Final</version>
+			<version>3.15.1.Final</version>
 			<scope>provided</scope>
 		</dependency>
 
@@ -248,16 +248,15 @@
 <!--			<version>4.7.3.Final</version>-->
 <!--		</dependency>-->
 
-
 		<dependency>
 			<groupId>org.jboss.resteasy</groupId>
 			<artifactId>resteasy-jackson-provider</artifactId>
-			<version>3.0.10.Final</version>
+			<version>3.15.1.Final</version>
 		</dependency>
 		<dependency>
 			<groupId>org.jboss.resteasy</groupId>
 			<artifactId>resteasy-multipart-provider</artifactId>
-			<version>3.0.10.Final</version>
+			<version>3.15.1.Final</version>
 		</dependency>
 
 		<dependency>
@@ -371,7 +370,7 @@
 		<dependency>
 			<groupId>org.javassist</groupId>
 			<artifactId>javassist</artifactId>
-			<version>3.18.1-GA</version>
+			<version>3.25.0-GA</version>
 		</dependency>
 
 <!--	<dependency>-->
@@ -401,9 +400,14 @@
 
 		<dependency>
 			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-api</artifactId>
+			<version>1.7.25</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.slf4j</groupId>
 			<artifactId>slf4j-log4j12</artifactId>
-			<version>2.0.0-alpha5</version>
-			<scope>test</scope>
+			<version>1.7.5</version>
 		</dependency>
 
 		<dependency>
