@@ -172,7 +172,7 @@ L-->
 				code="gov.nih.nci.security.authentication.loginmodules.RDBMSLoginModule"
 				flag="required">
 				<module-option name="driver">
-					com.mysql.jdbc.Driver
+					com.mysql.cj.jdbc.Driver
 				</module-option>
 				<module-option name="url">
 					@database.url@
@@ -198,7 +198,7 @@ L-->
 				code="gov.nih.nci.security.authentication.loginmodules.RDBMSLoginModule"
 				flag="required">
 				<module-option name="driver">
-					com.mysql.jdbc.Driver
+					com.mysql.cj.jdbc.Driver
 				</module-option>
 				<module-option name="url">
 					@database.url@
@@ -224,7 +224,7 @@ L-->
 				code="gov.nih.nci.security.authentication.loginmodules.RDBMSLoginModule"
 				flag="required">
 				<module-option name="driver">
-					com.mysql.jdbc.Driver
+					com.mysql.cj.jdbc.Driver
 				</module-option>
 				<module-option name="url">
 					@database.url@

@@ -431,7 +431,7 @@ L-->
 	</target>
 
 	<target name="jar:beano" depends="clean, compile-beans">
-		<jar destfile="${commonlib.dir}/caNanoLab-beans.jar" basedir="${domainbuild.dir}"></jar>
+		<jar destfile="${commonlib.dir}/caNanoLab-beans.jar" basedir="${domainbuild.dir}"/>
 	</target>
 
 	<target name="jar:endNote" depends="clean, compile">
