@@ -91,19 +91,6 @@ L-->
 		<resolver:files refid="runtime.dependencies" dir="${deps.dir}/runtime"  layout="{artifactId}-{version}.{extension}" scopes="compile" />
 	</resolver:resolve>
 
-	<!-- maven ant task -->
-	<!--	<path id="maven-ant-tasks.classpath" path="${common.dir}/lib/maven-ant-tasks-2.1.3.jar"/>-->
-	<!--	<path id="maven-ant-tasks.classpath" path="${commonlib.dir}/maven-ant-tasks-2.1.3.jar"/>-->
-	<!--	<typedef resource="org/apache/maven/artifact/ant/antlib.xml" uri="antlib:org.apache.maven.artifact.ant"-->
-	<!--			 classpathref="maven-ant-tasks.classpath"/>-->
-
-	<!--set up required dependencies jars for compile time and run time thru Maven -->
-	<!--	<artifact:pom id="cananolab-webapp-pom" file="pom.xml"/>-->
-	<!--	<artifact:dependencies pathId="runtime.dependency.classpath" filesetId="runtime.dependency.fileset"-->
-	<!--						   pomRefId="cananolab-webapp-pom" useScope="runtime"/>-->
-	<!--	<artifact:dependencies pathId="compiletime.dependency.classpath" filesetId="compiletime.dependency.fileset"-->
-	<!--						   pomRefId="cananolab-webapp-pom" useScope="compile"/>-->
-
 	<target name="clean">
 		<delete dir="${dist.dir}"/>
 		<delete dir="${target.dir}/classes"/>
@@ -139,7 +126,6 @@ L-->
 				<exclude name="**/sdk/*.jar"/>
 				<include name="caNanoLab-beans.jar"/>
 				<exclude name="**/globus/*.jar"/>
-				<exclude name="**/maven-ant-tasks-*.jar"/>
 				<exclude name="**/ant-contrib-*.jar"/>
 				<exclude name="maven-resolver-ant-tasks-*uber.jar"/>
 			</fileset>
@@ -158,7 +144,6 @@ L-->
 			<fileset dir="${commonlib.dir}">
 				<exclude name="**/sdk/*.jar"/>
 				<exclude name="**/globus/*.jar"/>
-				<exclude name="**/maven-ant-tasks-*.jar"/>
 				<exclude name="**/ant-contrib-*.jar"/>
 			</fileset>
 		</path>
@@ -261,7 +246,6 @@ L-->
 		<copy todir="${common.dist.dir}" overwrite="true">
 			<restrict>
 				<fileset refid="compiletime.dependencies"/>
-				<!--  **/mysql-connector-java-*.jar didn't work, but **\mysql-connector-java-*.jar works-->
 				<rsel:name name="**mysql*.jar"/>
 			</restrict>
 		</copy>
@@ -398,16 +382,6 @@ L-->
 			</fileset>
 		</copy>
 		<copy todir="${jboss.conf.dir}" overwrite="true" file="${common.dist.dir}/login-config.xml"/>
-		<!--		<copy todir="${jboss.conf.dir}/csmconfig" overwrite="true" file="${common.dist.dir}/ApplicationSecurityConfig.xml"/>-->
-		<!--		<copy todir="${jboss.conf.dir}/csmconfig" overwrite="true" file="${common.dist.dir}/csmupt.csm.new.hibernate.cfg.xml"/>-->
-		<!--		<copy todir="${jboss.conf.dir}/csmconfig" overwrite="true" file="${common.dist.dir}/csmupt423.csm.new.hibernate.cfg.xml"/>-->
-
-		<!--		<copy todir="${jboss.lib.dir}" overwrite="true">-->
-		<!--			<fileset dir="${common.dist.dir}">-->
-		<!--				<include name="mysql-connector-java*.jar"/>-->
-		<!--			</fileset>-->
-		<!--		</copy>-->
-
 	</target>
 
 	<target name="deploy_local" depends="dist">
@@ -417,7 +391,7 @@ L-->
 		<copy file="${dist.dir}/common/caNanoLab_logging.cli" todir="${jboss.artifacts.dir}" overwrite="true"/>
 		<copy file="${dist.dir}/common/caNanoLab_setup.cli" todir="${jboss.artifacts.dir}" overwrite="true"/>
 		<copy file="${dist.dir}/common/caNanoLab_deploy.cli" todir="${jboss.artifacts.dir}" overwrite="true"/>
-		<copy file="${commonlib.dir}/mysql-connector-java-8.0.18.jar" todir="${jboss.artifacts.dir}" overwrite="true"/>
+		<copy file="${commonlib.dir}/mysql-socket-factory-connector-j-8-1.4.1-jar-with-driver-and-dependencies.jar" todir="${jboss.artifacts.dir}" overwrite="true"/>
 		<copy file="${commonlib.dir}/bcprov-jdk15on-1.69.jar" todir="${jboss.artifacts.dir}" overwrite="true"/>
 		<copy file="${dist.dir}/common/wikihelp.properties" todir="${jboss.help.dir}" overwrite="true"/>
 	</target>
@@ -442,7 +416,7 @@ L-->
 	</target>
 
 	<target name="jar:beano" depends="clean, compile-beans">
-		<jar destfile="${commonlib.dir}/caNanoLab-beans.jar" basedir="${domainbuild.dir}"></jar>
+		<jar destfile="${commonlib.dir}/caNanoLab-beans.jar" basedir="${domainbuild.dir}"/>
 	</target>
 
 	<target name="jar:endNote" depends="clean, compile">
@@ -503,7 +477,6 @@ L-->
 			<!--			<fileset dir="${common.dir}/lib">-->
 			<fileset dir="${commonlib.dir">
 				<exclude name="**/sdk/*.jar"/>
-				<exclude name="**/maven-ant-tasks-*.jar"/>
 				<exclude name="**/ant-contrib-*.jar"/>
 			</fileset>
 		</path>
