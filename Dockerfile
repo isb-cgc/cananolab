@@ -20,7 +20,7 @@ FROM marketplace.gcr.io/google/debian10
 
 RUN apt-get update
 ENV DEBIAN_FRONTEND=noninteractive
-RUN apt-get install software-properties-common
+RUN apt-get install -y software-properties-common
 RUN apt-get install -y wget gnupg2
 
 # fetch the updated package metadata
