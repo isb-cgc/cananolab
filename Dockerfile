@@ -29,7 +29,7 @@ RUN apt-get update
 # Install OpenJDK8
 RUN wget -qO - https://adoptopenjdk.jfrog.io/adoptopenjdk/api/gpg/key/public | apt-key add -
 RUN add-apt-repository --yes https://adoptopenjdk.jfrog.io/adoptopenjdk/deb/
-RUN apt-get update && apt-get install adoptopenjdk-8-hotspot
+RUN apt-get update && apt-get -y install adoptopenjdk-8-hotspot
 ENV JAVA_HOME=/usr/lib/jvm/adoptopenjdk-8-hotspot-amd64/jre/
 
 RUN apt-get -y install build-essential
