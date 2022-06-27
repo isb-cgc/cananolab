@@ -140,7 +140,7 @@
               <div id="loginBlock" ng-show="loginShow">
                 <div class="spacer"></div><!-- <form name="loginForm" id="loginForm" method="post" action="/login.do;jsessionid=9944D3BC5DD5C7F3DB8EC210CC50424C"> -->
                 <form autocomplete="off">
-                <table class="loginBlock" summary="layout">
+                <table class="loginBlock" summary="layout" ng-show="loginBlockShow">
                   <tr>
                     <td>
                       <label for="login ID">LOGIN ID</label>
@@ -159,21 +159,42 @@
                   </tr>
                   <tr>
                     <td>
-                    <!-- <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" /> -->
-                     
                     </td>
                     <td align="left">
-
-<!--                       <input type="submit" value="Login" />
- -->                      <button type="submit"
-                             class="btn-canano btn-canano-primary btn-canano-xs"
-                             ng-click="loginDo()"
-                             >Login
+                      <button type="submit" class="btn-canano btn-canano-primary btn-canano-xs" ng-click="loginDo()">
+                        Login
                       </button>
-                      
+                    </td>
+                    <td>
+                      <a href="" ng-click="showResetPasswordBlock()" class="ng-binding">Forgot Password?</a>
                     </td>
                   </tr>
-                </table></form>
+                </table>
+
+                <table class="resetPasswordBlock" summary="layout" ng-show="resetPasswordBlockShow">
+                  <tr>
+                    <td>
+                      <label for="email">EMAIL</label>
+                    </td>
+                    <td>
+                      <input type="text" name="email" ng-model="email" size="14" id="email" />
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>
+                    </td>
+                    <td align="left">
+                      <button type="submit" class="btn-canano btn-canano-primary btn-canano-xs" ng-click="resetPasswordDo()">
+                        Reset Password
+                      </button>
+                    </td>
+                    <td>
+                      <a href="" ng-click="showLoginBlock()" class="ng-binding">Login</a>
+                    </td>
+                  </tr>
+                </table>
+
+                </form>
                 <div id="authErrors" ng-model="authErrors" ng-show="authErrors">
                   {{authErrors}}
                 </div>

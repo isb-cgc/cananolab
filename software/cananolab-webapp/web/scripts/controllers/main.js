@@ -7,6 +7,9 @@ var app = angular.module('angularApp')
     else
       $scope.loginShow = 1;
 
+    $scope.loginBlockShow = 1;
+    $scope.resetPasswordShow = 1;
+
     $scope.loginId = '';
     $scope.password = '';
 
@@ -122,6 +125,58 @@ var app = angular.module('angularApp')
           $scope.resettingPassword = 0;
         });
       }
+    }
+
+    $scope.showResetPasswordBlock = function() {
+      $scope.resetPasswordBlockShow = 1;
+      $scope.loginBlockShow = 0;
+    }
+    
+    $scope.resetPasswordDo = function() {
+      if (!$scope.email) {
+        $scope.authErrors = "Email is required to reset password";
+      } else {
+        // $scope.bean = {
+        //   "email": $scope.email,
+        // };
+        $http({
+          method: 'GET',
+          url: '/rest/userself/resetpwd?email=' + $scope.email,
+          headers: {
+            'Content-Type': 'application/x-www-form-urlencoded'
+          },
+          // transformRequest: function (obj) {
+          //   var str = [];
+          //   for (var p in obj)
+          //     str.push(encodeURIComponent(p) + "=" + encodeURIComponent(obj[p]));
+          //   return str.join("&");
+          // },
+          data: $scope.bean
+        }).
+        then(function (data, status, headers, config) {
+          data = data['data']
+          // this callback will be called asynchronously
+          // when the response is available
+
+          $scope.authErrors = data;
+          // $scope.loginShow = 0;
+          // $location.path().replace();
+          // $route.reload();
+
+          //Set tabs here.. Delete on logout. Use variable instead of rest call
+
+        }).
+        catch(function (data, status, headers, config) {
+          data = data['data']
+          // $scope.email = '';
+          $scope.authErrors = data;
+        });
+      }
+    }
+
+    $scope.showLoginBlock = function() {
+      $scope.resetPasswordBlockShow = 0;
+      $scope.loginBlockShow = 1;
     }
 
     $scope.loginDo = function () {

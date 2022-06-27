@@ -31,6 +31,9 @@ public class UserDaoImpl extends JdbcDaoSupport implements UserDao
 	
 	private static final String FETCH_USER_SQL = "select u.username, u.first_name, u.last_name, u.password, u.organization, u.department, " +
 												 "u.title, u.phone_number, u.email_id, u.enabled from users u where u.username = ?";
+
+	private static final String FETCH_USER_BY_EMAIL_SQL = "select u.username, u.first_name, u.last_name, u.password, u.organization, u.department, " +
+			"u.title, u.phone_number, u.email_id, u.enabled from users u where u.email_id = ?";
 	
 	private static final String FETCH_USER_ROLES_SQL = "SELECT a.authority rolename FROM authorities a where a.username = ?";
 	
@@ -68,6 +71,23 @@ public class UserDaoImpl extends JdbcDaoSupport implements UserDao
 		{
 			Object[] params = new Object[] {username};
 			List<CananoUserDetails> userList = (List<CananoUserDetails>) getJdbcTemplate().query(FETCH_USER_SQL, params, new UserMapper());
+			if (userList != null && userList.size() == 1)
+				user = userList.get(0);
+		}
+		return user;
+	}
+
+	@Override
+	public CananoUserDetails getUserByEmail(String email)
+	{
+		logger.debug("Fetching user details for user with email: " + email);
+
+		CananoUserDetails user = null;
+
+		if (!StringUtils.isEmpty(email))
+		{
+			Object[] params = new Object[] {email};
+			List<CananoUserDetails> userList = (List<CananoUserDetails>) getJdbcTemplate().query(FETCH_USER_BY_EMAIL_SQL, params, new UserMapper());
 			if (userList != null && userList.size() == 1)
 				user = userList.get(0);
 		}

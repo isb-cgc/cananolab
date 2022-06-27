@@ -53,5 +53,10 @@ public class UserAccountBO
 	{
         return userService.loadUsers(searchStr);
 	}
+
+	public CananoUserDetails getByEmail(String emailStr) throws NoAccessException
+	{
+		return userService.getUserAccountByEmail(emailStr);
+	}
 	
 }

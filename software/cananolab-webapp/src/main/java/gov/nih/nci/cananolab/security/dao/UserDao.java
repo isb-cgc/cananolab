@@ -8,6 +8,8 @@ public interface UserDao
 {
 	CananoUserDetails getUserByName(String username);
 	
+	CananoUserDetails getUserByEmail(String email);
+	
 	List<String> getUserGroups(String username);
 
 	List<String> getUserRoles(String username);

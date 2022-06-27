@@ -16,4 +16,5 @@ public interface UserService
 	
 	void updateUserAccount(CananoUserDetails userDetails);
 
+	CananoUserDetails getUserAccountByEmail(String email);
 }
