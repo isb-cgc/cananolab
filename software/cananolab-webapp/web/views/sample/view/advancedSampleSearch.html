@@ -337,8 +337,10 @@
 						<td ng-show="datumUnitOptionsList.length">
 							<div id="datumValueUnitBlock">
 							    <label for="datumValueUnit" aria-label="Datum Unit Options List">
-								<select ng-init="theCharacterizationQuery.datumValueUnit=''" data-ng-options="option for option in datumUnitOptionsList" ng-model="theCharacterizationQuery.datumValueUnit" name="theCharacterizationQuery.datumValueUnit" id="datumValueUnit"><option value=""> -- Please Select --
-									</option></select></label>
+								<select ng-init="theCharacterizationQuery.datumValueUnit=''" data-ng-options="option for option in datumUnitOptionsList" ng-model="theCharacterizationQuery.datumValueUnit" name="theCharacterizationQuery.datumValueUnit" id="datumValueUnit">
+									<option value=""> -- Please Select --
+									</option></select>
+								</label>
 							</div>
 						</td>
 					</tr>
@@ -348,7 +350,7 @@
 								<tbody>
 								<tr>
 									<td>
-										<button type="button" class="btn-canano btn-canano-primary btn-canano-xs" id="characterizationAdd" ng-click="updateCharacterizationCriteria()" ng-disabled="!theCharacterizationQuery.characterizationType||!theCharacterizationQuery.characterizationName">Add</button>	
+										<button type="button" class="btn-canano btn-canano-primary btn-canano-xs" id="characterizationAdd" ng-click="updateCharacterizationCriteria()" ng-disabled="!theCharacterizationQuery.characterizationType||!theCharacterizationQuery.characterizationName">Add</button>
 									</td>
 									<td>
 										<button type="button" id="characterizationReset" class="btn-canano btn-canano-danger btn-canano-xs promptButton" ng-click="clearCharacterizationQuery();">Reset</button>
@@ -378,6 +380,7 @@
 	<table class="submissionView" summary="layout" style="border: 0" width="100%" align="center">
 		<tbody><tr>
 			<td>
+
 				<div id="logicalOperator" style="display: block" role="radiogroup" aria-label="Sample Search">
 					<input name="searchSampleForm.logicalOperator" ng-model="searchSampleForm.logicalOperator" value="and" id="masterLogicalOperatorAnd" type="radio">
 					<label for="masterLogicalOperatorAnd">AND</label>
@@ -388,7 +391,6 @@
 		</tr>
 	</tbody></table>
 	<br>
-
 	<div class="form__actions">
 		<div align="center">
 			<span class="formMessage"> <em>Searching without any
