@@ -951,30 +951,28 @@ public class SynthesisPurificationServices {
         }
     }
 
-//    @POST
-//    @Path("/setColumnOrder")
-//    @Produces ("application/json")
-//    public Response setColumnOrder(@Context HttpServletRequest httpRequest, SimpleFindingBean simpleFinding)
-//    {
-//        logger.debug("In setColumnOrder");
-//
-//        if (!SpringSecurityUtil.isUserLoggedIn())
-//            return Response.status(Response.Status.UNAUTHORIZED).entity(Constants.MSG_SESSION_INVALID).build();
-//
-//        try {
-//            CharacterizationBO characterizationBO =
-//                    (CharacterizationBO) SpringApplicationContext.getBean(httpRequest, "characterizationBO");
-//
-//            SimpleFindingBean simpleFindingBean = characterizationBO.updateColumnOrder(httpRequest, simpleFinding);
-//
-//            return Response.ok(simpleFindingBean).header("Access-Control-Allow-Credentials", "true")
-//                    .header("Access-Control-Allow-Origin", "*").header("Access-Control-Allow-Methods", "GET, POST,
-//                    PUT, DELETE, OPTIONS")
-//                    .header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept,
-//                    Authorization").build();
-//        } catch (Exception e) {
-//            return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
-//                    .entity(CommonUtil.wrapErrorMessageInList(e.getMessage())).build();
-//        }
-//    }
+    @POST
+    @Path("/setColumnOrder")
+    @Produces ("application/json")
+    public Response setColumnOrder(@Context HttpServletRequest httpRequest, SimplePurityBean simplePurity)
+    {
+        logger.debug("In setColumnOrder");
+
+        if (!SpringSecurityUtil.isUserLoggedIn())
+            return Response.status(Response.Status.UNAUTHORIZED).entity(Constants.MSG_SESSION_INVALID).build();
+
+        try {
+            SynthesisPurificationBO purificationBO =
+                    (SynthesisPurificationBO) SpringApplicationContext.getBean(httpRequest, "synthesisPurificationBO");
+
+            SimplePurityBean simpleFindingBean = purificationBO.updatePurity(httpRequest, simplePurity);
+            List<String> errors = simpleFindingBean.getErrors();
+            return (errors == null || errors.size() == 0) ?
+                    Response.ok(simpleFindingBean).build() :
+                    Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(errors).build();
+        } catch (Exception e) {
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
+                    .entity(CommonUtil.wrapErrorMessageInList(e.getMessage())).build();
+        }
+    }
 }

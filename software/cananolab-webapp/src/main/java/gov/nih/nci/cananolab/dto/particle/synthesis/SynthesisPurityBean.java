@@ -1,13 +1,11 @@
 package gov.nih.nci.cananolab.dto.particle.synthesis;
 
-import gov.nih.nci.cananolab.domain.characterization.physical.Purity;
 import gov.nih.nci.cananolab.domain.common.File;
 import gov.nih.nci.cananolab.domain.common.PurityColumnHeader;
 
 import gov.nih.nci.cananolab.domain.common.PurityDatumCondition;
 import gov.nih.nci.cananolab.domain.particle.SynthesisPurity;
 import gov.nih.nci.cananolab.dto.common.BadCellInputException;
-import gov.nih.nci.cananolab.dto.common.ColumnHeader;
 import gov.nih.nci.cananolab.dto.common.FileBean;
 import gov.nih.nci.cananolab.dto.common.PurityRow;
 import gov.nih.nci.cananolab.dto.common.table.PurityTableCell;
@@ -25,7 +23,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import javax.persistence.criteria.CriteriaBuilder;
 
 
 public class SynthesisPurityBean
@@ -155,14 +152,14 @@ public class SynthesisPurityBean
                 }
                 rows.add( row );
             }
-//            updateColumnOrder();
+            updateColumnOrder();
         }
     }
 
 
 //    public SynthesisPurityBean( SynthesisPurity synthesisPurity, List<ColumnHeader> inputColumnHeaders)
 //    {
-//        //TODO rewrite?
+
 //        domain = synthesisPurity;
 //        id = synthesisPurity.getId();
 //
@@ -983,6 +980,19 @@ public class SynthesisPurityBean
                 }
                 rInd++;
             }
+        }
+    }
+
+    public void resetPurityDatumCollectionColumnHeaders(){
+        HashMap<Long,PurityColumnHeader> headerHashMap = new HashMap<Long,PurityColumnHeader>();
+        for(PurityColumnHeader header:this.purityColumnHeaders){
+            Long id = header.getId();
+            headerHashMap.put(id, header);
+        }
+
+        for(PurityDatumCondition datumCondition: this.domain.getPurityDatumCollection()){
+            PurityColumnHeader header = headerHashMap.get(datumCondition.getColumnId());
+            datumCondition.setColumnHeader(header);
         }
     }
 
