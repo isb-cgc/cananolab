@@ -84,15 +84,26 @@ public class CompositionBO extends BaseAnnotationBO
 	 * @throws Exception
 	 */
 	public CompositionBean summaryView(CompositionForm form,
-			HttpServletRequest request)
-			throws Exception {
+		HttpServletRequest request) throws Exception {
+			System.out.println("MHL summaryView sampleId: " + form.getSampleId());
+			if( form == null ){
+				System.out.println("summaryView form==null");
+				return new CompositionBean();
+			}
 		// Call shared function to prepare CompositionBean for viewing.
 		this.prepareSummary(form, request);
 
-		CompositionBean compBean = (CompositionBean) request.getSession()
-				.getAttribute("compBean");
+		CompositionBean compBean = (CompositionBean) request.getSession().getAttribute("compBean");
+		if( compBean == null ){
+			System.err.println("compBean form==null");
+			return new CompositionBean();
+		}
+
+		if( compBean.getCompositionSections() == null ){
+			System.err.println("compBean.getCompositionSections()==null");
+			return new CompositionBean();
+		}
 		setSummaryTab(request, compBean.getCompositionSections().size());
-		//return mapping.findForward("summaryView");
 		return compBean;
 	}
 
@@ -189,6 +200,7 @@ public class CompositionBO extends BaseAnnotationBO
 	private CompositionBean prepareSummary(CompositionForm form,
 			HttpServletRequest request)
 			throws Exception {
+		System.out.println("MHL prepareSummary");
 		// Remove previous result from session.
 		HttpSession session = request.getSession();
 		session.removeAttribute(CompositionBean.CHEMICAL_SELECTION);
@@ -202,12 +214,10 @@ public class CompositionBO extends BaseAnnotationBO
 			throw new Exception("CompositionForm is null");
 		}
 		String sampleId = form.getSampleId();  //Sting(SampleConstants.SAMPLE_ID);
-		
 		SampleBean sampleBean = setupSampleById(sampleId, request);
 
 		CompositionBean compBean = compositionService.findCompositionBySampleId(sampleId);
 		form.setComp(compBean);
-
 		// Save result bean in session for later use - export/print.
 		session.setAttribute("compBean", compBean);
 		session.setAttribute("theSample", sampleBean); // for showing title.

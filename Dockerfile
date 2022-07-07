@@ -1,6 +1,6 @@
 ###
 #
-# Copyright 2021, Institute for Systems Biology
+# Copyright 2022, Institute for Systems Biology
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -16,18 +16,26 @@
 #
 ###
 
-FROM gcr.io/google-appengine/openjdk:8
+FROM marketplace.gcr.io/google/debian10
 
 RUN apt-get update
 ENV DEBIAN_FRONTEND=noninteractive
+RUN apt-get install -y software-properties-common
 RUN apt-get install -y wget gnupg2
 
 # fetch the updated package metadata
 RUN apt-get update
 
+# Install OpenJDK8
+RUN wget -qO - https://adoptopenjdk.jfrog.io/adoptopenjdk/api/gpg/key/public | apt-key add -
+RUN add-apt-repository --yes https://adoptopenjdk.jfrog.io/adoptopenjdk/deb/
+RUN apt-get update && apt-get -y install adoptopenjdk-8-hotspot
+ENV JAVA_HOME=/usr/lib/jvm/adoptopenjdk-8-hotspot-amd64/jre/
+RUN echo "Java Version:"
+RUN java -version
+
 RUN apt-get -y install build-essential
 RUN apt-get -y install libxml2-dev libxmlsec1-dev swig
-
 RUN apt-get -y install unzip libffi-dev libssl-dev git ruby g++ curl
 
 COPY ./staged /local/content/
