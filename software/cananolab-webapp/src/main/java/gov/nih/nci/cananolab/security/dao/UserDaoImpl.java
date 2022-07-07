@@ -15,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.support.JdbcDaoSupport;
 import org.springframework.stereotype.Component;
+import gov.nih.nci.cananolab.security.service.PasswordResetToken;
 
 @Component("userDao")
 public class UserDaoImpl extends JdbcDaoSupport implements UserDao 
@@ -59,6 +60,11 @@ public class UserDaoImpl extends JdbcDaoSupport implements UserDao
 												  "WHERE username = ?";
 	
 	private static final String DELETE_ROLES_SQL = "DELETE FROM authorities WHERE username = ? AND authority != '" + CaNanoRoleEnum.ROLE_ANONYMOUS.toString() + "'";
+
+	private static final String INSERT_PASSWORD_RESET_TOKEN = "INSERT INTO password_reset_tokens(token, username, expiry_date) " +
+													"values (?, ?, ?)";
+
+	private static final String FETCH_PASSWORD_RESET_TOKEN = "select p.token, p.username, p.expiry_date from password_reset_tokens where p.token = ?";
 
 	@Override
 	public CananoUserDetails getUserByName(String username)
@@ -200,6 +206,44 @@ public class UserDaoImpl extends JdbcDaoSupport implements UserDao
 		Object[] params = new Object[] {username};
 
         return getJdbcTemplate().update(DELETE_ROLES_SQL, params);
+	}
+
+	@Override
+	public int insertPasswordResetToken(PasswordResetToken prt)
+	{
+		logger.debug("Insert password reset token : " + prt.getToken());
+		Object[] params = new Object[] { prt.getToken(), prt.getUserName(), prt.getExpiryDate() };
+		return getJdbcTemplate().update(INSERT_PASSWORD_RESET_TOKEN, params);
+	}
+
+	@Override
+	public PasswordResetToken getPasswordResetToken(String token)
+	{
+		logger.debug("Fetching password reset token for token string: " + token);
+
+		PasswordResetToken prt = null;
+
+		if (!StringUtils.isEmpty(token))
+		{
+			Object[] params = new Object[] { token };
+			List<PasswordResetToken> tokenList = (List<PasswordResetToken>) getJdbcTemplate().query(FETCH_PASSWORD_RESET_TOKEN, params, new PasswordResetTokenMapper());
+			if (tokenList != null && tokenList.size() == 1)
+				prt = tokenList.get(0);
+		}
+		return prt;
+	}
+
+	private static final class PasswordResetTokenMapper implements RowMapper
+	{
+		public Object mapRow(ResultSet rs, int rowNum) throws SQLException
+		{
+			PasswordResetToken prt = new PasswordResetToken();
+			prt.setToken(rs.getString("TOKEN"));
+			prt.setUserName(rs.getString("USERNAME"));
+			prt.setExpiryDate(rs.getDate("EXPIRY_DATE"));
+
+			return prt;
+		}
 	}
 	
 	private static final class UserMapper implements RowMapper

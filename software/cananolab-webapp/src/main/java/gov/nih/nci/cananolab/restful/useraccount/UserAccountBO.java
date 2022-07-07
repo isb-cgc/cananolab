@@ -2,6 +2,7 @@ package gov.nih.nci.cananolab.restful.useraccount;
 
 import java.util.List;
 
+import gov.nih.nci.cananolab.security.service.PasswordResetToken;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,6 +37,17 @@ public class UserAccountBO
 	{
 		userService.createUserAccount(userDetails);
         return (CananoUserDetails) userDetailsService.loadUserByUsername(userDetails.getUsername());
+	}
+
+	public PasswordResetToken readPasswordResetToken(String token) throws NoAccessException
+	{
+		return userService.loadPasswordResetToken(token);
+	}
+
+	public PasswordResetToken createPasswordResetToken(PasswordResetToken prt) throws NoAccessException
+	{
+		userService.createPasswordResetToken(prt);
+		return userService.loadPasswordResetToken(prt.getToken());
 	}
 	
 	public void resetUserAccountPassword(String oldPassword, String newPassword, String userName) throws Exception

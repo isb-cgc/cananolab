@@ -6,18 +6,23 @@ import java.util.Date;
 
 public class PasswordResetToken {
 
-    private static final int EXPIRATION = 60 * 24;
-
-    private Long id;
+    public static final int EXPIRATION_HOURS = 24;
 
     private String token;
 
-    private CananoUserDetails user;
+    private String username;
 
     private Date expiryDate;
 
-    public PasswordResetToken(CananoUserDetails user, String token) {
-        this.user = user;
-        this.token = token;
-    }
+    public String getToken() { return this.token; }
+
+    public void setToken(String token) { this.token = token; }
+
+    public String getUserName() { return this.username; }
+
+    public void setUserName(String username) { this.username = username; }
+
+    public Date getExpiryDate() { return this.expiryDate; }
+
+    public void setExpiryDate(Date expiryDate) { this.expiryDate = expiryDate; }
 }

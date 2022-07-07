@@ -19,6 +19,7 @@ import javax.ws.rs.core.Context;
 import javax.ws.rs.core.Response;
 import java.net.URI;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
@@ -51,6 +52,17 @@ public class UserSelfManageServices
 				String baseUrl = "https://" + URI.create(httpRequest.getRequestURL().toString()).getHost();
 				resetPasswordUrl = baseUrl + "/userself/changepwd?token=" + token;
 
+				if (!StringUtils.isEmpty(userDetails.getUsername()))
+				{
+					PasswordResetToken prt = new PasswordResetToken();
+					prt.setToken(token);
+					prt.setUserName(userDetails.getUsername());
+
+					userAccountBO.createPasswordResetToken(prt);
+				}
+				else
+					throw new Exception("Username is required to create a password reset token.");
+
 //				userService.createPasswordResetTokenForUser(user, token);
 //				mailSender.send(constructResetTokenEmail(getAppUrl(request),
 //						request.getLocale(), token, user));
@@ -68,7 +80,6 @@ public class UserSelfManageServices
 
 			return
 					Response.ok(value).build();
-
 		}
 		catch (Exception e) {
 			logger.error("Error in resetting password for account: ", e);
@@ -77,10 +88,6 @@ public class UserSelfManageServices
 		}
 	}
 
-//	private void createPasswordResetTokenForUser(CananoUserDetails user, String token) {
-//		PasswordResetToken myToken = new PasswordResetToken(user, token);
-//		passwordTokenRepository.save(myToken);
-//	}
 //
 //	private SimpleMailMessage constructResetTokenEmail(
 //			String contextPath, Locale locale, String token, User user) {
@@ -100,34 +107,34 @@ public class UserSelfManageServices
 //		return email;
 //	}
 //
-//	@GET
-//	@Path("/changepwd")
-//	@Produces ({"application/json", "text/plain"})
-//	public Response showChangePasswordPage(@Context HttpServletRequest httpRequest, @DefaultValue("") @QueryParam("token") String token)
-//	{
-//		String result = validatePasswordResetToken(token);
-//		if (result != null) {
-//			String message = result;
-//			return "redirect:/login.html?"+ "&message=" + message;
-//		} else {
-//			return "redirect:/updatePassword.html" + locale.getLanguage();
-//		}
-//	}
-//
-//	public String validatePasswordResetToken(String token) {
-////		final PasswordResetToken passToken = passwordTokenRepository.findByToken(token);
-//
-//		return !isTokenFound(passToken) ? "invalidToken"
-//				: isTokenExpired(passToken) ? "expired"
-//				: null;
-//	}
-//
-//	private boolean isTokenFound(PasswordResetToken passToken) {
-//		return passToken != null;
-//	}
-//
-//	private boolean isTokenExpired(PasswordResetToken passToken) {
-//		final Calendar cal = Calendar.getInstance();
-//		return passToken.getExpiryDate().before(cal.getTime());
-//	}
+	@GET
+	@Path("/changepwd")
+	@Produces ({"application/json", "text/plain"})
+	public Response showChangePasswordPage(@Context HttpServletRequest httpRequest, @DefaultValue("") @QueryParam("token") String token)
+	{
+		try {
+			UserAccountBO userAccountBO = (UserAccountBO) SpringApplicationContext.getBean(httpRequest, "userAccountBO");
+			PasswordResetToken prt = userAccountBO.readPasswordResetToken(token);
+			String message = null;
+			if (prt == null) {
+				message = "invalidToken";
+			} else {
+				Date expiryDate = prt.getExpiryDate();
+				Date now = new Date();
+				if (now.after(expiryDate)) {
+					message = "expiredToken";
+				}
+			}
+
+			if (message != null) {
+				return "redirect:/login.html?"+ "&message=" + message;
+			} else {
+				return "redirect:/updatePassword.html" + locale.getLanguage();
+			}
+		} catch (Exception e) {
+			logger.error("Error in showing password reset page: ", e);
+			return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
+					.entity(CommonUtil.wrapErrorMessageInList(e.getMessage())).build();
+		}
+	}
 }
