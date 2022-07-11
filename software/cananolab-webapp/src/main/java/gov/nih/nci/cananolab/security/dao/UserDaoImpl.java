@@ -64,7 +64,7 @@ public class UserDaoImpl extends JdbcDaoSupport implements UserDao
 	private static final String INSERT_PASSWORD_RESET_TOKEN = "INSERT INTO password_reset_tokens(token, username, expiry_date) " +
 													"values (?, ?, ?)";
 
-	private static final String FETCH_PASSWORD_RESET_TOKEN = "select p.token, p.username, p.expiry_date from password_reset_tokens where p.token = ?";
+	private static final String FETCH_PASSWORD_RESET_TOKEN = "select p.token, p.username, p.expiry_date from password_reset_tokens p where p.token = ?";
 
 	@Override
 	public CananoUserDetails getUserByName(String username)

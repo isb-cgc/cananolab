@@ -343,6 +343,10 @@ app.config(function ($routeProvider, $httpProvider) {
       templateUrl: 'views/admin/view/manageUsers.html',
       controller: 'ManageUserCtrl'
     })
+    .when('/updatePassword', {
+      templateUrl: 'views/updatePassword.html',
+      controller: 'UpdatePasswordCtrl'
+    })
     .otherwise({
       redirectTo: '/'
     });

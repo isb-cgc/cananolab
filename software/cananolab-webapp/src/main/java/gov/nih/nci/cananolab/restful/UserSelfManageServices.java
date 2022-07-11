@@ -49,8 +49,12 @@ public class UserSelfManageServices
 
 				// Reset password token
 				String token = UUID.randomUUID().toString();
-				String baseUrl = "https://" + URI.create(httpRequest.getRequestURL().toString()).getHost();
-				resetPasswordUrl = baseUrl + "/userself/changepwd?token=" + token;
+				String baseUrl = "http://" + URI.create(httpRequest.getRequestURL().toString()).getHost();
+
+				// TODO: for local
+				resetPasswordUrl = baseUrl + ":8080/rest/userself/changepwd?token=" + token;
+				// TODO: for deploy
+				// resetPasswordUrl = baseUrl + "/userself/changepwd?token=" + token;
 
 				if (!StringUtils.isEmpty(userDetails.getUsername()))
 				{
@@ -126,11 +130,24 @@ public class UserSelfManageServices
 				}
 			}
 
+			String redirectUri = "";
 			if (message != null) {
-				return "redirect:/login.html?"+ "&message=" + message;
+				redirectUri = "/login.html?" + "&message=" + message;
+				JsonBuilderFactory factory = Json.createBuilderFactory(null);
+				JsonObject value = factory.createObjectBuilder()
+						.add("status", "success")
+						.add("customMessage", redirectUri).build();
+				return Response.ok(value).build();
 			} else {
-				return "redirect:/updatePassword.html" + locale.getLanguage();
+				String baseUrl = "http://" + URI.create(httpRequest.getRequestURL().toString()).getHost();
+
+				// TODO: for local
+				redirectUri = baseUrl + ":8080/#/updatePassword/";
+//				redirectUri = "/updatePassword";
+
+				return Response.seeOther(new URI(redirectUri)).build();
 			}
+
 		} catch (Exception e) {
 			logger.error("Error in showing password reset page: ", e);
 			return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
