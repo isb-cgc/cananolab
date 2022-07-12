@@ -119,20 +119,11 @@ public class UserSelfManageServices
 		try {
 			UserAccountBO userAccountBO = (UserAccountBO) SpringApplicationContext.getBean(httpRequest, "userAccountBO");
 			PasswordResetToken prt = userAccountBO.readPasswordResetToken(token);
-			String message = null;
-			if (prt == null) {
-				message = "invalidToken";
-			} else {
-				Date expiryDate = prt.getExpiryDate();
-				Date now = new Date();
-				if (now.after(expiryDate)) {
-					message = "expiredToken";
-				}
-			}
+			String validateResult = validateToken(prt);
 
 			String redirectUri = "";
-			if (message != null) {
-				redirectUri = "/login.html?" + "&message=" + message;
+			if (validateResult != null) {
+				redirectUri = "/login.html?" + "&message=" + validateResult;
 				JsonBuilderFactory factory = Json.createBuilderFactory(null);
 				JsonObject value = factory.createObjectBuilder()
 						.add("status", "success")
@@ -142,7 +133,7 @@ public class UserSelfManageServices
 				String baseUrl = "http://" + URI.create(httpRequest.getRequestURL().toString()).getHost();
 
 				// TODO: for local
-				redirectUri = baseUrl + ":8080/#/updatePassword/";
+				redirectUri = baseUrl + ":8080/#/changePassword/";
 //				redirectUri = "/updatePassword";
 
 				return Response.seeOther(new URI(redirectUri)).build();
@@ -150,6 +141,56 @@ public class UserSelfManageServices
 
 		} catch (Exception e) {
 			logger.error("Error in showing password reset page: ", e);
+			return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
+					.entity(CommonUtil.wrapErrorMessageInList(e.getMessage())).build();
+		}
+	}
+
+	private String validateToken(PasswordResetToken prt) {
+		if (prt == null) {
+			return "invalidToken";
+		} else {
+			Date expiryDate = prt.getExpiryDate();
+			Date now = new Date();
+			if (now.after(expiryDate)) {
+				return "expiredToken";
+			} else {
+				return null;
+			}
+		}
+	}
+
+	@POST
+	@Path("/savepwd")
+	@Produces ({"application/json", "text/plain"})
+	public Response saveNewPassword(@Context HttpServletRequest httpRequest,
+	                              @FormParam("newpassword") String newpassword, @QueryParam("token") String token)
+	{
+		try {
+			UserAccountBO userAccountBO = (UserAccountBO) SpringApplicationContext.getBean(httpRequest, "userAccountBO");
+			PasswordResetToken prt = userAccountBO.readPasswordResetToken(token);
+			String validateResult = validateToken(prt);
+
+			if (validateResult == null) {
+				String username = prt.getUserName();
+				if (!StringUtils.isEmpty(username) && !StringUtils.isEmpty(newpassword)) {
+					userAccountBO.changeUserAccountPassword(newpassword, username);
+				} else {
+					throw new Exception("Username and new passwords are required for changing password.");
+				}
+			} else {
+				// Token invalid, something went wrong
+			}
+
+			JsonBuilderFactory factory = Json.createBuilderFactory(null);
+			JsonObject value = factory.createObjectBuilder()
+					.add("status", "success").build();
+
+			return
+					Response.ok(value).build();
+		}
+		catch (Exception e) {
+			logger.error("Error in resetting password for account: ", e);
 			return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
 					.entity(CommonUtil.wrapErrorMessageInList(e.getMessage())).build();
 		}

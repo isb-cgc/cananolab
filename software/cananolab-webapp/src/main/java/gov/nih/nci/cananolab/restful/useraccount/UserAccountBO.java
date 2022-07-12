@@ -49,7 +49,12 @@ public class UserAccountBO
 		userService.createPasswordResetToken(prt);
 		return userService.loadPasswordResetToken(prt.getToken());
 	}
-	
+
+	public void changeUserAccountPassword(String newPassword, String userName) throws Exception
+	{
+		userService.changePasswordForUser(newPassword, userName);
+	}
+
 	public void resetUserAccountPassword(String oldPassword, String newPassword, String userName) throws Exception
 	{
 		userService.resetPasswordForUser(oldPassword, newPassword, userName);

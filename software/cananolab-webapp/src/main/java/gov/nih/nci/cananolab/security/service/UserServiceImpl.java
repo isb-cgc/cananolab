@@ -125,6 +125,18 @@ public class UserServiceImpl implements UserService
 	}
 
 	@Override
+	public int changePasswordForUser(String newPassword, String userName) throws Exception
+	{
+		int status = 0;
+		if (!StringUtils.isEmpty(userName) && !StringUtils.isEmpty(newPassword))
+		{
+			String encryptedPassword = passwordEncoder.encode(newPassword);
+			status = userDao.resetPassword(userName, encryptedPassword);
+		}
+		return status;
+	}
+
+	@Override
 	public void updateUserAccount(CananoUserDetails userDetails)
 	{
 		String username = userDetails.getUsername();
