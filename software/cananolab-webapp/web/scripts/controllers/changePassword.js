@@ -1,8 +1,9 @@
 'use strict';
 var app = angular.module('angularApp')
-    .controller('ChangePasswordCtrl', function (navigationService, groupService, $rootScope, $scope, $http) {
+    .controller('ChangePasswordCtrl', function (navigationService, groupService, $rootScope, $scope, $http, $filter, $routeParams) {
         $scope.doChangePwd = function () {
             $scope.loader = true;
+            $scope.token = $routeParams.token;
             // $scope.changePwd.username = $scope.userForm.username;
             $http({
                 method: 'POST',
@@ -12,7 +13,7 @@ var app = angular.module('angularApp')
                     var str = [];
                     for (var p in obj)
                         str.push(encodeURIComponent(p) + "=" + encodeURIComponent(obj[p]));
-                    return str.join("&");
+                    return str.join("&") + "&token=" + $routeParams.token;
                 },
                 headers: {
                     'Content-Type': 'application/x-www-form-urlencoded'

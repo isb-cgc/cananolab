@@ -133,7 +133,7 @@ public class UserSelfManageServices
 				String baseUrl = "http://" + URI.create(httpRequest.getRequestURL().toString()).getHost();
 
 				// TODO: for local
-				redirectUri = baseUrl + ":8080/#/changePassword/";
+				redirectUri = baseUrl + ":8080/#/changePassword?token=" + token;
 //				redirectUri = "/updatePassword";
 
 				return Response.seeOther(new URI(redirectUri)).build();
@@ -163,8 +163,8 @@ public class UserSelfManageServices
 	@POST
 	@Path("/savepwd")
 	@Produces ({"application/json", "text/plain"})
-	public Response saveNewPassword(@Context HttpServletRequest httpRequest,
-	                              @FormParam("newpassword") String newpassword, @QueryParam("token") String token)
+	public Response savePassword(@Context HttpServletRequest httpRequest,
+	                              @FormParam("newpassword") String newpassword, @FormParam("token") String token)
 	{
 		try {
 			UserAccountBO userAccountBO = (UserAccountBO) SpringApplicationContext.getBean(httpRequest, "userAccountBO");
