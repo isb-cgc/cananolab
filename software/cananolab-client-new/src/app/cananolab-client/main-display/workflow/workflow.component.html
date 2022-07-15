@@ -1,0 +1,22 @@
+<canano-main-display-heading
+    [helpUrl]="helpUrl"
+    [toolHeadingName]="toolHeadingName"
+>
+
+</canano-main-display-heading>
+<div class="mainSection">
+    <div class="mainBorder">
+The diagram below illustrates the caNanoLab functionality and workflow. Active links are provided for directly navigating to the appropriate function based on the authorization level of the user. In particular, the Sample Submission workflow allows direct launching points to develop caNanoLab data files from a user's input.<br>To assist in the data submission process, a <a href="https://cbiit-download.nci.nih.gov/icr/cananolab/2.0/Gaheen_cananolab_demo.mp4" target="_blank">caNanoLab Data Submission Video</a> is available. Navigation is also available through the menus above.
+
+<img src="assets/images/Home_Page_Workflow.png" border="0" width="750" height="520" usemap="#funcMap" alt="rectangle" />
+<map class="ng-scope" name="funcMap" id="funcMap">
+    <area [routerLink]="['/home/login']" routerLinkActive="router-link-active" alt="login" shape="rect" coords="65,176,206,238" />
+    <area [routerLink]="['/home/protocols/protocol-create']" routerLinkActive="router-link-active"  alt="submit protocols" shape="rect" coords="294,72,435,134" />
+    <area [routerLink]="['/home/samples/sample-create']" routerLinkActive="router-link-active"  alt="submit samples" shape="rect" coords="291,165,435,244" />
+    <area [routerLink]="['/home/samples/publications/publication/-1']" routerLinkActive="router-link-active" alt="submit publications" shape="rect" coords="291,277,435,333" />
+    <area [routerLink]="['/home/protocols/protocol-search']" routerLinkActive="router-link-active" alt="search protocols" shape="rect" coords="177,379,326,467" />
+    <area [routerLink]="['/home/samples/sample-search']" routerLinkActive="router-link-active"  alt="search samples" shape="rect" coords="346,379,494,465" />
+    <area [routerLink]="['/home/publications/publication-search']" routerLinkActive="router-link-active" alt="search publications" shape="rect" coords="512,380,660,466" />
+</map>
+</div>
+</div>

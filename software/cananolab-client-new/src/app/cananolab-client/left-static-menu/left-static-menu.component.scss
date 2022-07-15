@@ -1,0 +1,119 @@
+// -------------------------------------------------------------------------
+// ---------------  "Related Links" mid left vertical menu  ----------------
+// -------------------------------------------------------------------------
+
+@import "../../app.component";
+@import "../../btn-canano";
+@import "../cananolab-client.component";
+
+// Navigation Tree, Related Links and Status Display on left
+// @TODO Used by left-navigation-menu also. move to a higher common scss
+
+.left-menu-div{
+    width: $leftMenuWidth;
+    margin-right: $leftMenuMargin;
+}
+
+
+
+.left-menu-button{
+    @extend .d-block;
+    width: 100%;
+    margin: 0px 0 0 0;
+}
+
+.left-menu-button-blue{
+    @extend .left-menu-button;
+    @extend .btn-canano-sm-blue;
+}
+
+.left-menu-button-green{
+    display:block;
+    border:0px;
+    margin:0px;
+    padding:0px;
+    width:100%;
+    background-color:#005518;
+    padding:3px 3px 3px 15px;
+    font-size:$mainFontSize;
+    color:#fff;
+    border-top:1px solid $leftMenuBorderColor;
+    text-align:left;
+    font-weight:bold;
+    text-transform: uppercase;
+    outline:0 !important;
+}
+.left-menu-button-green:hover{
+    @extend .left-menu-button;
+    background-color:#fff;
+    color:#000;
+}
+
+
+.left-menu-heading{
+    background-color: $menuHeadingBackgroundColor;
+    color: #fff;
+    margin-top: 0px;
+    cursor: default;
+    padding-top:10px
+}
+
+.left-menu-heading.p-2{
+    padding-top:6px !important;
+    padding-bottom:6px !important;
+}
+.left-menu-top-heading{
+    @extend .left-menu-button;
+    @extend .rounded-0;
+    font-size:$mainFontSize;
+    padding-left:15px !important;
+    text-transform: uppercase;
+    font-weight:bold;
+    background-color: $canano-background-blue;
+    color: #fff;
+}
+
+.p-2 {
+    @extend .left-menu-top-heading;
+    background-color:$menuHeadingBackgroundColor;
+    text-transform: none;
+    border: solid $leftMenuBorderColor;
+    border-width:1px 0px 0px 0px;
+    padding-left:5px !important;
+}
+
+a{
+    color: #fff;
+    font-size: $mainFontSize;
+    &:hover{
+        color: #aeeee9;
+        cursor: pointer;
+    }
+}
+
+.left-nav {
+    display:block;
+    outline:0 !important;
+    background-color:#02055A !important;
+    width:100%;
+    color:#fff;
+    padding:5px 1px 5px 15px;
+    border: solid $leftMenuBorderColor;
+    border-width:.1em 0px 0px 0px !important;
+    font-weight:bold;
+    font-size:$mainFontSize;
+    margin:0px !important;
+    text-align:left;
+    line-height:normal !important
+}
+
+.left-nav:hover {
+    background-color:$navButtonColor !important;
+    color:#02055A;
+
+}
+
+
+.underline {
+    text-decoration: underline;
+}

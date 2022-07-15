@@ -1,0 +1,297 @@
+
+
+$canano-green: #005518;
+$canano-blue: #0073b9;
+$canano-background-blue: #02055a;
+$menuHeadingBackgroundColor: #005d7e;
+$leftMenuBorderColor:#88BCE2;
+$leftMenuWidth: 160px;
+$leftMenuMargin: 0px;
+$navButtonColor:#81FFFE;
+$borderColor: $leftMenuBorderColor;
+$mainFontSize:12px;
+$keywordSearchFontSize: 12px;
+$oddRowColor:#efeded;
+$mainDisplayHeadingHeight: 28px;
+$mainDisplayHeadingMargin: 8px;
+$font-family-sans-serif:arial,helvetica,verdana,sans-serif !important;
+html {
+    font-family:$font-family-sans-serif;
+
+}
+body {
+    font-family:$font-family-sans-serif;
+}
+.header {
+	margin:0px;
+	padding:0px;
+}
+.home {
+}
+
+td.leftMenu {
+    @extend .home;
+    background-color:$canano-background-blue;
+    width:$leftMenuWidth;
+	margin:0px;
+	padding:0px;
+	vertical-align:top;
+}
+
+td.mainContent {
+    @extend .home;
+    vertical-align:top;
+    padding:0px;
+    margin:0px;
+}
+
+.footer {
+    @extend .home;
+    background-color:$canano-background-blue;
+    border:solid $leftMenuBorderColor;
+    border-width:1px 1px 1px 0px;
+}
+
+.parent-div{
+    /* keep the Query section and the Display section side by side.  */
+    display: -webkit-flex;
+    display: flex;
+    flex-direction: row;
+    background-color: #fff;
+    width: 100%;
+}
+
+// @FIXME - These colors need variables
+.link-clicker{
+    cursor: pointer;
+    text-decoration: underline;
+    color: #333;
+
+    &:hover{
+        color: #a90101;
+        cursor: pointer;
+    }
+}
+
+/* unvisited link */
+a:link{
+    cursor: pointer;
+    text-decoration: underline;
+    color: #333;
+}
+
+/* visited link */
+a:visited{
+    cursor: pointer;
+    text-decoration: underline;
+    color: #333;
+}
+
+/* mouse over link */
+a:hover{
+    cursor: pointer;
+    text-decoration: underline;
+    color: #a90101;
+}
+
+/* selected link */
+a:active{
+    cursor: pointer;
+    text-decoration: underline;
+    color: #333;
+}
+
+.hide{
+    display: none;
+}
+
+.unselectable{
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    text-transform: uppercase;
+}
+
+.hand {
+    cursor:pointer !important;
+}
+
+.clicker{
+    cursor: pointer;
+}
+
+
+.search-results-table{
+    font-size: $mainFontSize;
+    width: 100%;
+    border: solid #ccc 1px;
+}
+
+.search-results-tr{
+    background-color: #fff;
+    border: solid #ccc 1px;
+}
+
+.search-results-th{
+    padding: 6px;
+    //  border: solid #dfdfdf 2px;
+    border: solid #ccc 1px;
+    background-color: $canano-blue;
+    color: #fff;
+}
+
+.search-results-td{
+    padding: 6px;
+    // border: solid #dfdfdf 2px;
+    border-left: solid #ccc 1px;
+    border-right: solid #ccc 1px;
+}
+
+.rowOdd{
+    background-color: $oddRowColor;
+}
+
+.search-results--tr-odd{
+    background-color: #fff;
+}
+
+img {
+	border-width:0px;
+	margin:0px;
+	padding:0px;
+
+}
+
+.spacer {
+    padding-left:$leftMenuWidth;
+    text-align:center;
+}
+
+.spacer.center {
+    color:$canano-background-blue;
+}
+
+
+.footer {
+	padding:0px 0px 0px 160px;
+	vertical-align:middle !important;
+	text-align:center;
+	background-color:$canano-background-blue;
+    border:solid $leftMenuBorderColor;
+    border-width:1px 1px 1px 0px;
+    font-size:$mainFontSize;
+};
+
+
+.footer.white{
+	background-color:#fff;
+	border:0px;
+	padding:10px 0px 0px 0px;
+	font-size:9.5px;
+    color:#333;
+};
+
+.footer.white a {
+    text-decoration:none !important;
+};
+
+.footer.white a:hover {
+    text-decoration:underline !important;
+    color:#333;
+}
+
+.footer.white.release {
+    font-size:12px !important;
+	font-weight:normal !important;
+	color:#4A49A8;
+}
+
+.footer.white .divider {
+	padding:0px 10px 0px 10px;
+};
+
+.footer ul {
+    margin:0px;
+    padding:0px;
+    vertical-align:middle;
+    list-style:none;
+};
+
+.footer ul li.footer-item {
+    padding:0px;
+    margin:0px;
+    display:inline-block;
+}
+
+
+.footer ul li.footer-item .nav-link.nav-menu-top-item {
+    background-color:$canano-background-blue;
+    color:$navButtonColor;
+    border: solid $leftMenuBorderColor;
+    border-width:0px 1px 0px 0px;
+    padding:4px 15px 4px 15px;
+    margin:0px;
+    vertical-align:top;
+	text-transform:uppercase;
+	font-weight:bold;
+	outline:0;
+}
+
+.footer ul li.footer-item .nav-link.nav-menu-top-item.left{
+    border: solid $leftMenuBorderColor;
+    border-width:0px 1px 0px 1px;
+}
+
+.footer ul li.footer-item .nav-link.nav-menu-top-item:hover{
+    background-color:$navButtonColor;
+    color:$canano-background-blue;
+    margin:0px;
+    vertical-align:top;
+}
+
+.rowOdd {
+	background-color:$oddRowColor;
+}
+
+table.dataTable{
+    width:100%;
+    border: 1px solid #ccc;
+
+}
+
+table.dataTable th{
+    background-color: #0073b9;
+    color: #fff;
+    font-weight: bold;
+    padding:3px 3px 3px 5px;
+    border:1px solid #ccc;
+    text-transform: capitalize;
+}
+
+table.dataTable td{
+	padding:5px;
+    vertical-align:top;
+    border:1px solid #ccc;
+	width:250px;
+}
+
+table.dataTable td.actions  {
+	width:110px !important;
+}
+
+table.dataTable td.actions div {
+	display:inline-block;
+	margin:0px 4px 0px 0px;
+}
+
+.actions div {
+	display:inline-block;
+	margin:0px 4px 0px 0px;
+}
+
+.myFilters label {
+    margin-left:5px;
+}

@@ -1,0 +1,59 @@
+// -------------------------------------------------------------------------
+// --------------- Top header, parent of top right search  -----------------
+// -------------------------------------------------------------------------
+
+@import '../../app.component.scss';
+@import "../cananolab-client.component";
+@import '../cananolab-client.component.scss';
+
+.nih-logo-00{
+    margin: 2px;
+    width: 240px;
+}
+
+.nih-logo-01{
+    height: 30px;
+}
+
+.header-table{
+    width: 100%;
+    padding: 0px;
+    margin: 0px;
+    border-bottom:1px solid $leftMenuBorderColor !important;
+
+}
+
+.header-table td {
+    margin:0px;
+    padding:0px;
+
+}
+
+.header-img-00{
+    background-image: linear-gradient(to right, #00095d, #fff);
+    width: 300px;
+}
+
+.header-div{
+    display: block;
+    width: 100%;
+    padding: 0px !important;
+    margin:0px !important;
+}
+
+.nih-link{
+    font-size: $keywordSearchFontSize;
+    padding: 0;
+    margin: 0;
+}
+
+.nih-link-td{
+    padding: 0;
+    margin: 0;
+}
+
+.nih-link-td .link{
+    position:absolute;
+    top:10px;
+}
+

@@ -234,7 +234,7 @@ var app = angular.module('angularApp')
         $scope.exportKeywordJsonAll = function () {
             $scope.loader = true;
             $http({
-                method: 'GET',
+                method: 'POST',
                 url: '/rest/sample/fullSampleExportJsonAll',
                 params: {
                     "sampleIds": utilsService.keyWordSampleIdListStrings($scope.keywordData)
@@ -264,7 +264,7 @@ var app = angular.module('angularApp')
         $scope.exportKeywordXmlAll = function () {
             $scope.loader = true;
             $http({
-                method: 'GET',
+                method: 'POST',
                 url: '/rest/sample/fullSampleExportXmlAll',
                 params: {
                     "sampleIds": utilsService.keyWordSampleIdListStrings($scope.keywordData)

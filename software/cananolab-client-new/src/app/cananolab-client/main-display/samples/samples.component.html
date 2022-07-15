@@ -1,0 +1,51 @@
+<canano-main-display-heading
+    [helpUrl]="helpUrl"
+    [toolHeadingName]="toolHeadingNameManage"
+>
+</canano-main-display-heading>
+
+<div class="mainSection">
+    <div class="error" *ngIf="message">{{message}}</div>
+    <div class="mainBorder">
+        <p>
+            This is the manage samples section which allows users to enter general information about the sample, detailed
+            information about the composition of the sample, and information about the physico-chemical, in vitro, and other
+            characterizations performed on the sample. A sample is a formulation of a base nanomaterial platform and any
+            additional components that contribute to the function(s) of the nanomaterial. A sample can also be a control used in
+            comparative analysis. In this section, depending on your authorization level, you may submit new sample information
+            or search for an existing sample for editing, copying, viewing, printing, or exporting.
+        </p>
+        <div class="links-panel card ml-1 mt-2">
+            <div  class="card-header mb-0 pb-0">
+                <span class="card-title unselectable m-0 p-0">
+                    <h5>Sample Links</h5>
+                </span>
+
+            </div>
+
+            <div class="card-body">
+
+                <ng-container *ngIf="properties.LOGGED_IN">
+                    <a class="link-clicker" routerLink="sample-create">Create a New Sample</a><br>
+                    Select to create a new sample.
+                    <br>
+                    <br>
+                    <a class="link-clicker" routerLink="sample-copy">Copy an Existing Sample</a><br>
+                    Select to copy information from an existing sample to a new sample.
+
+                    <br>
+                    <br>
+                </ng-container>
+                <a class="link-clicker" routerLink="sample-search">Search Existing Samples</a><br>
+                Enter search criteria to obtain information on samples of interest.
+
+                <br>
+                <br>
+
+
+                <a class="link-clicker" routerLink="sample-advanced-search">Advanced Sample Search</a><br>
+                Enter advanced search criteria based on caNanoLab metadata to obtain information on samples of interest.
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,70 @@
+@import '../../cananolab-client.component.scss';
+
+$leftColumnWidth:597px;
+.home-page-image{
+    margin: 0px 0px 0 0;
+}
+
+.home-div{
+    width: 100%;
+    background-color: #fff;
+    display: -webkit-flex;
+    display: flex;
+    flex-direction: row;
+
+    /*
+class="d-block p-2 bg-primary text-white"
+ */
+}
+
+.welcomeTitle{
+    padding: 8px;
+    background-color: #ccc;
+    border-top: 1px solid #ccc;
+    font-size:13px;
+  //  font-weight: 700;
+
+    /* for titles of sections inside the content area */
+
+    /* constant: medium gray */
+}
+
+.welcomeContent{
+    padding: 0px;
+    font-size: $mainFontSize;
+    color: black;
+}
+
+.welcomeContent.p-3 {
+	padding:0px 0px 0px 10px !important;
+	margin:0px 0px 0px 5px !important;
+}
+
+
+// This is a fixed width. It is the total width of the three images.
+.welcome{
+   // max-width: 596px; // @FIXME - This should be a variable resulting from adding all the picture widths
+    max-width: 599px; // @FIXME - This should be a variable resulting from adding all the picture widths and subtracting 3
+    background-color: #fff;
+}
+
+.contentDisplay td{
+    vertical-align:top;
+    padding:0px;
+    margin:0px;
+    }
+    .contentDisplay td.left {
+
+        width:$leftColumnWidth !important;
+    }
+
+    .contentDisplay td.right {
+        width:calc(100% - #{$leftColumnWidth}) !important;
+        border-left:1px solid $leftMenuBorderColor;
+        border-right:1px solid $leftMenuBorderColor;
+    }
+img {
+    border:0px;
+    margin:0px;
+    padding:0px;
+}
