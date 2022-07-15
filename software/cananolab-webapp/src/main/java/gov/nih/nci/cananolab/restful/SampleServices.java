@@ -985,51 +985,6 @@ public class SampleServices {
 			return e.getMessage();
 		}
 	}
-
-    /**
-     * Export one Sample as XML
-     *
-     * @param httpRequest
-     * @param httpResponse
-     * @param sampleId
-     */
-    @GET
-    @Path("/fullSampleExportXml")
-    public void fullSampleExportXml(@Context HttpServletRequest httpRequest, @Context HttpServletResponse httpResponse,
-                                     @DefaultValue("") @QueryParam("sampleId") String sampleId)
-    {
-        String xmlData = null;
-
-        // Get data as JSON
-        String jsonData =  buildSampleJson( httpRequest, httpResponse, sampleId, 0);
-
-        // Build XML from JSON
-        try
-        {
-            xmlData = jsonToXml( jsonData );
-        }
-        catch( Exception e )
-        {
-            System.err.println( "Error converting JSON to XML: " + e.getMessage() );
-        }
-
-        ///////////////////////////////////////////////////////////////////////////////
-        // Send to user
-        try
-        {
-            PrintWriter out = httpResponse.getWriter();
-            httpResponse.setContentType("application/force-download");
-            httpResponse.setContentLength( xmlData.length() );
-            httpResponse.setHeader("Content-Disposition","attachment; filename=\"SampleData_" + sampleId + ".xml\"");
-            out.print( xmlData );
-            out.close();
-        }
-        catch( Exception e )
-        {
-            System.err.println( "Error sending XML to client: " + e.getMessage() );
-        }
-    }
-
     /**
      * Build JSON from a list of IDs.
      *
