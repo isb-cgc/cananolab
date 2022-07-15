@@ -1,0 +1,59 @@
+@import "src/app/btn-canano";
+@import "src/app/cananolab-client/cananolab-client.component";
+@import '../../../../main-display.component.scss';
+$popup-z-index: 10;
+
+td,
+th{
+    vertical-align: top;
+}
+
+.sample-search-results-type-td{
+    min-width: 60px;
+}
+
+.sample-search-results-version-td{
+    min-width: 90px;
+}
+
+.sample-search-results-created-td{
+    min-width: 82px;
+}
+
+.sample-search-results-abbreviation-td{
+    min-width: 110px;
+}
+
+.sample-search-results-poc-td {
+    min-width:150px;
+}
+
+
+
+
+
+
+
+.number-spinner{
+    border: solid 1px #686868;
+    border-radius: 3px;
+    position: relative;
+    top: 0;
+    padding: 0 4px 0 4px;
+    width: 50px;
+    height: 28px;
+}
+
+.rows-per-page-spinner{
+    color: #686868;
+}
+
+.sample-search-results-edit-button{
+    color: #00f;
+    text-decoration: underline;
+    text-decoration-color: #00f;
+
+    &:hover{
+        cursor: pointer;
+    }
+}

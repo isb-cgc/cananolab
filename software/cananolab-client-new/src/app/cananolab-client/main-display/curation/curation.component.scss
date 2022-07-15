@@ -1,0 +1,13 @@
+@import "../../main-display/main-display.component.scss";
+@import '../../../btn-bravo-canano.scss';
+.message{
+    color:red;
+}
+
+.dataTable th:first-child{
+    width:25% !important
+}
+
+.dataTable th:last-child{
+    width:75% !important
+}

@@ -1,0 +1,13 @@
+@import "../../../../main-display/main-display.component.scss";
+
+.mainSection table.antibodyProperties td.label{
+    font-weight:bold;
+    width:100px !important;
+    vertical-align:top;
+}
+
+.mainSection table.antibodyProperties{
+    font-weight:bold;
+    width:600px !important;
+    vertical-align:top;
+}

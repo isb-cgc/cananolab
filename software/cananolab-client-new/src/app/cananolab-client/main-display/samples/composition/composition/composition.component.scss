@@ -1,0 +1,52 @@
+@import "../../../../main-display/main-display.component.scss";
+@import '../../../../../btn-bravo-canano.scss';
+
+.dataTable {
+    width:700px !important;
+}
+
+.dataTable {
+    margin-bottom:15px;
+}
+.dataTable.last {
+    margin-bottom:0px;
+}
+
+.dataTable th {
+    text-transform:capitalize;
+}
+
+.mainBorder {
+    margin-bottom:15px;
+}
+
+.mainBorder.last {
+    margin-bottom:15px;
+
+}
+.nav-item {
+    margin-bottom:0px !important;
+    padding-bottom:0px !important;
+    text-transform: capitalize !important;
+
+}
+
+.nav.nav-tabs {
+    font-size:12px;
+    margin-left:7px;
+    border-bottom:none !important;
+    padding-top:15px !important;
+}
+.mainSection {
+    margin-top:0px;
+}
+a.nav-link {
+    text-transform: capitalize !important;
+    text-decoration: none !important;
+}
+a.nav-link.active {
+    border-color: #000 #000 $canano-green !important;
+    text-decoration: none !important;
+    color:#fff !important;
+    background-color:$canano-green !important;
+}
