@@ -95,7 +95,7 @@ public class Constants {
 	// inheritance with joined-subclass
 	// TODO check the order generated in the hibernate mapping file for each
 	// release, the parent class is 1.
-	
+
 	public static final Map<String, Integer> FUNCTIONALIZING_ENTITY_SUBCLASS_ORDER_MAP = new HashMap<String, Integer>();
 	static {
 		FUNCTIONALIZING_ENTITY_SUBCLASS_ORDER_MAP.put(new String(
@@ -166,10 +166,10 @@ public class Constants {
 	public static final String ISI_PREFIX = "http://apps.isiknowledge.com/InboundService.do?Func=Frame&product=WOS&action=retrieve&SrcApp=EndNote&Init=Yes&SrcAuth=ResearchSoft&mode=FullRecord&UT=";
 	public static final int CANANOLAB_AVAILABLE_ENTITY = 30;
 
-	public static final String EXTERNAL_SITE_DISCLAIMER_LINK = " [<a class='disclaimerLink' href='html/cananoDisclaimer.html' target='new'>Disclaimer</a>]";
-	
+	public static final String EXTERNAL_SITE_DISCLAIMER_LINK = "[DISCLAIMER]";
+
 	public static String MSG_SESSION_INVALID = "User session invalid. Session may have been expired";
-	
+
 	public static final String ROLE_PREFIX = "ROLE_";
 
 	public static final String DATUM = "datum";

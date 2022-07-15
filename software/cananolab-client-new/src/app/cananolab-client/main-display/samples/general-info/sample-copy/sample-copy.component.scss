@@ -1,0 +1,14 @@
+@import '../../../main-display.component.scss';
+@import '../../../../../btn-bravo-canano.scss';
+
+.dataMain.copy {
+    width:600px;
+}
+
+.dataMain tr:first-child{
+    height:27px;
+}
+
+select.multiple {
+    width:400px;
+}

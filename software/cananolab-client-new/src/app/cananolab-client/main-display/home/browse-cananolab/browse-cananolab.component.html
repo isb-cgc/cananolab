@@ -1,0 +1,145 @@
+<!------------------------------------------------------------------------->
+<!---------------  This is the Home screen for main-display's    ---------------->
+<!------------------------------------------------------------------------->
+
+<div class="welcome">
+    <div class="welcomeTitle">
+        <b>Browse caNanoLab</b>
+    </div>
+    <div class="welcomeContent">
+
+        <table class="home-browse-cananolab-table">
+            <tr>
+                <td  colspan="2" class="home-browse-cananolab-table-td pl-1">
+                    <b>Data Type</b>
+                </td>
+                <td class="pl-1" id="results">
+                    <B>Public Results</B>
+                </td>
+            </tr>
+
+
+
+            <tr>
+                <td class="home-page-left-td" >
+                    <a (click)="onSearchProtocolsClick()" >
+                        <img
+                            width=50
+                            height=50
+                            src="assets/images/icon_protocol_48x.jpg"
+                            class="m-1 p-0" alt="Search Protocols"
+                           (click)="onSearchProtocolsClick()"
+                        />
+                    </a>
+                </td>
+                <td class="home-page-center-td">
+                    <div
+                        class="link-clicker"
+                        (click)="onSearchProtocolsClick()">Search Protocols
+                    </div>
+                    <div style="height: 5px"></div>
+                    Search for nanotechnology protocols leveraged in performing nanomaterial characterization assays.
+                </td>
+                <td class="home-page-right-td ">
+                    <div class="link-clicker" (click)="onSearchAllProtocolsClick()">{{initData['numOfPublicProtocols']}}</div>
+                </td>
+            </tr>
+
+
+
+            <tr>
+                <td class="home-page-left-td" >
+                    <a (click)="onSearchSamplesClick()" >
+                        <img
+                            width=50
+                            height=50
+                            src="assets/images/icon_nanoparticle_48x.jpg"
+                            class="m-1 p-0" alt="Search Samples"
+                            (click)="onSearchSamplesClick()"
+                        />
+                    </a>
+                </td>
+                <td class="home-page-center-td">
+                    <div
+                        class="link-clicker"
+                        (click)="onSearchSamplesClick()">Search Samples
+                    </div>
+                    <div style="height: 5px;"></div>
+                    Search for information on nanomaterials including the composition of the nanomaterial, results of physico-chemical, <i>in vitro</i>, <i>in vivo</i> and other characterizations,
+                    and associated publications. <br />
+                    See also <span
+                    class="link-clicker"
+                    (click)="onSearchAdvanced()">Advanced Sample Search
+                    </span>
+
+
+                </td>
+                <td class="home-page-right-td">
+                    <div class="link-clicker" (click)="onSearchAllSamplesClick()">{{initData['numOfPublicSamples']}}</div>
+                    <div class="home-page-right-td-content">&nbsp;&nbsp;<span>{{initData['numOfPublicSources']}}</span> Sample Sources</div>
+                    <div class="home-page-right-td-content">&nbsp;&nbsp;<span>{{initData['numOfPublicCharacterizations']}}</span> Characterizations</div>
+                    <div class="home-page-right-td-content">&nbsp;&nbsp;&nbsp;&nbsp;<span>{{initData['numOfPublicPhysicoChemicalCharacterizations']}}</span> Physico-chemical</div>
+                    <div class="home-page-right-td-content">&nbsp;&nbsp;&nbsp;&nbsp;<span>{{initData['numOfPublicInvitroCharacterizations']}}</span> In Vitro</div>
+                    <div class="home-page-right-td-content">&nbsp;&nbsp;&nbsp;&nbsp;<span>{{initData['numOfPublicInvivoCharacterizations']}}</span> In Vivo</div>
+                    <div class="home-page-right-td-content">&nbsp;&nbsp;&nbsp;&nbsp;<span>{{initData['numOfPublicOtherCharacterizations']}}</span> Other</div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="home-page-left-td" >
+                    <a (click)="onSearchPublicationsClick()" >
+                        <img
+                            width=50
+                            height=50
+                            src="assets/images/icon_report_48x.gif"
+                            class="m-1 p-0 link-clicker" alt="Search Publications"
+                            (click)="onSearchPublicationsClick()"
+                        />
+                    </a>
+                </td>
+                <td class="home-page-center-td">
+                    <a (click)="onSearchPublicationsClick()" class="link-clicker" routerLink="publications">Search Publications</a>
+<!--
+                    <div
+                        class="link-clicker"
+                        (click)="onSearchPublicationsClick()">Search Publications
+                    </div>
+-->
+                    <div style="height: 5px"></div>
+                    Search for information on nanotechnology publications including peer reviewed articles, reviews, and other types of reports related to the use of nanotechnology in biomedicine.
+                </td>
+                <td class="home-page-right-td">
+                    <div class="link-clicker" (click)="onSearchAllPublicationsClick()">{{initData['numOfPublicPublications']}}</div>
+                </td>
+            </tr>
+
+        </table>
+
+    <!--   <table class="home-browse-cananolab-table">
+           <tr>
+               <td class="home-browse-cananolab-table-td" ><b>Data Type</b></td>
+               <td class="home-browse-cananolab-table-td" ><b>Public Results</b></td>
+
+           </tr>
+           <tr>
+               <td class="home-browse-cananolab-table-td" >
+                   <img src="assets/images/icon_protocol_48x.jpg" alt="icon_protocol">
+                   <a href="#/searchProtocol">Search Protocols</a>
+                   <div>Search for nanotechnology protocols leveraged in performing nanomaterial characterization assays.</div>
+               </td>
+           </tr>
+           <tr>
+               <td class="home-browse-cananolab-table-td" >
+                   <img src="assets/images/icon_nanoparticle_48x.jpg" alt="icon_nanoparticle">
+               </td>
+           </tr>
+           <tr>
+               <td class="home-browse-cananolab-table-td" >
+                   <img src="assets/images/icon_report_48x.gif" alt="icon_report">
+               </td>
+           </tr>
+       </table>
+-->
+    </div>
+</div>
