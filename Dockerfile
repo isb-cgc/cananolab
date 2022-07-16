@@ -31,6 +31,8 @@ RUN wget -qO - https://adoptopenjdk.jfrog.io/adoptopenjdk/api/gpg/key/public | a
 RUN add-apt-repository --yes https://adoptopenjdk.jfrog.io/adoptopenjdk/deb/
 RUN apt-get update && apt-get -y install adoptopenjdk-8-hotspot
 ENV JAVA_HOME=/usr/lib/jvm/adoptopenjdk-8-hotspot-amd64/jre/
+RUN echo "Java Version:"
+RUN java -version
 
 RUN apt-get -y install build-essential
 RUN apt-get -y install libxml2-dev libxmlsec1-dev swig

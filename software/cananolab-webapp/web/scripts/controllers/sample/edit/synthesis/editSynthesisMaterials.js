@@ -311,18 +311,20 @@ var app = angular.module('angularApp')
     else {
       $scope.material['materialElements'][$scope.materialElementFormIndex] = me;
     };
-    $scope.material['materialElementBeingEdited']=me;
-    $http({
-      method: 'POST',
-      url: '/rest/synthesisMaterial/saveSynthesisMaterialElement',
-      data: $scope.material
-    }).
-    then(function (data, status, headers, config) {
-      data = data['data']
-    }).
-    catch(function (data, status, headers, config) {
-      data = data['data']
-    });    
+    // $scope.material['materialElementBeingEdited']=me;
+    // $http({
+    //   method: 'POST',
+    //   url: '/caNanoLab/rest/synthesisMaterial/saveSynthesisMaterialElement',
+    //   data: $scope.material
+    // }).
+    // then(function (data, status, headers, config) {
+    //   data = data['data'];
+    //   $scope.material = data;
+    //   $scope.materialCopy = angular.copy($scope.material);
+    // }).
+    // catch(function (data, status, headers, config) {
+    //   data = data['data']
+    // });
 
     $scope.materialElementFormIndex = null;
   };
