@@ -1,0 +1,68 @@
+<canano-main-display-heading
+    [helpUrl]="helpUrl"
+    [toolHeadingName]="toolHeadingNameManage" [export]="[sampleId,'PUBLICATION']" [print]="true"
+>
+</canano-main-display-heading>
+
+<div *ngIf="data">
+    <ul class="nav nav-tabs">
+        <li class="nav-item">
+            <a class="nav-link active" id="all-tab" data-toggle="tab" (click)="showSection('all')">All</a>
+          </li>
+        <li *ngFor="let category of publicationData | keyvalue" class="nav-item">
+            <a class="nav-link" id="category-tab" data-toggle="tab" (click)="showSection(category.key)">{{category.key}}</a>
+        </li>
+    </ul>
+    <ng-container *ngFor="let publicationCategory of publicationData | keyvalue">
+    <div class="mainSection" *ngIf="publicationCategory.key==sectionToShow||sectionToShow=='all'">
+        <div class="header">
+            {{publicationCategory.key}} <button *ngIf="editUrl" (click)="addPublication(publicationCategory.key)" class="btn btn-primary btn-sm">Add</button>
+        </div><br />
+        <ng-container *ngFor="let publication of publicationData[publicationCategory.key]; let publicationIndex=index;let last=last">
+            <div class="mainBorder" [ngClass]="{'last':last}">
+                <div class="editButton">
+                    <button (click)="editpublication(publicationCategory.key,publication.publicationId)" class="btn btn-primary btn-sm">Edit</button>
+                </div>
+                <table class="dataMain">
+                    <tr>
+                        <td class="label">
+                            Bibliography Info
+                        </td>
+                        <td [innerHTML]="publication.displayName|samplePublications">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="label">
+                            Description
+                        </td>
+                        <td>
+                            <span [innerHtml]="publication.description"></span>
+                        </td>
+                    </tr>
+                    <tr *ngIf="publication.keywordsStr!=''">
+                        <td class="label">
+                            Keywords
+                        </td>
+                        <td>
+                            <ul>
+                                <li *ngFor="let keyword of splitKeywords(publication.keywordsStr)">
+                                    {{keyword}}
+                                </li>
+                            </ul>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="label">
+                            Publication Status
+                        </td>
+                        <td>
+                            {{publication.status}}
+                        </td>
+                    </tr>
+                </table>
+            </div>
+
+        </ng-container>
+    </div>
+</ng-container>
+</div>

@@ -1,0 +1,70 @@
+@import "../../app.component";
+@import "../../btn-canano";
+@import "../cananolab-client.component";
+@import '../cananolab-client.component.scss';
+
+.nav-menu-top-first-button{
+    @extend .rounded-0;
+    width: $leftMenuWidth;
+    margin-right: 1px;
+    margin-top: 1px;
+}
+
+.nav-menu-top-button{
+    @extend .rounded-0;
+
+    /*
+    margin-right: 1px;
+    margin-top: 1px;
+    */
+}
+
+.nav-menu-top{
+    padding: 0;
+    margin: 0;
+    width: 100%;
+    background-color: #01045a;
+}
+
+.nav-menu-top-item{
+    outline: none !important;
+    @extend .canano-blue;
+    color: #fff;
+    // border-top: solid #668ec0 1px;
+    // border-left: solid #3e3f65 1px;
+    // border-bottom: solid #668ec0 1px;
+}
+
+a:hover{
+    color: #fff;
+}
+
+.navbar-collapse {
+border-bottom:1px solid $leftMenuBorderColor;
+}
+.nav-item {
+    padding:0px;
+}
+
+
+.nav-menu-top-item {
+    height:24px;
+    padding:0px 15px 0px 15px !important;
+    font-size:$mainFontSize;
+    font-weight:bold;
+    color:$navButtonColor;
+    vertical-align:middle;
+    border:solid $leftMenuBorderColor;
+    border-width:0px 1px 0px 0px;
+    text-transform:uppercase;
+}
+.nav-menu-top-item.disabled{
+    width:160px;
+    color:#fff;
+    padding:0px 0px 0px 15px !important;
+    text-align:left;
+    border:solid $leftMenuBorderColor;
+    border-width:0px 1px 0px 0px;
+    background-image:none;
+}
+

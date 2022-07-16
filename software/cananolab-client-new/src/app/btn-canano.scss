@@ -1,0 +1,76 @@
+@import "../app/app.component";
+@import '../app/cananolab-client/cananolab-client.component';
+
+$disabled-button-text: #777;
+$disabled-button-background: #333;
+
+.btn-canano{
+    @extend .btn;
+    outline: none;
+    background-color: #0073b9;
+    color: #fff;
+}
+
+.btn-canano-disabled{
+    background-color: $disabled-button-background !important;
+    color: $disabled-button-text !important;
+    cursor: not-allowed !important;
+    /*
+
+    &:active{
+        background-color: $disabled-button-background;
+        color: $disabled-button-text;
+        cursor: not-allowed;
+    }
+
+    &:hover{
+        background-color: $disabled-button-background !important;
+        color: $disabled-button-text;
+        cursor: not-allowed;
+    }
+    */
+}
+
+
+.btn-canano-sm{
+    @extend .btn-canano;
+    @extend .btn-sm;
+}
+
+.btn-canano-blue{
+    @extend .btn-canano;
+    @extend .canano-blue;
+}
+
+.btn-canano-green{
+    @extend .btn-canano;
+    @extend .canano-green;
+}
+
+.btn-canano-sm-blue{
+    @extend .btn-canano-sm;
+    @extend .canano-blue;
+}
+
+.btn-canano-sm-green{
+    @extend .btn-canano-sm;
+    @extend .btn-canano-green;
+}
+
+.canano-green{
+    background-color: $canano-green;
+
+    &:hover{
+        color: $canano-green;
+        background-color: #82ffa5;
+    }
+}
+
+.canano-blue{
+    background-color: $canano-background-blue;
+
+    &:hover{
+        color: $canano-background-blue;
+        background-color: #82fffe;
+    }
+}

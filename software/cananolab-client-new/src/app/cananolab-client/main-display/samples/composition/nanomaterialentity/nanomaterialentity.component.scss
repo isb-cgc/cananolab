@@ -1,0 +1,40 @@
+@import "../../../../../btn-bravo-canano";
+@import '../../../main-display.component.scss';
+
+
+.dataTable.properties {
+    width:800px !important;
+    margin-bottom:15px;
+    text-transform: none !important;
+}
+
+.dataTable.properties th {
+    border:none;
+}
+
+.dataTable.properties:last-child {
+    margin-bottom:0px;
+}
+
+.dataTable.properties td {
+    border:none;
+}
+
+.dataTable.properties td:nth-child(3) {
+    text-align: right !important;
+}
+
+.mainBorder.properties {
+    margin-bottom:23px;
+}
+
+.dataMain td.right {
+    text-align:right;
+}
+
+select.multiple {
+    width:300px;
+}
+.dataMain.properties td {
+    border:none;
+}
