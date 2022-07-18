@@ -697,7 +697,7 @@
                                                                 <img  [src]="serverUrl+'/caNanoLab/rest/sample/download?fileId='+file.id" width="150">
                                                             </a>
 
-                                                            <a  *ngIf="file.uriExternal" [href]="file.externalUrl" target="_blank">
+                                                            <a  *ngIf="file.uriExternal" [href]="file.externalUrl" target="_blank" rel="nofollow noreferrer">
                                                                 {{file['title']}}
                                                             </a>
                                                         </td>

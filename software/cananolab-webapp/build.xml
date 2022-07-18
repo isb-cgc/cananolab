@@ -232,10 +232,6 @@ L-->
 		<property name="build_tag" value="trunk"/>
 		<propertyregex override="true" property="build_tag" input="${build.tag}"
 					   regexp="\$HeadURL\: .*/cananolab/tags/([^/]*)/.*" select="\1"/>
-		<replaceregexp file="${build.dir}/html/nciFooter.html" match="\{CANANOLAB_RELEASE_VERSION\}"
-					   replace="${release.version}" flags="g"/>
-		<replaceregexp file="${build.dir}/html/nciFooter.html" match="\{CANANOLAB_BUILD_TAG\}" replace="${build_tag}"
-					   flags="g"/>
 
 		<!-- package WAR file -->
 		<jar destfile="${dist.dir}/caNanoLab.war" basedir="${build.dir}"/>
