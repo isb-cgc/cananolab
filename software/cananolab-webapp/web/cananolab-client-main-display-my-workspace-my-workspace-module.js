@@ -472,7 +472,7 @@ class MyWorkspaceComponent {
                 this.loadData();
             }, (err) => {
                 this.loadData();
-                console.error('\'caNanoLab/rest/sample/deleteSampleFromWorkspace?sampleId=\'' + sampleId + ':', err);
+                console.error('\'rest/sample/deleteSampleFromWorkspace?sampleId=\'' + sampleId + ':', err);
             });
         }
     }
@@ -487,7 +487,7 @@ class MyWorkspaceComponent {
                 this.loadData();
             }, (err) => {
                 this.errors = err;
-                console.error('\'caNanoLab/rest/sample/deleteProtocolById?protocolId=\'' + protocolId + ':', err);
+                console.error('\'rest/sample/deleteProtocolById?protocolId=\'' + protocolId + ':', err);
             });
         }
     }

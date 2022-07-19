@@ -457,7 +457,7 @@ class SearchpublicationresultsComponent {
         };
         this.errors = {};
         this.apiService
-            .doPost('caNanoLab/rest/core/addFavorite', data)
+            .doPost('rest/core/addFavorite', data)
             .subscribe((data) => {
             publication['addedToFavorites'] = data;
             console.log('added to favorites');
