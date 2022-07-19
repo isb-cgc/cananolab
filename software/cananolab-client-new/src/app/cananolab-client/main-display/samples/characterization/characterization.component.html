@@ -82,19 +82,19 @@
                                                     <td>
                                                         <!-- Image -->
                                                         <a *ngIf="file['imageTitle'] !== undefined"
-                                                           [href]="serverUrl+'/caNanoLab/rest/sample/download?fileId='+file.fileId"
+                                                           [href]="serverUrl+'/rest/sample/download?fileId='+file.fileId"
                                                         >
-                                                            <img  [src]="serverUrl+'/caNanoLab/rest/sample/download?fileId='+file.fileId" width="150">
+                                                            <img  [src]="serverUrl+'/rest/sample/download?fileId='+file.fileId" width="150">
                                                         </a>
 
                                                         <!-- Text file -->
                                                         <a  *ngIf="file['title'] !== undefined"
-                                                            [href]="serverUrl+'/caNanoLab/rest/sample/download?fileId='+file.fileId">
+                                                            [href]="serverUrl+'/rest/sample/download?fileId='+file.fileId">
                                                             {{file['title']}}
                                                         </a>
 
                                                         <a  *ngIf="file['title'] == undefined"
-                                                        [href]="file['uri']" target="_blank">
+                                                        [href]="file['uri']" target="_blank" rel="nofollow noreferrer">
                                                         {{file['uri']}}
                                                     </a>
                                                     </td>
