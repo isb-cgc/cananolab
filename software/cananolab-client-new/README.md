@@ -5,4 +5,4 @@ This project was generated with [Angular CLI](https://github.com/angular/angular
 ## Build
 - cd to source directory - cananolab/software/cananolab-client-new
 - For first build, run - npm install
-- ng build --base-href '.'  --output-path <destination path for compiled code> 
+- ng build --base-href /  --output-path <destination path for compiled code> 
