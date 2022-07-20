@@ -255,13 +255,28 @@
                     </td>
                 </tr>
             </table>
+            <br>
+            <div style="width:800px">
+                <div>
+                    <b>IMPORTANT</b>: Please only enter PUBLIC BUSINESS RELATED contact information into these fields (such as institutional
+                    points of contact used in public publications). DO NOT add private contact information here, as this information
+                    will be made available to the public viewing the system. We will contact you yearly via the email address you
+                    provide to ask if you would like to correct, update or delete this information. If you would like to update it
+                    earlier, please contact us via xxxx.
+                </div>
+                <br>
+                <div style="color: red">
+                    <input type="checkbox" [checked]="piiConfirmed" (change)="piiConfirmed = !piiConfirmed">
+                    I have read and understood the message above.
+                </div>
+            </div>
         </div>
         <div>
             <table class="dataMain submit">
                 <tr>
                     <td>
                         <button (click)="reset()" class="btn-canano btn-canano-danger btn-canano-lg mr-1">Reset</button>
-                        <button (click)="submit()" [disabled]="userData.username==''||userData.firstName==''||userData.lastName==''" class="btn-canano btn-canano-primary btn-canano-lg mr-1">Submit</button>
+                        <button (click)="submit()" [disabled]="userData.username==''||userData.firstName==''||userData.lastName==''||!piiConfirmed" class="btn-canano btn-canano-primary btn-canano-lg mr-1">Submit</button>
                     </td>
                 </tr>
             </table>
