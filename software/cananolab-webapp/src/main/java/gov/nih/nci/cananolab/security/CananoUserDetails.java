@@ -2,10 +2,9 @@ package gov.nih.nci.cananolab.security;
 
 import gov.nih.nci.cananolab.security.enums.CaNanoRoleEnum;
 import gov.nih.nci.cananolab.util.StringUtils;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Iterator;
-import java.util.List;
+
+import java.util.*;
+
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -24,6 +23,7 @@ public class CananoUserDetails implements UserDetails
 	private String password;
 	private String emailId;
 	private boolean enabled;		//active_flag
+	private Date updatedDate;
 	private List<String> roles;
 	
 	private List<String> groups;
@@ -109,6 +109,10 @@ public class CananoUserDetails implements UserDetails
 	public void setEnabled(boolean enabled) {
 		this.enabled = enabled;
 	}
+
+	public Date getUpdatedDate() { return updatedDate; }
+
+	public void setUpdatedDate(Date date) { this.updatedDate = date; }
 
 	public List<String> getRoles() {
 		return roles;
