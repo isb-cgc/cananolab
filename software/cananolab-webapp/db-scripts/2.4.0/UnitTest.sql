@@ -425,6 +425,7 @@ CREATE TABLE `users`
     `phone_number` varchar(100) DEFAULT NULL,
     `email_id`     varchar(100) DEFAULT NULL,
     `enabled`      varchar(1)   DEFAULT NULL,
+    `updated_date` datetime     DEFAULT NULL,
     PRIMARY KEY (`username`),
     UNIQUE KEY `id_users_UNIQUE` (`username`)
 ) ENGINE = InnoDB
@@ -667,6 +668,7 @@ CREATE TABLE `author`
     `initial`      varchar(10) DEFAULT NULL,
     `created_by`   varchar(200) NOT NULL,
     `created_date` datetime     NOT NULL,
+    `updated_date` datetime     NOT NULL,
     PRIMARY KEY (`author_pk_id`),
     UNIQUE KEY `author_pk_id` (`author_pk_id`)
 ) ENGINE = InnoDB
