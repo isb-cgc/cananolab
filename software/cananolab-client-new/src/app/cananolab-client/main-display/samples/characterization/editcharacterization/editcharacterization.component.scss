@@ -1,0 +1,30 @@
+@import "../../../../main-display/main-display.component.scss";
+
+
+.dataTable th a {
+    color:#fff !important;
+}
+
+.dataMain td.columnUpdate{
+    text-align:right;
+}
+
+.test td {bordeR:1px solid red;}
+
+.dataMain.copy {
+    width:900px;
+}
+.dataMain.copy td:last-child{
+    width:400px !important;
+}
+select.multiple{
+    width:300px;
+}
+.mainBorder div.dataConditions{
+    padding-bottom:10px;
+}
+
+.mainBorder div.dataConditions button{
+    float:right;
+}
+

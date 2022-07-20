@@ -867,13 +867,14 @@ public class SampleServices {
      * @param httpResponse
      * @param sampleIds
      */
-    @GET
+    @POST
     @Path("/fullSampleExportJsonAll")
     @Produces ("application/json")
-    public Response fullSampleExportJsonAll(@Context HttpServletRequest httpRequest, @Context HttpServletResponse httpResponse,
-                                        @DefaultValue("") @QueryParam("sampleIds") String sampleIds)
+    public Response fullSampleExportJsonAll(@Context HttpServletRequest httpRequest, String sampleIds, @Context HttpServletResponse httpResponse)
     {
-        try
+    	sampleIds = sampleIds.replaceFirst("\\{\"sampleIds\":\"", "");
+		sampleIds = sampleIds.replace("\"}", "");
+		try
         {
             String[] idlist = sampleIds.split( "\\s*,\\s*" );
             String jsonData = buildAllJson(httpRequest, httpResponse, idlist);
@@ -895,13 +896,14 @@ public class SampleServices {
      * @param httpResponse
      * @param sampleIds  Comma separated list of Sample IDs
      */
-    @GET
+    @POST
     @Path("/fullSampleExportXmlAll")
     @Produces ("application/xml")
-    public Response fullSampleExportXmlAll(@Context HttpServletRequest httpRequest, @Context HttpServletResponse httpResponse,
-                                        @DefaultValue("") @QueryParam("sampleIds") String sampleIds)
+    public Response fullSampleExportXmlAll(@Context HttpServletRequest httpRequest, String sampleIds, @Context HttpServletResponse httpResponse)
     {
-        try
+		sampleIds = sampleIds.replaceFirst("\\{\"sampleIds\":\"", "");
+		sampleIds = sampleIds.replace("\"}", "");
+		try
         {
             String[] idlist = sampleIds.split( "\\s*,\\s*" );
             String jsonData =  "{\n \"csNanoLabData\": " + buildAllJson(httpRequest, httpResponse, idlist) +"\n}\n";
@@ -983,51 +985,6 @@ public class SampleServices {
 			return e.getMessage();
 		}
 	}
-
-    /**
-     * Export one Sample as XML
-     *
-     * @param httpRequest
-     * @param httpResponse
-     * @param sampleId
-     */
-    @GET
-    @Path("/fullSampleExportXml")
-    public void fullSampleExportXml(@Context HttpServletRequest httpRequest, @Context HttpServletResponse httpResponse,
-                                     @DefaultValue("") @QueryParam("sampleId") String sampleId)
-    {
-        String xmlData = null;
-
-        // Get data as JSON
-        String jsonData =  buildSampleJson( httpRequest, httpResponse, sampleId, 0);
-
-        // Build XML from JSON
-        try
-        {
-            xmlData = jsonToXml( jsonData );
-        }
-        catch( Exception e )
-        {
-            System.err.println( "Error converting JSON to XML: " + e.getMessage() );
-        }
-
-        ///////////////////////////////////////////////////////////////////////////////
-        // Send to user
-        try
-        {
-            PrintWriter out = httpResponse.getWriter();
-            httpResponse.setContentType("application/force-download");
-            httpResponse.setContentLength( xmlData.length() );
-            httpResponse.setHeader("Content-Disposition","attachment; filename=\"SampleData_" + sampleId + ".xml\"");
-            out.print( xmlData );
-            out.close();
-        }
-        catch( Exception e )
-        {
-            System.err.println( "Error sending XML to client: " + e.getMessage() );
-        }
-    }
-
     /**
      * Build JSON from a list of IDs.
      *
@@ -1043,18 +1000,17 @@ public class SampleServices {
         {
             if( id.endsWith( "_pubmed" ))
             {
-                jsonData.append( buildPubJson( httpRequest, id.replaceAll( "_pubmed$", ""), 2 ) + "\n," );
+				jsonData.append( buildPubJson( httpRequest, id.replaceAll( "_pubmed$", ""), 2 ) + "\n," );
             }
 
             else if( id.endsWith( "_protocol" ))
             {
-                // jsonData.append( buildProtocolJson( httpRequest, id.replaceAll( "_protocol$", ""), 2 ) + "\n," );
+				// jsonData.append( buildProtocolJson( httpRequest, id.replaceAll( "_protocol$", ""), 2 ) + "\n," );
             }
             else
             {
-                jsonData.append( buildSampleJson( httpRequest, httpResponse, id , 2) + "\n," );
+				jsonData.append( buildSampleJson( httpRequest, httpResponse, id , 2) + "\n," );
             }
-
         }
         // Remove trailing ","
         if (jsonData.length() > 0) {
@@ -1068,7 +1024,6 @@ public class SampleServices {
         catch( JsonSyntaxException jse){
             logger.error("Not a valid Json String:" + jse.getMessage());
         }
-
         return jsonData.toString();
     }
 
@@ -1127,20 +1082,20 @@ public class SampleServices {
 
         // General Info
         SampleBO sampleBO = (SampleBO) SpringApplicationContext.getBean(httpRequest, "sampleBO");
-        String sampleBeanData = "";
+		String sampleBeanData = "";
         try
         {
-            sampleBeanData = sampleBO.summaryExport( sampleId, "all", httpRequest, httpResponse );
+			sampleBeanData = sampleBO.summaryExport( sampleId, "all", httpRequest, httpResponse );
             sampleBeanData = doIndent(sampleBeanData, indent * 4);
-        }
+		}
         catch( Exception e )
         {
-            e.printStackTrace();
+			e.printStackTrace();
         }
-        jasonData.append( "\"GeneralInfo\":" );
+
+		jasonData.append( "\"GeneralInfo\":" );
         jasonData.append(  sampleBeanData );
         jasonData.append(  "\n" );
-
 
         // Composition
         CompositionForm form;
@@ -1149,10 +1104,11 @@ public class SampleServices {
         SimpleCompositionBean view = null;
         try
         {
-            form = new CompositionForm();
-            form.setSampleId(sampleId);
-            compositionBO = (CompositionBO) SpringApplicationContext.getBean( httpRequest, "compositionBO" );
-            compBean = compositionBO.summaryView( form, httpRequest );
+			form = new CompositionForm();
+			form.setSampleId(sampleId);
+
+			compositionBO = (CompositionBO) SpringApplicationContext.getBean( httpRequest, "compositionBO" );
+			compBean = compositionBO.summaryView( form, httpRequest );  // @FIXME
 
             view = new SimpleCompositionBean();
             view.transferCompositionBeanForSummaryView( compBean );

@@ -389,6 +389,9 @@ public class PublicationBean extends FileBean {
 						|| author.getCreatedBy().trim().length() == 0) {
 					author.setCreatedBy(createdBy);
 				}
+				if (author.getUpdatedDate() == null) {
+					author.setUpdatedDate(DateUtils.addSecondsToCurrentDate(i));
+				}
 				if (author.getId() != null && author.getId() <= 0) {
 					author.setId(null);
 				}

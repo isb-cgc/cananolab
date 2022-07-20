@@ -1,0 +1,404 @@
+<canano-main-display-heading [helpUrl]="helpUrl" [print]="true" [toolHeadingName]="toolHeadingNameManage" [export]="[sampleId,'COMPOSITION']">
+
+</canano-main-display-heading>
+    <ul class="nav nav-tabs">
+        <li class="nav-item">
+          <a class="nav-link active" id="all-tab" data-toggle="tab" (click)="showSection('all')">All</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" id="nano-tab" data-toggle="tab" (click)="showSection('nanomaterialentity')">Nanomaterial Entity</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" id="functionalizing-tab" data-toggle="tab" (click)="showSection('functionalizingentity')">Functionalizing Entity</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" id="chemical-tab" data-toggle="tab" (click)="showSection('chemicalassociation')">Chemical Association</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" id="file-tab" data-toggle="tab" (click)="showSection('compositionfile')">Composition File</a>
+          </li>
+    </ul>
+<div class="mainSection" *ngIf="data&&(sectionToShow=='all'||sectionToShow=='nanomaterialentity')">
+    <div id="nanomaterialEntity" class="header" *ngIf="sectionToShow=='all'||sectionToShow=='nanomaterialentity'">
+        Nanomaterial Entity <button *ngIf="editUrl" (click)="onNanomaterialEntityClick(-1)" class="btn btn-primary btn-sm">Add</button>
+    </div>
+    <span *ngFor="let nanomaterial of data['nanomaterialentity'] | keyvalue; let index = index">
+        <div class="blueHeader">{{nanomaterial.key}}</div><br />
+        <div class="mainBorder" *ngFor="let entry of nanomaterial.value">
+            <div class="editButton" *ngIf="editUrl">
+                <button class="btn btn-primary btn-sm" (click)="onNanomaterialEntityClick(entry['dataId'] )">
+                    Edit
+                </button>
+            </div>
+
+            <div>
+                <table class="dataMain">
+                    <tr *ngIf="entry.Description">
+                        <td class="label">Description</td>
+                        <td>
+                            {{entry.Description}}
+                        </td>
+                    </tr>
+                    <tr *ngIf="entry['isWithProperties'] && propertyCheck(entry)">
+                        <td class="label">Properties</td>
+                        <td>
+                            <table class="dataTable">
+                                <tr>
+                                    <th *ngFor="let property of entry['Properties'] | keyvalue">
+                                        {{convertTitlesToRealWords(property.key)}}
+                                    </th>
+                                </tr>
+                                <tr>
+                                    <td *ngFor="let property of entry['Properties'] | keyvalue">{{property.value}}</td>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>
+                    <tr *ngIf="entry['ComposingElements'].length">
+                        <td class="label">Composing Elements</td>
+                        <td>
+
+                            <div *ngFor="let ce of entry['ComposingElements']; let last=last">
+                                <table class="dataTable" [ngClass]="{'last':last}">
+                                    <tr>
+                                        <th class="label" colspan="2">
+                                           {{ce.DisplayName}}
+                                        </th>
+                                    </tr>
+                                    <tr *ngIf="ce.PubChemId!=''">
+                                        <td class="label">
+                                            PubChem ID
+                                        </td>
+                                        <td>
+                                            {{ce.PubChemId}}
+                                        </td>
+                                    </tr>
+                                    <tr *ngIf="ce.MolecularFormulaDisplayName!=''">
+                                        <td class="label">
+                                            Molecular Formula
+                                        </td>
+                                        <td>
+                                            {{ce.MolecularFormulaDisplayName}}
+                                        </td>
+                                    </tr>
+                                    <tr *ngIf="ce.Description!=''">
+                                        <td class="label">
+                                            Description
+                                        </td>
+                                        <td>
+                                            {{ce.Description}}
+                                        </td>
+                                    </tr>
+                                    <tr *ngIf="ce.Function">
+                                        <td class="label">
+                                            Function
+                                        </td>
+                                        <td>
+                                            <ul>
+                                                <li *ngFor="let inherentfunction of ce.Function">
+                                                    {{inherentfunction}}
+                                                </li>
+                                            </ul>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr *ngIf="entry['Files'].length">
+                        <td class="label">Files</td>
+                        <td>
+                                <table class="dataTable">
+                                    <tr>
+                                        <th>File Title and Download Link</th>
+                                        <th>Keywords</th>
+                                        <th>Description</th>
+                                    </tr>
+                                    <tr *ngFor="let file of entry['Files']; let odd=odd" [ngClass]="{'rowOdd':odd}">
+                                        <td class="label">
+                                            <span *ngIf="file.ExternalURI=='true'; else elseBlock">
+                                                <a href="{{file.URI}}" target="blank">{{file.Title}}</a>
+                                            </span>
+                                            <ng-template #elseBlock>
+                                                <span *ngIf="file.isImage; else elseBlock">{{file.Title}}<br />
+                                                    <img src="/rest/sample/downloadImage?fileId={{file.fileId}}"
+                                                        border="0" width="150" alt="uploaded image">
+                                                </span>
+                                                <ng-template #elseBlock>
+                                                    <a href="/rest/sample/download?fileId={{file.fileId}}"
+                                                        target="blank">
+                                                        {{file.Title}}
+                                                    </a>
+                                                </ng-template>
+                                            </ng-template>
+                                        </td>
+                                        <td>
+                                            <div *ngFor="let keyword of splitKeywordString(file.KeywordStr)">
+                                                {{keyword}}
+                                            </div>
+                                        </td>
+                                        <td>
+                                            {{file.Description}}
+                                        </td>
+                                    </tr>
+                                </table>
+                        </td>
+                    </tr>
+
+                </table>
+            </div>
+        </div>
+    </span>
+</div>
+
+<div class="mainSection" *ngIf="sectionToShow=='all'||sectionToShow=='functionalizingentity'">
+    <div id="functionalizingEntity" class="header">
+        Functionalizing Entity <button *ngIf="editUrl" class="btn btn-primary btn-sm"
+            (click)="onFunctionalizingEntityClick(-1)">Add</button>
+    </div>
+    <span *ngFor="let functionalizingentity of data['functionalizingentity'] | keyvalue; let index = index">
+
+        <div class="blueHeader">{{functionalizingentity.key}}</div><br />
+        <div class="mainBorder" [ngClass]="{'last':last}"
+            *ngFor="let entry of functionalizingentity.value;let last=last">
+            <div class="editButton" *ngIf="editUrl"><button class="btn btn-primary btn-sm"
+                    (click)="onFunctionalizingEntityClick(entry.dataId)">Edit</button></div>
+            <div>
+                <table class="dataMain">
+                    <tr *ngIf="entry.Name">
+                        <td class="label">Name</td>
+                        <td>{{entry.Name}}</td>
+                    </tr>
+                    <tr *ngIf="entry.pubChemLink">
+                        <td class="label">PubChem ID</td>
+                        <td><a [href]="entry.pubChemLink" target="blank">{{entry.pubChemID}}</a></td>
+                    </tr>
+                    <tr *ngIf="entry.value">
+                        <td class="label">Amount</td>
+                        <td>{{entry.value}} {{entry.valueUnit}}</td>
+                    </tr>
+                    <tr *ngIf="entry.MolecularFormulaDisplayName">
+                        <td class="label">Molecular Formula</td>
+                        <td>{{entry.MolecularFormulaDisplayName}}</td>
+                    </tr>
+                    <tr *ngIf="propertyCheck(entry)">
+                        <td class="label">Properties</td>
+                        <td>
+                            <table class="dataTable">
+                                <tr>
+                                    <th *ngFor="let property of entry['Properties'] | keyvalue">
+                                        {{convertTitlesToRealWords(property.key)}}
+                                    </th>
+                                </tr>
+                                <tr>
+                                    <td *ngFor="let property of entry['Properties'] | keyvalue">{{property.value}}</td>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>
+                    <tr *ngIf="entry['Functions'].length">
+                        <td class="label">Function(s)</td>
+                        <td>
+                            <table class="dataTable">
+                                <tr>
+                                    <th>Type</th>
+                                    <th>Image Modality</th>
+                                    <th>Description</th>
+                                </tr>
+                                <tr *ngFor="let function of entry.Functions; let odd=odd" [ngClass]="{'rowOdd':odd}">
+                                    <td>{{function.Type}}
+                                    </td>
+                                    <td>{{function.Modality}}</td>
+                                    <td>{{function.FunctionDescription}}</td>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>
+                    <tr *ngIf="entry.ActivationMethod">
+                        <td class="label">Activation Method</td>
+                        <td>{{entry.ActivationMethod}}</td>
+                    </tr>
+                    <tr *ngIf="entry.Desc">
+                        <td class="label">Description</td>
+                        <td>{{entry.Desc}}</td>
+                    </tr>
+                    <tr *ngIf="entry['Files'].length">
+                        <td class="label">Files</td>
+                        <td>
+                            <table class="dataTable">
+                                <tr>
+                                    <th>Title and Download Link</th>
+                                    <th>Keywords</th>
+                                    <th>Description</th>
+                                </tr>
+                                <tr *ngFor="let file of entry['Files']; let odd=odd" [ngClass]="{'rowOdd':odd}">
+                                    <td>
+                                        <span *ngIf="file.ExternalURI=='true'; else elseBlock">
+                                            <a href="{{file.URI}}" target="blank">{{file.Title}}</a>
+                                        </span>
+                                        <ng-template #elseBlock>
+                                            <span *ngIf="file.isImage; else elseBlock">{{file.Title}}<br />
+                                                <img src="/rest/sample/downloadImage?fileId={{file.fileId}}"
+                                                    border="0" width="150" alt="uploaded image">
+                                            </span>
+                                            <ng-template #elseBlock>
+                                                <a href="/rest/sample/download?fileId={{file.fileId}}"
+                                                    target="blank">
+                                                    {{file.Title}}
+                                                </a>
+                                            </ng-template>
+                                        </ng-template>
+                                    </td>
+                                    <td>
+                                        <div *ngFor="let keyword of splitKeywordString(file.KeywordStr)">
+                                            {{keyword}}
+                                        </div>
+                                    </td>
+                                    <td>
+                                        {{file.Description}}
+                                    </td>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </span>
+</div>
+
+<div class="mainSection" *ngIf="sectionToShow=='all'||sectionToShow=='chemicalassociation'">
+    <div id="chemicalAssociation" class="header">
+        Chemical Association<button *ngIf="editUrl" (click)="onChemicalAssociationClick(-1)"
+            class="btn btn-primary btn-sm">Add</button>
+    </div>
+    <span *ngFor="let chemicalassociation of data['chemicalassociation'] | keyvalue; let index = index">
+        <div class="blueHeader">{{chemicalassociation.key}}</div><br />
+        <div class="mainBorder" *ngFor="let entry of chemicalassociation.value;let last=last" [ngClass]="{'last':last}">
+            <div class="editButton" *ngIf="editUrl"><button class="btn btn-primary btn-sm"
+                    (click)="onChemicalAssociationClick(entry.dataId)">Edit</button></div>
+            <div>
+                <table class="dataMain">
+                    <tr *ngIf="entry.BondType">
+                        <td class="label">Bond Type</td>
+                        <td>{{entry.BondType}}</td>
+                    </tr>
+                    <tr *ngIf="entry.Description">
+                        <td class="label">Description</td>
+                        <td>{{entry.Description}}</td>
+                    </tr>
+                    <tr>
+                        <td class="label">Associated Elements</td>
+                        <td>
+                            <table class="properties">
+                                <tr>
+                                    <td>{{entry.AssocitedElements.CompositiontypeA}}
+                                        {{entry.AssocitedElements.EntityDisplayNameA}} composing element of type
+                                        {{entry.AssocitedElements.ComposingElementTypeA}}
+                                        (name:{{entry.AssocitedElements.DomainElementNameA}})
+                                    </td>
+                                    <td style="text-align:center">associated with
+                                        <img src="assets/images//arrow_left_right_gray.gif">
+
+                                    </td>
+                                    <td>
+                                        {{entry.AssocitedElements.CompositiontypeB}}
+                                        {{entry.AssocitedElements.EntityDisplayNameB}} (name:
+                                        {{entry.AssocitedElements.DomainElementNameB}})
+                                    </td>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>
+                    <tr *ngIf="entry['Files']">
+                        <td class="label">Files</td>
+                        <td>
+                            <table class="dataTable">
+                                <tr>
+                                    <th>Title and Download Link</th>
+                                    <th>Keywords</th>
+                                    <th>Description</th>
+                                </tr>
+                                <tr *ngFor="let file of entry['Files']; let odd=odd" [ngClass]="{'rowOdd':odd}">
+                                    <td>
+                                        <span *ngIf="file.ExternalURI=='true'; else elseBlock">
+                                            <a href="{{file.URI}}" target="blank">{{file.Title}}</a>
+                                        </span>
+                                        <ng-template #elseBlock>
+                                            <span *ngIf="file.isImage; else elseBlock">{{file.Title}}<br />
+                                                <img src="/rest/sample/downloadImage?fileId={{file.fileId}}"
+                                                    border="0" width="150" alt="uploaded image">
+                                            </span>
+                                            <ng-template #elseBlock>
+                                                <a href="/rest/sample/download?fileId={{file.fileId}}"
+                                                    target="blank">
+                                                    {{file.Title}}
+                                                </a>
+                                            </ng-template>
+                                        </ng-template>
+                                    </td>
+                                    <td>
+                                        <div *ngFor="let keyword of splitKeywordString(file.KeywordStr)">
+                                            {{keyword}}
+                                        </div>
+                                    </td>
+                                    <td>
+                                        {{file.Description}}
+                                    </td>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </span>
+</div>
+
+<div class="mainSection" *ngIf="sectionToShow=='all'||sectionToShow=='compositionfile'">
+    <div id="compositionFile" class="header">
+        Composition File <button *ngIf="editUrl" (click)="onCompositionFileClick(-1)"
+            class="btn btn-primary btn-sm">Add</button>
+    </div>
+    <ng-container *ngFor="let compositionfile of data['compositionfile'] | keyvalue; let index = index">
+        <div class="blueHeader">{{compositionfile.key}}</div><Br />
+        <div class="mainBorder" [ngClass]="mainBorder">
+            <table class="dataTable">
+                <tr>
+                    <th>Title and Download Link</th>
+                    <th>Keywords</th>
+                    <th>Description</th>
+                    <th *ngIf="editUrl"></th>
+                </tr>
+                <tr *ngFor="let file of compositionfile.value; let odd=odd" [ngClass]="{'rowOdd':odd}">
+                    <td>
+                        <span *ngIf="file.ExternalURI=='true'; else elseBlock">
+                            <a href="{{file.URI}}" target="blank">{{file.Title}}</a>
+                        </span>
+                        <ng-template #elseBlock>
+                            <span *ngIf="file.isImage; else elseBlock">{{file.Title}}<br />
+                                <img src="/rest/sample/downloadImage?fileId={{file.fileId}}" border="0"
+                                    width="150" alt="uploaded image">
+                            </span>
+                            <ng-template #elseBlock>
+                                <a href="/rest/sample/download?fileId={{file.fileId}}" target="blank">
+                                    {{file.Title}}
+                                </a>
+                            </ng-template>
+                        </ng-template>
+                    </td>
+                    <td>
+                        <div *ngFor="let keyword of splitKeywordString(file.KeywordStr)">
+                            {{keyword}}
+                        </div>
+                    </td>
+                    <td>{{file.Description}}</td>
+                    <td *ngIf="editUrl">
+                        <button class="btn-canano btn-canano-primary btn-canano-xs mr-1"
+                            (click)="onCompositionFileClick(file.dataId)">Edit</button>
+                    </td>
+                </tr>
+            </table><br />
+        </div>
+    </ng-container>
+</div>

@@ -2,11 +2,14 @@
 
 export $(cat /local/content/.env | grep -v ^# | xargs) 2> /dev/null
 
-export WILDFLY_HOME=/opt/wildfly-13.0.0.Final
+export WILDFLY_HOME=/opt/wildfly-23.0.2.Final
 export WILDFLY_BIN=$WILDFLY_HOME/bin
 export JBOSS_CLI=$WILDFLY_BIN/jboss-cli.sh
 
-${WILDFLY_BIN}/standalone.sh --server-config=standalone-full.xml -b 0.0.0.0 -bmanagement 0.0.0.0 &
+cp -v /local/content/standalone-full.xml ${WILDFLY_HOME}/standalone/configuration/
+cp -v /local/content/log4j2.xml ${WILDFLY_HOME}/standalone/configuration/
+
+${WILDFLY_BIN}/standalone.sh -Dapp.props.path=${APPLICATION_PROPERTIES_PATH} --server-config=standalone-full.xml -b 0.0.0.0 -bmanagement 0.0.0.0 &
 
 # Helper functions
 
@@ -35,7 +38,8 @@ function wait_for_server() {
 
 # Check to see if wildfly's process is still running
 function check_for_wildfly() {
-  ps -ef | grep wildfly | grep -v grep | grep -v "wildfly-setup.sh" | grep -v "start-wildfly.sh" | awk '{print $2}'
+  pids=$(ps -ef | grep wildfly | grep -v grep | grep -v "wildfly-setup.sh" | grep -v "start-wildfly.sh" | awk '{print $2}')
+  echo "${pids}"
 }
 
 echo "Waiting while Wildfly starts:"
@@ -65,7 +69,7 @@ fi
 echo "Testing data source setup and connection"
 ${JBOSS_CLI} --file=/local/content/caNanoLab/artifacts/caNanoLab_checks.cli
 echo "Deploying caNano WAR"
-cp -v /local/content/caNanoLab/artifacts/caNanoLab.war /opt/wildfly-13.0.0.Final/standalone/deployments
+cp -v /local/content/caNanoLab/artifacts/caNanoLab.war /opt/wildfly-23.0.2.Final/standalone/deployments
 
 wait_for_server "deployment-info --name=caNanoLab.war" "OK" "Deployment"
 
@@ -79,17 +83,20 @@ fi
 echo "Deployment completed - stopping Wildfly"
 ${JBOSS_CLI} -c --controller=localhost:9990 ":shutdown"
 counter=0
-WILDFLY_PID=check_for_wildfly
-echo "${pids}"
+WILDFLY_PID=`check_for_wildfly`
+echo "WILDFLY_PID(s) seen:"
+echo "${WILDFLY_PID}"
 while [ ! -z "${WILDFLY_PID}" ] && [ $counter -lt 5 ]; do
   echo "JBoss is still running. Continuing to wait..."
-  WILDFLY_PID=check_for_wildfly
+  WILDFLY_PID=`check_for_wildfly`
   ((counter=counter+1))
   sleep 6
 done
 
 if [ ! -z "${WILDFLY_PID}" ]; then
-  echo "Wildfly failed to stop in time!"
+  echo "[WARNING] Wildfly failed to stop in time! Processes still seen:"
+  ps -ef | grep wildfly | grep -v grep | grep -v "wildfly-setup.sh" | grep -v "start-wildfly.sh"
+  echo "[WARNING] This may cause problems when Wildfly is launched in the entrypoint script."
   exit 1
 fi
 

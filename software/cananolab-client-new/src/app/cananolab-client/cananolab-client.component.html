@@ -1,0 +1,112 @@
+<!----------------------------------------------------------------------------------------->
+<!----------------------            "cananolab-client"             ------------------------>
+<!-----------           The top level UI component                                   ------>
+<!-----------           Contains these UI component:                                 ------>
+<!-----------               Header                                                   ------>
+<!-----------               Main Top Menu                                            ------>
+<!-----------               Navigation Menu                                          ------>
+<!-----------               Static Left side Menu                                    ------>
+<!----------------------------------------------------------------------------------------->
+<div  [ngStyle]="{ width: properties.MAX_WIDTH }" >
+<!-- -----  The top header with the "Keyword Search" box on the right ----- -->
+
+<!-- Shows a "Testing" banner if we are in TEST_MODE -->
+<div *ngIf="properties.TEST_MODE">
+    <div class="alert alert-danger p-1 m-0">TEST MODE</div>
+</div>
+
+<canano-idle></canano-idle>
+<!-- -----  The Top Main Menu  ----- -->
+
+    <!-- -----  The left side Navigation menu & left static menu  ----- -->
+<div>
+    <table class="home">
+        <tr *ngIf="!print">
+            <td colspan="2" class="header">
+                <canano-header></canano-header>
+
+                <canano-top-main-menu></canano-top-main-menu>
+            </td>
+        </tr>
+
+        <tr>
+            <td class="leftMenu" *ngIf="!print">
+                <div>
+                    <canano-left-navigation-menu *ngIf="properties.SAMPLE_TOOLS">
+                    </canano-left-navigation-menu>
+
+                    <canano-left-static-menu>
+                    </canano-left-static-menu>
+
+                    <canano-status-display></canano-status-display>
+                </div>
+            </td>
+            <td class="mainContent">
+                    <router-outlet></router-outlet>
+            </td>
+        </tr>
+        <tr *ngIf="!print">
+            <td colspan="2" class="footer">
+                    <ul>
+                        <li class="footer-item">
+                            <button class="nav-link nav-menu-top-item left" (click)="navigateToUrl('mailto:nciappsupport@nih.gov')">
+                                Contact Us
+                            </button>
+                        </li>
+                        <li class="footer-item">
+                            <button class="nav-link nav-menu-top-item" (click)="navigateToUrl('https://www.hhs.gov/web/policies-and-standards/hhs-web-policies/privacy/index.html')">
+                                Privacy Notice
+                            </button>
+                        </li>
+                        <li class="footer-item">
+                            <button class="nav-link nav-menu-top-item" (click)="navigateToUrl('https://www.cancer.gov/policies')">
+                                Policies
+                            </button>
+                        </li>
+                        <li class="footer-item">
+                            <canano-disclaimer [hide]="true"></canano-disclaimer>
+                            <button data-toggle="modal" data-target="#disclaimer" class="nav-link nav-menu-top-item">
+                                Disclaimer
+                            </button>
+                        </li>
+                    </ul>
+            </td>
+        </tr>
+        <tr *ngIf="!print">
+            <td colspan="2" class="footer white">
+                <a href="http://www.dhhs.gov/" target="_blank" rel="nofollow noreferrer">
+                    Department of Health and Human Services
+                </a>
+                <span class="divider">|</span>
+                <a href="http://www.nih.gov/" target="_blank" rel="nofollow noreferrer">
+                    National Institutes of Health
+                </a>
+                <span class="divider">|</span>
+                <a href="http://www.cancer.gov/" target="_blank" rel="nofollow noreferrer">
+                    National Cancer Institute
+                </a>
+                <span class="divider">|</span>
+                <a href="http://www.usa.gov/" target="_blank" rel="nofollow noreferrer">
+                    USA.gov
+                </a>
+                <span class="divider">|</span>
+                <a href="https://www.hhs.gov/vulnerability-disclosure-policy/index.html" target="_blank" rel="nofollow noreferrer">
+                    Vulnerability Disclosure
+                </a>
+            </td>
+        </tr>
+        <tr *ngIf="!print">
+            <td colspan="2" class="footer white">
+                NIH...Turning Discovery Into Health®
+            </td>
+        </tr>
+        <tr *ngIf="!print">
+            <td colspan="2" class="footer white release">
+                caNanoLab Release 3.0 Build cananolab-3.0.0-it2
+            </td>
+        </tr>
+    </table>
+
+
+</div>
+</div>

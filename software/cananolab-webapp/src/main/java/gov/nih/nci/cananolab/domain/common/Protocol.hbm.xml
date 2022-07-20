@@ -12,9 +12,7 @@ L-->
 		<cache usage="read-write" />
 		<id name="id" type="long" column="protocol_pk_id">
 			<generator class="increment">
-                          <param name="table">hibernate_unique_key</param>
-                          <param name="column">next_hi</param>
-                        </generator>
+			</generator>
 		</id>
 		<!-- Attributes mapping for the Protocol class -->
 		<property name="abbreviation" type="string" column="protocol_abbreviation"/>

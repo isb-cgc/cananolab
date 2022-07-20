@@ -12,8 +12,6 @@ L-->
         <cache usage="read-write" />
         <id name="purificationConfigPkId" type="long" column="purification_config_pk_id">
             <generator class="increment">
-                <param name="table">hibernate_unique_key</param>
-                <param name="column">next_hi</param>
             </generator>
         </id>
         <property name="createdBy" type="string" column="created_by"/>

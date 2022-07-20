@@ -115,15 +115,20 @@ public class CurationServiceJDBCImpl extends JdbcDaoSupport implements CurationS
 //			}
 			JdbcTemplate template = this.getJdbcTemplate();
 			String sql = "select " + REVIEW_STATUS_TABLE_ALL_COLS + " from " + REVIEW_STATUS_TABLE + " where data_id=?";
+			System.out.println("[findDataReviewStatusBeanByDataId] SQL: " + sql);
 			Object[] args = { dataId };
+			System.out.println("[findDataReviewStatusBeanByDataId] dataId: " + dataId);
 			List result = template.query(sql, args, getDataReviewStatusRowMapper());
+			System.out.println("[findDataReviewStatusBeanByDataId] result count: " + result.size());
 			for (int i = 0; i < result.size(); i++) {
 				dataReviewStatusBean = (DataReviewStatusBean) result.get(0);
+				System.out.println("[findDataReviewStatusBeanByDataId] result - " + dataReviewStatusBean.toString());
 			}
 //		} catch (NoAccessException e) {
 //			throw e;
 		} catch (Exception e) {
 			String error = "Error finding existing pending for review data by Id";
+			System.out.println("[findDataReviewStatusBeanByDataId] ERROR - " + e);
 			throw new CurationException(error, e);
 		}
 		return dataReviewStatusBean;

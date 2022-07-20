@@ -27,6 +27,7 @@ cp -v ${HOME}/maven-settings.xml ${ANT_HOME}/etc/settings.xml
 cp -v ${HOME}/maven-settings.xml /opt/apache-maven/conf/settings.xml
 cp -v ${HOME}/jars/*.jar ${HOME}/software/cananolab-webapp/lib/
 cp -v ${HOME}/jars/sdk/*.jar ${HOME}/software/cananolab-webapp/lib/sdk/
+cp -v ${HOME}/.env ${HOME}/software/cananolab-webapp/web/WEB-INF/
 
 cd ${HOME}/software/cananolab-webapp/
 ant dist
@@ -40,11 +41,13 @@ cp -v ${HOME}/software/cananolab-webapp/target/dist/caNanoLab.war ${CANANODIR}/a
 cd ${HOME}/software/cananolab-webapp/lib/sdk
 cp -v csmapi* ${CANANODIR}/artifacts
 cd ${HOME}/software/cananolab-webapp/lib
-cp -v mysql-connector*.jar mysql-socket*.jar bcprov*.jar ${CANANODIR}/artifacts
+cp -v mysql-socket*.jar bcprov*.jar ${CANANODIR}/artifacts
 cd ${HOME}/software/cananolab-webapp/target/dist/common
 cp -v *.cli ${CANANODIR}/artifacts
 cp -v wikihelp.properties ${CANANODIR}/config
 
 cp -v ${HOME}/shell/*wildfly*.sh ${HOME}/staged/
 cp -v ${HOME}/.env ${HOME}/staged/
+cp -v ${HOME}/standalone-full.xml ${HOME}/staged/
+cp -v ${HOME}/log4j2.xml ${HOME}/staged/
 chmod ug+x ${HOME}/staged/*wildfly*.sh

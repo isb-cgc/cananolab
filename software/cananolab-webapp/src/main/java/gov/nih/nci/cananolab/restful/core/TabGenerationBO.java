@@ -1,7 +1,9 @@
 package gov.nih.nci.cananolab.restful.core;
 
+import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
+import org.jboss.logging.Logger;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -15,6 +17,8 @@ import gov.nih.nci.cananolab.security.utils.SpringSecurityUtil;
 @Component("tabGenerationBO")
 public class TabGenerationBO {
 
+	private static Logger log = Logger.getLogger(TabGenerationBO.class.getName());
+
 	public SimpleTabsBean getTabs(HttpServletRequest httpRequest, CananoUserDetails userDetails, String homePage) {
 		
 		List<String[]> tabs = new ArrayList<String[]>();
@@ -23,7 +27,7 @@ public class TabGenerationBO {
 		boolean hasResultWaiting = (hasResult == null) ? false : (Boolean)hasResult;
 		homePage = homePage.trim().toLowerCase();
 		
-		String urlBase = getUrlBase(httpRequest.getRequestURL().toString());
+		String urlBase = "https://" + URI.create(httpRequest.getRequestURL().toString()).getHost() + "/";
 		
 		SimpleTabsBean tabsBean = new SimpleTabsBean();
 		tabsBean.setUserLoggedIn(SpringSecurityUtil.isUserLoggedIn());
@@ -144,13 +148,5 @@ public class TabGenerationBO {
 
 		return tabsBean;
 		
-	}
-	
-	protected String getUrlBase(String fullUrl) {
-		if (fullUrl == null || fullUrl.length() == 0)
-			return "";
-		String token = "/caNanoLab/";
-		int end = fullUrl.indexOf(token) + token.length();
-		return fullUrl.substring(0, end);
 	}
 }

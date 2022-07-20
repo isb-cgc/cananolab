@@ -1,4 +1,6 @@
 package gov.nih.nci.cananolab.ui.form;
+import org.codehaus.jackson.annotate.JsonIgnoreProperties;
+@JsonIgnoreProperties(ignoreUnknown = true)
 
 public class GenerateBatchDataAvailabilityForm {
 
@@ -24,6 +26,4 @@ public class GenerateBatchDataAvailabilityForm {
 	public void setPage(int page) {
 		this.page = page;
 	}
-	
-	
 }

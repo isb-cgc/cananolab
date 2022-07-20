@@ -10,7 +10,8 @@
 		<exclusions>
 			<module name="org.jboss.resteasy.resteasy-jackson2-provider" />
 			<module name="org.hibernate" />
+			<module name="org.apache.log4j" />
+			<module name="org.apache.commons.logging"/>
 		</exclusions>
-
 	</deployment>
 </jboss-deployment-structure>
