@@ -210,7 +210,9 @@ L-->
 
 		<!-- copy dependency jars to WEB-INF/lib files  -->
 		<copy todir="${build.dir}/WEB-INF/lib">
-			<fileset dir="${deps.dir}/runtime"/>
+			<fileset dir="${deps.dir}/runtime">
+				<exclude name="**/log4j-1.2.13.jar" />
+			</fileset>
 		</copy>
 
 		<!-- copy jars from common/lib -->
@@ -221,6 +223,7 @@ L-->
 				<exclude name="**/sdk/*.jar"/>
 				<exclude name="**/cglib-2.1.3.jar"/>
 				<exclude name="**/spring.jar"/>
+				<exclude name="**/log4j-1.2.13.jar" />
 			</fileset>
 			<!--			<fileset dir="${common.dir}/lib">-->
 			<fileset dir="${commonlib.dir}">
@@ -474,6 +477,7 @@ L-->
 			<fileset dir="${commonlib.dir">
 				<exclude name="**/sdk/*.jar"/>
 				<exclude name="**/ant-contrib-*.jar"/>
+				<exclude name="**/log4j-1.2.13.jar" />
 			</fileset>
 		</path>
 		<javac destdir="${build.dir}/WEB-INF/classes" debug="true" source="1.8" target="1.8">
