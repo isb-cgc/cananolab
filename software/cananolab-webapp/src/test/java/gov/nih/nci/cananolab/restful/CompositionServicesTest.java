@@ -13,7 +13,7 @@ import static org.junit.Assert.assertNotNull;
 
 public class CompositionServicesTest {
 
-	String urlbase = RestTestLoginUtil.readTestUrlProperty() +  "caNanoLab/rest/";
+	String urlbase = RestTestLoginUtil.readTestUrlProperty() +  "/rest/";
 	Client client; 
 
 	@Before

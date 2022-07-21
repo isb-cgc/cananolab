@@ -19,7 +19,7 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
 public class SynthesisServicesTest {
-    String urlbase = RestTestLoginUtil.readTestUrlProperty() +  "caNanoLab/rest/";
+    String urlbase = RestTestLoginUtil.readTestUrlProperty() +  "/rest/";
     Client client;
 
     @After
@@ -62,12 +62,12 @@ public class SynthesisServicesTest {
 //                given().contentType("application/json").cookie("JSESSIONID=" + jsessionId)
 //                        .expect()
 //                        .body("samples.dataName", equalToIgnoringCase("test_HJ_11"))
-//                        .when().get(RestTestLoginUtil.readTestUrlProperty() +  "caNanoLab/rest/synthesis/summaryView");
+//                        .when().get(RestTestLoginUtil.readTestUrlProperty() +  "/rest/synthesis/summaryView");
 
                 ValidatableResponse res =  given().auth()
                         .basic("canano_curator", "canano_curator")
                         .when()
-                        .get(RestTestLoginUtil.readTestUrlProperty() +  "caNanoLab/rest/synthesis/summaryView")
+                        .get(RestTestLoginUtil.readTestUrlProperty() +  "/rest/synthesis/summaryView")
                         .then()
                         .assertThat()
                         .statusCode(HttpStatus.OK.value());

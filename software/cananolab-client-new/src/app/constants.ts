@@ -56,7 +56,7 @@ export const Consts = {
     QUERY_SAMPLE_SAVE_ACCESS:'rest/sample/saveAccess',
     QUERY_SAMPLE_DELETE: 'rest/sample/deleteSample',
     QUERY_SAMPLE_UPDATE: 'rest/sample/updateSample',
-    QUERY_SAMPLE_AVAILABILITY_HTML: 'caNanoLab/views/sample/view/sampleDataAvailability.html',  // @FIXME That's not how this works
+    QUERY_SAMPLE_AVAILABILITY_HTML: 'views/sample/view/sampleDataAvailability.html',  // @FIXME That's not how this works
     QUERY_SAMPLE_POC_UPDATE_SAVE:  'rest/sample/savePOC',
     QUERY_SAMPLE_POC_UPDATE_DELETE: 'rest/sample/deletePOC',
     QUERY_SAMPLE_GET_CHARACTERIZATION_OPTIONS:  'rest/sample/getDecoratedCharacterizationOptions',
@@ -82,7 +82,7 @@ export const Consts = {
     QUERY_GET_PROTOCOL: 'rest/protocol/getProtocol',
     QUERY_PROTOCOL_DELETE_ACCESS: 'rest/protocol/deleteAccess',
     QUERY_DOWNLOAD_FILE: 'rest/protocol/download',
-    QUERY_PUBLICATION_DOWNLOAD_FILE:'caNanoLab/',
+    QUERY_PUBLICATION_DOWNLOAD_FILE:'/',
     QUERY_PUBLICATION_SETUP: 'rest/publication/setup',
     QUERY_PUBLICATION_SAVE: 'rest/publication/submitPublication',
     QUERY_PUBLICATION_SEARCH: 'rest/publication/searchPublication',

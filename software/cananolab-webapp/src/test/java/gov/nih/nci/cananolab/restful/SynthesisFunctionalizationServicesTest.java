@@ -47,7 +47,7 @@ public class SynthesisFunctionalizationServicesTest {
         //Create spec for all test logins in this class
         specification = new RequestSpecBuilder()
                 .setContentType( ContentType.JSON )
-                .setBaseUri( RestTestLoginUtil.readTestUrlProperty() + "caNanoLab/rest/" )
+                .setBaseUri( RestTestLoginUtil.readTestUrlProperty() + "/rest/" )
                 .addFilter( new ResponseLoggingFilter() )
                 .addFilter( new RequestLoggingFilter() )
                 .setSessionId( jsessionId )
@@ -72,7 +72,7 @@ public class SynthesisFunctionalizationServicesTest {
             parameters.put( "username", username );
             parameters.put( "password", pwd );
 
-            Response response = given().contentType( "application/x-www-form-urlencoded" ).params( parameters ).when().post( RestTestLoginUtil.readTestUrlProperty() + "caNanoLab/login" );
+            Response response = given().contentType( "application/x-www-form-urlencoded" ).params( parameters ).when().post( RestTestLoginUtil.readTestUrlProperty() + "/login" );
             jsessionId = response.getCookie( "JSESSIONID" );
         }
         return jsessionId;
