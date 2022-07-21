@@ -266,17 +266,16 @@
 			<scope>provided</scope>
 		</dependency>
 
+
+		<!--
+		 caNano code still uses org.codehaus.jackson in various places; until that is removed and replaced with
+		 com.fasterxml, we need to pull this in.
+		 -->
 		<dependency>
 			<groupId>org.codehaus.jackson</groupId>
 			<artifactId>jackson-mapper-asl</artifactId>
 			<version>1.9.13</version>
 		</dependency>
-
-<!--		<dependency>-->
-<!--			<groupId>com.fasterxml.jackson.core</groupId>-->
-<!--			<artifactId>jackson-databind</artifactId>-->
-<!--			<version>2.13.0</version>-->
-<!--		</dependency>-->
 
 		<dependency>
 			<groupId>javax.inject</groupId>
