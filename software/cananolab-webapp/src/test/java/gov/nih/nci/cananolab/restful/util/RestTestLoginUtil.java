@@ -41,10 +41,10 @@ public class RestTestLoginUtil {
 //				return null;
 //
 ////			Response response = with().params("username", username, "password", pwd)
-////					.expect().statusCode(200).when().get(RestTestLoginUtil.readTestUrlProperty() + "caNanoLab/rest/security/login");
+////					.expect().statusCode(200).when().get(RestTestLoginUtil.readTestUrlProperty() + "/rest/security/login");
 //
 //			Response response = with().params("username", username, "password", pwd)
-//					.expect().statusCode(200).when().get(RestTestLoginUtil.readTestUrlProperty() + "caNanoLab/login");
+//					.expect().statusCode(200).when().get(RestTestLoginUtil.readTestUrlProperty() + "/login");
 //
 //
 //			jsessionId = response.getCookie("JSESSIONID");
@@ -66,14 +66,14 @@ public class RestTestLoginUtil {
 			parameters.put("username", username);
 			parameters.put("password", pwd);
 
-			Response response = given().contentType("application/x-www-form-urlencoded").params(parameters).when().post(RestTestLoginUtil.readTestUrlProperty() +  "caNanoLab/login");
+			Response response = given().contentType("application/x-www-form-urlencoded").params(parameters).when().post(RestTestLoginUtil.readTestUrlProperty() +  "/login");
 			jsessionId = response.getCookie("JSESSIONID");
 		}
 		return jsessionId;
 	}
 
 	public static void testLogout(){
-		Response response = given().contentType("application/x-www-form-urlencoded").when().post(RestTestLoginUtil.readTestUrlProperty() +  "caNanoLab/logout");
+		Response response = given().contentType("application/x-www-form-urlencoded").when().post(RestTestLoginUtil.readTestUrlProperty() +  "/logout");
 
 	}
 
@@ -98,7 +98,7 @@ public class RestTestLoginUtil {
 //		RestAssured.authentication = authScheme;}
 	
 	public static void logoutTest() {
-		expect().statusCode(200).when().get(RestTestLoginUtil.readTestUrlProperty() + "caNanoLab/rest/security/logout");
+		expect().statusCode(200).when().get(RestTestLoginUtil.readTestUrlProperty() + "/rest/security/logout");
 		jsessionId = null;
 	}
 	

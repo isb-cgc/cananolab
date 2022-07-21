@@ -25,7 +25,7 @@ import static org.junit.Assert.assertTrue;
 
 public class PublicationServicesTest {
 
-	String urlbase = RestTestLoginUtil.readTestUrlProperty() +  "caNanoLab/rest/";
+	String urlbase = RestTestLoginUtil.readTestUrlProperty() +  "/rest/";
 	Client client; 
 
 	
@@ -97,7 +97,7 @@ public class PublicationServicesTest {
 		        .register(ObjectMapperProvider.class)
 		        .build();
 		
-		WebTarget webTarget = aClient.target(RestTestLoginUtil.readTestUrlProperty() +  "caNanoLab/rest");
+		WebTarget webTarget = aClient.target(RestTestLoginUtil.readTestUrlProperty() +  "/rest");
 		webTarget.register(PublicationServices.class);
 		
 		WebTarget searchPublicationWebTarget = webTarget.path("publication").path("searchPublication");
@@ -131,7 +131,7 @@ public class PublicationServicesTest {
 		        .register(ObjectMapperProvider.class)
 		        .build();
 		
-		WebTarget webTarget = aClient.target(RestTestLoginUtil.readTestUrlProperty() +  "caNanoLab/rest");
+		WebTarget webTarget = aClient.target(RestTestLoginUtil.readTestUrlProperty() +  "/rest");
 		webTarget.register(PublicationServices.class);
 		
 		WebTarget submitPublicationWebTarget = webTarget.path("publication").path("submitPublication");
@@ -178,7 +178,7 @@ public class PublicationServicesTest {
 					given().contentType("application/json").cookie("JSESSIONID=" + jsessionId)
 					.params(parameters).expect()
 					.body("category", equalToIgnoringCase("Test Pub Type"))
-							.when().get(RestTestLoginUtil.readTestUrlProperty() +  "caNanoLab/rest/publication/edit");
+							.when().get(RestTestLoginUtil.readTestUrlProperty() +  "/rest/publication/edit");
 
 			System.out.println(res.getBody().asString());
 			RestTestLoginUtil.logoutTest();
@@ -195,7 +195,7 @@ public class PublicationServicesTest {
 					given().contentType("application/json").cookie("JSESSIONID=" + jsessionId)
 					.params(parameters).expect()
 					.body("category", equalToIgnoringCase("Test Pub Type"))
-							.when().get(RestTestLoginUtil.readTestUrlProperty() +  "caNanoLab/rest/publication/getSamples");
+							.when().get(RestTestLoginUtil.readTestUrlProperty() +  "/rest/publication/getSamples");
 
 //		String jsonString = client.target(urlbase)
 //				.register(PublicationServices.class)
@@ -262,7 +262,7 @@ public class PublicationServicesTest {
 //		        .register(ObjectMapperProvider.class)
 //		        .build();
 //
-//		WebTarget webTarget = aClient.target(RestTestLoginUtil.readTestUrlProperty() +  "caNanoLab/rest");
+//		WebTarget webTarget = aClient.target(RestTestLoginUtil.readTestUrlProperty() +  "/rest");
 //		webTarget.register(PublicationServices.class);
 //
 //		WebTarget submitPublicationWebTarget = webTarget.path("publication").path("saveAccess");
@@ -315,7 +315,7 @@ public class PublicationServicesTest {
 //		        .register(ObjectMapperProvider.class)
 //		        .build();
 //
-//		WebTarget webTarget = aClient.target(RestTestLoginUtil.readTestUrlProperty() +  "caNanoLab/rest");
+//		WebTarget webTarget = aClient.target(RestTestLoginUtil.readTestUrlProperty() +  "/rest");
 //		webTarget.register(PublicationServices.class);
 //
 //		WebTarget submitPublicationWebTarget = webTarget.path("publication").path("deleteAccess");
@@ -356,7 +356,7 @@ public class PublicationServicesTest {
 //		        .register(ObjectMapperProvider.class)
 //		        .build();
 //
-//		WebTarget webTarget = aClient.target(RestTestLoginUtil.readTestUrlProperty() +  "caNanoLab/rest");
+//		WebTarget webTarget = aClient.target(RestTestLoginUtil.readTestUrlProperty() +  "/rest");
 //		webTarget.register(PublicationServices.class);
 //
 //		WebTarget submitPublicationWebTarget = webTarget.path("publication").path("deletePublication");
@@ -386,7 +386,7 @@ public class PublicationServicesTest {
 		        .register(ObjectMapperProvider.class)
 		        .build();
 		
-		WebTarget webTarget = aClient.target(RestTestLoginUtil.readTestUrlProperty() +  "caNanoLab/rest");
+		WebTarget webTarget = aClient.target(RestTestLoginUtil.readTestUrlProperty() +  "/rest");
 		webTarget.register(PublicationServices.class);
 		
 		WebTarget submitProtocolWebTarget = webTarget.path("publication").path("submitForReview");

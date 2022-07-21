@@ -12,7 +12,7 @@ import static org.junit.Assert.assertTrue;
 
 public class SecurityServicesTest {
 	
-	String urlbase = RestTestLoginUtil.readTestUrlProperty() +  "caNanoLab/rest/";
+	String urlbase = RestTestLoginUtil.readTestUrlProperty() +  "/rest/";
 	Client client; 
 
 	@Before
