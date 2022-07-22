@@ -132,7 +132,7 @@ public class SimpleSearchProtocolBean {
 			if (file.getDomainFile().getId() != null) {
 				// set fileId for favorites section
 				this.setFileId(file.getDomainFile().getId());
-				String link = "rest/protocol/download?fileId="
+				String link = "/rest/protocol/download?fileId="
 						+ file.getDomainFile().getId();
 				String linkText = "View";
 				sb.append("<br>").append("<a href=");
