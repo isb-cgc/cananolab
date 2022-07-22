@@ -283,10 +283,6 @@ public class CompositionBO extends BaseAnnotationBO
 		}
 	}
 
-	public java.io.File download(String fileId, HttpServletRequest request)
-			throws Exception {
-		return downloadImage(compositionService, fileId, request);
-	}
 	public String download(String fileId,
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {

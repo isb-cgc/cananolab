@@ -18,7 +18,7 @@ import static org.junit.Assert.assertTrue;
 
 public class CurationServicesTest {
 
-	String urlbase = RestTestLoginUtil.readTestUrlProperty() +  "caNanoLab/rest/";
+	String urlbase = RestTestLoginUtil.readTestUrlProperty() +  "/rest/";
 	Client client; 
 
 	
@@ -53,7 +53,7 @@ public class CurationServicesTest {
 		        .register(ObjectMapperProvider.class)
 		        .build();
 		
-		WebTarget webTarget = aClient.target(RestTestLoginUtil.readTestUrlProperty() +  "caNanoLab/rest");
+		WebTarget webTarget = aClient.target(RestTestLoginUtil.readTestUrlProperty() +  "/rest");
 		webTarget.register(CurationServices.class);
 		
 		WebTarget submitPublicationWebTarget = webTarget.path("curation").path("generateBatchDataAvailability");

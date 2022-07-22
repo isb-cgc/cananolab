@@ -109,14 +109,7 @@ public class CompositionServices {
 	public Response characterizationImage(@Context HttpServletRequest httpRequest, @Context HttpServletResponse httpResponse,
 			@DefaultValue("") @QueryParam("fileId") String fileId)
 	{
-		try {
-			CompositionBO compositionBO = (CompositionBO) SpringApplicationContext.getBean(httpRequest, "compositionBO");
-			java.io.File file = compositionBO.download(fileId, httpRequest);
-
-			return Response.ok((Object) file).build();
-		} catch (Exception e) {
-			return Response.ok(e.getMessage()).build();
-		}
+		return download(httpRequest, httpResponse, fileId);
 	}
 
 	@GET
@@ -127,8 +120,8 @@ public class CompositionServices {
 	{
 		try {
 			CompositionBO compositionBO = (CompositionBO) SpringApplicationContext.getBean(httpRequest, "compositionBO");
-
 			String result = compositionBO.download(fileId, httpRequest, httpResponse);
+
 			return Response.ok(result).build();
 		}
 		catch (Exception e) {
