@@ -219,19 +219,9 @@ public class SampleServices {
 	@Path("/downloadImage")
 	@Produces({"image/png", "application/json"})
 	 public Response downloadImage(@Context HttpServletRequest httpRequest, @Context HttpServletResponse httpResponse,
-	    		@DefaultValue("") @QueryParam("fileId") String fileId){
-		try {
-			CharacterizationBO characterizationBO = 
-					(CharacterizationBO) SpringApplicationContext.getBean(httpRequest, "characterizationBO");
-			
-			java.io.File file = characterizationBO.download(fileId, httpRequest);
-			
-			return Response.ok((Object) file).build();
-			
-		} catch (Exception ioe) {
-			return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
-					.entity(CommonUtil.wrapErrorMessageInList(ioe.getMessage())).build();
-		}
+	    		@DefaultValue("") @QueryParam("fileId") String fileId)
+	{
+		return download(httpRequest, httpResponse, fileId);
 	}
 	
 	@GET
