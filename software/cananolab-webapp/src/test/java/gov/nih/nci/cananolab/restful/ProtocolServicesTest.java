@@ -23,7 +23,7 @@ import static org.junit.Assert.assertTrue;
 
 public class ProtocolServicesTest {
 
-	String urlbase = RestTestLoginUtil.readTestUrlProperty() +  "caNanoLab/rest/";
+	String urlbase = RestTestLoginUtil.readTestUrlProperty() +  "/rest/";
 	Client client; 
 
 	
@@ -62,7 +62,7 @@ public class ProtocolServicesTest {
 		        .register(ObjectMapperProvider.class)
 		        .build();
 		
-		WebTarget webTarget = aClient.target(RestTestLoginUtil.readTestUrlProperty() +  "caNanoLab/rest");
+		WebTarget webTarget = aClient.target(RestTestLoginUtil.readTestUrlProperty() +  "/rest");
 		webTarget.register(ProtocolServices.class);
 		
 		WebTarget searchPublicationWebTarget = webTarget.path("protocol").path("searchProtocol");
@@ -108,7 +108,7 @@ public class ProtocolServicesTest {
 		        .register(ObjectMapperProvider.class)
 		        .build();
 		
-		WebTarget webTarget = aClient.target(RestTestLoginUtil.readTestUrlProperty() +  "caNanoLab/rest");
+		WebTarget webTarget = aClient.target(RestTestLoginUtil.readTestUrlProperty() +  "/rest");
 		webTarget.register(ProtocolServices.class);
 		
 		WebTarget submitProtocolWebTarget = webTarget.path("protocol").path("submitProtocol");
@@ -171,7 +171,7 @@ public class ProtocolServicesTest {
 		        .register(ObjectMapperProvider.class)
 		        .build();
 		
-		WebTarget webTarget = aClient.target(RestTestLoginUtil.readTestUrlProperty() +  "caNanoLab/rest");
+		WebTarget webTarget = aClient.target(RestTestLoginUtil.readTestUrlProperty() +  "/rest");
 		webTarget.register(ProtocolServices.class);
 		
 		WebTarget submitPublicationWebTarget = webTarget.path("protocol").path("saveAccess");
@@ -224,7 +224,7 @@ public class ProtocolServicesTest {
 //		        .register(ObjectMapperProvider.class)
 //		        .build();
 //
-//		WebTarget webTarget = aClient.target(RestTestLoginUtil.readTestUrlProperty() +  "caNanoLab/rest");
+//		WebTarget webTarget = aClient.target(RestTestLoginUtil.readTestUrlProperty() +  "/rest");
 //		webTarget.register(ProtocolServices.class);
 //
 //		WebTarget submitProtocolWebTarget = webTarget.path("protocol").path("deleteAccess");
@@ -265,7 +265,7 @@ public class ProtocolServicesTest {
 //		        .register(ObjectMapperProvider.class)
 //		        .build();
 //
-//		WebTarget webTarget = aClient.target(RestTestLoginUtil.readTestUrlProperty() +  "caNanoLab/rest");
+//		WebTarget webTarget = aClient.target(RestTestLoginUtil.readTestUrlProperty() +  "/rest");
 //		webTarget.register(ProtocolServices.class);
 //
 //		WebTarget submitPublicationWebTarget = webTarget.path("protocol").path("deleteProtocol");
@@ -311,7 +311,7 @@ public class ProtocolServicesTest {
 		        .register(ObjectMapperProvider.class)
 		        .build();
 		
-		WebTarget webTarget = aClient.target(RestTestLoginUtil.readTestUrlProperty() +  "caNanoLab/rest");
+		WebTarget webTarget = aClient.target(RestTestLoginUtil.readTestUrlProperty() +  "/rest");
 		webTarget.register(ProtocolServices.class);
 		
 		WebTarget submitProtocolWebTarget = webTarget.path("protocol").path("submitForReview");

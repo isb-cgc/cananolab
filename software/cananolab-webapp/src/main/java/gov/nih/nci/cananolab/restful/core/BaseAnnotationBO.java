@@ -158,53 +158,6 @@ public abstract class BaseAnnotationBO extends AbstractDispatchBO
 		
 		return null;
 	}
-	
-	protected java.io.File downloadImage(BaseService service, String fileId,
-			HttpServletRequest request) throws Exception {
-
-		FileBean fileBean = service.findFileById(fileId);
-		System.out.println("fileBean.getDomainFile().getUri()"+fileBean.getDomainFile().getUri());
-
-		if (fileBean != null) {
-			if (fileBean.getDomainFile().getUriExternal()) {
-				throw new FileException("UriExternal file download can't be handled in downloadImage method");
-			}
-		}
-
-		// TODO Mi: rewrite with something like this:
-//
-//		try {
-//			Storage storage = GCPStorageUtil.getGCPStorageService();
-//			String bucketPath = GCPStorageUtil.getGCPStorageBucketPath();
-//			String folderPath = GCPStorageUtil.getGCPStorageRootFolderPath();
-//			Bucket assetBucket = storage.get(bucketPath);
-//			Blob blob = assetBucket.get(folderPath + "/" + fileBean.getDomainFile().getUri());
-//
-//			if (blob.exists()) {
-//				ExportUtils.prepareReponseForImage(response, fileBean.getDomainFile().getUri());
-//
-//				OutputStream out = response.getOutputStream();
-//				blob.downloadTo(out);
-//			}
-//		}
-//		catch (Exception e) {
-//			String msg = PropertyUtil.getProperty("sample", "error.noFile");
-//			throw new FileException("Target download file doesn't exist");
-//		}
-//
-//		return null;
-
-		String fileRoot = PropertyUtils.getProperty(
-				Constants.CANANOLAB_PROPERTY, "fileRepositoryDir");
-		java.io.File dFile = new java.io.File(fileRoot + java.io.File.separator
-				+ fileBean.getDomainFile().getUri());
-				//+ "particles/composition.png");
-
-		if (dFile.exists()) 
-			return dFile;
-		else
-			throw new FileException(PropertyUtil.getProperty("sample", "error.noFile"));
-	}
 
 	/**
 	 * Download action to handle file downloading and viewing
