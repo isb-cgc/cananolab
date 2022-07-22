@@ -105,7 +105,7 @@ public class CompositionServices {
 
 	@GET
 	@Path("/downloadImage")
-	@Produces("image/png")
+	@Produces({"image/png", "application/json"})
 	public Response characterizationImage(@Context HttpServletRequest httpRequest, @Context HttpServletResponse httpResponse,
 			@DefaultValue("") @QueryParam("fileId") String fileId)
 	{
