@@ -111,9 +111,9 @@ public class CompositionServices {
 	{
 		try {
 			CompositionBO compositionBO = (CompositionBO) SpringApplicationContext.getBean(httpRequest, "compositionBO");
-			java.io.File file = compositionBO.download(fileId, httpRequest);
+			String result = compositionBO.download(fileId, httpRequest, httpResponse);
 
-			return Response.ok((Object) file).build();
+			return Response.ok(result).build();
 		} catch (Exception e) {
 			return Response.ok(e.getMessage()).build();
 		}

@@ -223,10 +223,10 @@ public class SampleServices {
 		try {
 			CharacterizationBO characterizationBO = 
 					(CharacterizationBO) SpringApplicationContext.getBean(httpRequest, "characterizationBO");
-			
-			java.io.File file = characterizationBO.download(fileId, httpRequest);
-			
-			return Response.ok((Object) file).build();
+
+			String result = characterizationBO.download(fileId, httpRequest, httpResponse);
+
+			return Response.ok(result).build();
 			
 		} catch (Exception ioe) {
 			return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
