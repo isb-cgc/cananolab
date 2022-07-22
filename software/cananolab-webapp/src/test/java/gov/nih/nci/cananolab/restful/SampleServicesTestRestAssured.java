@@ -22,7 +22,7 @@ public class SampleServicesTestRestAssured {
 				given().contentType("application/json").cookie("JSESSIONID=" + jsessionId).expect()
 				.body("organizationNamesForUser", hasItems("AIST_HTRC",
 						"BB_SH_DFCI_WCMC_BWH_MIT",
-						"BB_SH_KCI_DFCI_WCMC_BWH_MIT")).when().get(RestTestLoginUtil.readTestUrlProperty() +  "caNanoLab/rest/sample/submissionSetup");
+						"BB_SH_KCI_DFCI_WCMC_BWH_MIT")).when().get(RestTestLoginUtil.readTestUrlProperty() +  "/rest/sample/submissionSetup");
 
 		System.out.println(res.getBody().asString());
 		
@@ -41,7 +41,7 @@ public class SampleServicesTestRestAssured {
 		Response res = //with().parameters("sampleName", "SY-NCL-23-1")
 		given().contentType("application/json").cookie("JSESSIONID=" + jsessionId).body(form)
 		.expect().body("sampleName", hasToString("[SY-NCL-23-1]"))
-		.when().post(RestTestLoginUtil.readTestUrlProperty() +  "caNanoLab/rest/sample/searchSample");
+		.when().post(RestTestLoginUtil.readTestUrlProperty() +  "/rest/sample/searchSample");
 		
 		System.out.println(res.getBody().asString());
 	}
