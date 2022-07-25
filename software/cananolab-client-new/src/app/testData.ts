@@ -4,43 +4,43 @@ export const TestData = {
         '    "tabs": [\n' +
         '        [\n' +
         '            "HOME",\n' +
-        '            "http://localhost:8090/caNanoLab/#/"\n' +
+        '            "http://localhost:8090/#/"\n' +
         '        ],\n' +
         '        [\n' +
         '            "WORKFLOW",\n' +
-        '            "http://localhost:8090/caNanoLab/#/workflow"\n' +
+        '            "http://localhost:8090/#/workflow"\n' +
         '        ],\n' +
         '        [\n' +
         '            "PROTOCOLS",\n' +
-        '            "http://localhost:8090/caNanoLab/#/manageProtocols"\n' +
+        '            "http://localhost:8090/#/manageProtocols"\n' +
         '        ],\n' +
         '        [\n' +
         '            "SAMPLES",\n' +
-        '            "http://localhost:8090/caNanoLab/#/manageSamples"\n' +
+        '            "http://localhost:8090/#/manageSamples"\n' +
         '        ],\n' +
         '        [\n' +
         '            "PUBLICATIONS",\n' +
-        '            "http://localhost:8090/caNanoLab/#/managePublications"\n' +
+        '            "http://localhost:8090/#/managePublications"\n' +
         '        ],\n' +
         '        [\n' +
         '            "GROUPS",\n' +
-        '            "http://localhost:8090/caNanoLab/#/manageGroups"\n' +
+        '            "http://localhost:8090/#/manageGroups"\n' +
         '        ],\n' +
         '        [\n' +
         '            "CURATION",\n' +
-        '            "http://localhost:8090/caNanoLab/#/manageCuration"\n' +
+        '            "http://localhost:8090/#/manageCuration"\n' +
         '        ],\n' +
         '        [\n' +
         '            "MY WORKSPACE",\n' +
-        '            "http://localhost:8090/caNanoLab/#/myWorkspace"\n' +
+        '            "http://localhost:8090/#/myWorkspace"\n' +
         '        ],\n' +
         '        [\n' +
         '            "MY FAVORITES",\n' +
-        '            "http://localhost:8090/caNanoLab/#/myFavorites"\n' +
+        '            "http://localhost:8090/#/myFavorites"\n' +
         '        ],\n' +
         '        [\n' +
         '            "LOGOUT",\n' +
-        '            "http://localhost:8090/caNanoLab/index.html#/logout"\n' +
+        '            "http://localhost:8090/index.html#/logout"\n' +
         '        ]\n' +
         '    ]\n' +
         '}'

@@ -49,4 +49,5 @@ cp -v wikihelp.properties ${CANANODIR}/config
 cp -v ${HOME}/shell/*wildfly*.sh ${HOME}/staged/
 cp -v ${HOME}/.env ${HOME}/staged/
 cp -v ${HOME}/standalone-full.xml ${HOME}/staged/
+cp -v ${HOME}/log4j2.xml ${HOME}/staged/
 chmod ug+x ${HOME}/staged/*wildfly*.sh

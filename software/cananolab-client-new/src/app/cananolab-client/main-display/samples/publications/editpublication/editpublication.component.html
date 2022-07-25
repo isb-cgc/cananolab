@@ -58,7 +58,7 @@
                             </label>
                         </td>
                         <td colspan="5">
-                            <a href="http://www.ncbi.nlm.nih.gov/pubmed/" target="_blank">Click to look up PubMed Identifier</a><br />
+                            <a href="http://www.ncbi.nlm.nih.gov/pubmed/" target="_blank" rel="nofollow noreferrer">Click to look up PubMed Identifier</a><br />
                             <input (focusout)="lookupPubMedId($event)" id="pubMedId" type="text" name="pubMedId" size="70" [(ngModel)]="data.pubMedId"><br />
                             <i>clicking outside of the text field after entering a valid PubMed ID enables auto-population of PubMed related fields</i>
                         </td>
@@ -200,11 +200,30 @@
                                     </td>
                                 </tr>
                                 <tr>
+                                    <td colspan="2">
+                                        <br>
+                                        <div style="width:700px">
+                                            <div>
+                                                <b>IMPORTANT</b>: Please only enter PUBLIC BUSINESS RELATED contact information into these fields (such as institutional
+                                                points of contact used in public publications). DO NOT add private contact information here, as this information
+                                                will be made available to the public viewing the system. We will contact you yearly via the email address you
+                                                provide to ask if you would like to correct, update or delete this information. If you would like to update it
+                                                earlier, please contact us via xxxx.
+                                            </div>
+                                            <br>
+                                            <div style="color: red">
+                                                <input type="checkbox" [checked]="piiConfirmed" (change)="piiConfirmed = !piiConfirmed">
+                                                I have read and understood the message above.
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
                                     <td>
                                         <button (click)="deleteAuthor(authorIndex)" [hidden]="authorIndex==-1" class="btn-canano btn-canano-danger btn-canano-xs mr-1">Delete</button>
                                     </td>
                                     <td class="field">
-                                        <button (click)="saveAuthor()" [disabled]="currentAuthor.lastName=='' || currentAuthor.firstName==''" class="btn-canano btn-canano-primary btn-canano-xs mr-1">Save</button>
+                                        <button (click)="saveAuthor()" [disabled]="currentAuthor.lastName=='' || currentAuthor.firstName=='' || !piiConfirmed" class="btn-canano btn-canano-primary btn-canano-xs mr-1">Save</button>
                                         <button (click)="cancelAuthor()" class="btn-canano btn-canano-default btn-canano-xs mr-1">Cancel</button>
                                     </td>
                                 </tr>

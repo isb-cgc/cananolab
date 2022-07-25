@@ -88,7 +88,7 @@ export class MyWorkspaceComponent implements OnInit {
 
                 ( err ) => {
                     this.loadData();
-                    console.error( '\'caNanoLab/rest/sample/deleteSampleFromWorkspace?sampleId=\'' + sampleId + ':', err );
+                    console.error( '\'rest/sample/deleteSampleFromWorkspace?sampleId=\'' + sampleId + ':', err );
                 } );
         }
     }
@@ -110,7 +110,7 @@ export class MyWorkspaceComponent implements OnInit {
 
                 ( err ) => {
                     this.errors=err;
-                    console.error( '\'caNanoLab/rest/sample/deleteProtocolById?protocolId=\'' + protocolId + ':', err );
+                    console.error( '\'rest/sample/deleteProtocolById?protocolId=\'' + protocolId + ':', err );
                 } );
         }
 

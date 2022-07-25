@@ -228,6 +228,7 @@ public class SampleServiceLocalImpl extends BaseServiceLocalImpl implements Samp
 					domainPOC.setId(dbPointOfContact.getId());
 					domainPOC.setCreatedDate(dbPointOfContact.getCreatedDate());
 					domainPOC.setCreatedBy(dbPointOfContact.getCreatedBy());
+					domainPOC.setUpdatedDate(dbPointOfContact.getUpdatedDate());
 					newPOC = false;
 				}
 			} else {
@@ -251,6 +252,7 @@ public class SampleServiceLocalImpl extends BaseServiceLocalImpl implements Samp
 					domainPOC.setId(dbPointOfContact.getId());
 					domainPOC.setCreatedBy(dbPointOfContact.getCreatedBy());
 					domainPOC.setCreatedDate(dbPointOfContact.getCreatedDate());
+					domainPOC.setUpdatedDate(dbPointOfContact.getUpdatedDate());
 					newPOC = false;
 				}
 			}

@@ -115,7 +115,7 @@ export class SearchpublicationresultsComponent implements OnInit {
         };
         this.errors = {};
         this.apiService
-            .doPost('caNanoLab/rest/core/addFavorite', data)
+            .doPost('rest/core/addFavorite', data)
             .subscribe(
                 (data) => {
                     publication['addedToFavorites']=data;
