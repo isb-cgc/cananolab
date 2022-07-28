@@ -107,6 +107,9 @@ export class EditcharacterizationComponent implements OnInit {
 
                             this.data = data;
                             this.propertiesLoaded=true;
+                            if (!this.data.characterizationDate) {
+                                this.data.characterizationDate=new Date()
+                            }
                             this.setCharacterizationData();
                         },
                         error=> {
