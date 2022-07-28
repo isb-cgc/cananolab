@@ -839,7 +839,7 @@ function AdminComponent_ng_container_5_Template(rf, ctx) { if (rf & 1) {
     _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](68, "b");
     _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtext"](69, "IMPORTANT");
     _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementEnd"]();
-    _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtext"](70, ": Please only enter PUBLIC BUSINESS RELATED contact information into these fields (such as institutional points of contact used in public publications). DO NOT add private contact information here, as this information will be made available to the public viewing the system. We will contact you yearly via the email address you provide to ask if you would like to correct, update or delete this information. If you would like to update it earlier, please contact us via xxxx. ");
+    _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtext"](70, ": Please only enter PUBLIC BUSINESS RELATED contact information into these fields (such as institutional points of contact used in public publications). DO NOT add private contact information here, as this information will be made available to the public viewing the system. We will contact you yearly via the email address you provide to ask if you would like to correct, update or delete this information. If you would like to update it earlier, please contact us via caNanoLab-support@isb-cgc.org. ");
     _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementEnd"]();
     _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelement"](71, "br");
     _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](72, "div", 47);
