@@ -78,6 +78,15 @@ if [ $? -ne 0 ]; then
   exit 1
 fi
 
+# Check filesystem access
+touch /tmp/checkFS
+ls -la /tmp
+if [ ! -f /tmp/checkFS ]; then
+  echo "[WARNING] Didn't see /tmp/checkFS! Index writes may not succeed."
+else
+  echo "[STATUS] /tmp/checkFS seen - File system appears writeable."
+fi
+
 # We need to halt Wildfly here to start it in the main entrypoint process, so that the shell
 # which is running is that one and not this script.
 echo "Deployment completed - stopping Wildfly"
@@ -100,4 +109,4 @@ if [ ! -z "${WILDFLY_PID}" ]; then
   exit 1
 fi
 
-echo "Wildfly has stopped."
+echo "Wildfly has stopped - setup is complete."
