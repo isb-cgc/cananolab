@@ -29,7 +29,7 @@ public class IndexBuilder
     
     public IndexWriter getIndexWriter(boolean create) throws IOException {
         if (indexWriter == null) {
-            Directory indexDir = FSDirectory.open(new File("indexDir"));
+            Directory indexDir = FSDirectory.open(new File("/tmp/indexDir"));
             IndexWriterConfig config = new IndexWriterConfig(Version.LUCENE_4_10_0, new StandardAnalyzer());
             indexWriter = new IndexWriter(indexDir, config);
             indexWriter.deleteAll();
