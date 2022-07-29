@@ -46,6 +46,7 @@ public class PublicDataCountJob extends QuartzJobBean
 	public void executeInternal(JobExecutionContext context) throws JobExecutionException 
 	{
 		try {
+			logger.info("[STATUS] Beginning Public Data Count job.");
 			queryPublicDataCounts();
 		} catch (Exception e) {
 			throw new JobExecutionException(e);
