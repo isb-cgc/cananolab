@@ -7,7 +7,7 @@
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(/*! c:\Users\spaquett\IdeaProjects\cananolab\software\cananolab-client-new\src\polyfills.ts */"hN/g");
+module.exports = __webpack_require__(/*! /Users/mi/software/cananolab/software/cananolab-client-new/src/polyfills.ts */"hN/g");
 
 
 /***/ }),

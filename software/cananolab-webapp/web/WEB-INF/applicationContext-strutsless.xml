@@ -38,8 +38,8 @@
     <bean id="publicDataCountTrigger" class="org.springframework.scheduling.quartz.SimpleTriggerFactoryBean">
          <!-- see the example of method invoking job above -->
          <property name="jobDetail" ref="publicDataCountJob"/>
-         <property name="startDelay" value="2000"/>
-         <property name="repeatInterval" value="86400000"/>
+         <property name="startDelay" value="360000"/>
+         <property name="repeatInterval" value="3600000"/>
     </bean>
     
     <bean name="luceneIndexJob" class="org.springframework.scheduling.quartz.JobDetailFactoryBean">
@@ -55,8 +55,8 @@
     <bean id="luceneIndexTrigger" class="org.springframework.scheduling.quartz.SimpleTriggerFactoryBean">
          <!-- see the example of method invoking job above -->
          <property name="jobDetail" ref="luceneIndexJob"/>
-         <property name="startDelay" value="2000"/>
-         <property name="repeatInterval" value="86400000"/>
+         <property name="startDelay" value="300000"/>
+         <property name="repeatInterval" value="3600000"/>
     </bean>
 	
 	<bean class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
