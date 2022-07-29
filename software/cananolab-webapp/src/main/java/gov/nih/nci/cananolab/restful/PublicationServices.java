@@ -421,7 +421,7 @@ public class PublicationServices {
 
 	@GET
 	@Path("/searchByIdImage")
-	@Produces("image/png")
+	@Produces({"image/png", "application/json"})
 	public Response searchByIdImage(@Context HttpServletRequest httpRequest, 
 			@DefaultValue("") @QueryParam("type") String type, @QueryParam("id") String id)
 	{
