@@ -155,7 +155,7 @@ public class Constants {
 
 	public static final String PLACEHOLDER_DATUM_CONDITION_CREATED_BY = "place holder";
 
-	public static final String DOI_PREFIX = "http://dx.doi.org/";
+	public static final String DOI_PREFIX = "https://dx.doi.org/";
 
 	public static final String PUBMED_PREFIX = "https://www.ncbi.nlm.nih.gov/pubmed/";
 
