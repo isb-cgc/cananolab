@@ -101,6 +101,7 @@ public class SampleServices {
 		
 		try {
 			List<String> characterizations = searchSampleBO.getCharacterizationByType(httpRequest, type);
+			System.out.println("[STATUS] Characterizations found: "+characterizations.size());
 			return Response.ok(characterizations).build();
 		} catch (Exception e) {
 			logger.error(e.getMessage());
