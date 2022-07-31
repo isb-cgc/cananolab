@@ -38,7 +38,7 @@ export class ProtocolCreateComponent implements OnInit, AfterViewInit{
                 this.protocolId=params['protocolId'];
                 if (params['message']) {
                     if (params['message']=='deleted') {
-                        this.message='Protocol Deleted Succesfully'
+                        this.message='Protocol Deleted Successfully'
                     }
                     else {
                         this.message='Protocol Created Successfully'

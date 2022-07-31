@@ -123,7 +123,7 @@ export class SampleEditComponent implements OnInit, OnDestroy{
     delete() {
         if (confirm("Are you sure you wish to delete this sample?")) {
             this.apiService.doGet(Consts.QUERY_SAMPLE_DELETE,'sampleId='+this.sampleId,'text').subscribe(data=> {
-                this.router.navigate(['home/samples/deleted'])
+                this.router.navigate(['home/samples'])
             },
             error=> {
                 console.log(error)
