@@ -202,8 +202,9 @@ export class ApiService{
 
         if( Properties.TEST_MODE ){
             return this.doTestGet( queryType, query );
-        }else{
+        } else {
             let getUrl = Properties.API_SERVER_URL + '/' + queryType;
+            getUrl = getUrl.replace(/\/+/g,"/");
             if( query !== undefined && query !== null && query.length > 0 ){
                 getUrl += '?' + query;
             }
