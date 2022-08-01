@@ -411,6 +411,7 @@ public class SearchSampleBO extends AbstractDispatchBO {
 	 */
 	public List<String> getCharacterizationByType(HttpServletRequest httpRequest, String type) throws Exception
 	{
+		System.out.println("[STATUS] In SearchSampleBO.getCharacterizationByType:");
 		SortedSet<String> charNames = InitCharacterizationSetup.getInstance().getCharNamesByCharType(httpRequest, type, characterizationService);
 		
 		return new ArrayList<String>(charNames);

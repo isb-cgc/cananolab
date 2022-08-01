@@ -84,6 +84,8 @@ public class SampleServices {
 
 			return Response.ok(dropdownTypeLists).build();
 		} catch (Exception e) {
+			logger.error(e.getMessage());
+			e.printStackTrace();
 			return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
 					.entity(CommonUtil.wrapErrorMessageInList("Error while setting up drop down lists")).build();
 		}
@@ -99,8 +101,11 @@ public class SampleServices {
 		
 		try {
 			List<String> characterizations = searchSampleBO.getCharacterizationByType(httpRequest, type);
+			System.out.println("[STATUS] Characterizations found: "+characterizations.size());
 			return Response.ok(characterizations).build();
 		} catch (Exception e) {
+			logger.error(e.getMessage());
+			e.printStackTrace();
 			return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
 					.entity(CommonUtil.wrapErrorMessageInList("Error while getting characterization by type")).build();
 		}
@@ -128,6 +133,7 @@ public class SampleServices {
 
 		} catch (Exception e) {
 			logger.error(e.getMessage());
+			e.printStackTrace();
 			return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
 					.entity(CommonUtil.wrapErrorMessageInList("Error while searching for samples: " + e.getMessage())).build();
 		}
@@ -154,7 +160,8 @@ public class SampleServices {
 					:Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(sampleBean.getErrors()).build();
 
 		} catch (Exception e) {
-			//return Response.ok("Error while viewing the search results").build();
+			logger.error(e.getMessage());
+			e.printStackTrace();
 			return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
 					.entity(CommonUtil.wrapErrorMessageInList("Error while viewing the search results")).build();
 		}
@@ -180,6 +187,7 @@ public class SampleServices {
 			
 		} catch (Exception e) {
 			logger.error(e.getMessage());
+			e.printStackTrace();
 			return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
 					.entity(CommonUtil.wrapErrorMessageInList("Error while getting data availability data")).build();
 		}
