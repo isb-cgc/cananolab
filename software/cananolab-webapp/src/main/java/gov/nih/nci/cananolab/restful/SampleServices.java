@@ -1152,6 +1152,7 @@ public class SampleServices {
 			simpleSynthesisBean.transferSynthesisForSummaryView(synthesisBean);
 		} catch(Exception e){
 			logger.error("Error exporting synthesis", e);
+			e.printStackTrace();
 		}
 
 		if(simpleSynthesisBean!=null) {
