@@ -11,14 +11,12 @@
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "SamplePublicationsPipe", function() { return SamplePublicationsPipe; });
 /* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "fXoL");
-/* harmony import */ var src_app_constants__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! src/app/constants */ "l207");
-
 
 
 class SamplePublicationsPipe {
     transform(value, ...args) {
         let val = value;
-        val = val.replace('rest/publication/download', src_app_constants__WEBPACK_IMPORTED_MODULE_1__["Consts"].QUERY_PUBLICATION_DOWNLOAD);
+        val = val.replace(/(^[^\/])/, "/$1");
         return val;
     }
 }
