@@ -10,11 +10,11 @@ export class SearchpublicationresultsPipe implements PipeTransform {
         if (val.indexOf('[DISCLAIMER]')>-1) {
             val = val.replace('[DISCLAIMER].','');
             val = val.replace('[DISCLAIMER]','');
-            val = val.replace('rest/publication/download',Consts.QUERY_PUBLICATION_DOWNLOAD)
+            val = val.replace(/(^[^\/])/,"/$1");
             return [val,true]
         }
         else {
-            val = val.replace('rest/publication/download',Consts.QUERY_PUBLICATION_DOWNLOAD)
+            val = val.replace(/(^[^\/])/,"/$1");
             return [val]
         }
     }
