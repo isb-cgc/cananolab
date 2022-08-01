@@ -519,7 +519,7 @@ class ProtocolSearchResultsComponent {
     }
     formatFileField(data) {
         console.log(data);
-        data = data.replace('/rest/', _constants__WEBPACK_IMPORTED_MODULE_3__["Consts"].serverlUrl + '/rest/');
+        data = data.replace(/(^[^\/])/, "/$1");
         return data;
     }
     parseFileData(fileData) { }

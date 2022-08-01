@@ -115,7 +115,7 @@ export class ProtocolSearchResultsComponent implements OnInit, OnDestroy {
 
     formatFileField(data) {
         console.log(data)
-        data = data.replace('/rest/',Consts.serverlUrl+'/rest/')
+        data = data.replace(/(^[^\/])/,"/$1");
         return data;
     }
 
