@@ -103,8 +103,9 @@ export class ApiService{
             // Not Test mode
         {
             let simpleSearchUrl = Properties.API_SERVER_URL + '/' + queryType;
+            simpleSearchUrl = simpleSearchUrl.replace(/(?<!:)\/+/g, "/");
             if( Properties.DEBUG_CURL ){
-                let curl = 'curl -k \'' + Properties.API_SERVER_URL + '/' + queryType + '\' -d \'' + query + '\'';
+                let curl = 'curl -k \'' + simpleSearchUrl + '\' -d \'' + query + '\'';
             }
 
             let headers = null;
@@ -162,8 +163,9 @@ export class ApiService{
             // Not Test mode
         {
             let simpleSearchUrl = Properties.API_SERVER_URL + '/' + queryType;
+            simpleSearchUrl = simpleSearchUrl.replace(/(?<!:)\/+/g, "/");
             if( Properties.DEBUG_CURL ){
-                let curl = 'curl -k \'' + Properties.API_SERVER_URL + '/' + queryType + '\' -d \'' + query + '\'';
+                let curl = 'curl -k \'' + simpleSearchUrl + '\' -d \'' + query + '\'';
             }
 
             let headers = null;
@@ -294,6 +296,7 @@ export class ApiService{
             this.currentlyAuthenticatingUser = true;
 
             let post_url = Properties.API_SERVER_URL + '/' + Consts.LOGIN_URL;
+            post_url = post_url.replace(/(?<!:)\/+/g, "/");
             let headers = new HttpHeaders( { 'Content-Type': 'application/x-www-form-urlencoded' } );
             let data = 'username=' + user + '&password=' + password;
 
