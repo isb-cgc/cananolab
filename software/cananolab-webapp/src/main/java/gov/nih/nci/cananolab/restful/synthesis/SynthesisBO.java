@@ -159,7 +159,17 @@ public class SynthesisBO extends BaseAnnotationBO {
 
         SynthesisBean synthesisBean = (SynthesisBean) request.getSession()
                 .getAttribute("synthesisBean");
-        setSummaryTab(request, synthesisBean.getSynthesisSections().size());
+        if (synthesisBean != null) {
+            List<String> synthesisSections = synthesisBean.getSynthesisSections();
+            if (synthesisSections != null) {
+                setSummaryTab(request, synthesisSections.size());
+            }
+            else {
+                System.out.println("SynthesisBO:summaryView - synthesisSections is null");
+            }
+        } else {
+            System.out.println("SynthesisBO:summaryView - synthesisBean is null");
+        }
         //return mapping.findForward("summaryView");
         return synthesisBean;
     }
