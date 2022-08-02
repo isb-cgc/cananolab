@@ -1284,6 +1284,7 @@ class EditpublicationComponent {
         this.helpUrl = _constants__WEBPACK_IMPORTED_MODULE_2__["Consts"].HELP_URL_SAMPLE_PUBLICATIONS;
         this.sampleId = _assets_properties__WEBPACK_IMPORTED_MODULE_1__["Properties"].CURRENT_SAMPLE_ID;
         this.downloadUrl = _constants__WEBPACK_IMPORTED_MODULE_2__["Consts"].QUERY_PUBLICATION_DOWNLOAD;
+        this.submitReviewButton = true;
     }
     ngOnInit() {
         console.log(_constants__WEBPACK_IMPORTED_MODULE_2__["Consts"]);
@@ -1654,6 +1655,13 @@ class EditpublicationComponent {
         this.theFile.append('theAccess', this.theAccess);
         this.theFile.append('category', this.data['category']);
         this.theFile.append('status', this.data['status']);
+    }
+    submitForReview() {
+        console.log(this.data);
+        let url = this.apiService.doPost(_constants__WEBPACK_IMPORTED_MODULE_2__["Consts"].QUERY_PUBLICATION_SUBMIT_REVIEW, { dataId: this.data.fileId, dataName: this.data.title, dataType: "publication" }, 'text');
+        url.subscribe(data => {
+            this.submitReviewButton = false;
+        });
     }
 }
 EditpublicationComponent.ɵfac = function EditpublicationComponent_Factory(t) { return new (t || EditpublicationComponent)(_angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdirectiveInject"](_common_services_api_service__WEBPACK_IMPORTED_MODULE_3__["ApiService"]), _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdirectiveInject"](_common_services_navigation_service__WEBPACK_IMPORTED_MODULE_4__["NavigationService"]), _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdirectiveInject"](_angular_common_http__WEBPACK_IMPORTED_MODULE_5__["HttpClient"]), _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdirectiveInject"](_angular_router__WEBPACK_IMPORTED_MODULE_6__["ActivatedRoute"]), _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdirectiveInject"](_angular_router__WEBPACK_IMPORTED_MODULE_6__["Router"])); };
