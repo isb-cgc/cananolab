@@ -23,10 +23,13 @@ import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Component;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 @Component("synthesisBO")
 public class SynthesisBO extends BaseAnnotationBO {
 
+    private Logger logger = LogManager.getLogger(SynthesisBO.class);
 
     @Autowired
     private CurationService curationServiceDAO;
@@ -165,10 +168,10 @@ public class SynthesisBO extends BaseAnnotationBO {
                 setSummaryTab(request, synthesisSections.size());
             }
             else {
-                System.out.println("SynthesisBO:summaryView - synthesisSections is null");
+                logger.warn("SynthesisBO:summaryView - synthesisSections is null");
             }
         } else {
-            System.out.println("SynthesisBO:summaryView - synthesisBean is null");
+                logger.warn("SynthesisBO:summaryView - synthesisBean is null");
         }
         //return mapping.findForward("summaryView");
         return synthesisBean;
