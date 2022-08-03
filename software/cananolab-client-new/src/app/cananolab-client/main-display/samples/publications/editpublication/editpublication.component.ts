@@ -36,6 +36,7 @@ export class EditpublicationComponent implements OnInit {
     theFile;
     type;
     downloadUrl=Consts.QUERY_PUBLICATION_DOWNLOAD;
+    submitReviewButton=true;
 
   constructor(private apiService:ApiService,private navigationService:NavigationService,private httpClient:HttpClient,private route:ActivatedRoute,private router:Router) { }
 
@@ -394,7 +395,7 @@ export class EditpublicationComponent implements OnInit {
       if (this.theFile) {
         this.theFile.append('uriExternal',this.currentFile['uriExternal']);
         this.theFile.append('externalUrl',this.currentFile['externalUrl']);
-        let uploadFileUrl = this.httpClient.post('/'+Consts.QUERY_UPLOAD_FILE,this.theFile);
+        let uploadFileUrl = this.httpClient.post(Consts.QUERY_UPLOAD_FILE,this.theFile);
             uploadFileUrl.subscribe(data=> {
             this.data['uri']=data['fileName'];
             this.submitPublication();
@@ -466,6 +467,13 @@ export class EditpublicationComponent implements OnInit {
   }
 
 
+  submitForReview() {
+      console.log(this.data)
+    let url = this.apiService.doPost(Consts.QUERY_PUBLICATION_SUBMIT_REVIEW,{dataId:this.data.fileId,dataName:this.data.title,dataType:"publication"},'text');
+    url.subscribe(data=> {
+        this.submitReviewButton=false;
+    })
+}
 
 
 

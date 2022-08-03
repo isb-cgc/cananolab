@@ -33,7 +33,7 @@ export class SampleEditComponent implements OnInit, OnDestroy{
     pointOfContactIndex;
     sampleId = -1;
     toolHeadingNameSearchSample = 'Update Sample';
-
+    submitReviewButton=true;
 
 
     constructor( private router:Router,private navigationService: NavigationService, private route: ActivatedRoute, private httpClient: HttpClient,
@@ -123,7 +123,7 @@ export class SampleEditComponent implements OnInit, OnDestroy{
     delete() {
         if (confirm("Are you sure you wish to delete this sample?")) {
             this.apiService.doGet(Consts.QUERY_SAMPLE_DELETE,'sampleId='+this.sampleId,'text').subscribe(data=> {
-                this.router.navigate(['home/samples'])
+                this.router.navigate(['home/samples/deleted'])
             },
             error=> {
                 console.log(error)
@@ -359,6 +359,13 @@ export class SampleEditComponent implements OnInit, OnDestroy{
     }
 
     ngOnDestroy(): void{
+    }
+
+    submitForReview() {
+        let url = this.apiService.doPost(Consts.QUERY_SAMPLE_SUBMIT_REVIEW,{dataId:this.data.sampleId,dataName:this.data.sampleName,dataType:"sample"},'text');
+        url.subscribe(data=> {
+            this.submitReviewButton=false;
+        })
     }
 
 }

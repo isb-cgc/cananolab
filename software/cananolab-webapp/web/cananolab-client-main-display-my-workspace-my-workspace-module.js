@@ -386,7 +386,7 @@ function MyWorkspaceComponent_div_17_table_5_Template(rf, ctx) { if (rf & 1) {
     _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtext"](11, " Created Date ");
     _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementEnd"]();
     _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](12, "th");
-    _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtext"](13, " Protocol Access ");
+    _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtext"](13, " Publication Access ");
     _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementEnd"]();
     _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementEnd"]();
     _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtemplate"](14, MyWorkspaceComponent_div_17_table_5_tr_14_Template, 15, 13, "tr", 14);
@@ -472,7 +472,7 @@ class MyWorkspaceComponent {
                 this.loadData();
             }, (err) => {
                 this.loadData();
-                console.error('\'rest/sample/deleteSampleFromWorkspace?sampleId=\'' + sampleId + ':', err);
+                console.error('\'/rest/sample/deleteSampleFromWorkspace?sampleId=\'' + sampleId + ':', err);
             });
         }
     }
@@ -487,7 +487,7 @@ class MyWorkspaceComponent {
                 this.loadData();
             }, (err) => {
                 this.errors = err;
-                console.error('\'rest/sample/deleteProtocolById?protocolId=\'' + protocolId + ':', err);
+                console.error('\'/rest/sample/deleteProtocolById?protocolId=\'' + protocolId + ':', err);
             });
         }
     }

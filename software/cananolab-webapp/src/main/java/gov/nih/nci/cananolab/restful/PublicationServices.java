@@ -63,7 +63,7 @@ public class PublicationServices {
 
 	@GET
 	@Path("/download")
-	@Produces ("application/pdf")
+	@Produces({"application/pdf", "application/json"})
 	public Response download(@Context HttpServletRequest httpRequest, @Context HttpServletResponse httpResponse, @DefaultValue("") @QueryParam("fileId") String fileId)
 	{
 		try { 
@@ -318,6 +318,10 @@ public class PublicationServices {
 
 			if (!SpringSecurityUtil.isUserLoggedIn())
 				return Response.status(Response.Status.UNAUTHORIZED).entity(Constants.MSG_SESSION_INVALID).build();
+
+			if (pubBO == null) {
+				throw new Exception("PublicationServices:saveAccess - PublicationBO is null");
+			}
 
 			SimpleSubmitPublicationBean view = pubBO.saveAccess(bean, httpRequest);
 

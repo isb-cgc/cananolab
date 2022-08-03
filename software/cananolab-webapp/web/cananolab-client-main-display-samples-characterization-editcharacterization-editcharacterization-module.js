@@ -2742,7 +2742,6 @@ class EditcharacterizationComponent {
             return true;
         };
     }
-    ;
     ngOnInit() {
         this.navigationService.setCurrentSelectedItem(2);
         this.currentDropdownValues = {};
@@ -2767,7 +2766,7 @@ class EditcharacterizationComponent {
                     this.data = data;
                     this.data.name = '';
                     this.data.assayType = '';
-                    this.data.characterizationDate = null,
+                    this.data.characterizationDate = new Date(),
                         this.setCharacterizationData();
                     if (this.data.type == 'other') {
                         this.addOtherValue('type', this.data.type);
@@ -2783,6 +2782,9 @@ class EditcharacterizationComponent {
                     this.errors = {};
                     this.data = data;
                     this.propertiesLoaded = true;
+                    if (!this.data.characterizationDate) {
+                        this.data.characterizationDate = new Date();
+                    }
                     this.setCharacterizationData();
                 }, error => {
                     this.errors = error;
@@ -3377,7 +3379,7 @@ class EditcharacterizationComponent {
                 this.theFile.append('title', this.currentFile['title']);
                 this.theFile.append('keywordsStr', this.currentFile['keywordsStr']);
                 this.theFile.append('description', this.currentFile['description']);
-                let uploadUrl = this.httpClient.post('/' + _constants__WEBPACK_IMPORTED_MODULE_2__["Consts"].QUERY_UPLOAD_FILE, this.theFile);
+                let uploadUrl = this.httpClient.post(_constants__WEBPACK_IMPORTED_MODULE_2__["Consts"].QUERY_UPLOAD_FILE, this.theFile);
                 uploadUrl.subscribe(data => {
                     if (this.fileIndex == -1) {
                         this.currentFinding.files.push(data);

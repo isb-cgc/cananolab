@@ -344,7 +344,7 @@ class CompositionfileComponent {
             this.theFile.append('title', this.data['title']);
             this.theFile.append('keywordsStr', this.data['keywordsStr']);
             this.theFile.append('description', this.data['description']);
-            let uploadUrl = this.httpClient.post('/' + _constants__WEBPACK_IMPORTED_MODULE_2__["Consts"].QUERY_UPLOAD_FILE, this.theFile);
+            let uploadUrl = this.httpClient.post(_constants__WEBPACK_IMPORTED_MODULE_2__["Consts"].QUERY_UPLOAD_FILE, this.theFile);
             uploadUrl.subscribe(data => {
                 this.errors = {};
                 this.data['uri'] = data['fileName'];
