@@ -77,13 +77,13 @@ public class SimpleSynthesisBean {
 
     public void transferSynthesisForSummaryView( SynthesisBean synBean) {
         if (synBean == null) {
-            logger.warn("SimpleSynthesisBean:transferSynthesisForSummaryView - synBean is null")
+            logger.warn("SimpleSynthesisBean:transferSynthesisForSummaryView - synBean is null");
             return;
         } else if (synBean.getDomain() == null) {
-            logger.warn("SimpleSynthesisBean:transferSynthesisForSummaryView - getDomain() is null")
+            logger.warn("SimpleSynthesisBean:transferSynthesisForSummaryView - getDomain() is null");
             return;
         } else if (synBean.getDomain().getSample() == null) {
-            logger.warn("SimpleSynthesisBean:transferSynthesisForSummaryView - getSample() is null")
+            logger.warn("SimpleSynthesisBean:transferSynthesisForSummaryView - getSample() is null");
             return;
         }
 
