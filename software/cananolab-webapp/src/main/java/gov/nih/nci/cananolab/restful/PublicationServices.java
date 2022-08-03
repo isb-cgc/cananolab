@@ -319,6 +319,10 @@ public class PublicationServices {
 			if (!SpringSecurityUtil.isUserLoggedIn())
 				return Response.status(Response.Status.UNAUTHORIZED).entity(Constants.MSG_SESSION_INVALID).build();
 
+			if (pubBO == null) {
+				throw new Exception("PublicationServices:saveAccess - PublicationBO is null");
+			}
+
 			SimpleSubmitPublicationBean view = pubBO.saveAccess(bean, httpRequest);
 
 			List<String> errors = view.getErrors();
