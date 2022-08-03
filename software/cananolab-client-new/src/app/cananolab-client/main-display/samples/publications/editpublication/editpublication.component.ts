@@ -395,7 +395,7 @@ export class EditpublicationComponent implements OnInit {
       if (this.theFile) {
         this.theFile.append('uriExternal',this.currentFile['uriExternal']);
         this.theFile.append('externalUrl',this.currentFile['externalUrl']);
-        let uploadFileUrl = this.httpClient.post('/'+Consts.QUERY_UPLOAD_FILE,this.theFile);
+        let uploadFileUrl = this.httpClient.post(Consts.QUERY_UPLOAD_FILE,this.theFile);
             uploadFileUrl.subscribe(data=> {
             this.data['uri']=data['fileName'];
             this.submitPublication();
