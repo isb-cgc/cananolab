@@ -165,10 +165,10 @@ public class SynthesisBO extends BaseAnnotationBO {
                 setSummaryTab(request, synthesisSections.size());
             }
             else {
-                System.out.println("SynthesisBO:summaryView - synthesisSections is null");
+                logger.warn("SynthesisBO:summaryView - synthesisSections is null");
             }
         } else {
-            System.out.println("SynthesisBO:summaryView - synthesisBean is null");
+                logger.warn("SynthesisBO:summaryView - synthesisBean is null");
         }
         //return mapping.findForward("summaryView");
         return synthesisBean;
