@@ -76,6 +76,16 @@ public class SimpleSynthesisBean {
     }
 
     public void transferSynthesisForSummaryView( SynthesisBean synBean) {
+        if (synBean == null) {
+            System.out.println("SimpleSynthesisBean:transferSynthesisForSummaryView - synBean is null")
+            return;
+        } else if (synBean.getDomain() == null) {
+            System.out.println("SimpleSynthesisBean:transferSynthesisForSummaryView - getDomain() is null")
+            return;
+        } else if (synBean.getDomain().getSample() == null) {
+            System.out.println("SimpleSynthesisBean:transferSynthesisForSummaryView - getSample() is null")
+            return;
+        }
 
         sampleId = synBean.getDomain().getSample().getId();
         Map<String, Object> files;
