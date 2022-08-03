@@ -985,7 +985,7 @@ class AdminComponent {
             headers: headers,
             method: 'post',
         };
-        this.httpClient.post('/' + _constants__WEBPACK_IMPORTED_MODULE_1__["Consts"].QUERY_ADMIN_RESET_PASSWORD, params.join('&'), options).subscribe(data => {
+        this.httpClient.post(_constants__WEBPACK_IMPORTED_MODULE_1__["Consts"].QUERY_ADMIN_RESET_PASSWORD, params.join('&'), options).subscribe(data => {
             this.message = 'Password Reset Successfully';
         }, errors => {
             if (errors.error.text == 'success') {
