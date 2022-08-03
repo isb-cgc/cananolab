@@ -416,7 +416,7 @@ class FileComponent {
         if (confirm("Are you sure you wish to delete this file?")) {
             this.data[this.fileVariable] = file;
             console.log(this.deleteUrl);
-            let deleteUrl = this.httpClient.post('/' + this.deleteUrl, this.data);
+            let deleteUrl = this.httpClient.post(this.deleteUrl, this.data);
             deleteUrl.subscribe(data => {
                 this.data = data;
                 this.changeFile.emit({
@@ -467,7 +467,7 @@ class FileComponent {
                 "uriExternal": true,
                 "externalUrl": this.currentFile.externalUrl
             };
-            let saveUrl = this.httpClient.post('/' + this.saveUrl, this.data);
+            let saveUrl = this.httpClient.post(this.saveUrl, this.data);
             saveUrl.subscribe(data => {
                 this.data = data;
                 this.changeFile.emit({
@@ -490,7 +490,7 @@ class FileComponent {
                 this.theFile.append('title', this.currentFile['title']);
                 this.theFile.append('keywordsStr', this.currentFile['keywordsStr']);
                 this.theFile.append('description', this.currentFile['description']);
-                let uploadUrl = this.httpClient.post('/' + src_app_constants__WEBPACK_IMPORTED_MODULE_2__["Consts"].QUERY_UPLOAD_FILE, this.theFile);
+                let uploadUrl = this.httpClient.post(src_app_constants__WEBPACK_IMPORTED_MODULE_2__["Consts"].QUERY_UPLOAD_FILE, this.theFile);
                 uploadUrl.subscribe(data => {
                     this.data[this.fileVariable] = {
                         "description": this.currentFile.description,
@@ -503,7 +503,7 @@ class FileComponent {
                     if (this.fileIndex == 1) {
                         this.data[this.fileVariable]['id'] = this.currentFile['id'];
                     }
-                    let saveUrl = this.httpClient.post('/' + this.saveUrl, this.data);
+                    let saveUrl = this.httpClient.post(this.saveUrl, this.data);
                     saveUrl.subscribe(data => {
                         this.data = data;
                         this.changeFile.emit({
@@ -531,7 +531,7 @@ class FileComponent {
                 if (this.fileIndex == 1) {
                     this.data[this.fileVariable]['id'] = this.currentFile['id'];
                 }
-                let saveUrl = this.httpClient.post('/' + this.saveUrl, this.data);
+                let saveUrl = this.httpClient.post(this.saveUrl, this.data);
                 saveUrl.subscribe(data => {
                     this.data = data;
                     this.changeFile.emit({

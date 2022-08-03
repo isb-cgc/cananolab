@@ -275,7 +275,7 @@ class MainDisplayHeadingComponent {
         let type = this.export[1];
         let query = 'QUERY_' + type + '_EXPORT_XLS';
         // console.log(query)
-        window.open('/' + _constants__WEBPACK_IMPORTED_MODULE_4__["Consts"][query] + '?sampleId=' + sampleId + '&type=all');
+        window.open(_constants__WEBPACK_IMPORTED_MODULE_4__["Consts"][query] + '?sampleId=' + sampleId + '&type=all');
         // <a ng-disabled="loader" class="helpText" ng-href="/rest/publication/summaryExport?sampleId=66945032&amp;type=all" href="/rest/publication/summaryExport?sampleId=66945032&amp;type=all">Export</a>
     }
     exportAsJSON() {

@@ -845,7 +845,7 @@ class ProtocolCreateComponent {
             // Send the file
             if (!this.data.uriExternal) {
                 if (this.fileToUpload) {
-                    let uploadUrl = this.httpClient.post('/' + _constants__WEBPACK_IMPORTED_MODULE_2__["Consts"].QUERY_UPLOAD_FILE, this.fileToUpload);
+                    let uploadUrl = this.httpClient.post(_constants__WEBPACK_IMPORTED_MODULE_2__["Consts"].QUERY_UPLOAD_FILE, this.fileToUpload);
                     uploadUrl.subscribe(data => {
                         this.errors = {};
                         this.data.fileId = "0";
