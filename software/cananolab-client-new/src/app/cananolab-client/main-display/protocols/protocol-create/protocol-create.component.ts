@@ -251,7 +251,7 @@ export class ProtocolCreateComponent implements OnInit, AfterViewInit{
         // Send the file
         if( !this.data.uriExternal ){
             if (this.fileToUpload) {
-            let uploadUrl = this.httpClient.post('/'+Consts.QUERY_UPLOAD_FILE, this.fileToUpload);
+            let uploadUrl = this.httpClient.post(Consts.QUERY_UPLOAD_FILE, this.fileToUpload);
             uploadUrl.subscribe(data=> {
                     this.errors={};
                     this.data.fileId="0";

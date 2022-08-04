@@ -877,7 +877,7 @@ export class EditcharacterizationComponent implements OnInit {
                 this.theFile.append('title',this.currentFile['title']);
                 this.theFile.append('keywordsStr',this.currentFile['keywordsStr']);
                 this.theFile.append('description',this.currentFile['description']);
-                let uploadUrl = this.httpClient.post('/'+Consts.QUERY_UPLOAD_FILE,this.theFile);
+                let uploadUrl = this.httpClient.post(Consts.QUERY_UPLOAD_FILE,this.theFile);
                 uploadUrl.subscribe(data=> {
                     if (this.fileIndex==-1) {
                         this.currentFinding.files.push(data);
