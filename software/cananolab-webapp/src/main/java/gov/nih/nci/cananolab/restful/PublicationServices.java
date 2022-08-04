@@ -328,6 +328,12 @@ public class PublicationServices {
 
 			System.out.println("Bean ID out " + view.getFileId());
 			List<String> errors = view.getErrors();
+			if (errors != null) {
+				for (i = 0; i < errors.size; i++) {
+					System.out.println("saveAccess ERROR " + errors[i]);
+				}
+			}
+
 			return (errors == null || errors.size() == 0) ?
 					Response.ok(view).build() :
 						Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(errors).build();
