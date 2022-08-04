@@ -329,7 +329,7 @@ public class PublicationServices {
 			System.out.println("Bean ID out " + view.getFileId());
 			List<String> errors = view.getErrors();
 			if (errors != null) {
-				for (i = 0; i < errors.size; i++) {
+				for (int i = 0; i < errors.size(); i++) {
 					System.out.println("saveAccess ERROR " + errors[i]);
 				}
 			}
