@@ -330,7 +330,7 @@ public class PublicationServices {
 			List<String> errors = view.getErrors();
 			if (errors != null) {
 				for (int i = 0; i < errors.size(); i++) {
-					System.out.println("saveAccess ERROR " + errors[i]);
+					System.out.println("saveAccess ERROR " + errors.get(i));
 				}
 			}
 
