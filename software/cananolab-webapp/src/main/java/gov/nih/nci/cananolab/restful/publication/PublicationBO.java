@@ -757,7 +757,7 @@ public class PublicationBO extends BaseAnnotationBO
 	{
 		//	DynaValidatorForm theForm = (DynaValidatorForm) form;
 		PublicationBean publication = (PublicationBean) transferSimpleSubmitPublicationBean(simplePubBean);//(PublicationBean) theForm.getPublicationBean();
-		System.out.println("PublicationBean " + publication)
+		System.out.println("PublicationBean " + publication);
 		AccessControlInfo theAccess = publication.getTheAccess();
 		List<String> errors = super.validateAccess(request, theAccess);
 		if (errors.size() > 0) {
@@ -777,16 +777,16 @@ public class PublicationBO extends BaseAnnotationBO
 			}
 
 		}
-		System.out.println("PublicationBean DF ID " + publication.getDomainFile().getId())
+		System.out.println("PublicationBean DF ID " + publication.getDomainFile().getId());
 		// if publication is public, the access is not public, retract
 		// public
 		// privilege would be handled in the service method
 		PublicationBean pub =  (PublicationBean) request.getSession().getAttribute("publicationBean");
-		System.out.println("PublicationBean direct from session " + pub)
+		System.out.println("PublicationBean direct from session " + pub);
 		if(pub == null){
 			pub = publication;
 		}
-		System.out.println("PublicationBean after session " + pub.getDomainFile().getId())
+		System.out.println("PublicationBean after session " + pub.getDomainFile().getId());
 		publicationService.assignAccessibility(theAccess, (Publication) pub.getDomainFile());
 		// update status to retracted if the access is not public and
 		// publication is public
@@ -800,7 +800,7 @@ public class PublicationBO extends BaseAnnotationBO
 		// if access is public, pending review status, update review
 		// status to public
 		if (CaNanoRoleEnum.ROLE_ANONYMOUS.toString().equalsIgnoreCase(theAccess.getRecipient())) {
-			System.out.println("PublicationBean into switch " + pub.getDomainFile().getId().toString())
+			System.out.println("PublicationBean into switch " + pub.getDomainFile().getId().toString());
 			this.switchPendingReviewToPublic(request, pub.getDomainFile().getId().toString());
 		}
 
