@@ -782,10 +782,11 @@ public class PublicationBO extends BaseAnnotationBO
 		// public
 		// privilege would be handled in the service method
 		PublicationBean pub =  (PublicationBean) request.getSession().getAttribute("publicationBean");
+		System.out.println("PublicationBean direct from session " + pub)
 		if(pub == null){
 			pub = publication;
 		}
-		System.out.println("PublicationBean from session " + pub.getDomainFile().getId())
+		System.out.println("PublicationBean after session " + pub.getDomainFile().getId())
 		publicationService.assignAccessibility(theAccess, (Publication) pub.getDomainFile());
 		// update status to retracted if the access is not public and
 		// publication is public
