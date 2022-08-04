@@ -316,11 +316,13 @@ public class PublicationServices {
 		try {
 			PublicationBO pubBO = (PublicationBO) SpringApplicationContext.getBean(httpRequest, "publicationBO");
 
+			System.out.println("Bean ID in " + bean.getFileID())
 			if (!SpringSecurityUtil.isUserLoggedIn())
 				return Response.status(Response.Status.UNAUTHORIZED).entity(Constants.MSG_SESSION_INVALID).build();
 
 			SimpleSubmitPublicationBean view = pubBO.saveAccess(bean, httpRequest);
 
+			System.out.println("Bean ID out " + view.getFileID())
 			List<String> errors = view.getErrors();
 			return (errors == null || errors.size() == 0) ?
 					Response.ok(view).build() :
