@@ -178,6 +178,7 @@ public class CompositionFileBO extends BaseAnnotationBO
 			throws Exception {
 		fileId = super.validateId(request, "dataId");
 		FileBean fileBean = compositionService.findFileById(fileId);
+		System.out.println("C Issue 50 setting sampleId to " + sampleId);
 		request.getSession().setAttribute("sampleId", sampleId);
 		SimpleFileBean simpleBean = new SimpleFileBean();
 		fileBean.setPublicStatus(springSecurityAclService.checkObjectPublic(Long.valueOf(sampleId), SecureClassesEnum.SAMPLE.getClazz()));

@@ -703,7 +703,7 @@ function AdminComponent_ng_container_5_B_9_Template(rf, ctx) { if (rf & 1) {
 } }
 function AdminComponent_ng_container_5_input_10_Template(rf, ctx) { if (rf & 1) {
     const _r20 = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵgetCurrentView"]();
-    _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](0, "input", 50);
+    _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](0, "input", 49);
     _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵlistener"]("ngModelChange", function AdminComponent_ng_container_5_input_10_Template_input_ngModelChange_0_listener($event) { _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵrestoreView"](_r20); const ctx_r19 = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵnextContext"](2); return ctx_r19.userData.username = $event; });
     _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementEnd"]();
 } if (rf & 2) {
@@ -836,31 +836,38 @@ function AdminComponent_ng_container_5_Template(rf, ctx) { if (rf & 1) {
     _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelement"](65, "br");
     _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](66, "div", 46);
     _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](67, "div");
-    _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](68, "b");
-    _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtext"](69, "IMPORTANT");
+    _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtext"](68, " Enter only ");
+    _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](69, "i");
+    _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtext"](70, "public business-related");
     _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementEnd"]();
-    _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtext"](70, ": Please only enter PUBLIC BUSINESS RELATED contact information into these fields (such as institutional points of contact used in public publications). DO NOT add private contact information here, as this information will be made available to the public viewing the system. We will contact you yearly via the email address you provide to ask if you would like to correct, update or delete this information. If you would like to update it earlier, please contact us via xxxx. ");
+    _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtext"](71, " contact information into these fields (such as institutional points of contact used in public publications). ");
+    _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](72, "i");
+    _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtext"](73, "Do not");
     _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementEnd"]();
-    _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelement"](71, "br");
-    _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](72, "div", 47);
-    _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](73, "input", 48);
-    _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵlistener"]("change", function AdminComponent_ng_container_5_Template_input_change_73_listener() { _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵrestoreView"](_r22); const ctx_r30 = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵnextContext"](); return ctx_r30.piiConfirmed = !ctx_r30.piiConfirmed; });
+    _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtext"](74, " add private contact information here, as this information will be made available to the public viewing the system. The system will contact you yearly, via the email address you provide, to ask if you would like to correct, update, or delete this information. If you would like to update it earlier, contact us via cananolab-support@isb-cgc.org. ");
     _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementEnd"]();
-    _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtext"](74, " I have read and understood the message above. ");
+    _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelement"](75, "br");
+    _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](76, "div");
+    _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](77, "input", 47);
+    _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵlistener"]("change", function AdminComponent_ng_container_5_Template_input_change_77_listener() { _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵrestoreView"](_r22); const ctx_r30 = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵnextContext"](); return ctx_r30.piiConfirmed = !ctx_r30.piiConfirmed; });
+    _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementEnd"]();
+    _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](78, "b");
+    _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtext"](79, " * I have read and understood the message above.");
     _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementEnd"]();
     _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementEnd"]();
     _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementEnd"]();
-    _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](75, "div");
-    _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](76, "table", 17);
-    _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](77, "tr");
-    _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](78, "td");
-    _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](79, "button", 24);
-    _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵlistener"]("click", function AdminComponent_ng_container_5_Template_button_click_79_listener() { _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵrestoreView"](_r22); const ctx_r31 = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵnextContext"](); return ctx_r31.reset(); });
-    _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtext"](80, "Reset");
     _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementEnd"]();
-    _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](81, "button", 49);
-    _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵlistener"]("click", function AdminComponent_ng_container_5_Template_button_click_81_listener() { _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵrestoreView"](_r22); const ctx_r32 = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵnextContext"](); return ctx_r32.submit(); });
-    _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtext"](82, "Submit");
+    _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](80, "div");
+    _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](81, "table", 17);
+    _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](82, "tr");
+    _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](83, "td");
+    _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](84, "button", 24);
+    _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵlistener"]("click", function AdminComponent_ng_container_5_Template_button_click_84_listener() { _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵrestoreView"](_r22); const ctx_r31 = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵnextContext"](); return ctx_r31.reset(); });
+    _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtext"](85, "Reset");
+    _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementEnd"]();
+    _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](86, "button", 48);
+    _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵlistener"]("click", function AdminComponent_ng_container_5_Template_button_click_86_listener() { _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵrestoreView"](_r22); const ctx_r32 = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵnextContext"](); return ctx_r32.submit(); });
+    _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtext"](87, "Submit");
     _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementEnd"]();
     _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementEnd"]();
     _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementEnd"]();
@@ -897,9 +904,9 @@ function AdminComponent_ng_container_5_Template(rf, ctx) { if (rf & 1) {
     _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵproperty"]("ngValue", "ROLE_RESEARCHER");
     _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵadvance"](2);
     _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵproperty"]("ngValue", "ROLE_ADMIN");
-    _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵadvance"](10);
+    _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵadvance"](14);
     _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵproperty"]("checked", ctx_r3.piiConfirmed);
-    _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵadvance"](8);
+    _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵadvance"](9);
     _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵproperty"]("disabled", ctx_r3.userData.username == "" || ctx_r3.userData.firstName == "" || ctx_r3.userData.lastName == "" || !ctx_r3.piiConfirmed);
 } }
 class AdminComponent {
@@ -1035,13 +1042,13 @@ class AdminComponent {
     }
 }
 AdminComponent.ɵfac = function AdminComponent_Factory(t) { return new (t || AdminComponent)(_angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdirectiveInject"](_angular_router__WEBPACK_IMPORTED_MODULE_3__["ActivatedRoute"]), _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdirectiveInject"](_angular_router__WEBPACK_IMPORTED_MODULE_3__["Router"]), _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdirectiveInject"](_common_services_api_service__WEBPACK_IMPORTED_MODULE_4__["ApiService"]), _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdirectiveInject"](_angular_common_http__WEBPACK_IMPORTED_MODULE_2__["HttpClient"])); };
-AdminComponent.ɵcmp = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdefineComponent"]({ type: AdminComponent, selectors: [["canano-admin"]], decls: 6, vars: 6, consts: [[3, "helpUrl", "toolHeadingName"], [1, "mainSection"], ["class", "mainBorder", 4, "ngIf"], [4, "ngIf"], [1, "mainBorder"], [1, "links-panel", "card", "ml-1", "mt-2"], [1, "card-header", "mb-0", "pb-0"], [1, "card-title", "unselectable", "m-0", "p-0"], [1, "card-body"], ["routerLink", "/home/admin/create-user", 1, "link-clicker"], ["routerLink", "/home/admin/search-user", 1, "link-clicker"], [1, "dataMain"], [1, "label"], ["for", "resetData.oldpassword"], ["type", "text", "name", "resetData.oldpassword", "id", "resetData.oldpassword", "size", "50", 3, "ngModel", "ngModelChange"], ["for", "newpassword"], ["type", "text", "name", "resetData.newpassword", "id", "resetData.newpassword", "size", "50", 3, "ngModel", "ngModelChange"], [1, "dataMain", "submit"], [1, "btn-canano", "btn-canano-default", "btn-canano-lg", "mr-1", 3, "click"], [1, "btn-canano", "btn-canano-danger", "btn-canano-lg", "mr-1", 3, "disabled", "click"], ["colspan", "2", 1, "message"], ["for", "username"], ["type", "text", "name", "username", "id", "username", "size", "50", 3, "ngModel", "ngModelChange"], ["colspan", "2"], [1, "btn-canano", "btn-canano-danger", "btn-canano-lg", "mr-1", 3, "click"], [1, "btn-canano", "btn-canano-primary", "btn-canano-lg", "mr-1", 3, "click"], [3, "searchResults"], ["for", "userData.username"], ["type", "text", "name", "userData.userName", "id", "userData.username", "size", "70", 3, "ngModel", "ngModelChange", 4, "ngIf"], ["for", "userData.firstName"], ["type", "text", "name", "userData.firstName", "id", "userData.firstName", "size", "70", 3, "ngModel", "ngModelChange"], ["for", "userData.lastName"], ["type", "text", "name", "userData.lastName", "id", "userData.lastName", "size", "70", 3, "ngModel", "ngModelChange"], ["for", "userData.organization"], ["type", "text", "name", "userData.organization", "id", "userData.organization", "size", "70", 3, "ngModel", "ngModelChange"], ["for", "userData.department"], ["type", "text", "name", "userData.department", "id", "userData.department", "size", "70", 3, "ngModel", "ngModelChange"], ["for", "userData.title"], ["type", "text", "name", "userData.title", "id", "userData.title", "size", "70", 3, "ngModel", "ngModelChange"], ["for", "userData.phoneNumber"], ["type", "text", "name", "userData.phoneNumber", "id", "userData.phoneNumber", "size", "70", 3, "ngModel", "ngModelChange"], ["for", "userData.emailId"], ["type", "text", "name", "userData.emailId", "id", "userData.emailId", "size", "70", 3, "ngModel", "ngModelChange"], ["for", "userData.roles"], ["name", "userData.roles", "id", "userData.roles", "multiple", "", "size", "3", 1, "multiple", 3, "ngModel", "ngModelChange"], [3, "ngValue"], [2, "width", "800px"], [2, "color", "red"], ["type", "checkbox", 3, "checked", "change"], [1, "btn-canano", "btn-canano-primary", "btn-canano-lg", "mr-1", 3, "disabled", "click"], ["type", "text", "name", "userData.userName", "id", "userData.username", "size", "70", 3, "ngModel", "ngModelChange"]], template: function AdminComponent_Template(rf, ctx) { if (rf & 1) {
+AdminComponent.ɵcmp = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdefineComponent"]({ type: AdminComponent, selectors: [["canano-admin"]], decls: 6, vars: 6, consts: [[3, "helpUrl", "toolHeadingName"], [1, "mainSection"], ["class", "mainBorder", 4, "ngIf"], [4, "ngIf"], [1, "mainBorder"], [1, "links-panel", "card", "ml-1", "mt-2"], [1, "card-header", "mb-0", "pb-0"], [1, "card-title", "unselectable", "m-0", "p-0"], [1, "card-body"], ["routerLink", "/home/admin/create-user", 1, "link-clicker"], ["routerLink", "/home/admin/search-user", 1, "link-clicker"], [1, "dataMain"], [1, "label"], ["for", "resetData.oldpassword"], ["type", "text", "name", "resetData.oldpassword", "id", "resetData.oldpassword", "size", "50", 3, "ngModel", "ngModelChange"], ["for", "newpassword"], ["type", "text", "name", "resetData.newpassword", "id", "resetData.newpassword", "size", "50", 3, "ngModel", "ngModelChange"], [1, "dataMain", "submit"], [1, "btn-canano", "btn-canano-default", "btn-canano-lg", "mr-1", 3, "click"], [1, "btn-canano", "btn-canano-danger", "btn-canano-lg", "mr-1", 3, "disabled", "click"], ["colspan", "2", 1, "message"], ["for", "username"], ["type", "text", "name", "username", "id", "username", "size", "50", 3, "ngModel", "ngModelChange"], ["colspan", "2"], [1, "btn-canano", "btn-canano-danger", "btn-canano-lg", "mr-1", 3, "click"], [1, "btn-canano", "btn-canano-primary", "btn-canano-lg", "mr-1", 3, "click"], [3, "searchResults"], ["for", "userData.username"], ["type", "text", "name", "userData.userName", "id", "userData.username", "size", "70", 3, "ngModel", "ngModelChange", 4, "ngIf"], ["for", "userData.firstName"], ["type", "text", "name", "userData.firstName", "id", "userData.firstName", "size", "70", 3, "ngModel", "ngModelChange"], ["for", "userData.lastName"], ["type", "text", "name", "userData.lastName", "id", "userData.lastName", "size", "70", 3, "ngModel", "ngModelChange"], ["for", "userData.organization"], ["type", "text", "name", "userData.organization", "id", "userData.organization", "size", "70", 3, "ngModel", "ngModelChange"], ["for", "userData.department"], ["type", "text", "name", "userData.department", "id", "userData.department", "size", "70", 3, "ngModel", "ngModelChange"], ["for", "userData.title"], ["type", "text", "name", "userData.title", "id", "userData.title", "size", "70", 3, "ngModel", "ngModelChange"], ["for", "userData.phoneNumber"], ["type", "text", "name", "userData.phoneNumber", "id", "userData.phoneNumber", "size", "70", 3, "ngModel", "ngModelChange"], ["for", "userData.emailId"], ["type", "text", "name", "userData.emailId", "id", "userData.emailId", "size", "70", 3, "ngModel", "ngModelChange"], ["for", "userData.roles"], ["name", "userData.roles", "id", "userData.roles", "multiple", "", "size", "3", 1, "multiple", 3, "ngModel", "ngModelChange"], [3, "ngValue"], [2, "width", "800px"], ["type", "checkbox", 3, "checked", "change"], [1, "btn-canano", "btn-canano-primary", "btn-canano-lg", "mr-1", 3, "disabled", "click"], ["type", "text", "name", "userData.userName", "id", "userData.username", "size", "70", 3, "ngModel", "ngModelChange"]], template: function AdminComponent_Template(rf, ctx) { if (rf & 1) {
         _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelement"](0, "canano-main-display-heading", 0);
         _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](1, "div", 1);
         _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtemplate"](2, AdminComponent_div_2_Template, 17, 0, "div", 2);
         _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtemplate"](3, AdminComponent_ng_container_3_Template, 31, 6, "ng-container", 3);
         _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtemplate"](4, AdminComponent_ng_container_4_Template, 22, 2, "ng-container", 3);
-        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtemplate"](5, AdminComponent_ng_container_5_Template, 83, 16, "ng-container", 3);
+        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtemplate"](5, AdminComponent_ng_container_5_Template, 88, 16, "ng-container", 3);
         _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementEnd"]();
     } if (rf & 2) {
         _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵproperty"]("helpUrl", "")("toolHeadingName", ctx.toolHeadingName);
