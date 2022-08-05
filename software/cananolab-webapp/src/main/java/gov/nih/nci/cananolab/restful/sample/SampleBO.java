@@ -717,16 +717,20 @@ public class SampleBO extends BaseAnnotationBO {
 
 		SampleBean clonedSampleBean = null;
 
+		// Instrumentation to track issue #54
 		try {
 			clonedSampleBean = sampleService.cloneSample(orgSampleName, newNameForClone);
 		} catch (NotExistException e) {
 			error =  PropertyUtil.getPropertyReplacingToken("sample", "error.cloneSample.noOriginalSample",  "0", orgSampleName);
+			logger.error(error, e);
 			return wrapErrorInEditBean(error);
 		} catch (DuplicateEntriesException e) {
 			error =  PropertyUtil.getProperty("sample", "error.cloneSample.duplicateSample");
+			logger.error(error, e);
 			return wrapErrorInEditBean(error);
 		} catch (SampleException e) {
 			error =  PropertyUtil.getProperty("sample", "error.cloneSample");
+			logger.error(error, e);
 			return wrapErrorInEditBean(error);
 		}
 
