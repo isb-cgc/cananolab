@@ -181,6 +181,7 @@ public class PublicationBO extends BaseAnnotationBO
 		publicationService.savePublication(publicationBean);
 		//	msgs.add("success");
 
+		System.out.println("Setting this attribute here causes issue #37" + publicationBean.getDomainFile().getId().toString());
 		session.setAttribute("publicationBean", publicationBean);
 		request.setAttribute("publicationId", publicationBean.getDomainFile().getId().toString());
 
@@ -781,6 +782,8 @@ public class PublicationBO extends BaseAnnotationBO
 		// if publication is public, the access is not public, retract
 		// public
 		// privilege would be handled in the service method
+		System.out.println("This causes issue #37, as the uncleared attribute is retained from the last edit");
+		System.out.println("BUT this hack must be here for a reason that we need to determine.");
 		PublicationBean pub =  (PublicationBean) request.getSession().getAttribute("publicationBean");
 		System.out.println("PublicationBean direct from session " + pub);
 		if(pub == null){

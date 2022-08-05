@@ -222,6 +222,7 @@ public class CharacterizationBO extends BaseAnnotationBO {
 //			charBean.getCharacterizationName(), charBean.getAssayType());
 		
 		//SY: new
+		System.out.println("B Issue 50 setting sampleId to " + sampleId);
 		request.getSession().setAttribute("sampleId", sampleId);
 		request.getSession().setAttribute("theChar", charBean);
 		logger.debug("Setting theChar in session: " + request.getSession().getId());
