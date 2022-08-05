@@ -163,6 +163,7 @@ public class CompositionServiceHelper
 	public NanomaterialEntity findNanomaterialEntityById(String sampleId, String entityId) throws Exception
 	{
 		NanomaterialEntity entity = null;
+		System.out.println("Helper Looking for issue 50 sampleID is not a long? " + sampleId + " " + entityId);
 		if (!springSecurityAclService.currentUserHasReadPermission(Long.valueOf(sampleId), SecureClassesEnum.SAMPLE.getClazz()) &&
 			!springSecurityAclService.currentUserHasWritePermission(Long.valueOf(sampleId), SecureClassesEnum.SAMPLE.getClazz())) {
 			throw new NoAccessException("User has no access to the nanomaterial entity " + entityId);
