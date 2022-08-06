@@ -923,6 +923,7 @@ class AdminComponent {
         this.userData = {};
         this.username = '';
         this.searchUserName = '';
+        this.piiConfirmed = false;
     }
     ngOnInit() {
         this.activatedRoute.params.subscribe(data => {
@@ -975,6 +976,7 @@ class AdminComponent {
         if (this.currentUrl == 'update-user') {
             this.userData['username'] = this.username;
         }
+        this.piiConfirmed = false;
     }
     resetSearch() {
         this.searchUserName = '';

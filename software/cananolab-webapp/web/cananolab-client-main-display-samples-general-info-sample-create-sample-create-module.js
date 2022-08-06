@@ -472,6 +472,7 @@ class SampleCreateComponent {
         this.currentDropdownValues = {};
         this.errors = {};
         this.helpUrl = _constants__WEBPACK_IMPORTED_MODULE_1__["Consts"].HELP_URL_SAMPLE_EDIT;
+        this.piiConfirmed = false;
     }
     ngOnInit() {
         setTimeout(() => {
@@ -497,6 +498,7 @@ class SampleCreateComponent {
         this.data = JSON.parse(JSON.stringify(this.dataTrailer));
         this.pointOfContact = { dirty: true, organization: { name: "" }, address: {}, role: "" };
         this.errors = {};
+        this.piiConfirmed = false;
     }
     onSaveSample() {
         this.data.pointOfContacts.push(this.pointOfContact);

@@ -17,7 +17,7 @@ export class SampleCreateComponent implements OnInit{
     helpUrl = Consts.HELP_URL_SAMPLE_EDIT;
     pointOfContact;
     pointOfContactIndex;
-
+    piiConfirmed=false;
     constructor(private apiService:ApiService,private httpClient: HttpClient,
                  private router: Router){
     }
@@ -49,6 +49,7 @@ export class SampleCreateComponent implements OnInit{
         this.data=JSON.parse(JSON.stringify(this.dataTrailer));
         this.pointOfContact={dirty:true,organization:{name:""},address:{},role:""};
         this.errors={};
+        this.piiConfirmed=false;
     }
 
     onSaveSample(){

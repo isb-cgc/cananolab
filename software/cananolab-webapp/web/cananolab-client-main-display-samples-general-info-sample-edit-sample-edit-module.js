@@ -1793,6 +1793,7 @@ class SampleEditComponent {
         this.sampleId = -1;
         this.toolHeadingNameSearchSample = 'Update Sample';
         this.submitReviewButton = true;
+        this.piiConfirmed = false;
     }
     ngOnInit() {
         this.navigationService.setCurrentSelectedItem(0);

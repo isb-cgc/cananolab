@@ -22,6 +22,7 @@ export class AdminComponent implements OnInit {
     userSearchResults;
     searchUserName='';
     searchAll;
+    piiConfirmed=false;
     constructor(private activatedRoute:ActivatedRoute,private router:Router,private apiService:ApiService,private httpClient:HttpClient) { }
     ngOnInit(): void {
         this.activatedRoute.params.subscribe(data=> {
@@ -78,6 +79,7 @@ export class AdminComponent implements OnInit {
         if (this.currentUrl=='update-user') {
             this.userData['username']=this.username;
         }
+        this.piiConfirmed=false;
     }
 
     resetSearch() {
