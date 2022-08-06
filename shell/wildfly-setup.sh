@@ -7,7 +7,7 @@ export WILDFLY_BIN=$WILDFLY_HOME/bin
 export JBOSS_CLI=$WILDFLY_BIN/jboss-cli.sh
 
 cp -v /local/content/standalone-full.xml ${WILDFLY_HOME}/standalone/configuration/
-cp -v /local/content/standalone.cfg ${WILDFLY_BIN}/
+cp -v /local/content/standalone.conf ${WILDFLY_BIN}/
 cp -v /local/content/log4j2.xml ${WILDFLY_HOME}/standalone/configuration/
 
 ${WILDFLY_BIN}/standalone.sh -Dapp.props.path=${APPLICATION_PROPERTIES_PATH} --server-config=standalone-full.xml -b 0.0.0.0 -bmanagement 0.0.0.0 &
