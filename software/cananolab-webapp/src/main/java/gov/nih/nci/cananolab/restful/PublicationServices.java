@@ -230,7 +230,7 @@ public class PublicationServices {
 			// Issue 80: NPE thrown in msgs.add.
 			System.out.println("Issue 80 debug msgs " + msgs);
 			if (msgs != null) {
-				for (int i = 0; i < msgs.length(); i++) {
+				for (int i = 0; i < msgs.size(); i++) {
 					System.out.println("Issue 80 debug message " + msgs.get(i));
 				}
 			}
