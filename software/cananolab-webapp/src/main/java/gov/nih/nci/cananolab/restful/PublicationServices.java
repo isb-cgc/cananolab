@@ -227,6 +227,13 @@ public class PublicationServices {
 				return Response.status(Response.Status.UNAUTHORIZED).entity(Constants.MSG_SESSION_INVALID).build();
 
 			List<String> msgs = pubBO.create(form, httpRequest);
+			// Issue 80: NPE thrown here.
+			System.out.println("Issue 80 debug msgs " + msgs);
+			System.out.println("Issue 80 debug form " + form);
+			if (form != null) {
+				System.out.println("Issue 80 debug fileID " + form.getFileId());
+			}
+			// END Issue 80 debug code
 			msgs.add(form.getFileId().toString());
 
 			return Response.ok(msgs).header("Access-Control-Allow-Credentials", "true").header("Access-Control-Allow-Origin", "*").header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS").header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization").build();
