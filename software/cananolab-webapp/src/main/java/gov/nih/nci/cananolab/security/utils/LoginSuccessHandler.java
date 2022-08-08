@@ -20,9 +20,9 @@ public class LoginSuccessHandler implements AuthenticationSuccessHandler
 	public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response,
 										Authentication authentication) throws IOException, ServletException
 	{
-		// We are upgrading debug logging to info logging
+		// We are upgrading debug logging to warn logging to capture for audits
 		System.out.println("LSH Successful Login attempt for user "+  authentication.getName());
-		logger.info("Successfully authenticated user: " + authentication.getName());
+		logger.warn("Successfully authenticated user: " + authentication.getName());
 		OutputStream out = response.getOutputStream();
 		out.write(authentication.getName().getBytes());	
 	}
