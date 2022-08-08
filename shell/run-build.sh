@@ -29,6 +29,8 @@ cp -v ${HOME}/jars/*.jar ${HOME}/software/cananolab-webapp/lib/
 cp -v ${HOME}/jars/sdk/*.jar ${HOME}/software/cananolab-webapp/lib/sdk/
 cp -v ${HOME}/.env ${HOME}/software/cananolab-webapp/web/WEB-INF/
 
+sed -s "s/\[\[RELEASE_AND_BUILD_INFO\]\]/caNanoLab Release 3.1.0 Build cananolab-3.1.0-${APP_SHA}/g" ${HOME}/software/cananolab-webapp/web/main.js
+
 cd ${HOME}/software/cananolab-webapp/
 ant dist
 
