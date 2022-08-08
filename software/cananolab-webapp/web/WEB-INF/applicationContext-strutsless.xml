@@ -56,7 +56,7 @@
          <!-- see the example of method invoking job above -->
          <property name="jobDetail" ref="luceneIndexJob"/>
          <property name="startDelay" value="150000"/>
-         <property name="repeatInterval" value="3600000"/>
+         <property name="repeatInterval" value="18000000"/>
     </bean>
 	
 	<bean class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
