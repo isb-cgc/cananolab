@@ -244,9 +244,10 @@ public class PublicationServices {
 			msgs.add((fileID == null) ? "No file provided" : fileID.toString());
 			// This is a hack to band-aid issue 80. We want the error message to go back and get displayed, but it is
 			// unclear what other messages may be returned that represent errors to report. The only reason 80 got an
-			// error message shown was that it invoked an NPE
+			// error message shown at all was that it invoked an NPE
+			// Also, returning a 500 error for a client error (40x) is bogus, but minimizing difference for now.
 			if ((fileID == null) && (msgs != null) && !msgs.isEmpty()) {
-				return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(CommonUtil.wrapErrorMessageInList("Error while submitting the publication " + msgs.get(0)).build());
+				return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(CommonUtil.wrapErrorMessageInList("Error while submitting the publication " + msgs.get(0))).build();
 			}
 
 			return Response.ok(msgs).header("Access-Control-Allow-Credentials", "true").header("Access-Control-Allow-Origin", "*").header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS").header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization").build();
