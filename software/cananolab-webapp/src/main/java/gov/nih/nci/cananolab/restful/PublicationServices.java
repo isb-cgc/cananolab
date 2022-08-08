@@ -246,7 +246,7 @@ public class PublicationServices {
 			// unclear what other messages may be returned that represent errors to report. The only reason 80 got an
 			// error message shown was that it invoked an NPE
 			if ((fileID == null) && (msgs != null) && !msgs.isEmpty()) {
-				return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(CommonUtil.wrapErrorMessageInList("Error while submitting the publication " + msgs.get(0)).build();
+				return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(CommonUtil.wrapErrorMessageInList("Error while submitting the publication " + msgs.get(0)).build());
 			}
 
 			return Response.ok(msgs).header("Access-Control-Allow-Credentials", "true").header("Access-Control-Allow-Origin", "*").header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS").header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization").build();
