@@ -268,7 +268,7 @@ public class CommunityServiceLocalImpl extends BaseServiceLocalImpl implements C
             // check if user has access to delete the group
             System.out.println("Debug for issue 29: " + collaborationGroup);
             Long id = Long.valueOf(collaborationGroup.getId());
-            System.out.println("Debug for issue 29: " + collaborationGroup.getId())
+            System.out.println("Debug for issue 29: " + collaborationGroup.getId());
             if (!springSecurityAclService.isOwnerOfObject(id, SecureClassesEnum.COLLABORATIONGRP.getClazz())) {
                 System.out.println("Debug for issue 29: Not the owner");
                 throw new NoAccessException();
