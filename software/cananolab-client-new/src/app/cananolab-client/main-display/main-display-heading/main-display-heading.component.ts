@@ -13,6 +13,8 @@ import { ApiService } from '../../common/services/api.service';
 import { Consts } from '../../../constants';
 import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
+import { MatTooltipModule } from '@angular/material/tooltip';
+
 @Component( {
     selector: 'canano-main-display-heading',
     templateUrl: './main-display-heading.component.html',
