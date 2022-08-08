@@ -263,6 +263,8 @@ public class CommonAuthenticationManager implements AuthenticationManager{
 			if (log.isDebugEnabled())
 				log.debug("Authentication|"+applicationContextName+"|"+userName+"|login|Success| Authentication is "+loginSuccessful+" for user "+userName+"|");
 			auditLog.info("Successful Login attempt for user "+ userName);
+			// Where is the auditlog being routed to??
+			System.out.println("CAM Successful Login attempt for user "+ userName);
 		}
 
 		catch (Exception csiiae)
