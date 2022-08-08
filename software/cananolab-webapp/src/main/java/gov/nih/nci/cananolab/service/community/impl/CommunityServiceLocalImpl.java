@@ -266,22 +266,30 @@ public class CommunityServiceLocalImpl extends BaseServiceLocalImpl implements C
         }
         try {
             // check if user has access to delete the group
+            System.out.println("Debug for issue 29: " + collaborationGroup);
             Long id = Long.valueOf(collaborationGroup.getId());
+            System.out.println("Debug for issue 29: " + collaborationGroup.getId());
             if (!springSecurityAclService.isOwnerOfObject(id, SecureClassesEnum.COLLABORATIONGRP.getClazz())) {
+                System.out.println("Debug for issue 29: Not the owner");
                 throw new NoAccessException();
             } else {
                 //delete all access for objects to group
+                System.out.println("Debug for issue 29: Into aclDao");
 				aclDao.deleteAllAccessToSid(collaborationGroup.getName());
+                System.out.println("Debug for issue 29: Out of aclDao");
 
                 groupService.removeGroup(id);
-
+                System.out.println("Debug for issue 29: Out of Group service");
                 // update current user's associated groups shown on the side menu
                 CananoUserDetails userDetails = SpringSecurityUtil.getPrincipal();
+                System.out.println("Debug for issue 29: Have user details");
                 userDetails.removeGroup(collaborationGroup.getName());
+                System.out.println("Debug for issue 29: out of remove group from details");
             }
         } catch (NoAccessException e) {
             throw e;
         } catch (Exception e) {
+            System.out.println("Debug for issue 29: " + e.getMessage());
             String error = "Error deleting the collaboration group";
             throw new CommunityException(error, e);
         }
