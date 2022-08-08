@@ -1,0 +1,90 @@
+
+<canano-main-display-heading
+[helpUrl]="'https://wiki.nci.nih.gov/display/caNanoLab/Managing+Protocols+in+caNanoLab#ManagingProtocolsincaNanoLab-SearchProtocols'"
+[toolHeadingName]="'Protocol Search'">
+</canano-main-display-heading>
+
+<div class="mainSection" *ngIf="protocolSearchForm">
+    <canano-loader [loading]="loading" [message]="loadingMessage"></canano-loader>
+    <form name="protocolSearchForm">
+        <div class="mainBorder">
+            <table>
+                <tr>
+                    <td class="label">
+                        <label for="protocolType">
+                            Protocol Type
+                        </label>
+                    </td>
+                    <td>
+                        <select  name="protocolType" id="protocolType" [(ngModel)]="protocolSearchForm.protocolType">
+                            <option [selected]="protocolSearchForm.protocolType==''" [ngValue]="''">--Select--</option>
+                            <option *ngFor=" let option of protocolTypes" value={{option}}>
+                                {{option}}
+                            </option>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="label">
+                        <label for="protocolName">
+                            Protocol Name
+                        </label>
+                    </td>
+                    <td>
+                        <label for="nameOperand">
+                            <select [(ngModel)]="protocolSearchForm.nameOperand" name="nameOperand" id="nameOperand">
+                                <option  value="contains">contains</option>
+                                <option value="equals">equals</option>
+                            </select>
+                        </label>
+                        <input type="text" [(ngModel)]="protocolSearchForm.protocolName" name="protocolName" id="protocolName">
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label for="protocolAbbreviation">
+                            Protocol Abbreviation
+                        </label>
+                    </td>
+                    <td>
+                        <label for="abbreviationOperand">
+                            <select [(ngModel)]="protocolSearchForm.abbreviationOperand" name="abbreviationOperand" id="abbreviationOperand">
+                                <option value="contains">contains</option>
+                                <option value="equals">equals</option>
+                            </select>
+                        </label>
+                        <input id="protocolAbbreviation" name="protocolAbbreviation" type="text" [(ngModel)]="protocolSearchForm.protocolAbbreviation">
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label for="fileTitle">
+                            Protcol File Title
+                        </label>
+                    </td>
+                    <td>
+                        <label for="titleOperand">
+                            <select [(ngModel)]="protocolSearchForm.titleOperand" name="titleOperand" id="titleOperand">
+                                <option value="contains">contains</option>
+                                <option value="equals">equals</option>
+                            </select>
+                        </label>
+                        <input name="fileTitle" id="fileTitle" type="text" [(ngModel)]="protocolSearchForm.fileTitle">
+                    </td>
+                </tr>
+            </table>
+
+        </div>
+        <div class="buttons">
+            <div>
+                Searching without any parameters returns all protocols.
+            </div>
+            <button [disabled]="loading" (click)="onResetClick()" class="btn-canano btn-canano-danger btn-canano-lg mr-1">Reset</button>
+            <button [disabled]="loading" (click)="onSubmit()" class="btn-canano btn-canano-primary btn-canano-lg mr-1">Search</button>
+
+        </div>
+    </form>
+</div>
+<!-- -----  END Enter search criteria  ----- -->
+
+

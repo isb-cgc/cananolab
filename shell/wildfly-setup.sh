@@ -6,7 +6,9 @@ export WILDFLY_HOME=/opt/wildfly-23.0.2.Final
 export WILDFLY_BIN=$WILDFLY_HOME/bin
 export JBOSS_CLI=$WILDFLY_BIN/jboss-cli.sh
 
-cp -v /local/content/standalone-full.xml /opt/wildfly-23.0.2.Final/standalone/configuration/
+cp -v /local/content/standalone-full.xml ${WILDFLY_HOME}/standalone/configuration/
+cp -v /local/content/standalone.conf ${WILDFLY_BIN}/
+cp -v /local/content/log4j2.xml ${WILDFLY_HOME}/standalone/configuration/
 
 ${WILDFLY_BIN}/standalone.sh -Dapp.props.path=${APPLICATION_PROPERTIES_PATH} --server-config=standalone-full.xml -b 0.0.0.0 -bmanagement 0.0.0.0 &
 
@@ -77,6 +79,15 @@ if [ $? -ne 0 ]; then
   exit 1
 fi
 
+# Check filesystem access
+touch /tmp/checkFS
+ls -la /tmp
+if [ ! -f /tmp/checkFS ]; then
+  echo "[WARNING] Didn't see /tmp/checkFS! Index writes may not succeed."
+else
+  echo "[STATUS] /tmp/checkFS seen - File system appears writeable."
+fi
+
 # We need to halt Wildfly here to start it in the main entrypoint process, so that the shell
 # which is running is that one and not this script.
 echo "Deployment completed - stopping Wildfly"
@@ -99,4 +110,4 @@ if [ ! -z "${WILDFLY_PID}" ]; then
   exit 1
 fi
 
-echo "Wildfly has stopped."
+echo "Wildfly has stopped - setup is complete."

@@ -1,0 +1,30 @@
+// -----------------------------------------------------------------------------------------
+// ----------------------            "Main Display Heading"         ------------------------
+// -----------   The blueish bar across the top of the Main Display ------------------------
+// -----------   Contains topic name, context sensitive Help link, and Glossary link  ------
+// -----------------------------------------------------------------------------------------
+
+@import "../../../app.component";
+@import "../../../btn-canano";
+@import "../../cananolab-client.component";
+@import '../../../btn-bravo-canano.scss';
+.main-display-heading{
+    text-transform: capitalize;
+    font-weight:bold;
+    font-size:$mainFontSize;
+    padding: $mainDisplayHeadingMargin;
+    margin: $mainDisplayHeadingMargin;
+    // height: $mainDisplayHeadingHeight;
+    background-color: $menuHeadingBackgroundColor;
+    color: #fff;
+    width: calc(100% - #{$mainDisplayHeadingMargin});
+}
+
+.display-heading-button{
+    outline: none;
+}
+
+.btn-canano.btn-canano-success {
+    background-color:green;
+    border:1px solid #fff;
+}

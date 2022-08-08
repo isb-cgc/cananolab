@@ -75,7 +75,7 @@ public class ProtocolServices
 
 	@GET
 	@Path("/download")
-	@Produces ("application/pdf")
+	@Produces ({"application/pdf", "application/json"})
 	public Response download(@Context HttpServletRequest httpRequest, @Context HttpServletResponse httpResponse, 
 			@DefaultValue("") @QueryParam("fileId") String fileId)
 	{

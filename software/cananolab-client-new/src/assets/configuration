@@ -1,0 +1,10 @@
+####################################################################
+## Will not contact the server, will only use hard coded test data
+## The default in properties.ts is false
+# TEST_MODE = true
+
+####################################################################
+## How long the client will wait before timing out when making a rest call (Thousandths of a second)
+# HTTP_TIMEOUT = 300000
+
+# MAX_WIDTH = 2000px

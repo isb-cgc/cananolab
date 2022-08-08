@@ -1,0 +1,246 @@
+@import '../cananolab-client.component.scss';
+
+.outer-input-frame{
+    border: solid #d4d4d4 2px;
+}
+.mainSection {
+    margin:10px 0px 5px 7px;
+    padding:0px;
+    font-size:$mainFontSize;
+    min-width:1150px !important;
+
+}
+.mainBorder {
+    padding:15px 15px 15px 15px;
+    border:1px solid #ccc;
+    margin:0px 0px 0px 2px;
+    width: 100%;
+
+}
+
+.mainBorder.loading {
+	background-color:$menuHeadingBackgroundColor !important;
+	color:#fff;
+	padding:15px !important;
+    margin-bottom:15px;
+}
+
+.dataMain  {
+    margin:5px;
+    width:90%;
+}
+
+.dataMain td.label {
+    width:200px;
+    padding:10px;
+    font-weight:bold;
+    vertical-align:top;
+}
+.dataMain td {
+    padding:10px;
+    vertical-align:top;
+}
+
+.dataMain td.buttons {
+    text-align:right;
+}
+
+
+.links-panel{
+    width: 500px;  // @FIXME - make a const
+}
+
+.links-panel.card.ml-1.mt-2 {
+	margin-left:0px !important
+}
+
+.create-search-button-group{
+    float: right;
+}
+.create-delete-button-group{
+    float: left;
+}
+
+label {
+    font-weight:bold;
+    margin-right:5px !important;
+}
+
+.searchForm {
+    margin:5px;
+}
+
+.searchForm td{
+    vertical-align:top;
+    padding:5px 10px 5px 0px;
+}
+
+.searchForm td.label{
+    vertical-align:top;
+    padding-right:20px;
+    width:150px;
+}
+
+.searchForm select.multiple {
+    width:150px;
+}
+
+.searchForm select {
+    margin-right:4px;
+}
+
+.searchForm span.label {
+    padding-right:10px;
+}
+
+.submit {
+    width:100%;
+}
+
+.submit td:last-child {
+    text-align:right;
+}
+
+.buttons {
+    margin:10px;
+    text-align:right;
+}
+
+.buttons div {
+    font-style: italic;
+    color:#4A49A8;
+    text-align:center;
+}
+
+.error {
+    color:red;
+    margin:5px;
+    font-size:14px !important;
+}
+
+.mainSection a {
+    color:#00f !important;
+    text-decoration: underline !important;
+}
+
+.mainSection td {
+    padding-bottom:13px !important;
+    font-size:$mainFontSize;
+
+}
+.mainSection .blueHeader {
+        padding:10px;
+        background-color:#0073b9;
+        color:#fff;
+        text-transform: capitalize;
+}
+
+.mainSection .header {
+    background-color:#005518;
+    color:#fff;
+    padding:10px;
+}
+
+    .mainSection .header .btn {
+        margin-left:10px;
+    }
+
+.mainSection .editButton{
+    padding-top:5px;
+    text-align:right;
+}
+.mainSection table.dataMain.files{
+    margin-bottom:10px;
+}
+.mainSection table.dataMain td{
+    vertical-align:top;
+}
+.mainSection table.dataMain .properties{
+    text-transform: capitalize;
+}
+.mainSection table.dataMain .properties th{
+    text-align:left;
+    width:150px;
+    vertical-align:top;
+    padding-right:20px;
+}
+.mainSection table.dataMain td.label{
+    font-weight:bold;
+    width:200px;
+    vertical-align:top;
+}
+
+.mainSection table.dataMain .properties td{
+    text-align:left;
+    width:150px;
+    vertical-align:top;
+    padding-right:20px;
+}
+
+.mainSection table.dataMain .properties.files{
+    border:1px solid #ccc;
+    width:100%;
+    margin-bottom:5px;
+}
+
+.experimentConfigurations td {
+    padding-right:10px;
+    width:300px;
+}
+ ul {
+   padding-left:13px;
+}
+
+
+.dataAndConditions td{
+    padding:5px;
+    border:1px solid #ccc;
+    width:200px;
+}
+
+.dataAndConditions th{
+    background-color:#0073b9;
+    color:#fff;
+    padding:5px;
+    vertical-align:top;
+    border:1px  solid #ccc;
+
+}
+
+.properties td{
+    padding:5px;
+    border:1px solid #ccc;
+    width:200px;
+}
+
+.properties th{
+    background-color:#0073b9;
+    color:#fff;
+    padding:5px;
+    vertical-align:top;
+    border:1px  solid #ccc;
+
+}
+
+.files {
+    min-width:650px;
+}
+
+.files td{
+    padding:5px;
+    border:1px solid #ccc;
+}
+
+.files th{
+    background-color:#0073b9;
+    color:#fff;
+    padding:5px;
+    vertical-align:top;
+    border:1px  solid #ccc;
+
+}
+
+label.right {
+    padding-left:5px;
+}
+

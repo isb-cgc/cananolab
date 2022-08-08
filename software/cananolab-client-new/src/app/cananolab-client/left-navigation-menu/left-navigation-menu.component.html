@@ -1,0 +1,43 @@
+<!------------------------------------------------------------------------->
+<!---------------------  "Navigation Tree" top left  ---------------------->
+<!---------------  (General Info, Composition, Publication)  -------------->
+<!------------------------------------------------------------------------->
+
+<div class="left-menu-div">
+    <div class="left-menu-top-heading p-2">
+        {{topHeading}}
+    </div>
+
+    <button class="left-menu-button-green" type="button"
+            [ngClass]="{
+               'current-selected-item':  currentSelectedItem === 0
+            }"
+            (click)="onGeneralInfoClick()"
+    >General Info
+    </button>
+
+    <button class="left-menu-button-green" type="button"
+            [ngClass]="{
+               'current-selected-item':  currentSelectedItem === 1
+            }"
+            (click)="onCompositionClick()"
+    >Composition
+    </button>
+
+    <button class="left-menu-button-green" type="button"
+            [ngClass]="{
+               'current-selected-item':  currentSelectedItem === 2
+            }"
+            (click)="onCharacterizationClick()"
+    >Characterization
+    </button>
+
+    <button class="left-menu-button-green" type="button"
+            [ngClass]="{
+               'current-selected-item':  currentSelectedItem === 3
+            }"
+            (click)="onPublicationsClick()"
+
+    >Publication
+    </button>
+</div>
