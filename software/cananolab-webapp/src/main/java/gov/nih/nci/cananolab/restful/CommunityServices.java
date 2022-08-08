@@ -51,6 +51,8 @@ public class CommunityServices
 					.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization").build();
 
 		} catch (Exception e) {
+			logger.error(e.getMessage());
+			e.printStackTrace();
 			return Response.status(Response.Status.NOT_FOUND)
 					.entity("Problem getting the collaboration groups: "+ e.getMessage()).build();
 		}
@@ -77,6 +79,8 @@ public class CommunityServices
 					.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization").build();
 
 		} catch (Exception e) {
+			logger.error(e.getMessage());
+			e.printStackTrace();
 			return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
 					.entity("Problem creating the collaboration groups: "+ e.getMessage()).build();
 		}
@@ -103,6 +107,8 @@ public class CommunityServices
 					.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization").build();
 
 		} catch (Exception e) {
+			logger.error(e.getMessage());
+			e.printStackTrace();
 			return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
 					.entity("Problem deleting the collaboration groups: "+ e.getMessage()).build();
 		}
@@ -129,6 +135,8 @@ public class CommunityServices
 					.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization").build();
 
 		} catch (Exception e) {
+			logger.error(e.getMessage());
+			e.printStackTrace();
 			return Response.status(Response.Status.NOT_FOUND)
 					.entity("Problem getting the collaboration group by ID: "+ e.getMessage()).build();
 		}
@@ -155,6 +163,8 @@ public class CommunityServices
 					.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization").build();
 
 		} catch (Exception e) {
+			logger.error(e.getMessage());
+			e.printStackTrace();
 			return Response.status(Response.Status.NOT_FOUND)
 					.entity("Error while adding the user to collaboration group : "+ e.getMessage()).build();
 		}
@@ -182,6 +192,8 @@ public class CommunityServices
 					.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization").build();
 
 		} catch (Exception e) {
+			logger.error(e.getMessage());
+			e.printStackTrace();
 			return Response.status(Response.Status.NOT_FOUND)
 					.entity("Error while removing user from the collaboration group : "+ e.getMessage()).build();
 		}
@@ -208,6 +220,8 @@ public class CommunityServices
 					.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization").build();
 
 		} catch (Exception e) {
+			logger.error(e.getMessage());
+			e.printStackTrace();
 			return Response.status(Response.Status.NOT_FOUND)
 					.entity("Problem setting up the new collaboration groups: "+ e.getMessage()).build();
 		}
@@ -235,6 +249,8 @@ public class CommunityServices
 					.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization").build();
 
 		} catch (Exception e) {
+			logger.error(e.getMessage());
+			e.printStackTrace();
 			return Response.status(Response.Status.NOT_FOUND)
 					.entity("Error in fetching samples for collaboration groups: "+ e.getMessage()).build();
 		}
