@@ -222,6 +222,7 @@ public class CharacterizationBO extends BaseAnnotationBO {
 //			charBean.getCharacterizationName(), charBean.getAssayType());
 		
 		//SY: new
+		System.out.println("B Issue 50 setting sampleId to " + sampleId);
 		request.getSession().setAttribute("sampleId", sampleId);
 		request.getSession().setAttribute("theChar", charBean);
 		logger.debug("Setting theChar in session: " + request.getSession().getId());
@@ -1281,10 +1282,6 @@ public class CharacterizationBO extends BaseAnnotationBO {
 		if ("Solubility".equals(achar.getClassName())) {
 			achar.getSolubility().setIsSoluble(soluble);
 		}
-	}
-
-	public java.io.File download(String fileId, HttpServletRequest request) throws Exception {
-		return downloadImage(characterizationService, fileId, request);
 	}
 	
 	public String download(String fileId, HttpServletRequest request, HttpServletResponse response) throws Exception {

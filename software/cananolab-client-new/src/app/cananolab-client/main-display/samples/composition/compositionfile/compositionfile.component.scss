@@ -1,0 +1,32 @@
+@import "../../../../main-display/main-display.component.scss";
+
+
+.dataMain td{
+    vertical-align:top;
+    padding:10px;
+}
+
+.buttons {
+    width:100%;
+    text-align:right;
+}
+.buttons .buttons{
+    text-align:right;
+}
+
+
+.mainSection table.dataMain td.label{
+    font-weight:bold;
+    width:200px !important;
+    vertical-align:top;
+}
+
+.mainSection table.antibodyProperties td.label{
+    font-weight:bold;
+    width:100px !important;
+    vertical-align:top;
+}
+.error {
+    color:red;
+    margin:5px;
+}

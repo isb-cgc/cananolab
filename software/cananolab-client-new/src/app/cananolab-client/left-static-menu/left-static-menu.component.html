@@ -1,0 +1,90 @@
+<!------------------------------------------------------------------------->
+<!---------------  "Related Links" mid left vertical menu  ---------------->
+<!------------------------------------------------------------------------->
+
+<div class="left-menu-div">
+    <div class="left-menu-heading p-2">
+        NCI
+    </div>
+
+    <button class="left-nav" type="button"
+            (click)="openWindow('https://wiki.nci.nih.gov/display/caNanoLab', '')"
+    >caNanoLab Wiki
+    </button>
+
+    <button class="left-nav" type="button"
+            (click)="openWindow('https://wiki.nci.nih.gov/display/icr/isa-tab-nano', '')"
+    >ISA-TAB-Nano Wiki
+    </button>
+
+    <button class="left-nav" type="button"
+            (click)="openWindow('https://cbiit.nci.nih.gov/', '')"
+    >NCI CBIIT Home
+    </button>
+
+    <button class="left-nav" type="button"
+            (click)="openWindow('https://nanolab.cancer.gov/', '')"
+    >NCL Home
+    </button>
+
+    <button class="left-nav" type="button"
+            (click)="openWindow('http://nano.cancer.gov', '')"
+    >NCI Nano Alliance Home
+    </button>
+
+
+    <button class="left-nav" type="button"
+            (click)="openWindow('https://www.cancer.gov', '')"
+    >NCI Home
+    </button>
+    <button class="left-nav" type="button"
+            (click)="openWindow('https://wiki.nci.nih.gov/display/ICR/Nanotechnology+Working+Group', '')"
+    >Nanotechnology Working Group
+    </button>
+    <button class="left-nav" type="button"
+            (click)="openWindow('https://nciphub.org/groups/cananolabcuration', '')"
+    >NCIP HUB
+    </button>
+
+
+
+    <div class="left-menu-heading p-2">
+        EXTERNAL
+        <canano-disclaimer [hide]="true"></canano-disclaimer>
+        <a class="underline" data-toggle="modal" data-target="#disclaimer">
+            Disclaimer
+        </a>
+    </div>
+
+
+    <button class="left-nav" type="button"
+            (click)="openWindow('http://oregonstate.edu/nbi/', '')"
+    >NBI
+    </button>
+
+    <button class="left-nav" type="button"
+            (click)="openWindow('http://nanoparticlelibrary.net/index.asp', '')"
+    >NIOSH NIL
+    </button>
+
+    <button class="left-nav" type="button"
+            (click)="openWindow('http://www.nanohub.org/home', '')"
+    >nanoHUB
+    </button>
+
+    <button class="left-nav" type="button"
+            (click)="openWindow('http://www.safenano.org', '')"
+    >SAFENANO
+    </button>
+
+    <button class="left-nav" type="button"
+            (click)="openWindow('https://www.oecd.org/sti/nano/', '')"
+    >OECD
+    </button>
+
+    <button class="left-nav" type="button"
+            (click)="openWindow('https://enanomapper.net/', '')"
+    >eNanoMapper
+    </button>
+
+</div>

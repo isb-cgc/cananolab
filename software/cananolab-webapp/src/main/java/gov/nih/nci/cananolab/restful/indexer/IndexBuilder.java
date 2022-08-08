@@ -4,6 +4,7 @@ import gov.nih.nci.cananolab.restful.customsearch.CustomSearchEngine;
 import gov.nih.nci.cananolab.restful.customsearch.bean.ProtocolSearchableFieldsBean;
 import gov.nih.nci.cananolab.restful.customsearch.bean.PublicationSearchableFieldsBean;
 import gov.nih.nci.cananolab.restful.customsearch.bean.SampleSearchableFieldsBean;
+import gov.nih.nci.cananolab.restful.util.AppPropertyUtil;
 
 import java.io.File;
 import java.io.IOException;
@@ -29,7 +30,7 @@ public class IndexBuilder
     
     public IndexWriter getIndexWriter(boolean create) throws IOException {
         if (indexWriter == null) {
-            Directory indexDir = FSDirectory.open(new File("indexDir"));
+            Directory indexDir = FSDirectory.open(new File(AppPropertyUtil.getAppProperty("INDEX_FILE_PATH")));
             IndexWriterConfig config = new IndexWriterConfig(Version.LUCENE_4_10_0, new StandardAnalyzer());
             indexWriter = new IndexWriter(indexDir, config);
             indexWriter.deleteAll();

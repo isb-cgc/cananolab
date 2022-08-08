@@ -1,0 +1,34 @@
+@import "src/app/btn-canano";
+@import "src/app/cananolab-client/cananolab-client.component";
+@import '../../../main-display.component.scss';
+@import '../../../../../btn-bravo-canano.scss';
+@import '../../../main-display.component.scss';
+td{
+    padding: 6px;
+}
+
+tr{
+    //  border: solid #aaaaab 1px;
+    padding: 16px;
+    margin: 6px;
+}
+
+table{
+    width: 100%;
+    padding: 6px;
+    margin: 6px;
+    // border-collapse: separate;
+}
+
+.tr-border{
+    margin: 6px;
+    border-collapse: collapse;
+}
+
+.border{
+    border: solid #aaaaab 1px;
+}
+
+select.multiple{
+    width:200px !important;
+}

@@ -1,0 +1,31 @@
+<canano-main-display-heading
+    [helpUrl]="helpUrl"
+    [toolHeadingName]="toolHeadingName"
+>
+</canano-main-display-heading>
+
+<div class="mainSection">
+    <div class="mainBorder">
+        <P>
+            This is the manage protocols section. A protocol is a predefined procedural method used in the design and implementation of assays. For example, a protocol could describe the steps a laboratory used for characterizing nanomaterials. In this section, depending on your authorization level, you may submit a new protocol, or search for an existing protocol.
+        </P>
+        <div class="links-panel card ml-1 mt-2">
+            <div  class="card-header mb-0 pb-0">
+                <span class="card-title unselectable m-0 p-0">
+                    <h5>Protocol Links</h5>
+                </span>
+
+            </div>
+            <div class="card-body">
+                <ng-container *ngIf="properties.LOGGED_IN">
+                    <a class="link-clicker" routerLink="protocol-create">Create a New Protocol</a><br>
+                Select to create a new protocol.<br><br>
+                </ng-container>
+
+                <a  class="link-clicker" routerLink="protocol-search">Search Existing Protocols</a><br>
+                Enter search criteria to obtain information on protocols of interest.<br><br>
+            </div>
+        </div>
+    </div>
+</div>
+

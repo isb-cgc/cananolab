@@ -20,6 +20,7 @@ public class IndexWriter extends QuartzJobBean
 	{	
 		try {
 			// build a lucene index
+			System.out.println("[STATUS] Beginning Lucene Index Write job.");
 			IndexBuilder indexBuilder = new IndexBuilder();
 			indexBuilder.buildIndexes(customSearchEngine);
 		}catch(Exception e){

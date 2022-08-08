@@ -11,7 +11,7 @@ import org.junit.Test;
 
 public class CustomSearchServicesTest {
 
-	String urlbase = RestTestLoginUtil.readTestUrlProperty() +  "caNanoLab/rest/";
+	String urlbase = RestTestLoginUtil.readTestUrlProperty() +  "/rest/";
 	Client client; 
 
 	
