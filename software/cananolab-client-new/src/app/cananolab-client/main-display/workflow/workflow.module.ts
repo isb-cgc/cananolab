@@ -4,6 +4,8 @@ import { WorkflowComponent } from './workflow.component';
 import { WorkflowRoutingModule } from './workflow-routing.module';
 import { SharedModule } from '../../common/modules/set-object-value/shared.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+
+
 @NgModule({
     declarations: [WorkflowComponent],
     imports: [
@@ -11,7 +13,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
       WorkflowRoutingModule,
       SharedModule,
       FormsModule,
-      ReactiveFormsModule
+      ReactiveFormsModule,
     ]
   })
   export class WorkflowModule { }
