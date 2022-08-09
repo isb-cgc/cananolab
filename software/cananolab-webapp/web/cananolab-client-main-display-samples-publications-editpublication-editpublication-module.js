@@ -60,6 +60,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var src_app_cananolab_client_common_components_other_dropdown_other_dropdown_module__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! src/app/cananolab-client/common/components/other-dropdown/other-dropdown.module */ "K3r8");
 /* harmony import */ var _editpublication_pipe__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./editpublication.pipe */ "48fn");
 /* harmony import */ var src_app_cananolab_client_common_components_disclaimer_disclaimer_module__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! src/app/cananolab-client/common/components/disclaimer/disclaimer.module */ "xXah");
+/* harmony import */ var _angular_material_tooltip__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! @angular/material/tooltip */ "Qu3c");
+
 
 
 
@@ -77,6 +79,7 @@ EditpublicationModule.ɵinj = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵde
             _angular_common__WEBPACK_IMPORTED_MODULE_1__["CommonModule"],
             _editpublication_routing_module__WEBPACK_IMPORTED_MODULE_3__["EditpublicationRoutingModule"],
             _common_modules_set_object_value_shared_module__WEBPACK_IMPORTED_MODULE_4__["SharedModule"],
+            _angular_material_tooltip__WEBPACK_IMPORTED_MODULE_9__["MatTooltipModule"],
             _angular_forms__WEBPACK_IMPORTED_MODULE_5__["FormsModule"],
             _angular_forms__WEBPACK_IMPORTED_MODULE_5__["ReactiveFormsModule"],
             src_app_cananolab_client_common_components_other_dropdown_other_dropdown_module__WEBPACK_IMPORTED_MODULE_6__["OtherDropdownModule"],
@@ -85,6 +88,7 @@ EditpublicationModule.ɵinj = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵde
 (function () { (typeof ngJitMode === "undefined" || ngJitMode) && _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵsetNgModuleScope"](EditpublicationModule, { declarations: [_editpublication_component__WEBPACK_IMPORTED_MODULE_2__["EditpublicationComponent"], _editpublication_pipe__WEBPACK_IMPORTED_MODULE_7__["EditpublicationPipe"]], imports: [_angular_common__WEBPACK_IMPORTED_MODULE_1__["CommonModule"],
         _editpublication_routing_module__WEBPACK_IMPORTED_MODULE_3__["EditpublicationRoutingModule"],
         _common_modules_set_object_value_shared_module__WEBPACK_IMPORTED_MODULE_4__["SharedModule"],
+        _angular_material_tooltip__WEBPACK_IMPORTED_MODULE_9__["MatTooltipModule"],
         _angular_forms__WEBPACK_IMPORTED_MODULE_5__["FormsModule"],
         _angular_forms__WEBPACK_IMPORTED_MODULE_5__["ReactiveFormsModule"],
         src_app_cananolab_client_common_components_other_dropdown_other_dropdown_module__WEBPACK_IMPORTED_MODULE_6__["OtherDropdownModule"],
@@ -97,6 +101,7 @@ EditpublicationModule.ɵinj = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵde
                     _angular_common__WEBPACK_IMPORTED_MODULE_1__["CommonModule"],
                     _editpublication_routing_module__WEBPACK_IMPORTED_MODULE_3__["EditpublicationRoutingModule"],
                     _common_modules_set_object_value_shared_module__WEBPACK_IMPORTED_MODULE_4__["SharedModule"],
+                    _angular_material_tooltip__WEBPACK_IMPORTED_MODULE_9__["MatTooltipModule"],
                     _angular_forms__WEBPACK_IMPORTED_MODULE_5__["FormsModule"],
                     _angular_forms__WEBPACK_IMPORTED_MODULE_5__["ReactiveFormsModule"],
                     src_app_cananolab_client_common_components_other_dropdown_other_dropdown_module__WEBPACK_IMPORTED_MODULE_6__["OtherDropdownModule"],
