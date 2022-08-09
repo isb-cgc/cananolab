@@ -6,7 +6,7 @@ import { SharedModule } from '../../../../common/modules/set-object-value/shared
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { SearchpublicationresultsPipe } from './searchpublicationresults.pipe';
 import { DisclaimerModule } from 'src/app/cananolab-client/common/components/disclaimer/disclaimer.module';
-import { MatTooltipModule } from '@angular/material/tooltip';
+
 
 @NgModule({
     declarations: [SearchpublicationresultsComponent, SearchpublicationresultsPipe],
@@ -14,7 +14,6 @@ import { MatTooltipModule } from '@angular/material/tooltip';
       CommonModule,
       SearchpublicationresultsRoutingModule,
       SharedModule,
-      MatTooltipModule,
       FormsModule,
       ReactiveFormsModule,
       DisclaimerModule

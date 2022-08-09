@@ -453,8 +453,6 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _advanced_search_results_routing_module__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./advanced-search-results-routing.module */ "OgJf");
 /* harmony import */ var _common_modules_set_object_value_shared_module__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../../../../common/modules/set-object-value/shared.module */ "0U9J");
 /* harmony import */ var _angular_forms__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @angular/forms */ "3Pt+");
-/* harmony import */ var _angular_material_tooltip__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @angular/material/tooltip */ "Qu3c");
-
 
 
 
@@ -469,14 +467,12 @@ AdvnacedSearchResultsModule.ɵinj = _angular_core__WEBPACK_IMPORTED_MODULE_0__["
             _angular_common__WEBPACK_IMPORTED_MODULE_1__["CommonModule"],
             _advanced_search_results_routing_module__WEBPACK_IMPORTED_MODULE_3__["AdvancedSearchResultsRoutingModule"],
             _common_modules_set_object_value_shared_module__WEBPACK_IMPORTED_MODULE_4__["SharedModule"],
-            _angular_material_tooltip__WEBPACK_IMPORTED_MODULE_6__["MatTooltipModule"],
             _angular_forms__WEBPACK_IMPORTED_MODULE_5__["FormsModule"],
             _angular_forms__WEBPACK_IMPORTED_MODULE_5__["ReactiveFormsModule"]
         ]] });
 (function () { (typeof ngJitMode === "undefined" || ngJitMode) && _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵsetNgModuleScope"](AdvnacedSearchResultsModule, { declarations: [_advanced_search_results_component__WEBPACK_IMPORTED_MODULE_2__["AdvancedSearchResultsComponent"]], imports: [_angular_common__WEBPACK_IMPORTED_MODULE_1__["CommonModule"],
         _advanced_search_results_routing_module__WEBPACK_IMPORTED_MODULE_3__["AdvancedSearchResultsRoutingModule"],
         _common_modules_set_object_value_shared_module__WEBPACK_IMPORTED_MODULE_4__["SharedModule"],
-        _angular_material_tooltip__WEBPACK_IMPORTED_MODULE_6__["MatTooltipModule"],
         _angular_forms__WEBPACK_IMPORTED_MODULE_5__["FormsModule"],
         _angular_forms__WEBPACK_IMPORTED_MODULE_5__["ReactiveFormsModule"]] }); })();
 /*@__PURE__*/ (function () { _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵsetClassMetadata"](AdvnacedSearchResultsModule, [{
@@ -487,7 +483,6 @@ AdvnacedSearchResultsModule.ɵinj = _angular_core__WEBPACK_IMPORTED_MODULE_0__["
                     _angular_common__WEBPACK_IMPORTED_MODULE_1__["CommonModule"],
                     _advanced_search_results_routing_module__WEBPACK_IMPORTED_MODULE_3__["AdvancedSearchResultsRoutingModule"],
                     _common_modules_set_object_value_shared_module__WEBPACK_IMPORTED_MODULE_4__["SharedModule"],
-                    _angular_material_tooltip__WEBPACK_IMPORTED_MODULE_6__["MatTooltipModule"],
                     _angular_forms__WEBPACK_IMPORTED_MODULE_5__["FormsModule"],
                     _angular_forms__WEBPACK_IMPORTED_MODULE_5__["ReactiveFormsModule"]
                 ]
