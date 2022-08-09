@@ -528,6 +528,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _sample_search_results_routing_module__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./sample-search-results-routing.module */ "YM7B");
 /* harmony import */ var _common_modules_set_object_value_shared_module__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../../../../common/modules/set-object-value/shared.module */ "0U9J");
 /* harmony import */ var _angular_forms__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @angular/forms */ "3Pt+");
+/* harmony import */ var _angular_material_tooltip__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @angular/material/tooltip */ "Qu3c");
+
 
 
 
@@ -542,11 +544,13 @@ SampleSearchResultsModule.ɵinj = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵ
             _angular_common__WEBPACK_IMPORTED_MODULE_1__["CommonModule"],
             _sample_search_results_routing_module__WEBPACK_IMPORTED_MODULE_3__["SampleSearchResultsRoutingModule"],
             _common_modules_set_object_value_shared_module__WEBPACK_IMPORTED_MODULE_4__["SharedModule"],
+            _angular_material_tooltip__WEBPACK_IMPORTED_MODULE_6__["MatTooltipModule"],
             _angular_forms__WEBPACK_IMPORTED_MODULE_5__["FormsModule"]
         ]] });
 (function () { (typeof ngJitMode === "undefined" || ngJitMode) && _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵsetNgModuleScope"](SampleSearchResultsModule, { declarations: [_sample_search_results_component__WEBPACK_IMPORTED_MODULE_2__["SampleSearchResultsComponent"]], imports: [_angular_common__WEBPACK_IMPORTED_MODULE_1__["CommonModule"],
         _sample_search_results_routing_module__WEBPACK_IMPORTED_MODULE_3__["SampleSearchResultsRoutingModule"],
         _common_modules_set_object_value_shared_module__WEBPACK_IMPORTED_MODULE_4__["SharedModule"],
+        _angular_material_tooltip__WEBPACK_IMPORTED_MODULE_6__["MatTooltipModule"],
         _angular_forms__WEBPACK_IMPORTED_MODULE_5__["FormsModule"]] }); })();
 /*@__PURE__*/ (function () { _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵsetClassMetadata"](SampleSearchResultsModule, [{
         type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["NgModule"],
@@ -556,6 +560,7 @@ SampleSearchResultsModule.ɵinj = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵ
                     _angular_common__WEBPACK_IMPORTED_MODULE_1__["CommonModule"],
                     _sample_search_results_routing_module__WEBPACK_IMPORTED_MODULE_3__["SampleSearchResultsRoutingModule"],
                     _common_modules_set_object_value_shared_module__WEBPACK_IMPORTED_MODULE_4__["SharedModule"],
+                    _angular_material_tooltip__WEBPACK_IMPORTED_MODULE_6__["MatTooltipModule"],
                     _angular_forms__WEBPACK_IMPORTED_MODULE_5__["FormsModule"]
                 ]
             }]

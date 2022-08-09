@@ -4,12 +4,14 @@ import { SampleViewComponent } from './sample-view.component';
 import { SampleViewRoutingModule } from './sample-view-routing.module';
 import { SharedModule } from '../../../common/modules/set-object-value/shared.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { MatTooltipModule } from '@angular/material/tooltip';
 @NgModule({
     declarations: [SampleViewComponent],
     imports: [
       CommonModule,
       SampleViewRoutingModule,
       SharedModule,
+      MatTooltipModule,
       FormsModule,
       ReactiveFormsModule
     ]
