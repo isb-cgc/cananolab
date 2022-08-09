@@ -5,6 +5,7 @@ import { SampleSearchRoutingModule } from './sample-search-routing.module';
 import { SharedModule } from '../../../../common/modules/set-object-value/shared.module';
 import { FormsModule,ReactiveFormsModule } from '@angular/forms';
 
+
 @NgModule({
     declarations: [SampleSearchComponent],
     imports: [

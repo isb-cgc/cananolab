@@ -519,7 +519,7 @@ SearchResultsModule.ɵinj = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdefi
             _search_results_routing_search_results_routing_module__WEBPACK_IMPORTED_MODULE_3__["SearchResultsRoutingModule"],
             _common_modules_set_object_value_shared_module__WEBPACK_IMPORTED_MODULE_4__["SharedModule"],
             _angular_forms__WEBPACK_IMPORTED_MODULE_5__["FormsModule"],
-            _angular_forms__WEBPACK_IMPORTED_MODULE_5__["ReactiveFormsModule"]
+            _angular_forms__WEBPACK_IMPORTED_MODULE_5__["ReactiveFormsModule"],
         ]] });
 (function () { (typeof ngJitMode === "undefined" || ngJitMode) && _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵsetNgModuleScope"](SearchResultsModule, { declarations: [_search_results_component__WEBPACK_IMPORTED_MODULE_2__["SearchResultsComponent"]], imports: [_angular_common__WEBPACK_IMPORTED_MODULE_1__["CommonModule"],
         _search_results_routing_search_results_routing_module__WEBPACK_IMPORTED_MODULE_3__["SearchResultsRoutingModule"],
@@ -535,7 +535,7 @@ SearchResultsModule.ɵinj = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdefi
                     _search_results_routing_search_results_routing_module__WEBPACK_IMPORTED_MODULE_3__["SearchResultsRoutingModule"],
                     _common_modules_set_object_value_shared_module__WEBPACK_IMPORTED_MODULE_4__["SharedModule"],
                     _angular_forms__WEBPACK_IMPORTED_MODULE_5__["FormsModule"],
-                    _angular_forms__WEBPACK_IMPORTED_MODULE_5__["ReactiveFormsModule"]
+                    _angular_forms__WEBPACK_IMPORTED_MODULE_5__["ReactiveFormsModule"],
                 ]
             }]
     }], null, null); })();
