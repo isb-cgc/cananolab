@@ -7,6 +7,8 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ProtocolSearchResultsDisplayTitlePipe } from './protocol-search-results-display-title.pipe';
 import { ProtocolSearchResultsDisplayDescriptionPipe } from './protocol-search-results-display-description.pipe';
 import { ProtocolSearchResultsDisplayHrefPipe } from './protocol-search-results-display-href.pipe';
+import { MatTooltipModule } from '@angular/material/tooltip';
+
 @NgModule({
     declarations: [
         ProtocolSearchResultsComponent,
@@ -18,6 +20,7 @@ import { ProtocolSearchResultsDisplayHrefPipe } from './protocol-search-results-
       CommonModule,
       ProtocolSearchResultsRoutingModule,
       SharedModule,
+      MatTooltipModule,
       FormsModule,
       ReactiveFormsModule
     ]

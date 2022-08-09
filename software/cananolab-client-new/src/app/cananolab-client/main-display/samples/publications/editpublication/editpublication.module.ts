@@ -7,12 +7,14 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { OtherDropdownModule } from 'src/app/cananolab-client/common/components/other-dropdown/other-dropdown.module';
 import { EditpublicationPipe } from './editpublication.pipe';
 import { DisclaimerModule } from 'src/app/cananolab-client/common/components/disclaimer/disclaimer.module';
+import { MatTooltipModule } from '@angular/material/tooltip';
 @NgModule({
     declarations: [EditpublicationComponent,EditpublicationPipe],
     imports: [
       CommonModule,
       EditpublicationRoutingModule,
       SharedModule,
+      MatTooltipModule,
       FormsModule,
       ReactiveFormsModule,
       OtherDropdownModule,

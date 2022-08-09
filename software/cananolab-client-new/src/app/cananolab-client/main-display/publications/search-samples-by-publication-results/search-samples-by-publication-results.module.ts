@@ -4,12 +4,15 @@ import { SearchSamplesByPublicationResultsComponent } from './search-samples-by-
 import { SearchSamplesByPublicationResultsRoutingModule } from './search-samples-by-publication-results-routing.module';
 import { SharedModule } from '../../../common/modules/set-object-value/shared.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { MatTooltipModule } from '@angular/material/tooltip';
+
 @NgModule({
     declarations: [SearchSamplesByPublicationResultsComponent],
     imports: [
       CommonModule,
       SearchSamplesByPublicationResultsRoutingModule,
       SharedModule,
+      MatTooltipModule,
       FormsModule,
       ReactiveFormsModule
     ]
