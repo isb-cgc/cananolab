@@ -5,7 +5,7 @@ import { SampleCreateRoutingModule } from './sample-create-routing.module';
 import { SharedModule } from '../../../../common/modules/set-object-value/shared.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { OtherDropdownModule } from 'src/app/cananolab-client/common/components/other-dropdown/other-dropdown.module';
-import { MatTooltipModule } from '@angular/material/tooltip';
+
 
 @NgModule({
     declarations: [SampleCreateComponent],
@@ -13,7 +13,6 @@ import { MatTooltipModule } from '@angular/material/tooltip';
       CommonModule,
       SampleCreateRoutingModule,
       SharedModule,
-      MatTooltipModule,
       FormsModule,
       ReactiveFormsModule,
       OtherDropdownModule
