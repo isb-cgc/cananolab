@@ -4,7 +4,7 @@ import { SampleCopyComponent } from './sample-copy.component';
 import { SampleCopyRoutingModule } from './sample-copy-routing.module';
 import { SharedModule } from '../../../../common/modules/set-object-value/shared.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { MatTooltipModule } from '@angular/material/tooltip';
+
 
 @NgModule({
     declarations: [SampleCopyComponent],
@@ -12,7 +12,6 @@ import { MatTooltipModule } from '@angular/material/tooltip';
       CommonModule,
       SampleCopyRoutingModule,
       SharedModule,
-      MatTooltipModule,
       FormsModule,
       ReactiveFormsModule
     ]

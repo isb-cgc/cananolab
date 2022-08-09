@@ -3,7 +3,6 @@ import { CommonModule } from '@angular/common';
 import { LogoutComponent } from './logout.component';
 import { LogoutRoutingModule } from './logout-routing.module';
 import { SharedModule } from '../../common/modules/set-object-value/shared.module';
-import { MatTooltipModule } from '@angular/material/tooltip';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 @NgModule({
@@ -12,8 +11,6 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
       CommonModule,
       LogoutRoutingModule,
       SharedModule,
-      MatTooltipModule,
-      MatTooltipModule,
       FormsModule,
       ReactiveFormsModule,
     ]

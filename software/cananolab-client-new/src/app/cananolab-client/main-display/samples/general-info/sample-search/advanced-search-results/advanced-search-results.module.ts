@@ -4,7 +4,7 @@ import { AdvancedSearchResultsComponent } from './advanced-search-results.compon
 import { AdvancedSearchResultsRoutingModule } from './advanced-search-results-routing.module';
 import { SharedModule } from '../../../../../common/modules/set-object-value/shared.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { MatTooltipModule } from '@angular/material/tooltip';
+
 
 
 @NgModule({
@@ -13,7 +13,6 @@ import { MatTooltipModule } from '@angular/material/tooltip';
       CommonModule,
       AdvancedSearchResultsRoutingModule,
       SharedModule,
-      MatTooltipModule,
       FormsModule,
       ReactiveFormsModule
     ]

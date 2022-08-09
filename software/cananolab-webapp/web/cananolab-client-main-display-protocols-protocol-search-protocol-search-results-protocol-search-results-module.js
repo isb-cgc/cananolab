@@ -19,8 +19,6 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _protocol_search_results_display_title_pipe__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./protocol-search-results-display-title.pipe */ "SdJ4");
 /* harmony import */ var _protocol_search_results_display_description_pipe__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./protocol-search-results-display-description.pipe */ "Q3yT");
 /* harmony import */ var _protocol_search_results_display_href_pipe__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./protocol-search-results-display-href.pipe */ "HCSS");
-/* harmony import */ var _angular_material_tooltip__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! @angular/material/tooltip */ "Qu3c");
-
 
 
 
@@ -38,7 +36,6 @@ ProtocolSearchResultsModule.ɵinj = _angular_core__WEBPACK_IMPORTED_MODULE_0__["
             _angular_common__WEBPACK_IMPORTED_MODULE_1__["CommonModule"],
             _protocol_search_results_routing_module__WEBPACK_IMPORTED_MODULE_3__["ProtocolSearchResultsRoutingModule"],
             _common_modules_set_object_value_shared_module__WEBPACK_IMPORTED_MODULE_4__["SharedModule"],
-            _angular_material_tooltip__WEBPACK_IMPORTED_MODULE_9__["MatTooltipModule"],
             _angular_forms__WEBPACK_IMPORTED_MODULE_5__["FormsModule"],
             _angular_forms__WEBPACK_IMPORTED_MODULE_5__["ReactiveFormsModule"]
         ]] });
@@ -48,7 +45,6 @@ ProtocolSearchResultsModule.ɵinj = _angular_core__WEBPACK_IMPORTED_MODULE_0__["
         _protocol_search_results_display_href_pipe__WEBPACK_IMPORTED_MODULE_8__["ProtocolSearchResultsDisplayHrefPipe"]], imports: [_angular_common__WEBPACK_IMPORTED_MODULE_1__["CommonModule"],
         _protocol_search_results_routing_module__WEBPACK_IMPORTED_MODULE_3__["ProtocolSearchResultsRoutingModule"],
         _common_modules_set_object_value_shared_module__WEBPACK_IMPORTED_MODULE_4__["SharedModule"],
-        _angular_material_tooltip__WEBPACK_IMPORTED_MODULE_9__["MatTooltipModule"],
         _angular_forms__WEBPACK_IMPORTED_MODULE_5__["FormsModule"],
         _angular_forms__WEBPACK_IMPORTED_MODULE_5__["ReactiveFormsModule"]] }); })();
 /*@__PURE__*/ (function () { _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵsetClassMetadata"](ProtocolSearchResultsModule, [{
@@ -64,7 +60,6 @@ ProtocolSearchResultsModule.ɵinj = _angular_core__WEBPACK_IMPORTED_MODULE_0__["
                     _angular_common__WEBPACK_IMPORTED_MODULE_1__["CommonModule"],
                     _protocol_search_results_routing_module__WEBPACK_IMPORTED_MODULE_3__["ProtocolSearchResultsRoutingModule"],
                     _common_modules_set_object_value_shared_module__WEBPACK_IMPORTED_MODULE_4__["SharedModule"],
-                    _angular_material_tooltip__WEBPACK_IMPORTED_MODULE_9__["MatTooltipModule"],
                     _angular_forms__WEBPACK_IMPORTED_MODULE_5__["FormsModule"],
                     _angular_forms__WEBPACK_IMPORTED_MODULE_5__["ReactiveFormsModule"]
                 ]
