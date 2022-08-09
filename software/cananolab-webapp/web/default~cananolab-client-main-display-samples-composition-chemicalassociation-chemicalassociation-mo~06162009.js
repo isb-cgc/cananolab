@@ -16,6 +16,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _modules_set_object_value_shared_module__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../modules/set-object-value/shared.module */ "0U9J");
 /* harmony import */ var _angular_forms__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @angular/forms */ "3Pt+");
 /* harmony import */ var _disclaimer_disclaimer_module__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../disclaimer/disclaimer.module */ "xXah");
+/* harmony import */ var _angular_material_tooltip__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @angular/material/tooltip */ "Qu3c");
+
 
 
 
@@ -29,12 +31,14 @@ FileModule.ɵmod = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdefineNgModul
 FileModule.ɵinj = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdefineInjector"]({ factory: function FileModule_Factory(t) { return new (t || FileModule)(); }, imports: [[
             _angular_common__WEBPACK_IMPORTED_MODULE_1__["CommonModule"],
             _modules_set_object_value_shared_module__WEBPACK_IMPORTED_MODULE_3__["SharedModule"],
+            _angular_material_tooltip__WEBPACK_IMPORTED_MODULE_6__["MatTooltipModule"],
             _angular_forms__WEBPACK_IMPORTED_MODULE_4__["FormsModule"],
             _angular_forms__WEBPACK_IMPORTED_MODULE_4__["ReactiveFormsModule"],
             _disclaimer_disclaimer_module__WEBPACK_IMPORTED_MODULE_5__["DisclaimerModule"]
         ]] });
 (function () { (typeof ngJitMode === "undefined" || ngJitMode) && _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵsetNgModuleScope"](FileModule, { declarations: [_file_component__WEBPACK_IMPORTED_MODULE_2__["FileComponent"]], imports: [_angular_common__WEBPACK_IMPORTED_MODULE_1__["CommonModule"],
         _modules_set_object_value_shared_module__WEBPACK_IMPORTED_MODULE_3__["SharedModule"],
+        _angular_material_tooltip__WEBPACK_IMPORTED_MODULE_6__["MatTooltipModule"],
         _angular_forms__WEBPACK_IMPORTED_MODULE_4__["FormsModule"],
         _angular_forms__WEBPACK_IMPORTED_MODULE_4__["ReactiveFormsModule"],
         _disclaimer_disclaimer_module__WEBPACK_IMPORTED_MODULE_5__["DisclaimerModule"]], exports: [_file_component__WEBPACK_IMPORTED_MODULE_2__["FileComponent"]] }); })();
@@ -45,6 +49,7 @@ FileModule.ɵinj = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdefineInjecto
                 imports: [
                     _angular_common__WEBPACK_IMPORTED_MODULE_1__["CommonModule"],
                     _modules_set_object_value_shared_module__WEBPACK_IMPORTED_MODULE_3__["SharedModule"],
+                    _angular_material_tooltip__WEBPACK_IMPORTED_MODULE_6__["MatTooltipModule"],
                     _angular_forms__WEBPACK_IMPORTED_MODULE_4__["FormsModule"],
                     _angular_forms__WEBPACK_IMPORTED_MODULE_4__["ReactiveFormsModule"],
                     _disclaimer_disclaimer_module__WEBPACK_IMPORTED_MODULE_5__["DisclaimerModule"]

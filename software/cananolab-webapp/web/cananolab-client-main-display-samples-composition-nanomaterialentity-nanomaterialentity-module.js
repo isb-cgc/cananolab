@@ -1967,6 +1967,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _common_modules_set_object_value_shared_module__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../../../common/modules/set-object-value/shared.module */ "0U9J");
 /* harmony import */ var _angular_forms__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @angular/forms */ "3Pt+");
 /* harmony import */ var src_app_cananolab_client_common_components_file_file_module__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! src/app/cananolab-client/common/components/file/file.module */ "AUy9");
+/* harmony import */ var _angular_material_tooltip__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! @angular/material/tooltip */ "Qu3c");
+
 
 
 
@@ -1982,6 +1984,7 @@ NanomaterialentityModule.ɵinj = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵ�
             _angular_common__WEBPACK_IMPORTED_MODULE_1__["CommonModule"],
             _nanomaterialentity_routing_module__WEBPACK_IMPORTED_MODULE_3__["NanomaterialentityRoutingModule"],
             _common_modules_set_object_value_shared_module__WEBPACK_IMPORTED_MODULE_4__["SharedModule"],
+            _angular_material_tooltip__WEBPACK_IMPORTED_MODULE_7__["MatTooltipModule"],
             _angular_forms__WEBPACK_IMPORTED_MODULE_5__["FormsModule"],
             _angular_forms__WEBPACK_IMPORTED_MODULE_5__["ReactiveFormsModule"],
             src_app_cananolab_client_common_components_file_file_module__WEBPACK_IMPORTED_MODULE_6__["FileModule"]
@@ -1989,6 +1992,7 @@ NanomaterialentityModule.ɵinj = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵ�
 (function () { (typeof ngJitMode === "undefined" || ngJitMode) && _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵsetNgModuleScope"](NanomaterialentityModule, { declarations: [_nanomaterialentity_component__WEBPACK_IMPORTED_MODULE_2__["NanomaterialentityComponent"]], imports: [_angular_common__WEBPACK_IMPORTED_MODULE_1__["CommonModule"],
         _nanomaterialentity_routing_module__WEBPACK_IMPORTED_MODULE_3__["NanomaterialentityRoutingModule"],
         _common_modules_set_object_value_shared_module__WEBPACK_IMPORTED_MODULE_4__["SharedModule"],
+        _angular_material_tooltip__WEBPACK_IMPORTED_MODULE_7__["MatTooltipModule"],
         _angular_forms__WEBPACK_IMPORTED_MODULE_5__["FormsModule"],
         _angular_forms__WEBPACK_IMPORTED_MODULE_5__["ReactiveFormsModule"],
         src_app_cananolab_client_common_components_file_file_module__WEBPACK_IMPORTED_MODULE_6__["FileModule"]] }); })();
@@ -2000,6 +2004,7 @@ NanomaterialentityModule.ɵinj = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵ�
                     _angular_common__WEBPACK_IMPORTED_MODULE_1__["CommonModule"],
                     _nanomaterialentity_routing_module__WEBPACK_IMPORTED_MODULE_3__["NanomaterialentityRoutingModule"],
                     _common_modules_set_object_value_shared_module__WEBPACK_IMPORTED_MODULE_4__["SharedModule"],
+                    _angular_material_tooltip__WEBPACK_IMPORTED_MODULE_7__["MatTooltipModule"],
                     _angular_forms__WEBPACK_IMPORTED_MODULE_5__["FormsModule"],
                     _angular_forms__WEBPACK_IMPORTED_MODULE_5__["ReactiveFormsModule"],
                     src_app_cananolab_client_common_components_file_file_module__WEBPACK_IMPORTED_MODULE_6__["FileModule"]
