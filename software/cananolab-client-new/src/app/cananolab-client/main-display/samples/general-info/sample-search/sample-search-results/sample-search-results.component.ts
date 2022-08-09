@@ -124,7 +124,7 @@ export class SampleSearchResultsComponent implements OnInit, OnDestroy {
 
     onAvailabilityClick(id) {
         this.apiService
-            .doGet(Consts.QUERY_SAMPLE_AVAILABILITY, 'sampleId=' + id)
+            .doGet(Consts.QUERY_SAMPLE_VIEW_AVAILABILITY, 'sampleId=' + id)
             .subscribe(
                 (data) => {
                     this.sampleAvailabilityDisplayService.displayStuff(data);
