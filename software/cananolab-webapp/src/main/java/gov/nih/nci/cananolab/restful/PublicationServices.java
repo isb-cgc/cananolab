@@ -227,7 +227,28 @@ public class PublicationServices {
 				return Response.status(Response.Status.UNAUTHORIZED).entity(Constants.MSG_SESSION_INVALID).build();
 
 			List<String> msgs = pubBO.create(form, httpRequest);
-			msgs.add(form.getFileId().toString());
+			// Issue 80: NPE thrown in msgs.add.
+			System.out.println("Issue 80 debug msgs " + msgs);
+			if (msgs != null) {
+				for (int i = 0; i < msgs.size(); i++) {
+					System.out.println("Issue 80 debug message " + msgs.get(i));
+				}
+			}
+			System.out.println("Issue 80 debug form " + form);
+			if (form != null) {
+				System.out.println("Issue 80 debug fileID " + form.getFileId());
+			}
+			// END Issue 80 debug code
+			// Should fix 80:
+			Long fileID = form.getFileId();
+			msgs.add((fileID == null) ? "No file provided" : fileID.toString());
+			// This is a hack to band-aid issue 80. We want the error message to go back and get displayed, but it is
+			// unclear what other messages may be returned that represent errors to report. The only reason 80 got an
+			// error message shown at all was that it invoked an NPE
+			// Also, returning a 500 error for a client error (40x) is bogus, but minimizing difference for now.
+			if ((fileID == null) && (msgs != null) && !msgs.isEmpty()) {
+				return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(CommonUtil.wrapErrorMessageInList("Error while submitting the publication " + msgs.get(0))).build();
+			}
 
 			return Response.ok(msgs).header("Access-Control-Allow-Credentials", "true").header("Access-Control-Allow-Origin", "*").header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS").header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization").build();
 		} catch (Exception e) {
@@ -316,6 +337,7 @@ public class PublicationServices {
 		try {
 			PublicationBO pubBO = (PublicationBO) SpringApplicationContext.getBean(httpRequest, "publicationBO");
 
+			System.out.println("Bean ID in " + bean.getFileId());
 			if (!SpringSecurityUtil.isUserLoggedIn())
 				return Response.status(Response.Status.UNAUTHORIZED).entity(Constants.MSG_SESSION_INVALID).build();
 
@@ -325,7 +347,14 @@ public class PublicationServices {
 
 			SimpleSubmitPublicationBean view = pubBO.saveAccess(bean, httpRequest);
 
+			System.out.println("Bean ID out " + view.getFileId());
 			List<String> errors = view.getErrors();
+			if (errors != null) {
+				for (int i = 0; i < errors.size(); i++) {
+					System.out.println("saveAccess ERROR " + errors.get(i));
+				}
+			}
+
 			return (errors == null || errors.size() == 0) ?
 					Response.ok(view).build() :
 						Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(errors).build();

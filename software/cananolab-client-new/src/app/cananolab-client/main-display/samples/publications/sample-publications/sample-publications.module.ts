@@ -5,6 +5,7 @@ import { SamplePublicationsRoutingModule } from './sample-publications-routing.m
 import { SharedModule } from '../../../../common/modules/set-object-value/shared.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { SamplePublicationsPipe } from './sample-publications.pipe';
+
 @NgModule({
     declarations: [SamplePublicationsComponent, SamplePublicationsPipe],
     imports: [

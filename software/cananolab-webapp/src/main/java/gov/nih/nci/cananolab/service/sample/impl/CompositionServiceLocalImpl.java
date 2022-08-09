@@ -166,6 +166,7 @@ public class CompositionServiceLocalImpl extends BaseServiceLocalImpl implements
 			throws CompositionException, NoAccessException {
 		NanomaterialEntityBean entityBean = null;
 		try {
+			System.out.println("CSLI Looking for issue 50 " + sampleId + " " + entityId);
 			NanomaterialEntity entity = compositionServiceHelper.findNanomaterialEntityById(sampleId, entityId);
 			if (entity != null) {
 				entityBean = new NanomaterialEntityBean(entity);

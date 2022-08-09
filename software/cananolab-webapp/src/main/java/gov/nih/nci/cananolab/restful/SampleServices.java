@@ -698,6 +698,7 @@ public class SampleServices {
 					.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization")
 */					.build();
 		} catch (Exception e) {
+			logger.error(e.getMessage());
 			//return Response.ok("Error while viewing the search results").build();
 			return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
 					.entity(CommonUtil.wrapErrorMessageInList(e.getMessage())).build();
@@ -719,6 +720,7 @@ public class SampleServices {
 
 			return Response.ok(dropdownTypeLists).build();
 		} catch (Exception e) {
+			logger.error(e.getMessage());
 			return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
 					.entity(CommonUtil.wrapErrorMessageInList("Error while setting up drop down lists")).build();
 		}
@@ -740,6 +742,7 @@ public class SampleServices {
 
 			return Response.ok(charOptions).build();
 		} catch (Exception e) {
+			logger.error(e.getMessage());
 			return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
 					.entity(CommonUtil.wrapErrorMessageInList("Error while creating characterization options")).build();
 		}
@@ -762,6 +765,7 @@ public class SampleServices {
 
 			return Response.ok(datumOptions).build();
 		} catch (Exception e) {
+			logger.error(e.getMessage());
 			return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
 					.entity(CommonUtil.wrapErrorMessageInList("Error while creating characterization datum options")).build();
 		}
@@ -785,6 +789,7 @@ public class SampleServices {
 						.header("Access-Control-Allow-Origin", "*").header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS")
 						.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization").build();
 		} catch (Exception e) {
+			logger.error(e.getMessage());
 			return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
 					.entity(CommonUtil.wrapErrorMessageInList(e.getMessage())).build();
 		}
@@ -836,6 +841,7 @@ public class SampleServices {
 					.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization").build();
 			
 		} catch (Exception e) {
+			logger.error(e.getMessage());
 			return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
 					.entity(CommonUtil.wrapErrorMessageInList("Error while evaluating if sample is editable by current user.")).build();
 		}
@@ -853,6 +859,7 @@ public class SampleServices {
 			return Response.ok("").build();
 			
 		} catch (Exception e) {
+			logger.error(e.getMessage());
 			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(CommonUtil.wrapErrorMessageInList("Error while exporting the file" + e.getMessage())).build();
 
 		}
@@ -883,6 +890,7 @@ public class SampleServices {
         }
         catch( Exception e )
         {
+			logger.error(e.getMessage());
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(CommonUtil.wrapErrorMessageInList("Error sending JSON to client: " + e.getMessage())).build();
         }
     }
@@ -917,6 +925,7 @@ public class SampleServices {
         }
         catch( Exception e )
         {
+			logger.error(e.getMessage());
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(CommonUtil.wrapErrorMessageInList("Error sending XML to client: " + e.getMessage())).build();
         }
     }
@@ -948,6 +957,7 @@ public class SampleServices {
             }
         catch( Exception e )
         {
+			logger.error(e.getMessage());
             System.err.println( "Error sending JSON to client: " + e.getMessage() );
         }
     }

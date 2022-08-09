@@ -129,7 +129,9 @@ public class CompositionManager
 			return null;
 		
 		String sampleId = (String) request.getSession().getAttribute("sampleId");
-		
+
+		System.out.println("Looking for issue 50 " + sampleId + " " + id);
+		System.out.println("FIXME using sample ID here not entity ID! " + sampleId + " " + id);
 		NanomaterialEntityBean entityBean = compositionService.findNanomaterialEntityById(sampleId, id);
         return entityBean.getComposingElements();
 	}
