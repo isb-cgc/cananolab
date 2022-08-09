@@ -597,7 +597,7 @@ class CharacterizationComponent {
     }
     // separates out all data into subsets of physico, in vivo, in vitro and other characterization types //
     separateDataSets(data) {
-        console.log(data);
+        //console.log(data)
         // let types =['in vitro characterization','in vivo characterization','physico-chemical characterization']
         data.forEach(item => {
             item.charName = Object.keys(item.charsByAssayType)[0];

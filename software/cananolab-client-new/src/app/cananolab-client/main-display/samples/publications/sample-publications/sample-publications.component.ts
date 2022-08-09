@@ -48,7 +48,7 @@ export class SamplePublicationsComponent implements OnInit{
                 };
                 let url = this.apiService.doGet(Consts.QUERY_PUBLICATION_SUMMARY_VIEW,'sampleId='+this.sampleId);
                 url.subscribe(data=> {
-                    console.log(data)
+                    //console.log(data)
                     this.data=data;
                     this.propertiesLoaded=true;
                     Properties.SAMPLE_TOOLS = true;

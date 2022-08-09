@@ -610,7 +610,7 @@ class GroupsComponent {
             }, 100);
             this.errors = {};
             this.collaborationGroup = data;
-            console.log(data);
+            //console.log(data)
             this.collaborationGroupTrailer = JSON.parse(JSON.stringify(data));
         }, error => {
             this.errors = error;

@@ -16,7 +16,6 @@ import { TopKeywordSearchComponent } from './cananolab-client/header/top-keyword
 import { TopMainMenuComponent } from './cananolab-client/top-main-menu/top-main-menu.component';
 import { DisclaimerModule } from './cananolab-client/common/components/disclaimer/disclaimer.module';
 
-
 @NgModule({
   declarations: [
     AppComponent,

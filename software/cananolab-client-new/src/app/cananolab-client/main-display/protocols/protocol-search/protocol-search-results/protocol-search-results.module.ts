@@ -7,6 +7,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ProtocolSearchResultsDisplayTitlePipe } from './protocol-search-results-display-title.pipe';
 import { ProtocolSearchResultsDisplayDescriptionPipe } from './protocol-search-results-display-description.pipe';
 import { ProtocolSearchResultsDisplayHrefPipe } from './protocol-search-results-display-href.pipe';
+
 @NgModule({
     declarations: [
         ProtocolSearchResultsComponent,

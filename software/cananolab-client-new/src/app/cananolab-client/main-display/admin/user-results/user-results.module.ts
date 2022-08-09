@@ -4,7 +4,6 @@ import { UserResultsComponent } from './user-results.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { SharedModule } from 'src/app/cananolab-client/common/modules/set-object-value/shared.module';
 
-
 @NgModule({
   declarations: [UserResultsComponent],
   imports: [
