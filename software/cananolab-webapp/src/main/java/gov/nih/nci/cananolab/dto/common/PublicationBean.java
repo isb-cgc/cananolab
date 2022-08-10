@@ -298,7 +298,7 @@ public class PublicationBean extends FileBean {
 
 	private String getUriDisplayName() {
 		Publication pub = (Publication) domainFile;
-		String link = "rest/publication/download?fileId=" + pub.getId();
+		String link = "/rest/publication/download?fileId=" + pub.getId();
 	//	String link = "publication.do?dispatch=download&fileId=" + pub.getId();
 		if (!StringUtils.isEmpty(pub.getUri())) {
 			if (pub.getUriExternal()) {
@@ -388,6 +388,9 @@ public class PublicationBean extends FileBean {
 				if (author.getCreatedBy() == null
 						|| author.getCreatedBy().trim().length() == 0) {
 					author.setCreatedBy(createdBy);
+				}
+				if (author.getUpdatedDate() == null) {
+					author.setUpdatedDate(DateUtils.addSecondsToCurrentDate(i));
 				}
 				if (author.getId() != null && author.getId() <= 0) {
 					author.setId(null);

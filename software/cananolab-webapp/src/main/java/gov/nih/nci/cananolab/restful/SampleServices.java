@@ -84,6 +84,8 @@ public class SampleServices {
 
 			return Response.ok(dropdownTypeLists).build();
 		} catch (Exception e) {
+			logger.error(e.getMessage());
+			e.printStackTrace();
 			return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
 					.entity(CommonUtil.wrapErrorMessageInList("Error while setting up drop down lists")).build();
 		}
@@ -99,8 +101,11 @@ public class SampleServices {
 		
 		try {
 			List<String> characterizations = searchSampleBO.getCharacterizationByType(httpRequest, type);
+			System.out.println("[STATUS] Characterizations found: "+characterizations.size());
 			return Response.ok(characterizations).build();
 		} catch (Exception e) {
+			logger.error(e.getMessage());
+			e.printStackTrace();
 			return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
 					.entity(CommonUtil.wrapErrorMessageInList("Error while getting characterization by type")).build();
 		}
@@ -128,6 +133,7 @@ public class SampleServices {
 
 		} catch (Exception e) {
 			logger.error(e.getMessage());
+			e.printStackTrace();
 			return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
 					.entity(CommonUtil.wrapErrorMessageInList("Error while searching for samples: " + e.getMessage())).build();
 		}
@@ -154,7 +160,8 @@ public class SampleServices {
 					:Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(sampleBean.getErrors()).build();
 
 		} catch (Exception e) {
-			//return Response.ok("Error while viewing the search results").build();
+			logger.error(e.getMessage());
+			e.printStackTrace();
 			return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
 					.entity(CommonUtil.wrapErrorMessageInList("Error while viewing the search results")).build();
 		}
@@ -180,6 +187,7 @@ public class SampleServices {
 			
 		} catch (Exception e) {
 			logger.error(e.getMessage());
+			e.printStackTrace();
 			return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
 					.entity(CommonUtil.wrapErrorMessageInList("Error while getting data availability data")).build();
 		}
@@ -208,8 +216,9 @@ public class SampleServices {
 							.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization").build();
 			
 		} catch (Exception e) {
-			return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
-					.entity(CommonUtil.wrapErrorMessageInList(e.getMessage())).build();
+			logger.error(e.getMessage());
+			e.printStackTrace();
+			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(CommonUtil.wrapErrorMessageInList(e.getMessage())).build();
 		}
 		
 	}
@@ -219,19 +228,9 @@ public class SampleServices {
 	@Path("/downloadImage")
 	@Produces({"image/png", "application/json"})
 	 public Response downloadImage(@Context HttpServletRequest httpRequest, @Context HttpServletResponse httpResponse,
-	    		@DefaultValue("") @QueryParam("fileId") String fileId){
-		try {
-			CharacterizationBO characterizationBO = 
-					(CharacterizationBO) SpringApplicationContext.getBean(httpRequest, "characterizationBO");
-			
-			java.io.File file = characterizationBO.download(fileId, httpRequest);
-			
-			return Response.ok((Object) file).build();
-			
-		} catch (Exception ioe) {
-			return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
-					.entity(CommonUtil.wrapErrorMessageInList(ioe.getMessage())).build();
-		}
+	    		@DefaultValue("") @QueryParam("fileId") String fileId)
+	{
+		return download(httpRequest, httpResponse, fileId);
 	}
 	
 	@GET
@@ -248,6 +247,8 @@ public class SampleServices {
 		} 
 		
 		catch (Exception ioe) {
+			logger.error(ioe.getMessage());
+			ioe.printStackTrace();
 			return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
 					.entity(CommonUtil.wrapErrorMessageInList(ioe.getMessage())).build();
 		}
@@ -267,6 +268,8 @@ public class SampleServices {
 			return Response.ok(result).build();
 		}
 		catch (Exception ioe) {
+			logger.error(ioe.getMessage());
+			ioe.printStackTrace();
 			return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
 					.entity(CommonUtil.wrapErrorMessageInList(ioe.getMessage())).build();
 		}
@@ -294,6 +297,8 @@ public class SampleServices {
 		} 
 
 		catch (Exception ioe) {
+			logger.error(ioe.getMessage());
+			ioe.printStackTrace();
 			return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
 					.entity(CommonUtil.wrapErrorMessageInList(ioe.getMessage())).build();
 		}
@@ -325,6 +330,7 @@ public class SampleServices {
 
 		} catch (Exception e) {
 			logger.error(e.getMessage());
+			e.printStackTrace();
 			return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
 					.entity(CommonUtil.wrapErrorMessageInList("Error while saving Point of Contact: " + e.getMessage())).build();
 		}
@@ -351,6 +357,7 @@ public class SampleServices {
 
 		} catch (Exception e) {
 			logger.error(e.getMessage());
+			e.printStackTrace();
 			return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
 					.entity(CommonUtil.wrapErrorMessageInList("Error while saving Access: " + e.getMessage())).build();
 		}
@@ -376,6 +383,8 @@ public class SampleServices {
 					:
 					Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(simpleBean.getErrors()).build();
 		} catch (Exception ioe) {
+			logger.error(ioe.getMessage());
+			ioe.printStackTrace();
 			return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
 					.entity(CommonUtil.wrapErrorMessageInList(ioe.getMessage())).build();
 		}
@@ -400,6 +409,7 @@ public class SampleServices {
 
 		} catch (Exception e) {
 			logger.error(e.getMessage());
+			e.printStackTrace();
 			return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
 					.entity(CommonUtil.wrapErrorMessageInList("Error while updating sample: " + e.getMessage())).build();
 		}
@@ -429,6 +439,7 @@ public class SampleServices {
 
 		} catch (Exception e) {
 			logger.error(e.getMessage());
+			e.printStackTrace();
 			return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
 					.entity(CommonUtil.wrapErrorMessageInList("Error while submitting sample: " + e.getMessage())).build();
 		}
@@ -459,6 +470,7 @@ public class SampleServices {
 
 		} catch (Exception e) {
 			logger.error(e.getMessage());
+			e.printStackTrace();
 			return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
 					.entity(CommonUtil.wrapErrorMessageInList("Error while copying sample: " + e.getMessage())).build();
 		}
@@ -700,9 +712,9 @@ public class SampleServices {
 					.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization")
 */					.build();
 		} catch (Exception e) {
+			logger.error(e.getMessage());
 			//return Response.ok("Error while viewing the search results").build();
-			return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
-					.entity(CommonUtil.wrapErrorMessageInList(e.getMessage())).build();
+			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(CommonUtil.wrapErrorMessageInList(e.getMessage())).build();
 		}
 	}
 	
@@ -721,6 +733,7 @@ public class SampleServices {
 
 			return Response.ok(dropdownTypeLists).build();
 		} catch (Exception e) {
+			logger.error(e.getMessage());
 			return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
 					.entity(CommonUtil.wrapErrorMessageInList("Error while setting up drop down lists")).build();
 		}
@@ -742,6 +755,7 @@ public class SampleServices {
 
 			return Response.ok(charOptions).build();
 		} catch (Exception e) {
+			logger.error(e.getMessage());
 			return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
 					.entity(CommonUtil.wrapErrorMessageInList("Error while creating characterization options")).build();
 		}
@@ -764,6 +778,7 @@ public class SampleServices {
 
 			return Response.ok(datumOptions).build();
 		} catch (Exception e) {
+			logger.error(e.getMessage());
 			return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
 					.entity(CommonUtil.wrapErrorMessageInList("Error while creating characterization datum options")).build();
 		}
@@ -787,8 +802,8 @@ public class SampleServices {
 						.header("Access-Control-Allow-Origin", "*").header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS")
 						.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization").build();
 		} catch (Exception e) {
-			return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
-					.entity(CommonUtil.wrapErrorMessageInList(e.getMessage())).build();
+			logger.error(e.getMessage());
+			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(CommonUtil.wrapErrorMessageInList(e.getMessage())).build();
 		}
 	}
 	
@@ -838,6 +853,7 @@ public class SampleServices {
 					.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization").build();
 			
 		} catch (Exception e) {
+			logger.error(e.getMessage());
 			return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
 					.entity(CommonUtil.wrapErrorMessageInList("Error while evaluating if sample is editable by current user.")).build();
 		}
@@ -855,6 +871,7 @@ public class SampleServices {
 			return Response.ok("").build();
 			
 		} catch (Exception e) {
+			logger.error(e.getMessage());
 			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(CommonUtil.wrapErrorMessageInList("Error while exporting the file" + e.getMessage())).build();
 
 		}
@@ -867,13 +884,14 @@ public class SampleServices {
      * @param httpResponse
      * @param sampleIds
      */
-    @GET
+    @POST
     @Path("/fullSampleExportJsonAll")
     @Produces ("application/json")
-    public Response fullSampleExportJsonAll(@Context HttpServletRequest httpRequest, @Context HttpServletResponse httpResponse,
-                                        @DefaultValue("") @QueryParam("sampleIds") String sampleIds)
+    public Response fullSampleExportJsonAll(@Context HttpServletRequest httpRequest, String sampleIds, @Context HttpServletResponse httpResponse)
     {
-        try
+    	sampleIds = sampleIds.replaceFirst("\\{\"sampleIds\":\"", "");
+		sampleIds = sampleIds.replace("\"}", "");
+		try
         {
             String[] idlist = sampleIds.split( "\\s*,\\s*" );
             String jsonData = buildAllJson(httpRequest, httpResponse, idlist);
@@ -884,6 +902,7 @@ public class SampleServices {
         }
         catch( Exception e )
         {
+			logger.error(e.getMessage());
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(CommonUtil.wrapErrorMessageInList("Error sending JSON to client: " + e.getMessage())).build();
         }
     }
@@ -895,13 +914,14 @@ public class SampleServices {
      * @param httpResponse
      * @param sampleIds  Comma separated list of Sample IDs
      */
-    @GET
+    @POST
     @Path("/fullSampleExportXmlAll")
     @Produces ("application/xml")
-    public Response fullSampleExportXmlAll(@Context HttpServletRequest httpRequest, @Context HttpServletResponse httpResponse,
-                                        @DefaultValue("") @QueryParam("sampleIds") String sampleIds)
+    public Response fullSampleExportXmlAll(@Context HttpServletRequest httpRequest, String sampleIds, @Context HttpServletResponse httpResponse)
     {
-        try
+		sampleIds = sampleIds.replaceFirst("\\{\"sampleIds\":\"", "");
+		sampleIds = sampleIds.replace("\"}", "");
+		try
         {
             String[] idlist = sampleIds.split( "\\s*,\\s*" );
             String jsonData =  "{\n \"csNanoLabData\": " + buildAllJson(httpRequest, httpResponse, idlist) +"\n}\n";
@@ -917,6 +937,7 @@ public class SampleServices {
         }
         catch( Exception e )
         {
+			logger.error(e.getMessage());
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(CommonUtil.wrapErrorMessageInList("Error sending XML to client: " + e.getMessage())).build();
         }
     }
@@ -948,6 +969,7 @@ public class SampleServices {
             }
         catch( Exception e )
         {
+			logger.error(e.getMessage());
             System.err.println( "Error sending JSON to client: " + e.getMessage() );
         }
     }
@@ -983,51 +1005,6 @@ public class SampleServices {
 			return e.getMessage();
 		}
 	}
-
-    /**
-     * Export one Sample as XML
-     *
-     * @param httpRequest
-     * @param httpResponse
-     * @param sampleId
-     */
-    @GET
-    @Path("/fullSampleExportXml")
-    public void fullSampleExportXml(@Context HttpServletRequest httpRequest, @Context HttpServletResponse httpResponse,
-                                     @DefaultValue("") @QueryParam("sampleId") String sampleId)
-    {
-        String xmlData = null;
-
-        // Get data as JSON
-        String jsonData =  buildSampleJson( httpRequest, httpResponse, sampleId, 0);
-
-        // Build XML from JSON
-        try
-        {
-            xmlData = jsonToXml( jsonData );
-        }
-        catch( Exception e )
-        {
-            System.err.println( "Error converting JSON to XML: " + e.getMessage() );
-        }
-
-        ///////////////////////////////////////////////////////////////////////////////
-        // Send to user
-        try
-        {
-            PrintWriter out = httpResponse.getWriter();
-            httpResponse.setContentType("application/force-download");
-            httpResponse.setContentLength( xmlData.length() );
-            httpResponse.setHeader("Content-Disposition","attachment; filename=\"SampleData_" + sampleId + ".xml\"");
-            out.print( xmlData );
-            out.close();
-        }
-        catch( Exception e )
-        {
-            System.err.println( "Error sending XML to client: " + e.getMessage() );
-        }
-    }
-
     /**
      * Build JSON from a list of IDs.
      *
@@ -1043,18 +1020,17 @@ public class SampleServices {
         {
             if( id.endsWith( "_pubmed" ))
             {
-                jsonData.append( buildPubJson( httpRequest, id.replaceAll( "_pubmed$", ""), 2 ) + "\n," );
+				jsonData.append( buildPubJson( httpRequest, id.replaceAll( "_pubmed$", ""), 2 ) + "\n," );
             }
 
             else if( id.endsWith( "_protocol" ))
             {
-                // jsonData.append( buildProtocolJson( httpRequest, id.replaceAll( "_protocol$", ""), 2 ) + "\n," );
+				// jsonData.append( buildProtocolJson( httpRequest, id.replaceAll( "_protocol$", ""), 2 ) + "\n," );
             }
             else
             {
-                jsonData.append( buildSampleJson( httpRequest, httpResponse, id , 2) + "\n," );
+				jsonData.append( buildSampleJson( httpRequest, httpResponse, id , 2) + "\n," );
             }
-
         }
         // Remove trailing ","
         if (jsonData.length() > 0) {
@@ -1068,7 +1044,6 @@ public class SampleServices {
         catch( JsonSyntaxException jse){
             logger.error("Not a valid Json String:" + jse.getMessage());
         }
-
         return jsonData.toString();
     }
 
@@ -1127,20 +1102,20 @@ public class SampleServices {
 
         // General Info
         SampleBO sampleBO = (SampleBO) SpringApplicationContext.getBean(httpRequest, "sampleBO");
-        String sampleBeanData = "";
+		String sampleBeanData = "";
         try
         {
-            sampleBeanData = sampleBO.summaryExport( sampleId, "all", httpRequest, httpResponse );
+			sampleBeanData = sampleBO.summaryExport( sampleId, "all", httpRequest, httpResponse );
             sampleBeanData = doIndent(sampleBeanData, indent * 4);
-        }
+		}
         catch( Exception e )
         {
-            e.printStackTrace();
+			e.printStackTrace();
         }
-        jasonData.append( "\"GeneralInfo\":" );
+
+		jasonData.append( "\"GeneralInfo\":" );
         jasonData.append(  sampleBeanData );
         jasonData.append(  "\n" );
-
 
         // Composition
         CompositionForm form;
@@ -1149,10 +1124,11 @@ public class SampleServices {
         SimpleCompositionBean view = null;
         try
         {
-            form = new CompositionForm();
-            form.setSampleId(sampleId);
-            compositionBO = (CompositionBO) SpringApplicationContext.getBean( httpRequest, "compositionBO" );
-            compBean = compositionBO.summaryView( form, httpRequest );
+			form = new CompositionForm();
+			form.setSampleId(sampleId);
+
+			compositionBO = (CompositionBO) SpringApplicationContext.getBean( httpRequest, "compositionBO" );
+			compBean = compositionBO.summaryView( form, httpRequest );  // @FIXME
 
             view = new SimpleCompositionBean();
             view.transferCompositionBeanForSummaryView( compBean );
@@ -1198,6 +1174,7 @@ public class SampleServices {
 			simpleSynthesisBean.transferSynthesisForSummaryView(synthesisBean);
 		} catch(Exception e){
 			logger.error("Error exporting synthesis", e);
+			e.printStackTrace();
 		}
 
 		if(simpleSynthesisBean!=null) {

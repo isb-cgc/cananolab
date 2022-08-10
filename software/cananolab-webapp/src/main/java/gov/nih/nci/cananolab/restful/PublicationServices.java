@@ -57,13 +57,15 @@ public class PublicationServices {
 			return Response.ok(view).header("Access-Control-Allow-Credentials", "true").header("Access-Control-Allow-Origin", "*").header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS").header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization").build();
 
 		} catch (Exception e) {
+			logger.error(e.getMessage());
+			e.printStackTrace();
 			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(CommonUtil.wrapErrorMessageInList("Error while viewing for publication " + e.getMessage())).build();
 		}
 	}
 
 	@GET
 	@Path("/download")
-	@Produces ("application/pdf")
+	@Produces({"application/pdf", "application/json"})
 	public Response download(@Context HttpServletRequest httpRequest, @Context HttpServletResponse httpResponse, @DefaultValue("") @QueryParam("fileId") String fileId)
 	{
 		try { 
@@ -74,6 +76,8 @@ public class PublicationServices {
 			return Response.ok(result).build();
 
 		} catch (Exception e) {
+			logger.error(e.getMessage());
+			e.printStackTrace();
 			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(CommonUtil.wrapErrorMessageInList("Error while downloading the file" + e.getMessage())).build();
 		}
 	}
@@ -92,6 +96,8 @@ public class PublicationServices {
 			view.transferPublicationBeanForSummaryView(summaryBean);
 			return Response.ok(view).build();
 		} catch (Exception e) {
+			logger.error(e.getMessage());
+			e.printStackTrace();
 			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(CommonUtil.wrapErrorMessageInList("Error while printing the file" + e.getMessage())).build();
 		}
 	}
@@ -107,6 +113,8 @@ public class PublicationServices {
 			String result = publicationBO.summaryExport(sampleId, type, httpRequest, httpResponse);
 			return Response.ok("").build();
 		} catch (Exception e) {
+			logger.error(e.getMessage());
+			e.printStackTrace();
 			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(CommonUtil.wrapErrorMessageInList("Error while exporting the file" + e.getMessage())).build();
 		}
 	}
@@ -127,6 +135,8 @@ public class PublicationServices {
 			// return Response.ok(view).build();
 			return Response.ok(pubBean).header("Access-Control-Allow-Credentials", "true").header("Access-Control-Allow-Origin", "*").header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS").header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization").build();
 		} catch (Exception e) {
+			logger.error(e.getMessage());
+			e.printStackTrace();
 			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(CommonUtil.wrapErrorMessageInList("Error while viewing the publication results" + e.getMessage())).build();
 
 		}
@@ -144,6 +154,8 @@ public class PublicationServices {
 
 			// return Response.ok(dropdownMap).build();
 		} catch (Exception e) {
+			logger.error(e.getMessage());
+			e.printStackTrace();
 			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(CommonUtil.wrapErrorMessageInList("Error while setting up drop down lists" + e.getMessage())).build();
 		}
 	}
@@ -165,6 +177,7 @@ public class PublicationServices {
 
 		} catch (Exception e) {
 			logger.error(e.getMessage());
+			e.printStackTrace();
 			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(CommonUtil.wrapErrorMessageInList("Error while searching for publication " + e.getMessage())).build();
 		}
 	}
@@ -189,6 +202,8 @@ public class PublicationServices {
 						Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(errors).build();
 
 		} catch (Exception e) {
+			logger.error(e.getMessage());
+			e.printStackTrace();
 			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(CommonUtil.wrapErrorMessageInList("Error while viewing for publication " + e.getMessage())).build();
 
 		}
@@ -211,6 +226,8 @@ public class PublicationServices {
 
 			// return Response.ok(dropdownMap).build();
 		} catch (Exception e) {
+			logger.error(e.getMessage());
+			e.printStackTrace();
 			return Response.status(Response.Status.NOT_FOUND).entity(CommonUtil.wrapErrorMessageInList("Problem getting all sample names for publication submission"+ e.getMessage())).build();
 		}
 	}
@@ -227,7 +244,28 @@ public class PublicationServices {
 				return Response.status(Response.Status.UNAUTHORIZED).entity(Constants.MSG_SESSION_INVALID).build();
 
 			List<String> msgs = pubBO.create(form, httpRequest);
-			msgs.add(form.getFileId().toString());
+			// Issue 80: NPE thrown in msgs.add.
+			System.out.println("Issue 80 debug msgs " + msgs);
+			if (msgs != null) {
+				for (int i = 0; i < msgs.size(); i++) {
+					System.out.println("Issue 80 debug message " + msgs.get(i));
+				}
+			}
+			System.out.println("Issue 80 debug form " + form);
+			if (form != null) {
+				System.out.println("Issue 80 debug fileID " + form.getFileId());
+			}
+			// END Issue 80 debug code
+			// Should fix 80:
+			Long fileID = form.getFileId();
+			msgs.add((fileID == null) ? "No file provided" : fileID.toString());
+			// This is a hack to band-aid issue 80. We want the error message to go back and get displayed, but it is
+			// unclear what other messages may be returned that represent errors to report. The only reason 80 got an
+			// error message shown at all was that it invoked an NPE
+			// Also, returning a 500 error for a client error (40x) is bogus, but minimizing difference for now.
+			if ((fileID == null) && (msgs != null) && !msgs.isEmpty()) {
+				return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(CommonUtil.wrapErrorMessageInList("Error while submitting the publication " + msgs.get(0))).build();
+			}
 
 			return Response.ok(msgs).header("Access-Control-Allow-Credentials", "true").header("Access-Control-Allow-Origin", "*").header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS").header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization").build();
 		} catch (Exception e) {
@@ -253,6 +291,8 @@ public class PublicationServices {
 					: Response.ok(result).build();
 		}
 		catch (Exception ioe) {
+			logger.error(ioe.getMessage());
+			ioe.printStackTrace();
 			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(ioe.getMessage()).build();
 		}
 	}	
@@ -277,6 +317,8 @@ public class PublicationServices {
 
 					// return Response.ok(dropdownMap).build();
 		} catch (Exception e) {
+			logger.error(e.getMessage());
+			e.printStackTrace();
 			return Response.status(Response.Status.NOT_FOUND).entity(CommonUtil.wrapErrorMessageInList("Problem getting the publication Id"+ e.getMessage())).build();
 		}
 	}
@@ -304,6 +346,8 @@ public class PublicationServices {
 
 			// return Response.ok(dropdownMap).build();
 		} catch (Exception e) {
+			logger.error(e.getMessage());
+			e.printStackTrace();
 			return Response.status(Response.Status.NOT_FOUND).entity(CommonUtil.wrapErrorMessageInList("Problem retrieving the pubmed information"+ e.getMessage())).build();
 		}
 	}
@@ -316,17 +360,30 @@ public class PublicationServices {
 		try {
 			PublicationBO pubBO = (PublicationBO) SpringApplicationContext.getBean(httpRequest, "publicationBO");
 
+			System.out.println("Bean ID in " + bean.getFileId());
 			if (!SpringSecurityUtil.isUserLoggedIn())
 				return Response.status(Response.Status.UNAUTHORIZED).entity(Constants.MSG_SESSION_INVALID).build();
 
+			if (pubBO == null) {
+				throw new Exception("PublicationServices:saveAccess - PublicationBO is null");
+			}
+
 			SimpleSubmitPublicationBean view = pubBO.saveAccess(bean, httpRequest);
 
+			System.out.println("Bean ID out " + view.getFileId());
 			List<String> errors = view.getErrors();
+			if (errors != null) {
+				for (int i = 0; i < errors.size(); i++) {
+					System.out.println("saveAccess ERROR " + errors.get(i));
+				}
+			}
+
 			return (errors == null || errors.size() == 0) ?
 					Response.ok(view).build() :
 						Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(errors).build();
 		} catch (Exception e) {
 			logger.error(e.getMessage());
+			e.printStackTrace();
 			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(CommonUtil.wrapErrorMessageInList("Error while saving the access to publication " + e.getMessage())).build();
 		}
 	}

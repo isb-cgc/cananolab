@@ -360,6 +360,7 @@ public class SynthesisPurificationBO extends BaseAnnotationBO {
         return synthesisPurificationBean;
     }
 
+
     /**
      * @param httpRequest
      * @param synthesisPurificationBean
@@ -1500,6 +1501,8 @@ public class SynthesisPurificationBO extends BaseAnnotationBO {
                 purityRows.add(row);
             }
             oldPurityBean.setRows(purityRows);
+            oldPurityBean.updateColumnOrder();
+            oldPurityBean.resetPurityDatumCollectionColumnHeaders();
 
             Long purificationId = oldPurityBean.getDomain().getSynthesisPurificationId();
             SynthesisPurification purification =

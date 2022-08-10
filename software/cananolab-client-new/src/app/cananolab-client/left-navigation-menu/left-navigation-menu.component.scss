@@ -1,0 +1,12 @@
+// -------------------------------------------------------------------------
+// ---------------------  "Navigation Tree" top left  ----------------------
+// ---------------  (General Info, Composition, Publication)  --------------
+// ---------------------  @TODO This will be dynamic  ----------------------
+// -------------------------------------------------------------------------
+
+@import "../left-static-menu/left-static-menu.component";
+
+.current-selected-item{
+    color: #000;
+    background-color: #fff;
+}

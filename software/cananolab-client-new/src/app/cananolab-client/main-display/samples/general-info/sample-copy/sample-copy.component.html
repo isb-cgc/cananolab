@@ -1,0 +1,61 @@
+<canano-main-display-heading
+    [helpUrl]="helpUrl"
+    [toolHeadingName]="toolHeadingNameSearchSample"
+>
+</canano-main-display-heading>
+
+<div class="mainSection">
+    <div class="error" *ngIf="errors['error']">
+        {{errors['error']}}
+    </div>
+    <div class="mainBorder">
+    <table class="dataMain copy">
+        <tr>
+            <td class="label">
+                <label for="sampleName">
+                    Existing Sample*
+                </label>
+            </td>
+            <td>
+                <input type="text" name="sampleName" id="sampleName" [(ngModel)]="sampleName" size="60">
+            </td>
+        </tr>
+        <tr>
+            <td class="label">
+                <label for="newSampleName">
+                    New Sample*
+                </label>
+            </td>
+            <td>
+                <input type="text" name="newSampleName" id="newSampleName" [(ngModel)]="newSampleName" size="60">
+            </td>
+        </tr>
+        <tr>
+            <td class="label">
+                <label for="existingSamples">
+                    Existing Samples
+                </label>
+            </td>
+            <td>
+                <span>
+                    <select class="multiple" name="nameMenu" id="nameMenu" size="10" [(ngModel)]="sampleName">
+                            <option [ngValue]="nm" *ngFor="let nm of sampleNames" (click)="selectSampleName(nm)">
+                                {{nm}}
+                            </option>
+                    </select>
+                </span>
+            </td>
+        </tr>
+    </table>
+</div>
+<div>
+    <table class="dataMain submit">
+        <tr>
+            <td>
+                <button (click)="reset()" class="btn-canano btn-canano-danger btn-canano-lg mr-1">Reset</button>
+                <button [disabled]="sampleName=='' || newSampleName==''" (click)="onSubmitCopyClicked()" class="btn-canano btn-canano-primary btn-canano-lg mr-1">Submit</button>
+            </td>
+        </tr>
+    </table>
+</div>
+</div>

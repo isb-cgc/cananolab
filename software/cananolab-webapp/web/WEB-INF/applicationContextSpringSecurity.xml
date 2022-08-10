@@ -35,6 +35,7 @@
 
 		<intercept-url pattern="/rest/sample/searchSample" access="permitAll" />
 		<intercept-url pattern="/rest/sample/viewDataAvailability" access="permitAll" />
+		<intercept-url pattern="/rest/sample/getCharacterizationByType" access="permitAll" />
 		<intercept-url pattern="/rest/sample/getCurrentSampleName" access="permitAll" />
 		<intercept-url pattern="/rest/sample/view" access="permitAll" />
 		<intercept-url pattern="/rest/sample/downloadImage" access="permitAll" />

@@ -28,6 +28,7 @@ import gov.nih.nci.cananolab.service.protocol.ProtocolService;
 import gov.nih.nci.cananolab.service.publication.PublicationService;
 import gov.nih.nci.cananolab.service.sample.SampleService;
 import gov.nih.nci.cananolab.util.StringUtils;
+import gov.nih.nci.cananolab.restful.util.AppPropertyUtil;
 
 @Component("customSearchServiceHelper")
 public class CustomSearchServiceHelper
@@ -50,7 +51,7 @@ public class CustomSearchServiceHelper
 		DirectoryReader directoryReader = null;
 		try {
 			results = new ArrayList<CustomSearchBean>();
-			fsDirectory = FSDirectory.open(new File("indexDir"));
+			fsDirectory = FSDirectory.open(new File(AppPropertyUtil.getAppProperty("INDEX_FILE_PATH")));
 			directoryReader = DirectoryReader.open(fsDirectory);
 			  
 		    IndexSearcher searcher = new IndexSearcher(directoryReader);
@@ -147,7 +148,7 @@ public class CustomSearchServiceHelper
 		try {
 			results = new ArrayList<CustomSearchBean>();	
 			  
-			fsDirectory = FSDirectory.open(new File("indexDir"));
+			fsDirectory = FSDirectory.open(new File(AppPropertyUtil.getAppProperty("INDEX_FILE_PATH")));
 			directoryReader = DirectoryReader.open(fsDirectory);
 			  
 		    IndexSearcher searcher = new IndexSearcher(directoryReader);
@@ -210,7 +211,7 @@ public class CustomSearchServiceHelper
 			
 			results = new ArrayList<CustomSearchBean>();	
 			
-			fsDirectory = FSDirectory.open(new File("indexDir"));
+			fsDirectory = FSDirectory.open(new File(AppPropertyUtil.getAppProperty("INDEX_FILE_PATH")));
 			directoryReader = DirectoryReader.open(fsDirectory);
 			  
 		    IndexSearcher searcher = new IndexSearcher(directoryReader);
