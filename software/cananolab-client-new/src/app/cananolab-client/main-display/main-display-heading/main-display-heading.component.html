@@ -24,7 +24,8 @@
 
     <span *ngIf="exportXML"
         class="float-right clicker mr-2"
-        title="Exports over 200 records may time out."
+        matTooltip="Exports over 200 records may time out."
+        matTooltipClass="canano-tooltip"
     (click)="exportAsXML()"
     >Export (XML)
     </span>
@@ -32,14 +33,16 @@
 
     <span *ngIf="exportJSON"
         class="float-right clicker mr-2"
-          title="Exports over 200 records may time out."
+          matTooltip="Exports over 200 records may time out."
+          matTooltipClass="canano-tooltip"
     (click)="exportAsJSON()"
     >Export (JSON)
     </span>
 
     <span *ngIf="export"
         class="float-right clicker mr-2"
-          title="Exports over 200 records may time out."
+          matTooltip="Exports over 200 records may time out."
+          matTooltipClass="canano-tooltip"
     (click)="exportAsXLS()"
     >Export
     </span>
