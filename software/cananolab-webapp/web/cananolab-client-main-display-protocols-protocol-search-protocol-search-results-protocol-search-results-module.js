@@ -518,7 +518,7 @@ class ProtocolSearchResultsComponent {
         this.searchResultsPageToDisplay = this.searchResults.slice(this.pageLength * this.currentPage, this.pageLength * (this.currentPage + 1));
     }
     formatFileField(data) {
-        console.log(data);
+        //console.log(data)
         data = data.replace(/(^[^\/])/, "/$1");
         return data;
     }

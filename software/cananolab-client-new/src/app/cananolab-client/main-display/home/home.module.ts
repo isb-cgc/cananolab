@@ -6,6 +6,8 @@ import { SharedModule } from '../../common/modules/set-object-value/shared.modul
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BrowseCananolabModule } from './browse-cananolab/browse-cananolab.module';
 import { RightSideBarModule } from './right-side-bar/right-side-bar.module';
+
+
 @NgModule({
     declarations: [HomeComponent],
     imports: [

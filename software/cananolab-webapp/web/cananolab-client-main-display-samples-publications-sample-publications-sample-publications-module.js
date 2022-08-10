@@ -340,7 +340,7 @@ class SamplePublicationsComponent {
             ;
             let url = this.apiService.doGet(_constants__WEBPACK_IMPORTED_MODULE_2__["Consts"].QUERY_PUBLICATION_SUMMARY_VIEW, 'sampleId=' + this.sampleId);
             url.subscribe(data => {
-                console.log(data);
+                //console.log(data)
                 this.data = data;
                 this.propertiesLoaded = true;
                 _assets_properties__WEBPACK_IMPORTED_MODULE_1__["Properties"].SAMPLE_TOOLS = true;

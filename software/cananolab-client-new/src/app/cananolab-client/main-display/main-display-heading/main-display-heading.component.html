@@ -22,10 +22,9 @@
     >Help
     </span>
 
-
-
     <span *ngIf="exportXML"
         class="float-right clicker mr-2"
+        title="Exports over 200 records may time out."
     (click)="exportAsXML()"
     >Export (XML)
     </span>
@@ -33,12 +32,14 @@
 
     <span *ngIf="exportJSON"
         class="float-right clicker mr-2"
+          title="Exports over 200 records may time out."
     (click)="exportAsJSON()"
     >Export (JSON)
     </span>
 
     <span *ngIf="export"
         class="float-right clicker mr-2"
+          title="Exports over 200 records may time out."
     (click)="exportAsXLS()"
     >Export
     </span>

@@ -390,7 +390,7 @@ class SampleSearchResultsComponent {
     }
     onAvailabilityClick(id) {
         this.apiService
-            .doGet(_constants__WEBPACK_IMPORTED_MODULE_1__["Consts"].QUERY_SAMPLE_AVAILABILITY, 'sampleId=' + id)
+            .doGet(_constants__WEBPACK_IMPORTED_MODULE_1__["Consts"].QUERY_SAMPLE_VIEW_AVAILABILITY, 'sampleId=' + id)
             .subscribe((data) => {
             this.sampleAvailabilityDisplayService.displayStuff(data);
         }, (err) => {

@@ -1793,7 +1793,6 @@ class SampleEditComponent {
         this.sampleId = -1;
         this.toolHeadingNameSearchSample = 'Update Sample';
         this.submitReviewButton = true;
-        this.piiConfirmed = false;
     }
     ngOnInit() {
         this.navigationService.setCurrentSelectedItem(0);
@@ -1810,7 +1809,7 @@ class SampleEditComponent {
             this.getSampleEditData().subscribe(data => {
                 _assets_properties__WEBPACK_IMPORTED_MODULE_2__["Properties"].SAMPLE_TOOLS = true;
                 this.data = data;
-                console.log(data);
+                //console.log(data)
                 this.data.keywords = this.joinKeywords(this.data.keywords);
                 this.dataTrailer = JSON.parse(JSON.stringify(this.data));
                 _assets_properties__WEBPACK_IMPORTED_MODULE_2__["Properties"].CURRENT_SAMPLE_NAME = data['sampleName'];
