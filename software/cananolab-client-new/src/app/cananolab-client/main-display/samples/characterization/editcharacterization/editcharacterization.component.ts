@@ -85,7 +85,7 @@ export class EditcharacterizationComponent implements OnInit {
                             this.data = data;
                             this.data.name='';
                             this.data.assayType='';
-                            this.data.characterizationDate=null,
+                            this.data.characterizationDate=new Date(),
                             this.setCharacterizationData();
                             if (this.data.type=='other') {
                                 this.addOtherValue('type',this.data.type)
@@ -106,6 +106,9 @@ export class EditcharacterizationComponent implements OnInit {
 
                             this.data = data;
                             this.propertiesLoaded=true;
+                            if (!this.data.characterizationDate) {
+                                this.data.characterizationDate=new Date()
+                            }
                             this.setCharacterizationData();
                         },
                         error=> {
