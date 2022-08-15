@@ -13,6 +13,7 @@ import { ApiService } from '../../common/services/api.service';
 import { Consts } from '../../../constants';
 import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
+
 @Component( {
     selector: 'canano-main-display-heading',
     templateUrl: './main-display-heading.component.html',
@@ -75,6 +76,10 @@ export class MainDisplayHeadingComponent implements OnInit, OnDestroy{
            case TopMenuItems.SAMPLES:
                 this.helpUrl = 'https://wiki.nci.nih.gov/display/caNanoLab/Managing+Samples+in+caNanoLab#ManagingSamplesincaNanoLab-ManageSamples';
                 break;
+
+           case TopMenuItems.SEARCH_SAMPLES_BY_PUBLICATIONS:
+               this.helpUrl = 'https://wiki.nci.nih.gov/display/caNanoLab/Searching+Existing+Samples';
+               break;
 
            case TopMenuItems.PUBLICATIONS:
                 this.helpUrl = 'https://wiki.nci.nih.gov/x/e4QfEQ';
