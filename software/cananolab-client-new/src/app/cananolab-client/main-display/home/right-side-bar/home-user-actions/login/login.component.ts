@@ -14,6 +14,7 @@ export class LoginComponent implements OnInit{
     password = '';
     homePage = true;
     loaded=false;
+    showResetPassword=false;
     constructor( private idleService:IdleService,private router:Router,private apiService: ApiService, private statusDisplayService: StatusDisplayService ){
     }
 
@@ -30,5 +31,13 @@ export class LoginComponent implements OnInit{
         this.statusDisplayService.updateUser( this.user );
         this.idleService.startTimer();
         this.router.navigateByUrl('home');
+    }
+
+    toggleResetPassword() {
+        this.showResetPassword=!this.showResetPassword;
+        return false;
+    }
+
+    onResetClick() {
     }
 }
