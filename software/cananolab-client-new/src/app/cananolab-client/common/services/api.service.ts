@@ -19,6 +19,7 @@ import { TopMainMenuService } from '../../top-main-menu/top-main-menu.service';
 export class ApiService{
 
     currentlyAuthenticatingUser = false;
+    currentlyResettingUserPassword = false;
 
     constructor( private httpClient: HttpClient, private utilService: UtilService,
                  private router: Router, private topMainMenuService: TopMainMenuService ){
@@ -344,7 +345,42 @@ export class ApiService{
 
     }
 
+    /**
+     * Request the server to reset the user's password.
+     *
+     * @param email
+     */
+    resetUserPassword(email) {
+        if (this.currentlyResettingUserPassword) {
+            return;
+        }
 
+        if (email.length == 0) {
+            return;
+        }
+        
+        this.currentlyResettingUserPassword = true;
+
+        let get_url = Properties.API_SERVER_URL + '/' + Consts.RESET_PASSWORD_URL;
+        get_url = get_url.replace(/(?<!:)\/+/g, "/");
+        get_url += '?email=' + email;
+
+        // let headers = new HttpHeaders();
+
+        let options = {
+            // method: 'get',
+        } 
+
+        this.httpClient.get(get_url).pipe(timeout(Properties.HTTP_TIMEOUT)).subscribe(
+            (resetPwdReturnData) => {
+                this.currentlyResettingUserPassword = false;
+            },
+            (err) => {
+                alert('Reset password error[' + err.status + ']: ' + '\n' + err.message);
+                this.currentlyResettingUserPassword = false;
+            }
+        );
+    }
 }
 
 /*

@@ -12,6 +12,7 @@ export class LoginComponent implements OnInit{
 
     user = '';
     password = '';
+    email = '';
     homePage = true;
     loaded=false;
     showResetPassword=false;
@@ -27,7 +28,7 @@ export class LoginComponent implements OnInit{
     }
 
     onLoginClick(){
-        this.apiService.authenticateUser( this.user, this.password )
+        this.apiService.authenticateUser( this.user, this.password );
         this.statusDisplayService.updateUser( this.user );
         this.idleService.startTimer();
         this.router.navigateByUrl('home');
@@ -39,5 +40,8 @@ export class LoginComponent implements OnInit{
     }
 
     onResetClick() {
+        this.apiService.resetUserPassword(this.email);
+        this.idleService.startTimer();
+        console.log(this.email);
     }
 }

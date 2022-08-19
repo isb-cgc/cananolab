@@ -67,6 +67,7 @@ public class UserSelfManageServices
 				else
 					throw new Exception("Username is required to create a password reset token.");
 
+				// TODO Mi: Send email to the user
 //				userService.createPasswordResetTokenForUser(user, token);
 //				mailSender.send(constructResetTokenEmail(getAppUrl(request),
 //						request.getLocale(), token, user));
