@@ -134,7 +134,7 @@ public class UserSelfManageServices
 				String baseUrl = "http://" + URI.create(httpRequest.getRequestURL().toString()).getHost();
 
 				// TODO: for local
-				redirectUri = baseUrl + ":8080/#/changePassword?token=" + token;
+				redirectUri = baseUrl + ":8080/#/change-password?token=" + token;
 //				redirectUri = "/updatePassword";
 
 				return Response.seeOther(new URI(redirectUri)).build();
