@@ -3,7 +3,7 @@ export const Consts = {
 
     waitTime: 11,
     timeoutWarning: 300,
-    sessionTimeInSeconds: 1800,
+    sessionTimeInSeconds: 600,
     loadingMessage:'Loading Data',
     searchingMessage:'Searching',
     serverlUrl:'/',
