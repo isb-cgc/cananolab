@@ -10,7 +10,7 @@ services:
       - "8080:8080"
       - "19990:19990"
     environment:
-      nano_db: canano-db:3306/canano
+      nano_db: canano-db:3306/canano?enabledTLSProtocols=TLSv1.2&serverTimezone=UTC
       nano_user: root
       nano_password: password
     networks:

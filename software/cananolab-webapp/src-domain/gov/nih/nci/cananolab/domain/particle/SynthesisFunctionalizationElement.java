@@ -2,10 +2,14 @@ package gov.nih.nci.cananolab.domain.particle;
 
 import gov.nih.nci.cananolab.domain.common.File;
 import gov.nih.nci.cananolab.domain.common.Supplier;
+import java.io.Serializable;
+import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 
-import java.util.*;
 
-public class SynthesisFunctionalizationElement {
+
+public class SynthesisFunctionalizationElement implements Serializable {
 
     private Long synthesisFunctionalizationElementPkId;
     private Long synthesisFunctionalizationId;

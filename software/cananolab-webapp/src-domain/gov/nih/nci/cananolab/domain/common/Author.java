@@ -24,6 +24,13 @@ public class Author implements Serializable {
      **/
 
     private java.util.Date createdDate;
+
+    /**
+     *
+     **/
+
+    private java.util.Date updatedDate;
+
     /**
      *
      **/
@@ -84,6 +91,24 @@ public class Author implements Serializable {
 
     public void setCreatedDate(java.util.Date createdDate) {
         this.createdDate = createdDate;
+    }
+
+    /**
+     * Retrieves the value of the updatedDate attribute
+     *
+     * @return updatedDate
+     **/
+
+    public java.util.Date getUpdatedDate() {
+        return updatedDate;
+    }
+
+    /**
+     * Sets the value of updatedDate attribute
+     **/
+
+    public void setUpdatedDate(java.util.Date updatedDate) {
+        this.updatedDate = updatedDate;
     }
 
     /**

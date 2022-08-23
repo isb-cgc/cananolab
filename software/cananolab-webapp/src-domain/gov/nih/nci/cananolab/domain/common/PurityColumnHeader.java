@@ -1,11 +1,12 @@
 package gov.nih.nci.cananolab.domain.common;
 
+import java.io.Serializable;
 import java.util.Date;
 
-public class PurityColumnHeader {
+public class PurityColumnHeader implements Serializable {
     private Long id;
     private String name;
-    private String property;
+    private String conditionProperty;
     private String valueType;
     private String valueUnit;
     private String createdBy;
@@ -30,12 +31,12 @@ public class PurityColumnHeader {
         this.name = name;
     }
 
-    public String getProperty() {
-        return property;
+    public String getConditionProperty() {
+        return conditionProperty;
     }
 
-    public void setProperty(String property) {
-        this.property = property;
+    public void setConditionProperty(String property) {
+        this.conditionProperty = property;
     }
 
     public String getValueType() {

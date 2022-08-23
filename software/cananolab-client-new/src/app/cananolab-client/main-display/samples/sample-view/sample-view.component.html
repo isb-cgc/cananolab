@@ -1,0 +1,84 @@
+<canano-main-display-heading
+    [helpUrl]="helpUrl"
+    [toolHeadingName]="toolHeadingNameViewSample"
+    [exportXML]="true" [exportJSON]="true" [sampleIds]="[sampleId]" (downloadReady)="downloadReady($event)" [backUrl]="'home/samples/sample-search'">
+</canano-main-display-heading>
+<div class="mainSection">
+    <canano-loader [loading]="loading" [message]="'Exporting Data'">
+
+    </canano-loader>
+<div class="mainBorder">
+    <table class="dataMain">
+        <tr>
+            <td class="label">
+                Sample Name
+            </td>
+            <td>
+                {{sampleData['sampleName']}}
+            </td>
+        </tr>
+        <tr>
+            <td class="label">
+                Created Date
+            </td>
+            <td>
+                  {{dateFormat(sampleData['createdDate'])}}
+            </td>
+        </tr>
+        <tr>
+            <td class="label">
+                Keywords
+            </td>
+            <td>
+                <div *ngFor="let keyword of keyWords">
+                    {{keyword}}
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td class="label">
+                Point of Contacts
+            </td>
+            <td>
+                <table class="dataTable">
+                    <tr>
+                        <th>
+                            Primary Contact
+                        </th>
+                        <th>
+                            Contact Person
+                        </th>
+                        <th>
+                            Organization
+                        </th>
+                        <th>
+                            Role
+                        </th>
+                    </tr>
+                    <tr *ngFor="let contact of pointOfContacts">
+                        <td>
+                            <ng-container *ngIf="contact.primaryContact">
+                                Yes
+                            </ng-container>
+                            <ng-container *ngIf="!contact.primaryContact">
+                                No
+                            </ng-container>
+                        </td>
+                        <td>
+                            {{contact.contactPerson}}
+                        </td>
+                        <td>
+                            <span [innerHtml]="contact.organizationDisplayName">
+                                Org Name
+                            </span>
+                        </td>
+                        <td>
+                            {{contact.role}}
+                        </td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+    </table>
+</div>
+</div>

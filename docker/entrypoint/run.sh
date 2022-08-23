@@ -18,7 +18,7 @@ fi
 echo "entering cananolab directory"
 cd /usr/local/cananolab
 echo "pulling latest code from github"
-git checkout synthesis
+git checkout master
 git pull 
 
 JBOSS_HOME=/opt/wildfly-8.2.1.Final

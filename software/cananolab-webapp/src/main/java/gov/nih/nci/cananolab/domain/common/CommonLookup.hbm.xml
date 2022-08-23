@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--L
+   Copyright Leidos
+   Copyright Leidos Biomedical
+
+   Distributed under the OSI-approved BSD 3-Clause License.
+   See http://ncip.github.com/cananolab/LICENSE.txt for details.
+L-->
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping package="gov.nih.nci.cananolab.domain.common" auto-import="false">
+	<class name="CommonLookup" table="common_lookup" lazy="true" polymorphism="explicit">
+		<cache usage="read-write" />
+		<id name="id" type="long" column="common_lookup_pk_id">
+			<generator class="increment">
+			</generator>
+		</id>
+		<!-- Attributes mapping for the CommonLookup class -->
+		<property name="attribute" type="string" column="attribute"/>
+		<property name="name" type="string" column="name"/>
+		<property name="value" type="string" column="value"/>
+	</class>
+</hibernate-mapping>

@@ -20,6 +20,10 @@ public class Synthesis implements Serializable {
     	synthesisPurifications.add(synthesisPurification);
     }
 
+    public void removeFunctionalization(SynthesisFunctionalization synthesisFunctionalization) {
+		synthesisFunctionalizations.remove(synthesisFunctionalization);
+    }
+
     public void removePurification(SynthesisPurification synthesisPurification){
     	synthesisPurifications.remove(synthesisPurification);
 	}
