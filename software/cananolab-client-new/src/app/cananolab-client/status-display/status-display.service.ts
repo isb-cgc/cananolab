@@ -36,6 +36,8 @@ export class StatusDisplayService{
         //  this.apiService.doPost( Consts.QUERY_SEARCH, 'keyword=' + this.topKeyWordSearchText ).subscribe(
             this.apiService.doGet( Consts.QUERY_GET_USER_GROUPS, '' ).subscribe(
                 data => {
+                    console.log("User groups response:");
+                    console.log(data);
                     // Set user as "Logged in"
                     Properties.logged_in = true;
                     this.updateGroupEmitter.emit(data)
