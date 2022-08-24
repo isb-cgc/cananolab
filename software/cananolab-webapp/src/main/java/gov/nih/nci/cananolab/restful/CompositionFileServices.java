@@ -38,8 +38,9 @@ public class CompositionFileServices {
 			return Response.ok(dropdownMap).header("Access-Control-Allow-Credentials", "true").header("Access-Control-Allow-Origin", "*")
 					.header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS").header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization").build();
 		} catch (Exception e) {
+			logger.error(e.getMessage());
+			e.printStackTrace();
 			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(CommonUtil.wrapErrorMessageInList("Error while setting up drop down lists" + e.getMessage())).build();
-
 		}
 	}
 	
@@ -62,6 +63,8 @@ public class CompositionFileServices {
 						Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(errors).build();
 			
 		} catch (Exception e) {
+			logger.error(e.getMessage());
+			e.printStackTrace();
 			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(CommonUtil.wrapErrorMessageInList("Error while viewing the Composition File " + e.getMessage())).build();
 
 		}
@@ -81,6 +84,8 @@ public class CompositionFileServices {
 			
 			return Response.ok(msgs).header("Access-Control-Allow-Credentials", "true").header("Access-Control-Allow-Origin", "*").header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS").header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization").build();		
 		} catch (Exception e) {
+			logger.error(e.getMessage());
+			e.printStackTrace();
 			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(CommonUtil.wrapErrorMessageInList("Error while submitting the Composition File" + e.getMessage())).build();
 		}
 	}
@@ -100,6 +105,8 @@ public class CompositionFileServices {
 			
 			return Response.ok(msgs).header("Access-Control-Allow-Credentials", "true").header("Access-Control-Allow-Origin", "*").header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS").header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization").build();
 		} catch (Exception e) {
+			logger.error(e.getMessage());
+			e.printStackTrace();
 			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(CommonUtil.wrapErrorMessageInList("Error while deleting the Composition File" + e.getMessage())).build();
 		}
 	}

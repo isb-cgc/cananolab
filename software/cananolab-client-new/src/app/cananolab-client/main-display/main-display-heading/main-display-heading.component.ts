@@ -77,6 +77,10 @@ export class MainDisplayHeadingComponent implements OnInit, OnDestroy{
                 this.helpUrl = 'https://wiki.nci.nih.gov/display/caNanoLab/Managing+Samples+in+caNanoLab#ManagingSamplesincaNanoLab-ManageSamples';
                 break;
 
+           case TopMenuItems.SEARCH_SAMPLES_BY_PUBLICATIONS:
+               this.helpUrl = 'https://wiki.nci.nih.gov/display/caNanoLab/Searching+Existing+Samples';
+               break;
+
            case TopMenuItems.PUBLICATIONS:
                 this.helpUrl = 'https://wiki.nci.nih.gov/x/e4QfEQ';
                 break;

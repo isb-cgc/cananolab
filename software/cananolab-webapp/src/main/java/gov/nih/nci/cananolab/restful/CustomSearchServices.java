@@ -36,8 +36,9 @@ public class CustomSearchServices {
 
 			// return Response.ok(dropdownMap).build();
 		} catch (Exception e) {
+			logger.error(e.getMessage());
+			e.printStackTrace();
 			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(CommonUtil.wrapErrorMessageInList("Error while setting up drop down lists" + e.getMessage())).build();
-
 		}
 	}
 
