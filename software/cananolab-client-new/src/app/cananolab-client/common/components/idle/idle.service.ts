@@ -61,7 +61,6 @@ export class IdleService {
                     this.theTimer = this.timer.subscribe(data=> {
                         this.activeTimer.emit(data);
                     });
-
                 }
                 else {
                     if (this.theTimer) {

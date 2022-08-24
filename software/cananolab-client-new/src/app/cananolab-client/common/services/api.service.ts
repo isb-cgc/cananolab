@@ -141,8 +141,7 @@ export class ApiService{
     doPost0( queryType, query: any ): Observable<any>{
         if( typeof query === 'object' ){
             query = JSON.stringify( query ); // .replace(/^{"/, '').replace(/"}$/, '')
-        }else{
-
+        } else {
             let re = /&/g;
             query = query.replace( re, '\',\'' );
 
@@ -156,9 +155,8 @@ export class ApiService{
         // Test mode, return hard coded test data
         if( Properties.TEST_MODE ){
             return this.doTestPost( queryType, query );  // @FIXME Return this as a promise
-        }else
+        } else {
             // Not Test mode
-        {
             let simpleSearchUrl = Properties.API_SERVER_URL + '/' + queryType;
             simpleSearchUrl = simpleSearchUrl.replace(/(?<!:)\/+/g, "/");
             if( Properties.DEBUG_CURL ){
@@ -176,13 +174,12 @@ export class ApiService{
 
 
             // These are returned as text not JSON (which is the default return format).
-            if( queryType === Consts.LOGIN_URL || queryType === Consts.QUERY_CREATE_PROTOCOL
-            ){
+            if( queryType === Consts.LOGIN_URL || queryType === Consts.QUERY_CREATE_PROTOCOL) {
                 options = {
                     headers: headers,
                     responseType: 'text' as 'text'
                 };
-            }else{
+            } else {
                 options = {
                     headers: headers
                 };
@@ -217,8 +214,8 @@ export class ApiService{
                 'Content-Type': 'application/x-www-form-urlencoded',
                 'Access-Control-Allow-Origin': '*',  // @CHECKME
             } );
-       let results;
 
+            let results;
             let options;
 
             if( queryType !== Consts.QUERY_SAMPLE_AVAILABILITY_HTML){
@@ -226,7 +223,7 @@ export class ApiService{
                     headers: headers,
                     method: 'get'
                 };
-            }else{
+            } else {
                 options = {
                     headers: headers,
                     method: 'get',
@@ -240,8 +237,6 @@ export class ApiService{
 
             return results;
         }
-
-
     }
 
     /**
@@ -263,15 +258,11 @@ export class ApiService{
      */
     doTestGet( queryType, query ): Observable<string>{
         let retPromise = new Observable<string>( null );
-
         switch( queryType ){
             case Consts.QUERY_GET_TABS:
                 retPromise = of( TestData.QUERY_GET_TABS );
                 break;
-
-
         }
-
         return retPromise;
     }
 
@@ -283,7 +274,7 @@ export class ApiService{
      * @param user
      * @param password
      */
-    authenticateUser( user, password ){
+    authenticateUser( user, password ): Observable<string>{
 
         if( this.currentlyAuthenticatingUser ){
             return;
@@ -301,31 +292,28 @@ export class ApiService{
                 let curl = 'curl  -v -d  \'' + data + '\' ' + ' -k \'' + post_url + '\'';
             }
 
-            let options =
-                {
-                    responseType: <any>'text',
-                    headers: headers,
-                    method: 'post'
-                };
+            let options = {
+                responseType: <any>'text',
+                headers: headers,
+                method: 'post'
+            };
 
             this.httpClient.post( post_url, data, options ).pipe( timeout( Properties.HTTP_TIMEOUT ) ).subscribe(
                 ( loginReturnData ) => {
                     Properties.LOGGED_IN = true;
                     Properties.current_user = user;
-                    let tabs=[];
+                    let tabs = [];
                     this.getTabs().subscribe(data=> {
                         data['tabs'].forEach(element => {
-                            console.log(element[0])
                             tabs.push(element[0].replace(' ','_'));
-                            if (element[0]=='CURATION') {
+                            if (element[0] == 'CURATION') {
                                 tabs.push('RESULTS')
                             }
                         });
                         this.topMainMenuService.showOnlyMenuItems(tabs);
                         this.currentlyAuthenticatingUser = false;
-
+                        return user;
                     });
-
                 },
                 // ERROR
                 ( err ) => {
@@ -335,55 +323,8 @@ export class ApiService{
                     Properties.LOGGED_IN = false;
                 }
             );
-
         }
         // END if user length > 0
-
     }
-
-
 }
 
-/*
-    $scope.loginDo = function () {
-      if (!$scope.password || !$scope.loginId) {
-        $scope.authErrors = "Username and Password are required";
-      } else {
-        $scope.bean = {
-          "username": $scope.loginId,
-          "password": $scope.password
-        };
-        $http({
-          method: 'POST',
-          url: 'login',
-          headers: {
-            'Content-Type': 'application/x-www-form-urlencoded'
-          },
-          transformRequest: function (obj) {
-            var str = [];
-            for (var p in obj)
-              str.push(encodeURIComponent(p) + "=" + encodeURIComponent(obj[p]));
-            return str.join("&");
-          },
-          data: $scope.bean
-        }).
-        then(function (data, status, headers, config) {
-          data = data['data']
-          // this callback will be called asynchronously
-          // when the response is available
-          $rootScope.loggedInUser = data;
-          $scope.loginShow = 0;
-          $location.path("/").replace();
-          // $route.reload();
-
-          //Set tabs here.. Delete on logout. Use variable instead of rest call
-
-        }).
-        catch(function (data, status, headers, config) {
-          data = data['data']
-          $scope.password = '';
-          $scope.authErrors = data;
-        });
-      }
-    }
- */
