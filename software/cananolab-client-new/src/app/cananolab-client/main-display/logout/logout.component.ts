@@ -19,7 +19,7 @@ export class LogoutComponent implements OnInit{
                  private router: Router, private utilService: UtilService ){
     }
 
-    ngOnInit(): void{
+    ngOnInit(): void {
         this.logOut();
         this.properties['LOGGED_IN']=false;
         this.properties['logged_in']=false;
@@ -29,9 +29,7 @@ export class LogoutComponent implements OnInit{
         this.router.navigate( [this.utilService.getRouteByName( 'HOME' )] );
     }
 
-
-    logOut()
-    {
+    logOut() {
         this.apiService.doPost( Consts.QUERY_LOGOUT, '' ).subscribe(
             data => {
                 Properties.LOGGED_IN = false;
@@ -44,6 +42,4 @@ export class LogoutComponent implements OnInit{
         );
         this.idleService.stopTimer();
     }
-
-
 }

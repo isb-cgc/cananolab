@@ -82,8 +82,7 @@ export class ApiService{
 
         if( typeof query === 'object' ){
             query = JSON.stringify( query ); // .replace(/^{"/, '').replace(/"}$/, '')
-        }else{
-
+        } else {
             // Change query to JSON format
             let re = /&/g;
             query = query.replace( re, '\',\'' );
@@ -95,13 +94,11 @@ export class ApiService{
 
             query = '{"' + query + '"}';
         }
-
         // Test mode, return hard coded test data
         if( Properties.TEST_MODE ){
             return this.doTestPost( queryType, query );  // @FIXME Return this as a promise
-        }else
+        } else {
             // Not Test mode
-        {
             let simpleSearchUrl = Properties.API_SERVER_URL + '/' + queryType;
             simpleSearchUrl = simpleSearchUrl.replace(/(?<!:)\/+/g, "/");
             if( Properties.DEBUG_CURL ){
@@ -116,13 +113,13 @@ export class ApiService{
             let options;
 
             // These are returned as text not JSON (which is the default return format).
-            if( queryType === Consts.LOGIN_URL || queryType === Consts.QUERY_CREATE_PROTOCOL
-            ){
+            if( queryType === Consts.LOGIN_URL || queryType === Consts.QUERY_LOGOUT ||
+                queryType === Consts.QUERY_CREATE_PROTOCOL) {
                 options = {
                     headers: headers,
                     responseType: 'text' as 'text'
                 };
-            }else{
+            } else {
                 options = {
                     headers: headers
                 };
