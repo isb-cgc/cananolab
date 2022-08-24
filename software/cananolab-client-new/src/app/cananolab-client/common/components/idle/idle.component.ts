@@ -13,7 +13,7 @@ import { UtilService } from '../../services/util.service';
   styleUrls: ['./idle.component.scss']
 })
 export class IdleComponent implements OnInit {
-    activeTimer;
+    activeTimer=null;
     poppedUp=false;
     timeoutTime;
     constructor(
@@ -27,7 +27,10 @@ export class IdleComponent implements OnInit {
         this.timeoutTime=this.idleService.getTimeoutMessageTime();
         this.idleService.activeTimer.subscribe(data=> {
             this.activeTimer = data;
-            if (this.activeTimer<this.timeoutTime) {
+
+            if (this.activeTimer !== null
+                && this.activeTimer !== undefined
+                && this.activeTimer < this.timeoutTime) {
                 if (this.poppedUp==false) {
                     document.getElementById('timeoutModalButton').click();
                     this.poppedUp=true;
@@ -54,7 +57,7 @@ export class IdleComponent implements OnInit {
 
     convertSecondsToMinutesSeconds() {
         let minutes=Math.floor(this.activeTimer/60);
-        let seconds = this.activeTimer - minutes * 60;
+        let seconds = this.activeTimer - (minutes * 60);
         let timeLeft='';
         timeLeft=minutes.toString()+':';
         if (minutes==0) timeLeft = ':'
