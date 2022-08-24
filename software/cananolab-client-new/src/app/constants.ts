@@ -2,8 +2,8 @@ export const Consts = {
 
 
     waitTime: 11,
-    timeoutWarning: 300,
-    sessionTimeInSeconds: 600,
+    timeoutWarning: 600,
+    sessionTimeInSeconds: 900,
     loadingMessage:'Loading Data',
     searchingMessage:'Searching',
     serverlUrl:'/',

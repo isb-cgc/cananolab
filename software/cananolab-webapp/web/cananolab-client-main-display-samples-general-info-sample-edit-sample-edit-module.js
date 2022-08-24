@@ -1884,7 +1884,6 @@ class SampleEditComponent {
     }
     // set pointer fields to old values when adding other //
     addOtherValue(field, currentValue) {
-        console.log('test');
         this.currentDropdownValues[field] = currentValue;
     }
     ;

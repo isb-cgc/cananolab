@@ -365,7 +365,6 @@ class SampleSearchResultsComponent {
         this.onPageLengthChange();
     }
     navigateToSampleEdit(sampleId) {
-        console.log('test');
         this.router.navigate(['home/samples/sample', sampleId]); // @FIXME  Don't hard code these
     }
     navigateToSampleView(sampleId, sampleName) {

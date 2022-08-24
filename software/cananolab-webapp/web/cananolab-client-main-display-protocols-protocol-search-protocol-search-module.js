@@ -217,7 +217,6 @@ class ProtocolSearchComponent {
     }
     ngOnInit() {
         this.errors = {};
-        console.log('test');
         this.protocolSearchForm = {
             "nameOperand": this.defaultOperand,
             "titleOperand": this.defaultOperand,
