@@ -27,14 +27,15 @@ export class LoginComponent implements OnInit{
     }
 
     onLoginClick(){
-        this.apiService.authenticateUser( this.user, this.password ).subscribe((data) => {
-            this.statusDisplayService.updateUser( data );
+        this.apiService.authenticateUser( this.user, this.password ).then((user) => {
+            this.statusDisplayService.updateUser( user );
             this.idleService.startTimer();
             this.router.navigateByUrl('home');
         },
         // ERROR
         ( err ) => {
-            this.statusDisplayService.updateUser( "anonymousUser" );
+            console.log(err);
+            this.statusDisplayService.updateUser( "guest" );
             this.idleService.stopTimer();
         });
     }

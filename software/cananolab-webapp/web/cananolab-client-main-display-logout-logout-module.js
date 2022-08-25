@@ -106,6 +106,7 @@ class LogoutComponent {
     logOut() {
         this.apiService.doPost(_constants__WEBPACK_IMPORTED_MODULE_1__["Consts"].QUERY_LOGOUT, '').subscribe(data => {
             _assets_properties__WEBPACK_IMPORTED_MODULE_2__["Properties"].LOGGED_IN = false;
+            _assets_properties__WEBPACK_IMPORTED_MODULE_2__["Properties"].logged_in = false;
             this.statusDisplayService.updateUser('guest');
         }, err => {
             this.statusDisplayService.updateUser('unknown'); // CHECKME

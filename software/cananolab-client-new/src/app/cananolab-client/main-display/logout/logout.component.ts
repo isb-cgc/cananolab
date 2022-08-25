@@ -21,8 +21,8 @@ export class LogoutComponent implements OnInit{
 
     ngOnInit(): void {
         this.logOut();
-        this.properties['LOGGED_IN']=false;
-        this.properties['logged_in']=false;
+        this.properties['LOGGED_IN'] = false;
+        this.properties['logged_in'] = false;
         this.topMainMenuService.showOnlyMenuItems([
             'HOME','HELP','GLOSSARY','PROTOCOLS','SAMPLES','PUBLICATIONS','LOGIN'
         ])
@@ -33,6 +33,7 @@ export class LogoutComponent implements OnInit{
         this.apiService.doPost( Consts.QUERY_LOGOUT, '' ).subscribe(
             data => {
                 Properties.LOGGED_IN = false;
+                Properties.logged_in = false;
                 this.statusDisplayService.updateUser( 'guest' );
             },
             err => {
