@@ -71,6 +71,7 @@ export class IdleComponent implements OnInit {
     }
 
     logout(){
+        console.log("Idler logging out.");
         this.poppedUp=false;
         document.getElementById('timeoutModalButtonClose').click();
         this.apiService.doPost( Consts.QUERY_LOGOUT, '' ).subscribe(
