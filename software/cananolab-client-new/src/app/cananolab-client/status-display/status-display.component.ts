@@ -1,8 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { StatusDisplayService } from './status-display.service';
-import { timeout } from 'rxjs/operators';
+import { timeoutWith } from 'rxjs/operators';
 import { Properties } from '../../../assets/properties';
 import { TopMainMenuService } from '../top-main-menu/top-main-menu.service';
+import { throwError } from "rxjs";
+
+
 @Component({
   selector: 'canano-status-display',
   templateUrl: './status-display.component.html',
@@ -15,7 +18,9 @@ export class StatusDisplayComponent implements OnInit {
   constructor(private topMainMenuService:TopMainMenuService,private statusDisplayService: StatusDisplayService) { }
 
   ngOnInit(): void {
-    this.statusDisplayService.updateUserEmitter.pipe( timeout( Properties.HTTP_TIMEOUT ) ).subscribe(
+    this.statusDisplayService.updateUserEmitter.pipe(
+        timeoutWith(Properties.HTTP_TIMEOUT, throwError(new Error("Didn't see user update!")))
+    ).subscribe(
     data => {
         console.log("Saw username of:");
         console.log(data);
