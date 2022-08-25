@@ -76,6 +76,7 @@ export class IdleComponent implements OnInit {
         this.apiService.doPost( Consts.QUERY_LOGOUT, '' ).subscribe(
             data => {
                 Properties.LOGGED_IN = false;
+                Properties.logged_in = false;
                 this.statusDisplayService.updateUser( 'guest' );
             }
         );

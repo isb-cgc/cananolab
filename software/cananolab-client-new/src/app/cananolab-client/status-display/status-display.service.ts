@@ -39,6 +39,7 @@ export class StatusDisplayService{
                     console.log("User groups response:");
                     console.log(data);
                     // Set user as "Logged in"
+                    Properties.LOGGED_IN = true;
                     Properties.logged_in = true;
                     this.updateGroupEmitter.emit(data)
                 },
@@ -46,8 +47,6 @@ export class StatusDisplayService{
                     console.log( 'ERROR getUserGroups: ', err );
                 } );
         },200)
-
-
     }
 
 }
