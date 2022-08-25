@@ -276,7 +276,7 @@ export class ApiService {
      * @param password
      */
     authenticateUser(user, password): Promise<string> {
-        if(user.length <= 0 && password.length <= 0) {
+        if(user.length <= 0 || password.length <= 0) {
             this.authPromise = Promise.reject("Username or password not provided!");
         } else {
             if(!this.currentlyAuthenticatingUser) {
