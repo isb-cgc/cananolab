@@ -42,7 +42,6 @@ export class IdleService {
         this.startTimer();
     }
 
-
     stopTimer() {
         if (this.theTimer) {
             this.theTimer.unsubscribe();
@@ -65,7 +64,7 @@ export class IdleService {
                 else {
                     if (this.theTimer) {
                         this.theTimer.unsubscribe();
-                    };
+                    }
                 }
             })
         },100)
