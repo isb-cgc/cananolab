@@ -9,6 +9,8 @@ import { StatusDisplayService } from '../../../../../status-display/status-displ
 import { ApiService } from '../../../../../common/services/api.service';
 import { SampleAvailabilityDisplayService } from './sample-availability-display/sample-availability-display.service';
 import { Router } from '@angular/router';
+import { timeoutWith } from 'rxjs/operators'
+import { throwError } from 'rxjs'
 
 @Component({
     selector: 'canano-sample-search-results',
@@ -80,7 +82,7 @@ export class SampleSearchResultsComponent implements OnInit, OnDestroy {
             });
 
         this.statusDisplayService.updateUserEmitter
-            .pipe(timeout(Properties.HTTP_TIMEOUT))
+            .pipe(timeoutWith(Properties.HTTP_TIMEOUT, throwError(new Error("Didn't see user update!"))))
             .subscribe((data) => {
                 this.userName = data;
             });
