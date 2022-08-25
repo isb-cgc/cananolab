@@ -8,6 +8,9 @@ import { StatusDisplayService } from '../../../../status-display/status-display.
 import { Subject } from 'rxjs';
 import { Router } from '@angular/router';
 import { ApiService } from '../../../../common/services/api.service';
+import { timeoutWith } from 'rxjs/operators'
+import { throwError } from 'rxjs'
+
 @Component({
     selector: 'canano-searchpublicationresults',
     templateUrl: './searchpublicationresults.component.html',
@@ -81,7 +84,7 @@ export class SearchpublicationresultsComponent implements OnInit {
 
         console.log(this.properties);
         this.statusDisplayService.updateUserEmitter
-            .pipe(timeout(Properties.HTTP_TIMEOUT))
+            .pipe(timeoutWith(Properties.HTTP_TIMEOUT, throwError(new Error("Didn't see user update!"))))
             .subscribe(
                 (data) => {
                     this.errors = {};

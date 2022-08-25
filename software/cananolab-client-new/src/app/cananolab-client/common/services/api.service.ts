@@ -10,8 +10,9 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { timeout } from 'rxjs/operators';
 import { TestData } from '../../../testData';
-import { Observable, of } from 'rxjs';
+import {Observable, of, throwError} from 'rxjs';
 import { TopMainMenuService } from '../../top-main-menu/top-main-menu.service';
+import { timeoutWith } from 'rxjs/operators'
 
 @Injectable( {
     providedIn: 'root'
@@ -296,7 +297,8 @@ export class ApiService {
                         headers: headers,
                         method: 'post'
                     };
-                    this.httpClient.post(post_url, data, options).pipe(timeout(Properties.HTTP_TIMEOUT)).subscribe(
+                    this.httpClient.post(post_url, data, options)
+                        .pipe(timeoutWith(Properties.HTTP_TIMEOUT, throwError(new Error("User authentication timed out.")))).subscribe(
                         (loginReturnData) => {
                             Properties.LOGGED_IN = true;
                             Properties.logged_in = true;

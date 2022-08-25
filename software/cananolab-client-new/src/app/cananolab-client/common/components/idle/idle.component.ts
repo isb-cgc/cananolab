@@ -7,6 +7,7 @@ import { Properties } from 'src/assets/properties';
 import { StatusDisplayService } from 'src/app/cananolab-client/status-display/status-display.service';
 import { TopMainMenuService } from 'src/app/cananolab-client/top-main-menu/top-main-menu.service';
 import { UtilService } from '../../services/util.service';
+
 @Component({
   selector: 'canano-idle',
   templateUrl: './idle.component.html',

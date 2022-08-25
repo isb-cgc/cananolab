@@ -213,6 +213,8 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
+
+
 function ProtocolSearchResultsComponent_div_1_div_1_Template(rf, ctx) { if (rf & 1) {
     _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](0, "div", 5);
     _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtext"](1, " No search results found. ");
@@ -487,7 +489,7 @@ class ProtocolSearchResultsComponent {
             this.setupPage();
         });
         this.statusDisplayService.updateUserEmitter
-            .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_1__["timeout"])(_assets_properties__WEBPACK_IMPORTED_MODULE_4__["Properties"].HTTP_TIMEOUT))
+            .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_1__["timeoutWith"])(_assets_properties__WEBPACK_IMPORTED_MODULE_4__["Properties"].HTTP_TIMEOUT, Object(rxjs__WEBPACK_IMPORTED_MODULE_2__["throwError"])(new Error("Didn't see user update!"))))
             .subscribe((data) => {
             this.userName = data;
         });
