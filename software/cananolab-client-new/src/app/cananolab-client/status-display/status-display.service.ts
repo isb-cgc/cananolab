@@ -26,6 +26,7 @@ export class StatusDisplayService{
     }
 
     updateUser( user ){
+        console.log("Saw update user: "+user);
         this.user = user;
         this.updateUserGroups();
         this.updateUserEmitter.emit( user );
@@ -38,9 +39,6 @@ export class StatusDisplayService{
                 data => {
                     console.log("User groups response:");
                     console.log(data);
-                    // Set user as "Logged in"
-                    Properties.LOGGED_IN = true;
-                    Properties.logged_in = true;
                     this.updateGroupEmitter.emit(data)
                 },
                 ( err ) => {
