@@ -3099,7 +3099,6 @@ class EditcharacterizationComponent {
             (cellData !== null) && (isNaN(cellData.replace(/(d|f)$/, ''))));
     }
     rendering() {
-        console.log('test');
     }
     validateCsvLine(csvLine) {
         let inQ = false;

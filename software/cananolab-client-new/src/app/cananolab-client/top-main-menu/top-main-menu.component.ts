@@ -64,6 +64,7 @@ export class TopMainMenuComponent implements OnInit, OnDestroy {
         if( item['route'].includes( 'home/' + Consts.QUERY_LOGOUT )){
             this.topMainMenuService.hideMenuItem( 'LOGOUT' );
             Properties.LOGGED_IN = false;
+            Properties.logged_in = false;
             // Init the top menu
             this.topMainMenuService.showOnlyMenuItems(
                 [

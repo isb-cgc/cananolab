@@ -50,10 +50,17 @@ class LoginComponent {
         }
     }
     onLoginClick() {
-        this.apiService.authenticateUser(this.user, this.password);
-        this.statusDisplayService.updateUser(this.user);
-        this.idleService.startTimer();
-        this.router.navigateByUrl('home');
+        this.apiService.authenticateUser(this.user, this.password).then((user) => {
+            this.statusDisplayService.updateUser(user);
+            this.idleService.startTimer();
+            this.router.navigateByUrl('home');
+        }, 
+        // ERROR
+        (err) => {
+            console.log(err);
+            this.statusDisplayService.updateUser("guest");
+            this.idleService.stopTimer();
+        });
     }
 }
 LoginComponent.ɵfac = function LoginComponent_Factory(t) { return new (t || LoginComponent)(_angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdirectiveInject"](src_app_cananolab_client_common_components_idle_idle_service__WEBPACK_IMPORTED_MODULE_1__["IdleService"]), _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdirectiveInject"](_angular_router__WEBPACK_IMPORTED_MODULE_2__["Router"]), _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdirectiveInject"](_common_services_api_service__WEBPACK_IMPORTED_MODULE_3__["ApiService"]), _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdirectiveInject"](_status_display_status_display_service__WEBPACK_IMPORTED_MODULE_4__["StatusDisplayService"])); };
