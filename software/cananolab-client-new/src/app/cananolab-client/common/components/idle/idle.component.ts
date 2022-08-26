@@ -48,7 +48,7 @@ export class IdleComponent implements OnInit {
 
                 this.idleService.stopTimer();
             }
-        })
+        });
     }
 
     closeModal() {

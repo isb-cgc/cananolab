@@ -19,7 +19,7 @@ export class StatusDisplayComponent implements OnInit {
 
   ngOnInit(): void {
     this.statusDisplayService.updateUserEmitter.pipe(
-        timeoutWith(Properties.HTTP_TIMEOUT, throwError(new Error("Didn't see user update!")))
+        timeoutWith(Properties.HTTP_TIMEOUT, throwError(new Error("Didn't see user update in StatusDisplayComponent.")))
     ).subscribe(
     data => {
         console.log("Saw username of:");
