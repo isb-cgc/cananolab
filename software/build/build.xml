@@ -1,304 +1,523 @@
 <?xml version="1.0" encoding="utf-8" ?>
 
 <!--L
-   Copyright SAIC
-   Copyright SAIC-Frederick
+   Copyright Leidos
+   Copyright Leidos Biomedical
 
    Distributed under the OSI-approved BSD 3-Clause License.
    See http://ncip.github.com/cananolab/LICENSE.txt for details.
 L-->
 
-<project name="cananolab" default="dist:all" basedir=".">
+<project name="cananolab-webapp" default="dist" basedir="."
+		 xmlns:rsel="antlib:org.apache.tools.ant.types.resources.selectors"
+		 xmlns:resolver="antlib:org.apache.maven.resolver.ant"
+>
 	<description>
-	This is the master build file for the caNanoLab project.  caNanoLab web application, caNanoLab database, and caNanoLab grid service are three sub-projects
+		This is the build file for the caNanoLab webapp project.
 	</description>
 
-	<!-- Property file related properties and tasks -->
-	<property name="software.dir" location=".." />
-	<property name="common.dir" location="${software.dir}/common" />
-	<property name="target.dir" location="${software.dir}/target" />
-	<property name="log.dir" location="${target.dir}/logs" />
-	<property name="dist.dir" location="${target.dir}/dist" />
-	<property name="temp.dir" location="${target.dir}/temp" />
-	<property name="download.dir" location="${target.dir}/download" />
+	<property file="build.properties"/>
+	<property file="project.properties"/>
+	<property name="src-cfg" location="${basedir}/src/main/config"/>
+	<property name="src-resources" location="${basedir}/src/main/resources"/>
+	<property name="src.dir" location="${basedir}/src/main/java"/>
+	<property name="domainsrc.dir" location="${basedir}/src-domain"/>
+	<property name="webroot.dir" location="${basedir}/web"/>
+	<property name="image.dir" location="${webroot.dir}/images"/>
+	<property name="build.dir" location="${basedir}/build"/>
+	<property name="domainbuild.dir" location="${basedir}/domainbuild"/>
+	<property name="common.dir" location="${basedir}/../common"/>
+	<property name="commonlib.dir" location="${basedir}/lib"/>
+	<property name="target.dir" location="${basedir}/target"/>
+	<property name="deps.dir" location="${target.dir}/deps"/>
+	<property name="dist.dir" location="${target.dir}/dist"/>
+	<property name="common.dist.dir" location="${dist.dir}/common"/>
+	<property name="classes.dir" location="${basedir}/build/WEB-INF/classes"/>
+	<property name="lib.dir" location="${basedir}/build/WEB-INF/lib"/>
+	<!--	<property name="globus.dir" location="../cananolab-client/lib/globus"/>-->
+	<property name="db.dir" location="${basedir}/lib"/>
 
-	<!-- Paths -->
+	<property name="test.dir" value="test-rest"/>
+	<property name="test.src.dir" value="${test.dir}/java"/>
+	<property name="report.dir" location="${test.dir}/junitreport"/>
+	<property name="logLevel" value="info"/>
+
+	<!-- antcontrib task-->
 	<path id="common.classpath">
-		<fileset dir="${common.dir}">
-			<include name="**/*.jar" />
+		<fileset dir="${commonlib.dir}">
+			<include name="**/*.jar"/>
+			<exclude name="**/cglib-2.1.3.jar"/>
+			<exclude name="**/spring.jar"/>
 		</fileset>
 	</path>
-	<taskdef resource="net/sf/antcontrib/antcontrib.properties" classpathref="common.classpath" />
 
-	<!--property name="tier" value="qa"/> -->
-	<if>
-		<isset property="tier" />
-		<then>
-			<!-- if tier is defined, load tier specific properties for tier based installation -->
-			<property file="${tier}.properties" />
-			<echo message="loaded ${tier} tier properties." />
-		</then>
-		<else>
-			<property file="build.properties" />
-			<echo message="loaded build.properties" />
-		</else>
-	</if>
-	<property file="default.properties" />
-	<property file="project.properties" />
+	<path id="test.classpath">
+		<fileset dir="${lib.dir}" includes="**/*.jar"/>
+		<fileset dir="${test.dir}/lib" includes="**/*.jar"/>
+	</path>
 
-	<!-- Properties that relate to how to call build targets from sub-projects-->
-	<!-- Working directory passed to Ant tasks -->
-	<property name="cananolab-webapp.base.dir" location="${software.dir}/cananolab-webapp" />
-	<property name="cananolab-grid.base.dir" location="${software.dir}/cananolab-grid" />
-	<property name="cananolab-db.base.dir" location="${software.dir}/cananolab-db" />
+	<property name="ant.contrib.location" value="${commonlib.dir}/ant-contrib-1.0b3.jar"/>
+	<!-- using ant contrib for contidionals, looping , and runtarget -->
+	<taskdef resource="net/sf/antcontrib/antlib.xml">
+		<classpath>
+			<pathelement location="${ant.contrib.location}"/>
+		</classpath>
+	</taskdef>
+	<taskdef uri="antlib:org.apache.maven.resolver.ant" resource="org/apache/maven/resolver/ant/antlib.xml">
+		<classpath>
+			<fileset dir="${commonlib.dir}" includes="maven-resolver-ant-tasks-*uber.jar"/>
+		</classpath>
+	</taskdef>
 
-	<!-- Build file names relative working dir above, if the basedir of the sub-project ant script is ".." you should set the *.basdir to and the build file should include the dir and build file name from the *.base.dir -->
-	<property name="cananolab-webapp.build.file" value="build.xml" />
-	<property name="cananolab-grid.build.file" value="build.xml" />
-	<property name="cananolab-db.build.file" value="build.xml" />
+	<taskdef resource="net/sf/antcontrib/antcontrib.properties" classpathref="common.classpath"/>
 
-	<!-- The target name that should be called from the sub-project build file -->
-	<property name="cananolab-webapp.build.target" value="war" />
-	<property name="cananolab-grid.build.target" value="distWebApp" />
+	<delete dir="${deps.dir}"/>
 
-	<!-- Distribution Structure properties, used to copy files into the distribution area. -->
-	<property name="dist.exploded.dir" location="${dist.dir}/exploded" />
-	<property name="cananolab-webapp.dist.dir" location="${dist.exploded.dir}/cananolab-webapp" />
-	<property name="cananolab-grid.dist.dir" location="${dist.exploded.dir}/cananolab-grid" />
-	<property name="cananolab-db.dist.dir" location="${dist.exploded.dir}/cananolab-db" />
-	<property name="common.dist.dir" location="${dist.exploded.dir}/common" />
-	<property name="jboss-conf.dist.dir" location="${dist.exploded.dir}/jboss-conf" />
-	<property name="cananolab-grid.temp.dir" location="${temp.dir}/cananolab-grid" />
+	<resolver:pom file="pom.xml" id="pom"/>
 
-	<condition property="application.base.path" value="${application.base.path.linux}">
-		<or>
-			<os family="unix" />
-			<os family="mac" />
-		</or>
-	</condition>
+	<resolver:resolve>
+		<resolver:dependencies>
+			<resolver:pom refid="pom"/>
+		</resolver:dependencies>
+		<resolver:path refid="compiletime.dependencies.path" classpath="compile" />
+		<resolver:files refid="compiletime.dependencies" dir="${deps.dir}/compile" layout="{artifactId}-{version}.{extension}"/>
+	</resolver:resolve>
 
-	<condition property="application.base.path" value="${application.base.path.windows}">
-		<os family="windows" />
-	</condition>
-	<echo message="application.base.path=${application.base.path}" />
-
-	<!-- tools needed for cagrid -->
-	<property name="cagrid-base-war.dest.file" value="${download.dir}/${cagrid-base-war.binaries.file}" />
-	<property name="cagrid-libs.dest.file" value="${download.dir}/${cagrid-libs.binaries.file}" />
-	<property name="ws-core.dest.file" value="${download.dir}/${ws-core.binaries.file}" />
-	<available file="${cagrid-libs.dest.file}" property="cagrid-libs.tools.exists" />
-	<available file="${cagrid-base-war.dest.file}" property="cagrid-base-war.tools.exists" />
-	<available file="${ws-core.dest.file}" property="ws-core.tools.exists" />
-	<available file="${application.base.path}/${ws-core.relative.dir}" property="ws-core.install.exists" />
+	<resolver:resolve>
+		<resolver:dependencies>
+			<resolver:pom refid="pom" />
+		</resolver:dependencies>
+		<resolver:path refid="runtime.dependencies.path" classpath="runtime" />
+		<resolver:files refid="runtime.dependencies" dir="${deps.dir}/runtime"  layout="{artifactId}-{version}.{extension}" scopes="compile" />
+	</resolver:resolve>
 
 	<target name="clean">
-		<delete dir="${dist.dir}" />
-		<delete dir="${temp.dir}" />
+		<delete dir="${dist.dir}"/>
+		<delete dir="${target.dir}/classes"/>
+		<delete dir="${target.dir}/test-classes"/>
+		<delete dir="${common.dist.dir}"/>
+		<delete dir="${build.dir}"/>
+		<delete dir="${domainbuild.dir}"/>
 	</target>
 
-	<!-- the init targets for the web application and database are handled by the subproject build files already-->
-	<target name="initGrid" description="Sets up required directories for the grid service">
-		<mkdir dir="${dist.dir}" />
-		<mkdir dir="${temp.dir}" />
-		<mkdir dir="${dist.exploded.dir}" />
-		<mkdir dir="${cananolab-grid.dist.dir}" />
-		<mkdir dir="${cananolab-db.dist.dir}" />
-		<mkdir dir="${common.dist.dir}" />
-		<mkdir dir="${download.dir}" />
+	<target name="init" depends="clean">
+		<!-- create the necessary folders -->
+		<mkdir dir="${dist.dir}"/>
+		<mkdir dir="${domainbuild.dir}"/>
+		<mkdir dir="${build.dir}"/>
+		<mkdir dir="${build.dir}/WEB-INF"/>
+		<mkdir dir="${build.dir}/WEB-INF/classes"/>
+		<mkdir dir="${build.dir}/WEB-INF/lib"/>
+		<filterset id="properties.filterset">
+			<filter token="FILE_REPOSITORY_DIR" value="${file.repository.dir}"/>
+			<filter token="ADMIN_EMAIL" value="${admin.email}"/>
+			<!--			<filter token="ONLINE_HELP_URL" value="${online.help.url}"/>-->
+			<!--			<filter token="USE_LDAP" value="${ldap.authentication.enabled}"/>-->
+		</filterset>
 	</target>
 
-	<target name="build:all" description="Builds all the sub projects, putting artifacts in the project level target directory, used by distribution targets to make distributions" depends="clean, build:cananolab-webapp, build:cananolab-grid">
-	</target>
+	<target name="compile" depends="jar:beano">
+		<echo message="*****************************************************"/>
+		<echo message="**   Compiling Java Classes ...          		  **"/>
+		<echo message="*****************************************************"/>
 
-	<target name="build:cananolab-webapp" description="Call webapp sub-project build target to produce build artifiacts">
-		<!-- setting the property in the ant call overrides the property in the sub-project allowing the artifact to be produced where needed -->
-		<ant antfile="${cananolab-webapp.build.file}" target="${cananolab-webapp.build.target}" dir="${cananolab-webapp.base.dir}">
-			<!--overwrite distribution directory for the war file-->
-			<property name="dist.dir" location="${cananolab-webapp.dist.dir}" />
-		</ant>
-	</target>
-
-	<target name="dist:cananolab-webapp" description="Call webapp sub-project dist target to produce distribution artifacts">
-		<ant antfile="${cananolab-webapp.build.file}" target="dist" dir="${cananolab-webapp.base.dir}">
-			<property name="dist.dir" location="${cananolab-webapp.dist.dir}" />
-		</ant>
-	</target>
-
-	<target name="deploy:cananolab-webapp">
-		<ant antfile="${cananolab-webapp.build.file}" target="deploy" dir="${cananolab-webapp.base.dir}">
-			<property name="dist.dir" location="${cananolab-webapp.dist.dir}" />
-		</ant>
-	</target>
-
-	<!-- retrieve cagrid required tools from tech stack -->
-	<target name="dist:tools:retrieve:cagrid-libs" unless="cagrid-libs.tools.exists" description="Downloads caGrid ws-core 4.0.3 libs from binary repository">
-		<get src="${cagrid-libs.src.url}" dest="${cagrid-libs.dest.file}" />
-		<get src="${cagrid-base-war.src.url}" dest="${cagrid-base-war.dest.file}" />
-	</target>
-
-	<target name="dist:tools:retrieve:cagrid-base-war" unless="cagrid-base-war.tools.exists" description="Downloads caGrid base war">
-		<get src="${cagrid-base-war.src.url}" dest="${cagrid-base-war.dest.file}" />
-	</target>
-
-	<target name="install:ws-core" unless="env.GLOBUS_LOCATION">
-		<echo message="environment variable GLOBUS_LOCATION not set, downloading and installing from ${ws-core.src.url}" />
-		<if>
-			<equals arg1="${ws-core.install.exists}" arg2="true" />
-			<then>
-				<echo message="${ws-core.relative.dir} has been installed at ${application.base.path}" />
-			</then>
-			<else>
-				<antcall target="dist:tools:retrieve:ws-core" />
-				<unzip dest="${application.base.path}" src="${ws-core.dest.file}" />
-			</else>
-		</if>
-		<property name="env.GLOBUS_LOCATION" value="${application.base.path}/${ws-core.relative.dir}" />
-	</target>
-
-	<target name="dist:tools:retrieve:ws-core" unless="ws-core.tools.exists">
-		<get src="${ws-core.src.url}" dest="${ws-core.dest.file}" />
-		<get src="${ws-core.src.url}.MD5" dest="${ws-core.dest.file}.MD5" />
-		<checksum file="${ws-core.dest.file}" verifyProperty="ws-core.cksum.ok" />
-		<if>
-			<equals arg1="${ws-core.cksum.ok}" arg2="true" />
-			<then>
-				<echo message="Downloaded wscore sucessfully" />
-			</then>
-			<else>
-				<fail message="Failed to download wscore file sucessfully." />
-			</else>
-		</if>
-	</target>
-
-	<target name="build:cananolab-grid:webapp:jars">
-		<!-- build the caNanoLab-helpers.jar -->
-		<ant antfile="${cananolab-webapp.build.file}" target="jar:helpers" dir="${cananolab-webapp.base.dir}">
-			<property name="dist.dir" location="${cananolab-webapp.dist.dir}" />
-		</ant>
-		<!-- build the caNanoLabSDK-orm.jar -->
-		<ant antfile="${cananolab-webapp.build.file}" target="jar:orm" dir="${cananolab-webapp.base.dir}">
-			<property name="dist.dir" location="${cananolab-webapp.dist.dir}" />
-		</ant>
-	</target>
-
-	<target name="build:cananolab-grid" depends="initGrid, build:cananolab-grid:webapp:jars, dist:tools:retrieve:cagrid-libs, dist:tools:retrieve:cagrid-base-war, install:ws-core" description="Call grid sub-project build target to produce artifiacts">
-		<!--unpack base globus wsrf war into wsrf-canano.war directory -->
-		<unzip dest="${cananolab-grid.temp.dir}" src="${cagrid-base-war.dest.file}" />
-
-		<ant inheritAll="false" inheritRefs="false" antfile="${cananolab-grid.build.file}" target="clean" dir="${cananolab-grid.base.dir}">
-		</ant>
-		<!-- setting the property in the ant call overerides the property in the sub-project allowing the artifact to be produced where needed -->
-		<ant inheritAll="false" inheritRefs="false" antfile="${cananolab-grid.build.file}" target="${cananolab-grid.build.target}" dir="${cananolab-grid.base.dir}">
-			<property name="dist.dir" value="${cananolab-grid.temp.dir}" />
-			<property name="env.GLOBUS_LOCATION" value="${env.GLOBUS_LOCATION}" />
-		</ant>
-		<antcall target="build:cananolab-grid:properties" />
-		<!-- repackage grid WAR file -->
-		<mkdir dir="${cananolab-grid.dist.dir}" />
-		<jar destfile="${cananolab-grid.dist.dir}/wsrf-canano.war" basedir="${cananolab-grid.temp.dir}" />
-	</target>
-
-	<!-- replace generic tokens with properties -->
-	<target name="build:cananolab-grid:properties">
-		<copy overwrite="true" todir="${temp.dir}" filtering="true">
-			<fileset dir="${common.dir}/resources/hibernate">
-				<include name="*.xml" />
+		<path id="classpath">
+			<fileset dir="${commonlib.dir}">
+				<exclude name="**/sdk/*.jar"/>
+				<include name="caNanoLab-beans.jar"/>
+				<exclude name="**/globus/*.jar"/>
+				<exclude name="**/ant-contrib-*.jar"/>
+				<exclude name="maven-resolver-ant-tasks-*uber.jar"/>
 			</fileset>
+		</path>
+		<javac srcdir="${src.dir}" destdir="${build.dir}/WEB-INF/classes" debug="true" source="1.8" target="1.8">
+			<classpath refid="classpath"/>
+			<classpath refid="compiletime.dependencies.path"  />
+		</javac>
+	</target>
+	<target name="compile-beans" depends="init">
+		<echo message="*****************************************************"/>
+		<echo message="**   Compiling caNanoLab-beans.jar ...          		  **"/>
+		<echo message="*****************************************************"/>
+
+		<path id="classpath">
+			<fileset dir="${commonlib.dir}">
+				<exclude name="**/sdk/*.jar"/>
+				<exclude name="**/globus/*.jar"/>
+				<exclude name="**/ant-contrib-*.jar"/>
+			</fileset>
+		</path>
+		<javac srcdir="${domainsrc.dir}" destdir="${domainbuild.dir}" debug="true" source="1.8" target="1.8">
+			<classpath refid="classpath"/>
+			<classpath refid="compiletime.dependencies.path" />
+		</javac>
+	</target>
+
+	<target name="war" depends="clean, compile, jar:beano">
+
+		<!--copy properties files -->
+		<copy todir="${build.dir}/WEB-INF/classes">
+			<fileset dir="${src-cfg}">
+				<include name="**/*.properties"/>
+				<exclude name="caNanoLab.properties"/>
+			</fileset>
+		</copy>
+
+		<copy overwrite="true" tofile="${build.dir}/WEB-INF/classes/caNanoLab.properties"
+			  file="${src-cfg}/caNanoLab.properties.template">
+			<!-- replace tokens with values from build properties -->
+			<filterset refid="properties.filterset"/>
+		</copy>
+
+		<copy todir="${build.dir}/WEB-INF/classes">
+			<fileset dir="${src-resources}">
+				<include name="**/*.properties"/>
+			</fileset>
+		</copy>
+
+		<!-- copy web files and lib files -->
+		<copy todir="${build.dir}">
+			<fileset dir="${webroot.dir}">
+				<exclude name="**/*.mex"/>
+				<exclude name="**/WEB-INF/classes/**"/>
+				<exclude name="**/WEB-INF/.env"/>
+			</fileset>
+		</copy>
+
+		<!--copy env file -->
+		<copy todir="${build.dir}/WEB-INF/classes">
+			<fileset dir="${webroot.dir}/WEB-INF">
+				<include name=".env"/>
+			</fileset>
+		</copy>
+
+		<!--copy hibernate xml files -->
+		<copy todir="${build.dir}/WEB-INF/classes">
+			<fileset dir="${src.dir}">
+				<include name="**/*.xml"/>
+			</fileset>
+		</copy>
+
+		<!--copy config xml files -->
+		<copy todir="${build.dir}/WEB-INF/classes">
+			<fileset dir="${src-cfg}">
+				<include name="**/*.xml"/>
+			</fileset>
+		</copy>
+
+		<!-- modify ehcache directory -->
+		<replace file="${build.dir}/WEB-INF/classes/ehcache.xml" token="java.io.tmpdir" value="${ehcache.path}"/>
+
+		<!-- copy dependency jars to WEB-INF/lib files  -->
+		<copy todir="${build.dir}/WEB-INF/lib">
+			<fileset dir="${deps.dir}/runtime">
+				<exclude name="**/log4j-1.2.13.jar" />
+			</fileset>
+		</copy>
+
+		<!-- copy jars from common/lib -->
+		<copy todir="${build.dir}/WEB-INF/lib">
+			<!--			<fileset dir="${common.dir}/lib">-->
+			<fileset dir="${commonlib.dir}">
+				<include name="**/*.jar"/>
+				<exclude name="**/sdk/*.jar"/>
+				<exclude name="**/cglib-2.1.3.jar"/>
+				<exclude name="**/spring.jar"/>
+				<exclude name="**/log4j-1.2.13.jar" />
+			</fileset>
+			<!--			<fileset dir="${common.dir}/lib">-->
+			<fileset dir="${commonlib.dir}">
+				<include name="cananolab-beans.jar"/>
+			</fileset>
+		</copy>
+
+		<!-- tag footer with release version and build tag -->
+		<property name="build_tag" value="trunk"/>
+		<propertyregex override="true" property="build_tag" input="${build.tag}"
+					   regexp="\$HeadURL\: .*/cananolab/tags/([^/]*)/.*" select="\1"/>
+
+		<!-- package WAR file -->
+		<jar destfile="${dist.dir}/caNanoLab.war" basedir="${build.dir}"/>
+	</target>
+
+	<target name="dist" depends="war">
+		<!-- copy database jdbc driver and socket factory to common dist-->
+		<copy todir="${common.dist.dir}" overwrite="true">
+			<restrict>
+				<fileset refid="compiletime.dependencies"/>
+				<rsel:name name="**mysql*.jar"/>
+			</restrict>
+		</copy>
+
+		<!-- copy bouncy castle from common lib-->
+		<copy todir="${common.dist.dir}" overwrite="true">
+			<restrict>
+				<fileset refid="compiletime.dependencies"/>
+				<rsel:name name="**bcprov*.jar"/>
+			</restrict>
+		</copy>
+
+		<!--copy mysql-ds.xml and replace database connection info-->
+		<copy overwrite="true" tofile="${common.dist.dir}/mysql-ds.xml"
+			  file="${common.dir}/resources/jboss-conf/mysql-ds.xml">
+			<!-- replace tokens with values from build properties -->
 			<filterset id="db.filterset">
-				<filter token="database.url" value="${database.url}" />
-				<filter token="database.user" value="${database.user}" />
-				<filter token="database.password" value="${database.password}" />
+				<filter token="database.url" value="${database.url}"/>
+				<filter token="database.user" value="${database.user}"/>
+				<filter token="database.password" value="${database.password}"/>
+			</filterset>
+		</copy>
+		<!--		<if>-->
+		<!--			&lt;!&ndash;if use LDAP authentication, replace ldap tokens from build properties &ndash;&gt;-->
+		<!--			<equals arg1="${ldap.authentication.enabled}" arg2="true"/>-->
+		<!--			<then>-->
+		<!--				<echo message="Using LDAP authenication"/>-->
+		<!--				<copy overwrite="true" tofile="${common.dist.dir}/login-config.xml"-->
+		<!--					  file="${common.dir}/resources/jboss-conf/login-config-ldap.xml">-->
+		<!--					<filterset>-->
+		<!--						<filter token="ldap.host.url" value="${ldap.host.url}"/>-->
+		<!--						<filter token="ldap.searchable.base" value="${ldap.searchable.base}"/>-->
+		<!--						<filter token="ldap.userId.label" value="${ldap.userId.label}"/>-->
+		<!--					</filterset>-->
+		<!--				</copy>-->
+		<!--			</then>-->
+		<!--			&lt;!&ndash;if use database authentication, replace database tokens from build properties &ndash;&gt;-->
+		<!--			<else>-->
+		<copy overwrite="true" tofile="${common.dist.dir}/login-config.xml"
+			  file="${common.dir}/resources/jboss-conf/login-config-db.xml">
+			<!-- replace tokens with values from build properties -->
+			<filterset refid="db.filterset"/>
+		</copy>
+		<!--			</else>-->
+		<!--		</if>-->
+		<!-- the following is UPT specific -->
+		<!-- copy UPT required config files -->
+		<!--		<copy overwrite="true" tofile="${common.dist.dir}/ApplicationSecurityConfig.xml" file="${common.dir}/resources/jboss-conf/ApplicationSecurityConfig.xml">-->
+		<!--			&lt;!&ndash; replace tokens with values from build properties &ndash;&gt;-->
+		<!--			<filterset>-->
+		<!--				<filter token="jboss.server.dir" value="${jboss.server.dir}" />-->
+		<!--			</filterset>-->
+		<!--		</copy>-->
+		<!--		<copy overwrite="true" tofile="${common.dist.dir}/properties-service.xml" file="${common.dir}/resources/jboss-conf/properties-service.xml">-->
+		<!--			&lt;!&ndash; replace tokens with values from build properties &ndash;&gt;-->
+		<!--			<filterset>-->
+		<!--				<filter token="jboss.server.dir" value="${jboss.server.dir}" />-->
+		<!--			</filterset>-->
+		<!--		</copy>-->
+		<!--		<copy overwrite="true" tofile="${common.dist.dir}/csmupt.csm.new.hibernate.cfg.xml" file="${common.dir}/resources/jboss-conf/csmupt.csm.new.hibernate.cfg.xml" />-->
+		<!--		<copy overwrite="true" tofile="${common.dist.dir}/csmupt423.csm.new.hibernate.cfg.xml" file="${common.dir}/resources/jboss-conf/csmupt423.csm.new.hibernate.cfg.xml" />-->
+
+		<!--copy upt-ds.xml and replace database connection info-->
+		<!--		<copy overwrite="true" tofile="${common.dist.dir}/upt-ds.xml" file="${common.dir}/resources/jboss-conf/upt-ds.xml">-->
+		<!--			&lt;!&ndash; replace tokens with values from build properties &ndash;&gt;-->
+		<!--			<filterset id="db.filterset">-->
+		<!--				<filter token="database.url" value="${database.url}" />-->
+		<!--				<filter token="database.user" value="${database.user}" />-->
+		<!--				<filter token="database.password" value="${database.password}" />-->
+		<!--			</filterset>-->
+		<!--		</copy>-->
+
+		<!--copy uptEAR.ear -->
+		<!--copy overwrite="true" todir="${common.dist.dir}" file="${common.dir}/resources/security/uptEAR.ear" /-->
+
+		<!--copy csmapi-5.2.jar -->
+		<!--		<copy overwrite="true" todir="${common.dist.dir}" file="${commonlib.dir}/sdk/csmapi-5.2.jar" />-->
+
+		<!--copy bcprov-jdk15on-1.47.jar -->
+		<!--		<copy overwrite="true" todir="${common.dist.dir}" file="${commonlib.dir}/sdk/bcprov-jdk15on-1.47.jar"/>-->
+
+		<copy overwrite="true" todir="${common.dist.dir}" file="${common.dir}/resources/help/wikihelp.properties"/>
+
+		<!--copy images -->
+		<copy overwrite="true" todir="${common.dist.dir}" file="${image.dir}/canano_logo_mini.jpg"/>
+
+		<copy overwrite="true" todir="${common.dist.dir}" file="${image.dir}/doi-transparent.png"/>
+
+		<!--copy caNanoLab_setup.cli and replace database connection info-->
+		<copy overwrite="true" tofile="${common.dist.dir}/caNanoLab_setup.cli" file="${basedir}/caNanoLab_setup.cli">
+			<!-- replace tokens with values from build properties -->
+			<filterset id="db.filterset">
+				<filter token="database.url" value="${database.url}&amp;serverTimezone=UTC"/>
+				<filter token="database.user" value="${database.user}"/>
+				<filter token="database.password" value="${database.password}"/>
+				<filter token="logLevel" value="${logLevel}"/>
+				<filter token="file.repository.dir" value="${file.repository.dir}"/>
+				<filter token="client.port" value="${client.port}"/>
+			</filterset>
+		</copy>
+		<copy overwrite="true" tofile="${common.dist.dir}/caNanoLab_checks.cli"
+			  file="${basedir}/caNanoLab_checks.cli">
+			<filterset>
+				<filter token="client.port" value="${client.port}"/>
+			</filterset>
+		</copy>
+		<copy overwrite="true" tofile="${common.dist.dir}/caNanoLab_modules.cli"
+			  file="${basedir}/caNanoLab_modules.cli">
+			<filterset>
+				<filter token="file.repository.dir" value="${file.repository.dir}"/>
+				<filter token="client.port" value="${client.port}"/>
+			</filterset>
+		</copy>
+		<copy overwrite="true" tofile="${common.dist.dir}/caNanoLab_deploy.cli"
+			  file="${basedir}/caNanoLab_deploy.cli">
+			<filterset>
+				<filter token="file.repository.dir" value="${file.repository.dir}"/>
+				<filter token="client.port" value="${client.port}"/>
 			</filterset>
 		</copy>
 
-		<!-- replace hibernate.cfg.xml in caNanoLabSDK-orm.jar -->
-		<jar update="true" destfile="${cananolab-grid.temp.dir}/WEB-INF/lib/caNanoLabSDK-orm.jar">
-			<zipfileset src="${cananolab-grid.temp.dir}/WEB-INF/lib/caNanoLabSDK-orm.jar" excludes="hibernate.cfg.xml" />
-			<fileset dir="${temp.dir}">
-				<include name="hibernate.cfg.xml" />
-			</fileset>
-		</jar>
-
-		<!-- replace caNanoLab.csm.new.hibernate.cfg.xml in caNanoLabSDK-customConfig.jar -->
-		<jar update="true" destfile="${cananolab-grid.temp.dir}/WEB-INF/lib/caNanoLabSDK-customConfig.jar">
-			<zipfileset src="${cananolab-grid.temp.dir}/WEB-INF/lib/caNanoLabSDK-customConfig.jar" excludes="caNanoLab.csm.new.hibernate.cfg.xml" />
-			<fileset dir="${temp.dir}">
-				<include name="caNanoLab.csm.new.hibernate.cfg.xml" />
-			</fileset>
-		</jar>
-
-		<!-- replace downloaded server-config.wsdd with the one that has logicalHost parameter -->
-		<copy overwrite="true" tofile="${cananolab-grid.temp.dir}/WEB-INF/etc/globus_wsrf_core/server-config.wsdd" file="${common.dir}/resources/jboss-conf/server-config.wsdd" />
-		<!-- replace grid service hostname -->
-		<replace file="${cananolab-grid.temp.dir}/WEB-INF/etc/globus_wsrf_core/server-config.wsdd" token="GRID_SERVICE_HOSTNAME" value="${grid.service.hostname}" />
-		<!-- replace grid service port -->
-		<replace file="${cananolab-grid.temp.dir}/WEB-INF/web.xml" token=">8080" value=">${grid.service.port}" />
-		<!-- replace grid service protocol -->
-		<replace file="${cananolab-grid.temp.dir}/WEB-INF/web.xml" token=">http" value=">${grid.service.protocol}" />
-		<!-- replace grid web app name -->
-		<replace file="${cananolab-grid.temp.dir}/WEB-INF/web.xml" token=">wsrf" value=">wsrf-canano" />
-		<!-- replace grid index service URL -->
-		<replace file="${cananolab-grid.temp.dir}/WEB-INF/etc/cagrid_${grid.service.name}/${grid.service.name}_registration.xml" token="GRID_INDEX_SERVER" value="${grid.indexserver}" />
-
-		<!-- replace grid service metadata -->
-		<replace file="${cananolab-grid.temp.dir}/WEB-INF/etc/cagrid_${grid.service.name}/serviceMetadata.xml">
-			<replacefilter token="APPOWNER" value="${application.owner}" />
-			<replacefilter token="YOUR_COUNTRY" value="${country}" />
-			<replacefilter token="YOUR_STATE" value="${state}" />
-			<replacefilter token="YOUR_CITY" value="${city}" />
-			<replacefilter token="YOUR_ZIP" value="${zipcode}" />
-			<replacefilter token="YOUR_STREET1" value="${street1}" />
-			<replacefilter token="YOUR_STREET2" value="${street2}" />
-			<replacefilter token="YOUR_AFFILIATION" value="${affiliation}" />
-			<replacefilter token="YOUR_EMAIL" value="${email}" />
-			<replacefilter token="YOUR_PHONE" value="${phone}" />
-			<replacefilter token="FIRSTNAME" value="${first.name}" />
-			<replacefilter token="LASTNAME" value="${last.name}" />
-		</replace>
 	</target>
 
-	<target name="dist:cananolab-grid" depends="build:cananolab-grid">
-		<!-- unpack required globus libraries for JBoss -->
-		<unzip dest="${common.dist.dir}" src="${cagrid-libs.dest.file}">
-			<patternset>
-				<exclude name="log4j*.jar" />
-			</patternset>
-		</unzip>
-	</target>
-
-	<target name="deploy:cananolab-grid" depends="dist:cananolab-grid">
-		<!-- deploy WAR to JBOSS deploy direction -->
+	<target name="deploy" depends="dist">
+		<!-- deploy WAR and xml to JBOSS deploy location-->
 		<copy todir="${jboss.deploy.dir}" overwrite="true">
-			<fileset dir="${cananolab-grid.dist.dir}">
-				<include name="wsrf-canano.war" />
-			</fileset>
-		</copy>
-		<!-- copy globus libs to JBoss lib direction -->
-		<copy todir="${jboss.lib.dir}" overwrite="true">
 			<fileset dir="${common.dist.dir}">
-				<include name="*.jar" />
+				<!--				<include name="upt-ds.xml" />-->
+				<include name="${database.type}-ds.xml"/>
+				<include name="properties-service.xml"/>
+			</fileset>
+			<fileset dir="${dist.dir}">
+				<include name="caNanoLab.war"/>
 			</fileset>
 		</copy>
+		<copy todir="${jboss.conf.dir}" overwrite="true" file="${common.dist.dir}/login-config.xml"/>
 	</target>
 
-	<target name="install:new:cananolab-db">
-		<ant antfile="${cananolab-db.build.file}" target="install:new" dir="${cananolab-db.base.dir}">
-			<property name="dist.dir" location="${cananolab-db.dist.dir}" />
-		</ant>
+	<target name="deploy_local" depends="dist">
+		<copy file="${dist.dir}/caNanoLab.war" todir="${jboss.artifacts.dir}" overwrite="true"/>
+		<copy file="${dist.dir}/common/caNanoLab_modules.cli" todir="${jboss.artifacts.dir}" overwrite="true"/>
+		<copy file="${dist.dir}/common/caNanoLab_checks.cli" todir="${jboss.artifacts.dir}" overwrite="true"/>
+		<copy file="${dist.dir}/common/caNanoLab_logging.cli" todir="${jboss.artifacts.dir}" overwrite="true"/>
+		<copy file="${dist.dir}/common/caNanoLab_setup.cli" todir="${jboss.artifacts.dir}" overwrite="true"/>
+		<copy file="${dist.dir}/common/caNanoLab_deploy.cli" todir="${jboss.artifacts.dir}" overwrite="true"/>
+		<copy file="${commonlib.dir}/mysql-socket-factory-connector-j-8-1.4.1-jar-with-driver-and-dependencies.jar" todir="${jboss.artifacts.dir}" overwrite="true"/>
+		<copy file="${commonlib.dir}/bcprov-jdk15on-1.69.jar" todir="${jboss.artifacts.dir}" overwrite="true"/>
+		<copy file="${dist.dir}/common/wikihelp.properties" todir="${jboss.help.dir}" overwrite="true"/>
 	</target>
 
-	<target name="update:cananolab-db">
-		<ant antfile="${cananolab-db.build.file}" target="sync:update" dir="${cananolab-db.base.dir}">
-			<property name="dist.dir" location="${cananolab-db.dist.dir}" />
-		</ant>
+	<target name="jar:helpers" depends="compile">
+		<!-- caNanoLab.properties -->
+		<copy overwrite="true" tofile="${build.dir}/WEB-INF/classes/caNanoLab.properties"
+			  file="/src/main/config/caNanoLab.properties.template">
+			<!-- replace tokens with values from build properties -->
+			<filterset refid="properties.filterset"/>
+		</copy>
+		<!-- package jar file -->
+		<jar destfile="${dist.dir}/caNanoLab-helpers.jar" basedir="${build.dir}/WEB-INF/classes"
+			 includes="**/AccessibilityBean.class, **/UserBean.class, **/*Exception.class, **/SecurityService.class, **/*Helper*.class, **/ClassUtils.class, **/StringUtils.class, **/TextMatchMode.class, **/Constants.class, **/PropertyUtils.class, caNanoLab.properties.template"
+			 excludes="**/AdvancedSampleServiceHelper.class"/>
 	</target>
 
-	<target name="update:cananolab-db:ldap:upt:superadmin">
-		<ant antfile="${cananolab-db.build.file}" target="update:ldap:upt:superadmin" dir="${cananolab-db.base.dir}">
-			<property name="dist.dir" location="${cananolab-db.dist.dir}" />
-		</ant>
+	<target name="jar:orm">
+		<!-- package jar file -->
+		<jar destfile="${dist.dir}/caNanoLabSDK-orm.jar" basedir="${src.dir}"
+			 includes="**/*hbm.xml, ehcache.xml, hibernate.cfg.xml"/>
 	</target>
 
-	<target name="dist:all" description="Builds all the sub projects, putting artifacts in the project level target directory, and distribute targets to make distributions" depends="clean, dist:cananolab-webapp, dist:cananolab-grid">
+	<target name="jar:beano" depends="clean, compile-beans">
+		<jar destfile="${commonlib.dir}/caNanoLab-beans.jar" basedir="${domainbuild.dir}"/>
 	</target>
+
+	<target name="jar:endNote" depends="clean, compile">
+		<copy todir="${build.dir}/WEB-INF/classes">
+			<fileset dir="${src-cfg}">
+				<include name="**/*.properties"/>
+				<exclude name="caNanoLab.properties"/>
+			</fileset>
+		</copy>
+
+		<copy todir="${build.dir}/WEB-INF/classes">
+			<fileset dir="${src.dir}">
+				<include name="**/*.xml"/>
+				<exclude name="caNanoLab.csm.new.hibernate.cfg.xml"/>
+				<exclude name="hibernate.cfg.xml"/>
+			</fileset>
+		</copy>
+
+		<!-- copy dependency jars to WEB-INF/lib files  -->
+		<copy todir="${build.dir}/WEB-INF/lib">
+			<fileset dir="${deps.dir}/runtime"/>
+		</copy>
+
+		<!-- copy jars from common/lib -->
+		<!--		<copy todir="${build.dir}/WEB-INF/lib">-->
+		<!--			<fileset dir="${common.dir}/lib/sdk">-->
+		<!--				<include name="**/*.jar" />-->
+		<!--			</fileset>-->
+		<!--		</copy>-->
+
+		<!--		<copy todir="${build.dir}/WEB-INF/lib">-->
+		<!--			<fileset dir="${globus.dir}">-->
+		<!--				<include name="**/log4*.jar"/>-->
+		<!--			</fileset>-->
+		<!--		</copy>-->
+
+		<copy todir="${build.dir}/WEB-INF/lib">
+			<fileset dir="${db.dir}">
+				<include name="**/mysql*.jar"/>
+			</fileset>
+		</copy>
+
+		<jar destfile="${dist.dir}/endNoteParser.jar" basedir="${classes.dir}" duplicate="preserve">
+			<manifest>
+				<attribute name="Main-Class" value="test.EndNoteParser"/>
+				<attribute name="Class-Path" value="conf/conf.jar"/>
+			</manifest>
+			<zipgroupfileset dir="${lib.dir}" includes="**/*.jar"/>
+		</jar>
+	</target>
+
+	<target name="compile-test" depends="clean, init">
+		<echo message="*****************************************************"/>
+		<echo message="**   Compiling Junit Java Classes ...          		  **"/>
+		<echo message="*****************************************************"/>
+		<path id="classpath">
+			<fileset refid="compiletime.dependencies"/>
+			<!--			<fileset dir="${common.dir}/lib">-->
+			<fileset dir="${commonlib.dir">
+				<exclude name="**/sdk/*.jar"/>
+				<exclude name="**/ant-contrib-*.jar"/>
+				<exclude name="**/log4j-1.2.13.jar" />
+			</fileset>
+		</path>
+		<javac destdir="${build.dir}/WEB-INF/classes" debug="true" source="1.8" target="1.8">
+			<classpath refid="classpath"/>
+			<classpath refid="test.classpath"/>
+			<src path="${src.dir}"/>
+			<src path="${test.src.dir}"/>
+		</javac>
+	</target>
+
+	<target name="junit" depends="compile-test">
+		<delete dir="${report.dir}" failonerror="true"/>
+		<mkdir dir="${report.dir}"/>
+		<junit printsummary="true" failureproperty="junit.failure" haltonfailure='false'>
+			<classpath>
+				<path refid="test.classpath"/>
+				<path refid="classpath"/>
+				<!-- Do not put the following inside test.classpath-->
+				<pathelement path="${classes.dir}"/>
+				<!--
+		 	     	<pathelement path="${basedir}/WebContent/WEB-INF"/>
+		 	     	<pathelement path="${resources.dir}"/> -->
+				<pathelement path="${test.dir}/resources"/>
+
+			</classpath>
+
+			<batchtest fork="yes" todir="${report.dir}">
+				<fileset dir="${test.src.dir}" includes="**/*Test.java"
+						 excludes="**/PropertyUtilTest.java, **/RestValidatorTest.java,
+		 			 	**/SimplePublicationWithSamplesBeanTest.java, **/SearchSampleBOTest.java"/>
+			</batchtest>
+			<formatter type="xml"/>
+		</junit>
+	</target>
+
+	<target name="junitreport" depends="junit">
+		<junitreport todir="${report.dir}">
+			<fileset dir="${report.dir}" includes="TEST-*.xml"/>
+			<report todir="${report.dir}"/>
+		</junitreport>
+	</target>
+
 </project>

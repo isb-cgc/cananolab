@@ -9,6 +9,9 @@ import { takeUntil, timeout } from 'rxjs/operators';
 import { ApiService } from 'src/app/cananolab-client/common/services/api.service';
 import { Router } from '@angular/router';
 import { Subject } from 'rxjs';
+import { timeoutWith } from 'rxjs/operators'
+import { throwError } from 'rxjs'
+
 @Component({
   selector: 'canano-advanced-search-results',
   templateUrl: './advanced-search-results.component.html',
@@ -67,7 +70,7 @@ export class AdvancedSearchResultsComponent implements OnInit,OnDestroy {
             });
 
         this.statusDisplayService.updateUserEmitter
-            .pipe(timeout(Properties.HTTP_TIMEOUT))
+            .pipe(timeoutWith(Properties.HTTP_TIMEOUT, throwError(new Error("Didn't see user update!"))))
             .subscribe((data) => {
                 this.userName = data;
             });

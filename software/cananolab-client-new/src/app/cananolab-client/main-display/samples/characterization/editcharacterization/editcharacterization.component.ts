@@ -536,7 +536,6 @@ export class EditcharacterizationComponent implements OnInit {
     };
 
     rendering() {
-        console.log('test')
     }
 
     validateCsv = function (csv) {
