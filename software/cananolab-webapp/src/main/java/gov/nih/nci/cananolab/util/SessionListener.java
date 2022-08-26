@@ -2,24 +2,28 @@ package gov.nih.nci.cananolab.util;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import javax.servlet.http.HttpSessionEvent;
-import javax.servlet.http.HttpSessionListener;
+import javax.servlet.annotation.WebListener;
+import javax.servlet.http.HttpSessionBindingListener;
+import javax.servlet.http.HttpSessionBindingEvent;
 
+@WebListener
+public class SessionListener implements HttpSessionBindingListener {
 
-
-public class SessionListener implements HttpSessionListener {
-
+    private String userName;
     protected static Logger logger = LogManager.getLogger(SessionListener.class);
 
-    public SessionListener() {
+    public SessionListener(String userName_) {
         super();
+        this.userName = userName_;
     }
 
-    public void sessionCreated(final HttpSessionEvent event) {
-        //logger.info("[STATUS] Session created: "+event.getSession().getAttribute("username"));
+    @Override
+    public void valueBound(final HttpSessionBindingEvent event) {
+        logger.info("[STATUS] Session created for user "+this.userName);
 
     }
-    public void sessionDestroyed(final HttpSessionEvent event) {
-        logger.info("[STATUS] Session terminated: "+event.getSession().getAttribute("username"));
+    @Override
+    public void valueUnbound(final HttpSessionBindingEvent event) {
+        logger.info("[STATUS] Session terminated for user "+this.userName);
     }
 }

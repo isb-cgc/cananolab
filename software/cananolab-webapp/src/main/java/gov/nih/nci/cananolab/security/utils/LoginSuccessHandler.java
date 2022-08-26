@@ -11,6 +11,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
+import gov.nih.nci.cananolab.util.SessionListener;
 
 public class LoginSuccessHandler implements AuthenticationSuccessHandler
 {
@@ -22,7 +23,8 @@ public class LoginSuccessHandler implements AuthenticationSuccessHandler
 	{
 		// We are upgrading debug logging to warn logging to capture for audits
 		System.out.println("LSH Successful Login attempt for user "+  authentication.getName());
-		request.getSession(true).setAttribute("username", authentication.getName());
+		SessionListener userListener = new SessionListener(authentication.getName());
+		request.getSession(true).setAttribute("username", userListener);
 		logger.warn("Successfully authenticated user: " + authentication.getName());
 		OutputStream out = response.getOutputStream();
 		out.write(authentication.getName().getBytes());	
