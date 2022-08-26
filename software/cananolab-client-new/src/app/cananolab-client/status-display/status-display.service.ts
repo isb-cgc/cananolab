@@ -10,7 +10,7 @@ import { Router } from '@angular/router';
 export class StatusDisplayService{
 
     updateUserEmitter = new BehaviorSubject("guest");
-    updateGroupEmitter = new BehaviorSubject<Object>({ 'anonymousUser': 'Public' });
+    updateGroupEmitter = new BehaviorSubject<Object>({ 'anonymousUser': ['Public'] });
     user = '';
     groups = [];
 
