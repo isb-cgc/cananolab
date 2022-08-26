@@ -12,8 +12,11 @@ public class SessionListener implements HttpSessionBindingListener {
     private String userName;
     protected static Logger logger = LogManager.getLogger(SessionListener.class);
 
+    public SessionListener() {
+        this("guest");
+    }
+
     public SessionListener(String userName_) {
-        super();
         this.userName = userName_;
     }
 
