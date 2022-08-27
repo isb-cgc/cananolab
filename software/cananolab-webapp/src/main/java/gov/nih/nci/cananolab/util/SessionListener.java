@@ -5,6 +5,11 @@ import org.apache.logging.log4j.Logger;
 import javax.servlet.http.HttpSessionBindingListener;
 import javax.servlet.http.HttpSessionBindingEvent;
 
+/*
+ * Class for triggering an event when a session is made and destroyed.
+ *
+ */
+
 public class SessionListener implements HttpSessionBindingListener {
 
     private String userName;
