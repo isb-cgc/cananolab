@@ -3,10 +3,13 @@ package gov.nih.nci.cananolab.security.dao;
 import java.util.List;
 
 import gov.nih.nci.cananolab.security.CananoUserDetails;
+import gov.nih.nci.cananolab.security.service.PasswordResetToken;
 
 public interface UserDao 
 {
 	CananoUserDetails getUserByName(String username);
+	
+	CananoUserDetails getUserByEmail(String email);
 	
 	List<String> getUserGroups(String username);
 
@@ -26,4 +29,7 @@ public interface UserDao
 	
 	int deleteUserAssignedRoles(String username);
 
+	int insertPasswordResetToken(PasswordResetToken prt);
+
+	PasswordResetToken getPasswordResetToken(String token);
 }

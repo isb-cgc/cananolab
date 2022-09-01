@@ -11,9 +11,16 @@ public interface UserService
 	List<String> getGroupsAccessibleToUser(String matchStr);
 	
 	void createUserAccount(CananoUserDetails userDetails);
-	
+
+	void createPasswordResetToken(PasswordResetToken prt);
+
+	PasswordResetToken loadPasswordResetToken(String matchStr);
+
 	int resetPasswordForUser(String oldPassword, String newPassword, String userName) throws Exception;
-	
+
+	int changePasswordForUser(String newPassword, String userName) throws Exception;
+
 	void updateUserAccount(CananoUserDetails userDetails);
 
+	CananoUserDetails getUserAccountByEmail(String email);
 }

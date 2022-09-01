@@ -9,6 +9,7 @@ export const Consts = {
     serverlUrl:'/',
     // For each rest service
     LOGIN_URL: 'login',
+    RESET_PASSWORD_URL: 'rest/userself/resetpwd',
     QUERY_LOGOUT: 'logout',
     QUERY_SAMPLE_EXPORT_JSON: '/rest/sample/fullSampleExportJsonAll',
     QUERY_SAMPLE_EXPORT_XML: '/rest/sample/fullSampleExportXmlAll',

@@ -6,41 +6,83 @@
 
 <div [ngClass]="{'mainSection':loaded&&!homePage,'right-side-bar-content':homePage}">
 <div [ngClass]="{'mainBorder':loaded&&!homePage}">
-    <table class="login">
-        <tr>
-            <td colspan="2">
-                <P><B>No account is required to browse publicly available data.</B></P>
-            </td>
-        </tr>
-        <tr>
-            <td>
-                <label for="loginId">
-                    LOGIN ID
-                </label>
-            </td>
-            <td>
-                <input type="text" name="loginId" id="loginId" [(ngModel)]="user">
-            </td>
-        </tr>
+    <div *ngIf="!showResetPassword">
+        <table class="login">
+            <tr>
+                <td colspan="2">
+                    <P><B>No account is required to browse publicly available data.</B></P>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <label for="loginId">
+                        LOGIN ID
+                    </label>
+                </td>
+                <td>
+                    <input type="text" name="loginId" id="loginId" [(ngModel)]="user">
+                </td>
+            </tr>
 
-        <tr>
-            <td>
-                <label for="password">
-                    PASSWORD
-                </label>
-            </td>
-            <td>
-                <input type="password" name="password" id="password" [(ngModel)]="password">
-            </td>
-        </tr>
-        <tr>
-            <td></td>
-            <td>
+            <tr>
+                <td>
+                    <label for="password">
+                        PASSWORD
+                    </label>
+                </td>
+                <td>
+                    <input type="password" name="password" id="password" [(ngModel)]="password">
+                </td>
+            </tr>
+            <tr>
+                <td></td>
+                <td>
                     <button class="btn btn-primary btn-sm" (click)="onLoginClick()">
                         Login
                     </button>
-            </td>
-        </tr>
-    </table>
+                </td>
+            </tr>
+            <tr>
+                <td></td>
+                <td>
+                    <a href="" (click)="toggleResetPassword()">Forgot Password?</a>
+                </td>
+            </tr>
+        </table>
+    </div>
+    <div *ngIf="showResetPassword">
+        <table class="resetpwd">
+             <tr>
+                <td colspan="2">
+                    <P><B>Enter your email to receive a password reset link.</B></P>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <label for="email">
+                        EMAIL
+                    </label>
+                </td>
+                <td>
+                    <input type="text" name="email" id="email" [(ngModel)]="email">
+                </td>
+            </tr>
+
+            <tr>
+                <td></td>
+                <td>
+                    <button class="btn btn-primary btn-sm" (click)="onResetClick()">
+                        Reset Password
+                    </button>
+                </td>
+            </tr>
+            <tr>
+                <td></td>
+                <td>
+                  <a href="" (click)="toggleResetPassword()">Back to Login</a>
+                </td>
+            </tr>
+        </table>
+    </div>
 </div>
 </div>

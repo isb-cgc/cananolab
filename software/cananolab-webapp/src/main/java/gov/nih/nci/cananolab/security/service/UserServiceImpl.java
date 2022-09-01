@@ -5,9 +5,9 @@ import gov.nih.nci.cananolab.security.dao.UserDao;
 import gov.nih.nci.cananolab.security.enums.CaNanoRoleEnum;
 import gov.nih.nci.cananolab.security.utils.SpringSecurityUtil;
 import gov.nih.nci.cananolab.util.StringUtils;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
+
+import java.util.*;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -79,6 +79,28 @@ public class UserServiceImpl implements UserService
 			}
 		}
 	}
+
+	@Override
+	public PasswordResetToken loadPasswordResetToken(String matchStr)
+	{
+		PasswordResetToken prt = userDao.getPasswordResetToken(matchStr);
+		return prt;
+	}
+
+	@Override
+	public void createPasswordResetToken(PasswordResetToken prt)
+	{
+		String token = prt.getToken();
+		if (prt != null && !StringUtils.isEmpty(token)) {
+			// Calculate future date when token will expire
+			Calendar cal = Calendar.getInstance();
+			cal.setTime(new Date());
+			cal.add(Calendar.DATE, PasswordResetToken.EXPIRATION_HOURS);
+			Date expiryDate = cal.getTime();
+			prt.setExpiryDate(expiryDate);
+			int status = userDao.insertPasswordResetToken(prt);
+		}
+	}
 	
 	@Override
 	public int resetPasswordForUser(String oldPassword, String newPassword, String userName) throws Exception
@@ -103,6 +125,18 @@ public class UserServiceImpl implements UserService
 	}
 
 	@Override
+	public int changePasswordForUser(String newPassword, String userName) throws Exception
+	{
+		int status = 0;
+		if (!StringUtils.isEmpty(userName) && !StringUtils.isEmpty(newPassword))
+		{
+			String encryptedPassword = passwordEncoder.encode(newPassword);
+			status = userDao.resetPassword(userName, encryptedPassword);
+		}
+		return status;
+	}
+
+	@Override
 	public void updateUserAccount(CananoUserDetails userDetails)
 	{
 		String username = userDetails.getUsername();
@@ -121,4 +155,8 @@ public class UserServiceImpl implements UserService
 		}
 	}
 
+	@Override
+	public CananoUserDetails getUserAccountByEmail(String email) {
+		return userDao.getUserByEmail(email);
+	}
 }

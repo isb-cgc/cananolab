@@ -13,8 +13,10 @@ export class LoginComponent implements OnInit{
 
     user = '';
     password = '';
+    email = '';
     homePage = true;
     loaded=false;
+    showResetPassword=false;
     constructor( private idleService:IdleService,private router:Router,private apiService: ApiService, private statusDisplayService: StatusDisplayService ){
     }
 
@@ -28,7 +30,7 @@ export class LoginComponent implements OnInit{
 
     onLoginClick(){
         this.apiService.authenticateUser( this.user, this.password ).then((user) => {
-            this.statusDisplayService.updateUser( user );
+            this.statusDisplayService.updateUser( this.user );
             this.idleService.startTimer();
             this.router.navigateByUrl('home');
         },
@@ -38,5 +40,16 @@ export class LoginComponent implements OnInit{
             this.statusDisplayService.updateUser( "guest" );
             this.idleService.stopTimer();
         });
+    }
+
+    toggleResetPassword() {
+        this.showResetPassword=!this.showResetPassword;
+        return false;
+    }
+
+    onResetClick() {
+        this.apiService.resetUserPassword(this.email);
+        this.idleService.startTimer();
+        console.log(this.email);
     }
 }
