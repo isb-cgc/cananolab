@@ -466,7 +466,11 @@ public class CharacterizationServiceLocalImpl extends BaseServiceLocalImpl imple
 			CaNanoLabApplicationService appService = (CaNanoLabApplicationService) ApplicationServiceProvider.getApplicationService();
 			DetachedCriteria crit = DetachedCriteria.forClass(OtherCharacterization.class).add(
 					Property.forName("assayCategory").eq(assayCategory).ignoreCase());
+			System.out.println("FOCBAC Issue60: " + Property.forName("assayCategory") + " " + assayCategory);
+			System.out.println("FOCBAC Issue60 crit: " + crit.toString());
+
 			List result = appService.query(crit);
+			System.out.println("FOCBAC Issue60: " + result.size());
 			for (Object obj : result) {
 				String charName = ((OtherCharacterization) obj).getName();
 				if (!charNames.contains(charName)) {
