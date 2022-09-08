@@ -39,6 +39,12 @@
                             {{entry.Description}}
                         </td>
                     </tr>
+                    <tr *ngIf="entry.Protocol">
+                        <td class="label">Protocol</td>
+                        <td>
+                            {{entry.Protocol}}
+                        </td>
+                    </tr>
                     <tr *ngIf="entry['isWithProperties'] && propertyCheck(entry)">
                         <td class="label">Properties</td>
                         <td>
