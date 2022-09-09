@@ -137,6 +137,7 @@ export const Consts = {
     QUERY_COMPOSITION_FILE_DELETE: '/rest/compositionFile/delete',
     QUERY_COMPOSITION_FILE_SAVE: '/rest/compositionFile/submit',
     QUERY_COMPOSITION_EXPORT_XLS: '/rest/composition/summaryExport',
+    QUERY_SYNTHESIS_SUMMARY_VIEW: '/rest/synthesis/summaryView',
     QUERY_FUNCTIONALIZING_ENTITY_SAVE_FILE: '/rest/functionalizingEntity/saveFile',
     QUERY_FUNCTIONALIZING_ENTITY_REMOVE_FILE: '/rest/functionalizingEntity/removeFile',
     QUERY_FUNCTIONALIZING_ENTITY_REMOVE_FUNCTION: '/rest/functionalizingEntity/removeFunction',

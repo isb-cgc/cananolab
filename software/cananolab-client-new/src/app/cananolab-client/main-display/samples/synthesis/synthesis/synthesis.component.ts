@@ -43,7 +43,7 @@ export class SynthesisComponent implements OnInit{
                 this.apiService.getSampleName(this.sampleId).subscribe(
                     data=>this.toolHeadingNameManage='Sample ' +data['sampleName'] + ' Composition'
                 )
-                this.data = this.getCompositionEditData().subscribe(
+                this.data = this.getSynthesisEditData().subscribe(
                     data => {
                         this.data = data;
                         Properties.CURRENT_SAMPLE_NAME = data['sampleName'];
@@ -52,14 +52,22 @@ export class SynthesisComponent implements OnInit{
         );
     }
 
+    checkNull(field) {
+      if(!field) {
+        return "N/A"
+      } else {
+        return field;
+      }
+    }
+
     convertTitlesToRealWords(title) {
         const wordRegex = /[A-Z]?[a-z]+|[0-9]+|[A-Z]+(?![a-z])/g;
         const result = title.match(wordRegex);
         return result.join(' ')
     }
 
-    getCompositionEditData(){
-        let getUrl = Consts.QUERY_COMPOSITION_SUMMARY_VIEW;
+    getSynthesisEditData(){
+        let getUrl = Consts.QUERY_SYNTHESIS_SUMMARY_VIEW;
 
         if( Properties.DEBUG_CURL ){
             let curl = 'curl  -k \'' + getUrl + '\'';
@@ -85,6 +93,7 @@ export class SynthesisComponent implements OnInit{
         return results;
 
     }
+
     onPurificationClick(dataId){
         if (dataId==-1){
             this.router.navigate( ['home/samples/synthesis/purification', Properties.CURRENT_SAMPLE_ID] );  // @FIXME  Don't hard code these
@@ -93,6 +102,7 @@ export class SynthesisComponent implements OnInit{
             this.router.navigate( ['home/samples/synthesis/purification', Properties.CURRENT_SAMPLE_ID, dataId] );  // @FIXME  Don't hard code these
         }
     }
+    
     onFunctionalizationClick(dataId){
         if (dataId==-1){
             this.router.navigate( ['home/samples/synthesis/functionalization', Properties.CURRENT_SAMPLE_ID] );  // @FIXME  Don't hard code these
