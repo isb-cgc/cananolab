@@ -10,15 +10,17 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { timeout } from 'rxjs/operators';
 import { TestData } from '../../../testData';
-import { Observable, of } from 'rxjs';
+import {Observable, of, throwError} from 'rxjs';
 import { TopMainMenuService } from '../../top-main-menu/top-main-menu.service';
+import { timeoutWith } from 'rxjs/operators'
 
 @Injectable( {
     providedIn: 'root'
 } )
-export class ApiService{
+export class ApiService {
 
     currentlyAuthenticatingUser = false;
+    authPromise = null;
 
     constructor( private httpClient: HttpClient, private utilService: UtilService,
                  private router: Router, private topMainMenuService: TopMainMenuService ){
@@ -82,8 +84,7 @@ export class ApiService{
 
         if( typeof query === 'object' ){
             query = JSON.stringify( query ); // .replace(/^{"/, '').replace(/"}$/, '')
-        }else{
-
+        } else {
             // Change query to JSON format
             let re = /&/g;
             query = query.replace( re, '\',\'' );
@@ -95,16 +96,15 @@ export class ApiService{
 
             query = '{"' + query + '"}';
         }
-
         // Test mode, return hard coded test data
         if( Properties.TEST_MODE ){
             return this.doTestPost( queryType, query );  // @FIXME Return this as a promise
-        }else
+        } else {
             // Not Test mode
-        {
             let simpleSearchUrl = Properties.API_SERVER_URL + '/' + queryType;
+            simpleSearchUrl = simpleSearchUrl.replace(/(?<!:)\/+/g, "/");
             if( Properties.DEBUG_CURL ){
-                let curl = 'curl -k \'' + Properties.API_SERVER_URL + '/' + queryType + '\' -d \'' + query + '\'';
+                let curl = 'curl -k \'' + simpleSearchUrl + '\' -d \'' + query + '\'';
             }
 
             let headers = null;
@@ -115,13 +115,13 @@ export class ApiService{
             let options;
 
             // These are returned as text not JSON (which is the default return format).
-            if( queryType === Consts.LOGIN_URL || queryType === Consts.QUERY_CREATE_PROTOCOL
-            ){
+            if( queryType === Consts.LOGIN_URL || queryType === Consts.QUERY_LOGOUT ||
+                queryType === Consts.QUERY_CREATE_PROTOCOL) {
                 options = {
                     headers: headers,
                     responseType: 'text' as 'text'
                 };
-            }else{
+            } else {
                 options = {
                     headers: headers
                 };
@@ -143,8 +143,7 @@ export class ApiService{
     doPost0( queryType, query: any ): Observable<any>{
         if( typeof query === 'object' ){
             query = JSON.stringify( query ); // .replace(/^{"/, '').replace(/"}$/, '')
-        }else{
-
+        } else {
             let re = /&/g;
             query = query.replace( re, '\',\'' );
 
@@ -158,12 +157,12 @@ export class ApiService{
         // Test mode, return hard coded test data
         if( Properties.TEST_MODE ){
             return this.doTestPost( queryType, query );  // @FIXME Return this as a promise
-        }else
+        } else {
             // Not Test mode
-        {
             let simpleSearchUrl = Properties.API_SERVER_URL + '/' + queryType;
+            simpleSearchUrl = simpleSearchUrl.replace(/(?<!:)\/+/g, "/");
             if( Properties.DEBUG_CURL ){
-                let curl = 'curl -k \'' + Properties.API_SERVER_URL + '/' + queryType + '\' -d \'' + query + '\'';
+                let curl = 'curl -k \'' + simpleSearchUrl + '\' -d \'' + query + '\'';
             }
 
             let headers = null;
@@ -177,13 +176,12 @@ export class ApiService{
 
 
             // These are returned as text not JSON (which is the default return format).
-            if( queryType === Consts.LOGIN_URL || queryType === Consts.QUERY_CREATE_PROTOCOL
-            ){
+            if( queryType === Consts.LOGIN_URL || queryType === Consts.QUERY_CREATE_PROTOCOL) {
                 options = {
                     headers: headers,
                     responseType: 'text' as 'text'
                 };
-            }else{
+            } else {
                 options = {
                     headers: headers
                 };
@@ -198,12 +196,13 @@ export class ApiService{
      * @param queryType
      * @param query
      */
-    doGet( queryType, query,responseType=null ): Observable<string>{
+    doGet(queryType, query, responseType=null): Observable<string>{
 
         if( Properties.TEST_MODE ){
             return this.doTestGet( queryType, query );
-        }else{
+        } else {
             let getUrl = Properties.API_SERVER_URL + '/' + queryType;
+            getUrl = getUrl.replace(/(?<!:)\/+/g,"/");
             if( query !== undefined && query !== null && query.length > 0 ){
                 getUrl += '?' + query;
             }
@@ -217,8 +216,8 @@ export class ApiService{
                 'Content-Type': 'application/x-www-form-urlencoded',
                 'Access-Control-Allow-Origin': '*',  // @CHECKME
             } );
-       let results;
 
+            let results;
             let options;
 
             if( queryType !== Consts.QUERY_SAMPLE_AVAILABILITY_HTML){
@@ -226,7 +225,7 @@ export class ApiService{
                     headers: headers,
                     method: 'get'
                 };
-            }else{
+            } else {
                 options = {
                     headers: headers,
                     method: 'get',
@@ -240,8 +239,6 @@ export class ApiService{
 
             return results;
         }
-
-
     }
 
     /**
@@ -263,15 +260,11 @@ export class ApiService{
      */
     doTestGet( queryType, query ): Observable<string>{
         let retPromise = new Observable<string>( null );
-
         switch( queryType ){
             case Consts.QUERY_GET_TABS:
                 retPromise = of( TestData.QUERY_GET_TABS );
                 break;
-
-
         }
-
         return retPromise;
     }
 
@@ -283,106 +276,60 @@ export class ApiService{
      * @param user
      * @param password
      */
-    authenticateUser( user, password ){
+    authenticateUser(user, password): Promise<string> {
+        if(user.length <= 0 || password.length <= 0) {
+            this.authPromise = Promise.reject("Username or password not provided!");
+        } else {
+            if(!this.currentlyAuthenticatingUser) {
+                this.authPromise = new Promise<string>((resolve, reject) => {
+                    this.currentlyAuthenticatingUser = true;
+                    let post_url = Properties.API_SERVER_URL + '/' + Consts.LOGIN_URL;
+                    post_url = post_url.replace(/(?<!:)\/+/g, "/");
+                    let headers = new HttpHeaders({'Content-Type': 'application/x-www-form-urlencoded'});
+                    let data = 'username=' + user + '&password=' + password;
 
-        if( this.currentlyAuthenticatingUser ){
-            return;
-        }
+                    if (Properties.DEBUG_CURL) {
+                        let curl = 'curl  -v -d  \'' + data + '\' ' + ' -k \'' + post_url + '\'';
+                    }
 
-        if( user.length > 0 && password.length > 0 ){
-            this.currentlyAuthenticatingUser = true;
-
-            let post_url = Properties.API_SERVER_URL + '/' + Consts.LOGIN_URL;
-            let headers = new HttpHeaders( { 'Content-Type': 'application/x-www-form-urlencoded' } );
-            let data = 'username=' + user + '&password=' + password;
-
-            if( Properties.DEBUG_CURL ){
-                let curl = 'curl  -v -d  \'' + data + '\' ' + ' -k \'' + post_url + '\'';
+                    let options = {
+                        responseType: <any>'text',
+                        headers: headers,
+                        method: 'post'
+                    };
+                    this.httpClient.post(post_url, data, options)
+                        .pipe(timeoutWith(Properties.HTTP_TIMEOUT, throwError(new Error("User authentication timed out.")))).subscribe(
+                        (loginReturnData) => {
+                            Properties.LOGGED_IN = true;
+                            Properties.logged_in = true;
+                            Properties.current_user = user;
+                            let tabs = [];
+                            this.getTabs().subscribe(data => {
+                                data['tabs'].forEach(element => {
+                                    tabs.push(element[0].replace(' ', '_'));
+                                    if (element[0] == 'CURATION') {
+                                        tabs.push('RESULTS')
+                                    }
+                                });
+                                this.topMainMenuService.showOnlyMenuItems(tabs);
+                                this.currentlyAuthenticatingUser = false;
+                                resolve(user);
+                            });
+                        },
+                        // ERROR
+                        (err) => {
+                            alert('Login error[' + err.status + ']: ' +
+                                '\n' + err.message);
+                            this.currentlyAuthenticatingUser = false;
+                            Properties.LOGGED_IN = false;
+                            Properties.logged_in = false;
+                            reject(err.message);
+                        }
+                    );
+                });
             }
-
-            let options =
-                {
-                    responseType: <any>'text',
-                    headers: headers,
-                    method: 'post'
-                };
-
-            this.httpClient.post( post_url, data, options ).pipe( timeout( Properties.HTTP_TIMEOUT ) ).subscribe(
-                ( loginReturnData ) => {
-                    Properties.LOGGED_IN = true;
-                    Properties.current_user = user;
-                    let tabs=[];
-                    this.getTabs().subscribe(data=> {
-                        data['tabs'].forEach(element => {
-                            console.log(element[0])
-                            tabs.push(element[0].replace(' ','_'));
-                            if (element[0]=='CURATION') {
-                                tabs.push('RESULTS')
-                            }
-                        });
-                        this.topMainMenuService.showOnlyMenuItems(tabs);
-                        this.currentlyAuthenticatingUser = false;
-
-                    });
-
-                },
-                // ERROR
-                ( err ) => {
-                    alert( 'Login error[' + err.status + ']: ' +
-                        '\n' + err.message );
-                    this.currentlyAuthenticatingUser = false;
-                    Properties.LOGGED_IN = false;
-                }
-            );
-
         }
-        // END if user length > 0
-
+        return this.authPromise;
     }
-
-
 }
 
-/*
-    $scope.loginDo = function () {
-      if (!$scope.password || !$scope.loginId) {
-        $scope.authErrors = "Username and Password are required";
-      } else {
-        $scope.bean = {
-          "username": $scope.loginId,
-          "password": $scope.password
-        };
-        $http({
-          method: 'POST',
-          url: 'login',
-          headers: {
-            'Content-Type': 'application/x-www-form-urlencoded'
-          },
-          transformRequest: function (obj) {
-            var str = [];
-            for (var p in obj)
-              str.push(encodeURIComponent(p) + "=" + encodeURIComponent(obj[p]));
-            return str.join("&");
-          },
-          data: $scope.bean
-        }).
-        then(function (data, status, headers, config) {
-          data = data['data']
-          // this callback will be called asynchronously
-          // when the response is available
-          $rootScope.loggedInUser = data;
-          $scope.loginShow = 0;
-          $location.path("/").replace();
-          // $route.reload();
-
-          //Set tabs here.. Delete on logout. Use variable instead of rest call
-
-        }).
-        catch(function (data, status, headers, config) {
-          data = data['data']
-          $scope.password = '';
-          $scope.authErrors = data;
-        });
-      }
-    }
- */

@@ -42,7 +42,6 @@ export class IdleService {
         this.startTimer();
     }
 
-
     stopTimer() {
         if (this.theTimer) {
             this.theTimer.unsubscribe();
@@ -52,6 +51,8 @@ export class IdleService {
     startTimer() {
         setTimeout(()=> {
             this.apiService.doGet(Consts.QUERY_GET_USER_GROUPS,'').subscribe(data=> {
+                console.log("User groups response:");
+                console.log(data);
                 if (Object.keys(data).indexOf('anonymousUser')==-1) {
                     if (this.theTimer) {
                         this.theTimer.unsubscribe();
@@ -59,12 +60,11 @@ export class IdleService {
                     this.theTimer = this.timer.subscribe(data=> {
                         this.activeTimer.emit(data);
                     });
-
                 }
                 else {
                     if (this.theTimer) {
                         this.theTimer.unsubscribe();
-                    };
+                    }
                 }
             })
         },100)

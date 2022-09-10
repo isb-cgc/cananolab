@@ -5,6 +5,8 @@ import { NanomaterialentityRoutingModule } from './nanomaterialentity-routing.mo
 import { SharedModule } from '../../../../common/modules/set-object-value/shared.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { FileModule } from 'src/app/cananolab-client/common/components/file/file.module';
+
+
 @NgModule({
     declarations: [NanomaterialentityComponent],
     imports: [

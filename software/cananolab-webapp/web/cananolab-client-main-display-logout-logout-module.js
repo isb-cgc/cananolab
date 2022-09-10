@@ -31,7 +31,7 @@ LogoutModule.ɵinj = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdefineInjec
             _logout_routing_module__WEBPACK_IMPORTED_MODULE_3__["LogoutRoutingModule"],
             _common_modules_set_object_value_shared_module__WEBPACK_IMPORTED_MODULE_4__["SharedModule"],
             _angular_forms__WEBPACK_IMPORTED_MODULE_5__["FormsModule"],
-            _angular_forms__WEBPACK_IMPORTED_MODULE_5__["ReactiveFormsModule"]
+            _angular_forms__WEBPACK_IMPORTED_MODULE_5__["ReactiveFormsModule"],
         ]] });
 (function () { (typeof ngJitMode === "undefined" || ngJitMode) && _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵsetNgModuleScope"](LogoutModule, { declarations: [_logout_component__WEBPACK_IMPORTED_MODULE_2__["LogoutComponent"]], imports: [_angular_common__WEBPACK_IMPORTED_MODULE_1__["CommonModule"],
         _logout_routing_module__WEBPACK_IMPORTED_MODULE_3__["LogoutRoutingModule"],
@@ -47,7 +47,7 @@ LogoutModule.ɵinj = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdefineInjec
                     _logout_routing_module__WEBPACK_IMPORTED_MODULE_3__["LogoutRoutingModule"],
                     _common_modules_set_object_value_shared_module__WEBPACK_IMPORTED_MODULE_4__["SharedModule"],
                     _angular_forms__WEBPACK_IMPORTED_MODULE_5__["FormsModule"],
-                    _angular_forms__WEBPACK_IMPORTED_MODULE_5__["ReactiveFormsModule"]
+                    _angular_forms__WEBPACK_IMPORTED_MODULE_5__["ReactiveFormsModule"],
                 ]
             }]
     }], null, null); })();
@@ -106,6 +106,7 @@ class LogoutComponent {
     logOut() {
         this.apiService.doPost(_constants__WEBPACK_IMPORTED_MODULE_1__["Consts"].QUERY_LOGOUT, '').subscribe(data => {
             _assets_properties__WEBPACK_IMPORTED_MODULE_2__["Properties"].LOGGED_IN = false;
+            _assets_properties__WEBPACK_IMPORTED_MODULE_2__["Properties"].logged_in = false;
             this.statusDisplayService.updateUser('guest');
         }, err => {
             this.statusDisplayService.updateUser('unknown'); // CHECKME

@@ -13,6 +13,7 @@ import { ApiService } from '../../common/services/api.service';
 import { Consts } from '../../../constants';
 import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
+
 @Component( {
     selector: 'canano-main-display-heading',
     templateUrl: './main-display-heading.component.html',
@@ -76,6 +77,10 @@ export class MainDisplayHeadingComponent implements OnInit, OnDestroy{
                 this.helpUrl = 'https://wiki.nci.nih.gov/display/caNanoLab/Managing+Samples+in+caNanoLab#ManagingSamplesincaNanoLab-ManageSamples';
                 break;
 
+           case TopMenuItems.SEARCH_SAMPLES_BY_PUBLICATIONS:
+               this.helpUrl = 'https://wiki.nci.nih.gov/display/caNanoLab/Searching+Existing+Samples';
+               break;
+
            case TopMenuItems.PUBLICATIONS:
                 this.helpUrl = 'https://wiki.nci.nih.gov/x/e4QfEQ';
                 break;
@@ -109,7 +114,7 @@ export class MainDisplayHeadingComponent implements OnInit, OnDestroy{
         let type=this.export[1];
         let query='QUERY_'+type+'_EXPORT_XLS';
         // console.log(query)
-        window.open('/'+Consts[query]+'?sampleId='+sampleId+'&type=all');
+        window.open(Consts[query]+'?sampleId='+sampleId+'&type=all');
         // <a ng-disabled="loader" class="helpText" ng-href="/rest/publication/summaryExport?sampleId=66945032&amp;type=all" href="/rest/publication/summaryExport?sampleId=66945032&amp;type=all">Export</a>
     }
 

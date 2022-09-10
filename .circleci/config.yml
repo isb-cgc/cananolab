@@ -25,10 +25,10 @@ commands:
             PROJECT_ID=${DEPLOYMENT_PROJECT_ID_ISB_CANANO_DEV}
             BUCKET=${DEPLOYMENT_BUCKET_ISB_CANANO_DEV}
             if [[ ${TIER} == "PROD" ]]; then
-              CLIENT_EMAIL=${DEPLOYMENT_CLIENT_EMAIL_ISB_CANANO}
-              PROJECT_ID=${DEPLOYMENT_PROJECT_ID_ISB_CANANO}
-              BUCKET="${DEPLOYMENT_BUCKET_ISB_CANANO}/${TIER,,}"
-              KEY=${DEPLOYMENT_KEY_ISB_CANANO}
+              CLIENT_EMAIL=${DEPLOYMENT_CLIENT_EMAIL_ISB_CANANO_PROD}
+              PROJECT_ID=${DEPLOYMENT_PROJECT_ID_ISB_CANANO_PROD}
+              BUCKET=${DEPLOYMENT_BUCKET_ISB_CANANO_PROD}
+              KEY=${DEPLOYMENT_KEY_ISB_CANANO_PROD}
             elif [[ ${TIER} == "UAT" ]]; then
               KEY=${DEPLOYMENT_KEY_ISB_CANANO_UAT}
               CLIENT_EMAIL=${DEPLOYMENT_CLIENT_EMAIL_ISB_CANANO_UAT}
@@ -93,6 +93,11 @@ jobs:
           MYSQL_ROOT_PASSWORD: "isb"
     steps:
       - checkout
+      - run:
+          name: Fix for bug with Git and Ubuntu 20+
+          command: |
+            SHA=$(git rev-list -1 HEAD)
+            echo "export APP_SHA=${SHA:0:7}" >> $BASH_ENV
       - run:
           name: Install Dependencies
           command: |

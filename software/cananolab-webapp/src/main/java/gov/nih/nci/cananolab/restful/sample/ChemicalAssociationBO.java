@@ -555,6 +555,7 @@ public class ChemicalAssociationBO extends BaseAnnotationBO
 		//theForm.set("assoc", assocBean);
 		this.checkOpenForms(assocBean, request);
 	//	return mapping.findForward("inputForm");
+		System.out.println("A Issue 50 setting sampleId to " + sampleId);
 		request.getSession().setAttribute("sampleId", sampleId);
 		SimpleChemicalAssociationBean chemBean = new SimpleChemicalAssociationBean();
 		chemBean.trasferToSimpleChemicalAssociation(assocBean, request, springSecurityAclService);
