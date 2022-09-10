@@ -59,7 +59,7 @@ export class SampleEditComponent implements OnInit, OnDestroy{
                     data => {
                         Properties.SAMPLE_TOOLS = true;
                         this.data = data;
-                        console.log(data)
+                        //console.log(data)
                         this.data.keywords=this.joinKeywords(this.data.keywords);
                         this.dataTrailer=JSON.parse(JSON.stringify(this.data))
                         Properties.CURRENT_SAMPLE_NAME = data['sampleName'];
@@ -144,7 +144,6 @@ export class SampleEditComponent implements OnInit, OnDestroy{
     }
     // set pointer fields to old values when adding other //
     addOtherValue(field,currentValue) {
-        console.log('test')
         this.currentDropdownValues[field]=currentValue;
     };
 

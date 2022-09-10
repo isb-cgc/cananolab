@@ -216,8 +216,9 @@ public class SampleServices {
 							.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization").build();
 			
 		} catch (Exception e) {
-			return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
-					.entity(CommonUtil.wrapErrorMessageInList(e.getMessage())).build();
+			logger.error(e.getMessage());
+			e.printStackTrace();
+			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(CommonUtil.wrapErrorMessageInList(e.getMessage())).build();
 		}
 		
 	}
@@ -246,6 +247,8 @@ public class SampleServices {
 		} 
 		
 		catch (Exception ioe) {
+			logger.error(ioe.getMessage());
+			ioe.printStackTrace();
 			return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
 					.entity(CommonUtil.wrapErrorMessageInList(ioe.getMessage())).build();
 		}
@@ -265,6 +268,8 @@ public class SampleServices {
 			return Response.ok(result).build();
 		}
 		catch (Exception ioe) {
+			logger.error(ioe.getMessage());
+			ioe.printStackTrace();
 			return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
 					.entity(CommonUtil.wrapErrorMessageInList(ioe.getMessage())).build();
 		}
@@ -292,6 +297,8 @@ public class SampleServices {
 		} 
 
 		catch (Exception ioe) {
+			logger.error(ioe.getMessage());
+			ioe.printStackTrace();
 			return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
 					.entity(CommonUtil.wrapErrorMessageInList(ioe.getMessage())).build();
 		}
@@ -323,6 +330,7 @@ public class SampleServices {
 
 		} catch (Exception e) {
 			logger.error(e.getMessage());
+			e.printStackTrace();
 			return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
 					.entity(CommonUtil.wrapErrorMessageInList("Error while saving Point of Contact: " + e.getMessage())).build();
 		}
@@ -349,6 +357,7 @@ public class SampleServices {
 
 		} catch (Exception e) {
 			logger.error(e.getMessage());
+			e.printStackTrace();
 			return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
 					.entity(CommonUtil.wrapErrorMessageInList("Error while saving Access: " + e.getMessage())).build();
 		}
@@ -374,6 +383,8 @@ public class SampleServices {
 					:
 					Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(simpleBean.getErrors()).build();
 		} catch (Exception ioe) {
+			logger.error(ioe.getMessage());
+			ioe.printStackTrace();
 			return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
 					.entity(CommonUtil.wrapErrorMessageInList(ioe.getMessage())).build();
 		}
@@ -398,6 +409,7 @@ public class SampleServices {
 
 		} catch (Exception e) {
 			logger.error(e.getMessage());
+			e.printStackTrace();
 			return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
 					.entity(CommonUtil.wrapErrorMessageInList("Error while updating sample: " + e.getMessage())).build();
 		}
@@ -427,6 +439,7 @@ public class SampleServices {
 
 		} catch (Exception e) {
 			logger.error(e.getMessage());
+			e.printStackTrace();
 			return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
 					.entity(CommonUtil.wrapErrorMessageInList("Error while submitting sample: " + e.getMessage())).build();
 		}
@@ -457,6 +470,7 @@ public class SampleServices {
 
 		} catch (Exception e) {
 			logger.error(e.getMessage());
+			e.printStackTrace();
 			return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
 					.entity(CommonUtil.wrapErrorMessageInList("Error while copying sample: " + e.getMessage())).build();
 		}
@@ -700,8 +714,7 @@ public class SampleServices {
 		} catch (Exception e) {
 			logger.error(e.getMessage());
 			//return Response.ok("Error while viewing the search results").build();
-			return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
-					.entity(CommonUtil.wrapErrorMessageInList(e.getMessage())).build();
+			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(CommonUtil.wrapErrorMessageInList(e.getMessage())).build();
 		}
 	}
 	
@@ -790,8 +803,7 @@ public class SampleServices {
 						.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization").build();
 		} catch (Exception e) {
 			logger.error(e.getMessage());
-			return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
-					.entity(CommonUtil.wrapErrorMessageInList(e.getMessage())).build();
+			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(CommonUtil.wrapErrorMessageInList(e.getMessage())).build();
 		}
 	}
 	

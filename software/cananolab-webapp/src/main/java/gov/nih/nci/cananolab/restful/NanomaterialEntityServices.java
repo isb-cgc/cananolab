@@ -37,8 +37,9 @@ public class NanomaterialEntityServices {
 			return Response.ok(dropdownMap).header("Access-Control-Allow-Credentials", "true").header("Access-Control-Allow-Origin", "*").header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS").header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization").build();
 
 		} catch (Exception e) {
+			logger.error(e.getMessage());
+			e.printStackTrace();
 			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(CommonUtil.wrapErrorMessageInList("Error while setting up drop down lists" + e.getMessage())).build();
-
 		}
 	}
 	
@@ -62,8 +63,9 @@ public class NanomaterialEntityServices {
 						Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(errors).build();
 			
 		} catch (Exception e) {
+			logger.error(e.getMessage());
+			e.printStackTrace();
 			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(CommonUtil.wrapErrorMessageInList("Error while viewing the NanoMaterial Entity" + e.getMessage())).build();
-
 		}
 	}
 	
@@ -87,8 +89,9 @@ public class NanomaterialEntityServices {
 						Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(errors).build();
 					
 		} catch (Exception e) {
+			logger.error(e.getMessage());
+			e.printStackTrace();
 			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(CommonUtil.wrapErrorMessageInList("Error while saving the composing element" + e.getMessage())).build();
-
 		}
 	}
 
@@ -115,8 +118,9 @@ public class NanomaterialEntityServices {
 					Response.ok(nano).build() :
 						Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(errors).build();
 		} catch (Exception e) {
+			logger.error(e.getMessage());
+			e.printStackTrace();
 			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(CommonUtil.wrapErrorMessageInList("Error while removing the composing element" + e.getMessage())).build();
-
 		}
 	}
 
@@ -164,10 +168,10 @@ public class NanomaterialEntityServices {
 			return (errors == null || errors.size() == 0) ?
 					Response.ok(nano).build() :
 						Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(errors).build();
-					
 		} catch (Exception e) {
+			logger.error(e.getMessage());
+			e.printStackTrace();
 			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(CommonUtil.wrapErrorMessageInList("Error while saving the NanoEntity file. " + e.getMessage())).build();
-
 		}
 	}
 
@@ -194,8 +198,9 @@ public class NanomaterialEntityServices {
 						Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(errors).build();
 					
 		} catch (Exception e) {
+			logger.error(e.getMessage());
+			e.printStackTrace();
 			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(CommonUtil.wrapErrorMessageInList("Error while removing the file" + e.getMessage())).build();
-
 		}
 	}
 	
@@ -213,11 +218,11 @@ public class NanomaterialEntityServices {
 			List<String> msgs = nanomaterialEntityBO.create(nanoBean, httpRequest);
 			
 			return Response.ok(msgs).header("Access-Control-Allow-Credentials", "true").header("Access-Control-Allow-Origin", "*").header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS").header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization").build();
-	
-					
-		} catch (Exception e) {
-			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(CommonUtil.wrapErrorMessageInList("Error while saving the nano material entity" + e.getMessage())).build();
 
+		} catch (Exception e) {
+			logger.error(e.getMessage());
+			e.printStackTrace();
+			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(CommonUtil.wrapErrorMessageInList("Error while saving the nano material entity" + e.getMessage())).build();
 		}
 	}
 	@POST
@@ -235,9 +240,9 @@ public class NanomaterialEntityServices {
 			List<String> msgs = nanomaterialEntityBO.delete(nanoBean, httpRequest);
 			
 			return Response.ok(msgs).header("Access-Control-Allow-Credentials", "true").header("Access-Control-Allow-Origin", "*").header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS").header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization").build();
-	
-					
 		} catch (Exception e) {
+			logger.error(e.getMessage());
+			e.printStackTrace();
 			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(CommonUtil.wrapErrorMessageInList("Error while deleting the nanomaterial entity " + e.getMessage())).build();
 
 		}
@@ -259,10 +264,10 @@ public class NanomaterialEntityServices {
 			return Response.ok(compBean).header("Access-Control-Allow-Credentials", "true").header("Access-Control-Allow-Origin", "*").header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS").header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization").build();
 
 		} catch (Exception e) {
+			logger.error(e.getMessage());
+			e.printStackTrace();
 			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(CommonUtil.wrapErrorMessageInList("Error while viewing the NanoMaterial Entity" + e.getMessage())).build();
-
 		}
 	}
-	
 }
 

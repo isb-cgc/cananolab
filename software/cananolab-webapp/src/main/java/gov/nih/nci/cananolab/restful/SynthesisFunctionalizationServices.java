@@ -37,6 +37,8 @@ public class SynthesisFunctionalizationServices {
             return Response.ok(dropdownMap).header("Access-Control-Allow-Credentials", "true").header("Access-Control-Allow-Origin", "*").header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS").header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization").build();
 
         } catch (Exception e) {
+            logger.error(e.getMessage());
+            e.printStackTrace();
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(CommonUtil.wrapErrorMessageInList("Error while setting up drop down lists" + e.getMessage())).build();
         }
     }
@@ -59,7 +61,9 @@ public class SynthesisFunctionalizationServices {
                     Response.ok(synthesisFunctionalizationBean).build(): Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(errors).build();
 
         } catch(Exception e){
-            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity((CommonUtil.wrapErrorMessageInList("Error while saving Synthesis Functionalization Element "+ e.getStackTrace()))).build();
+            logger.error(e.getMessage());
+			e.printStackTrace();
+			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity((CommonUtil.wrapErrorMessageInList("Error while saving Synthesis Functionalization Element "+ e.getStackTrace()))).build();
         }
 
     }
@@ -79,6 +83,7 @@ public class SynthesisFunctionalizationServices {
                     Response.ok(synthesisFunctionalizationBean).build() :
                     Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(errors).build();
         } catch (Exception e){
+            logger.error(e.getMessage());
             e.printStackTrace();
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(CommonUtil.wrapErrorMessageInList("Error while saving the File " + e.getMessage())).build();
         }
@@ -101,6 +106,7 @@ public class SynthesisFunctionalizationServices {
                     Response.ok(synthesisFunctionalizationBean).build() :
                     Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(errors).build();
         }catch (Exception e){
+            logger.error(e.getMessage());
             e.printStackTrace();
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(CommonUtil.wrapErrorMessageInList("Error while removing the File " + e.getMessage())).build();
         }
@@ -127,9 +133,9 @@ public class SynthesisFunctionalizationServices {
                     Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(errors).build();
 
         } catch (Exception e) {
+            logger.error(e.getMessage());
             e.printStackTrace();
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(CommonUtil.wrapErrorMessageInList("Error while viewing the Synthesis Entity. " + e.getMessage())).build();
-
         }
     }
 
@@ -154,8 +160,9 @@ public class SynthesisFunctionalizationServices {
             return (errors == null || errors.size() == 0) ?
                     Response.ok(bean).build() :
                     Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(errors).build();
-
         } catch (Exception e) {
+            logger.error(e.getMessage());
+            e.printStackTrace();
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(CommonUtil.wrapErrorMessageInList("Error while viewing the synthesisFunctionalizationBO Entity" + e.getMessage())).build();
         }
     }
@@ -173,8 +180,9 @@ public class SynthesisFunctionalizationServices {
             List<String> errors = synthesisFunctionalizationBean.getErrors();
             return (errors==null || errors.size()==0)? Response.ok(synthesisFunctionalizationBean).build() :
                     Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(errors).build();
-
-        }catch(Exception e){
+        } catch(Exception e){
+            logger.error(e.getMessage());
+            e.printStackTrace();
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(CommonUtil.wrapErrorMessageInList("Error while removing Functionalization Element "+ e.getMessage())).build();
         }
     }
@@ -189,6 +197,8 @@ public class SynthesisFunctionalizationServices {
         try{
             return Response.status(Response.Status.OK).entity("ALL GOOD TEST").build();
         }catch(Exception e){
+            logger.error(e.getMessage());
+            e.printStackTrace();
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(CommonUtil.wrapErrorMessageInList("Error while removing Functionalization Element "+ e.getMessage())).build();
         }
     }
@@ -207,6 +217,7 @@ public class SynthesisFunctionalizationServices {
             return Response.ok(msgs).header("Access-Control-Allow-Credentials", "true").header("Access-Control-Allow-Origin", "*").header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS").header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization").build();
 
         } catch (Exception e) {
+            logger.error(e.getMessage());
             e.printStackTrace();
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(CommonUtil.wrapErrorMessageInList("Error while saving the synthesis functionalization :" + e.getMessage())).build();
         }

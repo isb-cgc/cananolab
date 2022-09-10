@@ -11,6 +11,8 @@ import { ProtocolsService } from '../../protocols.service';
 import { ApiService } from '../../../../common/services/api.service';
 import { StatusDisplayService } from '../../../../status-display/status-display.service';
 import { Router } from '@angular/router';
+import { timeoutWith } from 'rxjs/operators'
+import { throwError } from 'rxjs'
 
 @Component({
     selector: 'canano-protocol-search-results',
@@ -74,7 +76,7 @@ export class ProtocolSearchResultsComponent implements OnInit, OnDestroy {
             });
 
         this.statusDisplayService.updateUserEmitter
-            .pipe(timeout(Properties.HTTP_TIMEOUT))
+            .pipe(timeoutWith(Properties.HTTP_TIMEOUT, throwError(new Error("Didn't see user update!"))))
             .subscribe((data) => {
                 this.userName = data;
             });
@@ -114,7 +116,7 @@ export class ProtocolSearchResultsComponent implements OnInit, OnDestroy {
     }
 
     formatFileField(data) {
-        console.log(data)
+        //console.log(data)
         data = data.replace(/(^[^\/])/,"/$1");
         return data;
     }

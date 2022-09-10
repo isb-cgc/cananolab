@@ -57,6 +57,8 @@ public class PublicationServices {
 			return Response.ok(view).header("Access-Control-Allow-Credentials", "true").header("Access-Control-Allow-Origin", "*").header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS").header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization").build();
 
 		} catch (Exception e) {
+			logger.error(e.getMessage());
+			e.printStackTrace();
 			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(CommonUtil.wrapErrorMessageInList("Error while viewing for publication " + e.getMessage())).build();
 		}
 	}
@@ -74,6 +76,8 @@ public class PublicationServices {
 			return Response.ok(result).build();
 
 		} catch (Exception e) {
+			logger.error(e.getMessage());
+			e.printStackTrace();
 			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(CommonUtil.wrapErrorMessageInList("Error while downloading the file" + e.getMessage())).build();
 		}
 	}
@@ -92,6 +96,8 @@ public class PublicationServices {
 			view.transferPublicationBeanForSummaryView(summaryBean);
 			return Response.ok(view).build();
 		} catch (Exception e) {
+			logger.error(e.getMessage());
+			e.printStackTrace();
 			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(CommonUtil.wrapErrorMessageInList("Error while printing the file" + e.getMessage())).build();
 		}
 	}
@@ -107,6 +113,8 @@ public class PublicationServices {
 			String result = publicationBO.summaryExport(sampleId, type, httpRequest, httpResponse);
 			return Response.ok("").build();
 		} catch (Exception e) {
+			logger.error(e.getMessage());
+			e.printStackTrace();
 			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(CommonUtil.wrapErrorMessageInList("Error while exporting the file" + e.getMessage())).build();
 		}
 	}
@@ -127,6 +135,8 @@ public class PublicationServices {
 			// return Response.ok(view).build();
 			return Response.ok(pubBean).header("Access-Control-Allow-Credentials", "true").header("Access-Control-Allow-Origin", "*").header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS").header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization").build();
 		} catch (Exception e) {
+			logger.error(e.getMessage());
+			e.printStackTrace();
 			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(CommonUtil.wrapErrorMessageInList("Error while viewing the publication results" + e.getMessage())).build();
 
 		}
@@ -144,6 +154,8 @@ public class PublicationServices {
 
 			// return Response.ok(dropdownMap).build();
 		} catch (Exception e) {
+			logger.error(e.getMessage());
+			e.printStackTrace();
 			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(CommonUtil.wrapErrorMessageInList("Error while setting up drop down lists" + e.getMessage())).build();
 		}
 	}
@@ -165,6 +177,7 @@ public class PublicationServices {
 
 		} catch (Exception e) {
 			logger.error(e.getMessage());
+			e.printStackTrace();
 			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(CommonUtil.wrapErrorMessageInList("Error while searching for publication " + e.getMessage())).build();
 		}
 	}
@@ -189,6 +202,8 @@ public class PublicationServices {
 						Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(errors).build();
 
 		} catch (Exception e) {
+			logger.error(e.getMessage());
+			e.printStackTrace();
 			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(CommonUtil.wrapErrorMessageInList("Error while viewing for publication " + e.getMessage())).build();
 
 		}
@@ -211,6 +226,8 @@ public class PublicationServices {
 
 			// return Response.ok(dropdownMap).build();
 		} catch (Exception e) {
+			logger.error(e.getMessage());
+			e.printStackTrace();
 			return Response.status(Response.Status.NOT_FOUND).entity(CommonUtil.wrapErrorMessageInList("Problem getting all sample names for publication submission"+ e.getMessage())).build();
 		}
 	}
@@ -274,6 +291,8 @@ public class PublicationServices {
 					: Response.ok(result).build();
 		}
 		catch (Exception ioe) {
+			logger.error(ioe.getMessage());
+			ioe.printStackTrace();
 			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(ioe.getMessage()).build();
 		}
 	}	
@@ -298,6 +317,8 @@ public class PublicationServices {
 
 					// return Response.ok(dropdownMap).build();
 		} catch (Exception e) {
+			logger.error(e.getMessage());
+			e.printStackTrace();
 			return Response.status(Response.Status.NOT_FOUND).entity(CommonUtil.wrapErrorMessageInList("Problem getting the publication Id"+ e.getMessage())).build();
 		}
 	}
@@ -325,6 +346,8 @@ public class PublicationServices {
 
 			// return Response.ok(dropdownMap).build();
 		} catch (Exception e) {
+			logger.error(e.getMessage());
+			e.printStackTrace();
 			return Response.status(Response.Status.NOT_FOUND).entity(CommonUtil.wrapErrorMessageInList("Problem retrieving the pubmed information"+ e.getMessage())).build();
 		}
 	}
@@ -360,6 +383,7 @@ public class PublicationServices {
 						Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(errors).build();
 		} catch (Exception e) {
 			logger.error(e.getMessage());
+			e.printStackTrace();
 			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(CommonUtil.wrapErrorMessageInList("Error while saving the access to publication " + e.getMessage())).build();
 		}
 	}

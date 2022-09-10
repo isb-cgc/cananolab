@@ -6,6 +6,8 @@ import { SharedModule } from '../../../../common/modules/set-object-value/shared
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { OtherDropdownModule } from 'src/app/cananolab-client/common/components/other-dropdown/other-dropdown.module';
 import { DisclaimerModule } from 'src/app/cananolab-client/common/components/disclaimer/disclaimer.module';
+
+
 @NgModule({
     declarations: [EditcharacterizationComponent],
     imports: [

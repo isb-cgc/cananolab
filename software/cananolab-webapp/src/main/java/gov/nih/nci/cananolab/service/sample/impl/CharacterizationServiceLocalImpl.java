@@ -66,6 +66,7 @@ public class CharacterizationServiceLocalImpl extends BaseServiceLocalImpl imple
 	public void saveCharacterization(SampleBean sampleBean, CharacterizationBean charBean) throws CharacterizationException, NoAccessException
 	{
 		if (SpringSecurityUtil.getPrincipal() == null) {
+			logger.error("Throwing no access Point A");
 			throw new NoAccessException();
 		}
 		try {
@@ -76,13 +77,14 @@ public class CharacterizationServiceLocalImpl extends BaseServiceLocalImpl imple
 			if (achar.getId() != null) {
 				newChar = false;
 				if (!springSecurityAclService.currentUserHasWritePermission(achar.getId(), SecureClassesEnum.CHAR.getClazz())) {
+					logger.error("Throwing no access Point B");
 					throw new NoAccessException();
 				}
 				try {
 					Characterization dbChar = (Characterization) appService.load(Characterization.class, achar.getId());
 				} catch (Exception e) {
 					String err = "Object doesn't exist in the database anymore.  Please log in again.";
-					logger.error(err);
+					logger.error(err, e);
 					throw new CharacterizationException(err, e);
 				}
 			}
@@ -105,6 +107,7 @@ public class CharacterizationServiceLocalImpl extends BaseServiceLocalImpl imple
 																  achar.getId(),
 																  SecureClassesEnum.CHAR.getClazz());
 		} catch (NoAccessException e) {
+			logger.error("catch no access Point C ", e);
 			throw e;
 		} catch (Exception e) {
 			String err = "Problem in saving the characterization.";
@@ -463,7 +466,11 @@ public class CharacterizationServiceLocalImpl extends BaseServiceLocalImpl imple
 			CaNanoLabApplicationService appService = (CaNanoLabApplicationService) ApplicationServiceProvider.getApplicationService();
 			DetachedCriteria crit = DetachedCriteria.forClass(OtherCharacterization.class).add(
 					Property.forName("assayCategory").eq(assayCategory).ignoreCase());
+			System.out.println("FOCBAC Issue60: " + Property.forName("assayCategory") + " " + assayCategory);
+			System.out.println("FOCBAC Issue60 crit: " + crit.toString());
+
 			List result = appService.query(crit);
+			System.out.println("FOCBAC Issue60: " + result.size());
 			for (Object obj : result) {
 				String charName = ((OtherCharacterization) obj).getName();
 				if (!charNames.contains(charName)) {
