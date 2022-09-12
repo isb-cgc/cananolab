@@ -3,6 +3,8 @@
 
 <canano-main-display-heading [helpUrl]="helpUrl" [print]="true" [toolHeadingName]="toolHeadingNameManage" [export]="[sampleId,'COMPOSITION']">
 
+<ng-template #none_content><td>N/A</td></ng-template>
+
 </canano-main-display-heading>
     <ul class="nav nav-tabs">
         <li class="nav-item">
@@ -148,12 +150,14 @@
 	                                    <td class="label">
 	                                        Inherent Functions
 	                                    </td>
-	                                    <td>
-	                                        <ul>
-	                                            <li *ngFor="let inherentfunction of me.Function">
-	                                                <!-- {{inherentfunction}} -->
-	                                            </li>
-	                                        </ul>
+	                                    <td *ngIf="me.InherentFunctions.length; else none_content">
+	                                    	<ul>
+		                                    	 <div *ngFor="let iFun of me.InherentFunctions; let last=last">
+		                                    	 	<li>
+		                                    	 		{{iFun.FunctionDisplayName}}
+		                                    	 	</li>
+		                                    	 </div>
+	                                    	</ul>
 	                                    </td>
 	                                </tr>
 	                            </table>
@@ -166,209 +170,239 @@
     </span>
 </div>
 
-<ng-template #none_content><td>N/A</td></ng-template>
 
 <div class="mainSection" *ngIf="sectionToShow=='all'||sectionToShow=='functionalization'">
     <div id="functionalization" class="header">
         Functionalization <button *ngIf="editUrl" class="btn btn-primary btn-sm"
             (click)="onFunctionalizationClick(-1)">Add</button>
     </div>
-    <span *ngFor="let functionalization of data['functionalization'] | keyvalue; let index = index">
+    <span *ngFor="let func of data['synthesisFunctionalization'] | keyvalue; let index = index;">
+        <div class="blueHeader">{{func.value.DisplayName}}</div><br />
+    	<div class="mainBorder">
 
-        <div class="blueHeader">{{functionalization.key}}</div><br />
-        <div class="mainBorder" [ngClass]="{'last':last}"
-            *ngFor="let entry of functionalization.value;let last=last">
-            <div class="editButton" *ngIf="editUrl"><button class="btn btn-primary btn-sm"
-                    (click)="onFunctionalizationClick(entry.dataId)">Edit</button></div>
-            <div>
-                <table class="dataMain">
-                    <tr *ngIf="entry.Name">
-                        <td class="label">Name</td>
-                        <td>{{entry.Name}}</td>
-                    </tr>
-                    <tr *ngIf="entry.pubChemLink">
-                        <td class="label">PubChem ID</td>
-                        <td><a [href]="entry.pubChemLink" target="blank">{{entry.pubChemID}}</a></td>
-                    </tr>
-                    <tr *ngIf="entry.value">
-                        <td class="label">Amount</td>
-                        <td>{{entry.value}} {{entry.valueUnit}}</td>
-                    </tr>
-                    <tr *ngIf="entry.MolecularFormulaDisplayName">
-                        <td class="label">Molecular Formula</td>
-                        <td>{{entry.MolecularFormulaDisplayName}}</td>
-                    </tr>
-                    <tr *ngIf="propertyCheck(entry)">
-                        <td class="label">Properties</td>
-                        <td>
-                            <table class="dataTable">
-                                <tr>
-                                    <th *ngFor="let property of entry['Properties'] | keyvalue">
-                                        {{convertTitlesToRealWords(property.key)}}
-                                    </th>
-                                </tr>
-                                <tr>
-                                    <td *ngFor="let property of entry['Properties'] | keyvalue">{{property.value}}</td>
-                                </tr>
-                            </table>
-                        </td>
-                    </tr>
-                    <tr *ngIf="entry['Functions'].length">
-                        <td class="label">Function(s)</td>
-                        <td>
-                            <table class="dataTable">
-                                <tr>
-                                    <th>Type</th>
-                                    <th>Image Modality</th>
-                                    <th>Description</th>
-                                </tr>
-                                <tr *ngFor="let function of entry.Functions; let odd=odd" [ngClass]="{'rowOdd':odd}">
-                                    <td>{{function.Type}}
-                                    </td>
-                                    <td>{{function.Modality}}</td>
-                                    <td>{{function.FunctionDescription}}</td>
-                                </tr>
-                            </table>
-                        </td>
-                    </tr>
-                    <tr *ngIf="entry.ActivationMethod">
-                        <td class="label">Activation Method</td>
-                        <td>{{entry.ActivationMethod}}</td>
-                    </tr>
-                    <tr *ngIf="entry.Desc">
-                        <td class="label">Description</td>
-                        <td>{{entry.Desc}}</td>
-                    </tr>
-                    <tr *ngIf="entry['Files'].length">
-                        <td class="label">Files</td>
-                        <td>
-                            <table class="dataTable">
-                                <tr>
-                                    <th>Title and Download Link</th>
-                                    <th>Keywords</th>
-                                    <th>Description</th>
-                                </tr>
-                                <tr *ngFor="let file of entry['Files']; let odd=odd" [ngClass]="{'rowOdd':odd}">
-                                    <td>
-                                        <span *ngIf="file.ExternalURI=='true'; else elseBlock">
-                                            <a href="{{file.URI}}" target="blank">{{file.Title}}</a>
-                                        </span>
-                                        <ng-template #elseBlock>
-                                            <span *ngIf="file.isImage; else elseBlock">{{file.Title}}<br />
-                                                <img src="/rest/sample/downloadImage?fileId={{file.fileId}}"
-                                                    border="0" width="150" alt="uploaded image">
-                                            </span>
-                                            <ng-template #elseBlock>
-                                                <a href="/rest/sample/download?fileId={{file.fileId}}"
-                                                    target="blank">
-                                                    {{file.Title}}
-                                                </a>
-                                            </ng-template>
-                                        </ng-template>
-                                    </td>
-                                    <td>
-                                        <div *ngFor="let keyword of splitKeywordString(file.KeywordStr)">
-                                            {{keyword}}
-                                        </div>
-                                    </td>
-                                    <td>
-                                        {{file.Description}}
-                                    </td>
-                                </tr>
-                            </table>
-                        </td>
-                    </tr>
-                </table>
-            </div>
-        </div>
+	        <div class="editButton" *ngIf="editUrl">
+	            <button class="btn btn-primary btn-sm" (click)="onFunctionalizationClick(func.value['dataId'] )">
+	                Edit
+	            </button>
+	        </div>
+
+	        <div>
+	            <table class="dataMain">
+	                <tr>
+	                    <td class="label">Description</td>
+	                    <td *ngIf="func.value.Description; else none_content">
+	                        {{func.value.Description}}
+	                    </td>
+	                </tr>
+	                <tr>
+	                    <td class="label">Source</td>
+	                    <td *ngIf="func.value.source; else none_content">
+	                        {{func.value.source}}
+	                    </td>
+	                </tr>
+	                 <tr *ngIf="func.value.FunctionalizationElements.length">
+	                    <td class="label">Functionalization Elements</td>
+	                    <td>
+	                        <div *ngFor="let fe of func.value.FunctionalizationElements; let last=last">
+	                            <table class="dataTable" border="0" [ngClass]="{'last':last}">
+	                            	 <tr>
+                                        <th class="label" colspan="2">
+                                           {{fe.DisplayName}}
+                                        </th>
+                                    </tr>
+                                    <tr>
+	                                    <td class="label">
+	                                        Chemical Name
+	                                    </td>
+	                                    <td *ngIf="fe.ChemicalName; else none_content">
+	                                        {{fe.ChemicalName}}
+	                                    </td>
+	                                </tr>
+	                                <tr>
+	                                    <td class="label">
+	                                        Type
+	                                    </td>
+	                                    <td *ngIf="fe.type; else none_content">
+	                                        {{fe.type}}
+	                                    </td>
+	                                </tr>
+	                                 <tr>
+	                                    <td class="label">
+	                                        Description
+	                                    </td>
+	                                    <td *ngIf="fe.Description; else none_content">
+	                                        {{fe.Description}}
+	                                    </td>
+	                                </tr>
+	                                <tr>
+	                                    <td class="label">
+	                                        PubChem Data Source
+	                                    </td>
+	                                    <td *ngIf="fe.pubChemDataSourceName; else none_content">
+	                                        {{fe.pubChemDataSourceName}}
+	                                    </td>
+	                                </tr>
+	                                <tr>
+	                                    <td class="label">
+	                                        PubChem Id
+	                                    </td>
+	                                    <td *ngIf="fe.pubChemID; else none_content">
+	                                        {{fe.pubChemID}}
+	                                    </td>
+	                                </tr>
+	                                <tr>
+	                                    <td class="label">
+	                                        PubChem Link
+	                                    </td>
+	                                    <td *ngIf="fe.pubChemLink; else none_content">
+	                                        {{fe.pubChemLink}}
+	                                    </td>
+	                                </tr>
+	                                <tr>
+	                                    <td class="label">
+	                                        Amount (and units)
+	                                    </td>
+	                                    <td *ngIf="fe.Amount && fe.AmountUnit; else none_content">
+	                                        {{fe.Amount}} ({{fe.AmountUnit}})
+	                                    </td>
+	                                </tr>
+	                                <tr>
+	                                    <td class="label">
+	                                        Molecular Formula
+	                                    </td>
+	                                    <td *ngIf="fe.MolecularFormula; else none_content">
+	                                        {{fe.MolecularFormula}}
+	                                    </td>
+	                                </tr>
+	                                <tr>
+	                                    <td class="label">
+	                                        Molecular Formula Type
+	                                    </td>
+	                                    <td *ngIf="fe.MolecularFormulaType; else none_content">
+	                                        {{fe.MolecularFormulaType}}
+	                                    </td>
+	                                </tr>
+	                                <tr>
+	                                    <td class="label">
+	                                        Activation Method
+	                                    </td>
+	                                    <td *ngIf="fe.ActivationMethod; else none_content">
+	                                        {{fe.ActivationMethod}}
+	                                    </td>
+	                                </tr>
+	                                <tr>
+	                                    <td class="label">
+	                                        Activation Effect
+	                                    </td>
+	                                    <td *ngIf="fe.ActivationEffect; else none_content">
+	                                        {{fe.ActivationEffect}}
+	                                    </td>
+	                                </tr>
+	                                <tr>
+	                                    <td class="label">
+	                                        Inherent Functions
+	                                    </td>
+	                                    <td *ngIf="fe.InherentFunctions.length; else none_content">
+	                                    	<ul>
+	                                            <div *ngFor="let iFun of fe.InherentFunctions; let last=last">
+		                                    	 	<li>
+		                                    	 	{{iFun.FunctionDisplayName}}
+		                                    	 	</li>
+		                                    	</div>
+                                            </ul>
+	                                    </td>
+	                                </tr>
+	                            </table>
+	                        </div>
+	                    </td>
+	                </tr>
+	            </table>
+	        </div>
+    	</div>
     </span>
 </div>
 
 <div class="mainSection" *ngIf="sectionToShow=='all'||sectionToShow=='purification'">
     <div id="purification" class="header">
-        Purification <button *ngIf="editUrl" (click)="onPurificationClick(-1)"
-            class="btn btn-primary btn-sm">Add</button>
+        Purification <button *ngIf="editUrl" class="btn btn-primary btn-sm"
+            (click)="onPurificationClick(-1)">Add</button>
     </div>
-    <span *ngFor="let purification of data['purification'] | keyvalue; let index = index">
-        <div class="blueHeader">{{purification.key}}</div><br />
-        <div class="mainBorder" *ngFor="let entry of purification.value;let last=last" [ngClass]="{'last':last}">
-            <div class="editButton" *ngIf="editUrl"><button class="btn btn-primary btn-sm"
-                    (click)="onPurificationClick(entry.dataId)">Edit</button></div>
-            <div>
-                <table class="dataMain">
-                    <tr *ngIf="entry.BondType">
-                        <td class="label">Bond Type</td>
-                        <td>{{entry.BondType}}</td>
-                    </tr>
-                    <tr *ngIf="entry.Description">
-                        <td class="label">Description</td>
-                        <td>{{entry.Description}}</td>
-                    </tr>
-                    <tr>
-                        <td class="label">Associated Elements</td>
-                        <td>
-                            <table class="properties">
-                                <tr>
-                                    <td>{{entry.AssocitedElements.CompositiontypeA}}
-                                        {{entry.AssocitedElements.EntityDisplayNameA}} composing element of type
-                                        {{entry.AssocitedElements.ComposingElementTypeA}}
-                                        (name:{{entry.AssocitedElements.DomainElementNameA}})
-                                    </td>
-                                    <td style="text-align:center">associated with
-                                        <img src="assets/images/arrow_left_right_gray.gif">
+    <span *ngFor="let puri of data['synthesisPurification'] | keyvalue; let index = index;">
+        <div class="blueHeader">{{puri.value.displayName}}</div><br />
+    	<div class="mainBorder">
 
-                                    </td>
-                                    <td>
-                                        {{entry.AssocitedElements.CompositiontypeB}}
-                                        {{entry.AssocitedElements.EntityDisplayNameB}} (name:
-                                        {{entry.AssocitedElements.DomainElementNameB}})
-                                    </td>
-                                </tr>
-                            </table>
-                        </td>
-                    </tr>
-                    <tr *ngIf="entry['Files']">
-                        <td class="label">Files</td>
-                        <td>
-                            <table class="dataTable">
-                                <tr>
-                                    <th>Title and Download Link</th>
-                                    <th>Keywords</th>
-                                    <th>Description</th>
-                                </tr>
-                                <tr *ngFor="let file of entry['Files']; let odd=odd" [ngClass]="{'rowOdd':odd}">
-                                    <td>
-                                        <span *ngIf="file.ExternalURI=='true'; else elseBlock">
-                                            <a href="{{file.URI}}" target="blank">{{file.Title}}</a>
-                                        </span>
-                                        <ng-template #elseBlock>
-                                            <span *ngIf="file.isImage; else elseBlock">{{file.Title}}<br />
-                                                <img src="/rest/sample/downloadImage?fileId={{file.fileId}}"
-                                                    border="0" width="150" alt="uploaded image">
-                                            </span>
-                                            <ng-template #elseBlock>
-                                                <a href="/rest/sample/download?fileId={{file.fileId}}"
-                                                    target="blank">
-                                                    {{file.Title}}
-                                                </a>
-                                            </ng-template>
-                                        </ng-template>
-                                    </td>
-                                    <td>
-                                        <div *ngFor="let keyword of splitKeywordString(file.KeywordStr)">
-                                            {{keyword}}
-                                        </div>
-                                    </td>
-                                    <td>
-                                        {{file.Description}}
-                                    </td>
-                                </tr>
-                            </table>
-                        </td>
-                    </tr>
-                </table>
-            </div>
-        </div>
+	        <div class="editButton" *ngIf="editUrl">
+	            <button class="btn btn-primary btn-sm" (click)="onPurificationClick(func.value['dataId'] )">
+	                Edit
+	            </button>
+	        </div>
+
+	        <div>
+	            <table class="dataMain">
+	                <tr>
+	                    <td class="label">Protocol Name</td>
+	                    <td *ngIf="puri.value.Protocol; else none_content">
+	                        {{puri.value.Protocol}}
+	                    </td>
+	                </tr>
+	                <tr>
+	                    <td class="label">Type</td>
+	                    <td *ngIf="puri.value.Type; else none_content">
+	                        {{puri.value.Type}}
+	                    </td>
+	                </tr>
+	                <tr>
+	                    <td class="label">Characterization Source/Date</td>
+	                    <td *ngIf="puri.value.Source && puri.value.Date; else none_content">
+	                        {{puri.value.Source}}/{{puri.value.Date}}
+	                    </td>
+	                </tr>
+	                <tr>
+	                    <td class="label">Description</td>
+	                    <td *ngIf="puri.value.Description; else none_content">
+	                        {{puri.value.Description}}
+	                    </td>
+	                </tr>
+	                <tr>
+	                    <td class="label">Yield</td>
+	                    <td *ngIf="puri.value.Yield; else none_content">
+	                        {{puri.value.Yield}}
+	                    </td>
+	                </tr>
+	                <tr>
+	                    <td class="label">Analysis</td>
+	                    <td *ngIf="puri.value.Analysis; else none_content">
+	                        {{puri.value.Analysis}}
+	                    </td>
+	                </tr>
+	                 <tr>
+	                    <td class="label">Purification Elements</td>
+	                    <td *ngIf="puri.value.purificationElements.length; else none_content">
+	                        <div *ngFor="let pe of puri.value.purificationElements; let last=last">
+	                        	<div *ngIf="pe['Data and Conditions']; else N/A">
+		                        	<b>Data and Conditions</b>
+	                                <table class="dataTable" border="0" [ngClass]="{'last':last}">
+	                                    <tr *ngFor="let row of pe['Data and Conditions']">
+	                                    	<ng-container *ngIf="row.name=='colTitles'">
+                                    			<th *ngFor="let colHead of row.value">
+                                    				{{colHead}} 
+                                    			</th>
+	                                    	</ng-container>
+	                                    	<ng-container *ngIf="row.name=='colValues'">
+                                    			<td *ngFor="let colVal of row.value">
+                                    				{{colVal}} 
+                                    			</td>
+	                                    	</ng-container>
+	                        			</tr>
+	                        		</table>
+	                        		<br>
+	                        	</div>
+	                        </div>
+	                    </td>
+	                </tr>
+	            </table>
+	        </div>
+    	</div>
     </span>
 </div>
 
