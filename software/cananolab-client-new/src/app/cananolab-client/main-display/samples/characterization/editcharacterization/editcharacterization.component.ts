@@ -985,6 +985,7 @@ export class EditcharacterizationComponent implements OnInit {
         }
 
         this.data.techniqueInstruments.experiments[this.techniqueIndex]=this.techniqueInstrument;
+        this.data.characterizationDate = new Date(this.data.characterizationDate.toISOString());
         let url = this.apiService.doPost(Consts.QUERY_CHARACTERIZATION_SAVE_EXPERIMENT,this.data);
         url.subscribe(
                 data=> {
