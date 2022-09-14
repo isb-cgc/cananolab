@@ -5,23 +5,23 @@
 
 @media only screen and (max-width: 768px) {
     /* Force table to not be like tables anymore */
-    .collapsible-table table,
-    .collapsible-table thead,
-    .collapsible-table tbody,
-    .collapsible-table th,
-    .collapsible-table td,
-    .collapsible-table tr {
+    #collapsible-table table,
+    #collapsible-table thead,
+    #collapsible-table tbody,
+    #collapsible-table th,
+    #collapsible-table td,
+    #collapsible-table tr {
         display: block;
     }
 
     /* Hide table headers (but not display: none;, for accessibility) */
-    .collapsible-table thead tr {
+    #collapsible-table thead tr {
         position: absolute;
         top: -9999px;
         left: -9999px;
     }
 
-    .collapsible-table td {
+    #collapsible-table td {
         /* Behave like a "row" */
         border: none;
         border-bottom: 1px solid #eee;
@@ -31,7 +31,7 @@
         text-align:left;
     }
 
-    .collapsible-table td:before {
+    #collapsible-table td:before {
         /* Now like a table header */
         position: absolute;
         /* Top/left values mimic padding */
@@ -47,7 +47,7 @@
     /*
     Label the data
     */
-    .collapsible-table td:before { content: attr(data-title); }
+    #collapsible-table td:before { content: attr(data-title); }
 }
 
 
