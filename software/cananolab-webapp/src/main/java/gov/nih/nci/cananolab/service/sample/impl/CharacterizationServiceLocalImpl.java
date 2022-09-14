@@ -70,10 +70,9 @@ public class CharacterizationServiceLocalImpl extends BaseServiceLocalImpl imple
 			throw new NoAccessException();
 		}
 
-		Characterization achar = null;
 		try {
 			Sample sample = sampleBean.getDomain();
-			achar = charBean.getDomainChar();
+			Characterization achar = charBean.getDomainChar();
 			CaNanoLabApplicationService appService = (CaNanoLabApplicationService) ApplicationServiceProvider.getApplicationService();
 			Boolean newChar = true;
 			if (achar.getId() != null) {
@@ -110,12 +109,10 @@ public class CharacterizationServiceLocalImpl extends BaseServiceLocalImpl imple
 																  SecureClassesEnum.CHAR.getClazz());
 		} catch (NoAccessException e) {
 			logger.error("catch no access Point C ", e);
-			achar.setId(null);
 			throw e;
 		} catch (Exception e) {
 			String err = "Problem in saving the characterization.";
 			logger.error(err, e);
-			achar.setId(null);
 			throw new CharacterizationException(err, e);
 		}
 	}
