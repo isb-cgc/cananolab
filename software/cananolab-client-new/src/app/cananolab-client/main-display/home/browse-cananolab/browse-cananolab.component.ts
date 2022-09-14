@@ -68,7 +68,6 @@ export class BrowseCananolabComponent implements OnInit{
     }
 
     onSearchAllProtocolsClick() {
-        console.log('test')
         let url = this.apiService.doPost(Consts.QUERY_SEARCH_PROTOCOL,{
                 "nameOperand": "contains",
                 "titleOperand": "contains",

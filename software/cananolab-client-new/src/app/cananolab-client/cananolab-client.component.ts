@@ -54,36 +54,33 @@ export class CananolabClientComponent implements OnInit{
         })
         let loginUrl=this.apiService.doGet(Consts.QUERY_GET_USER_GROUPS,{});
         loginUrl.subscribe(data=> {
-            let keys=Object.keys(data);
-            if (keys[0]!='anonymousUser') {
-                this.properties['LOGGED_IN']=true;
-                this.properties['logged_in']=true;
-                this.properties['current_user']=keys[0];
+            let keys = Object.keys(data);
+            console.log("Saw user and groups of:")
+            console.log(data);
+            if (keys[0] !== 'anonymousUser') {
+                this.properties['LOGGED_IN'] = true;
+                this.properties['logged_in'] = true;
+                this.properties['current_user'] = keys[0];
                 this.statusDisplayService.updateUser(this.properties['current_user']);
-                let tabs=[];
                 this.apiService.getTabs().subscribe(data=> {
-                        data['tabs'].forEach(element => {
-                            this.menuItems.push(element[0].replace(' ','_'))
-                            if (element[0]=='CURATION') {
-                                this.menuItems.push('RESULTS');
-                            }
-                        });
-                        this.topMainMenuService.showOnlyMenuItems(
-                            this.menuItems
-                        )
-                })
-                // this.menuItems.push('HOME','WORKFLOW','PROTOCOLS','SAMPLES','PUBLICATIONS','GROUPS','CURATION','MY_WORKSPACE','MY_FAVORITES','LOGOUT');
-            }
-            else {
-
+                    data['tabs'].forEach(element => {
+                        this.menuItems.push(element[0].replace(' ','_'))
+                        if (element[0]=='CURATION') {
+                            this.menuItems.push('RESULTS');
+                        }
+                    });
+                    this.topMainMenuService.showOnlyMenuItems(
+                        this.menuItems
+                    )
+                });
+            } else {
                 this.properties['LOGGED_IN']=false;
                 this.properties['logged_in']=false;
                 this.menuItems.push('HOME','HELP','GLOSSARY','PROTOCOLS','SAMPLES','PUBLICATIONS','LOGIN');
                 this.topMainMenuService.showOnlyMenuItems(this.menuItems)
             }
-        })
+        });
     }
-
 
     navigateToUrl(url) {
         window.open(url);

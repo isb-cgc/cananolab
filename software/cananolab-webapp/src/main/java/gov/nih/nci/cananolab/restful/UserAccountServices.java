@@ -49,8 +49,7 @@ public class UserAccountServices
 		}
 		catch (Exception e) {
 			logger.error("Error in reading user account : ", e);
-			return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
-					.entity(CommonUtil.wrapErrorMessageInList(e.getMessage())).build();
+			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(CommonUtil.wrapErrorMessageInList(e.getMessage())).build();
 		}
 	}
 
@@ -72,8 +71,7 @@ public class UserAccountServices
 		}
 		catch (Exception e) {
 			logger.error("Error in searching for user accounts : ", e);
-			return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
-					.entity(CommonUtil.wrapErrorMessageInList(e.getMessage())).build();
+			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(CommonUtil.wrapErrorMessageInList(e.getMessage())).build();
 		}
 	}
 
@@ -108,8 +106,7 @@ public class UserAccountServices
 		}
 		catch (Exception e) {
 			logger.error("Error in resetting password for account: ", e);
-			return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
-					.entity(CommonUtil.wrapErrorMessageInList(e.getMessage())).build();
+			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(CommonUtil.wrapErrorMessageInList(e.getMessage())).build();
 		}
 	}
 	
@@ -136,8 +133,7 @@ public class UserAccountServices
 		}
 		catch (Exception e) {
 			logger.error("Error in creating user account : ", e);
-			return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
-					.entity(CommonUtil.wrapErrorMessageInList(e.getMessage())).build();
+			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(CommonUtil.wrapErrorMessageInList(e.getMessage())).build();
 		}
 	}
 	
@@ -164,8 +160,7 @@ public class UserAccountServices
 		}
 		catch (Exception e) {
 			logger.error("Error in updating user account : ", e);
-			return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
-					.entity(CommonUtil.wrapErrorMessageInList(e.getMessage())).build();
+			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(CommonUtil.wrapErrorMessageInList(e.getMessage())).build();
 		}
 	}
 
