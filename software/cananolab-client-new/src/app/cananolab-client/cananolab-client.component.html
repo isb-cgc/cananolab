@@ -7,8 +7,7 @@
 <!-----------               Navigation Menu                                          ------>
 <!-----------               Static Left side Menu                                    ------>
 <!----------------------------------------------------------------------------------------->
-<div  [ngStyle]="{ 'max-width': properties.MAX_WIDTH }" >
-<!-- -----  The top header with the "Keyword Search" box on the right ----- -->
+<div class="main">
 
 <!-- Shows a "Testing" banner if we are in TEST_MODE -->
 <div *ngIf="properties.TEST_MODE">
@@ -18,17 +17,13 @@
 <canano-idle></canano-idle>
 <!-- -----  The Top Main Menu  ----- -->
 
-    <!-- -----  The left side Navigation menu & left static menu  ----- -->
-<div>
-    <table class="home">
-        <tr *ngIf="!print">
-            <td colspan="2" class="header">
-                <canano-header></canano-header>
-
-                <canano-top-main-menu></canano-top-main-menu>
-            </td>
-        </tr>
-
+    <!-- -----  The top header with the "Keyword Search" box on the right ----- -->
+    <canano-header></canano-header>
+    <div class="row no-gutters" *ngIf="!print">
+        <canano-top-main-menu></canano-top-main-menu>
+    </div>
+    <div class="row no-gutters">
+        <!-- -----  The left side Navigation menu & left static menu  ----- -->
         <tr>
             <td class="leftMenu" *ngIf="!print">
                 <div>
@@ -45,35 +40,36 @@
                     <router-outlet></router-outlet>
             </td>
         </tr>
-        <tr *ngIf="!print">
-            <td colspan="2" class="footer">
-                    <ul>
-                        <li class="footer-item">
-                            <button class="nav-link nav-menu-top-item left" (click)="navigateToUrl('mailto:nciappsupport@nih.gov')">
-                                Contact Us
-                            </button>
-                        </li>
-                        <li class="footer-item">
-                            <button class="nav-link nav-menu-top-item" (click)="navigateToUrl('https://www.hhs.gov/web/policies-and-standards/hhs-web-policies/privacy/index.html')">
-                                Privacy Notice
-                            </button>
-                        </li>
-                        <li class="footer-item">
-                            <button class="nav-link nav-menu-top-item" (click)="navigateToUrl('https://www.cancer.gov/policies')">
-                                Policies
-                            </button>
-                        </li>
-                        <li class="footer-item">
-                            <canano-disclaimer [hide]="true"></canano-disclaimer>
-                            <button data-toggle="modal" data-target="#disclaimer" class="nav-link nav-menu-top-item">
-                                Disclaimer
-                            </button>
-                        </li>
-                    </ul>
-            </td>
-        </tr>
-        <tr *ngIf="!print">
-            <td colspan="2" class="footer white">
+    </div>
+    <div class="row no-gutters" *ngIf="!print">
+        <div class="footer col">
+            <ul>
+                <li class="footer-item">
+                    <button class="nav-link nav-menu-top-item left" (click)="navigateToUrl('mailto:nciappsupport@nih.gov')">
+                        Contact Us
+                    </button>
+                </li>
+                <li class="footer-item">
+                    <button class="nav-link nav-menu-top-item" (click)="navigateToUrl('https://www.hhs.gov/web/policies-and-standards/hhs-web-policies/privacy/index.html')">
+                        Privacy Notice
+                    </button>
+                </li>
+                <li class="footer-item">
+                    <button class="nav-link nav-menu-top-item" (click)="navigateToUrl('https://www.cancer.gov/policies')">
+                        Policies
+                    </button>
+                </li>
+                <li class="footer-item">
+                    <canano-disclaimer [hide]="true"></canano-disclaimer>
+                    <button data-toggle="modal" data-target="#disclaimer" class="nav-link nav-menu-top-item">
+                        Disclaimer
+                    </button>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <div class="row no-gutters" *ngIf="!print">
+            <div class="footer white col">
                 <a href="http://www.dhhs.gov/" target="_blank" rel="nofollow noreferrer">
                     Department of Health and Human Services
                 </a>
@@ -93,20 +89,17 @@
                 <a href="https://www.hhs.gov/vulnerability-disclosure-policy/index.html" target="_blank" rel="nofollow noreferrer">
                     Vulnerability Disclosure
                 </a>
-            </td>
-        </tr>
-        <tr *ngIf="!print">
-            <td colspan="2" class="footer white">
+            </div>
+        </div>
+    <div class="row no-gutters" *ngIf="!print">
+            <div class="footer white col">
                 NIH...Turning Discovery Into Health®
-            </td>
-        </tr>
-        <tr *ngIf="!print">
-            <td colspan="2" class="footer white release">
+            </div>
+        </div>
+    <div class="row no-gutters" *ngIf="!print">
+        <div class="footer white release  col">
                 [[RELEASE_AND_BUILD_INFO]]
-            </td>
-        </tr>
-    </table>
-
-
+            </div>
+    </div>
 </div>
-</div>
+
