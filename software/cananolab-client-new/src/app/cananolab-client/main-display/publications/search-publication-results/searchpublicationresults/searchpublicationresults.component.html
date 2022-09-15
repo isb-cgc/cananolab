@@ -21,6 +21,7 @@
 		<br />
 		<br />
 		<table id="collapsible-table" class="dataTable">
+            <thead>
 			<!-- -----  Header row  ----- -->
 			<tr>
                 <ng-container *ngFor="let col of columnHeadings; let i = index">
@@ -53,6 +54,7 @@
                     </th>
                 </ng-container>
 			</tr>
+            </thead>
 			<!-- -----  END Header row  ----- -->
 			<tr *ngFor="let publication of searchResultsPageToDisplay; let even=even; let odd=odd; let i=index" class="search-results-tr" [ngClass]="{
                         '': even,

@@ -26,9 +26,10 @@
         border: none;
         border-bottom: 1px solid #eee;
         position: relative;
-        padding-left: 50%;
+        padding-left: 15%;
         white-space: normal;
         text-align:left;
+        width: 95% !important;
     }
 
     #collapsible-table td:before {
@@ -37,7 +38,7 @@
         /* Top/left values mimic padding */
         top: 5px;
         left: 5px;
-        width: 45%;
+        width: 10%;
         padding-right: 10px;
         white-space: nowrap;
         text-align:left;
