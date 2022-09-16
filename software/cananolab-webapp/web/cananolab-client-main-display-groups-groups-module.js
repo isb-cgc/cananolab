@@ -534,7 +534,7 @@ class GroupsComponent {
         this.statusDisplayService = statusDisplayService;
         this.router = router;
         this.apiService = apiService;
-        this.helpUrl = 'javascript:openHelpWindow(' + 'https://wiki.nci.nih.gov/display/caNanoLab/Managing+Collaboration+Groups' + ')';
+        this.helpUrl = src_app_constants__WEBPACK_IMPORTED_MODULE_1__["Consts"].HELP_URL_GROUPS;
         this.toolHeadingNameManage = 'Manage Collaboration Groups';
         this.errors = {};
     }
