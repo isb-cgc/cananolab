@@ -471,7 +471,7 @@ class SampleCreateComponent {
         this.router = router;
         this.currentDropdownValues = {};
         this.errors = {};
-        this.helpUrl = _constants__WEBPACK_IMPORTED_MODULE_1__["Consts"].HELP_URL_SAMPLE_EDIT;
+        this.helpUrl = _constants__WEBPACK_IMPORTED_MODULE_1__["Consts"].HELP_URL_SAMPLE_CREATE;
         this.piiConfirmed = false;
     }
     ngOnInit() {
