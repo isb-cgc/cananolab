@@ -78,6 +78,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "fXoL");
 
 
+//import {A11yModule} from '@angular/cdk/a11y';
+//import {MatTooltipModule} from '@angular/material/tooltip';
 class MaterialModule {
 }
 MaterialModule.ɵmod = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdefineNgModule"]({ type: MaterialModule });
@@ -85,7 +87,10 @@ MaterialModule.ɵinj = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdefineInj
 /*@__PURE__*/ (function () { _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵsetClassMetadata"](MaterialModule, [{
         type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["NgModule"],
         args: [{
-                exports: []
+                exports: [
+                //       A11yModule,
+                //       MatTooltipModule,
+                ]
             }]
     }], null, null); })();
 
