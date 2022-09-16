@@ -15,7 +15,7 @@ export class CurationComponent implements OnInit {
     currationResults;
     currentUrl = 'curation';
     generateOptions={option:""};
-    helpUrl='https://wiki.nci.nih.gov/display/caNanoLab/Managing+Data+Curation';
+    helpUrl=Consts.HELP_URL_CURATION;
     toolHeadingNameManage = 'Manage Curation';
     constructor(private activatedRoute:ActivatedRoute,private apiService:ApiService,private router:Router) { }
 

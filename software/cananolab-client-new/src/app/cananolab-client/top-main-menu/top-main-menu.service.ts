@@ -116,13 +116,13 @@ export let TopMenuData = [
         'name': 'HELP',
         'displayName': 'Help',
         'route': 'home/help',
-        'externalUrl':'https://wiki.nci.nih.gov/display/caNanoLab/caNanoLab+User%27s+Guide'
+        'externalUrl':'https://wiki.nci.nih.gov/x/14CUBg'
     },
     {
         'name': 'GLOSSARY',
         'displayName': 'Glossary',
         'route': 'home/glossary',
-        'externalUrl':'https://wiki.nci.nih.gov/display/caNanoLab/caNanoLab+Glossary'
+        'externalUrl':'https://wiki.nci.nih.gov/x/9ICUBg'
     },
     {
         'name': 'LOGOUT',

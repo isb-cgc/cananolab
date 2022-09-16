@@ -14,7 +14,7 @@ export class SampleCreateComponent implements OnInit{
     data;
     dataTrailer;
     errors={};
-    helpUrl = Consts.HELP_URL_SAMPLE_EDIT;
+    helpUrl = Consts.HELP_URL_SAMPLE_CREATE;
     pointOfContact;
     pointOfContactIndex;
     piiConfirmed=false;
