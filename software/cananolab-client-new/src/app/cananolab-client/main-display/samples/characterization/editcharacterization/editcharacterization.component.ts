@@ -942,7 +942,8 @@ export class EditcharacterizationComponent implements OnInit {
         }
         else {
             this.data.finding[this.findingIndex]=JSON.parse(JSON.stringify(this.currentFinding));
-        }
+        }          
+        this.data.characterizationDate = new Date(this.data.characterizationDate.toISOString());
         let url = this.apiService.doPost(Consts.QUERY_CHARACTERIZATION_SAVE_FINDING,this.data);
         url.subscribe(data=> {
             this.errors={};
