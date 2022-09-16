@@ -307,7 +307,7 @@ class CurationComponent {
         this.message = '';
         this.currentUrl = 'curation';
         this.generateOptions = { option: "" };
-        this.helpUrl = 'https://wiki.nci.nih.gov/display/caNanoLab/Managing+Data+Curation';
+        this.helpUrl = src_app_constants__WEBPACK_IMPORTED_MODULE_1__["Consts"].HELP_URL_CURATION;
         this.toolHeadingNameManage = 'Manage Curation';
     }
     ngOnInit() {
