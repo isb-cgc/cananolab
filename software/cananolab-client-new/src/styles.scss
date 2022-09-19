@@ -4,3 +4,9 @@
 */
 
 @import url("./assets/bootstrap-4.5.2-dist/css/bootstrap.css");
+@import url("../node_modules/@angular/material/prebuilt-themes/pink-bluegrey.css");
+
+.canano-tooltip {
+    font-size: 15px;
+    border: 1px solid black;
+}

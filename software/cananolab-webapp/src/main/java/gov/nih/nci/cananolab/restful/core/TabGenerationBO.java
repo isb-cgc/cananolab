@@ -26,7 +26,7 @@ public class TabGenerationBO {
 		Object hasResult = (session == null)? null : session.getAttribute("hasResultsWaiting") ;
 		boolean hasResultWaiting = (hasResult == null) ? false : (Boolean)hasResult;
 		homePage = homePage.trim().toLowerCase();
-		
+
 		String urlBase = "https://" + URI.create(httpRequest.getRequestURL().toString()).getHost() + "/";
 		
 		SimpleTabsBean tabsBean = new SimpleTabsBean();
