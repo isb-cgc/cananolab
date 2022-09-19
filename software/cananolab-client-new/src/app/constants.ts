@@ -174,6 +174,9 @@ export const Consts = {
     HELP_URL_PROTOCOL_CREATE: 'https://wiki.nci.nih.gov/display/caNanoLab/Managing+Protocols+in+caNanoLab#ManagingProtocolsincaNanoLab-SubmitProtocol',
     HELP_URL_PROTOCOL_EDIT: 'https://wiki.nci.nih.gov/display/caNanoLab/Managing+Protocols+in+caNanoLab#ManagingProtocolsincaNanoLab-EditProtocol',
     HELP_URL_PROTOCOL_SEARCH_RESULTS: 'https://wiki.nci.nih.gov/display/caNanoLab/Managing+Protocols+in+caNanoLab#ManagingProtocolsincaNanoLab-ProtocolResults',
+
+    // Mi TODO: change this to real link
+    HELP_URL_SAMPLE_SYNTHESIS: 'https://wiki.nci.nih.gov/display/caNanoLab/Managing+Samples+in+caNanoLab#ManagingSamplesincaNanoLab-EditSample',
 }
 
 

@@ -16,7 +16,7 @@ import {StatusDisplayService } from '../../../../status-display/status-display.s
 export class SynthesisComponent implements OnInit{
     sampleId = Properties.CURRENT_SAMPLE_ID;
     sampleName = Properties.CURRENT_SAMPLE_NAME;
-    helpUrl =  Consts.HELP_URL_SAMPLE_COMPOSITION;
+    helpUrl =  Consts.HELP_URL_SAMPLE_SYNTHESIS;
     toolHeadingNameManage;
     data;
     editUrl=false;
@@ -41,7 +41,7 @@ export class SynthesisComponent implements OnInit{
                     Properties.CURRENT_SAMPLE_ID = this.sampleId;
                 };
                 this.apiService.getSampleName(this.sampleId).subscribe(
-                    data=>this.toolHeadingNameManage='Sample ' +data['sampleName'] + ' Composition'
+                    data=>this.toolHeadingNameManage='Sample ' +data['sampleName'] + ' Synthesis'
                 )
                 this.data = this.getSynthesisEditData().subscribe(
                     data => {
