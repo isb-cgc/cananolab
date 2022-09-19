@@ -10,7 +10,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>gov.nih.nci.cananolab</groupId>
 	<artifactId>cananolab-web</artifactId>
-	<version>2.3.8</version>
+	<version>3.1.0</version>
 	<repositories>
 		<repository>
 			<id>central</id>
@@ -416,13 +416,4 @@
 		</dependency>
 
 	</dependencies>
-
-	<build>
-		<plugins>
-			<plugin>
-				<artifactId>maven-dependency-plugin</artifactId>
-				<version>2.0</version>
-			</plugin>
-		</plugins>
-	</build>
 </project>

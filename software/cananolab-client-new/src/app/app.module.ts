@@ -1,6 +1,7 @@
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
 import { BrowserModule } from '@angular/platform-browser';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { CananolabClientComponent } from './cananolab-client/cananolab-client.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HeaderComponent } from './cananolab-client/header/header.component';
@@ -35,7 +36,8 @@ import { DisclaimerModule } from './cananolab-client/common/components/disclaime
         HttpClientModule,
         ReactiveFormsModule,
         SetObjectValueModule,
-        DisclaimerModule
+        DisclaimerModule,
+        BrowserAnimationsModule
     ],
   providers: [{provide: LocationStrategy, useClass: HashLocationStrategy}],
   bootstrap: [AppComponent]

@@ -57,7 +57,6 @@ export class ProtocolSearchComponent implements OnInit, OnDestroy{
 
     ngOnInit(): void{
         this.errors={};
-        console.log('test')
         this.protocolSearchForm={
             "nameOperand":this.defaultOperand,
             "titleOperand":this.defaultOperand,

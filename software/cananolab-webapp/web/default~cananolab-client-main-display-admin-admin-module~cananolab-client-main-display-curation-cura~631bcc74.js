@@ -16,6 +16,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _components_loader_loader_component__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../components/loader/loader.component */ "FBEc");
 /* harmony import */ var src_app_cananolab_client_main_display_samples_general_info_sample_search_sample_search_results_sample_availability_display_sample_availability_display_component__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! src/app/cananolab-client/main-display/samples/general-info/sample-search/sample-search-results/sample-availability-display/sample-availability-display.component */ "F1Ef");
 /* harmony import */ var _components_search_results_pager_search_results_pager_component__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../../components/search-results-pager/search-results-pager.component */ "vqvm");
+/* harmony import */ var _mats_module__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./mats-module */ "5y5M");
+
 
 
 
@@ -33,12 +35,14 @@ class SharedModule {
 }
 SharedModule.ɵmod = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdefineNgModule"]({ type: SharedModule });
 SharedModule.ɵinj = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdefineInjector"]({ factory: function SharedModule_Factory(t) { return new (t || SharedModule)(); }, imports: [[
-            _angular_common__WEBPACK_IMPORTED_MODULE_1__["CommonModule"]
+            _angular_common__WEBPACK_IMPORTED_MODULE_1__["CommonModule"],
+            _mats_module__WEBPACK_IMPORTED_MODULE_6__["MaterialModule"]
         ]] });
 (function () { (typeof ngJitMode === "undefined" || ngJitMode) && _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵsetNgModuleScope"](SharedModule, { declarations: [src_app_cananolab_client_main_display_main_display_heading_main_display_heading_component__WEBPACK_IMPORTED_MODULE_2__["MainDisplayHeadingComponent"],
         _components_loader_loader_component__WEBPACK_IMPORTED_MODULE_3__["LoaderComponent"],
         src_app_cananolab_client_main_display_samples_general_info_sample_search_sample_search_results_sample_availability_display_sample_availability_display_component__WEBPACK_IMPORTED_MODULE_4__["SampleAvailabilityDisplayComponent"],
-        _components_search_results_pager_search_results_pager_component__WEBPACK_IMPORTED_MODULE_5__["SearchResultsPagerComponent"]], imports: [_angular_common__WEBPACK_IMPORTED_MODULE_1__["CommonModule"]], exports: [src_app_cananolab_client_main_display_main_display_heading_main_display_heading_component__WEBPACK_IMPORTED_MODULE_2__["MainDisplayHeadingComponent"],
+        _components_search_results_pager_search_results_pager_component__WEBPACK_IMPORTED_MODULE_5__["SearchResultsPagerComponent"]], imports: [_angular_common__WEBPACK_IMPORTED_MODULE_1__["CommonModule"],
+        _mats_module__WEBPACK_IMPORTED_MODULE_6__["MaterialModule"]], exports: [src_app_cananolab_client_main_display_main_display_heading_main_display_heading_component__WEBPACK_IMPORTED_MODULE_2__["MainDisplayHeadingComponent"],
         _components_loader_loader_component__WEBPACK_IMPORTED_MODULE_3__["LoaderComponent"],
         src_app_cananolab_client_main_display_samples_general_info_sample_search_sample_search_results_sample_availability_display_sample_availability_display_component__WEBPACK_IMPORTED_MODULE_4__["SampleAvailabilityDisplayComponent"],
         _components_search_results_pager_search_results_pager_component__WEBPACK_IMPORTED_MODULE_5__["SearchResultsPagerComponent"]] }); })();
@@ -49,10 +53,43 @@ SharedModule.ɵinj = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdefineInjec
                     COMPONENT
                 ],
                 imports: [
-                    _angular_common__WEBPACK_IMPORTED_MODULE_1__["CommonModule"]
+                    _angular_common__WEBPACK_IMPORTED_MODULE_1__["CommonModule"],
+                    _mats_module__WEBPACK_IMPORTED_MODULE_6__["MaterialModule"]
                 ],
                 exports: [
                     COMPONENT
+                ]
+            }]
+    }], null, null); })();
+
+
+/***/ }),
+
+/***/ "5y5M":
+/*!*********************************************************************************!*\
+  !*** ./src/app/cananolab-client/common/modules/set-object-value/mats-module.ts ***!
+  \*********************************************************************************/
+/*! exports provided: MaterialModule */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "MaterialModule", function() { return MaterialModule; });
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "fXoL");
+
+
+//import {A11yModule} from '@angular/cdk/a11y';
+//import {MatTooltipModule} from '@angular/material/tooltip';
+class MaterialModule {
+}
+MaterialModule.ɵmod = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdefineNgModule"]({ type: MaterialModule });
+MaterialModule.ɵinj = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdefineInjector"]({ factory: function MaterialModule_Factory(t) { return new (t || MaterialModule)(); } });
+/*@__PURE__*/ (function () { _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵsetClassMetadata"](MaterialModule, [{
+        type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["NgModule"],
+        args: [{
+                exports: [
+                //       A11yModule,
+                //       MatTooltipModule,
                 ]
             }]
     }], null, null); })();
@@ -248,6 +285,9 @@ class MainDisplayHeadingComponent {
             case _top_main_menu_top_main_menu_service__WEBPACK_IMPORTED_MODULE_1__["TopMenuItems"].SAMPLES:
                 this.helpUrl = 'https://wiki.nci.nih.gov/display/caNanoLab/Managing+Samples+in+caNanoLab#ManagingSamplesincaNanoLab-ManageSamples';
                 break;
+            case _top_main_menu_top_main_menu_service__WEBPACK_IMPORTED_MODULE_1__["TopMenuItems"].SEARCH_SAMPLES_BY_PUBLICATIONS:
+                this.helpUrl = 'https://wiki.nci.nih.gov/display/caNanoLab/Searching+Existing+Samples';
+                break;
             case _top_main_menu_top_main_menu_service__WEBPACK_IMPORTED_MODULE_1__["TopMenuItems"].PUBLICATIONS:
                 this.helpUrl = 'https://wiki.nci.nih.gov/x/e4QfEQ';
                 break;
@@ -325,7 +365,7 @@ class MainDisplayHeadingComponent {
     }
 }
 MainDisplayHeadingComponent.ɵfac = function MainDisplayHeadingComponent_Factory(t) { return new (t || MainDisplayHeadingComponent)(_angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdirectiveInject"](_angular_router__WEBPACK_IMPORTED_MODULE_5__["Router"]), _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdirectiveInject"](_angular_common_http__WEBPACK_IMPORTED_MODULE_6__["HttpClient"]), _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdirectiveInject"](_common_services_api_service__WEBPACK_IMPORTED_MODULE_7__["ApiService"]), _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdirectiveInject"](_main_display_service__WEBPACK_IMPORTED_MODULE_8__["MainDisplayService"])); };
-MainDisplayHeadingComponent.ɵcmp = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdefineComponent"]({ type: MainDisplayHeadingComponent, selectors: [["canano-main-display-heading"]], inputs: { helpUrl: "helpUrl", backUrl: "backUrl", otherUrl: "otherUrl", export: "export", exportJSON: "exportJSON", exportXML: "exportXML", sampleIds: "sampleIds", toolHeadingName: "toolHeadingName", print: "print" }, outputs: { downloadReady: "downloadReady" }, decls: 12, vars: 8, consts: [[1, "main-display-heading"], [1, "pl-1"], [1, "float-right", "clicker", "mr-1", 3, "click"], ["class", "float-right clicker mr-2", 3, "click", 4, "ngIf"], ["class", "float-right clicker mr-2", "title", "Exports over 200 records may time out.", 3, "click", 4, "ngIf"], ["class", "float-right clicker mr-2", 4, "ngIf"], [1, "float-right", "clicker", "mr-2", 3, "click"], ["title", "Exports over 200 records may time out.", 1, "float-right", "clicker", "mr-2", 3, "click"], [1, "float-right", "clicker", "mr-2"], [1, "btn-canano", "btn-canano-success", "btn-canano-xs", "mr-1", 3, "click"]], template: function MainDisplayHeadingComponent_Template(rf, ctx) { if (rf & 1) {
+MainDisplayHeadingComponent.ɵcmp = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdefineComponent"]({ type: MainDisplayHeadingComponent, selectors: [["canano-main-display-heading"]], inputs: { helpUrl: "helpUrl", backUrl: "backUrl", otherUrl: "otherUrl", export: "export", exportJSON: "exportJSON", exportXML: "exportXML", sampleIds: "sampleIds", toolHeadingName: "toolHeadingName", print: "print" }, outputs: { downloadReady: "downloadReady" }, decls: 12, vars: 8, consts: [[1, "main-display-heading"], [1, "pl-1"], [1, "float-right", "clicker", "mr-1", 3, "click"], ["class", "float-right clicker mr-2", 3, "click", 4, "ngIf"], ["class", "float-right clicker mr-2", "matTooltip", "Exports over 200 records may time out.", "matTooltipClass", "canano-tooltip", 3, "click", 4, "ngIf"], ["class", "float-right clicker mr-2", 4, "ngIf"], [1, "float-right", "clicker", "mr-2", 3, "click"], ["matTooltip", "Exports over 200 records may time out.", "matTooltipClass", "canano-tooltip", 1, "float-right", "clicker", "mr-2", 3, "click"], [1, "float-right", "clicker", "mr-2"], [1, "btn-canano", "btn-canano-success", "btn-canano-xs", "mr-1", 3, "click"]], template: function MainDisplayHeadingComponent_Template(rf, ctx) { if (rf & 1) {
         _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](0, "div", 0);
         _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](1, "span", 1);
         _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtext"](2);

@@ -536,7 +536,6 @@ export class EditcharacterizationComponent implements OnInit {
     };
 
     rendering() {
-        console.log('test')
     }
 
     validateCsv = function (csv) {
@@ -943,7 +942,9 @@ export class EditcharacterizationComponent implements OnInit {
         }
         else {
             this.data.finding[this.findingIndex]=JSON.parse(JSON.stringify(this.currentFinding));
-        }
+        }          
+
+        this.data.characterizationDate = new Date(this.data.characterizationDate.toISOString());
         let url = this.apiService.doPost(Consts.QUERY_CHARACTERIZATION_SAVE_FINDING,this.data);
         url.subscribe(data=> {
             this.errors={};
@@ -986,6 +987,7 @@ export class EditcharacterizationComponent implements OnInit {
         }
 
         this.data.techniqueInstruments.experiments[this.techniqueIndex]=this.techniqueInstrument;
+        this.data.characterizationDate = new Date(this.data.characterizationDate.toISOString());
         let url = this.apiService.doPost(Consts.QUERY_CHARACTERIZATION_SAVE_EXPERIMENT,this.data);
         url.subscribe(
                 data=> {

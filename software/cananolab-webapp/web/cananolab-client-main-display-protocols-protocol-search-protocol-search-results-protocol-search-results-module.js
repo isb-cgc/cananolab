@@ -213,6 +213,8 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
+
+
 function ProtocolSearchResultsComponent_div_1_div_1_Template(rf, ctx) { if (rf & 1) {
     _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](0, "div", 5);
     _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtext"](1, " No search results found. ");
@@ -315,7 +317,7 @@ function ProtocolSearchResultsComponent_div_1_div_2_tr_12_div_3_Template(rf, ctx
 function ProtocolSearchResultsComponent_div_1_div_2_tr_12_a_5_Template(rf, ctx) { if (rf & 1) {
     const _r34 = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵgetCurrentView"]();
     _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](0, "a", 33);
-    _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵlistener"]("click", function ProtocolSearchResultsComponent_div_1_div_2_tr_12_a_5_Template_a_click_0_listener() { _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵrestoreView"](_r34); const res_r20 = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵnextContext"]().$implicit; const ctx_r32 = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵnextContext"](3); return ctx_r32.addToFavorites(res_r20, res_r20.id, res_r20.viewName, res_r20.fileId, res_r20.editable, res_r20.fileTitle); });
+    _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵlistener"]("click", function ProtocolSearchResultsComponent_div_1_div_2_tr_12_a_5_Template_a_click_0_listener() { _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵrestoreView"](_r34); const res_r20 = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵnextContext"]().$implicit; const ctx_r32 = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵnextContext"](3); return ctx_r32.addToFavorites(res_r20, res_r20.id, res_r20.viewName, res_r20.fileId, res_r20.editable, res_r20.fileTitle, ""); });
     _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtext"](1, "Add to Favorites");
     _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementEnd"]();
 } }
@@ -487,7 +489,7 @@ class ProtocolSearchResultsComponent {
             this.setupPage();
         });
         this.statusDisplayService.updateUserEmitter
-            .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_1__["timeout"])(_assets_properties__WEBPACK_IMPORTED_MODULE_4__["Properties"].HTTP_TIMEOUT))
+            .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_1__["timeoutWith"])(_assets_properties__WEBPACK_IMPORTED_MODULE_4__["Properties"].HTTP_TIMEOUT, Object(rxjs__WEBPACK_IMPORTED_MODULE_2__["throwError"])(new Error("Didn't see user update!"))))
             .subscribe((data) => {
             this.userName = data;
         });

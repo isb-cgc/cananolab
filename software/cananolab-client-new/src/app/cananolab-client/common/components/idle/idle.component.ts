@@ -7,13 +7,14 @@ import { Properties } from 'src/assets/properties';
 import { StatusDisplayService } from 'src/app/cananolab-client/status-display/status-display.service';
 import { TopMainMenuService } from 'src/app/cananolab-client/top-main-menu/top-main-menu.service';
 import { UtilService } from '../../services/util.service';
+
 @Component({
   selector: 'canano-idle',
   templateUrl: './idle.component.html',
   styleUrls: ['./idle.component.scss']
 })
 export class IdleComponent implements OnInit {
-    activeTimer;
+    activeTimer=null;
     poppedUp=false;
     timeoutTime;
     constructor(
@@ -27,7 +28,10 @@ export class IdleComponent implements OnInit {
         this.timeoutTime=this.idleService.getTimeoutMessageTime();
         this.idleService.activeTimer.subscribe(data=> {
             this.activeTimer = data;
-            if (this.activeTimer<this.timeoutTime) {
+
+            if (this.activeTimer !== null
+                && this.activeTimer !== undefined
+                && this.activeTimer < this.timeoutTime) {
                 if (this.poppedUp==false) {
                     document.getElementById('timeoutModalButton').click();
                     this.poppedUp=true;
@@ -44,7 +48,7 @@ export class IdleComponent implements OnInit {
 
                 this.idleService.stopTimer();
             }
-        })
+        });
     }
 
     closeModal() {
@@ -54,7 +58,7 @@ export class IdleComponent implements OnInit {
 
     convertSecondsToMinutesSeconds() {
         let minutes=Math.floor(this.activeTimer/60);
-        let seconds = this.activeTimer - minutes * 60;
+        let seconds = this.activeTimer - (minutes * 60);
         let timeLeft='';
         timeLeft=minutes.toString()+':';
         if (minutes==0) timeLeft = ':'
@@ -68,11 +72,13 @@ export class IdleComponent implements OnInit {
     }
 
     logout(){
+        console.log("Idler logging out.");
         this.poppedUp=false;
         document.getElementById('timeoutModalButtonClose').click();
         this.apiService.doPost( Consts.QUERY_LOGOUT, '' ).subscribe(
             data => {
                 Properties.LOGGED_IN = false;
+                Properties.logged_in = false;
                 this.statusDisplayService.updateUser( 'guest' );
             }
         );

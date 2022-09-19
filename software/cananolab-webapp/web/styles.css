@@ -8469,5 +8469,9 @@ a.text-dark:hover, a.text-dark:focus {
     border-color: #dee2e6;
   }
 }
+.canano-tooltip {
+  font-size: 15px;
+  border: 1px solid black;
+}
 
 /*# sourceMappingURL=styles.css.map*/
