@@ -5,8 +5,8 @@ fi
 
 # Build the Angular front end
 cd ${HOME}/software/cananolab-client-new/
-npm i
-ln -s ${HOME}/software/cananolab-client-new/node_modules/angular-cli/bin/ng /usr/local/bin/ng
+npm i --loglevel verbose
+npm install -g @angular/cli@latest --loglevel verbose
 ng build --base-href / --ouput-path ${HOME}/software/cananolab-webapp/web/
 
 cd ${HOME}
@@ -33,7 +33,7 @@ cp -v ${HOME}/jars/*.jar ${HOME}/software/cananolab-webapp/lib/
 cp -v ${HOME}/jars/sdk/*.jar ${HOME}/software/cananolab-webapp/lib/sdk/
 cp -v ${HOME}/.env ${HOME}/software/cananolab-webapp/web/WEB-INF/
 
-sed -i "s/\[\[RELEASE_AND_BUILD_INFO\]\]/caNanoLab Release 3.1.0 Build cananolab-3.1.0-${APP_SHA}/g" ${HOME}/software/cananolab-webapp/web/main.js
+sed -i "s/\[\[RELEASE_AND_BUILD_INFO\]\]/caNanoLab Release 3.1.1 Build cananolab-3.1.1-${APP_SHA}/g" ${HOME}/software/cananolab-webapp/web/main.js
 
 cd ${HOME}/software/cananolab-webapp/
 ant dist
