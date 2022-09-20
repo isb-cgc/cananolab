@@ -4,13 +4,23 @@ if [ -n "$CI" ]; then
 fi
 
 # Build the Angular front end
+echo "[STATUS] Building Angular front end"
 cd ${HOME}/software/cananolab-client-new/
-npm i --loglevel verbose
-npm install -g @angular/cli@latest --loglevel verbose
-ng build --base-href / --output-path ${HOME}/software/cananolab-webapp/web/
+npm i
+# Install Angular CLI globally
+npm install -g @angular/cli@latest
+ng build --base-href / --output-path ./front-end/
+
+cp -a /front-end/. ${HOME}/software/cananolab-webapp/web/
+
+if [[ "$?" -ne 0 ]] ; then
+  echo "<<<ANGULAR BUILD FAILED - CHECK THE BUILD LOGS>>>"
+  exit 1
+fi
 
 cd ${HOME}
 
+echo "[STATUS] Building Web Application"
 wget http://archive.apache.org/dist/ant/binaries/apache-ant-1.9.9-bin.tar.gz \
     && tar xvfz apache-ant-1.9.9-bin.tar.gz \
     && mv apache-ant-1.9.9 /opt
@@ -39,7 +49,7 @@ cd ${HOME}/software/cananolab-webapp/
 ant dist
 
 if [[ "$?" -ne 0 ]] ; then
-  echo "<<<BUILD FAILED - CHECK THE BUILD LOGS>>>"
+  echo "<<<ANT BUILD FAILED - CHECK THE BUILD LOGS>>>"
   exit 1
 fi
 
