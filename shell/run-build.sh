@@ -6,6 +6,7 @@ fi
 # Build the Angular front end
 cd ${HOME}/software/cananolab-client-new/
 npm i
+ln -s ${HOME}/software/cananolab-client-new/node_modules/angular-cli/bin/ng /usr/local/bin/ng
 ng build --base-href / --ouput-path ${HOME}/software/cananolab-webapp/web/
 
 cd ${HOME}
