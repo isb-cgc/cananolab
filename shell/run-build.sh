@@ -3,6 +3,13 @@ if [ -n "$CI" ]; then
     export CANANODIR=${HOME}/staged/caNanoLab
 fi
 
+# Build the Angular front end
+cd ${HOME}/software/cananolab-client-new/
+npm i
+ng build --base-href / --ouput-path ${HOME}/software/cananolab-webapp/web/
+
+cd ${HOME}
+
 wget http://archive.apache.org/dist/ant/binaries/apache-ant-1.9.9-bin.tar.gz \
     && tar xvfz apache-ant-1.9.9-bin.tar.gz \
     && mv apache-ant-1.9.9 /opt
@@ -18,10 +25,6 @@ wget https://archive.apache.org/dist/maven/maven-3/3.6.3/binaries/apache-maven-3
 mkdir -p ${CANANODIR} \
     && mkdir -p ${CANANODIR}/artifacts \
     && mkdir -p ${CANANODIR}/config
-
-#sudo gcloud auth activate-service-account --key-file ${HOME}/${SECURE_LOCAL_PATH}/${GOOGLE_APPLICATION_CREDENTIALS}
-#sudo gcloud config set project "${GCLOUD_PROJECT_ID}"
-#sudo gsutil cp "gs://${GCLOUD_BUCKET_DEV_SQL}/${JAR_FOLDER}" ${HOME}/lib/${JAR_FOLDER}
 
 cp -v ${HOME}/maven-settings.xml ${ANT_HOME}/etc/settings.xml
 cp -v ${HOME}/maven-settings.xml /opt/apache-maven/conf/settings.xml
