@@ -100,9 +100,6 @@ export class MainDisplayHeadingComponent implements OnInit, OnDestroy{
           case TopMenuItems.MY_FAVORITES:
                 this.helpUrl = 'https://wiki.nci.nih.gov/x/b4AnEQ';
                 break;
-
-          case TopMenuItems.SYNTHESIS:
-                this.helpUrl = 'https://wiki.nci.nih.gov/x/b4AnEQ';
         }
     }
 
