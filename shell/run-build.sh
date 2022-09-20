@@ -7,7 +7,7 @@ fi
 cd ${HOME}/software/cananolab-client-new/
 npm i --loglevel verbose
 npm install -g @angular/cli@latest --loglevel verbose
-ng build --base-href / --ouput-path ${HOME}/software/cananolab-webapp/web/
+ng build --base-href / --output-path ${HOME}/software/cananolab-webapp/web/
 
 cd ${HOME}
 
