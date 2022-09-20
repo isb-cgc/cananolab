@@ -11,7 +11,7 @@ npm i
 npm install -g @angular/cli@latest
 ng build --base-href / --output-path ./front-end/
 
-cp -a /front-end/. ${HOME}/software/cananolab-webapp/web/
+cp -a ./front-end/. ${HOME}/software/cananolab-webapp/web/
 
 if [[ "$?" -ne 0 ]] ; then
   echo "<<<ANGULAR BUILD FAILED - CHECK THE BUILD LOGS>>>"
