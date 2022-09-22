@@ -12,32 +12,23 @@
     <form name="materialForm">
         <div class="mainBorder">
             <table class="dataMain">
-                <!-- <tr>
+                <tr>
                     <td class="label">
                         <label for="protocol">
                             Protocol
                         </label>
                     </td>
                     <td>
-                        <div *ngIf="dataId">
-                            <B>{{data.type}}</B>
-                        </div>
-                            <div *ngIf="!dataId">
-                            <select (ngModelChange)="addOtherValue('type',data.type);setupDomainEntity($event)"  name="type" id="nanomaterialType" [(ngModel)]="data.type">
+                        <!-- <div *ngIf="!dataId"> -->
+                            <select name="type" id="materialType">
                                 <option [ngValue]="''" [selected]="data.type===''">--Select--</option>
-                                <option *ngFor="let type of setupData['nanomaterialEntityTypes']" [selected]="type==data.type">
-                                    {{type}}
+                                <option *ngFor="let type of protocolDropdown" [selected]="type.displayName==data.type">
+                                    {{type.displayName}}
                                 </option>
-                                <option [ngValue]="'other'">other</option>
                             </select>
-                            <div *ngIf="data.type ==='other'">
-                                <canano-other-dropdown (saveOther)="saveOther($event)" [label]="'Nanomaterial Entity Type'" [value]="currentDropdownValues['type']" [field]="'data.type'" [array]="'setupData.nanomaterialEntityTypes'">
-
-                                </canano-other-dropdown>
-                            </div>
-                        </div>
+                        <!-- </div> -->
                     </td>
-                </tr> -->
+                </tr>
                 <tr>
                     <td class="label">
                         <label for="description">
@@ -51,330 +42,20 @@
                 </tr>
             </table>
         </div>
-<!--         <div class="mainBorder properties" *ngIf="data.type=='biopolymer'">
-            <table class="dataMain properties">
-                <tr>
-                    <td class="label" colspan="4">
-                        Biopolymer Properties
-                    </td>
-                </tr>
-                <tr>
-                    <td class="label">
-                        <label for="biopolymerName">
-                            Name*
-                        </label>
-                    </td>
-                    <td>
-                        <input type="text" name="biopolymerName" [(ngModel)]="data.domainEntity['name']">
-                    </td>
-                    <td class="label">
-                        <label for="biopolymerType">Biopolymer Type*</label>
-                    </td>
-                    <td>
-                        <select (ngModelChange)="addOtherValue('domainEntity.type',data.domainEntity.type)" id="biopolymerType" [(ngModel)]="data['domainEntity']['type']" name="biopolymerType">
-                            <option [ngValue]="null" [selected]="data.domainEntity['type']==null">--Select--</option>
-                            <option *ngFor="let type of setupData['biopolymerTypes']" [selected]="data.domainEntity['type']==type" value="{{type}}">
-                                {{type}}
-                            </option>
-                            <option value="other">
-                                other
-                            </option>
-                        </select>
-                        <div *ngIf="data.domainEntity.type ==='other'">
-                            <canano-other-dropdown (saveOther)="saveOther($event)" [label]="'Type'" [value]="currentDropdownValues['domainEntity.type']" [field]="'data.domainEntity.type'" [array]="'setupData.biopolymerTypes'">
-                            </canano-other-dropdown>
-                        </div>
-                    </td>
-                </tr>
-                <tr>
-                    <td class="label">
-                        <label for="biopolymerSequence">Sequence</label>
-                    </td>
-                    <td colspan="3">
-                        <textarea name="biopolymerSequence" id="biopolymerSequence" [(ngModel)]="data.domainEntity.sequence" rows="3" cols="80">
-                            {{data.sequence}}
-                        </textarea>
-                    </td>
-                </tr>
-            </table>
-        </div>
-        <div class="mainBorder properties" *ngIf="data.type=='carbon nanotube'">
-            <table class="dataMain properties">
-                <tr>
-                    <td colspan="6" class="label">
-                        Carbon Nanotube Properties
-                    </td>
-                </tr>
-                <tr>
-                    <td class="label">
-                        <label for="averageLength">
-                            Average Length
-                        </label>
-                    </td>
-                    <td>
-                        <input type="number" (input)="convertToString($event)" name="averageLength" id="averageLength" [(ngModel)]="data.domainEntity.averageLength">
-                    </td>
-                    <td class="label">
-                        <label for="averageLengthUnit">
-                            Average Length Unit
-                        </label>
-                    </td>
-                    <td>
-                        <select id="averageLengthUnit" (ngModelChange)="addOtherValue('domainEntity.averageLengthUnit',data.domainEntity.averageLengthUnit)" name="averageLengthUnit" [(ngModel)]="data.domainEntity.averageLengthUnit" [(ngModel)]="data.domainEntity.averageLengthUnit">
-                            <option [ngValue]="null" [selected]="data.domainEntity.averageLengthUnit==null">--Select--</option>
-                            <option *ngFor="let type of setupData['composingElementUnits']" [selected]="type==data.domainEntity.averageLengthUnit">
-                                {{type}}
-                            </option>
-                            <option>other</option>
-                        </select>
-                        <div *ngIf="data.domainEntity.averageLengthUnit ==='other'">
-                            <canano-other-dropdown (saveOther)="saveOther($event)" [label]="'Average Length Unit'" [value]="currentDropdownValues['domainEntity.averageLengthUnit']" [field]="'data.domainEntity.averageLengthUnit'" [array]="'setupData.composingElementUnits'">
-                            </canano-other-dropdown>
-                        </div>
-                    </td>
-                    <td class="label">
-                        <label for="chirality">
-                            Chirality
-                        </label>
-                    </td>
-                    <td>
-                       <input type="text" name="chirality" [(ngModel)]="data.domainEntity.chirality">
-                    </td>
-                </tr>
-                <tr>
-                    <td class="label">
-                        <label for="diameter">
-                            Diameter
-                        </label>
-                    </td>
-                    <td>
-                        <input type="number" (input)="convertToString($event)" name="diameter" id="diameter" [(ngModel)]="data.domainEntity.diameter">
-                    </td>
-                    <td class="label">
-                        <label for="diameterUnit">
-                            Diameter Unit
-                        </label>
-                    </td>
-                    <td>
-                        <select id="diameterUnit" (ngModelChange)="addOtherValue('domainEntity.diameterUnit',data.domainEntity.diameterUnit)" name="diameterUnit" [(ngModel)]="data.domainEntity.diameterUnit" [(ngModel)]="data.domainEntity.diameterUnit">
-                            <option [ngValue]="null" [selected]="data.domainEntity.diameterUnit==null">--Select--</option>
-                            <option *ngFor="let type of setupData['dimensionUnits']" [selected]="type==data.domainEntity.diameterUnit">
-                                {{type}}
-                            </option>
-                            <option>other</option>
-                        </select>
-                        <div *ngIf="data.domainEntity.diameterUnit ==='other'">
-                            <canano-other-dropdown (saveOther)="saveOther($event)" [label]="'Diameter Unit'" [value]="currentDropdownValues['domainEntity.diameterUnit']" [field]="'data.domainEntity.diameterUnit'" [array]="'setupData.dimensionUnits'">
-                            </canano-other-dropdown>
-                        </div>
-                    </td>
-                    <td class="label">
-                        <label for="wallType">
-                            Wall Type
-                        </label>
-                    </td>
-                    <td>
-                        <select id="wallType" name="wallType" [(ngModel)]="data.domainEntity.wallType" [(ngModel)]="data.domainEntity.wallType">
-                            <option [ngValue]="null" [selected]="data.domainEntity.wallType==null">--Select--</option>
-                            <option *ngFor="let type of setupData['wallTypes']" [selected]="type==data.domainEntity.wallType">
-                                {{type}}
-                            </option>
-                        </select>
-                    </td>
-                </tr>
-            </table>
-        </div>
-        <div class="mainBorder properties" *ngIf="data.type=='dendrimer'">
-            <table class="dataMain properties">
-                <tr>
-                    <td class="label" colspan="4">
-                        Dendrimer Properties
-                    </td>
-                </tr>
-                <tr>
-                    <td class="label">
-                        <label for="branch">
-                            Branch
-                        </label>
-                    </td>
-                    <td>
-                        <input type="text" name="branch" id="branch" [(ngModel)]="data.domainEntity.branch">
-                    </td>
-                    <td class="label">
-                        <label for="generation">
-                            Generation
-                        </label>
-                    </td>
-                    <td>
-                        <input type="number" (input)="convertToString($event)" name="generation" id="generation" [(ngModel)]="data.domainEntity.generation">
-                    </td>
-                </tr>
-            </table>
-        </div>
-        <div class="mainBorder properties" *ngIf="data.type=='emulsion'">
-            <table class="dataMain properties">
-                <tr>
-                    <td class="label" colspan="4">
-                        Emulsion Properties
-                    </td>
-                </tr>
-                <tr>
-                    <td class="label">
-                        <label for="isPolymerized">
-                            Is Polymerized
-                        </label>
-                    </td>
-                    <td>
-                        <select name="isPolymerized" id="isPolymerized" [(ngModel)]="data.domainEntity.isPolymerized">
-                            <option [ngValue]="null" [selected]="data.domainEntity.polymerized==null">--Select--</option>
-                            <option value="true"
-                                    [selected]="data.domainEntity.polymerized==true">Yes</option>
-                            <option value="false"
-                                    [selected]="data.domainEntity.polymerized==false">No</option>
-                        </select>
-                    </td>
-                    <td class="label">
-                        <label for="polymerName">
-                            Polymer Name
-                        </label>
-                    </td>
-                    <td>
-                        <input type="text" name="polymerName" id="polymerName" [(ngModel)]="data.domainEntity.polymerName">
-                    </td>
-                </tr>
-            </table>
-        </div>
-        <div class="mainBorder properties" *ngIf="data.type=='fullerene'">
-            <table class="dataMain properties">
-                <tr>
-                    <td class="label" colspan="6">
-                        Fullerene Properties
-                    </td>
-                </tr>
-                <tr>
-                    <td class="label">
-                        <label for="averageDiameter">
-                            Average Diameter
-                        </label>
-                    </td>
-                    <td>
-                        <input type="number" (input)="convertToString($event)" name="averageDiameter" id="averageDiameter" [(ngModel)]="data.domainEntity.averageDiameter">
-                    </td>
-                    <td class="label">
-                        <label for="averageDiameterUnit">
-                            Average Diameter Unit
-                        </label>
-                    </td>
-                    <td>
-                        <select id="averageDiameterUnit" (ngModelChange)="addOtherValue('domainEntity.averageDiameterUnit',data.domainEntity.averageDiameterUnit)" name="averageDiameterUnit" [(ngModel)]="data.domainEntity.averageDiameterUnit" [(ngModel)]="data.domainEntity.averageDiameterUnit">
-                            <option [ngValue]="null" [selected]="data.domainEntity.averageDiameterUnit==null">--Select--</option>
-                            <option *ngFor="let type of setupData['dimensionUnits']" [selected]="type==data.domainEntity.averageDiameterUnit">
-                                {{type}}
-                            </option>
-                            <option>other</option>
-                        </select>
-                        <div *ngIf="data.domainEntity.averageDiameterUnit ==='other'">
-                            <canano-other-dropdown (saveOther)="saveOther($event)" [label]="'Average Diameter Unit'" [value]="currentDropdownValues['domainEntity.averageDiameterUnit']" [field]="'data.domainEntity.averageDiameterUnit'" [array]="'setupData.dimensionUnits'">
-                            </canano-other-dropdown>
-                        </div>
-                    </td>
-                    <td class="label">
-                        <label for="numberOfCarbon">
-                            Number of Carbons
-                        </label>
-                    </td>
-                    <td>
-                        <input type="number" (input)="convertToString($event)" name="numberOfCarbon" id="numberOfCarbon" [(ngModel)]="data.domainEntity.numberOfCarbon">
-                    </td>
-                </tr>
-            </table>
-        </div>
-        <div class="mainBorder properties" *ngIf="data.type=='liposome'">
-            <table class="dataMain properties">
-                <tr>
-                    <td class="label" colspan="4">
-                        Liposome Properties
-                    </td>
-                </tr>
-                <tr>
-                    <td class="label">
-                        <label for="isPolymerized">
-                            Is Polymerized
-                        </label>
-                    </td>
-                    <td>
-                        <select name="isPolymerized" id="isPolymerized" [(ngModel)]="data.domainEntity.isPolymerized">
-                            <option [ngValue]="null" [selected]="data.domainEntity.polymerized==null">--Select--</option>
-                            <option value="true"
-                                    [selected]="data.domainEntity.polymerized===true">Yes</option>
-                            <option value="false"
-                                    [selected]="data.domainEntity.polymerized===false">No</option>
-                        </select>
-                    </td>
-                    <td class="label">
-                        <label for="polymerName">
-                            Polymer Name
-                        </label>
-                    </td>
-                    <td>
-                        <input type="text" name="polymerName" id="polymerName" [(ngModel)]="data.domainEntity.polymerName">
-                    </td>
-                </tr>
-            </table>
-        </div>
-        <div class="mainBorder properties" *ngIf="data.type=='polymer'">
-            <table class="dataMain properties">
-                <tr>
-                    <td class="label" colspan="6">
-                        Polymer Properties
-                    </td>
-                </tr>
-                <tr>
-                    <td class="label">
-                        <label for="initiator">
-                            Initiator
-                        </label>
-                    </td>
-                    <td>
-                        <input (input)="convertToString($event)" type="number" name="initiator" id="initiator" [(ngModel)]="data.domainEntity.initiator">
-                    </td>
-                    <td class="label">
-                        <label for="isCrossLinked">
-                            Is Cross Linked
-                        </label>
-                    </td>
-                    <td>
-                        <select name="isCrossLinked" id="isCrossLinked" [(ngModel)]="data.domainEntity.isCrossLinked">
-                            <option [ngValue]="null" [selected]="data.domainEntity.isCrossLinked==null">--Select--</option>
-                            <option value="true"
-                                    [selected]="data.domainEntity.isCrossLinked==true">Yes</option>
-                            <option value="false"
-                                    [selected]="data.domainEntity.isCrossLinked==false">No</option>
-                        </select>
-                    </td>
-                    <td class="label">
-                        <label for="crossLinkDegree">
-                            Cross Link Degree
-                        </label>
-                    </td>
-                    <td>
-                        <input type="number" (input)="convertToString($event)" name="crossLinkDegree" id="crossLinkDegree" [(ngModel)]="data.domainEntity.crossLinkDegree">
-                    </td>
-                </tr>
-            </table>
-        </div>
+
+        <br>
 
         <div class="mainBorder">
             <table class="dataMain">
                 <tr>
                     <td class="label">
-                        Composing Element
+                        Materials
                     </td>
                     <td>
-                        <button (click)="addComposingElement()" class="btn-canano btn-canano-primary btn-canano-xs mr-1">Add</button>
+                        <button (click)="addMaterial()" class="btn-canano btn-canano-primary btn-canano-xs mr-1">Add</button>
                     </td>
                 </tr>
-                <tr *ngIf="data.composingElements.length">
+                <!-- <tr *ngIf="data.composingElements.length">
                     <td></td>
                     <td>
                         <table class="dataTable properties" *ngFor="let cElement of data.composingElements;let cIndex=index">
@@ -681,10 +362,10 @@
                             </table>
                         </div>
                     </td>
-                </tr>
+                </tr> -->
             </table>
         </div><br />
-        <div class="mainBorder">
+<!--         <div class="mainBorder">
             <table class="dataMain">
                 <tr>
                     <td class="label">
@@ -697,8 +378,8 @@
                     </td>
                 </tr>
             </table>
-        </div><br />
-        <div class="mainBorder">
+        </div><br /> -->
+<!--         <div class="mainBorder">
             <table class="dataMain">
                 <tr>
                     <td class="label">
@@ -716,7 +397,7 @@
                 </tr>
             </table> 
          </div><br /> -->
-        <div>
+        <!-- <div>
             <table class="submit">
                 <tr>
                     <td *ngIf="dataId" style="text-align:left;">
@@ -728,6 +409,6 @@
                     </td>
                 </tr>
             </table>
-        </div>
+        </div> -->
     </form>
 </div>

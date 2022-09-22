@@ -47,6 +47,7 @@ export class MaterialsComponent implements OnInit {
     toolHeadingNameManage = ' Sample Synthesis - Material';
     setupData;
     dataTrailer;
+    protocolDropdown = [];
 
     constructor(
         private navigationService: NavigationService,
@@ -68,7 +69,7 @@ export class MaterialsComponent implements OnInit {
                 .subscribe(
                     (data) => {
                         this.setupData = data;
-                        // this.dropdowns = data;
+                        this.protocolDropdown = data['protocolLookup'];
                     },
                     (errors) => {
                         this.errors = errors;
@@ -106,7 +107,7 @@ export class MaterialsComponent implements OnInit {
             composingElements: [],
             files: [],
         };
-        this.dataTrailer=JSON.parse(JSON.stringify(this.data));
+        // this.dataTrailer=JSON.parse(JSON.stringify(this.editData));
 
     }
 
