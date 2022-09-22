@@ -945,6 +945,8 @@ export class EditcharacterizationComponent implements OnInit {
         }          
 
         this.data.characterizationDate = new Date(this.data.characterizationDate.toISOString());
+        }
+        this.data.characterizationDate = new Date(this.data.characterizationDate.replace('-', '/'));
         let url = this.apiService.doPost(Consts.QUERY_CHARACTERIZATION_SAVE_FINDING,this.data);
         url.subscribe(data=> {
             this.errors={};
@@ -987,7 +989,7 @@ export class EditcharacterizationComponent implements OnInit {
         }
 
         this.data.techniqueInstruments.experiments[this.techniqueIndex]=this.techniqueInstrument;
-        this.data.characterizationDate = new Date(this.data.characterizationDate.toISOString());
+        this.data.characterizationDate = new Date(this.data.characterizationDate.replace('-', '/'));
         let url = this.apiService.doPost(Consts.QUERY_CHARACTERIZATION_SAVE_EXPERIMENT,this.data);
         url.subscribe(
                 data=> {

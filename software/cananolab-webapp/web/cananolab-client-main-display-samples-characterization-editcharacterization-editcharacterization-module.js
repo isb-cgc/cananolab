@@ -3438,7 +3438,7 @@ class EditcharacterizationComponent {
         else {
             this.data.finding[this.findingIndex] = JSON.parse(JSON.stringify(this.currentFinding));
         }
-        this.data.characterizationDate = new Date(this.data.characterizationDate.toISOString());
+        this.data.characterizationDate = new Date(this.data.characterizationDate.replace('-', '/'));
         let url = this.apiService.doPost(_constants__WEBPACK_IMPORTED_MODULE_2__["Consts"].QUERY_CHARACTERIZATION_SAVE_FINDING, this.data);
         url.subscribe(data => {
             this.errors = {};
@@ -3477,7 +3477,7 @@ class EditcharacterizationComponent {
             // push technique, call save and overwrite this.data //
         }
         this.data.techniqueInstruments.experiments[this.techniqueIndex] = this.techniqueInstrument;
-        this.data.characterizationDate = new Date(this.data.characterizationDate.toISOString());
+        this.data.characterizationDate = new Date(this.data.characterizationDate.replace('-', '/'));
         let url = this.apiService.doPost(_constants__WEBPACK_IMPORTED_MODULE_2__["Consts"].QUERY_CHARACTERIZATION_SAVE_EXPERIMENT, this.data);
         url.subscribe(data => {
             this.errors = {};
