@@ -46,9 +46,12 @@ cp -v ${HOME}/.env ${HOME}/software/cananolab-webapp/web/WEB-INF/
 SEMVER="${TIER}_Build"
 if [ -n "$CIRCLE_TAG" ]; then
   SEMVER=$CIRCLE_TAG
+  echo "[STATUS] Tag for production release deployment: ${SEMVER}"
+else
+  echo "[STATUS] Version for merge build: ${SEMVER}"
 fi
 
-sed -i "s/\[\[RELEASE_AND_BUILD_INFO\]\]/caNanoLab Release ${CIRCLE_TAG} Build cananolab-${CIRCLE_TAG}-${APP_SHA}/g" ${HOME}/software/cananolab-webapp/web/main.js
+sed -i "s/\[\[RELEASE_AND_BUILD_INFO\]\]/caNanoLab Release ${SEMVER} Build cananolab-${SEMVER}-${APP_SHA}/g" ${HOME}/software/cananolab-webapp/web/main.js
 
 cd ${HOME}/software/cananolab-webapp/
 ant dist
