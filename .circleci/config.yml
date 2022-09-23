@@ -158,4 +158,5 @@ workflows:
                 - master
                 - test
                 - uat
-                - prod
+            tags:
+              only: /.*/

@@ -43,7 +43,12 @@ cp -v ${HOME}/jars/*.jar ${HOME}/software/cananolab-webapp/lib/
 cp -v ${HOME}/jars/sdk/*.jar ${HOME}/software/cananolab-webapp/lib/sdk/
 cp -v ${HOME}/.env ${HOME}/software/cananolab-webapp/web/WEB-INF/
 
-sed -i "s/\[\[RELEASE_AND_BUILD_INFO\]\]/caNanoLab Release 3.1.1 Build cananolab-3.1.1-${APP_SHA}/g" ${HOME}/software/cananolab-webapp/web/main.js
+SEMVER="${TIER}_Build"
+if [ -n "$CIRCLE_TAG" ]; then
+  SEMVER=$CIRCLE_TAG
+fi
+
+sed -i "s/\[\[RELEASE_AND_BUILD_INFO\]\]/caNanoLab Release ${CIRCLE_TAG} Build cananolab-${CIRCLE_TAG}-${APP_SHA}/g" ${HOME}/software/cananolab-webapp/web/main.js
 
 cd ${HOME}/software/cananolab-webapp/
 ant dist
