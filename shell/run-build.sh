@@ -3,6 +3,24 @@ if [ -n "$CI" ]; then
     export CANANODIR=${HOME}/staged/caNanoLab
 fi
 
+# Build the Angular front end
+echo "[STATUS] Building Angular front end"
+cd ${HOME}/software/cananolab-client-new/
+npm i
+# Install Angular CLI globally
+npm install -g @angular/cli@latest
+ng build --base-href / --output-path ./front-end/
+
+cp -av ./front-end/. ${HOME}/software/cananolab-webapp/web/
+
+if [[ "$?" -ne 0 ]] ; then
+  echo "<<<ANGULAR BUILD FAILED - CHECK THE BUILD LOGS>>>"
+  exit 1
+fi
+
+cd ${HOME}
+
+echo "[STATUS] Building Web Application"
 wget http://archive.apache.org/dist/ant/binaries/apache-ant-1.9.9-bin.tar.gz \
     && tar xvfz apache-ant-1.9.9-bin.tar.gz \
     && mv apache-ant-1.9.9 /opt
@@ -19,23 +37,29 @@ mkdir -p ${CANANODIR} \
     && mkdir -p ${CANANODIR}/artifacts \
     && mkdir -p ${CANANODIR}/config
 
-#sudo gcloud auth activate-service-account --key-file ${HOME}/${SECURE_LOCAL_PATH}/${GOOGLE_APPLICATION_CREDENTIALS}
-#sudo gcloud config set project "${GCLOUD_PROJECT_ID}"
-#sudo gsutil cp "gs://${GCLOUD_BUCKET_DEV_SQL}/${JAR_FOLDER}" ${HOME}/lib/${JAR_FOLDER}
-
 cp -v ${HOME}/maven-settings.xml ${ANT_HOME}/etc/settings.xml
 cp -v ${HOME}/maven-settings.xml /opt/apache-maven/conf/settings.xml
 cp -v ${HOME}/jars/*.jar ${HOME}/software/cananolab-webapp/lib/
 cp -v ${HOME}/jars/sdk/*.jar ${HOME}/software/cananolab-webapp/lib/sdk/
 cp -v ${HOME}/.env ${HOME}/software/cananolab-webapp/web/WEB-INF/
 
-sed -i "s/\[\[RELEASE_AND_BUILD_INFO\]\]/caNanoLab Release 3.1.0 Build cananolab-3.1.0-${APP_SHA}/g" ${HOME}/software/cananolab-webapp/web/main.js
+SEMVER="${TIER}"
+if [ -n "$CIRCLE_TAG" ]; then
+  SEMVER=$CIRCLE_TAG
+  echo "[STATUS] Tag for production release deployment: ${SEMVER}"
+else
+  COUNT=`git rev-list --count HEAD`
+  SEMVER="${SEMVER}.${COUNT}"
+  echo "[STATUS] Version for merge build: ${SEMVER}"
+fi
+
+sed -i "s/\[\[RELEASE_AND_BUILD_INFO\]\]/caNanoLab Release ${SEMVER} Build cananolab-${SEMVER}-${APP_SHA}/g" ${HOME}/software/cananolab-webapp/web/main.js
 
 cd ${HOME}/software/cananolab-webapp/
 ant dist
 
 if [[ "$?" -ne 0 ]] ; then
-  echo "<<<BUILD FAILED - CHECK THE BUILD LOGS>>>"
+  echo "<<<ANT BUILD FAILED - CHECK THE BUILD LOGS>>>"
   exit 1
 fi
 
