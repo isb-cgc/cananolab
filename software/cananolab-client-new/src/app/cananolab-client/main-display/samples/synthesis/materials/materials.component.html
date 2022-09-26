@@ -5,6 +5,7 @@
     [toolHeadingName]="toolHeadingNameManage">
 </canano-main-display-heading> -->
 
+
 <div class="mainSection" *ngIf="data&&setupData">
     <div class="error" *ngIf="errors['error']">
         {{errors['error']}}
@@ -19,14 +20,14 @@
                         </label>
                     </td>
                     <td>
-                        <!-- <div *ngIf="!dataId"> -->
+                        <div *ngIf="!dataId">
                             <select name="type" id="materialType">
                                 <option [ngValue]="''" [selected]="data.type===''">--Select--</option>
-                                <option *ngFor="let type of protocolDropdown" [selected]="type.displayName==data.type">
+                                <option *ngFor="let type of setupData['protocolLookup']" [selected]="type.displayName==data.type">
                                     {{type.displayName}}
                                 </option>
                             </select>
-                        <!-- </div> -->
+                       </div>
                     </td>
                 </tr>
                 <tr>
@@ -52,13 +53,13 @@
                         Materials
                     </td>
                     <td>
-                        <button (click)="addMaterial()" class="btn-canano btn-canano-primary btn-canano-xs mr-1">Add</button>
+                        <button type="button" (click)="addMaterialElement()" class="btn-canano btn-canano-primary btn-canano-xs mr-1">Add</button>
                     </td>
                 </tr>
-                <!-- <tr *ngIf="data.composingElements.length">
+                <tr *ngIf="data.materialElements.length">
                     <td></td>
                     <td>
-                        <table class="dataTable properties" *ngFor="let cElement of data.composingElements;let cIndex=index">
+                        <table class="dataTable properties" *ngFor="let cElement of data.materialElements;let cIndex=index">
                             <tr>
                                 <th colspan="2">
                                     {{cElement.type}} (name:{{cElement.name}})
@@ -73,7 +74,7 @@
                                     {{cElement.pubChemId}}
                                 </td>
                                 <td>
-                                    <button (click)="editComposingElement(cIndex,cElement)" class="btn-canano btn-canano-primary btn-canano-xs mr-1">Edit</button>
+                                    <button (click)="editMaterialElement(cIndex,cElement)" class="btn-canano btn-canano-primary btn-canano-xs mr-1">Edit</button>
                                 </td>
                             </tr>
                             <tr>
@@ -105,7 +106,7 @@
                         </table>
                     </td>
                 </tr>
-                <tr *ngIf="composingElementIndex!=null" id="composingElementForm">
+                <tr *ngIf="materialElementIndex!=null" id="materialElementForm">
                     <td></td>
                     <td>
                         <div class="mainBorder">
@@ -113,22 +114,16 @@
                                 <tr>
                                     <td class="label">
                                         <label for="cType">
-                                            Type*
+                                            Material Type*
                                         </label>
                                     </td>
                                     <td>
-                                        <select (ngModelChange)="addOtherValue('composingElement.type',composingElement.type)" id="cType" name="cType" [(ngModel)]="composingElement.type">
-                                            <option [ngValue]="''" [selected]="composingElement.type==type">--Select--</option>
-                                            <option *ngFor="let type of setupData.emulsionComposingElementTypes" [selected]="type==composingElement.type">
+                                        <select id="cType" name="cType" [(ngModel)]="materialElement.type">
+                                            <option [ngValue]="''" [selected]="materialElement.type==type">--Select--</option>
+                                            <option *ngFor="let type of setupData.materialTypes" [selected]="type==materialElement.type">
                                                 {{type}}
                                             </option>
-                                            <option>other</option>
                                         </select>
-                                        <div *ngIf="composingElement.type ==='other'">
-                                            <canano-other-dropdown (saveOther)="saveOther($event)" [label]="'Type'" [value]="currentDropdownValues['composingElement.type']" [field]="'composingElement.type'" [array]="'setupData.emulsionComposingElementTypes'">
-
-                                            </canano-other-dropdown>
-                                        </div>
                                     </td>
                                     <td class="label">
                                         <label for="cName*">
@@ -136,30 +131,30 @@
                                         </label>
                                     </td>
                                     <td>
-                                        <input type="text" name="cName" [(ngModel)]="composingElement.name">
+                                        <input type="text" name="cName" [(ngModel)]="materialElement.name">
                                     </td>
                                 </tr>
                                 <tr>
                                     <td class="label">
                                         <label for="cPubchemDataSource">
-                                            PubChem DataSource
+                                            PubChem Data Source
                                         </label>
                                     </td>
                                     <td>
-                                        <select id="cPubchemDataSource" name="cPubchemDataSource" [(ngModel)]="composingElement.pubChemDataSourceName">
-                                            <option [ngValue]="''" [selected]="composingElement.pubChemDataSourceName===''">--Select--</option>
-                                            <option *ngFor="let type of setupData.pubChemDataSources" [selected]="type==composingElement.pubChemDataSourceName">
+                                        <select id="cPubchemDataSource" name="cPubchemDataSource" [(ngModel)]="materialElement.pubChemDataSourceName">
+                                            <option [ngValue]="''" [selected]="materialElement.pubChemDataSourceName===''">--Select--</option>
+                                            <option *ngFor="let type of setupData.pubChemDataSources" [selected]="type==materialElement.pubChemDataSourceName">
                                                 {{type}}
                                             </option>
                                         </select>
                                     </td>
                                     <td class="label">
                                         <label for="pubchemid">
-                                            PubChem Id
+                                            PubChem ID
                                         </label>
                                     </td>
                                     <td>
-                                        <input type="number" id="pubchemid" name="pubChemId" [(ngModel)]="composingElement.pubChemId">
+                                        <input type="number" id="pubchemid" name="pubChemId" [(ngModel)]="materialElement.pubChemId">
                                     </td>
                                 </tr>
                                 <tr>
@@ -169,7 +164,7 @@
                                         </label>
                                     </td>
                                     <td>
-                                        <input type="number" name="amount" id="amount" [(ngModel)]="composingElement.value">
+                                        <input type="number" name="amount" id="amount" [(ngModel)]="materialElement.value">
                                     </td>
                                     <td class="label">
                                         <label for="amountunit">
@@ -177,18 +172,13 @@
                                         </label>
                                     </td>
                                     <td>
-                                        <select (ngModelChange)="addOtherValue('composingElement.valueUnit',composingElement.valueUnit)" name="valueUnit" id="valueUnit" [(ngModel)]="composingElement.valueUnit">
-                                            <option [ngValue]="''" [selected]="composingElement.valueUnit===''">--Select--</option>
-                                            <option *ngFor="let type of setupData.composingElementUnits" [selected]="composingElement.valueUnit==type">
+                                        <select name="valueUnit" id="valueUnit" [(ngModel)]="materialElement.valueUnit">
+                                            <option [ngValue]="''" [selected]="materialElement.valueUnit===''">--Select--</option>
+                                            <option *ngFor="let type of setupData.amountUnits
+" [selected]="materialElement.valueUnit==type">
                                                 {{type}}
                                             </option>
-                                            <option>other</option>
                                         </select>
-                                        <div *ngIf="composingElement.valueUnit ==='other'">
-                                            <canano-other-dropdown (saveOther)="saveOther($event)" [label]="'Amount Unit'" [value]="currentDropdownValues['composingElement.valueUnit']" [field]="'composingElement.valueUnit'" [array]="'setupData.composingElementUnits'">
-
-                                            </canano-other-dropdown>
-                                        </div>
                                     </td>
                                 </tr>
                                 <tr>
@@ -198,18 +188,12 @@
                                         </label>
                                     </td>
                                     <td>
-                                        <select (ngModelChange)="addOtherValue('composingElement.molecularFormulaType',composingElement.molecularFormulaType)" name="molecularFormulaType" id="molecularFormulaType" [(ngModel)]="composingElement.molecularFormulaType">
-                                            <option [ngValue]="''" [selected]="composingElement.molecularFormulaType===''">--Select--</option>
-                                            <option *ngFor="let type of setupData.molecularFormulaTypes" [selected]="composingElement.valueUnit==type">
+                                        <select name="molecularFormulaType" id="molecularFormulaType" [(ngModel)]="materialElement.molecularFormulaType">
+                                            <option [ngValue]="''" [selected]="materialElement.molecularFormulaType===''">--Select--</option>
+                                            <option *ngFor="let type of setupData.formulaTypes" [selected]="materialElement.valueUnit==type">
                                                 {{type}}
                                             </option>
-                                            <option>other</option>
                                         </select>
-                                        <div *ngIf="composingElement.molecularFormulaType ==='other'">
-                                            <canano-other-dropdown (saveOther)="saveOther($event)" [label]="'Molecular Formula Type'" [value]="currentDropdownValues['composingElement.molecularFormulaType']" [field]="'composingElement.molecularFormulaType'" [array]="'setupData.molecularFormulaTypes'">
-
-                                            </canano-other-dropdown>
-                                        </div>
                                     </td>
                                     <td class="label">
                                         <label for="molecularFormula">
@@ -217,35 +201,66 @@
                                         </label>
                                     </td>
                                     <td>
-                                        <textarea name="molecularFormula" id="molecularFormula" rows="2" cols="40" [(ngModel)]="composingElement.molecularFormula">
-                                            {{composingElement.molecularFormula}}
+                                        <textarea name="molecularFormula" id="molecularFormula" rows="2" cols="40" [(ngModel)]="materialElement.molecularFormula">
+                                            {{materialElement.molecularFormula}}
                                         </textarea>
                                     </td>
                                 </tr>
                                 <tr>
                                     <td class="label">
+                                        <label for="supplierName">
+                                            Supplier Name
+                                        </label>
+                                    </td>
+                                    <td>
+                                        <select (ngModelChange)="addOtherValue('materialElement.supplierName',materialElement.supplierName)" id="supplierName" name="supplierName" [(ngModel)]="materialElement.supplierName">
+                                            <option [ngValue]="''" [selected]="materialElement.supplierName==supplierName">--Select--</option>
+                                            <option *ngFor="let supplierName of setupData.supplierNames" [selected]="supplierName==materialElement.supplierName">
+                                                {{supplierName}}
+                                            </option>
+                                        </select>
+                                        <div *ngIf="materialElement.supplierName ==='other'">
+                                            <canano-other-dropdown (saveOther)="saveOther($event)" [label]="'Type'" [value]="currentDropdownValues['materialElement.supplierName']" [field]="'materialElement.supplierName'" [array]="'setupData.supplierNames'">
+
+                                            </canano-other-dropdown>
+                                        </div>
+                                    </td>
+                                    <td class="label">
+                                        <label for="supplierLot">
+                                            Lot
+                                        </label>
+                                    </td>
+                                    <td>
+                                        <textarea name="supplierLot" id="supplierLot" rows="2" cols="40" [(ngModel)]="materialElement.supplier.lot">
+                                            {{materialElement.supplier.lot}}
+                                        </textarea>
+                                    </td>
+                                </tr>
+
+                                <tr>
+                                    <td class="label">
                                         <label for="cDescription">
-                                            Description
+                                            Material Description
                                         </label>
                                     </td>
                                     <td colspan="3">
-                                        <textarea name="cDescription" id="cDescription" rows="3" cols="65" [(ngModel)]="composingElement.description">
-                                            {{composingElement.description}}
+                                        <textarea name="cDescription" id="cDescription" rows="3" cols="65" [(ngModel)]="materialElement.description">
+                                            {{materialElement.description}}
                                         </textarea>
                                     </td>
                                 </tr>
                                 <tr>
                                     <td class="label">
                                         <label for="inherentFunction">
-                                            Inherent Function
+                                            Inherent Functions
                                         </label>
                                     </td>
                                     <td colspan="3">
-                                        <button (click)="addInherentFunction()" class="btn-canano btn-canano-primary btn-canano-xs mr-1">Add</button>
+                                        <button type='button' (click)="addInherentFunction()" class="btn-canano btn-canano-primary btn-canano-xs mr-1">Add</button>
                                     </td>
                                 </tr>
-                                <ng-container *ngIf="composingElement.inherentFunction">
-                                    <tr *ngIf="composingElement.inherentFunction.length">
+                                <ng-container *ngIf="materialElement.inherentFunction">
+                                    <tr *ngIf="materialElement.inherentFunction.length">
                                         <td></td>
                                         <td colspan="3">
                                             <table class="dataTable">
@@ -256,7 +271,7 @@
                                                     <th>Description</th>
                                                     <th></th>
                                                 </tr>
-                                                <tr *ngFor="let iFunction of composingElement.inherentFunction;let fIndex=index">
+                                                <tr *ngFor="let iFunction of materialElement.inherentFunction;let fIndex=index">
                                                     <td>
                                                         {{iFunction.type}}
                                                     </td>
@@ -286,41 +301,16 @@
                                                 <tr>
                                                     <td class="label">
                                                         <label for="functionType">
-                                                            Function Type
+                                                            Type
                                                         </label>
                                                     </td>
                                                     <td>
-                                                        <select (ngModelChange)="addOtherValue('inherentFunction.type',inherentFunction.type)"  name="type" id="functionType" [(ngModel)]="inherentFunction.type">
+                                                        <select name="type" id="functionType" [(ngModel)]="inherentFunction.type">
                                                             <option [ngValue]="''" [selected]="inherentFunction.type===''">--Select--</option>
-                                                            <option *ngFor="let type of setupData['functionTypes']" [selected]="type==inherentFunction.type">
+                                                            <option *ngFor="let type of setupData.inherentFunctionTypes" [selected]="type==inherentFunction.type">
                                                                 {{type}}
                                                             </option>
-                                                            <option>other</option>
                                                         </select>
-                                                        <div *ngIf="inherentFunction.type ==='other'">
-                                                            <canano-other-dropdown (saveOther)="saveOther($event)" [label]="'Function Type'" [value]="currentDropdownValues['inherentFunction.type']" [field]="'inherentFunction.type'" [array]="'setupData.functionTypes'">
-
-                                                            </canano-other-dropdown>
-                                                        </div>
-                                                    </td>
-                                                    <td class="label">
-                                                        <label for="modality" *ngIf="inherentFunction.type=='imaging function'">
-                                                            Imaging Modality Type
-                                                        </label>
-                                                    </td>
-                                                    <td>
-                                                        <select *ngIf="inherentFunction.type=='imaging function'" (ngModelChange)="addOtherValue('inherentFunction.modality',inherentFunction.modality)"  name="modality" id="modality" [(ngModel)]="inherentFunction.modality">
-                                                            <option [ngValue]="''" [selected]="inherentFunction.modality===''">--Select--</option>
-                                                            <option *ngFor="let type of setupData['modalityTypes']" [selected]="type==inherentFunction.modality">
-                                                                {{type}}
-                                                            </option>
-                                                            <option>other</option>
-                                                        </select>
-                                                        <div *ngIf="inherentFunction.modality ==='other'">
-                                                            <canano-other-dropdown (saveOther)="saveOther($event)" [label]="'Imaging Modality Type'" [value]="currentDropdownValues['inherentFunction.modality']" [field]="'inherentFunction.modality'" [array]="'setupData.modalityTypes'">
-
-                                                            </canano-other-dropdown>
-                                                        </div>
                                                     </td>
                                                 </tr>
                                                 <tr>
@@ -350,19 +340,19 @@
                                 </tr>
                                 <tr>
                                     <td>
-                                        <button (click)="deleteComposingElement()" *ngIf="composingElementIndex!=-1" class="btn-canano btn-canano-danger btn-canano-xs mr-1">Delete</button>
+                                        <button (click)="deleteMaterialElement()" *ngIf="materialElementIndex!=-1" class="btn-canano btn-canano-danger btn-canano-xs mr-1">Delete</button>
                                     </td>
                                     <td></td>
                                     <td></td>
                                     <td class="right">
-                                        <button [disabled]="!readyToSubmit()||composingElement.type==''||composingElement.name==''" (click)="saveComposingElement()" class="btn-canano btn-canano-primary btn-canano-xs mr-1">Save</button>
-                                        <button (click)="cancelComposingElement()" class="btn-canano btn-canano-default btn-canano-xs mr-1">Cancel</button>
+                                        <button [disabled]="!readyToSubmit()||materialElement.type==''||materialElement.name==''" (click)="saveMaterialElement()" class="btn-canano btn-canano-primary btn-canano-xs mr-1">Save</button>
+                                        <button (click)="cancelMaterialElement()" class="btn-canano btn-canano-default btn-canano-xs mr-1">Cancel</button>
                                     </td>
                                 </tr>
                             </table>
                         </div>
                     </td>
-                </tr> -->
+                </tr>
             </table>
         </div><br />
 <!--         <div class="mainBorder">
