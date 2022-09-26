@@ -43,11 +43,13 @@ cp -v ${HOME}/jars/*.jar ${HOME}/software/cananolab-webapp/lib/
 cp -v ${HOME}/jars/sdk/*.jar ${HOME}/software/cananolab-webapp/lib/sdk/
 cp -v ${HOME}/.env ${HOME}/software/cananolab-webapp/web/WEB-INF/
 
-SEMVER="${TIER}_Build"
+SEMVER="${TIER}"
 if [ -n "$CIRCLE_TAG" ]; then
   SEMVER=$CIRCLE_TAG
   echo "[STATUS] Tag for production release deployment: ${SEMVER}"
 else
+  COUNT=`git rev-list --count HEAD`
+  SEMVER="${SEMVER}.${COUNT}"
   echo "[STATUS] Version for merge build: ${SEMVER}"
 fi
 
