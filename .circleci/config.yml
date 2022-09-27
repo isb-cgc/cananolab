@@ -146,7 +146,7 @@ jobs:
             sudo -E gcloud app deploy --verbosity=debug ./app.yaml --quiet
 workflows:
   version: 2
-  build_and_deploy_test_dev:
+  build_and_deploy:
     jobs:
       - build_job
       - deploy_job:
