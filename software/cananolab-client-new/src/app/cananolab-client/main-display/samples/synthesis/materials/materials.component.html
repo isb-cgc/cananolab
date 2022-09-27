@@ -1,10 +1,9 @@
 <p>materials works!</p>
 
-<!-- <canano-main-display-heading
+<canano-main-display-heading
     [helpUrl]="helpUrl"
     [toolHeadingName]="toolHeadingNameManage">
-</canano-main-display-heading> -->
-
+</canano-main-display-heading>
 
 <div class="mainSection" *ngIf="data&&setupData">
     <div class="error" *ngIf="errors['error']">
@@ -141,9 +140,9 @@
                                         </label>
                                     </td>
                                     <td>
-                                        <select id="cPubchemDataSource" name="cPubchemDataSource" [(ngModel)]="materialElement.pubChemDataSourceName">
-                                            <option [ngValue]="''" [selected]="materialElement.pubChemDataSourceName===''">--Select--</option>
-                                            <option *ngFor="let type of setupData.pubChemDataSources" [selected]="type==materialElement.pubChemDataSourceName">
+                                        <select id="cPubchemDataSource" name="cPubchemDataSource" [(ngModel)]="materialElement.pubChemDataSource">
+                                            <option [ngValue]="''" [selected]="materialElement.pubChemDataSource===''">--Select--</option>
+                                            <option *ngFor="let type of setupData.pubChemDataSources" [selected]="type==materialElement.pubChemDataSource">
                                                 {{type}}
                                             </option>
                                         </select>
@@ -213,14 +212,14 @@
                                         </label>
                                     </td>
                                     <td>
-                                        <select (ngModelChange)="addOtherValue('materialElement.supplierName',materialElement.supplierName)" id="supplierName" name="supplierName" [(ngModel)]="materialElement.supplierName">
-                                            <option [ngValue]="''" [selected]="materialElement.supplierName==supplierName">--Select--</option>
-                                            <option *ngFor="let supplierName of setupData.supplierNames" [selected]="supplierName==materialElement.supplierName">
+                                        <select (ngModelChange)="addOtherValue('materialElement.supplier.supplierName',materialElement.supplier.supplierName)" id="supplierName" name="supplierName" [(ngModel)]="materialElement.supplier.supplierName">
+                                            <option [ngValue]="''" [selected]="materialElement.supplier.supplierName==supplierName">--Select--</option>
+                                            <option *ngFor="let supplierName of setupData.supplierNames" [selected]="supplierName==materialElement.supplier.supplierName">
                                                 {{supplierName}}
                                             </option>
                                         </select>
-                                        <div *ngIf="materialElement.supplierName ==='other'">
-                                            <canano-other-dropdown (saveOther)="saveOther($event)" [label]="'Type'" [value]="currentDropdownValues['materialElement.supplierName']" [field]="'materialElement.supplierName'" [array]="'setupData.supplierNames'">
+                                        <div *ngIf="materialElement.supplier.supplierName ==='other'">
+                                            <canano-other-dropdown (saveOther)="saveOther($event)" [label]="'Type'" [value]="currentDropdownValues['materialElement.supplier.supplierName']" [field]="'materialElement.supplier.supplierName'" [array]="'setupData.supplierNames'">
 
                                             </canano-other-dropdown>
                                         </div>
@@ -355,21 +354,21 @@
                 </tr>
             </table>
         </div><br />
-<!--         <div class="mainBorder">
+        <div class="mainBorder">
             <table class="dataMain">
                 <tr>
                     <td class="label">
                         File
                     </td>
                     <td>
-                        <canano-file [reset]="resetStatus" (getError)="getError($event)"  (changeFile)="changeFile($event)" [nanomaterial]="true" [saveUrl]="consts.QUERY_NANOMATERIAL_SAVE_FILE" [deleteUrl]="consts.QUERY_NANOMATERIAL_REMOVE_FILE" [sampleId]="sampleId" [data]="data" [fileVariable]="'fileBean'" [fileArray]="'files'">
+                        <canano-file [reset]="resetStatus" (getError)="getError($event)"  (changeFile)="changeFile($event)" [nanomaterial]="false" [saveUrl]="consts.QUERY_MATERIAL_SAVE_FILE" [deleteUrl]="consts.QUERY_MATERIAL_REMOVE_FILE" [sampleId]="sampleId" [data]="data" [fileVariable]="'fileBeingEdited'" [fileArray]="'fileElements'">
 
                         </canano-file>
                     </td>
                 </tr>
             </table>
-        </div><br /> -->
-<!--         <div class="mainBorder">
+        </div><br />
+       <!--  <div class="mainBorder">
             <table class="dataMain">
                 <tr>
                     <td class="label">
@@ -387,7 +386,7 @@
                 </tr>
             </table> 
          </div><br /> -->
-        <!-- <div>
+        <div>
             <table class="submit">
                 <tr>
                     <td *ngIf="dataId" style="text-align:left;">
@@ -399,6 +398,6 @@
                     </td>
                 </tr>
             </table>
-        </div> -->
+        </div>
     </form>
 </div>

@@ -1,9 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Params, Router } from '@angular/router';
-import { Consts } from '../../../../../constants';
-import { ApiService } from '../../../../common/services/api.service';
 import { Properties } from '../../../../../../assets/properties';
+import { Consts } from '../../../../../constants';
 import { NavigationService } from '../../../../common/services/navigation.service';
+import { ApiService } from '../../../../common/services/api.service';
+
 @Component({
   selector: 'canano-materials',
   templateUrl: './materials.component.html',
@@ -29,14 +30,14 @@ export class MaterialsComponent implements OnInit {
     toolHeadingNameManage = ' Sample Synthesis - Material';
 
     constructor(
+        private apiService: ApiService,
         private navigationService: NavigationService,
         private router: Router,
         private route: ActivatedRoute,
-        private apiService: ApiService,
     ) { }
 
     ngOnInit(): void {
-        this.navigationService.setCurrentSelectedItem(1);
+        this.navigationService.setCurrentSelectedItem(4);
         this.route.params.subscribe((params: Params) => {
             this.sampleId = params['sampleId'];
             this.dataId = params['dataId'];
@@ -48,6 +49,8 @@ export class MaterialsComponent implements OnInit {
                 .subscribe(
                     (data) => {
                         this.setupData = data;
+                        Properties.SAMPLE_TOOLS = true;
+                        Properties.CURRENT_SAMPLE_ID = this.sampleId;
                     },
                     (errors) => {
                         this.errors = errors;
@@ -58,11 +61,11 @@ export class MaterialsComponent implements OnInit {
                 this.apiService
                     .doGet(
                         Consts.QUERY_SYNTHESIS_MATERIAL_EDIT,
-                        'sampleId=' + this.sampleId + '&dataId=' + this.dataId
+                        'sampleId=' + this.sampleId + '&synMaterialId=' + this.dataId
                     )
                     .subscribe(
                         (data) => {
-                            this.data = data['data'];
+                            this.data = data;
                             // this.material = data;
                             // this.dataTrailer = JSON.parse(JSON.stringify(data));
                             this.errors = {};
@@ -158,26 +161,26 @@ export class MaterialsComponent implements OnInit {
         this.data.domainEntity[event.target.id] = event.target.value.toString();
     }
 
-    // delete() {
-    //     if (confirm('Are you sure you wish to delete this nanomaterial?')) {
-    //         this.convertDomainEntityFieldsToNullAndStrings();
-    //         setTimeout(() => {
-    //             this.apiService
-    //                 .doPost(Consts.QUERY_NANOMATERIAL_DELETE, this.data)
-    //                 .subscribe(
-    //                     (data) => {
-    //                         this.router.navigate([
-    //                             'home/samples/composition',
-    //                             this.sampleId,
-    //                         ]);
-    //                     },
-    //                     (error) => {
-    //                         this.errors = error;
-    //                     }
-    //                 );
-    //         }, 200);
-    //     }
-    // }
+    delete() {
+        if (confirm('Are you sure you wish to delete this material?')) {
+            this.convertDomainEntityFieldsToNullAndStrings();
+            setTimeout(() => {
+                this.apiService
+                    .doPost(Consts.QUERY_SYNTHESIS_MATERIAL_DELETE, this.data)
+                    .subscribe(
+                        (data) => {
+                            this.router.navigate([
+                                'home/samples/composition',
+                                this.sampleId,
+                            ]);
+                        },
+                        (error) => {
+                            this.errors = error;
+                        }
+                    );
+            }, 200);
+        }
+    }
 
     deleteMaterialElement() {
         if (
@@ -311,64 +314,64 @@ export class MaterialsComponent implements OnInit {
         this.dataTrailer = JSON.parse(JSON.stringify(data));
     }
 
-    // setupDomainEntity(event) {
-    //     delete this.data['domainEntity'];
-    //     if (event == 'biopolymer')
-    //         this.data['domainEntity'] = {
-    //             type: null,
-    //             name: null,
-    //             sequence: null,
-    //         };
-    //     if (event == 'dendrimer')
-    //         this.data['domainEntity'] = { branch: null, generation: null };
-    //     if (event == 'fullerene')
-    //         this.data['domainEntity'] = {
-    //             averageDiameter: null,
-    //             averageDiameterUnit: null,
-    //             numberOfCarbon: null,
-    //         };
-    //     if (event == 'liposome')
-    //         this.data['domainEntity'] = {
-    //             isPolymerized: null,
-    //             polymerName: null,
-    //         };
-    //     if (event == 'polymer')
-    //         this.data['domainEntity'] = {
-    //             isCrossLinked: null,
-    //             initiator: null,
-    //             crossLinkDegree: null,
-    //         };
-    //     if (event == 'emulsion')
-    //         this.data['domainEntity'] = {
-    //             isPolymerized: null,
-    //             polymerName: null,
-    //         };
-    //     if (event == 'carbon nanotube')
-    //         this.data['domainEntity'] = {
-    //             averageLength: null,
-    //             diameter: null,
-    //             averageLengthUnit: null,
-    //             diameterUnit: null,
-    //             chirality: null,
-    //             wallType: null,
-    //         };
-    // }
+    setupDomainEntity(event) {
+        // delete this.data['domainEntity'];
+        // if (event == 'biopolymer')
+        //     this.data['domainEntity'] = {
+        //         type: null,
+        //         name: null,
+        //         sequence: null,
+        //     };
+        // if (event == 'dendrimer')
+        //     this.data['domainEntity'] = { branch: null, generation: null };
+        // if (event == 'fullerene')
+        //     this.data['domainEntity'] = {
+        //         averageDiameter: null,
+        //         averageDiameterUnit: null,
+        //         numberOfCarbon: null,
+        //     };
+        // if (event == 'liposome')
+        //     this.data['domainEntity'] = {
+        //         isPolymerized: null,
+        //         polymerName: null,
+        //     };
+        // if (event == 'polymer')
+        //     this.data['domainEntity'] = {
+        //         isCrossLinked: null,
+        //         initiator: null,
+        //         crossLinkDegree: null,
+        //     };
+        // if (event == 'emulsion')
+        //     this.data['domainEntity'] = {
+        //         isPolymerized: null,
+        //         polymerName: null,
+        //     };
+        // if (event == 'carbon nanotube')
+        //     this.data['domainEntity'] = {
+        //         averageLength: null,
+        //         diameter: null,
+        //         averageLengthUnit: null,
+        //         diameterUnit: null,
+        //         chirality: null,
+        //         wallType: null,
+        //     };
+    }
 
 
-    // submit() {
-    //     this.convertDomainEntityFieldsToNullAndStrings();
-    //     this.apiService
-    //         .doPost(Consts.QUERY_NANOMATERIAL_UPDATE, this.data)
-    //         .subscribe(
-    //             (data) => {
-    //                 this.router.navigate([
-    //                     'home/samples/composition',
-    //                     this.sampleId,
-    //                 ]);
-    //             },
-    //             (errors) => {
-    //                 this.errors = errors;
-    //             }
-    //         );
-    // }
+    submit() {
+        this.convertDomainEntityFieldsToNullAndStrings();
+        this.apiService
+            .doPost(Consts.QUERY_SYNTHESIS_MATERIAL_UPDATE, this.data)
+            .subscribe(
+                (data) => {
+                    this.router.navigate([
+                        'home/samples/synthesis',
+                        this.sampleId,
+                    ]);
+                },
+                (errors) => {
+                    this.errors = errors;
+                }
+            );
+    }
 }

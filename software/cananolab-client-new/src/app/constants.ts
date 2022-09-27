@@ -141,8 +141,12 @@ export const Consts = {
     QUERY_SYNTHESIS_SUMMARY_VIEW: '/rest/synthesis/summaryView',
     QUERY_SYNTHESIS_MATERIAL_SETUP: '/rest/synthesisMaterial/setup',
     QUERY_SYNTHESIS_MATERIAL_EDIT: '/rest/synthesisMaterial/edit',
+    QUERY_SYNTHESIS_MATERIAL_DELETE: '/rest/synthesisMaterial/delete',
+    QUERY_SYNTHESIS_MATERIAL_UPDATE: '/rest/synthesisMaterial/submit',
     QUERY_REMOVE_MATERIAL_ELEMENT: '/rest/synthesisMaterial/removeMaterialElement',
     SAVE_MATERIAL_ELEMENT: '/rest/synthesisMaterial/saveMaterialElement',
+    QUERY_SYNTHESIS_MATERIAL_SAVE_FILE: '/rest/synthesisMaterial/saveFile',
+    QUERY_SYNTHESIS_MATERIAL_REMOVE_FILE: '/rest/synthesisMaterial/removeFile',
     
     QUERY_FUNCTIONALIZING_ENTITY_SAVE_FILE: '/rest/functionalizingEntity/saveFile',
     QUERY_FUNCTIONALIZING_ENTITY_REMOVE_FILE: '/rest/functionalizingEntity/removeFile',

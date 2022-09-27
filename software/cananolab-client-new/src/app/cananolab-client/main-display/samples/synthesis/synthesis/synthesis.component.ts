@@ -21,8 +21,14 @@ export class SynthesisComponent implements OnInit{
     data;
     editUrl=false;
     sectionToShow='all';
-    constructor( private statusDisplayService:StatusDisplayService,private apiService:ApiService,private navigationService:NavigationService,private router: Router, private route: ActivatedRoute ){
-    }
+    
+    constructor(
+        private statusDisplayService:StatusDisplayService,
+        private apiService:ApiService,
+        private navigationService:NavigationService,
+        private router: Router,
+        private route: ActivatedRoute
+    ) { }
 
     ngOnInit(): void{
         this.editUrl=this.statusDisplayService.isEditUrl();
