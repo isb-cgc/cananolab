@@ -44,8 +44,9 @@ cp -v ${HOME}/jars/sdk/*.jar ${HOME}/software/cananolab-webapp/lib/sdk/
 cp -v ${HOME}/.env ${HOME}/software/cananolab-webapp/web/WEB-INF/
 
 SEMVER="${TIER}"
+echo " "
 if [ -n "$CIRCLE_TAG" ]; then
-  SEMVER=$CIRCLE_TAG
+  SEMVER="${CIRCLE_TAG}"
   echo "[STATUS] Tag for production release deployment: ${SEMVER}"
 else
   COUNT=`git rev-list --count HEAD`
@@ -54,6 +55,9 @@ else
 fi
 
 sed -i "s/\[\[RELEASE_AND_BUILD_INFO\]\]/caNanoLab Release ${SEMVER} Build cananolab-${SEMVER}-${APP_SHA}/g" ${HOME}/software/cananolab-webapp/web/main.js
+echo "[STATUS] Build is stamped as ${SEMVER}"
+echo " "
+
 
 cd ${HOME}/software/cananolab-webapp/
 ant dist
