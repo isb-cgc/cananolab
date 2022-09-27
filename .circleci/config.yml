@@ -169,12 +169,14 @@ workflows:
       - build_job:
           filters:
             branches:
-              only:
-                - prod
+              ignore: /.*/
+            tags:
+              only: /.*/
       - deploy_job:
           requires:
             - build_job
           filters:
             branches:
-              only:
-                - prod
+              ignore: /.*/
+            tags:
+              only: /.*/
