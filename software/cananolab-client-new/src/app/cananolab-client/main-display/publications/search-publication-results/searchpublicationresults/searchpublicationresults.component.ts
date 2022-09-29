@@ -84,7 +84,6 @@ export class SearchpublicationresultsComponent implements OnInit {
 
         console.log(this.properties);
         this.statusDisplayService.updateUserEmitter
-            .pipe(timeoutWith(Properties.HTTP_TIMEOUT, throwError(new Error("Didn't see user update!"))))
             .subscribe(
                 (data) => {
                     this.errors = {};
