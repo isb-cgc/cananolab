@@ -114,6 +114,21 @@ export class MaterialsComponent implements OnInit {
             document.getElementById('materialElementForm').scrollIntoView();
         }, 100);
     }
+    addFile() {
+        this.materialElementIndex = -1;
+        this.materialElement = {
+            type: '',
+            name: '',
+            pubChemDataSourceName: '',
+            valueUnit: '',
+            molecularFormulaType: '',
+            supplier: {},
+            inherentFunction: [],
+        };
+        setTimeout(function () {
+            document.getElementById('materialElementForm').scrollIntoView();
+        }, 100);
+    }
 
     // set pointer fields to old values when adding other //
     addOtherValue(field, currentValue) {

@@ -139,6 +139,7 @@ export const Consts = {
     QUERY_COMPOSITION_EXPORT_XLS: '/rest/composition/summaryExport',
 
     QUERY_SYNTHESIS_SUMMARY_VIEW: '/rest/synthesis/summaryView',
+
     QUERY_SYNTHESIS_MATERIAL_SETUP: '/rest/synthesisMaterial/setup',
     QUERY_SYNTHESIS_MATERIAL_EDIT: '/rest/synthesisMaterial/edit',
     QUERY_SYNTHESIS_MATERIAL_DELETE: '/rest/synthesisMaterial/delete',
@@ -147,6 +148,15 @@ export const Consts = {
     SAVE_MATERIAL_ELEMENT: '/rest/synthesisMaterial/saveMaterialElement',
     QUERY_SYNTHESIS_MATERIAL_SAVE_FILE: '/rest/synthesisMaterial/saveFile',
     QUERY_SYNTHESIS_MATERIAL_REMOVE_FILE: '/rest/synthesisMaterial/removeFile',
+
+    QUERY_SYNTHESIS_FUNCTIONALIZATION_SETUP: '/rest/synthesisFunctionalization/setup',
+    QUERY_SYNTHESIS_FUNCTIONALIZATION_EDIT: '/rest/synthesisFunctionalization/edit',
+    QUERY_SYNTHESIS_FUNCTIONALIZATION_DELETE: '/rest/synthesisFunctionalization/delete',
+    QUERY_SYNTHESIS_FUNCTIONALIZATION_UPDATE: '/rest/synthesisFunctionalization/submit',
+    QUERY_REMOVE_FUNCTIONALIZATION_ELEMENT: '/rest/synthesisFunctionalization/removeMaterialElement',
+    SAVE_FUNCTIONALIZATION_ELEMENT: '/rest/synthesisFunctionalization/saveMaterialElement',
+    QUERY_SYNTHESIS_FUNCTIONALIZATION_SAVE_FILE: '/rest/synthesisFunctionalization/saveFile',
+    QUERY_SYNTHESIS_FUNCTIONALIZATION_REMOVE_FILE: '/rest/synthesisFunctionalization/removeFile',
     
     QUERY_FUNCTIONALIZING_ENTITY_SAVE_FILE: '/rest/functionalizingEntity/saveFile',
     QUERY_FUNCTIONALIZING_ENTITY_REMOVE_FILE: '/rest/functionalizingEntity/removeFile',
