@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { ApiService } from '../../../../../common/services/api.service';
 import { StatusDisplayService } from '../../../../../status-display/status-display.service';
 import { Router } from '@angular/router';
-import { IdleService } from 'src/app/cananolab-client/common/components/idle/idle.service';
 import {Properties} from "../../../../../../../assets/properties";
 @Component( {
     selector: 'canano-login',
@@ -15,7 +14,7 @@ export class LoginComponent implements OnInit{
     password = '';
     homePage = true;
     loaded=false;
-    constructor( private idleService:IdleService,private router:Router,private apiService: ApiService, private statusDisplayService: StatusDisplayService ){
+    constructor( private router:Router,private apiService: ApiService, private statusDisplayService: StatusDisplayService ){
     }
 
     ngOnInit(): void{
@@ -29,14 +28,12 @@ export class LoginComponent implements OnInit{
     onLoginClick(){
         this.apiService.authenticateUser( this.user, this.password ).then((user) => {
             this.statusDisplayService.updateUser( user );
-            this.idleService.startTimer();
             this.router.navigateByUrl('home');
         },
         // ERROR
         ( err ) => {
             console.log(err);
             this.statusDisplayService.updateUser( "guest" );
-            this.idleService.stopTimer();
         });
     }
 }

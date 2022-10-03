@@ -1,0 +1,9 @@
+<h1 mat-dialog-title>You are idle!</h1>
+<div mat-dialog-content>
+    <p>You've been inactive for more than {{data.idle_duration}} minutes and are now marked idle. Your session will
+        expire in {{data.time_remaining}} minutes at {{data.expire_time}} if you remain inactive.</p>
+    <p>Click 'OK' below to re-activate your session.</p>
+</div>
+<div mat-dialog-actions>
+    <button mat-button (click)="onOkClick()" title="Resume session and close this dialog">OK</button>
+</div>
