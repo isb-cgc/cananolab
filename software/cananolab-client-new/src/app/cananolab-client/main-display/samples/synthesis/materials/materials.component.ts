@@ -87,6 +87,7 @@ export class MaterialsComponent implements OnInit {
             sampleId: this.sampleId,
             materialElements: [],
             files: [],
+            simpleProtocol: { displayName: '' }
         };
         this.dataTrailer=JSON.parse(JSON.stringify(this.data));
     }
@@ -100,6 +101,21 @@ export class MaterialsComponent implements OnInit {
     }
 
     addMaterialElement() {
+        this.materialElementIndex = -1;
+        this.materialElement = {
+            type: '',
+            chemicalName: '',
+            pubChemDataSource: '',
+            valueUnit: '',
+            molecularFormulaType: '',
+            supplier: { supplierName: '', lot: ''},
+            inherentFunctionList: [],
+        };
+        setTimeout(function () {
+            document.getElementById('materialElementForm').scrollIntoView();
+        }, 100);
+    }
+    addFile() {
         this.materialElementIndex = -1;
         this.materialElement = {
             type: '',
@@ -279,11 +295,11 @@ export class MaterialsComponent implements OnInit {
     saveMaterialElement() {
         this.convertDomainEntityFieldsToNullAndStrings();
         if (this.materialElementIndex == -1) {
-            this.data['simpleMaterialBean'] = this.materialElement;
+            this.data['materialElementBeingEdited'] = this.materialElement;
         } else {
             this.data['materialElements'][this.materialElementIndex] =
                 this.materialElement;
-            this.data['simpleMaterialBean'] = this.materialElement;
+            this.data['materialElementBeingEdited'] = this.materialElement;
         }
         this.apiService
             .doPost(Consts.SAVE_MATERIAL_ELEMENT, this.data)

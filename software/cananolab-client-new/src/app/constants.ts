@@ -145,7 +145,7 @@ export const Consts = {
     QUERY_SYNTHESIS_MATERIAL_DELETE: '/rest/synthesisMaterial/delete',
     QUERY_SYNTHESIS_MATERIAL_UPDATE: '/rest/synthesisMaterial/submit',
     QUERY_REMOVE_MATERIAL_ELEMENT: '/rest/synthesisMaterial/removeMaterialElement',
-    SAVE_MATERIAL_ELEMENT: '/rest/synthesisMaterial/saveMaterialElement',
+    SAVE_MATERIAL_ELEMENT: '/rest/synthesisMaterial/saveSynthesisMaterialElement',
     QUERY_SYNTHESIS_MATERIAL_SAVE_FILE: '/rest/synthesisMaterial/saveFile',
     QUERY_SYNTHESIS_MATERIAL_REMOVE_FILE: '/rest/synthesisMaterial/removeFile',
 
