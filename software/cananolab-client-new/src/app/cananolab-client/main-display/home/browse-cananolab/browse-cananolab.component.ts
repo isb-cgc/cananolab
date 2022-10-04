@@ -16,22 +16,25 @@ export class BrowseCananolabComponent implements OnInit{
     initData = {};
     searchResults;
 
-    constructor( private protocolsService:ProtocolsService,private searchPublicationService:SearchPublicationService,private sampleSearchResultsService: SampleSearchResultsService,private apiService: ApiService, private mainDisplayService: MainDisplayService,
-                 private router: Router, private utilService: UtilService ){
+    constructor( private protocolsService:ProtocolsService,
+                 private searchPublicationService:SearchPublicationService,
+                 private sampleSearchResultsService: SampleSearchResultsService,
+                 private apiService: ApiService,
+                 private mainDisplayService: MainDisplayService,
+                 private router: Router,
+                 private utilService: UtilService ){
     }
 
     ngOnInit(): void{
+        this.initData = {};
         this.init();
-
     }
 
     async init(){
-
         this.apiService.doGet( Consts.QUERY_INIT_SETUP, '' ).subscribe(
-            data => {
-                this.initData = data;
-            } );
-
+        data => {
+            this.initData = data;
+        } );
     }
 
     onSearchProtocolsClick(){
