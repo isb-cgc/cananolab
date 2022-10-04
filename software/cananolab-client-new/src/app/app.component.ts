@@ -57,6 +57,7 @@ export class AppComponent implements OnInit {
             this.closeIdleDialog();
             console.log("Saw user time out");
             this.vcref.clear();
+            this.idle.stop();
             import('./cananolab-client/main-display/logout/logout.component').then(
                 ({LogoutComponent}) => {
                 this.vcref.createComponent(
@@ -83,8 +84,10 @@ export class AppComponent implements OnInit {
 
         // Idler doesn't activate until someone logs in
         this.statusDisplayService.updateUserEmitter.subscribe((data) => {
-            if(Properties.LOGGED_IN && data !== "guest") {
+            if(Properties.LOGGED_IN && data !== "guest" && data !== "unknown") {
                 this.resetIdler();
+            } else {
+                this.idle.stop();
             }
         });
     }
