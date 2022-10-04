@@ -26,14 +26,20 @@ export class BrowseCananolabComponent implements OnInit{
     }
 
     ngOnInit(): void{
-        this.initData = {};
-        this.init();
+        this.init().then(() => {
+            // Sanity check for data
+            if(!this.initData['numOfPublicSources']) {
+                console.log("No public counts received!");
+            }
+        });
     }
 
     async init(){
         this.apiService.doGet( Consts.QUERY_INIT_SETUP, '' ).subscribe(
         data => {
-            this.initData = data;
+            if(data) {
+                this.initData = data;
+            }
         } );
     }
 
