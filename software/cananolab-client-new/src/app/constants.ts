@@ -1,8 +1,8 @@
 export const Consts = {
     waitTime: 11,
-    idleAfter: 60,
-    logoutAfterIdle: 60,
-    keepAliveInterval: 30,
+    idleAfter: 900,
+    logoutAfterIdle: 300,
+    keepAliveInterval: 600,
     loadingMessage: 'Loading Data',
     searchingMessage: 'Searching',
     serverlUrl: '/',
