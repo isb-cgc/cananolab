@@ -1,9 +1,10 @@
-import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit, ViewContainerRef, ComponentFactoryResolver  } from '@angular/core';
 import { Idle, DEFAULT_INTERRUPTSOURCES, LocalStorageExpiry, IdleExpiry } from '@ng-idle/core';
 import { Keepalive } from '@ng-idle/keepalive';
 import { Consts } from 'src/app/constants';
-import { MatDialog } from "@angular/material/dialog";
+import { NgbModal } from "@ng-bootstrap/ng-bootstrap"
 import { IdleDialog } from "./cananolab-client/common/components/idle-dialog/idle.dialog.component";
+
 
 @Component({
   selector: 'canano-root',
@@ -16,44 +17,59 @@ import { IdleDialog } from "./cananolab-client/common/components/idle-dialog/idl
 export class AppComponent implements OnInit {
     title = 'cananolab-client-new';
     idleState = "NOT_STARTED";
+    idleDialogOpen = false;
+    idleDialogRef = null;
     countdown?: number = null;
     lastPing?: Date = null;
-
+    cd = null;
 
     // add parameters for Idle and Keepalive (if using) so Angular will inject them from the module
-    constructor(private idle: Idle, keepalive: Keepalive, cd: ChangeDetectorRef, public dialog: MatDialog) {
-        idle.setIdleName(Consts.idleStorageKey);
-        // set idle parameters
-        idle.setIdle(Consts.idleAfter); // how long can they be inactive before considered idle, in seconds
-        idle.setTimeout(Consts.logoutAfterIdle); // how long can they be idle before considered timed out, in seconds
-        idle.setInterrupts(DEFAULT_INTERRUPTSOURCES); // provide sources that will "interrupt" aka provide events indicating the user is active
+    constructor(private idle: Idle, keepalive: Keepalive, cd: ChangeDetectorRef,
+                private vcref: ViewContainerRef, private cfr: ComponentFactoryResolver,
+                private modalService: NgbModal) {
 
-        // do something when the user becomes idle
+        this.cd = cd;
+        idle.setIdle(Consts.idleAfter);
+        idle.setTimeout(Consts.logoutAfterIdle);
+        idle.setInterrupts(DEFAULT_INTERRUPTSOURCES);
+
         idle.onIdleStart.subscribe(() => {
             this.idleState = "IDLE";
             console.log("Saw user go idle.");
             let now = new Date();
             now.setSeconds(now.getSeconds()+Consts.logoutAfterIdle);
-            this.openIdleDialog(now.toTimeString(), Math.floor(Consts.idleAfter/60),Math.floor(Consts.logoutAfterIdle/60));
+            if(!this.idleDialogOpen && !this.idleDialogRef) {
+                this.openIdleDialog(now.toTimeString(), Math.floor(Consts.idleAfter/60),Math.floor(Consts.logoutAfterIdle/60));
+            }
         });
-        // do something when the user is no longer idle
+
         idle.onIdleEnd.subscribe(() => {
             this.idleState = "NOT_IDLE";
             console.log("Saw user unidle.");
-            // close dialog
+            this.closeIdleDialog();
             this.countdown = null;
-            cd.detectChanges(); // how do i avoid this kludge?
         });
         // do something when the user has timed out
         idle.onTimeout.subscribe(() => {
             this.idleState = "TIMED_OUT";
             this.closeIdleDialog();
             console.log("Saw user time out");
+            this.vcref.clear();
+            import('./cananolab-client/main-display/logout/logout.component').then(
+                ({LogoutComponent}) => {
+                this.vcref.createComponent(
+                    this.cfr.resolveComponentFactory(LogoutComponent)
+                );
+            });
         });
 
-        // TODO: If we want to re-rimplement the countdown, do it here
         idle.onTimeoutWarning.subscribe(seconds => {
-            this.countdown = seconds;
+            let minutesLeft = Math.floor(seconds/60);
+            let secondsLeft = seconds-(minutesLeft*60);
+            let timeLeft = ((minutesLeft <= 0) ? "00:" :
+                (minutesLeft > 10 ? minutesLeft.toString() : "0"+minutesLeft.toString()))
+                + (secondsLeft < 10 ? "0"+secondsLeft.toString() : secondsLeft.toString());
+            this.idleDialogRef.componentInstance.updateTimeRemaining(timeLeft);
         });
 
         // Use the user groups setting for keepalive
@@ -69,6 +85,7 @@ export class AppComponent implements OnInit {
         this.idleState = "NOT_IDLE";
         this.countdown = null;
         this.lastPing = null;
+        this.closeIdleDialog();
     }
 
     ngOnInit(): void {
@@ -76,17 +93,14 @@ export class AppComponent implements OnInit {
     }
 
     openIdleDialog(expire_time, idle_duration, time_remaining): void {
-        const dialogRef = this.dialog.open(IdleDialog, {
-            width: '450px',
-            data: {expire_time: expire_time, idle_duration: idle_duration, time_remaining: time_remaining}
-        });
-
-        dialogRef.afterClosed().subscribe(result => {
-            // If something needs to happen when the dialog closes, do it here.
-        });
+        this.idleDialogRef = this.modalService.open(IdleDialog);
+        this.idleDialogRef.componentInstance.setData(expire_time, idle_duration, time_remaining);
+        this.idleDialogOpen = true;
     }
 
     closeIdleDialog(): void {
-        this.dialog.closeAll();
+        this.idleDialogRef && this.idleDialogRef.close();
+        this.idleDialogRef = null;
+        this.idleDialogOpen = false;
     }
 }

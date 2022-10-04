@@ -1,24 +1,31 @@
-import {Component, Inject} from '@angular/core';
-import {MatDialogRef, MAT_DIALOG_DATA} from '@angular/material/dialog';
+import { Component, Input, OnInit, ViewChild, TemplateRef } from '@angular/core';
+import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 
-export interface DialogData {
-    expire_time: string;
-    idle_duration: string;
-    time_remaining: string;
-}
 
 @Component({
     selector: 'idle-dialog',
     templateUrl: 'idle.dialog.html',
+    styleUrls: ['./idle.dialog.scss']
 })
-export class IdleDialog {
+export class IdleDialog implements OnInit {
+    @Input() expire_time: string;
+    @Input() idle_duration: string;
+    @Input() time_remaining: string;
 
-    constructor(
-        public dialogRef: MatDialogRef<IdleDialog>,
-        @Inject(MAT_DIALOG_DATA) public data: DialogData) {}
+    constructor(public activeModal: NgbActiveModal) { }
 
-    onOkClick(): void {
-        this.dialogRef.close();
+    setData(expire_time, idle_duration, time_remaining): void {
+        this.expire_time = expire_time;
+        this.idle_duration = idle_duration;
+        this.time_remaining = time_remaining;
     }
 
+    updateTimeRemaining(timeLeft): void {
+        this.time_remaining = timeLeft;
+    }
+
+    ngOnInit(): void {
+        //
+    }
 }
+

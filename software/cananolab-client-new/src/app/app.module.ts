@@ -17,7 +17,7 @@ import { TopMainMenuComponent } from './cananolab-client/top-main-menu/top-main-
 import { DisclaimerModule } from './cananolab-client/common/components/disclaimer/disclaimer.module';
 import { NgIdleKeepaliveModule } from '@ng-idle/keepalive';
 import { IdleDialog} from "./cananolab-client/common/components/idle-dialog/idle.dialog.component";
-import { MatDialogModule } from "@angular/material/dialog";
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 
 @NgModule({
@@ -42,7 +42,7 @@ import { MatDialogModule } from "@angular/material/dialog";
         DisclaimerModule,
         BrowserAnimationsModule,
         NgIdleKeepaliveModule.forRoot(),
-        MatDialogModule
+        NgbModule
     ],
   providers: [{provide: LocationStrategy, useClass: HashLocationStrategy}],
   bootstrap: [AppComponent]

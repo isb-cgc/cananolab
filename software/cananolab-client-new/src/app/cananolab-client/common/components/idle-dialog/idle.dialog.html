@@ -1,9 +1,15 @@
-<h1 mat-dialog-title>You are idle!</h1>
-<div mat-dialog-content>
-    <p>You've been inactive for more than {{data.idle_duration}} minutes and are now marked idle. Your session will
-        expire in {{data.time_remaining}} minutes at {{data.expire_time}} if you remain inactive.</p>
-    <p>Click 'OK' below to re-activate your session.</p>
+<div class="modal-header">
+    <h4 class="modal-title">Session Timeout Notification</h4>
+    <button type="button" class="close" aria-label="Close" (click)="activeModal.dismiss('Cross click')">
+        <span aria-hidden="true">&times;</span>
+    </button>
 </div>
-<div mat-dialog-actions>
-    <button mat-button (click)="onOkClick()" title="Resume session and close this dialog">OK</button>
+<div class="modal-body">
+    <p>For your protection you are about to be automatically logged out of caNanoLab. Your session will expire in
+        {{time_remaining}} at {{expire_time}} if you remain inactive.</p>
+    <p>If you would like to keep your session active, move your mouse or dismiss this dialog using the 'X' or 'OK' buttons.</p>
 </div>
+<div class="modal-footer">
+    <button type="button" class="btn btn-outline-dark" (click)="activeModal.close()" title="Resume session and close this dialog">OK</button>
+</div>
+
