@@ -19,7 +19,10 @@ export class LogoutComponent implements OnInit{
     }
 
     ngOnInit(): void {
-        (Properties.LOGGED_IN && !Properties.LOGGING_OUT) ? this.logOut() : console.log("User is already logged out.");
+        if(!Properties.LOGGING_OUT) {
+            Properties.LOGGING_OUT = true;
+            (Properties.LOGGED_IN) ? this.logOut() : console.log("User is already logged out.");
+        }
 
         this.topMainMenuService.showOnlyMenuItems([
             'HOME','HELP','GLOSSARY','PROTOCOLS','SAMPLES','PUBLICATIONS','LOGIN'
@@ -28,7 +31,6 @@ export class LogoutComponent implements OnInit{
     }
 
     logOut() {
-        Properties.LOGGING_OUT = true;
         this.apiService.doPost( Consts.QUERY_LOGOUT, '' ).subscribe(
             data => {
                 console.log("User logged out.");
