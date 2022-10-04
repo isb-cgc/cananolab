@@ -69,9 +69,8 @@ export class UserResultsComponent implements OnInit {
             });
 
         this.statusDisplayService.updateUserEmitter
-            .pipe(timeoutWith(Properties.HTTP_TIMEOUT, throwError(new Error("Didn't see user update!"))))
             .subscribe((data) => {
-                this.userName = Properties.current_user;
+                this.userName = data;
             });
             this.searchResultsCount = this.searchResults.length;
             this.pageCount = Math.ceil(this.searchResultsCount / this.pageLength);
