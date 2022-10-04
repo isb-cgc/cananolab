@@ -1,14 +1,12 @@
 export const Consts = {
-
-
     waitTime: 11,
     idleAfter: 60,
     logoutAfterIdle: 60,
     keepAliveInterval: 30,
-    loadingMessage:'Loading Data',
-    searchingMessage:'Searching',
-    serverlUrl:'/',
-    idleStorageKey: 'cananolab-idle-storage',
+    loadingMessage: 'Loading Data',
+    searchingMessage: 'Searching',
+    serverlUrl: '/',
+
     // For each rest service
     LOGIN_URL: 'login',
     QUERY_LOGOUT: 'logout',
@@ -178,7 +176,6 @@ export const Consts = {
     HELP_URL_GROUPS: 'https://wiki.nci.nih.gov/x/fIQfEQ',
     HELP_URL_CURATION: 'https://wiki.nci.nih.gov/x/uoGAEQ',
 }
-
 
 export enum SortState{
     NO_SORT,
