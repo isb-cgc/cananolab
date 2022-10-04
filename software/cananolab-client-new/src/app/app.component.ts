@@ -1,10 +1,11 @@
-import { ChangeDetectorRef, Component, OnInit, ViewContainerRef, ComponentFactoryResolver  } from '@angular/core';
+import { Component, OnInit, ViewContainerRef, ComponentFactoryResolver  } from '@angular/core';
 import { Idle, DEFAULT_INTERRUPTSOURCES, LocalStorageExpiry, IdleExpiry } from '@ng-idle/core';
 import { Keepalive } from '@ng-idle/keepalive';
 import { Consts } from 'src/app/constants';
 import { NgbModal } from "@ng-bootstrap/ng-bootstrap"
 import { IdleDialog } from "./cananolab-client/common/components/idle-dialog/idle.dialog.component";
-
+import { StatusDisplayService } from './cananolab-client/status-display/status-display.service'
+import {Properties} from "../assets/properties";
 
 @Component({
   selector: 'canano-root',
@@ -21,14 +22,13 @@ export class AppComponent implements OnInit {
     idleDialogRef = null;
     countdown?: number = null;
     lastPing?: Date = null;
-    cd = null;
 
     // add parameters for Idle and Keepalive (if using) so Angular will inject them from the module
-    constructor(private idle: Idle, keepalive: Keepalive, cd: ChangeDetectorRef,
-                private vcref: ViewContainerRef, private cfr: ComponentFactoryResolver,
-                private modalService: NgbModal) {
+    constructor(private idle: Idle, keepalive: Keepalive, private vcref: ViewContainerRef,
+                private cfr: ComponentFactoryResolver,
+                private modalService: NgbModal,
+                private statusDisplayService: StatusDisplayService) {
 
-        this.cd = cd;
         idle.setIdle(Consts.idleAfter);
         idle.setTimeout(Consts.logoutAfterIdle);
         idle.setInterrupts(DEFAULT_INTERRUPTSOURCES);
@@ -39,7 +39,9 @@ export class AppComponent implements OnInit {
             let now = new Date();
             now.setSeconds(now.getSeconds()+Consts.logoutAfterIdle);
             if(!this.idleDialogOpen && !this.idleDialogRef) {
-                this.openIdleDialog(now.toTimeString(), Math.floor(Consts.idleAfter/60),Math.floor(Consts.logoutAfterIdle/60));
+                this.openIdleDialog(now.toTimeString(),
+                    Math.floor(Consts.idleAfter/60),
+                    Math.floor(Consts.logoutAfterIdle/60));
             }
         });
 
@@ -78,6 +80,13 @@ export class AppComponent implements OnInit {
         keepalive.onPing.subscribe(() => {
             this.lastPing = new Date();
         });
+
+        // Idler doesn't activate until someone logs in
+        this.statusDisplayService.updateUserEmitter.subscribe((data) => {
+            if(Properties.LOGGED_IN && data !== "guest") {
+                this.resetIdler();
+            }
+        });
     }
 
     resetIdler() {
@@ -89,7 +98,7 @@ export class AppComponent implements OnInit {
     }
 
     ngOnInit(): void {
-        this.resetIdler();
+
     }
 
     openIdleDialog(expire_time, idle_duration, time_remaining): void {
