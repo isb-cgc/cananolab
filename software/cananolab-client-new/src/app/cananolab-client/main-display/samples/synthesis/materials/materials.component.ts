@@ -86,8 +86,8 @@ export class MaterialsComponent implements OnInit {
             type: '',
             sampleId: this.sampleId,
             materialElements: [],
-            files: [],
-            simpleProtocol: { displayName: '' }
+            fileElements: [],
+            simpleProtocol: { displayName: '', domainFileId: '', domainFileUri: '', domainId: '' }
         };
         this.dataTrailer=JSON.parse(JSON.stringify(this.data));
     }
@@ -115,21 +115,7 @@ export class MaterialsComponent implements OnInit {
             document.getElementById('materialElementForm').scrollIntoView();
         }, 100);
     }
-    addFile() {
-        this.materialElementIndex = -1;
-        this.materialElement = {
-            type: '',
-            name: '',
-            pubChemDataSourceName: '',
-            valueUnit: '',
-            molecularFormulaType: '',
-            supplier: {},
-            inherentFunction: [],
-        };
-        setTimeout(function () {
-            document.getElementById('materialElementForm').scrollIntoView();
-        }, 100);
-    }
+
     addFile() {
         this.materialElementIndex = -1;
         this.materialElement = {
@@ -213,12 +199,38 @@ export class MaterialsComponent implements OnInit {
         }
     }
 
+    saveMaterialElement() {
+        this.convertDomainEntityFieldsToNullAndStrings();
+        if (this.materialElementIndex == -1) {
+            this.data['materialElements'].push(this.materialElement);
+            this.data['materialElementBeingEdited'] = this.materialElement;
+        } else {
+            this.data['materialElements'][this.materialElementIndex] =
+                this.materialElement;
+            this.data['materialElementBeingEdited'] = this.materialElement;
+        }
+        this.apiService
+            .doPost(Consts.SAVE_MATERIAL_ELEMENT, this.data)
+            .subscribe(
+                (data) => {
+                    this.materialElementIndex = null;
+                    this.inherentFunctionIndex = null;
+                    this.data = data;
+                    this.setupDataTrailer(data);
+                    this.errors = {};
+                },
+                (error) => {
+                    this.errors = error;
+                }
+            );
+    }
+
     deleteMaterialElement() {
         if (
             confirm('Are you sure you wish to delete this material element?')
         ) {
             this.convertDomainEntityFieldsToNullAndStrings();
-            this.data.simpleMaterialBean = this.materialElement;
+            this.data.materialElementBeingEdited = this.materialElement;
             this.data.materialElements.splice(
                 this.data.materialElements[this.materialElementIndex],
                 1
@@ -281,7 +293,7 @@ export class MaterialsComponent implements OnInit {
         //     )
         //         submissionStatus = false;
         // }
-        if (this.data.type == '') submissionStatus = false;
+        if (this.data.simpleProtocol.displayNamel == '') submissionStatus = false;
         return submissionStatus;
     }
 
@@ -290,31 +302,6 @@ export class MaterialsComponent implements OnInit {
         this.materialElementIndex=null;
         this.inherentFunctionIndex=null;
         this.resetStatus=true;
-    }
-
-    saveMaterialElement() {
-        this.convertDomainEntityFieldsToNullAndStrings();
-        if (this.materialElementIndex == -1) {
-            this.data['materialElementBeingEdited'] = this.materialElement;
-        } else {
-            this.data['materialElements'][this.materialElementIndex] =
-                this.materialElement;
-            this.data['materialElementBeingEdited'] = this.materialElement;
-        }
-        this.apiService
-            .doPost(Consts.SAVE_MATERIAL_ELEMENT, this.data)
-            .subscribe(
-                (data) => {
-                    this.materialElementIndex = null;
-                    this.inherentFunctionIndex = null;
-                    this.data = data;
-                    this.setupDataTrailer(data);
-                    this.errors = {};
-                },
-                (error) => {
-                    this.errors = error;
-                }
-            );
     }
 
     saveInherentFunction() {

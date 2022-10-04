@@ -15,14 +15,14 @@
                 <tr>
                     <td class="label">
                         <label for="protocol">
-                            Protocol
+                            Protocol*
                         </label>
                     </td>
                     <td>
                         <div>
-                            <select name="type" id="materialType">
+                            <select name="type" id="materialType" [(ngModel)]="data.simpleProtocol">
                                 <option [ngValue]="''" [selected]="data.simpleProtocol.displayName===''">--Select--</option>
-                                <option *ngFor="let type of setupData['protocolLookup']" [selected]="type.displayName==data.simpleProtocol.displayName">
+                                <option *ngFor="let type of setupData['protocolLookup']" [ngValue]="type" [selected]="type.displayName==data.simpleProtocol.displayName">
                                     {{type.displayName}}
                                 </option>
                             </select>
@@ -118,7 +118,7 @@
                                     </td>
                                     <td>
                                         <select id="cType" name="cType" [(ngModel)]="materialElement.type">
-                                            <option [ngValue]="''" [selected]="materialElement.type==type">--Select--</option>
+                                            <option [ngValue]="''" [selected]="materialElement.type==''">--Select--</option>
                                             <option *ngFor="let type of setupData.materialTypes" [selected]="type==materialElement.type">
                                                 {{type}}
                                             </option>
