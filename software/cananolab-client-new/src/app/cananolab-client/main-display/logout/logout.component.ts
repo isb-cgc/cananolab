@@ -19,7 +19,7 @@ export class LogoutComponent implements OnInit{
     }
 
     ngOnInit(): void {
-        !(Properties.LOGGED_IN) ? this.logOut() : console.log("User is already logged out.");
+        (Properties.LOGGED_IN) ? this.logOut() : console.log("User is already logged out.");
 
         this.topMainMenuService.showOnlyMenuItems([
             'HOME','HELP','GLOSSARY','PROTOCOLS','SAMPLES','PUBLICATIONS','LOGIN'
