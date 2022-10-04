@@ -2,11 +2,13 @@ export const Consts = {
 
 
     waitTime: 11,
-    timeoutWarning: 300,
-    sessionTimeInSeconds: 900,
+    idleAfter: 60,
+    logoutAfterIdle: 60,
+    keepAliveInterval: 30,
     loadingMessage:'Loading Data',
     searchingMessage:'Searching',
     serverlUrl:'/',
+    idleStorageKey: 'cananolab-idle-storage',
     // For each rest service
     LOGIN_URL: 'login',
     QUERY_LOGOUT: 'logout',
