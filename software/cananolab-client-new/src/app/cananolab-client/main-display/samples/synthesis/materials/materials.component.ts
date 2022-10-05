@@ -278,7 +278,7 @@ export class MaterialsComponent implements OnInit {
         //     )
         //         submissionStatus = false;
         // }
-        if (this.data.simpleProtocol.displayNamel == '') submissionStatus = false;
+        if (this.data.simpleProtocol.displayName == '') submissionStatus = false;
         return submissionStatus;
     }
 

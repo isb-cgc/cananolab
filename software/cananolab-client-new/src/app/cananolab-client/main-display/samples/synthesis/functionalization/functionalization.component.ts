@@ -66,7 +66,6 @@ export class FunctionalizationComponent implements OnInit {
                     .subscribe(
                         (data) => {
                             this.data = data;
-                            // this.functionalization = data;
                             // this.dataTrailer = JSON.parse(JSON.stringify(data));
                             this.errors = {};
                         },
@@ -86,14 +85,15 @@ export class FunctionalizationComponent implements OnInit {
             type: '',
             sampleId: this.sampleId,
             functionalizationElements: [],
-            files: [],
+            fileElements: [],
+            simpleProtocol: { displayName: '', domainFileId: '', domainFileUri: '', domainId: '' }
         };
         this.dataTrailer=JSON.parse(JSON.stringify(this.data));
     }
 
     addInherentFunction() {
         this.inherentFunctionIndex=-1;
-        this.inherentFunction={type:"",description:"",modality:""};
+        this.inherentFunction={type:"",description:""};
         setTimeout(function () {
             document.getElementById('inherentFunctionForm').scrollIntoView();
         }, 100);
@@ -108,12 +108,13 @@ export class FunctionalizationComponent implements OnInit {
             valueUnit: '',
             molecularFormulaType: '',
             supplier: {},
-            inherentFunction: [],
+            inherentFunctionList: [],
         };
         setTimeout(function () {
             document.getElementById('functionalizationElementForm').scrollIntoView();
         }, 100);
     }
+
     addFile() {
         this.functionalizationElementIndex = -1;
         this.functionalizationElement = {
@@ -123,7 +124,7 @@ export class FunctionalizationComponent implements OnInit {
             valueUnit: '',
             molecularFormulaType: '',
             supplier: {},
-            inherentFunction: [],
+            inherentFunctionList: [],
         };
         setTimeout(function () {
             document.getElementById('functionalizationElementForm').scrollIntoView();
@@ -185,7 +186,7 @@ export class FunctionalizationComponent implements OnInit {
                     .subscribe(
                         (data) => {
                             this.router.navigate([
-                                'home/samples/composition',
+                                'home/samples/synthesis',
                                 this.sampleId,
                             ]);
                         },
@@ -226,7 +227,7 @@ export class FunctionalizationComponent implements OnInit {
 
     deleteInherentFunction() {
         if (confirm("Are you sure you wish to delete this inherent function?")) {
-            this.functionalizationElement.inherentFunction.splice(this.inherentFunctionIndex,1)
+            this.functionalizationElement.inherentFunctionList.splice(this.inherentFunctionIndex,1)
         };
         this.inherentFunctionIndex=null;
     }
@@ -265,7 +266,7 @@ export class FunctionalizationComponent implements OnInit {
         //     )
         //         submissionStatus = false;
         // }
-        if (this.data.type == '') submissionStatus = false;
+        if (this.data.simpleProtocol.displayName == '') submissionStatus = false;
         return submissionStatus;
     }
 
@@ -279,38 +280,25 @@ export class FunctionalizationComponent implements OnInit {
     saveFunctionalizationElement() {
         this.convertDomainEntityFieldsToNullAndStrings();
         if (this.functionalizationElementIndex == -1) {
+            this.data['functionalizationElements'].push(this.functionalizationElement);
             this.data['simpleFunctionalizationBean'] = this.functionalizationElement;
         } else {
             this.data['functionalizationElements'][this.functionalizationElementIndex] =
                 this.functionalizationElement;
             this.data['simpleFunctionalizationBean'] = this.functionalizationElement;
         }
-        this.apiService
-            .doPost(Consts.SAVE_FUNCTIONALIZATION_ELEMENT, this.data)
-            .subscribe(
-                (data) => {
-                    this.functionalizationElementIndex = null;
-                    this.inherentFunctionIndex = null;
-                    this.data = data;
-                    this.setupDataTrailer(data);
-                    this.errors = {};
-                },
-                (error) => {
-                    this.errors = error;
-                }
-            );
+        this.functionalizationElementIndex = null;
     }
 
     saveInherentFunction() {
         if (this.inherentFunctionIndex==-1) {
-            this.inherentFunction.id="-1000";
-            if (!this.functionalizationElement.inherentFunction) {
-                this.functionalizationElement['inherentFunction']=[];
+            if (!this.functionalizationElement.inherentFunctionList) {
+                this.functionalizationElement['inherentFunctionList']=[];
             }
-            this.functionalizationElement.inherentFunction.push(this.inherentFunction);
+            this.functionalizationElement.inherentFunctionList.push(this.inherentFunction);
         }
         else {
-            this.functionalizationElement.inherentFunction[this.inherentFunctionIndex]=this.inherentFunction;
+            this.functionalizationElement.inherentFunctionList[this.inherentFunctionIndex]=this.inherentFunction;
         }
         this.inherentFunctionIndex=null;
     }
