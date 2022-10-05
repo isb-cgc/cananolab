@@ -18,15 +18,15 @@
 
     <!-- -----  The top header with the "Keyword Search" box on the right ----- -->
     <canano-header></canano-header>
-    <div class="row no-gutters" *ngIf="!print">
-        <div class="col">
+    <div class="row no-gutters main-menu" *ngIf="!print">
+        <div class="col-2"></div>
+        <div class="col-10">
             <canano-top-main-menu></canano-top-main-menu>
         </div>
     </div>
     <div class="row no-gutters">
         <!-- -----  The left side Navigation menu & left static menu  ----- -->
-        <tr>
-            <td class="leftMenu" *ngIf="!print">
+            <div class="col-2 leftMenu" *ngIf="!print">
                 <div>
                     <canano-left-navigation-menu *ngIf="properties.SAMPLE_TOOLS">
                     </canano-left-navigation-menu>
@@ -36,11 +36,10 @@
 
                     <canano-status-display></canano-status-display>
                 </div>
-            </td>
-            <td class="mainContent">
+            </div>
+            <div class="col-10 mainContent">
                     <router-outlet></router-outlet>
-            </td>
-        </tr>
+            </div>
     </div>
     <div class="row no-gutters" *ngIf="!print">
         <div class="footer col">

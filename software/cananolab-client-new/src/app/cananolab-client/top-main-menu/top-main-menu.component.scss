@@ -3,13 +3,6 @@
 @import "../cananolab-client.component";
 @import '../cananolab-client.component.scss';
 
-.nav-menu-top-first-button{
-    @extend .rounded-0;
-    width: $leftMenuWidth;
-    margin-right: 1px;
-    margin-top: 1px;
-}
-
 .nav-menu-top-button{
     @extend .rounded-0;
 
@@ -40,8 +33,9 @@ a:hover{
 }
 
 .navbar-collapse {
-border-bottom:1px solid $leftMenuBorderColor;
+    border-bottom:1px solid $leftMenuBorderColor;
 }
+
 .nav-item {
     padding:0px;
 }
@@ -53,19 +47,8 @@ border-bottom:1px solid $leftMenuBorderColor;
     font-weight:bold;
     color:$navButtonColor;
     vertical-align:middle;
-    border:solid $leftMenuBorderColor;
-    border-width:0px 1px 0px 0px;
+    border: none;
     text-transform:uppercase;
-}
-
-.nav-menu-top-item.disabled{
-    width:160px;
-    color:#fff;
-    padding:0px 0px 0px 15px !important;
-    text-align:left;
-    border:solid $leftMenuBorderColor;
-    border-width:0px 1px 0px 0px;
-    background-image:none;
 }
 
 @media(max-width: 992px) {
