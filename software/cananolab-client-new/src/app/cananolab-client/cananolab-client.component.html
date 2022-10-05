@@ -25,18 +25,15 @@
     </div>
     <div class="row no-gutters">
         <!-- -----  The left side Navigation menu & left static menu  ----- -->
-            <div class="col-2 leftMenu" *ngIf="!print">
+            <div class="col-lg-1 col-md-2 col-sm-2 leftMenu" *ngIf="!print">
                 <div>
                     <canano-left-navigation-menu *ngIf="properties.SAMPLE_TOOLS">
                     </canano-left-navigation-menu>
 
-                    <canano-left-static-menu>
-                    </canano-left-static-menu>
-
                     <canano-status-display></canano-status-display>
                 </div>
             </div>
-            <div class="col-10 mainContent">
+            <div class="col-lg-11 col-md-10 col-sm-10 mainContent">
                     <router-outlet></router-outlet>
             </div>
     </div>
