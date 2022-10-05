@@ -411,16 +411,8 @@ export class EditcharacterizationComponent implements OnInit {
 
     formatDate(date) {
         let tempDate = new Date(date);
-        let month = (tempDate.getMonth()+1).toString();
-        if (parseInt(month)<10) {
-            month = '0'+month;
-        }
-        let day = tempDate.getDate().toString();
-        if (parseInt(day)<10) {
-            day = '0'+day;
-        }
-        let newDate = tempDate.getFullYear().toString()+'-'+month+'-'+day
-        return newDate
+        let isoStr = tempDate.toISOString();
+        return isoStr.slice(0, isoStr.indexOf('T'));
     };
 
     getInstrumentTypes(value) {
@@ -985,7 +977,6 @@ export class EditcharacterizationComponent implements OnInit {
         }
 
         this.data.techniqueInstruments.experiments[this.techniqueIndex]=this.techniqueInstrument;
-        this.data.characterizationDate = new Date(this.data.characterizationDate.toISOString());
         let url = this.apiService.doPost(Consts.QUERY_CHARACTERIZATION_SAVE_EXPERIMENT,this.data);
         url.subscribe(
                 data=> {

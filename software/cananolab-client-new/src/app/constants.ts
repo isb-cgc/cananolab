@@ -1,12 +1,12 @@
 export const Consts = {
-
-
     waitTime: 11,
-    timeoutWarning: 300,
-    sessionTimeInSeconds: 900,
-    loadingMessage:'Loading Data',
-    searchingMessage:'Searching',
-    serverlUrl:'/',
+    idleAfter: 900,
+    logoutAfterIdle: 300,
+    keepAliveInterval: 600,
+    loadingMessage: 'Loading Data',
+    searchingMessage: 'Searching',
+    serverlUrl: '/',
+
     // For each rest service
     LOGIN_URL: 'login',
     QUERY_LOGOUT: 'logout',
@@ -160,21 +160,22 @@ export const Consts = {
     HELP_URL_SAMPLE_CHARACTERIZATION: 'https://wiki.nci.nih.gov/display/caNanoLab/Managing+Sample+Characterizations#ManagingSampleCharacterizations-Characterization',
     HELP_URL_SAMPLE_COMPOSITION: 'https://wiki.nci.nih.gov/display/caNanoLab/Managing+Sample+Characterizations#ManagingSampleCharacterizations-Composition',
     HELP_URL_SAMPLE_COMPOSITION_NANOMATERIAL: 'https://wiki.nci.nih.gov/display/caNanoLab/Managing+Sample+Composition+Annotations#ManagingSampleCompositionAnnotations-NanomaterialAddingNanomaterialEntityCompositionAnnotations',
-    HELP_URL_SAMPLE_SEARCH: 'https://wiki.nci.nih.gov/display/caNanoLab/Managing+Sample+Characterizations#ManagingSampleCharacterizations-Characterization',
-    HELP_URL_SAMPLE_COPY: 'https://wiki.nci.nih.gov/display/caNanoLab/Managing+Samples+in+caNanoLab#ManagingSamplesincaNanoLab-CopySample',
+    HELP_URL_SAMPLE_SEARCH: 'https://wiki.nci.nih.gov/x/jIS8HQ',
+    HELP_URL_SAMPLE_COPY: 'https://wiki.nci.nih.gov/x/14S8HQ',
 
-    HELP_URL_SAMPLE_CREATE: 'https://wiki.nci.nih.gov/display/caNanoLab/Managing+Samples+in+caNanoLab#ManagingSamplesincaNanoLab-EditSample',
-    HELP_URL_SAMPLE_EDIT: 'https://wiki.nci.nih.gov/display/caNanoLab/Managing+Samples+in+caNanoLab#ManagingSamplesincaNanoLab-EditSample',
+    HELP_URL_SAMPLE_CREATE: 'https://wiki.nci.nih.gov/x/gIS8HQ',
+    HELP_URL_SAMPLE_EDIT: 'https://wiki.nci.nih.gov/x/goS8HQ',
     HELP_URL_SAMPLE_VIEW: 'https://wiki.nci.nih.gov/display/caNanoLab/Managing+Samples+in+caNanoLab#ManagingSamplesincaNanoLab-EditSample',
-    HELP_URL_SAMPLE_ADVANCED_SEARCH: 'https://wiki.nci.nih.gov/display/caNanoLab/Managing+Samples+in+caNanoLab#ManagingSamplesincaNanoLab-AdvSearchSample',
+    HELP_URL_SAMPLE_ADVANCED_SEARCH: 'https://wiki.nci.nih.gov/x/joS8HQ',
 
     HELP_URL_PROTOCOL_SEARCH: 'https://wiki.nci.nih.gov/display/caNanoLab/Managing+Protocols+in+caNanoLab#ManagingProtocolsincaNanoLab-SearchProtocols',
     HELP_URL_PROTOCOL_MANAGE: 'https://wiki.nci.nih.gov/display/caNanoLab/Managing+Protocols+in+caNanoLab',
     HELP_URL_PROTOCOL_CREATE: 'https://wiki.nci.nih.gov/display/caNanoLab/Managing+Protocols+in+caNanoLab#ManagingProtocolsincaNanoLab-SubmitProtocol',
     HELP_URL_PROTOCOL_EDIT: 'https://wiki.nci.nih.gov/display/caNanoLab/Managing+Protocols+in+caNanoLab#ManagingProtocolsincaNanoLab-EditProtocol',
     HELP_URL_PROTOCOL_SEARCH_RESULTS: 'https://wiki.nci.nih.gov/display/caNanoLab/Managing+Protocols+in+caNanoLab#ManagingProtocolsincaNanoLab-ProtocolResults',
+    HELP_URL_GROUPS: 'https://wiki.nci.nih.gov/x/fIQfEQ',
+    HELP_URL_CURATION: 'https://wiki.nci.nih.gov/x/uoGAEQ',
 }
-
 
 export enum SortState{
     NO_SORT,

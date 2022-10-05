@@ -18,6 +18,10 @@ apt-get install -y --force-yes unzip libffi-dev libssl-dev git ruby g++ curl dos
 apt-get install -y --force-yes libmysqlclient-dev build-essential
 apt-get install -y --force-yes mysql-client
 
+curl -fsSL https://deb.nodesource.com/setup_lts.x | bash -
+apt-get install -y nodejs
+
+
 echo "Libraries Installed"
 
 # Run dos2unix on the files in shell/ because of line terminator shenanigans with Windows

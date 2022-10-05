@@ -10,7 +10,7 @@ import { Properties } from '../../../../assets/properties';
   styleUrls: ['../../../btn-bravo-canano.scss','./groups.component.scss']
 })
 export class GroupsComponent implements OnInit {
-    helpUrl='javascript:openHelpWindow('+'https://wiki.nci.nih.gov/display/caNanoLab/Managing+Collaboration+Groups' + ')';
+    helpUrl=Consts.HELP_URL_GROUPS;
     toolHeadingNameManage='Manage Collaboration Groups';
     currentUrl;
     data;

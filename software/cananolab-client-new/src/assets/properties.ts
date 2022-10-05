@@ -25,6 +25,7 @@ export let Properties = {
     current_user: 'xx',
     logged_in: false,
     LOGGED_IN: false,
+    LOGGING_OUT: false,
 
     COUNTER: 0,
 
