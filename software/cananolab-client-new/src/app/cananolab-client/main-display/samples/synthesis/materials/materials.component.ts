@@ -66,8 +66,6 @@ export class MaterialsComponent implements OnInit {
                     .subscribe(
                         (data) => {
                             this.data = data;
-                            // this.material = data;
-                            // this.dataTrailer = JSON.parse(JSON.stringify(data));
                             this.errors = {};
                         },
                         (errors) => {
@@ -94,7 +92,7 @@ export class MaterialsComponent implements OnInit {
 
     addInherentFunction() {
         this.inherentFunctionIndex=-1;
-        this.inherentFunction={type:"",description:"",modality:""};
+        this.inherentFunction={type:"",description:""};
         setTimeout(function () {
             document.getElementById('inherentFunctionForm').scrollIntoView();
         }, 100);
@@ -125,7 +123,7 @@ export class MaterialsComponent implements OnInit {
             valueUnit: '',
             molecularFormulaType: '',
             supplier: {},
-            inherentFunction: [],
+            inherentFunctionList: [],
         };
         setTimeout(function () {
             document.getElementById('materialElementForm').scrollIntoView();
@@ -187,7 +185,7 @@ export class MaterialsComponent implements OnInit {
                     .subscribe(
                         (data) => {
                             this.router.navigate([
-                                'home/samples/composition',
+                                'home/samples/synthesis',
                                 this.sampleId,
                             ]);
                         },
@@ -209,20 +207,7 @@ export class MaterialsComponent implements OnInit {
                 this.materialElement;
             this.data['materialElementBeingEdited'] = this.materialElement;
         }
-        this.apiService
-            .doPost(Consts.SAVE_MATERIAL_ELEMENT, this.data)
-            .subscribe(
-                (data) => {
-                    this.materialElementIndex = null;
-                    this.inherentFunctionIndex = null;
-                    this.data = data;
-                    this.setupDataTrailer(data);
-                    this.errors = {};
-                },
-                (error) => {
-                    this.errors = error;
-                }
-            );
+        this.materialElementIndex = null;
     }
 
     deleteMaterialElement() {
@@ -254,7 +239,7 @@ export class MaterialsComponent implements OnInit {
 
     deleteInherentFunction() {
         if (confirm("Are you sure you wish to delete this inherent function?")) {
-            this.materialElement.inherentFunction.splice(this.inherentFunctionIndex,1)
+            this.materialElement.inherentFunctionList.splice(this.inherentFunctionIndex,1)
         };
         this.inherentFunctionIndex=null;
     }
@@ -306,14 +291,13 @@ export class MaterialsComponent implements OnInit {
 
     saveInherentFunction() {
         if (this.inherentFunctionIndex==-1) {
-            this.inherentFunction.id="-1000";
-            if (!this.materialElement.inherentFunction) {
-                this.materialElement['inherentFunction']=[];
+            if (!this.materialElement.inherentFunctionList) {
+                this.materialElement['inherentFunctionList']=[];
             }
-            this.materialElement.inherentFunction.push(this.inherentFunction);
+            this.materialElement.inherentFunctionList.push(this.inherentFunction);
         }
         else {
-            this.materialElement.inherentFunction[this.inherentFunctionIndex]=this.inherentFunction;
+            this.materialElement.inherentFunctionList[this.inherentFunctionIndex]=this.inherentFunction;
         }
         this.inherentFunctionIndex=null;
     }

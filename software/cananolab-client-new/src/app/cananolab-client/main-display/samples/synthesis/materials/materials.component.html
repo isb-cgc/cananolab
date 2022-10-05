@@ -92,12 +92,12 @@
                                     {{cElement.description}}
                                 </td>
                             </tr>
-                            <tr *ngIf="cElement.inherentFunction">
+                            <tr *ngIf="cElement.inherentFunctionList">
                                 <td class="label">
                                     Function
                                 </td>
                                 <td colspan="2">
-                                    <div *ngFor="let function of cElement.inherentFunction">
+                                    <div *ngFor="let function of cElement.inherentFunctionList">
                                         {{function.type}}:{{function.description}}
                                     </div>
                                 </td>
