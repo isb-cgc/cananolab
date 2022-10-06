@@ -103,11 +103,11 @@ export class FunctionalizationComponent implements OnInit {
         this.functionalizationElementIndex = -1;
         this.functionalizationElement = {
             type: '',
-            name: '',
-            pubChemDataSourceName: '',
+            chemicalName: '',
+            pubChemDataSource: '',
+            activationMethod:'',
             valueUnit: '',
             molecularFormulaType: '',
-            supplier: {},
             inherentFunctionList: [],
         };
         setTimeout(function () {
@@ -119,11 +119,11 @@ export class FunctionalizationComponent implements OnInit {
         this.functionalizationElementIndex = -1;
         this.functionalizationElement = {
             type: '',
-            name: '',
-            pubChemDataSourceName: '',
+            chemicalName: '',
+            pubChemDataSource: '',
+            activationMethod: '',
             valueUnit: '',
             molecularFormulaType: '',
-            supplier: {},
             inherentFunctionList: [],
         };
         setTimeout(function () {
@@ -203,25 +203,12 @@ export class FunctionalizationComponent implements OnInit {
             confirm('Are you sure you wish to delete this functionalization element?')
         ) {
             this.convertDomainEntityFieldsToNullAndStrings();
-            this.data.simpleFunctionalizationBean = this.functionalizationElement;
+            this.data.functionalizationElementBeingEdited = this.functionalizationElement;
             this.data.functionalizationElements.splice(
                 this.data.functionalizationElements[this.functionalizationElementIndex],
                 1
             );
-            this.apiService
-                .doPost(Consts.QUERY_REMOVE_FUNCTIONALIZATION_ELEMENT, this.data)
-                .subscribe(
-                    (data) => {
-                        this.functionalizationElementIndex = null;
-                        this.inherentFunctionIndex = null;
-                        this.data = data;
-                        this.setupDataTrailer(data);
-                        this.errors = {};
-                    },
-                    (error) => {
-                        this.errors = error;
-                    }
-                );
+            this.functionalizationElementIndex = null;
         }
     }
 
@@ -281,11 +268,11 @@ export class FunctionalizationComponent implements OnInit {
         this.convertDomainEntityFieldsToNullAndStrings();
         if (this.functionalizationElementIndex == -1) {
             this.data['functionalizationElements'].push(this.functionalizationElement);
-            this.data['simpleFunctionalizationBean'] = this.functionalizationElement;
+            this.data['functionalizationElementBeingEdited'] = this.functionalizationElement;
         } else {
             this.data['functionalizationElements'][this.functionalizationElementIndex] =
                 this.functionalizationElement;
-            this.data['simpleFunctionalizationBean'] = this.functionalizationElement;
+            this.data['functionalizationElementBeingEdited'] = this.functionalizationElement;
         }
         this.functionalizationElementIndex = null;
     }

@@ -118,7 +118,7 @@ export class MaterialsComponent implements OnInit {
         this.materialElementIndex = -1;
         this.materialElement = {
             type: '',
-            name: '',
+            chemicalName: '',
             pubChemDataSourceName: '',
             valueUnit: '',
             molecularFormulaType: '',
@@ -220,20 +220,7 @@ export class MaterialsComponent implements OnInit {
                 this.data.materialElements[this.materialElementIndex],
                 1
             );
-            this.apiService
-                .doPost(Consts.QUERY_REMOVE_MATERIAL_ELEMENT, this.data)
-                .subscribe(
-                    (data) => {
-                        this.materialElementIndex = null;
-                        this.inherentFunctionIndex = null;
-                        this.data = data;
-                        this.setupDataTrailer(data);
-                        this.errors = {};
-                    },
-                    (error) => {
-                        this.errors = error;
-                    }
-                );
+            this.materialElementIndex = null;
         }
     }
 
