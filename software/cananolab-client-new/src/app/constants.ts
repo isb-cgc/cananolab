@@ -156,6 +156,15 @@ export const Consts = {
     QUERY_SYNTHESIS_FUNCTIONALIZATION_SAVE_FILE: '/rest/synthesisFunctionalization/saveFile',
     QUERY_SYNTHESIS_FUNCTIONALIZATION_REMOVE_FILE: '/rest/synthesisFunctionalization/removeFile',
     
+    QUERY_SYNTHESIS_PURIFICATION_SETUP: '/rest/synthesisPurification/setup',
+    QUERY_SYNTHESIS_PURIFICATION_EDIT: '/rest/synthesisPurification//edit',
+    QUERY_SYNTHESIS_PURIFICATION_DELETE: '/rest/synthesisPurification//delete',
+    QUERY_SYNTHESIS_PURIFICATION_UPDATE: '/rest/synthesisPurification//submit',
+    SAVE_PURIFICATION_ELEMENT: '/rest/synthesisPurification//savePurification/Element',
+    QUERY_SYNTHESIS_PURIFICATION_SAVE_FILE: '/rest/synthesisPurification//saveFile',
+    QUERY_SYNTHESIS_PURIFICATION_REMOVE_FILE: '/rest/synthesisPurification//removeFile',
+    
+
     QUERY_FUNCTIONALIZING_ENTITY_SAVE_FILE: '/rest/functionalizingEntity/saveFile',
     QUERY_FUNCTIONALIZING_ENTITY_REMOVE_FILE: '/rest/functionalizingEntity/removeFile',
     QUERY_FUNCTIONALIZING_ENTITY_REMOVE_FUNCTION: '/rest/functionalizingEntity/removeFunction',
