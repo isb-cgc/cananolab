@@ -23,7 +23,7 @@ export class PurificationComponent implements OnInit {
     helpUrl = Consts.HELP_URL_SAMPLE_SYNTHESIS;
     instrumentIndex;
     instrument;
-    instrumentTypes = [];
+    instrumentTypes;
     resetStatus=false;
     otherValue;
     sampleId;
