@@ -11,9 +11,9 @@ import { ApiService } from '../../../../common/services/api.service';
   styleUrls: ['./purification.component.scss']
 })
 export class PurificationComponent implements OnInit {
-    purificationElementIndex;
+    techniqueIndex;
     consts=Consts;
-    purificationElement;
+    technique;
     currentDropdownValues = {};
     currentField;
     data;
@@ -21,8 +21,9 @@ export class PurificationComponent implements OnInit {
     dataId;
     errors = {};
     helpUrl = Consts.HELP_URL_SAMPLE_SYNTHESIS;
-    inherentFunctionIndex;
-    inherentFunction;
+    instrumentIndex;
+    instrument;
+    instrumentTypes = [];
     resetStatus=false;
     otherValue;
     sampleId;
@@ -80,53 +81,50 @@ export class PurificationComponent implements OnInit {
 
     setupSynthesisPurification() {
         this.data = {
-            description: '',
+            yield: '',
             type: '',
+            designMethodsDescription: '',
+            analysisConclusion: '',
             sampleId: this.sampleId,
-            purificationElements: [],
+            techniques: [],
             fileElements: [],
             simpleProtocol: { displayName: '', domainFileId: '', domainFileUri: '', domainId: '' }
         };
         this.dataTrailer=JSON.parse(JSON.stringify(this.data));
     }
 
-    addInherentFunction() {
-        this.inherentFunctionIndex=-1;
-        this.inherentFunction={type:"",description:""};
+    addInstrument() {
+        this.instrumentIndex=-1;
+        this.instrument={manufacturer:"", modelName: "", type:""};
+        this.getInstrumentTypes();
         setTimeout(function () {
-            document.getElementById('inherentFunctionForm').scrollIntoView();
+            document.getElementById('instrumentForm').scrollIntoView();
         }, 100);
     }
 
-    addPurificationElement() {
-        this.purificationElementIndex = -1;
-        this.purificationElement = {
+    addTechnique() {
+        this.techniqueIndex = -1;
+        this.technique = {
             type: '',
-            chemicalName: '',
-            pubChemDataSource: '',
-            valueUnit: '',
-            molecularFormulaType: '',
-            supplier: { supplierName: '', lot: ''},
-            inherentFunctionList: [],
+            abbreviation: '',
+            description: '',
+            instrumentList: [],
         };
         setTimeout(function () {
-            document.getElementById('purificationElementForm').scrollIntoView();
+            document.getElementById('techniqueForm').scrollIntoView();
         }, 100);
     }
 
     addFile() {
-        this.purificationElementIndex = -1;
-        this.purificationElement = {
+        this.techniqueIndex = -1;
+        this.technique = {
             type: '',
-            chemicalName: '',
-            pubChemDataSourceName: '',
-            valueUnit: '',
-            molecularFormulaType: '',
-            supplier: {},
-            inherentFunctionList: [],
+            abbreviation: '',
+            description: '',
+            instrumentList: [],
         };
         setTimeout(function () {
-            document.getElementById('purificationElementForm').scrollIntoView();
+            document.getElementById('techniqueForm').scrollIntoView();
         }, 100);
     }
 
@@ -135,13 +133,13 @@ export class PurificationComponent implements OnInit {
         this.currentDropdownValues[field] = currentValue;
     }
 
-    cancelPurificationElement() {
-        this.purificationElementIndex = null;
-        this.inherentFunctionIndex = null;
+    cancelTechnique() {
+        this.techniqueIndex = null;
+        this.instrumentIndex = null;
     }
 
-    cancelInherentFunction() {
-        this.inherentFunctionIndex=null;
+    cancelInstrument() {
+        this.instrumentIndex=null;
     }
 
     changeFile(newItem: Object) {
@@ -197,54 +195,76 @@ export class PurificationComponent implements OnInit {
         }
     }
 
-    savePurificationElement() {
+    saveTechnique() {
         this.convertDomainEntityFieldsToNullAndStrings();
-        if (this.purificationElementIndex == -1) {
-            this.data['purificationElements'].push(this.purificationElement);
-            this.data['purificationElementBeingEdited'] = this.purificationElement;
+        if (this.techniqueIndex == -1) {
+            this.data['techniques'].push(this.technique);
+            this.data['techniqueBeingEdited'] = this.technique;
         } else {
-            this.data['purificationElements'][this.purificationElementIndex] =
-                this.purificationElement;
-            this.data['purificationElementBeingEdited'] = this.purificationElement;
+            this.data['techniques'][this.techniqueIndex] =
+                this.technique;
+            this.data['techniqueBeingEdited'] = this.technique;
         }
-        this.purificationElementIndex = null;
+        this.techniqueIndex = null;
     }
 
-    deletePurificationElement() {
+    deleteTechnique() {
         if (
             confirm('Are you sure you wish to delete this purification element?')
         ) {
             this.convertDomainEntityFieldsToNullAndStrings();
-            this.data.purificationElementBeingEdited = this.purificationElement;
-            this.data.purificationElements.splice(
-                this.data.purificationElements[this.purificationElementIndex],
+            this.data.techniqueBeingEdited = this.technique;
+            this.data.techniques.splice(
+                this.data.techniques[this.techniqueIndex],
                 1
             );
-            this.purificationElementIndex = null;
+            this.techniqueIndex = null;
         }
     }
 
-    deleteInherentFunction() {
+    deleteInstrument() {
         if (confirm("Are you sure you wish to delete this inherent function?")) {
-            this.purificationElement.inherentFunctionList.splice(this.inherentFunctionIndex,1)
+            this.technique.instrumentList.splice(this.instrumentIndex,1)
         };
-        this.inherentFunctionIndex=null;
+        this.instrumentIndex=null;
     }
 
-    editPurificationElement(index, element) {
-        this.purificationElement = JSON.parse(JSON.stringify(element));
-        this.purificationElementIndex = index;
+    editTechnique(index, element) {
+        this.technique = JSON.parse(JSON.stringify(element));
+        this.techniqueIndex = index;
         setTimeout(function () {
-            document.getElementById('purificationElementForm').scrollIntoView();
+            document.getElementById('techniqueForm').scrollIntoView();
         }, 100);
     }
 
-    editInherentFunction(fIndex,iFunction) {
-        this.inherentFunctionIndex=fIndex;
-        this.inherentFunction=JSON.parse(JSON.stringify(iFunction));
+    editInstrument(fIndex,iFunction) {
+        this.instrumentIndex=fIndex;
+        this.instrument=JSON.parse(JSON.stringify(iFunction));
+        this.getInstrumentTypes();
         setTimeout(function () {
-            document.getElementById('inherentFunctionForm').scrollIntoView();
+            document.getElementById('instrumentForm').scrollIntoView();
         }, 100);
+    }
+
+    getInstrumentTypes() {
+        if(!this.technique || !this.technique.type) {
+          this.instrumentTypes = [];
+          return;
+        }
+
+        this.apiService
+            .doGet(
+                Consts.QUERY_SYNTHESIS_PURIFICATION_INSTRUMENT_TYPES,
+                'techniqueType=' + this.technique.type
+            )
+            .subscribe(
+                (data) => {
+                    this.instrumentTypes = data;
+                },
+                (errors) => {
+                    this.errors = errors;
+                }
+            );
     }
 
     getError(error:Object) {
@@ -271,22 +291,22 @@ export class PurificationComponent implements OnInit {
 
     reset() {
         this.data=JSON.parse(JSON.stringify(this.dataTrailer));
-        this.purificationElementIndex=null;
-        this.inherentFunctionIndex=null;
+        this.techniqueIndex=null;
+        this.instrumentIndex=null;
         this.resetStatus=true;
     }
 
-    saveInherentFunction() {
-        if (this.inherentFunctionIndex==-1) {
-            if (!this.purificationElement.inherentFunctionList) {
-                this.purificationElement['inherentFunctionList']=[];
+    saveInstrument() {
+        if (this.instrumentIndex==-1) {
+            if (!this.technique.instrumentList) {
+                this.technique['instrumentList']=[];
             }
-            this.purificationElement.inherentFunctionList.push(this.inherentFunction);
+            this.technique.instrumentList.push(this.instrument);
         }
         else {
-            this.purificationElement.inherentFunctionList[this.inherentFunctionIndex]=this.inherentFunction;
+            this.technique.instrumentList[this.instrumentIndex]=this.instrument;
         }
-        this.inherentFunctionIndex=null;
+        this.instrumentIndex=null;
     }
 
     // save other value //
@@ -345,7 +365,6 @@ export class PurificationComponent implements OnInit {
         //         wallType: null,
         //     };
     }
-
 
     submit() {
         this.convertDomainEntityFieldsToNullAndStrings();

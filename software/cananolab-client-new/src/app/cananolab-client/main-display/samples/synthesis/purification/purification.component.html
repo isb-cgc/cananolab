@@ -15,15 +15,15 @@
             <table class="dataMain">
                 <tr>
                     <td class="label">
-                        <label for="purificationType">
+                        <label for="type">
                             Purification Type*
                         </label>
                     </td>
                     <td>
                         <div>
-                            <select name="type" id="purificationType" [(ngModel)]="data.purificationType">
-                                <option [ngValue]="''" [selected]="data.purificationType===''">--Select--</option>
-                                <option *ngFor="let type of setupData['purificationTypes']" [ngValue]="type" [selected]="type==data.purificationType">
+                            <select name="type" id="type" [(ngModel)]="data.type">
+                                <option [ngValue]="''" [selected]="data.type===''">--Select--</option>
+                                <option *ngFor="let type of setupData['purificationTypes']" [ngValue]="type" [selected]="type==data.type">
                                     {{type}}
                                 </option>
                             </select>
@@ -40,7 +40,7 @@
                         <div>
                             <select name="protocol" id="protocol" [(ngModel)]="data.protocol">
                                 <option [ngValue]="''" [selected]="data.protocol===''">--Select--</option>
-                                <option *ngFor="let type of setupData['protocolLookup']" [ngValue]="type" [selected]="type.displayName==data.protocol.displayName">
+                                <option *ngFor="let type of setupData['protocolLookup']" [ngValue]="type" [selected]="type.displayName==data.simpleProtocol.displayName">
                                     {{type.displayName}}
                                 </option>
                             </select>
@@ -78,198 +78,194 @@
 				    </td>
 				</tr>
             </table>
+        </div>
+        <br>
 
-			<!-- Technique and instruments-->
-	        <div class="mainBorder">
-	            <table class="dataMain">
-	                <tr>
-	                    <td class="label">
-	                        Technique and Instruments
-	                    </td>
-	                    <td>
-	                        <button type="button" (click)="addTechniqueInstrument()" class="btn-canano btn-canano-primary btn-canano-xs mr-1">Add</button>
-	                    </td>
-	                </tr>
-	                <tr *ngIf="data.simpleExperimentBeans.length">
-	                    <td></td>
-	                    <td>
-	                        <table class="dataTable properties" *ngFor="let cElement of data.simpleExperimentBeans;let cIndex=index">
-	                            <tr>
-	                                <td class="label">
-	                                    Technique Type
-	                                </td>
-	                                <td>
-	                                    {{cElement.type}}
-	                                </td>
-	                                <td>
-	                                    <button (click)="editTechniqueInstrument(cIndex,cElement)" class="btn-canano btn-canano-primary btn-canano-xs mr-1">Edit</button>
-	                                </td>
-	                            </tr>
-	                        </table>
-	                    </td>
-	                </tr>
-	                <tr *ngIf="techniqueInstrumentIndex!=null" id="techniqueInstrumentForm">
-	                    <td></td>
-	                    <td>
-	                        <div class="mainBorder">
-	                            <table class="dataMain">
-	                                <tr>
-	                                    <td class="label">
-	                                        <label for="cType">
-	                                            Technique*
-	                                        </label>
-	                                    </td>
-	                                    <td>
-	                                        <select id="cType" name="cType" [(ngModel)]="techniqueInstrument.type">
-	                                            <option [ngValue]="''" [selected]="techniqueInstrument.type==''">--Select--</option>
-	                                            <option *ngFor="let type of setupData.techniqueInstrumentTypes" [selected]="type==techniqueInstrument.type">
-	                                                {{type}}
-	                                            </option>
-	                                        </select>
-	                                    </td>
-	                                </tr>
+		<!-- Technique and instruments-->
+        <div class="mainBorder">
+            <table class="dataMain">
+                <tr>
+                    <td class="label">
+                        Technique and Instruments
+                    </td>
+                    <td>
+                        <button type="button" (click)="addTechnique()" class="btn-canano btn-canano-primary btn-canano-xs mr-1">Add</button>
+                    </td>
+                </tr>
+                <tr *ngIf="data.techniques.length">
+                    <td></td>
+                    <td>
+                        <table class="dataTable properties" *ngFor="let cElement of data.techniques;let cIndex=index">
+                            <tr>
+                                <td class="label">
+                                    Technique Type
+                                </td>
+                                <td>
+                                    {{cElement.type}}
+                                </td>
+                                <td>
+                                    <button (click)="editTechnique(cIndex,cElement)" class="btn-canano btn-canano-primary btn-canano-xs mr-1">Edit</button>
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+                <tr *ngIf="techniqueIndex!=null" id="techniqueForm">
+                    <td></td>
+                    <td>
+                        <div class="mainBorder">
+                            <table class="dataMain">
+                                <tr>
+                                    <td class="label">
+                                        <label for="cType">
+                                            Technique*
+                                        </label>
+                                    </td>
+                                    <td>
+                                        <select id="cType" name="cType" [(ngModel)]="technique.type">
+                                            <option [ngValue]="''" [selected]="technique.type==''">--Select--</option>
+                                            <option *ngFor="let type of setupData.techniques" [selected]="type==technique.type">
+                                                {{type}}
+                                            </option>
+                                        </select>
+                                    </td>
+                                </tr>
 
-	                                <tr>
-	                                    <td class="label">
-	                                        <label for="cName">
-                                        		Abbreviation
-	                                        </label>
-	                                    </td>
-	                                    <td>
-	                                        <input type="text" name="cName" [(ngModel)]="techniqueInstrument.abbreviation">
-	                                    </td>
-	                                </tr>
-	                               
-	                                <tr>
-	                                    <td class="label">
-	                                        <label for="cDescription">
-	                                            Description
-	                                        </label>
-	                                    </td>
-	                                    <td colspan="3">
-	                                        <textarea name="cDescription" id="cDescription" rows="3" cols="65" [(ngModel)]="techniqueInstrument.description">
-	                                            {{techniqueInstrument.description}}
-	                                        </textarea>
-	                                    </td>
-	                                </tr>
+                                <tr>
+                                    <td class="label">
+                                        <label for="cName">
+                                    		Abbreviation
+                                        </label>
+                                    </td>
+                                    <td>
+                                        <input type="text" name="cName" [(ngModel)]="technique.abbreviation">
+                                    </td>
+                                </tr>
+                               
+                                <tr>
+                                    <td class="label">
+                                        <label for="cDescription">
+                                            Description
+                                        </label>
+                                    </td>
+                                    <td colspan="3">
+                                        <textarea name="cDescription" id="cDescription" rows="3" cols="65" [(ngModel)]="technique.description">
+                                            {{technique.description}}
+                                        </textarea>
+                                    </td>
+                                </tr>
 
-	                                <tr>
-	                                    <td class="label">
-	                                        <label for="instrument">
-	                                            Instruments
-	                                        </label>
-	                                    </td>
-	                                    <td colspan="3">
-	                                        <button type='button' (click)="addInstrument()" class="btn-canano btn-canano-primary btn-canano-xs mr-1">Add</button>
-	                                    </td>
-	                                </tr>
+                                <tr>
+                                    <td class="label">
+                                        <label for="instrument">
+                                            Instruments
+                                        </label>
+                                    </td>
+                                    <td colspan="3">
+                                        <button type='button' (click)="addInstrument()" class="btn-canano btn-canano-primary btn-canano-xs mr-1">Add</button>
+                                    </td>
+                                </tr>
 
-	                                <ng-container *ngIf="techniqueInstrument.instrumentList">
-	                                    <tr *ngIf="techniqueInstrument.instrumentList.length">
-	                                        <td></td>
-	                                        <td colspan="3">
-	                                            <table class="dataTable">
-	                                                <tr *ngFor="let iInstrument of techniqueInstrument.instrumentList;let fIndex=index">
-	                                                    <td>
-	                                                        <b>Type</b>
-	                                                    </td>
-	                                                    <td>
-	                                                        {{iInstrument.type}}
-	                                                    </td>
-	                                                    <td>
-	                                                        <button (click)="editInstrument(fIndex,iInstrument)" class="btn-canano btn-canano-primary btn-canano-xs mr-1">Edit</button>
-	                                                    </td>
-	                                                </tr>
-	                                            </table>
-	                                        </td>
-	                                    </tr>
-	                                </ng-container>
+                                <ng-container *ngIf="technique.instrumentList">
+                                    <tr *ngIf="technique.instrumentList.length">
+                                        <td></td>
+                                        <td colspan="3">
+                                            <table class="dataTable">
+                                                <tr *ngFor="let iInstrument of technique.instrumentList;let fIndex=index">
+                                                    <td>
+                                                        <b>Type</b>
+                                                    </td>
+                                                    <td>
+                                                        {{iInstrument.type}}
+                                                    </td>
+                                                    <td>
+                                                        <button (click)="editInstrument(fIndex,iInstrument)" class="btn-canano btn-canano-primary btn-canano-xs mr-1">Edit</button>
+                                                    </td>
+                                                </tr>
+                                            </table>
+                                        </td>
+                                    </tr>
+                                </ng-container>
 
-	                                <tr *ngIf="instrumentIndex!=null" id="instrumentForm">
-	                                    <td>
-	                                    </td>
-	                                    <td colspan="3">
-	                                        <div class="mainBorder">
-	                                            <table class="dataMain">
-	                                                <tr>
-	                                                    <td class="label">
-	                                                        <label for="manufacturer">
-	                                                            Manufacturer
-	                                                        </label>
-	                                                    </td>
-	                                                    <td>
-	                                                        <select name="manufacturer" id="manufacturer" [(ngModel)]="instrument.manufacturer">
-	                                                            <option [ngValue]="''" [selected]="instrument.manufacturer===''">--Select--</option>
-	                                                            <option *ngFor="let manu of setupData.manufacturerTypes" [selected]="manu==instrument.manufacturer">
-	                                                                {{manu}}
-	                                                            </option>
-	                                                        </select>
-	                                                    </td>
-	                                                </tr>
+                                <tr *ngIf="instrumentIndex!=null" id="instrumentForm">
+                                    <td>
+                                    </td>
+                                    <td colspan="3">
+                                        <div class="mainBorder">
+                                            <table class="dataMain">
+                                                <tr>
+                                                    <td class="label">
+                                                        <label for="manufacturer">
+                                                            Manufacturer
+                                                    </label>
+                                                    </td>
+                                                    <td>
+                                                        <select name="manufacturer" id="manufacturer" [(ngModel)]="instrument.manufacturer">
+                                                            <option [ngValue]="''" [selected]="instrument.manufacturer===''">--Select--</option>
+                                                            <option *ngFor="let manu of setupData.manufacturers" [selected]="manu==instrument.manufacturer">
+                                                                {{manu}}
+                                                            </option>
+                                                        </select>
+                                                    </td>
+                                                </tr>
 
-	                                                <tr>
-	                                                    <td class="label">
-	                                                        <label for="modelName">
-	                                                            ModelName
-	                                                        </label>
-	                                                    </td>
-	                                                    <td>
-	                                                        <select name="modelName" id="modelName" [(ngModel)]="instrument.modelName">
-	                                                            <option [ngValue]="''" [selected]="instrument.modelName===''">--Select--</option>
-	                                                            <option *ngFor="let name of setupData.modelNames" [selected]="name==instrument.modelName">
-	                                                                {{name}}
-	                                                            </option>
-	                                                        </select>
-	                                                    </td>
-	                                                </tr>
+                                                <tr>
+                                                    <td class="label">
+                                                        <label for="modelName">
+                                                            ModelName
+                                                        </label>
+                                                    </td>
+                                                    <td>
+				                                        <input type="text" name="cName" [(ngModel)]="instrument.modelName">
+				                                    </td>
+                                                </tr>
 
-	                                                <tr>
-	                                                    <td class="label">
-	                                                        <label for="type">
-	                                                            Type
-	                                                        </label>
-	                                                    </td>
-	                                                    <td>
-	                                                        <select name="type" id="type" [(ngModel)]="instrument.type">
-	                                                            <option [ngValue]="''" [selected]="instrument.type===''">--Select--</option>
-	                                                            <option *ngFor="let type of setupData.instrumentTypes" [selected]="manu==instrument.type">
-	                                                                {{type}}
-	                                                            </option>
-	                                                        </select>
-	                                                    </td>
-	                                                </tr>
-	                                                
-	                                                <tr>
-	                                                    <td>
-	                                                        <button *ngIf="inherentFunctionIndex!=-1" (click)="deleteInherentFunction()" class="btn-canano btn-canano-danger btn-canano-xs mr-1">Delete</button>
-	                                                    </td>
-	                                                    <td colspan="3" class="right">
-	                                                        <button [disabled]="inherentFunction.type==''" (click)="saveInherentFunction()" class="btn-canano btn-canano-primary btn-canano-xs mr-1">Save</button>
-	                                                        <button (click)="cancelInherentFunction()" class="btn-canano btn-canano-default btn-canano-xs mr-1">Cancel</button>
-	                                                    </td>
-	                                                </tr>
-	                                            </table>
-	                                        </div>
-	                                    </td>
-	                                </tr>
-	                                <tr>
-	                                    <td>
-	                                        <button (click)="deletePurificationElement()" *ngIf="purificationElementIndex!=-1" class="btn-canano btn-canano-danger btn-canano-xs mr-1">Delete</button>
-	                                    </td>
-	                                    <td></td>
-	                                    <td></td>
-	                                    <td class="right">
-	                                        <button [disabled]="!readyToSubmit()||purificationElement.type==''||purificationElement.chemicalName==''" (click)="savePurificationElement()" class="btn-canano btn-canano-primary btn-canano-xs mr-1">Save</button>
-	                                        <button (click)="cancelPurificationElement()" class="btn-canano btn-canano-default btn-canano-xs mr-1">Cancel</button>
-	                                    </td>
-	                                </tr>
-	                            </table>
-	                        </div>
-	                    </td>
-	                </tr>
-	            </table>
-	        </div><br />
-	    </div>
+                                                <tr>
+                                                    <td class="label">
+                                                        <label for="type">
+                                                            Type
+                                                        </label>
+                                                    </td>
+                                                    <td>
+                                                        <select name="type" id="type" [(ngModel)]="instrument.type">
+                                                            <option [ngValue]="''" [selected]="instrument.type===''">--Select--</option>
+                                                            <option *ngFor="let type of instrumentTypes" [selected]="manu==instrument.type">
+                                                                {{type}}
+                                                            </option>
+                                                        </select>
+                                                    </td>
+                                                </tr>
+                                                
+                                                <tr>
+                                                    <td>
+                                                        <button *ngIf="instrumentIndex!=-1" (click)="deleteinstrument()" class="btn-canano btn-canano-danger btn-canano-xs mr-1">Delete</button>
+                                                    </td>
+                                                    <td colspan="3" class="right">
+                                                        <button [disabled]="instrument.type==''" (click)="saveinstrument()" class="btn-canano btn-canano-primary btn-canano-xs mr-1">Save</button>
+                                                        <button (click)="cancelinstrument()" class="btn-canano btn-canano-default btn-canano-xs mr-1">Cancel</button>
+                                                    </td>
+                                                </tr>
+                                            </table>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <button (click)="deleteTechnique()" *ngIf="techniqueIndex!=-1" class="btn-canano btn-canano-danger btn-canano-xs mr-1">Delete</button>
+                                    </td>
+                                    <td></td>
+                                    <td></td>
+                                    <td class="right">
+                                        <button [disabled]="!readyToSubmit()||technique.type==''||technique.chemicalName==''" (click)="saveTechnique()" class="btn-canano btn-canano-primary btn-canano-xs mr-1">Save</button>
+                                        <button (click)="cancelTechnique()" class="btn-canano btn-canano-default btn-canano-xs mr-1">Cancel</button>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                    </td>
+                </tr>
+            </table>
+        </div><br />
 
 	    <br />
 
@@ -284,293 +280,8 @@
                         <button type="button" (click)="addPurificationElement()" class="btn-canano btn-canano-primary btn-canano-xs mr-1">Add</button>
                     </td>
                 </tr>
-                <tr *ngIf="data.purificationElements.length">
+                <tr *ngIf="data.techniques.length">
                     <td></td>
-                    <td>
-                        <table class="dataTable properties" *ngFor="let cElement of data.purificationElements;let cIndex=index">
-                            <tr>
-                                <th colspan="2">
-                                    {{cElement.type}} (name:{{cElement.chemicalName}})
-                                </th>
-                                <th></th>
-                            </tr>
-                            <tr>
-                                <td class="label">
-                                    PubChem ID
-                                </td>
-                                <td>
-                                    {{cElement.pubChemId}}
-                                </td>
-                                <td>
-                                    <button (click)="editPurificationElement(cIndex,cElement)" class="btn-canano btn-canano-primary btn-canano-xs mr-1">Edit</button>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="label">
-                                    Molecular Formula
-                                </td>
-                                <td colspan="2">
-                                    {{cElement.molecularFormula}} ({{cElement.molecularFormulaType}})
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="label">
-                                    Description
-                                </td>
-                                <td colspan="2">
-                                    {{cElement.description}}
-                                </td>
-                            </tr>
-                            <tr *ngIf="cElement.inherentFunctionList">
-                                <td class="label">
-                                    Function
-                                </td>
-                                <td colspan="2">
-                                    <div *ngFor="let function of cElement.inherentFunctionList">
-                                        {{function.type}}:{{function.description}}
-                                    </div>
-                                </td>
-                            </tr>
-                        </table>
-                    </td>
-                </tr>
-                <tr *ngIf="purificationElementIndex!=null" id="purificationElementForm">
-                    <td></td>
-                    <td>
-                        <div class="mainBorder">
-                            <table class="dataMain">
-                                <tr>
-                                    <td class="label">
-                                        <label for="cType">
-                                            Purification Type*
-                                        </label>
-                                    </td>
-                                    <td>
-                                        <select id="cType" name="cType" [(ngModel)]="purificationElement.type">
-                                            <option [ngValue]="''" [selected]="purificationElement.type==''">--Select--</option>
-                                            <option *ngFor="let type of setupData.purificationTypes" [selected]="type==purificationElement.type">
-                                                {{type}}
-                                            </option>
-                                        </select>
-                                    </td>
-                                    <td class="label">
-                                        <label for="cName*">
-                                            Chemical Name*
-                                        </label>
-                                    </td>
-                                    <td>
-                                        <input type="text" name="cName" [(ngModel)]="purificationElement.chemicalName">
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td class="label">
-                                        <label for="cPubchemDataSource">
-                                            PubChem Data Source
-                                        </label>
-                                    </td>
-                                    <td>
-                                        <select id="cPubchemDataSource" name="cPubchemDataSource" [(ngModel)]="purificationElement.pubChemDataSource">
-                                            <option [ngValue]="''" [selected]="purificationElement.pubChemDataSource===''">--Select--</option>
-                                            <option *ngFor="let type of setupData.pubChemDataSources" [selected]="type==purificationElement.pubChemDataSource">
-                                                {{type}}
-                                            </option>
-                                        </select>
-                                    </td>
-                                    <td class="label">
-                                        <label for="pubchemid">
-                                            PubChem ID
-                                        </label>
-                                    </td>
-                                    <td>
-                                        <input type="number" id="pubchemid" name="pubChemId" [(ngModel)]="purificationElement.pubChemId">
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td class="label">
-                                        <label for="amount">
-                                            Amount
-                                        </label>
-                                    </td>
-                                    <td>
-                                        <input type="number" name="amount" id="amount" [(ngModel)]="purificationElement.value">
-                                    </td>
-                                    <td class="label">
-                                        <label for="amountunit">
-                                            Amount Unit
-                                        </label>
-                                    </td>
-                                    <td>
-                                        <select name="valueUnit" id="valueUnit" [(ngModel)]="purificationElement.valueUnit">
-                                            <option [ngValue]="''" [selected]="purificationElement.valueUnit===''">--Select--</option>
-                                            <option *ngFor="let type of setupData.amountUnits" [selected]="purificationElement.valueUnit==type">
-                                                {{type}}
-                                            </option>
-                                        </select>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td class="label">
-                                        <label for="molecularFormulaType">
-                                            Molecular Formula Type
-                                        </label>
-                                    </td>
-                                    <td>
-                                        <select name="molecularFormulaType" id="molecularFormulaType" [(ngModel)]="purificationElement.molecularFormulaType">
-                                            <option [ngValue]="''" [selected]="purificationElement.molecularFormulaType===''">--Select--</option>
-                                            <option *ngFor="let type of setupData.formulaTypes" [selected]="purificationElement.valueUnit==type">
-                                                {{type}}
-                                            </option>
-                                        </select>
-                                    </td>
-                                    <td class="label">
-                                        <label for="molecularFormula">
-                                            Molecular Formula
-                                        </label>
-                                    </td>
-                                    <td>
-                                        <textarea name="molecularFormula" id="molecularFormula" rows="2" cols="40" [(ngModel)]="purificationElement.molecularFormula">
-                                            {{purificationElement.molecularFormula}}
-                                        </textarea>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td class="label">
-                                        <label for="supplierName">
-                                            Supplier Name
-                                        </label>
-                                    </td>
-                                    <td>
-                                        <select (ngModelChange)="addOtherValue('purificationElement.supplier.supplierName',purificationElement.supplier.supplierName)" id="supplierName" name="supplierName" [(ngModel)]="purificationElement.supplier.supplierName">
-                                            <option [ngValue]="''" [selected]="purificationElement.supplier.supplierName==supplierName">--Select--</option>
-                                            <option *ngFor="let supplierName of setupData.supplierNames" [selected]="supplierName==purificationElement.supplier.supplierName">
-                                                {{supplierName}}
-                                            </option>
-                                        </select>
-                                        <div *ngIf="purificationElement.supplier.supplierName ==='other'">
-                                            <canano-other-dropdown (saveOther)="saveOther($event)" [label]="'Type'" [value]="currentDropdownValues['purificationElement.supplier.supplierName']" [field]="'purificationElement.supplier.supplierName'" [array]="'setupData.supplierNames'">
-
-                                            </canano-other-dropdown>
-                                        </div>
-                                    </td>
-                                    <td class="label">
-                                        <label for="supplierLot">
-                                            Lot
-                                        </label>
-                                    </td>
-                                    <td>
-                                        <textarea name="supplierLot" id="supplierLot" rows="2" cols="40" [(ngModel)]="purificationElement.supplier.lot">
-                                            {{purificationElement.supplier.lot}}
-                                        </textarea>
-                                    </td>
-                                </tr>
-
-                                <tr>
-                                    <td class="label">
-                                        <label for="cDescription">
-                                            Purification Description
-                                        </label>
-                                    </td>
-                                    <td colspan="3">
-                                        <textarea name="cDescription" id="cDescription" rows="3" cols="65" [(ngModel)]="purificationElement.description">
-                                            {{purificationElement.description}}
-                                        </textarea>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td class="label">
-                                        <label for="inherentFunction">
-                                            Inherent Functions
-                                        </label>
-                                    </td>
-                                    <td colspan="3">
-                                        <button type='button' (click)="addInherentFunction()" class="btn-canano btn-canano-primary btn-canano-xs mr-1">Add</button>
-                                    </td>
-                                </tr>
-                                <ng-container *ngIf="purificationElement.inherentFunctionList">
-                                    <tr *ngIf="purificationElement.inherentFunctionList.length">
-                                        <td></td>
-                                        <td colspan="3">
-                                            <table class="dataTable">
-                                                <tr>
-                                                    <th>Function Type</th>
-                                                    <th>Description</th>
-                                                    <th></th>
-                                                </tr>
-                                                <tr *ngFor="let iFunction of purificationElement.inherentFunctionList;let fIndex=index">
-                                                    <td>
-                                                        {{iFunction.type}}
-                                                    </td>
-                                                    <td>
-                                                        {{iFunction.description}}
-                                                    </td>
-                                                    <td>
-                                                        <button (click)="editInherentFunction(fIndex,iFunction)" class="btn-canano btn-canano-primary btn-canano-xs mr-1">Edit</button>
-                                                    </td>
-                                                </tr>
-                                            </table>
-                                        </td>
-                                    </tr>
-                                </ng-container>
-                                <tr *ngIf="inherentFunctionIndex!=null" id="inherentFunctionForm">
-                                    <td>
-                                    </td>
-                                    <td colspan="3">
-                                        <div class="mainBorder">
-                                            <table class="dataMain">
-                                                <tr>
-                                                    <td class="label">
-                                                        <label for="functionType">
-                                                            Type
-                                                        </label>
-                                                    </td>
-                                                    <td>
-                                                        <select name="type" id="functionType" [(ngModel)]="inherentFunction.type">
-                                                            <option [ngValue]="''" [selected]="inherentFunction.type===''">--Select--</option>
-                                                            <option *ngFor="let type of setupData.inherentFunctionTypes" [selected]="type==inherentFunction.type">
-                                                                {{type}}
-                                                            </option>
-                                                        </select>
-                                                    </td>
-                                                </tr>
-                                                <tr>
-                                                    <td class="label">
-                                                        <label for="inherentFunction.description">
-                                                            Description
-                                                        </label>
-                                                    </td>
-                                                    <td colspan="3">
-                                                        <textarea name="inherentFunction.description" id="inherentFunction.description" [(ngModel)]="inherentFunction.description" rows="5" cols="50">
-                                                            {{inherentFunction.description}}
-                                                        </textarea>
-                                                    </td>
-                                                </tr>
-                                                <tr>
-                                                    <td>
-                                                        <button *ngIf="inherentFunctionIndex!=-1" (click)="deleteInherentFunction()" class="btn-canano btn-canano-danger btn-canano-xs mr-1">Delete</button>
-                                                    </td>
-                                                    <td colspan="3" class="right">
-                                                        <button [disabled]="inherentFunction.type==''" (click)="saveInherentFunction()" class="btn-canano btn-canano-primary btn-canano-xs mr-1">Save</button>
-                                                        <button (click)="cancelInherentFunction()" class="btn-canano btn-canano-default btn-canano-xs mr-1">Cancel</button>
-                                                    </td>
-                                                </tr>
-                                            </table>
-                                        </div>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        <button (click)="deletePurificationElement()" *ngIf="purificationElementIndex!=-1" class="btn-canano btn-canano-danger btn-canano-xs mr-1">Delete</button>
-                                    </td>
-                                    <td></td>
-                                    <td></td>
-                                    <td class="right">
-                                        <button [disabled]="!readyToSubmit()||purificationElement.type==''||purificationElement.chemicalName==''" (click)="savePurificationElement()" class="btn-canano btn-canano-primary btn-canano-xs mr-1">Save</button>
-                                        <button (click)="cancelPurificationElement()" class="btn-canano btn-canano-default btn-canano-xs mr-1">Cancel</button>
-                                    </td>
-                                </tr>
-                            </table>
-                        </div>
-                    </td>
                 </tr>
             </table>
         </div><br />
