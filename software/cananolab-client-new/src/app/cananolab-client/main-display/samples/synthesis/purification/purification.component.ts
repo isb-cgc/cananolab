@@ -62,7 +62,7 @@ export class PurificationComponent implements OnInit {
                 this.apiService
                     .doGet(
                         Consts.QUERY_SYNTHESIS_PURIFICATION_EDIT,
-                        'sampleId=' + this.sampleId + '&synPurificationId=' + this.dataId
+                        'sampleId=' + this.sampleId + '&dataId=' + this.dataId
                     )
                     .subscribe(
                         (data) => {
@@ -83,10 +83,10 @@ export class PurificationComponent implements OnInit {
         this.data = {
             yield: '',
             type: '',
-            designMethodsDescription: '',
-            analysisConclusion: '',
+            designMethodDescription: '',
+            analysis: '',
             sampleId: this.sampleId,
-            techniques: [],
+            simpleExperimentBeans: [],
             fileElements: [],
             simpleProtocol: { displayName: '', domainFileId: '', domainFileUri: '', domainId: '' }
         };
@@ -105,10 +105,10 @@ export class PurificationComponent implements OnInit {
     addTechnique() {
         this.techniqueIndex = -1;
         this.technique = {
-            type: '',
+            techniqueType: '',
             abbreviation: '',
             description: '',
-            instrumentList: [],
+            instruments: [],
         };
         setTimeout(function () {
             document.getElementById('techniqueForm').scrollIntoView();
@@ -118,10 +118,10 @@ export class PurificationComponent implements OnInit {
     addFile() {
         this.techniqueIndex = -1;
         this.technique = {
-            type: '',
+            techniqueType: '',
             abbreviation: '',
             description: '',
-            instrumentList: [],
+            instruments: [],
         };
         setTimeout(function () {
             document.getElementById('techniqueForm').scrollIntoView();
@@ -198,12 +198,12 @@ export class PurificationComponent implements OnInit {
     saveTechnique() {
         this.convertDomainEntityFieldsToNullAndStrings();
         if (this.techniqueIndex == -1) {
-            this.data['techniques'].push(this.technique);
-            this.data['techniqueBeingEdited'] = this.technique;
+            this.data['simpleExperimentBeans'].push(this.technique);
+            this.data['purityBeingEdited'] = this.technique;
         } else {
-            this.data['techniques'][this.techniqueIndex] =
+            this.data['simpleExperimentBeans'][this.techniqueIndex] =
                 this.technique;
-            this.data['techniqueBeingEdited'] = this.technique;
+            this.data['purityBeingEdited'] = this.technique;
         }
         this.techniqueIndex = null;
     }
@@ -213,9 +213,9 @@ export class PurificationComponent implements OnInit {
             confirm('Are you sure you wish to delete this purification element?')
         ) {
             this.convertDomainEntityFieldsToNullAndStrings();
-            this.data.techniqueBeingEdited = this.technique;
-            this.data.techniques.splice(
-                this.data.techniques[this.techniqueIndex],
+            this.data.purityBeingEdited = this.technique;
+            this.data.simpleExperimentBeans.splice(
+                this.data.simpleExperimentBeans[this.techniqueIndex],
                 1
             );
             this.techniqueIndex = null;
@@ -224,7 +224,7 @@ export class PurificationComponent implements OnInit {
 
     deleteInstrument() {
         if (confirm("Are you sure you wish to delete this inherent function?")) {
-            this.technique.instrumentList.splice(this.instrumentIndex,1)
+            this.technique.instruments.splice(this.instrumentIndex,1)
         };
         this.instrumentIndex=null;
     }
@@ -247,7 +247,7 @@ export class PurificationComponent implements OnInit {
     }
 
     getInstrumentTypes() {
-        if(!this.technique || !this.technique.type) {
+        if(!this.technique || !this.technique.techniqueType) {
           this.instrumentTypes = [];
           return;
         }
@@ -255,7 +255,7 @@ export class PurificationComponent implements OnInit {
         this.apiService
             .doGet(
                 Consts.QUERY_SYNTHESIS_PURIFICATION_INSTRUMENT_TYPES,
-                'techniqueType=' + this.technique.type
+                'techniqueType=' + this.technique.techniqueType
             )
             .subscribe(
                 (data) => {
@@ -286,6 +286,8 @@ export class PurificationComponent implements OnInit {
         //         submissionStatus = false;
         // }
         if (this.data.simpleProtocol.displayName == '') submissionStatus = false;
+        if (this.data.type == '') submissionStatus = false;
+        if (this.data.yield == '') submissionStatus = false;
         return submissionStatus;
     }
 
@@ -298,13 +300,13 @@ export class PurificationComponent implements OnInit {
 
     saveInstrument() {
         if (this.instrumentIndex==-1) {
-            if (!this.technique.instrumentList) {
-                this.technique['instrumentList']=[];
+            if (!this.technique.instruments) {
+                this.technique['instruments']=[];
             }
-            this.technique.instrumentList.push(this.instrument);
+            this.technique.instruments.push(this.instrument);
         }
         else {
-            this.technique.instrumentList[this.instrumentIndex]=this.instrument;
+            this.technique.instruments[this.instrumentIndex]=this.instrument;
         }
         this.instrumentIndex=null;
     }

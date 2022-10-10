@@ -1,5 +1,3 @@
-<p>functionalization works!</p>
-
 <canano-main-display-heading
     [helpUrl]="helpUrl"
     [toolHeadingName]="toolHeadingNameManage">
@@ -339,7 +337,7 @@
                                     <td></td>
                                     <td></td>
                                     <td class="right">
-                                        <button [disabled]="!readyToSubmit()||functionalizationElement.type==''||functionalizationElement.name==''" (click)="saveFunctionalizationElement()" class="btn-canano btn-canano-primary btn-canano-xs mr-1">Save</button>
+                                        <button [disabled]="functionalizationElement.type==''||functionalizationElement.name==''" (click)="saveFunctionalizationElement()" class="btn-canano btn-canano-primary btn-canano-xs mr-1">Save</button>
                                         <button (click)="cancelFunctionalizationElement()" class="btn-canano btn-canano-default btn-canano-xs mr-1">Cancel</button>
                                     </td>
                                 </tr>

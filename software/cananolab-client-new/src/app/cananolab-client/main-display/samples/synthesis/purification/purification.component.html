@@ -1,5 +1,3 @@
-<p>purification works!</p>
-
 <canano-main-display-heading
     [helpUrl]="helpUrl"
     [toolHeadingName]="toolHeadingNameManage">
@@ -38,8 +36,8 @@
                     </td>
                     <td>
                         <div>
-                            <select name="protocol" id="protocol" [(ngModel)]="data.protocol">
-                                <option [ngValue]="''" [selected]="data.protocol===''">--Select--</option>
+                            <select name="protocol" id="protocol" [(ngModel)]="data.simpleProtocol">
+                                <option [ngValue]="''" [selected]="data.simpleProtocol.displayName===''">--Select--</option>
                                 <option *ngFor="let type of setupData['protocolLookup']" [ngValue]="type" [selected]="type.displayName==data.simpleProtocol.displayName">
                                     {{type.displayName}}
                                 </option>
@@ -54,8 +52,7 @@
                         </label>
                     </td>
                     <td>
-                        <textarea name="yield" id="yield" rows="1" cols="60" [(ngModel)]="data.yield">
-                        </textarea>
+                    	<input type="number" name="yield" id="yield" [(ngModel)]="data.yield">
                     </td>
                 </tr>
             </table>
@@ -68,12 +65,12 @@
             <table class="dataMain">
 				<tr>
 				    <td class="label">
-				    	<label for="designMethodsDescription">
+				    	<label for="designMethodDescription">
 				        	Design and Methods Description
 				    	</label>
 				    </td>
 				    <td>
-				        <textarea name="designMethodsDescription" id="designMethodsDescription" rows="3" cols="60" [(ngModel)]="data.designMethodsDescription">
+				        <textarea name="designMethodDescription" id="designMethodDescription" rows="3" cols="60" [(ngModel)]="data.designMethodDescription">
                         </textarea>
 				    </td>
 				</tr>
@@ -92,16 +89,16 @@
                         <button type="button" (click)="addTechnique()" class="btn-canano btn-canano-primary btn-canano-xs mr-1">Add</button>
                     </td>
                 </tr>
-                <tr *ngIf="data.techniques.length">
+                <tr *ngIf="data.simpleExperimentBeans.length">
                     <td></td>
                     <td>
-                        <table class="dataTable properties" *ngFor="let cElement of data.techniques;let cIndex=index">
+                        <table class="dataTable properties" *ngFor="let cElement of data.simpleExperimentBeans;let cIndex=index">
                             <tr>
                                 <td class="label">
                                     Technique Type
                                 </td>
                                 <td>
-                                    {{cElement.type}}
+                                    {{cElement.techniqueType}}
                                 </td>
                                 <td>
                                     <button (click)="editTechnique(cIndex,cElement)" class="btn-canano btn-canano-primary btn-canano-xs mr-1">Edit</button>
@@ -122,9 +119,9 @@
                                         </label>
                                     </td>
                                     <td>
-                                        <select id="cType" name="cType" [(ngModel)]="technique.type">
-                                            <option [ngValue]="''" [selected]="technique.type==''">--Select--</option>
-                                            <option *ngFor="let type of setupData.techniques" [selected]="type==technique.type">
+                                        <select id="cType" name="cType" [(ngModel)]="technique.techniqueType">
+                                            <option [ngValue]="''" [selected]="technique.techniqueType==''">--Select--</option>
+                                            <option *ngFor="let type of setupData.techniques" [selected]="type==technique.techniqueType">
                                                 {{type}}
                                             </option>
                                         </select>
@@ -166,12 +163,12 @@
                                     </td>
                                 </tr>
 
-                                <ng-container *ngIf="technique.instrumentList">
-                                    <tr *ngIf="technique.instrumentList.length">
+                                <ng-container *ngIf="technique.instruments">
+                                    <tr *ngIf="technique.instruments.length">
                                         <td></td>
                                         <td colspan="3">
                                             <table class="dataTable">
-                                                <tr *ngFor="let iInstrument of technique.instrumentList;let fIndex=index">
+                                                <tr *ngFor="let iInstrument of technique.instruments;let fIndex=index">
                                                     <td>
                                                         <b>Type</b>
                                                     </td>
@@ -241,7 +238,7 @@
                                                         <button *ngIf="instrumentIndex!=-1" (click)="deleteinstrument()" class="btn-canano btn-canano-danger btn-canano-xs mr-1">Delete</button>
                                                     </td>
                                                     <td colspan="3" class="right">
-                                                        <button [disabled]="instrument.type==''" (click)="saveinstrument()" class="btn-canano btn-canano-primary btn-canano-xs mr-1">Save</button>
+                                                        <button [disabled]="instrument.type==''" (click)="saveInstrument()" class="btn-canano btn-canano-primary btn-canano-xs mr-1">Save</button>
                                                         <button (click)="cancelinstrument()" class="btn-canano btn-canano-default btn-canano-xs mr-1">Cancel</button>
                                                     </td>
                                                 </tr>
@@ -256,7 +253,7 @@
                                     <td></td>
                                     <td></td>
                                     <td class="right">
-                                        <button [disabled]="!readyToSubmit()||technique.type==''||technique.chemicalName==''" (click)="saveTechnique()" class="btn-canano btn-canano-primary btn-canano-xs mr-1">Save</button>
+                                        <button [disabled]="technique.techniqueType==''" (click)="saveTechnique()" class="btn-canano btn-canano-primary btn-canano-xs mr-1">Save</button>
                                         <button (click)="cancelTechnique()" class="btn-canano btn-canano-default btn-canano-xs mr-1">Cancel</button>
                                     </td>
                                 </tr>
@@ -280,7 +277,7 @@
                         <button type="button" (click)="addPurificationElement()" class="btn-canano btn-canano-primary btn-canano-xs mr-1">Add</button>
                     </td>
                 </tr>
-                <tr *ngIf="data.techniques.length">
+                <tr *ngIf="data.simpleExperimentBeans.length">
                     <td></td>
                 </tr>
             </table>
@@ -291,12 +288,12 @@
             <table class="dataMain">
 				<tr>
 				    <td class="label">
-				    	<label for="analysisConclusion">
+				    	<label for="analysis">
 				        	Analysis and Conclusion
 				    	</label>
 				    </td>
 				    <td>
-				        <textarea name="analysisConclusion" id="analysisConclusion" rows="3" cols="60" [(ngModel)]="data.analysisConclusion">
+				        <textarea name="analysis" id="analysis" rows="3" cols="60" [(ngModel)]="data.analysis">
                         </textarea>
 				    </td>
 				</tr>

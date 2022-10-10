@@ -1,5 +1,3 @@
-<p>materials works!</p>
-
 <canano-main-display-heading
     [helpUrl]="helpUrl"
     [toolHeadingName]="toolHeadingNameManage">
@@ -336,7 +334,7 @@
                                     <td></td>
                                     <td></td>
                                     <td class="right">
-                                        <button [disabled]="!readyToSubmit()||materialElement.type==''||materialElement.chemicalName==''" (click)="saveMaterialElement()" class="btn-canano btn-canano-primary btn-canano-xs mr-1">Save</button>
+                                        <button [disabled]="materialElement.type==''||materialElement.chemicalName==''" (click)="saveMaterialElement()" class="btn-canano btn-canano-primary btn-canano-xs mr-1">Save</button>
                                         <button (click)="cancelMaterialElement()" class="btn-canano btn-canano-default btn-canano-xs mr-1">Cancel</button>
                                     </td>
                                 </tr>
