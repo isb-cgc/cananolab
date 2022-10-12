@@ -158,9 +158,8 @@ export const Consts = {
     
     QUERY_SYNTHESIS_PURIFICATION_SETUP: '/rest/synthesisPurification/setup',
     QUERY_SYNTHESIS_PURIFICATION_EDIT: '/rest/synthesisPurification/setupEdit',
-    QUERY_SYNTHESIS_PURIFICATION_DELETE: '/rest/synthesisPurification/delete',
+    QUERY_SYNTHESIS_PURIFICATION_DELETE: '/rest/synthesisPurification/deletePurification',
     QUERY_SYNTHESIS_PURIFICATION_UPDATE: '/rest/synthesisPurification/submit',
-    SAVE_PURIFICATION_ELEMENT: '/rest/synthesisPurification/savePurification/Element',
     QUERY_SYNTHESIS_PURIFICATION_SAVE_FILE: '/rest/synthesisPurification/saveFile',
     QUERY_SYNTHESIS_PURIFICATION_REMOVE_FILE: '/rest/synthesisPurification/removeFile',
     QUERY_SYNTHESIS_PURIFICATION_INSTRUMENT_TYPES: '/rest/synthesisPurification/getInstrumentTypesByTechniqueType',

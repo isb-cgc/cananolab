@@ -30,6 +30,7 @@ export class PurificationComponent implements OnInit {
     columnOrder;
     columnHeaderIndex;
 
+    findingIndex;
     currentFinding
     importingCSV=false;
     rowData;
@@ -779,11 +780,11 @@ export class PurificationComponent implements OnInit {
         this.convertDomainEntityFieldsToNullAndStrings();
         if (this.techniqueIndex == -1) {
             this.data['simpleExperimentBeans'].push(this.technique);
-            this.data['purityBeingEdited'] = this.technique;
+            // this.data['purityBeingEdited'] = this.technique;
         } else {
             this.data['simpleExperimentBeans'][this.techniqueIndex] =
                 this.technique;
-            this.data['purityBeingEdited'] = this.technique;
+            // this.data['purityBeingEdited'] = this.technique;
         }
         this.techniqueIndex = null;
     }
@@ -793,7 +794,7 @@ export class PurificationComponent implements OnInit {
             confirm('Are you sure you wish to delete this purification element?')
         ) {
             this.convertDomainEntityFieldsToNullAndStrings();
-            this.data.purityBeingEdited = this.technique;
+            // this.data.purityBeingEdited = this.technique;
             this.data.simpleExperimentBeans.splice(
                 this.data.simpleExperimentBeans[this.techniqueIndex],
                 1
