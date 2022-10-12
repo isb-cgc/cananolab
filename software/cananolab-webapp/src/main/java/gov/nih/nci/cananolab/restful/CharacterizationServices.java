@@ -528,8 +528,6 @@ public class CharacterizationServices
 				return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(errors).build();
 			}
 
-
-
 			return Response.ok(summaryView.getMessages()).header("Access-Control-Allow-Credentials", "true")
 					.header("Access-Control-Allow-Origin", "*").header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS")
 					.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization").build();
@@ -542,6 +540,10 @@ public class CharacterizationServices
 		} catch (Exception e) {
 			logger.error(e.getMessage());
 			e.printStackTrace();
+			if (editBean.isSubmitNewChar()) {
+				// Save new char failed, need to set session theChar to null to prevent later use this wrong one
+				httpRequest.getSession().setAttribute("theChar", null);
+			}
 			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(CommonUtil.wrapErrorMessageInList(e.getMessage())).build();
 		}
 	}

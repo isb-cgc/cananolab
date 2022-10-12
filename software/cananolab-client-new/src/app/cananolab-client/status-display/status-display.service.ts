@@ -1,4 +1,5 @@
-import { EventEmitter, Injectable } from '@angular/core';
+import { Injectable } from '@angular/core';
+import { BehaviorSubject } from 'rxjs';
 import { Consts } from '../../constants';
 import { ApiService } from '../common/services/api.service';
 import { Properties } from '../../../assets/properties';
@@ -8,8 +9,8 @@ import { Router } from '@angular/router';
 } )
 export class StatusDisplayService{
 
-    updateUserEmitter = new EventEmitter();
-    updateGroupEmitter = new EventEmitter();
+    updateUserEmitter = new BehaviorSubject("guest");
+    updateGroupEmitter = new BehaviorSubject<Object>({ 'anonymousUser': ['Public'] });
     user = '';
     groups = [];
 
@@ -29,7 +30,7 @@ export class StatusDisplayService{
         console.log("Saw update user: "+user);
         this.user = user;
         this.updateUserGroups();
-        this.updateUserEmitter.emit( user );
+        this.updateUserEmitter.next( user );
     }
 
     updateUserGroups(){
@@ -39,7 +40,7 @@ export class StatusDisplayService{
                 data => {
                     console.log("User groups response:");
                     console.log(data);
-                    this.updateGroupEmitter.emit(data)
+                    this.updateGroupEmitter.next(data)
                 },
                 ( err ) => {
                     console.log( 'ERROR getUserGroups: ', err );

@@ -18,9 +18,7 @@ export class StatusDisplayComponent implements OnInit {
   constructor(private topMainMenuService:TopMainMenuService,private statusDisplayService: StatusDisplayService) { }
 
   ngOnInit(): void {
-    this.statusDisplayService.updateUserEmitter.pipe(
-        timeoutWith(Properties.HTTP_TIMEOUT, throwError(new Error("Didn't see user update!")))
-    ).subscribe(
+    this.statusDisplayService.updateUserEmitter.subscribe(
     data => {
         console.log("Saw username of:");
         console.log(data);
