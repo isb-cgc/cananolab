@@ -137,6 +137,39 @@ export const Consts = {
     QUERY_COMPOSITION_FILE_DELETE: '/rest/compositionFile/delete',
     QUERY_COMPOSITION_FILE_SAVE: '/rest/compositionFile/submit',
     QUERY_COMPOSITION_EXPORT_XLS: '/rest/composition/summaryExport',
+
+    QUERY_SYNTHESIS_SUMMARY_VIEW: '/rest/synthesis/summaryView',
+
+    QUERY_SYNTHESIS_MATERIAL_SETUP: '/rest/synthesisMaterial/setup',
+    QUERY_SYNTHESIS_MATERIAL_EDIT: '/rest/synthesisMaterial/edit',
+    QUERY_SYNTHESIS_MATERIAL_DELETE: '/rest/synthesisMaterial/delete',
+    QUERY_SYNTHESIS_MATERIAL_UPDATE: '/rest/synthesisMaterial/submit',
+    SAVE_MATERIAL_ELEMENT: '/rest/synthesisMaterial/saveSynthesisMaterialElement',
+    QUERY_SYNTHESIS_MATERIAL_SAVE_FILE: '/rest/synthesisMaterial/saveFile',
+    QUERY_SYNTHESIS_MATERIAL_REMOVE_FILE: '/rest/synthesisMaterial/removeFile',
+
+    QUERY_SYNTHESIS_FUNCTIONALIZATION_SETUP: '/rest/synthesisFunctionalization/setup',
+    QUERY_SYNTHESIS_FUNCTIONALIZATION_EDIT: '/rest/synthesisFunctionalization/edit',
+    QUERY_SYNTHESIS_FUNCTIONALIZATION_DELETE: '/rest/synthesisFunctionalization/delete',
+    QUERY_SYNTHESIS_FUNCTIONALIZATION_UPDATE: '/rest/synthesisFunctionalization/submit',
+    SAVE_FUNCTIONALIZATION_ELEMENT: '/rest/synthesisFunctionalization/saveMaterialElement',
+    QUERY_SYNTHESIS_FUNCTIONALIZATION_SAVE_FILE: '/rest/synthesisFunctionalization/saveFile',
+    QUERY_SYNTHESIS_FUNCTIONALIZATION_REMOVE_FILE: '/rest/synthesisFunctionalization/removeFile',
+    
+    QUERY_SYNTHESIS_PURIFICATION_SETUP: '/rest/synthesisPurification/setup',
+    QUERY_SYNTHESIS_PURIFICATION_EDIT: '/rest/synthesisPurification/setupEdit',
+    QUERY_SYNTHESIS_PURIFICATION_DELETE: '/rest/synthesisPurification/deletePurification',
+    QUERY_SYNTHESIS_PURIFICATION_UPDATE: '/rest/synthesisPurification/submit',
+    QUERY_SYNTHESIS_PURIFICATION_SAVE_FILE: '/rest/synthesisPurification/saveFile',
+    QUERY_SYNTHESIS_PURIFICATION_REMOVE_FILE: '/rest/synthesisPurification/removeFile',
+    QUERY_SYNTHESIS_PURIFICATION_INSTRUMENT_TYPES: '/rest/synthesisPurification/getInstrumentTypesByTechniqueType',
+    QUERY_SYNTHESIS_GET_COLUMN_NAME_OPTIONS_BY_TYPE: '/rest/synthesisPurification/getColumnNameOptionsByType',
+    QUERY_SYNTHESIS_GET_COLUMN_VALUE_UNIT_OPTIONS: '/rest/synthesisPurification/getColumnValueUnitOptions',
+    QUERY_SYNTHESIS_REMOVE_FINDING: '/rest/synthesisPurification/deletePurity',
+    QUERY_SYNTHESIS_SET_COLUMN_ORDER: '/rest/synthesisPurification/setColumnOrder',
+    QUERY_SYNTHESIS_SAVE_FINDING: '/rest/synthesisPurification/createPurity',
+    QUERY_SYNTHESIS_UPDATE_FINDING: '/rest/synthesisPurification/updatePurity',
+
     QUERY_FUNCTIONALIZING_ENTITY_SAVE_FILE: '/rest/functionalizingEntity/saveFile',
     QUERY_FUNCTIONALIZING_ENTITY_REMOVE_FILE: '/rest/functionalizingEntity/removeFile',
     QUERY_FUNCTIONALIZING_ENTITY_REMOVE_FUNCTION: '/rest/functionalizingEntity/removeFunction',
@@ -173,6 +206,8 @@ export const Consts = {
     HELP_URL_PROTOCOL_CREATE: 'https://wiki.nci.nih.gov/display/caNanoLab/Managing+Protocols+in+caNanoLab#ManagingProtocolsincaNanoLab-SubmitProtocol',
     HELP_URL_PROTOCOL_EDIT: 'https://wiki.nci.nih.gov/display/caNanoLab/Managing+Protocols+in+caNanoLab#ManagingProtocolsincaNanoLab-EditProtocol',
     HELP_URL_PROTOCOL_SEARCH_RESULTS: 'https://wiki.nci.nih.gov/display/caNanoLab/Managing+Protocols+in+caNanoLab#ManagingProtocolsincaNanoLab-ProtocolResults',
+    // Mi TODO: change this to real link
+    HELP_URL_SAMPLE_SYNTHESIS: 'https://wiki.nci.nih.gov/display/caNanoLab/Managing+Samples+in+caNanoLab#ManagingSamplesincaNanoLab-EditSample',
     HELP_URL_GROUPS: 'https://wiki.nci.nih.gov/x/fIQfEQ',
     HELP_URL_CURATION: 'https://wiki.nci.nih.gov/x/uoGAEQ',
 }
