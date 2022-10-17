@@ -30,16 +30,16 @@
                 </tr>
                 <tr>
                     <td class="label">
-                        <label for="protocol">
+                        <label for="protocolType">
                             Protocol*
                         </label>
                     </td>
                     <td>
                         <div>
-                            <select name="protocol" id="protocol" [(ngModel)]="data.simpleProtocol">
-                                <option [ngValue]="''" [selected]="data.simpleProtocol.displayName===''">--Select--</option>
-                                <option *ngFor="let type of setupData['protocolLookup']" [ngValue]="type" [selected]="type.displayName==data.simpleProtocol.displayName">
-                                    {{type.displayName}}
+                            <select name="protocolType" id="protocolType" [(ngModel)]="data.simpleProtocol.displayName">
+                                <option [ngValue]="''">--Select--</option>
+                                <option *ngFor="let protocol of setupData['protocolLookup']" [ngValue]="protocol.displayName">
+                                    {{protocol.displayName}}
                                 </option>
                             </select>
                        </div>
@@ -555,7 +555,7 @@
                         Files
                     </td>
                     <td>
-                        <canano-file [reset]="resetStatus" (getError)="getError($event)"  (changeFile)="changeFile($event)" [nanopurification]="false" [saveUrl]="consts.QUERY_PURIFICATION_SAVE_FILE" [deleteUrl]="consts.QUERY_PURIFICATION_REMOVE_FILE" [sampleId]="sampleId" [data]="data" [fileVariable]="'fileBeingEdited'" [fileArray]="'fileElements'">
+                        <canano-file [reset]="resetStatus" (getError)="getError($event)"  (changeFile)="changeFile($event)" [nanopurification]="false" [saveUrl]="consts.QUERY_SYNTHESIS_PURIFICATION_SAVE_FILE" [deleteUrl]="consts.QUERY_SYNTHESIS_PURIFICATION_REMOVE_FILE" [sampleId]="sampleId" [data]="data" [fileVariable]="'fileBeingEdited'" [fileArray]="'fileElements'">
                         </canano-file>
                     </td>
                 </tr>

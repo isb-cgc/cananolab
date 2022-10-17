@@ -149,36 +149,10 @@ export class MaterialsComponent implements OnInit {
             this.data = newItem['data'];
             this.dataTrailer = JSON.parse(JSON.stringify(this.data));
         }
-    }    
-
-    convertDomainEntityFieldsToNullAndStrings() {
-        let fieldsToIgnore = ['id', 'createdDate', 'sampleMaterial'];
-        if (this.data['domainEntity']) {
-            let domainEntityKeys = Object.keys(this.data['domainEntity']);
-            domainEntityKeys.forEach((item) => {
-                if (this.data.domainEntity[item] != null) {
-                    if (
-                        this.data.domainEntity[item] != '' &&
-                        fieldsToIgnore.indexOf(item) == -1
-                    ) {
-                        this.data.domainEntity[item] =
-                            this.data.domainEntity[item].toString();
-                    }
-                    if (this.data.domainEntity[item] == '') {
-                        this.data.domainEntity[item] = null;
-                    }
-                }
-            });
-        }
-    }
-
-    convertToString(event) {
-        this.data.domainEntity[event.target.id] = event.target.value.toString();
     }
 
     delete() {
         if (confirm('Are you sure you wish to delete this material?')) {
-            this.convertDomainEntityFieldsToNullAndStrings();
             setTimeout(() => {
                 this.apiService
                     .doPost(Consts.QUERY_SYNTHESIS_MATERIAL_DELETE, this.data)
@@ -198,7 +172,6 @@ export class MaterialsComponent implements OnInit {
     }
 
     saveMaterialElement() {
-        this.convertDomainEntityFieldsToNullAndStrings();
         if (this.materialElementIndex == -1) {
             this.data['materialElements'].push(this.materialElement);
             this.data['materialElementBeingEdited'] = this.materialElement;
@@ -214,7 +187,6 @@ export class MaterialsComponent implements OnInit {
         if (
             confirm('Are you sure you wish to delete this material element?')
         ) {
-            this.convertDomainEntityFieldsToNullAndStrings();
             this.data.materialElementBeingEdited = this.materialElement;
             this.data.materialElements.splice(
                 this.data.materialElements[this.materialElementIndex],
@@ -303,52 +275,15 @@ export class MaterialsComponent implements OnInit {
         this.dataTrailer = JSON.parse(JSON.stringify(data));
     }
 
-    setupDomainEntity(event) {
-        // delete this.data['domainEntity'];
-        // if (event == 'biopolymer')
-        //     this.data['domainEntity'] = {
-        //         type: null,
-        //         name: null,
-        //         sequence: null,
-        //     };
-        // if (event == 'dendrimer')
-        //     this.data['domainEntity'] = { branch: null, generation: null };
-        // if (event == 'fullerene')
-        //     this.data['domainEntity'] = {
-        //         averageDiameter: null,
-        //         averageDiameterUnit: null,
-        //         numberOfCarbon: null,
-        //     };
-        // if (event == 'liposome')
-        //     this.data['domainEntity'] = {
-        //         isPolymerized: null,
-        //         polymerName: null,
-        //     };
-        // if (event == 'polymer')
-        //     this.data['domainEntity'] = {
-        //         isCrossLinked: null,
-        //         initiator: null,
-        //         crossLinkDegree: null,
-        //     };
-        // if (event == 'emulsion')
-        //     this.data['domainEntity'] = {
-        //         isPolymerized: null,
-        //         polymerName: null,
-        //     };
-        // if (event == 'carbon nanotube')
-        //     this.data['domainEntity'] = {
-        //         averageLength: null,
-        //         diameter: null,
-        //         averageLengthUnit: null,
-        //         diameterUnit: null,
-        //         chirality: null,
-        //         wallType: null,
-        //     };
+    prepareSubmitData() {
+        if (this.data.simpleProtocol.displayName != '') {
+            this.data.simpleProtocol = this.setupData.protocolLookup.find(
+                e => e.displayName == this.data.simpleProtocol.displayName);
+        }
     }
 
-
     submit() {
-        this.convertDomainEntityFieldsToNullAndStrings();
+        this.prepareSubmitData();
         this.apiService
             .doPost(Consts.QUERY_SYNTHESIS_MATERIAL_UPDATE, this.data)
             .subscribe(
