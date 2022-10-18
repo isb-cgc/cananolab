@@ -13,27 +13,32 @@ export class LoginComponent implements OnInit{
     user = '';
     password = '';
     homePage = true;
-    loaded=false;
+    loaded = false;
     constructor( private router:Router,private apiService: ApiService, private statusDisplayService: StatusDisplayService ){
     }
 
-    ngOnInit(): void{
-        if (this.router.url.includes('login'))
-        {
-            this.homePage=false;
-            this.loaded=true;
+    ngOnInit(): void {
+        if (this.router.url.includes('login')) {
+            this.homePage = false;
+            this.loaded = true;
         }
     }
 
     onLoginClick(){
-        this.apiService.authenticateUser( this.user, this.password ).then((user) => {
-            this.statusDisplayService.updateUser( user );
+        if(!Properties.LOGGED_IN) {
+            this.apiService.authenticateUser( this.user, this.password ).then((user) => {
+                    this.statusDisplayService.updateUser( user );
+                    this.router.navigateByUrl('home');
+                },
+                // ERROR
+                ( err ) => {
+                    console.log(err);
+                    this.statusDisplayService.updateUser( "guest" );
+                }
+            );
+        } else {
+            console.log("User is already logged in!");
             this.router.navigateByUrl('home');
-        },
-        // ERROR
-        ( err ) => {
-            console.log(err);
-            this.statusDisplayService.updateUser( "guest" );
-        });
+        }
     }
 }

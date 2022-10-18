@@ -1,0 +1,596 @@
+<canano-main-display-heading
+    [helpUrl]="helpUrl"
+    [toolHeadingName]="toolHeadingNameManage">
+</canano-main-display-heading>
+
+<div class="mainSection" *ngIf="data&&setupData">
+    <div class="error" *ngIf="errors['error']">
+        {{errors['error']}}
+    </div>
+    <form name="purificationForm">
+    	<!-- Purification type, protocol, yield -->
+        <div class="mainBorder">
+            <table class="dataMain">
+                <tr>
+                    <td class="label">
+                        <label for="purificationType">
+                            Purification Type*
+                        </label>
+                    </td>
+                    <td>
+                        <div>
+                            <select name="purificationType" id="purificationType" [(ngModel)]="data.type">
+                                <option [ngValue]="''" [selected]="data.type===''">--Select--</option>
+                                <option *ngFor="let type of setupData['purificationTypes']" [ngValue]="type" [selected]="type==data.type">
+                                    {{type}}
+                                </option>
+                            </select>
+                       </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="label">
+                        <label for="protocolType">
+                            Protocol*
+                        </label>
+                    </td>
+                    <td>
+                        <div>
+                            <select name="protocolType" id="protocolType" [(ngModel)]="data.simpleProtocol.displayName">
+                                <option [ngValue]="''">--Select--</option>
+                                <option *ngFor="let protocol of setupData['protocolLookup']" [ngValue]="protocol.displayName">
+                                    {{protocol.displayName}}
+                                </option>
+                            </select>
+                       </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="label">
+                        <label for="yield">
+                            Yield*
+                        </label>
+                    </td>
+                    <td>
+                    	<input type="number" name="yield" id="yield" [(ngModel)]="data.yield">
+                    </td>
+                </tr>
+            </table>
+        </div>
+
+        <br>
+
+    	<!-- Design and Methods Description -->
+        <div class="mainBorder">
+            <table class="dataMain">
+				<tr>
+				    <td class="label">
+				    	<label for="designMethodDescription">
+				        	Design and Methods Description
+				    	</label>
+				    </td>
+				    <td>
+				        <textarea name="designMethodDescription" id="designMethodDescription" rows="3" cols="60" [(ngModel)]="data.designMethodDescription">
+                        </textarea>
+				    </td>
+				</tr>
+            </table>
+        </div>
+        <br>
+
+		<!-- Technique and instruments-->
+        <div class="mainBorder">
+            <table class="dataMain">
+                <tr>
+                    <td class="label">
+                        Technique and Instruments
+                    </td>
+                    <td>
+                        <button type="button" (click)="addTechnique()" class="btn-canano btn-canano-primary btn-canano-xs mr-1">Add</button>
+                    </td>
+                </tr>
+                <tr *ngIf="data.simpleExperimentBeans.length">
+                    <td></td>
+                    <td>
+                        <table class="dataTable properties" *ngFor="let cElement of data.simpleExperimentBeans;let cIndex=index">
+                            <tr>
+                                <td class="label">
+                                    Technique Type
+                                </td>
+                                <td>
+                                    {{cElement.techniqueType}}
+                                </td>
+                                <td>
+                                    <button (click)="editTechnique(cIndex,cElement)" class="btn-canano btn-canano-primary btn-canano-xs mr-1">Edit</button>
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+                <tr *ngIf="techniqueIndex!=null" id="techniqueForm">
+                    <td></td>
+                    <td>
+                        <div class="mainBorder" style="background-color: #d3e4de;" >
+                            <table class="dataMain">
+                                <tr>
+                                    <td class="label">
+                                        <label for="cType">
+                                            Technique*
+                                        </label>
+                                    </td>
+                                    <td>
+                                        <select id="cType" name="cType" [(ngModel)]="technique.techniqueType">
+                                            <option [ngValue]="''" [selected]="technique.techniqueType==''">--Select--</option>
+                                            <option *ngFor="let type of setupData.techniques" [selected]="type==technique.techniqueType">
+                                                {{type}}
+                                            </option>
+                                        </select>
+                                    </td>
+                                </tr>
+
+                                <tr>
+                                    <td class="label">
+                                        <label for="cName">
+                                    		Abbreviation
+                                        </label>
+                                    </td>
+                                    <td>
+                                        <input type="text" name="cName" [(ngModel)]="technique.abbreviation">
+                                    </td>
+                                </tr>
+                               
+                                <tr>
+                                    <td class="label">
+                                        <label for="cDescription">
+                                            Description
+                                        </label>
+                                    </td>
+                                    <td colspan="3">
+                                        <textarea name="cDescription" id="cDescription" rows="3" cols="65" [(ngModel)]="technique.description">
+                                            {{technique.description}}
+                                        </textarea>
+                                    </td>
+                                </tr>
+
+                                <tr>
+                                    <td class="label">
+                                        <label for="instrument">
+                                            Instruments
+                                        </label>
+                                    </td>
+                                    <td colspan="3">
+                                        <button type='button' (click)="addInstrument()" class="btn-canano btn-canano-primary btn-canano-xs mr-1">Add</button>
+                                    </td>
+                                </tr>
+
+                                <ng-container *ngIf="technique.instruments">
+                                    <tr *ngIf="technique.instruments.length">
+                                        <td></td>
+                                        <td colspan="3">
+                                            <table class="dataTable">
+                                                <tr *ngFor="let iInstrument of technique.instruments;let fIndex=index">
+                                                    <td>
+                                                        <b>Type</b>
+                                                    </td>
+                                                    <td>
+                                                        {{iInstrument.type}}
+                                                    </td>
+                                                    <td>
+                                                        <button (click)="editInstrument(fIndex,iInstrument)" class="btn-canano btn-canano-primary btn-canano-xs mr-1">Edit</button>
+                                                    </td>
+                                                </tr>
+                                            </table>
+                                        </td>
+                                    </tr>
+                                </ng-container>
+
+                                <tr *ngIf="instrumentIndex!=null" id="instrumentForm">
+                                    <td>
+                                    </td>
+                                    <td colspan="3">
+                                        <div class="mainBorder">
+                                            <table class="dataMain">
+                                                <tr>
+                                                    <td class="label">
+                                                        <label for="manufacturer">
+                                                            Manufacturer
+                                                    </label>
+                                                    </td>
+                                                    <td>
+                                                        <select name="manufacturer" id="manufacturer" [(ngModel)]="instrument.manufacturer">
+                                                            <option [ngValue]="''" [selected]="instrument.manufacturer===''">--Select--</option>
+                                                            <option *ngFor="let manu of setupData.manufacturers" [selected]="manu==instrument.manufacturer">
+                                                                {{manu}}
+                                                            </option>
+                                                        </select>
+                                                    </td>
+                                                </tr>
+
+                                                <tr>
+                                                    <td class="label">
+                                                        <label for="modelName">
+                                                            ModelName
+                                                        </label>
+                                                    </td>
+                                                    <td>
+				                                        <input type="text" name="cName" [(ngModel)]="instrument.modelName">
+				                                    </td>
+                                                </tr>
+
+                                                <tr>
+                                                    <td class="label">
+                                                        <label for="type">
+                                                            Type
+                                                        </label>
+                                                    </td>
+                                                    <td>
+                                                        <select name="type" id="type" [(ngModel)]="instrument.type">
+                                                            <option [ngValue]="''" [selected]="instrument.type===''">--Select--</option>
+                                                            <option *ngFor="let type of instrumentTypes" [selected]="type==instrument.type">
+                                                                {{type}}
+                                                            </option>
+                                                        </select>
+                                                    </td>
+                                                </tr>
+                                                
+                                                <tr>
+                                                    <td>
+                                                        <button *ngIf="instrumentIndex!=-1" (click)="deleteInstrument()" class="btn-canano btn-canano-danger btn-canano-xs mr-1">Delete</button>
+                                                    </td>
+                                                    <td colspan="3" class="right">
+                                                        <button [disabled]="instrument.type==''" (click)="saveInstrument()" class="btn-canano btn-canano-primary btn-canano-xs mr-1">Save</button>
+                                                        <button (click)="cancelInstrument()" class="btn-canano btn-canano-default btn-canano-xs mr-1">Cancel</button>
+                                                    </td>
+                                                </tr>
+                                            </table>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <button (click)="deleteTechnique()" *ngIf="techniqueIndex!=-1" class="btn-canano btn-canano-danger btn-canano-xs mr-1">Delete</button>
+                                    </td>
+                                    <td></td>
+                                    <td></td>
+                                    <td class="right">
+                                        <button [disabled]="technique.techniqueType==''" (click)="saveTechnique()" class="btn-canano btn-canano-primary btn-canano-xs mr-1">Save</button>
+                                        <button (click)="cancelTechnique()" class="btn-canano btn-canano-default btn-canano-xs mr-1">Cancel</button>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                    </td>
+                </tr>
+            </table>
+        </div>
+
+	    <br />
+
+		<!-- Finding -->
+        <div class="mainBorder">
+            <table class="dataMain">
+                <tr>
+                    <td class="label">
+                        <label for="finding">
+                            Finding
+                        </label>
+                    </td>
+                    <td>
+                        <button (click)="addFinding()" class="btn-canano btn-canano-primary btn-canano-xs mr-1">Add</button>
+                    </td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td>
+                        <ng-container *ngFor="let finding of data.purityBeans; let fIndex=index">
+                            <div *ngIf="finding.rows.length||finding.files.length" class="mainBorder">
+                                <div class="dataConditions">
+                                	<B>Data and Conditions</B>
+                                    <button  (click)="editFinding(fIndex, finding)" class="btn-canano btn-canano-primary btn-canano-xs mr-1">Edit</button>
+                                </div>
+                                <table class="dataTable">
+                                    <tr>
+                                        <th *ngFor="let header of finding.columnHeaders">
+                                            {{header.name}}
+                                        </th>
+                                    </tr>
+                                    <tr *ngFor="let row of finding.rows; let rowIndex=index; let odd=odd" [ngClass]="{'rowOdd':odd}">
+                                        <td [ngStyle]="{'width':85/row.cells.length+'%'}" *ngFor="let column of row.cells">
+                                            <span *ngIf="column.operand!='='">
+                                                {{column.operand}}
+                                            </span>
+                                            {{column.value}}
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div><br />
+                        </ng-container>
+                        <div class="mainBorder" *ngIf="findingIndex!=null" style="background-color: #d3e4de;">
+                            <table id="findingsEditForm" class="dataMain">
+                                <tr>
+                                    <td colspan="2">
+                                        <table class="dataMain">
+                                            <tr>
+                                                <td class="columnUpdate">
+                                                    <label for="finding.columns">
+                                                        Columns
+                                                    </label>
+                                                    <input type="number" name="columns" id="finding.columns" [(ngModel)]="currentFinding.numberOfColumns">
+                                                    <label for="finding.rows">
+                                                        &nbsp;Rows
+                                                    </label>
+                                                    <input type="number" name="rows" id="finding.rows" [(ngModel)]="currentFinding.numberOfRows"><br />
+                                                    <button (click)="updateRowsColumns()" class="btn-canano btn-canano-primary btn-canano-xs mr-1">Update</button>
+                                                    <button *ngIf="findingIndex!=-1" (click)="editColumnOrder()" class="btn-canano btn-canano-primary btn-canano-xs mr-1">Set Column Order</button>
+                                                    <label class="btn-canano btn-canano-primary btn-canano-xs">
+                                                        Import csv
+                                                        <input type="file" id="csvFile" style="display: none" (change)="importCSV($event)">
+                                                    </label>
+
+                                                </td>
+                                            </tr>
+                                            <tr *ngIf="columnOrder!=null">
+                                                <td>
+                                                    <div class="mainBorder">
+                                                        <h5>Column Order</h5>
+                                                            <table class="dataTable">
+                                                                <tr>
+                                                                    <th *ngFor="let columnHeader of columnOrder.columnHeaders">
+                                                                        {{columnHeader.name}}
+                                                                    </th>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td *ngFor="let columnHeader of columnOrder.columnHeaders; let cIndex=index">
+                                                                        <input type="number" [(ngModel)]="columnHeader.columnOrder" [name]="'c'+cIndex+'.columnOrder'">
+                                                                    </td>
+                                                                </tr>
+
+                                                            </table><br />
+                                                            <button (click)="saveColumnOrder()" class="btn-canano btn-canano-primary btn-canano-xs mr-1">Save</button>
+                                                            <button (click)="cancelColumnOrder()" class="btn-canano btn-canano-default btn-canano-xs mr-1">Cancel</button>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td class="label">
+                                                    Data and Conditions
+                                                </td>
+                                            </tr>
+                                            <tr *ngIf="columnHeaderIndex!=null">
+                                                <td>
+                                                    <div class="mainBorder">
+                                                        <table class="columnHeaderDefinitions">
+                                                            <tr>
+                                                                <td colspan="2">
+                                                                    <h5>Column Definitions</h5>
+                                                                    <br />
+                                                                    At least one column must be of type Datum.
+                                                                </td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td class="label">
+                                                                    <label for="columnHeader.columnType">
+                                                                        Column Type*
+                                                                    </label>
+                                                                </td>
+                                                                <td>
+                                                                    <select (ngModelChange)="changeColumnType($event,true)" name="columnHeader.columnType" [(ngModel)]="columnHeader.columnType">
+                                                                        <option [selected]="columnHeader.columnType===null" [ngValue]="null">--Select--</option>
+                                                                        <option [selected]="columnHeader.columnType==='datum'">datum</option>
+                                                                        <option [selected]="columnHeader.columnType==='condition'">condition</option>
+                                                                    </select>
+                                                                </td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td class="label">
+                                                                    <label for="columnHeader.columnName">
+                                                                        Column Name*
+                                                                    </label>
+                                                                </td>
+                                                                <td>
+                                                                    <select (ngModelChange)="addOtherValue('columnHeader.columnName',columnHeader.columnName);changeColumnName($event,true)" name="columnHeader.columnName" [disabled]="columnHeader.columnType==null" [(ngModel)]="columnHeader.columnName">
+                                                                        <option [selected]="columnHeader.columnName===null" [ngValue]="null">--Select--</option>
+                                                                        <option *ngFor="let name of setupData.columnNameOptions" [selected]="columnHeader.columnName==name">
+                                                                            {{name}}
+                                                                        </option>
+                                                                    </select>
+                                                                    <div *ngIf="columnHeader.columnName ==='other'">
+                                                                        <canano-other-dropdown (saveOther)="saveOther($event)" [label]="'Name'" [value]="currentDropdownValues['columnHeader.columnName']" [field]="'columnHeader.columnName'" [array]="'setupData.columnNameOptions'">
+
+                                                                        </canano-other-dropdown>
+                                                                    </div>
+                                                                    <br />
+                                                                    <i>Combination of column name and column value type must be unique.</i>
+
+                                                                </td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td class="label">
+                                                                    <label for="columnHeader.valueType">
+                                                                        Column Value Type
+                                                                    </label>
+                                                                </td>
+                                                                <td>
+                                                                    <select (ngModelChange)="addOtherValue('columnHeader.valueType',columnHeader.valueType)" name="columnHeader.valueType" [disabled]="columnHeader.columnType==null || columnHeader.columnName==null" [(ngModel)]="columnHeader.valueType">
+                                                                        <option [selected]="columnHeader.valueType===null" [ngValue]="null">--Select--</option>
+                                                                        <option *ngFor="let name of data.datumConditionValueTypeLookup" [selected]="columnHeader.valueType==name">
+                                                                            {{name}}
+                                                                        </option>
+                                                                    </select>
+                                                                    <div *ngIf="columnHeader.valueType ==='other'">
+                                                                        <canano-other-dropdown (saveOther)="saveOther($event)" [label]="'Value Type'" [value]="currentDropdownValues['columnHeader.valueType']" [field]="'columnHeader.valueType'" [array]="'data.datumConditionValueTypeLookup'">
+
+                                                                        </canano-other-dropdown>
+                                                                    </div><br />
+                                                                    <i>Combination of column name and column value type must be unique.</i>
+
+                                                                </td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td class="label">
+                                                                    <label for="columnHeader.valueUnit">
+                                                                        Column Value Unit
+                                                                    </label>
+                                                                </td>
+                                                                <td>
+                                                                    <select (ngModelChange)="addOtherValue('columnHeader.valueUnit',columnHeader.valueUnit)" name="columnHeader.valueUnit" id="columnHeader.valueUnit" [(ngModel)]="columnHeader.valueUnit">
+                                                                        <option [selected]="columnHeader.valueUnit==null" [ngValue]="null">--Select--</option>
+                                                                        <option *ngFor="let type of setupData.valueUnitOptions" [selected]="columnHeader.valueUnit===type" value="{{type}}">
+                                                                            {{type}}
+                                                                        </option>
+                                                                    </select>
+                                                                    <div *ngIf="columnHeader.valueUnit ==='other'">
+                                                                        <canano-other-dropdown (saveOther)="saveOther($event)" [label]="'Value Unit'" [value]="currentDropdownValues['columnHeader.valueUnit']" [field]="'columnHeader.valueUnit'" [array]="'setupData.valueUnitOptions'">
+
+                                                                        </canano-other-dropdown>
+                                                                    </div>
+
+                                                                </td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td class="label">
+                                                                    <label for="columnHeader.constantValue">
+                                                                        Constant Value
+                                                                    </label>
+                                                                </td>
+                                                                <td>
+                                                                    <input type="text" name="columnHeader.constantValue" id="columnHeader.constantValue" [(ngModel)]="columnHeader.constantValue">
+                                                                    <br />
+                                                                    <i>For boolean column value type, please enter 1 for true, 0 for false
+                                                                    </i>
+                                                                </td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td>
+                                                                    <button (click)="resetColumnForm()" class="btn-canano btn-canano-danger btn-canano-xs mr-1">Reset</button>
+
+                                                                </td>
+                                                                <td>
+                                                                    <button (click)="saveColumnForm()" [disabled]="columnHeader.columnType==null||columnHeader.columnName==null" class="btn-canano btn-canano-primary btn-canano-xs mr-1">Save</button>
+                                                                    <button (click)="cancelColumnForm()" class="btn-canano btn-canano-default btn-canano-xs mr-1">Cancel</button>
+                                                                </td>
+                                                            </tr>
+                                                        </table>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    <table class="dataTable">
+                                                        <tr>
+                                                            <td [colSpan]="currentFinding.numberOfColumns+1">
+                                                                <h5>Column Data</h5><br />
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <th *ngFor="let columnHeader of currentFinding.columnHeaders; let columnHeaderIndex=index">
+                                                                <a [routerLink]="" (click)="editColumnForm(columnHeader, columnHeaderIndex)">
+                                                                    {{columnHeader.name}}
+                                                                </a>
+                                                            </th>
+                                                            <th></th>
+                                                        </tr>
+                                                        <ng-container *ngFor="let row of currentFinding.rows;let rIndex=index; let odd=odd; let last=last">
+                                                            <tr [ngClass]="{'rowOdd':odd}">
+                                                                <td *ngFor="let column of row.cells; let cIndex=index;">
+                                                                    <select [name]="'column.operand'+rIndex+cIndex" [(ngModel)]="column.operand">
+                                                                        <option *ngFor="let modifier of setupData.datumNumberModifier" [selected]="column.operand===modifier" [ngValue]="modifier">{{modifier}}</option>
+                                                                    </select>
+                                                                    <input type="number" *ngIf="currentFinding.columnHeaders[cIndex]['columnType']=='datum'" [name]="'column.value'+rIndex+cIndex" [(ngModel)]="column.value" size="10">
+                                                                    <input type="text" *ngIf="currentFinding.columnHeaders[cIndex]['columnType']=='condition'||currentFinding.columnHeaders[cIndex]['columnType']==null" [name]="'column.value'+rIndex+cIndex" [(ngModel)]="column.value" size="10">
+                                                                </td>
+                                                                <td>
+                                                                    <button (click)="deleteFindingRow(rIndex)" class="btn-canano btn-canano-danger btn-canano-xs mr-1">Delete</button>
+                                                                </td>
+                                                            </tr>
+                                                        </ng-container>
+                                                    </table>
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <button (click)="deleteFinding()" class="btn-canano btn-canano-danger btn-canano-xs mr-1">Delete</button>
+                                    </td>
+                                    <td class="submit">
+                                        <button (click)="saveFinding()" class="btn-canano btn-canano-primary btn-canano-xs mr-1">Save</button>
+                                        <button (click)="cancelFinding()" class="btn-canano btn-canano-default btn-canano-xs mr-1">Cancel</button>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                    </td>
+                </tr>
+            </table>
+        </div><br />
+
+		<br />
+
+		<!-- Analysis and Conclusion -->
+ 		<div class="mainBorder">
+            <table class="dataMain">
+				<tr>
+				    <td class="label">
+				    	<label for="analysis">
+				        	Analysis and Conclusion
+				    	</label>
+				    </td>
+				    <td>
+				        <textarea name="analysis" id="analysis" rows="3" cols="60" [(ngModel)]="data.analysis">
+                        </textarea>
+				    </td>
+				</tr>
+            </table>
+        </div>
+
+        <br />
+
+		<!-- Files -->
+        <div class="mainBorder">
+            <table class="dataMain">
+                <tr>
+                    <td class="label">
+                        Files
+                    </td>
+                    <td>
+                        <canano-file [reset]="resetStatus" (getError)="getError($event)"  (changeFile)="changeFile($event)" [nanopurification]="false" [saveUrl]="consts.QUERY_SYNTHESIS_PURIFICATION_SAVE_FILE" [deleteUrl]="consts.QUERY_SYNTHESIS_PURIFICATION_REMOVE_FILE" [sampleId]="sampleId" [data]="data" [fileVariable]="'fileBeingEdited'" [fileArray]="'fileElements'">
+                        </canano-file>
+                    </td>
+                </tr>
+            </table>
+        </div><br />
+       <!--  <div class="mainBorder">
+            <table class="dataMain">
+                <tr>
+                    <td class="label">
+                        <label for="otherSampleNames">
+                            Copy to other samples with the same primary organization?
+                        </label>
+                    </td>
+                    <td>
+                        <select class="multiple" name="otherSampleNames" id="otherSampleNames" multiple size="10" [(ngModel)]="data.otherSampleNames">
+                            <option *ngFor="let type of setupData['otherSampleNames']">
+                                {{type}}
+                            </option>
+                        </select>
+                    </td>
+                </tr>
+            </table> 
+         </div><br /> -->
+        <div>
+            <table class="submit">
+                <tr>
+                    <td *ngIf="dataId" style="text-align:left;">
+                        <button (click)="delete()" class="btn-canano btn-canano-danger btn-canano-lg mr-1">Delete</button>
+                    </td>
+                    <td>
+                        <button (click)="reset()" class="btn-canano btn-canano-danger btn-canano-lg mr-1">Reset</button>
+                        <button [disabled]="!readyToSubmit()" (click)="submit()" class="btn-canano btn-canano-primary btn-canano-lg mr-1">Submit</button>
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </form>
+</div>
