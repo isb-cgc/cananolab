@@ -13,13 +13,13 @@
             <table class="dataMain">
                 <tr>
                     <td class="label">
-                        <label for="type">
+                        <label for="purificationType">
                             Purification Type*
                         </label>
                     </td>
                     <td>
                         <div>
-                            <select name="type" id="type" [(ngModel)]="data.type">
+                            <select name="purificationType" id="purificationType" [(ngModel)]="data.type">
                                 <option [ngValue]="''" [selected]="data.type===''">--Select--</option>
                                 <option *ngFor="let type of setupData['purificationTypes']" [ngValue]="type" [selected]="type==data.type">
                                     {{type}}
@@ -226,7 +226,7 @@
                                                     <td>
                                                         <select name="type" id="type" [(ngModel)]="instrument.type">
                                                             <option [ngValue]="''" [selected]="instrument.type===''">--Select--</option>
-                                                            <option *ngFor="let type of instrumentTypes" [selected]="manu==instrument.type">
+                                                            <option *ngFor="let type of instrumentTypes" [selected]="type==instrument.type">
                                                                 {{type}}
                                                             </option>
                                                         </select>
@@ -235,11 +235,11 @@
                                                 
                                                 <tr>
                                                     <td>
-                                                        <button *ngIf="instrumentIndex!=-1" (click)="deleteinstrument()" class="btn-canano btn-canano-danger btn-canano-xs mr-1">Delete</button>
+                                                        <button *ngIf="instrumentIndex!=-1" (click)="deleteInstrument()" class="btn-canano btn-canano-danger btn-canano-xs mr-1">Delete</button>
                                                     </td>
                                                     <td colspan="3" class="right">
                                                         <button [disabled]="instrument.type==''" (click)="saveInstrument()" class="btn-canano btn-canano-primary btn-canano-xs mr-1">Save</button>
-                                                        <button (click)="cancelinstrument()" class="btn-canano btn-canano-default btn-canano-xs mr-1">Cancel</button>
+                                                        <button (click)="cancelInstrument()" class="btn-canano btn-canano-default btn-canano-xs mr-1">Cancel</button>
                                                     </td>
                                                 </tr>
                                             </table>
