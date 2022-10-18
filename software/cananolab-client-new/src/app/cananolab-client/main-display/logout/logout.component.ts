@@ -22,6 +22,8 @@ export class LogoutComponent implements OnInit{
         if(!Properties.LOGGING_OUT) {
             Properties.LOGGING_OUT = true;
             (Properties.LOGGED_IN) ? this.logOut() : console.log("User is already logged out.");
+        } else {
+            console.log("Logout process underway elsewhere--updating display only.");
         }
 
         this.topMainMenuService.showOnlyMenuItems([

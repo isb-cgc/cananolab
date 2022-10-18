@@ -1,0 +1,392 @@
+<canano-main-display-heading
+    [helpUrl]="helpUrl"
+    [toolHeadingName]="toolHeadingNameManage">
+</canano-main-display-heading>
+
+<div class="mainSection" *ngIf="data&&setupData">
+    <div class="error" *ngIf="errors['error']">
+        {{errors['error']}}
+    </div>
+    <form name="materialForm">
+        <div class="mainBorder">
+            <table class="dataMain">
+                <tr>
+                    <td class="label">
+                        <label for="protocolType">
+                            Protocol*
+                        </label>
+                    </td>
+                    <td>
+                        <div>
+                            <select name="protocolType" id="protocolType" [(ngModel)]="data.simpleProtocol.displayName">
+                                <option [ngValue]="''">--Select--</option>
+                                <option *ngFor="let protocol of setupData['protocolLookup']" [ngValue]="protocol.displayName">
+                                    {{protocol.displayName}}
+                                </option>
+                            </select>
+                       </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="label">
+                        <label for="description">
+                            Description
+                        </label>
+                    </td>
+                    <td>
+                        <textarea name="description" id="description" rows="3" cols="60" [(ngModel)]="data.description">
+                        </textarea>
+                    </td>
+                </tr>
+            </table>
+        </div>
+
+        <br>
+
+        <div class="mainBorder">
+            <table class="dataMain">
+                <tr>
+                    <td class="label">
+                        Materials
+                    </td>
+                    <td>
+                        <button type="button" (click)="addMaterialElement()" class="btn-canano btn-canano-primary btn-canano-xs mr-1">Add</button>
+                    </td>
+                </tr>
+                <tr *ngIf="data.materialElements.length">
+                    <td></td>
+                    <td>
+                        <table class="dataTable properties" *ngFor="let cElement of data.materialElements;let cIndex=index">
+                            <tr>
+                                <th colspan="2">
+                                    {{cElement.type}} (name:{{cElement.chemicalName}})
+                                </th>
+                                <th></th>
+                            </tr>
+                            <tr>
+                                <td class="label">
+                                    PubChem ID
+                                </td>
+                                <td>
+                                    {{cElement.pubChemId}}
+                                </td>
+                                <td>
+                                    <button (click)="editMaterialElement(cIndex,cElement)" class="btn-canano btn-canano-primary btn-canano-xs mr-1">Edit</button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="label">
+                                    Molecular Formula
+                                </td>
+                                <td colspan="2">
+                                    {{cElement.molecularFormula}} ({{cElement.molecularFormulaType}})
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="label">
+                                    Description
+                                </td>
+                                <td colspan="2">
+                                    {{cElement.description}}
+                                </td>
+                            </tr>
+                            <tr *ngIf="cElement.inherentFunctionList">
+                                <td class="label">
+                                    Function
+                                </td>
+                                <td colspan="2">
+                                    <div *ngFor="let function of cElement.inherentFunctionList">
+                                        {{function.type}}:{{function.description}}
+                                    </div>
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+                <tr *ngIf="materialElementIndex!=null" id="materialElementForm">
+                    <td></td>
+                    <td>
+                        <div class="mainBorder" style="background-color: #d3e4de;">
+                            <table class="dataMain">
+                                <tr>
+                                    <td class="label">
+                                        <label for="cType">
+                                            Material Type*
+                                        </label>
+                                    </td>
+                                    <td>
+                                        <select id="cType" name="cType" [(ngModel)]="materialElement.type">
+                                            <option [ngValue]="''" [selected]="materialElement.type==''">--Select--</option>
+                                            <option *ngFor="let type of setupData.materialTypes" [selected]="type==materialElement.type">
+                                                {{type}}
+                                            </option>
+                                        </select>
+                                    </td>
+                                    <td class="label">
+                                        <label for="cName*">
+                                            Chemical Name*
+                                        </label>
+                                    </td>
+                                    <td>
+                                        <input type="text" name="cName" [(ngModel)]="materialElement.chemicalName">
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="label">
+                                        <label for="cPubchemDataSource">
+                                            PubChem Data Source
+                                        </label>
+                                    </td>
+                                    <td>
+                                        <select id="cPubchemDataSource" name="cPubchemDataSource" [(ngModel)]="materialElement.pubChemDataSource">
+                                            <option [ngValue]="''" [selected]="materialElement.pubChemDataSource===''">--Select--</option>
+                                            <option *ngFor="let type of setupData.pubChemDataSources" [selected]="type==materialElement.pubChemDataSource">
+                                                {{type}}
+                                            </option>
+                                        </select>
+                                    </td>
+                                    <td class="label">
+                                        <label for="pubchemid">
+                                            PubChem ID
+                                        </label>
+                                    </td>
+                                    <td>
+                                        <input type="number" id="pubchemid" name="pubChemId" [(ngModel)]="materialElement.pubChemId">
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="label">
+                                        <label for="amount">
+                                            Amount
+                                        </label>
+                                    </td>
+                                    <td>
+                                        <input type="number" name="amount" id="amount" [(ngModel)]="materialElement.value">
+                                    </td>
+                                    <td class="label">
+                                        <label for="amountunit">
+                                            Amount Unit
+                                        </label>
+                                    </td>
+                                    <td>
+                                        <select name="valueUnit" id="valueUnit" [(ngModel)]="materialElement.valueUnit">
+                                            <option [ngValue]="''" [selected]="materialElement.valueUnit===''">--Select--</option>
+                                            <option *ngFor="let type of setupData.amountUnits
+" [selected]="materialElement.valueUnit==type">
+                                                {{type}}
+                                            </option>
+                                        </select>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="label">
+                                        <label for="molecularFormulaType">
+                                            Molecular Formula Type
+                                        </label>
+                                    </td>
+                                    <td>
+                                        <select name="molecularFormulaType" id="molecularFormulaType" [(ngModel)]="materialElement.molecularFormulaType">
+                                            <option [ngValue]="''" [selected]="materialElement.molecularFormulaType===''">--Select--</option>
+                                            <option *ngFor="let type of setupData.formulaTypes" [selected]="materialElement.valueUnit==type">
+                                                {{type}}
+                                            </option>
+                                        </select>
+                                    </td>
+                                    <td class="label">
+                                        <label for="molecularFormula">
+                                            Molecular Formula
+                                        </label>
+                                    </td>
+                                    <td>
+                                        <textarea name="molecularFormula" id="molecularFormula" rows="2" cols="40" [(ngModel)]="materialElement.molecularFormula">
+                                            {{materialElement.molecularFormula}}
+                                        </textarea>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="label">
+                                        <label for="supplierName">
+                                            Supplier Name
+                                        </label>
+                                    </td>
+                                    <td>
+                                        <select (ngModelChange)="addOtherValue('materialElement.supplier.supplierName',materialElement.supplier.supplierName)" id="supplierName" name="supplierName" [(ngModel)]="materialElement.supplier.supplierName">
+                                            <option [ngValue]="''" [selected]="materialElement.supplier.supplierName==supplierName">--Select--</option>
+                                            <option *ngFor="let supplierName of setupData.supplierNames" [selected]="supplierName==materialElement.supplier.supplierName">
+                                                {{supplierName}}
+                                            </option>
+                                        </select>
+                                        <div *ngIf="materialElement.supplier.supplierName ==='other'">
+                                            <canano-other-dropdown (saveOther)="saveOther($event)" [label]="'Type'" [value]="currentDropdownValues['materialElement.supplier.supplierName']" [field]="'materialElement.supplier.supplierName'" [array]="'setupData.supplierNames'">
+
+                                            </canano-other-dropdown>
+                                        </div>
+                                    </td>
+                                    <td class="label">
+                                        <label for="supplierLot">
+                                            Lot
+                                        </label>
+                                    </td>
+                                    <td>
+                                        <textarea name="supplierLot" id="supplierLot" rows="2" cols="40" [(ngModel)]="materialElement.supplier.lot">
+                                            {{materialElement.supplier.lot}}
+                                        </textarea>
+                                    </td>
+                                </tr>
+
+                                <tr>
+                                    <td class="label">
+                                        <label for="cDescription">
+                                            Material Description
+                                        </label>
+                                    </td>
+                                    <td colspan="3">
+                                        <textarea name="cDescription" id="cDescription" rows="3" cols="65" [(ngModel)]="materialElement.description">
+                                            {{materialElement.description}}
+                                        </textarea>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="label">
+                                        <label for="inherentFunction">
+                                            Inherent Functions
+                                        </label>
+                                    </td>
+                                    <td colspan="3">
+                                        <button type='button' (click)="addInherentFunction()" class="btn-canano btn-canano-primary btn-canano-xs mr-1">Add</button>
+                                    </td>
+                                </tr>
+                                <ng-container *ngIf="materialElement.inherentFunctionList">
+                                    <tr *ngIf="materialElement.inherentFunctionList.length">
+                                        <td></td>
+                                        <td colspan="3">
+                                            <table class="dataTable">
+                                                <tr>
+                                                    <th>Function Type</th>
+                                                    <th>Description</th>
+                                                    <th></th>
+                                                </tr>
+                                                <tr *ngFor="let iFunction of materialElement.inherentFunctionList;let fIndex=index">
+                                                    <td>
+                                                        {{iFunction.type}}
+                                                    </td>
+                                                    <td>
+                                                        {{iFunction.description}}
+                                                    </td>
+                                                    <td>
+                                                        <button (click)="editInherentFunction(fIndex,iFunction)" class="btn-canano btn-canano-primary btn-canano-xs mr-1">Edit</button>
+                                                    </td>
+                                                </tr>
+                                            </table>
+                                        </td>
+                                    </tr>
+                                </ng-container>
+                                <tr *ngIf="inherentFunctionIndex!=null" id="inherentFunctionForm">
+                                    <td>
+                                    </td>
+                                    <td colspan="3">
+                                        <div class="mainBorder">
+                                            <table class="dataMain">
+                                                <tr>
+                                                    <td class="label">
+                                                        <label for="functionType">
+                                                            Type
+                                                        </label>
+                                                    </td>
+                                                    <td>
+                                                        <select name="type" id="functionType" [(ngModel)]="inherentFunction.type">
+                                                            <option [ngValue]="''" [selected]="inherentFunction.type===''">--Select--</option>
+                                                            <option *ngFor="let type of setupData.inherentFunctionTypes" [selected]="type==inherentFunction.type">
+                                                                {{type}}
+                                                            </option>
+                                                        </select>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="label">
+                                                        <label for="inherentFunction.description">
+                                                            Description
+                                                        </label>
+                                                    </td>
+                                                    <td colspan="3">
+                                                        <textarea name="inherentFunction.description" id="inherentFunction.description" [(ngModel)]="inherentFunction.description" rows="5" cols="50">
+                                                            {{inherentFunction.description}}
+                                                        </textarea>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>
+                                                        <button *ngIf="inherentFunctionIndex!=-1" (click)="deleteInherentFunction()" class="btn-canano btn-canano-danger btn-canano-xs mr-1">Delete</button>
+                                                    </td>
+                                                    <td colspan="3" class="right">
+                                                        <button [disabled]="inherentFunction.type==''" (click)="saveInherentFunction()" class="btn-canano btn-canano-primary btn-canano-xs mr-1">Save</button>
+                                                        <button (click)="cancelInherentFunction()" class="btn-canano btn-canano-default btn-canano-xs mr-1">Cancel</button>
+                                                    </td>
+                                                </tr>
+                                            </table>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <button (click)="deleteMaterialElement()" *ngIf="materialElementIndex!=-1" class="btn-canano btn-canano-danger btn-canano-xs mr-1">Delete</button>
+                                    </td>
+                                    <td></td>
+                                    <td></td>
+                                    <td class="right">
+                                        <button [disabled]="materialElement.type==''||materialElement.chemicalName==''" (click)="saveMaterialElement()" class="btn-canano btn-canano-primary btn-canano-xs mr-1">Save</button>
+                                        <button (click)="cancelMaterialElement()" class="btn-canano btn-canano-default btn-canano-xs mr-1">Cancel</button>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                    </td>
+                </tr>
+            </table>
+        </div><br />
+        <div class="mainBorder">
+            <table class="dataMain">
+                <tr>
+                    <td class="label">
+                        File
+                    </td>
+                    <td>
+                        <canano-file [reset]="resetStatus" (getError)="getError($event)"  (changeFile)="changeFile($event)" [nanomaterial]="false" [saveUrl]="consts.QUERY_SYNTHESIS_MATERIAL_SAVE_FILE" [deleteUrl]="consts.QUERY_SYNTHESIS_MATERIAL_REMOVE_FILE" [sampleId]="sampleId" [data]="data" [fileVariable]="'fileBeingEdited'" [fileArray]="'fileElements'">
+                        </canano-file>
+                    </td>
+                </tr>
+            </table>
+        </div><br />
+       <!--  <div class="mainBorder">
+            <table class="dataMain">
+                <tr>
+                    <td class="label">
+                        <label for="otherSampleNames">
+                            Copy to other samples with the same primary organization?
+                        </label>
+                    </td>
+                    <td>
+                        <select class="multiple" name="otherSampleNames" id="otherSampleNames" multiple size="10" [(ngModel)]="data.otherSampleNames">
+                            <option *ngFor="let type of setupData['otherSampleNames']">
+                                {{type}}
+                            </option>
+                        </select>
+                    </td>
+                </tr>
+            </table> 
+         </div><br /> -->
+        <div>
+            <table class="submit">
+                <tr>
+                    <td *ngIf="dataId" style="text-align:left;">
+                        <button (click)="delete()" class="btn-canano btn-canano-danger btn-canano-lg mr-1">Delete</button>
+                    </td>
+                    <td>
+                        <button (click)="reset()" class="btn-canano btn-canano-danger btn-canano-lg mr-1">Reset</button>
+                        <button [disabled]="!readyToSubmit()" (click)="submit()" class="btn-canano btn-canano-primary btn-canano-lg mr-1">Submit</button>
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </form>
+</div>

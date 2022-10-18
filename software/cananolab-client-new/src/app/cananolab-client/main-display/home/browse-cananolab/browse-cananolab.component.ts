@@ -29,7 +29,7 @@ export class BrowseCananolabComponent implements OnInit{
         this.init().then(() => {
             // Sanity check for data
             if(!this.initData['numOfPublicSources']) {
-                console.log("No public counts received!");
+                console.log("Waiting on public count data.");
             }
         });
     }
@@ -50,13 +50,12 @@ export class BrowseCananolabComponent implements OnInit{
     // Will not need this after router is in place?
     onSearchPublicationsClick(){
         this.router.navigate(['home/publications/publication-search'])
-
     }
 
     onSearchSamplesClick(){
         this.router.navigate(['home/samples/sample-search'])
-
     }
+
     onSearchAllPublicationsClick() {
         let url = this.apiService.doPost(Consts.QUERY_PUBLICATION_SEARCH,
             {

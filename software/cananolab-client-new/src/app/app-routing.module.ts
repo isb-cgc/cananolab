@@ -64,6 +64,13 @@ const routes: Routes = [
     { path: 'home/samples/publications/:sampleId', loadChildren: () => import('./cananolab-client/main-display/samples/publications/sample-publications/sample-publications.module').then(m => m.SamplePublicationsModule) },
     { path: 'home/samples/view-publications/:sampleId', loadChildren: () => import('./cananolab-client/main-display/samples/publications/sample-publications/sample-publications.module').then(m => m.SamplePublicationsModule) },
     { path: 'home/samples/view-sample/:sampleId', loadChildren: () => import('./cananolab-client/main-display/samples/sample-view/sample-view.module').then(m => m.SampleViewModule) },
+    { path: 'home/samples/synthesis/:sampleId', loadChildren: () => import('./cananolab-client/main-display/samples/synthesis/synthesis/synthesis.module').then(m => m.SynthesisModule) },
+    { path: 'home/samples/synthesis/materials/:sampleId/:dataId', loadChildren: () => import('./cananolab-client/main-display/samples/synthesis/materials/materials.module').then(m => m.MaterialsModule) },
+    { path: 'home/samples/synthesis/materials/:sampleId', loadChildren: () => import('./cananolab-client/main-display/samples/synthesis/materials/materials.module').then(m => m.MaterialsModule) },
+    { path: 'home/samples/synthesis/functionalization/:sampleId/:dataId', loadChildren: () => import('./cananolab-client/main-display/samples/synthesis/functionalization/functionalization.module').then(m => m.FunctionalizationModule) },
+    { path: 'home/samples/synthesis/functionalization/:sampleId', loadChildren: () => import('./cananolab-client/main-display/samples/synthesis/functionalization/functionalization.module').then(m => m.FunctionalizationModule) },
+    { path: 'home/samples/synthesis/purification/:sampleId/:dataId', loadChildren: () => import('./cananolab-client/main-display/samples/synthesis/purification/purification.module').then(m => m.PurificationModule) },
+    { path: 'home/samples/synthesis/purification/:sampleId', loadChildren: () => import('./cananolab-client/main-display/samples/synthesis/purification/purification.module').then(m => m.PurificationModule) },
 ];
 
 @NgModule({
