@@ -320,7 +320,7 @@
                                                         &nbsp;Rows
                                                     </label>
                                                     <input type="number" name="rows" id="finding.rows" [(ngModel)]="currentFinding.numberOfRows"><br />
-                                                    <button (click)="updateRowsColumns()" class="btn-canano btn-canano-primary btn-canano-xs mr-1">Update</button>
+                                                    <button (click)="updateRowsColsForFinding()" class="btn-canano btn-canano-primary btn-canano-xs mr-1">Update</button>
                                                     <button *ngIf="findingIndex!=-1" (click)="editColumnOrder()" class="btn-canano btn-canano-primary btn-canano-xs mr-1">Set Column Order</button>
                                                     <label class="btn-canano btn-canano-primary btn-canano-xs">
                                                         Import csv
@@ -383,19 +383,19 @@
                                                             </tr>
                                                             <tr>
                                                                 <td class="label">
-                                                                    <label for="columnHeader.columnName">
+                                                                    <label for="columnHeader.name">
                                                                         Column Name*
                                                                     </label>
                                                                 </td>
                                                                 <td>
-                                                                    <select (ngModelChange)="addOtherValue('columnHeader.columnName',columnHeader.columnName);changeColumnName($event,true)" name="columnHeader.columnName" [disabled]="columnHeader.columnType==null" [(ngModel)]="columnHeader.columnName">
-                                                                        <option [selected]="columnHeader.columnName===null" [ngValue]="null">--Select--</option>
-                                                                        <option *ngFor="let name of setupData.columnNameOptions" [selected]="columnHeader.columnName==name">
+                                                                    <select (ngModelChange)="addOtherValue('columnHeader.name',columnHeader.name);changeColumnName($event,true)" name="columnHeader.name" [disabled]="columnHeader.columnType==null" [(ngModel)]="columnHeader.name">
+                                                                        <option [selected]="columnHeader.name===null" [ngValue]="null">--Select--</option>
+                                                                        <option *ngFor="let name of setupData.columnNameOptions" [selected]="columnHeader.name==name">
                                                                             {{name}}
                                                                         </option>
                                                                     </select>
-                                                                    <div *ngIf="columnHeader.columnName ==='other'">
-                                                                        <canano-other-dropdown (saveOther)="saveOther($event)" [label]="'Name'" [value]="currentDropdownValues['columnHeader.columnName']" [field]="'columnHeader.columnName'" [array]="'setupData.columnNameOptions'">
+                                                                    <div *ngIf="columnHeader.name ==='other'">
+                                                                        <canano-other-dropdown (saveOther)="saveOther($event)" [label]="'Name'" [value]="currentDropdownValues['columnHeader.name']" [field]="'columnHeader.name'" [array]="'setupData.columnNameOptions'">
 
                                                                         </canano-other-dropdown>
                                                                     </div>
@@ -411,7 +411,7 @@
                                                                     </label>
                                                                 </td>
                                                                 <td>
-                                                                    <select (ngModelChange)="addOtherValue('columnHeader.valueType',columnHeader.valueType)" name="columnHeader.valueType" [disabled]="columnHeader.columnType==null || columnHeader.columnName==null" [(ngModel)]="columnHeader.valueType">
+                                                                    <select (ngModelChange)="addOtherValue('columnHeader.valueType',columnHeader.valueType)" name="columnHeader.valueType" [disabled]="columnHeader.columnType==null || columnHeader.name==null" [(ngModel)]="columnHeader.valueType">
                                                                         <option [selected]="columnHeader.valueType===null" [ngValue]="null">--Select--</option>
                                                                         <option *ngFor="let name of data.datumConditionValueTypeLookup" [selected]="columnHeader.valueType==name">
                                                                             {{name}}
@@ -466,7 +466,7 @@
 
                                                                 </td>
                                                                 <td>
-                                                                    <button (click)="saveColumnForm()" [disabled]="columnHeader.columnType==null||columnHeader.columnName==null" class="btn-canano btn-canano-primary btn-canano-xs mr-1">Save</button>
+                                                                    <button (click)="saveColumnForm()" [disabled]="columnHeader.columnType==null||columnHeader.name==null" class="btn-canano btn-canano-primary btn-canano-xs mr-1">Save</button>
                                                                     <button (click)="cancelColumnForm()" class="btn-canano btn-canano-default btn-canano-xs mr-1">Cancel</button>
                                                                 </td>
                                                             </tr>
