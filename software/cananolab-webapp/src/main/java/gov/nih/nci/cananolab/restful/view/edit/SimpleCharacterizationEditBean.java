@@ -357,7 +357,7 @@ public class SimpleCharacterizationEditBean
 		achar.setCharacterizationName(this.name);
 		achar.setCharacterizationType(this.type);
 		System.out.println("Issue 181 SCEB T2CB " + this.type);
-		System.out.println("Issue 181 SCEB T2CB 2 " + achar.getCharacterizationType() + " " + achar.getCharacterizationName();
+		System.out.println("Issue 181 SCEB T2CB 2 " + achar.getCharacterizationType() + " " + achar.getCharacterizationName());
 
 		achar.setAssayType(assayType);
 
