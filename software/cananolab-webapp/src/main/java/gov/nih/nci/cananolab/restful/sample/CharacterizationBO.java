@@ -103,7 +103,9 @@ public class CharacterizationBO extends BaseAnnotationBO {
 		
 		simpleEdit.getErrors().clear();
 		simpleEdit.getMessages().clear();
-		
+
+		System.out.println("Issue 181 BO subOrUp " + charBean.getDomainChar());
+		System.out.println("Issue 181 BO subOrUp 2 " + simpleEdit);
 		charBean = simpleEdit.transferToCharacterizationBean(charBean);
 		if (simpleEdit.getCharId() == 0)
 			simpleEdit.setSubmitNewChar(true);
@@ -124,6 +126,7 @@ public class CharacterizationBO extends BaseAnnotationBO {
 		
 		SimpleCharacterizationSummaryEditBean success = new SimpleCharacterizationSummaryEditBean();
 		success.getMessages().add("The characterization has been saved successfully");
+		System.out.println("Issue 181 BO subOrUp 3 " + success);
 		return success;
 	}
 
