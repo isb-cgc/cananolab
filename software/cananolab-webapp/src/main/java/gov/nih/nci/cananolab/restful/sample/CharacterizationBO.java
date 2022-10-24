@@ -105,7 +105,7 @@ public class CharacterizationBO extends BaseAnnotationBO {
 		simpleEdit.getMessages().clear();
 
 		System.out.println("Issue 181 BO subOrUp " + charBean.getDomainChar());
-		System.out.println("Issue 181 BO subOrUp 2 " + simpleEdit.getType() + " " +  simpleEdit.getName() + " " +  simpleEdit.getCharId());
+		System.out.println("Issue 181 BO subOrUp 2 " + simpleEdit.getType() + "  " +  simpleEdit.getName() + "  " +  simpleEdit.getCharId());
 		charBean = simpleEdit.transferToCharacterizationBean(charBean);
 		// WJRL 10/24/22: If trying to save an ex-vivo charactirization with type Pharmacokinetics,
 		// by the time you get here getDomainChar() is returning NULL:
