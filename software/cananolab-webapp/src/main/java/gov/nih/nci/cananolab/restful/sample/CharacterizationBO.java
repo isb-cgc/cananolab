@@ -107,6 +107,7 @@ public class CharacterizationBO extends BaseAnnotationBO {
 		System.out.println("Issue 181 BO subOrUp " + charBean.getDomainChar());
 		System.out.println("Issue 181 BO subOrUp 2 " + simpleEdit);
 		charBean = simpleEdit.transferToCharacterizationBean(charBean);
+		System.out.println("Issue 181 BO subOrUp 2a " + charBean.getDomainChar());
 		if (simpleEdit.getCharId() == 0)
 			simpleEdit.setSubmitNewChar(true);
 		
@@ -264,7 +265,8 @@ public class CharacterizationBO extends BaseAnnotationBO {
 			newChar = false;
 		}
 		logger.debug("Saving new char? " + newChar);
-		
+		System.out.println("Issue 181 cbo.saveCharacterization gdc " + charBean.getDomainChar());
+
 		characterizationService.saveCharacterization(sampleBean, charBean);
 		// retract from public if updating an existing public record and not curator
 		if (!newChar && !SpringSecurityUtil.getPrincipal().isCurator() && 
