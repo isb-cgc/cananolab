@@ -107,6 +107,7 @@ export class PurificationComponent implements OnInit {
             sampleId: this.sampleId,
             simpleExperimentBeans: [],
             fileElements: [],
+            purityBeans: [],
             simpleProtocol: { displayName: '', domainFileId: '', domainFileUri: '', domainId: '' }
         };
         this.dataTrailer=JSON.parse(JSON.stringify(this.data));
@@ -141,7 +142,7 @@ export class PurificationComponent implements OnInit {
 
         if (column.columnType) {
             this.changeColumnType(column.columnType,false);
-            this.changeColumnName(column.columnName,false);
+            this.changeColumnName(column.name,false);
         }
         else {
         }
@@ -154,7 +155,7 @@ export class PurificationComponent implements OnInit {
             this.errors={};
             this.setupData.columnNameOptions=data;
             if (isDropdown) {
-                this.columnHeader.columnName=null;
+                this.columnHeader.name=null;
             }
         },
         error=> {
@@ -298,8 +299,8 @@ export class PurificationComponent implements OnInit {
 
     updateRowsColsForFinding = function () {
         this.badFindingCell = this.createArray(this.csvDataColCount, this.csvDataRowCount);
-        let url = this.apiService.doPost(Consts.QUERY_CHARACTERIZTAION_UPDATE_FINDING,this.currentFinding);
 
+        let url = this.apiService.doPost(Consts.QUERY_SYNTHESIS_NEW_FINDING,this.currentFinding);
         url.subscribe(data=> {
                 data = data;
                 if (data.rows[this.csvDataRowCount - 1] === undefined) {
@@ -666,12 +667,39 @@ export class PurificationComponent implements OnInit {
     saveFinding() {
         this.currentFinding.dirty=1;
         if (this.findingIndex==-1) {
-            this.data.finding.push(this.currentFinding);
+            this.data['purityBeans'].push(this.currentFinding);
         }
         else {
-            this.data.finding[this.findingIndex]=JSON.parse(JSON.stringify(this.currentFinding));
+            this.data['purityBeans'][this.findingIndex]=JSON.parse(JSON.stringify(this.currentFinding));
         }
-        let url = this.apiService.doPost(Consts.QUERY_SYNTHESIS_SAVE_FINDING,this.data);
+
+        var haveDatum = false;
+        for (var i0 = 0; i0 < this.data.purityBeans.length; i0++) {
+            for (var i1 = 0; i1 < this.data.purityBeans[i0].columnHeaders.length; i1++) {
+                if (this.data.purityBeans[i0].columnHeaders[i1].columnType === 'datum') {
+                    haveDatum = true;
+                    break;
+                }
+            }
+            if (haveDatum) {
+                break;
+            }
+        }
+
+        // Warn user if there is no datum column
+        if (!haveDatum) {
+            alert("At least one column must be of type Datum.");
+            return;
+        }
+
+        var purityUrl = "";
+        if (this.findingIndex==-1) {
+            purityUrl = Consts.QUERY_SYNTHESIS_SAVE_FINDING;
+        } else {
+            purityUrl = Consts.QUERY_SYNTHESIS_UPDATE_FINDING;
+        }
+
+        let url = this.apiService.doPost(purityUrl,this.data);
         url.subscribe(data=> {
             this.errors={};
 
@@ -681,19 +709,9 @@ export class PurificationComponent implements OnInit {
         error=> {
             this.errors=error;
         })
+
         this.columnHeaderIndex=null;
         this.findingIndex=null;
-    };
-
-    updateRowsColumns() {
-        let url = this.apiService.doPost(Consts.QUERY_SYNTHESIS_UPDATE_FINDING,this.currentFinding)
-        url.subscribe(data=> {
-            this.errors={};
-            this.currentFinding=data;
-        },
-        error=> {
-            this.errors=error;
-        })
     };
 
     addFile() {
