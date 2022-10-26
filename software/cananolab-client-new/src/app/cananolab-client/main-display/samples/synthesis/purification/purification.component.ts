@@ -644,6 +644,7 @@ export class PurificationComponent implements OnInit {
         if (this.columnHeader['constantValue']!='') {
             this.currentFinding['rows'].forEach(row=> {
                 row['cells'][this.columnHeaderIndex]['value']=this.columnHeader['constantValue'];
+                row['cells'][this.columnHeaderIndex]['datumOrCondition'] = this.columnHeader['columnType'];
             });
         }
         this.currentFinding.columnHeaders[this.columnHeaderIndex]=this.columnHeader;

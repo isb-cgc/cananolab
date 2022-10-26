@@ -220,7 +220,10 @@ public class CharacterizationBean {
 
 	public void setupDomain(String createdBy) throws Exception {
 		className = ClassUtils.getShortClassNameFromDisplayName(characterizationName);
+		System.out.println("Issue 181 charBean A " + characterizationName);
+		System.out.println("Issue 181 charBean B " + className);
 		Class clazz = ClassUtils.getFullClass(className);
+		System.out.println("Issue 181 charBean C " + clazz);
 		if (clazz == null) {
 			clazz = OtherCharacterization.class;
 		}
