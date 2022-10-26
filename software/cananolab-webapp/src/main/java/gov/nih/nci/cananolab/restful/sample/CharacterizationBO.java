@@ -103,11 +103,17 @@ public class CharacterizationBO extends BaseAnnotationBO {
 		
 		simpleEdit.getErrors().clear();
 		simpleEdit.getMessages().clear();
-		
+
+		System.out.println("Issue 181 BO subOrUp " + charBean.getDomainChar());
+		System.out.println("Issue 181 BO subOrUp 2 " + simpleEdit.getType() + "  " +  simpleEdit.getName() + "  " +  simpleEdit.getCharId());
 		charBean = simpleEdit.transferToCharacterizationBean(charBean);
+		// WJRL 10/24/22: If trying to save an ex-vivo charactirization with type Pharmacokinetics,
+		// by the time you get here getDomainChar() is returning NULL:
+		System.out.println("Issue 181 BO subOrUp 2a " + charBean.getDomainChar());
 		if (simpleEdit.getCharId() == 0)
 			simpleEdit.setSubmitNewChar(true);
-		
+		System.out.println("Issue 181 BO subOrUp 2b " + simpleEdit.isSubmitNewChar());
+
 		List<String> errs = new ArrayList<String>();
 		if (!validateInputs(request, charBean, errs)) {
 			SimpleCharacterizationSummaryEditBean emptyView = new SimpleCharacterizationSummaryEditBean();
@@ -124,6 +130,7 @@ public class CharacterizationBO extends BaseAnnotationBO {
 		
 		SimpleCharacterizationSummaryEditBean success = new SimpleCharacterizationSummaryEditBean();
 		success.getMessages().add("The characterization has been saved successfully");
+		System.out.println("Issue 181 BO subOrUp 3 " + success);
 		return success;
 	}
 
@@ -261,7 +268,11 @@ public class CharacterizationBO extends BaseAnnotationBO {
 			newChar = false;
 		}
 		logger.debug("Saving new char? " + newChar);
-		
+		// WJRL 10/24/22: If trying to save an ex-vivo charactirization with type Pharmacokinetics,
+		// by the time you get here the charBean is of type
+		// gov.nih.nci.cananolab.domain.characterization.invivo.Pharmacokinetics@0
+		System.out.println("Issue 181 cbo.saveCharacterization gdc " + charBean.getDomainChar());
+
 		characterizationService.saveCharacterization(sampleBean, charBean);
 		// retract from public if updating an existing public record and not curator
 		if (!newChar && !SpringSecurityUtil.getPrincipal().isCurator() && 

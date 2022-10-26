@@ -1006,24 +1006,21 @@ public class SynthesisPurificationBO extends BaseAnnotationBO {
         //Determine the directory for saving the file
         String internalUriPath = Constants.FOLDER_PARTICLE + '/' + sampleBean.getDomain().getName() + '/' +
                 "synthesisPurification";
-        byte[] newFileData = (byte[]) httpRequest.getSession().getAttribute("newFileData");
-        theNewFile.setNewFileData(newFileData);
         theNewFile.setupDomainFile(internalUriPath, SpringSecurityUtil.getLoggedInUserName());
 
-
-
-//        if (!theNewFile.getDomainFile().getUriExternal()) {
-//            if (newFileData != null) {
-//                theNewFile.setNewFileData((byte[]) httpRequest.getSession().getAttribute("newFileData"));
-//                theNewFile.getDomainFile().setUri(Constants.FOLDER_PARTICLE + '/'
-//                        + sampleBean.getDomain().getName() + '/' + "synthesisPurification" + "/" + timestamp + "_"
-//                        + theNewFile.getDomainFile().getName());
-//            } else if (theNewFile.getDomainFile().getId() != null) {
-//                theNewFile.getDomainFile().setUri(theNewFile.getDomainFile().getName());
-//            } else {
-//                theNewFile.getDomainFile().setUri(null);
-//            }
-//        }
+        byte[] newFileData = (byte[]) httpRequest.getSession().getAttribute("newFileData");
+        if (!theNewFile.getDomainFile().getUriExternal()) {
+            if (newFileData != null) {
+                theNewFile.setNewFileData((byte[]) httpRequest.getSession().getAttribute("newFileData"));
+                theNewFile.getDomainFile().setUri(Constants.FOLDER_PARTICLE + '/'
+                        + sampleBean.getDomain().getName() + '/' + "synthesisPurification" + "/" + timestamp + "_"
+                        + theNewFile.getDomainFile().getName());
+            } else if (theNewFile.getDomainFile().getId() != null) {
+                theNewFile.getDomainFile().setUri(theNewFile.getDomainFile().getName());
+            } else {
+                theNewFile.getDomainFile().setUri(null);
+            }
+        }
         synthesisPurificationBean.addFile(theNewFile);
 
 //
