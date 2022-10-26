@@ -261,8 +261,9 @@ public class SimpleSynthesisPurificationBean {
         setAnalysis(synthesisPurification.getAnalysis());
         setYield(synthesisPurification.getYield());
         setDisplayName(synBean.getDisplayName());
+
+        simplePurityBeans = new ArrayList<SimplePurityBean>();
         if ((synBean.getPurityBeans() != null) && (synBean.getPurityBeans().size()>0)) {
-            simplePurityBeans = new ArrayList<SimplePurityBean>();
 //            columnHeaders = synBean.getPurityBeans().get(0).getColumnHeaders();
 //            columnHeaders = synBean.getPurityBeans().get(0).getPurityColumnHeaders();
             for (SynthesisPurityBean purityBean : synBean.getPurityBeans()) {
@@ -270,8 +271,8 @@ public class SimpleSynthesisPurificationBean {
                 simplePurityBean.transferFromPurityBean(purityBean, sampleId);
                 simplePurityBeans.add(simplePurityBean);
             }
-
         }
+        setPurityBeans(simplePurityBeans);
 
         //*** Testing SimpleRowBean**//
 
@@ -349,8 +350,9 @@ public class SimpleSynthesisPurificationBean {
         setAnalysis(synthesisPurification.getAnalysis());
         setYield(synthesisPurification.getYield());
         setDisplayName(synBean.getDisplayName());
+
+        simplePurityBeans = new ArrayList<SimplePurityBean>();
         if ((synBean.getPurityBeans() != null) && (synBean.getPurityBeans().size()>0)) {
-            simplePurityBeans = new ArrayList<SimplePurityBean>();
 //            columnHeaders = synBean.getPurityBeans().get(0).getColumnHeaders();
 //            columnHeaders = synBean.getPurityBeans().get(0).getPurityColumnHeaders();
             for (SynthesisPurityBean purityBean : synBean.getPurityBeans()) {
@@ -358,12 +360,10 @@ public class SimpleSynthesisPurificationBean {
                 simplePurityBean.transferFromPurityBean(purityBean, sampleId);
                 simplePurityBeans.add(simplePurityBean);
             }
-
         }
+        setPurityBeans(simplePurityBeans);
 
         //*** Testing SimpleRowBean**//
-
-
 //        editBean.transferPurificationToPurificationEdit(this);
 
         if (synBean != null) {
