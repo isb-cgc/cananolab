@@ -26,20 +26,6 @@ public class SynthesisFunctionalizationBean extends BaseSynthesisEntityBean {
 
     List<SynthesisFunctionalizationElementBean> synthesisFunctionalizationElements = new ArrayList<SynthesisFunctionalizationElementBean>();
 
-    public void SynthesisFunctionalizationBean0( SynthesisFunctionalization synthesisFunctionalization ) {
-        this.domainEntity = synthesisFunctionalization;
-
-        if( synthesisFunctionalization.getSynthesisFunctionalizationElements() != null ) {
-            for( SynthesisFunctionalizationElement synthesisFunctionalizationElement : synthesisFunctionalization.getSynthesisFunctionalizationElements() ) {
-                synthesisFunctionalizationElements.add( new SynthesisFunctionalizationElementBean( synthesisFunctionalizationElement ) );
-            }
-
-        }
-        Collections.sort( synthesisFunctionalizationElements, new Comparators.SFEBeanTypeComparator() );
-
-    }
-
-
     public SynthesisFunctionalizationBean(SynthesisFunctionalization functionalization){
 
         domainEntity = functionalization;

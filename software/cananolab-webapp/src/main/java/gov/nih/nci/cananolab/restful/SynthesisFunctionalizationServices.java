@@ -44,31 +44,6 @@ public class SynthesisFunctionalizationServices {
     }
 
     @POST
-    @Path("/saveSynthesisFunctionalizationElement")
-    @Produces ("application/json")
-    public Response saveSynthesisunctionalizationElement(@Context HttpServletRequest httpRequest, SimpleSynthesisFunctionalizationBean simpleSynthesisFunctionalizationBean) {
-       // return Response.status(Response.Status.OK).entity("ALL GOOD TEST").build();
-
-        try{
-            SynthesisFunctionalizationBO synthesisFunctionalizationBO = (SynthesisFunctionalizationBO) SpringApplicationContext.getBean(httpRequest, "synthesisFunctionalizationBO");
-            if(!SpringSecurityUtil.isUserLoggedIn())
-                return Response.status(Response.Status.UNAUTHORIZED).entity("Session expired").build();
-
-            SimpleSynthesisFunctionalizationBean synthesisFunctionalizationBean = synthesisFunctionalizationBO.saveFunctionalizationElement(simpleSynthesisFunctionalizationBean, httpRequest);
-
-            List<String> errors = synthesisFunctionalizationBean.getErrors();
-            return(errors ==null || errors.size()==0)?
-                    Response.ok(synthesisFunctionalizationBean).build(): Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(errors).build();
-
-        } catch(Exception e){
-            logger.error(e.getMessage());
-			e.printStackTrace();
-			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity((CommonUtil.wrapErrorMessageInList("Error while saving Synthesis Functionalization Element "+ e.getStackTrace()))).build();
-        }
-
-    }
-
-    @POST
     @Path("/saveFile")
     @Produces ("application/json")
     public Response saveFile(@Context HttpServletRequest httpRequest, SimpleSynthesisFunctionalizationBean simpleSynthesisFunctionalizationBean) {
@@ -88,8 +63,6 @@ public class SynthesisFunctionalizationServices {
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(CommonUtil.wrapErrorMessageInList("Error while saving the File " + e.getMessage())).build();
         }
     }
-
-
 
     @POST
     @Path("/removeFile")
@@ -111,8 +84,6 @@ public class SynthesisFunctionalizationServices {
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(CommonUtil.wrapErrorMessageInList("Error while removing the File " + e.getMessage())).build();
         }
     }
-
-
 
     @GET
     @Path("/edit")
@@ -139,71 +110,6 @@ public class SynthesisFunctionalizationServices {
         }
     }
 
-
-
-    @GET
-    @Path("/viewDetails")
-    @Produces ("application/json")
-    public Response viewDetails(@Context HttpServletRequest httpRequest, @DefaultValue("") @QueryParam("sampleId") String sampleId, @DefaultValue("") @QueryParam("dataId") String dataId) {
-
-        try {
-            SynthesisFunctionalizationBO simpleSynthesisFunctionalizationBO =
-                    (SynthesisFunctionalizationBO) SpringApplicationContext.getBean(httpRequest, "synthesisFunctionalizationBO");
-
-            if (!SpringSecurityUtil.isUserLoggedIn()) {
-                return Response.status(Response.Status.UNAUTHORIZED).entity(Constants.MSG_SESSION_INVALID).build();
-            }
-
-            SimpleSynthesisFunctionalizationBean bean = simpleSynthesisFunctionalizationBO.setupUpdate(sampleId, dataId, httpRequest);
-
-            List<String> errors = bean.getErrors();
-            return (errors == null || errors.size() == 0) ?
-                    Response.ok(bean).build() :
-                    Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(errors).build();
-        } catch (Exception e) {
-            logger.error(e.getMessage());
-            e.printStackTrace();
-            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(CommonUtil.wrapErrorMessageInList("Error while viewing the synthesisFunctionalizationBO Entity" + e.getMessage())).build();
-        }
-    }
-
-    @POST
-    @Path("/removeSynthesisFunctionalizationElement")
-    @Produces ("application/json")
-    public Response removeSynthesisFunctionalizationElement(@Context HttpServletRequest httpRequest, SimpleSynthesisFunctionalizationBean simpleSynthesisFunctionalizationBean) {
-        try{
-            SynthesisFunctionalizationBO synthesisFunctionalizationBO = (SynthesisFunctionalizationBO) SpringApplicationContext.getBean(httpRequest, "synthesisFunctionalizationBO");
-            if(!SpringSecurityUtil.isUserLoggedIn()){
-                return Response.status(Response.Status.UNAUTHORIZED).entity("Session expired").build();
-            }
-            SimpleSynthesisFunctionalizationBean synthesisFunctionalizationBean= synthesisFunctionalizationBO.removeFunctionalizationElement(simpleSynthesisFunctionalizationBean,httpRequest);
-            List<String> errors = synthesisFunctionalizationBean.getErrors();
-            return (errors==null || errors.size()==0)? Response.ok(synthesisFunctionalizationBean).build() :
-                    Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(errors).build();
-        } catch(Exception e){
-            logger.error(e.getMessage());
-            e.printStackTrace();
-            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(CommonUtil.wrapErrorMessageInList("Error while removing Functionalization Element "+ e.getMessage())).build();
-        }
-    }
-
-
-
-
-    @POST
-    @Path("/tester")
-    @Produces ("application/json")
-    public Response tester(@Context HttpServletRequest httpRequest, SimpleSynthesisFunctionalizationBean simpleSynthesisFunctionalizationBean) {
-        try{
-            return Response.status(Response.Status.OK).entity("ALL GOOD TEST").build();
-        }catch(Exception e){
-            logger.error(e.getMessage());
-            e.printStackTrace();
-            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(CommonUtil.wrapErrorMessageInList("Error while removing Functionalization Element "+ e.getMessage())).build();
-        }
-    }
-
-
     @POST
     @Path("/submit")
     @Produces("application/json")
@@ -222,7 +128,6 @@ public class SynthesisFunctionalizationServices {
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(CommonUtil.wrapErrorMessageInList("Error while saving the synthesis functionalization :" + e.getMessage())).build();
         }
     }
-
 
     /**
      *
@@ -246,6 +151,4 @@ public class SynthesisFunctionalizationServices {
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(CommonUtil.wrapErrorMessageInList("Error while deleting the synthesis functionalization " + e.getMessage())).build();
         }
     }
-
-
 }

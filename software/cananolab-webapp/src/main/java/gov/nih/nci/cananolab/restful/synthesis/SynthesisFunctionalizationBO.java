@@ -52,9 +52,7 @@ import javax.servlet.http.HttpSession;
 @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
 @Component("synthesisFunctionalizationBO")
 public class SynthesisFunctionalizationBO extends BaseAnnotationBO {
-
     Logger logger = LogManager.getLogger(SynthesisFunctionalizationBO.class);
-
 
     @Autowired
     private CurationService curationServiceDAO;
@@ -102,15 +100,12 @@ public class SynthesisFunctionalizationBO extends BaseAnnotationBO {
         return msgs;
     }
 
-
-
     private SynthesisFunctionalizationBean transferSynthesisFunctionalizationBean(SimpleSynthesisFunctionalizationBean synFuncBean,
                                                                 HttpServletRequest request){
         //Transfer from the simple front-end bean to a full bean
         //TODO write
         SynthesisFunctionalizationBean bean = new SynthesisFunctionalizationBean();
         SynthesisFunctionalization functionalization = new SynthesisFunctionalization();
-
 
         //set up domain and bean
 //         functionalization.setId(synFuncBean.getId());
@@ -148,7 +143,6 @@ public class SynthesisFunctionalizationBO extends BaseAnnotationBO {
             e.printStackTrace();
             logger.error(e);
         }
-
 
         //Set files for domain and bean
         FileBean fileBean;
@@ -208,8 +202,7 @@ public class SynthesisFunctionalizationBO extends BaseAnnotationBO {
             logger.error(e);
         }
 
-
-//TODO check if any old functionalization elements have been removed and delete from data
+        //TODO check if any old functionalization elements have been removed and delete from data
         //TODO check if any new functionalization elements have been added and create row in data
         //Add synthesisFunctionalizationElements to bean and domain
         Set<SynthesisFunctionalizationElement> sfes = new HashSet<SynthesisFunctionalizationElement>();
@@ -237,7 +230,6 @@ public class SynthesisFunctionalizationBO extends BaseAnnotationBO {
                 synthesisFunctionalizationElement.setActivationMethod(sSFEBean.getActivationMethod());
                 synthesisFunctionalizationElement.setActivationEffect(sSFEBean.getActivationEffect());
                 synthesisFunctionalizationElement.setSynthesisFunctionalizationId(synFuncBean.getId());
-
 
                 //check for Files
                 List<SimpleFileBean> sfileBeans = sSFEBean.getFiles();
@@ -277,7 +269,6 @@ public class SynthesisFunctionalizationBO extends BaseAnnotationBO {
                         sfeInherentFunctionSet.add(sfeInherentFunction);
                     }}
 
-
                 synthesisFunctionalizationElement.setSfeInherentFunctions(sfeInherentFunctionSet);
 
                 sfes.add(synthesisFunctionalizationElement);
@@ -308,8 +299,6 @@ public class SynthesisFunctionalizationBO extends BaseAnnotationBO {
         msgs = validateFile(request, msgs, entityBean);
 
         return msgs;
-
-
     }
 
     private List<String> validateFile(HttpServletRequest request, List<String> msgs,
@@ -326,13 +315,11 @@ public class SynthesisFunctionalizationBO extends BaseAnnotationBO {
 
     private List<String> validateEntity(HttpServletRequest httpRequest, List<String> msgs, SynthesisFunctionalizationBean synthesisFunctionalizationBean){
         //TODO write
-
         return msgs;
     }
 
     private List<String> validateFunctionalizationElements(HttpServletRequest httpRequest, List<String> msgs, SynthesisFunctionalizationBean synthesisFunctionalizationBean){
         //TODO write
-
         return msgs;
     }
 
@@ -368,7 +355,6 @@ public class SynthesisFunctionalizationBO extends BaseAnnotationBO {
             return msgs;
         }
         return msgs;
-
     }
 
     private void detectRemovedElements(SynthesisFunctionalizationBean entityBean, Long sampleId) throws SynthesisException {
@@ -396,27 +382,19 @@ public class SynthesisFunctionalizationBO extends BaseAnnotationBO {
                     detectRemovedFunctions(element, entityBean.getSynthesisFunctionalizationElementById(element.getDomainId()),sampleId);
                 }
             }
-
-
-
         }
         catch (NoAccessException e) {
             logger.error("User does not have access to sample", e);
             throw new SynthesisException("User does not have access to sample", e);
-
         }
-
-
     }
 
     private void detectRemovedFunctions(SynthesisFunctionalizationElementBean originalElement, SynthesisFunctionalizationElementBean currentElement,Long sampleId) throws SynthesisException {
-
         List<SfeInherentFunctionBean> originalFunctionBeans = originalElement.getFunctions();
         List<SfeInherentFunctionBean> currentFunctionBeans = currentElement.getFunctions();
         List<SfeInherentFunctionBean> removedFunctions = new ArrayList<SfeInherentFunctionBean>();
         List<Long> functionIds = new ArrayList<Long>();
         for (SfeInherentFunctionBean function : currentFunctionBeans) {
-
             functionIds.add(function.getDomain().getId());
         }
 
@@ -427,13 +405,9 @@ public class SynthesisFunctionalizationBO extends BaseAnnotationBO {
                 synthesisService.deleteSfeInherentFunction(sampleId, currentElement.getDomainEntity(), functionBean.getDomain());
             }
         }
-
-
-
     }
 
     public List<String> delete(SimpleSynthesisFunctionalizationBean synthesisFunctionalizationBean, HttpServletRequest request) throws Exception {
-
         List<String> msgs = new ArrayList<String>();
         SynthesisFunctionalizationBean entityBean = transferSynthesisFunctionalizationBean(synthesisFunctionalizationBean, request);
         entityBean.setUpDomainEntity(SpringSecurityUtil.getLoggedInUserName());
@@ -495,8 +469,6 @@ public class SynthesisFunctionalizationBO extends BaseAnnotationBO {
                 , httpRequest);
     }
 
-
-
     private void checkOpenForms(SynthesisFunctionalizationBean synthesisFunctionalizationBean, HttpServletRequest request) throws Exception {
         String dispatch = request.getParameter("dispatch");
         String browserDispatch = getBrowserDispatch(request);
@@ -511,8 +483,6 @@ public class SynthesisFunctionalizationBO extends BaseAnnotationBO {
 //        setOtherValueOption(request, entityType, "synthesisFunctionalizationTypes");
 
         //TODO Check SynthesisFunctionalizationElement?
-
-
         String detailPage = InitSynthesisSetup.getInstance().getDetailPage(
                 "synthesisFunctionalization");
 
@@ -602,7 +572,6 @@ public class SynthesisFunctionalizationBO extends BaseAnnotationBO {
         }
         synthesisFunctionalizationBean.addFile(theNewFile);
 
-//
 //        // save entity to save file because inverse="false"
         List<String> msgs = validateInputs(httpRequest, synthesisFunctionalizationBean);
         if (msgs.size()>0) {
@@ -654,8 +623,6 @@ public class SynthesisFunctionalizationBO extends BaseAnnotationBO {
             }
 
             httpServletRequest.setAttribute("dataId", entity.getDomainEntity().getId().toString());
-
-
         }
         catch (Exception e) {
             logger.error("Error while saving Synthesis Functionalization Element " + e.getMessage());
@@ -722,8 +689,4 @@ public class SynthesisFunctionalizationBO extends BaseAnnotationBO {
         }
         return protocolLookup;
     }
-
-
-
-
 }

@@ -85,8 +85,7 @@ public class SynthesisMaterialBO extends BaseAnnotationBO {
     }
 
     public List<String> create(SimpleSynthesisMaterialBean synMatBean,
-                               HttpServletRequest request)
-            throws Exception {
+                               HttpServletRequest request) throws Exception {
         List<String> msgs = new ArrayList<String>() ;
         String sampleId = synMatBean.getSampleId();
         try {
@@ -106,13 +105,10 @@ public class SynthesisMaterialBO extends BaseAnnotationBO {
             return msgs;
         }
 
-
         msgs.add("success");
         request.getSession().setAttribute("tab", "1");
         return msgs;
     }
-
-
 
     private SynthesisMaterialBean transferSynthesisMaterialBean(SimpleSynthesisMaterialBean synMatBean,
                                                                 HttpServletRequest request) throws SynthesisException {
@@ -120,7 +116,6 @@ public class SynthesisMaterialBO extends BaseAnnotationBO {
         //TODO write
         SynthesisMaterialBean bean = new SynthesisMaterialBean();
         SynthesisMaterial material = new SynthesisMaterial();
-
 
         //set up domain and bean
 //        material.setId(synMatBean.getId());
@@ -133,7 +128,7 @@ public class SynthesisMaterialBO extends BaseAnnotationBO {
 
         material.setDescription(synMatBean.getDescription());
         bean.setDescription(synMatBean.getDescription());
-        if(synMatBean.getType()!=null) {
+        if (synMatBean.getType()!=null) {
             bean.setType(synMatBean.getType());
         } else
         {
@@ -143,7 +138,6 @@ public class SynthesisMaterialBO extends BaseAnnotationBO {
         //Add parent object to domain
         Synthesis synthesis;
         try {
-
             synthesis = synthesisService.getHelper().findSynthesisBySampleId(synMatBean.getSampleId());
 //            purification.setSynthesisId(synthesis.getId());
             if (synthesis != null) {
@@ -168,9 +162,6 @@ public class SynthesisMaterialBO extends BaseAnnotationBO {
             String err = "Issue retrieving sample for addition of synthesis element. ";
             throw new SynthesisException(err, se);
         }
-
-
-
 
         //Set files for domain and bean
         FileBean fileBean;
@@ -230,8 +221,7 @@ public class SynthesisMaterialBO extends BaseAnnotationBO {
             logger.error(e);
         }
 
-
-//TODO check if any old material elements have been removed and delete from data
+        //TODO check if any old material elements have been removed and delete from data
         //TODO check if any new material elements have been added and create row in data
         //Add synthesisMaterialElements to bean and domain
         Set<SynthesisMaterialElement> smes = new HashSet<SynthesisMaterialElement>();
@@ -257,7 +247,6 @@ public class SynthesisMaterialBO extends BaseAnnotationBO {
                 synthesisMaterialElement.setId(sSMEBean.getId());
                 synthesisMaterialElement.setType(sSMEBean.getType());
                 synthesisMaterialElement.setSynthesisMaterialId(synMatBean.getId());
-
 
                 //check supplier
 
@@ -335,16 +324,12 @@ public class SynthesisMaterialBO extends BaseAnnotationBO {
     }
 
     private List<String> validateInputs(HttpServletRequest request, SynthesisMaterialBean entityBean) {
-
-
         List<String> msgs = new ArrayList<String>();
         msgs = validateEntity(request, msgs, entityBean);
         msgs = validateMaterialElements(request, msgs, entityBean);
         msgs = validateFile(request, msgs, entityBean);
 
         return msgs;
-
-
     }
 
     private List<String> validateFile(HttpServletRequest request, List<String> msgs,
@@ -361,18 +346,15 @@ public class SynthesisMaterialBO extends BaseAnnotationBO {
 
     private List<String> validateEntity(HttpServletRequest httpRequest, List<String> msgs, SynthesisMaterialBean synthesisMaterialBean){
         //TODO write
-
         return msgs;
     }
 
     private List<String> validateMaterialElements(HttpServletRequest httpRequest, List<String> msgs, SynthesisMaterialBean synthesisMaterialBean){
         //TODO write
-
         return msgs;
     }
 
     private List<String> saveEntity(HttpServletRequest request, String sampleIdString, SynthesisMaterialBean entityBean) throws Exception {
-
         List<String> msgs = new ArrayList<String>();
         SampleBean sampleBean = setupSampleById(sampleIdString, request);
         CananoUserDetails userDetails = SpringSecurityUtil.getPrincipal();
@@ -431,43 +413,32 @@ public class SynthesisMaterialBO extends BaseAnnotationBO {
                     detectRemovedFunctions(element, entityBean.getSynthesisMaterialElementById(element.getDomainId()),sampleId);
                 }
             }
-
-
-
         }
         catch (NoAccessException e) {
             logger.error("User does not have access to sample", e);
             throw new SynthesisException("User does not have access to sample", e);
-
         }
-
-
     }
 
     private void detectRemovedFunctions(SynthesisMaterialElementBean originalElement, SynthesisMaterialElementBean currentElement,Long sampleId) throws SynthesisException {
+        List<SmeInherentFunctionBean> originalFunctionBeans = originalElement.getFunctions();
+        List<SmeInherentFunctionBean> currentFunctionBeans = currentElement.getFunctions();
+        List<SmeInherentFunctionBean> removedFunctions = new ArrayList<SmeInherentFunctionBean>();
+        List<Long> functionIds = new ArrayList<Long>();
+        for (SmeInherentFunctionBean function : currentFunctionBeans) {
+            functionIds.add(function.getDomain().getId());
+        }
 
-            List<SmeInherentFunctionBean> originalFunctionBeans = originalElement.getFunctions();
-            List<SmeInherentFunctionBean> currentFunctionBeans = currentElement.getFunctions();
-            List<SmeInherentFunctionBean> removedFunctions = new ArrayList<SmeInherentFunctionBean>();
-            List<Long> functionIds = new ArrayList<Long>();
-            for (SmeInherentFunctionBean function : currentFunctionBeans) {
-                functionIds.add(function.getDomain().getId());
+        for (SmeInherentFunctionBean functionBean : originalFunctionBeans) {
+            if (!functionIds.contains(functionBean.getDomain().getId())) {
+                logger.info("Inherent function removed: " + functionBean.getDomain().toString());
+                removedFunctions.add(functionBean);
+                synthesisService.deleteSmeInherentFunction(sampleId, currentElement.getDomainEntity(), functionBean.getDomain());
             }
-
-            for (SmeInherentFunctionBean functionBean : originalFunctionBeans) {
-                if (!functionIds.contains(functionBean.getDomain().getId())) {
-                    logger.info("Inherent function removed: " + functionBean.getDomain().toString());
-                    removedFunctions.add(functionBean);
-                    synthesisService.deleteSmeInherentFunction(sampleId, currentElement.getDomainEntity(), functionBean.getDomain());
-                }
-            }
-
-
-
+        }
     }
 
     public List<String> delete(SimpleSynthesisMaterialBean synthesisMaterialBean, HttpServletRequest request) throws Exception {
-
         List<String> msgs = new ArrayList<String>();
         SynthesisMaterialBean entityBean = transferSynthesisMaterialBean(synthesisMaterialBean, request);
         entityBean.setUpDomainEntity(SpringSecurityUtil.getLoggedInUserName());
@@ -528,13 +499,10 @@ public class SynthesisMaterialBO extends BaseAnnotationBO {
                 , httpRequest);
     }
 
-
-
     private void checkOpenForms(SynthesisMaterialBean synthesisMaterialBean, HttpServletRequest request) throws Exception {
         String dispatch = request.getParameter("dispatch");
         String browserDispatch = getBrowserDispatch(request);
         HttpSession session = request.getSession();
-
 
         InitSynthesisSetup.getInstance().persistSynthesisMaterialDropdowns(
                 request, synthesisMaterialBean);
@@ -544,13 +512,10 @@ public class SynthesisMaterialBO extends BaseAnnotationBO {
 //        setOtherValueOption(request, entityType, "synthesisMaterialTypes");
 
         //TODO Check SynthesisMaterialElement?
-
-
         String detailPage = InitSynthesisSetup.getInstance().getDetailPage(
                 "synthesisMaterial");
 
         request.setAttribute("synthesisDetailPage", detailPage);
-
     }
 
     public SimpleSynthesisMaterialBean setupUpdate(String sampleId, String synMatId, HttpServletRequest httpRequest) throws Exception {
@@ -618,7 +583,6 @@ public class SynthesisMaterialBO extends BaseAnnotationBO {
         String internalUriPath = Constants.FOLDER_PARTICLE+'/'+sampleBean.getDomain().getName()+'/'+"synthesisMaterial";
         theNewFile.setupDomainFile(internalUriPath,SpringSecurityUtil.getLoggedInUserName());
 
-
         byte[] newFileData = (byte[]) httpRequest.getSession().getAttribute("newFileData");
         if(!theNewFile.getDomainFile().getUriExternal()){
             if(newFileData!=null){
@@ -653,57 +617,6 @@ public class SynthesisMaterialBO extends BaseAnnotationBO {
 
     }
 
-    public SimpleSynthesisMaterialBean saveMaterialElement(SimpleSynthesisMaterialBean simpleSynthesisMaterialBean,
-                                                           HttpServletRequest httpServletRequest) throws Exception {
-        SynthesisMaterialBean entity = null;
-        String sampleId = simpleSynthesisMaterialBean.getSampleId();
-        try {
-            entity = transferSynthesisMaterialBean(simpleSynthesisMaterialBean, httpServletRequest);
-
-            SimpleSynthesisMaterialElementBean elementBeingEdited = simpleSynthesisMaterialBean.getMaterialElementBeingEdited();
-            SynthesisMaterialElementBean newElementBean = new SynthesisMaterialElementBean(elementBeingEdited);
-            newElementBean.getDomainEntity().setSynthesisMaterialId(entity.getId());
-            newElementBean.getDomainEntity().setSynthesisMaterial(entity.getDomainEntity());
-//            newElementBean.getDomainEntity().setSynthesisMaterial(entity.getDomainEntity());
-            Supplier supplier = newElementBean.getSupplier();
-
-            if((supplier !=null) && (supplier.getId()==null)){
-                //new supplier
-                supplier = saveSupplier(supplier);
-            }
-            newElementBean.setSuppler(supplier);
-
-
-            List<SynthesisMaterialElementBean> synthesisMaterialElementBeans = entity.getSynthesisMaterialElements();
-//            synthesisMaterialElementBeans.add(newElementBean);
-            for (SynthesisMaterialElementBean synthesisMaterialElementBean : synthesisMaterialElementBeans) {
-                synthesisMaterialElementBean.setupDomain(SpringSecurityUtil.getLoggedInUserName());
-            }
-            List<String> msgs,msgs2 = new ArrayList<String>();
-            msgs = validateInputs(httpServletRequest, entity);
-            msgs2 = this.saveEntity(httpServletRequest, sampleId, entity);
-            if(msgs2.size()>0){
-                msgs.addAll(msgs2);
-            }
-            if (msgs.size() > 0) {
-                SimpleSynthesisMaterialBean simpleSynthesisMaterialBean_error = new SimpleSynthesisMaterialBean();
-                simpleSynthesisMaterialBean_error.setErrors(msgs);
-                return simpleSynthesisMaterialBean_error;
-            }
-
-            httpServletRequest.setAttribute("dataId", entity.getDomainEntity().getId().toString());
-
-
-        }
-        catch (Exception e) {
-            logger.error("Error while saving Synthesis Material Element ", e);
-            throw new SynthesisException("Error while saving Synthesis Material Element ");
-        }
-        return setupUpdate(sampleId, entity.getDomainEntity().getId().toString(), httpServletRequest);
-    }
-
-
-
     public Supplier saveSupplier(Supplier supplier) throws SynthesisException {
        return synthesisService.createSupplierRecord(supplier);
     }
@@ -723,8 +636,6 @@ public class SynthesisMaterialBO extends BaseAnnotationBO {
 
     public void setLookups(HttpServletRequest request) throws Exception {
         ServletContext appContext = request.getSession().getServletContext();
-
-
 //        List<ProtocolBean> protocols = protocolService.getSynthesisProtocols(request);
         InitSynthesisSetup.getInstance().setSynthesisMaterialDropdowns(request);
 
@@ -753,8 +664,4 @@ public class SynthesisMaterialBO extends BaseAnnotationBO {
         }
         return protocolLookup;
     }
-
-
-
-
 }
