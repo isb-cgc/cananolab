@@ -214,17 +214,11 @@ export class PurificationComponent implements OnInit {
 
     deleteFinding() {
         if (confirm('Are you sure you wish to delete this finding?')) {
-            this.columnHeaderIndex=null;
-            this.findingIndex=null;
-            let url = this.apiService.doPost(Consts.QUERY_SYNTHESIS_REMOVE_FINDING,this.currentFinding);
-            url.subscribe(data=> {
-                this.errors={};
-                this.data=data;
-                //???? this.setCharacterizationData();
-            },
-            error=> {
-                this.errors=error;
-            })
+            this.data.purityBeans.splice(
+                this.data.purityBeans[this.findingIndex],
+                1
+            );
+            this.findingIndex = null;
         }
     };
 
@@ -700,16 +694,16 @@ export class PurificationComponent implements OnInit {
             purityUrl = Consts.QUERY_SYNTHESIS_UPDATE_FINDING;
         }
 
-        let url = this.apiService.doPost(purityUrl,this.data);
-        url.subscribe(data=> {
-            this.errors={};
+        // let url = this.apiService.doPost(purityUrl,this.data);
+        // url.subscribe(data=> {
+        //     this.errors={};
 
-            this.data=data;
-            //??? this.setCharacterizationData();
-        },
-        error=> {
-            this.errors=error;
-        })
+        //     this.data=data;
+        //     //??? this.setCharacterizationData();
+        // },
+        // error=> {
+        //     this.errors=error;
+        // })
 
         this.columnHeaderIndex=null;
         this.findingIndex=null;
@@ -770,16 +764,32 @@ export class PurificationComponent implements OnInit {
     }
 
     saveTechnique() {
-        if (this.techniqueIndex == -1) {
+        if (this.techniqueIndex==-1) {
             this.data['simpleExperimentBeans'].push(this.technique);
-            // this.data['purityBeingEdited'] = this.technique;
         } else {
-            this.data['simpleExperimentBeans'][this.techniqueIndex] =
-                this.technique;
-            // this.data['purityBeingEdited'] = this.technique;
+            this.data['simpleExperimentBeans'].experiments[this.techniqueIndex]=this.technique;
         }
-        this.techniqueIndex = null;
+
+        this.techniqueIndex=null;
+        this.instrumentIndex=null;
     }
+
+    // setPurificationData() {
+    //     this.dataTrailer = JSON.parse(JSON.stringify(this.data));
+    //     this.data.characterizationDate = this.formatDate(this.data.characterizationDate)
+    //     this.setupData = [];
+    //     let url = this.apiService.doGet(Consts.QUERY_CHARACTERIZATION_GET_DATUM_NUMBER_MODIFIER,'columnName=Number%20Modifier');
+    //     url.subscribe(data=> {
+    //         this.errors={};
+
+    //         this.setupData.datumNumberModifier=data;
+    //         this.setupData.datumNumberModifier.splice(this.setupData.datumNumberModifier.indexOf('other'),1)
+    //     },
+    //     error=> {
+    //         this.errors=error;
+    //     })
+    //     this.setupData.instrumentTypeLookup = [];
+    // };
 
     deleteTechnique() {
         if (

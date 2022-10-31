@@ -23,7 +23,7 @@ public class SimpleSynthesisPurificationBean {
     String sampleId = "";
     Long id;
     SimpleProtocol simpleProtocol;
-    private String createdBy;
+    private String createdBy = "";
     private Date createdDate;
     private String type;
     private String displayName;

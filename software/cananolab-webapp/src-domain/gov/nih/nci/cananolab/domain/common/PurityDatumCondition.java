@@ -15,7 +15,7 @@ public class PurityDatumCondition implements Serializable {
      */
     private static final long serialVersionUID = 1234567890L;
 
-    private String createdBy;
+    private String createdBy = "";
 
     private Date createdDate;
 

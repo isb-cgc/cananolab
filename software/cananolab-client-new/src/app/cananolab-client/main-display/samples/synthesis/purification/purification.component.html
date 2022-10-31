@@ -213,7 +213,7 @@
                                                         </label>
                                                     </td>
                                                     <td>
-				                                        <input type="text" id="cModelName" name="cModelName" [(ngModel)]="instrument.modelName">
+				                                        <input type="text" id="cModelName" name="cName" [(ngModel)]="instrument.modelName">
 				                                    </td>
                                                 </tr>
 
@@ -413,12 +413,12 @@
                                                                 <td>
                                                                     <select (ngModelChange)="addOtherValue('columnHeader.valueType',columnHeader.valueType)" name="columnHeader.valueType" [disabled]="columnHeader.columnType==null || columnHeader.name==null" [(ngModel)]="columnHeader.valueType">
                                                                         <option [selected]="columnHeader.valueType===null" [ngValue]="null">--Select--</option>
-                                                                        <option *ngFor="let name of data.datumConditionValueTypeLookup" [selected]="columnHeader.valueType==name">
+                                                                        <option *ngFor="let name of setupData.datumAndCondition" [selected]="columnHeader.valueType==name">
                                                                             {{name}}
                                                                         </option>
                                                                     </select>
                                                                     <div *ngIf="columnHeader.valueType ==='other'">
-                                                                        <canano-other-dropdown (saveOther)="saveOther($event)" [label]="'Value Type'" [value]="currentDropdownValues['columnHeader.valueType']" [field]="'columnHeader.valueType'" [array]="'data.datumConditionValueTypeLookup'">
+                                                                        <canano-other-dropdown (saveOther)="saveOther($event)" [label]="'Value Type'" [value]="currentDropdownValues['columnHeader.valueType']" [field]="'columnHeader.valueType'" [array]="'setupData.datumAndCondition'">
 
                                                                         </canano-other-dropdown>
                                                                     </div><br />

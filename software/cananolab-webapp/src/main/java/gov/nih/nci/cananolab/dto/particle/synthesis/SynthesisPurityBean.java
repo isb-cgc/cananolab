@@ -146,7 +146,7 @@ public class SynthesisPurityBean
                     }
                     PurityTableCell cell = new PurityTableCell( condition );
 
-                    row.getCells().add( new PurityTableCell( condition ) );
+                    row.getCells().add( cell );
                     row.setRowNumber(condition.getRowNumber());
 //                    }
                 }

@@ -144,7 +144,6 @@ export const Consts = {
     QUERY_SYNTHESIS_MATERIAL_EDIT: '/rest/synthesisMaterial/edit',
     QUERY_SYNTHESIS_MATERIAL_DELETE: '/rest/synthesisMaterial/delete',
     QUERY_SYNTHESIS_MATERIAL_UPDATE: '/rest/synthesisMaterial/submit',
-    SAVE_MATERIAL_ELEMENT: '/rest/synthesisMaterial/saveSynthesisMaterialElement',
     QUERY_SYNTHESIS_MATERIAL_SAVE_FILE: '/rest/synthesisMaterial/saveFile',
     QUERY_SYNTHESIS_MATERIAL_REMOVE_FILE: '/rest/synthesisMaterial/removeFile',
 
@@ -152,7 +151,6 @@ export const Consts = {
     QUERY_SYNTHESIS_FUNCTIONALIZATION_EDIT: '/rest/synthesisFunctionalization/edit',
     QUERY_SYNTHESIS_FUNCTIONALIZATION_DELETE: '/rest/synthesisFunctionalization/delete',
     QUERY_SYNTHESIS_FUNCTIONALIZATION_UPDATE: '/rest/synthesisFunctionalization/submit',
-    SAVE_FUNCTIONALIZATION_ELEMENT: '/rest/synthesisFunctionalization/saveMaterialElement',
     QUERY_SYNTHESIS_FUNCTIONALIZATION_SAVE_FILE: '/rest/synthesisFunctionalization/saveFile',
     QUERY_SYNTHESIS_FUNCTIONALIZATION_REMOVE_FILE: '/rest/synthesisFunctionalization/removeFile',
     
@@ -167,7 +165,6 @@ export const Consts = {
     QUERY_SYNTHESIS_NEW_FINDING: '/rest/synthesisPurification/newPurity',
     QUERY_SYNTHESIS_SAVE_FINDING: '/rest/synthesisPurification/createPurity',
     QUERY_SYNTHESIS_UPDATE_FINDING: '/rest/synthesisPurification/updatePurity',
-    QUERY_SYNTHESIS_REMOVE_FINDING: '/rest/synthesisPurification/deletePurity',
 
     QUERY_SYNTHESIS_GET_COLUMN_NAME_OPTIONS_BY_TYPE: '/rest/synthesisPurification/getColumnNameOptionsByType',
     QUERY_SYNTHESIS_GET_COLUMN_VALUE_UNIT_OPTIONS: '/rest/synthesisPurification/getColumnValueUnitOptions',

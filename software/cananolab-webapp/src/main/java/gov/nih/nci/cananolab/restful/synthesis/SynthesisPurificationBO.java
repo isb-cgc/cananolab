@@ -179,6 +179,12 @@ public class SynthesisPurificationBO extends BaseAnnotationBO {
         if ((sSynPurificationBean.getId() != null) && (sSynPurificationBean.getId() > 0)) {
             purification.setId(sSynPurificationBean.getId());
         }
+        else {
+            CananoUserDetails userDetails = SpringSecurityUtil.getPrincipal();
+            sSynPurificationBean.setCreatedBy(userDetails.getUsername());
+            sSynPurificationBean.setCreatedDate(Calendar.getInstance().getTime());
+        }
+
         //Name
         purification.setDisplayName(sSynPurificationBean.getDisplayName());
 
