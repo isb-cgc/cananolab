@@ -1,6 +1,14 @@
 if [ -n "$CI" ]; then
     export HOME=/home/circleci/${CIRCLE_PROJECT_REPONAME}
     export CANANODIR=${HOME}/staged/caNanoLab
+else
+    if ( "/home/vagrant/cananolab/shell/get_env.sh" ) ; then
+        export $(cat ${ENV_FILE_PATH} | grep -v ^# | xargs) 2> /dev/null
+    else
+        exit 1
+    fi
+    export HOME=/home/vagrant
+    export HOMEROOT=/home/vagrant/cananolab
 fi
 
 apt-get update -qq
@@ -20,7 +28,6 @@ apt-get install -y --force-yes mysql-client
 
 curl -fsSL https://deb.nodesource.com/setup_lts.x | bash -
 apt-get install -y nodejs
-
 
 echo "Libraries Installed"
 
