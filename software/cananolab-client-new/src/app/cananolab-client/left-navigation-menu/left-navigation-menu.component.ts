@@ -85,4 +85,15 @@ export class LeftNavigationMenuComponent implements OnInit{
         }
     }
 
+    onSynthesisClick(){
+        console.log(this.isEdit)
+
+        this.currentSelectedItem = 4;
+        if (this.isEdit) {
+            this.router.navigate( ['home/samples/synthesis', Properties.CURRENT_SAMPLE_ID] );  // @FIXME  Don't hard code these
+        }
+        else {
+            this.router.navigate( ['home/samples/view-synthesis', Properties.CURRENT_SAMPLE_ID] );  // @FIXME  Don't hard code these
+        }
+    }
 }

@@ -5,7 +5,7 @@ import {MatTooltipModule} from '@angular/material/tooltip';
 @NgModule({
     exports: [
         A11yModule,
-        MatTooltipModule,
+        MatTooltipModule
     ]
 })
 export class MaterialModule {}

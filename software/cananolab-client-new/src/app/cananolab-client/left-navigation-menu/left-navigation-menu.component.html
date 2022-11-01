@@ -40,4 +40,13 @@
 
     >Publication
     </button>
+
+    <button class="left-menu-button-green" type="button"
+            [ngClass]="{
+               'current-selected-item':  currentSelectedItem === 4
+            }"
+            (click)="onSynthesisClick()"
+
+    >Synthesis
+    </button>
 </div>
