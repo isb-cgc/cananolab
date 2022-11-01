@@ -1,4 +1,4 @@
- #!/bin/bash
+#!/bin/bash
 
 export $(cat /local/content/.env | grep -v ^# | xargs) 2> /dev/null
 
