@@ -18,7 +18,7 @@ apt-get install -y --force-yes unzip libffi-dev libssl-dev git ruby g++ curl dos
 apt-get install -y --force-yes libmysqlclient-dev build-essential
 apt-get install -y --force-yes mysql-client
 
-curl -fsSL https://deb.nodesource.com/setup_lts.x | bash -
+curl -fsSL https://deb.nodesource.com/setup_16.x | bash -
 apt-get install -y nodejs
 
 
