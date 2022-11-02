@@ -1,15 +1,22 @@
 #!/bin/bash
 
+
+# This script stages the Web Application WAR file and arranges all config files where needed. It runs a check script
+# to log the ability to access the data source and module installations, then shuts down Wildfly in preparation for
+# a wrapper script to run it.
+
 export $(cat /local/content/.env | grep -v ^# | xargs) 2> /dev/null
 
 export WILDFLY_HOME=/opt/wildfly-23.0.2.Final
 export WILDFLY_BIN=$WILDFLY_HOME/bin
 export JBOSS_CLI=$WILDFLY_BIN/jboss-cli.sh
 
+# Copy all config files
 cp -v /local/content/standalone-full.xml ${WILDFLY_HOME}/standalone/configuration/
 cp -v /local/content/standalone.conf ${WILDFLY_BIN}/
 cp -v /local/content/log4j2.xml ${WILDFLY_HOME}/standalone/configuration/
 
+# Run the server
 ${WILDFLY_BIN}/standalone.sh -Dapp.props.path=${APPLICATION_PROPERTIES_PATH} --server-config=standalone-full.xml -b 0.0.0.0 -bmanagement 0.0.0.0 &
 
 # Helper functions
@@ -43,6 +50,7 @@ function check_for_wildfly() {
   echo "${pids}"
 }
 
+# Wait for Wildfly to start before we do anything else (this can take a while)
 echo "Waiting while Wildfly starts:"
 wait_for_server "read-attribute server-state" "running" "Wildfly"
 
@@ -55,11 +63,13 @@ echo "Wildfly is now running - continuing setup and deployment:"
 # If this is a new database, uncomment these lines *once* to add an admin user
 #echo "Adding admin console user."
 #${WILDFLY_BIN}/add-user.sh -a -u "${WILDFLY_ADMIN}" -p "${WILDFLY_ADMIN_PASSWORD}" -g "admin"
-echo "Adding BouncyCastle and JDBC driver to Wildfly"
+echo "Adding BouncyCastle and JDBC modules to Wildfly"
+# Note that unlike the other scripts, module addition scripts DO change the filesystem and so will
+# persist between VM cycling. Most other .cli scripts will modify only in-memory files and be lost
+# at the end of this script.
 ${JBOSS_CLI} --file=/local/content/caNanoLab/artifacts/caNanoLab_modules.cli
-echo "Setting up logging and data sources."
-${JBOSS_CLI} --file=/local/content/caNanoLab/artifacts/caNanoLab_setup.cli
 
+# Wait for Wildfly to reload...
 wait_for_server "read-attribute server-state" "running" "Wildfly"
 
 if [ $? -ne 0 ]; then
@@ -67,8 +77,11 @@ if [ $? -ne 0 ]; then
   exit 1
 fi
 
+# Run the check script to log the status
 echo "Testing data source setup and connection"
 ${JBOSS_CLI} --file=/local/content/caNanoLab/artifacts/caNanoLab_checks.cli
+
+# Drop the WAR file into standalone/deployments, which will start a deployment
 echo "Deploying caNano WAR"
 cp -v /local/content/caNanoLab/artifacts/caNanoLab.war /opt/wildfly-23.0.2.Final/standalone/deployments
 
@@ -79,7 +92,7 @@ if [ $? -ne 0 ]; then
   exit 1
 fi
 
-# Check filesystem access
+# Check filesystem access for Lucene index writing. If we don't have filesystem write acces, indexed searches will fail.
 touch /tmp/checkFS
 ls -la /tmp
 if [ ! -f /tmp/checkFS ]; then
