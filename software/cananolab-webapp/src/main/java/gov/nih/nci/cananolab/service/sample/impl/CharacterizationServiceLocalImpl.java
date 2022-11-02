@@ -69,6 +69,7 @@ public class CharacterizationServiceLocalImpl extends BaseServiceLocalImpl imple
 			logger.error("Throwing no access Point A");
 			throw new NoAccessException();
 		}
+
 		try {
 			Sample sample = sampleBean.getDomain();
 			Characterization achar = charBean.getDomainChar();

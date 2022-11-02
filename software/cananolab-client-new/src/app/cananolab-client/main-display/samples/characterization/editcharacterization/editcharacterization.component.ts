@@ -411,16 +411,8 @@ export class EditcharacterizationComponent implements OnInit {
 
     formatDate(date) {
         let tempDate = new Date(date);
-        let month = (tempDate.getMonth()+1).toString();
-        if (parseInt(month)<10) {
-            month = '0'+month;
-        }
-        let day = tempDate.getDate().toString();
-        if (parseInt(day)<10) {
-            day = '0'+day;
-        }
-        let newDate = tempDate.getFullYear().toString()+'-'+month+'-'+day
-        return newDate
+        let isoStr = tempDate.toISOString();
+        return isoStr.slice(0, isoStr.indexOf('T'));
     };
 
     getInstrumentTypes(value) {

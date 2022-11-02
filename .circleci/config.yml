@@ -6,7 +6,9 @@ commands:
           name: "Set the Tier"
           command: |
             TIER=DEV
-            if [[ ${CIRCLE_BRANCH} =~ (prod|uat|test).* ]]; then
+            if [[ -n ${CIRCLE_TAG} ]]; then
+              TIER=$(git branch --contains tags/${CIRCLE_TAG} | awk '{print toupper($1)}')
+            elif [[ ${CIRCLE_BRANCH} =~ (prod|uat|test).* ]]; then
               TIER=$(awk -F[\-_] '{print toupper($1)}' \<<< ${CIRCLE_BRANCH})
             fi
             echo "export TIER=${TIER}" >> $BASH_ENV
@@ -148,7 +150,10 @@ workflows:
   version: 2
   build_and_deploy:
     jobs:
-      - build_job
+      - build_job:
+          filters:
+            tags:
+              only: /.*/
       - deploy_job:
           requires:
             - build_job
@@ -158,4 +163,5 @@ workflows:
                 - master
                 - test
                 - uat
-                - prod
+            tags:
+              only: /.*/

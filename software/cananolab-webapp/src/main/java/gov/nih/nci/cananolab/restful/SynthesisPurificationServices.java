@@ -8,6 +8,7 @@ import gov.nih.nci.cananolab.restful.synthesis.SynthesisPurificationBO;
 import gov.nih.nci.cananolab.restful.util.CommonUtil;
 import gov.nih.nci.cananolab.restful.view.SimpleSynthesisBean;
 import gov.nih.nci.cananolab.restful.view.edit.SimplePurityBean;
+import gov.nih.nci.cananolab.restful.view.edit.SimpleSynthesisMaterialBean;
 import gov.nih.nci.cananolab.restful.view.edit.SimpleSynthesisPurificationBean;
 import gov.nih.nci.cananolab.security.utils.SpringSecurityUtil;
 import gov.nih.nci.cananolab.system.applicationservice.CaNanoLabApplicationService;
@@ -534,26 +535,24 @@ public class SynthesisPurificationServices {
     @Path("/removeFile")
     @Produces("application/json")
     public Response removeFile(@Context HttpServletRequest httpRequest, SimpleSynthesisPurificationBean editBean) {
-        return null;
-//TODO clean up
-//        try {
-//            if (!SpringSecurityUtil.isUserLoggedIn()) {
-//                return Response.status(Response.Status.UNAUTHORIZED).entity(Constants.MSG_SESSION_INVALID).build();
-//            }
-//
-//            SynthesisPurificationBO purificationBO =
-//                    (SynthesisPurificationBO) SpringApplicationContext.getBean(httpRequest, "synthesisPurificationBO");
-//            List<String> msgs = purificationBO.deleteFile(editBean, httpRequest);
-//            return Response.ok(msgs).header("Access-Control-Allow-Credentials", "true")
-//                    .header("Access-Control-Allow-Origin", "*").header("Access-Control-Allow-Methods", "GET, POST, " +
-//                            "PUT, DELETE, OPTIONS")
-//                    .header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, " +
-//                            "Authorization").build();
-//        }
-//        catch (Exception e) {
-//            return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
-//                    .entity(CommonUtil.wrapErrorMessageInList(e.getMessage())).build();
-//        }
+        try {
+            SynthesisPurificationBO purificationBO = (SynthesisPurificationBO) SpringApplicationContext.getBean(httpRequest, "synthesisPurificationBO");
+            if (!SpringSecurityUtil.isUserLoggedIn()) {
+                return Response.status(Response.Status.UNAUTHORIZED).
+                        entity(Constants.MSG_SESSION_INVALID).build();
+            }
+            SimpleSynthesisPurificationBean synthesisPurificationBean
+                    = purificationBO.removeFile(editBean, httpRequest);
+
+            List<String> errors = synthesisPurificationBean.getErrors();
+            return (errors == null || errors.size() == 0) ?
+                    Response.ok(synthesisPurificationBean).build() :
+                    Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(errors).build();
+        }
+        catch (Exception e) {
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
+                    .entity(CommonUtil.wrapErrorMessageInList("Error while removing the File " + e.getMessage())).build();
+        }
     }
 
     /**
