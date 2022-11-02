@@ -6,7 +6,6 @@ fi
 # Build the Angular front end
 echo "[STATUS] Building Angular front end"
 cd ${HOME}/software/cananolab-client-new/
-export NODE_OPTIONS=--openssl-legacy-provider
 npm i
 # Install Angular CLI globally
 npm install -g @angular/cli@latest
