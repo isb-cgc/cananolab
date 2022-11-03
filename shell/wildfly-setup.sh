@@ -1,18 +1,6 @@
 #!/bin/bash
 
-export $(cat /local/content/.env | grep -v ^# | xargs) 2> /dev/null
-
-export WILDFLY_HOME=/opt/wildfly-23.0.2.Final
-export WILDFLY_BIN=$WILDFLY_HOME/bin
-export JBOSS_CLI=$WILDFLY_BIN/jboss-cli.sh
-
-cp -v /local/content/standalone-full.xml ${WILDFLY_HOME}/standalone/configuration/
-cp -v /local/content/standalone.conf ${WILDFLY_BIN}/
-cp -v /local/content/log4j2.xml ${WILDFLY_HOME}/standalone/configuration/
-
-${WILDFLY_BIN}/standalone.sh -Dapp.props.path=${APPLICATION_PROPERTIES_PATH} --server-config=standalone-full.xml -b 0.0.0.0 -bmanagement 0.0.0.0 &
-
-# Helper functions
+############## Helper functions ##############
 
 # Wait for something server-related.
 # $1 - the JBoss CLI command to perform eg. "read-attribute server-state"
@@ -43,6 +31,35 @@ function check_for_wildfly() {
   echo "${pids}"
 }
 
+############## END Helper Functions ##############
+
+if [ -n "$CI" ]; then
+  export HOME=/home/circleci/${CIRCLE_PROJECT_REPONAME}
+  export SETTINGS=/local/content
+  export CANANODIR=${SETTINGS}/caNanoLab
+else
+  export HOME=/home/vagrant/cananolab
+  export SETTINGS=${HOME}/localDev
+  export CANANODIR=${HOME}/staged/caNanoLab
+fi
+
+export ARTIFACTS=${CANANODIR}/artifacts
+
+export $(cat ${SETTINGS}/.env | grep -v ^# | xargs) 2> /dev/null
+
+export WILDFLY_HOME=/opt/wildfly-23.0.2.Final
+export WILDFLY_BIN=$WILDFLY_HOME/bin
+export JBOSS_CLI=$WILDFLY_BIN/jboss-cli.sh
+
+if [ -n "$CI" ]; then
+  cp -v ${SETTINGS}/standalone-full.xml ${WILDFLY_HOME}/standalone/configuration/
+  cp -v ${SETTINGS}/standalone.conf ${WILDFLY_BIN}/
+fi
+
+cp -v ${SETTINGS}/log4j2.xml ${WILDFLY_HOME}/standalone/configuration/
+
+${WILDFLY_BIN}/standalone.sh -Dapp.props.path=${APPLICATION_PROPERTIES_PATH} --server-config=standalone-full.xml -b 0.0.0.0 -bmanagement 0.0.0.0 &
+
 echo "Waiting while Wildfly starts:"
 wait_for_server "read-attribute server-state" "running" "Wildfly"
 
@@ -56,9 +73,12 @@ echo "Wildfly is now running - continuing setup and deployment:"
 #echo "Adding admin console user."
 #${WILDFLY_BIN}/add-user.sh -a -u "${WILDFLY_ADMIN}" -p "${WILDFLY_ADMIN_PASSWORD}" -g "admin"
 echo "Adding BouncyCastle and JDBC driver to Wildfly"
-${JBOSS_CLI} --file=/local/content/caNanoLab/artifacts/caNanoLab_modules.cli
-echo "Setting up logging and data sources."
-${JBOSS_CLI} --file=/local/content/caNanoLab/artifacts/caNanoLab_setup.cli
+${JBOSS_CLI} --file=${ARTIFACTS}/caNanoLab_modules.cli
+
+if [ -z "$CI" ]; then
+  echo "Setting up logging and data sources."
+  ${JBOSS_CLI} --file=${ARTIFACTS}/caNanoLab_setup.cli
+fi
 
 wait_for_server "read-attribute server-state" "running" "Wildfly"
 
@@ -68,9 +88,9 @@ if [ $? -ne 0 ]; then
 fi
 
 echo "Testing data source setup and connection"
-${JBOSS_CLI} --file=/local/content/caNanoLab/artifacts/caNanoLab_checks.cli
+${JBOSS_CLI} --file=${ARTIFACTS}/caNanoLab_checks.cli
 echo "Deploying caNano WAR"
-cp -v /local/content/caNanoLab/artifacts/caNanoLab.war /opt/wildfly-23.0.2.Final/standalone/deployments
+cp -v ${ARTIFACTS}/caNanoLab.war /opt/wildfly-23.0.2.Final/standalone/deployments
 
 wait_for_server "deployment-info --name=caNanoLab.war" "OK" "Deployment"
 

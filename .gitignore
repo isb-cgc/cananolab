@@ -38,6 +38,13 @@ software/common/lib/caNanoLab-beans\.jar
 
 software/cananolab-webapp/ijbuild/
 
+staged/
+
+localDev/jars/
+
+software/cananolab-webapp/lib/
+
+software/cananolab-client-new/build/
 
 software/cananolab-webapp/lib/caNanoLab-beans\.jar
 

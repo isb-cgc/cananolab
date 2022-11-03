@@ -1,7 +1,12 @@
 if [ -n "$CI" ]; then
     export HOME=/home/circleci/${CIRCLE_PROJECT_REPONAME}
-    export CANANODIR=${HOME}/staged/caNanoLab
+    export SETTINGS=/home/circleci/${CIRCLE_PROJECT_REPONAME}
+else
+    export HOME=/home/vagrant/cananolab
+    export SETTINGS=/home/vagrant/cananolab/localDev
 fi
+
+export CANANODIR=${HOME}/staged/caNanoLab
 
 # Build the Angular front end
 echo "[STATUS] Building Angular front end"
@@ -9,9 +14,9 @@ cd ${HOME}/software/cananolab-client-new/
 npm i
 # Install Angular CLI globally
 npm install -g @angular/cli@latest
-ng build --base-href / --output-path ./front-end/
+ng build --base-href / --output-path ./build/
 
-cp -av ./front-end/. ${HOME}/software/cananolab-webapp/web/
+cp -av ./build/. ${HOME}/software/cananolab-webapp/web/
 
 if [[ "$?" -ne 0 ]] ; then
   echo "<<<ANGULAR BUILD FAILED - CHECK THE BUILD LOGS>>>"
@@ -20,13 +25,16 @@ fi
 
 cd ${HOME}
 
-echo "[STATUS] Building Web Application"
+echo "[STATUS] Installing Libraries for build: Ant"
+
 wget http://archive.apache.org/dist/ant/binaries/apache-ant-1.9.9-bin.tar.gz \
     && tar xvfz apache-ant-1.9.9-bin.tar.gz \
     && mv apache-ant-1.9.9 /opt
 
 export ANT_HOME=/opt/apache-ant-1.9.9
 export PATH=${PATH}:${ANT_HOME}/bin
+
+echo "[STATUS] Installing Libraries for build: Maeven"
 
 wget https://archive.apache.org/dist/maven/maven-3/3.6.3/binaries/apache-maven-3.6.3-bin.tar.gz \
     && tar xvfz apache-maven-3.6.3-bin.tar.gz \
@@ -37,11 +45,11 @@ mkdir -p ${CANANODIR} \
     && mkdir -p ${CANANODIR}/artifacts \
     && mkdir -p ${CANANODIR}/config
 
-cp -v ${HOME}/maven-settings.xml ${ANT_HOME}/etc/settings.xml
-cp -v ${HOME}/maven-settings.xml /opt/apache-maven/conf/settings.xml
-cp -v ${HOME}/jars/*.jar ${HOME}/software/cananolab-webapp/lib/
-cp -v ${HOME}/jars/sdk/*.jar ${HOME}/software/cananolab-webapp/lib/sdk/
-cp -v ${HOME}/.env ${HOME}/software/cananolab-webapp/web/WEB-INF/
+cp -v ${SETTINGS}/maven-settings.xml ${ANT_HOME}/etc/settings.xml
+cp -v ${SETTINGS}/maven-settings.xml /opt/apache-maven/conf/settings.xml
+cp -v ${SETTINGS}/.env ${HOME}/software/cananolab-webapp/web/WEB-INF/
+cp -v ${SETTINGS}/jars/*.jar ${HOME}/software/cananolab-webapp/lib/
+cp -v ${SETTINGS}/jars/sdk/*.jar ${HOME}/software/cananolab-webapp/lib/sdk/
 
 SEMVER="${TIER}"
 if [ -n "$CIRCLE_TAG" ]; then
@@ -56,7 +64,14 @@ fi
 sed -i "s/\[\[RELEASE_AND_BUILD_INFO\]\]/caNanoLab Release ${SEMVER} Build cananolab-${SEMVER}-${APP_SHA}/g" ${HOME}/software/cananolab-webapp/web/main.js
 
 cd ${HOME}/software/cananolab-webapp/
-ant dist
+
+echo "[STATUS] Building Web Application"
+
+if [ -n "$CI" ]; then
+  ant dist
+else
+  ant deploy_vm
+fi
 
 if [[ "$?" -ne 0 ]] ; then
   echo "<<<ANT BUILD FAILED - CHECK THE BUILD LOGS>>>"
@@ -64,17 +79,22 @@ if [[ "$?" -ne 0 ]] ; then
 fi
 
 cp -v ${HOME}/software/cananolab-webapp/target/dist/caNanoLab.war ${CANANODIR}/artifacts
-cd ${HOME}/software/cananolab-webapp/lib/sdk
-cp -v csmapi* ${CANANODIR}/artifacts
-cd ${HOME}/software/cananolab-webapp/lib
-cp -v mysql-socket*.jar bcprov*.jar ${CANANODIR}/artifacts
-cd ${HOME}/software/cananolab-webapp/target/dist/common
-cp -v *.cli ${CANANODIR}/artifacts
-cp -v wikihelp.properties ${CANANODIR}/config
 
-cp -v ${HOME}/shell/*wildfly*.sh ${HOME}/staged/
-cp -v ${HOME}/.env ${HOME}/staged/
-cp -v ${HOME}/standalone-full.xml ${HOME}/staged/
-cp -v ${HOME}/standalone.conf ${HOME}/staged/
-cp -v ${HOME}/log4j2.xml ${HOME}/staged/
-chmod ug+x ${HOME}/staged/*wildfly*.sh
+if [ -n "$CIRCLE_TAG" ]; then
+  cd ${HOME}/software/cananolab-webapp/lib/sdk
+  cp -v csmapi* ${CANANODIR}/artifacts
+  cd ${HOME}/software/cananolab-webapp/lib
+  cp -v mysql-socket*.jar bcprov*.jar ${CANANODIR}/artifacts
+  cd ${HOME}/software/cananolab-webapp/target/dist/common
+  cp -v *.cli ${CANANODIR}/artifacts
+  cp -v wikihelp.properties ${CANANODIR}/config
+
+  cp -v ${SETTINGS}/.env ${HOME}/staged/
+  cp -v ${SETTINGS}/log4j2.xml ${HOME}/staged/
+  cp -v ${SETTINGS}/shell/*wildfly*.sh ${HOME}/staged/
+  cp -v ${SETTINGS}/standalone-full.xml ${HOME}/staged/
+  cp -v ${SETTINGS}/standalone.conf ${HOME}/staged/
+  chmod ug+x ${SETTINGS}/staged/*wildfly*.sh
+else
+
+fi
