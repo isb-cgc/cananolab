@@ -31,7 +31,7 @@ class SearchPublicationService {
 }
 SearchPublicationService.ɵfac = function SearchPublicationService_Factory(t) { return new (t || SearchPublicationService)(); };
 SearchPublicationService.ɵprov = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdefineInjectable"]({ token: SearchPublicationService, factory: SearchPublicationService.ɵfac, providedIn: 'root' });
-/*@__PURE__*/ (function () { _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵsetClassMetadata"](SearchPublicationService, [{
+(function () { (typeof ngDevMode === "undefined" || ngDevMode) && _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵsetClassMetadata"](SearchPublicationService, [{
         type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Injectable"],
         args: [{
                 providedIn: 'root'
@@ -89,12 +89,90 @@ class SampleSearchResultsService {
 }
 SampleSearchResultsService.ɵfac = function SampleSearchResultsService_Factory(t) { return new (t || SampleSearchResultsService)(); };
 SampleSearchResultsService.ɵprov = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdefineInjectable"]({ token: SampleSearchResultsService, factory: SampleSearchResultsService.ɵfac, providedIn: 'root' });
-/*@__PURE__*/ (function () { _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵsetClassMetadata"](SampleSearchResultsService, [{
+(function () { (typeof ngDevMode === "undefined" || ngDevMode) && _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵsetClassMetadata"](SampleSearchResultsService, [{
         type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Injectable"],
         args: [{
                 providedIn: 'root'
             }]
     }], function () { return []; }, null); })();
+
+
+/***/ }),
+
+/***/ "kzQT":
+/*!**************************************************************************!*\
+  !*** ./src/app/cananolab-client/main-display/logout/logout.component.ts ***!
+  \**************************************************************************/
+/*! exports provided: LogoutComponent */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "LogoutComponent", function() { return LogoutComponent; });
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "fXoL");
+/* harmony import */ var _constants__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../../constants */ "l207");
+/* harmony import */ var _assets_properties__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../../assets/properties */ "DzTi");
+/* harmony import */ var _top_main_menu_top_main_menu_service__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../top-main-menu/top-main-menu.service */ "VE4C");
+/* harmony import */ var _common_services_api_service__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../common/services/api.service */ "WHDV");
+/* harmony import */ var _status_display_status_display_service__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../../status-display/status-display.service */ "X3t+");
+/* harmony import */ var _angular_router__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @angular/router */ "tyNb");
+/* harmony import */ var _common_services_util_service__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../../common/services/util.service */ "WHaB");
+
+
+
+
+
+
+
+
+
+class LogoutComponent {
+    constructor(topMainMenuService, apiService, statusDisplayService, router, utilService) {
+        this.topMainMenuService = topMainMenuService;
+        this.apiService = apiService;
+        this.statusDisplayService = statusDisplayService;
+        this.router = router;
+        this.utilService = utilService;
+        this.properties = _assets_properties__WEBPACK_IMPORTED_MODULE_2__["Properties"];
+    }
+    ngOnInit() {
+        if (!_assets_properties__WEBPACK_IMPORTED_MODULE_2__["Properties"].LOGGING_OUT) {
+            _assets_properties__WEBPACK_IMPORTED_MODULE_2__["Properties"].LOGGING_OUT = true;
+            (_assets_properties__WEBPACK_IMPORTED_MODULE_2__["Properties"].LOGGED_IN) ? this.logOut() : console.log("User is already logged out.");
+        }
+        else {
+            console.log("Logout process underway elsewhere--updating display only.");
+        }
+        this.topMainMenuService.showOnlyMenuItems([
+            'HOME', 'HELP', 'GLOSSARY', 'PROTOCOLS', 'SAMPLES', 'PUBLICATIONS', 'LOGIN'
+        ]);
+        this.router.navigate([this.utilService.getRouteByName('HOME')]);
+    }
+    logOut() {
+        this.apiService.doPost(_constants__WEBPACK_IMPORTED_MODULE_1__["Consts"].QUERY_LOGOUT, '').subscribe(data => {
+            console.log("User logged out.");
+            _assets_properties__WEBPACK_IMPORTED_MODULE_2__["Properties"].LOGGED_IN = false;
+            _assets_properties__WEBPACK_IMPORTED_MODULE_2__["Properties"].logged_in = false;
+            this.statusDisplayService.updateUser('guest');
+            _assets_properties__WEBPACK_IMPORTED_MODULE_2__["Properties"].LOGGING_OUT = false;
+        }, err => {
+            this.statusDisplayService.updateUser('unknown'); // CHECKME
+            console.log('ERROR doPost Consts.QUERY_LOGOUT: ');
+            console.log(err);
+            _assets_properties__WEBPACK_IMPORTED_MODULE_2__["Properties"].LOGGING_OUT = false;
+        });
+    }
+}
+LogoutComponent.ɵfac = function LogoutComponent_Factory(t) { return new (t || LogoutComponent)(_angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdirectiveInject"](_top_main_menu_top_main_menu_service__WEBPACK_IMPORTED_MODULE_3__["TopMainMenuService"]), _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdirectiveInject"](_common_services_api_service__WEBPACK_IMPORTED_MODULE_4__["ApiService"]), _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdirectiveInject"](_status_display_status_display_service__WEBPACK_IMPORTED_MODULE_5__["StatusDisplayService"]), _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdirectiveInject"](_angular_router__WEBPACK_IMPORTED_MODULE_6__["Router"]), _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdirectiveInject"](_common_services_util_service__WEBPACK_IMPORTED_MODULE_7__["UtilService"])); };
+LogoutComponent.ɵcmp = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdefineComponent"]({ type: LogoutComponent, selectors: [["canano-logout"]], decls: 0, vars: 0, template: function LogoutComponent_Template(rf, ctx) { }, styles: ["\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6IiIsImZpbGUiOiJsb2dvdXQuY29tcG9uZW50LnNjc3MifQ== */"] });
+(function () { (typeof ngDevMode === "undefined" || ngDevMode) && _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵsetClassMetadata"](LogoutComponent, [{
+        type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Component"],
+        args: [{
+                selector: 'canano-logout',
+                templateUrl: './logout.component.html',
+                styleUrls: ['./logout.component.scss']
+            }]
+    }], function () { return [{ type: _top_main_menu_top_main_menu_service__WEBPACK_IMPORTED_MODULE_3__["TopMainMenuService"] }, { type: _common_services_api_service__WEBPACK_IMPORTED_MODULE_4__["ApiService"] }, { type: _status_display_status_display_service__WEBPACK_IMPORTED_MODULE_5__["StatusDisplayService"] }, { type: _angular_router__WEBPACK_IMPORTED_MODULE_6__["Router"] }, { type: _common_services_util_service__WEBPACK_IMPORTED_MODULE_7__["UtilService"] }]; }, null); })();
 
 
 /***/ }),
@@ -130,7 +208,7 @@ class SearchSamplesByPublicationService {
 }
 SearchSamplesByPublicationService.ɵfac = function SearchSamplesByPublicationService_Factory(t) { return new (t || SearchSamplesByPublicationService)(); };
 SearchSamplesByPublicationService.ɵprov = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdefineInjectable"]({ token: SearchSamplesByPublicationService, factory: SearchSamplesByPublicationService.ɵfac, providedIn: 'root' });
-/*@__PURE__*/ (function () { _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵsetClassMetadata"](SearchSamplesByPublicationService, [{
+(function () { (typeof ngDevMode === "undefined" || ngDevMode) && _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵsetClassMetadata"](SearchSamplesByPublicationService, [{
         type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Injectable"],
         args: [{
                 providedIn: 'root'
@@ -185,7 +263,7 @@ class AdvancedSearchService {
 }
 AdvancedSearchService.ɵfac = function AdvancedSearchService_Factory(t) { return new (t || AdvancedSearchService)(); };
 AdvancedSearchService.ɵprov = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdefineInjectable"]({ token: AdvancedSearchService, factory: AdvancedSearchService.ɵfac, providedIn: 'root' });
-/*@__PURE__*/ (function () { _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵsetClassMetadata"](AdvancedSearchService, [{
+(function () { (typeof ngDevMode === "undefined" || ngDevMode) && _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵsetClassMetadata"](AdvancedSearchService, [{
         type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Injectable"],
         args: [{
                 providedIn: 'root'
@@ -247,7 +325,7 @@ class ProtocolsService {
 }
 ProtocolsService.ɵfac = function ProtocolsService_Factory(t) { return new (t || ProtocolsService)(); };
 ProtocolsService.ɵprov = _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵdefineInjectable"]({ token: ProtocolsService, factory: ProtocolsService.ɵfac, providedIn: 'root' });
-/*@__PURE__*/ (function () { _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵsetClassMetadata"](ProtocolsService, [{
+(function () { (typeof ngDevMode === "undefined" || ngDevMode) && _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵsetClassMetadata"](ProtocolsService, [{
         type: _angular_core__WEBPACK_IMPORTED_MODULE_1__["Injectable"],
         args: [{
                 providedIn: 'root'
