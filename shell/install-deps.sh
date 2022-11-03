@@ -2,11 +2,6 @@ if [ -n "$CI" ]; then
     export HOME=/home/circleci/${CIRCLE_PROJECT_REPONAME}
     export CANANODIR=${HOME}/staged/caNanoLab
 else
-    if ( "/home/vagrant/cananolab/shell/get_env.sh" ) ; then
-        export $(cat ${ENV_FILE_PATH} | grep -v ^# | xargs) 2> /dev/null
-    else
-        exit 1
-    fi
     export HOME=/home/vagrant
     export HOMEROOT=/home/vagrant/cananolab
 fi

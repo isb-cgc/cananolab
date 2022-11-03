@@ -37,15 +37,19 @@ if [ -n "$CI" ]; then
   export HOME=/home/circleci/${CIRCLE_PROJECT_REPONAME}
   export SETTINGS=/local/content
   export CANANODIR=${SETTINGS}/caNanoLab
+  export $(cat ${SETTINGS}/.env | grep -v ^# | xargs) 2> /dev/null
 else
+    if ( "/home/vagrant/cananolab/shell/get_env.sh" ) ; then
+        export $(cat ${ENV_FILE_PATH} | grep -v ^# | xargs) 2> /dev/null
+    else
+        exit 1
+    fi
   export HOME=/home/vagrant/cananolab
   export SETTINGS=${HOME}/localDev
   export CANANODIR=${HOME}/staged/caNanoLab
 fi
 
 export ARTIFACTS=${CANANODIR}/artifacts
-
-export $(cat ${SETTINGS}/.env | grep -v ^# | xargs) 2> /dev/null
 
 export WILDFLY_HOME=/opt/wildfly-23.0.2.Final
 export WILDFLY_BIN=$WILDFLY_HOME/bin
