@@ -34,7 +34,6 @@ L-->
 	<property name="common.dist.dir" location="${dist.dir}/common"/>
 	<property name="classes.dir" location="${basedir}/build/WEB-INF/classes"/>
 	<property name="lib.dir" location="${basedir}/build/WEB-INF/lib"/>
-	<!--	<property name="globus.dir" location="../cananolab-client/lib/globus"/>-->
 	<property name="db.dir" location="${basedir}/lib"/>
 
 	<property name="test.dir" value="test-rest"/>
@@ -112,7 +111,6 @@ L-->
 			<filter token="FILE_REPOSITORY_DIR" value="${file.repository.dir}"/>
 			<filter token="ADMIN_EMAIL" value="${admin.email}"/>
 			<!--			<filter token="ONLINE_HELP_URL" value="${online.help.url}"/>-->
-			<!--			<filter token="USE_LDAP" value="${ldap.authentication.enabled}"/>-->
 		</filterset>
 	</target>
 
@@ -267,64 +265,11 @@ L-->
 				<filter token="database.password" value="${database.password}"/>
 			</filterset>
 		</copy>
-		<!--		<if>-->
-		<!--			&lt;!&ndash;if use LDAP authentication, replace ldap tokens from build properties &ndash;&gt;-->
-		<!--			<equals arg1="${ldap.authentication.enabled}" arg2="true"/>-->
-		<!--			<then>-->
-		<!--				<echo message="Using LDAP authenication"/>-->
-		<!--				<copy overwrite="true" tofile="${common.dist.dir}/login-config.xml"-->
-		<!--					  file="${common.dir}/resources/jboss-conf/login-config-ldap.xml">-->
-		<!--					<filterset>-->
-		<!--						<filter token="ldap.host.url" value="${ldap.host.url}"/>-->
-		<!--						<filter token="ldap.searchable.base" value="${ldap.searchable.base}"/>-->
-		<!--						<filter token="ldap.userId.label" value="${ldap.userId.label}"/>-->
-		<!--					</filterset>-->
-		<!--				</copy>-->
-		<!--			</then>-->
-		<!--			&lt;!&ndash;if use database authentication, replace database tokens from build properties &ndash;&gt;-->
-		<!--			<else>-->
 		<copy overwrite="true" tofile="${common.dist.dir}/login-config.xml"
 			  file="${common.dir}/resources/jboss-conf/login-config-db.xml">
 			<!-- replace tokens with values from build properties -->
 			<filterset refid="db.filterset"/>
 		</copy>
-		<!--			</else>-->
-		<!--		</if>-->
-		<!-- the following is UPT specific -->
-		<!-- copy UPT required config files -->
-		<!--		<copy overwrite="true" tofile="${common.dist.dir}/ApplicationSecurityConfig.xml" file="${common.dir}/resources/jboss-conf/ApplicationSecurityConfig.xml">-->
-		<!--			&lt;!&ndash; replace tokens with values from build properties &ndash;&gt;-->
-		<!--			<filterset>-->
-		<!--				<filter token="jboss.server.dir" value="${jboss.server.dir}" />-->
-		<!--			</filterset>-->
-		<!--		</copy>-->
-		<!--		<copy overwrite="true" tofile="${common.dist.dir}/properties-service.xml" file="${common.dir}/resources/jboss-conf/properties-service.xml">-->
-		<!--			&lt;!&ndash; replace tokens with values from build properties &ndash;&gt;-->
-		<!--			<filterset>-->
-		<!--				<filter token="jboss.server.dir" value="${jboss.server.dir}" />-->
-		<!--			</filterset>-->
-		<!--		</copy>-->
-		<!--		<copy overwrite="true" tofile="${common.dist.dir}/csmupt.csm.new.hibernate.cfg.xml" file="${common.dir}/resources/jboss-conf/csmupt.csm.new.hibernate.cfg.xml" />-->
-		<!--		<copy overwrite="true" tofile="${common.dist.dir}/csmupt423.csm.new.hibernate.cfg.xml" file="${common.dir}/resources/jboss-conf/csmupt423.csm.new.hibernate.cfg.xml" />-->
-
-		<!--copy upt-ds.xml and replace database connection info-->
-		<!--		<copy overwrite="true" tofile="${common.dist.dir}/upt-ds.xml" file="${common.dir}/resources/jboss-conf/upt-ds.xml">-->
-		<!--			&lt;!&ndash; replace tokens with values from build properties &ndash;&gt;-->
-		<!--			<filterset id="db.filterset">-->
-		<!--				<filter token="database.url" value="${database.url}" />-->
-		<!--				<filter token="database.user" value="${database.user}" />-->
-		<!--				<filter token="database.password" value="${database.password}" />-->
-		<!--			</filterset>-->
-		<!--		</copy>-->
-
-		<!--copy uptEAR.ear -->
-		<!--copy overwrite="true" todir="${common.dist.dir}" file="${common.dir}/resources/security/uptEAR.ear" /-->
-
-		<!--copy csmapi-5.2.jar -->
-		<!--		<copy overwrite="true" todir="${common.dist.dir}" file="${commonlib.dir}/sdk/csmapi-5.2.jar" />-->
-
-		<!--copy bcprov-jdk15on-1.47.jar -->
-		<!--		<copy overwrite="true" todir="${common.dist.dir}" file="${commonlib.dir}/sdk/bcprov-jdk15on-1.47.jar"/>-->
 
 		<copy overwrite="true" todir="${common.dist.dir}" file="${common.dir}/resources/help/wikihelp.properties"/>
 
@@ -381,15 +326,6 @@ L-->
 			</fileset>
 		</copy>
 		<copy todir="${jboss.conf.dir}" overwrite="true" file="${common.dist.dir}/login-config.xml"/>
-	</target>
-
-	<target name="deploy_vm" depends="dist">
-		<copy file="${dist.dir}/caNanoLab.war" todir="${jboss.artifacts.dir}" overwrite="true"/>
-		<copy file="${dist.dir}/common/caNanoLab_modules.cli" todir="${jboss.artifacts.dir}" overwrite="true"/>
-		<copy file="${dist.dir}/common/caNanoLab_checks.cli" todir="${jboss.artifacts.dir}" overwrite="true"/>
-		<copy file="${commonlib.dir}/mysql-socket-factory-connector-j-8-1.4.1-jar-with-driver-and-dependencies.jar" todir="${jboss.artifacts.dir}" overwrite="true"/>
-		<copy file="${commonlib.dir}/bcprov-jdk15on-1.69.jar" todir="${jboss.artifacts.dir}" overwrite="true"/>
-		<copy file="${dist.dir}/common/wikihelp.properties" todir="${jboss.help.dir}" overwrite="true"/>
 	</target>
 
 	<target name="deploy_local" depends="dist">

@@ -76,7 +76,7 @@ echo "[STATUS] Building Web Application"
 if [ -n "$CI" ]; then
   ant dist
 else
-  ant deploy_vm
+  ant deploy_local
 fi
 
 if [[ "$?" -ne 0 ]] ; then
