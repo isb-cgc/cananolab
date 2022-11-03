@@ -7,7 +7,8 @@
 <!-----------               Navigation Menu                                          ------>
 <!-----------               Static Left side Menu                                    ------>
 <!----------------------------------------------------------------------------------------->
-<div class="main">
+<div  [ngStyle]="{ width: properties.MAX_WIDTH }" >
+<!-- -----  The top header with the "Keyword Search" box on the right ----- -->
 
 <!-- Shows a "Testing" banner if we are in TEST_MODE -->
 <div *ngIf="properties.TEST_MODE">
@@ -16,56 +17,62 @@
 
 <!-- -----  The Top Main Menu  ----- -->
 
-    <!-- -----  The top header with the "Keyword Search" box on the right ----- -->
-    <canano-header></canano-header>
-    <div class="row no-gutters main-menu" *ngIf="!print">
-        <div class="col">
-            <canano-top-main-menu></canano-top-main-menu>
-        </div>
-    </div>
-    <div class="row no-gutters">
-        <!-- -----  The left side Navigation menu & left static menu  ----- -->
-            <div class="col-lg-1 col-md-2 col-sm-2 leftMenu" *ngIf="!print">
+    <!-- -----  The left side Navigation menu & left static menu  ----- -->
+<div>
+    <table class="home">
+        <tr *ngIf="!print">
+            <td colspan="2" class="header">
+                <canano-header></canano-header>
+
+                <canano-top-main-menu></canano-top-main-menu>
+            </td>
+        </tr>
+
+        <tr>
+            <td class="leftMenu" *ngIf="!print">
                 <div>
                     <canano-left-navigation-menu *ngIf="properties.SAMPLE_TOOLS">
                     </canano-left-navigation-menu>
 
+                    <canano-left-static-menu>
+                    </canano-left-static-menu>
+
                     <canano-status-display></canano-status-display>
                 </div>
-            </div>
-            <div class="col-lg-11 col-md-10 col-sm-10 mainContent">
+            </td>
+            <td class="mainContent">
                     <router-outlet></router-outlet>
-            </div>
-    </div>
-    <div class="row no-gutters" *ngIf="!print">
-        <div class="footer col">
-            <ul>
-                <li class="footer-item">
-                    <button class="nav-link nav-menu-top-item left" (click)="navigateToUrl('mailto:nciappsupport@nih.gov')">
-                        Contact Us
-                    </button>
-                </li>
-                <li class="footer-item">
-                    <button class="nav-link nav-menu-top-item" (click)="navigateToUrl('https://www.hhs.gov/web/policies-and-standards/hhs-web-policies/privacy/index.html')">
-                        Privacy Notice
-                    </button>
-                </li>
-                <li class="footer-item">
-                    <button class="nav-link nav-menu-top-item" (click)="navigateToUrl('https://www.cancer.gov/policies')">
-                        Policies
-                    </button>
-                </li>
-                <li class="footer-item">
-                    <canano-disclaimer [hide]="true"></canano-disclaimer>
-                    <button data-toggle="modal" data-target="#disclaimer" class="nav-link nav-menu-top-item">
-                        Disclaimer
-                    </button>
-                </li>
-            </ul>
-        </div>
-    </div>
-    <div class="row no-gutters" *ngIf="!print">
-            <div class="footer white col">
+            </td>
+        </tr>
+        <tr *ngIf="!print">
+            <td colspan="2" class="footer">
+                    <ul>
+                        <li class="footer-item">
+                            <button class="nav-link nav-menu-top-item left" (click)="navigateToUrl('mailto:nciappsupport@nih.gov')">
+                                Contact Us
+                            </button>
+                        </li>
+                        <li class="footer-item">
+                            <button class="nav-link nav-menu-top-item" (click)="navigateToUrl('https://www.hhs.gov/web/policies-and-standards/hhs-web-policies/privacy/index.html')">
+                                Privacy Notice
+                            </button>
+                        </li>
+                        <li class="footer-item">
+                            <button class="nav-link nav-menu-top-item" (click)="navigateToUrl('https://www.cancer.gov/policies')">
+                                Policies
+                            </button>
+                        </li>
+                        <li class="footer-item">
+                            <canano-disclaimer [hide]="true"></canano-disclaimer>
+                            <button data-toggle="modal" data-target="#disclaimer" class="nav-link nav-menu-top-item">
+                                Disclaimer
+                            </button>
+                        </li>
+                    </ul>
+            </td>
+        </tr>
+        <tr *ngIf="!print">
+            <td colspan="2" class="footer white">
                 <a href="http://www.dhhs.gov/" target="_blank" rel="nofollow noreferrer">
                     Department of Health and Human Services
                 </a>
@@ -85,17 +92,20 @@
                 <a href="https://www.hhs.gov/vulnerability-disclosure-policy/index.html" target="_blank" rel="nofollow noreferrer">
                     Vulnerability Disclosure
                 </a>
-            </div>
-        </div>
-    <div class="row no-gutters" *ngIf="!print">
-            <div class="footer white col">
+            </td>
+        </tr>
+        <tr *ngIf="!print">
+            <td colspan="2" class="footer white">
                 NIH...Turning Discovery Into Health®
-            </div>
-        </div>
-    <div class="row no-gutters" *ngIf="!print">
-        <div class="footer white release  col">
+            </td>
+        </tr>
+        <tr *ngIf="!print">
+            <td colspan="2" class="footer white release">
                 [[RELEASE_AND_BUILD_INFO]]
-            </div>
-    </div>
-</div>
+            </td>
+        </tr>
+    </table>
 
+
+</div>
+</div>

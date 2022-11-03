@@ -92,11 +92,20 @@ export class ConfigurationService{
                         Properties.TEST_MODE = this.utilService.isTrue( value );
                     }
 
+
                     if( key === 'HTTP_TIMEOUT' ){
                         if( !this.utilService.isNullOrUndefinedOrEmpty( value ) ){
                             Properties.HTTP_TIMEOUT = value;
                         }
                     }
+
+
+                    if( key === 'MAX_WIDTH' ){
+                        if( !this.utilService.isNullOrUndefinedOrEmpty( value ) ){
+                            Properties.MAX_WIDTH = value;
+                        }
+                    }
+
                 }
             }
         }

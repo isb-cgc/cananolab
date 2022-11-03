@@ -2,28 +2,36 @@
 <!--------------- Top header, parent of top right search  ----------------->
 <!------------------------------------------------------------------------->
 
-    <div class="header-table row no-gutters" style="background-color: #ffffff">
-        <div class="col-8">
-            <span>
-                <a href="https://www.cancer.gov/" target="_blank" rel="nofollow noreferrer">
-                    <img class="nih-logo-00" src="assets/images/CBIIT-36px-Logo-COLOR_contrast.png" alt="NIH Logo">
-                </a>
-            </span>
-        </div>
-        <div class="col-4 align-right-center">
-            <a style="float: right" class="nih-link" href="https://www.nih.gov">U.S. National Institutes of Health</a>
-        </div>
-    </div>
-    <div class="header-table row no-gutters" style="background-color: #ffffff">
-        <div class="col-8">
-            <a [routerLink]="['/home']" routerLinkActive="router-link-active">
+<div class="header-div">
+    <table class="header-table" style="background-color: #ffffff">
+        <tr>
+            <td colspan="2">
+                <span>
+                    <a href="https://www.cancer.gov/" target="_blank" rel="nofollow noreferrer">
+                        <img class="nih-logo-00" src="assets/images/CBIIT-36px-Logo-COLOR_contrast.png" alt="NIH Logo0">
+                    </a>
+                </span>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <a [routerLink]="['/home']" routerLinkActive="router-link-active">
                 <img src="assets/images/appLogo-nanolab.gif" alt="caNanoLab">
-            </a>
-        </div>
-        <div class="col-4 align-right-center">
-            <canano-top-keyword-search
-                style="float: right"
-                class="m-0 p-0"
-            ></canano-top-keyword-search>
-        </div>
-    </div>
+                </a>
+            </td>
+            <td>
+                <span class="float-right nih-link-td">
+                    <div class="link">
+                        <a style="float: right" class="nih-link" href="https://www.nih.gov">U.S. National Institutes of Health</a>
+                    </div>
+                    <canano-top-keyword-search
+                        style="float: right"
+                        class="m-0 p-0"
+                    ></canano-top-keyword-search>
+                </span>
+            </td>
+
+        </tr>
+
+    </table>
+</div>

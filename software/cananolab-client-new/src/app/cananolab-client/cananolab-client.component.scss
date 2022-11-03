@@ -1,3 +1,5 @@
+
+
 $canano-green: #005518;
 $canano-blue: #0073b9;
 $canano-background-blue: #02055a;
@@ -13,7 +15,6 @@ $oddRowColor:#efeded;
 $mainDisplayHeadingHeight: 28px;
 $mainDisplayHeadingMargin: 8px;
 $font-family-sans-serif:arial,helvetica,verdana,sans-serif !important;
-
 html {
     font-family:$font-family-sans-serif;
 
@@ -21,15 +22,6 @@ html {
 body {
     font-family:$font-family-sans-serif;
 }
-
-.main {
-    max-width: 1350px;
-}
-
-.main-menu {
-    background-color: $canano-background-blue;
-}
-
 .header {
 	margin:0px;
 	padding:0px;
@@ -37,7 +29,7 @@ body {
 .home {
 }
 
-.leftMenu {
+td.leftMenu {
     @extend .home;
     background-color:$canano-background-blue;
     width:$leftMenuWidth;
@@ -46,7 +38,7 @@ body {
 	vertical-align:top;
 }
 
-.mainContent {
+td.mainContent {
     @extend .home;
     vertical-align:top;
     padding:0px;
@@ -184,6 +176,7 @@ img {
 
 
 .footer {
+	padding:0px 0px 0px 160px;
 	vertical-align:middle !important;
 	text-align:center;
 	background-color:$canano-background-blue;

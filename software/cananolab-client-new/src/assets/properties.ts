@@ -16,6 +16,8 @@ export let Properties = {
     // This value can be changed in the config file.
     HTTP_TIMEOUT: 180000, // Thousands of a second
 
+    MAX_WIDTH: '1600px',  // @TODO make this a configuration file thing
+
     CONFIG_FILE: 'configuration',
     CONFIG_COMPLETE: false, // @TODO Do not forget to implement checking for & updating this value
 

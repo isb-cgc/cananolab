@@ -10,6 +10,7 @@
 // @TODO Used by left-navigation-menu also. move to a higher common scss
 
 .left-menu-div{
+    width: $leftMenuWidth;
     margin-right: $leftMenuMargin;
 }
 
@@ -48,6 +49,7 @@
     color:#000;
 }
 
+
 .left-menu-heading{
     background-color: $menuHeadingBackgroundColor;
     color: #fff;
@@ -76,7 +78,7 @@
     background-color:$menuHeadingBackgroundColor;
     text-transform: none;
     border: solid $leftMenuBorderColor;
-    border-width:1px 0px 1px 0px;
+    border-width:1px 0px 0px 0px;
     padding-left:5px !important;
 }
 
@@ -96,7 +98,8 @@ a{
     width:100%;
     color:#fff;
     padding:5px 1px 5px 15px;
-    border: none;
+    border: solid $leftMenuBorderColor;
+    border-width:.1em 0px 0px 0px !important;
     font-weight:bold;
     font-size:$mainFontSize;
     margin:0px !important;
@@ -104,16 +107,13 @@ a{
     line-height:normal !important
 }
 
-button.left-nav:hover {
+.left-nav:hover {
     background-color:$navButtonColor !important;
     color:#02055A;
 
 }
 
+
 .underline {
     text-decoration: underline;
-}
-
-.dropdown-menu {
-    background-color: $canano-background-blue !important;
 }
