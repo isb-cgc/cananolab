@@ -107,5 +107,3 @@ if [ -n "$CIRCLE_TAG" ]; then
   cp -v ${SETTINGS}/standalone.conf ${HOME}/staged/
   chmod ug+x ${SETTINGS}/staged/*wildfly*.sh
 else
-
-fi
