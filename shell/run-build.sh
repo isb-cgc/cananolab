@@ -45,11 +45,17 @@ mkdir -p ${CANANODIR} \
     && mkdir -p ${CANANODIR}/artifacts \
     && mkdir -p ${CANANODIR}/config
 
+if [ ! -d "${HOME}/software/cananolab-webapp/lib" ]; then
+  mkdir ${HOME}/software/cananolab-webapp/lib
+fi
+
 cp -v ${SETTINGS}/maven-settings.xml ${ANT_HOME}/etc/settings.xml
 cp -v ${SETTINGS}/maven-settings.xml /opt/apache-maven/conf/settings.xml
 cp -v ${SETTINGS}/.env ${HOME}/software/cananolab-webapp/web/WEB-INF/
-cp -v ${SETTINGS}/jars/*.jar ${HOME}/software/cananolab-webapp/lib/
-cp -v ${SETTINGS}/jars/sdk/*.jar ${HOME}/software/cananolab-webapp/lib/sdk/
+if [ -n "$CI" ] || [ ! -d "${HOME}/software/cananolab-webapp/lib/sdk" ]; then
+  cp -v ${SETTINGS}/jars/*.jar ${HOME}/software/cananolab-webapp/lib/
+  cp -v ${SETTINGS}/jars/sdk/*.jar ${HOME}/software/cananolab-webapp/lib/sdk/
+fi
 
 SEMVER="${TIER}"
 if [ -n "$CIRCLE_TAG" ]; then
