@@ -101,9 +101,10 @@ if [[ "$?" -ne 0 ]] ; then
   exit 1
 fi
 
-cp -v ${HOME}/software/cananolab-webapp/target/dist/caNanoLab.war ${CANANODIR}/artifacts
+
 
 if [ -n "$CIRCLE_TAG" ]; then
+  cp -v ${HOME}/software/cananolab-webapp/target/dist/caNanoLab.war ${CANANODIR}/artifacts
   cd ${HOME}/software/cananolab-webapp/lib/sdk
   cp -v csmapi* ${CANANODIR}/artifacts
   cd ${HOME}/software/cananolab-webapp/lib
@@ -118,4 +119,6 @@ if [ -n "$CIRCLE_TAG" ]; then
   cp -v ${SETTINGS}/standalone-full.xml ${HOME}/staged/
   cp -v ${SETTINGS}/standalone.conf ${HOME}/staged/
   chmod ug+x ${SETTINGS}/staged/*wildfly*.sh
+else
+  cp -v ${HOME}/software/cananolab-webapp/local_build/artifacts/* ${CANANODIR}/artifacts
 fi

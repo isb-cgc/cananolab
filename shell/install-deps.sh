@@ -39,16 +39,19 @@ if [ -z "$CI" ]; then
   java -version
 
   wget https://download.jboss.org/wildfly/23.0.2.Final/wildfly-23.0.2.Final.tar.gz \
-      && tar xvfz wildfly-23.0.2.Final.tar.gz \
+      && tar xfz wildfly-23.0.2.Final.tar.gz \
       && mv wildfly-23.0.2.Final /opt
 fi
 
 echo "Libraries Installed"
 
 # Run dos2unix on the files in shell/ because of line terminator shenanigans with Windows
-echo "Running dos2unix on shell/*.sh..."
+echo "Running dos2unix on shell/*.sh and .env files..."
 dos2unix ${HOMEROOT}/shell/*.sh
 doc2unix ${HOMEROOT}/localDev/.env
+if ( "/home/vagrant/cananolab/shell/get_env.sh" ) ; then
+    dos2unix ${ENV_FILE_PATH}
+fi
 
 # If we have any git hooks, drop them into place.
 echo "Loading Git Hooks"
