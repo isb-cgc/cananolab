@@ -28,7 +28,7 @@ if [ -n "$CI" ]; then
   apt-get install -y nodejs
 fi
 
-# Wildfly and Java installation are done in the Dockerfile for deployments; for the local VM, we do that here
+# Wildfly and Java installation are done in the Dockerfile for cloud deployments; for the local VM, we do that here
 if [ -z "$CI" ]; then
   apt-get update
   wget -qO - https://adoptopenjdk.jfrog.io/adoptopenjdk/api/gpg/key/public | apt-key add -

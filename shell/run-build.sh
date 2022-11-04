@@ -34,6 +34,7 @@ else
   else
     cp -av ./build/. ${HOME}/software/cananolab-webapp/web/
   fi
+  cp -av ${SETTINGS}/build.properties ${HOME}/software/cananolab-webapp/
 fi
 
 if [[ "$?" -ne 0 ]] ; then
@@ -58,10 +59,6 @@ wget https://archive.apache.org/dist/maven/maven-3/3.6.3/binaries/apache-maven-3
     && tar xfz apache-maven-3.6.3-bin.tar.gz \
     && mv apache-maven-3.6.3 /opt \
     && ln -s /opt/apache-maven-3.6.3 /opt/apache-maven
-
-mkdir -p ${CANANODIR} \
-    && mkdir -p ${CANANODIR}/artifacts \
-    && mkdir -p ${CANANODIR}/config
 
 cp -v ${SETTINGS}/maven-settings.xml ${ANT_HOME}/etc/settings.xml
 cp -v ${SETTINGS}/maven-settings.xml /opt/apache-maven/conf/settings.xml
@@ -101,9 +98,11 @@ if [[ "$?" -ne 0 ]] ; then
   exit 1
 fi
 
-
-
+# For cloud deployment, stage all necessary files to be loaded onto the deployment image
 if [ -n "$CIRCLE_TAG" ]; then
+  mkdir -p ${CANANODIR} \
+    && mkdir -p ${CANANODIR}/artifacts \
+    && mkdir -p ${CANANODIR}/config
   cp -v ${HOME}/software/cananolab-webapp/target/dist/caNanoLab.war ${CANANODIR}/artifacts
   cd ${HOME}/software/cananolab-webapp/lib/sdk
   cp -v csmapi* ${CANANODIR}/artifacts
@@ -119,6 +118,4 @@ if [ -n "$CIRCLE_TAG" ]; then
   cp -v ${SETTINGS}/standalone-full.xml ${HOME}/staged/
   cp -v ${SETTINGS}/standalone.conf ${HOME}/staged/
   chmod ug+x ${SETTINGS}/staged/*wildfly*.sh
-else
-  cp -v ${HOME}/software/cananolab-webapp/local_build/artifacts/* ${CANANODIR}/artifacts
 fi

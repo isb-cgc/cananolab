@@ -46,7 +46,7 @@ else
     fi
   export HOME=/home/vagrant/cananolab
   export SETTINGS=${HOME}/localDev
-  export CANANODIR=${HOME}/staged/caNanoLab
+  export CANANODIR=${HOME}/software/cananolab-webapp/local_build
 fi
 
 export ARTIFACTS=${CANANODIR}/artifacts
