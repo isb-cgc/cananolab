@@ -1,3 +1,7 @@
+#!/bin/bash
+
+export DEBIAN_FRONTEND=noninteractive
+
 if [ -n "$CI" ]; then
     export HOME=/home/circleci/${CIRCLE_PROJECT_REPONAME}
     export CANANODIR=${HOME}/staged/caNanoLab
@@ -10,16 +14,14 @@ apt-get update -qq
 
 # Install and update apt-get info
 echo "Preparing System..."
-apt-get -y --force-yes install software-properties-common
-apt-get install ca-certificates
-
+apt-get -y --allow-downgrades install software-properties-common
 apt-get update -qq
 
 # Install apt-get dependencies
 echo "Installing Dependencies..."
-apt-get install -y --force-yes unzip libffi-dev libssl-dev git ruby g++ curl dos2unix
-apt-get install -y --force-yes libmysqlclient-dev build-essential
-apt-get install -y --force-yes mysql-client
+apt-get install -y --allow-downgrades debconf-utils ca-certificates lsb-release
+apt-get install -y --allow-downgrades unzip libffi-dev libssl-dev git g++ curl dos2unix
+apt-get install -y --allow-downgrades build-essential
 
 curl -fsSL https://deb.nodesource.com/setup_16.x | bash -
 apt-get install -y nodejs
@@ -35,7 +37,7 @@ echo "Libraries Installed"
 
 # Run dos2unix on the files in shell/ because of line terminator shenanigans with Windows
 echo "Running dos2unix on shell/*.sh..."
-dos2unix ${HOME}/shell/*.sh
+dos2unix ${HOMEROOT}/shell/*.sh
 
 # If we have any git hooks, drop them into place.
 echo "Loading Git Hooks"

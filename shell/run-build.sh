@@ -1,3 +1,5 @@
+#!/bin/bash
+
 if [ -n "$CI" ]; then
     export HOME=/home/circleci/${CIRCLE_PROJECT_REPONAME}
     export SETTINGS=/home/circleci/${CIRCLE_PROJECT_REPONAME}
