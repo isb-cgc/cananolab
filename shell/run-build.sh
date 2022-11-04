@@ -48,7 +48,8 @@ echo "[STATUS] Installing Libraries for build: Ant"
 
 wget http://archive.apache.org/dist/ant/binaries/apache-ant-1.9.9-bin.tar.gz \
     && tar xfz apache-ant-1.9.9-bin.tar.gz \
-    && mv apache-ant-1.9.9 /opt
+    && mv apache-ant-1.9.9 /opt \
+    && rm apache-ant-1.9.9-bin.tar.gz
 
 export ANT_HOME=/opt/apache-ant-1.9.9
 export PATH=${PATH}:${ANT_HOME}/bin
@@ -58,7 +59,8 @@ echo "[STATUS] Installing Libraries for build: Maeven"
 wget https://archive.apache.org/dist/maven/maven-3/3.6.3/binaries/apache-maven-3.6.3-bin.tar.gz \
     && tar xfz apache-maven-3.6.3-bin.tar.gz \
     && mv apache-maven-3.6.3 /opt \
-    && ln -s /opt/apache-maven-3.6.3 /opt/apache-maven
+    && ln -s /opt/apache-maven-3.6.3 /opt/apache-maven \
+    && rm apache-maven-3.6.3-bin.tar.gz
 
 cp -v ${SETTINGS}/maven-settings.xml ${ANT_HOME}/etc/settings.xml
 cp -v ${SETTINGS}/maven-settings.xml /opt/apache-maven/conf/settings.xml

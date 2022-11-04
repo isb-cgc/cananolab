@@ -44,13 +44,22 @@ Refer to the <a href="https://wiki.nci.nih.gov/x/F4V-AQ" target="_blank" nofollo
 <li>This will eventually open a terminal in the lower half of the IdeaJ window.</li>
 <li>It can be slow; alternatively you can use your own SSH client if you prefer.</li>
 </ul>
-<li>From the command line: <ul>
-<li><code>cd shell/</code></li>
-<li><code>chmod u+x ./start-wildfly-vm.sh</code></li>
-<li><code>./start-wildfly-vm.sh &</code></li>
-</ul>
-</li>
 </ol>
+
+<h4>Starting Wildfly on your VM</h4>
+From the VM command line: 
+<ul>
+<li><code>cd /home/vagrant/cananolab/shell/</code></li>
+<li><code>./start-wildfly.sh &</code></li>
+</ul>
+
+<h4>Rebuilding and Redeploying</h4>
+From the VM command line:
+<ul>
+<li><code>cd /home/vagrant/cananolab/shell/</code></li>
+<li><code>./build-and-redeploy.sh &</code></li>
+</ul>
+
 
 <h3>Local Deployment directly on a Linux/OSX platform</h3>
 
