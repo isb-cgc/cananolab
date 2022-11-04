@@ -2,7 +2,7 @@
 
 if [ -z "$CI" ]; then
     if ( "/home/vagrant/cananolab/shell/get_env.sh" ) ; then
-        export $(cat ${ENV_FILE_PATH} | grep -v ^\# | xargs) 2> /dev/null
+        export $(cat ${ENV_FILE_PATH} | grep -v ^# | xargs) 2> /dev/null
     else
         exit 1
     fi
@@ -13,25 +13,16 @@ if [ -z "$CI" ]; then
 
     # MySQL Install
     echo "Installing MySQL..."
-    # Select MySQL 5.7 or we're going to get 8.0
-    # 8.0 isn't strictly speaking a problem but 5.7 is the current CloudSQL instance
+    sudo -E debconf-set-selections <<< "mysql-server-5.7 mysql-server/root_password password ${MYSQL_ROOT_PASSWORD}"
+    sudo -E debconf-set-selections <<< "mysql-server-5.7 mysql-server/root_password_again password ${MYSQL_ROOT_PASSWORD}"
+    sudo -E debconf-set-selections <<< "mysql-apt-config mysql-apt-config/select-server select mysql-5.7"
+    sudo -E debconf-set-selections <<< "mysql-community-server mysql-community-server/root-pass password ${MYSQL_ROOT_PASSWORD}"
+    sudo -E debconf-set-selections <<< "mysql-community-server mysql-community-server/re-root-pass password ${MYSQL_ROOT_PASSWORD}"
     apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv 467B942D3A79BD29
-    wget https://dev.mysql.com/get/mysql-apt-config_0.8.18-1_all.deb
-    dpkg -i mysql-apt-config_0.8.18-1_all.deb
-    apt-get update -qq
-    debconf-set-selections <<< "mysql-apt-config mysql-apt-config/select-server select mysql-5.7"
-    debconf-set-selections <<< "mysql-apt-config mysql-apt-config/repo-codename select buster"
-    debconf-set-selections <<< "mysql-apt-config mysql-apt-config/repo-distro select debian"
-    debconf-set-selections <<< "mysql-community-server mysql-community-server/lowercase-table-names select"
-    debconf-set-selections <<< "mysql-community-server mysql-server/default-auth-override select Use Legacy Authentication Method (Retain MySQL 5.x Compatibility)"
-    debconf-set-selections <<< "mysql-community-server mysql-community-server/root_password password $MYSQL_ROOT_PASSWORD"
-    debconf-set-selections <<< "mysql-community-server mysql-community-server/root_password_again password $MYSQL_ROOT_PASSWORD"
-    apt-get -y --allow-downgrades install mysql-community-server
-
-    echo "Creating Databases..."
-    mysql -u$MYSQL_ROOT_USER -p$MYSQL_ROOT_PASSWORD -h $MYSQL_DB_HOST -e "CREATE DATABASE $DATABASE_NAME"
-
-    mysql -u$MYSQL_ROOT_USER -p$MYSQL_ROOT_PASSWORD -h $MYSQL_DB_HOST $DATABASE_NAME < ${HOME}/software/cananolab-webapp/db-scripts/2.4.0/UnitTest.sql
+    wget https://dev.mysql.com/get/mysql-apt-config_0.8.24-1_all.deb
+    dpkg -i mysql-apt-config_0.8.24-1_all.deb
+    apt-get update
+    sudo -E apt-get -y install mysql-server
 else
   echo "This script is not intended for use in CircleCI -- exiting!"
   exit 1

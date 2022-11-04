@@ -30,6 +30,7 @@ Vagrant.configure(2) do |config|
   config.vm.provision :shell, inline: "echo 'source /home/vagrant/cananolab/shell/env.sh' > /etc/profile.d/sa-environment.sh", :run => 'always'
   config.vm.provision "shell", path: 'shell/install-deps.sh'
   config.vm.provision "shell", path: 'shell/create-database.sh'
-  #config.vm.provision "shell", path: 'shell/run-build.sh'
-  #config.vm.provision "shell", path: 'shell/wildfly-setup.sh'
+  config.vm.provision "shell", path: 'shell/database-setup.sh'
+  config.vm.provision "shell", path: 'shell/run-build.sh'
+  config.vm.provision "shell", path: 'shell/wildfly-setup.sh'
 end

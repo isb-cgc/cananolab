@@ -11,19 +11,30 @@ else
     else
         exit 1
     fi
+    export JAVA_HOME=/usr/lib/jvm/adoptopenjdk-8-hotspot-amd64/jre/
+    export JBOSS_HOME=/opt/wildfly-23.0.2.Final
+    export PATH=/opt/apache-maven/bin:/opt/apache-ant-1.9.9/bin:$PATH
 fi
 
 export CANANODIR=${HOME}/staged/caNanoLab
-
-# Build the Angular front end
-echo "[STATUS] Building Angular front end"
 cd ${HOME}/software/cananolab-client-new/
-npm i
-# Install Angular CLI globally
-npm install -g @angular/cli@latest
-ng build --base-href / --output-path ./build/
 
-cp -av ./build/. ${HOME}/software/cananolab-webapp/web/
+if [ -n "$CI" ]; then
+  # Build the Angular front end
+  echo "[STATUS] Building Angular front end"
+  npm i
+  # Install Angular CLI globally
+  npm install -g @angular/cli@latest
+  ng build --base-href / --output-path ./build/
+
+  cp -av ./build/. ${HOME}/software/cananolab-webapp/web/
+else
+  if [ ! -d "${HOME}/software/cananolab-client-new/build" ]; then
+    echo "Remember to build Angular on your local file system and copy the results into cananolab-webapp/web"
+  else
+    cp -av ./build/. ${HOME}/software/cananolab-webapp/web/
+  fi
+fi
 
 if [[ "$?" -ne 0 ]] ; then
   echo "<<<ANGULAR BUILD FAILED - CHECK THE BUILD LOGS>>>"
@@ -35,7 +46,7 @@ cd ${HOME}
 echo "[STATUS] Installing Libraries for build: Ant"
 
 wget http://archive.apache.org/dist/ant/binaries/apache-ant-1.9.9-bin.tar.gz \
-    && tar xvfz apache-ant-1.9.9-bin.tar.gz \
+    && tar xfz apache-ant-1.9.9-bin.tar.gz \
     && mv apache-ant-1.9.9 /opt
 
 export ANT_HOME=/opt/apache-ant-1.9.9
@@ -44,7 +55,7 @@ export PATH=${PATH}:${ANT_HOME}/bin
 echo "[STATUS] Installing Libraries for build: Maeven"
 
 wget https://archive.apache.org/dist/maven/maven-3/3.6.3/binaries/apache-maven-3.6.3-bin.tar.gz \
-    && tar xvfz apache-maven-3.6.3-bin.tar.gz \
+    && tar xfz apache-maven-3.6.3-bin.tar.gz \
     && mv apache-maven-3.6.3 /opt \
     && ln -s /opt/apache-maven-3.6.3 /opt/apache-maven
 
@@ -52,14 +63,13 @@ mkdir -p ${CANANODIR} \
     && mkdir -p ${CANANODIR}/artifacts \
     && mkdir -p ${CANANODIR}/config
 
-if [ ! -d "${HOME}/software/cananolab-webapp/lib" ]; then
-  mkdir ${HOME}/software/cananolab-webapp/lib
-fi
-
 cp -v ${SETTINGS}/maven-settings.xml ${ANT_HOME}/etc/settings.xml
 cp -v ${SETTINGS}/maven-settings.xml /opt/apache-maven/conf/settings.xml
 cp -v ${SETTINGS}/.env ${HOME}/software/cananolab-webapp/web/WEB-INF/
 if [ -n "$CI" ] || [ ! -d "${HOME}/software/cananolab-webapp/lib/sdk" ]; then
+  if [ ! -d "${HOME}/software/cananolab-webapp/lib" ]; then
+    mkdir -p ${HOME}/software/cananolab-webapp/lib/sdk
+  fi
   cp -v ${SETTINGS}/jars/*.jar ${HOME}/software/cananolab-webapp/lib/
   cp -v ${SETTINGS}/jars/sdk/*.jar ${HOME}/software/cananolab-webapp/lib/sdk/
 fi
