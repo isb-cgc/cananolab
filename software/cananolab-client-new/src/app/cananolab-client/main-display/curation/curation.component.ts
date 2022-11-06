@@ -27,7 +27,7 @@ export class CurationComponent implements OnInit {
         }
         if (this.router.url.includes('review-data')) {
             this.currentUrl = 'review-data';
-            helpUrl=Consts.HELP_URL_CURATION_REVIEW_DATA_PENDING_RELEASE;
+            this.helpUrl=Consts.HELP_URL_CURATION_REVIEW_DATA_PENDING_RELEASE;
             this.toolHeadingNameManage='Review By Curator';
         }
         let reviewDataUrl=this.apiService.doGet(Consts.QUERY_CURATION_REVIEW_DATA,'');
