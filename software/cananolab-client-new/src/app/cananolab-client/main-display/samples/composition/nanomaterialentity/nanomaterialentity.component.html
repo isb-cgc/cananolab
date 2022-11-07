@@ -415,7 +415,8 @@
                                 </td>
                                 <td colspan="2">
                                     <div *ngFor="let function of cElement.inherentFunction">
-                                        {{function.type}}:{{function.description}}
+                                        {{inherentFunctionDisplayString(function)}}
+                                        <!-- {{function.type}}:{{function.description}} -->
                                     </div>
                                 </td>
                             </tr>
@@ -568,7 +569,8 @@
                                             <table class="dataTable">
                                                 <tr>
                                                     <th>Function Type</th>
-                                                    <th>Image Modality</th>
+                                                    <th *ngIf="inherentFunctionHasType('imaging function')">Image Modality</th>
+                                                    <!-- <th *ngIf="inherentFunctionHasType('targeting function')">Targets</th> -->
                                                     <th>Description</th>
                                                     <th></th>
                                                 </tr>
@@ -576,9 +578,11 @@
                                                     <td>
                                                         {{iFunction.type}}
                                                     </td>
-                                                    <td>
+                                                    <td *ngIf="inherentFunctionHasType('imaging function')">
                                                         {{iFunction.modality}}
                                                     </td>
+                                                    <!-- <td *ngIf="inherentFunctionHasType('targeting function')">
+                                                    </td> -->
                                                     <td>
                                                         {{iFunction.description}}
                                                     </td>
