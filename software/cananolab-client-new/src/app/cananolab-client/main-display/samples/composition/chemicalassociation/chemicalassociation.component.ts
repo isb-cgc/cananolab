@@ -16,7 +16,7 @@ export class ChemicalassociationComponent implements OnInit {
   consts=Consts;
   dataId;
   sampleName = Properties.CURRENT_SAMPLE_NAME;
-  helpUrl =  Consts.HELP_URL_SAMPLE_COMPOSITION;
+  helpUrl =  Consts.HELP_URL_SAMPLE_COMPOSITION_CHEMICAL_ASSOCIATION;
   toolHeadingNameManage = 'Sample Composition';
   data;
   dataTrailer;

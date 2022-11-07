@@ -272,6 +272,7 @@ public class SimpleCharacterizationEditBean
 		String charType = charBean.getCharacterizationType();
 
 		charTypesLookup = InitCharacterizationSetup.getInstance().getCharacterizationTypes(request);
+		InitCharacterizationSetup.getInstance().setCharacterizationDropdowns(request);
 //		charTypesLookup.add("other");
 		
 
