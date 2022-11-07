@@ -23,7 +23,7 @@ export class EditpublicationComponent implements OnInit {
     dataTrailer;
     errors;
     fileName;
-    helpUrl = Consts.HELP_URL_SAMPLE_PUBLICATIONS;
+    helpUrl = Consts.HELP_URL_CREATE_PUBLICATIONS;
     message;
     publicationId;
     recipientList;
@@ -59,7 +59,12 @@ export class EditpublicationComponent implements OnInit {
             this.publicationId=params['publicationId'];
             if (this.sampleId) {
                 this.apiService.getSampleName(this.sampleId).subscribe(data=>this.toolHeadingNameManage='Edit '+data['sampleName']+' Publication')
+            }
 
+            if (this.publicationId && this.publicationId != -1) {
+                this.helpUrl = Consts.HELP_URL_EDIT_PUBLICATIONS;
+            } else {
+                this.helpUrl = Consts.HELP_URL_CREATE_PUBLICATIONS;
             }
 
             if(

@@ -22,12 +22,12 @@ export class CurationComponent implements OnInit {
     ngOnInit(): void {
         if (this.router.url.includes('manage-availability')) {
             this.currentUrl = 'manage-availability';
-            this.helpUrl='https://wiki.nci.nih.gov/display/caNanoLab/Managing+Data+Curation#ManagingDataCuration-ManageBatch';
+            this.helpUrl=Consts.HELP_URL_CURATION_MANAGE_BATCH_DATA;
             this.toolHeadingNameManage='Manage Batch Data Availability';
         }
         if (this.router.url.includes('review-data')) {
             this.currentUrl = 'review-data';
-            this.helpUrl='https://wiki.nci.nih.gov/display/caNanoLab/Managing+Data+Curation#ManagingDataCuration-ReviewBatchResults';
+            this.helpUrl=Consts.HELP_URL_CURATION_REVIEW_DATA_PENDING_RELEASE;
             this.toolHeadingNameManage='Review By Curator';
         }
         let reviewDataUrl=this.apiService.doGet(Consts.QUERY_CURATION_REVIEW_DATA,'');
