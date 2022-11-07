@@ -192,6 +192,7 @@ export const Consts = {
     // Publications top menu
     HELP_URL_PUBLICATIONS: 'https://wiki.nci.nih.gov/x/e4QfEQ',
     HELP_URL_CREATE_PUBLICATIONS: 'https://wiki.nci.nih.gov/x/kIFDHg',
+    HELP_URL_EDIT_PUBLICATIONS: 'https://wiki.nci.nih.gov/x/koFDHg',
 
     // Publications within sample
     HELP_URL_SAMPLE_PUBLICATIONS: 'https://wiki.nci.nih.gov/x/nYFDHg',
@@ -221,6 +222,7 @@ export const Consts = {
     HELP_URL_GROUPS: 'https://wiki.nci.nih.gov/x/fIQfEQ',
     HELP_URL_CURATION: 'https://wiki.nci.nih.gov/x/uoGAEQ',
     HELP_URL_CURATION_REVIEW_DATA_PENDING_RELEASE: 'https://wiki.nci.nih.gov/x/UoZDHg',
+    HELP_URL_CURATION_MANAGE_BATCH_DATA: 'https://wiki.nci.nih.gov/x/VIZDHg',
 }
 
 export enum SortState{
