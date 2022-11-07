@@ -30,7 +30,7 @@ export class FunctionalizingentityComponent implements OnInit {
     data;
     dataTrailer;
     fileIndex;
-    helpUrl =  Consts.HELP_URL_SAMPLE_COMPOSITION;
+    helpUrl =  Consts.HELP_URL_SAMPLE_COMPOSITION_FUNCTIONALIZING;
     message;
     resetStatus=false;
     sampleName = Properties.CURRENT_SAMPLE_NAME;
