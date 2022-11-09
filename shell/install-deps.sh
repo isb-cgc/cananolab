@@ -8,6 +8,14 @@ if [ -n "$CI" ]; then
 else
     export HOME=/home/vagrant
     export HOMEROOT=/home/vagrant/cananolab
+
+    if ( "/home/vagrant/cananolab/shell/get_env.sh" ) ; then
+      echo "Local VM environment vars found at ${ENV_FILE_PATH} - if these are not up to date you should"
+      echo "stop this build immediately, fix them, and restart it!"
+    else
+      echo "Local VM environment vars NOT FOUND at ${ENV_FILE_PATH} - copying in the example for now."
+      cp -v ${HOMEROOT}/localDev/example.env ${HOME}/secure_files/.env
+    fi
 fi
 
 apt-get update -qq
@@ -46,11 +54,11 @@ fi
 
 echo "Libraries Installed"
 
-# Run dos2unix on the files in shell/ and .env because of line terminator shenanigans with Windows
+# Run dos2unix on the files in shell/ and example.env because of line terminator shenanigans with Windows
 echo "Running dos2unix on shell/*.sh files..."
 dos2unix ${HOMEROOT}/shell/*.sh
 if [ -z "${CI}" ]; then
-  dos2unix ${HOMEROOT}/localDev/.env
+  dos2unix ${HOMEROOT}/localDev/example.env
   if ( "/home/vagrant/cananolab/shell/get_env.sh" ) ; then
       dos2unix ${ENV_FILE_PATH}
   fi

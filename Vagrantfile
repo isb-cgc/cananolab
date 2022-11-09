@@ -20,8 +20,8 @@ Vagrant.configure(2) do |config|
   config.vm.box = "debian/buster64"
 
   # WebApp ports
-  config.vm.network "forwarded_port", guest: 8086, host: 8086
-  config.vm.network "forwarded_port", guest: 8006, host: 8006
+  config.vm.network "forwarded_port", guest: 8080, host: 8080
+  config.vm.network "forwarded_port", guest: 9990, host: 9990
 
   config.vm.synced_folder ".", "/home/vagrant/cananolab"
   config.vm.synced_folder "../", "/home/vagrant/parentDir"

@@ -55,11 +55,8 @@ export WILDFLY_HOME=/opt/wildfly-23.0.2.Final
 export WILDFLY_BIN=$WILDFLY_HOME/bin
 export JBOSS_CLI=$WILDFLY_BIN/jboss-cli.sh
 
-if [ -n "$CI" ]; then
-  cp -v ${SETTINGS}/standalone-full.xml ${WILDFLY_HOME}/standalone/configuration/
-  cp -v ${SETTINGS}/standalone.conf ${WILDFLY_BIN}/
-fi
-
+cp -v ${SETTINGS}/standalone-full.xml ${WILDFLY_HOME}/standalone/configuration/
+cp -v ${SETTINGS}/standalone.conf ${WILDFLY_BIN}/
 cp -v ${SETTINGS}/log4j2.xml ${WILDFLY_HOME}/standalone/configuration/
 
 ${WILDFLY_BIN}/standalone.sh -Dapp.props.path=${APPLICATION_PROPERTIES_PATH} --server-config=standalone-full.xml -b 0.0.0.0 -bmanagement 0.0.0.0 &
@@ -75,17 +72,13 @@ fi
 
 echo "Wildfly is now running - continuing setup and deployment:"
 # If this is a new database, uncomment these lines *once* to add an admin user
-#echo "Adding admin console user."
-#${WILDFLY_BIN}/add-user.sh -a -u "${WILDFLY_ADMIN}" -p "${WILDFLY_ADMIN_PASSWORD}" -g "admin"
+# echo "Adding admin console user."
+# ${WILDFLY_BIN}/add-user.sh -a -u "${WILDFLY_ADMIN}" -p "${WILDFLY_ADMIN_PASSWORD}" -g "admin"
 echo "Adding BouncyCastle and JDBC driver to Wildfly"
 ${JBOSS_CLI} --file=${ARTIFACTS}/caNanoLab_modules.cli
 # Note that unlike the other scripts, module addition scripts DO change the filesystem and so will
 # persist between VM cycling. Most other .cli scripts will modify only in-memory files and be lost
 # at the end of this script.
-if [ -z "$CI" ]; then
-  echo "Setting up logging and data sources."
-  ${JBOSS_CLI} --file=${ARTIFACTS}/caNanoLab_setup.cli
-fi
 
 # Wait for Wildfly to reload...
 wait_for_server "read-attribute server-state" "running" "Wildfly"
