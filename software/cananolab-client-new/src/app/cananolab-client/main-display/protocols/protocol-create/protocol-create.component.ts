@@ -27,6 +27,7 @@ export class ProtocolCreateComponent implements OnInit, AfterViewInit{
     recipientList;
     setupData={};
     theAccess={};
+    helpUrl=Consts.HELP_URL_PROTOCOL_CREATE;
     submitReviewButton=true;
     constructor(private httpClient:HttpClient, private route:ActivatedRoute,private router:Router,private apiService: ApiService, private utilService: UtilService,
                  ){
@@ -187,6 +188,7 @@ export class ProtocolCreateComponent implements OnInit, AfterViewInit{
         if (this.protocolId) {
             this.currentRoute='edit-protocol';
             this.toolHeadingName='Edit Protocol';
+            this.helpUrl=Consts.HELP_URL_PROTOCOL_EDIT;
             this.apiService.doGet( Consts.QUERY_EDIT_PROTOCOL, 'protocolId='+this.protocolId ).subscribe(
                 data => {
                     this.data = data;
@@ -197,6 +199,7 @@ export class ProtocolCreateComponent implements OnInit, AfterViewInit{
         }
         else {
             this.toolHeadingName='Create Protocol';
+            this.helpUrl=HELP_URL_PROTOCOL_CREATE;
             this.data={
                 "uriExternal":false,
                 "type":"",
