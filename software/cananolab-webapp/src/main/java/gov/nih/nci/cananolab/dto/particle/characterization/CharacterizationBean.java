@@ -225,7 +225,7 @@ public class CharacterizationBean {
 		Class parentClass = ClassUtils.getFullClass(parentClassName);
 
 		Class clazz = subClass;
-		if (subClass == null || !subClass.getSuperclass().getName().equals(parentClass.getName())) {
+		if (subClass == null || parentClass == null || !subClass.getSuperclass().getName().equals(parentClass.getName())) {
 			clazz = OtherCharacterization.class;
 		}
 
