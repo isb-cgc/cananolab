@@ -43,7 +43,7 @@
         <extension module="org.wildfly.iiop-openjdk"/>
     </extensions>
 	<system-properties>
-        <property name="log4j.configurationFile" value="${env.WILDFLY_HOME}/standalone/configuration/log4j2.xml"/>
+        <property name="log4j.configurationFile" value="/opt/wildfly-23.0.2.Final/standalone/configuration/log4j2.xml"/>
         <property name="jackson.deserialization.whitelist.packages" value="gov.nih.nci.cananolab" />
 	</system-properties>	
     <management>

@@ -300,6 +300,7 @@ L-->
 			  file="${basedir}/caNanoLab_modules.cli">
 			<filterset>
 				<filter token="file.repository.dir" value="${file.repository.dir}"/>
+				<filter token="mysql.connector.jar" value="${mysql.connector.jar}"/>
 				<filter token="client.port" value="${client.port}"/>
 			</filterset>
 		</copy>
