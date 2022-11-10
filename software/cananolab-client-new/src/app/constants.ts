@@ -215,12 +215,14 @@ export const Consts = {
     HELP_URL_PROTOCOL_SEARCH: 'https://wiki.nci.nih.gov/x/TYFDHg',
     HELP_URL_PROTOCOL_MANAGE: 'https://wiki.nci.nih.gov/display/caNanoLab/Managing+Protocols+in+caNanoLab',
     HELP_URL_PROTOCOL_CREATE: 'https://wiki.nci.nih.gov/x/SIFDHg',
-    HELP_URL_PROTOCOL_EDIT: 'https://wiki.nci.nih.gov/display/caNanoLab/Managing+Protocols+in+caNanoLab#ManagingProtocolsincaNanoLab-EditProtocol',
-    HELP_URL_PROTOCOL_SEARCH_RESULTS: 'https://wiki.nci.nih.gov/x/S4FDHg',
+    HELP_URL_PROTOCOL_EDIT: 'https://wiki.nci.nih.gov/x/S4FDHg',
+    HELP_URL_PROTOCOL_SEARCH_RESULTS: 'https://wiki.nci.nih.gov/x/TYFDHg',
     // Mi TODO: change this to real link
     HELP_URL_SAMPLE_SYNTHESIS: 'https://wiki.nci.nih.gov/display/caNanoLab/Managing+Samples+in+caNanoLab#ManagingSamplesincaNanoLab-EditSample',
-    HELP_URL_GROUPS: 'https://wiki.nci.nih.gov/x/fIQfEQ',
     HELP_URL_CURATION: 'https://wiki.nci.nih.gov/x/uoGAEQ',
+    HELP_URL_GROUPS_CURATOR:'https://wiki.nci.nih.gov/x/fIQfEQ',
+    HELP_URL_GROUPS_RESEARCHER:'https://wiki.nci.nih.gov/x/a4ZDHg',
+
     HELP_URL_CURATION_REVIEW_DATA_PENDING_RELEASE: 'https://wiki.nci.nih.gov/x/UoZDHg',
     HELP_URL_CURATION_MANAGE_BATCH_DATA: 'https://wiki.nci.nih.gov/x/VIZDHg',
 }
