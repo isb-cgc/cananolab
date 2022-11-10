@@ -199,7 +199,7 @@ export class ProtocolCreateComponent implements OnInit, AfterViewInit{
         }
         else {
             this.toolHeadingName='Create Protocol';
-            this.helpUrl=HELP_URL_PROTOCOL_CREATE;
+            this.helpUrl=Consts.HELP_URL_PROTOCOL_CREATE;
             this.data={
                 "uriExternal":false,
                 "type":"",
