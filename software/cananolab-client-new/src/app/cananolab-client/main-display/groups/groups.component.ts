@@ -10,7 +10,6 @@ import { Properties } from '../../../../assets/properties';
   styleUrls: ['../../../btn-bravo-canano.scss','./groups.component.scss']
 })
 export class GroupsComponent implements OnInit {
-    helpUrl=Consts.HELP_URL_GROUPS;
     toolHeadingNameManage='Manage Collaboration Groups';
     currentUrl;
     data;
@@ -199,4 +198,7 @@ export class GroupsComponent implements OnInit {
         return false
     }
 
+    getHelpUrl() {
+        return this.groups.indexOf('Curator')>-1 ? Consts.HELP_URL_GROUPS_CURATOR : Consts.HELP_URL_GROUPS_RESEARCHER;
+    }
 }
