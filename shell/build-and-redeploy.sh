@@ -13,13 +13,17 @@ if [ -z "$CI" ]; then
     export WILDFLY_HOME=/opt/wildfly-23.0.2.Final
     export WILDFLY_BIN=$WILDFLY_HOME/bin
     export JBOSS_CLI=$WILDFLY_BIN/jboss-cli.sh
+    export ARTIFACTS=/home/vagrant/cananolab/software/cananolab-webapp/local_build/artifacts
 
-    ant deploy_local
-
-    if [[ "$?" -ne 0 ]] ; then
-      echo "<<<ANT BUILD FAILED - CHECK THE BUILD LOGS>>>"
-      exit 1
+    if [[ ! "$1" == "d" ]]; then
+      ant deploy_local
+      if [[ "$?" -ne 0 ]] ; then
+        echo "<<<ANT BUILD FAILED - CHECK THE BUILD LOGS>>>"
+        exit 1
+      fi
     fi
+
+    echo "[STATUS] Deploying caNanoLab via CLI script. Make sure Wildfly is up and running or this won't work!"
 
     ${JBOSS_CLI} --file=${ARTIFACTS}/caNanoLab_deploy.cli
 else

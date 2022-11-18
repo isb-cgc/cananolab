@@ -37,7 +37,9 @@ if [ -z "$CI" ]; then
     mysql -u "${MYSQL_ROOT_USER}" -h "${MYSQL_DB_HOST}" -p"${MYSQL_ROOT_PASSWORD}" -e "GRANT ALL PRIVILEGES ON *.* TO '${DATABASE_USER}'@'localhost';"
 
     echo "Loading test database:"
-    mysql -u$MYSQL_ROOT_USER -p$MYSQL_ROOT_PASSWORD -h $MYSQL_DB_HOST $DATABASE_NAME < ${HOME}/software/cananolab-webapp/db-scripts/2.4.0/UnitTest.sql
+    mysql -u "${MYSQL_ROOT_USER}" -h "${MYSQL_DB_HOST}" -p"${MYSQL_ROOT_PASSWORD}" $DATABASE_NAME < ${HOME}/software/cananolab-webapp/db-scripts/2.4.0/UnitTest.sql
+    mysql -u "${MYSQL_ROOT_USER}" -h "${MYSQL_DB_HOST}" -p"${MYSQL_ROOT_PASSWORD}" $DATABASE_NAME -e "ALTER TABLE canano.point_of_contact ADD COLUMN updated_date DATETIME NULL DEFAULT NULL AFTER organization_pk_id;"
+
 
     echo "Database loaded."
 else
