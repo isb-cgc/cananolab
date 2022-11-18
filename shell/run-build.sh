@@ -101,7 +101,7 @@ if [[ "$?" -ne 0 ]] ; then
 fi
 
 # For cloud deployment, stage all necessary files to be loaded onto the deployment image
-if [ -n "$CIRCLE_TAG" ]; then
+if [ -n "$CI" ]; then
   mkdir -p ${CANANODIR} \
     && mkdir -p ${CANANODIR}/artifacts \
     && mkdir -p ${CANANODIR}/config

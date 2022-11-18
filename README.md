@@ -5,7 +5,7 @@ Refer to the <a href="https://wiki.nci.nih.gov/x/F4V-AQ" target="_blank" nofollo
 <h3>Software Requirements</h3>
 <ul>
 <li>JDK8 - available at <a href="https://jdk.java.net/java-se-ri/8-MR4" target="_blank" nofollow noreferrer>OpenJDK</a></li>
-<li>JetBrains IdeaJ</li>
+<li>An IDE (there is a Vagrant plugin for JetBrains IdeaJ)</li>
 <li>For Vagrant VM development:
 <ul>
 <li>Hashicorp Vagrant</li>
@@ -13,6 +13,9 @@ Refer to the <a href="https://wiki.nci.nih.gov/x/F4V-AQ" target="_blank" nofollo
 </ul>
 </li>
 </ul>
+
+Before proceeding, make a new project in your IDE and check out the caNanoLab repository from GitHub 
+(github.com/isb-cgc/cananolab). 
 
 <h3>Local Deployment using a Vagrant VM</h3>
 <ol>
@@ -53,6 +56,8 @@ From the VM command line:
 <li><code>./start-wildfly.sh &</code></li>
 </ul>
 
+This will leave Wildfly running with the logs outputting to the console. 
+
 <h4>Rebuilding and Redeploying</h4>
 From the VM command line:
 <ul>
@@ -60,6 +65,7 @@ From the VM command line:
 <li><code>./build-and-redeploy.sh &</code></li>
 </ul>
 
+If Wildfly isn't currently running the script will attempt to restart it.
 
 <h3>Local Deployment directly on a Linux/OSX platform</h3>
 
