@@ -53,19 +53,21 @@ Before proceeding, make a new project in your IDE and check out the caNanoLab re
 From the VM command line: 
 <ul>
 <li><code>cd /home/vagrant/cananolab/shell/</code></li>
-<li><code>./start-wildfly.sh &</code></li>
+<li><code>sudo -E ./build-and-redeploy.sh &</code></li>
 </ul>
-
-This will leave Wildfly running with the logs outputting to the console. 
+Leaving off the -d switch will result in the system only starting Wildfly and deploying.
 
 <h4>Rebuilding and Redeploying</h4>
 From the VM command line:
 <ul>
-<li><code>cd /home/vagrant/cananolab/shell/</code></li>
-<li><code>./build-and-redeploy.sh &</code></li>
+<li><code>cd /home/vagrant/cananolab/software/cananolab-webapp/</code></li>
+<li><code>sudo -E ../../shell/build-and-redeploy.sh -d &</code></li>
 </ul>
 
-If Wildfly isn't currently running the script will attempt to restart it.
+The -d switch will cause the script to rebuild the WAR before starting wildfly and (re)deploying.
+
+Wildfly will output its logs directly to the console.
+
 
 <h3>Local Deployment directly on a Linux/OSX platform</h3>
 
