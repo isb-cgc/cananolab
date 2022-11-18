@@ -1,9 +1,7 @@
 #!/bin/bash
 
-if [ -z "$CI" ]; then
-  echo "[ERROR] This script is only for use in CircleCI!"
-  exit 1
-fi
+# This script is the entrypoint for the Docker image
+# It should NOT be run locally
 
 export $(cat /local/content/.env | grep -v ^# | xargs) 2> /dev/null
 
