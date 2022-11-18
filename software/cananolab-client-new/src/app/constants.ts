@@ -188,15 +188,22 @@ export const Consts = {
     QUERY_DELETE_FAVORITE: '/rest/core/deleteFavorite',
     HELP_URL_FAVORITE: 'https://wiki.nci.nih.gov/x/b4AnEQ',
     HELP_URL_WORKSPACE: 'https://wiki.nci.nih.gov/x/fYQfEQ',
-    HELP_URL_WORKFLOW: 'https://wiki.nci.nih.gov/display/caNanoLab/Getting+Started+in+caNanoLab#GettingStartedincaNanoLab-UsingtheWorkflowtoGetStarted',
+    HELP_URL_WORKFLOW: 'https://wiki.nci.nih.gov/x/GIIyHg',
     // Publications top menu
     HELP_URL_PUBLICATIONS: 'https://wiki.nci.nih.gov/x/e4QfEQ',
+    HELP_URL_CREATE_PUBLICATIONS: 'https://wiki.nci.nih.gov/x/kIFDHg',
+    HELP_URL_EDIT_PUBLICATIONS: 'https://wiki.nci.nih.gov/x/koFDHg',
+
     // Publications within sample
-    HELP_URL_SAMPLE_PUBLICATIONS: 'https://wiki.nci.nih.gov/display/caNanoLab/Managing+Sample+Composition+Annotations#ManagingSampleCompositionAnnotations-Composition',
-    HELP_URL_SAMPLE_SEARCH_BY_PUBLICATIONS: '/rest/publication/searchById',
-    HELP_URL_SAMPLE_CHARACTERIZATION: 'https://wiki.nci.nih.gov/display/caNanoLab/Managing+Sample+Characterizations#ManagingSampleCharacterizations-Characterization',
-    HELP_URL_SAMPLE_COMPOSITION: 'https://wiki.nci.nih.gov/display/caNanoLab/Managing+Sample+Characterizations#ManagingSampleCharacterizations-Composition',
-    HELP_URL_SAMPLE_COMPOSITION_NANOMATERIAL: 'https://wiki.nci.nih.gov/display/caNanoLab/Managing+Sample+Composition+Annotations#ManagingSampleCompositionAnnotations-NanomaterialAddingNanomaterialEntityCompositionAnnotations',
+    HELP_URL_SAMPLE_PUBLICATIONS: 'https://wiki.nci.nih.gov/x/nYFDHg',
+    HELP_URL_SAMPLE_SEARCH_BY_PUBLICATIONS: 'https://wiki.nci.nih.gov/x/mIFDHg',
+    HELP_URL_SAMPLE_CHARACTERIZATION: 'https://wiki.nci.nih.gov/x/eoQfEQ',
+    HELP_URL_SAMPLE_COMPOSITION: 'https://wiki.nci.nih.gov/x/eYQfEQ',
+    HELP_URL_SAMPLE_COMPOSITION_NANOMATERIAL: 'https://wiki.nci.nih.gov/x/toNDHg',
+    HELP_URL_SAMPLE_COMPOSITION_FUNCTIONALIZING:'https://wiki.nci.nih.gov/x/uINDHg',
+    HELP_URL_SAMPLE_COMPOSITION_CHEMICAL_ASSOCIATION:'https://wiki.nci.nih.gov/x/uoNDHg',
+    HELP_URL_SAMPLE_COMPOSITION_COMPOSITION_FILE:'https://wiki.nci.nih.gov/x/4INDHg',
+
     HELP_URL_SAMPLE_SEARCH: 'https://wiki.nci.nih.gov/x/jIS8HQ',
     HELP_URL_SAMPLE_COPY: 'https://wiki.nci.nih.gov/x/14S8HQ',
 
@@ -205,15 +212,19 @@ export const Consts = {
     HELP_URL_SAMPLE_VIEW: 'https://wiki.nci.nih.gov/display/caNanoLab/Managing+Samples+in+caNanoLab#ManagingSamplesincaNanoLab-EditSample',
     HELP_URL_SAMPLE_ADVANCED_SEARCH: 'https://wiki.nci.nih.gov/x/joS8HQ',
 
-    HELP_URL_PROTOCOL_SEARCH: 'https://wiki.nci.nih.gov/display/caNanoLab/Managing+Protocols+in+caNanoLab#ManagingProtocolsincaNanoLab-SearchProtocols',
+    HELP_URL_PROTOCOL_SEARCH: 'https://wiki.nci.nih.gov/x/TYFDHg',
     HELP_URL_PROTOCOL_MANAGE: 'https://wiki.nci.nih.gov/display/caNanoLab/Managing+Protocols+in+caNanoLab',
-    HELP_URL_PROTOCOL_CREATE: 'https://wiki.nci.nih.gov/display/caNanoLab/Managing+Protocols+in+caNanoLab#ManagingProtocolsincaNanoLab-SubmitProtocol',
-    HELP_URL_PROTOCOL_EDIT: 'https://wiki.nci.nih.gov/display/caNanoLab/Managing+Protocols+in+caNanoLab#ManagingProtocolsincaNanoLab-EditProtocol',
-    HELP_URL_PROTOCOL_SEARCH_RESULTS: 'https://wiki.nci.nih.gov/display/caNanoLab/Managing+Protocols+in+caNanoLab#ManagingProtocolsincaNanoLab-ProtocolResults',
+    HELP_URL_PROTOCOL_CREATE: 'https://wiki.nci.nih.gov/x/SIFDHg',
+    HELP_URL_PROTOCOL_EDIT: 'https://wiki.nci.nih.gov/x/S4FDHg',
+    HELP_URL_PROTOCOL_SEARCH_RESULTS: 'https://wiki.nci.nih.gov/x/TYFDHg',
     // Mi TODO: change this to real link
     HELP_URL_SAMPLE_SYNTHESIS: 'https://wiki.nci.nih.gov/display/caNanoLab/Managing+Samples+in+caNanoLab#ManagingSamplesincaNanoLab-EditSample',
-    HELP_URL_GROUPS: 'https://wiki.nci.nih.gov/x/fIQfEQ',
     HELP_URL_CURATION: 'https://wiki.nci.nih.gov/x/uoGAEQ',
+    HELP_URL_GROUPS_CURATOR:'https://wiki.nci.nih.gov/x/fIQfEQ',
+    HELP_URL_GROUPS_RESEARCHER:'https://wiki.nci.nih.gov/x/a4ZDHg',
+
+    HELP_URL_CURATION_REVIEW_DATA_PENDING_RELEASE: 'https://wiki.nci.nih.gov/x/UoZDHg',
+    HELP_URL_CURATION_MANAGE_BATCH_DATA: 'https://wiki.nci.nih.gov/x/VIZDHg',
 }
 
 export enum SortState{
