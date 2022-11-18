@@ -48,7 +48,7 @@ if [ -z "$CI" ]; then
     export JBOSS_CLI=$WILDFLY_BIN/jboss-cli.sh
     export ARTIFACTS=/home/vagrant/cananolab/software/cananolab-webapp/local_build/artifacts
 
-    if [[ ! "$1" == "-d" ]]; then
+    if [ "$1" == "-d" ]; then
       ant deploy_local
       if [[ "$?" -ne 0 ]] ; then
         echo "<<<ANT BUILD FAILED - CHECK THE BUILD LOGS>>>"
