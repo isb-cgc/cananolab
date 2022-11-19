@@ -41,8 +41,8 @@ if [ "${IS_DEV,,}" == "true" ]; then
     fi
   export HOME=/home/vagrant/cananolab
   export SETTINGS=${HOME}/localDev
-else
   export CANANODIR=${HOME}/software/cananolab-webapp/local_build
+else
   export HOME=/home/circleci/${CIRCLE_PROJECT_REPONAME}
   export SETTINGS=/local/content
   export CANANODIR=${SETTINGS}/caNanoLab
