@@ -33,12 +33,7 @@ function check_for_wildfly() {
 
 ############## END Helper Functions ##############
 
-if [ -n "$CI" ]; then
-  export HOME=/home/circleci/${CIRCLE_PROJECT_REPONAME}
-  export SETTINGS=/local/content
-  export CANANODIR=${SETTINGS}/caNanoLab
-  export $(cat ${SETTINGS}/.env | grep -v ^# | xargs) 2> /dev/null
-else
+if [ "${IS_DEV,,}" == "true" ]; then
     if ( "/home/vagrant/cananolab/shell/get_env.sh" ) ; then
         export $(cat ${ENV_FILE_PATH} | grep -v ^# | xargs) 2> /dev/null
     else
@@ -46,7 +41,12 @@ else
     fi
   export HOME=/home/vagrant/cananolab
   export SETTINGS=${HOME}/localDev
+else
   export CANANODIR=${HOME}/software/cananolab-webapp/local_build
+  export HOME=/home/circleci/${CIRCLE_PROJECT_REPONAME}
+  export SETTINGS=/local/content
+  export CANANODIR=${SETTINGS}/caNanoLab
+  export $(cat ${SETTINGS}/.env | grep -v ^# | xargs) 2> /dev/null
 fi
 
 export ARTIFACTS=${CANANODIR}/artifacts

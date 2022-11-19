@@ -1,7 +1,11 @@
 #!/bin/bash
 
-# This script is the entrypoint for the Docker image
-# It should NOT be run locally
+######################
+## DOCKER ENTRYPOINT
+######################
+#
+# This script is the entrypoint for the Docker image used in Google Cloud Deployments.
+# It should NOT be run locally! Please see build-and-redeploy.sh for local runtime.
 
 export $(cat /local/content/.env | grep -v ^# | xargs) 2> /dev/null
 
