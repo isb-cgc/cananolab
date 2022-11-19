@@ -1,5 +1,14 @@
 #!/bin/bash
 
+########################################
+## Local Build and Redeployment Script
+########################################
+#
+# This script is intended for use in a local Vagrant build of the caNano system. It can optionally build
+# the caNanoLab WAR file, check for and start Wildfly if needed, and deploy the WAR.
+#
+# It is NOT intended for use in a Dockerfile for a Google Cloud Deployment. For that, please see start-wildfly.sh
+
 ############## Helper functions ##############
 
 # Wait for something server-related.
