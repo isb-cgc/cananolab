@@ -36,7 +36,7 @@ export class PurificationComponent implements OnInit {
     rowData;
     csvColumnMaxCount = 25; // Maximum number of columns allowed
     csvMaxNumberOfLines = 5000; // Maximum number of rows allowed
-    csvMaxLenOfEntry = 200;
+    csvMaxLenOfEntry = 400;
     runaway = 10240; // A counter used to prevent an endless loop if something goes wrong.  @TODO needs a better name
     csvDataColCount = 0;
     csvDataObj;
@@ -181,7 +181,7 @@ export class PurificationComponent implements OnInit {
     editColumnOrder() {
         this.columnOrder=JSON.parse(JSON.stringify(this.currentFinding));
     };
-    
+
     addFinding() {
         this.findingIndex=-1;
         setTimeout(function() {
@@ -747,7 +747,7 @@ export class PurificationComponent implements OnInit {
             this.data = newItem['data'];
             this.dataTrailer = JSON.parse(JSON.stringify(this.data));
         }
-    }    
+    }
 
     delete() {
         if (confirm('Are you sure you wish to delete this purification?')) {

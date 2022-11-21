@@ -44,7 +44,7 @@ export class EditcharacterizationComponent implements OnInit {
 
     csvColumnMaxCount = 25; // Maximum number of columns allowed
     csvMaxNumberOfLines = 5000; // Maximum number of rows allowed
-    csvMaxLenOfEntry = 200;
+    csvMaxLenOfEntry = 400;
     runaway = 10240; // A counter used to prevent an endless loop if something goes wrong.  @TODO needs a better name
     csvDataColCount = 0;
     csvDataObj;
