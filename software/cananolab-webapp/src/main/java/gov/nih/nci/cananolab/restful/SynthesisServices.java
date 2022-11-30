@@ -31,6 +31,10 @@ public class SynthesisServices {
     @Produces ("application/json")
     public Response view(@Context HttpServletRequest httpRequest, @DefaultValue("") @QueryParam("sampleId") String sampleId)
     {
+        // TODO Mi: Remove to turn on Synthesis backend
+        return Response.ok("Feature under development").build();
+
+        /*
         try {
             SynthesisForm form = new SynthesisForm();
             form.setSampleId(sampleId);
@@ -49,6 +53,7 @@ public class SynthesisServices {
         catch (Exception e) {
             return Response.ok("Error while viewing the synthesis results " +e).build();
         }
+         */
     }
 
     /**
@@ -62,6 +67,10 @@ public class SynthesisServices {
     @Produces ("application/json")
     public Response summaryPrint(@Context HttpServletRequest httpRequest, @DefaultValue("") @QueryParam("sampleId") String sampleId)
     {
+        // TODO Mi: Remove to turn on Synthesis backend
+        return Response.ok("Feature under development").build();
+
+        /* TODO Mi: Uncomment for Synthesis
         try {
         SynthesisForm form = new SynthesisForm();
         form.setSampleId(sampleId);
@@ -73,6 +82,7 @@ public class SynthesisServices {
         } catch (Exception e){
             return Response.ok("Error while printing the file").build();
         }
+         */
     }
 
     /**
@@ -89,6 +99,10 @@ public class SynthesisServices {
     public Response summaryExport(@Context HttpServletRequest httpRequest, @Context HttpServletResponse httpResponse,
                                   @DefaultValue("") @QueryParam("sampleId") String sampleId, @DefaultValue("") @QueryParam("type") String type)
     {
+        // TODO Mi: Remove to turn on Synthesis backend
+        return Response.ok("Feature under development").build();
+
+        /* TODO Mi: Uncomment for Synthesis
         try {
             SynthesisForm form = new SynthesisForm();
             form.setSampleId(sampleId);
@@ -101,6 +115,8 @@ public class SynthesisServices {
         } catch (Exception e) {
             return Response.ok("Error while exporting the file").build();
         }
+
+         */
     }
 
 //    @GET
