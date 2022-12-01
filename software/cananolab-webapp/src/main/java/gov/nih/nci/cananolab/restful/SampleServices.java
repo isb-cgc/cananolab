@@ -33,6 +33,7 @@ import gov.nih.nci.cananolab.restful.view.SimpleCompositionBean;
 import gov.nih.nci.cananolab.restful.view.SimplePublicationSummaryViewBean;
 import gov.nih.nci.cananolab.restful.view.SimpleSampleBean;
 import gov.nih.nci.cananolab.restful.view.SimpleSynthesisBean;
+import gov.nih.nci.cananolab.restful.view.SimpleSortRequestBean;
 import gov.nih.nci.cananolab.restful.view.SimpleSynthesisExportBean;
 import gov.nih.nci.cananolab.restful.view.edit.SampleEditGeneralBean;
 import gov.nih.nci.cananolab.restful.view.edit.SimplePointOfContactBean;
@@ -121,7 +122,44 @@ public class SampleServices {
 			SearchSampleBO searchSampleBO = (SearchSampleBO) SpringApplicationContext.getBean(httpRequest, "searchSampleBO");
 			
 			List results = searchSampleBO.search(searchForm, httpRequest);
-			
+			System.out.println(">>>> getting data for page " + searchForm.getPage());
+			Object result = results.get(0);
+			if (result instanceof String) {
+				logger.debug("Search sample has error: " + results.get(0));
+				return Response.status(Response.Status.NOT_FOUND).entity(result).build();
+			} else {
+				logger.debug("Sample search successful");
+				return Response.ok(results).build();
+			}
+
+		} catch (Exception e) {
+			logger.error(e.getMessage());
+			e.printStackTrace();
+			return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
+					.entity(CommonUtil.wrapErrorMessageInList("Error while searching for samples: " + e.getMessage())).build();
+		}
+	}
+
+	@POST
+	@Path("/sampleTestEndpoint")
+	@Produces ("application/json")
+	public Response wjrlTestEndpoint(@Context HttpServletRequest httpRequest, SimpleSortRequestBean sortRequest) {
+
+		SearchSampleBO searchSampleBO = (SearchSampleBO) SpringApplicationContext.getBean(httpRequest, "searchSampleBO");
+		List results = searchSampleBO.sortNG(sortRequest, httpRequest);
+		return Response.ok(results).build();
+	}
+
+	@POST
+	@Path("/searchSampleNextGen")
+	@Produces ("application/json")
+	public Response searchSampleNextGen(@Context HttpServletRequest httpRequest, SearchSampleForm searchForm ) {
+		try
+		{
+			SearchSampleBO searchSampleBO = (SearchSampleBO) SpringApplicationContext.getBean(httpRequest, "searchSampleBO");
+
+			List results = searchSampleBO.searchNG(searchForm, httpRequest);
+			System.out.println(">>>> getting data for page " + searchForm.getPage());
 			Object result = results.get(0);
 			if (result instanceof String) {
 				logger.debug("Search sample has error: " + results.get(0));
@@ -207,7 +245,7 @@ public class SampleServices {
 			
 			List<SimpleCharacterizationsByTypeBean> finalBean = viewBean.transferData(httpRequest, charView, sampleId);
 			
-			logger.debug("Found " + finalBean.size() + " characterizations for sample: " + sampleId);
+			System.out.println("Found " + finalBean.size() + " characterizations for sample: " + sampleId);
 			
 			return (finalBean.size() == 0) ? Response.status(Response.Status.NOT_FOUND)
 					.entity(CommonUtil.wrapErrorMessageInList("There is no characterization with your sample.")).build()

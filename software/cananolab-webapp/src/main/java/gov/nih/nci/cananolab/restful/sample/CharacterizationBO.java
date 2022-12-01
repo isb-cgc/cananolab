@@ -1030,7 +1030,8 @@ public class CharacterizationBO extends BaseAnnotationBO {
 			SimpleFindingBean simpleFinding) 
 	throws Exception {
 		
-		
+
+		// WJRL 11/21/22: Log indicates this gets a NPE: achar is null?
 		List<FindingBean> findingBeans = achar.getFindings();
 		if (findingBeans == null)
 			throw new Exception("Current characterization has no finding matching input finding id: " + simpleFinding.getFindingId());

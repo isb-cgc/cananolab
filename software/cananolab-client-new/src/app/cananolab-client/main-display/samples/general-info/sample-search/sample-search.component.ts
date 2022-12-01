@@ -57,20 +57,20 @@ export class SampleSearchComponent implements OnInit {
             "characterizationType":"",
             "characterizations":[]
         };
-        this.dataTrailer=JSON.parse(JSON.stringify(this.data));
+        this.dataTrailer = JSON.parse(JSON.stringify(this.data));
         this.init();
     }
 
     init(){
-        this.loading=true;
-        this.loadingMessage=Consts.loadingMessage;
+        this.loading = true;
+        this.loadingMessage = Consts.loadingMessage;
         this.apiService.doGet( Consts.QUERY_SAMPLE_SETUP, '' ).subscribe(
             data => {
-                this.loading=null;
+                this.loading = null;
                 this.sampleSetupData = data;
             },
-            error=> {
-                this.loading=null;
+            error => {
+                this.loading = null;
             } );
     }
 
@@ -85,25 +85,28 @@ export class SampleSearchComponent implements OnInit {
     }
 
     onSubmit(){
-        this.loading=true;
-        this.loadingMessage=Consts.searchingMessage;
+        this.loading = true;
+        this.loadingMessage = Consts.searchingMessage;
         // QUERY_SEARCH_SAMPLE
+        console.log('WJRL about to post! ' + Consts.QUERY_SEARCH_SAMPLE);
         this.apiService.doPost( Consts.QUERY_SEARCH_SAMPLE, this.data ).subscribe(
             data => {
                 this.searchResults = <any>data;
-                this.loading=null;
+                this.loading = null;
                 // send search results to samplesSearchResults
+                console.log('WJRL do not get all of it and save it');
                 this.sampleSearchResultsService.setSearchResults( this.searchResults );
+                console.log(typeof(this.searchResults));
                 this.router.navigate(['home/samples/sample-search-results']); // @FIXME TESTING  Don't hard code this!!!
             },
-            error=> {
-                this.loading=null;
-                this.errors=error;
+            error => {
+                this.loading = null;
+                this.errors = error;
             } );
     }
 
     reset() {
-        this.data=JSON.parse(JSON.stringify(this.dataTrailer));
+        this.data = JSON.parse(JSON.stringify(this.dataTrailer));
     }
 
 }

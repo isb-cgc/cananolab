@@ -115,6 +115,7 @@ public class ORMDAOImpl extends HibernateDaoSupport implements DAO
 		else
 		{
 			List rs = getHibernateTemplate().findByCriteria(obj, request.getFirstRow() == null?-1:request.getFirstRow(), resultCountPerQuery);
+			System.out.println("QS " + rs.size());
 			rsp.setRowCount(rs.size());
 			rsp.setResponse(rs);
 		}

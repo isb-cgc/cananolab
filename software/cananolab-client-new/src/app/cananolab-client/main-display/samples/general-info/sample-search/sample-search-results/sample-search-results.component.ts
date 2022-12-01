@@ -33,7 +33,9 @@ export class SampleSearchResultsComponent implements OnInit, OnDestroy {
     pageLength = Properties.DEFAULT_PAGE_LENGTH;
     loading;
     searchResults;
-    sampleIds=[];
+    data;
+    loadingMessage = 'Hello World';
+    sampleIds = [];
     helpUrl = Consts.HELP_URL_SAMPLE_SEARCH;
     toolHeadingNameSearchSample = 'Sample Search Results';
     pageCount = 10;
@@ -68,17 +70,25 @@ export class SampleSearchResultsComponent implements OnInit, OnDestroy {
     ) {}
 
     ngOnInit(): void {
-        setTimeout(()=> {
+        setTimeout(() => {
             Properties.SAMPLE_TOOLS = false;
         })
         this.searchResults = this.sampleSearchResultsService.getSearchResults();
         this.searchResultsCount = this.searchResults.length;
-        this.sampleIds=this.sampleSearchResultsService.getSampleIds();
+        this.sampleIds = this.sampleSearchResultsService.getSampleIds();
         this.searchResultsPagerService.currentPageChangeEmitter
             .pipe(takeUntil(this.ngUnsubscribe))
             .subscribe((data) => {
                 this.currentPage = data;
                 this.setupPage();
+                console.log('WJRL page change emitted');
+            });
+        this.sampleSearchResultsService.sortResultsEmitter
+            .pipe(takeUntil(this.ngUnsubscribe))
+            .subscribe((data) => {
+                // this.currentPage = data;
+                // this.setupPage();
+                console.log('WJRL sort results emitted');
             });
 
         this.statusDisplayService.updateUserEmitter
@@ -107,13 +117,13 @@ export class SampleSearchResultsComponent implements OnInit, OnDestroy {
         favObj['dataId'] = samp['sampleId'];
         favObj['description'] = samp['nanoEntityDesc'];
         favObj['editable'] = samp['editable'];
-        favObj['loginName']=Properties.current_user;
+        favObj['loginName'] = Properties.current_user;
 
         console.log('favObj:', favObj);
 
         this.apiService.doPost(Consts.QUERY_ADD_FAVORITE, favObj).subscribe(
             (data) => {
-                samp['addedToFavorites']=data;
+                samp['addedToFavorites'] = data;
                 console.log(samp)
                 // console.log('set Fave results: ', data);
             },
@@ -138,15 +148,16 @@ export class SampleSearchResultsComponent implements OnInit, OnDestroy {
 
 
     downloadReady(event) {
-        if (event==true) {
-            this.loading=null;
+        if (event === true) {
+            this.loading = null;
         }
-        if (event==false) {
-            this.loading=true;
+        if (event === false) {
+            this.loading = true;
         }
     }
 
     setupPage() {
+        console.log('WJRL Do not slice, but make a call!')
         this.searchResultsPageToDisplay = this.searchResults.slice(
             this.pageLength * this.currentPage,
             this.pageLength * (this.currentPage + 1)
@@ -167,10 +178,11 @@ export class SampleSearchResultsComponent implements OnInit, OnDestroy {
     }
 
     onSortClick(i, key) {
+        console.log('WJRL sorting click on samples ' + i + ' ' + key);
         if (i) {
             if (this.sortingStates[i]) {
                 // clicking on column that already is sorted on //
-                this.sortingStates[i] = this.sortingStates[i] == 1 ? 2 : 1;
+                this.sortingStates[i] = this.sortingStates[i] === 1 ? 2 : 1;
             } else {
                 // reset sorting states //
                 this.sortingStates.forEach((item, index) => {
@@ -179,7 +191,26 @@ export class SampleSearchResultsComponent implements OnInit, OnDestroy {
                 this.sortingStates[i] = 1;
             }
             console.log(this.sortingStates)
-            if (this.sortingStates[i] == 1) {
+            console.log('WJRL sorting samples ' + i + ' ' + key);
+            console.log('WJRL about to post! ' + Consts.WJRL_TEST_URL);
+            let sampleIDs = this.sampleSearchResultsService.getSampleIds();
+            this.data = {
+                'sortOn': this.columnHeadings[i],
+                'direction': (this.sortingStates[i] === 1) ? 'gt' : 'lt',
+                'sampleIDs': sampleIDs,
+                'pageNum': this.currentPage,
+                'pageLength': this.pageLength
+            };
+            this.apiService.doPost(Consts.WJRL_TEST_URL, this.data).subscribe(
+                (data) => {
+                    console.log('called the API and got back ' + data + ' ' + typeof(data))
+                    // console.log('set Fave results: ', data);
+                },
+                (err) => {
+                    console.log('ERROR SORT REQUEST: ', err);
+                }
+            );
+            if (this.sortingStates[i] === 1) {
                 this.searchResults.sort((a, b) => (this.getStringValue(a[key]) > this.getStringValue(b[key]) ? 1 : -1));
             } else {
                 this.searchResults.sort((a, b) => (this.getStringValue(a[key]) < this.getStringValue(b[key]) ? 1 : -1));

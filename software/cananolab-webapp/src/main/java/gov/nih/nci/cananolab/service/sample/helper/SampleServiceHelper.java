@@ -678,6 +678,52 @@ public class SampleServiceHelper
 		return pointOfContacts;
 	}
 
+
+	/*
+	** This is an alternate  hacky way to return samples that do not excessive joins. Note that
+	** since this is all done in one pull session, lazy does not work, and the HBM.XML spec needs to
+	** be changed from lazy to eager.
+
+	public Sample findSampleSearchResultById(String sampleId) throws Exception {
+		if (!springSecurityAclService.currentUserHasReadPermission(Long.valueOf(sampleId), SecureClassesEnum.SAMPLE.getClazz()) &&
+				!springSecurityAclService.currentUserHasWritePermission(Long.valueOf(sampleId), SecureClassesEnum.SAMPLE.getClazz())) {
+			throw new NoAccessException("User has no access to the sample " + sampleId);
+		}
+
+		logger.debug("===============Finding a sample by id: " + System.currentTimeMillis());
+		Sample sample = null;
+		CaNanoLabApplicationService appService = (CaNanoLabApplicationService) ApplicationServiceProvider.getApplicationService();
+
+		DetachedCriteria crit = DetachedCriteria.forClass(Sample.class).add(
+				Property.forName("id").eq(new Long(sampleId)));
+		crit.setFetchMode("primaryPointOfContact", FetchMode.JOIN);
+		crit.setFetchMode("primaryPointOfContact.organization", FetchMode.JOIN);
+		crit.setFetchMode("characterizationCollection", FetchMode.SELECT);
+		crit.setFetchMode("sampleComposition.nanomaterialEntityCollection",
+				FetchMode.SELECT);
+		crit.setFetchMode("sampleComposition.functionalizingEntityCollection",
+				FetchMode.SELECT);
+
+		crit.setFetchMode("sampleComposition.nanomaterialEntityCollection",
+				FetchMode.SELECT);
+		crit.setFetchMode(
+				"sampleComposition.nanomaterialEntityCollection.composingElementCollection",
+				FetchMode.SELECT);
+		crit.setFetchMode(
+				"sampleComposition.nanomaterialEntityCollection.composingElementCollection.inherentFunctionCollection",
+				FetchMode.SELECT);
+		crit.setFetchMode(
+				"sampleComposition.functionalizingEntityCollection.functionCollection",
+				FetchMode.SELECT);
+		crit.setResultTransformer(CriteriaSpecification.DISTINCT_ROOT_ENTITY);
+
+		List result = appService.query(crit);
+		if (!result.isEmpty() || result.size() > 0) {
+			sample = (Sample) result.get(0);
+		}
+		return sample;
+	}*/
+
 	public Sample findSampleById(String sampleId) throws Exception
 	{
 		if (!springSecurityAclService.currentUserHasReadPermission(Long.valueOf(sampleId), SecureClassesEnum.SAMPLE.getClazz()) &&

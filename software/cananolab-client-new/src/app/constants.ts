@@ -49,7 +49,7 @@ export const Consts = {
     QUERY_SAMPLE_DELETE_FROM_WORKSPACE: '/rest/sample/deleteSampleFromWorkspace',
     QUERY_SAMPLE_ADVANCED_SEARCH_SETUP: '/rest/sample/setupAdvancedSearch',
     QUERY_SAMPLE_ADVANCED_SEARCH: '/rest/sample/searchSampleAdvanced',
-    QUERY_SEARCH_SAMPLE: '/rest/sample/searchSample', // @TODO rename this SAMPLE_SEARCH
+    QUERY_SEARCH_SAMPLE: '/rest/sample/searchSampleNextGen', // @TODO rename this SAMPLE_SEARCH
     QUERY_SAMPLE_AVAILABILITY: '/rest/sample/regenerateDataAvailability',
     QUERY_SAMPLE_VIEW_AVAILABILITY: '/rest/sample/viewDataAvailability',
     QUERY_SAMPLE_DELETE_AVAILABILITY: '/rest/sample/deleteDataAvailability',
@@ -173,6 +173,7 @@ export const Consts = {
     HELP_URL_PROTOCOL_CREATE: 'https://wiki.nci.nih.gov/display/caNanoLab/Managing+Protocols+in+caNanoLab#ManagingProtocolsincaNanoLab-SubmitProtocol',
     HELP_URL_PROTOCOL_EDIT: 'https://wiki.nci.nih.gov/display/caNanoLab/Managing+Protocols+in+caNanoLab#ManagingProtocolsincaNanoLab-EditProtocol',
     HELP_URL_PROTOCOL_SEARCH_RESULTS: 'https://wiki.nci.nih.gov/display/caNanoLab/Managing+Protocols+in+caNanoLab#ManagingProtocolsincaNanoLab-ProtocolResults',
+    WJRL_TEST_URL: '/rest/sample/sampleTestEndpoint'
 }
 
 

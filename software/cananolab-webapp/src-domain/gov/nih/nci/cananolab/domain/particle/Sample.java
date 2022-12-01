@@ -75,6 +75,7 @@ public class Sample implements java.io.Serializable {
 	}
 
 	public void setId(Long id) {
+		System.out.println("set sample id" + id);
 		this.id = id;
 	}
 

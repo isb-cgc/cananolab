@@ -58,7 +58,7 @@ public class SimpleCharacterizationSummaryViewBean {
 			CharacterizationSummaryViewBean viewBean, String sampleId) 
 	throws Exception {
 		
-		logger.debug("============ SimpleCharacterizationSummaryViewBean.transferData ==================");
+		System.out.println("============ SimpleCharacterizationSummaryViewBean.transferData ==================");
 		if (viewBean == null) return null;
 		
 		Map<String, SortedSet<CharacterizationBean>> name2CharBeans = viewBean.getCharName2Characterizations();
@@ -69,19 +69,19 @@ public class SimpleCharacterizationSummaryViewBean {
 			return charByTypeBeans;
 		
 		for (String type : charTypes) {
-			logger.debug("Processing type: " + type);
+			System.out.println("Processing type: " + type);
 			
 			SortedSet<String> namesOfType = charNames.get(type);
 			SortedMap<String, Object> charsByAssayType = new TreeMap<String, Object>();
 			
 			for (String charname : namesOfType) {
-				logger.debug("Char Name for type: " + charname + " | " + type);
+				System.out.println("Char Name for type: " + charname + " | " + type);
 				
 				SortedSet<CharacterizationBean> charBeans = name2CharBeans.get(charname);
 				List<SimpleCharacterizationViewBean> charBeansByCharName = new ArrayList<SimpleCharacterizationViewBean>();
 				
 				for (CharacterizationBean charBean : charBeans) {
-					logger.debug("Proccessing char bean: " + charBean.getCharacterizationName());
+					System.out.println("Proccessing char bean: " + charBean.getCharacterizationName());
 					
 					SimpleCharacterizationViewBean aView = new SimpleCharacterizationViewBean();
 		
@@ -89,7 +89,7 @@ public class SimpleCharacterizationSummaryViewBean {
 					aView.transferData(charBean, aBeanUnitList, sampleId, type);
 										
 					charBeansByCharName.add(aView);
-					logger.debug("End Proccessing char bean: " + charBean.getCharacterizationName());
+					System.out.println("End Proccessing char bean: " + charBean.getCharacterizationName());
 				}
 				charsByAssayType.put(charname, charBeansByCharName);
 				
@@ -99,8 +99,8 @@ public class SimpleCharacterizationSummaryViewBean {
 			charByTypeBean.setType(type);
 			charByTypeBean.setCharsByAssayType(charsByAssayType);
 			charByTypeBeans.add(charByTypeBean);
-			
-			logger.debug("End of Processing type: " + type);
+
+			System.out.println("End of Processing type: " + type);
 		}		
 
 		return charByTypeBeans;

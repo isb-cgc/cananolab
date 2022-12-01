@@ -30,11 +30,13 @@ export class SearchResultsPagerService{
     }
 
     goToNextPage(){
+        console.log('goToNextPage!');
         this.nextPageEmitter.emit();
     }
 
     setCurrentPage( p ){
         this.currentPage = p;
+        console.log('setCurrentPage! ' + p);
         this.currentPageChangeEmitter.emit( this.currentPage );
     }
 

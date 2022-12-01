@@ -156,6 +156,15 @@ public class CharacterizationServiceHelper
 	{
 		List<Characterization> chars = new ArrayList<Characterization>();
 
+		//
+		// WJRL 11/23/22: This is a disaster. It retrieves *every data point* for all characterizations
+		// attached to a sample. With the qyery size limited to 10,000 rows (see the limit set
+		// in application-config.xml):
+		//  <bean name="ORMDAO" class="gov.nih.nci.cananolab.system.dao.orm.CaNanoLabORMDAOImpl">
+		//		<property name="resultCountPerQuery" value="10000" />
+		//
+		// It will just miss data sitting in the database. See issues #210, #203 (8981 rows)?, #51.
+		//
 		CaNanoLabApplicationService appService = (CaNanoLabApplicationService) ApplicationServiceProvider.getApplicationService();
 		DetachedCriteria crit = DetachedCriteria.forClass(Characterization.class);
 		crit.createAlias("sample", "sample");
@@ -179,6 +188,7 @@ public class CharacterizationServiceHelper
 
 		for (int i = 0; i < results.size(); i++) {
 			Characterization achar = (Characterization) results.get(i);
+			System.out.println("getting achar " + achar.getId() + " " + achar.getCreatedBy() + achar.getCreatedDate());
 			if (springSecurityAclService.currentUserHasReadPermission(achar.getId(), SecureClassesEnum.CHAR.getClazz()) ||
 				springSecurityAclService.currentUserHasWritePermission(achar.getId(), SecureClassesEnum.CHAR.getClazz())) {
 				checkAssociatedVisibility(achar);

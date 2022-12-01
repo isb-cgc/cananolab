@@ -35,11 +35,14 @@ public class CharacterizationSummaryViewBean {
 		Integer charNameCount=0;
 		for (CharacterizationBean achar : chars) {
 			String type = achar.getCharacterizationType();
+			System.out.println("achar gct " + type);
 			if (type2Characterizations.get(type) != null) {
+				System.out.println("achar A " + type);
 				typeChars = type2Characterizations.get(type);
 			} else {
 				typeChars = new TreeSet<CharacterizationBean>(
 						new Comparators.CharacterizationBeanNameDateComparator());
+				System.out.println("achar B " + type);
 				type2Characterizations.put(type, typeChars);
 			}
 			typeChars.add(achar);

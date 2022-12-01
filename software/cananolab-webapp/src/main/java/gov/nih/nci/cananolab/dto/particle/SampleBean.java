@@ -95,25 +95,26 @@ public class SampleBean extends SecuredDataBean {
 	public SampleBean(Sample sample) {
 		this.domain = sample;
 		this.createdBy = sample.getCreatedBy();
-		if (sample.getKeywordCollection() != null) {
-			for (Keyword keyword : sample.getKeywordCollection()) {
-				keywordSet.add(keyword.getName());
-			}
-		}
+		System.out.println("SampleBean.getKeywordCollection");
+		//if (sample.getKeywordCollection() != null) {
+		//	for (Keyword keyword : sample.getKeywordCollection()) {
+		//		keywordSet.add(keyword.getName());
+		//	}
+		//}
 		keywordsStr = StringUtils.join(keywordSet, "\r\n");
 		if (domain != null) {
 			PointOfContact primaryPOC = domain.getPrimaryPointOfContact();
 			primaryPOCBean = new PointOfContactBean(primaryPOC);
-			if (domain.getOtherPointOfContactCollection() != null) {
-				for (PointOfContact poc : domain
-						.getOtherPointOfContactCollection()) {
-					PointOfContactBean pocBean = new PointOfContactBean(poc);
-					pocBean.setPrimaryStatus(false);
-					otherPOCBeans.add(pocBean);
-				}
-				Collections.sort(otherPOCBeans,
-						new Comparators.PointOfContactBeanDateComparator());
-			}
+			//if (domain.getOtherPointOfContactCollection() != null) {
+			//	for (PointOfContact poc : domain
+			//			.getOtherPointOfContactCollection()) {
+			//		PointOfContactBean pocBean = new PointOfContactBean(poc);
+			//		pocBean.setPrimaryStatus(false);
+			//		otherPOCBeans.add(pocBean);
+			//	}
+			//	Collections.sort(otherPOCBeans,
+			//			new Comparators.PointOfContactBeanDateComparator());
+			//}
 			thePOC = primaryPOCBean;
 		}
 		if (sample.getSampleComposition() != null
@@ -124,10 +125,10 @@ public class SampleBean extends SecuredDataBean {
 				&& !sample.getCharacterizationCollection().isEmpty()) {
 			hasCharacterizations = true;
 		}
-		if (sample.getPublicationCollection() != null
-				&& !sample.getPublicationCollection().isEmpty()) {
-			hasPublications = true;
-		}
+		//if (sample.getPublicationCollection() != null
+		//		&& !sample.getPublicationCollection().isEmpty()) {
+		//	hasPublications = true;
+		//}
 
 //		if (sample.getSynthesisCollection() != null && !sample.getSynthesisCollection().isEmpty()){
 //			hasSynthesis = true;

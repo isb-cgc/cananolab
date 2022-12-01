@@ -16,6 +16,18 @@ end-if
 
 /system-property=gov.nih.nci.cananolab.wikihelpProperties:add(value=@file.repository.dir@/config/wikihelp.properties)
 
+if (outcome == success) of /system-property=log4j.configurationFile:read-resource
+	/system-property=log4j.configurationFile:remove
+end-if
+
+/system-property=log4j.configurationFile:add(value=@file.repository.dir@/config/log4j.xml)
+
+if (outcome == success) of /system-property=jackson.deserialization.whitelist.packages:read-resource
+	/system-property=jackson.deserialization.whitelist.packages:remove
+end-if
+
+/system-property=jackson.deserialization.whitelist.packages:add(value=gov.nih.nci.cananolab)
+
 
 ##############################################################
 #             Datasource Configuration                      

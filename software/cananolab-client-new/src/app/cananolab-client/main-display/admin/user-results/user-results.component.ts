@@ -107,6 +107,7 @@ export class UserResultsComponent implements OnInit {
     }
 
     onSortClick(i, key) {
+        console.log('WJRL user results sorting click');
         if (i) {
             if (this.sortingStates[i]) {
                 // clicking on column that already is sorted on //
