@@ -20,5 +20,5 @@ public interface CurationService
 
 	List<DataReviewStatusBean> findDataPendingReview() throws CurationException, NoAccessException;
 
-	DataReviewStatusBean findDataReviewStatusBeanByDataId(String dataId) throws CurationException, NoAccessException;
+	DataReviewStatusBean findDataReviewStatusBeanByDataId(String dataId, String classTag) throws CurationException, NoAccessException;
 }

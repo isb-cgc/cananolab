@@ -278,7 +278,7 @@ public class ProtocolBO extends BaseAnnotationBO
 		form.setProtocol(protocolBean);
 		setupDynamicDropdowns(request, protocolBean);
 		request.getSession().setAttribute("updateProtocol", "true");
-		setUpSubmitForReviewButton(request, protocolBean.getDomain().getId().toString(), 
+		setUpSubmitForReviewButton(request, protocolBean.getDomain().getId().toString(), DataReviewStatusBean.getDataTypeTag(SecureClassesEnum.PROTOCOL),
 								   springSecurityAclService.checkObjectPublic(protocolBean.getDomain().getId(), SecureClassesEnum.PROTOCOL.getClazz()));
 	//	saveToken(request);
 	//	return mapping.findForward("inputPage");
@@ -375,7 +375,8 @@ public class ProtocolBO extends BaseAnnotationBO
 		// if access is public, pending review status, update review
 		// status to public
 		if (CaNanoRoleEnum.ROLE_ANONYMOUS.toString().equalsIgnoreCase(theAccess.getRecipient())) {
-			this.switchPendingReviewToPublic(request, protocol.getDomain().getId().toString());
+			this.switchPendingReviewToPublic(request, protocol.getDomain().getId().toString(),
+					                         DataReviewStatusBean.getDataTypeTag(SecureClassesEnum.PROTOCOL));
 		}
 
 		if (protocol.getDomain().getId() == null) {
