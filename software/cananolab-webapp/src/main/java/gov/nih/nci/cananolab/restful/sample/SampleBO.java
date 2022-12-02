@@ -935,7 +935,8 @@ public class SampleBO extends BaseAnnotationBO {
 
 		// if access is public, pending review status, update review status to public
 		if (CaNanoRoleEnum.ROLE_ANONYMOUS.toString().equalsIgnoreCase(theAccess.getRecipient())) {
-			this.switchPendingReviewToPublic(request, sample.getDomain().getId().toString());
+			this.switchPendingReviewToPublic(request, sample.getDomain().getId().toString(),
+					                         DataReviewStatusBean.getDataTypeTag(SecureClassesEnum.SAMPLE));
 		}
 
 		simpleEditBean.populateDataForSavingSample(sample);
