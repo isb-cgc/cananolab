@@ -234,7 +234,8 @@ public class SampleEditGeneralBean {
 		boolean publicData = springSecurityAclService.checkObjectPublic(sampleBean.getDomain().getId(), SecureClassesEnum.SAMPLE.getClazz());
 		if (!publicData)
 		{
-			DataReviewStatusBean reviewStatus = curatorService.findDataReviewStatusBeanByDataId(sampleBean.getDomain().getId().toString());
+			DataReviewStatusBean reviewStatus = curatorService.findDataReviewStatusBeanByDataId(sampleBean.getDomain().getId().toString(),
+					                                              DataReviewStatusBean.getDataTypeTag(SecureClassesEnum.SAMPLE));
 
             this.showReviewButton = !SpringSecurityUtil.getPrincipal().isCurator() && (reviewStatus == null || reviewStatus != null &&
                     reviewStatus.getReviewStatus().equals(DataReviewStatusBean.RETRACTED_STATUS));

@@ -18,7 +18,7 @@ public class AppPropertyUtil {
         if (!isLoaded) {
             try {
                 InputStream inputStream = AppPropertyUtil.class.getResourceAsStream(System.getProperty("app.props.path","/.env"));
-                System.out.println("[STATUS] Application properties file should be at: " + inputStream);
+                System.out.println("[STATUS] Application properties file should be at: " + System.getProperty("app.props.path","/.env"));
                 if (inputStream != null) {
                     appProperties = new Properties();
                     appProperties.load(inputStream);
