@@ -8,6 +8,9 @@
 
 package gov.nih.nci.cananolab.dto.common;
 
+import gov.nih.nci.cananolab.exception.CurationException;
+import gov.nih.nci.cananolab.security.enums.SecureClassesEnum;
+
 import java.util.Date;
 
 public class DataReviewStatusBean {
@@ -91,5 +94,9 @@ public class DataReviewStatusBean {
 		}
 		reviewLink += dataId;
 		return reviewLink;
+	}
+
+	public static String getDataTypeTag(SecureClassesEnum dataType) {
+		return (dataType.toString().toLowerCase());
 	}
 }
