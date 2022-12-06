@@ -49,6 +49,7 @@
 #
 # We want to look at all the fields in the DB and see if any are in danger with going from 1 byte/char to max of 4 bytes/char.
 #
+# mysql -D cananotoo -B -N -e "SHOW TABLES" | awk '{print "SHOW CREATE TABLE `",$1,"` ;"}' | sed 's/` /`/' | sed 's/ ` ;/`;/' | mysql -D cananotoo > table_dump.txt
 # cat table_dump.txt | awk  '{gsub("\\\\n","\n")};1' | grep -v "PRIMARY KEY" | grep -v "UNIQUE KEY" | grep -v "Create Table" \
 #  | grep -v ENGINE | grep -v KEY | grep -v CONSTRAINT | sed 's/.*`.*` //' | sed 's/ .*//' | sort | uniq
 # bigint
