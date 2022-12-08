@@ -19,8 +19,8 @@ Before proceeding, make a new project in your IDE and clone the caNanoLab reposi
 
 <h3>Local Deployment using a Vagrant VM</h3>
 <h4>Step 0: Install Node and Build the Front End</h4>
+<p>Download and install Node 16 for your machine. Do not use a newer version, and do not install it from the VM.</p>
 <ul>
-    <li>Download and install Node 16 for your machine. Do not use a newer version, and do not install it from the VM.</li>
     <li>Open a Command Line prompt and change directories to <code>cananolab/software/canaolab-client-new</code></li>
     <li><code>npm i</code></li>
     <li><code>npm install -g @angular/cli@latest</code></li>
