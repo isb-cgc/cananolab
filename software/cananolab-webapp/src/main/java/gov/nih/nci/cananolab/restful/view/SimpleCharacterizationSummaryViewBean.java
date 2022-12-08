@@ -81,8 +81,12 @@ public class SimpleCharacterizationSummaryViewBean {
 				List<SimpleCharacterizationViewBean> charBeansByCharName = new ArrayList<SimpleCharacterizationViewBean>();
 				
 				for (CharacterizationBean charBean : charBeans) {
+					if (!charBean.getCharacterizationType().equals(type)) {
+						continue;
+					}
+
 					logger.debug("Proccessing char bean: " + charBean.getCharacterizationName());
-					
+
 					SimpleCharacterizationViewBean aView = new SimpleCharacterizationViewBean();
 		
 					List<SimpleCharacterizationUnitBean> aBeanUnitList = tranferCharacterizationBeanData(request, charBean);

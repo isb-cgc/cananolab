@@ -7,7 +7,7 @@ commands:
           command: |
             TIER=DEV
             if [[ -n ${CIRCLE_TAG} ]]; then
-              TIER="PROD"
+              TIER=$(git branch --contains tags/${CIRCLE_TAG} | awk '{print toupper($1)}')
             elif [[ ${CIRCLE_BRANCH} =~ (prod|uat|test).* ]]; then
               TIER=$(awk -F[\-_] '{print toupper($1)}' \<<< ${CIRCLE_BRANCH})
             fi

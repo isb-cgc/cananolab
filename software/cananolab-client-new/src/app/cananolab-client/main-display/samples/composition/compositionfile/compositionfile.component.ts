@@ -21,7 +21,7 @@ export class CompositionfileComponent implements OnInit {
     theFile;
     sampleId = Properties.CURRENT_SAMPLE_ID;
     sampleName = Properties.CURRENT_SAMPLE_NAME;
-    helpUrl = Consts.HELP_URL_SAMPLE_CHARACTERIZATION;
+    helpUrl = Consts.HELP_URL_SAMPLE_COMPOSITION_COMPOSITION_FILE;
     toolHeadingNameManage = 'Sample ' + this.sampleName + ' Composition File';
 
   constructor( private httpClient:HttpClient,private apiService:ApiService,private navigationService:NavigationService,private router: Router, private route: ActivatedRoute ){

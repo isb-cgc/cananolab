@@ -310,13 +310,13 @@ public abstract class BaseAnnotationBO extends AbstractDispatchBO
 		return "success";
 	}
 
-	protected void setUpSubmitForReviewButton(HttpServletRequest request, String dataId, Boolean publicData) throws Exception
+	protected void setUpSubmitForReviewButton(HttpServletRequest request, String dataId, String dataType, Boolean publicData) throws Exception
 	{
 		// show 'submit for review' button if data is not public and doesn't
 		// have retracted status and user is not curator
 		if (!publicData) {
 			CananoUserDetails userDetails = SpringSecurityUtil.getPrincipal();
-			DataReviewStatusBean reviewStatus = getCurationServiceDAO().findDataReviewStatusBeanByDataId(dataId);
+			DataReviewStatusBean reviewStatus = getCurationServiceDAO().findDataReviewStatusBeanByDataId(dataId, dataType);
 
 			if (!userDetails.isCurator() && (reviewStatus == null || (reviewStatus != null && 
 				 reviewStatus.getReviewStatus().equals(DataReviewStatusBean.RETRACTED_STATUS)))) {
@@ -329,10 +329,10 @@ public abstract class BaseAnnotationBO extends AbstractDispatchBO
 		}
 	}
 
-	protected void switchPendingReviewToPublic(HttpServletRequest request, String dataId) throws Exception
+	protected void switchPendingReviewToPublic(HttpServletRequest request, String dataId, String classTag) throws Exception
 	{
 		CananoUserDetails userDetails = SpringSecurityUtil.getPrincipal();
-		DataReviewStatusBean reviewStatus = getCurationServiceDAO().findDataReviewStatusBeanByDataId(dataId);
+		DataReviewStatusBean reviewStatus = getCurationServiceDAO().findDataReviewStatusBeanByDataId(dataId, classTag);
 		if (userDetails.isCurator() && reviewStatus != null && 
 			reviewStatus.getReviewStatus().equals(DataReviewStatusBean.PENDING_STATUS)) {
 			reviewStatus.setReviewStatus(DataReviewStatusBean.PUBLIC_STATUS);
@@ -353,7 +353,7 @@ public abstract class BaseAnnotationBO extends AbstractDispatchBO
 	protected void updateReviewStatusTo(String status, HttpServletRequest request, String dataId, String dataName,
 			String dataType) throws Exception
 	{
-		DataReviewStatusBean reviewStatus = getCurationServiceDAO().findDataReviewStatusBeanByDataId(dataId);
+		DataReviewStatusBean reviewStatus = getCurationServiceDAO().findDataReviewStatusBeanByDataId(dataId, dataType);
 		if (reviewStatus == null) {
 			reviewStatus = new DataReviewStatusBean();
 			reviewStatus.setDataId(dataId);
@@ -366,6 +366,7 @@ public abstract class BaseAnnotationBO extends AbstractDispatchBO
 				return;
 			}
 		}
+		System.out.println("updating review status " + status);
 		reviewStatus.setReviewStatus(status);
 		getCurationServiceDAO().submitDataForReview(reviewStatus);
 	}

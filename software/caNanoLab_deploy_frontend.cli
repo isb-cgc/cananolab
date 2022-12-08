@@ -1,0 +1,13 @@
+# caNanoLab Wildfly deploy scripts
+
+connect localhost:9990
+
+##############################################################
+#              Deploy War Files                            
+##############################################################
+
+if (outcome == success) of /deployment=cananolab_new_client.war:read-resource
+    undeploy cananolab_new_client.war
+end-if
+
+deploy --force /tmp/cananolab_new_client/cananolab_new_client.war

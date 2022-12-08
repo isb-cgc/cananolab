@@ -1,4 +1,7 @@
 # caNanoLab Wildfly setup scripts
+# This script will not work in an App Engine environment due to the volatility the configuration (changes here are in
+# memory and not on disk). If you wish to make changes to data sources or logging you must make them to the
+# standalone-full.xml file in a given tier's deployment bucket. Changes here will have no impact.
 
 connect localhost:@client.port@
 
@@ -55,21 +58,21 @@ end-if
 ######################################################################
 
 # Adjust the console handler
-# /subsystem=logging:write-attribute(name=use-deployment-logging-config, value=false)
-# /subsystem=logging:write-attribute(name=add-logging-api-dependencies,value=true)
-# /subsystem=logging/console-handler=CONSOLE:write-attribute(name=autoflush, value=true)
-# /subsystem=logging/console-handler=CONSOLE:write-attribute(name=level, value=INFO)
-# /subsystem=logging/console-handler=CONSOLE:write-attribute(name="formatter", value="%d{HH:mm:ss,SSS} %-5p [%c] (%t) %m%n")
+/subsystem=logging:write-attribute(name=use-deployment-logging-config, value=false)
+/subsystem=logging:write-attribute(name=add-logging-api-dependencies,value=true)
+/subsystem=logging/console-handler=CONSOLE:write-attribute(name=autoflush, value=true)
+/subsystem=logging/console-handler=CONSOLE:write-attribute(name=level, value=INFO)
+/subsystem=logging/console-handler=CONSOLE:write-attribute(name="formatter", value="%d{HH:mm:ss,SSS} %-5p [%c] (%t) %m%n")
 
 # Point stdout and stderr to it
-# /subsystem=logging/logger=stderr:add(use-parent-handlers="false", handlers=[CONSOLE])
-# /subsystem=logging/logger=stdout:add(use-parent-handlers="false", handlers=[CONSOLE])
+/subsystem=logging/logger=stderr:add(use-parent-handlers="false", handlers=[CONSOLE])
+/subsystem=logging/logger=stdout:add(use-parent-handlers="false", handlers=[CONSOLE])
 
 # Pull the root logger off the File handler; file logging is useless in AppEngine
-# /subsystem=logging/root-logger=ROOT:remove-handler(name=FILE)
-# /subsystem=logging/root-logger=ROOT:write-attribute(name=level, value=DEBUG)
+/subsystem=logging/root-logger=ROOT:remove-handler(name=FILE)
+/subsystem=logging/root-logger=ROOT:write-attribute(name=level, value=DEBUG)
 
 # Hook up our cananolab code to the console handler
-# /subsystem=logging/logger=gov.nih.nci.cananolab:add(handlers=["CONSOLE"])
+/subsystem=logging/logger=gov.nih.nci.cananolab:add(handlers=["CONSOLE"])
 
 :reload
