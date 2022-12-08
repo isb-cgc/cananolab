@@ -40,8 +40,10 @@ public class CurationServiceJDBCImpl extends JdbcDaoSupport implements CurationS
 	
 	@Autowired
 	private SpringSecurityAclService springSecurityAclService;
-	
-	private static final String REVIEW_STATUS_TABLE = "canano.data_review_status";
+
+	// WJRL 12/1/22: This was hardwired to "canano.data_status_review". The database
+	// is specified in the build properties, and should not be hardwired here:
+	private static final String REVIEW_STATUS_TABLE = "data_review_status";
 	private static final String REVIEW_STATUS_TABLE_DATA_ID_COL = "data_id";
 	private static final String REVIEW_STATUS_TABLE_DATA_NAME_COL = "data_name";
 	private static final String REVIEW_STATUS_TABLE_DATA_TYPE_COL = "data_type";
@@ -106,7 +108,7 @@ public class CurationServiceJDBCImpl extends JdbcDaoSupport implements CurationS
 		return pendingDataList;
 	}
 
-	public DataReviewStatusBean findDataReviewStatusBeanByDataId(String dataId) throws CurationException, NoAccessException
+	public DataReviewStatusBean findDataReviewStatusBeanByDataId(String dataId, String classTag) throws CurationException, NoAccessException
 	{
 		DataReviewStatusBean dataReviewStatusBean = null;
 		try {
@@ -114,21 +116,20 @@ public class CurationServiceJDBCImpl extends JdbcDaoSupport implements CurationS
 //				throw new NoAccessException();
 //			}
 			JdbcTemplate template = this.getJdbcTemplate();
-			String sql = "select " + REVIEW_STATUS_TABLE_ALL_COLS + " from " + REVIEW_STATUS_TABLE + " where data_id=?";
-			System.out.println("[findDataReviewStatusBeanByDataId] SQL: " + sql);
-			Object[] args = { dataId };
-			System.out.println("[findDataReviewStatusBeanByDataId] dataId: " + dataId);
+			String sql = "SELECT " + REVIEW_STATUS_TABLE_ALL_COLS
+					     + " FROM " + REVIEW_STATUS_TABLE
+					     + " WHERE " + REVIEW_STATUS_TABLE_DATA_ID_COL + " = ?"
+					     + " AND " + REVIEW_STATUS_TABLE_DATA_TYPE_COL + " = ?";
+			Object[] args = { dataId, classTag };
 			List result = template.query(sql, args, getDataReviewStatusRowMapper());
-			System.out.println("[findDataReviewStatusBeanByDataId] result count: " + result.size());
-			for (int i = 0; i < result.size(); i++) {
-				dataReviewStatusBean = (DataReviewStatusBean) result.get(0);
-				System.out.println("[findDataReviewStatusBeanByDataId] result - " + dataReviewStatusBean.toString());
+			if (result.size() > 1) {
+				String error = "Multiple status review entries for ID and Type " + dataId + " " + classTag;
+				throw new CurationException(error);
+			} else if (result.size() == 1) {
+				dataReviewStatusBean = (DataReviewStatusBean)result.get(0);
 			}
-//		} catch (NoAccessException e) {
-//			throw e;
 		} catch (Exception e) {
 			String error = "Error finding existing pending for review data by Id";
-			System.out.println("[findDataReviewStatusBeanByDataId] ERROR - " + e);
 			throw new CurationException(error, e);
 		}
 		return dataReviewStatusBean;
@@ -147,17 +148,35 @@ public class CurationServiceJDBCImpl extends JdbcDaoSupport implements CurationS
         return this.getJdbcTemplate().update(sql, args);
 	}
 
-	private int updateDataReviewStatusBean(
-			DataReviewStatusBean dataReviewStatusBean) {
-		String sql = "update " + REVIEW_STATUS_TABLE + " set "
-				+ REVIEW_STATUS_TABLE_DATA_NAME_COL + "= ?, "
-				+ REVIEW_STATUS_TABLE_STATUS_COL + "=? where "
-				+ REVIEW_STATUS_TABLE_DATA_ID_COL + "= ?";
+	private void updateOrDeleteDataReviewStatusBean(DataReviewStatusBean dataReviewStatusBean) {
+		//
+		// WJRL 12/1/22: Previously, if a sample was deleted, it was entered
+		// into this table as deleted (even if it was not originally here). Plus,
+		// if the deletion was successful (not always true), we would be placing
+		// a now freed-up primary key into this table which could be picked up
+		// by the next item created (see issue #196). Thus, if an element
+		// is being "updated" to deleted, the correct approach is to
+		// delete it if it is present, and ignore it otherwise.
+		//
+		if (dataReviewStatusBean.getReviewStatus().equals(DataReviewStatusBean.DELETED_STATUS)) {
+			String sql = "DELETE FROM " + REVIEW_STATUS_TABLE + " WHERE "
+					+ REVIEW_STATUS_TABLE_DATA_TYPE_COL + " = \"" + dataReviewStatusBean.getDataType() +"\" AND "
+					+ REVIEW_STATUS_TABLE_DATA_ID_COL + " = " + dataReviewStatusBean.getDataId();
+			System.out.println("Submitting " + sql);
+			this.getJdbcTemplate().execute(sql);
+			System.out.println("finished " + sql + " to delete");
+		} else {
+			String sql = "update " + REVIEW_STATUS_TABLE + " set "
+					+ REVIEW_STATUS_TABLE_DATA_NAME_COL + "= ?, "
+					+ REVIEW_STATUS_TABLE_STATUS_COL + "=? where "
+					+ REVIEW_STATUS_TABLE_DATA_ID_COL + "= ?";
 
-		Object[] args = { dataReviewStatusBean.getDataName(),
-				dataReviewStatusBean.getReviewStatus(),
-				dataReviewStatusBean.getDataId() };
-        return this.getJdbcTemplate().update(sql, args);
+			Object[] args = {dataReviewStatusBean.getDataName(),
+					dataReviewStatusBean.getReviewStatus(),
+					dataReviewStatusBean.getDataId()};
+			this.getJdbcTemplate().update(sql, args);
+		}
+		return;
 	}
 
 	public void submitDataForReview(DataReviewStatusBean dataReviewStatusBean) throws CurationException, NoAccessException
@@ -172,20 +191,24 @@ public class CurationServiceJDBCImpl extends JdbcDaoSupport implements CurationS
 				clazz = SecureClassesEnum.PROTOCOL.getClazz();
 			else if (SecureClassesEnum.PUBLICATION.toString().equalsIgnoreCase(dataType))
 				clazz = SecureClassesEnum.PUBLICATION.getClazz();
-			
+			System.out.println("submitDataForReview " + dataType);
 			if (!springSecurityAclService.currentUserHasWritePermission(Long.valueOf(dataReviewStatusBean.getDataId()), clazz)) {
-				throw new NoAccessException();
+				String error = "Current user has no write access to item";
+				throw new NoAccessException(error);
 			}
-			DataReviewStatusBean existingBean = findDataReviewStatusBeanByDataId(dataReviewStatusBean.getDataId());
-			if (existingBean != null)
-			{
-				this.updateDataReviewStatusBean(dataReviewStatusBean);
-			} else {
+			DataReviewStatusBean existingBean = findDataReviewStatusBeanByDataId(dataReviewStatusBean.getDataId(), dataType);
+
+			if (existingBean != null) {
+				System.out.println("updated or delete");
+				this.updateOrDeleteDataReviewStatusBean(dataReviewStatusBean);
+				System.out.println("successful return");
+			} else if (!dataReviewStatusBean.getReviewStatus().equals(DataReviewStatusBean.DELETED_STATUS)) {
 				this.insertDataReviewStatusBean(dataReviewStatusBean);
 			}
 		} catch (NoAccessException e) {
 			throw e;
 		} catch (Exception e) {
+			System.out.println("Exception " + e);
 			String error = "Error in submitting data for curator review";
 			throw new CurationException(error, e);
 		}

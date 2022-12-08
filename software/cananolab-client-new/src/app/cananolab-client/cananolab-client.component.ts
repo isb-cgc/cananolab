@@ -15,7 +15,7 @@ import { ApiService } from './common/services/api.service';
 import { TopMainMenuService } from './top-main-menu/top-main-menu.service';
 import { StatusDisplayService } from './status-display/status-display.service';
 import { Consts } from '../constants';
-import { IdleService } from './common/components/idle/idle.service';
+
 @Component( {
     selector: 'canano-cananolab-client',
     templateUrl: './cananolab-client.component.html',
@@ -27,9 +27,10 @@ export class CananolabClientComponent implements OnInit{
     currentRoute;
     menuItems=[];
     print=false;
-    constructor( private activatedRoute:ActivatedRoute,private idleService:IdleService,private statusDisplayService:StatusDisplayService,private topMainMenuService:TopMainMenuService,private apiService:ApiService,private configurationService: ConfigurationService, private router: Router,
+    constructor( private activatedRoute:ActivatedRoute,private statusDisplayService:StatusDisplayService,
+                 private topMainMenuService:TopMainMenuService,private apiService:ApiService,
+                 private configurationService: ConfigurationService, private router: Router,
                  private utilService: UtilService ){
-
     }
 
     ngOnInit(): void{
@@ -47,9 +48,6 @@ export class CananolabClientComponent implements OnInit{
                 if (event.url!='/home') {
                     this.menuItems=['HOME'];
                 }
-            }
-            if (event instanceof NavigationEnd) {
-                this.idleService.startTimer();
             }
         })
         let loginUrl=this.apiService.doGet(Consts.QUERY_GET_USER_GROUPS,{});

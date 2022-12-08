@@ -386,7 +386,7 @@ public class PublicationBO extends BaseAnnotationBO
 		InitPublicationSetup.getInstance().setPublicationDropdowns(request);
 		request.setAttribute("onloadJavascript",
 				"updateSubmitFormBasedOnCategory();updateFormFields('" + publicationId + "')");
-		setUpSubmitForReviewButton(request, pubBean.getDomainFile().getId().toString(), 
+		setUpSubmitForReviewButton(request, pubBean.getDomainFile().getId().toString(), DataReviewStatusBean.getDataTypeTag(SecureClassesEnum.PUBLICATION),
 				springSecurityAclService.checkObjectPublic(pubBean.getDomainFile().getId(), SecureClassesEnum.PUBLICATION.getClazz()));
 		request.getSession().setAttribute("updatePublication", "true");
 
@@ -804,7 +804,8 @@ public class PublicationBO extends BaseAnnotationBO
 		// status to public
 		if (CaNanoRoleEnum.ROLE_ANONYMOUS.toString().equalsIgnoreCase(theAccess.getRecipient())) {
 			System.out.println("PublicationBean into switch " + pub.getDomainFile().getId().toString());
-			this.switchPendingReviewToPublic(request, pub.getDomainFile().getId().toString());
+			this.switchPendingReviewToPublic(request, pub.getDomainFile().getId().toString(),
+					                         DataReviewStatusBean.getDataTypeTag(SecureClassesEnum.PUBLICATION));
 		}
 
 		PublicationBean pBean = this.setAccesses(request, pub);

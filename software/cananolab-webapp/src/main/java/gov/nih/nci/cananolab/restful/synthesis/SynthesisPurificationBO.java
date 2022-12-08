@@ -802,9 +802,9 @@ public class SynthesisPurificationBO extends BaseAnnotationBO {
      * @param httpRequest
      * @return
      */
-    public SimpleSynthesisPurificationBean deleteFile(SimpleSynthesisPurificationBean editBean, HttpServletRequest httpRequest) throws SynthesisException {
-
+    public SimpleSynthesisPurificationBean removeFile(SimpleSynthesisPurificationBean editBean, HttpServletRequest httpRequest) throws SynthesisException {
         try {
+            //Assumption is they have ONE file submitted attached to the object.  That is the file to be removed
             SynthesisPurificationBean entityBean = transferSimplePurification(editBean, httpRequest);
 
             FileBean theFile = entityBean.getFile(editBean.getFileBeingEdited().getId());
@@ -812,21 +812,22 @@ public class SynthesisPurificationBO extends BaseAnnotationBO {
 
             List<String> msgs = validateInputs(httpRequest, entityBean);
             if (msgs.size() > 0) {
-                SimpleSynthesisPurificationBean synPure = new SimpleSynthesisPurificationBean();
-                synPure.setErrors(msgs);
-                return synPure;
+                SimpleSynthesisPurificationBean synMat = new SimpleSynthesisPurificationBean();
+                synMat.setErrors(msgs);
+                return synMat;
             }
             this.saveEntity(entityBean, editBean.getSampleId(), httpRequest);
             httpRequest.setAttribute("anchor", "file");
             this.checkOpenForms(entityBean, httpRequest);
             return setupUpdate(editBean.getSampleId(), entityBean.getDomainEntity().getId().toString()
                     , httpRequest);
+
         } catch (SynthesisException s){
             throw s;
         }
         catch (Exception e) {
             e.printStackTrace();
-            throw new SynthesisException("Unable to delete File",e);
+            throw new SynthesisException("Unable to delete File", e);
         }
     }
 
@@ -1006,24 +1007,21 @@ public class SynthesisPurificationBO extends BaseAnnotationBO {
         //Determine the directory for saving the file
         String internalUriPath = Constants.FOLDER_PARTICLE + '/' + sampleBean.getDomain().getName() + '/' +
                 "synthesisPurification";
-        byte[] newFileData = (byte[]) httpRequest.getSession().getAttribute("newFileData");
-        theNewFile.setNewFileData(newFileData);
         theNewFile.setupDomainFile(internalUriPath, SpringSecurityUtil.getLoggedInUserName());
 
-
-
-//        if (!theNewFile.getDomainFile().getUriExternal()) {
-//            if (newFileData != null) {
-//                theNewFile.setNewFileData((byte[]) httpRequest.getSession().getAttribute("newFileData"));
-//                theNewFile.getDomainFile().setUri(Constants.FOLDER_PARTICLE + '/'
-//                        + sampleBean.getDomain().getName() + '/' + "synthesisPurification" + "/" + timestamp + "_"
-//                        + theNewFile.getDomainFile().getName());
-//            } else if (theNewFile.getDomainFile().getId() != null) {
-//                theNewFile.getDomainFile().setUri(theNewFile.getDomainFile().getName());
-//            } else {
-//                theNewFile.getDomainFile().setUri(null);
-//            }
-//        }
+        byte[] newFileData = (byte[]) httpRequest.getSession().getAttribute("newFileData");
+        if (!theNewFile.getDomainFile().getUriExternal()) {
+            if (newFileData != null) {
+                theNewFile.setNewFileData((byte[]) httpRequest.getSession().getAttribute("newFileData"));
+                theNewFile.getDomainFile().setUri(Constants.FOLDER_PARTICLE + '/'
+                        + sampleBean.getDomain().getName() + '/' + "synthesisPurification" + "/" + timestamp + "_"
+                        + theNewFile.getDomainFile().getName());
+            } else if (theNewFile.getDomainFile().getId() != null) {
+                theNewFile.getDomainFile().setUri(theNewFile.getDomainFile().getName());
+            } else {
+                theNewFile.getDomainFile().setUri(null);
+            }
+        }
         synthesisPurificationBean.addFile(theNewFile);
 
 //

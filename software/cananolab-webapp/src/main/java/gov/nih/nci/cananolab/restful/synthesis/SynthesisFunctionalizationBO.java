@@ -572,7 +572,6 @@ public class SynthesisFunctionalizationBO extends BaseAnnotationBO {
 
     public SimpleSynthesisFunctionalizationBean saveFile(SimpleSynthesisFunctionalizationBean simpleSynthesisFunctionalizationBean,
                                                 HttpServletRequest httpRequest) throws Exception{
-
         SynthesisFunctionalizationBean synthesisFunctionalizationBean = transferSynthesisFunctionalizationBean(simpleSynthesisFunctionalizationBean, httpRequest);
         List<FileBean> fileList = synthesisFunctionalizationBean.getFiles();
 
@@ -581,7 +580,6 @@ public class SynthesisFunctionalizationBO extends BaseAnnotationBO {
 
         SampleBean sampleBean = setupSampleById(simpleSynthesisFunctionalizationBean.getSampleId(), httpRequest);
         FileBean theNewFile = new FileBean(simpleSynthesisFunctionalizationBean.getFileBeingEdited());
-
 
 
         //Determine the directory for saving the file

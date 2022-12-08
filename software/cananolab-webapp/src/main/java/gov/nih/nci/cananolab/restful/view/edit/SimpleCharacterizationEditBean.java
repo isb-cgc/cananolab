@@ -272,6 +272,7 @@ public class SimpleCharacterizationEditBean
 		String charType = charBean.getCharacterizationType();
 
 		charTypesLookup = InitCharacterizationSetup.getInstance().getCharacterizationTypes(request);
+		InitCharacterizationSetup.getInstance().setCharacterizationDropdowns(request);
 //		charTypesLookup.add("other");
 		
 
@@ -356,6 +357,8 @@ public class SimpleCharacterizationEditBean
 
 		achar.setCharacterizationName(this.name);
 		achar.setCharacterizationType(this.type);
+		System.out.println("Issue 181 SCEB T2CB " + this.type);
+		System.out.println("Issue 181 SCEB T2CB 2 " + achar.getCharacterizationType() + " " + achar.getCharacterizationName());
 
 		achar.setAssayType(assayType);
 
@@ -374,6 +377,7 @@ public class SimpleCharacterizationEditBean
 
 		//char date
 		if (achar.getDomainChar() != null) {
+			System.out.println("Issue 181 SCEB T2CB 3" + achar.getDomainChar());
 			achar.getDomainChar().setDate(characterizationDate);
 		}
 

@@ -8,6 +8,7 @@ import gov.nih.nci.cananolab.restful.synthesis.SynthesisPurificationBO;
 import gov.nih.nci.cananolab.restful.util.CommonUtil;
 import gov.nih.nci.cananolab.restful.view.SimpleSynthesisBean;
 import gov.nih.nci.cananolab.restful.view.edit.SimplePurityBean;
+import gov.nih.nci.cananolab.restful.view.edit.SimpleSynthesisMaterialBean;
 import gov.nih.nci.cananolab.restful.view.edit.SimpleSynthesisPurificationBean;
 import gov.nih.nci.cananolab.security.utils.SpringSecurityUtil;
 import gov.nih.nci.cananolab.system.applicationservice.CaNanoLabApplicationService;
@@ -45,6 +46,11 @@ public class SynthesisPurificationServices {
     @Produces("application/json")
     public Response createPurification(@Context HttpServletRequest httpRequest,
                                        SimpleSynthesisPurificationBean editBean) {
+        // TODO Mi: Remove to turn on Synthesis backend
+        return Response.ok("Feature under development").build();
+
+        /* TODO Mi: Uncomment for Synthesis
+
         //TODO write
         try {
             if (!SpringSecurityUtil.isUserLoggedIn()) {
@@ -68,6 +74,8 @@ public class SynthesisPurificationServices {
                     .entity(CommonUtil.wrapErrorMessageInList(e.getMessage())).build();
         }
 
+         */
+
 
     }
 
@@ -81,7 +89,10 @@ public class SynthesisPurificationServices {
     @Path("createPurity")
     @Produces("application/json")
     public Response createPurity(@Context HttpServletRequest httpRequest, SimpleSynthesisPurificationBean editBean) {
+        // TODO Mi: Remove to turn on Synthesis backend
+        return Response.ok("Feature under development").build();
 
+        /* TODO Mi: Uncomment for Synthesis
         try {
             if (!SpringSecurityUtil.isUserLoggedIn()) {
                 return Response.status(Response.Status.UNAUTHORIZED).entity(Constants.MSG_SESSION_INVALID).build();
@@ -106,6 +117,8 @@ public class SynthesisPurificationServices {
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
                     .entity(CommonUtil.wrapErrorMessageInList(e.getMessage())).build();
         }
+
+         */
     }
 
     /**
@@ -119,7 +132,10 @@ public class SynthesisPurificationServices {
     @Produces("application/json")
     public Response deletePurification(@Context HttpServletRequest httpRequest,
                                        SimpleSynthesisPurificationBean editBean) {
+        // TODO Mi: Remove to turn on Synthesis backend
+        return Response.ok("Feature under development").build();
 
+        /* TODO Mi: Uncomment for Synthesis
         try {
             if (!SpringSecurityUtil.isUserLoggedIn()) {
                 return Response.status(Response.Status.UNAUTHORIZED).entity(Constants.MSG_SESSION_INVALID).build();
@@ -138,6 +154,8 @@ public class SynthesisPurificationServices {
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
                     .entity(CommonUtil.wrapErrorMessageInList(e.getMessage())).build();
         }
+
+         */
     }
 
     /**
@@ -150,6 +168,11 @@ public class SynthesisPurificationServices {
     @Path("deletePurity")
     @Produces("application/json")
     public Response deletePurity(@Context HttpServletRequest httpRequest, SimpleSynthesisPurificationBean editBean) {
+        // TODO Mi: Remove to turn on Synthesis backend
+        return Response.ok("Feature under development").build();
+
+        /* TODO Mi: Uncomment for Synthesis
+
 //TODO clean up
         List<String> msgs = new ArrayList<String>();
 //        try {
@@ -170,6 +193,8 @@ public class SynthesisPurificationServices {
 //            return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
 //                    .entity(CommonUtil.wrapErrorMessageInList(e.getMessage())).build();
 //        }
+
+         */
     }
 
     /**
@@ -183,7 +208,10 @@ public class SynthesisPurificationServices {
     @Produces("application/json")
     public Response deleteTechniqueAndInstrument(@Context HttpServletRequest httpRequest,
                                                  SimpleSynthesisPurificationBean editBean) {
+        // TODO Mi: Remove to turn on Synthesis backend
+        return Response.ok("Feature under development").build();
 
+        /* TODO Mi: Uncomment for Synthesis
         try {
             if (!SpringSecurityUtil.isUserLoggedIn()) {
                 return Response.status(Response.Status.UNAUTHORIZED).entity(Constants.MSG_SESSION_INVALID).build();
@@ -202,6 +230,8 @@ public class SynthesisPurificationServices {
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
                     .entity(CommonUtil.wrapErrorMessageInList(e.getMessage())).build();
         }
+
+         */
     }
 
     /**
@@ -214,6 +244,11 @@ public class SynthesisPurificationServices {
     @Path("/findTechniqueByType")
     @Produces("application/json")
     public Response findTechniqueByType(@QueryParam("techniqueType") String type)  {
+        // TODO Mi: Remove to turn on Synthesis backend
+        return Response.ok("Feature under development").build();
+
+        /* TODO Mi: Uncomment for Synthesis
+
         Technique technique = null;
         try {
             CaNanoLabApplicationService appService =
@@ -240,6 +275,8 @@ public class SynthesisPurificationServices {
 
         }
 
+
+         */
     }
 
     /**
@@ -252,6 +289,11 @@ public class SynthesisPurificationServices {
     @Produces("application/json")
     public Response getAssayTypes(@Context HttpServletRequest httpRequest,
                                   @DefaultValue("") @QueryParam("purificationName") String purificationName) {
+        // TODO Mi: Remove to turn on Synthesis backend
+        return Response.ok("Feature under development").build();
+
+        /* TODO Mi: Uncomment for Synthesis
+
         //TODO write
 
         try {
@@ -273,6 +315,8 @@ public class SynthesisPurificationServices {
                     "Error while retrieving AssayNames. " + e.getMessage())).build();
 
         }
+
+         */
     }
 
     /**
@@ -292,6 +336,11 @@ public class SynthesisPurificationServices {
                                                @DefaultValue("") @QueryParam("purificationType") String purificationType,
                                                @DefaultValue("") @QueryParam("purificationName") String purificationName,
                                                @DefaultValue("") @QueryParam("assayType") String assayType) {
+        // TODO Mi: Remove to turn on Synthesis backend
+        return Response.ok("Feature under development").build();
+
+        /* TODO Mi: Uncomment for Synthesis
+
         //TODO write
         try {
             SynthesisManager synthesisMgr = (SynthesisManager) SpringApplicationContext.getBean(httpRequest,
@@ -310,6 +359,8 @@ public class SynthesisPurificationServices {
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
                     .entity(CommonUtil.wrapErrorMessageInList(e.getMessage())).build();
         }
+
+         */
     }
 
     /**
@@ -325,6 +376,11 @@ public class SynthesisPurificationServices {
     public Response getColumnNameOptionsByType(@Context HttpServletRequest httpRequest,
                                                @DefaultValue("") @QueryParam("columnType") String columnType,
                                                @DefaultValue("") @QueryParam("assayType") String assayType) {
+        // TODO Mi: Remove to turn on Synthesis backend
+        return Response.ok("Feature under development").build();
+
+        /* TODO Mi: Uncomment for Synthesis
+
         //TODO write
         try {
             SynthesisManager synthesisMgr = (SynthesisManager) SpringApplicationContext.getBean(httpRequest,
@@ -341,6 +397,8 @@ public class SynthesisPurificationServices {
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
                     .entity(CommonUtil.wrapErrorMessageInList(e.getMessage())).build();
         }
+
+         */
     }
 
     /**
@@ -356,6 +414,11 @@ public class SynthesisPurificationServices {
     public Response getColumnValueUnitOptions(@Context HttpServletRequest httpRequest,
                                               @DefaultValue("") @QueryParam("columnName") String columnName,
                                               @DefaultValue("") @QueryParam("conditionProperty") String conditionProperty) {
+        // TODO Mi: Remove to turn on Synthesis backend
+        return Response.ok("Feature under development").build();
+
+        /* TODO Mi: Uncomment for Synthesis
+
         //TODO write
         try {
             SynthesisManager synthesisMgr = (SynthesisManager) SpringApplicationContext.getBean(httpRequest,
@@ -372,6 +435,8 @@ public class SynthesisPurificationServices {
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
                     .entity(CommonUtil.wrapErrorMessageInList(e.getMessage())).build();
         }
+
+         */
     }
 
     /**
@@ -385,6 +450,11 @@ public class SynthesisPurificationServices {
     @Produces("application/json")
     public Response getConditionPropertyOptions(@Context HttpServletRequest httpRequest,
                                                 @DefaultValue("") @QueryParam("columnName") String columnName) {
+        // TODO Mi: Remove to turn on Synthesis backend
+        return Response.ok("Feature under development").build();
+
+        /* TODO Mi: Uncomment for Synthesis
+
         //TODO write
         try {
             SynthesisManager synthesisMgr = (SynthesisManager) SpringApplicationContext.getBean(httpRequest,
@@ -400,6 +470,8 @@ public class SynthesisPurificationServices {
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
                     .entity(CommonUtil.wrapErrorMessageInList(e.getMessage())).build();
         }
+
+         */
     }
 
     /**
@@ -415,6 +487,11 @@ public class SynthesisPurificationServices {
     public Response getDatumNumberModifier(@Context HttpServletRequest httpRequest,
                                            @DefaultValue("") @QueryParam("columnName") String columnName,
                                            @DefaultValue("") @QueryParam("conditionProperty") String conditionProperty) {
+        // TODO Mi: Remove to turn on Synthesis backend
+        return Response.ok("Feature under development").build();
+
+        /* TODO Mi: Uncomment for Synthesis
+
         try {
             SynthesisManager synthesisMgr = (SynthesisManager) SpringApplicationContext.getBean(httpRequest,
                     "synthesisManager");
@@ -430,6 +507,8 @@ public class SynthesisPurificationServices {
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
                     .entity(CommonUtil.wrapErrorMessageInList(e.getMessage())).build();
         }
+
+         */
     }
 
     /**
@@ -443,6 +522,10 @@ public class SynthesisPurificationServices {
     @Produces("application/json")
     public Response getInstrumentsByType(@Context HttpServletRequest httpRequest,
                                          @DefaultValue("") @QueryParam("techniqueType") String techniqueType) {
+        // TODO Mi: Remove to turn on Synthesis backend
+        return Response.ok("Feature under development").build();
+
+        /* TODO Mi: Uncomment for Synthesis
         try {
             ExperimentConfigManager experimentMgr =
                     (ExperimentConfigManager) SpringApplicationContext.getBean(httpRequest, "experimentConfigManager");
@@ -460,6 +543,8 @@ public class SynthesisPurificationServices {
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
                     .entity(CommonUtil.wrapErrorMessageInList(e.getMessage())).build();
         }
+
+         */
     }
 
     /**
@@ -472,6 +557,11 @@ public class SynthesisPurificationServices {
     @Produces("application/json")
     public Response getPurificationByType(@Context HttpServletRequest httpRequest, @DefaultValue("") @QueryParam(
             "purificationType") String purificationType) {
+        // TODO Mi: Remove to turn on Synthesis backend
+        return Response.ok("Feature under development").build();
+
+        /* TODO Mi: Uncomment for Synthesis
+
         //TODO write
         try {
 
@@ -490,6 +580,8 @@ public class SynthesisPurificationServices {
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
                     .entity(CommonUtil.wrapErrorMessageInList(e.getMessage())).build();
         }
+
+         */
     }
 
     /**
@@ -502,6 +594,10 @@ public class SynthesisPurificationServices {
     @Path("/newPurity")
     @Produces("application/json")
     public Response newPurityTemplate(@Context HttpServletRequest httpRequest, SimplePurityBean purityBean) {
+        // TODO Mi: Remove to turn on Synthesis backend
+        return Response.ok("Feature under development").build();
+
+        /* TODO Mi: Uncomment for Synthesis
         try {
 
             SynthesisPurificationBO purificationBO =
@@ -522,6 +618,8 @@ public class SynthesisPurificationServices {
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
                     .entity(CommonUtil.wrapErrorMessageInList(e.getMessage())).build();
         }
+
+         */
     }
 
     /**
@@ -534,26 +632,30 @@ public class SynthesisPurificationServices {
     @Path("/removeFile")
     @Produces("application/json")
     public Response removeFile(@Context HttpServletRequest httpRequest, SimpleSynthesisPurificationBean editBean) {
-        return null;
-//TODO clean up
-//        try {
-//            if (!SpringSecurityUtil.isUserLoggedIn()) {
-//                return Response.status(Response.Status.UNAUTHORIZED).entity(Constants.MSG_SESSION_INVALID).build();
-//            }
-//
-//            SynthesisPurificationBO purificationBO =
-//                    (SynthesisPurificationBO) SpringApplicationContext.getBean(httpRequest, "synthesisPurificationBO");
-//            List<String> msgs = purificationBO.deleteFile(editBean, httpRequest);
-//            return Response.ok(msgs).header("Access-Control-Allow-Credentials", "true")
-//                    .header("Access-Control-Allow-Origin", "*").header("Access-Control-Allow-Methods", "GET, POST, " +
-//                            "PUT, DELETE, OPTIONS")
-//                    .header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, " +
-//                            "Authorization").build();
-//        }
-//        catch (Exception e) {
-//            return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
-//                    .entity(CommonUtil.wrapErrorMessageInList(e.getMessage())).build();
-//        }
+        // TODO Mi: Remove to turn on Synthesis backend
+        return Response.ok("Feature under development").build();
+
+        /* TODO Mi: Uncomment for Synthesis
+        try {
+            SynthesisPurificationBO purificationBO = (SynthesisPurificationBO) SpringApplicationContext.getBean(httpRequest, "synthesisPurificationBO");
+            if (!SpringSecurityUtil.isUserLoggedIn()) {
+                return Response.status(Response.Status.UNAUTHORIZED).
+                        entity(Constants.MSG_SESSION_INVALID).build();
+            }
+            SimpleSynthesisPurificationBean synthesisPurificationBean
+                    = purificationBO.removeFile(editBean, httpRequest);
+
+            List<String> errors = synthesisPurificationBean.getErrors();
+            return (errors == null || errors.size() == 0) ?
+                    Response.ok(synthesisPurificationBean).build() :
+                    Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(errors).build();
+        }
+        catch (Exception e) {
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
+                    .entity(CommonUtil.wrapErrorMessageInList("Error while removing the File " + e.getMessage())).build();
+        }
+
+         */
     }
 
     /**
@@ -566,6 +668,11 @@ public class SynthesisPurificationServices {
     @Path("/removePurityFile")
     @Produces("application/json")
     public Response removePurityFile(@Context HttpServletRequest httpRequest, SimpleSynthesisPurificationBean editBean) {
+        // TODO Mi: Remove to turn on Synthesis backend
+        return Response.ok("Feature under development").build();
+
+        /* TODO Mi: Uncomment for Synthesis
+
         return null;
         //TODO clean up
 //        try {
@@ -586,6 +693,8 @@ public class SynthesisPurificationServices {
 //            return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
 //                    .entity(CommonUtil.wrapErrorMessageInList(e.getMessage())).build();
 //        }
+
+         */
     }
 
 
@@ -599,7 +708,10 @@ public class SynthesisPurificationServices {
     @Path("/saveFile")
     @Produces("application/json")
     public Response saveFile(@Context HttpServletRequest httpRequest, SimpleSynthesisPurificationBean editBean) {
+        // TODO Mi: Remove to turn on Synthesis backend
+        return Response.ok("Feature under development").build();
 
+        /* TODO Mi: Uncomment for Synthesis
         try {
             if (!SpringSecurityUtil.isUserLoggedIn()) {
                 return Response.status(Response.Status.UNAUTHORIZED).entity(Constants.MSG_SESSION_INVALID).build();
@@ -629,6 +741,8 @@ public class SynthesisPurificationServices {
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
                     .entity(CommonUtil.wrapErrorMessageInList(e.getMessage())).build();
         }
+
+         */
     }
 
     /**
@@ -640,7 +754,10 @@ public class SynthesisPurificationServices {
     @Path("/savePurityFile")
     @Produces("application/json")
     public Response savePurityFile(@Context HttpServletRequest httpRequest, SimpleSynthesisPurificationBean purificationBean) {
+        // TODO Mi: Remove to turn on Synthesis backend
+        return Response.ok("Feature under development").build();
 
+        /* TODO Mi: Uncomment for Synthesis
         try {
             if (!SpringSecurityUtil.isUserLoggedIn()) {
                 return Response.status(Response.Status.UNAUTHORIZED).entity(Constants.MSG_SESSION_INVALID).build();
@@ -671,6 +788,8 @@ public class SynthesisPurificationServices {
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
                     .entity(CommonUtil.wrapErrorMessageInList(e.getMessage())).build();
         }
+
+         */
     }
 
 
@@ -685,6 +804,11 @@ public class SynthesisPurificationServices {
     @Produces("application/json")
     public Response saveTechniqueAndInstrument(@Context HttpServletRequest httpRequest,
                                                SimpleSynthesisPurificationBean editBean) {
+
+        // TODO Mi: Remove to turn on Synthesis backend
+        return Response.ok("Feature under development").build();
+
+        /* TODO Mi: Uncomment for Synthesis
 //TODO write
         try {
             if (!SpringSecurityUtil.isUserLoggedIn()) {
@@ -704,6 +828,8 @@ public class SynthesisPurificationServices {
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
                     .entity(CommonUtil.wrapErrorMessageInList(e.getMessage())).build();
         }
+
+         */
     }
 
     /**
@@ -717,6 +843,11 @@ public class SynthesisPurificationServices {
     @Produces("application/json")
     public Response setupEdit(@Context HttpServletRequest httpRequest, @QueryParam("sampleId") String sampleId,
                               @QueryParam("dataId") String dataId) {
+
+        // TODO Mi: Remove to turn on Synthesis backend
+        return Response.ok("Feature under development").build();
+
+        /* TODO Mi: Uncomment for Synthesis
         if (!SpringSecurityUtil.isUserLoggedIn()) {
             return Response.status(Response.Status.UNAUTHORIZED)
                     .entity("Session expired").build();
@@ -736,6 +867,8 @@ public class SynthesisPurificationServices {
                     "Error while viewing the Synthesis Purification. " + e.getMessage())).build();
 
         }
+
+         */
     }
 
 //    @POST
@@ -773,6 +906,10 @@ public class SynthesisPurificationServices {
     @Produces("application/json")
     public Response setupNew(@Context HttpServletRequest httpRequest,
                              @DefaultValue("") @QueryParam("sampleId") String sampleId) {
+        // TODO Mi: Remove to turn on Synthesis backend
+        return Response.ok("Feature under development").build();
+
+        /* TODO Mi: Uncomment for Synthesis
         try {
             SynthesisPurificationBO synthesisPurificationBO =
                     (SynthesisPurificationBO) SpringApplicationContext.getBean(httpRequest, "synthesisPurificationBO");
@@ -785,6 +922,8 @@ public class SynthesisPurificationServices {
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(CommonUtil.wrapErrorMessageInList(
                     "Error while setting up drop down lists. " + e.getMessage())).build();
         }
+
+         */
     }
 
     /**
@@ -797,6 +936,10 @@ public class SynthesisPurificationServices {
     @Path("/submit")
     @Produces("application/json")
     public Response submit(@Context HttpServletRequest httpRequest, SimpleSynthesisPurificationBean editBean) {
+        // TODO Mi: Remove to turn on Synthesis backend
+        return Response.ok("Feature under development").build();
+
+        /* TODO Mi: Uncomment for Synthesis
 
         try {
             if (!SpringSecurityUtil.isUserLoggedIn()) {
@@ -814,6 +957,8 @@ public class SynthesisPurificationServices {
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
                     .entity(CommonUtil.wrapErrorMessageInList(e.getMessage())).build();
         }
+
+         */
 
     }
 
@@ -850,6 +995,10 @@ public class SynthesisPurificationServices {
     @Produces("application/json")
     public Response updatePurification(@Context HttpServletRequest httpRequest,
                                        SimpleSynthesisPurificationBean purificationEditBean) {
+        // TODO Mi: Remove to turn on Synthesis backend
+        return Response.ok("Feature under development").build();
+
+        /* TODO Mi: Uncomment for Synthesis
         logger.debug("In updatePurification");
 
         if (!SpringSecurityUtil.isUserLoggedIn()) {
@@ -880,12 +1029,18 @@ public class SynthesisPurificationServices {
                     .entity(CommonUtil.wrapErrorMessageInList(e.getMessage())).build();
         }
 
+         */
+
     }
 
     @POST
     @Path("/removeFinding")
     @Produces("application/json")
     public Response removePurity(@Context HttpServletRequest httpRequest, SimplePurityBean simplePurityBean){
+        // TODO Mi: Remove to turn on Synthesis backend
+        return Response.ok("Feature under development").build();
+
+        /* TODO Mi: Uncomment for Synthesis
         try{
             SynthesisPurificationBO purificationBO =
                     (SynthesisPurificationBO) SpringApplicationContext.getBean(httpRequest, "synthesisPurificationBO");
@@ -903,6 +1058,8 @@ public class SynthesisPurificationServices {
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
                     .entity(CommonUtil.wrapErrorMessageInList(e.getMessage())).build();
         }
+
+         */
     }
 
     /**
@@ -915,6 +1072,10 @@ public class SynthesisPurificationServices {
     @Path("/updatePurity")
     @Produces("application/json")
     public Response updatePurity(@Context HttpServletRequest httpRequest, SimplePurityBean simplePurityBean) {
+        // TODO Mi: Remove to turn on Synthesis backend
+        return Response.ok("Feature under development").build();
+
+        /* TODO Mi: Uncomment for Synthesis
         logger.debug("In updateDataConditionTable");
 
         if (!SpringSecurityUtil.isUserLoggedIn()) {
@@ -949,6 +1110,8 @@ public class SynthesisPurificationServices {
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
                     .entity(CommonUtil.wrapErrorMessageInList(e.getMessage())).build();
         }
+
+         */
     }
 
     @POST
@@ -956,6 +1119,10 @@ public class SynthesisPurificationServices {
     @Produces ("application/json")
     public Response setColumnOrder(@Context HttpServletRequest httpRequest, SimplePurityBean simplePurity)
     {
+        // TODO Mi: Remove to turn on Synthesis backend
+        return Response.ok("Feature under development").build();
+
+        /* TODO Mi: Uncomment for Synthesis
         logger.debug("In setColumnOrder");
 
         if (!SpringSecurityUtil.isUserLoggedIn())
@@ -974,5 +1141,7 @@ public class SynthesisPurificationServices {
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
                     .entity(CommonUtil.wrapErrorMessageInList(e.getMessage())).build();
         }
+
+         */
     }
 }

@@ -1,11 +1,18 @@
 #!/bin/bash
 
+######################
+## DOCKER ENTRYPOINT
+######################
+#
+# This script is the entrypoint for the Docker image used in Google Cloud Deployments.
+# It should NOT be run locally! Please see build-and-redeploy.sh for local runtime.
+
 export $(cat /local/content/.env | grep -v ^# | xargs) 2> /dev/null
 
 export WILDFLY_HOME=/opt/wildfly-23.0.2.Final
 export WILDFLY_BIN=$WILDFLY_HOME/bin
 
-# Call the setup script which will ensure we have the right logging, modules, and run the deployment.
+# Call the setup script which will load up the modules and stage the WAR file.
 # It will then shut down Wildfly so we can start it up here.
 /local/content/wildfly-setup.sh
 

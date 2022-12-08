@@ -253,7 +253,7 @@ public class WorkspaceManager extends BaseAnnotationBO
 			item.setSubmisstionStatus("In Draft");
 
 		try {
-			DataReviewStatusBean reviewBean = curationServiceDAO.findDataReviewStatusBeanByDataId(itemId);
+			DataReviewStatusBean reviewBean = curationServiceDAO.findDataReviewStatusBeanByDataId(itemId, DataReviewStatusBean.getDataTypeTag(type));
 			if (reviewBean != null) {
 				item.setSubmisstionStatus(StringUtils.getCamelCaseFormatInWords(reviewBean.getReviewStatus()));
 			}

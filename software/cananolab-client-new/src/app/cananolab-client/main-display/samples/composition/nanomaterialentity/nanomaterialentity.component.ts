@@ -287,6 +287,25 @@ export class NanomaterialentityComponent implements OnInit {
         }
         this.inherentFunctionIndex=null;
     }
+
+    inherentFunctionHasType(functionType) {
+        for (let func of this.composingElement.inherentFunction) {
+            if (func.type == functionType) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    inherentFunctionDisplayString(func) {
+        if (func.type == "imaging function") {
+            return func.type + ' (' + func.modality + ') : ' + func.description;
+        } else {
+            return func.type + ' : ' + func.description;
+        }
+    }
+
     // save other value //
     saveOther(newItem: Object) {
         if (newItem['change'] && newItem['value']) {

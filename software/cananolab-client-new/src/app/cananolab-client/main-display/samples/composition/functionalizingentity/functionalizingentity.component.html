@@ -378,10 +378,14 @@
 
                                                     <select id="functionType" [(ngModel)]="inherentFunction.type" name="functionType">
                                                         <option value="" [selected]="inherentFunction.type===''">--Select--</option>
-                                                        <option *ngFor="let type of setupData['functionTypes']" [selected]="inherentFunction.type===type" value="{{type}}">
+                                                        <option *ngFor="let type of setupData.functionTypes" [selected]="inherentFunction.type===type" value="{{type}}">
                                                             {{type}}
                                                         </option>
                                                     </select>
+                                                    <div *ngIf="inherentFunction.type==='other'">
+                                                        <canano-other-dropdown (saveOther)="saveOther($event)" [label]="'Functionalizing Entity Type'" [value]="currentDropdownValues['type']" [field]="'inherentFunction.type'" [array]="'setupData.functionTypes'">
+                                                        </canano-other-dropdown>
+                                                    </div>
                                                 </td>
                                                 <td class="label">
                                                     <label for="functionModalityType" [hidden]="inherentFunction.type!='imaging function'">Imaging Modality Type</label>
@@ -407,7 +411,7 @@
                                             </tr>
                                             <tr [hidden]="inherentFunction.type!='targeting function'">
                                                 <td class="label">
-                                                    <label for="">
+                                                    <label for="targetingFunction">
                                                         Target
                                                     </label>
                                                 </td>

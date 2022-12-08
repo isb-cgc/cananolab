@@ -1,17 +1,10 @@
-## Ignore build.properties ##
-
-software/cananolab-webapp/build.properties
-
 ## Ignore target, build, C: directories ##
 
-software/cananolab-webapp/build/
-software/cananolab-webapp/target/
 .DS_Store
 **/.DS_Store
 .classpath
 .project
 indexDir/*
-software/cananolab-webapp/.settings/*
 
 ## Ignore node modules ##
 
@@ -21,24 +14,28 @@ app.yaml
 
 \.settings/
 
-software/common/lib/globus/
-
 .idea/
 
 .env
 
 vpproject/
 
-software/cananolab-webapp/cananolab-web.iml
+software/cananolab-webapp/build.properties
+software/cananolab-webapp/project.properties
 
-
+software/common/lib/globus/
 software/common/lib/sdk/
-
 software/common/lib/caNanoLab-beans\.jar
-
 software/cananolab-webapp/ijbuild/
 
+localDev/jars/
 
+software/cananolab-webapp/.settings/*
+software/cananolab-webapp/build/
+software/cananolab-webapp/target/
+software/cananolab-webapp/local_build/
+software/cananolab-webapp/lib/
+software/cananolab-client-new/build/
 software/cananolab-webapp/lib/caNanoLab-beans\.jar
 
 *.iml
