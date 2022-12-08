@@ -43,7 +43,21 @@ cp -v ${HOME}/jars/*.jar ${HOME}/software/cananolab-webapp/lib/
 cp -v ${HOME}/jars/sdk/*.jar ${HOME}/software/cananolab-webapp/lib/sdk/
 cp -v ${HOME}/.env ${HOME}/software/cananolab-webapp/web/WEB-INF/
 
-sed -i "s/\[\[RELEASE_AND_BUILD_INFO\]\]/caNanoLab Release 3.1.1 Build cananolab-3.1.1-${APP_SHA}/g" ${HOME}/software/cananolab-webapp/web/main.js
+SEMVER="${TIER}"
+echo " "
+if [ -n "$CIRCLE_TAG" ]; then
+  SEMVER="${CIRCLE_TAG}"
+  echo "[STATUS] Tag for production release deployment: ${SEMVER}"
+else
+  COUNT=`git rev-list --count HEAD`
+  SEMVER="${SEMVER}.${COUNT}"
+  echo "[STATUS] Version for merge build: ${SEMVER}"
+fi
+
+sed -i "s/\[\[RELEASE_AND_BUILD_INFO\]\]/caNanoLab Release ${SEMVER} Build cananolab-${SEMVER}-${APP_SHA}/g" ${HOME}/software/cananolab-webapp/web/main.js
+echo "[STATUS] Build is stamped as ${SEMVER}"
+echo " "
+
 
 cd ${HOME}/software/cananolab-webapp/
 ant dist
