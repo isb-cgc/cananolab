@@ -7,7 +7,7 @@ commands:
           command: |
             mkdir -p workspace
             echo "export TIER=${TIER}" >> workspace/env-vars
-      - persis_to_workspace:
+      - persist_to_workspace:
           root: workspace
           paths:
             - env-vars
