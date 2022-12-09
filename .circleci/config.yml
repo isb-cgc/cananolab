@@ -5,8 +5,8 @@ commands:
       - run:
           name: "Persist some variables in the workspace"
           command: |
-            mkdir -p workspace
-            echo "export TIER=${TIER}" >> workspace/env-vars
+            mkdir -p ~/cananolab/workspace
+            echo "export TIER=${TIER}" >> ~/cananolab/workspace/env-vars
       - persist_to_workspace:
           root: workspace
           paths:
@@ -153,12 +153,14 @@ jobs:
       - restore_cache:
           keys:
             - isb-canano-{{ .Branch }}-{{ .Revision }}-
+      - attach_workspace:
+          at: ~/cananolab/workspace
       - run:
           name: Restore persisted environment variables
           command: |
-            if [ -f workspace/env-vars ]; then
+            if [ -f ~/cananolab/workspace/env-vars ]; then
               echo "Persisted environment variables found, loading."
-              cat workspace/env-vars >> $BASH_ENV
+              cat ~/cananolab/workspace/env-vars >> $BASH_ENV
             else
               echo "Persisted environment variables not found!"
             fi
