@@ -3,6 +3,7 @@ package gov.nih.nci.cananolab.restful;
 import gov.nih.nci.cananolab.restful.synthesis.SynthesisFunctionalizationBO;
 import gov.nih.nci.cananolab.restful.synthesis.SynthesisFunctionalizationBO;
 import gov.nih.nci.cananolab.restful.synthesis.SynthesisMaterialBO;
+import gov.nih.nci.cananolab.restful.util.AppPropertyUtil;
 import gov.nih.nci.cananolab.restful.util.CommonUtil;
 import gov.nih.nci.cananolab.restful.view.edit.SimpleFunctionalizingEntityBean;
 import gov.nih.nci.cananolab.restful.view.edit.SimpleSynthesisFunctionalizationBean;
@@ -29,10 +30,10 @@ public class SynthesisFunctionalizationServices {
     @Path("/setup")
     @Produces("application/json")
     public Response setup(@Context HttpServletRequest httpRequest, @QueryParam("sampleId") String sampleId) {
-        // TODO Mi: Remove to turn on Synthesis backend
-        return Response.ok("Feature under development").build();
 
-        /* TODO Mi: Uncomment for Synthesis
+        if (!Boolean.parseBoolean(AppPropertyUtil.getAppProperty("SYNTHESIS_ENABLED"))) {
+            return Response.ok("{\"message\": \"Feature under development\"}").build();
+        }
 
         try {
             SynthesisFunctionalizationBO simpleSynthesisFunctionalizationBO =
@@ -45,19 +46,17 @@ public class SynthesisFunctionalizationServices {
             e.printStackTrace();
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(CommonUtil.wrapErrorMessageInList("Error while setting up drop down lists" + e.getMessage())).build();
         }
-
-         */
     }
 
     @POST
     @Path("/saveSynthesisFunctionalizationElement")
     @Produces ("application/json")
     public Response saveSynthesisunctionalizationElement(@Context HttpServletRequest httpRequest, SimpleSynthesisFunctionalizationBean simpleSynthesisFunctionalizationBean) {
-        // TODO Mi: Remove to turn on Synthesis backend
-        return Response.ok("Feature under development").build();
+        if (!Boolean.parseBoolean(AppPropertyUtil.getAppProperty("SYNTHESIS_ENABLED"))) {
+            return Response.ok("{\"message\": \"Feature under development\"}").build();
+        }
 
-        /* TODO Mi: Uncomment for Synthesis
-       // return Response.status(Response.Status.OK).entity("ALL GOOD TEST").build();
+        // return Response.status(Response.Status.OK).entity("ALL GOOD TEST").build();
 
         try{
             SynthesisFunctionalizationBO synthesisFunctionalizationBO = (SynthesisFunctionalizationBO) SpringApplicationContext.getBean(httpRequest, "synthesisFunctionalizationBO");
@@ -76,18 +75,16 @@ public class SynthesisFunctionalizationServices {
 			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity((CommonUtil.wrapErrorMessageInList("Error while saving Synthesis Functionalization Element "+ e.getStackTrace()))).build();
         }
 
-         */
-
     }
 
     @POST
     @Path("/saveFile")
     @Produces ("application/json")
     public Response saveFile(@Context HttpServletRequest httpRequest, SimpleSynthesisFunctionalizationBean simpleSynthesisFunctionalizationBean) {
-        // TODO Mi: Remove to turn on Synthesis backend
-        return Response.ok("Feature under development").build();
+        if (!Boolean.parseBoolean(AppPropertyUtil.getAppProperty("SYNTHESIS_ENABLED"))) {
+            return Response.ok("{\"message\": \"Feature under development\"}").build();
+        }
 
-        /* TODO Mi: Uncomment for Synthesis
         try {
             SynthesisFunctionalizationBO synthesisFunctionalizationBO = (SynthesisFunctionalizationBO) SpringApplicationContext.getBean(httpRequest,"synthesisFunctionalizationBO");
             if (!SpringSecurityUtil.isUserLoggedIn())
@@ -104,7 +101,6 @@ public class SynthesisFunctionalizationServices {
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(CommonUtil.wrapErrorMessageInList("Error while saving the File " + e.getMessage())).build();
         }
 
-         */
     }
 
 
@@ -113,10 +109,9 @@ public class SynthesisFunctionalizationServices {
     @Path("/removeFile")
     @Produces ("application/json")
     public Response removeFile(@Context HttpServletRequest httpRequest,  SimpleSynthesisFunctionalizationBean simpleSynthesisFunctionalizationBean) {
-        // TODO Mi: Remove to turn on Synthesis backend
-        return Response.ok("Feature under development").build();
-
-        /* TODO Mi: Uncomment for Synthesis
+        if (!Boolean.parseBoolean(AppPropertyUtil.getAppProperty("SYNTHESIS_ENABLED"))) {
+            return Response.ok("{\"message\": \"Feature under development\"}").build();
+        }
         try{
             SynthesisFunctionalizationBO synthesisFunctionalizationBO = (SynthesisFunctionalizationBO) SpringApplicationContext.getBean(httpRequest,"synthesisFunctionalizationBO");
             if (!SpringSecurityUtil.isUserLoggedIn())
@@ -133,7 +128,6 @@ public class SynthesisFunctionalizationServices {
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(CommonUtil.wrapErrorMessageInList("Error while removing the File " + e.getMessage())).build();
         }
 
-         */
     }
 
 
@@ -142,10 +136,11 @@ public class SynthesisFunctionalizationServices {
     @Path("/edit")
     @Produces ("application/json")
     public Response  edit(@Context HttpServletRequest httpRequest, @QueryParam("sampleId") String sampleId, @QueryParam("dataId") String dataId) {
-        // TODO Mi: Remove to turn on Synthesis backend
-        return Response.ok("Feature under development").build();
 
-        /* TODO Mi: Uncomment for Synthesis
+        if (!Boolean.parseBoolean(AppPropertyUtil.getAppProperty("SYNTHESIS_ENABLED"))) {
+            return Response.ok("{\"message\": \"Feature under development\"}").build();
+        }
+
         try {
             SynthesisFunctionalizationBO synthesisFunctionalizationBO =
                     (SynthesisFunctionalizationBO) SpringApplicationContext.getBean(httpRequest, "synthesisFunctionalizationBO");
@@ -165,8 +160,6 @@ public class SynthesisFunctionalizationServices {
             e.printStackTrace();
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(CommonUtil.wrapErrorMessageInList("Error while viewing the Synthesis Entity. " + e.getMessage())).build();
         }
-
-         */
     }
 
 
@@ -175,10 +168,10 @@ public class SynthesisFunctionalizationServices {
     @Path("/viewDetails")
     @Produces ("application/json")
     public Response viewDetails(@Context HttpServletRequest httpRequest, @DefaultValue("") @QueryParam("sampleId") String sampleId, @DefaultValue("") @QueryParam("dataId") String dataId) {
-        // TODO Mi: Remove to turn on Synthesis backend
-        return Response.ok("Feature under development").build();
+        if (!Boolean.parseBoolean(AppPropertyUtil.getAppProperty("SYNTHESIS_ENABLED"))) {
+            return Response.ok("{\"message\": \"Feature under development\"}").build();
+        }
 
-        /* TODO Mi: Uncomment for Synthesis
         try {
             SynthesisFunctionalizationBO simpleSynthesisFunctionalizationBO =
                     (SynthesisFunctionalizationBO) SpringApplicationContext.getBean(httpRequest, "synthesisFunctionalizationBO");
@@ -199,17 +192,17 @@ public class SynthesisFunctionalizationServices {
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(CommonUtil.wrapErrorMessageInList("Error while viewing the synthesisFunctionalizationBO Entity" + e.getMessage())).build();
         }
 
-         */
     }
 
     @POST
     @Path("/removeSynthesisFunctionalizationElement")
     @Produces ("application/json")
     public Response removeSynthesisFunctionalizationElement(@Context HttpServletRequest httpRequest, SimpleSynthesisFunctionalizationBean simpleSynthesisFunctionalizationBean) {
-        // TODO Mi: Remove to turn on Synthesis backend
-        return Response.ok("Feature under development").build();
 
-        /* TODO Mi: Uncomment for Synthesis
+        if (!Boolean.parseBoolean(AppPropertyUtil.getAppProperty("SYNTHESIS_ENABLED"))) {
+            return Response.ok("{\"message\": \"Feature under development\"}").build();
+        }
+
         try{
             SynthesisFunctionalizationBO synthesisFunctionalizationBO = (SynthesisFunctionalizationBO) SpringApplicationContext.getBean(httpRequest, "synthesisFunctionalizationBO");
             if(!SpringSecurityUtil.isUserLoggedIn()){
@@ -225,7 +218,6 @@ public class SynthesisFunctionalizationServices {
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(CommonUtil.wrapErrorMessageInList("Error while removing Functionalization Element "+ e.getMessage())).build();
         }
 
-         */
     }
 
 
@@ -249,10 +241,11 @@ public class SynthesisFunctionalizationServices {
     @Path("/submit")
     @Produces("application/json")
     public Response submit(@Context HttpServletRequest httpRequest, SimpleSynthesisFunctionalizationBean simpleSynthesisFunctionalizationBean) {
-        // TODO Mi: Remove to turn on Synthesis backend
-        return Response.ok("Feature under development").build();
 
-        /* TODO Mi: Uncomment for Synthesis
+        if (!Boolean.parseBoolean(AppPropertyUtil.getAppProperty("SYNTHESIS_ENABLED"))) {
+            return Response.ok("{\"message\": \"Feature under development\"}").build();
+        }
+
         try {
             SynthesisFunctionalizationBO synthesisFunctionalizationBO = (SynthesisFunctionalizationBO) SpringApplicationContext.getBean(httpRequest, "synthesisFunctionalizationBO");
             if (!SpringSecurityUtil.isUserLoggedIn()) {
@@ -266,8 +259,6 @@ public class SynthesisFunctionalizationServices {
             e.printStackTrace();
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(CommonUtil.wrapErrorMessageInList("Error while saving the synthesis functionalization :" + e.getMessage())).build();
         }
-
-         */
     }
 
 
@@ -281,10 +272,11 @@ public class SynthesisFunctionalizationServices {
     @Path("/delete")
     @Produces ("application/json")
     public Response delete(@Context HttpServletRequest httpRequest, SimpleSynthesisFunctionalizationBean simpleSynthesisFunctionalizationBean) {
-        // TODO Mi: Remove to turn on Synthesis backend
-        return Response.ok("Feature under development").build();
 
-        /* TODO Mi: Uncomment for Synthesis
+        if (!Boolean.parseBoolean(AppPropertyUtil.getAppProperty("SYNTHESIS_ENABLED"))) {
+            return Response.ok("{\"message\": \"Feature under development\"}").build();
+        }
+
         try{
             SynthesisFunctionalizationBO synthesisFunctionalizationBO = (SynthesisFunctionalizationBO) SpringApplicationContext.getBean(httpRequest,"synthesisFunctionalizationBO");
             if (!SpringSecurityUtil.isUserLoggedIn())
@@ -297,6 +289,5 @@ public class SynthesisFunctionalizationServices {
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(CommonUtil.wrapErrorMessageInList("Error while deleting the synthesis functionalization " + e.getMessage())).build();
         }
 
-         */
     }
 }
