@@ -104,12 +104,20 @@ public class CharacterizationBO extends BaseAnnotationBO {
 		simpleEdit.getErrors().clear();
 		simpleEdit.getMessages().clear();
 
-		System.out.println("Issue 181 BO subOrUp " + charBean.getDomainChar());
+		if (charBean != null) {
+			System.out.println("Issue 181 BO subOrUp " + charBean.getDomainChar());
+		} else {
+			System.out.println("Issue 181 BO subOrUp NULL Char bean");
+		}
 		System.out.println("Issue 181 BO subOrUp 2 " + simpleEdit.getType() + "  " +  simpleEdit.getName() + "  " +  simpleEdit.getCharId());
 		charBean = simpleEdit.transferToCharacterizationBean(charBean);
 		// WJRL 10/24/22: If trying to save an ex-vivo charactirization with type Pharmacokinetics,
 		// by the time you get here getDomainChar() is returning NULL:
-		System.out.println("Issue 181 BO subOrUp 2a " + charBean.getDomainChar());
+		if (charBean != null) {
+			System.out.println("Issue 181 BO subOrUp 2a " + charBean.getDomainChar());
+		} else {
+			System.out.println("Issue 181 BO subOrUp 2a NULL Char bean");
+		}
 		if (simpleEdit.getCharId() == 0)
 			simpleEdit.setSubmitNewChar(true);
 		System.out.println("Issue 181 BO subOrUp 2b " + simpleEdit.isSubmitNewChar());
