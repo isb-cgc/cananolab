@@ -104,6 +104,11 @@ public class CharacterizationBO extends BaseAnnotationBO {
 		simpleEdit.getErrors().clear();
 		simpleEdit.getMessages().clear();
 
+		// WJRL 12/16/22: If there was an exception in CharacterizationServices.saveCharacterization(), the char bean will
+		// be a null. When we do a transferToCharacterizationBean() below, it will create a new CharBean from scratch,
+		// instead of using an existing one. For a new char, maybe that is ok? But for editing, do we lose info from the
+		// existing char bean we started out with?
+		// For the time being, just restore previous functionality with null checks:
 		if (charBean != null) {
 			System.out.println("Issue 181 BO subOrUp " + charBean.getDomainChar());
 		} else {
@@ -111,7 +116,7 @@ public class CharacterizationBO extends BaseAnnotationBO {
 		}
 		System.out.println("Issue 181 BO subOrUp 2 " + simpleEdit.getType() + "  " +  simpleEdit.getName() + "  " +  simpleEdit.getCharId());
 		charBean = simpleEdit.transferToCharacterizationBean(charBean);
-		// WJRL 10/24/22: If trying to save an ex-vivo charactirization with type Pharmacokinetics,
+		// WJRL 10/24/22: If trying to save an ex-vivo characterization with type Pharmacokinetics,
 		// by the time you get here getDomainChar() is returning NULL:
 		if (charBean != null) {
 			System.out.println("Issue 181 BO subOrUp 2a " + charBean.getDomainChar());
@@ -190,6 +195,7 @@ public class CharacterizationBO extends BaseAnnotationBO {
 		editBean.transferFromCharacterizationBean(request, charBean, sampleId, sampleService, characterizationService, protocolService, springSecurityAclService);
 		
 		request.getSession().setAttribute("theEditChar", editBean);
+		// WJRL 12/16/22: This is pulled out in submitOrUpdate. It is how the bean gets into that function:
 		request.getSession().setAttribute("theChar", charBean);
 		return editBean;
 	}
@@ -239,6 +245,7 @@ public class CharacterizationBO extends BaseAnnotationBO {
 		//SY: new
 		System.out.println("B Issue 50 setting sampleId to " + sampleId);
 		request.getSession().setAttribute("sampleId", sampleId);
+		// WJRL 12/16/22: This is pulled out in submitOrUpdate. It is how the bean gets into that function:
 		request.getSession().setAttribute("theChar", charBean);
 		logger.debug("Setting theChar in session: " + request.getSession().getId());
 
@@ -762,6 +769,7 @@ public class CharacterizationBO extends BaseAnnotationBO {
 //			.persistCharacterizationDropdowns(request, achar);
 		
 		request.getSession().removeAttribute("newFileData");
+		// WJRL 12/16/22: This is pulled out in submitOrUpdate. It is how the bean gets into that function:
 		request.getSession().setAttribute("theChar", achar);
 		
 		/// save char to session
