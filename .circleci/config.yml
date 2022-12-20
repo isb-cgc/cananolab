@@ -163,6 +163,7 @@ jobs:
               cat ~/cananolab/workspace/env-vars >> $BASH_ENV
             else
               echo "Persisted environment variables not found!"
+              exit 1
             fi
       - install_cloud_sdk
       - deployment_setup
