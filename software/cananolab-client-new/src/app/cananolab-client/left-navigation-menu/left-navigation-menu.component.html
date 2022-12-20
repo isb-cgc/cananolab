@@ -41,13 +41,12 @@
     >Publication
     </button>
 
-     <!-- TODO Mi: uncomment to turn on Synthesis -->
-    <!-- <button class="left-menu-button-green" type="button"
+    <button class="left-menu-button-green" type="button" *ngIf="constants.ENABLE_SYNTHESIS"
             [ngClass]="{
                'current-selected-item':  currentSelectedItem === 4
             }"
             (click)="onSynthesisClick()"
 
     >Synthesis
-    </button> -->
+    </button>
 </div>
