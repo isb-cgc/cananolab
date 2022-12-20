@@ -30,8 +30,12 @@ Before proceeding, make a new project in your IDE and clone the caNanoLab reposi
 <h4>Step 1: Load provided JAR dependencies</h4>
 <ul>Download the additional JARs from the dev-tier deployment bucket <code>/jars</code> folder or the caNano Google 
     Drive <code>Build Libraries</code> folder and place them into <code>cananolab/localDev/jars</code></ul>
+
+<h4>Step 2: Load provided JAR dependencies</h4>
+<ul>Create a directory above the git repository root (<code>cananolab</code>) named <code>secure_files</code>. Note that
+if you are using IdeaJ this directory will be in your <code>IdeajProjects</code> directory.</ul>
     
-<h4>Step 2a: <b><i>With</i></b> IdeaJ integration</h4>
+<h4>Step 3a: <b><i>With</i></b> IdeaJ integration</h4>
 <ul>
     <li>Launch IdeaJ</li>
     <li>Install the Vagrant plugin for IdeaJ from <code>File > Settings > Plugins</code>.
@@ -55,14 +59,14 @@ Before proceeding, make a new project in your IDE and clone the caNanoLab reposi
     </ul>
 </ul>
 
-<h4>Step 2b: <b><i>Without</i></b> IdeaJ integration</h4>
+<h4>Step 3b: <b><i>Without</i></b> IdeaJ integration</h4>
 <ul>
     <li>In your machine's CLI, change directories to <code>cananolab/software/cananolab-wepapp/</code></li>
     <li><code>vagrant up</code></li>
     <li>The build should complete with an exit code of 0. At this point you can SSH into the VM from any SSH client using a login and password of vagrant/vagrant on port 2222.</li>
 </ul>
 
-<h4>Step 3: Starting Wildfly on your VM</h4>
+<h4>Step 4: Starting Wildfly on your VM</h4>
 From the VM command line: 
 <ul>
     <li><code>cd /home/vagrant/cananolab/shell/</code></li>
