@@ -33,7 +33,7 @@ function check_for_wildfly() {
 
 ############## END Helper Functions ##############
 
-if [ "${IS_DEV,,}" == "true" ]; then
+if [ -z "$CI" ]; then
   if ( "/home/vagrant/cananolab/shell/get_env.sh" ) ; then
     export $(cat ${ENV_FILE_PATH} | grep -v ^# | xargs) 2> /dev/null
   else

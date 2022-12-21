@@ -3,6 +3,7 @@
 if [ -n "$CI" ]; then
     export HOME=/home/circleci/${CIRCLE_PROJECT_REPONAME}
     export SETTINGS=/home/circleci/${CIRCLE_PROJECT_REPONAME}
+    export ENV_FILE_PATH=${SETTINGS}/.env
 else
     export HOME=/home/vagrant/cananolab
     export SETTINGS=/home/vagrant/cananolab/localDev
@@ -64,9 +65,9 @@ wget https://archive.apache.org/dist/maven/maven-3/3.6.3/binaries/apache-maven-3
 
 cp -v ${SETTINGS}/maven-settings.xml ${ANT_HOME}/etc/settings.xml
 cp -v ${SETTINGS}/maven-settings.xml /opt/apache-maven/conf/settings.xml
-cp -v ${SETTINGS}/.env ${HOME}/software/cananolab-webapp/web/WEB-INF/
+cp -v ${ENV_FILE_PATH} ${HOME}/software/cananolab-webapp/web/WEB-INF/
 if [ -n "$CI" ] || [ ! -d "${HOME}/software/cananolab-webapp/lib/sdk" ]; then
-  if [ ! -d "${HOME}/software/cananolab-webapp/lib" ]; then
+  if [ ! -d "${HOME}/software/cananolab-webapp/lib" ] || [ -d "${HOME}/software/cananolab-webapp/lib/sdk"]; then
     mkdir -p ${HOME}/software/cananolab-webapp/lib/sdk
   fi
   cp -v ${SETTINGS}/jars/*.jar ${HOME}/software/cananolab-webapp/lib/
