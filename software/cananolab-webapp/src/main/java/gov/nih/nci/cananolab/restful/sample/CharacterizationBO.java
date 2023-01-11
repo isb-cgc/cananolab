@@ -650,18 +650,28 @@ public class CharacterizationBO extends BaseAnnotationBO {
 //				(SimpleCharacterizationEditBean) request.getSession().getAttribute("theEditChar");
 		
 		SimpleFindingBean simpleFinding = editBean.getDirtyFindingBean();
-		
+		//System.out.println("CBO dirty " + simpleFinding);
+		//if (editBean != null) {
+		//	System.out.println("CBO eb Name " + editBean.getName());
+		//}
+		//if (achar != null) {
+		//	System.out.println("CBO ac Name " + achar.getCharacterizationName());
+		//}
+
 		if (simpleFinding == null)
 			throw new Exception("Can't find dirty finding object"); //temp
 		
 		FindingBean findingBean = this.findMatchFindingBean(achar, simpleFinding);
-		
+
 		//FindingBean findingBean = achar.getTheFinding();
 		String theFindingId = String.valueOf(simpleFinding.getFindingId());
-		
+
+		//System.out.println("CBO saveFinding " + theFindingId);
+
 		simpleFinding.transferToFindingBean(findingBean);
 		
 		if (!validateEmptyFinding(request, findingBean, editBean.getErrors())) {
+		//	System.out.println("CBO saveFinding VEF not validating " + editBean.getErrors());
 			return editBean;
 		}
 		
@@ -674,18 +684,23 @@ public class CharacterizationBO extends BaseAnnotationBO {
 				+ StringUtils.getOneWordLowerCaseFirstLetter(achar
 						.getCharacterizationName());
 
+		//System.out.println("CBO saveFinding internalUriPath " + internalUriPath);
 		findingBean.setupDomain(internalUriPath, SpringSecurityUtil.getLoggedInUserName());
+		//System.out.println("CBO saveFinding calling cs saveFinding ");
 		characterizationService.saveFinding(findingBean);
 		achar.addFinding(findingBean);
 		
 		//transfer other data fields of the char
+		//System.out.println("CBO saveFinding calling transfer ");
 		editBean.transferToCharacterizationBean(achar);
 
 		// also save characterization
 		if (!validateInputs(request, achar, editBean.getMessages())) {
+			//System.out.println("CBO saveFinding VI not validating " + editBean.getMessages());
 			return editBean;
 		}
-		
+
+		//System.out.println("CBO saveFinding calling saveChar ");
 		this.saveCharacterization(request, achar, editBean);
 		characterizationService.assignAccesses(achar.getDomainChar(), findingBean.getDomain());
 		//this.checkOpenForms(achar, theForm, request);
@@ -698,6 +713,7 @@ public class CharacterizationBO extends BaseAnnotationBO {
 		// after saving to database.
 		request.setAttribute("charId", achar.getDomainChar().getId().toString());
 		request.setAttribute("charType", achar.getCharacterizationType());
+		//System.out.println("CBO returning  " + achar.getDomainChar().getId().toString());
 		
 		return setupUpdate(request, String.valueOf(editBean.getParentSampleId()), achar.getDomainChar().getId().toString(), 
 				achar.getClassName(), achar.getCharacterizationType());
@@ -1063,6 +1079,7 @@ public class CharacterizationBO extends BaseAnnotationBO {
 			throw new Exception("Current characterization has no finding matching input finding id: " + simpleFinding.getFindingId());
 		
 		for (FindingBean finding : findingBeans) {
+			//System.out.println("fmfb cols " + finding.getNumberOfColumns());
 			if (finding.getDomain() != null) {
 				Long id = finding.getDomain().getId(); 
 				if (id == null && simpleFinding.getFindingId() == 0 || //could be a new finding bean added when saving a file
@@ -1074,6 +1091,7 @@ public class CharacterizationBO extends BaseAnnotationBO {
 		}
 		
 		if (simpleFinding.getFindingId() <= 0) {//new finding
+			//System.out.println("fmfb new finding " + simpleFinding.getFindingId());
 			FindingBean newBean = new FindingBean();
 			achar.setTheFinding(newBean);
 			return newBean;

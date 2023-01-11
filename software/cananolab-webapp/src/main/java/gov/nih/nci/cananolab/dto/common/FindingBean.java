@@ -213,6 +213,8 @@ public class FindingBean
                             condition = conditionMap.get( theHeader ).get( i );
                         }
                         row.getCells().add( new TableCell( condition ) );
+                    } else {
+                        System.out.println("ERROR! FindingBean const No column definition, no addition");
                     }
                 }
                 rows.add( row );
