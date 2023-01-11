@@ -2,11 +2,21 @@
 #
 # To convert database:
 #
-# System offline
+# Add a downtime message to the header page (lines 35-37 in:
+# software/cananolab-client-new/src/app/cananolab-client/header/header.component.html) and
+# deploy with a few days lead time
+#
+# System offline (Change load balancer default route to backend offline bucket)
+# Wait for this message to propagate
 # Do a backup dump SQL (SA needs storage object write for this)
 # Convert
 # Do a post-conversion dump
-# Compare before and after
+# Compare before and after. Will see encoding changes as well as text->textmedium
+# Change setting in Cloud SQL to new encoding
+# Comment out downtime message in the header page (lines 35-37 in:
+# software/cananolab-client-new/src/app/cananolab-client/header/header.component.html)
+# Redeploy (needed to reset database connection and remove header)
+#
 # System online
 
 # For cloud: https://cloud.google.com/sql/docs/mysql/import-export/import-export-sql

@@ -56,6 +56,7 @@ public class CaNanoLabApplicationServiceImpl extends WritableApplicationServiceI
 
 	public void saveOrUpdate(Object object) throws ApplicationException {
 		try {
+			// System.out.println("CNLASL saveOrUpdate " + object.getClass().getCanonicalName());
 			CaNanoLabORMDAO dao = (CaNanoLabORMDAO) classCache.getDAOForClass(object.getClass().getCanonicalName());
 			dao.saveOrUpdate(object);
 		} catch (Exception e) {
