@@ -17,6 +17,22 @@ else
     export PATH=/opt/apache-maven/bin:/opt/apache-ant-1.9.9/bin:$PATH
 fi
 
+#
+# We vary the announcement (or don't show it) based upon the env var
+#
+
+# Undefined or blank or "NONE" means do nothing
+if [ -z "${ANNOUNCEMENT}" ] || [ "${ANNOUNCEMENT}" = "NONE" ]; then
+  echo "Not installing announcement"
+else
+  TARGET_FILE="${HOME}/software/cananolab-client-new/src/app/cananolab-client/header/header.component.html"
+  TMP_FILE=$(mktemp header.XXXXXXXXXX)
+  cp ${TARGET_FILE} ${TMP_FILE}
+  cat ${TMP_FILE} | grep -v "___CGC_START_ANNOUNCE___" | grep -v "___CGC_END_ANNOUNCE___" \
+                  | sed "s#___CGC_ANNOUNCE_MESSAGE___#${ANNOUNCEMENT}#" > ${TARGET_FILE}
+  rm ${TMP_FILE}
+fi
+
 export CANANODIR=${HOME}/staged/caNanoLab
 cd ${HOME}/software/cananolab-client-new/
 
