@@ -21,6 +21,7 @@ fi
 # We vary the announcement (or don't show it) based upon the env var
 #
 
+ANNOUNCEMENT=$(grep "ANNOUNCEMENT" "${ENV_FILE_PATH}" | sed 's#^ANNOUNCEMENT=##')
 # Undefined or blank or "NONE" means do nothing
 if [ -z "${ANNOUNCEMENT}" ] || [ "${ANNOUNCEMENT}" = "NONE" ]; then
   echo "Not installing announcement"
