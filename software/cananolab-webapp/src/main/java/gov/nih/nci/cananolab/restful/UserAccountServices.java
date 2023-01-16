@@ -17,6 +17,7 @@ import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.Response;
 
+import gov.nih.nci.cananolab.exception.NoAccessException;
 import org.apache.logging.log4j.LogManager;
 
 import gov.nih.nci.cananolab.restful.useraccount.UserAccountBO;
@@ -63,6 +64,11 @@ public class UserAccountServices
 			if (!SpringSecurityUtil.isUserLoggedIn()) 
 				return Response.status(Response.Status.UNAUTHORIZED).entity(Constants.MSG_SESSION_INVALID).build();
 
+			if (!SpringSecurityUtil.getPrincipal().isAdmin()) {
+				logger.error("Unexpected principal state for searchUserAccounts");
+				return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity("Admin permissions required").build();
+			}
+
 			UserAccountBO userAccountBO = (UserAccountBO) SpringApplicationContext.getBean(httpRequest, "userAccountBO");
 			
 			List<CananoUserDetails> userDetailsList = new ArrayList<CananoUserDetails>();
@@ -85,6 +91,11 @@ public class UserAccountServices
 		{
 			if (!SpringSecurityUtil.isUserLoggedIn()) 
 				return Response.status(Response.Status.UNAUTHORIZED).entity(Constants.MSG_SESSION_INVALID).build();
+
+			if (!SpringSecurityUtil.getPrincipal().isAdmin()) {
+				logger.error("Unexpected principal state for resetPassword");
+				return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity("Admin permissions required").build();
+			}
 
 			if (!StringUtils.isEmpty(username) && !StringUtils.isEmpty(oldpassword) && !StringUtils.isEmpty(newpassword))
 			{
@@ -117,18 +128,24 @@ public class UserAccountServices
 	{
 		try
 		{
+			System.out.println("Call to create user " + userDetails.getUsername());
 			if (!SpringSecurityUtil.isUserLoggedIn()) 
 				return Response.status(Response.Status.UNAUTHORIZED).entity(Constants.MSG_SESSION_INVALID).build();
+
+			if (!SpringSecurityUtil.getPrincipal().isAdmin()) {
+				logger.error("Unexpected principal state for createUserAccount");
+				return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity("Admin permissions required").build();
+			}
 
 			CananoUserDetails newUserDetails = new CananoUserDetails();
 			if (!StringUtils.isEmpty(userDetails.getUsername()) && !StringUtils.isEmpty(userDetails.getFirstName()) && !StringUtils.isEmpty(userDetails.getLastName()))
 			{
 				UserAccountBO userAccountBO = (UserAccountBO) SpringApplicationContext.getBean(httpRequest, "userAccountBO");
 				newUserDetails = userAccountBO.createUserAccount(userDetails);
-			}
-			else
+			} else {
 				throw new Exception("Username, First and Last names are required to create an account.");
-			
+			}
+			System.out.println("CUA Complete");
 			return Response.ok(newUserDetails).build();
 		}
 		catch (Exception e) {
@@ -146,6 +163,11 @@ public class UserAccountServices
 		{
 			if (!SpringSecurityUtil.isUserLoggedIn()) 
 				return Response.status(Response.Status.UNAUTHORIZED).entity(Constants.MSG_SESSION_INVALID).build();
+
+			if (!SpringSecurityUtil.getPrincipal().isAdmin()) {
+				logger.error("Unexpected principal state for updateUserAccount");
+				return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity("Admin permissions required").build();
+			}
 
 			CananoUserDetails newUserDetails = new CananoUserDetails();
 			if (!StringUtils.isEmpty(userDetails.getUsername()) && !StringUtils.isEmpty(userDetails.getFirstName()) && !StringUtils.isEmpty(userDetails.getLastName()))
