@@ -12,31 +12,34 @@ import { TopMainMenuService } from '../../top-main-menu/top-main-menu.service';
   styleUrls: ['./logout.component.scss']
 })
 export class LogoutComponent implements OnInit{
-    properties=Properties;
+    properties = Properties;
 
-    constructor(private topMainMenuService:TopMainMenuService,private apiService: ApiService, private statusDisplayService: StatusDisplayService,
+    constructor(private topMainMenuService: TopMainMenuService, private apiService: ApiService, private statusDisplayService: StatusDisplayService,
                  private router: Router, private utilService: UtilService ){
     }
 
     ngOnInit(): void {
+        console.log('logout component init logging out? ' + Properties.LOGGING_OUT + ' logged in: ' + Properties.LOGGED_IN )
         if(!Properties.LOGGING_OUT) {
             Properties.LOGGING_OUT = true;
-            (Properties.LOGGED_IN) ? this.logOut() : console.log("User is already logged out.");
+            (Properties.LOGGED_IN) ? this.logOut() : console.log('User is already logged out.');
         } else {
-            console.log("Logout process underway elsewhere--updating display only.");
+            console.log('Logout process underway elsewhere--updating display only.');
         }
 
         this.topMainMenuService.showOnlyMenuItems([
-            'HOME','HELP','GLOSSARY','PROTOCOLS','SAMPLES','PUBLICATIONS','LOGIN'
+            'HOME', 'HELP', 'GLOSSARY', 'PROTOCOLS', 'SAMPLES', 'PUBLICATIONS', 'LOGIN'
         ])
         this.router.navigate( [this.utilService.getRouteByName( 'HOME' )] );
     }
 
     logOut() {
+        console.log('logout being called ' + Consts.QUERY_LOGOUT)
         this.apiService.doPost( Consts.QUERY_LOGOUT, '' ).subscribe(
             data => {
-                console.log("User logged out.");
+                console.log('User logged out.');
                 Properties.LOGGED_IN = false;
+                console.log('Properties.LOGGED_IN ' +  Properties.LOGGED_IN);
                 Properties.logged_in = false;
                 this.statusDisplayService.updateUser( 'guest' );
                 Properties.LOGGING_OUT = false;

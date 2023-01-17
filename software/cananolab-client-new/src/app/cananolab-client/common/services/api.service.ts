@@ -323,6 +323,7 @@ export class ApiService {
                             this.currentlyAuthenticatingUser = false;
                             Properties.LOGGED_IN = false;
                             Properties.logged_in = false;
+                            console.log('Properties.LOGGED_IN ' +  Properties.LOGGED_IN);
                             reject(err.message);
                         }
                     );

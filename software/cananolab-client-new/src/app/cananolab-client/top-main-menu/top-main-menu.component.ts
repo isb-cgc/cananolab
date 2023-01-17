@@ -34,7 +34,7 @@ export class TopMainMenuComponent implements OnInit, OnDestroy {
                private router: Router) {
                 this.router.events.subscribe((event: Event) => {
                     if (event instanceof NavigationStart) {
-                        this.currentRoute=event.url;
+                        this.currentRoute = event.url;
                     }
                 })
                }
@@ -63,8 +63,14 @@ export class TopMainMenuComponent implements OnInit, OnDestroy {
     onMenuSelect(item){
         if( item['route'].includes( 'home/' + Consts.QUERY_LOGOUT )){
             this.topMainMenuService.hideMenuItem( 'LOGOUT' );
-            Properties.LOGGED_IN = false;
-            Properties.logged_in = false;
+            //
+            // WJRL 1/16/23: This is set here, and then the code that is
+            // working to log the user out gives up before logout because
+            // it is told that the user is logged out. That is messed up.
+            // Don't set it here!
+            // Properties.LOGGED_IN = false;
+            console.log('Properties.LOGGED_IN ' +  Properties.LOGGED_IN);
+            // Properties.logged_in = false;
             // Init the top menu
             this.topMainMenuService.showOnlyMenuItems(
                 [
@@ -77,8 +83,8 @@ export class TopMainMenuComponent implements OnInit, OnDestroy {
                     'LOGIN'
                 ]
             ); }
-            let keys=Object.keys(item);
-            if (keys.indexOf('externalUrl')>-1) {
+            let keys = Object.keys(item);
+            if (keys.indexOf('externalUrl') > -1) {
                 window.open(item['externalUrl'])
             }
             else {
