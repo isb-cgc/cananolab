@@ -18,6 +18,23 @@ else
 fi
 
 #
+# Ww enable or disable synthesis based on an env variable. This is a quick hack. There are deployment
+# mechanisms in Angular to do this
+#
+
+SYNTHESIS_ENABLED=$(grep "SYNTHESIS_ENABLED" "${ENV_FILE_PATH}" | sed 's#^SYNTHESIS_ENABLED=##')
+# Undefined or blank or "False" means make the change
+if [ -z "${SYNTHESIS_ENABLED}" ] || [ "${SYNTHESIS_ENABLED}" = "False" ]; then
+  TARGET_FILE="${HOME}/software/cananolab-client-new/src/app/constants.ts"
+  TMP_FILE=$(mktemp header.XXXXXXXXXX)
+  cp ${TARGET_FILE} ${TMP_FILE}
+  cat ${TMP_FILE} | sed "s#ENABLE_SYNTHESIS: true#ENABLE_SYNTHESIS: false#" > ${TARGET_FILE}
+  rm ${TMP_FILE}
+else
+  echo "Synthesis remains enabled"
+fi
+
+#
 # We vary the announcement (or don't show it) based upon the env var
 #
 
