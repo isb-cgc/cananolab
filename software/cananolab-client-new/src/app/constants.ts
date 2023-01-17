@@ -7,6 +7,8 @@ export const Consts = {
     searchingMessage: 'Searching',
     serverlUrl: '/',
 
+    ENABLE_SYNTHESIS: true,
+
     // For each rest service
     LOGIN_URL: 'login',
     QUERY_LOGOUT: 'logout',
@@ -155,7 +157,7 @@ export const Consts = {
     SAVE_FUNCTIONALIZATION_ELEMENT: '/rest/synthesisFunctionalization/saveMaterialElement',
     QUERY_SYNTHESIS_FUNCTIONALIZATION_SAVE_FILE: '/rest/synthesisFunctionalization/saveFile',
     QUERY_SYNTHESIS_FUNCTIONALIZATION_REMOVE_FILE: '/rest/synthesisFunctionalization/removeFile',
-    
+
     QUERY_SYNTHESIS_PURIFICATION_SETUP: '/rest/synthesisPurification/setup',
     QUERY_SYNTHESIS_PURIFICATION_EDIT: '/rest/synthesisPurification/setupEdit',
     QUERY_SYNTHESIS_PURIFICATION_DELETE: '/rest/synthesisPurification/deletePurification',
@@ -173,7 +175,7 @@ export const Consts = {
     QUERY_SYNTHESIS_GET_COLUMN_VALUE_UNIT_OPTIONS: '/rest/synthesisPurification/getColumnValueUnitOptions',
     QUERY_SYNTHESIS_GET_CONDITION_PROPERTY_OPTIONS: '/rest/synthesisPurification/getConditionPropertyOptions',
     QUERY_SYNTHESIS_SET_COLUMN_ORDER: '/rest/synthesisPurification/setColumnOrder',
-    
+
     QUERY_FUNCTIONALIZING_ENTITY_SAVE_FILE: '/rest/functionalizingEntity/saveFile',
     QUERY_FUNCTIONALIZING_ENTITY_REMOVE_FILE: '/rest/functionalizingEntity/removeFile',
     QUERY_FUNCTIONALIZING_ENTITY_REMOVE_FUNCTION: '/rest/functionalizingEntity/removeFunction',

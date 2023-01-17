@@ -30,6 +30,7 @@ public class SecurityServices
     public Response getUserGroups(@Context HttpServletRequest httpRequest)
 	{
 		logger.info("In getUserGroups service");
+		System.out.println("In getUserGroups service");
 		CananoUserDetails userDetails = SpringSecurityUtil.getPrincipal();
 		Map<String, List<String>> userGroups = new HashMap<String, List<String>>();
 		
