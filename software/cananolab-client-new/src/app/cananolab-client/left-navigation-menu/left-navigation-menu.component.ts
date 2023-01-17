@@ -8,6 +8,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { UtilService } from '../common/services/util.service';
 import { Properties } from '../../../assets/properties';
+import { Consts } from '../../constants';
 import { ActivatedRoute } from '@angular/router';
 import { NavigationService } from '../common/services/navigation.service';
 import { StatusDisplayService } from '../status-display/status-display.service';
@@ -18,6 +19,8 @@ import { StatusDisplayService } from '../status-display/status-display.service';
     styleUrls: ['./left-navigation-menu.component.scss']
 } )
 export class LeftNavigationMenuComponent implements OnInit{
+
+    constants = Consts;
     topHeading = 'Navigation Tree';
     currentSelectedItem = 0;
     sampleId;

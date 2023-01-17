@@ -62,10 +62,18 @@ public class SimpleFindingBean {
 	{
 		Long domainId = findingBean.getDomain().getId();
 		 //TODO: do things differently for new or update?
-		
+
+		//System.out.println("SFB t2fb " + columnHeaders);
+		//if (columnHeaders != null) {
+		//	for (ColumnHeader ch: columnHeaders) {
+		//		System.out.println("SFB ch " + ch);
+		//	}
+		//}
 		findingBean.setColumnHeaders(columnHeaders);
 		findingBean.setNumberOfColumns(numberOfColumns);
+		//System.out.println("SFB noc " + numberOfColumns);
 		findingBean.setNumberOfRows(numberOfRows);
+		//System.out.println("SFB nor " + numberOfRows);
 		//findingBean.setupColumnOrder();
 		
 		transferRowsToFindingBean(findingBean);
