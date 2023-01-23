@@ -6,20 +6,21 @@ import { Consts } from 'src/app/constants';
 @Component({
   selector: 'canano-search-publication',
   templateUrl: './search-publication.component.html',
-  styleUrls: ['../../../../btn-bravo-canano.scss','./search-publication.component.scss']
+  styleUrls: ['../../../../btn-bravo-canano.scss', './search-publication.component.scss']
 })
 export class SearchPublicationComponent implements OnInit {
     data;
+    helpUrl = Consts.HELP_URL_PUBLICATION_SEARCH;
+    toolHeadingName = 'Publication Search';
     dataResults;
     dataTrailer;
     errors;
-    helpUrl;
     loading;
-    loadingMessage=Consts.searchingMessage;
+    loadingMessage = Consts.searchingMessage;
     toolHeadingNameManage;
-    setupData:any={
-        publicationResearchAreas:[],
-        publicationCategories:[],
+    setupData: any = {
+        publicationResearchAreas: [],
+        publicationCategories: [],
 
     };
 

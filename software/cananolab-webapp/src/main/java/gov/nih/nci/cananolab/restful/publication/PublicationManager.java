@@ -278,8 +278,18 @@ public class PublicationManager
 		SimplePublicationWithSamplesBean simplePubBean = new SimplePublicationWithSamplesBean();
 		
 		if (type.equals("PubMed")) {
-			key = "pubMedId";
-			val = new Long(id);
+			//Fix for issue #248
+			try {
+				val = Long.valueOf(id);
+				key = "pubMedId";
+			} catch (NumberFormatException nfex) {
+				// Just do what is done below
+				List<String> errors = new ArrayList<String>();
+				errors.add("Provided PubMed id \"" + id + "\" is not allowed");
+				simplePubBean = new SimplePublicationWithSamplesBean();
+				simplePubBean.setErrors(errors);
+				return simplePubBean;
+			}
 		} else if (type.equals("DOI")) {
 			key = "digitalObjectId";
 			val = id;
