@@ -6,7 +6,7 @@ import { HttpHeaders } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { NavigationService } from '../../../../common/services/navigation.service';
 import { ApiService } from '../../../../common/services/api.service';
-import {takeUntil} from "rxjs/operators";
+
 @Component({
   selector: 'canano-chemicalassociation',
   templateUrl: './chemicalassociation.component.html',
@@ -125,63 +125,63 @@ export class ChemicalassociationComponent implements OnInit {
 }
 
 isSubmissionValid() {
-    if (this.data.type=='') {
+    if (this.data.type == '') {
         return true
     }
-    if (this.data.type=='attachment'&&this.data.bondType=='') {
+    if (this.data.type == 'attachment' && this.data.bondType == '') {
         return true
     }
-    let AKeys=Object.keys(this.data['associatedElementA']);
-    let BKeys=Object.keys(this.data['associatedElementB']);
-    let ACount=[];
-    let BCount=[];
+    let AKeys = Object.keys(this.data['associatedElementA']);
+    let BKeys = Object.keys(this.data['associatedElementB']);
+    let ACount = [];
+    let BCount = [];
 
-    AKeys.forEach(item=> {
-        if (this.data['associatedElementA'][item]=='') {
+    AKeys.forEach(item => {
+        if (this.data['associatedElementA'][item] == '') {
             ACount.push(item)
         }
-        if (this.data['associatedElementA']['compositionType']=='nanomaterial entity') {
-            if (this.data['associatedElementA']['composingElement']['id']=='') {
+        if (this.data['associatedElementA']['compositionType'] == 'nanomaterial entity') {
+            if (this.data['associatedElementA']['composingElement']['id'] == '') {
                 ACount.push(item)
             }
         }
     })
-    BKeys.forEach(item=> {
-        if (this.data['associatedElementB'][item]=='') {
+    BKeys.forEach(item => {
+        if (this.data['associatedElementB'][item] == '') {
             BCount.push(item)
         }
-        if (this.data['associatedElementB']['compositionType']=='nanomaterial entity') {
-            if (this.data['associatedElementB']['composingElement']['id']=='') {
+        if (this.data['associatedElementB']['compositionType'] == 'nanomaterial entity') {
+            if (this.data['associatedElementB']['composingElement']['id'] == '') {
                 BCount.push(item)
             }
         }
     })
-    if (ACount.length||BCount.length) {
+    if (ACount.length || BCount.length) {
         return true
     }
     return false
 }
 setDefaultDataSet() {
     return {
-        "sampleId":this.sampleId,
-        "type":"",
-        "bondType":"",
-        "description":"",
-        "files":[],
-        "associatedElementA":{
-            "compositionType":"",
-            "entityId":"",
-            "entityDisplayName":"",
-            "composingElement":{
-                "id":""
+        'sampleId': this.sampleId,
+        'type': '',
+        'bondType': '',
+        'description': '',
+        'files': [],
+        'associatedElementA': {
+            'compositionType': '',
+            'entityId': '',
+            'entityDisplayName': '',
+            'composingElement': {
+                'id': ''
             }
         },
-        "associatedElementB":{
-            "compositionType":"",
-            "entityId":"",
-            "entityDisplayName":"",
-            "composingElement":{
-                "id":""
+        'associatedElementB': {
+            'compositionType': '',
+            'entityId': '',
+            'entityDisplayName': '',
+            'composingElement': {
+                'id': ''
             }
         }
     }
@@ -246,7 +246,7 @@ changeEntityId(compositionType, entity, val) {
     }
 }
 
-changeCompositionType(compositionType,val,edit) {
+changeCompositionType(compositionType, val, edit) {
 
     if (compositionType === 'compositionTypeA') {
         this.entityOptionsA = val == 'nanomaterial entity' ? this.nanomaterialEntityOptions:this.functionalizingEntityOptions;
@@ -258,7 +258,7 @@ changeCompositionType(compositionType,val,edit) {
 
     }
     else {
-        this.entityOptionsB = val == 'nanomaterial entity' ? this.nanomaterialEntityOptions:this.functionalizingEntityOptions;
+        this.entityOptionsB = val == 'nanomaterial entity' ? this.nanomaterialEntityOptions: this.functionalizingEntityOptions;
         if (!edit) {
             this.data['associatedElementB']['entityId'] = ''
             this.data['associatedElementB']['entityDisplayName'] = ''
@@ -269,8 +269,8 @@ changeCompositionType(compositionType,val,edit) {
 }
 
 deleteChemicalAssociation() {
-    if (confirm("Are you sure you want to delete this functionalizing entity?")) {
-        let url = this.apiService.doPost(Consts.QUERY_CHEMICAL_ASSOCIATION_DELETE,this.data);
+    if (confirm('Are you sure you want to delete this functionalizing entity?')) {
+        let url = this.apiService.doPost(Consts.QUERY_CHEMICAL_ASSOCIATION_DELETE, this.data);
         url.subscribe( data => {
             this.router.navigate( ['home/samples/composition', this.sampleId] );
             this.errors = {};
@@ -303,10 +303,10 @@ selectAssociatedElement(entityId, domainId) {
 }
 
 loadDropdowns() {
-    this.changeEntityId('compositionTypeA',this.data.associatedElementA.compositionType,this.data.associatedElementA.entityId)
-    this.changeEntityId('compositionTypeB',this.data.associatedElementB.compositionType,this.data.associatedElementB.entityId)
-    this.changeCompositionType('compositionTypeA',this.data.associatedElementA.compositionType,true)
-    this.changeCompositionType('compositionTypeB',this.data.associatedElementB.compositionType,true)
+    this.changeEntityId('compositionTypeA', this.data.associatedElementA.compositionType,this.data.associatedElementA.entityId)
+    this.changeEntityId('compositionTypeB', this.data.associatedElementB.compositionType,this.data.associatedElementB.entityId)
+    this.changeCompositionType('compositionTypeA', this.data.associatedElementA.compositionType,true)
+    this.changeCompositionType('compositionTypeB', this.data.associatedElementB.compositionType,true)
 
 }
 
