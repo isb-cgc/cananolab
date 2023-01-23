@@ -3,6 +3,7 @@
 if [ -n "$CI" ]; then
     export HOME=/home/circleci/${CIRCLE_PROJECT_REPONAME}
     export SETTINGS=/home/circleci/${CIRCLE_PROJECT_REPONAME}
+    export ENV_FILE_PATH=${SETTINGS}/.env
 else
     export HOME=/home/vagrant/cananolab
     export SETTINGS=/home/vagrant/cananolab/localDev
@@ -14,6 +15,40 @@ else
     export JAVA_HOME=/usr/lib/jvm/adoptopenjdk-8-hotspot-amd64/jre/
     export JBOSS_HOME=/opt/wildfly-23.0.2.Final
     export PATH=/opt/apache-maven/bin:/opt/apache-ant-1.9.9/bin:$PATH
+fi
+
+#
+# Ww enable or disable synthesis based on an env variable. This is a quick hack. There are deployment
+# mechanisms in Angular to do this
+#
+
+SYNTHESIS_ENABLED=$(grep "SYNTHESIS_ENABLED" "${ENV_FILE_PATH}" | sed 's#^SYNTHESIS_ENABLED=##')
+# Undefined or blank or "False" means make the change
+if [ -z "${SYNTHESIS_ENABLED}" ] || [ "${SYNTHESIS_ENABLED}" = "False" ]; then
+  TARGET_FILE="${HOME}/software/cananolab-client-new/src/app/constants.ts"
+  TMP_FILE=$(mktemp header.XXXXXXXXXX)
+  cp ${TARGET_FILE} ${TMP_FILE}
+  cat ${TMP_FILE} | sed "s#ENABLE_SYNTHESIS: true#ENABLE_SYNTHESIS: false#" > ${TARGET_FILE}
+  rm ${TMP_FILE}
+else
+  echo "Synthesis remains enabled"
+fi
+
+#
+# We vary the announcement (or don't show it) based upon the env var
+#
+
+ANNOUNCEMENT=$(grep "ANNOUNCEMENT" "${ENV_FILE_PATH}" | sed 's#^ANNOUNCEMENT=##')
+# Undefined or blank or "NONE" means do nothing
+if [ -z "${ANNOUNCEMENT}" ] || [ "${ANNOUNCEMENT}" = "NONE" ]; then
+  echo "Not installing announcement"
+else
+  TARGET_FILE="${HOME}/software/cananolab-client-new/src/app/cananolab-client/header/header.component.html"
+  TMP_FILE=$(mktemp header.XXXXXXXXXX)
+  cp ${TARGET_FILE} ${TMP_FILE}
+  cat ${TMP_FILE} | grep -v "___CGC_START_ANNOUNCE___" | grep -v "___CGC_END_ANNOUNCE___" \
+                  | sed "s#___CGC_ANNOUNCE_MESSAGE___#${ANNOUNCEMENT}#" > ${TARGET_FILE}
+  rm ${TMP_FILE}
 fi
 
 export CANANODIR=${HOME}/staged/caNanoLab
@@ -64,9 +99,9 @@ wget https://archive.apache.org/dist/maven/maven-3/3.6.3/binaries/apache-maven-3
 
 cp -v ${SETTINGS}/maven-settings.xml ${ANT_HOME}/etc/settings.xml
 cp -v ${SETTINGS}/maven-settings.xml /opt/apache-maven/conf/settings.xml
-cp -v ${SETTINGS}/.env ${HOME}/software/cananolab-webapp/web/WEB-INF/
+cp -v ${ENV_FILE_PATH} ${HOME}/software/cananolab-webapp/web/WEB-INF/
 if [ -n "$CI" ] || [ ! -d "${HOME}/software/cananolab-webapp/lib/sdk" ]; then
-  if [ ! -d "${HOME}/software/cananolab-webapp/lib" ]; then
+  if [ ! -d "${HOME}/software/cananolab-webapp/lib" ] || [ -d "${HOME}/software/cananolab-webapp/lib/sdk"]; then
     mkdir -p ${HOME}/software/cananolab-webapp/lib/sdk
   fi
   cp -v ${SETTINGS}/jars/*.jar ${HOME}/software/cananolab-webapp/lib/
@@ -84,6 +119,7 @@ else
 fi
 
 sed -i "s/\[\[RELEASE_AND_BUILD_INFO\]\]/caNanoLab Release ${SEMVER} Build cananolab-${SEMVER}-${APP_SHA}/g" ${HOME}/software/cananolab-webapp/web/main.js
+sed -i "s/\[\[RELEASE_VERSION\]\]/${SEMVER}/g" ${HOME}/software/cananolab-webapp/web/main.js
 
 cd ${HOME}/software/cananolab-webapp/
 
