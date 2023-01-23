@@ -1,11 +1,11 @@
-import { Component, OnInit, OnChanges,Output, EventEmitter, Input } from '@angular/core';
+import { Component, OnInit, OnChanges, Output, EventEmitter, Input } from '@angular/core';
 import { Properties } from '../../../../../assets/properties';
 import { HttpClient } from '@angular/common/http';
 import { Consts } from 'src/app/constants';
 @Component({
   selector: 'canano-file',
   templateUrl: './file.component.html',
-  styleUrls: ['../../../../btn-bravo-canano.scss','./file.component.scss']
+  styleUrls: ['../../../../btn-bravo-canano.scss', './file.component.scss']
 })
 export class FileComponent implements OnInit, OnChanges {
 @Input() data;
@@ -30,28 +30,28 @@ serverUrl = Properties.API_SERVER_URL;
   }
 
   ngOnChanges(changes): void {
-    if (changes['fileIndex']==-1) {
+    if (changes['fileIndex'] == -1) {
         this.setupCurrentFile();
     }
     if (this.reset) {
-        this.fileIndex=null;
+        this.fileIndex = null;
     }
   }
 
   addFile() {
-      this.fileIndex=-1;
+      this.fileIndex = -1;
       this.setupCurrentFile();
   }
 
   // used in nanomaterial only //
   convertDomainEntityFieldsToNullAndStrings() {
-    let fieldsToIgnore=['id','createdDate','sampleComposition']
+    let fieldsToIgnore = ['id', 'createdDate', 'sampleComposition']
     if (this.data['domainEntity']) {
         let domainEntityKeys = Object.keys(this.data['domainEntity']);
         domainEntityKeys.forEach((item) => {
 
             if (this.data.domainEntity[item] != null) {
-                if (this.data.domainEntity[item] != '' && fieldsToIgnore.indexOf(item)==-1) {
+                if (this.data.domainEntity[item] != '' && fieldsToIgnore.indexOf(item) == -1) {
                     this.data.domainEntity[item] = this.data.domainEntity[item].toString()
                 }
                 if (this.data.domainEntity[item] == '') {
@@ -64,23 +64,23 @@ serverUrl = Properties.API_SERVER_URL;
 
   cancelFile() {
     this.changeFile.emit({
-        "fileIndex":null,
-        "data":this.data,
-        "type":"cancel"
+        'fileIndex': null,
+        'data': this.data,
+        'type': 'cancel'
     });
-    this.fileIndex=null;
+    this.fileIndex = null;
   }
 
   deleteFile(file) {
     if (this.nanomaterial) {
         this.convertDomainEntityFieldsToNullAndStrings();
-      };
-    if (confirm("Are you sure you wish to delete this file?")) {
-        this.data[this.fileVariable]=file;
+    }
+    if (confirm('Are you sure you wish to delete this file?')) {
+        this.data[this.fileVariable] = file;
         console.log(this.deleteUrl)
         let deleteUrl = this.httpClient.post(this.deleteUrl,this.data);
-        deleteUrl.subscribe(data=> {
-            this.data=data;
+        deleteUrl.subscribe(data => {
+            this.data = data;
             this.changeFile.emit({
                 "fileIndex":null,
                 "data":data,
@@ -96,19 +96,19 @@ serverUrl = Properties.API_SERVER_URL;
   }
 
   editFile(file) {
-      this.fileIndex=1;
-      this.currentFile=JSON.parse(JSON.stringify(file));
+      this.fileIndex = 1;
+      this.currentFile = JSON.parse(JSON.stringify(file));
   }
 
   isFileUploadValid() {
-      if (this.currentFile.type!=''&&this.currentFile.title!='') {
+      if (this.currentFile.type != '' && this.currentFile.title != '') {
         if (this.currentFile.uriExternal) {
-            if (this.currentFile.externalUrl!='') {
+            if (this.currentFile.externalUrl != '') {
                 return false;
             }
         }
         if (!this.currentFile.uriExternal) {
-            if (this.theFile||this.fileIndex!=-1) {
+            if (this.theFile || this.fileIndex != -1) {
                 return false
             }
         }
@@ -125,27 +125,27 @@ serverUrl = Properties.API_SERVER_URL;
   saveFile() {
       if (this.nanomaterial) {
         this.convertDomainEntityFieldsToNullAndStrings();
-      };
+      }
       if (this.currentFile.uriExternal) {
-        this.data[this.fileVariable]={
-            "description":this.currentFile.description,
-            "keywordsStr":this.currentFile.keywordsStr,
-            "title":this.currentFile.title,
-            "type":this.currentFile.type,
-            "uriExternal":true,
-            "externalUrl":this.currentFile.externalUrl
+        this.data[this.fileVariable] = {
+            'description': this.currentFile.description,
+            'keywordsStr': this.currentFile.keywordsStr,
+            'title': this.currentFile.title,
+            'type': this.currentFile.type,
+            'uriExternal': true,
+            'externalUrl': this.currentFile.externalUrl
         }
-        let saveUrl=this.httpClient.post(this.saveUrl,this.data) ;
-        saveUrl.subscribe(data=> {
-            this.data=data;
+        let saveUrl = this.httpClient.post(this.saveUrl, this.data) ;
+        saveUrl.subscribe(data => {
+            this.data = data;
             this.changeFile.emit({
-                "fileIndex":null,
-                "data":data,
-                "type":"save"
+                'fileIndex': null,
+                'data': data,
+                'type': 'save'
             });
-            this.fileIndex=null;
+            this.fileIndex = null;
         },
-        error=> {
+        error => {
             this.getError.emit(error)
             console.log('file save error 1')
         })
@@ -153,21 +153,21 @@ serverUrl = Properties.API_SERVER_URL;
       else {
         if (this.theFile) {
             console.log('thefile?')
-            this.theFile.append('uriExternal',this.currentFile['uriExternal']);
-            this.theFile.append('externalUrl',this.currentFile['externalUrl']);
-            this.theFile.append('type',this.currentFile['type']);
-            this.theFile.append('title',this.currentFile['title']);
-            this.theFile.append('keywordsStr',this.currentFile['keywordsStr']);
-            this.theFile.append('description',this.currentFile['description']);
+            this.theFile.append('uriExternal', this.currentFile['uriExternal']);
+            this.theFile.append('externalUrl', this.currentFile['externalUrl']);
+            this.theFile.append('type', this.currentFile['type']);
+            this.theFile.append('title', this.currentFile['title']);
+            this.theFile.append('keywordsStr', this.currentFile['keywordsStr']);
+            this.theFile.append('description', this.currentFile['description']);
             let uploadUrl = this.httpClient.post(Consts.QUERY_UPLOAD_FILE, this.theFile);
-            uploadUrl.subscribe(data=> {
-                this.data[this.fileVariable]={
-                    "description":this.currentFile.description,
-                    "keywordsStr":this.currentFile.keywordsStr,
-                    "title":this.currentFile.title,
-                    "type":this.currentFile.type,
-                    "uri":data['fileName'],
-                    "uriExternal":false,
+            uploadUrl.subscribe(data => {
+                this.data[this.fileVariable] = {
+                    'description': this.currentFile.description,
+                    'keywordsStr': this.currentFile.keywordsStr,
+                    'title': this.currentFile.title,
+                    'type': this.currentFile.type,
+                    'uri': data['fileName'],
+                    'uriExternal': false,
                 };
                 if (this.fileIndex==1) {
                     this.data[this.fileVariable]['id']=this.currentFile['id'];
@@ -183,6 +183,7 @@ serverUrl = Properties.API_SERVER_URL;
                     this.fileIndex=null;
                 },
                 error=> {
+                    this.getError.emit(error)
                     console.log('file save error 2')
                 })
             },
