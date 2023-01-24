@@ -27,6 +27,7 @@ export class SearchResultsComponent implements OnInit {
     ];
     currentPage = 0;
     errors = {};
+    toolHeadingName = 'Search Results'
     helpUrl = Consts.HELP_URL_KEYWORD_SEARCH_RESULTS;
     maxPageLength = Properties.MAX_PAGE_LENGTH;
     pageCount = 10;
