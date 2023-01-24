@@ -10,11 +10,13 @@ import {Properties} from "../../../../../../../assets/properties";
 } )
 export class LoginComponent implements OnInit{
 
+    helpUrl = 'https://wiki.nci.nih.gov/x/BoIyHg'
+    toolHeadingName = 'Log into caNanoLab'
     user = '';
     password = '';
     homePage = true;
     loaded = false;
-    constructor( private router:Router,private apiService: ApiService, private statusDisplayService: StatusDisplayService ){
+    constructor( private router:Router, private apiService: ApiService, private statusDisplayService: StatusDisplayService ){
     }
 
     ngOnInit(): void {
