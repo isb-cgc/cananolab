@@ -208,7 +208,7 @@ export const Consts = {
     HELP_URL_SAMPLE_COMPOSITION_CHEMICAL_ASSOCIATION: 'https://wiki.nci.nih.gov/x/uoNDHg',
     HELP_URL_SAMPLE_COMPOSITION_COMPOSITION_FILE: 'https://wiki.nci.nih.gov/x/4INDHg',
 
-    HELP_URL_KEYWORD_SEARCH_RESULTS: 'https://wiki.nci.nih.gov/display/caNanoLab/Performing+a+caNanoLab+Keyword+Search', // FIXME: permalink
+    HELP_URL_KEYWORD_SEARCH_RESULTS: 'https://wiki.nci.nih.gov/x/NIKAEQ',
 
     HELP_URL_SAMPLE_SEARCH: 'https://wiki.nci.nih.gov/x/jIS8HQ',
     HELP_URL_SAMPLE_SEARCH_RESULTS: 'https://wiki.nci.nih.gov/x/kYS8HQ',
@@ -216,14 +216,14 @@ export const Consts = {
 
     HELP_URL_SAMPLE_CREATE: 'https://wiki.nci.nih.gov/x/gIS8HQ',
     HELP_URL_SAMPLE_EDIT: 'https://wiki.nci.nih.gov/x/goS8HQ',
-    HELP_URL_SAMPLE_VIEW: 'https://wiki.nci.nih.gov/display/caNanoLab/Managing+Samples+in+caNanoLab#ManagingSamplesincaNanoLab-EditSample',
+    HELP_URL_SAMPLE_VIEW: 'https://wiki.nci.nih.gov/x/goS8HQ',
     HELP_URL_SAMPLE_ADVANCED_SEARCH: 'https://wiki.nci.nih.gov/x/joS8HQ',
 
     HELP_URL_PUBLICATION_SEARCH: 'https://wiki.nci.nih.gov/x/loFDHg',
     HELP_URL_PUBLICATION_SEARCH_RESULTS: 'https://wiki.nci.nih.gov/x/pYFDHg',
 
     HELP_URL_PROTOCOL_SEARCH: 'https://wiki.nci.nih.gov/x/TYFDHg',
-    HELP_URL_PROTOCOL_MANAGE: 'https://wiki.nci.nih.gov/display/caNanoLab/Managing+Protocols+in+caNanoLab',
+    HELP_URL_PROTOCOL_MANAGE: 'https://wiki.nci.nih.gov/x/eIQfEQ',
     HELP_URL_PROTOCOL_CREATE: 'https://wiki.nci.nih.gov/x/SIFDHg',
     HELP_URL_PROTOCOL_EDIT: 'https://wiki.nci.nih.gov/x/S4FDHg',
     HELP_URL_PROTOCOL_SEARCH_RESULTS: 'https://wiki.nci.nih.gov/x/VoFDHg',
