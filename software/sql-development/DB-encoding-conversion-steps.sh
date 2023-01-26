@@ -4,20 +4,32 @@
 #
 # Add a downtime message to the header page (lines 35-37 in:
 # software/cananolab-client-new/src/app/cananolab-client/header/header.component.html) and
+# This is done via the announcement environment variable in .env
 # deploy with a few days lead time
 #
 # System offline (Change load balancer default route to backend offline bucket)
+# This is handled in the script rollout_offline_buckets.sh in ProjectAdmin repo.
+# Announcement messages are edited there for the offline screen
+#
 # Wait for this message to propagate
+# Optionally create bucket for DB dumps
 # Do a backup dump SQL (SA needs storage object write for this)
 # Convert
 # Do a post-conversion dump
 # Compare before and after. Will see encoding changes as well as text->textmedium
-# Change setting in Cloud SQL to new encoding
+# Change database flag in Cloud SQL to new encoding:
+#
+#  databaseFlags:
+#  ....
+#  - name: character_set_server
+#    value: utf8mb4
 # Comment out downtime message in the header page (lines 35-37 in:
 # software/cananolab-client-new/src/app/cananolab-client/header/header.component.html)
+# This is done via the announcement environment variable in .env Set ANNOUNCEMENT=NONE
+
 # Redeploy (needed to reset database connection and remove header)
 #
-# System online
+# System online; smoke test
 
 # For cloud: https://cloud.google.com/sql/docs/mysql/import-export/import-export-sql
 
@@ -25,6 +37,7 @@ SQL_HOME='path to mysql on desktop'
 INSTANCE='instance-name'
 PROJECT='project-name'
 DATABASE='database-name'
+BUILD_BUCKET='TRUE/FALSE (Does bucket exist?)'
 STORAGE_BUCKET='gs://your-storage-bucket/'
 PRE_STORAGE_FILE='PreConvert-Filename.sql'
 POST_STORAGE_FILE='PostConvert-Filename.sql'
@@ -41,6 +54,10 @@ ENV_FILE="./DB-encoding-conversion-steps-SetEnv.sh"
 
 if [ -f "${ENV_FILE}" ]; then
     source "${ENV_FILE}"
+fi
+
+if [ ${BUILD_BUCKET} = "TRUE" ]; then
+  gsutil mb -p ${PROJECT} -c STANDARD -l ${TARG_ZONE} -b on ${STORAGE_BUCKET}
 fi
 
 SQL_SA=$(gcloud sql instances describe ${INSTANCE} --project=${PROJECT} | grep serviceAccountEmailAddress | sed 's/.*: //')
@@ -88,3 +105,21 @@ gsutil cp ${PRE_STORAGE} /tmp
 gsutil cp ${POST_STORAGE} /tmp
 diff /tmp/${PRE_STORAGE_FILE} /tmp/${POST_STORAGE_FILE} > ${HOME}/database_diff.txt
 rm /tmp/${PRE_STORAGE_FILE} /tmp/${POST_STORAGE_FILE}
+
+#
+# The database instance needs flags:
+#
+
+FLAGS=$(gcloud sql instances describe ${INSTANCE} --project=${PROJECT} | awk '/databaseFlags:/, /ipConfiguration:/' | grep "name\|value" | \
+        tr -d '\n' | sed 's/ - name:/,/g' | sed 's/   value:/=/g' | tr -d " " | sed 's/\x27//g' | sed 's/,/--database-flags=/')
+
+FLAGS="${FLAGS},character_set_server=utf8mb4"
+
+echo "Flags will be " ${FLAGS}
+read -r -p "Are you sure? [y/N] " response
+if [[ ! "${response}" =~ ^([yY][eE][sS]|[yY])$ ]]; then
+    echo "Exiting"
+    exit
+fi
+
+gcloud sql instances patch ${INSTANCE} --project=${PROJECT} ${FLAGS}
