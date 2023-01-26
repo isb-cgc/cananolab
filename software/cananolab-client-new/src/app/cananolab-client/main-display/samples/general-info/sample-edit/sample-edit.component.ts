@@ -1,6 +1,6 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Consts } from '../../../../../constants';
-import { ActivatedRoute, Params } from '@angular/router';
+import {ActivatedRoute, Params} from '@angular/router';
 import { Properties } from '../../../../../../assets/properties';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { timeout } from 'rxjs/operators';
@@ -33,10 +33,10 @@ export class SampleEditComponent implements OnInit, OnDestroy{
     pointOfContactIndex;
     sampleId = -1;
     toolHeadingNameSearchSample = 'Update Sample';
-    submitReviewButton=true;
+    submitReviewButton = true;
 
 
-    constructor( private router:Router,private navigationService: NavigationService, private route: ActivatedRoute, private httpClient: HttpClient,
+    constructor( private router: Router, private navigationService: NavigationService, private route: ActivatedRoute, private httpClient: HttpClient,
                  private apiService: ApiService,
                  private sampleAvailabilityDisplayService: SampleAvailabilityDisplayService){
     }
@@ -44,7 +44,7 @@ export class SampleEditComponent implements OnInit, OnDestroy{
     ngOnInit(): void{
         this.navigationService.setCurrentSelectedItem(0);
         this.currentDropdownValues = {};
-        this.errors={};
+        this.errors = {};
         this.route.params.subscribe(
             ( params: Params ) => {
                 this.sampleId = params['sampleId'].replace( /^.*\?sampleId=/, '' );
@@ -59,21 +59,21 @@ export class SampleEditComponent implements OnInit, OnDestroy{
                     data => {
                         Properties.SAMPLE_TOOLS = true;
                         this.data = data;
-                        //console.log(data)
-                        this.data.keywords=this.joinKeywords(this.data.keywords);
-                        this.dataTrailer=JSON.parse(JSON.stringify(this.data))
+                        // console.log(data)
+                        this.data.keywords = this.joinKeywords(this.data.keywords);
+                        this.dataTrailer = JSON.parse(JSON.stringify(this.data))
                         Properties.CURRENT_SAMPLE_NAME = data['sampleName'];
                     } );
             } );
     }
 
     addAccess() {
-        this.theAccessIndex=-1;
-        this.theAccess={
-            accessType: "",
-            recipient: "",
-            recipientDisplayName: "",
-            roleName: "",
+        this.theAccessIndex = -1;
+        this.theAccess = {
+            accessType: '',
+            recipient: '',
+            recipientDisplayName: '',
+            roleName: '',
         }
 
         setTimeout(function () {
@@ -85,56 +85,59 @@ export class SampleEditComponent implements OnInit, OnDestroy{
     }
 
     saveAccess() {
-        this.data.theAccess=this.theAccess;
-        this.data['keywords']=this.data['keywords'].split('\n');
-        this.apiService.doPost(Consts.QUERY_SAMPLE_SAVE_ACCESS,this.data).subscribe(data=> {
-            this.data=data;
-            this.data['keywords']=this.joinKeywords(this.data['keywords']);
-            this.dataTrailer=JSON.parse(JSON.stringify(this.data));
-            this.theAccessIndex=null;
+        this.data.theAccess = this.theAccess;
+        this.data['keywords'] = this.data['keywords'].split('\n');
+        this.apiService.doPost(Consts.QUERY_SAMPLE_SAVE_ACCESS, this.data).subscribe(data => {
+            this.data = data;
+            this.data['keywords'] = this.joinKeywords(this.data['keywords']);
+            this.dataTrailer = JSON.parse(JSON.stringify(this.data));
+            this.theAccessIndex = null;
         })
     }
 
     changeAccessType(event) {
-        this.theAccess.recipient="";
-        this.theAccess.roleName="";
-        if (event=='role') {
-            this.theAccess['recipient']='ROLE_ANONYMOUS';
-            this.theAccess['recipientDisplayName']='Public';
+        this.theAccess.recipient = '';
+        this.theAccess.roleName = '';
+        if (event == 'role') {
+            this.theAccess['recipient'] = 'ROLE_ANONYMOUS';
+            this.theAccess['recipientDisplayName'] = 'Public';
         }
     }
 
     cancelAccess() {
-        this.theAccessIndex=null;
+        this.theAccessIndex = null;
     }
     deleteAccess() {
-        if (confirm("Are you sure you wish to delete this access?")) {
-            this.theAccessIndex=null;
-            this.data['theAccess']=this.theAccess;
+        if (confirm('Are you sure you wish to delete this access?')) {
+            this.theAccessIndex = null;
+            this.data['theAccess'] = this.theAccess;
             this.data['keywords'] = this.data['keywords'].split('\n');
-            this.apiService.doPost(Consts.QUERY_SAMPLE_DELETE_ACCESS,this.data).subscribe(data=> {
-                this.data=data;
-                this.data.keywords=this.joinKeywords(this.data['keywords']);
-                this.dataTrailer=JSON.parse(JSON.stringify(this.data));
+            this.apiService.doPost(Consts.QUERY_SAMPLE_DELETE_ACCESS, this.data).subscribe(data => {
+                this.data = data;
+                this.data.keywords = this.joinKeywords(this.data['keywords']);
+                this.dataTrailer = JSON.parse(JSON.stringify(this.data));
             })
         }
     }
 
     delete() {
-        if (confirm("Are you sure you wish to delete this sample?")) {
-            this.apiService.doGet(Consts.QUERY_SAMPLE_DELETE,'sampleId='+this.sampleId,'text').subscribe(data=> {
-                this.router.navigate(['home/samples/deleted'])
+        if (confirm('Are you sure you wish to delete this sample?')) {
+            this.apiService.doGet(Consts.QUERY_SAMPLE_DELETE, 'sampleId=' + this.sampleId, 'text').subscribe(data => {
+                console.log('Hi! I deleted with ' + data);
+                // WJRL 12/7/22: This is the fix to #211. If the sample is deleted, we go to the creation page
+                // along with the message about success. This is similar to protocol deletion.
+                this.router.navigate(['home/samples/sample-create'], {state: {data: data}});
             },
-            error=> {
+            error => {
                 console.log(error)
-                this.errors=error;
+                this.errors = error;
             })
         }
     }
 
-    editAccess(index,access) {
-        this.theAccessIndex=index;
-        this.theAccess=access;
+    editAccess(index, access) {
+        this.theAccessIndex = index;
+        this.theAccess = access;
         setTimeout(function () {
             document.getElementById('accessForm').scrollIntoView();
         }, 100);
@@ -143,18 +146,18 @@ export class SampleEditComponent implements OnInit, OnDestroy{
 
     }
     // set pointer fields to old values when adding other //
-    addOtherValue(field,currentValue) {
-        this.currentDropdownValues[field]=currentValue;
+    addOtherValue(field, currentValue) {
+        this.currentDropdownValues[field] = currentValue;
     };
 
     // save other value //
     saveOther(newItem: Object) {
         if (newItem['change'] && newItem['value']) {
-            this.addDropdownItem(newItem['array'],newItem['value'])
-            this.setValue(newItem['field'],newItem['value']);
+            this.addDropdownItem(newItem['array'], newItem['value'])
+            this.setValue(newItem['field'], newItem['value']);
         }
         else {
-            this.setValue(newItem['field'],newItem['value']);
+            this.setValue(newItem['field'], newItem['value']);
         }
     };
 
@@ -163,57 +166,57 @@ export class SampleEditComponent implements OnInit, OnDestroy{
     }
 
     addPointOfContact() {
-        this.pointOfContact={organization:{name:""},address:{},role:""};
-        this.pointOfContactIndex=-1;
+        this.pointOfContact = {organization: {name: ''}, address: {}, role: ''};
+        this.pointOfContactIndex = -1;
         setTimeout(function () {
             document.getElementById('pocForm').scrollIntoView();
         }, 100);
     }
 
     cancelPointOfContact() {
-        this.pointOfContactIndex=null;
+        this.pointOfContactIndex = null;
     }
 
     deletePointOfContact() {
-        if (confirm("Are you sure you wish to delete this point of contact?")) {
-            this.pointOfContact['sampleId']=this.sampleId;
-            this.apiService.doPost(Consts.QUERY_SAMPLE_POC_UPDATE_DELETE,this.pointOfContact).subscribe(data=> {
-                this.errors={};
-                this.data=data;
-                this.data.keywords=this.joinKeywords(this.data.keywords);
-                this.dataTrailer=JSON.stringify(JSON.parse(this.data));
-                this.pointOfContactIndex=null;
+        if (confirm('Are you sure you wish to delete this point of contact?')) {
+            this.pointOfContact['sampleId'] = this.sampleId;
+            this.apiService.doPost(Consts.QUERY_SAMPLE_POC_UPDATE_DELETE, this.pointOfContact).subscribe(data => {
+                this.errors = {};
+                this.data = data;
+                this.data.keywords = this.joinKeywords(this.data.keywords);
+                this.dataTrailer = JSON.stringify(JSON.parse(this.data));
+                this.pointOfContactIndex = null;
             },
-            errors=> {
-                this.errors=errors;
+            errors => {
+                this.errors = errors;
             })
         }
     }
 
-    editPointOfContact(index,poc) {
+    editPointOfContact(index, poc) {
         this.pointOfContact = JSON.parse(JSON.stringify(poc));
-        this.pointOfContactIndex=index;
+        this.pointOfContactIndex = index;
         setTimeout(function () {
             document.getElementById('pocForm').scrollIntoView();
         }, 100);
     }
 
     savePointOfContact() {
-        this.pointOfContact['dirty']=true;
-        if (this.pointOfContactIndex==-1) {
+        this.pointOfContact['dirty'] = true;
+        if (this.pointOfContactIndex == -1) {
             this.data.pointOfContacts.push(this.pointOfContact)
             console.log(this.data)
         }
         else {
-            this.data['pointOfContacts'][this.pointOfContactIndex]=this.pointOfContact;
+            this.data['pointOfContacts'][this.pointOfContactIndex] = this.pointOfContact;
         }
         this.data['keywords'] = this.data['keywords'].split('\n');
 
-        this.apiService.doPost(Consts.QUERY_SAMPLE_POC_UPDATE_SAVE,this.data).subscribe(data=> {
-            data['keywords']=this.joinKeywords(this.data['keywords'])
-            this.data=data;
-            this.dataTrailer=JSON.parse(JSON.stringify(data));
-            this.pointOfContactIndex=null;
+        this.apiService.doPost(Consts.QUERY_SAMPLE_POC_UPDATE_SAVE, this.data).subscribe(data => {
+            data['keywords'] = this.joinKeywords(this.data['keywords'])
+            this.data = data;
+            this.dataTrailer = JSON.parse(JSON.stringify(data));
+            this.pointOfContactIndex = null;
         })
     }
 
@@ -227,11 +230,11 @@ export class SampleEditComponent implements OnInit, OnDestroy{
 
 
     downloadReady(event) {
-        if (event==true) {
-            this.loading=null;
+        if (event == true) {
+            this.loading = null;
         }
-        if (event==false) {
-            this.loading=true;
+        if (event == false) {
+            this.loading = true;
         }
     }
 
@@ -240,12 +243,12 @@ export class SampleEditComponent implements OnInit, OnDestroy{
     }
 
     onSampleCopyClick(){
-        this.router.navigate(['home/samples/sample-copy',this.sampleId])
+        this.router.navigate(['home/samples/sample-copy', this.sampleId])
     }
 
     onSampleResetClick(){
-       this.data=JSON.parse(JSON.stringify(this.dataTrailer));
-       this.data.keywords=this.joinKeywords(this.data.keywords);
+       this.data = JSON.parse(JSON.stringify(this.dataTrailer));
+       this.data.keywords = this.joinKeywords(this.data.keywords);
     }
 
     onSampleUpdateClick(){
@@ -263,10 +266,10 @@ export class SampleEditComponent implements OnInit, OnDestroy{
 
         this.apiService.doPost( Consts.QUERY_SAMPLE_UPDATE, su ).subscribe(
             data => {
-                this.data=data;
-                this.data.keywords=this.joinKeywords(this.data.keywords);
-                this.dataTrailer=JSON.parse(JSON.stringify(this.data));
-                this.message='Sample Updated'
+                this.data = data;
+                this.data.keywords = this.joinKeywords(this.data.keywords);
+                this.dataTrailer = JSON.parse(JSON.stringify(this.data));
+                this.message = 'Sample Updated'
             },
             ( err ) => {
                 console.log( 'ERROR QUERY_SAMPLE_UPDATE: ', err );
@@ -275,15 +278,15 @@ export class SampleEditComponent implements OnInit, OnDestroy{
     }
 
     getUsers() {
-        this.apiService.doGet(Consts.QUERY_GET_USERS,'searchStr').subscribe(data=> {
-            this.users=data;
+        this.apiService.doGet(Consts.QUERY_GET_USERS, 'searchStr').subscribe(data => {
+            this.users = data;
         })
 
     }
 
     getUserGroups() {
-        this.apiService.doGet(Consts.QUERY_GET_USER_GROUPS,'searchStr').subscribe(data=> {
-            this.userGroups=data;
+        this.apiService.doGet(Consts.QUERY_GET_USER_GROUPS, 'searchStr').subscribe(data => {
+            this.userGroups = data;
         })
     }
 
@@ -306,7 +309,7 @@ export class SampleEditComponent implements OnInit, OnDestroy{
 
         let results;
         try{
-            results = this.apiService.doGet(getUrl,'sampleId=' + this.sampleId).pipe( timeout( Properties.HTTP_TIMEOUT ) );
+            results = this.apiService.doGet(getUrl, 'sampleId=' + this.sampleId).pipe( timeout( Properties.HTTP_TIMEOUT ) );
         }catch( e ){
             // TODO react to error.
             console.error( 'doGet Exception: ' + e );
@@ -320,9 +323,9 @@ export class SampleEditComponent implements OnInit, OnDestroy{
         this.apiService.doGet( Consts.QUERY_SAMPLE_AVAILABILITY, 'sampleId=' + this.sampleId).subscribe(
             data => {
                 this.sampleAvailabilityDisplayService.displayStuff( data );
-                this.data=data;
-                this.data['keywords']=this.joinKeywords(this.data['keywords']);
-                this.dataTrailer=JSON.parse(JSON.stringify(this.data));
+                this.data = data;
+                this.data['keywords'] = this.joinKeywords(this.data['keywords']);
+                this.dataTrailer = JSON.parse(JSON.stringify(this.data));
             },
             ( err ) => {
                 console.log( 'ERROR QUERY_SAMPLE_AVAILABILITY: ', err );
@@ -331,14 +334,14 @@ export class SampleEditComponent implements OnInit, OnDestroy{
 
 
     onAvailabilityDeleteClick( ){
-        if (confirm("Are you sure you wish to delete the data availability metric?")) {
+        if (confirm('Are you sure you wish to delete the data availability metric?')) {
             this.data['keywords'] = this.data['keywords'].split('\n');
 
             this.apiService.doPost( Consts.QUERY_SAMPLE_DELETE_AVAILABILITY, this.data).subscribe(
                 data => {
-                    this.data=data;
-                    this.data['keywords']=this.joinKeywords(this.data['keywords']);
-                    this.dataTrailer=JSON.parse(JSON.stringify(this.data));
+                    this.data = data;
+                    this.data['keywords'] = this.joinKeywords(this.data['keywords']);
+                    this.dataTrailer = JSON.parse(JSON.stringify(this.data));
                 },
                 ( err ) => {
                     console.log( 'ERROR QUERY_SAMPLE_AVAILABILITY: ', err );
@@ -348,12 +351,12 @@ export class SampleEditComponent implements OnInit, OnDestroy{
     }
 
     onAvailabilityEdit(event) {
-        this.availabilityEditIndex=1;
-        this.apiService.doGet(Consts.QUERY_SAMPLE_VIEW_AVAILABILITY,'sampleId='+this.sampleId).subscribe(data=> {
-            this.dataAvailability=data;
+        this.availabilityEditIndex = 1;
+        this.apiService.doGet(Consts.QUERY_SAMPLE_VIEW_AVAILABILITY, 'sampleId=' + this.sampleId).subscribe(data => {
+            this.dataAvailability = data;
         },
-        errors=> {
-            this.errors=errors;
+        errors => {
+            this.errors = errors;
         })
     }
 
@@ -361,9 +364,9 @@ export class SampleEditComponent implements OnInit, OnDestroy{
     }
 
     submitForReview() {
-        let url = this.apiService.doPost(Consts.QUERY_SAMPLE_SUBMIT_REVIEW,{dataId:this.data.sampleId,dataName:this.data.sampleName,dataType:"sample"},'text');
-        url.subscribe(data=> {
-            this.submitReviewButton=false;
+        let url = this.apiService.doPost(Consts.QUERY_SAMPLE_SUBMIT_REVIEW, {dataId: this.data.sampleId, dataName: this.data.sampleName, dataType: 'sample'}, 'text');
+        url.subscribe(data => {
+            this.submitReviewButton = false;
         })
     }
 

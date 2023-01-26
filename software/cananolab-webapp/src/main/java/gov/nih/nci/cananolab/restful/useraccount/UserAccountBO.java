@@ -2,6 +2,7 @@ package gov.nih.nci.cananolab.restful.useraccount;
 
 import java.util.List;
 
+import gov.nih.nci.cananolab.util.SessionListener;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,22 +36,30 @@ public class UserAccountBO
 	public CananoUserDetails createUserAccount(CananoUserDetails userDetails) throws NoAccessException
 	{
 		userService.createUserAccount(userDetails);
+		System.out.println("New user has been created: " + userDetails.getUsername());
+		logger.warn("Successful creation of user: " + userDetails.getUsername());
         return (CananoUserDetails) userDetailsService.loadUserByUsername(userDetails.getUsername());
 	}
 	
 	public void resetUserAccountPassword(String oldPassword, String newPassword, String userName) throws Exception
 	{
 		userService.resetPasswordForUser(oldPassword, newPassword, userName);
+		System.out.println("Password reset for user: " +  userName);
+		logger.warn("Successful password reset for user: " + userName);
 	}
 	
 	public CananoUserDetails updateUserAccount(CananoUserDetails userDetails) throws NoAccessException
 	{
 		userService.updateUserAccount(userDetails);
+		System.out.println("Updated user account for user: " +  userDetails.getUsername());
+		logger.warn("Successful update of user account for user: " + userDetails.getUsername());
         return (CananoUserDetails) userDetailsService.loadUserByUsername(userDetails.getUsername());
 	}
 	
 	public List<CananoUserDetails> searchByUsername(String searchStr) throws NoAccessException
 	{
+		System.out.println("Searching for users by string: " +  searchStr);
+		logger.warn("Searching for users by string: " + searchStr);
         return userService.loadUsers(searchStr);
 	}
 	

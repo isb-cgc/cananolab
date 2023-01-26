@@ -33,7 +33,15 @@ function check_for_wildfly() {
 
 ############## END Helper Functions ##############
 
-if [ "${IS_DEV,,}" == "true" ]; then
+# This check must differentiate between CircleCI and an AppEngine VM or a local dev instance.
+# As a result, IS_DEV should only ever be set in local developer .env files; setting it here
+# will break the deployment build.
+if [ "${IS_DEV,,}" != "true" ]; then
+  export HOME=/local
+  export SETTINGS=${HOME}/content
+  export CANANODIR=${SETTINGS}/caNanoLab
+  export $(cat ${SETTINGS}/.env | grep -v ^# | xargs) 2> /dev/null
+else
   if ( "/home/vagrant/cananolab/shell/get_env.sh" ) ; then
     export $(cat ${ENV_FILE_PATH} | grep -v ^# | xargs) 2> /dev/null
   else
@@ -42,11 +50,7 @@ if [ "${IS_DEV,,}" == "true" ]; then
   export HOME=/home/vagrant/cananolab
   export SETTINGS=${HOME}/localDev
   export CANANODIR=${HOME}/software/cananolab-webapp/local_build
-else
-  export HOME=/home/circleci/${CIRCLE_PROJECT_REPONAME}
-  export SETTINGS=/local/content
-  export CANANODIR=${SETTINGS}/caNanoLab
-  export $(cat ${SETTINGS}/.env | grep -v ^# | xargs) 2> /dev/null
+
 fi
 
 export ARTIFACTS=${CANANODIR}/artifacts

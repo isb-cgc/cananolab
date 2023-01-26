@@ -5,6 +5,7 @@ import { Consts } from '../../../../../constants';
 import { NavigationService } from '../../../../common/services/navigation.service';
 import { ApiService } from '../../../../common/services/api.service';
 import { HttpClient } from '@angular/common/http';
+
 @Component({
   selector: 'canano-editcharacterization',
   templateUrl: './editcharacterization.component.html',
@@ -44,7 +45,7 @@ export class EditcharacterizationComponent implements OnInit {
 
     csvColumnMaxCount = 25; // Maximum number of columns allowed
     csvMaxNumberOfLines = 5000; // Maximum number of rows allowed
-    csvMaxLenOfEntry = 400;
+    csvMaxLenOfEntry = 450;
     runaway = 10240; // A counter used to prevent an endless loop if something goes wrong.  @TODO needs a better name
     csvDataColCount = 0;
     csvDataObj;
@@ -485,15 +486,15 @@ export class EditcharacterizationComponent implements OnInit {
         this.badFindingCell = this.createArray(this.csvDataColCount, this.csvDataRowCount);
         let url = this.apiService.doPost(Consts.QUERY_CHARACTERIZTAION_UPDATE_FINDING,this.currentFinding);
 
-        url.subscribe(data=> {
+        url.subscribe(data => {
                 data = data;
                 if (data.rows[this.csvDataRowCount - 1] === undefined) {
                     this.csvDataRowCount = data.numberOfRows;
                 }
 
-                for (var y = 0; y < this.csvDataRowCount; y++) {
+                for (let y = 0; y < this.csvDataRowCount; y++) {
 
-                    for (var x = 0; x < this.csvDataColCount; x++) {
+                    for (let x = 0; x < this.csvDataColCount; x++) {
                         // If the user has reduced the number of columns, make sure we don't try to update columns that no longer exist.
                         if ((data.rows[y].cells[x] !== null) && (data.rows[y].cells[x] !== undefined)) {
                             data.rows[y].cells[x].value = Object(this.csvDataObj[y][x]);
@@ -520,7 +521,8 @@ export class EditcharacterizationComponent implements OnInit {
                     if ((this.currentFinding.columnHeaders[colX] !== null) && (this.currentFinding.columnHeaders[colX] !== undefined)) {
                         data.columnHeaders[colX] = this.currentFinding.columnHeaders[colX];
                     }
-                 }
+                }
+                // WJRL 12-21-22: Issue 209. The data appears to be correctly laid out at this point
                 this.currentFinding = data;
                 console.log('complete')
 
@@ -681,6 +683,7 @@ export class EditcharacterizationComponent implements OnInit {
         return returnData;
     }
 
+    // Issue 209: Data appear to pass through this function and not be munged
     parseCsv(data) {
         if (!this.validateCsv(data)) {
             return null;

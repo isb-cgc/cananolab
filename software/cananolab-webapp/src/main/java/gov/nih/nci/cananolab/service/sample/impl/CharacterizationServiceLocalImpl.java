@@ -195,6 +195,7 @@ public class CharacterizationServiceLocalImpl extends BaseServiceLocalImpl imple
 			for (FileBean fileBean : finding.getFiles()) {
 				fileUtils.prepareSaveFile(fileBean.getDomainFile());
 			}
+			//System.out.println("CSLI saveFinding calling appService sOu " + finding.getDomain());
 			appService.saveOrUpdate(finding.getDomain());
 			// save file data to file system
 			for (FileBean fileBean : finding.getFiles()) {

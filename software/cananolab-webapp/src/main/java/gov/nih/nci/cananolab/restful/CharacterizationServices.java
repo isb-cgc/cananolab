@@ -542,6 +542,10 @@ public class CharacterizationServices
 			e.printStackTrace();
 			if (editBean.isSubmitNewChar()) {
 				// Save new char failed, need to set session theChar to null to prevent later use this wrong one
+				// WJRL 12/16/22: This will happen if the user has timed out: "You don't have the required privileges to access this function"
+				// So is this a problem when you try to save again on an edit? The bean is null, and a save or update encounters
+				// a null, and creates a new CharBean from scratch. Do we lose information at all?
+				//
 				httpRequest.getSession().setAttribute("theChar", null);
 			}
 			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(CommonUtil.wrapErrorMessageInList(e.getMessage())).build();
