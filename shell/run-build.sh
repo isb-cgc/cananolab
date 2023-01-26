@@ -119,7 +119,7 @@ else
 fi
 
 sed -i "s/\[\[RELEASE_AND_BUILD_INFO\]\]/caNanoLab Release ${SEMVER} Build cananolab-${SEMVER}-${APP_SHA}/g" ${HOME}/software/cananolab-webapp/web/main.js
-sed -i "s/\[\[RELEASE_VERSION\]\]/${SEMVER}/g" ${HOME}/software/cananolab-webapp/web/main.js
+sed -i "s/\[\[RELEASE_VERSION\]\]/${SEMVER}/g" ${HOME}/software/cananolab-webapp/web/cananolab-client-main-display-home-home-module.js
 
 cd ${HOME}/software/cananolab-webapp/
 
