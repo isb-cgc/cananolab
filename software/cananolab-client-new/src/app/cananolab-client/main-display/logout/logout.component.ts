@@ -19,11 +19,15 @@ export class LogoutComponent implements OnInit{
     }
 
     ngOnInit(): void {
-        if(!Properties.LOGGING_OUT) {
-            Properties.LOGGING_OUT = true;
-            (Properties.LOGGED_IN) ? this.logOut() : console.log("User is already logged out.");
+        if(Properties.LOGGED_IN) {
+            if(!Properties.LOGGING_OUT) {
+                Properties.LOGGING_OUT = true;
+                this.logOut();
+            } else {
+                console.log("Logout process underway already--updating display only.");
+            }
         } else {
-            console.log("Logout process underway elsewhere--updating display only.");
+            console.log("User is already logged out.");
         }
 
         this.topMainMenuService.showOnlyMenuItems([
