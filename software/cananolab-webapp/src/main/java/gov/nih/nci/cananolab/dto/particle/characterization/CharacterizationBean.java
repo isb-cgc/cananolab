@@ -309,9 +309,10 @@ public class CharacterizationBean {
 		return description;
 	}
 
-	public String getDescriptionDisplayName() {
+	// WJRL 2/6/23: Appears to be unused
+	/*public String getDescriptionDisplayName() {
 		return StringUtils.escapeXmlButPreserveLineBreaks(description);
-	}
+	}*/
 
 	public void setDescription(String description) {
 		this.description = description;
