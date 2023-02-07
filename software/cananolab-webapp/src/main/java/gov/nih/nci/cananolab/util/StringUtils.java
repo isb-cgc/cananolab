@@ -1,6 +1,8 @@
 /*L
  *  Copyright Leidos
  *  Copyright Leidos Biomedical
+ *  Copyright Institute for Systems Biology
+ *  Portions Copyright Matthias Stevens
  *
  *  Distributed under the OSI-approved BSD 3-Clause License.
  *  See http://ncip.github.com/cananolab/LICENSE.txt for details.
@@ -18,7 +20,6 @@ import java.util.TreeSet;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import org.apache.commons.lang.StringEscapeUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -139,9 +140,92 @@ public class StringUtils {
 		return buffer.toString();
 	}
 
+	 //******************************************************************************************
+	 // We need to be able to figure out the newline logic. Code adapted from Stackoverflow example,
+	 // https://stackoverflow.com/questions/3776923/how-can-i-normalize-the-eol-character-in-java
+	 // Attibution is as follows:
+	 //   Loosely based on these examples:
+	 //    - http://stackoverflow.com/a/9456947/1084488 (cc by-sa 3.0)
+	 //    - https://github.com/apache/tomcat/blob/main/java/org/apache/tomcat/buildutil/CheckEol.java (Apache License v2.0)
+	 //
+	 //   This file is posted here to meet the "ShareAlike" requirement of cc by-sa 3.0:
+	 //      http://stackoverflow.com/a/27930311/1084488
+	 //
+	 //   @author Matthias Stevens
+	 // ******************************************************************************************
+
+	private static final String EOL_UNIX = "\n";
+	private static final String EOL_WINDOWS = "\r\n";
+	private static final String EOL_OLD_MAC = "\r";
+
+	/**
+	 * Determines the end-of-line String for possibly multi-line String
+	 *
+	 * @param text the String to investigate
+	 * @return the end-of-line string present
+	 */
+	public static String determineEOL(String text) {
+		int prev = -1;
+		int ch;
+		for (int i=0; i < text.length(  ); i++) {
+			ch = text.charAt(i);
+			if ( ch == '\n' ) {
+				if ( prev == '\r' ) {
+					return (EOL_WINDOWS);
+				} else {
+					return (EOL_UNIX);
+				}
+			} else if ( prev == '\r' ) {
+				return (EOL_OLD_MAC);
+			}
+			prev = ch;
+		}
+		return (null);
+	}
+
+	//
+	// WJRL 2/7/23
+	// Apache Commons StringEscapeUtils.escapeHtml4() (the 2023 version; until now the system was
+	// using the 2011 EscapeXML version that was *unable* to deal with 4-byte unicode) is *way*
+	// overkill when we are dealing with UTF-8. E.g. escaping greek characters is pointless,
+	// and looks really ugly if it slips through the net. So build a lightweight method that
+	// only handles the five basic XML entities (gt, lt, quot, amp, apos). That should be
+	// enough to foil embedded script and style tags.
+	//
+
+	public static String simpleHTMLEscape(String text) {
+		if (isEmpty(text)) {
+			return ("");
+		}
+		// Not efficient, but quick to implement. Better to do a single scan to a StringBuffer.
+		String retval = text.replaceAll(">", "&gt;")
+				            .replaceAll("<", "&lt;")
+							.replaceAll("&", "&amp;")
+							.replaceAll("\"", "&quot;")
+							.replaceAll("'", "&#039;");
+		return (retval);
+	}
+
+	//
+	// See above. The reverse
+	//
+
+	public static String simpleHTMLUnEscape(String text) {
+		if (isEmpty(text)) {
+			return ("");
+		}
+		// Not efficient, but quick to implement:
+		String retval = text.replaceAll("&gt;", ">")
+							.replaceAll("&lt;", "<")
+							.replaceAll("&amp;", "&")
+							.replaceAll("&quot;", "\"")
+							.replaceAll("&#039;", "'");
+		return (retval);
+	}
+
 	/**
 	 * Escape HTML but keep line breaks, useful in preserving line breaks in
-	 * descriptions
+	 * descriptions. WJRL 2/7/23: This improvement also handles non-Windows line breaks.
 	 *
 	 * @param text
 	 * @return
@@ -150,28 +234,33 @@ public class StringUtils {
 		if (isEmpty(text)) {
 			return "";
 		}
+		String eol = determineEOL(text);
 
-		String[] words = text.trim().split("\r\n");
 		List<String> lines = new ArrayList<String>();
-		for (String word : words) {
-			lines.add(word.trim());
+		if (eol != null) {
+			String[] words = text.trim().split(eol);
+			for (String word : words) {
+				lines.add(word.trim());
+			}
+		} else {
+			lines.add(text.trim());
 		}
 
 		StringBuffer newText = new StringBuffer();
 		int i = 0;
-		if (lines != null) {
-			for (String line : lines) {
-				String escapedLine = StringEscapeUtils.escapeXml(line);
-				newText.append(escapedLine);
-				if (i < lines.size() - 1) {
-					newText.append("<br>");
-				}
-				i++;
+		for (String line : lines) {
+			// If somehow an escaped string got into the database, we
+			// don't want to keep escaping it endlessly. So unescape it
+			// first to prevent this.
+			String unescapedLine = simpleHTMLUnEscape(line);
+			String escapedLine = simpleHTMLEscape(unescapedLine);
+			newText.append(escapedLine);
+			if (i < lines.size() - 1) {
+				newText.append("<br>");
 			}
-			return newText.toString();
-		} else {
-			return "";
+			i++;
 		}
+		return newText.toString();
 	}
 
 	public static Float convertToFloat(String floatStr) {
