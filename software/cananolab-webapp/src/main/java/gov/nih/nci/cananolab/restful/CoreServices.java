@@ -195,6 +195,12 @@ public class CoreServices
 		}
 	}
 
+	//
+	// Important! WJRL 2/7/23 In order to get the text parts correctly interpreted as UTF-8, look
+	// at gov.nih.nci.cananolab.restful.MultipartInterceptor, which references this call.
+	// At this time, the text is ignored, but the function interceptor was retained for correctness.
+	// See also	<param-name>resteasy.providers</param-name> in web.xml where it is registered.
+	//
 	@CrossOrigin
 	@POST
 	@Path("/uploadFile")
@@ -217,6 +223,11 @@ public class CoreServices
 					break;
 				}
 			}
+
+			//
+			// IMPORTANT! This does NOT save the file anywhere. It just stuffs the bytes for the
+			// Image into the session data attribute "newFileData" and returns.
+			//
 
 			protocolBO.saveFile(fileInputStream,fileName,httpRequest);
 			// httpRequest.getSession().getAttribute("newFileData") now has the file content
