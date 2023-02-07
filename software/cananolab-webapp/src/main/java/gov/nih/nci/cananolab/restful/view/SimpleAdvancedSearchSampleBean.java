@@ -136,6 +136,7 @@ public class SimpleAdvancedSearchSampleBean extends SimpleSearchSampleBean {
 		Map<String, Object> displayMap = new HashMap<String, Object>();
 		
 		for (LinkableItem item :items) {
+			// WJRL 2/6/23: Item display name is HTML escaped with breaks
 			String dn = item.getDisplayName();
 			List<String> dnStrs = item.getDisplayStrings();
 			String dataId = item.getAction();
