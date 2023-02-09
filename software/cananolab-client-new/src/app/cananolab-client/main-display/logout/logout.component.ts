@@ -14,8 +14,9 @@ import { TopMainMenuService } from '../../top-main-menu/top-main-menu.service';
 export class LogoutComponent implements OnInit{
     properties=Properties;
 
-    constructor(private topMainMenuService:TopMainMenuService,private apiService: ApiService, private statusDisplayService: StatusDisplayService,
-                 private router: Router, private utilService: UtilService ){
+    constructor(private topMainMenuService:TopMainMenuService, private apiService: ApiService,
+                private statusDisplayService: StatusDisplayService, private router: Router,
+                private utilService: UtilService ){
     }
 
     ngOnInit(): void {

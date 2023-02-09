@@ -7,7 +7,7 @@ export const Consts = {
     searchingMessage: 'Searching',
     serverlUrl: '/',
 
-    ENABLE_SYNTHESIS: true,
+    ENABLE_SYNTHESIS: false,
 
     // For each rest service
     LOGIN_URL: 'login',
