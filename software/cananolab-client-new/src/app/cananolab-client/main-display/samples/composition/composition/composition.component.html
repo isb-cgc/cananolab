@@ -1,6 +1,11 @@
 <canano-main-display-heading [helpUrl]="helpUrl" [print]="true" [toolHeadingName]="toolHeadingNameManage" [export]="[sampleId,'COMPOSITION']">
 
 </canano-main-display-heading>
+
+<!-- This same page is used for both "view" and "edit" modes. Add and -->
+<!-- Edit buttons are shown in the latter case. Note that this behavior -->
+<!-- is driven by "view" being in the page URL-->
+
     <ul class="nav nav-tabs">
         <li class="nav-item">
           <a class="nav-link active" id="all-tab" data-toggle="tab" (click)="showSection('all')">All</a>
@@ -35,9 +40,7 @@
                 <table class="dataMain">
                     <tr *ngIf="entry.Description">
                         <td class="label">Description</td>
-                        <td>
-                            {{entry.Description}}
-                        </td>
+                        <td [innerHtml]="entry.Description"></td>
                     </tr>
                     <tr *ngIf="entry['isWithProperties'] && propertyCheck(entry)">
                         <td class="label">Properties</td>
@@ -45,11 +48,13 @@
                             <table class="dataTable">
                                 <tr>
                                     <th *ngFor="let property of entry['Properties'] | keyvalue">
-                                        {{convertTitlesToRealWords(property.key)}}
+                                        <span [innerHtml]="convertTitlesToRealWords(property.key)"></span>
                                     </th>
                                 </tr>
                                 <tr>
-                                    <td *ngFor="let property of entry['Properties'] | keyvalue">{{property.value}}</td>
+                                    <td *ngFor="let property of entry['Properties'] | keyvalue">
+                                        <span [innerHtml]="property.value"></span>
+                                    </td>
                                 </tr>
                             </table>
                         </td>
@@ -61,33 +66,25 @@
                             <div *ngFor="let ce of entry['ComposingElements']; let last=last">
                                 <table class="dataTable" [ngClass]="{'last':last}">
                                     <tr>
-                                        <th class="label" colspan="2">
-                                           {{ce.DisplayName}}
-                                        </th>
+                                        <th class="label" colspan="2" [innerHtml]="ce.DisplayName"></th>
                                     </tr>
                                     <tr *ngIf="ce.PubChemId!=''">
                                         <td class="label">
                                             PubChem ID
                                         </td>
-                                        <td>
-                                            {{ce.PubChemId}}
-                                        </td>
+                                        <td [innerHtml]="ce.PubChemId"></td>
                                     </tr>
                                     <tr *ngIf="ce.MolecularFormulaDisplayName!=''">
                                         <td class="label">
                                             Molecular Formula
                                         </td>
-                                        <td>
-                                            {{ce.MolecularFormulaDisplayName}}
-                                        </td>
+                                        <td [innerHtml]="ce.MolecularFormulaDisplayName"></td>
                                     </tr>
                                     <tr *ngIf="ce.Description!=''">
                                         <td class="label">
                                             Description
                                         </td>
-                                        <td>
-                                            {{ce.Description}}
-                                        </td>
+                                        <td span [innerHtml]="ce.Description"></td>
                                     </tr>
                                     <tr *ngIf="ce.Function">
                                         <td class="label">
@@ -96,7 +93,7 @@
                                         <td>
                                             <ul>
                                                 <li *ngFor="let inherentfunction of ce.Function">
-                                                    {{inherentfunction}}
+                                                    <span [innerHtml]="inherentfunction"></span>
                                                 </li>
                                             </ul>
                                         </td>
@@ -126,20 +123,16 @@
                                                 </span>
                                                 <ng-template #elseBlock>
                                                     <a href="/rest/sample/download?fileId={{file.fileId}}"
-                                                        target="blank">
-                                                        {{file.Title}}
-                                                    </a>
+                                                        target="blank" [innerHtml]="file.Title"></a>
                                                 </ng-template>
                                             </ng-template>
                                         </td>
                                         <td>
                                             <div *ngFor="let keyword of splitKeywordString(file.KeywordStr)">
-                                                {{keyword}}
+                                                <span [innerHtml]="keyword"></span>
                                             </div>
                                         </td>
-                                        <td>
-                                            {{file.Description}}
-                                        </td>
+                                        <td [innerHtml]="file.Description"></td>
                                     </tr>
                                 </table>
                         </td>
@@ -167,11 +160,11 @@
                 <table class="dataMain">
                     <tr *ngIf="entry.Name">
                         <td class="label">Name</td>
-                        <td>{{entry.Name}}</td>
+                        <td [innerHtml]="entry.Name"></td>
                     </tr>
                     <tr *ngIf="entry.pubChemLink">
                         <td class="label">PubChem ID</td>
-                        <td><a [href]="entry.pubChemLink" target="blank">{{entry.pubChemID}}</a></td>
+                        <td><a [href]="entry.pubChemLink" target="blank" [innerHtml]="entry.pubChemID"></a></td>
                     </tr>
                     <tr *ngIf="entry.value">
                         <td class="label">Amount</td>
@@ -179,7 +172,7 @@
                     </tr>
                     <tr *ngIf="entry.MolecularFormulaDisplayName">
                         <td class="label">Molecular Formula</td>
-                        <td>{{entry.MolecularFormulaDisplayName}}</td>
+                        <td [innerHtml]="entry.MolecularFormulaDisplayName"></td>
                     </tr>
                     <tr *ngIf="propertyCheck(entry)">
                         <td class="label">Properties</td>
@@ -187,11 +180,13 @@
                             <table class="dataTable">
                                 <tr>
                                     <th *ngFor="let property of entry['Properties'] | keyvalue">
-                                        {{convertTitlesToRealWords(property.key)}}
+                                        <span [innerHtml]="convertTitlesToRealWords(property.key)"></span>
                                     </th>
                                 </tr>
                                 <tr>
-                                    <td *ngFor="let property of entry['Properties'] | keyvalue">{{property.value}}</td>
+                                    <td *ngFor="let property of entry['Properties'] | keyvalue">
+                                        <span [innerHtml]="property.value"></span>
+                                    </td>
                                 </tr>
                             </table>
                         </td>
@@ -205,11 +200,10 @@
                                     <th>Image Modality</th>
                                     <th>Description</th>
                                 </tr>
-                                <tr *ngFor="let function of entry.Functions; let odd=odd" [ngClass]="{'rowOdd':odd}">
-                                    <td>{{function.Type}}
-                                    </td>
-                                    <td>{{function.Modality}}</td>
-                                    <td>{{function.FunctionDescription}}</td>
+                                <tr *ngFor="let func of entry.Functions; let odd=odd" [ngClass]="{'rowOdd':odd}">
+                                    <td [innerHtml]="func.Type"></td>
+                                    <td [innerHtml]="func.Modality"></td>
+                                    <td [innerHtml]="func.FunctionDescription"></td>
                                 </tr>
                             </table>
                         </td>
@@ -220,7 +214,7 @@
                     </tr>
                     <tr *ngIf="entry.Desc">
                         <td class="label">Description</td>
-                        <td>{{entry.Desc}}</td>
+                        <td [innerHtml]="entry.Desc"></td>
                     </tr>
                     <tr *ngIf="entry['Files'].length">
                         <td class="label">Files</td>
@@ -234,29 +228,25 @@
                                 <tr *ngFor="let file of entry['Files']; let odd=odd" [ngClass]="{'rowOdd':odd}">
                                     <td>
                                         <span *ngIf="file.ExternalURI=='true'; else elseBlock">
-                                            <a href="{{file.URI}}" target="blank">{{file.Title}}</a>
+                                            <a href="{{file.URI}}" target="blank" [innerHtml]="file.Title"></a>
                                         </span>
                                         <ng-template #elseBlock>
-                                            <span *ngIf="file.isImage; else elseBlock">{{file.Title}}<br />
+                                            <span *ngIf="file.isImage; else elseBlock"><span [innerHTML]="file.Title"></span><br/>
                                                 <img src="/rest/sample/downloadImage?fileId={{file.fileId}}"
                                                     border="0" width="150" alt="uploaded image">
                                             </span>
                                             <ng-template #elseBlock>
                                                 <a href="/rest/sample/download?fileId={{file.fileId}}"
-                                                    target="blank">
-                                                    {{file.Title}}
-                                                </a>
+                                                    target="blank" [innerHtml]="file.Title"></a>
                                             </ng-template>
                                         </ng-template>
                                     </td>
                                     <td>
                                         <div *ngFor="let keyword of splitKeywordString(file.KeywordStr)">
-                                            {{keyword}}
+                                            <span [innerHtml]="keyword"></span>
                                         </div>
                                     </td>
-                                    <td>
-                                        {{file.Description}}
-                                    </td>
+                                    <td [innerHtml]="file.Description"></td>
                                 </tr>
                             </table>
                         </td>
@@ -281,11 +271,11 @@
                 <table class="dataMain">
                     <tr *ngIf="entry.BondType">
                         <td class="label">Bond Type</td>
-                        <td>{{entry.BondType}}</td>
+                         <td [innerHtml]="entry.BondType"></td>
                     </tr>
                     <tr *ngIf="entry.Description">
                         <td class="label">Description</td>
-                        <td>{{entry.Description}}</td>
+                        <td [innerHtml]="entry.Description"></td>
                     </tr>
                     <tr>
                         <td class="label">Associated Elements</td>
@@ -298,8 +288,7 @@
                                         (name:{{entry.AssocitedElements.DomainElementNameA}})
                                     </td>
                                     <td style="text-align:center">associated with
-                                        <img src="assets/images/arrow_left_right_gray.gif">
-
+                                        <img src="assets/images/arrow_left_right_gray.gif" alt="Double ended arrow">
                                     </td>
                                     <td>
                                         {{entry.AssocitedElements.CompositiontypeB}}
@@ -331,20 +320,16 @@
                                             </span>
                                             <ng-template #elseBlock>
                                                 <a href="/rest/sample/download?fileId={{file.fileId}}"
-                                                    target="blank">
-                                                    {{file.Title}}
-                                                </a>
+                                                    target="blank" [innerHtml]="file.Title"></a>
                                             </ng-template>
                                         </ng-template>
                                     </td>
                                     <td>
                                         <div *ngFor="let keyword of splitKeywordString(file.KeywordStr)">
-                                            {{keyword}}
+                                            <span [innerHtml]="keyword"></span>
                                         </div>
                                     </td>
-                                    <td>
-                                        {{file.Description}}
-                                    </td>
+                                    <td [innerHtml]="file.Description"></td>
                                 </tr>
                             </table>
                         </td>
@@ -361,7 +346,7 @@
             class="btn btn-primary btn-sm">Add</button>
     </div>
     <ng-container *ngFor="let compositionfile of data['compositionfile'] | keyvalue; let index = index">
-        <div class="blueHeader">{{compositionfile.key}}</div><Br />
+        <div class="blueHeader">{{compositionfile.key}}</div><br/>
         <div class="mainBorder" [ngClass]="mainBorder">
             <table class="dataTable">
                 <tr>
@@ -373,7 +358,7 @@
                 <tr *ngFor="let file of compositionfile.value; let odd=odd" [ngClass]="{'rowOdd':odd}">
                     <td>
                         <span *ngIf="file.ExternalURI=='true'; else elseBlock">
-                            <a href="{{file.URI}}" target="blank">{{file.Title}}</a>
+                            <a href="{{file.URI}}" target="blank" [innerHTML]="file.Title"></a>
                         </span>
                         <ng-template #elseBlock>
                             <span *ngIf="file.isImage; else elseBlock">{{file.Title}}<br />
@@ -381,18 +366,16 @@
                                     width="150" alt="uploaded image">
                             </span>
                             <ng-template #elseBlock>
-                                <a href="/rest/sample/download?fileId={{file.fileId}}" target="blank">
-                                    {{file.Title}}
-                                </a>
+                                <a href="/rest/sample/download?fileId={{file.fileId}}" target="blank" [innerHTML]="file.Title"></a>
                             </ng-template>
                         </ng-template>
                     </td>
                     <td>
                         <div *ngFor="let keyword of splitKeywordString(file.KeywordStr)">
-                            {{keyword}}
+                            <span [innerHtml]="keyword"></span>
                         </div>
                     </td>
-                    <td>{{file.Description}}</td>
+                    <td [innerHtml]="file.Description"></td>
                     <td *ngIf="editUrl">
                         <button class="btn-canano btn-canano-primary btn-canano-xs mr-1"
                             (click)="onCompositionFileClick(file.dataId)">Edit</button>
