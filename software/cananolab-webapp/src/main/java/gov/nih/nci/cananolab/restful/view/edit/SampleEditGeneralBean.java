@@ -364,6 +364,7 @@ public class SampleEditGeneralBean {
 	{
 		poc.setFirstName(samplePOC.getFirstName());
 		poc.setLastName(samplePOC.getLastName());
+		poc.setContactPerson(samplePOC.getFirstName() + " " + samplePOC.getMiddleInitial() + " " + samplePOC.getLastName());
 		poc.setMiddleInitial(samplePOC.getMiddleInitial());
 		poc.setSampleId(sampleId);
 

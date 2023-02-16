@@ -53,13 +53,15 @@ public class SampleDecorator extends TableDecorator {
 		return new SortableName(sampleName);
 	}
 
-	public String getKeywordStr() {
+	// WJRL 2/6/23: Appears to be unused
+	/*public String getKeywordStr() {
 		SampleBean sample = (SampleBean) getCurrentRowObject();
 		String keywordsStr = sample.getKeywordsStr();
 		return StringUtils.escapeXmlButPreserveLineBreaks(keywordsStr);
-	}
+	}*/
 
-	public String getCompositionStr() throws BaseException {
+	// WJRL 2/6/23: Appears to be unused
+	/*public String getCompositionStr() throws BaseException {
 		SampleBean sample = (SampleBean) getCurrentRowObject();
 		SortedSet<String> compEntityNames = new TreeSet<String>();
 		if (sample.getFunctionalizingEntityClassNames() != null) {
@@ -84,9 +86,10 @@ public class SampleDecorator extends TableDecorator {
 		}
 		String str = StringUtils.join(compEntityNames, "\r\n");
 		return StringUtils.escapeXmlButPreserveLineBreaks(str);
-	}
+	}*/
 
-	public String getFunctionStr() throws BaseException {
+	// WJRL 2/6/23: Appears to be unused
+	/*public String getFunctionStr() throws BaseException {
 		SampleBean sample = (SampleBean) getCurrentRowObject();
 		SortedSet<String> functionNames = new TreeSet<String>();
 		if (sample.getFunctionClassNames() != null) {
@@ -101,9 +104,10 @@ public class SampleDecorator extends TableDecorator {
 		}
 		String str = StringUtils.join(functionNames, "\r\n");
 		return StringUtils.escapeXmlButPreserveLineBreaks(str);
-	}
+	}*/
 
-	public String getCharacterizationStr() throws BaseException {
+	// WJRL 2/6/23: Appears to be unused
+	/*public String getCharacterizationStr() throws BaseException {
 		SampleBean sample = (SampleBean) getCurrentRowObject();
 		SortedSet<String> charNames = new TreeSet<String>();
 		if (sample.getCharacterizationClassNames() != null) {
@@ -114,7 +118,7 @@ public class SampleDecorator extends TableDecorator {
 		}
 		String str = StringUtils.join(charNames, "\r\n");
 		return StringUtils.escapeXmlButPreserveLineBreaks(str);
-	}
+	}*/
 
 	public String getPointOfContactName() throws BaseException {
 		SampleBean sample = (SampleBean) getCurrentRowObject();

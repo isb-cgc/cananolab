@@ -5,21 +5,72 @@ import org.apache.commons.validator.EmailValidator;
 public class InputValidationUtil {
 	
 	public static boolean isAlphabetic(String input) {
-		String reg = "^[a-zA-Z\\s]*$";
+		String reg = "^[\\p{L}\\s]*$";
 		
 		return (input != null) && input.matches(reg);
 
 	}
 	
 	public static boolean isRelaxedAlphabetic(String input) {
-		if(input == null || input == "")
+		if (input == null || input.equals("")) {
 			return false;
-		String reg = "^[a-zA-Z\\s\\-\\.\\'\\é\\Ė\\Á\\Ä\\á\\ë\\ú\\ý\\ÿ\\ğ\\ü\\ç]*$";
+		}
+		// See also CustomPatternValidator. Now handle Unicode letters
+		String reg = "^[\\p{L}\\s\\-.']*$";
+		//String reg = "^[\\p{L}\\s\\-\\.\\'\\é\\Ė\\Á\\Ä\\á\\ë\\ú\\ý\\ÿ\\ğ\\ü\\ç]*$";
 
         return !input.matches(reg);
 
     }
-	
+
+	// WJRL FIXME: Consider replacing this certainly outdated test with a comparison of sanitized and raw inputs!
+	public static boolean isTextFieldWhiteList(String input) {
+		if(input == null || input.equals(""))
+			return false;
+		String reg = "^(?!.*(<script|<%00script|\\%3C\\%73\\%63\\%72\\%69\\%70\\%74|<script|<script|<%00script|\\%uff1cscript\\%uff1e|\\%BC\\%F3\\%E3\\%F2\\%E9\\%F0\\%F4|\\+ADw\\-SCRIPT\\+AD4|\\u003Cscript|javascript\\:|\\%6A\\%61\\%76\\%61\\%73\\%63%\\%72\\%69\\%70\\%74\\%3A|javascript:|javascript:|<iframe|<frame|etc/passwd|/bin/id|\\.ini|;vol\\||id\\||AVAK\\$\\(RETURN_CODE\\)OS|sys\\.dba_user|\\+select\\+|\\+and\\+|WFXSSProbe|WF_XSRF|alert\\(|TEXT/VBSCRIPT|=\"|\\.\\./|\\.\\.\\|\\'|\\\"|background\\:|\\'\\+|\\\"\\+|%\\d+)).*$";
+		return !input.matches(reg);
+	}
+
+	public static boolean isDoiValid(String input) {
+		if(input == null || input.equals(""))
+			return true;
+		String reg = "^[a-zA-Z0-9/\\-_\\s():.]*$";
+		return input.matches(reg);
+	}
+
+	public static boolean isUrlValid(String input){
+		if(input == null || input.equals(""))
+			return false;
+		String reg = "((http://|https://|ftp://)([\\S.]+))|((\\\\)(.+)(\\.)(\\w+))";
+		return !input.matches(reg);
+	}
+
+	public static boolean isZipValid(String input) {
+		//CANANOLAB-240. User needs to input international postal codes, not just US pattern
+		boolean match = isRelaxedAlphanumeric(input);
+		if(match) {
+			match = (input.length() <= 10);
+		}
+		return match;
+
+//		String reg = "^(\\d{5}(-\\d{4})?)|([a-zA-Z0-9\\s])$";
+//		boolean match = input.matches(reg);
+//		return (input == null) ? false : input.matches(reg);
+	}
+
+	public static boolean isRelaxedAlphanumeric(String input) {
+		String reg = "^[a-zA-Z0-9\\s\\-.()]*$";
+		return (input != null) && input.matches(reg);
+
+	}
+
+	public static boolean isPhoneValid(String input) {
+		String reg = "^\\+?[0-9()\\-\\s]*((ext\\.|extension)\\s[0-9]+)?$";
+		return (input != null) && input.matches(reg);
+	}
+
+   /*
+   ** These are all unused. Seem to be replaced by CustomPatternValidator!
 	public static boolean isNumeric(String input) {
 		String reg = "^[0-9]*$";
 		
@@ -33,11 +84,7 @@ public class InputValidationUtil {
 		return (input != null) && input.matches(reg);
 	}
 	
-	public static boolean isRelaxedAlphanumeric(String input) {
-		String reg = "^[a-zA-Z0-9\\s\\-\\.\\(\\)]*$";
-		return (input != null) && input.matches(reg);
 
-	}
 	
 	public static boolean isLoginNameValid(String input) {
 		String reg = "^[a-zA-Z0-9\\s\\_]*$";
@@ -45,30 +92,9 @@ public class InputValidationUtil {
 		return (input != null) && input.matches(reg);
 	}
 	
-	public static boolean isZipValid(String input) {
-		//CANANOLAB-240. User needs to input international postal codes, not just US pattern
-		boolean match = isRelaxedAlphanumeric(input);
-		if(match) {
-			match = (input.length() <= 10);
-		}
-		return match;
-		
-//		String reg = "^(\\d{5}(-\\d{4})?)|([a-zA-Z0-9\\s])$";
-//		boolean match = input.matches(reg);
-//		return (input == null) ? false : input.matches(reg);
-	}
-	
-	public static boolean isPhoneValid(String input) {
-		String reg = "^\\+?[0-9()\\-\\s]*((ext\\.|extension)\\s[0-9]+)?$";
-		return (input != null) && input.matches(reg);
-	}
-	
-	public static boolean isTextFieldWhiteList(String input) {
-		if(input == null || input == "")
-			return false;
-		String reg = "^(?!.*(<script|<%00script|\\%3C\\%73\\%63\\%72\\%69\\%70\\%74|<script|<script|<%00script|\\%uff1cscript\\%uff1e|\\%BC\\%F3\\%E3\\%F2\\%E9\\%F0\\%F4|\\+ADw\\-SCRIPT\\+AD4|\\u003Cscript|javascript\\:|\\%6A\\%61\\%76\\%61\\%73\\%63%\\%72\\%69\\%70\\%74\\%3A|javascript:|javascript:|<iframe|<frame|etc/passwd|/bin/id|\\.ini|;vol\\||id\\||AVAK\\$\\(RETURN_CODE\\)OS|sys\\.dba_user|\\+select\\+|\\+and\\+|WFXSSProbe|WF_XSRF|alert\\(|TEXT/VBSCRIPT|=\"|\\.\\./|\\.\\.\\|\\'|\\\"|background\\:|\\'\\+|\\\"\\+|%\\d+)).*$";
-        return !input.matches(reg);
-    }
+
+
+
 	
 	public static boolean isNumber(String input) {
 		String reg = "^[-+]?[0-9]*\\.?[0-9]+$";
@@ -82,25 +108,12 @@ public class InputValidationUtil {
         return input.matches(reg);
     }
 	
-	public static boolean isDoiValid(String input) {
-		if(input == null || input == "")
-			return true;
-		String reg = "^[a-zA-Z0-9\\/\\-\\_\\s\\(\\)\\:\\.]*$";
-        return input.matches(reg);
-    }
-	
-	public static boolean isUrlValid(String input){
-		if(input == null || input == "")
-			return false;
-		String reg = "((http://|https://|ftp://)([\\S.]+))|((\\\\)(.+)(\\.)(\\w+))";
-        return !input.matches(reg);
-    }
+
 	
 	public static boolean isEmailValid(String email) {
 		EmailValidator emailValidator = EmailValidator.getInstance();
 		return (email == null || email.length() == 0) || emailValidator.isValid(email);
 	}
-	/*
 
 
 <constant>

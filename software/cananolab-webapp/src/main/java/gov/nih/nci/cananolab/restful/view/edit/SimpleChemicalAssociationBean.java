@@ -160,6 +160,7 @@ public class SimpleChemicalAssociationBean {
 		associatedElementB.setComposingElement(comp);
 		for(FileBean fileBean : chemBean.getFiles()){
 			SimpleFileBean simpleBean = new SimpleFileBean();
+			// WJRL 2/6/23: File Description is HTML escaped with breaks
 			simpleBean.setDescription(fileBean.getDescription());
 			simpleBean.setId(fileBean.getDomainFile().getId());
 			simpleBean.setKeywordsStr(fileBean.getKeywordsStr());

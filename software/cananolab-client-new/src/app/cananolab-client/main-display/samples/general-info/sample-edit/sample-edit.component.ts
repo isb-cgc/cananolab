@@ -34,6 +34,7 @@ export class SampleEditComponent implements OnInit, OnDestroy{
     sampleId = -1;
     toolHeadingNameSearchSample = 'Update Sample';
     submitReviewButton = true;
+    piiConfirmed = false;
 
 
     constructor( private router: Router, private navigationService: NavigationService, private route: ActivatedRoute, private httpClient: HttpClient,
@@ -95,10 +96,11 @@ export class SampleEditComponent implements OnInit, OnDestroy{
         })
     }
 
-    changeAccessType(event) {
+    changeAccessType(event: string) {
         this.theAccess.recipient = '';
         this.theAccess.roleName = '';
-        if (event == 'role') {
+        // The value "role" is sent in only when the "Access By" is set to public
+        if (event === 'role') {
             this.theAccess['recipient'] = 'ROLE_ANONYMOUS';
             this.theAccess['recipientDisplayName'] = 'Public';
         }
@@ -188,6 +190,7 @@ export class SampleEditComponent implements OnInit, OnDestroy{
                 this.pointOfContactIndex = null;
             },
             errors => {
+                console.log(errors);
                 this.errors = errors;
             })
         }
@@ -206,17 +209,26 @@ export class SampleEditComponent implements OnInit, OnDestroy{
         if (this.pointOfContactIndex == -1) {
             this.data.pointOfContacts.push(this.pointOfContact)
             console.log(this.data)
-        }
-        else {
+        } else {
             this.data['pointOfContacts'][this.pointOfContactIndex] = this.pointOfContact;
         }
-        this.data['keywords'] = this.data['keywords'].split('\n');
+        // WJRL If there is an error in saving a POC and you try again, this line dumps with "TypeError: this.data.keywords.split is not a function"
+        // BECAUSE IT IS AN ARRAY OF STRINGS
+        console.log(this.data['keywords']);
+        if ((typeof this.data['keywords']) === 'string') {
+          this.data['keywords'] = this.data['keywords'].split('\n');
+        }
 
         this.apiService.doPost(Consts.QUERY_SAMPLE_POC_UPDATE_SAVE, this.data).subscribe(data => {
             data['keywords'] = this.joinKeywords(this.data['keywords'])
+            this.errors = {};
             this.data = data;
             this.dataTrailer = JSON.parse(JSON.stringify(data));
             this.pointOfContactIndex = null;
+        },
+        errors => {
+            console.log(errors);
+            this.errors = errors;
         })
     }
 
