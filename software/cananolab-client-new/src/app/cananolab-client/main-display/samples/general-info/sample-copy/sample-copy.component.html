@@ -3,7 +3,7 @@
     [toolHeadingName]="toolHeadingNameSearchSample"
 >
 </canano-main-display-heading>
-
+<canano-loader [loading]="copying" [message]="copyingMessage"></canano-loader>
 <div class="mainSection">
     <div class="error" *ngIf="errors['error']">
         {{errors['error']}}
@@ -36,7 +36,7 @@
                     Existing Samples
                 </label>
             </td>
-            <td>
+            <td id="existingSamples">
                 <span>
                     <select class="multiple" name="nameMenu" id="nameMenu" size="10" [(ngModel)]="sampleName">
                             <option [ngValue]="nm" *ngFor="let nm of sampleNames" (click)="selectSampleName(nm)">
@@ -52,8 +52,8 @@
     <table class="dataMain submit">
         <tr>
             <td>
-                <button (click)="reset()" class="btn-canano btn-canano-danger btn-canano-lg mr-1">Reset</button>
-                <button [disabled]="sampleName=='' || newSampleName==''" (click)="onSubmitCopyClicked()" class="btn-canano btn-canano-primary btn-canano-lg mr-1">Submit</button>
+                <button [disabled]="copying" (click)="reset()" class="btn-canano btn-canano-danger btn-canano-lg mr-1">Reset</button>
+                <button [disabled]="sampleName=='' || newSampleName=='' || copying" (click)="onSubmitCopyClicked()" class="btn-canano btn-canano-primary btn-canano-lg mr-1">Submit</button>
             </td>
         </tr>
     </table>
