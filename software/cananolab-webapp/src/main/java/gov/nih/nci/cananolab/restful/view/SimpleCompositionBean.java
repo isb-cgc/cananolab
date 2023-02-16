@@ -382,6 +382,7 @@ public class SimpleCompositionBean {
 									funcBean.getActivationMethodDisplayName());
 						}
 						if (funcBean.getDescription() != null) {
+							// WJRL 2/8/23: This is what appears to be displayed (not the escaped version)
 							function.put("Desc", funcBean.getDescription());
 							// WJRL 2/6/23: Description display name is HTML escaped with breaks
 							function.put("Decription",

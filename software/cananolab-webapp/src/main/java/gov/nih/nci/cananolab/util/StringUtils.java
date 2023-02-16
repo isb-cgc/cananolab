@@ -1,7 +1,7 @@
 /*L
  *  Copyright Leidos
  *  Copyright Leidos Biomedical
- *  Copyright Institute for Systems Biology
+ *  Copyright 2023 Institute for Systems Biology
  *  Portions Copyright Matthias Stevens
  *
  *  Distributed under the OSI-approved BSD 3-Clause License.
@@ -22,6 +22,9 @@ import java.util.regex.Pattern;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+
+import org.apache.commons.text.StringEscapeUtils;
+import org.owasp.html.Sanitizers;
 
 /**
  * This class contains a set of utilities for converting Strings to other
@@ -224,8 +227,19 @@ public class StringUtils {
 	}
 
 	/**
-	 * Escape HTML but keep line breaks, useful in preserving line breaks in
-	 * descriptions. WJRL 2/7/23: This improvement also handles non-Windows line breaks.
+	 *
+	 * Legacy routing to escape HTML but keep line breaks, useful in preserving line breaks in
+	 * descriptions.
+	 *
+	 * WJRL 2/23: Total overhaul. What this now does is remove dangerous tags from the text, but
+	 * retains e.g. > < & so they appear correctly in the UI. Also will keep basic formatting
+	 * like <i>, <b>, <sup> and <sub>. We intentionally covert it back after scrubbing, since the
+	 * scrubbing library is agressive and escapes Unicode characters, so they appear in edit textareas
+	 * as HTML entities. We now send scrubbed 4-byte unicode out the door. NOTE however that this
+	 * function has not been traditionally been applied to every string sent, and <script> tags
+	 * can still go out where this is not used! This function has been overhauled, but not introduced
+	 * in new places; we are using Angular to protect against <script> tags by using the Angular innerHTML
+	 * sanitizer.
 	 *
 	 * @param text
 	 * @return
@@ -235,32 +249,9 @@ public class StringUtils {
 			return "";
 		}
 		String eol = determineEOL(text);
-
-		List<String> lines = new ArrayList<String>();
-		if (eol != null) {
-			String[] words = text.trim().split(eol);
-			for (String word : words) {
-				lines.add(word.trim());
-			}
-		} else {
-			lines.add(text.trim());
-		}
-
-		StringBuffer newText = new StringBuffer();
-		int i = 0;
-		for (String line : lines) {
-			// If somehow an escaped string got into the database, we
-			// don't want to keep escaping it endlessly. So unescape it
-			// first to prevent this.
-			String unescapedLine = simpleHTMLUnEscape(line);
-			String escapedLine = simpleHTMLEscape(unescapedLine);
-			newText.append(escapedLine);
-			if (i < lines.size() - 1) {
-				newText.append("<br>");
-			}
-			i++;
-		}
-		return newText.toString();
+		String use_br = (eol == null) ? text : text.replaceAll(eol, "<br>");
+		String safeHTML = Sanitizers.FORMATTING.sanitize(use_br);
+		return (StringEscapeUtils.unescapeHtml4(safeHTML));
 	}
 
 	public static Float convertToFloat(String floatStr) {
