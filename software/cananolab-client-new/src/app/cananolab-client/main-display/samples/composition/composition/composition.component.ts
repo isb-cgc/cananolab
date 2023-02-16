@@ -19,29 +19,28 @@ export class CompositionComponent implements OnInit{
     helpUrl =  Consts.HELP_URL_SAMPLE_COMPOSITION;
     toolHeadingNameManage;
     data;
-    editUrl=false;
-    sectionToShow='all';
-    constructor( private statusDisplayService:StatusDisplayService,private apiService:ApiService,private navigationService:NavigationService,private router: Router, private route: ActivatedRoute ){
+    editUrl = false;
+    sectionToShow = 'all';
+    constructor( private statusDisplayService: StatusDisplayService, private apiService: ApiService, private navigationService: NavigationService, private router: Router, private route: ActivatedRoute ){
     }
 
     ngOnInit(): void{
-        this.editUrl=this.statusDisplayService.isEditUrl();
+        this.editUrl = this.statusDisplayService.isEditUrl();
         this.navigationService.setCurrentSelectedItem(1);
         this.route.params.subscribe(
             ( params: Params ) => {
-                setTimeout(()=> {
+                setTimeout(() => {
                     Properties.SAMPLE_TOOLS = true;
 
-                },200)
+                }, 200)
                 this.sampleId = params['sampleId'];
-                if(
-                    this.sampleId <= 0 ){
+                if (this.sampleId <= 0) {
                     this.sampleId = Properties.CURRENT_SAMPLE_ID;
-                }else{
+                } else {
                     Properties.CURRENT_SAMPLE_ID = this.sampleId;
-                };
+                }
                 this.apiService.getSampleName(this.sampleId).subscribe(
-                    data=>this.toolHeadingNameManage='Sample ' +data['sampleName'] + ' Composition'
+                    data => this.toolHeadingNameManage = 'Sample ' + data['sampleName'] + ' Composition'
                 )
                 this.data = this.getCompositionEditData().subscribe(
                     data => {
@@ -77,7 +76,7 @@ export class CompositionComponent implements OnInit{
 
         let results;
         try{
-            results = this.apiService.doGet(getUrl,'sampleId=' + this.sampleId).pipe( timeout( Properties.HTTP_TIMEOUT ) );
+            results = this.apiService.doGet(getUrl, 'sampleId=' + this.sampleId).pipe( timeout( Properties.HTTP_TIMEOUT ) );
         }catch( e ){
             // TODO react to error.
             console.error( 'doGet Exception: ' + e );
@@ -86,7 +85,7 @@ export class CompositionComponent implements OnInit{
 
     }
     onChemicalAssociationClick(dataId){
-        if (dataId==-1){
+        if (dataId == -1){
             this.router.navigate( ['home/samples/composition/chemical-association', Properties.CURRENT_SAMPLE_ID] );  // @FIXME  Don't hard code these
         }
         else {
@@ -94,7 +93,7 @@ export class CompositionComponent implements OnInit{
         }
     }
     onFunctionalizingEntityClick(dataId){
-        if (dataId==-1){
+        if (dataId == -1){
             this.router.navigate( ['home/samples/composition/functionalizing-entity', Properties.CURRENT_SAMPLE_ID] );  // @FIXME  Don't hard code these
         }
         else {
@@ -103,7 +102,7 @@ export class CompositionComponent implements OnInit{
     }
 
     onNanomaterialEntityClick(dataId){
-        if (dataId==-1) {
+        if (dataId == -1) {
             this.router.navigate( ['home/samples/composition/nanomaterial-entity', Properties.CURRENT_SAMPLE_ID] );  // @FIXME  Don't hard code these
         }
         else {
@@ -111,7 +110,7 @@ export class CompositionComponent implements OnInit{
         }
     }
     onCompositionFileClick(dataId){
-        if (dataId==-1){
+        if (dataId == -1){
             this.router.navigate( ['home/samples/composition/composition-file', Properties.CURRENT_SAMPLE_ID] );  // @FIXME  Don't hard code these
         }
         else {
@@ -121,16 +120,16 @@ export class CompositionComponent implements OnInit{
 
     propertyCheck(entry) {
         if (entry['Properties']) {
-            let keys=Object.keys(entry['Properties']);
-            let displayableItems=[];
-            keys.forEach(item=> {
-                if (entry.Properties[item]&&entry.Properties[item]!='') {
+            let keys = Object.keys(entry['Properties']);
+            let displayableItems = [];
+            keys.forEach(item => {
+                if (entry.Properties[item] && entry.Properties[item] != '') {
                     displayableItems.push(item);
-                };
+                }
             });
             if (displayableItems.length) {
                 return true
-            };
+            }
         }
 
 
@@ -138,7 +137,7 @@ export class CompositionComponent implements OnInit{
     }
 
     showSection(value) {
-        this.sectionToShow=value;
+        this.sectionToShow = value;
     }
 
     splitKeywordString(keyword) {

@@ -405,9 +405,7 @@
                                 <td class="label">
                                     Description
                                 </td>
-                                <td colspan="2">
-                                    {{cElement.description}}
-                                </td>
+                                <td colspan="2" [innerHTML]="cElement.description"></td>
                             </tr>
                             <tr *ngIf="cElement.inherentFunction">
                                 <td class="label">
@@ -415,7 +413,7 @@
                                 </td>
                                 <td colspan="2">
                                     <div *ngFor="let function of cElement.inherentFunction">
-                                        {{inherentFunctionDisplayString(function)}}
+                                        <div [innerHTML]="inherentFunctionDisplayString(function)"></div>
                                         <!-- {{function.type}}:{{function.description}} -->
                                     </div>
                                 </td>

@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 import { Properties } from '../../../../../../assets/properties';
 import { Consts } from '../../../../../constants';
+import { Util } from '../../../../../utilities';
 import { NavigationService } from '../../../../common/services/navigation.service';
 import { ApiService } from '../../../../common/services/api.service';
 import { HttpClient } from '@angular/common/http';
@@ -194,7 +195,8 @@ export class EditcharacterizationComponent implements OnInit {
 
     cancelInstrument() {
         if (this.instrumentIndex > -1) {
-            this.techniqueInstrument.instruments[this.instrumentIndex] = JSON.parse(JSON.stringify(this.instrumentTrailer));
+            // Replace JSON.parse(JSON.stringify())
+            this.techniqueInstrument.instruments[this.instrumentIndex] = Util.deepCopy(this.instrumentTrailer, false);
         }
         this.instrumentIndex = null;
     };
@@ -345,7 +347,8 @@ export class EditcharacterizationComponent implements OnInit {
             url.subscribe(data => {
                 this.data = data;
                 this.errors = {};
-                this.dataTrailer = JSON.parse(JSON.stringify(this.data));
+                // Replace JSON.parse(JSON.stringify())
+                this.dataTrailer = Util.deepCopy(this.data, false);
                 this.setCharacterizationData();
             },
             error => {
@@ -360,7 +363,8 @@ export class EditcharacterizationComponent implements OnInit {
     editColumnForm(column, index) {
         this.columnHeaderIndex = index;
         this.columnHeader = column;
-        this.columnHeaderTrailer = JSON.parse(JSON.stringify(this.columnHeader));
+        // Replace JSON.parse(JSON.stringify())
+        this.columnHeaderTrailer = Util.deepCopy(this.columnHeader, false);
 
         if (column.columnType) {
             this.changeColumnType(column.columnType, false);
@@ -368,15 +372,18 @@ export class EditcharacterizationComponent implements OnInit {
         }
         else {
         }
-        this.columnHeader = JSON.parse(JSON.stringify(column));
+        // Replace JSON.parse(JSON.stringify())
+        this.columnHeader = Util.deepCopy(column, false);
     };
 
     editColumnOrder() {
-        this.columnOrder = JSON.parse(JSON.stringify(this.currentFinding));
+        // Replace JSON.parse(JSON.stringify())
+        this.columnOrder = Util.deepCopy(this.currentFinding, false);
     };
 
     editFileForm(file, index) {
-        this.currentFile = JSON.parse(JSON.stringify(file));
+        // Replace JSON.parse(JSON.stringify())
+        this.currentFile = Util.deepCopy(file, false);
         this.fileIndex = index;
     };
 
@@ -389,7 +396,8 @@ export class EditcharacterizationComponent implements OnInit {
 
     editFinding(index, finding) {
         this.columnOrder = null;
-        this.currentFinding = JSON.parse(JSON.stringify(finding));
+        // Replace JSON.parse(JSON.stringify())
+        this.currentFinding = Util.deepCopy(finding, false);
         this.findingIndex = index;
         setTimeout(function() {
             document.getElementById('findingsEditForm').scrollIntoView();
@@ -399,13 +407,17 @@ export class EditcharacterizationComponent implements OnInit {
     editInstrument(instrument, index) {
         this.instrumentIndex = index;
         this.instrument = instrument;
-        this.instrumentTrailer = JSON.parse(JSON.stringify(this.instrument));
+        // It appears we edit the live version of the instrument, and replace it with the original if
+        // we cancel.
+        // Replace JSON.parse(JSON.stringify())
+        this.instrumentTrailer = Util.deepCopy(this.instrument, false);
     };
 
     editTechniqueInstrument(index, technique) {
         this.instrumentIndex = null;
         this.techniqueIndex = index;
-        this.techniqueInstrument = JSON.parse(JSON.stringify(technique));
+        // Replace JSON.parse(JSON.stringify())
+        this.techniqueInstrument = Util.deepCopy(technique, false);
         this.techniqueInstrument.dirty = 1;
         this.getInstrumentTypes(this.techniqueInstrument.techniqueType)
     };
@@ -829,14 +841,16 @@ export class EditcharacterizationComponent implements OnInit {
     }
 
     resetCharacterization() {
-        this.data = JSON.parse(JSON.stringify(this.dataTrailer));
+        // Replace JSON.parse(JSON.stringify()):
+        this.data = Util.deepCopy(this.dataTrailer, false);
         this.data['assayTypesByCharNameLookup'] = [];
         this.changeType(this.data.type)
 
     };
 
     resetColumnForm() {
-        this.columnHeader = JSON.parse(JSON.stringify(this.columnHeaderTrailer));
+        // Replace JSON.parse(JSON.stringify()):
+        this.columnHeader = Util.deepCopy(this.columnHeaderTrailer, false);
     }
 
     saveColumnForm() {
@@ -851,7 +865,8 @@ export class EditcharacterizationComponent implements OnInit {
     };
 
     saveColumnOrder() {
-        this.currentFinding = JSON.parse(JSON.stringify(this.columnOrder));
+        // Replace JSON.parse(JSON.stringify()):
+        this.currentFinding = Util.deepCopy(this.columnOrder, false);
         let url = this.apiService.doPost(Consts.QUERY_CHARACTERIZATION_SET_COLUMN_ORDER, this.columnOrder);
         url.subscribe(data => {
             this.errors = {};
@@ -873,6 +888,9 @@ export class EditcharacterizationComponent implements OnInit {
                 this.theFile.append('title', this.currentFile['title']);
                 this.theFile.append('keywordsStr', this.currentFile['keywordsStr']);
                 this.theFile.append('description', this.currentFile['description']);
+                // WJRL 2/2/23 NOTE that "Uploading the file" places the image bytes into the session
+                // attribute "newFileData" on the server. It *appears* that none of the other fields
+                // above are processed at all.
                 let uploadUrl = this.httpClient.post(Consts.QUERY_UPLOAD_FILE, this.theFile);
                 uploadUrl.subscribe(data => {
                     if (this.fileIndex == -1) {
@@ -884,6 +902,7 @@ export class EditcharacterizationComponent implements OnInit {
                     this.currentFinding['dirty'] = 1;
                     this.currentFinding.theFile = this.currentFile;
                     this.currentFinding['theFile']['uri'] = data['fileName']
+                    // This is where the file gets saved to the filesystem/bucket
                     let saveUrl = this.apiService.doPost(Consts.QUERY_CHARACTERIZATION_SAVE_FILE, this.currentFinding);
                     saveUrl.subscribe(data => {
                         this.errors = {};
@@ -938,9 +957,10 @@ export class EditcharacterizationComponent implements OnInit {
             this.data.finding.push(this.currentFinding);
         }
         else {
-            this.data.finding[this.findingIndex] = JSON.parse(JSON.stringify(this.currentFinding));
+            // Replace JSON.parse(JSON.stringify()):
+            this.data.finding[this.findingIndex] = Util.deepCopy(this.currentFinding, false);
         }
-        let url = this.apiService.doPost(Consts.QUERY_CHARACTERIZATION_SAVE_FINDING,this.data);
+        let url = this.apiService.doPost(Consts.QUERY_CHARACTERIZATION_SAVE_FINDING, this.data);
         url.subscribe(data => {
             this.errors = {};
 
@@ -1001,7 +1021,8 @@ export class EditcharacterizationComponent implements OnInit {
     };
 
     setCharacterizationData() {
-        this.dataTrailer = JSON.parse(JSON.stringify(this.data));
+        // Replace JSON.parse(JSON.stringify()):
+        this.dataTrailer = Util.deepCopy(this.data, false);
         this.data.characterizationDate = this.formatDate(this.data.characterizationDate)
         this.setupData = [];
         let url = this.apiService.doGet(Consts.QUERY_CHARACTERIZATION_GET_DATUM_NUMBER_MODIFIER, 'columnName=Number%20Modifier');
@@ -1018,7 +1039,8 @@ export class EditcharacterizationComponent implements OnInit {
     };
 
     setupDefaultDataSet() {
-        this.dataTrailer = JSON.parse(JSON.stringify(this.data));
+        // Replace JSON.parse(JSON.stringify()):
+        this.dataTrailer = Util.deepCopy(this.data, false);
     };
 
     setupTechniqueInstrument() {
