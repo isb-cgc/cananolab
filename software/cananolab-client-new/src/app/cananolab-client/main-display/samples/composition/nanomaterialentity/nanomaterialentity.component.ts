@@ -177,8 +177,19 @@ export class NanomaterialentityComponent implements OnInit {
         ) {
             this.convertDomainEntityFieldsToNullAndStrings();
             this.data.simpleCompBean = this.composingElement;
+            // WJRL 2/2023: This was the cause for issue #264. The
+            // array of composing elements that is supposed to survive the
+            // deletion deletes drops the first element regardless of what is
+            // being deleted. Thus, two elements were getting deleted!
+            // This incorrect call is dropping the first element, not the element to delete.
+            // The first argument is supposed to be an integer, not an element
+            // this.data.composingElements.splice(
+            //    this.data.composingElements[this.composingElementIndex],
+            //    1
+            // );
+            //
             this.data.composingElements.splice(
-                this.data.composingElements[this.composingElementIndex],
+                this.composingElementIndex,
                 1
             );
             this.apiService
@@ -201,7 +212,7 @@ export class NanomaterialentityComponent implements OnInit {
     deleteInherentFunction() {
         if (confirm('Are you sure you wish to delete this inherent function?')) {
             this.composingElement.inherentFunction.splice(this.inherentFunctionIndex, 1)
-        };
+        }
         this.inherentFunctionIndex = null;
     }
 

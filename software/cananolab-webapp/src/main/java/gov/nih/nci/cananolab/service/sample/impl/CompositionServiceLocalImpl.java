@@ -597,6 +597,7 @@ public class CompositionServiceLocalImpl extends BaseServiceLocalImpl implements
 				comp = new CompositionBean(composition);
 			}
 		} catch (Exception e) {
+			System.out.println(e.getMessage() + " " + e.getClass());
 			String err = "Error finding composition by sample ID: " + sampleId;
 			throw new CompositionException(err, e);
 		}

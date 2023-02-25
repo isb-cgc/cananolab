@@ -490,6 +490,12 @@ public class NanomaterialEntityBO extends BaseAnnotationBO {
             compBean.setInherentFunctions(inherentFunctions);
 
             nanomaterialEntityBean.addComposingElement(compBean);
+            //
+            // WJRL 2/17/23: This is how a single element that is important
+            // for current context is being handled. E.g. if a composing
+            // element is being deleted, it is set here. But it is used
+            // to supply focus context to an element in other areas.
+            //
             nanomaterialEntityBean.setTheComposingElement(compBean);
             compList.add(compBean);
         }
@@ -851,6 +857,11 @@ public class NanomaterialEntityBO extends BaseAnnotationBO {
         List<String> msgs = new ArrayList<String>();
         NanomaterialEntityBean entity = transferNanoMateriaEntityBean(nanoBean, request);
         //Trusting that form sets theComposingElement as the element being edited.
+        //
+        // WJRL 2/17/23 The current style appears to be to provide the object to be removed
+        // as "THE" composing element. The collection coming back from the client appears to
+        // already have removed the element as well from the collection.
+        //
         ComposingElementBean composingElement = entity.getTheComposingElement();
 
 
@@ -859,7 +870,7 @@ public class NanomaterialEntityBO extends BaseAnnotationBO {
         if (!compositionService.checkChemicalAssociationBeforeDelete(entity
                 .getDomainEntity().getSampleComposition(), composingElement.getDomain())) {
             throw new ChemicalAssociationViolationException(
-                    "The composing element is used in a chemical association.  Please delete the chemcial association first before deleting the nanomaterial entity.");
+                    "The composing element is used in a chemical association.  Please delete the chemical association first before deleting the nanomaterial entity.");
         }
         entity.removeComposingElement(composingElement);
         msgs = validateInputs(request, entity);
@@ -868,6 +879,10 @@ public class NanomaterialEntityBO extends BaseAnnotationBO {
             return nano;
         }
         this.saveEntity(request, nanoBean.getSampleId(), entity);
+        //
+        // WJRL 2/2023: It appears that at this time, the following call does not do anything at all (except check
+        // is the user is authorized):
+        //
         compositionService.removeAccesses(entity.getDomainEntity(), composingElement.getDomain());
         this.checkOpenForms(entity, request);
         return setupUpdate(nanoBean.getSampleId(), entity.getDomainEntity().getId().toString(), request);
@@ -886,7 +901,7 @@ public class NanomaterialEntityBO extends BaseAnnotationBO {
         if (!compositionService.checkChemicalAssociationBeforeDelete(entity
                 .getDomainEntity().getSampleComposition(), composingElement.getDomain())) {
             throw new ChemicalAssociationViolationException(
-                    "The composing element is used in a chemical association.  Please delete the chemcial association first before deleting the nanomaterial entity.");
+                    "The composing element is used in a chemical association.  Please delete the chemical association first before deleting the nanomaterial entity.");
         }
         entity.removeComposingElement(composingElement);
         msgs = validateInputs(request, entity);
