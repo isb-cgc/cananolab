@@ -5,7 +5,12 @@
 <!-- This same page is used for both "view" and "edit" modes. Add and -->
 <!-- Edit buttons are shown in the latter case. Note that this behavior -->
 <!-- is driven by "view" being in the page URL-->
-
+<div class="error" *ngIf="errors['error']">
+    {{errors['error']}}
+</div>
+<div class="error" *ngIf="message">
+    {{message}}
+</div>
     <ul class="nav nav-tabs">
         <li class="nav-item">
           <a class="nav-link active" id="all-tab" data-toggle="tab" (click)="showSection('all')">All</a>

@@ -19,6 +19,8 @@ export class CompositionComponent implements OnInit{
     helpUrl =  Consts.HELP_URL_SAMPLE_COMPOSITION;
     toolHeadingNameManage;
     data;
+    errors = {};
+    message = '';
     editUrl = false;
     sectionToShow = 'all';
     constructor( private statusDisplayService: StatusDisplayService, private apiService: ApiService, private navigationService: NavigationService, private router: Router, private route: ActivatedRoute ){
@@ -44,9 +46,15 @@ export class CompositionComponent implements OnInit{
                 )
                 this.data = this.getCompositionEditData().subscribe(
                     data => {
+                        this.errors = {};
                         this.data = data;
+                        console.log(data.status);
                         Properties.CURRENT_SAMPLE_NAME = data['sampleName'];
-                    } );
+                    },
+                    error => {
+                        this.errors = error;
+                        console.log(error);
+                    });
             }
         );
     }
