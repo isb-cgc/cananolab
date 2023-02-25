@@ -23,7 +23,7 @@ import gov.nih.nci.cananolab.dto.particle.SampleBean;
 import gov.nih.nci.cananolab.dto.particle.composition.ComposingElementBean;
 import gov.nih.nci.cananolab.dto.particle.composition.FunctionBean;
 import gov.nih.nci.cananolab.dto.particle.composition.NanomaterialEntityBean;
-import gov.nih.nci.cananolab.exception.ChemicalAssociationViolationException;
+import gov.nih.nci.cananolab.exception.*;
 import gov.nih.nci.cananolab.restful.core.BaseAnnotationBO;
 import gov.nih.nci.cananolab.restful.core.InitSetup;
 import gov.nih.nci.cananolab.restful.util.CompositionUtil;
@@ -42,6 +42,7 @@ import gov.nih.nci.cananolab.ui.form.CompositionForm;
 import gov.nih.nci.cananolab.util.Constants;
 import gov.nih.nci.cananolab.util.DateUtils;
 import gov.nih.nci.cananolab.util.StringUtils;
+
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collection;
@@ -49,6 +50,8 @@ import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.io.IOException;
+
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -147,7 +150,9 @@ public class NanomaterialEntityBO extends BaseAnnotationBO {
 
     private List<String> saveEntity(HttpServletRequest request, String sampleId,
                                     NanomaterialEntityBean entityBean)
-            throws Exception {
+            throws ClassCastException, CompositionException, NotExistException,
+                   SampleException, NoAccessException, CurationException,
+                   InstantiationException, IllegalAccessException, IOException, ClassNotFoundException {
         List<String> msgs = new ArrayList<String>();
         SampleBean sampleBean = setupSampleById(sampleId, request);
         CananoUserDetails userDetails = SpringSecurityUtil.getPrincipal();
@@ -320,7 +325,8 @@ public class NanomaterialEntityBO extends BaseAnnotationBO {
     }
 
     public SimpleNanomaterialEntityBean setupUpdate(String sampleId, String entityId, HttpServletRequest request)
-            throws Exception {
+            throws SampleException, CompositionException, NoAccessException,
+                   IOException, ClassNotFoundException, LookupException {
         //	entityId = super.validateId(request, "dataId");
         CompositionForm form = new CompositionForm();
         // set up other particles with the same primary point of contact
@@ -853,7 +859,13 @@ public class NanomaterialEntityBO extends BaseAnnotationBO {
     }
 
 
-    public SimpleNanomaterialEntityBean removeComposingElement(SimpleNanomaterialEntityBean nanoBean, HttpServletRequest request) throws Exception {
+    public SimpleNanomaterialEntityBean removeComposingElement(SimpleNanomaterialEntityBean nanoBean,
+                                                               HttpServletRequest request)
+            throws ChemicalAssociationViolationException, ClassCastException,
+            NotExistException, SampleException, NoAccessException,
+            InstantiationException, IllegalAccessException,
+            IOException, ClassNotFoundException, LookupException, CompositionException, CurationException {
+
         List<String> msgs = new ArrayList<String>();
         NanomaterialEntityBean entity = transferNanoMateriaEntityBean(nanoBean, request);
         //Trusting that form sets theComposingElement as the element being edited.
@@ -870,7 +882,7 @@ public class NanomaterialEntityBO extends BaseAnnotationBO {
         if (!compositionService.checkChemicalAssociationBeforeDelete(entity
                 .getDomainEntity().getSampleComposition(), composingElement.getDomain())) {
             throw new ChemicalAssociationViolationException(
-                    "The composing element is used in a chemical association.  Please delete the chemical association first before deleting the nanomaterial entity.");
+                    "The composing element is used in a chemical association. Please delete the chemical association first before deleting the nanomaterial entity.");
         }
         entity.removeComposingElement(composingElement);
         msgs = validateInputs(request, entity);
@@ -995,7 +1007,9 @@ public class NanomaterialEntityBO extends BaseAnnotationBO {
         return msgs;
     }
 
-    private void checkOpenForms(NanomaterialEntityBean entity, HttpServletRequest request) throws Exception {
+    private void checkOpenForms(NanomaterialEntityBean entity, HttpServletRequest request)
+        throws IOException, ClassNotFoundException, LookupException, CompositionException {
+
         String dispatch = request.getParameter("dispatch");
         String browserDispatch = getBrowserDispatch(request);
         HttpSession session = request.getSession();
