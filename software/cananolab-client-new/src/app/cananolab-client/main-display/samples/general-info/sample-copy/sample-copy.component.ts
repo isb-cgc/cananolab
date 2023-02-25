@@ -72,6 +72,7 @@ export class SampleCopyComponent implements OnInit{
     }
 
     onSubmitCopyClicked(){
+        this.errors = {};
         this.copying = true;
         this.apiService.doPost( Consts.QUERY_SAMPLE_COPY, { 'newSampleName': this.newSampleName, 'sampleName': this.sampleName } ).subscribe(
             data => {

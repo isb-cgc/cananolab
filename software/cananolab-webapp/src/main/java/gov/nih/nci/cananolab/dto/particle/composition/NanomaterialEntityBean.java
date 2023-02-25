@@ -441,6 +441,12 @@ public class NanomaterialEntityBean extends BaseCompositionEntityBean {
 		}
 	}
 
+	//
+	// WJRL 2/2023 This appears to be used to reference a single composing element
+	// in contexts where that is needed. Example: deleting a composing element.
+	// Other use appears to be to refer to a particular composing element that
+	// is being worked on.
+	//
 
 	//TODO This is evil and should be eliminated
 	private ComposingElementBean theComposingElement = new ComposingElementBean();

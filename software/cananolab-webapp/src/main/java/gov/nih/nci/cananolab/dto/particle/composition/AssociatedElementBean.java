@@ -110,28 +110,38 @@ public class AssociatedElementBean {
 	}
 
 	private void updateType() {
-		if (composingElement.getId() != null) {
-			compositionType = ClassUtils.getDisplayName("NanomaterialEntity");
-			NanomaterialEntity entity = composingElement
-					.getNanomaterialEntity();
-			if (entity instanceof OtherNanomaterialEntity) {
-				entityDisplayName = ((OtherNanomaterialEntity) entity)
-						.getType();
+		try {
+			//
+			// WJRL 2/2023 NanomaterialEntityBO.removeComposingElement() checks that there are no associations
+			// before deleting. But if an erroneous deletion occurs through other means, this method
+			// will throw an NPE. Instrument this to make it easier to track down in the future.
+			//
+			if (composingElement.getId() != null) {
+				compositionType = ClassUtils.getDisplayName("NanomaterialEntity");
+				NanomaterialEntity entity = composingElement
+						.getNanomaterialEntity();
+				if (entity instanceof OtherNanomaterialEntity) {
+					entityDisplayName = ((OtherNanomaterialEntity) entity)
+							.getType();
+				} else {
+					String entityClassName = ClassUtils
+							.getShortClassName(composingElement
+									.getNanomaterialEntity().getClass().getName());
+					entityDisplayName = ClassUtils.getDisplayName(entityClassName);
+				}
 			} else {
-				String entityClassName = ClassUtils
-						.getShortClassName(composingElement
-								.getNanomaterialEntity().getClass().getName());
-				entityDisplayName = ClassUtils.getDisplayName(entityClassName);
+				compositionType = ClassUtils
+						.getDisplayName("FunctionalizingEntity");
+				if (domainElement instanceof OtherFunctionalizingEntity) {
+					entityDisplayName = ((OtherFunctionalizingEntity) domainElement)
+							.getType();
+				} else {
+					entityDisplayName = ClassUtils.getDisplayName(className);
+				}
 			}
-		} else {
-			compositionType = ClassUtils
-					.getDisplayName("FunctionalizingEntity");
-			if (domainElement instanceof OtherFunctionalizingEntity) {
-				entityDisplayName = ((OtherFunctionalizingEntity) domainElement)
-						.getType();
-			} else {
-				entityDisplayName = ClassUtils.getDisplayName(className);
-			}
+		} catch (Exception ex) {
+			System.out.println("updateType has unexpected state: " + ex);
+			throw ex;
 		}
 	}
 

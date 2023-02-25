@@ -98,6 +98,7 @@ public class NanomaterialEntityServices {
 	/**
 	 *
 	 * Deprecated as of 2.4.0.  Use @removeComposingElementById
+	 * WJRL 2/2023: Which, as we can see, is entirely commented out right below, thus this *cannot* be deprecated.
 	 */
 	@POST
 	@Path("/removeComposingElement")
