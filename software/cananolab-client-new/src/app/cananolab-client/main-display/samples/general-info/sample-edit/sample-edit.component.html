@@ -2,16 +2,17 @@
     [helpUrl]="helpUrl"
     [toolHeadingName]="toolHeadingNameSearchSample" [exportXML]="true" [exportJSON]="true" [sampleIds]="[sampleId]" (downloadReady)="downloadReady($event)" [backUrl]="'home/samples/sample-search'">
 </canano-main-display-heading>
+<!-- Want to display errors even if (*especially if!*) there is no data to show! -->
+<div class="error" *ngIf="errors['error']">
+    {{errors['error']}}
+</div>
+<div class="error" *ngIf="message">
+    {{message}}
+</div>
 <div class="mainSection" *ngIf="data">
     <canano-loader [loading]="loading" [message]="'Exporting Data'">
 
     </canano-loader>
-    <div class="error" *ngIf="errors['error']">
-        {{errors['error']}}
-    </div>
-    <div class="error" *ngIf="message">
-        {{message}}
-    </div>
     <div class="mainBorder">
         <table class="dataMain">
             <!--
