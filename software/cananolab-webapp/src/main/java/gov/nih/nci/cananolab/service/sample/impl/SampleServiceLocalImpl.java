@@ -174,6 +174,10 @@ public class SampleServiceLocalImpl extends BaseServiceLocalImpl implements Samp
 					sample.getKeywordCollection().add(keyword);
 				}
 			}
+			// WJRL 2/13/23: This is a problem with issue #258. This is causing:
+			// nested exception is org.hibernate.NonUniqueObjectException: A different object with the same
+			// identifier value was already associated with the session :
+			// [gov.nih.nci.cananolab.domain.particle.Sample#115900438]
 			appService.saveOrUpdate(sample);
 			// save default access
 			if (newSample) {
@@ -663,6 +667,12 @@ public class SampleServiceLocalImpl extends BaseServiceLocalImpl implements Samp
 			// save the sample so later up just update the cloned the
 			// associations.
 			SampleBean newSampleBean0 = new SampleBean(newSample0);
+			// WJRL 2/13/23: This is a problem with issue #258. This is causing:
+			// nested exception is org.hibernate.NonUniqueObjectException: A different object with the same
+			// identifier value was already associated with the session :
+			// [gov.nih.nci.cananolab.domain.particle.Sample#115900438]
+			// Original comment:
+			//
 			// save the sample to get an ID before saving associations
 			saveSample(newSampleBean0);
 		} catch (NotExistException | DuplicateEntriesException e) {
@@ -675,14 +685,27 @@ public class SampleServiceLocalImpl extends BaseServiceLocalImpl implements Samp
 		}
 		try {
 			// clone the sample
+			// WJRL 2/13/23: This is creating a very extensive and deep copy of the existing sample,
+			// while also going through and nulling out the domain IDs as well as changing the created
+			// by tags to annotate the copy status.
+			//
 			Sample newSample = origSampleBean.getDomainCopy(SpringSecurityUtil.getLoggedInUserName());
 			newSample.setName(newSampleName);
+			// WJRL 2/13/23: This here is potentially the cause of issue #258? We have previously
+			// created a database object, and hold onto the object while we reuse the domain ID.
+			// Original comment:
+
 			// keep the id
 			newSample.setId(newSample0.getId());
 			newSampleBean = new SampleBean(newSample);
 
 			// retrieve accessibilities of the original sample
 			springSecurityAclService.loadAccessControlInfoForObject(origSampleBean.getDomain().getId(), SecureClassesEnum.SAMPLE.getClazz(), origSampleBean);
+
+			//
+			// WJRL 2/13/23 Here is where we take the Java objects hanging off of the newSampleBean, which
+			// were generated using getDomainCopy() above, and get them persisted into the
+			// database. Original comment:
 
 			// need to save associations one by one (except keywords)
 			// Hibernate mapping settings for most use cases

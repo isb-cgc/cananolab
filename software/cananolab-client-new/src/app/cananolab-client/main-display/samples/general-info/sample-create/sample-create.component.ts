@@ -28,6 +28,7 @@ export class SampleCreateComponent implements OnInit{
     }
 
     ngOnInit(): void{
+        this.piiConfirmed = false;
         setTimeout(() => {
             Properties.SAMPLE_TOOLS = false;
         })
@@ -56,14 +57,14 @@ export class SampleCreateComponent implements OnInit{
     };
 
     addPointOfContact() {
-        this.pointOfContactIndex=-1;
+        this.pointOfContactIndex = -1;
     }
 
     reset() {
-        this.data=JSON.parse(JSON.stringify(this.dataTrailer));
-        this.pointOfContact={dirty:true,organization:{name:""},address:{},role:""};
-        this.errors={};
-        this.piiConfirmed=false;
+        this.data = JSON.parse(JSON.stringify(this.dataTrailer));
+        this.pointOfContact = {dirty: true, organization:{name: ''}, address: {}, role: ''};
+        this.errors = {};
+        this.piiConfirmed = false;
     }
 
     onSaveSample(){
@@ -75,18 +76,18 @@ export class SampleCreateComponent implements OnInit{
                 this.router.navigate( ['home/samples/sample', data.sampleId] );
             }
         },
-        errors=>{
-            this.errors=errors;
+        errors => {
+            this.errors = errors;
         })
     }
 
     saveOther(newItem: Object) {
         if (newItem['change'] && newItem['value']) {
-            this.addDropdownItem(newItem['array'],newItem['value'])
-            this.setValue(newItem['field'],newItem['value']);
+            this.addDropdownItem(newItem['array'], newItem['value'])
+            this.setValue(newItem['field'], newItem['value']);
         }
         else {
-            this.setValue(newItem['field'],newItem['value']);
+            this.setValue(newItem['field'], newItem['value']);
         }
     };
 }

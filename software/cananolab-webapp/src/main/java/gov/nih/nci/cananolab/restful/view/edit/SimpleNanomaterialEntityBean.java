@@ -223,6 +223,7 @@ public class SimpleNanomaterialEntityBean {
 			composingElements = new ArrayList<SimpleComposingElementBean>();
 			for(ComposingElementBean comp : bean.getComposingElements()){
 				SimpleComposingElementBean sCompBean = new SimpleComposingElementBean();
+				// WJRL 2/6/23: Description is HTML escaped with breaks
 				sCompBean.setDescription(comp.getDescription());
 				sCompBean.setId(comp.getDomain().getId());
 				sCompBean.setMolecularFormula(comp.getDomain().getMolecularFormula());
@@ -260,6 +261,7 @@ public class SimpleNanomaterialEntityBean {
 			files = new ArrayList<SimpleFileBean>();
 		for(FileBean file : bean.getFiles()){
 			SimpleFileBean fBean = new SimpleFileBean();
+			// WJRL 2/6/23: File Description is HTML escaped with breaks
 			fBean.setDescription(file.getDescription());
 			fBean.setType(file.getDomainFile().getType());
 			fBean.setTitle(file.getDomainFile().getTitle());

@@ -419,7 +419,7 @@ L-->
 		<path id="classpath">
 			<fileset refid="compiletime.dependencies"/>
 			<!--			<fileset dir="${common.dir}/lib">-->
-			<fileset dir="${commonlib.dir">
+				<fileset dir="${commonlib.dir}">
 				<exclude name="**/sdk/*.jar"/>
 				<exclude name="**/ant-contrib-*.jar"/>
 				<exclude name="**/log4j-1.2.13.jar" />

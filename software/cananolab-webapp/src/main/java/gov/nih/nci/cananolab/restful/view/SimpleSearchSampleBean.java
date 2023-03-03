@@ -121,6 +121,7 @@ public class SimpleSearchSampleBean {
 			return;
 		setSampleId(sampleBean.getDomain().getId());
 		setSampleName(sampleBean.getDomain().getName());
+		// WJRL 2/6/23: OrganizationDisplayName is HTML escaped with breaks
 		setPointOfContact(sampleBean.getThePOC().getOrganizationDisplayName());
 
 		SampleComposition comp = sampleBean.getDomain().getSampleComposition();

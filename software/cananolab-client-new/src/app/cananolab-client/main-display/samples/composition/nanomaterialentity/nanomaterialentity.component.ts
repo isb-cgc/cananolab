@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 import { Consts } from '../../../../../constants';
+import { Util } from '../../../../../utilities';
 import { ApiService } from '../../../../common/services/api.service';
 import { Properties } from '../../../../../../assets/properties';
 import { NanomaterialService } from './nanomaterial.service';
@@ -12,7 +13,7 @@ import { NavigationService } from '../../../../common/services/navigation.servic
 })
 export class NanomaterialentityComponent implements OnInit {
     composingElementIndex;
-    consts=Consts;
+    consts = Consts;
     composingElement;
     currentDropdownValues = {};
     currentField;
@@ -23,7 +24,7 @@ export class NanomaterialentityComponent implements OnInit {
     helpUrl = Consts.HELP_URL_SAMPLE_COMPOSITION_NANOMATERIAL;
     inherentFunctionIndex;
     inherentFunction;
-    resetStatus=false;
+    resetStatus = false;
     otherValue;
     sampleId;
     setupData;
@@ -81,8 +82,8 @@ export class NanomaterialentityComponent implements OnInit {
     }
 
     addInherentFunction() {
-        this.inherentFunctionIndex=-1;
-        this.inherentFunction={type:"",description:"",modality:""};
+        this.inherentFunctionIndex = -1;
+        this.inherentFunction = {type: '', description: '', modality: ''};
         setTimeout(function () {
             document.getElementById('inherentFunctionForm').scrollIntoView();
         }, 100);
@@ -115,7 +116,7 @@ export class NanomaterialentityComponent implements OnInit {
     }
 
     cancelInherentFunction() {
-        this.inherentFunctionIndex=null;
+        this.inherentFunctionIndex = null;
     }
 
     changeFile(newItem: Object) {
@@ -176,8 +177,19 @@ export class NanomaterialentityComponent implements OnInit {
         ) {
             this.convertDomainEntityFieldsToNullAndStrings();
             this.data.simpleCompBean = this.composingElement;
+            // WJRL 2/2023: This was the cause for issue #264. The
+            // array of composing elements that is supposed to survive the
+            // deletion deletes drops the first element regardless of what is
+            // being deleted. Thus, two elements were getting deleted!
+            // This incorrect call is dropping the first element, not the element to delete.
+            // The first argument is supposed to be an integer, not an element
+            // this.data.composingElements.splice(
+            //    this.data.composingElements[this.composingElementIndex],
+            //    1
+            // );
+            //
             this.data.composingElements.splice(
-                this.data.composingElements[this.composingElementIndex],
+                this.composingElementIndex,
                 1
             );
             this.apiService
@@ -198,55 +210,56 @@ export class NanomaterialentityComponent implements OnInit {
     }
 
     deleteInherentFunction() {
-        if (confirm("Are you sure you wish to delete this inherent function?")) {
-            this.composingElement.inherentFunction.splice(this.inherentFunctionIndex,1)
-        };
-        this.inherentFunctionIndex=null;
+        if (confirm('Are you sure you wish to delete this inherent function?')) {
+            this.composingElement.inherentFunction.splice(this.inherentFunctionIndex, 1)
+        }
+        this.inherentFunctionIndex = null;
     }
 
     editComposingElement(index, element) {
-        this.composingElement = JSON.parse(JSON.stringify(element));
+        // WJRL 2/7/23: ditch JSON.parse(JSON.stringify())
+        this.composingElement = Util.deepCopy(element, false);
         this.composingElementIndex = index;
         setTimeout(function () {
             document.getElementById('composingElementForm').scrollIntoView();
         }, 100);
     }
 
-    editInherentFunction(fIndex,iFunction) {
-        this.inherentFunctionIndex=fIndex;
-        this.inherentFunction=JSON.parse(JSON.stringify(iFunction));
+    editInherentFunction(fIndex, iFunction) {
+        this.inherentFunctionIndex = fIndex;
+        // WJRL 2/7/23: ditch JSON.parse(JSON.stringify())
+        this.inherentFunction = Util.deepCopy(iFunction, false);
         setTimeout(function () {
             document.getElementById('inherentFunctionForm').scrollIntoView();
         }, 100);
     }
 
-    getError(error:Object) {
-        this.errors=error;
+    getError(error: Object) {
+        this.errors = error;
     }
 
     readyToSubmit() {
         let submissionStatus = true;
         if (this.data.type == 'biopolymer') {
-            if (
-                this.data.domainEntity.name == '' ||
-                this.data.domainEntity.name == null
-            )
+            if (this.data.domainEntity.name == '' || this.data.domainEntity.name == null) {
                 submissionStatus = false;
-            if (
-                this.data.domainEntity.type == '' ||
-                this.data.domainEntity.type == null
-            )
-                submissionStatus = false;
+            }
+            // WJRL ?? This is just a duplicate of above...
+            // if (this.data.domainEntity.type == '' || this.data.domainEntity.type == null) {
+            //    submissionStatus = false;
+            // }
         }
-        if (this.data.type == '') submissionStatus = false;
+        if (this.data.type == '') {
+            submissionStatus = false;
+        }
         return submissionStatus;
     }
 
     reset() {
-        this.data=JSON.parse(JSON.stringify(this.dataTrailer));
-        this.composingElementIndex=null;
-        this.inherentFunctionIndex=null;
-        this.resetStatus=true;
+        this.data = JSON.parse(JSON.stringify(this.dataTrailer));
+        this.composingElementIndex = null;
+        this.inherentFunctionIndex = null;
+        this.resetStatus = true;
     }
 
     saveComposingElement() {
@@ -275,17 +288,17 @@ export class NanomaterialentityComponent implements OnInit {
     }
 
     saveInherentFunction() {
-        if (this.inherentFunctionIndex==-1) {
-            this.inherentFunction.id="-1000";
+        if (this.inherentFunctionIndex == -1) {
+            this.inherentFunction.id = '-1000';
             if (!this.composingElement.inherentFunction) {
-                this.composingElement['inherentFunction']=[];
+                this.composingElement['inherentFunction'] = [];
             }
             this.composingElement.inherentFunction.push(this.inherentFunction);
         }
         else {
-            this.composingElement.inherentFunction[this.inherentFunctionIndex]=this.inherentFunction;
+            this.composingElement.inherentFunction[this.inherentFunctionIndex] = this.inherentFunction;
         }
-        this.inherentFunctionIndex=null;
+        this.inherentFunctionIndex = null;
     }
 
     inherentFunctionHasType(functionType) {
@@ -299,7 +312,7 @@ export class NanomaterialentityComponent implements OnInit {
     }
 
     inherentFunctionDisplayString(func) {
-        if (func.type == "imaging function") {
+        if (func.type == 'imaging function') {
             return func.type + ' (' + func.modality + ') : ' + func.description;
         } else {
             return func.type + ' : ' + func.description;
@@ -322,37 +335,43 @@ export class NanomaterialentityComponent implements OnInit {
 
     setupDomainEntity(event) {
         delete this.data['domainEntity'];
-        if (event == 'biopolymer')
+        if (event == 'biopolymer') {
             this.data['domainEntity'] = {
                 type: null,
                 name: null,
                 sequence: null,
             };
-        if (event == 'dendrimer')
+        }
+        if (event == 'dendrimer') {
             this.data['domainEntity'] = { branch: null, generation: null };
-        if (event == 'fullerene')
+        }
+        if (event == 'fullerene') {
             this.data['domainEntity'] = {
                 averageDiameter: null,
                 averageDiameterUnit: null,
                 numberOfCarbon: null,
             };
-        if (event == 'liposome')
+        }
+        if (event == 'liposome') {
             this.data['domainEntity'] = {
                 isPolymerized: null,
                 polymerName: null,
             };
-        if (event == 'polymer')
+        }
+        if (event == 'polymer') {
             this.data['domainEntity'] = {
                 isCrossLinked: null,
                 initiator: null,
                 crossLinkDegree: null,
             };
-        if (event == 'emulsion')
+        }
+        if (event == 'emulsion') {
             this.data['domainEntity'] = {
                 isPolymerized: null,
                 polymerName: null,
             };
-        if (event == 'carbon nanotube')
+        }
+        if (event == 'carbon nanotube') {
             this.data['domainEntity'] = {
                 averageLength: null,
                 diameter: null,
@@ -361,6 +380,7 @@ export class NanomaterialentityComponent implements OnInit {
                 chirality: null,
                 wallType: null,
             };
+        }
     }
 
     setupNanomaterial() {
@@ -371,7 +391,7 @@ export class NanomaterialentityComponent implements OnInit {
             composingElements: [],
             files: [],
         };
-        this.dataTrailer=JSON.parse(JSON.stringify(this.data));
+        this.dataTrailer = JSON.parse(JSON.stringify(this.data));
     }
 
     submit() {
