@@ -78,6 +78,8 @@ public class Comparators {
 	public static class PointOfContactBeanNameOrgComparator implements
 			Comparator<PointOfContactBean> {
 		public int compare(PointOfContactBean poc1, PointOfContactBean poc2) {
+			// WJRL 2/6/23: PersonDisplayName is HTML escaped with breaks
+			// WJRL 2/6/23: OrganizationDisplayName is HTML escaped with breaks
 			if (poc1.getPersonDisplayName().equals(poc2.getPersonDisplayName())) {
 				return poc1.getOrganizationDisplayName().compareTo(
 						poc2.getOrganizationDisplayName());

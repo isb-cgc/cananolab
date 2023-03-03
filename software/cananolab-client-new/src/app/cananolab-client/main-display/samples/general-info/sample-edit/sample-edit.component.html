@@ -2,18 +2,24 @@
     [helpUrl]="helpUrl"
     [toolHeadingName]="toolHeadingNameSearchSample" [exportXML]="true" [exportJSON]="true" [sampleIds]="[sampleId]" (downloadReady)="downloadReady($event)" [backUrl]="'home/samples/sample-search'">
 </canano-main-display-heading>
+<!-- Want to display errors even if (*especially if!*) there is no data to show! -->
+<div class="error" *ngIf="errors['error']">
+    {{errors['error']}}
+</div>
+<div class="error" *ngIf="message">
+    {{message}}
+</div>
 <div class="mainSection" *ngIf="data">
     <canano-loader [loading]="loading" [message]="'Exporting Data'">
 
     </canano-loader>
-    <div class="error" *ngIf="errors['error']">
-        {{errors['error']}}
-    </div>
-    <div class="error" *ngIf="message">
-        {{message}}
-    </div>
     <div class="mainBorder">
         <table class="dataMain">
+            <!--
+            |---
+            |---  Start of the SAMPLE NAME section
+            |---
+            -->
             <tr>
                 <td class="label">
                     <label for="data.sampleName">
@@ -24,6 +30,11 @@
                     <input type="text" name="data.sampleName" id="data.sampleName" [(ngModel)]="data['sampleName']" size="100">
                 </td>
             </tr>
+            <!--
+            |---
+            |---  Start of the POINT OF CONTACT section
+            |---
+            -->
             <tr>
                 <td class="label">
                     <label for="data.pointOfContact">
@@ -31,7 +42,7 @@
                     </label>
                 </td>
                 <td>
-                <button class="btn-canano btn-canano-primary btn-canano-xs mr-1" (click)="addPointOfContact()">Add</button>
+                <button id="data.pointOfContact" class="btn-canano btn-canano-primary btn-canano-xs mr-1" (click)="addPointOfContact()">Add</button>
                 </td>
             </tr>
             <tr>
@@ -54,34 +65,17 @@
                                     No
                                 </ng-container>
                             </td>
+                            <td [innerHTML]="contact.contactPerson"></td>
                             <td>
-                                {{contact.firstName}} {{contact.lastName}}
-
+                                <span [innerHTML]="contact.organization.name"></span>
+                                <div *ngIf="contact.address.line1" [innerHTML]="contact.address.line1"></div>
+                                <div *ngIf="contact.address.line2" [innerHTML]="contact.address.line2"></div>
+                                <span *ngIf="contact.address.city" [innerHTML]="contact.address.city"></span>
+                                <span *ngIf="contact.address.stateProvince" [innerHTML]="contact.address.stateProvince"></span>
+                                <span *ngIf="contact.address.zip" [innerHTML]="contact.address.zip"></span>
+                                <span *ngIf="contact.address.country" [innerHTML]="contact.address.country"></span>
                             </td>
-                            <td>
-                                {{contact.organization.name}}
-                                <div *ngIf="contact.address.line1">
-                                    {{contact.address.line1}}
-                                </div>
-                                <div *ngIf="contact.address.line2">
-                                    {{contact.address.line2}}
-                                </div>
-                                <span *ngIf="contact.address.city">
-                                    {{contact.address.city}},
-                                </span>
-                                <span *ngIf="contact.address.stateProvince">
-                                    {{contact.address.stateProvince}}
-                                </span>
-                                <span *ngIf="contact.address.zip">
-                                    {{contact.address.zip}}
-                                </span>
-                                <span *ngIf="contact.address.country">
-                                    {{contact.address.country}}
-                                </span>
-                            </td>
-                            <td>
-                                {{contact.role}}
-                            </td>
+                            <td [innerHTML]="contact.role"></td>
                             <td>
                                 <button (click)="editPointOfContact(pocIndex,contact)" class="btn-canano btn-canano-primary btn-canano-xs mr-1">Edit</button>
                             </td>
@@ -262,6 +256,11 @@
                     </div>
                 </td>
             </tr>
+            <!--
+            |---
+            |---  Start of the KEYWORDS section
+            |---
+            -->
             <tr>
                 <td class="label">
                     <label for="data.keywords">
@@ -276,6 +275,11 @@
 
                 </td>
             </tr>
+            <!--
+            |---
+            |---  Start of the DATA ACCESS section
+            |---
+            -->
             <tr>
                 <td class="label">
                     <label for="dataAccess">
@@ -283,7 +287,7 @@
                     </label>
                 </td>
                 <td>
-                    <button (click)="addAccess()" class="btn-canano btn-canano-primary btn-canano-xs mr-1">Add</button>
+                    <button id="dataAccess" (click)="addAccess()" class="btn-canano btn-canano-primary btn-canano-xs mr-1">Add</button>
                 </td>
             </tr>
             <tr>
@@ -331,11 +335,11 @@
                         <table class="dataMain access">
                             <tr>
                                 <td class="label">
-                                    <label for="acces">
+                                    <label for="access">
                                         Access By*
                                     </label>
                                 </td>
-                                <td>
+                                <td id="access">
                                     <input (ngModelChange)="changeAccessType($event)" [value]="'group'" type="radio" name="theAccess.accessType" id="theAccess.accessType.group" [(ngModel)]="theAccess.accessType">
                                     <label for="theAccess.accessType.group" class="right">
                                         Collaboration Group
@@ -350,6 +354,11 @@
                                     </label>
                                 </td>
                             </tr>
+                            <!--
+                            |---
+                            |---  Dropdown overlays if collaboration group is selected
+                            |---
+                            -->
                             <tr *ngIf="theAccess['accessType']=='group'">
                                 <td class="label">
                                     <label for="theAccess.collaborationGroup">
@@ -357,7 +366,7 @@
                                     </label>
                                 </td>
                                 <td>
-                                    <select name="theAccess.recipient" id="theAccess.recipient" [(ngModel)]="theAccess.recipient">
+                                    <select name="theAccess.recipient" id="theAccess.collaborationGroup" [(ngModel)]="theAccess.recipient">
                                         <option [ngValue]="''">--Select--</option>
                                         <ng-container *ngFor="let recipient of userGroups|keyvalue">
                                             <option *ngFor="let group of recipient['value']" [ngValue]="group">
@@ -368,6 +377,11 @@
                                     </select>
                                 </td>
                             </tr>
+                            <!--
+                            |---
+                            |---  Dropdown overlays if user is selected
+                            |---
+                            -->
                             <tr *ngIf="theAccess['accessType']=='user'">
                                 <td class="label">
                                     <label for="theAccess.user">
@@ -375,7 +389,7 @@
                                     </label>
                                 </td>
                                 <td>
-                                    <select name="theAccess.recipient" id="theAccess.recipient" [(ngModel)]="theAccess.recipient">
+                                    <select name="theAccess.recipient" id="theAccess.user" [(ngModel)]="theAccess.recipient">
                                         <option [ngValue]="''">--Select--</option>
                                         <option *ngFor="let recipient of users|keyvalue" [ngValue]="recipient.key">
                                             {{recipient.value}}, {{recipient.key}}
@@ -383,12 +397,18 @@
                                     </select>
                                 </td>
                             </tr>
+                            <!--
+                            |---
+                            |---  Blank control overlays if public is selected
+                            |---
+                            -->
                             <tr *ngIf="theAccess['accessType']=='role'">
                                 <td colspan="2" class="label">
-                                    <label for="theAccess.role">
+                                    <label for="theAccess.public">
                                         Public
                                     </label>
                                 </td>
+                                <td id="theAccess.public" ></td>
                             </tr>
                             <tr>
                                 <td class="label">
@@ -418,6 +438,11 @@
                     </div>
                 </td>
             </tr>
+            <!--
+            |---
+            |---  Start of the DATA AVAILABILITY section
+            |---
+            -->
             <tr>
                 <td class="label">
                     <label for="dataAvailability">
@@ -425,7 +450,7 @@
                     </label>
                 </td>
                 <td>
-                    <button *ngIf="!data.dataAvailability" class="btn-canano btn-canano-primary btn-canano-xs mr-1" (click)="onAvailabilityClick()">Generate</button>
+                    <button id="dataAvailability" *ngIf="!data.dataAvailability" class="btn-canano btn-canano-primary btn-canano-xs mr-1" (click)="onAvailabilityClick()">Generate</button>
                     <table class="dataTable availability" *ngIf="data.dataAvailability">
                         <tr>
                             <th>caNanoLab Availability Score</th>
@@ -448,6 +473,11 @@
             </tr>
         </table>
     </div>
+    <!--
+    |---
+    |---  Start of the BOTTOM BUTTONS section
+    |---
+    -->
     <div id="buttons">
         <table class="dataMain submit">
             <tr>
@@ -478,8 +508,11 @@
             </tr>
         </table>
     </div>
-
-  <!-- Data Availability Modal -->
+    <!--
+    |---
+    |---  Start of the Data Availability Modal
+    |---
+    -->
   <div class="modal fade" id="availabilityMetrics" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
     <div class="modal-dialog modal-dialog-top modal-lg modal-dialog-scrollable"  role="document">
       <div class="modal-content">

@@ -14,16 +14,21 @@ import { TopMainMenuService } from '../../top-main-menu/top-main-menu.service';
 export class LogoutComponent implements OnInit{
     properties=Properties;
 
-    constructor(private topMainMenuService:TopMainMenuService,private apiService: ApiService, private statusDisplayService: StatusDisplayService,
-                 private router: Router, private utilService: UtilService ){
+    constructor(private topMainMenuService:TopMainMenuService, private apiService: ApiService,
+                private statusDisplayService: StatusDisplayService, private router: Router,
+                private utilService: UtilService ){
     }
 
     ngOnInit(): void {
-        if(!Properties.LOGGING_OUT) {
-            Properties.LOGGING_OUT = true;
-            (Properties.LOGGED_IN) ? this.logOut() : console.log("User is already logged out.");
+        if(Properties.LOGGED_IN) {
+            if(!Properties.LOGGING_OUT) {
+                Properties.LOGGING_OUT = true;
+                this.logOut();
+            } else {
+                console.log("Logout process underway already--updating display only.");
+            }
         } else {
-            console.log("Logout process underway elsewhere--updating display only.");
+            console.log("User is already logged out.");
         }
 
         this.topMainMenuService.showOnlyMenuItems([

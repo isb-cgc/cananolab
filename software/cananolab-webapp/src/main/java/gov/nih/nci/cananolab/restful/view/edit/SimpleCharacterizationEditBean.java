@@ -240,6 +240,7 @@ public class SimpleCharacterizationEditBean
 
 		for (ExperimentConfigBean expConfig : expConfigs) {
 			SimpleExperimentBean simpleExp = new SimpleExperimentBean();
+			// WJRL 2/6/23: ExperimentConfigDescription is HTML escaped with breaks
 			simpleExp.setDescription(expConfig.getDescription());
 			simpleExp.setDisplayName(expConfig.getTechniqueDisplayName());
 

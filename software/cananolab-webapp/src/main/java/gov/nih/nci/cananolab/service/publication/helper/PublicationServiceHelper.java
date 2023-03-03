@@ -476,7 +476,7 @@ public class PublicationServiceHelper
 			if (nanomaterialEntityClassNames != null
 					&& nanomaterialEntityClassNames.length > 0) {
 				Criterion nanoEntityCrit = Restrictions.in("nanoEntity.class",
-						nanomaterialEntityClassNames);
+						(Object[])nanomaterialEntityClassNames);
 				disjunction.add(nanoEntityCrit);
 			}
 			if (otherNanomaterialEntityTypes != null
@@ -484,7 +484,7 @@ public class PublicationServiceHelper
 				Criterion otherNanoCrit1 = Restrictions.eq("nanoEntity.class",
 						"OtherNanomaterialEntity");
 				Criterion otherNanoCrit2 = Restrictions.in("nanoEntity.type",
-						otherNanomaterialEntityTypes);
+						(Object[])otherNanomaterialEntityTypes);
 				Criterion otherNanoCrit = Restrictions.and(otherNanoCrit1,
 						otherNanoCrit2);
 				disjunction.add(otherNanoCrit);
@@ -507,7 +507,7 @@ public class PublicationServiceHelper
 				Integer[] functionalizingEntityClassNameIntegers = this
 						.convertToFunctionalizingEntityClassOrderNumber(functionalizingEntityClassNames);
 				Criterion funcEntityCrit = Restrictions.in("funcEntity.class",
-						functionalizingEntityClassNameIntegers);
+						(Object[])functionalizingEntityClassNameIntegers);
 				disjunction.add(funcEntityCrit);
 			}
 			if (otherFunctionalizingEntityTypes != null
@@ -517,7 +517,7 @@ public class PublicationServiceHelper
 				Criterion otherFuncCrit1 = Restrictions.eq("funcEntity.class",
 						classOrderNumber);
 				Criterion otherFuncCrit2 = Restrictions.in("funcEntity.type",
-						otherFunctionalizingEntityTypes);
+						(Object[])otherFunctionalizingEntityTypes);
 				Criterion otherFuncCrit = Restrictions.and(otherFuncCrit1,
 						otherFuncCrit2);
 				disjunction.add(otherFuncCrit);
@@ -537,18 +537,25 @@ public class PublicationServiceHelper
 					CriteriaSpecification.LEFT_JOIN);
 			if (functionClassNames != null && functionClassNames.length > 0) {
 				Criterion funcCrit1 = Restrictions.in("inFunc.class",
-						functionClassNames);
+						(Object[])functionClassNames);
 				Criterion funcCrit2 = Restrictions.in("func.class",
-						functionClassNames);
+						(Object[])functionClassNames);
 				disjunction.add(funcCrit1).add(funcCrit2);
 			}
+
+			// WJRL 2/10/23 lots of casts to Object[] to shut up warnings. Note that between 3 and 5, Hibernate
+			// changed an Object[] signature to an Object... varargs signature.
+			//
+			// cast to Object for a varargs call
+			// cast to Object[] for a non-varargs call and to suppress this warning
+
 			if (otherFunctionTypes != null && otherFunctionTypes.length > 0) {
 				Criterion otherFuncCrit1 = Restrictions.and(
 						Restrictions.eq("inFunc.class", "OtherFunction"),
-						Restrictions.in("inFunc.type", otherFunctionTypes));
+						Restrictions.in("inFunc.type", (Object[])otherFunctionTypes));
 				Criterion otherFuncCrit2 = Restrictions.and(
 						Restrictions.eq("func.class", "OtherFunction"),
-						Restrictions.in("func.type", otherFunctionTypes));
+						Restrictions.in("func.type", (Object[])otherFunctionTypes));
 				disjunction.add(otherFuncCrit1).add(otherFuncCrit2);
 			}
 			crit.add(disjunction);

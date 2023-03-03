@@ -107,7 +107,7 @@ export class SampleViewComponent implements OnInit{
 
         let results;
         try{
-            results = this.apiService.doGet(getUrl,'sampleId='+this.sampleId);
+            results = this.apiService.doGet(getUrl, 'sampleId=' + this.sampleId);
         }catch( e ){
             // TODO react to error.
             console.error( 'doGet Exception: ' + e );
@@ -117,12 +117,12 @@ export class SampleViewComponent implements OnInit{
 
     getPointOfContacts(data) {
 
-        data['pointOfContactMap']['contactPerson'].forEach((element,index)=> {
-            let pointOfContact={
-                primaryContact:data['pointOfContactMap']['primaryContact'][index],
-                organizationDisplayName:data['pointOfContactMap']['organizationDisplayName'][index],
-                role:data['pointOfContactMap']['role'][index],
-                contactPerson:data['pointOfContactMap']['contactPerson'][index]
+        data['pointOfContactMap']['contactPerson'].forEach((element, index) => {
+            let pointOfContact = {
+                primaryContact: data['pointOfContactMap']['primaryContact'][index],
+                organizationDisplayName: data['pointOfContactMap']['organizationDisplayName'][index],
+                role: data['pointOfContactMap']['role'][index],
+                contactPerson: data['pointOfContactMap']['contactPerson'][index]
             };
             this.pointOfContacts.push(pointOfContact);
         });
@@ -130,7 +130,7 @@ export class SampleViewComponent implements OnInit{
 
     dateFormat(date) {
         if (date) {
-            return formatDate(date,'shortDate','en-US')
+            return formatDate(date, 'shortDate', 'en-US')
         }
     }
 }

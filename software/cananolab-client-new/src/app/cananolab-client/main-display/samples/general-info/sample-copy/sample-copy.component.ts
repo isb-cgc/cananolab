@@ -18,22 +18,25 @@ export class SampleCopyComponent implements OnInit{
     sampleName = '';
     sampleId;
     newSampleName = '';
-    errors={};
+    errors = {};
     sampleNames;
+    copyingMessage: string = Consts.copyingMessage;
+    copying: boolean = false;
     showNamesMenu = false;
 
-    constructor( private activatedRoute:ActivatedRoute,private apiService: ApiService, private router: Router ){
+    constructor( private activatedRoute: ActivatedRoute, private apiService: ApiService, private router: Router) {
     }
 
     ngOnInit(): void{
-        setTimeout(()=> {
+        setTimeout(() => {
             Properties.SAMPLE_TOOLS = false;
         })
-        this.activatedRoute.params.subscribe(data=> {
-            this.sampleId=data['sampleId'];
+
+        this.activatedRoute.params.subscribe(data => {
+            this.sampleId = data['sampleId'];
             if (this.sampleId) {
-                this.apiService.doGet(Consts.QUERY_SAMPLE_GET_SAMPLE_NAME,'sampleId='+this.sampleId).subscribe(data=> {
-                    this.sampleName=data['sampleName']
+                this.apiService.doGet(Consts.QUERY_SAMPLE_GET_SAMPLE_NAME, 'sampleId=' + this.sampleId).subscribe(data => {
+                    this.sampleName = data['sampleName']
                 })
             }
         })
@@ -64,17 +67,21 @@ export class SampleCopyComponent implements OnInit{
     }
 
     reset() {
-        this.sampleName='';
-        this.newSampleName='';
+        this.sampleName = '';
+        this.newSampleName = '';
     }
 
     onSubmitCopyClicked(){
+        this.errors = {};
+        this.copying = true;
         this.apiService.doPost( Consts.QUERY_SAMPLE_COPY, { 'newSampleName': this.newSampleName, 'sampleName': this.sampleName } ).subscribe(
             data => {
-                this.router.navigate(['home/samples/sample',data.sampleId])
+                this.copying = false;
+                this.router.navigate(['home/samples/sample', data.sampleId])
             },
             ( err ) => {
-                this.errors=err;
+                this.copying = false;
+                this.errors = err;
             }
         );
     }

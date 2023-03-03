@@ -28,8 +28,8 @@ Vagrant.configure(2) do |config|
   config.vm.synced_folder "../secure_files", "/home/vagrant/secure_files"
 
   config.vm.provision :shell, inline: "echo 'source /home/vagrant/cananolab/shell/env.sh' > /etc/profile.d/sa-environment.sh", :run => 'always'
-  config.vm.provision "shell", path: 'shell/install-deps.sh'
-  config.vm.provision "shell", path: 'shell/database-setup.sh'
-  config.vm.provision "shell", path: 'shell/run-build.sh'
-  config.vm.provision "shell", path: 'shell/wildfly-setup.sh'
+  config.vm.provision "shell", path: 'shell/install-deps.sh', env: {"IS_DEV" => "true"}
+  config.vm.provision "shell", path: 'shell/database-setup.sh', env: {"IS_DEV" => "true"}
+  config.vm.provision "shell", path: 'shell/run-build.sh', env: {"IS_DEV" => "true"}
+  config.vm.provision "shell", path: 'shell/wildfly-setup.sh', env: {"IS_DEV" => "true"}
 end

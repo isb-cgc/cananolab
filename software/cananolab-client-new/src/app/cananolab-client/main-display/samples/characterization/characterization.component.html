@@ -29,9 +29,11 @@
                         <ng-container *ngFor="let e of d.value['displayableItems'] | keyvalue">
 
                             <tr *ngIf="e.value.value.length">
+                                <!--  Values like Point of Contact, Characterization Date Protocol -->
                                 <td class="label">
                                     {{e.value.name}}
                                 </td>
+                                <!--  This gets a big box -->
                                 <td *ngIf="e.value.name=='Experiment Configurations'">
                                     <table class="dataTable" *ngIf="getExperiments(e.value); let experiment">
                                         <tr>
@@ -40,16 +42,19 @@
                                             </th>
                                         </tr>
                                         <tr *ngFor="let row of experiment[0];let odd=odd" [ngClass]="{'rowOdd':odd}">
-                                            <td *ngFor="let column of row">{{column}}</td>
+                                            <!-- These should be rendered with escapes -->
+                                            <td *ngFor="let column of row" [innerHTML]="column"></td>
                                         </tr>
                                     </table>
                                 </td>
+                                <!--  This also gets a big box -->
                                 <td *ngIf="e.value.name=='Characterization Results'">
                                     <ng-container *ngFor="let f of e.value.value">
                                         <label for="dataConditions">
                                                  Conditions
                                         </label>
                                         <div *ngIf="f['Data and Conditions']">
+                                            <!--  These are the data tables -->
                                             <table class="dataTable" id="dataConditions">
                                                 <ng-container *ngFor="let entry of f['Data and Conditions']; let even=even">
                                                     <tr *ngIf="entry.name=='colTitles'">
@@ -65,6 +70,7 @@
                                                 </ng-container>
                                             </table>
                                         </div>
+                                        <!--  Next comes the files -->
                                         <div *ngIf="f['Files']"><br />
                                             <table class="files">
                                                 <tr>
@@ -80,6 +86,7 @@
                                                 </tr>
                                                 <tr *ngFor="let file of f['Files']">
                                                     <td>
+                                                        <!--  First column: image or file title  -->
                                                         <!-- Image -->
                                                         <a *ngIf="file['imageTitle'] !== undefined"
                                                            [href]="serverUrl+'/rest/sample/download?fileId='+file.fileId"
@@ -92,25 +99,28 @@
                                                             [href]="serverUrl+'/rest/sample/download?fileId='+file.fileId">
                                                             {{file['title']}}
                                                         </a>
-
+                                                        <!-- Everything else -->
                                                         <a  *ngIf="file['title'] == undefined"
                                                         [href]="file['uri']" target="_blank" rel="nofollow noreferrer">
                                                         {{file['uri']}}
                                                     </a>
                                                     </td>
+                                                    <!--  Next column: keywords  -->
                                                     <td>
                                                         <ul>
                                                             <li *ngFor="let keyword of splitKeywords(file['keywordsString'])">
-                                                                {{keyword}}
+                                                                <span [innerHtml]="keyword"></span>
                                                             </li>
                                                         </ul>
                                                     </td>
-                                                    <td>{{file['description']}}</td>
+                                                    <!--  Final column: description going into innerHTML  -->
+                                                    <td [innerHTML]="file['description']"></td>
                                                 </tr>
                                             </table>
                                         </div><br />
                                     </ng-container>
                                 </td>
+                                <!--  Another big box! -->
                                 <td *ngIf="e.value.name=='Properties'">
                                     <table class="dataTable">
                                         <tr *ngFor="let entry of e.value.value">
@@ -127,9 +137,8 @@
                                         </tr>
                                     </table>
                                 </td>
-                                <td *ngIf="e.value.name!='Characterization Results'&&e.value.name!='Experiment Configurations'&&e.value.name!='Properties'">
-                                    {{e.value.value}}
-                                </td>
+                                <!--  This is just a line. Use innerHTML to parse out <sup> tags-->
+                                <td *ngIf="e.value.name!='Characterization Results'&&e.value.name!='Experiment Configurations'&&e.value.name!='Properties'" [innerHTML]="e.value.value"></td>
                             </tr>
                         </ng-container>
                     </table>
