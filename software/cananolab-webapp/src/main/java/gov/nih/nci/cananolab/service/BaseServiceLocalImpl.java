@@ -20,9 +20,11 @@ import gov.nih.nci.cananolab.exception.NoAccessException;
 import gov.nih.nci.cananolab.restful.util.GCPStorageUtil;
 import gov.nih.nci.cananolab.restful.util.PropertyUtil;
 import gov.nih.nci.cananolab.security.service.SpringSecurityAclService;
+import gov.nih.nci.cananolab.system.applicationservice.ApplicationException;
 import gov.nih.nci.cananolab.system.applicationservice.CaNanoLabApplicationService;
 import gov.nih.nci.cananolab.util.Constants;
 import gov.nih.nci.cananolab.system.applicationservice.client.ApplicationServiceProvider;
+import gov.nih.nci.cananolab.exception.ApplicationProviderException;
 import java.util.Collection;
 import java.util.Date;
 import java.util.HashSet;
@@ -40,21 +42,14 @@ public abstract class BaseServiceLocalImpl implements BaseService
 	
 	public abstract SpringSecurityAclService getSpringSecurityAclService();
 
-	public FileBean findFileById(String fileId) throws FileException, NoAccessException
+	public FileBean findFileById(String fileId) throws ApplicationException, ApplicationProviderException
 	{
 		FileBean fileBean = null;
-		try {
-			/*if (!getSpringSecurityAclService().currentUserHasReadPermission(Long.valueOf(fileId), SecureClassesEnum.FILE.getClazz())) {
-				throw new NoAccessException("No access to the file");
-			}*/
-			File file = fileUtils.findFileById(fileId);
-			fileBean = new FileBean(file);
-		} catch (NoAccessException e) {
-			throw e;
-		} catch (Exception e) {
-			String error = "Error finding the file by the given ID.";
-			throw new FileException(error, e);
-		}
+		/*if (!getSpringSecurityAclService().currentUserHasReadPermission(Long.valueOf(fileId), SecureClassesEnum.FILE.getClazz())) {
+			throw new NoAccessException("No access to the file");
+		}*/
+		File file = fileUtils.findFileById(fileId);
+		fileBean = new FileBean(file);
 		return fileBean;
 	}
 
@@ -70,7 +65,7 @@ public abstract class BaseServiceLocalImpl implements BaseService
 		 * @param fileId
 		 * @return
 		 */
-		public File findFileById(String fileId) throws Exception {
+		public File findFileById(String fileId) throws ApplicationException, ApplicationProviderException {
 			CaNanoLabApplicationService appService = (CaNanoLabApplicationService) ApplicationServiceProvider.getApplicationService();
 
 			DetachedCriteria crit = DetachedCriteria.forClass(File.class).add(Property.forName("id").eq(new Long(fileId)));
@@ -90,7 +85,8 @@ public abstract class BaseServiceLocalImpl implements BaseService
 		 * @return
 		 * @throws FileException
 		 */
-		public byte[] getFileContent(Long fileId) throws Exception {
+		public byte[] getFileContent(Long fileId)
+				throws ApplicationProviderException, ApplicationException, FileException {
 			File file = findFileById(fileId.toString());
 			if (file == null || file.getUri() == null) {
 				return null;
@@ -150,7 +146,7 @@ public abstract class BaseServiceLocalImpl implements BaseService
 		}
 
 		// save to the file system if fileData is not empty
-		public void writeFile(FileBean fileBean) throws Exception {
+		public void writeFile(FileBean fileBean) throws FileException {
 			 if (fileBean.getNewFileData() != null) {
 				 writeFile(fileBean.getNewFileData(), fileBean.getDomainFile().getUri());
 			 }
@@ -162,7 +158,7 @@ public abstract class BaseServiceLocalImpl implements BaseService
 		 * @param file
 		 * @throws FileException
 		 */
-		public void prepareSaveFile(File file) throws Exception {
+		public void prepareSaveFile(File file) throws ApplicationException, ApplicationProviderException, FileException {
 			CaNanoLabApplicationService appService = (CaNanoLabApplicationService) ApplicationServiceProvider.getApplicationService();
 			if(file.getCreatedDate() == null)
 			{
@@ -206,9 +202,11 @@ public abstract class BaseServiceLocalImpl implements BaseService
 		}
 
 		// update cloned file with file content and new file path
-		public void updateClonedFileInfo(FileBean copy, String origSampleName, String newSampleName) throws Exception
+		public void updateClonedFileInfo(FileBean copy, String origSampleName, String newSampleName)
+			throws ApplicationException, ApplicationProviderException, FileException
 		{
 			// copy file content obtain original id from created by
+			System.out.println("Change creator and URL");
 			int copyInd = copy.getDomainFile().getCreatedBy().indexOf(Constants.AUTO_COPY_ANNOTATION_PREFIX);
 			String origId = null;
 			if (copyInd != -1) {

@@ -38,6 +38,27 @@ public class Sample implements java.io.Serializable {
 	private Synthesis synthesis;
 
 	public Sample() {
+		/*
+		// This is a very useful fragment of code for tracking the call stack that throws out the
+		// dozens and dozens of useless indirect cruft. It just shows calls from our code base.
+		//
+		StackTraceElement[] stes = Thread.currentThread().getStackTrace();
+		for (StackTraceElement ste: stes) {
+			if (ste.getClassName().contains("gov") && ste.getMethodName().equals("getSampleNames"))  {
+				return;
+			}
+		}
+		System.out.println("Null Constructor Sample");
+		int count = 0;
+		for (StackTraceElement ste: stes) {
+			if (ste.getClassName().contains("gov")) {
+				System.out.println(ste.getClassName() + " " + ste.getMethodName() + " " + ste.getLineNumber());
+				if (count++ > 10) {
+					break;
+				}
+			}
+		}
+		*/
 	}
 
 	@Deprecated
