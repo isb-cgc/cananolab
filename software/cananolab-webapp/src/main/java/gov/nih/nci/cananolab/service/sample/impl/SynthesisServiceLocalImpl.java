@@ -39,6 +39,7 @@ import gov.nih.nci.cananolab.dto.particle.synthesis.SynthesisMaterialElementBean
 import gov.nih.nci.cananolab.dto.particle.synthesis.SynthesisPurificationBean;
 import gov.nih.nci.cananolab.dto.particle.synthesis.SynthesisPurityBean;
 
+import gov.nih.nci.cananolab.exception.ApplicationProviderException;
 import gov.nih.nci.cananolab.exception.NoAccessException;
 
 import gov.nih.nci.cananolab.exception.SynthesisException;
@@ -556,7 +557,7 @@ public class SynthesisServiceLocalImpl extends BaseServiceLocalImpl implements S
         return synthesisHelper;
     }
 
-    public Synthesis createSynthesis(SampleBean sampleBean) throws SynthesisException, NoAccessException {
+    public Synthesis createSynthesis(SampleBean sampleBean) throws SynthesisException {
 
         try {
             Synthesis synthesis = new Synthesis();
@@ -572,15 +573,7 @@ public class SynthesisServiceLocalImpl extends BaseServiceLocalImpl implements S
 
             return synthesis;
         }
-        catch (ApplicationException e) {
-            logger.error("Error in saving the synthesis. ", e);
-            throw new SynthesisException("Error in saving the synthesis. ", e);
-        }
-        catch (NoAccessException e) {
-            logger.error("User does not have access to edit synthesis ", e);
-            throw e;
-        }
-        catch (Exception e) {
+        catch (ApplicationException | ApplicationProviderException e) {
             logger.error("Error in saving the synthesis. ", e);
             throw new SynthesisException("Error in saving the synthesis. ", e);
         }
