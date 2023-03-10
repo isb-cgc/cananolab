@@ -53,6 +53,17 @@ public class PropertyUtil {
 		
 		return propertyVal.replace(token, replacement);
 	}
+
+	public static String getPropertyReplacingTwoTokens(String type, String key,
+													   String tokenIndex1, String replacement1,
+													   String tokenIndex2, String replacement2) {
+		String propertyVal = getProperty(type, key);
+		String token1 = "{" + tokenIndex1 + "}";
+		String token2 = "{" + tokenIndex2 + "}";
+
+		return (propertyVal.replace(token1, replacement1).replace(token2, replacement2));
+	}
+
 	
 	protected static Properties getPropertiesByType(String type) {
 		type = type.toLowerCase();

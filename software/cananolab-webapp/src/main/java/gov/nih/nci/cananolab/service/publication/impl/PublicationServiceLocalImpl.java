@@ -14,6 +14,8 @@ import gov.nih.nci.cananolab.domain.particle.Sample;
 import gov.nih.nci.cananolab.dto.common.PublicationBean;
 import gov.nih.nci.cananolab.exception.NoAccessException;
 import gov.nih.nci.cananolab.exception.PublicationException;
+import gov.nih.nci.cananolab.exception.ApplicationProviderException;
+import gov.nih.nci.cananolab.exception.FileException;
 import gov.nih.nci.cananolab.security.AccessControlInfo;
 import gov.nih.nci.cananolab.security.CananoUserDetails;
 import gov.nih.nci.cananolab.security.dao.AclDao;
@@ -26,6 +28,7 @@ import gov.nih.nci.cananolab.service.publication.PubMedXMLHandler;
 import gov.nih.nci.cananolab.service.publication.PublicationService;
 import gov.nih.nci.cananolab.service.publication.helper.PublicationServiceHelper;
 import gov.nih.nci.cananolab.service.sample.helper.SampleServiceHelper;
+import gov.nih.nci.cananolab.system.applicationservice.ApplicationException;
 import gov.nih.nci.cananolab.system.applicationservice.CaNanoLabApplicationService;
 import gov.nih.nci.cananolab.util.Comparators;
 import gov.nih.nci.cananolab.util.StringUtils;
@@ -119,7 +122,7 @@ public class PublicationServiceLocalImpl extends BaseServiceLocalImpl implements
 
 			// update sample associations
 			updateSampleAssociation(appService, publicationBean);
-		} catch (Exception e) {
+		} catch (ApplicationProviderException | ApplicationException | FileException e) {
 			String err = "Error in saving the publication.";
 			logger.error(err, e);
 			throw new PublicationException(err, e);
@@ -127,7 +130,9 @@ public class PublicationServiceLocalImpl extends BaseServiceLocalImpl implements
 	}
 
 	private void updateSampleAssociation(CaNanoLabApplicationService appService,
-			PublicationBean publicationBean) throws Exception {
+										 PublicationBean publicationBean)
+			throws NoAccessException, ApplicationProviderException, ApplicationException
+	{
 		Publication publication = (Publication) publicationBean.getDomainFile();
 		// if has associated sample, save sample to update the relationship
 		// between sample and publication

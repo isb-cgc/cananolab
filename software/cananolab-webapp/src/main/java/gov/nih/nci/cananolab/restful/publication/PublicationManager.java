@@ -5,6 +5,10 @@ import gov.nih.nci.cananolab.domain.common.Publication;
 import gov.nih.nci.cananolab.domain.particle.Sample;
 import gov.nih.nci.cananolab.dto.common.PublicationBean;
 import gov.nih.nci.cananolab.exception.ExperimentConfigException;
+import gov.nih.nci.cananolab.exception.ApplicationProviderException;
+import gov.nih.nci.cananolab.restful.util.PropertyUtil;
+import gov.nih.nci.cananolab.system.applicationservice.ApplicationException;
+import gov.nih.nci.cananolab.exception.UserInputException;
 import gov.nih.nci.cananolab.exception.NoAccessException;
 import gov.nih.nci.cananolab.exception.PublicationException;
 import gov.nih.nci.cananolab.restful.core.InitSetup;
@@ -16,10 +20,7 @@ import gov.nih.nci.cananolab.ui.form.PublicationForm;
 import gov.nih.nci.cananolab.util.Comparators;
 import gov.nih.nci.cananolab.util.StringUtils;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.SortedSet;
+import java.util.*;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -271,8 +272,9 @@ public class PublicationManager
 	}
 	
 	public SimplePublicationWithSamplesBean searchPublicationById(HttpServletRequest request, String id, String type)
-			throws Exception {
-		
+			throws UserInputException, NoAccessException, PublicationException,
+			       ApplicationException, ApplicationProviderException
+	{
 		String key;
 		Object val;
 		SimplePublicationWithSamplesBean simplePubBean = new SimplePublicationWithSamplesBean();
@@ -283,19 +285,17 @@ public class PublicationManager
 				val = Long.valueOf(id);
 				key = "pubMedId";
 			} catch (NumberFormatException nfex) {
-				// Just do what is done below
-				List<String> errors = new ArrayList<String>();
-				errors.add("Provided PubMed id \"" + id + "\" is not allowed");
-				simplePubBean = new SimplePublicationWithSamplesBean();
-				simplePubBean.setErrors(errors);
-				return simplePubBean;
+				String msg = PropertyUtil.getPropertyReplacingToken("publication", "errors.badID", "0", id);
+				throw new UserInputException(msg);
 			}
 		} else if (type.equals("DOI")) {
 			key = "digitalObjectId";
 			val = id;
-		} else
-			throw new Exception("type parameter is not valid");
-		
+		} else {
+			String msg = PropertyUtil.getPropertyReplacingToken("publication", "errors.badType", "0", type);
+			throw new UserInputException(msg);
+		}
+
 		PublicationBean pubBean = null;
 		List<Sample> samples = null;
 		try {
@@ -303,7 +303,9 @@ public class PublicationManager
 		
 			if (pubBean == null) {
 				List<String> errors = new ArrayList<String>();
-				errors.add("No publication found with id \"" + id + "\" of type \"" + type + "\"");
+				String msg = PropertyUtil.getPropertyReplacingTwoTokens("publication", "errors.notFound",
+																		"0", id, "1", type);
+				errors.add(msg);
 				simplePubBean = new SimplePublicationWithSamplesBean();
 				simplePubBean.setErrors(errors);
 				return simplePubBean;
@@ -313,11 +315,8 @@ public class PublicationManager
 			samples = publicationService.getPublicationServiceHelper().findSamplesByPublicationId(pubId);
 			
 		} catch (NoAccessException ne) {
-			logger.info("User can't access the publication with DOI/PubMed Id: " + id);
+			logger.info("User not allowed to access the publication with DOI/PubMed Id: " + id);
 			throw ne;
-		} catch (Exception e) {
-			logger.info("Error in retrieving publication with with DOI/PubMed Id: " + id);
-			throw e;
 		}
 		
 		simplePubBean = new SimplePublicationWithSamplesBean();

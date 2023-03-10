@@ -565,7 +565,9 @@ public class SampleServiceHelper
 
 
 	//TODO add Synthesis to all of the sample returns
-	public Sample findSampleByName(String sampleName) throws Exception {
+	public Sample findSampleByName(String sampleName)
+			throws ApplicationException, NoAccessException, ApplicationProviderException
+	{
 		Sample sample = null;
 		CaNanoLabApplicationService appService = (CaNanoLabApplicationService) ApplicationServiceProvider
 				.getApplicationService();

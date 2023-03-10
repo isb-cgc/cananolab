@@ -14,15 +14,11 @@ import gov.nih.nci.cananolab.dto.particle.AdvancedSampleBean;
 import gov.nih.nci.cananolab.dto.particle.AdvancedSampleSearchBean;
 import gov.nih.nci.cananolab.dto.particle.SampleBasicBean;
 import gov.nih.nci.cananolab.dto.particle.SampleBean;
-import gov.nih.nci.cananolab.exception.DuplicateEntriesException;
-import gov.nih.nci.cananolab.exception.ApplicationProviderException;
-import gov.nih.nci.cananolab.exception.NoAccessException;
-import gov.nih.nci.cananolab.exception.NotExistException;
-import gov.nih.nci.cananolab.exception.PointOfContactException;
-import gov.nih.nci.cananolab.exception.SampleException;
+import gov.nih.nci.cananolab.exception.*;
 import gov.nih.nci.cananolab.security.AccessControlInfo;
 import gov.nih.nci.cananolab.security.CananoUserDetails;
 import gov.nih.nci.cananolab.service.BaseService;
+import gov.nih.nci.cananolab.system.applicationservice.ApplicationException;
 
 import java.util.List;
 import java.util.Map;
@@ -80,8 +76,12 @@ public interface SampleService extends BaseService {
 
 	SampleBean cloneSample(String originalSampleName,
                            String newSampleName)
-			throws SampleException, NoAccessException, ApplicationProviderException,
-			DuplicateEntriesException, NotExistException;
+			throws SampleException, NoAccessException,
+			DuplicateEntriesException, NotExistException, PointOfContactException,
+			ExperimentConfigException, ApplicationException,
+			ApplicationProviderException, CompositionException,
+			FileException, CharacterizationException,
+			PublicationException, SynthesisException;
 
 	void deleteSample(String sampleName) throws SampleException,
 			NoAccessException, NotExistException;
