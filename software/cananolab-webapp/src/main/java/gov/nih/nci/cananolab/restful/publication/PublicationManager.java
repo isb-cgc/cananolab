@@ -303,8 +303,8 @@ public class PublicationManager
 		
 			if (pubBean == null) {
 				List<String> errors = new ArrayList<String>();
-				String msg = PropertyUtil.getPropertyReplacingTwoTokens("publication", "errors.notFound",
-																		"0", id, "1", type);
+				String msg = PropertyUtil.getPropertyReplacingAllTokens("publication", "errors.notFound",
+																		new Object[] {id, type});
 				errors.add(msg);
 				simplePubBean = new SimplePublicationWithSamplesBean();
 				simplePubBean.setErrors(errors);
