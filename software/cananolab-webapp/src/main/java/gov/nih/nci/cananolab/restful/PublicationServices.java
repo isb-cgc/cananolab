@@ -299,10 +299,9 @@ public class PublicationServices {
 			// user is not allowed to access this function, when in fact it is just a
 			// hit on a non-public publication. Issue a sane message
 			logger.info(ioe.getMessage());
-			String msg = PropertyUtil.getPropertyReplacingTwoTokens("publication", "errors.notFound",
-																	"0", id, "1", type);
+			String msg = PropertyUtil.getPropertyReplacingAllTokens("publication", "errors.notFound",
+																	new Object[] {id, type});
 			return (Response.status(Response.Status.NOT_FOUND).entity(msg).build());
-
 		} catch (UserInputException uiex) {
 			return Response.status(Response.Status.BAD_REQUEST).entity(uiex.getMessage()).build();
 		} catch (RuntimeException | PublicationException |
