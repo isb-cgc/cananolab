@@ -3,10 +3,12 @@ package gov.nih.nci.cananolab.service.publication.helper;
 import gov.nih.nci.cananolab.domain.common.Publication;
 import gov.nih.nci.cananolab.domain.particle.Sample;
 import gov.nih.nci.cananolab.exception.NoAccessException;
+import gov.nih.nci.cananolab.exception.ApplicationProviderException;
 import gov.nih.nci.cananolab.security.dao.AclDao;
 import gov.nih.nci.cananolab.security.enums.CaNanoRoleEnum;
 import gov.nih.nci.cananolab.security.enums.SecureClassesEnum;
 import gov.nih.nci.cananolab.security.service.SpringSecurityAclService;
+import gov.nih.nci.cananolab.system.applicationservice.ApplicationException;
 import gov.nih.nci.cananolab.system.applicationservice.CaNanoLabApplicationService;
 import gov.nih.nci.cananolab.util.Comparators;
 import gov.nih.nci.cananolab.util.Constants;
@@ -267,7 +269,7 @@ public class PublicationServiceHelper
 	}
 
 	public Publication findPublicationByKey(String keyName, Object keyValue)
-			throws Exception {
+			throws NoAccessException, ApplicationProviderException, ApplicationException {
 		CaNanoLabApplicationService appService = (CaNanoLabApplicationService) ApplicationServiceProvider
 				.getApplicationService();
 
@@ -310,7 +312,8 @@ public class PublicationServiceHelper
         return (publicData != null) ? publicData.size() : 0;
 	}
 
-	public String[] findSampleNamesByPublicationId(String publicationId) throws Exception
+	public String[] findSampleNamesByPublicationId(String publicationId)
+			throws NoAccessException, ApplicationProviderException, ApplicationException
 	{
 		if (!springSecurityAclService.currentUserHasReadPermission(Long.valueOf(publicationId), SecureClassesEnum.PUBLICATION.getClazz()) &&
 			!springSecurityAclService.currentUserHasWritePermission(Long.valueOf(publicationId), SecureClassesEnum.PUBLICATION.getClazz())) {
@@ -676,8 +679,8 @@ public class PublicationServiceHelper
 	 * @return
 	 * @throws Exception
 	 */
-	public List<Sample> findSamplesByPublicationId(long pubId) 
-			throws Exception {
+	public List<Sample> findSamplesByPublicationId(long pubId)
+			throws ApplicationException, ApplicationProviderException {
 
 		List<String> sampleIds = new ArrayList<String>();
 
@@ -728,7 +731,7 @@ public class PublicationServiceHelper
 		return orderedSamples;
 	}
 	
-	public List<String> getAllPublications() throws Exception {
+	public List<String> getAllPublications() throws ApplicationProviderException, ApplicationException {
 		CaNanoLabApplicationService appService = (CaNanoLabApplicationService) ApplicationServiceProvider
 				.getApplicationService();
 		HQLCriteria crit = new HQLCriteria(

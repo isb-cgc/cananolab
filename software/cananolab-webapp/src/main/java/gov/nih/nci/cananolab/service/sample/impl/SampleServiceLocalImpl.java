@@ -48,17 +48,7 @@ import gov.nih.nci.cananolab.dto.particle.synthesis.SynthesisMaterialBean;
 import gov.nih.nci.cananolab.dto.particle.synthesis.SynthesisMaterialElementBean;
 import gov.nih.nci.cananolab.dto.particle.synthesis.SynthesisPurificationBean;
 import gov.nih.nci.cananolab.dto.particle.synthesis.SynthesisPurityBean;
-import gov.nih.nci.cananolab.exception.DuplicateEntriesException;
-import gov.nih.nci.cananolab.exception.NoAccessException;
-import gov.nih.nci.cananolab.exception.NotExistException;
-import gov.nih.nci.cananolab.exception.PointOfContactException;
-import gov.nih.nci.cananolab.exception.SampleException;
-import gov.nih.nci.cananolab.exception.ApplicationProviderException;
-import gov.nih.nci.cananolab.exception.CharacterizationException;
-import gov.nih.nci.cananolab.exception.ChemicalAssociationViolationException;
-import gov.nih.nci.cananolab.exception.CompositionException;
-import gov.nih.nci.cananolab.exception.FileException;
-import gov.nih.nci.cananolab.exception.PublicationException;
+import gov.nih.nci.cananolab.exception.*;
 import gov.nih.nci.cananolab.security.AccessControlInfo;
 import gov.nih.nci.cananolab.security.CananoUserDetails;
 import gov.nih.nci.cananolab.security.dao.AclDao;
@@ -655,8 +645,12 @@ public class SampleServiceLocalImpl extends BaseServiceLocalImpl implements Samp
 	}
 
 	public SampleBean cloneSample(String originalSampleName, String newSampleName)
-			throws SampleException, NoAccessException, ApplicationProviderException,
-			       DuplicateEntriesException, NotExistException
+			throws SampleException, NoAccessException,
+			       DuplicateEntriesException, NotExistException, PointOfContactException,
+			       ExperimentConfigException, ApplicationException,
+			       ApplicationProviderException, CompositionException,
+	               FileException, CharacterizationException,
+			       PublicationException, SynthesisException
 	{
 		if (SpringSecurityUtil.getPrincipal() == null) {
 			throw new NoAccessException();
@@ -725,6 +719,12 @@ public class SampleServiceLocalImpl extends BaseServiceLocalImpl implements Samp
 			saveClonedCompositionFiles(origSampleBean, newSampleBean);
 			saveClonedComposition(origSampleBean, newSampleBean);
 			saveClonedSynthesis(origSampleBean, newSampleBean);
+			//
+			// WJRL 3/23: Issue #270: If the user is public/anonymous, they can try to copy a sample that
+			// has a non-public publication attached. They will not see the attached publication, and will
+			// have no understanding why the clone failed. We should catch that access error here and be specific
+			// with the error message:
+			//
 			saveClonedPublications(origSampleBean, newSampleBean);
 			CaNanoLabApplicationService appService = (CaNanoLabApplicationService)ApplicationServiceProvider.getApplicationService();
 			// WJRL 3/23: I originally tried this, to merge the two copies, but there were lots of issues.
@@ -754,7 +754,9 @@ public class SampleServiceLocalImpl extends BaseServiceLocalImpl implements Samp
 			for (AccessControlInfo access : origSampleBean.getAllAccesses()) {
 				this.assignAccessibility(access, newSampleBean.getDomain());
 			}
-		} catch (Exception e) {
+		} catch (RuntimeException | NoAccessException | PointOfContactException | ExperimentConfigException |
+				 ApplicationException | ApplicationProviderException | CompositionException |
+				 FileException | CharacterizationException | PublicationException | SynthesisException e) {
 			// delete the already persisted new sample in case of error
 			try {
 				this.deleteSampleWhenError(newSample0.getName());
@@ -766,12 +768,12 @@ public class SampleServiceLocalImpl extends BaseServiceLocalImpl implements Samp
 			}
 			String err = "Error in cloning the sample " + originalSampleName + ". " + e.getMessage();
 			logger.error(err, e);
-			throw new SampleException(err, e);
+			throw e;
 		}
 		return newSampleBean;
 	}
 
-	private void saveClonedPOCs(SampleBean sampleBean) throws Exception {
+	private void saveClonedPOCs(SampleBean sampleBean) throws PointOfContactException, NoAccessException {
 		savePointOfContact(sampleBean.getPrimaryPOCBean());
 		if (sampleBean.getOtherPOCBeans() != null && !sampleBean.getOtherPOCBeans().isEmpty()) {
 			for (PointOfContactBean pocBean : sampleBean.getOtherPOCBeans()) {
@@ -782,8 +784,10 @@ public class SampleServiceLocalImpl extends BaseServiceLocalImpl implements Samp
 
 
 
-	private void saveClonedCharacterizations(String origSampleName,
-			SampleBean sampleBean) throws Exception {
+	private void saveClonedCharacterizations(String origSampleName, SampleBean sampleBean)
+			throws ExperimentConfigException, NoAccessException, ApplicationException,
+			ApplicationProviderException, FileException, CharacterizationException
+	{
 		if (sampleBean.getDomain().getCharacterizationCollection() != null) {
 			String newSampleName = sampleBean.getDomain().getName();
 			for (Characterization achar : sampleBean.getDomain()
@@ -809,8 +813,9 @@ public class SampleServiceLocalImpl extends BaseServiceLocalImpl implements Samp
 		}
 	}
 
-	private void saveClonedSynthesis(SampleBean origSampleBean, SampleBean sampleBean) throws Exception {
-
+	private void saveClonedSynthesis(SampleBean origSampleBean, SampleBean sampleBean)
+			throws SynthesisException, NoAccessException, ApplicationException,
+			       ApplicationProviderException, FileException {
 
 		if (sampleBean.getDomain().getSynthesis()!=null){
 			synthesisService.createSynthesis(sampleBean);
@@ -826,8 +831,10 @@ public class SampleServiceLocalImpl extends BaseServiceLocalImpl implements Samp
 		}
 	}
 
-	private void saveClonedSynthesisMaterials(SampleBean origSampleBean, SampleBean sampleBean)throws Exception{
-
+	private void saveClonedSynthesisMaterials(SampleBean origSampleBean, SampleBean sampleBean)
+			throws ApplicationException, ApplicationProviderException, FileException,
+			SynthesisException, NoAccessException
+		{
 		Collection<SynthesisMaterial> materials = sampleBean.getDomain().getSynthesis().getSynthesisMaterials();
 		for(SynthesisMaterial material:materials){
 			SynthesisMaterialBean materialBean = new SynthesisMaterialBean(material);
@@ -854,7 +861,10 @@ public class SampleServiceLocalImpl extends BaseServiceLocalImpl implements Samp
 		}
 	}
 
-	private void saveClonedSynthesisFunctionalization(SampleBean origSampleBean, SampleBean sampleBean) throws Exception {
+	private void saveClonedSynthesisFunctionalization(SampleBean origSampleBean, SampleBean sampleBean)
+			throws ApplicationException, ApplicationProviderException, FileException,
+			SynthesisException, NoAccessException
+	{
 		Collection<SynthesisFunctionalization> functionalizations = sampleBean.getDomain().getSynthesis().getSynthesisFunctionalizations();
 		for(SynthesisFunctionalization functionalization: functionalizations){
 			SynthesisFunctionalizationBean functionalizationBean = new SynthesisFunctionalizationBean(functionalization);
@@ -873,7 +883,10 @@ public class SampleServiceLocalImpl extends BaseServiceLocalImpl implements Samp
 		}
 	}
 
-	private void saveClonedSynthesisPurification(SampleBean origSampleBean, SampleBean sampleBean) throws Exception {
+	private void saveClonedSynthesisPurification(SampleBean origSampleBean, SampleBean sampleBean)
+			throws SynthesisException, NoAccessException, ApplicationException,
+			ApplicationProviderException, FileException
+	{
 		Collection<SynthesisPurification> purifications = sampleBean.getDomain().getSynthesis().getSynthesisPurifications();
 		for(SynthesisPurification purification: purifications){
 			SynthesisPurificationBean purificationBean = new SynthesisPurificationBean(purification);

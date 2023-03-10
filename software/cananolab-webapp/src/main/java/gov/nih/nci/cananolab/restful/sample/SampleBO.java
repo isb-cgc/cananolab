@@ -13,16 +13,8 @@ import gov.nih.nci.cananolab.dto.common.DataReviewStatusBean;
 import gov.nih.nci.cananolab.dto.common.PointOfContactBean;
 import gov.nih.nci.cananolab.dto.particle.DataAvailabilityBean;
 import gov.nih.nci.cananolab.dto.particle.SampleBean;
-import gov.nih.nci.cananolab.exception.DuplicateEntriesException;
-import gov.nih.nci.cananolab.exception.NoAccessException;
-import gov.nih.nci.cananolab.exception.NotExistException;
-import gov.nih.nci.cananolab.exception.SampleException;
-import gov.nih.nci.cananolab.exception.LookupException;
-import gov.nih.nci.cananolab.exception.PointOfContactException;
-import gov.nih.nci.cananolab.exception.DataAvailabilityException;
+import gov.nih.nci.cananolab.exception.*;
 import gov.nih.nci.cananolab.exception.SecurityException;
-import gov.nih.nci.cananolab.exception.CurationException;
-import gov.nih.nci.cananolab.exception.ApplicationProviderException;
 import gov.nih.nci.cananolab.restful.core.BaseAnnotationBO;
 import gov.nih.nci.cananolab.restful.util.InputValidationUtil;
 import gov.nih.nci.cananolab.restful.util.PropertyUtil;
@@ -43,6 +35,7 @@ import gov.nih.nci.cananolab.security.utils.SpringSecurityUtil;
 import gov.nih.nci.cananolab.service.curation.CurationService;
 import gov.nih.nci.cananolab.service.sample.DataAvailabilityService;
 import gov.nih.nci.cananolab.service.sample.SampleService;
+import gov.nih.nci.cananolab.system.applicationservice.ApplicationException;
 import gov.nih.nci.cananolab.ui.form.SampleForm;
 import gov.nih.nci.cananolab.util.Comparators;
 import gov.nih.nci.cananolab.util.StringUtils;
@@ -738,14 +731,21 @@ public class SampleBO extends BaseAnnotationBO {
 			return summaryEdit(String.valueOf(clonedSampleBean.getDomain().getId()), request);
 		} catch (NotExistException e) {
 			error =  PropertyUtil.getPropertyReplacingToken("sample", "error.cloneSample.noOriginalSample",  "0", orgSampleName);
-			logger.error(error, e);
+			logger.info("User entered an non-existing original ID for cloning: " + newNameForClone);
 			return wrapErrorInEditBean(error);
 		} catch (DuplicateEntriesException e) {
-			error =  PropertyUtil.getProperty("sample", "error.cloneSample.duplicateSample");
+			error = PropertyUtil.getProperty("sample", "error.cloneSample.duplicateSample");
 			logger.info("User entered an existing ID for cloning: " + newNameForClone);
 			return wrapErrorInEditBean(error);
-		} catch (SampleException | LookupException | PointOfContactException | DataAvailabilityException |
-		         NoAccessException | SecurityException | CurationException | ApplicationProviderException e) {
+		} catch (NoAccessException e) {
+			error = PropertyUtil.getPropertyReplacingToken("sample", "error.cloneSample.nonPublicData",  "0", orgSampleName);
+			logger.error(error, e);
+			return wrapErrorInEditBean(error);
+		} catch (RuntimeException | SampleException | PointOfContactException |
+				 ExperimentConfigException | ApplicationException | CompositionException |
+				 FileException | CharacterizationException | PublicationException | SynthesisException |
+				 LookupException | DataAvailabilityException | SecurityException |
+				 CurationException | ApplicationProviderException e) {
 			// TO DO: Make individual messages for each error type
 			error =  PropertyUtil.getProperty("sample", "error.cloneSample");
 			logger.error(error, e);

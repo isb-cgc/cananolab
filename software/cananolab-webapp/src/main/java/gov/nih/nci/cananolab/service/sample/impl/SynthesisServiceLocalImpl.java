@@ -928,7 +928,22 @@ public class SynthesisServiceLocalImpl extends BaseServiceLocalImpl implements S
 
 
 //Need to save purity to get the ID for the dependents
+
+
+            /*
+            23:33:05,071 WARN  [org.hibernate.action.internal.UnresolvedEntityInsertActions] (default task-5) HHH000437:
+            Attempting to save one or more entities that have a non-nullable association with an unsaved transient entity.
+            The unsaved transient entity must be saved in an operation prior to saving these dependent entities.
+	Unsaved transient entity: ([gov.nih.nci.cananolab.domain.particle.SynthesisPurification#<null>])
+	Dependent entities: ([[gov.nih.nci.cananolab.domain.particle.SynthesisPurity#9]])
+	Non-nullable association(s): ([gov.nih.nci.cananolab.domain.particle.SynthesisPurity.synthesisPurification])
+
+
+             */
+            System.out.println("fail here with new SynthPurity ");
+            System.out.println("saving synthesis purity " + synthesisPurity.getId());
             appService.saveOrUpdate(synthesisPurity);
+            System.out.println("saved synthesis purity " + synthesisPurity.getId());
             synthesisPurityBean = new SynthesisPurityBean(synthesisPurity);
 
             //TODO detect if columnHeaders have been removed
@@ -1689,8 +1704,10 @@ public class SynthesisServiceLocalImpl extends BaseServiceLocalImpl implements S
             return condition;
         }
         catch (Exception e) {
+            System.out.println("Here is the exception " + e);
+
             String err = "Problem saving PurityDatumCondition ";
-            logger.error(err, e);
+            // WJRL restore when done logger.error(err, e);
             throw new SynthesisException(err, e);
         }
     }
