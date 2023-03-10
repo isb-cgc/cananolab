@@ -22,7 +22,7 @@
 		<property name="createdDate" type="java.util.Date" column="created_date" />
 		<property name="operand" type="java.lang.String" column="numberMod"/>
 		<property name="type" type="java.lang.String" column="type"/>
-		<property name="rowNumber" type="int" column="can_row_number"/>
+		<property name="rowNumber" type="int" column="finding_row_number"/>
 
 
 		<many-to-one
