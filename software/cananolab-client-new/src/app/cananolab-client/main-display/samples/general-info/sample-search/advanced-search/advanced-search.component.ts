@@ -9,26 +9,29 @@ import { Properties } from 'src/assets/properties';
   templateUrl: './advanced-search.component.html',
   styleUrls: ['./advanced-search.component.scss']
 })
+
 export class AdvancedSearchComponent implements OnInit {
 
-    constructor(
-        private router:Router,
-        private advancedSearchService:AdvancedSearchService,
-        private apiService:ApiService) { }
+    helpUrl = Consts.HELP_URL_SAMPLE_ADVANCED_SEARCH;
+    toolHeadingName = 'Advanced Sample Search';
+    characterizationEditIndex;
+    characterizationQuery;
+    characterizationQuery2;
+    compositionEditIndex;
+    compositionEntityTypes = [];
+    compositionQuery;
+    errors = {};
+    loading;
+    loadingMessage = Consts.searchingMessage;
+    query = {};
+    sampleEditIndex;
+    sampleQuery;
+    setupData = {};
 
-        characterizationEditIndex;
-        characterizationQuery;
-        characterizationQuery2;
-        compositionEditIndex;
-        compositionEntityTypes=[];
-        compositionQuery;
-        errors={};
-        loading;
-        loadingMessage=Consts.searchingMessage;
-        query={};
-        sampleEditIndex;
-        sampleQuery;
-        setupData={};
+    constructor(
+        private router: Router,
+        private advancedSearchService: AdvancedSearchService,
+        private apiService: ApiService) { }
 
     ngOnInit(): void {
         setTimeout(()=> {

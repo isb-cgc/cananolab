@@ -24,6 +24,7 @@ import gov.nih.nci.cananolab.dto.particle.composition.FunctionalizingEntityBean;
 import gov.nih.nci.cananolab.dto.particle.composition.NanomaterialEntityBean;
 import gov.nih.nci.cananolab.exception.ChemicalAssociationViolationException;
 import gov.nih.nci.cananolab.exception.CompositionException;
+import gov.nih.nci.cananolab.exception.FileException;
 import gov.nih.nci.cananolab.exception.NoAccessException;
 import gov.nih.nci.cananolab.service.BaseService;
 import gov.nih.nci.cananolab.service.sample.helper.CompositionServiceHelper;
@@ -48,8 +49,8 @@ public interface CompositionService extends BaseService {
     void saveChemicalAssociation(SampleBean sampleBean,
             ChemicalAssociationBean assocBean) throws CompositionException, NoAccessException;
 
-    void saveCompositionFile(SampleBean sampleBean, FileBean fileBean)
-            throws CompositionException, NoAccessException;
+    void saveCompositionFile(SampleBean sampleBean, FileBean fileBean, boolean forClone)
+            throws CompositionException, NoAccessException, FileException;
 
     FunctionalizingEntityBean findFunctionalizingEntityById(String sampleId,
             String entityId) throws CompositionException, NoAccessException;

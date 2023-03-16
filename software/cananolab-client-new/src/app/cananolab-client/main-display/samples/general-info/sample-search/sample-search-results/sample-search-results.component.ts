@@ -33,8 +33,8 @@ export class SampleSearchResultsComponent implements OnInit, OnDestroy {
     pageLength = Properties.DEFAULT_PAGE_LENGTH;
     loading;
     searchResults;
-    sampleIds=[];
-    helpUrl = Consts.HELP_URL_SAMPLE_SEARCH;
+    sampleIds = [];
+    helpUrl = Consts.HELP_URL_SAMPLE_SEARCH_RESULTS;
     toolHeadingNameSearchSample = 'Sample Search Results';
     pageCount = 10;
     searchResultsCount = -1;
@@ -82,7 +82,6 @@ export class SampleSearchResultsComponent implements OnInit, OnDestroy {
             });
 
         this.statusDisplayService.updateUserEmitter
-            .pipe(timeoutWith(Properties.HTTP_TIMEOUT, throwError(new Error("Didn't see user update!"))))
             .subscribe((data) => {
                 this.userName = data;
             });

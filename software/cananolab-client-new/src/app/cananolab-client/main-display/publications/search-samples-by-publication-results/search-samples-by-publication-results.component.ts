@@ -8,11 +8,14 @@ import { Consts } from 'src/app/constants';
 })
 export class SearchSamplesByPublicationResultsComponent implements OnInit {
     results;
-    consts=Consts;
-    constructor(private searchSamplesByPublicationService:SearchSamplesByPublicationService) { }
+
+    helpUrl = Consts.HELP_URL_SAMPLE_SEARCH_BY_PUBLICATIONS_RESULTS
+    toolHeadingName = 'Sample Information by Publication'
+    consts = Consts;
+    constructor(private searchSamplesByPublicationService: SearchSamplesByPublicationService) { }
 
     ngOnInit(): void {
-        this.results=this.searchSamplesByPublicationService.getPublicationSearchResults();
+        this.results = this.searchSamplesByPublicationService.getPublicationSearchResults();
     }
 
 }

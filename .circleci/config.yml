@@ -1,16 +1,31 @@
 version: 2.1
 commands:
-  deployment_setup:
+  save_env:
     steps:
       - run:
-          name: "Set the Tier"
+          name: "Persist some variables in the workspace"
+          command: |
+            mkdir -p ~/cananolab/workspace
+            echo "export TIER=${TIER}" >> ~/cananolab/workspace/env-vars
+      - persist_to_workspace:
+          root: workspace
+          paths:
+            - env-vars
+  detect_tier:
+    steps:
+      - run:
+          name: "Detect and set the tier"
           command: |
             TIER=DEV
-            if [[ ${CIRCLE_BRANCH} =~ (prod|uat|test).* ]]; then
+            if [[ -n ${CIRCLE_TAG} ]]; then
+              TIER=$(git ls-remote --heads origin | grep $CIRCLE_SHA1  | sed "s/.*\///" | awk '{print toupper($1)}')
+            elif [[ ${CIRCLE_BRANCH} =~ (prod|uat|test).* ]]; then
               TIER=$(awk -F[\-_] '{print toupper($1)}' \<<< ${CIRCLE_BRANCH})
             fi
             echo "export TIER=${TIER}" >> $BASH_ENV
             echo "Tier was identified as ${TIER} for branch ${CIRCLE_BRANCH}"
+  deployment_setup:
+    steps:
       - run:
           name: "Assign Project-level vars"
           command: |
@@ -94,7 +109,7 @@ jobs:
     steps:
       - checkout
       - run:
-          name: Fix for bug with Git and Ubuntu 20+
+          name: "Set the Application hash"
           command: |
             SHA=$(git rev-list -1 HEAD)
             echo "export APP_SHA=${SHA:0:7}" >> $BASH_ENV
@@ -103,6 +118,7 @@ jobs:
           command: |
             sudo -E /bin/bash ./shell/install-deps.sh
       - install_cloud_sdk
+      - detect_tier
       - deployment_setup
       - auth
       - deployment_config
@@ -126,6 +142,7 @@ jobs:
             - ./my.conf.js
             - ./app.yaml
             - ./Dockerfile
+      - save_env
   deploy_job:
     environment:
       TZ: "/usr/share/zoneinfo/America/Los_Angeles"
@@ -136,6 +153,18 @@ jobs:
       - restore_cache:
           keys:
             - isb-canano-{{ .Branch }}-{{ .Revision }}-
+      - attach_workspace:
+          at: ~/cananolab/workspace
+      - run:
+          name: Restore persisted environment variables
+          command: |
+            if [ -f ~/cananolab/workspace/env-vars ]; then
+              echo "Persisted environment variables found, loading."
+              cat ~/cananolab/workspace/env-vars >> $BASH_ENV
+            else
+              echo "Persisted environment variables not found!"
+              exit 1
+            fi
       - install_cloud_sdk
       - deployment_setup
       - auth
@@ -148,7 +177,10 @@ workflows:
   version: 2
   build_and_deploy:
     jobs:
-      - build_job
+      - build_job:
+          filters:
+            tags:
+              only: /.*/
       - deploy_job:
           requires:
             - build_job
@@ -158,4 +190,5 @@ workflows:
                 - master
                 - test
                 - uat
-                - prod
+            tags:
+              only: /.*/

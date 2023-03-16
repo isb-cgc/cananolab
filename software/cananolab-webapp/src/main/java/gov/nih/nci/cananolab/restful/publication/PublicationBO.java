@@ -241,21 +241,21 @@ public class PublicationBO extends BaseAnnotationBO
 
 		Publication publication = (Publication) publicationBean.getDomainFile();
 		String category = publication.getCategory();
-		if(category == null||category == ""){
+		if(category == null||category.equals("")){
 			errors.add("Publication Type is required.");
 		}
 		if(InputValidationUtil.isTextFieldWhiteList(category)){
 			errors.add(PropertyUtil.getProperty("publication", "publication.category.invalid"));
 		}
 		String status = publication.getStatus();
-		if(status == null||status == ""){
+		if(status == null||status.equals("")){
 			errors.add("Publication Status is required.");
 		}
 		if(InputValidationUtil.isTextFieldWhiteList(status)){
 			errors.add(PropertyUtil.getProperty("publication", "publication.status.invalid"));
 		}
 		String title = publication.getTitle();
-		if(title == null || title == ""){
+		if(title == null || title.equals("")){
 			errors.add("Title is required.");
 		}
 		if(InputValidationUtil.isTextFieldWhiteList(title)){
@@ -386,7 +386,7 @@ public class PublicationBO extends BaseAnnotationBO
 		InitPublicationSetup.getInstance().setPublicationDropdowns(request);
 		request.setAttribute("onloadJavascript",
 				"updateSubmitFormBasedOnCategory();updateFormFields('" + publicationId + "')");
-		setUpSubmitForReviewButton(request, pubBean.getDomainFile().getId().toString(), 
+		setUpSubmitForReviewButton(request, pubBean.getDomainFile().getId().toString(), DataReviewStatusBean.getDataTypeTag(SecureClassesEnum.PUBLICATION),
 				springSecurityAclService.checkObjectPublic(pubBean.getDomainFile().getId(), SecureClassesEnum.PUBLICATION.getClazz()));
 		request.getSession().setAttribute("updatePublication", "true");
 
@@ -804,7 +804,8 @@ public class PublicationBO extends BaseAnnotationBO
 		// status to public
 		if (CaNanoRoleEnum.ROLE_ANONYMOUS.toString().equalsIgnoreCase(theAccess.getRecipient())) {
 			System.out.println("PublicationBean into switch " + pub.getDomainFile().getId().toString());
-			this.switchPendingReviewToPublic(request, pub.getDomainFile().getId().toString());
+			this.switchPendingReviewToPublic(request, pub.getDomainFile().getId().toString(),
+					                         DataReviewStatusBean.getDataTypeTag(SecureClassesEnum.PUBLICATION));
 		}
 
 		PublicationBean pBean = this.setAccesses(request, pub);

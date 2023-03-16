@@ -39,7 +39,9 @@ public class PublicationDecorator extends TableDecorator {
         return new SortableName(publicationType);
 	}
 
-	public SortableName getResearchArea() throws UnsupportedEncodingException {
+	// WJRL 2/6/23: Appears to be unused
+	/* public SortableName getResearchArea() throws UnsupportedEncodingException {
+		// WJRL 2/6/23: Research Area is HTML escaped with breaks
 		String researchArea = "";
 		File file = ((PublicationBean) getCurrentRowObject()).getDomainFile();
 		researchArea = ((Publication) file).getResearchArea();
@@ -48,7 +50,7 @@ public class PublicationDecorator extends TableDecorator {
 		}
         return new SortableName(StringUtils
                 .escapeXmlButPreserveLineBreaks(researchArea));
-	}
+	}*/
 
 	public String getDetailURL() {
 		PublicationBean publication = (PublicationBean) getCurrentRowObject();
@@ -67,7 +69,9 @@ public class PublicationDecorator extends TableDecorator {
 		}
 	}
 
-	public String getSampleNames() {
+	// WJRL 2/6/23: Appears to be unused
+	/*public String getSampleNames() {
+		// WJRL 2/6/23: Sample name is HTML escaped with breaks
 		String[] sampleNames = ((PublicationBean) getCurrentRowObject())
 				.getSampleNames();
 		if (sampleNames == null) {
@@ -76,9 +80,11 @@ public class PublicationDecorator extends TableDecorator {
 		String sampleNamesStr = StringUtils.sortJoin(
 				Arrays.asList(sampleNames), "\r\n");
 		return StringUtils.escapeXmlButPreserveLineBreaks(sampleNamesStr);
-	}
+	}*/
 
-	public String getDescriptionDetail() {
+	// WJRL 2/6/23: Appears to be unused
+	/*public String getDescriptionDetail() {
+		// WJRL 2/6/23: File description is HTML escaped with breaks
 		PublicationBean publication = (PublicationBean) getCurrentRowObject();
 		String description = StringUtils
 				.escapeXmlButPreserveLineBreaks(publication.getDomainFile()
@@ -104,5 +110,5 @@ public class PublicationDecorator extends TableDecorator {
 		sb.append("</td></tr>");
 		sb.append("</table></div>");
 		return sb.toString();
-	}
+	}*/
 }

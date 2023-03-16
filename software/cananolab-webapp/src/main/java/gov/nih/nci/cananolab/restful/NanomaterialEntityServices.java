@@ -1,6 +1,7 @@
 package gov.nih.nci.cananolab.restful;
 
 import gov.nih.nci.cananolab.dto.particle.composition.NanomaterialEntityBean;
+import gov.nih.nci.cananolab.exception.ChemicalAssociationViolationException;
 import gov.nih.nci.cananolab.restful.sample.NanomaterialEntityBO;
 import gov.nih.nci.cananolab.restful.util.CommonUtil;
 import gov.nih.nci.cananolab.restful.view.SimpleAdvacedSampleCompositionBean;
@@ -98,6 +99,7 @@ public class NanomaterialEntityServices {
 	/**
 	 *
 	 * Deprecated as of 2.4.0.  Use @removeComposingElementById
+	 * WJRL 2/2023: Which, as we can see, is entirely commented out right below, thus this *cannot* be deprecated.
 	 */
 	@POST
 	@Path("/removeComposingElement")
@@ -111,12 +113,16 @@ public class NanomaterialEntityServices {
 			if (!SpringSecurityUtil.isUserLoggedIn())
 				return Response.status(Response.Status.UNAUTHORIZED)
 						.entity("Session expired").build();
-			
-			SimpleNanomaterialEntityBean nano = nanomaterialEntityBO.removeComposingElement(nanoBean, httpRequest);
-			List<String> errors = nano.getErrors();
-			return (errors == null || errors.size() == 0) ?
-					Response.ok(nano).build() :
-						Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(errors).build();
+
+			try {
+				SimpleNanomaterialEntityBean nano = nanomaterialEntityBO.removeComposingElement(nanoBean, httpRequest);
+				List<String> errors = nano.getErrors();
+				return (errors == null || errors.size() == 0) ?
+						Response.ok(nano).build() :
+						Response.status(Response.Status.BAD_REQUEST).entity(errors).build();
+			} catch (ChemicalAssociationViolationException cavex) {
+				return (Response.status(Response.Status.BAD_REQUEST).entity(cavex.getMessage()).build());
+			}
 		} catch (Exception e) {
 			logger.error(e.getMessage());
 			e.printStackTrace();

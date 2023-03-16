@@ -16,31 +16,32 @@ export class SearchSamplesByPublicationComponent implements OnInit{
     type = 'PubMed';
     inputId = '';
     errors;
-    constructor(private router:Router,private searchSamplesByPublicationService:SearchSamplesByPublicationService,private apiService: ApiService){
+    constructor(private router: Router, private searchSamplesByPublicationService: SearchSamplesByPublicationService, private apiService: ApiService){
     }
 
     ngOnInit(): void{
-        this.errors={};
-        setTimeout(()=> {
+        this.errors = {};
+        setTimeout(() => {
             Properties.SAMPLE_TOOLS = false;
         })
     }
 
     onSearchSampByPubClick(){
-        this.apiService.doGet( Consts.HELP_URL_SAMPLE_SEARCH_BY_PUBLICATIONS, 'id=' + this.inputId + '&type=' + this.type).subscribe(
+        // Fix for issue #223. Wrong (Help!) URL provided here:
+        this.apiService.doGet( Consts.QUERY_SAMPLE_SEARCH_BY_PUBLICATION, 'id=' + this.inputId + '&type=' + this.type).subscribe(
             data => {
                 this.searchSamplesByPublicationService.setPublicationSearchResults(data);
                 this.router.navigate(['home/publications/sample-search-by-publication-results'])
             },
             err => {
-                this.errors=err;
+                this.errors = err;
                 console.error('ERROR onSearchSampByPubClick: ', err);
             }
             );
     }
 
     reset() {
-        this.type='PubMed';
-        this.inputId='';
+        this.type = 'PubMed';
+        this.inputId = '';
     }
 }

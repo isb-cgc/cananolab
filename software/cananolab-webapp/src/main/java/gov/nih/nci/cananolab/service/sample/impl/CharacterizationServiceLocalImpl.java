@@ -63,12 +63,14 @@ public class CharacterizationServiceLocalImpl extends BaseServiceLocalImpl imple
 	@Autowired
 	private CharacterizationServiceHelper characterizationServiceHelper;
 
-	public void saveCharacterization(SampleBean sampleBean, CharacterizationBean charBean) throws CharacterizationException, NoAccessException
+	public void saveCharacterization(SampleBean sampleBean, CharacterizationBean charBean)
+			throws CharacterizationException, NoAccessException
 	{
 		if (SpringSecurityUtil.getPrincipal() == null) {
 			logger.error("Throwing no access Point A");
 			throw new NoAccessException();
 		}
+
 		try {
 			Sample sample = sampleBean.getDomain();
 			Characterization achar = charBean.getDomainChar();
@@ -194,6 +196,7 @@ public class CharacterizationServiceLocalImpl extends BaseServiceLocalImpl imple
 			for (FileBean fileBean : finding.getFiles()) {
 				fileUtils.prepareSaveFile(fileBean.getDomainFile());
 			}
+			//System.out.println("CSLI saveFinding calling appService sOu " + finding.getDomain());
 			appService.saveOrUpdate(finding.getDomain());
 			// save file data to file system
 			for (FileBean fileBean : finding.getFiles()) {

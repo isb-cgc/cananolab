@@ -16,22 +16,31 @@ export class BrowseCananolabComponent implements OnInit{
     initData = {};
     searchResults;
 
-    constructor( private protocolsService:ProtocolsService,private searchPublicationService:SearchPublicationService,private sampleSearchResultsService: SampleSearchResultsService,private apiService: ApiService, private mainDisplayService: MainDisplayService,
-                 private router: Router, private utilService: UtilService ){
+    constructor( private protocolsService:ProtocolsService,
+                 private searchPublicationService:SearchPublicationService,
+                 private sampleSearchResultsService: SampleSearchResultsService,
+                 private apiService: ApiService,
+                 private mainDisplayService: MainDisplayService,
+                 private router: Router,
+                 private utilService: UtilService ){
     }
 
     ngOnInit(): void{
-        this.init();
-
+        this.init().then(() => {
+            // Sanity check for data
+            if(!this.initData['numOfPublicSources']) {
+                console.log("Waiting on public count data.");
+            }
+        });
     }
 
     async init(){
-
         this.apiService.doGet( Consts.QUERY_INIT_SETUP, '' ).subscribe(
-            data => {
+        data => {
+            if(data) {
                 this.initData = data;
-            } );
-
+            }
+        } );
     }
 
     onSearchProtocolsClick(){
@@ -41,13 +50,12 @@ export class BrowseCananolabComponent implements OnInit{
     // Will not need this after router is in place?
     onSearchPublicationsClick(){
         this.router.navigate(['home/publications/publication-search'])
-
     }
 
     onSearchSamplesClick(){
         this.router.navigate(['home/samples/sample-search'])
-
     }
+
     onSearchAllPublicationsClick() {
         let url = this.apiService.doPost(Consts.QUERY_PUBLICATION_SEARCH,
             {

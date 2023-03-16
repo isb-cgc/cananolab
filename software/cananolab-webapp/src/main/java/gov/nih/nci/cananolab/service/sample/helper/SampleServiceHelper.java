@@ -25,11 +25,13 @@ import gov.nih.nci.cananolab.domain.particle.NanomaterialEntity;
 import gov.nih.nci.cananolab.domain.particle.Sample;
 import gov.nih.nci.cananolab.domain.particle.SampleComposition;
 import gov.nih.nci.cananolab.domain.particle.Synthesis;
+import gov.nih.nci.cananolab.exception.ApplicationProviderException;
 import gov.nih.nci.cananolab.exception.NoAccessException;
 import gov.nih.nci.cananolab.security.dao.AclDao;
 import gov.nih.nci.cananolab.security.enums.CaNanoRoleEnum;
 import gov.nih.nci.cananolab.security.enums.SecureClassesEnum;
 import gov.nih.nci.cananolab.security.service.SpringSecurityAclService;
+import gov.nih.nci.cananolab.system.applicationservice.ApplicationException;
 import gov.nih.nci.cananolab.system.applicationservice.CaNanoLabApplicationService;
 import gov.nih.nci.cananolab.util.ClassUtils;
 import gov.nih.nci.cananolab.util.Comparators;
@@ -182,7 +184,7 @@ public class SampleServiceHelper
 			if (nanomaterialEntityClassNames != null
 					&& nanomaterialEntityClassNames.length > 0) {
 				Criterion nanoEntityCrit = Restrictions.in("nanoEntity.class",
-						nanomaterialEntityClassNames);
+						(Object[])nanomaterialEntityClassNames);
 				disjunction.add(nanoEntityCrit);
 			}
 			if (otherNanomaterialEntityTypes != null
@@ -190,7 +192,7 @@ public class SampleServiceHelper
 				Criterion otherNanoCrit1 = Restrictions.eq("nanoEntity.class",
 						"OtherNanomaterialEntity");
 				Criterion otherNanoCrit2 = Restrictions.in("nanoEntity.type",
-						otherNanomaterialEntityTypes);
+						(Object[])otherNanomaterialEntityTypes);
 				Criterion otherNanoCrit = Restrictions.and(otherNanoCrit1,
 						otherNanoCrit2);
 				disjunction.add(otherNanoCrit);
@@ -213,7 +215,7 @@ public class SampleServiceHelper
 				Integer[] functionalizingEntityClassNameIntegers = this
 						.convertToFunctionalizingEntityClassOrderNumber(functionalizingEntityClassNames);
 				Criterion funcEntityCrit = Restrictions.in("funcEntity.class",
-						functionalizingEntityClassNameIntegers);
+						(Object[])functionalizingEntityClassNameIntegers);
 				disjunction.add(funcEntityCrit);
 			}
 			if (otherFunctionalizingEntityTypes != null
@@ -223,7 +225,7 @@ public class SampleServiceHelper
 				Criterion otherFuncCrit1 = Restrictions.eq("funcEntity.class",
 						classOrderNumber);
 				Criterion otherFuncCrit2 = Restrictions.in("funcEntity.type",
-						otherFunctionalizingEntityTypes);
+						(Object[])otherFunctionalizingEntityTypes);
 				Criterion otherFuncCrit = Restrictions.and(otherFuncCrit1,
 						otherFuncCrit2);
 				disjunction.add(otherFuncCrit);
@@ -243,18 +245,18 @@ public class SampleServiceHelper
 					CriteriaSpecification.LEFT_JOIN);
 			if (functionClassNames != null && functionClassNames.length > 0) {
 				Criterion funcCrit1 = Restrictions.in("inFunc.class",
-						functionClassNames);
+						(Object[])functionClassNames);
 				Criterion funcCrit2 = Restrictions.in("func.class",
-						functionClassNames);
+						(Object[])functionClassNames);
 				disjunction.add(funcCrit1).add(funcCrit2);
 			}
 			if (otherFunctionTypes != null && otherFunctionTypes.length > 0) {
 				Criterion otherFuncCrit1 = Restrictions.and(
 						Restrictions.eq("inFunc.class", "OtherFunction"),
-						Restrictions.in("inFunc.type", otherFunctionTypes));
+						Restrictions.in("inFunc.type", (Object[])otherFunctionTypes));
 				Criterion otherFuncCrit2 = Restrictions.and(
 						Restrictions.eq("func.class", "OtherFunction"),
-						Restrictions.in("func.type", otherFunctionTypes));
+						Restrictions.in("func.type", (Object[])otherFunctionTypes));
 				disjunction.add(otherFuncCrit1).add(otherFuncCrit2);
 			}
 			crit.add(disjunction);
@@ -278,7 +280,7 @@ public class SampleServiceHelper
 			if (characterizationClassNames != null
 					&& characterizationClassNames.length > 0) {
 				Criterion charCrit = Restrictions.in("chara.class",
-						characterizationClassNames);
+						(Object[])characterizationClassNames);
 				disjunction.add(charCrit);
 			}
 			if (otherCharacterizationTypes != null
@@ -286,7 +288,7 @@ public class SampleServiceHelper
 				Criterion otherCharCrit1 = Restrictions.eq("chara.class",
 						"OtherCharacterization");
 				Criterion otherCharCrit2 = Restrictions.in("chara.name",
-						otherCharacterizationTypes);
+						(Object[])otherCharacterizationTypes);
 				Criterion otherCharCrit = Restrictions.and(otherCharCrit1,
 						otherCharCrit2);
 				disjunction.add(otherCharCrit);
@@ -563,7 +565,9 @@ public class SampleServiceHelper
 
 
 	//TODO add Synthesis to all of the sample returns
-	public Sample findSampleByName(String sampleName) throws Exception {
+	public Sample findSampleByName(String sampleName)
+			throws ApplicationException, NoAccessException, ApplicationProviderException
+	{
 		Sample sample = null;
 		CaNanoLabApplicationService appService = (CaNanoLabApplicationService) ApplicationServiceProvider
 				.getApplicationService();
@@ -956,7 +960,9 @@ public class SampleServiceHelper
 	}
 
 	public PointOfContact findPointOfContactByNameAndOrg(String firstName,
-			String lastName, String orgName) throws Exception {
+			String lastName, String orgName)
+		throws ApplicationException, ApplicationProviderException
+	{
 		PointOfContact poc = null;
 
 		CaNanoLabApplicationService appService = (CaNanoLabApplicationService) ApplicationServiceProvider
@@ -979,7 +985,8 @@ public class SampleServiceHelper
 	}
 
 	public List<String> findSampleIdsByOwner(String currentOwner)
-			throws Exception {
+			throws ApplicationException, ApplicationProviderException
+	{
 		List<String> sampleIds = new ArrayList<String>();
 
 		// can't query for the entire Sample object due to
@@ -1010,7 +1017,9 @@ public class SampleServiceHelper
 		return sampleIds;
 	}
 
-	public List<String> getAllSamples() throws Exception {
+	public List<String> getAllSamples()
+			throws ApplicationException, ApplicationProviderException
+	{
 		CaNanoLabApplicationService appService = (CaNanoLabApplicationService) ApplicationServiceProvider
 				.getApplicationService();
 		HQLCriteria crit = new HQLCriteria(
@@ -1031,7 +1040,8 @@ public class SampleServiceHelper
 			String[] functionClassNames, String[] otherFunctionTypes,
 			String[] characterizationClassNames,
 			String[] otherCharacterizationTypes, String[] wordList)
-			throws Exception {
+			throws ApplicationException, ApplicationProviderException
+	{
 		List<String> sampleIds = new ArrayList<String>();
 
 		//logger.error("Processing: " + sampleName);
@@ -1121,7 +1131,7 @@ public class SampleServiceHelper
 			if (nanomaterialEntityClassNames != null
 					&& nanomaterialEntityClassNames.length > 0) {
 				Criterion nanoEntityCrit = Restrictions.in("nanoEntity.class",
-						nanomaterialEntityClassNames);
+						(Object[])nanomaterialEntityClassNames);
 				disjunction.add(nanoEntityCrit);
 			}
 			if (otherNanomaterialEntityTypes != null
@@ -1129,7 +1139,7 @@ public class SampleServiceHelper
 				Criterion otherNanoCrit1 = Restrictions.eq("nanoEntity.class",
 						"OtherNanomaterialEntity");
 				Criterion otherNanoCrit2 = Restrictions.in("nanoEntity.type",
-						otherNanomaterialEntityTypes);
+						(Object[])otherNanomaterialEntityTypes);
 				Criterion otherNanoCrit = Restrictions.and(otherNanoCrit1,
 						otherNanoCrit2);
 				disjunction.add(otherNanoCrit);
@@ -1152,7 +1162,7 @@ public class SampleServiceHelper
 				Integer[] functionalizingEntityClassNameIntegers = this
 						.convertToFunctionalizingEntityClassOrderNumber(functionalizingEntityClassNames);
 				Criterion funcEntityCrit = Restrictions.in("funcEntity.class",
-						functionalizingEntityClassNameIntegers);
+						(Object[])functionalizingEntityClassNameIntegers);
 				disjunction.add(funcEntityCrit);
 			}
 			if (otherFunctionalizingEntityTypes != null
@@ -1162,7 +1172,7 @@ public class SampleServiceHelper
 				Criterion otherFuncCrit1 = Restrictions.eq("funcEntity.class",
 						classOrderNumber);
 				Criterion otherFuncCrit2 = Restrictions.in("funcEntity.type",
-						otherFunctionalizingEntityTypes);
+						(Object[])otherFunctionalizingEntityTypes);
 				Criterion otherFuncCrit = Restrictions.and(otherFuncCrit1,
 						otherFuncCrit2);
 				disjunction.add(otherFuncCrit);
@@ -1182,18 +1192,18 @@ public class SampleServiceHelper
 					CriteriaSpecification.LEFT_JOIN);
 			if (functionClassNames != null && functionClassNames.length > 0) {
 				Criterion funcCrit1 = Restrictions.in("inFunc.class",
-						functionClassNames);
+						(Object[])functionClassNames);
 				Criterion funcCrit2 = Restrictions.in("func.class",
-						functionClassNames);
+						(Object[])functionClassNames);
 				disjunction.add(funcCrit1).add(funcCrit2);
 			}
 			if (otherFunctionTypes != null && otherFunctionTypes.length > 0) {
 				Criterion otherFuncCrit1 = Restrictions.and(
 						Restrictions.eq("inFunc.class", "OtherFunction"),
-						Restrictions.in("inFunc.type", otherFunctionTypes));
+						Restrictions.in("inFunc.type", (Object[])otherFunctionTypes));
 				Criterion otherFuncCrit2 = Restrictions.and(
 						Restrictions.eq("func.class", "OtherFunction"),
-						Restrictions.in("func.type", otherFunctionTypes));
+						Restrictions.in("func.type", (Object[])otherFunctionTypes));
 				disjunction.add(otherFuncCrit1).add(otherFuncCrit2);
 			}
 			crit.add(disjunction);
@@ -1217,7 +1227,7 @@ public class SampleServiceHelper
 			if (characterizationClassNames != null
 					&& characterizationClassNames.length > 0) {
 				Criterion charCrit = Restrictions.in("chara.class",
-						characterizationClassNames);
+						(Object[])characterizationClassNames);
 				disjunction.add(charCrit);
 			}
 			if (otherCharacterizationTypes != null
@@ -1225,7 +1235,7 @@ public class SampleServiceHelper
 				Criterion otherCharCrit1 = Restrictions.eq("chara.class",
 						"OtherCharacterization");
 				Criterion otherCharCrit2 = Restrictions.in("chara.name",
-						otherCharacterizationTypes);
+						(Object[])otherCharacterizationTypes);
 				Criterion otherCharCrit = Restrictions.and(otherCharCrit1,
 						otherCharCrit2);
 				disjunction.add(otherCharCrit);
