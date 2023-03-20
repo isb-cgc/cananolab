@@ -31,7 +31,8 @@ import java.util.List;
 public interface CharacterizationService extends BaseService {
 
 	void saveCharacterization(SampleBean sampleBean,
-                              CharacterizationBean achar) throws Exception;
+                              CharacterizationBean achar)
+			throws CharacterizationException, NoAccessException;
 
 	CharacterizationBean findCharacterizationById(String charId)
 			throws CharacterizationException, NoAccessException;
@@ -39,9 +40,8 @@ public interface CharacterizationService extends BaseService {
 	void deleteCharacterization(Characterization chara)
 			throws CharacterizationException, NoAccessException;
 
-	List<CharacterizationBean> findCharacterizationsBySampleId(
-            String sampleId) throws CharacterizationException,
-			NoAccessException;
+	List<CharacterizationBean> findCharacterizationsBySampleId(String sampleId)
+			throws CharacterizationException, NoAccessException;
 
 	void saveFinding(FindingBean findingBean)
 			throws CharacterizationException, NoAccessException;
@@ -70,8 +70,8 @@ public interface CharacterizationService extends BaseService {
 	 */
     void copyAndSaveCharacterization(CharacterizationBean charBean,
                                      SampleBean oldSampleBean, SampleBean[] newSampleBeans,
-                                     boolean copyData) throws CharacterizationException,
-			NoAccessException;
+                                     boolean copyData)
+			throws CharacterizationException, NoAccessException;
 
 	int getNumberOfPublicCharacterizations(
             String characterizationClassName) throws CharacterizationException;

@@ -2,6 +2,7 @@ package gov.nih.nci.cananolab.restful.util;
 
 import java.io.InputStream;
 import java.util.Properties;
+import java.text.MessageFormat;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -53,7 +54,12 @@ public class PropertyUtil {
 		
 		return propertyVal.replace(token, replacement);
 	}
-	
+
+	public static String getPropertyReplacingAllTokens(String type, String key, Object[] vals) {
+		String propertyVal = getProperty(type, key);
+		return (MessageFormat.format(propertyVal, vals));
+	}
+
 	protected static Properties getPropertiesByType(String type) {
 		type = type.toLowerCase();
         switch (type) {
