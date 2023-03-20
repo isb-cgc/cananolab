@@ -419,7 +419,7 @@
                                 <td class="field">
                                     <select [disabled]="theAccess.accessType=='role'" name="theAccess.roleName" [(ngModel)]="theAccess.roleName">
                                         <option [selected]="theAccess.roleName===''" [ngValue]="''">--Select--</option>
-                                        <option *ngFor="let role of data.csmRoleNames | keyvalue" [ngValue]="role.key" [selected]="role.key==theAccess.roleName">
+                                        <option *ngFor="let role of data.roleNames | keyvalue" [ngValue]="role.key" [selected]="role.key==theAccess.roleName">
                                             {{role.value}}
                                         </option>
                                     </select>
