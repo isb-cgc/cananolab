@@ -412,14 +412,14 @@
                             </tr>
                             <tr>
                                 <td class="label">
-                                    <label for="access.roleName">
+                                    <label for="theAccess.roleName">
                                         Access to the Sample*
                                     </label>
                                 </td>
                                 <td class="field">
-                                    <select [disabled]="theAccess.accessType=='role'" name="access.roleName" [(ngModel)]="theAccess.roleName">
+                                    <select [disabled]="theAccess.accessType=='role'" name="theAccess.roleName" [(ngModel)]="theAccess.roleName">
                                         <option [selected]="theAccess.roleName===''" [ngValue]="''">--Select--</option>
-                                        <option *ngFor="let role of setupData.csmRoleNames | keyvalue" [ngValue]="role.key" [selected]="role.key==theAccess.roleName">
+                                        <option *ngFor="let role of data.csmRoleNames | keyvalue" [ngValue]="role.key" [selected]="role.key==theAccess.roleName">
                                             {{role.value}}
                                         </option>
                                     </select>
