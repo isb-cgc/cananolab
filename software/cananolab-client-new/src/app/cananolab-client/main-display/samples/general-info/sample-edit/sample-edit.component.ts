@@ -108,6 +108,7 @@ export class SampleEditComponent implements OnInit, OnDestroy{
         if (event === 'role') {
             this.theAccess['recipient'] = 'ROLE_ANONYMOUS';
             this.theAccess['recipientDisplayName'] = 'Public';
+            this.theAccess['roleName']="R";
         }
     }
 
