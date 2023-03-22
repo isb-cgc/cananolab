@@ -16,18 +16,14 @@
         <th></th>
     </tr>
     <tr *ngFor="let file of data[fileArray]; let odd=odd; let fileIndex=index" [ngClass]="{'rowOdd':odd}">
-        <td>{{file.type}}</td>
+        <td [innerHTML]="file.type"></td>
         <td>
-            <a href="" [href]="serverUrl+'/rest/sample/download?fileId='+file.id" *ngIf="!file.uriExternal">
-                {{file['title']}}
-            </a>
-            <a href="" [href]="file.externalUrl" *ngIf="file.uriExternal">
-                {{file['title']}}
-            </a>
+            <a href="" [href]="serverUrl+'/rest/sample/download?fileId='+file.id" *ngIf="!file.uriExternal" [innerHTML]="file['title']"></a>
+            <a href="" [href]="file.externalUrl" *ngIf="file.uriExternal" [innerHTML]="file['title']"></a>
         </td>
         <td>
             <div *ngFor="let keyword of splitKeywordString(file.keywordsStr)">
-                {{keyword}}
+                <span [innerHTML]="keyword"></span>
             </div>
         <td [innerHTML] = "file.description"></td>
         <td>
@@ -112,26 +108,6 @@
                     <textarea id="currentFile.keywordsStr" name="currentFile.keywordsStr" rows="3" cols="60" [(ngModel)]="currentFile.keywordsStr" [innerHTML]="currentFile.keywordsStr">
                     </textarea>
                 </td>
-            </tr>
-            <tr>
-                <td class="label">
-                    <label for="currentFile.description">
-                        Description (inner does no eval in textarea)
-                    </label>
-                </td>
-                <td>
-                    <textarea id="currentFile.description" name="currentFile.description"
-                              rows="3" cols="60" [(ngModel)]="currentFile.description" [innerHTML]="currentFile.description">
-                    </textarea>
-                </td>
-            </tr>
-            <tr>
-                <td>Inner (evals but ditches hazards)</td>
-                <td [innerHtml]="currentFile.description"></td>
-            </tr>
-            <tr>
-                <td>Interpolated (evals nothing)</td>
-                <td>{{currentFile.description}}</td>
             </tr>
             <tr>
                 <td>

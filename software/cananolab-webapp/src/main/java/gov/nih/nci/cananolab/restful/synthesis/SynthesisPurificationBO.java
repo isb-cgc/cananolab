@@ -1421,8 +1421,9 @@ public class SynthesisPurificationBO extends BaseAnnotationBO {
         if (protoBeans == null) {
             return protocolLookup;
         }
-
+        System.out.println("protocol Beans" + protoBeans.size());
         for (ProtocolBean protoBean : protoBeans) {
+            System.out.println("protocol Bean" + protoBean.getDisplayName());
             SimpleProtocol simpleProto = new SimpleProtocol();
             simpleProto.transferFromProtocolBean(protoBean);
             protocolLookup.add(simpleProto);

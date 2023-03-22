@@ -25,11 +25,13 @@ import gov.nih.nci.cananolab.domain.particle.NanomaterialEntity;
 import gov.nih.nci.cananolab.domain.particle.Sample;
 import gov.nih.nci.cananolab.domain.particle.SampleComposition;
 import gov.nih.nci.cananolab.domain.particle.Synthesis;
+import gov.nih.nci.cananolab.exception.ApplicationProviderException;
 import gov.nih.nci.cananolab.exception.NoAccessException;
 import gov.nih.nci.cananolab.security.dao.AclDao;
 import gov.nih.nci.cananolab.security.enums.CaNanoRoleEnum;
 import gov.nih.nci.cananolab.security.enums.SecureClassesEnum;
 import gov.nih.nci.cananolab.security.service.SpringSecurityAclService;
+import gov.nih.nci.cananolab.system.applicationservice.ApplicationException;
 import gov.nih.nci.cananolab.system.applicationservice.CaNanoLabApplicationService;
 import gov.nih.nci.cananolab.util.ClassUtils;
 import gov.nih.nci.cananolab.util.Comparators;
@@ -563,7 +565,9 @@ public class SampleServiceHelper
 
 
 	//TODO add Synthesis to all of the sample returns
-	public Sample findSampleByName(String sampleName) throws Exception {
+	public Sample findSampleByName(String sampleName)
+			throws ApplicationException, NoAccessException, ApplicationProviderException
+	{
 		Sample sample = null;
 		CaNanoLabApplicationService appService = (CaNanoLabApplicationService) ApplicationServiceProvider
 				.getApplicationService();
@@ -956,7 +960,9 @@ public class SampleServiceHelper
 	}
 
 	public PointOfContact findPointOfContactByNameAndOrg(String firstName,
-			String lastName, String orgName) throws Exception {
+			String lastName, String orgName)
+		throws ApplicationException, ApplicationProviderException
+	{
 		PointOfContact poc = null;
 
 		CaNanoLabApplicationService appService = (CaNanoLabApplicationService) ApplicationServiceProvider
@@ -979,7 +985,8 @@ public class SampleServiceHelper
 	}
 
 	public List<String> findSampleIdsByOwner(String currentOwner)
-			throws Exception {
+			throws ApplicationException, ApplicationProviderException
+	{
 		List<String> sampleIds = new ArrayList<String>();
 
 		// can't query for the entire Sample object due to
@@ -1010,7 +1017,9 @@ public class SampleServiceHelper
 		return sampleIds;
 	}
 
-	public List<String> getAllSamples() throws Exception {
+	public List<String> getAllSamples()
+			throws ApplicationException, ApplicationProviderException
+	{
 		CaNanoLabApplicationService appService = (CaNanoLabApplicationService) ApplicationServiceProvider
 				.getApplicationService();
 		HQLCriteria crit = new HQLCriteria(
@@ -1031,7 +1040,8 @@ public class SampleServiceHelper
 			String[] functionClassNames, String[] otherFunctionTypes,
 			String[] characterizationClassNames,
 			String[] otherCharacterizationTypes, String[] wordList)
-			throws Exception {
+			throws ApplicationException, ApplicationProviderException
+	{
 		List<String> sampleIds = new ArrayList<String>();
 
 		//logger.error("Processing: " + sampleName);

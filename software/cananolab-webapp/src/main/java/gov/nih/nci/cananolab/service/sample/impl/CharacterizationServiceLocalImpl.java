@@ -63,7 +63,8 @@ public class CharacterizationServiceLocalImpl extends BaseServiceLocalImpl imple
 	@Autowired
 	private CharacterizationServiceHelper characterizationServiceHelper;
 
-	public void saveCharacterization(SampleBean sampleBean, CharacterizationBean charBean) throws CharacterizationException, NoAccessException
+	public void saveCharacterization(SampleBean sampleBean, CharacterizationBean charBean)
+			throws CharacterizationException, NoAccessException
 	{
 		if (SpringSecurityUtil.getPrincipal() == null) {
 			logger.error("Throwing no access Point A");

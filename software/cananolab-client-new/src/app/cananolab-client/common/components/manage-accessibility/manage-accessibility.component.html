@@ -1,32 +1,32 @@
 
 
 <div *ngIf="accessData !== undefined ">
-    data.recipientDisplayName: {{accessData['recipientDisplayName']}}
+    data.recipientDisplayName: <span [innerHTML]="accessData['recipientDisplayName']"></span>
 </div>
 <div>
-    temp.recipientDisplayName: {{temp['recipientDisplayName']}}
+    temp.recipientDisplayName: <span [innerHTML]="temp['recipientDisplayName']"></span>
 </div>
 
 <table>
     <tr>
         <td>recipient</td>
-        <td>{{temp['recipient']}}</td>
+        <td [innerHTML]="temp['recipient']"></td>
     </tr>
     <tr>
         <td>accessType</td>
-        <td>{{temp['accessType']}}</td>
+        <td [innerHTML]="temp['accessType']"></td>
     </tr>
     <tr>
         <td>roleName</td>
-        <td>{{temp['roleName']}}</td>
+        <td [innerHTML]="temp['roleName']"></td>
     </tr>
     <tr>
         <td>recipient</td>
-        <td>{{temp['roleDisplayName']}}</td>
+        <td [innerHTML]="temp['roleDisplayName']"></td>
     </tr>
     <tr>
         <td>recipient</td>
-        <td>{{temp['principal']}}</td>
+        <td [innerHTML]="temp['principal']"></td>
     </tr>
 </table>
 

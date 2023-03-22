@@ -41,7 +41,7 @@ export class SearchSamplesByPublicationComponent implements OnInit{
     }
 
     reset() {
-        this.type='PubMed';
-        this.inputId='';
+        this.type = 'PubMed';
+        this.inputId = '';
     }
 }
