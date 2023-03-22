@@ -237,11 +237,15 @@ public class SpringSecurityAclServiceImpl implements SpringSecurityAclService
 		Map<String, AccessControlInfo> userAccesses = new HashMap<String, AccessControlInfo>();
 		Map<String, AccessControlInfo> groupAccesses = new HashMap<String, AccessControlInfo>();
 		List<AccessControlEntry> entries = acl.getEntries();
+		// WJRL 3/23: We appear to have e.g. 87 entries here for a sample
 		for (AccessControlEntry entry : entries)
 		{
 			String aclSid = "";
 			AccessTypeEnum accessType = null;
 			AccessControlInfo info = null;
+			//
+			// WJRL 3/23: We appear to have either GrantedAuthoritySid e.g. [ROLE_RESEARCHER] or PrincipalSid [<username>]
+			//
 			if (entry.getSid() instanceof GrantedAuthoritySid)
 			{
 				GrantedAuthoritySid gaSid = (GrantedAuthoritySid) entry.getSid();
@@ -256,7 +260,9 @@ public class SpringSecurityAclServiceImpl implements SpringSecurityAclService
 				accessType = AccessTypeEnum.USER;
 				info = userAccesses.get(aclSid);
 			}
-			
+			// The pattern is a 32-bit representation, and looks like
+			// ............................D...
+
 			if (info == null)
 			{
 				info = new AccessControlInfo();
@@ -276,6 +282,11 @@ public class SpringSecurityAclServiceImpl implements SpringSecurityAclService
 			info.setRoleName(info.getRoleName() + entry.getPermission().getPattern());
 		}
 
+		//
+		// userAccesses.keySet() : [<user name>]
+		// userAccess.getRoleName(): ...............................R..............................W.............................D..................................R..............................W.............................D..................................R..............................W.............................D..................................R..............................W.............................D..................................R..............................W.............................D..................................R..............................W.............................D..................................R..............................W.............................D..................................R..............................W.............................D..................................R..............................W.............................D..................................R..............................W.............................D..................................R..............................W.............................D...
+		//
+
 		for (String recipient: userAccesses.keySet())
 		{
 			AccessControlInfo userAccess = userAccesses.get(recipient);
@@ -283,6 +294,9 @@ public class SpringSecurityAclServiceImpl implements SpringSecurityAclService
 			
 			StringBuffer permStr = new StringBuffer();
 			StringBuilder roleDisplayName = new StringBuilder();
+			//
+			// This loop is one of two responsible for issue #276
+			//
 			for (int i = 0; i < userAccess.getRoleName().length(); i++)
 			{
 				if (userAccess.getRoleName().charAt(i) != '.')
@@ -294,7 +308,11 @@ public class SpringSecurityAclServiceImpl implements SpringSecurityAclService
 			userAccess.setRoleName(permStr.toString());
 			userAccess.setRoleDisplayName(roleDisplayName.toString());
 		}
-		
+
+		//
+		// groupAccesses.keySet(): [ROLE_CURATOR, ROLE_RESEARCHER, ROLE_ANONYMOUS]
+		// groupAccess.getRoleName(): ...............................R..............................W.............................D..................................R..............................W.............................D..................................R..............................W.............................D..................................R..............................W.............................D..................................R..............................W.............................D..................................R..............................W.............................D..................................R..............................W.............................D..................................R..............................W.............................D..................................R..............................W.............................D..................................R..............................W.............................D..................................R..............................W.............................D...
+		//
 		//add all the roles and only those groups to which the logged in user is a member of
 		for (String recipient: groupAccesses.keySet())
 		{
@@ -306,6 +324,9 @@ public class SpringSecurityAclServiceImpl implements SpringSecurityAclService
 				
 				StringBuffer permStr = new StringBuffer();
 				StringBuilder roleDisplayName = new StringBuilder();
+				//
+				// This loop is one of two responsible for issue #276
+				//
 				for (int i = 0; i < groupAccess.getRoleName().length(); i++)
 				{
 					if (groupAccess.getRoleName().charAt(i) != '.')
