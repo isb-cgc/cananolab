@@ -41,10 +41,9 @@ public class SpringSecurityUtil
 		if (authentication != null)
 		{
 				Object principal = authentication.getPrincipal();
-				if (principal instanceof CananoUserDetails)
+				if (principal instanceof CananoUserDetails) {
 					userDetails = (CananoUserDetails) authentication.getPrincipal();
-				else
-				{
+				} else {
 					userDetails = new CananoUserDetails();
 					userDetails.setUsername(principal.toString());
 					Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();

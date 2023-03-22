@@ -13,6 +13,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import gov.nih.nci.cananolab.util.ClassUtils;
 import org.apache.commons.collections.MultiMap;
 import org.apache.commons.collections.map.MultiValueMap;
 
@@ -93,7 +94,9 @@ public class SimpleCompositionBean {
 
 		// NanoMaterial Entity
 		setCompositionSections(compBean.getCompositionSections());
-		setSampleName(compBean.getDomain().getSample().getName());
+		if ((compBean.getDomain() != null) && (compBean.getDomain().getSample() != null)) {
+			setSampleName(compBean.getDomain().getSample().getName());
+		}
 		nanomaterialentity = new MultiValueMap();
 
 		if (compBean.getNanomaterialEntities() != null) {
@@ -303,17 +306,20 @@ public class SimpleCompositionBean {
 								funcBean.getDescription());
 						if (funcBean.isWithProperties()) {
 							properties = new HashMap<String, Object>();
-							properties.put("isWithProperties",
-									funcBean.isWithProperties());
-							System.out.println("****** Is WIth Properties*****"
-									+ funcBean.isWithProperties());
+							// Fix for #294
+							// properties.put("isWithProperties",
+							//		funcBean.isWithProperties());
+							//System.out.println("****** Is WIth Properties*****"
+							//		+ funcBean.isWithProperties());
 							try {
 								String detailPage = gov.nih.nci.cananolab.restful.sample.InitCompositionSetup
 										.getInstance().getDetailPage(
 												entityType,
 												"functionalizingentity");
-								System.out.println("**** Deatils Page *****"
+								System.out.println("**** Details Page *****"
 										+ detailPage);
+								// See #294 for discussion
+								System.out.println("try using this instead?: " + ClassUtils.getShortClassNameFromDisplayName(entityType));
 								function.put("detailsPage", detailPage);
 								if (detailPage.contains("SmallMolecule")) {
 									properties.put("alternateName", funcBean
@@ -322,7 +328,8 @@ public class SimpleCompositionBean {
 								}
 
 								if (detailPage.contains("Biopolymer")) {
-									properties = new HashMap<String, Object>();
+									// Fix for #294 : not needed
+									//properties = new HashMap<String, Object>();
 
 									properties.put("type", funcBean
 											.getBiopolymer().getType());
@@ -331,7 +338,8 @@ public class SimpleCompositionBean {
 
 								}
 								if (detailPage.contains("Antibody")) {
-									properties = new HashMap<String, Object>();
+									// Fix for #294 : not needed
+									//properties = new HashMap<String, Object>();
 
 									properties.put("type", funcBean
 											.getAntibody().getType());
