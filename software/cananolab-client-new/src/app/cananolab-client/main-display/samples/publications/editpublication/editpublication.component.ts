@@ -472,17 +472,12 @@ export class EditpublicationComponent implements OnInit {
   }
 
 
-  submitForReview() {
-      console.log(this.data)
-    let url = this.apiService.doPost(Consts.QUERY_PUBLICATION_SUBMIT_REVIEW,{dataId:this.data.fileId,dataName:this.data.title,dataType:"publication"},'text');
-    url.subscribe(data=> {
-        this.submitReviewButton=false;
-    })
-}
-
-
-
-
-
+    submitForReview() {
+        console.log(this.data)
+        let url = this.apiService.doPost(Consts.QUERY_PUBLICATION_SUBMIT_REVIEW,{dataId: this.data.fileId, dataName: this.data.title, dataType:"publication"},'text');
+        url.subscribe(data=> {
+            this.submitReviewButton=false;
+        })
+    }
 
 }
