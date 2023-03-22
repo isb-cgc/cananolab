@@ -93,12 +93,17 @@ export class SampleEditComponent implements OnInit, OnDestroy{
     saveAccess() {
         this.data.theAccess = this.theAccess;
         this.data['keywords'] = this.data['keywords'].split('\n');
-        this.apiService.doPost(Consts.QUERY_SAMPLE_SAVE_ACCESS, this.data).subscribe(data => {
+        let url = this.apiService.doPost(Consts.QUERY_SAMPLE_SAVE_ACCESS, this.data);
+        url.subscribe(data => {
             this.data = data;
             this.data['keywords'] = this.joinKeywords(this.data['keywords']);
             this.dataTrailer = JSON.parse(JSON.stringify(this.data));
-            this.theAccessIndex = null;
-        })
+        },
+        error=> {
+            this.errors= error;
+        });
+
+        this.theAccessIndex = null;
     }
 
     changeAccessType(event: string) {
