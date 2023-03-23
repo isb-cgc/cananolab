@@ -44,6 +44,8 @@ public class CompositionServices {
 			return Response.ok(view).build();
 
 		} catch (Exception e) {
+			logger.error(e.getMessage());
+			e.printStackTrace();
 			// WJRL 2/24/23: An internal exception caught here is unexpected and should not return OK with just a status reporting an error.
 			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity("Error while building the composition results").build();
 		}
