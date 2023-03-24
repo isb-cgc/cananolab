@@ -50,6 +50,8 @@ public class SampleEditGeneralBean {
 	Map<String, String> roleNames;
 	Boolean isPublic = false;
 
+	Boolean isCuratorEditing = false;
+
 	boolean showReviewButton;
 
 	List<String> errors = new ArrayList<String>();
@@ -214,6 +216,13 @@ public class SampleEditGeneralBean {
 	}
 	public void setIsPublic(Boolean isPublic) {
 		this.isPublic = isPublic;
+	}
+
+	public Boolean getIsCuratorEditing() {
+		return this.isCuratorEditing;
+	}
+	public void setIsCuratorEditing(Boolean isCuratorEditing) {
+		this.isCuratorEditing = isCuratorEditing;
 	}
 
 	public void setupRoleNameMap() {

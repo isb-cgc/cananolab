@@ -469,7 +469,17 @@ export class EditpublicationComponent implements OnInit {
         this.theFile.append('theAccess',this.theAccess);
         this.theFile.append('category',this.data['category']);
         this.theFile.append('status',this.data['status']);
-  }
+    }
+
+    shouldShowAccessEditButton(group) {
+        if (group.recipient == 'ROLE_CURATOR') {
+            return false;
+        } else if (group.recipient == 'ROLE_ANONYMOUS') {
+            return this.data != null && this.data['isCuratorEditing'];
+        }
+
+        return true;
+    }
 
 
     submitForReview() {

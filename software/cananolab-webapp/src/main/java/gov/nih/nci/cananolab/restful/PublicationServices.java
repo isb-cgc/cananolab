@@ -37,6 +37,7 @@ import gov.nih.nci.cananolab.restful.view.SimplePublicationSummaryViewBean;
 import gov.nih.nci.cananolab.restful.view.SimplePublicationWithSamplesBean;
 import gov.nih.nci.cananolab.restful.view.edit.SimpleSubmitPublicationBean;
 import gov.nih.nci.cananolab.security.utils.SpringSecurityUtil;
+import gov.nih.nci.cananolab.security.CananoUserDetails;
 import gov.nih.nci.cananolab.ui.form.PublicationForm;
 import gov.nih.nci.cananolab.ui.form.SearchPublicationForm;
 import gov.nih.nci.cananolab.util.Constants;
@@ -201,6 +202,11 @@ public class PublicationServices {
 				return Response.status(Response.Status.UNAUTHORIZED).entity(Constants.MSG_SESSION_INVALID).build();
 			
 			SimpleSubmitPublicationBean view = publicationBO.setupUpdate(publicationId,sampleId, httpRequest);
+
+			CananoUserDetails userDetails = SpringSecurityUtil.getPrincipal();
+			boolean isCurator = userDetails.isCurator();
+
+			view.setIsCuratorEditing(isCurator);
 
 			List<String> errors = view.getErrors();
 			return (errors == null || errors.size() == 0) ?

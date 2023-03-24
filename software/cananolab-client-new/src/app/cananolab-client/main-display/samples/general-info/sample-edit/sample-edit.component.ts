@@ -313,6 +313,16 @@ export class SampleEditComponent implements OnInit, OnDestroy{
         })
     }
 
+    shouldShowAccessEditButton(group) {
+        if (group.recipient == 'ROLE_CURATOR') {
+            return false;
+        } else if (group.recipient == 'ROLE_ANONYMOUS') {
+            return this.data != null && this.data['isCuratorEditing'];
+        }
+
+        return true;
+    }
+
     getSampleEditData(){
         let getUrl = Consts.QUERY_SAMPLE_EDIT;
 

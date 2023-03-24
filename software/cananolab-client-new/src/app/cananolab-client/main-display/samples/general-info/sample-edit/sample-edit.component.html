@@ -283,7 +283,7 @@
             <tr>
                 <td class="label">
                     <label for="dataAccess">
-                        Access to the
+                        Access to the Sample
                     </label>
                 </td>
                 <td>
@@ -303,7 +303,7 @@
                             <td>{{group.recipientDisplayName}}</td>
                             <td>{{group.roleDisplayName}}</td>
                             <td>
-                                <button (click)="editAccess(gIndex,group)" *ngIf="group.recipient != 'ROLE_CURATOR'" class="btn-canano btn-canano-primary btn-canano-xs mr-1">Edit</button>
+                                <button (click)="editAccess(gIndex,group)" *ngIf="shouldShowAccessEditButton(group)" class="btn-canano btn-canano-primary btn-canano-xs mr-1">Edit</button>
                             </td>
                         </tr>
                     </table>
@@ -348,8 +348,9 @@
                                     <label for="theAccess.accessType.user" class="right">
                                         User
                                     </label>
-                                    <input (ngModelChange)="changeAccessType($event)" [value]="'role'" type="radio" name="theAccess.accessType" id="theAccess.accessType.role" [(ngModel)]="theAccess.accessType">
-                                    <label for="theAccess.accessType.role" class="right">
+
+                                    <input *ngIf="data.isCuratorEditing" (ngModelChange)="changeAccessType($event)" [value]="'role'" type="radio" name="theAccess.accessType" id="theAccess.accessType.role" [(ngModel)]="theAccess.accessType">
+                                    <label *ngIf="data.isCuratorEditing" for="theAccess.accessType.role" class="right">
                                         Public
                                     </label>
                                 </td>
