@@ -155,7 +155,7 @@
                                 <td>{{group.recipientDisplayName}}</td>
                                 <td>{{group.roleDisplayName}}</td>
                                 <td>
-                                    <button *ngIf="group.recipient != 'ROLE_CURATOR'" (click)="editAccess(groupIndex,group)" class="btn-canano btn-canano-primary btn-canano-xs mr-1">Edit</button>
+                                    <button (click)="editAccess(gIndex,group)" *ngIf="shouldShowAccessEditButton(group)" class="btn-canano btn-canano-primary btn-canano-xs mr-1">Edit</button>
                                 </td>
                             </tr>
                         </table>
@@ -198,8 +198,8 @@
                                         Collaboration Group
                                     </label>
                                     &nbsp;
-                                    <input (ngModelChange)="changeAccessType($event)" type="radio" name="accessType.user" id="accessType.user" [value]="'user'" [(ngModel)]="theAccess['accessType']">
-                                    <label for="accessType.user" class="right">
+                                    <input *ngIf="data.isCuratorEditing" (ngModelChange)="changeAccessType($event)" [value]="'role'" type="radio" name="theAccess.accessType" id="theAccess.accessType.role" [(ngModel)]="theAccess.accessType">
+                                    <label *ngIf="data.isCuratorEditing" for="theAccess.accessType.role" class="right">
                                         User
                                     </label>
                                     &nbsp;

@@ -62,6 +62,15 @@ export class ProtocolCreateComponent implements OnInit, AfterViewInit{
             }
     }
 
+    shouldShowAccessEditButton(group) {
+        if (group.recipient == 'ROLE_CURATOR') {
+            return false;
+        } else if (group.recipient == 'ROLE_ANONYMOUS') {
+            return this.data != null && this.data['isCuratorEditing'];
+        }
+
+        return true;
+    }
 
     buildExternalUriForm(): FormData{
         let formData = new FormData();

@@ -18,6 +18,7 @@ public class SimpleSearchProtocolBean {
 	long fileId;
 	boolean editable = false;
 	boolean userDeletable = false;
+	Boolean isCuratorEditing = false;
 	String fileTitle;
 	
 	public String getFileTitle() {
@@ -91,6 +92,12 @@ public class SimpleSearchProtocolBean {
 	}
 	public void setFileInfo(String fileInfo) {
 		this.fileInfo = fileInfo;
+	}
+	public Boolean getIsCuratorEditing() {
+		return this.isCuratorEditing;
+	}
+	public void setIsCuratorEditing(Boolean isCuratorEditing) {
+		this.isCuratorEditing = isCuratorEditing;
 	}
 	public void transferProtocolBeanForBasicResultView(ProtocolBean bean) {
 		
