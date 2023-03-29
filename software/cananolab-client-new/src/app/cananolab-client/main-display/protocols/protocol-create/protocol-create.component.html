@@ -155,7 +155,7 @@
                                 <td>{{group.recipientDisplayName}}</td>
                                 <td>{{group.roleDisplayName}}</td>
                                 <td>
-                                    <button (click)="editAccess(gIndex,group)" *ngIf="shouldShowAccessEditButton(group)" class="btn-canano btn-canano-primary btn-canano-xs mr-1">Edit</button>
+                                    <button (click)="editAccess(groupIndex,group)" *ngIf="shouldShowAccessEditButton(group)" class="btn-canano btn-canano-primary btn-canano-xs mr-1">Edit</button>
                                 </td>
                             </tr>
                         </table>
@@ -186,7 +186,7 @@
                 <td>
                     <div class="mainBorder">
                         <table class="authorForm">
-                            <tr>
+                            <tr *ngIf="!editingAccessRow">
                                 <td class="label">
                                     <label for="accessType">
                                         Access By*
@@ -209,7 +209,7 @@
                                     </label>
                                 </td>
                             </tr>
-                            <tr *ngIf="theAccess.accessType&&theAccess.accessType!='role'">
+                            <tr *ngIf="theAccess.accessType&&theAccess.accessType!='role'&&!editingAccessRow">
                                 <td class="label">
                                     <label for="access.recipient">
                                         <span *ngIf="theAccess.accessType=='group'">

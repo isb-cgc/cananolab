@@ -29,6 +29,8 @@ export class ProtocolCreateComponent implements OnInit, AfterViewInit{
     theAccess={};
     helpUrl=Consts.HELP_URL_PROTOCOL_CREATE;
     submitReviewButton=true;
+    editingAccessRow = false;
+
     constructor(private httpClient:HttpClient, private route:ActivatedRoute,private router:Router,private apiService: ApiService, private utilService: UtilService,
                  ){
     }
@@ -60,6 +62,7 @@ export class ProtocolCreateComponent implements OnInit, AfterViewInit{
                 "roleName":"",
                 "recipientDisplayName":""
             }
+        this.editingAccessRow = false;
     }
 
     shouldShowAccessEditButton(group) {
@@ -173,6 +176,7 @@ export class ProtocolCreateComponent implements OnInit, AfterViewInit{
         this.accessIndex=index;
         this.recipientList=null;
         this.theAccess=JSON.parse(JSON.stringify(access));
+        this.editingAccessRow = true;
     };
 
     getRecipientList() {

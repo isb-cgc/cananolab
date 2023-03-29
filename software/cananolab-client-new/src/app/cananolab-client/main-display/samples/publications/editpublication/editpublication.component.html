@@ -423,7 +423,7 @@
                         <td></td>
                         <td>
                             <table class="authorForm">
-                                <tr>
+                                <tr *ngIf="!editingAccessRow">
                                     <td class="label">
                                         <label for="accessType">
                                             Access By*
@@ -446,7 +446,7 @@
                                         </label>
                                     </td>
                                 </tr>
-                                <tr *ngIf="theAccess.accessType&&theAccess.accessType!='role'">
+                                <tr *ngIf="theAccess.accessType&&theAccess.accessType!='role'&&!editingAccessRow">
                                     <td class="label">
                                         <label for="access.recipient">
                                             <span *ngIf="theAccess.accessType=='group'">

@@ -35,6 +35,7 @@ export class SampleEditComponent implements OnInit, OnDestroy{
     toolHeadingNameSearchSample = 'Update Sample';
     submitReviewButton = true;
     piiConfirmed = false;
+    editingAccessRow = false;
 
 
     constructor( private router: Router, private navigationService: NavigationService, private route: ActivatedRoute, private httpClient: HttpClient,
@@ -87,7 +88,7 @@ export class SampleEditComponent implements OnInit, OnDestroy{
         }, 100);
         this.getUserGroups();
         this.getUsers();
-
+        this.editingAccessRow = false;
     }
 
     saveAccess() {
@@ -156,8 +157,9 @@ export class SampleEditComponent implements OnInit, OnDestroy{
         }, 100);
         this.getUserGroups();
         this.getUsers();
-
+        this.editingAccessRow = true;
     }
+
     // set pointer fields to old values when adding other //
     addOtherValue(field, currentValue) {
         this.currentDropdownValues[field] = currentValue;
