@@ -470,7 +470,7 @@ export class EditcharacterizationComponent implements OnInit {
             that.updateRowsColsForFinding();
         };
 
-        reader.readAsBinaryString(csvFile.slice(0, opt_stopByte));
+        reader.readAsText(csvFile.slice(0, opt_stopByte));
 
     };
 

@@ -198,13 +198,13 @@
                                         Collaboration Group
                                     </label>
                                     &nbsp;
-                                    <input *ngIf="data.isCuratorEditing" (ngModelChange)="changeAccessType($event)" [value]="'role'" type="radio" name="theAccess.accessType" id="theAccess.accessType.role" [(ngModel)]="theAccess.accessType">
-                                    <label *ngIf="data.isCuratorEditing" for="theAccess.accessType.role" class="right">
+                                    <input (ngModelChange)="changeAccessType($event)" [value]="'role'" type="radio" name="theAccess.accessType" id="theAccess.accessType.role" [(ngModel)]="theAccess.accessType">
+                                    <label for="theAccess.accessType.role" class="right">
                                         User
                                     </label>
                                     &nbsp;
-                                    <input (ngModelChange)="changeAccessType($event)" type="radio" name="accessType.role" id="accessType.role" [value]="'role'" [(ngModel)]="theAccess['accessType']">
-                                    <label for="accessType.role" class="right">
+                                    <input *ngIf="data.isCuratorEditing" (ngModelChange)="changeAccessType($event)" type="radio" name="accessType.role" id="accessType.role" [value]="'role'" [(ngModel)]="theAccess['accessType']">
+                                    <label *ngIf="data.isCuratorEditing" for="accessType.role" class="right">
                                         Public
                                     </label>
                                 </td>
