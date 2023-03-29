@@ -333,7 +333,7 @@
                 <td>
                     <div class="mainBorder">
                         <table class="dataMain access">
-                            <tr>
+                            <tr *ngIf="!editingAccessRow">
                                 <td class="label">
                                     <label for="access">
                                         Access By*
@@ -360,7 +360,7 @@
                             |---  Dropdown overlays if collaboration group is selected
                             |---
                             -->
-                            <tr *ngIf="theAccess['accessType']=='group'">
+                            <tr *ngIf="theAccess['accessType']=='group' && !editingAccessRow">
                                 <td class="label">
                                     <label for="theAccess.collaborationGroup">
                                         Collaboration Group*
@@ -383,7 +383,7 @@
                             |---  Dropdown overlays if user is selected
                             |---
                             -->
-                            <tr *ngIf="theAccess['accessType']=='user'">
+                            <tr *ngIf="theAccess['accessType']=='user' && !editingAccessRow">
                                 <td class="label">
                                     <label for="theAccess.user">
                                         User*
@@ -403,7 +403,7 @@
                             |---  Blank control overlays if public is selected
                             |---
                             -->
-                            <tr *ngIf="theAccess['accessType']=='role'">
+                            <tr *ngIf="theAccess['accessType']=='role' && !editingAccessRow">
                                 <td colspan="2" class="label">
                                     <label for="theAccess.public">
                                         Public

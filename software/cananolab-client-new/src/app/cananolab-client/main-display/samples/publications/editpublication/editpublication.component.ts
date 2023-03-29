@@ -37,6 +37,7 @@ export class EditpublicationComponent implements OnInit {
     type;
     downloadUrl=Consts.QUERY_PUBLICATION_DOWNLOAD;
     submitReviewButton=true;
+    editingAccessRow = false;
 
   constructor(private apiService:ApiService,private navigationService:NavigationService,private httpClient:HttpClient,private route:ActivatedRoute,private router:Router) { }
 
@@ -135,7 +136,7 @@ export class EditpublicationComponent implements OnInit {
                 "recipientDisplayName":""
             }
 
-
+        this.editingAccessRow = false;
     }
 
     addAuthor() {
@@ -169,6 +170,7 @@ export class EditpublicationComponent implements OnInit {
         this.accessIndex=index;
         this.recipientList=null;
         this.theAccess=JSON.parse(JSON.stringify(access));
+        this.editingAccessRow = true;
     }
 
     editAuthor(index,author) {
