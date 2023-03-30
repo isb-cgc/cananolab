@@ -136,7 +136,7 @@ export class SampleEditComponent implements OnInit, OnDestroy{
             },
             error => {
                 this.data['keywords'] = keywordString;
-                this.errors = erorr;
+                this.errors = error;
             });
         }
     }
