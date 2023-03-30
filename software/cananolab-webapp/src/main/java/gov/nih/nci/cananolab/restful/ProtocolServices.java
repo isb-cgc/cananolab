@@ -24,6 +24,7 @@ import gov.nih.nci.cananolab.restful.protocol.SearchProtocolBO;
 import gov.nih.nci.cananolab.restful.util.CommonUtil;
 import gov.nih.nci.cananolab.restful.view.edit.SimpleSubmitProtocolBean;
 import gov.nih.nci.cananolab.security.utils.SpringSecurityUtil;
+import gov.nih.nci.cananolab.security.CananoUserDetails;
 import gov.nih.nci.cananolab.ui.form.SearchProtocolForm;
 import gov.nih.nci.cananolab.util.Constants;
 import org.apache.logging.log4j.Logger;
@@ -131,6 +132,10 @@ public class ProtocolServices
 				return Response.status(Response.Status.UNAUTHORIZED).entity(Constants.MSG_SESSION_INVALID).build();
 
 			SimpleSubmitProtocolBean view = protocolBO.setupUpdate(protocolId, httpRequest);
+			CananoUserDetails userDetails = SpringSecurityUtil.getPrincipal();
+			boolean isCurator = userDetails.isCurator();
+
+			view.setIsCuratorEditing(isCurator);
 
 			List<String> errors = view.getErrors();
 			return (errors == null || errors.size() == 0) ?

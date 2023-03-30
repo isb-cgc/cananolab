@@ -37,6 +37,7 @@ export class EditpublicationComponent implements OnInit {
     type;
     downloadUrl=Consts.QUERY_PUBLICATION_DOWNLOAD;
     submitReviewButton=true;
+    editingAccessRow = false;
 
   constructor(private apiService:ApiService,private navigationService:NavigationService,private httpClient:HttpClient,private route:ActivatedRoute,private router:Router) { }
 
@@ -135,7 +136,7 @@ export class EditpublicationComponent implements OnInit {
                 "recipientDisplayName":""
             }
 
-
+        this.editingAccessRow = false;
     }
 
     addAuthor() {
@@ -169,6 +170,7 @@ export class EditpublicationComponent implements OnInit {
         this.accessIndex=index;
         this.recipientList=null;
         this.theAccess=JSON.parse(JSON.stringify(access));
+        this.editingAccessRow = true;
     }
 
     editAuthor(index,author) {
@@ -469,7 +471,17 @@ export class EditpublicationComponent implements OnInit {
         this.theFile.append('theAccess',this.theAccess);
         this.theFile.append('category',this.data['category']);
         this.theFile.append('status',this.data['status']);
-  }
+    }
+
+    shouldShowAccessEditButton(group) {
+        if (group.recipient == 'ROLE_CURATOR') {
+            return false;
+        } else if (group.recipient == 'ROLE_ANONYMOUS') {
+            return this.data != null && this.data['isCuratorEditing'];
+        }
+
+        return true;
+    }
 
 
     submitForReview() {
