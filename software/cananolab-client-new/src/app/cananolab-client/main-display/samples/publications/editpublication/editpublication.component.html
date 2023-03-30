@@ -142,8 +142,8 @@
                         <td colspan="5">
                             <table class="dataTable">
                                 <tr>
-                                    <th>First Name</th>
                                     <th>Last Name</th>
+                                    <th>First Name</th>
                                     <th>Initials</th>
                                     <th></th>
                                 </tr>
@@ -394,7 +394,7 @@
                                     <td>{{group.recipientDisplayName}}</td>
                                     <td>{{group.roleDisplayName}}</td>
                                     <td>
-                                        <button *ngIf="group.recipient != 'ROLE_CURATOR'" (click)="editAccess(groupIndex,group)" class="btn-canano btn-canano-primary btn-canano-xs mr-1">Edit</button>
+                                        <button *ngIf="shouldShowAccessEditButton(group)" (click)="editAccess(groupIndex,group)" class="btn-canano btn-canano-primary btn-canano-xs mr-1">Edit</button>
                                     </td>
                                 </tr>
                             </table>
@@ -423,7 +423,7 @@
                         <td></td>
                         <td>
                             <table class="authorForm">
-                                <tr>
+                                <tr *ngIf="!editingAccessRow">
                                     <td class="label">
                                         <label for="accessType">
                                             Access By*
@@ -440,13 +440,13 @@
                                             User
                                         </label>
                                         &nbsp;
-                                        <input (ngModelChange)="changeAccessType($event)" type="radio" name="accessType.role" id="accessType.role" [value]="'role'" [(ngModel)]="theAccess['accessType']">
-                                        <label for="accessType.role" class="right">
+                                        <input *ngIf="data.isCuratorEditing" (ngModelChange)="changeAccessType($event)" type="radio" name="accessType.role" id="accessType.role" [value]="'role'" [(ngModel)]="theAccess['accessType']">
+                                        <label *ngIf="data.isCuratorEditing" for="accessType.role" class="right">
                                             Public
                                         </label>
                                     </td>
                                 </tr>
-                                <tr *ngIf="theAccess.accessType&&theAccess.accessType!='role'">
+                                <tr *ngIf="theAccess.accessType&&theAccess.accessType!='role'&&!editingAccessRow">
                                     <td class="label">
                                         <label for="access.recipient">
                                             <span *ngIf="theAccess.accessType=='group'">

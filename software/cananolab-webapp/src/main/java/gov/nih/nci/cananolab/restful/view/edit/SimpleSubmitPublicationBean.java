@@ -46,6 +46,7 @@ public class SimpleSubmitPublicationBean {
 	List<String> errors;
 	List<String> otherSampleNames;
 	Boolean review = false;
+	Boolean isCuratorEditing = false;
 	
 	
 	public Boolean getReview() {
@@ -272,5 +273,6 @@ public class SimpleSubmitPublicationBean {
 	public void setUserDeletable(Boolean userDeletable) {
 		this.userDeletable = userDeletable;
 	}
-		
+	public Boolean getIsCuratorEditing() { return this.isCuratorEditing; }
+	public void setIsCuratorEditing(Boolean isCuratorEditing) { this.isCuratorEditing = isCuratorEditing; }
 }

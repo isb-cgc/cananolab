@@ -35,6 +35,7 @@ public class SimpleSubmitProtocolBean {
 	String externalUrl = "";
 	Boolean review =false;
 	byte[] newFileData;
+	Boolean isCuratorEditing = false;
 	
 	public byte[] getNewFileData() {
 		return newFileData;
@@ -193,5 +194,6 @@ public class SimpleSubmitProtocolBean {
 	public void setCreatedBy(String createdBy) {
 		this.createdBy = createdBy;
 	}
-	
+	public void setIsCuratorEditing(Boolean isCuratorEditing) { this.isCuratorEditing = isCuratorEditing; }
+	public Boolean getIsCuratorEditing() { return this.isCuratorEditing; }
 }
