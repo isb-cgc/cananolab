@@ -32,6 +32,7 @@ export class SampleEditComponent implements OnInit, OnDestroy{
     pointOfContact;
     pointOfContactIndex;
     sampleId = -1;
+    recipientList;
     toolHeadingNameSearchSample = 'Update Sample';
     submitReviewButton = true;
     piiConfirmed = false;
@@ -46,6 +47,7 @@ export class SampleEditComponent implements OnInit, OnDestroy{
     ngOnInit(): void{
         this.navigationService.setCurrentSelectedItem(0);
         this.currentDropdownValues = {};
+        this.recipientList;
         this.errors = {};
         this.route.params.subscribe(
             ( params: Params ) => {
@@ -76,6 +78,7 @@ export class SampleEditComponent implements OnInit, OnDestroy{
 
     addAccess() {
         this.theAccessIndex = -1;
+        this.recipientList = null;
         this.theAccess = {
             accessType: '',
             recipient: '',
@@ -112,6 +115,7 @@ export class SampleEditComponent implements OnInit, OnDestroy{
     changeAccessType(event: string) {
         this.theAccess.recipient = '';
         this.theAccess.roleName = '';
+        this.recipientList=null;
         // The value "role" is sent in only when the "Access By" is set to public
         if (event === 'role') {
             this.theAccess['recipient'] = 'ROLE_ANONYMOUS';
@@ -141,6 +145,24 @@ export class SampleEditComponent implements OnInit, OnDestroy{
         }
     }
 
+    getRecipientList() {
+        var url;
+        if (this.theAccess.accessType=='group') {
+            url = this.apiService.doGet(Consts.QUERY_GET_COLLABORATION_GROUPS,'searchStr=');
+        }
+        if (this.theAccess.accessType=='user') {
+            url = this.apiService.doGet(Consts.QUERY_GET_USERS,'searchStr=');
+        }
+        url.subscribe(data=> {
+            this.recipientList=data;
+            this.errors={};
+        },
+        error=> {
+            this.errors=error;
+
+        })
+    }
+
     delete() {
         if (confirm('Are you sure you wish to delete this sample?')) {
             this.apiService.doGet(Consts.QUERY_SAMPLE_DELETE, 'sampleId=' + this.sampleId, 'text').subscribe(data => {
@@ -159,6 +181,7 @@ export class SampleEditComponent implements OnInit, OnDestroy{
     editAccess(index, access) {
         this.theAccessIndex = index;
         this.theAccess = access;
+        this.recipientList=null;
         setTimeout(function () {
             document.getElementById('accessForm').scrollIntoView();
         }, 100);
