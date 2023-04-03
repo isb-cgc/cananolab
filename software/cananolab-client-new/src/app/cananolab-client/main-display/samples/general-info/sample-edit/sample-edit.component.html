@@ -355,61 +355,38 @@
                                     </label>
                                 </td>
                             </tr>
-                            <!--
-                            |---
-                            |---  Dropdown overlays if collaboration group is selected
-                            |---
-                            -->
-                            <tr *ngIf="theAccess['accessType']=='group' && !editingAccessRow">
+                            <tr *ngIf="theAccess.accessType&&theAccess.accessType!='role'&&!editingAccessRow">
                                 <td class="label">
-                                    <label for="theAccess.collaborationGroup">
-                                        Collaboration Group*
+                                    <label for="access.recipient">
+                                        <span *ngIf="theAccess.accessType=='group'">
+                                            Collaboration Group*
+                                        </span>
+                                        <span *ngIf="theAccess.accessType=='user'">
+                                            User*
+                                        </span>
                                     </label>
                                 </td>
-                                <td>
-                                    <select name="theAccess.recipient" id="theAccess.collaborationGroup" [(ngModel)]="theAccess.recipient">
-                                        <option [ngValue]="''">--Select--</option>
-                                        <ng-container *ngFor="let recipient of userGroups|keyvalue">
-                                            <option *ngFor="let group of recipient['value']" [ngValue]="group">
-                                                {{group}}
-                                            </option>
-                                        </ng-container>
+                                <td class="field">
+                                    <button (click)="getRecipientList()" class="btn-canano btn-canano-primary btn-canano-xs mr-1">Search</button>
+                                    <ng-container *ngIf="recipientList">
+                                        &nbsp;&nbsp;
+                                        <select name="access.recipient" [(ngModel)]="theAccess.recipient">
+                                            <option [selected]="theAccess.recipient===''" [ngValue]="''">--select</option>
+                                            <ng-container *ngIf="theAccess.accessType=='group'">
+                                                <option *ngFor="let group of recipientList">
+                                                    {{group}}
+                                                </option>
+                                            </ng-container>
+                                            <ng-container *ngIf="theAccess.accessType=='user'">
+                                                <option *ngFor="let user of recipientList|keyvalue" [ngValue]="user.key">
+                                                    {{user.value}}
+                                                </option>
+                                            </ng-container>
 
-                                    </select>
+                                        </select>
+                                    </ng-container>
+
                                 </td>
-                            </tr>
-                            <!--
-                            |---
-                            |---  Dropdown overlays if user is selected
-                            |---
-                            -->
-                            <tr *ngIf="theAccess['accessType']=='user' && !editingAccessRow">
-                                <td class="label">
-                                    <label for="theAccess.user">
-                                        User*
-                                    </label>
-                                </td>
-                                <td>
-                                    <select name="theAccess.recipient" id="theAccess.user" [(ngModel)]="theAccess.recipient">
-                                        <option [ngValue]="''">--Select--</option>
-                                        <option *ngFor="let recipient of users|keyvalue" [ngValue]="recipient.key">
-                                            {{recipient.value}}, {{recipient.key}}
-                                        </option>
-                                    </select>
-                                </td>
-                            </tr>
-                            <!--
-                            |---
-                            |---  Blank control overlays if public is selected
-                            |---
-                            -->
-                            <tr *ngIf="theAccess['accessType']=='role' && !editingAccessRow">
-                                <td colspan="2" class="label">
-                                    <label for="theAccess.public">
-                                        Public
-                                    </label>
-                                </td>
-                                <td id="theAccess.public" ></td>
                             </tr>
                             <tr>
                                 <td class="label">
