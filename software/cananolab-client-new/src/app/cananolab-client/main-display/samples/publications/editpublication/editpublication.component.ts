@@ -81,6 +81,9 @@ export class EditpublicationComponent implements OnInit {
                 if (this.sampleId) { Properties.SAMPLE_TOOLS = true; }
                 this.setupData=data;
                 this.setupData['otherSampleNames']=[];
+                if (!this.publicationId || this.publicationId == -1) {
+                    this.data["isCuratorEditing"] = this.setupData["isCuratorEditing"];
+                }
             },
             error=> {
                 this.errors=error;

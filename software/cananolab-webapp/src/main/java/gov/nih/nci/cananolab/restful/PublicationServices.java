@@ -157,6 +157,15 @@ public class PublicationServices {
 		try { 
 			SearchPublicationBO searchPublicationBO = (SearchPublicationBO) SpringApplicationContext.getBean(httpRequest, "searchPublicationBO");
 			Map<String, Object> dropdownMap = searchPublicationBO.setup(httpRequest);
+
+			// Curator can directly set public access when create publication
+			boolean isCurator = false;
+			if (SpringSecurityUtil.isUserLoggedIn()) {
+				CananoUserDetails userDetails = SpringSecurityUtil.getPrincipal();
+				isCurator = userDetails.isCurator();
+			}
+			dropdownMap.put("isCuratorEditing", isCurator);
+
 			return Response.ok(dropdownMap).header("Access-Control-Allow-Credentials", "true").header("Access-Control-Allow-Origin", "*").header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS").header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization").build();
 
 			// return Response.ok(dropdownMap).build();

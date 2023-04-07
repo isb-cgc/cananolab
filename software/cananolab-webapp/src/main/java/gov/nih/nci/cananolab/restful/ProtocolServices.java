@@ -43,6 +43,15 @@ public class ProtocolServices
 		{
 			SearchProtocolBO searchProtocolBO = (SearchProtocolBO) SpringApplicationContext.getBean(httpRequest, "searchProtocolBO");
 			Map<String, Object> dropdownMap = searchProtocolBO.setup(httpRequest);
+
+			// Curator can directly set public access when create protocol
+			boolean isCurator = false;
+			if (SpringSecurityUtil.isUserLoggedIn()) {
+				CananoUserDetails userDetails = SpringSecurityUtil.getPrincipal();
+				isCurator = userDetails.isCurator();
+			}
+			dropdownMap.put("isCuratorEditing", isCurator);
+
 			return Response.ok(dropdownMap).header("Access-Control-Allow-Credentials", "true").header("Access-Control-Allow-Origin", "*").header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS").header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization").build();
 
 			// return Response.ok(dropdownMap).build();
