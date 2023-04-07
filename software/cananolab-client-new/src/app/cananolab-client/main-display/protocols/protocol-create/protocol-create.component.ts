@@ -228,6 +228,9 @@ export class ProtocolCreateComponent implements OnInit, AfterViewInit{
             data => {
                 this.errors={};
                 this.setupData = data;
+                if (!this.protocolId) {
+                    this.data["isCuratorEditing"] = this.setupData["isCuratorEditing"];
+                }
                 // this.defaultProtocolType = this.protocolTypes[0]; // SET default - This doesn't work @CHECKME  I had to hard code the default
             },
             errors=> {
