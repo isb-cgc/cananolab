@@ -108,7 +108,8 @@ public class CurationServiceJDBCImpl extends JdbcDaoSupport implements CurationS
 		return pendingDataList;
 	}
 
-	public DataReviewStatusBean findDataReviewStatusBeanByDataId(String dataId, String classTag) throws CurationException, NoAccessException
+	public DataReviewStatusBean findDataReviewStatusBeanByDataId(String dataId, String classTag)
+			throws CurationException, NoAccessException
 	{
 		DataReviewStatusBean dataReviewStatusBean = null;
 		try {

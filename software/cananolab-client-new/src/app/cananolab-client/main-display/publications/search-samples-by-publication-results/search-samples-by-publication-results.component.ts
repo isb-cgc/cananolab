@@ -15,7 +15,7 @@ export class SearchSamplesByPublicationResultsComponent implements OnInit {
     constructor(private searchSamplesByPublicationService: SearchSamplesByPublicationService) { }
 
     ngOnInit(): void {
-        this.results=this.searchSamplesByPublicationService.getPublicationSearchResults();
+        this.results = this.searchSamplesByPublicationService.getPublicationSearchResults();
     }
 
 }

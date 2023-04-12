@@ -10,10 +10,13 @@
     <div class="error" *ngIf="message">
         {{message}}
     </div>
+    <!-- If you click on add/edit for any characterization type, this is where you land -->
     <form action="" method="get" name="characterizationForm">
         <div class="mainBorder">
+            <!--The top box of every characterization -->
             <table class="dataMain">
                 <tr *ngIf="!charId">
+                    <!-- Characterization type dropdown -->
                     <td class="label">
                         <label for="charType">
                             Characterization Type*
@@ -33,6 +36,7 @@
                             </canano-other-dropdown>
                         </div>
                     </td>
+                    <!-- Characterization name dropdown -->
                     <td class="label">
                         <label for="charNamePrompt">
                             Characterization Name*
@@ -53,6 +57,7 @@
                     </td>
                 </tr>
                 <tr>
+                    <!-- Assay type dropdown -->
                     <td class="label">
                         <label for="assayType">
                             Assay Type
@@ -71,6 +76,7 @@
                             </canano-other-dropdown>
                         </div>
                     </td>
+                    <!-- protocol dropdown -->
                     <td class="label">
                         <label for="protocolId">
                             Protocol Name - Version
@@ -86,6 +92,7 @@
                     </td>
                 </tr>
                 <tr>
+                    <!--Characterization source dropdown -->
                     <td class="label">
                         <label for="characterizationSourceId">
                             Characterization Source
@@ -99,6 +106,7 @@
                             </option>
                         </select>
                     </td>
+                    <!-- Characterization date dropdown -->
                     <td class="label">
                         <label for="characterizationDate">
                             Characterization Date
@@ -110,11 +118,13 @@
                 </tr>
             </table>
         </div><br />
+        <!--These boxes appear based on what you choose in "Characterization name" dropdown e.g. "physical state"-->
         <ng-container *ngIf="propertiesLoaded">
+            <!-- Pops up if you choose physical state -->
             <ng-container *ngIf="data.name=='physical state'">
                 <div class="mainBorder">
                     <table class="dataMain">
-                        <tr colspan="2"><td class="label">Phsyical Properties</td></tr>
+                        <tr colspan="2"><td class="label">Physical Properties</td></tr>
                         <tr>
                             <td class="label">
                                 <label for="property.type">
@@ -138,6 +148,7 @@
                     </table>
                 </div><br />
             </ng-container>
+            <!-- Pops up if you choose shape -->
             <ng-container *ngIf="data.name=='shape'">
                 <div class="mainBorder">
                     <table class="dataMain">
@@ -213,6 +224,7 @@
                     </table>
                 </div><br />
             </ng-container>
+            <!-- Pops up if you choose solubility -->
             <ng-container *ngIf="data.name=='solubility'">
                 <div class="mainBorder">
                     <table class="dataMain">
@@ -280,11 +292,12 @@
                     </table>
                 </div><br />
             </ng-container>
+            <!-- Pops up if you choose surface -->
             <ng-container *ngIf="data.name=='surface'">
                 <div class="mainBorder">
                     <table class="dataMain">
                         <tr>
-                            <td colspan="2" class="label">Surcace Properties</td>
+                            <td colspan="2" class="label">Surface Properties</td>
                         </tr>
                         <tr>
                             <td class="label">
@@ -304,6 +317,7 @@
                     </table>
                 </div><br />
             </ng-container>
+            <!-- Pops up if you choose cytotoxicity -->
             <ng-container *ngIf="data.name=='cytotoxicity'">
                 <div class="mainBorder">
                     <table class="dataMain">
@@ -325,6 +339,7 @@
                     </table>
                 </div><br />
             </ng-container>
+            <!-- Pops up if you choose enzyme induction -->
             <ng-container *ngIf="data.name=='enzyme induction'">
                 <div class="mainBorder">
                     <table class="dataMain">
@@ -354,6 +369,7 @@
                     </table>
                 </div><br />
             </ng-container>
+            <!-- Pops up if you choose targeting -->
             <ng-container *ngIf="data.name=='targeting'">
                 <div class="mainBorder">
                     <table class="dataMain">
@@ -375,6 +391,7 @@
                     </table>
                 </div><br />
             </ng-container>
+            <!-- Pops up if you choose transfection -->
             <ng-container *ngIf="data.name=='transfection'">
                 <div class="mainBorder">
                     <table class="dataMain">
@@ -397,8 +414,10 @@
                 </div><br />
             </ng-container>
         </ng-container>
+        <!-- This is the end of the Characterization Name optional boxes -->
         <div class="mainBorder">
             <table class="dataMain">
+                <!-- First row is a full row for Design and Methods -->
                 <tr>
                     <td class="label">
                         <label for="designMethodsDescription">
@@ -411,16 +430,20 @@
                         </textarea>
                     </td>
                 </tr>
+                <!-- Now we have a row for Technique and Instrument. Always at least a button here -->
                 <tr>
                     <td class="label">
                         <label for="techniqueInstrument">
                             Technique and Instrument
                         </label>
                     </td>
+                    <!-- Here is the permanent button -->
                     <td>
                         <button (click)="addTechniqueInstrument()" class="btn-canano btn-canano-primary btn-canano-xs mr-1">Add</button>
                     </td>
                 </tr>
+                <!-- Only shows up if you already have at least one tech/instrument data  -->
+                <!-- The edit button per row will bring up an edit form  -->
                 <tr *ngIf="data.techniqueInstruments.experiments.length">
                     <td>
                         &nbsp;
@@ -450,9 +473,8 @@
                                         </li>
                                     </ul>
                                 </td>
-                                <td>
-                                    {{technique.description}}
-                                </td>
+                                <!-- innerHTML to render text -->
+                                <td [innerHTML]="technique.description"></td>
                                 <td>
                                     <button (click)="editTechniqueInstrument(tIndex,technique)" class="btn-canano btn-canano-primary btn-canano-xs mr-1">Edit</button>
                                 </td>
@@ -460,6 +482,8 @@
                         </table>
                     </td>
                 </tr>
+                <!-- If you want to edit a technique in the above table, this pops up -->
+                <!-- It also pops up if you are adding a technique -->
                 <tr *ngIf="techniqueIndex!=null">
                     <td>&nbsp;</td>
                     <td>
@@ -689,7 +713,7 @@
                                                         <td>
                                                             <a href="" *ngIf="!file.uriExternal && file.type !=='image'"
                                                                [href]="serverUrl+'/rest/sample/download?fileId='+file.id">
-                                                                {{file['title']}}
+                                                                <span [innerHTML]="file.title"></span>
                                                             </a>
                                                             <a *ngIf="file['type'] === 'image'"
                                                                [href]="serverUrl+'/rest/sample/download?fileId='+file.id"
@@ -704,11 +728,11 @@
                                                         <td>
                                                             <ul>
                                                                 <li *ngFor="let keyword of splitKeywords(file['keywordsStr'])">
-                                                                    {{keyword}}
+                                                                    <span [innerHTML]="keyword"></span>
                                                                 </li>
                                                             </ul>
                                                         </td>
-                                                        <td>{{file.description}}</td>
+                                                        <td [innerHTML]="file.description"></td>
                                                     </tr>
                                                 </table>
                                             </ng-container>
@@ -943,11 +967,11 @@
                                                             <td>
                                                                 <ul>
                                                                     <li *ngFor="let keyword of splitKeywords(file.keywordsStr)">
-                                                                        {{keyword}}
+                                                                        <span [innerHTML]="keyword"></span>
                                                                     </li>
                                                                 </ul>
                                                             </td>
-                                                            <td>{{file.description}}</td>
+                                                            <td [innerHTML]="file.description"></td>
                                                             <td>
                                                                 <button (click)="editFile(file, fileIndex)" class="btn-canano btn-canano-primary btn-canano-xs mr-1">Edit</button>
                                                                 <button (click)="deleteFile(file, fileIndex)" class="btn-canano btn-canano-danger btn-canano-xs mr-1">Delete</button>

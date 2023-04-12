@@ -441,6 +441,7 @@ public class SimpleSynthesisBean {
 
             if (fileBean.getDomainFile().getDescription() != null && fileBean.getDomainFile().getDescription().length() > 0) {
                 logger.debug("File description: " + fileBean.getDescription());
+                // WJRL 2/6/23: File Description is HTML escaped with breaks
                 aFile.put("description", fileBean.getDescription());
             }
 

@@ -29,6 +29,8 @@ export class ProtocolCreateComponent implements OnInit, AfterViewInit{
     theAccess={};
     helpUrl=Consts.HELP_URL_PROTOCOL_CREATE;
     submitReviewButton=true;
+    editingAccessRow = false;
+
     constructor(private httpClient:HttpClient, private route:ActivatedRoute,private router:Router,private apiService: ApiService, private utilService: UtilService,
                  ){
     }
@@ -60,8 +62,18 @@ export class ProtocolCreateComponent implements OnInit, AfterViewInit{
                 "roleName":"",
                 "recipientDisplayName":""
             }
+        this.editingAccessRow = false;
     }
 
+    shouldShowAccessEditButton(group) {
+        if (group.recipient == 'ROLE_CURATOR') {
+            return false;
+        } else if (group.recipient == 'ROLE_ANONYMOUS') {
+            return this.data != null && this.data['isCuratorEditing'];
+        }
+
+        return true;
+    }
 
     buildExternalUriForm(): FormData{
         let formData = new FormData();
@@ -164,6 +176,7 @@ export class ProtocolCreateComponent implements OnInit, AfterViewInit{
         this.accessIndex=index;
         this.recipientList=null;
         this.theAccess=JSON.parse(JSON.stringify(access));
+        this.editingAccessRow = true;
     };
 
     getRecipientList() {
@@ -215,6 +228,9 @@ export class ProtocolCreateComponent implements OnInit, AfterViewInit{
             data => {
                 this.errors={};
                 this.setupData = data;
+                if (!this.protocolId) {
+                    this.data["isCuratorEditing"] = this.setupData["isCuratorEditing"];
+                }
                 // this.defaultProtocolType = this.protocolTypes[0]; // SET default - This doesn't work @CHECKME  I had to hard code the default
             },
             errors=> {

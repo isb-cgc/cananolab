@@ -63,8 +63,6 @@ export class TopMainMenuComponent implements OnInit, OnDestroy {
     onMenuSelect(item){
         if( item['route'].includes( 'home/' + Consts.QUERY_LOGOUT )){
             this.topMainMenuService.hideMenuItem( 'LOGOUT' );
-            Properties.LOGGED_IN = false;
-            Properties.logged_in = false;
             // Init the top menu
             this.topMainMenuService.showOnlyMenuItems(
                 [
@@ -76,15 +74,14 @@ export class TopMainMenuComponent implements OnInit, OnDestroy {
                     'PUBLICATIONS',
                     'LOGIN'
                 ]
-            ); }
-            let keys=Object.keys(item);
-            if (keys.indexOf('externalUrl')>-1) {
-                window.open(item['externalUrl'])
-            }
-            else {
-                this.router.navigate([item.route]);
-            }
-
+            );
+        }
+        let keys=Object.keys(item);
+        if (keys.indexOf('externalUrl')>-1) {
+            window.open(item['externalUrl'])
+        } else {
+            this.router.navigate([item.route]);
+        }
     }
 
     // Avoid memory leak

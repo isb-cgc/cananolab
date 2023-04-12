@@ -1,5 +1,4 @@
 #!/bin/bash
-export NODE_OPTIONS=--openssl-legacy-provider
 cd cananolab-client-new/
 rm -rf /tmp/cananolab_new_client
 ng build --base-href / --output-path /tmp/cananolab_new_client

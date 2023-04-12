@@ -42,6 +42,7 @@ public class PointOfContactBean implements Comparable{
 
 
 	public int compareTo(PointOfContactBean pocBean) {
+		// WJRL 2/6/23: OrganizationDisplayName is HTML escaped with breaks
 		return this.getOrganizationDisplayName().toLowerCase().compareTo(pocBean.getOrganizationDisplayName().toLowerCase());
 	}
 

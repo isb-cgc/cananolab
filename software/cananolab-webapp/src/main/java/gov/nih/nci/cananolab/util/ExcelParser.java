@@ -17,13 +17,14 @@ import java.util.SortedMap;
 import java.util.TreeMap;
 
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
-import org.apache.poi.hssf.util.CellReference;
 import org.apache.poi.poifs.filesystem.POIFSFileSystem;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.DateUtil;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.ss.util.CellReference;
+import org.apache.poi.ss.usermodel.CellType;
 
 public class ExcelParser {
 	/**
@@ -193,7 +194,7 @@ public class ExcelParser {
 				//4.iterate row from col-2 to last column, store datum value.
 				for (int colIndex = 2; colIndex <= row.getLastCellNum(); colIndex++) {
 					Cell cell = row.getCell(colIndex);
-					if (cell != null && cell.getCellType() == Cell.CELL_TYPE_NUMERIC) {
+					if (cell != null && cell.getCellType() == CellType.NUMERIC) {
 						String datumName = firstRow.getCell(colIndex).getStringCellValue();
 						assayMap.put(datumName,	cell.getNumericCellValue());
 					}
@@ -221,21 +222,21 @@ public class ExcelParser {
 				System.out.print(" - ");
 
 				switch (cell.getCellType()) {
-				case Cell.CELL_TYPE_STRING:
+				case STRING:
 					System.out.println(cell.getRichStringCellValue()
 							.getString());
 					break;
-				case Cell.CELL_TYPE_NUMERIC:
+				case NUMERIC:
 					if (DateUtil.isCellDateFormatted(cell)) {
 						System.out.println(cell.getDateCellValue());
 					} else {
 						System.out.println(cell.getNumericCellValue());
 					}
 					break;
-				case Cell.CELL_TYPE_BOOLEAN:
+				case BOOLEAN:
 					System.out.println(cell.getBooleanCellValue());
 					break;
-				case Cell.CELL_TYPE_FORMULA:
+				case FORMULA:
 					System.out.println(cell.getCellFormula());
 					break;
 				default:

@@ -15,8 +15,11 @@ import gov.nih.nci.cananolab.domain.common.File;
 import gov.nih.nci.cananolab.dto.common.DataReviewStatusBean;
 import gov.nih.nci.cananolab.dto.common.FileBean;
 import gov.nih.nci.cananolab.dto.particle.SampleBean;
+import gov.nih.nci.cananolab.exception.CurationException;
 import gov.nih.nci.cananolab.exception.FileException;
+import gov.nih.nci.cananolab.exception.NoAccessException;
 import gov.nih.nci.cananolab.exception.NotExistException;
+import gov.nih.nci.cananolab.exception.SampleException;
 import gov.nih.nci.cananolab.restful.util.GCPStorageUtil;
 import gov.nih.nci.cananolab.restful.util.InputValidationUtil;
 import gov.nih.nci.cananolab.restful.util.PropertyUtil;
@@ -68,7 +71,8 @@ public abstract class BaseAnnotationBO extends AbstractDispatchBO
 	 * @return
 	 * @throws Exception
 	 */
-	protected SampleBean setupSampleById(String sampleId, HttpServletRequest request) throws Exception
+	protected SampleBean setupSampleById(String sampleId, HttpServletRequest request)
+			throws NotExistException, SampleException, NoAccessException
 	{
 		if (StringUtils.isEmpty(sampleId)) 
 			throw new NotExistException("Null or empty sample Id passed in setupSampleById()");
@@ -351,7 +355,7 @@ public abstract class BaseAnnotationBO extends AbstractDispatchBO
 	 * @throws Exception
 	 */
 	protected void updateReviewStatusTo(String status, HttpServletRequest request, String dataId, String dataName,
-			String dataType) throws Exception
+			String dataType) throws CurationException, NoAccessException
 	{
 		DataReviewStatusBean reviewStatus = getCurationServiceDAO().findDataReviewStatusBeanByDataId(dataId, dataType);
 		if (reviewStatus == null) {
@@ -379,7 +383,10 @@ public abstract class BaseAnnotationBO extends AbstractDispatchBO
 	 * @param dataType
 	 * @throws Exception
 	 */
-	protected void retractFromPublic(HttpServletRequest request, Long dataId, String dataName, String dataType, Class clazz) throws Exception
+	protected void retractFromPublic(HttpServletRequest request, Long dataId, String dataName,
+									 String dataType, Class clazz)
+			throws CurationException, NoAccessException
+
 	{
 		updateReviewStatusTo(DataReviewStatusBean.RETRACTED_STATUS, request, dataId.toString(), dataName, dataType);
 		getSpringSecurityAclService().retractObjectFromPublic(dataId, clazz);

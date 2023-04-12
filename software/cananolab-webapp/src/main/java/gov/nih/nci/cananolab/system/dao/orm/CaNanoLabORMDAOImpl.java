@@ -8,9 +8,6 @@
 
 package gov.nih.nci.cananolab.system.dao.orm;
 
-
-
-
 import gov.nih.nci.cananolab.system.dao.DAOException;
 import java.io.Serializable;
 import java.util.List;
@@ -38,6 +35,8 @@ public class CaNanoLabORMDAOImpl extends WritableORMDAOImpl implements CaNanoLab
 
 	public Object load(Class domainClass, Serializable id) {
 		logger.debug("in caNanoLabORMDAOImpl.load()");
+		//System.out.println(domainClass + " " + id + " LO FlushMode = " + getHibernateTemplate().getSessionFactory().getCurrentSession().getFlushMode());
+		//System.out.println("LO Status = " + getHibernateTemplate().getSessionFactory().getCurrentSession().getTransaction().getStatus());
 		return getHibernateTemplate().load(domainClass, id);
 	}
 
@@ -46,6 +45,8 @@ public class CaNanoLabORMDAOImpl extends WritableORMDAOImpl implements CaNanoLab
 	}
 
 	public void saveOrUpdate(Object t) {
+		//System.out.println(t.getClass() + " SOU FlushMode = " + getHibernateTemplate().getSessionFactory().getCurrentSession().getFlushMode());
+		//System.out.println("SOU Status = " + getHibernateTemplate().getSessionFactory().getCurrentSession().getTransaction().getStatus());
 		HibernateTemplate hibernateTemplate = getHibernateTemplate();
 		hibernateTemplate.saveOrUpdate(t);
 	}
@@ -68,6 +69,10 @@ public class CaNanoLabORMDAOImpl extends WritableORMDAOImpl implements CaNanoLab
 
 		DetachedCriteria crit = DetachedCriteria.forClass(domainClass).add(
 				Property.forName(uniqueKeyName).eq(uniqueKeyValue));
+
+		//System.out.println(uniqueKeyName +  " " + uniqueKeyValue + " GO2 FlushMode = " + getHibernateTemplate().getSessionFactory().getCurrentSession().getFlushMode());
+		//System.out.println("GO2 Status = " + getHibernateTemplate().getSessionFactory().getCurrentSession().getTransaction().getStatus());
+
 		List results = getHibernateTemplate().findByCriteria(crit);
 
 		if (results != null && !results.isEmpty()) {
