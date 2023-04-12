@@ -3,7 +3,7 @@ commands:
   save_env:
     steps:
       - run:
-          name: "Persist some variables in the workspace"
+          name: "Persist some variables in the workspace "
           command: |
             mkdir -p ~/cananolab/workspace
             echo "export TIER=${TIER}" >> ~/cananolab/workspace/env-vars
