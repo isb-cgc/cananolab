@@ -1,0 +1,405 @@
+<canano-main-display-heading [helpUrl]="helpUrl" [print]="true" [toolHeadingName]="toolHeadingNameManage" [export]="[sampleId,'SYNTHESIS']">
+
+<ng-template #none_content><td>N/A</td></ng-template>
+
+</canano-main-display-heading>
+    <ul class="nav nav-tabs">
+        <li class="nav-item">
+          <a class="nav-link active" id="all-tab" data-toggle="tab" (click)="showSection('all')">All</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" id="materials-tab" data-toggle="tab" (click)="showSection('materials')">Materials</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" id="functionalization-tab" data-toggle="tab" (click)="showSection('functionalization')">Functionalization</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" id="purification-tab" data-toggle="tab" (click)="showSection('purification')">Purification</a>
+          </li>
+    </ul>
+<div class="mainSection" *ngIf="data&&(sectionToShow=='all'||sectionToShow=='materials')">
+    <div id="materials" class="header" *ngIf="sectionToShow=='all'||sectionToShow=='materials'">
+        Materials <button *ngIf="editUrl" (click)="onMaterialsClick(-1)" class="btn btn-primary btn-sm">Add</button>
+    </div>
+    <span *ngFor="let material of data['synthesisMaterials'] | keyvalue; let index = index;">
+        <div class="blueHeader">Material {{index+1}}</div><br />
+    	<div class="mainBorder">
+
+	        <div class="editButton" *ngIf="editUrl">
+	            <button class="btn btn-primary btn-sm" (click)="onMaterialsClick(material.value['dataId'] )">
+	                Edit
+	            </button>
+	        </div>
+
+	        <div>
+	            <table class="dataMain">
+	                <tr>
+	                    <td class="label">Description</td>
+	                    <td *ngIf="material.value.Description; else none_content">
+	                        {{material.value.Description}}
+	                    </td>
+	                </tr>
+	                <tr>
+	                    <td class="label">Protocol</td>
+	                    <td *ngIf="material.value.Protocol; else none_content">
+	                        {{material.value.Protocol}}
+	                    </td>
+	                </tr>
+	                 <tr *ngIf="material.value.MaterialElements.length">
+	                    <td class="label">Material Elements</td>
+	                    <td>
+	                        <div *ngFor="let me of material.value.MaterialElements; let last=last">
+	                            <table class="dataTable" border="0" [ngClass]="{'last':last}">
+	                            	 <tr>
+                                        <th class="label" colspan="2">
+                                           {{me.DisplayName}}
+                                        </th>
+                                    </tr>
+	                                <tr>
+	                                    <td class="label">
+	                                        Matarial Type
+	                                    </td>
+	                                    <td *ngIf="me.Type; else none_content">
+	                                        {{me.Type}}
+	                                    </td>
+	                                </tr>
+	                                <tr>
+	                                    <td class="label">
+	                                        Chemical Name
+	                                    </td>
+	                                    <td *ngIf="me.ChemicalName; else none_content">
+	                                        {{me.ChemicalName}}
+	                                    </td>
+	                                </tr>
+	                                <tr>
+	                                    <td class="label">
+	                                        PubChem Data Source
+	                                    </td>
+	                                    <td *ngIf="me.PubChemDataSourceName; else none_content">
+	                                        {{me.PubChemDataSourceName}}
+	                                    </td>
+	                                </tr>
+	                                <tr>
+	                                    <td class="label">
+	                                        PubChem Id
+	                                    </td>
+	                                    <td *ngIf="me.PubChemId; else none_content">
+	                                        {{me.PubChemId}}
+	                                    </td>
+	                                </tr>
+	                                <tr>
+	                                    <td class="label">
+	                                        PubChem Link
+	                                    </td>
+	                                    <td *ngIf="me.PubChemLink; else none_content">
+	                                        {{me.PubChemLink}}
+	                                    </td>
+	                                </tr>
+	                                <tr>
+	                                    <td class="label">
+	                                        Amount (and units)
+	                                    </td>
+	                                    <td *ngIf="me.Amount && me.ValueUnit; else none_content">
+	                                        {{me.Amount}} ({{me.ValueUnit}})
+	                                    </td>
+	                                </tr>
+	                                <tr>
+	                                    <td class="label">
+	                                        Molecular Formula
+	                                    </td>
+	                                    <td *ngIf="me.MolecularFormula; else none_content">
+	                                        {{me.MolecularFormula}}
+	                                    </td>
+	                                </tr>
+	                                <tr>
+	                                    <td class="label">
+	                                        Molecular Formula Type
+	                                    </td>
+	                                    <td *ngIf="me.MolecularFormulaType; else none_content">
+	                                        {{me.MolecularFormulaType}}
+	                                    </td>
+	                                </tr>
+	                                <tr>
+	                                    <td class="label">
+	                                        Material Description
+	                                    </td>
+	                                    <td *ngIf="me.Description; else none_content">
+	                                        {{me.Description}}
+	                                    </td>
+	                                </tr>
+	                                <tr>
+	                                    <td class="label">
+	                                        Supplier
+	                                    </td>
+	                                    <td *ngIf="me.Supplier && me.Supplier.supplierName; else none_content">
+	                                        {{me.Supplier.supplierName}}
+	                                    </td>
+	                                </tr>
+	                                <tr>
+	                                    <td class="label">
+	                                        Lot or Batch Number
+	                                    </td>
+	                                    <td *ngIf="me.Supplier && me.Supplier.lot; else none_content">
+	                                        {{me.Supplier.lot}}
+	                                    </td>
+	                                </tr>
+	                                <tr>
+	                                    <td class="label">
+	                                        Inherent Functions
+	                                    </td>
+	                                    <td *ngIf="me.InherentFunctions.length; else none_content">
+	                                    	<ul>
+		                                    	 <div *ngFor="let iFun of me.InherentFunctions; let last=last">
+		                                    	 	<li>
+		                                    	 		{{iFun.FunctionDisplayName}}
+		                                    	 	</li>
+		                                    	 </div>
+	                                    	</ul>
+	                                    </td>
+	                                </tr>
+	                            </table>
+	                        </div>
+	                    </td>
+	                </tr>
+	            </table>
+	        </div>
+    	</div>
+    </span>
+</div>
+
+
+<div class="mainSection" *ngIf="sectionToShow=='all'||sectionToShow=='functionalization'">
+    <div id="functionalization" class="header">
+        Functionalization <button *ngIf="editUrl" class="btn btn-primary btn-sm"
+            (click)="onFunctionalizationClick(-1)">Add</button>
+    </div>
+    <span *ngFor="let func of data['synthesisFunctionalization'] | keyvalue; let index = index;">
+        <div class="blueHeader">Functionalization {{index+1}}</div><br />
+    	<div class="mainBorder">
+
+	        <div class="editButton" *ngIf="editUrl">
+	            <button class="btn btn-primary btn-sm" (click)="onFunctionalizationClick(func.value['dataId'] )">
+	                Edit
+	            </button>
+	        </div>
+
+	        <div>
+	            <table class="dataMain">
+	                <tr>
+	                    <td class="label">Description</td>
+	                    <td *ngIf="func.value.Description; else none_content">
+	                        {{func.value.Description}}
+	                    </td>
+	                </tr>
+	                <tr>
+	                    <td class="label">Source</td>
+	                    <td *ngIf="func.value.source; else none_content">
+	                        {{func.value.source}}
+	                    </td>
+	                </tr>
+	                 <tr *ngIf="func.value.FunctionalizationElements.length">
+	                    <td class="label">Functionalization Elements</td>
+	                    <td>
+	                        <div *ngFor="let fe of func.value.FunctionalizationElements; let last=last">
+	                            <table class="dataTable" border="0" [ngClass]="{'last':last}">
+	                            	 <tr>
+                                        <th class="label" colspan="2">
+                                           {{fe.DisplayName}}
+                                        </th>
+                                    </tr>
+                                    <tr>
+	                                    <td class="label">
+	                                        Chemical Name
+	                                    </td>
+	                                    <td *ngIf="fe.ChemicalName; else none_content">
+	                                        {{fe.ChemicalName}}
+	                                    </td>
+	                                </tr>
+	                                <tr>
+	                                    <td class="label">
+	                                        Type
+	                                    </td>
+	                                    <td *ngIf="fe.type; else none_content">
+	                                        {{fe.type}}
+	                                    </td>
+	                                </tr>
+	                                 <tr>
+	                                    <td class="label">
+	                                        Description
+	                                    </td>
+	                                    <td *ngIf="fe.Description; else none_content">
+	                                        {{fe.Description}}
+	                                    </td>
+	                                </tr>
+	                                <tr>
+	                                    <td class="label">
+	                                        PubChem Data Source
+	                                    </td>
+	                                    <td *ngIf="fe.pubChemDataSourceName; else none_content">
+	                                        {{fe.pubChemDataSourceName}}
+	                                    </td>
+	                                </tr>
+	                                <tr>
+	                                    <td class="label">
+	                                        PubChem Id
+	                                    </td>
+	                                    <td *ngIf="fe.pubChemID; else none_content">
+	                                        {{fe.pubChemID}}
+	                                    </td>
+	                                </tr>
+	                                <tr>
+	                                    <td class="label">
+	                                        PubChem Link
+	                                    </td>
+	                                    <td *ngIf="fe.pubChemLink; else none_content">
+	                                        {{fe.pubChemLink}}
+	                                    </td>
+	                                </tr>
+	                                <tr>
+	                                    <td class="label">
+	                                        Amount (and units)
+	                                    </td>
+	                                    <td *ngIf="fe.Amount && fe.AmountUnit; else none_content">
+	                                        {{fe.Amount}} ({{fe.AmountUnit}})
+	                                    </td>
+	                                </tr>
+	                                <tr>
+	                                    <td class="label">
+	                                        Molecular Formula
+	                                    </td>
+	                                    <td *ngIf="fe.MolecularFormula; else none_content">
+	                                        {{fe.MolecularFormula}}
+	                                    </td>
+	                                </tr>
+	                                <tr>
+	                                    <td class="label">
+	                                        Molecular Formula Type
+	                                    </td>
+	                                    <td *ngIf="fe.MolecularFormulaType; else none_content">
+	                                        {{fe.MolecularFormulaType}}
+	                                    </td>
+	                                </tr>
+	                                <tr>
+	                                    <td class="label">
+	                                        Activation Method
+	                                    </td>
+	                                    <td *ngIf="fe.activationMethod; else none_content">
+	                                        {{fe.activationMethod}}
+	                                    </td>
+	                                </tr>
+	                                <tr>
+	                                    <td class="label">
+	                                        Activation Effect
+	                                    </td>
+	                                    <td *ngIf="fe.activationMethod; else none_content">
+	                                        {{fe.activationEffect}}
+	                                    </td>
+	                                </tr>
+	                                <tr>
+	                                    <td class="label">
+	                                        Inherent Functions
+	                                    </td>
+	                                    <td *ngIf="fe.InherentFunctions.length; else none_content">
+	                                    	<ul>
+	                                            <div *ngFor="let iFun of fe.InherentFunctions; let last=last">
+		                                    	 	<li>
+		                                    	 	{{iFun.FunctionDisplayName}}
+		                                    	 	</li>
+		                                    	</div>
+                                            </ul>
+	                                    </td>
+	                                </tr>
+	                            </table>
+	                        </div>
+	                    </td>
+	                </tr>
+	            </table>
+	        </div>
+    	</div>
+    </span>
+</div>
+
+<div class="mainSection" *ngIf="sectionToShow=='all'||sectionToShow=='purification'">
+    <div id="purification" class="header">
+        Purification <button *ngIf="editUrl" class="btn btn-primary btn-sm"
+            (click)="onPurificationClick(-1)">Add</button>
+    </div>
+    <span *ngFor="let puri of data['synthesisPurification'] | keyvalue; let index = index;">
+        <div class="blueHeader">Purification {{index+1}}</div><br />
+    	<div class="mainBorder">
+
+	        <div class="editButton" *ngIf="editUrl">
+	            <button class="btn btn-primary btn-sm" (click)="onPurificationClick(puri.value['dataId'] )">
+	                Edit
+	            </button>
+	        </div>
+
+	        <div>
+	            <table class="dataMain">
+	                <tr>
+	                    <td class="label">Protocol Name</td>
+	                    <td *ngIf="puri.value.Protocol; else none_content">
+	                        {{puri.value.Protocol}}
+	                    </td>
+	                </tr>
+	                <tr>
+	                    <td class="label">Type</td>
+	                    <td *ngIf="puri.value.Type; else none_content">
+	                        {{puri.value.Type}}
+	                    </td>
+	                </tr>
+	                <tr>
+	                    <td class="label">Characterization Source/Date</td>
+	                    <td *ngIf="puri.value.Source && puri.value.Date; else none_content">
+	                        {{puri.value.Source}}/{{puri.value.Date}}
+	                    </td>
+	                </tr>
+	                <tr>
+	                    <td class="label">Description</td>
+	                    <td *ngIf="puri.value.Description; else none_content">
+	                        {{puri.value.Description}}
+	                    </td>
+	                </tr>
+	                <tr>
+	                    <td class="label">Yield</td>
+	                    <td *ngIf="puri.value.Yield; else none_content">
+	                        {{puri.value.Yield}}
+	                    </td>
+	                </tr>
+	                <tr>
+	                    <td class="label">Analysis</td>
+	                    <td *ngIf="puri.value.Analysis; else none_content">
+	                        {{puri.value.Analysis}}
+	                    </td>
+	                </tr>
+	                 <tr>
+	                    <td class="label">Purification Elements</td>
+	                    <td *ngIf="puri.value.purificationElements.length; else none_content">
+	                        <div *ngFor="let pe of puri.value.purificationElements; let last=last">
+	                        	<div *ngIf="pe['Data and Conditions']; else N/A">
+		                        	<b>Data and Conditions</b>
+	                                <table class="dataTable" border="0" [ngClass]="{'last':last}">
+	                                    <tr *ngFor="let row of pe['Data and Conditions']">
+	                                    	<ng-container *ngIf="row.name=='colTitles'">
+                                    			<th *ngFor="let colHead of row.value">
+                                    				{{colHead}} 
+                                    			</th>
+	                                    	</ng-container>
+	                                    	<ng-container *ngIf="row.name=='colValues'">
+                                    			<td *ngFor="let colVal of row.value">
+                                    				{{colVal}} 
+                                    			</td>
+	                                    	</ng-container>
+	                        			</tr>
+	                        		</table>
+	                        		<br>
+	                        	</div>
+	                        </div>
+	                    </td>
+	                </tr>
+	            </table>
+	        </div>
+    	</div>
+    </span>
+</div>
+

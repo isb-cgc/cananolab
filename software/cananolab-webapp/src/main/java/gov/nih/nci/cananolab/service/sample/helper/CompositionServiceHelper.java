@@ -18,6 +18,8 @@ import gov.nih.nci.cananolab.domain.particle.SampleComposition;
 import gov.nih.nci.cananolab.exception.NoAccessException;
 import gov.nih.nci.cananolab.security.enums.SecureClassesEnum;
 import gov.nih.nci.cananolab.security.service.SpringSecurityAclService;
+import gov.nih.nci.cananolab.exception.ApplicationProviderException;
+import gov.nih.nci.cananolab.system.applicationservice.ApplicationException;
 import gov.nih.nci.cananolab.system.applicationservice.CaNanoLabApplicationService;
 import gov.nih.nci.cananolab.util.ClassUtils;
 import gov.nih.nci.cananolab.system.applicationservice.client.ApplicationServiceProvider;
@@ -114,8 +116,7 @@ public class CompositionServiceHelper
 		return fileCollection;
 	}
 
-	public SampleComposition findCompositionBySampleId(String sampleId) throws Exception
-	{
+	public SampleComposition findCompositionBySampleId(String sampleId) throws ApplicationException, ApplicationProviderException, NoAccessException {
 		if (!springSecurityAclService.currentUserHasReadPermission(Long.valueOf(sampleId), SecureClassesEnum.SAMPLE.getClazz()) &&
 			!springSecurityAclService.currentUserHasWritePermission(Long.valueOf(sampleId), SecureClassesEnum.SAMPLE.getClazz())) {
 			throw new NoAccessException("User has no access to the sample " + sampleId);
@@ -160,8 +161,8 @@ public class CompositionServiceHelper
 		return composition;
 	}
 
-	public NanomaterialEntity findNanomaterialEntityById(String sampleId, String entityId) throws Exception
-	{
+	public NanomaterialEntity findNanomaterialEntityById(String sampleId, String entityId)
+			throws ApplicationException, ApplicationProviderException, NoAccessException {
 		NanomaterialEntity entity = null;
 		System.out.println("Helper Looking for issue 50 sampleID is not a long? " + sampleId + " " + entityId);
 		if (!springSecurityAclService.currentUserHasReadPermission(Long.valueOf(sampleId), SecureClassesEnum.SAMPLE.getClazz()) &&
@@ -190,8 +191,8 @@ public class CompositionServiceHelper
 		return entity;
 	}
 
-	public FunctionalizingEntity findFunctionalizingEntityById(String sampleId, String entityId) throws Exception 
-	{
+	public FunctionalizingEntity findFunctionalizingEntityById(String sampleId, String entityId)
+			throws ApplicationException, ApplicationProviderException, NoAccessException {
 		if (!springSecurityAclService.currentUserHasReadPermission(Long.valueOf(sampleId), SecureClassesEnum.SAMPLE.getClazz()) &&
 			!springSecurityAclService.currentUserHasWritePermission(Long.valueOf(sampleId), SecureClassesEnum.SAMPLE.getClazz())) {
 			throw new NoAccessException("User has no access to the functionalizing entity " + entityId);
@@ -220,8 +221,8 @@ public class CompositionServiceHelper
 		return entity;
 	}
 
-	public ChemicalAssociation findChemicalAssociationById(String sampleId, String assocId) throws Exception
-	{
+	public ChemicalAssociation findChemicalAssociationById(String sampleId, String assocId)
+			throws ApplicationException, ApplicationProviderException, NoAccessException {
 		if (!springSecurityAclService.currentUserHasReadPermission(Long.valueOf(sampleId), SecureClassesEnum.SAMPLE.getClazz()) &&
 			!springSecurityAclService.currentUserHasWritePermission(Long.valueOf(sampleId), SecureClassesEnum.SAMPLE.getClazz())) {
 			throw new NoAccessException("User has no access to the chemical association " + assocId);

@@ -16,6 +16,12 @@ import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.Response;
 
+import gov.nih.nci.cananolab.exception.ApplicationProviderException;
+import gov.nih.nci.cananolab.exception.NoAccessException;
+import gov.nih.nci.cananolab.exception.PublicationException;
+import gov.nih.nci.cananolab.exception.UserInputException;
+import gov.nih.nci.cananolab.restful.util.PropertyUtil;
+import gov.nih.nci.cananolab.system.applicationservice.ApplicationException;
 import org.apache.logging.log4j.LogManager;
 
 import gov.nih.nci.cananolab.domain.common.Publication;
@@ -31,6 +37,7 @@ import gov.nih.nci.cananolab.restful.view.SimplePublicationSummaryViewBean;
 import gov.nih.nci.cananolab.restful.view.SimplePublicationWithSamplesBean;
 import gov.nih.nci.cananolab.restful.view.edit.SimpleSubmitPublicationBean;
 import gov.nih.nci.cananolab.security.utils.SpringSecurityUtil;
+import gov.nih.nci.cananolab.security.CananoUserDetails;
 import gov.nih.nci.cananolab.ui.form.PublicationForm;
 import gov.nih.nci.cananolab.ui.form.SearchPublicationForm;
 import gov.nih.nci.cananolab.util.Constants;
@@ -150,6 +157,15 @@ public class PublicationServices {
 		try { 
 			SearchPublicationBO searchPublicationBO = (SearchPublicationBO) SpringApplicationContext.getBean(httpRequest, "searchPublicationBO");
 			Map<String, Object> dropdownMap = searchPublicationBO.setup(httpRequest);
+
+			// Curator can directly set public access when create publication
+			boolean isCurator = false;
+			if (SpringSecurityUtil.isUserLoggedIn()) {
+				CananoUserDetails userDetails = SpringSecurityUtil.getPrincipal();
+				isCurator = userDetails.isCurator();
+			}
+			dropdownMap.put("isCuratorEditing", isCurator);
+
 			return Response.ok(dropdownMap).header("Access-Control-Allow-Credentials", "true").header("Access-Control-Allow-Origin", "*").header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS").header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization").build();
 
 			// return Response.ok(dropdownMap).build();
@@ -195,6 +211,11 @@ public class PublicationServices {
 				return Response.status(Response.Status.UNAUTHORIZED).entity(Constants.MSG_SESSION_INVALID).build();
 			
 			SimpleSubmitPublicationBean view = publicationBO.setupUpdate(publicationId,sampleId, httpRequest);
+
+			CananoUserDetails userDetails = SpringSecurityUtil.getPrincipal();
+			boolean isCurator = userDetails.isCurator();
+
+			view.setIsCuratorEditing(isCurator);
 
 			List<String> errors = view.getErrors();
 			return (errors == null || errors.size() == 0) ?
@@ -279,22 +300,29 @@ public class PublicationServices {
 	@Path("/searchById")
 	@Produces("application/json")
 	public Response searchById(@Context HttpServletRequest httpRequest, 
-			@DefaultValue("") @QueryParam("id") String id, @QueryParam("type") String type)
-	{
+			@DefaultValue("") @QueryParam("id") String id, @QueryParam("type") String type) {
 		PublicationManager pubManager = (PublicationManager) SpringApplicationContext.getBean(httpRequest, "publicationManager");
 
 		try {
 			SimplePublicationWithSamplesBean result = pubManager.searchPublicationById(httpRequest, id, type);
 
 			return (result.getErrors().size() > 0) ?
-					Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(result.getErrors()).build()
-					: Response.ok(result).build();
-		}
-		catch (Exception ioe) {
-			logger.error(ioe.getMessage());
-			ioe.printStackTrace();
-			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(ioe.getMessage()).build();
-		}
+					Response.status(Response.Status.NOT_FOUND).entity(result.getErrors()).build() :
+					Response.ok(result).build();
+		} catch (NoAccessException ioe) {
+			// WJRL 3/23 This comes back with a generic message from the depths about how the
+			// user is not allowed to access this function, when in fact it is just a
+			// hit on a non-public publication. Issue a sane message
+			logger.info(ioe.getMessage());
+			String msg = PropertyUtil.getPropertyReplacingAllTokens("publication", "errors.notFound",
+																	new Object[] {id, type});
+			return (Response.status(Response.Status.NOT_FOUND).entity(msg).build());
+		} catch (UserInputException uiex) {
+			return Response.status(Response.Status.BAD_REQUEST).entity(uiex.getMessage()).build();
+		} catch (RuntimeException | PublicationException |
+			     ApplicationException| ApplicationProviderException ex) {
+			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(ex.getMessage()).build();
+	    }
 	}	
 
 	@GET

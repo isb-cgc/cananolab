@@ -10,11 +10,16 @@ import gov.nih.nci.cananolab.system.dao.orm.translator.Path2NestedCriteria;
 import gov.nih.nci.cananolab.system.query.hibernate.HQLCriteria;
 import gov.nih.nci.cananolab.system.query.nestedcriteria.NestedCriteria;
 import gov.nih.nci.cananolab.system.query.nestedcriteria.NestedCriteriaPath;
-import java.sql.SQLException;
+
 import java.util.ArrayList;
-import java.util.Iterator;
+import java.util.Arrays;
+import java.util.Collection;
+
 import java.util.List;
 import java.util.Map;
+
+import javax.persistence.EntityManager;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.hibernate.Criteria;
@@ -26,6 +31,9 @@ import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Projections;
+import org.hibernate.metamodel.spi.MetamodelImplementor;
+import org.hibernate.persister.entity.AbstractEntityPersister;
+import org.hibernate.persister.entity.EntityPersister;
 import org.springframework.orm.hibernate5.HibernateCallback;
 import org.springframework.orm.hibernate5.HibernateTemplate;
 import org.springframework.orm.hibernate5.support.HibernateDaoSupport;
@@ -48,10 +56,12 @@ public class ORMDAOImpl extends HibernateDaoSupport implements DAO
 
 	private boolean caseSensitive;
 	private int resultCountPerQuery;
+	SessionFactory sessionFactory= null;
 
 
 	protected HibernateTemplate createHibernateTemplate(SessionFactory sessionFactory)
 	{
+		this.sessionFactory= sessionFactory;
 		if(securityHelper!=null && securityHelper.isSecurityEnabled() && securityHelper.getAuthorizationManager()!=null && (securityHelper.isInstanceLevelSecurityEnabled() || securityHelper.isAttributeLevelSecurityEnabled()))
 			return new FilterableHibernateTemplate(sessionFactory,securityHelper);
 		else
@@ -89,14 +99,20 @@ public class ORMDAOImpl extends HibernateDaoSupport implements DAO
 
 	public List<String> getAllClassNames(){
 
-		List<String> allClassNames = new ArrayList<String>();
-		Map allClassMetadata = getSessionFactory().getAllClassMetadata();
-
-		for (Iterator iter = allClassMetadata.keySet().iterator() ; iter.hasNext(); ){
-			allClassNames.add((String)iter.next());
-		}
-
-		return allClassNames;
+		EntityManager myEntityManager= sessionFactory.createEntityManager();
+		Session mySession = myEntityManager.unwrap(Session.class);
+		MetamodelImplementor metaModelImpl = (MetamodelImplementor)mySession.getMetamodel();
+		Map<String, EntityPersister> entityPersisters = metaModelImpl.entityPersisters();
+		List<String> myClassNames = new ArrayList<String>();
+		for (EntityPersister ep : entityPersisters.values()) {
+			AbstractEntityPersister aep = (AbstractEntityPersister)ep;
+			System.out.println(aep.getTableName());
+			System.out.println(Arrays.toString(aep.getIdentifierColumnNames()));
+			String name = aep.getClassMetadata().getMappedClass().getName();
+			myClassNames.add(name);
+	 	}
+		 myEntityManager.close();
+	 	return myClassNames;
 	}
 
 	protected Response query(Request request, DetachedCriteria obj) throws Exception

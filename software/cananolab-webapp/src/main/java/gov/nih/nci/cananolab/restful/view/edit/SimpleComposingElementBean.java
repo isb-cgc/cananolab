@@ -120,7 +120,7 @@ public class SimpleComposingElementBean {
 	}
 	public void transferSimpleComposingElementBean(ComposingElementBean sBean) {
 
-		
+		// WJRL 2/6/23: Description is HTML escaped with breaks
 		this.setDescription(sBean.getDescription());
 		this.setType(sBean.getDomain().getType());
 		this.setName(sBean.getDomain().getName());

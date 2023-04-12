@@ -1,4 +1,7 @@
-<canano-main-display-heading [helpUrl]="'https://wiki.nci.nih.gov/display/caNanoLab/Managing+Publications+in+caNanoLab#ManagingPublicationsincaNanoLab-SearchPublications'" [toolHeadingName]="'Publication Search Results'"> </canano-main-display-heading>
+<canano-main-display-heading
+    [helpUrl]="helpUrl"
+    [toolHeadingName]="toolHeadingName">
+</canano-main-display-heading>
 <div class="error" *ngIf="errors['error']"> {{errors['error']}} </div>
 <div class="mainSection" *ngIf="searchResults">
 	<div *ngIf="!searchResults.length" class="mainBorder"> No search results found. </div>

@@ -37,6 +37,7 @@ export class ProtocolSearchResultsComponent implements OnInit, OnDestroy {
     searchResultsCount = -1;
     currentPage = 0;
     searchResultsPageToDisplay;
+    helpUrl=Consts.HELP_URL_PROTOCOL_SEARCH_RESULTS;
     sortingStates = [
         SortState.NO_SORT,
         SortState.NO_SORT,
@@ -76,7 +77,6 @@ export class ProtocolSearchResultsComponent implements OnInit, OnDestroy {
             });
 
         this.statusDisplayService.updateUserEmitter
-            .pipe(timeoutWith(Properties.HTTP_TIMEOUT, throwError(new Error("Didn't see user update!"))))
             .subscribe((data) => {
                 this.userName = data;
             });

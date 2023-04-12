@@ -30,6 +30,7 @@ public class IndexBuilder
     
     public IndexWriter getIndexWriter(boolean create) throws IOException {
         if (indexWriter == null) {
+            System.out.println("[STATUS] Index path: "+AppPropertyUtil.getAppProperty("INDEX_FILE_PATH"));
             Directory indexDir = FSDirectory.open(new File(AppPropertyUtil.getAppProperty("INDEX_FILE_PATH")));
             IndexWriterConfig config = new IndexWriterConfig(Version.LUCENE_4_10_0, new StandardAnalyzer());
             indexWriter = new IndexWriter(indexDir, config);

@@ -23,7 +23,9 @@ public class SimpleCell {
 	
 	public void transferToTableCell(TableCell cell) {
 		cell.setColumnOrder(columnOrder);
+		//System.out.println("sc t2tc doc " + datumOrCondition);
 		cell.setDatumOrCondition(datumOrCondition);
+		//System.out.println("sc t2tc val " + value);
 		cell.setValue(value);
 		cell.setOperand(operand);
 	}

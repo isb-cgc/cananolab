@@ -176,6 +176,7 @@ public class SimpleSynthesisFunctionalizationBean {
             fileElements = new ArrayList<SimpleFileBean>();
             for(FileBean file : synBean.getFiles()){
                 SimpleFileBean fBean = new SimpleFileBean();
+                // WJRL 2/6/23: Publication Description is HTML escaped with breaks
                 fBean.setDescription(file.getDescription());
                 fBean.setType(file.getDomainFile().getType());
                 fBean.setTitle(file.getDomainFile().getTitle());

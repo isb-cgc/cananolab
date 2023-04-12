@@ -1,3 +1,5 @@
+#!/bin/bash
+
 if [ ! -f "/home/circleci/${CIRCLE_PROJECT_REPONAME}/deployment_config.txt" ]; then
     gsutil cp gs://${DEPLOYMENT_BUCKET}/deployment_config.txt /home/circleci/${CIRCLE_PROJECT_REPONAME}/
     chmod ugo+r /home/circleci/${CIRCLE_PROJECT_REPONAME}/deployment_config.txt

@@ -2,6 +2,7 @@
     [helpUrl]="helpUrl"
     [toolHeadingName]="toolHeadingNameManage">
 </canano-main-display-heading>
+
 <div class="mainSection" *ngIf="data&&setupData">
     <div class="error" *ngIf="errors['error']">
         {{errors['error']}}
@@ -404,9 +405,7 @@
                                 <td class="label">
                                     Description
                                 </td>
-                                <td colspan="2">
-                                    {{cElement.description}}
-                                </td>
+                                <td colspan="2" [innerHTML]="cElement.description"></td>
                             </tr>
                             <tr *ngIf="cElement.inherentFunction">
                                 <td class="label">
@@ -414,7 +413,8 @@
                                 </td>
                                 <td colspan="2">
                                     <div *ngFor="let function of cElement.inherentFunction">
-                                        {{function.type}}:{{function.description}}
+                                        <div [innerHTML]="inherentFunctionDisplayString(function)"></div>
+                                        <!-- {{function.type}}:{{function.description}} -->
                                     </div>
                                 </td>
                             </tr>
@@ -567,8 +567,8 @@
                                             <table class="dataTable">
                                                 <tr>
                                                     <th>Function Type</th>
-                                                    <th>Image Modality</th>
-                                                    <th>Targets</th>
+                                                    <th *ngIf="inherentFunctionHasType('imaging function')">Image Modality</th>
+                                                    <!-- <th *ngIf="inherentFunctionHasType('targeting function')">Targets</th> -->
                                                     <th>Description</th>
                                                     <th></th>
                                                 </tr>
@@ -576,12 +576,11 @@
                                                     <td>
                                                         {{iFunction.type}}
                                                     </td>
-                                                    <td>
+                                                    <td *ngIf="inherentFunctionHasType('imaging function')">
                                                         {{iFunction.modality}}
                                                     </td>
-                                                    <td>
-                                                        targets?
-                                                    </td>
+                                                    <!-- <td *ngIf="inherentFunctionHasType('targeting function')">
+                                                    </td> -->
                                                     <td>
                                                         {{iFunction.description}}
                                                     </td>

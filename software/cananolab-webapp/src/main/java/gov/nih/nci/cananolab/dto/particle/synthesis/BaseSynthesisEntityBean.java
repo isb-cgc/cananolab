@@ -24,9 +24,10 @@ public class BaseSynthesisEntityBean {
     public BaseSynthesisEntityBean() {
     }
 
-    public String getDescriptionDisplayName() {
+    // WJRL 2/6/23: Appears to be unused
+    /*public String getDescriptionDisplayName() {
         return StringUtils.escapeXmlButPreserveLineBreaks(description);
-    }
+    }*/
 
     public Object getPubChemLink() {
         //TODO FIGURE OUT WHERE TO PUT THIS

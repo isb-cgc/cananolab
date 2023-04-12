@@ -1,5 +1,5 @@
 <canano-main-display-heading
-    [helpUrl]="'https://wiki.nci.nih.gov/display/caNanoLab/Managing+Protocols+in+caNanoLab#ManagingProtocolsincaNanoLab-SubmitProtocol'"
+    [helpUrl]="helpUrl"
     [toolHeadingName]="toolHeadingName"
 >
 </canano-main-display-heading>
@@ -155,7 +155,7 @@
                                 <td>{{group.recipientDisplayName}}</td>
                                 <td>{{group.roleDisplayName}}</td>
                                 <td>
-                                    <button *ngIf="group.recipient != 'ROLE_CURATOR'" (click)="editAccess(groupIndex,group)" class="btn-canano btn-canano-primary btn-canano-xs mr-1">Edit</button>
+                                    <button (click)="editAccess(groupIndex,group)" *ngIf="shouldShowAccessEditButton(group)" class="btn-canano btn-canano-primary btn-canano-xs mr-1">Edit</button>
                                 </td>
                             </tr>
                         </table>
@@ -186,7 +186,7 @@
                 <td>
                     <div class="mainBorder">
                         <table class="authorForm">
-                            <tr>
+                            <tr *ngIf="!editingAccessRow">
                                 <td class="label">
                                     <label for="accessType">
                                         Access By*
@@ -198,25 +198,25 @@
                                         Collaboration Group
                                     </label>
                                     &nbsp;
-                                    <input (ngModelChange)="changeAccessType($event)" type="radio" name="accessType.user" id="accessType.user" [value]="'user'" [(ngModel)]="theAccess['accessType']">
-                                    <label for="accessType.user" class="right">
+                                    <input (ngModelChange)="changeAccessType($event)" [value]="'user'" type="radio" name="theAccess.accessType" id="theAccess.accessType.user" [(ngModel)]="theAccess.accessType">
+                                    <label for="theAccess.accessType.user" class="right">
                                         User
                                     </label>
                                     &nbsp;
-                                    <input (ngModelChange)="changeAccessType($event)" type="radio" name="accessType.role" id="accessType.role" [value]="'role'" [(ngModel)]="theAccess['accessType']">
-                                    <label for="accessType.role" class="right">
+                                    <input *ngIf="data.isCuratorEditing" (ngModelChange)="changeAccessType($event)" type="radio" name="accessType.role" id="accessType.role" [value]="'role'" [(ngModel)]="theAccess['accessType']">
+                                    <label *ngIf="data.isCuratorEditing" for="accessType.role" class="right">
                                         Public
                                     </label>
                                 </td>
                             </tr>
-                            <tr *ngIf="theAccess.accessType&&theAccess.accessType!='role'">
+                            <tr *ngIf="theAccess.accessType&&theAccess.accessType!='role'&&!editingAccessRow">
                                 <td class="label">
                                     <label for="access.recipient">
                                         <span *ngIf="theAccess.accessType=='group'">
-                                            Collaboration Group Name*
+                                            Collaboration Group*
                                         </span>
                                         <span *ngIf="theAccess.accessType=='user'">
-                                            User Login Name*
+                                            User*
                                         </span>
                                     </label>
                                 </td>

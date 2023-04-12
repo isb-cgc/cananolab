@@ -27,7 +27,8 @@ export class SearchResultsComponent implements OnInit {
     ];
     currentPage = 0;
     errors = {};
-    helpUrl = Consts.HELP_URL_SAMPLE_SEARCH;
+    toolHeadingName = 'Search Results'
+    helpUrl = Consts.HELP_URL_KEYWORD_SEARCH_RESULTS;
     maxPageLength = Properties.MAX_PAGE_LENGTH;
     pageCount = 10;
     pageLength = Properties.DEFAULT_PAGE_LENGTH;
@@ -55,6 +56,11 @@ export class SearchResultsComponent implements OnInit {
         private topKeywordSearchService: TopKeywordSearchService
     ) {}
 
+    //
+    // This is the page that provides the results of the lucene text search, launched from the
+    // upper-right text box
+    //
+
     ngOnInit(): void {
         this.searchResults = this.topKeywordSearchService.getKeywordResults();
         this.searchResultsCount = this.searchResults.length;
@@ -71,7 +77,6 @@ export class SearchResultsComponent implements OnInit {
                 }
             );
         this.statusDisplayService.updateUserEmitter
-            .pipe(timeoutWith(Properties.HTTP_TIMEOUT, throwError(new Error("Didn't see user update!"))))
             .subscribe(
                 (data) => {
                     this.userName = data;

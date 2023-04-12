@@ -1,7 +1,7 @@
 <canano-main-display-heading
-    [helpUrl]="'https://wiki.nci.nih.gov/display/caNanoLab/Managing+Publications+in+caNanoLab#ManagingPublicationsincaNanoLab-SearchSamplesbyPublications'"
-    [toolHeadingName]="'Sample Information by Publication'" [backUrl]="'home/publications/sample-search-by-publication'"
->
+    [helpUrl]="helpUrl"
+    [toolHeadingName]="toolHeadingName"
+    [backUrl]="'home/publications/sample-search-by-publication'">
 </canano-main-display-heading>
 
 <div class="mainSection">
@@ -43,12 +43,8 @@
                         {{results.type}} ID:{{results.id}}
                     </div>
                 </td>
-                <td>
-                    {{results.authors}}
-                </td>
-                <td>
-                    {{results.title}}
-                </td>
+                <td [innerHTML]="results.authors"></td>
+                <td [innerHTML]="results.title"></td>
                 <td>
                     Samples curated in caNanoLab:
                     <div *ngFor="let sample of results['samples'] | keyvalue">
@@ -65,20 +61,12 @@
                         </a>
                     </div>
                 </td>
-                <td>
-                    {{results.journal}}
-                </td>
-                <td>
-                    {{results.year}}
-                </td>
-                <td>
-                    {{results.volumn}}
-                </td>
+                <td [innerHTML]="results.journal"></td>
+                <td [innerHTML]="results.year"></td>
+                <td [innerHTML]="results.volumn"></td>
             </tr>
             <tr>
-                <td colspan="8">
-                    {{results.description}}
-                </td>
+                <td colspan="8" [innerHTML]="results.description"></td>
             </tr>
         </table>
     </div>
