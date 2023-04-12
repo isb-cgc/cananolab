@@ -17,6 +17,7 @@ commands:
           name: "Detect and set the tier"
           command: |
             TIER=DEV
+            git ls-remote --heads origin
             if [[ -n ${CIRCLE_TAG} ]]; then
               TIER=$(git ls-remote --heads origin | grep $CIRCLE_SHA1  | sed "s/.*\///" | awk '{print toupper($1)}')
             elif [[ ${CIRCLE_BRANCH} =~ (prod|uat|test).* ]]; then
