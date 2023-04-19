@@ -100,7 +100,7 @@ jobs:
     working_directory: ~/cananolab
     docker:
       - image: cimg/openjdk:8.0.302
-      - image: circleci/mysql:5.7
+      - image: cimg/mysql:5.7.36
         environment:
           MYSQL_ROOT_HOST: "%"
           MYSQL_USER: ubuntu
