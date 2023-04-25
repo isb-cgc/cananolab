@@ -6,6 +6,7 @@ import { Util } from '../../../../../utilities';
 import { NavigationService } from '../../../../common/services/navigation.service';
 import { ApiService } from '../../../../common/services/api.service';
 import { HttpClient } from '@angular/common/http';
+import { NgxCsvParser, NgxCSVParserError } from 'ngx-csv-parser';
 
 @Component({
   selector: 'canano-editcharacterization',
@@ -54,7 +55,7 @@ export class EditcharacterizationComponent implements OnInit {
     csvImportError = '';
     serverUrl = Properties.API_SERVER_URL;
 
-    constructor( private httpClient: HttpClient, private apiService: ApiService, private navigationService: NavigationService, private router: Router, private route: ActivatedRoute) {
+    constructor( private httpClient: HttpClient, private apiService: ApiService, private navigationService: NavigationService, private router: Router, private route: ActivatedRoute, private ngxCsvParser: NgxCsvParser) {
     }
 
 
@@ -441,38 +442,35 @@ export class EditcharacterizationComponent implements OnInit {
 
     importCSV(event) {
         let csvFile = event.target.files.item(0);
-        let size = csvFile.size;
-        this.dataReaderReadFile(0, size, csvFile);
+        this.ngxCsvParser.parse(csvFile, { header: false, delimiter: ',', encoding: 'utf8' })
+            .pipe().subscribe({
+                next: (result): void => {
+                    console.log('ngxCsvParser Result', result);
+                    this.csvDataObj = result;
 
-    }
+                    if (this.csvDataObj === null) {
+                        alert('CSV import parse error: ' + this.csvImportError);
+                        return;
+                    }
 
-    dataReaderReadFile = function (opt_startByte, opt_stopByte, csvFile) {
-        let reader = new FileReader();
-        let that = this;
-        reader.onloadend = function (evt) {
-            that.csvDataObj = that.parseCsv(evt.target.result);
+                    this.csvDataColCount = 0;
+                    this.csvDataRowCount = this.csvDataObj.length;
+                    for (let y = 0; y < this.csvDataRowCount; y++) {
+                        if (this.csvDataObj[y].length > this.csvDataColCount) {
+                            this.csvDataColCount = this.csvDataObj[y].length;
+                        }
+                    }
+                    this.currentFinding.numberOfColumns = this.csvDataColCount;
+                    this.currentFinding.numberOfRows = this.csvDataRowCount;
 
-            if (that.csvDataObj === null) {
-                alert('CSV import parse error: ' + that.csvImportError);
-                return;
-            }
+                    this.updateRowsColsForFinding();
 
-            that.csvDataColCount = 0;
-            that.csvDataRowCount = that.csvDataObj.length;
-            for (let y = 0; y < that.csvDataRowCount; y++) {
-                if (that.csvDataObj[y].length > that.csvDataColCount) {
-                    that.csvDataColCount = that.csvDataObj[y].length;
+                },
+                error: (error: NgxCSVParserError): void => {
+                  console.log('ngxCsvParser Error', error);
                 }
-            }
-            that.currentFinding.numberOfColumns = that.csvDataColCount;
-            that.currentFinding.numberOfRows = that.csvDataRowCount;
-
-            that.updateRowsColsForFinding();
-        };
-
-        reader.readAsBinaryString(csvFile.slice(0, opt_stopByte));
-
-    };
+            });
+    }
 
     createArray(len) {
         let arr = new Array(len || 0),
@@ -544,290 +542,6 @@ export class EditcharacterizationComponent implements OnInit {
     };
 
     rendering() {
-    }
-
-    validateCsv = function (csv) {
-        // Normalize line feeds
-        let temp = (csv.replace(/\r\n/g, '\r').replace(/\n\r/g, '\r').replace(/\n/g, '\r')).split(/\r/);
-
-        // Do we have too many rows?
-        if (temp.length > this.csvMaxNumberOfLines) {
-            this.csvImportError = 'Too many Lines (' + temp.length + ')';
-            return false;
-        }
-
-        // Are any cells too long?
-        // Determine length of longest cell entry
-        let biggestLine = 0;
-        for (let f0 = 0; f0 < temp.length; f0++) {
-            if (biggestLine < temp[f0].length) {
-                biggestLine = temp[f0].length;
-            }
-        }
-
-        // If at least one entry is too long, set error and return false
-        if (biggestLine > this.csvMaxLenOfEntry) {
-            this.csvImportError = 'line(s) too long (' + biggestLine + ')';
-            return false;
-        }
-
-
-        // Send each line to csv validation function.
-        // Remove anything that is not a quote or a comma. That is all we need for validating csv.
-        let regex = new RegExp('[^",]', 'g');
-        for (let f = 0; f < temp.length; f++) {
-            let csvString = temp[f].replace(regex, '');
-            let isValid = this.validateCsvLine(csvString);
-            if (!isValid) {
-                return false;
-            }
-        }
-
-        // Return true if: not too many rows, no row is too long, and csv format is correct.
-        return true;
-    };
-    validateCsvLine(csvLine) {
-        let inQ = false;
-        let badData = false;
-        for (let f = 0; f < csvLine.length; f++) {
-            if (!inQ) {
-
-                // A starting quote plus a nested quote (3 quotes)
-                if ((csvLine.length <= (f + 2)) && csvLine[f] === '"' && csvLine[f + 1] === '"' && csvLine[f + 2] === '"') {
-                    inQ = true;
-                }
-
-                // Two quotes, BUT not in a quote, and ends.
-                else if ((csvLine.length <= (f + 1)) && csvLine[f] === '"' && csvLine[f + 1] === '"') {
-                    badData = false;
-                    break;
-                } else if (csvLine[f] === '"') {
-                    inQ = true;
-                }
-            } else {
-                // An ending quote
-                if (csvLine[f] === '"' && csvLine[f + 1] !== '"') {
-                    inQ = false;
-                } else if (csvLine[f] === '"' && csvLine[f + 1] === '"') {
-                    f++;
-                }
-            }
-        }
-
-        // Are we still in a quote at the end
-        if (inQ) {
-            badData = true;
-            this.csvImportError = 'csv validation error';
-        }
-        return (!badData);
-    }
-
-    qFix(input) {
-        let output = '';
-        for (let i = 0; i < input.length; ++i) {
-
-            if (input.charCodeAt(i) === 226) {
-                // Unicode double quote
-                if (
-                    (input.charCodeAt(i + 1) === 128 && input.charCodeAt(i + 2) === 157) ||
-                    (input.charCodeAt(i + 1) === 128 && input.charCodeAt(i + 2) === 156)
-                ) {
-                    i += 2;
-                    output += '"';
-                }
-                // Unicode single quote
-                else if (input.charCodeAt(i + 1) === 128 && input.charCodeAt(i + 2) === 153) {
-                    i += 2;
-                    output += '\'';
-                }
-
-            } else if (input.charCodeAt(i) === 194 || input.charCodeAt(i) === 195) {
-                let hexDigit0 = input.charCodeAt(i).toString(16);
-                if (hexDigit0.length % 2) {
-                    hexDigit0 = '0' + hexDigit0;
-                }
-                let hexDigit1 = input.charCodeAt(i + 1).toString(16);
-                if (hexDigit1.length % 2) {
-                    hexDigit1 = '0' + hexDigit1;
-                }
-                let hex = '%' + hexDigit0 + '%' + hexDigit1;
-                let decoded = this.decode_utf8(hex);
-                if (decoded === 'ERROR-ERROR') {
-                    output = '';
-                    return output;
-                }
-                output += decoded;
-                i++;
-            } else {
-                output += input[i];
-            }
-        }
-        return (output);
-    };
-
-
-    cleanCsvValue(val) {
-        if (val.substr(0, 1) === '"') {
-            val = val.substr(1);
-        }
-        if (val.substr(val.length - 1) === ',') {
-            val = val.substr(0, val.length - 1);
-        }
-        if (val.substr(val.length - 1) === '"') {
-            val = val.substr(0, val.length - 1);
-        }
-
-        val = val.replace(/""/g, '"');
-        return val;
-    };
-
-
-    /**
-     *
-     * @param s
-     * @returns {string}
-     */
-    decode_utf8(s) {
-        let returnData = '';
-        try {
-            returnData = decodeURIComponent(s);
-        } catch (e) {
-            returnData = 'ERROR-ERROR'; // TODO  Make this a const
-        }
-        return returnData;
-    }
-
-    // Issue 209: Data appear to pass through this function and not be munged
-    parseCsv(data) {
-        if (!this.validateCsv(data)) {
-            return null;
-        }
-        // Split on the CR or LF
-        let dataLines = this.qFix(data.replace(/\r\n/g, '\r').replace(/\n\r/g, '\r').replace(/\n/g, '\r')).split(/\r/);
-        let startCell = 1; // true
-        let currentCell = '';
-        let currentCellType = 0; // 0=unknown  1=comma no double quote  2=comma with double quote
-        let i = 0;
-        let csvData;
-        let csvDataObj = [];
-
-        for (let dataLine = 0; dataLine < dataLines.length && this.runaway > 0; dataLine++) {
-            csvData = dataLines[dataLine];
-
-            if (csvData.length < 1) {
-                continue;
-            }
-
-            let lineOfValues = [];
-            i = 0;
-            while (i < csvData.length && this.runaway > 0) {
-                let trailingCommas = [];
-                trailingCommas = csvData.match(/(,+)$/g);
-                if (trailingCommas !== null) {
-                    let replacementStr = '';
-                    for (let f = 0; f < trailingCommas[0].length; f++) {
-                        replacementStr += ',""';
-                    }
-                    let re = new RegExp(trailingCommas[0] + '$');
-                    csvData = csvData.replace(re, replacementStr);
-                }
-                // Determine cell type
-                if (csvData.substr(i, 1) === '"') {
-                    currentCellType = 2;
-                } else {
-                    currentCellType = 1;
-                }
-
-                if (currentCellType === 1) {
-                    // Just grab to the first comma
-                    currentCell = csvData.substr(i).match(/[^,]*,/);
-                    if (currentCell !== null) {
-                        currentCell = currentCell[0];
-                        lineOfValues.push(this.cleanCsvValue(currentCell));
-                    }
-                    // No comma, we are at the end.
-                    else {
-                        currentCell = csvData.substr(i);
-                        lineOfValues.push(this.cleanCsvValue(currentCell));
-                    }
-                    i += currentCell.length;
-                } else if (currentCellType === 2) {
-                    csvData = csvData.substr(i);
-                    i = 0;
-                    startCell = 1;
-                    let charStatus = 0; // Nothing yet
-                    let currentChar = '';
-                    let currentNextChar = '';
-                    let i1 = 0;
-
-                    while (i1 < csvData.length) {
-                        currentChar = csvData.substr(i1, 1);
-                        if (i1 + 1 < csvData.length) {
-                            currentNextChar = csvData.substr(i1 + 1, 1);
-                        } else {
-                            currentNextChar = '';
-                        }
-                        i1++;
-
-                        // The first char
-                        if (charStatus === 0 && startCell === 1) {
-                            // Is it a quote (it should be)
-                            if (currentChar === '"') {
-                                charStatus = 1; // We have seen the first quote
-                            }
-                            startCell = 0; // No longer looking at the first char
-                            currentChar = csvData.substr(i1, 1);
-                            if (i1 + 1 < csvData.length) {
-                                currentNextChar = csvData.substr(i1 + 1, 1);
-                            } else {
-                                currentNextChar = '';
-                            }
-                        } // END if (charStatus === 0 && startCell === 1)
-
-                        // Not the first char
-                        else if (startCell !== 1) {
-                            // We are past the first quote
-                            if (charStatus === 1) { // We have seen the first quote
-                                // Check for two double quotes, this is a quote within a quoted cell - ignore it and go past it
-                                if (currentChar === '"' && currentNextChar === '"') {
-                                    i1 += 1;
-                                }
-                                // A quote here means the end
-                                else if (currentChar === '"') {
-                                    // Find the next comma or the end of the line.
-                                    currentCell = csvData.substr(0, i1);
-                                    csvData = csvData.substr(currentCell.length + 1);
-                                    i1 = 0;
-                                    startCell = 1; // true
-                                    charStatus = 0;
-                                    lineOfValues.push(this.cleanCsvValue(currentCell));
-                                }
-                            }
-
-                        } // END else if( startCell !== 1)
-                        this.runaway--;
-                    }
-                }
-                this.runaway--;
-            } // End while loop
-
-            csvDataObj.push(lineOfValues);
-            this.runaway--;
-
-        } // End for loop
-
-        // Check here for too may columns
-        if (this.getMaxColumnCount(csvDataObj) > this.csvColumnMaxCount) {
-            this.csvImportError = 'Too many columns (' + this.getMaxColumnCount(csvDataObj) + ')';
-            return null;
-        }
-        let columnCount = this.getMaxColumnCount(csvDataObj);
-        for (let f = 0; f < csvDataObj.length; f++) {
-            while (csvDataObj[f].length < columnCount) {
-                csvDataObj[f].push('');
-            }
-        }
-        return csvDataObj;
     }
 
     getMaxColumnCount(csvData) {
