@@ -27,7 +27,7 @@
     "@ng-idle/core": "^11.1.0",
     "@ng-idle/keepalive": "^11.0.3",
     "angular2-draggable": "^2.3.2",
-    "bootstrap": "^4.5.0",
+    "bootstrap": "^4.6.2",
     "clone": "^1.0.4",
     "ngx-csv-parser": "^1.2.2",
     "rxjs": "~6.6.0",
