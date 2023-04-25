@@ -23,7 +23,7 @@
     "@angular/platform-browser": "^15.2.8",
     "@angular/platform-browser-dynamic": "^15.2.8",
     "@angular/router": "^15.2.8",
-    "@ng-bootstrap/ng-bootstrap": "^13.1.1",
+    "@ng-bootstrap/ng-bootstrap": "^14.1.0",
     "@ng-idle/core": "^11.1.0",
     "@ng-idle/keepalive": "^11.0.3",
     "angular2-draggable": "^2.3.2",
