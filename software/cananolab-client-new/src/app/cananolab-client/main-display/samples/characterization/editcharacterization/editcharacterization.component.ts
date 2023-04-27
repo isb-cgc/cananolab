@@ -44,11 +44,8 @@ export class EditcharacterizationComponent implements OnInit {
     fileName;
     type;
     rowData;
+    csvRowsIsEdit;
 
-    csvColumnMaxCount = 25; // Maximum number of columns allowed
-    csvMaxNumberOfLines = 5000; // Maximum number of rows allowed
-    csvMaxLenOfEntry = 450;
-    runaway = 10240; // A counter used to prevent an endless loop if something goes wrong.  @TODO needs a better name
     csvDataColCount = 0;
     csvDataObj;
     csvDataRowCount;
@@ -332,8 +329,13 @@ export class EditcharacterizationComponent implements OnInit {
     deleteFindingRow(index) {
         if (confirm('Are you sure you wish to delete this finding row?')) {
             this.currentFinding.rows.splice([index], 1);
+            this.csvRowsIsEdit.splice([index], 1);
         }
     };
+
+    editFindingRow(index, isEdit) {
+        this.csvRowsIsEdit[index] = isEdit;
+    }
 
     deleteInstrument() {
         if (confirm('Are you sure you want to delete this instrument?')) {
@@ -462,6 +464,8 @@ export class EditcharacterizationComponent implements OnInit {
                     }
                     this.currentFinding.numberOfColumns = this.csvDataColCount;
                     this.currentFinding.numberOfRows = this.csvDataRowCount;
+
+                    this.csvRowsIsEdit = new Array(this.csvDataRowCount).fill(false);
 
                     this.updateRowsColsForFinding();
 
