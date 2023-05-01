@@ -841,7 +841,6 @@ public class SampleServiceHelper
 					for (Finding fi : fic) {
 						Collection<Datum> dac = fi.getDatumCollection();
 						for (Datum da : dac) {
-							count++;
 							Set<Condition> coc = da.getConditionCollection();
 							for (Condition co : coc) {
 								id = co.toString();
