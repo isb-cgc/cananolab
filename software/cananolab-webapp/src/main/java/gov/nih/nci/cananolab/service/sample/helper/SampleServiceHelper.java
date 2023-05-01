@@ -24,7 +24,18 @@ import gov.nih.nci.cananolab.domain.particle.FunctionalizingEntity;
 import gov.nih.nci.cananolab.domain.particle.NanomaterialEntity;
 import gov.nih.nci.cananolab.domain.particle.Sample;
 import gov.nih.nci.cananolab.domain.particle.SampleComposition;
+import gov.nih.nci.cananolab.domain.particle.AssociatedElement;
+import gov.nih.nci.cananolab.domain.particle.ActivationMethod;
+
 import gov.nih.nci.cananolab.domain.particle.Synthesis;
+import gov.nih.nci.cananolab.domain.common.File;
+import gov.nih.nci.cananolab.domain.common.Finding;
+import gov.nih.nci.cananolab.domain.common.Datum;
+import gov.nih.nci.cananolab.domain.common.Condition;
+import gov.nih.nci.cananolab.domain.common.ExperimentConfig;
+import gov.nih.nci.cananolab.domain.common.Instrument;
+import gov.nih.nci.cananolab.domain.common.Technique;
+
 import gov.nih.nci.cananolab.exception.ApplicationProviderException;
 import gov.nih.nci.cananolab.exception.NoAccessException;
 import gov.nih.nci.cananolab.security.dao.AclDao;
@@ -33,6 +44,7 @@ import gov.nih.nci.cananolab.security.enums.SecureClassesEnum;
 import gov.nih.nci.cananolab.security.service.SpringSecurityAclService;
 import gov.nih.nci.cananolab.system.applicationservice.ApplicationException;
 import gov.nih.nci.cananolab.system.applicationservice.CaNanoLabApplicationService;
+import gov.nih.nci.cananolab.system.applicationservice.TransactionInsertion;
 import gov.nih.nci.cananolab.util.ClassUtils;
 import gov.nih.nci.cananolab.util.Comparators;
 import gov.nih.nci.cananolab.util.Constants;
@@ -726,9 +738,139 @@ public class SampleServiceHelper
 		crit.setResultTransformer(CriteriaSpecification.DISTINCT_ROOT_ENTITY);
 
 		List result = appService.query(crit);
-		if (!result.isEmpty() || result.size() > 0) {
+		if (result.size() != 0) {
 			sample = (Sample) result.get(0);
 		}
+		return sample;
+	}
+
+	public Sample findSampleByIdLazyLoad(String sampleId) throws Exception
+	{
+		if (!springSecurityAclService.currentUserHasReadPermission(Long.valueOf(sampleId), SecureClassesEnum.SAMPLE.getClazz()) &&
+			!springSecurityAclService.currentUserHasWritePermission(Long.valueOf(sampleId), SecureClassesEnum.SAMPLE.getClazz())) {
+			throw new NoAccessException("User has no access to the sample " + sampleId);
+		}
+
+		logger.debug("===============Finding a sample by id: " + System.currentTimeMillis());
+		Sample sample = null;
+		CaNanoLabApplicationService appService = (CaNanoLabApplicationService) ApplicationServiceProvider.getApplicationService();
+
+		DetachedCriteria crit = DetachedCriteria.forClass(Sample.class).add(
+				Property.forName("id").eq(new Long(sampleId)));
+
+		crit.setFetchMode("publicationCollection", FetchMode.JOIN);
+		crit.setFetchMode("synthesis", FetchMode.JOIN);
+		crit.setFetchMode("synthesis.synthesisMaterials", FetchMode.JOIN);
+		crit.setFetchMode("synthesis.synthesisFunctionalizations", FetchMode.JOIN);
+		crit.setFetchMode("synthesis.synthesisPurifications",FetchMode.JOIN);
+		crit.setResultTransformer(CriteriaSpecification.DISTINCT_ROOT_ENTITY);
+
+		TransactionInsertion<Sample> lazyLoads = new TransactionInsertion<Sample>() {
+			@Override
+			public boolean executeInsideTransaction(Sample sample) {
+				PointOfContact poc = sample.getPrimaryPointOfContact();
+				String id = poc.toString();
+				Organization org = poc.getOrganization();
+				// It appears we actually need to do something with the org to get it to lazy load:
+				id = org.toString();
+				Set<PointOfContact> others = sample.getOtherPointOfContactCollection();
+				for (PointOfContact poci : others) {
+					Organization orgi = poci.getOrganization();
+					id = orgi.toString();
+				}
+				Set<Keyword> keys = sample.getKeywordCollection();
+				for (Keyword key : keys) {
+					id = key.toString();
+				}
+				SampleComposition scomp = sample.getSampleComposition();
+				if (scomp != null) {
+					Set<NanomaterialEntity> nec = scomp.getNanomaterialEntityCollection();
+					if (nec != null) {
+						for (NanomaterialEntity ne : nec) {
+							Collection<ComposingElement> cec = ne.getComposingElementCollection();
+							if (cec != null) {
+								for (ComposingElement ce : cec) {
+									Collection<Function> ifc = ce.getInherentFunctionCollection();
+									if (ifc != null) {
+										for (Function fc : ifc) {
+											FunctionalizingEntity fe = fc.getFunctionalizingEntity();
+											id = fc.toString();
+										}
+									}
+								}
+							}
+						}
+					}
+					Set<ChemicalAssociation> cac = scomp.getChemicalAssociationCollection();
+					for (ChemicalAssociation ca : cac) {
+						AssociatedElement a = ca.getAssociatedElementA();
+						id = a.toString();
+						AssociatedElement b = ca.getAssociatedElementB();
+						id = b.toString();
+						SampleComposition sa = ca.getSampleComposition();
+						id = sa.toString();
+						Collection<File> fic = ca.getFileCollection();
+						for (File fi : fic) {
+							Set<Keyword> fikc = fi.getKeywordCollection();
+							for (Keyword kw : fikc) {
+								id = kw.toString();
+							}
+						}
+					}
+					Set<FunctionalizingEntity> fec = scomp.getFunctionalizingEntityCollection();
+					for (FunctionalizingEntity fe : fec) {
+						Collection<Function> ifc = fe.getFunctionCollection();
+						for (Function fc : ifc) {
+							FunctionalizingEntity fet = fc.getFunctionalizingEntity();
+							id = fet.toString();
+						}
+						Collection<File> fic = fe.getFileCollection();
+						for (File fi : fic) {
+							Set<Keyword> fikc = fi.getKeywordCollection();
+							for (Keyword kw : fikc) {
+								id = kw.toString();
+							}
+						}
+						ActivationMethod am = fe.getActivationMethod();
+						SampleComposition sa = fe.getSampleComposition();
+					}
+				}
+				Set<Characterization> cs = sample.getCharacterizationCollection();
+				for (Characterization ca : cs) {
+					Set<Finding> fic = ca.getFindingCollection();
+					for (Finding fi : fic) {
+						Collection<Datum> dac = fi.getDatumCollection();
+						for (Datum da : dac) {
+							count++;
+							Set<Condition> coc = da.getConditionCollection();
+							for (Condition co : coc) {
+								id = co.toString();
+							}
+						}
+						Collection<File> flic = fi.getFileCollection();
+						for (File fli : flic) {
+							Set<Keyword> fikc = fli.getKeywordCollection();
+							for (Keyword kw : fikc) {
+								id = kw.toString();
+							}
+						}
+					}
+					Set<ExperimentConfig> ecc = ca.getExperimentConfigCollection();
+					for (ExperimentConfig ec : ecc) {
+						Collection<Instrument> inc = ec.getInstrumentCollection();
+						for (Instrument in : inc) {
+							id = in.toString();
+						}
+						Technique tq = ec.getTechnique();
+						id = tq.getType();
+					}
+					PointOfContact pc = ca.getPointOfContact();
+				}
+				return true;
+			}
+		};
+
+		sample = appService.queryAndProcess(crit, lazyLoads);
 		return sample;
 	}
 
