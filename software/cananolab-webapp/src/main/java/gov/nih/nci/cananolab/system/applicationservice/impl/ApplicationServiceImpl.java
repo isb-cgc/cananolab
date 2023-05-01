@@ -3,6 +3,7 @@ package gov.nih.nci.cananolab.system.applicationservice.impl;
 //import gov.nih.nci.cagrid.sdkquery4.processor.ParameterizedHqlQuery;
 
 
+import gov.nih.nci.cananolab.system.applicationservice.TransactionInsertion;
 import gov.nih.nci.cananolab.system.dao.DAO;
 
 import gov.nih.nci.cananolab.system.dao.Request;
@@ -30,6 +31,11 @@ import gov.nih.nci.cananolab.system.dao.orm.ORMDAOImpl;
  * @author Satish Patel
  * @version 1.0
  */
+
+//
+// WJRL 4/28/23: IMPORTANT! Configuration in the application-config.xml file makes this class transactional!
+// All methods called here are wrapped in a transaction.
+//
 
 public class ApplicationServiceImpl implements ApplicationService {
 
@@ -70,6 +76,39 @@ public class ApplicationServiceImpl implements ApplicationService {
 		CriteriaImpl crit = (CriteriaImpl)detachedCriteria.getExecutableCriteria(null);
 		String targetClassName = crit.getEntityOrClassName();
 		return privateQuery(detachedCriteria, targetClassName);
+	}
+
+	public <E> E queryAndProcess(DetachedCriteria detachedCriteria, TransactionInsertion<E> post) throws ApplicationException {
+
+		CriteriaImpl crit = (CriteriaImpl)detachedCriteria.getExecutableCriteria(null);
+		String targetClassName = crit.getEntityOrClassName();
+		List<E> resultList = privateQuery(detachedCriteria, targetClassName);
+
+		if (resultList.size() != 0) {
+			E retval = resultList.get(0);
+			boolean success = post.executeInsideTransaction(retval);
+			if (!success) {
+				throw new ApplicationException();
+			}
+			return (retval);
+		}
+		return (null);
+	}
+
+	public <E> List<E> queryAndProcessList(DetachedCriteria detachedCriteria, TransactionInsertion<E> post) throws ApplicationException {
+
+		CriteriaImpl crit = (CriteriaImpl)detachedCriteria.getExecutableCriteria(null);
+		String targetClassName = crit.getEntityOrClassName();
+		List<E> resultList = privateQuery(detachedCriteria, targetClassName);
+
+		for (int i = 0; i < resultList.size(); i++) {
+			E curr = resultList.get(i);
+			boolean success = post.executeInsideTransaction(curr);
+			if (!success) {
+				throw new ApplicationException();
+			}
+		}
+		return (resultList);
 	}
 
 	/**
