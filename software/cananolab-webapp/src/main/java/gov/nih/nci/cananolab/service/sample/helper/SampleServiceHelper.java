@@ -873,6 +873,96 @@ public class SampleServiceHelper
 		return sample;
 	}
 
+	/**
+	 * WJRL 4/30/23: Use this for loading sample search results. Note that the system currently requires that a
+	 * Sample gets wrapped into a SampleBean so it can then be handed to:
+	 * SimpleSearchSampleBean.transferSampleBeanForBasicResultView(SampleBean sampleBean)
+	 * and thus more stuff is loaded to create the SampleBean than is needed for the final result. Investigate
+	 * ways to minimize the database queries even more.
+	*/
+
+	public Sample findShallowSampleByIdLazyLoad(String sampleId) throws Exception
+	{
+		if (!springSecurityAclService.currentUserHasReadPermission(Long.valueOf(sampleId), SecureClassesEnum.SAMPLE.getClazz()) &&
+				!springSecurityAclService.currentUserHasWritePermission(Long.valueOf(sampleId), SecureClassesEnum.SAMPLE.getClazz())) {
+			throw new NoAccessException("User has no access to the sample " + sampleId);
+		}
+
+		logger.debug("===============Finding a sample by id: " + System.currentTimeMillis());
+		Sample sample = null;
+		CaNanoLabApplicationService appService = (CaNanoLabApplicationService) ApplicationServiceProvider.getApplicationService();
+
+		DetachedCriteria crit = DetachedCriteria.forClass(Sample.class).add(
+				Property.forName("id").eq(new Long(sampleId)));
+		crit.setFetchMode("publicationCollection", FetchMode.JOIN);
+		crit.setResultTransformer(CriteriaSpecification.DISTINCT_ROOT_ENTITY);
+		System.out.println("Shallow Lazy load for search");
+
+		TransactionInsertion<Sample> lazyLoads = new TransactionInsertion<Sample>() {
+			@Override
+			public boolean executeInsideTransaction(Sample sample) {
+				PointOfContact poc = sample.getPrimaryPointOfContact();
+				String id = poc.toString();
+				Organization org = poc.getOrganization();
+				// It appears we actually need to do something with the org to get it to lazy load:
+				id = org.toString();
+				Set<PointOfContact> others = sample.getOtherPointOfContactCollection();
+				for (PointOfContact poci : others) {
+					Organization orgi = poci.getOrganization();
+					id = orgi.toString();
+				}
+				Set<Keyword> keys = sample.getKeywordCollection();
+				for (Keyword key : keys) {
+					id = key.toString();
+				}
+				SampleComposition scomp = sample.getSampleComposition();
+				if (scomp != null) {
+					Set<NanomaterialEntity> nec = scomp.getNanomaterialEntityCollection();
+					if (nec != null) {
+						for (NanomaterialEntity ne : nec) {
+							Collection<ComposingElement> cec = ne.getComposingElementCollection();
+							if (cec != null) {
+								for (ComposingElement ce : cec) {
+									Collection<Function> ifc = ce.getInherentFunctionCollection();
+									if (ifc != null) {
+										for (Function fc : ifc) {
+											FunctionalizingEntity fe = fc.getFunctionalizingEntity();
+											if (fe != null) {
+												fe.getClass();
+											}
+										}
+									}
+								}
+							}
+						}
+					}
+					Set<FunctionalizingEntity> fec = scomp.getFunctionalizingEntityCollection();
+					if (fec != null) {
+						for (FunctionalizingEntity fe : fec) {
+							Collection<Function> ifc = fe.getFunctionCollection();
+							if (ifc != null) {
+								for (Function fc : ifc) {
+									FunctionalizingEntity fet = fc.getFunctionalizingEntity();
+									if (fet != null) {
+										fet.getClass();
+									}
+								}
+							}
+						}
+					}
+				}
+				Set<Characterization> cs = sample.getCharacterizationCollection();
+				for (Characterization ca : cs) {
+					PointOfContact pc = ca.getPointOfContact();
+					ca.getClass();
+				}
+				return true;
+			}
+		};
+
+		sample = appService.queryAndProcess(crit, lazyLoads);
+		return sample;
+	}
 
 	public Sample findSampleBasicById(String sampleId) throws Exception {
 		if (!springSecurityAclService.currentUserHasReadPermission(Long.valueOf(sampleId), SecureClassesEnum.SAMPLE.getClazz()) &&
