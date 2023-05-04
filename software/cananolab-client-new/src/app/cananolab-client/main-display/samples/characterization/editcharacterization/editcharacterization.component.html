@@ -761,6 +761,11 @@
                                                         <input type="file" id="csvFile" style="display: none" (change)="importCSV($event)">
                                                     </label>
 
+                                                    <label class="btn-canano btn-canano-primary btn-canano-xs">
+                                                        Import header
+                                                        <input type="file" id="csvHeaderFile" style="display: none" (change)="importCSVHeader($event)">
+                                                    </label>
+
                                                 </td>
                                             </tr>
                                             <tr *ngIf="columnOrder!=null">
