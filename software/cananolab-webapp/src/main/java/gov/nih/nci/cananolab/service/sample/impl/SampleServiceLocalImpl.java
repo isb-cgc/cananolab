@@ -329,6 +329,28 @@ public class SampleServiceLocalImpl extends BaseServiceLocalImpl implements Samp
 		return sampleBean;
 	}
 
+	public SampleBean findSampleForSearchById(String sampleId, Boolean loadAccessInfo) throws SampleException, NoAccessException
+	{
+		SampleBean sampleBean = null;
+		try {
+			Sample sample = sampleServiceHelper.findShallowSampleByIdLazyLoad(sampleId);
+			if (sample != null) {
+				if (loadAccessInfo) {
+					sampleBean = loadSampleBean(sample);
+				} else {
+					sampleBean = new SampleBean(sample);
+				}
+			}
+		} catch (NoAccessException e) {
+			throw e;
+		} catch (Exception e) {
+			String err = "Problem finding the sample by id: " + sampleId + ". " + e.getMessage();
+			logger.error(err, e);
+			throw new SampleException(err, e);
+		}
+		return sampleBean;
+	}
+
 	/**
 	 * Only load sample core data.
 	 * 
