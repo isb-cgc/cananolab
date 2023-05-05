@@ -52,6 +52,8 @@ export class EditcharacterizationComponent implements OnInit {
     csvImportError = '';
     serverUrl = Properties.API_SERVER_URL;
 
+    csvHeaderDataObj;
+
     constructor( private httpClient: HttpClient, private apiService: ApiService, private navigationService: NavigationService, private router: Router, private route: ActivatedRoute, private ngxCsvParser: NgxCsvParser) {
     }
 
@@ -442,6 +444,51 @@ export class EditcharacterizationComponent implements OnInit {
         });
     };
 
+    importCSVHeader(event) {
+        let csvFile = event.target.files.item(0);
+        this.ngxCsvParser.parse(csvFile, { header: true, delimiter: ',', encoding: 'utf8' })
+            .pipe().subscribe({
+                next: (result): void => {
+                    console.log('ngxCsvParser Header Result', result);
+                    this.csvHeaderDataObj = result;
+
+                    if (this.csvHeaderDataObj === null) {
+                        alert('CSV header parse error: ' + this.csvImportError);
+                        return;
+                    }
+
+                    let rowCount = this.csvHeaderDataObj.length;
+                    this.currentFinding.columnHeaders = [];
+                    for (let r = 0; r < rowCount; r++) {
+                        let headerObj = this.csvHeaderDataObj[r];
+                        let header = {
+                            'columnType':    headerObj.columnType,
+                            'columnName':    headerObj.columnName,
+                            'valueType':     headerObj.valueType,
+                            'valueUnit':     headerObj.valueUnit,
+                            'constantValue': headerObj.constantValue
+                        }
+
+                        this.currentFinding.columnHeaders.push(header);
+
+                        if (headerObj.constantValue) {
+                            this.currentFinding['rows'].forEach(row => {
+                                if (!row['cells'][r]['value']) {
+                                    row['cells'][r]['value'] = headerObj.constantValue;
+                                }
+                            });
+                        }
+                    }
+
+                    // this.updateRowsColsForFinding();
+
+                },
+                error: (error: NgxCSVParserError): void => {
+                  console.log('ngxCsvParser Header Error', error);
+                }
+            });
+    }
+
     importCSV(event) {
         let csvFile = event.target.files.item(0);
         this.ngxCsvParser.parse(csvFile, { header: false, delimiter: ',', encoding: 'utf8' })
@@ -794,6 +841,8 @@ export class EditcharacterizationComponent implements OnInit {
     };
 
     updateRowsColumns() {
+        this.csvRowsIsEdit = new Array(this.currentFinding.numberOfRows).fill(false);
+
         let url = this.apiService.doPost(Consts.QUERY_CHARACTERIZTAION_UPDATE_FINDING, this.currentFinding)
         url.subscribe(data => {
             this.errors = {};
