@@ -259,7 +259,8 @@ public class SynthesisPurificationServices {
             List results = appService.query(criteria);
             List<Technique> techniques = new ArrayList<Technique>() ;
 
-            for (Object result : results) {
+	    for (int i = 0; i < results.size(); i++) {
+	    		Object result =  results.get(i);
                 technique = (Technique) result;
                 techniques.add(technique);
             }
