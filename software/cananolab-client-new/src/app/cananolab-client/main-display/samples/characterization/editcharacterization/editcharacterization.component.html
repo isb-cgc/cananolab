@@ -691,7 +691,7 @@
                                                         </th>
                                                     </tr>
                                                     <tr *ngFor="let row of finding.rows; let rowIndex=index; let odd=odd" [ngClass]="{'rowOdd':odd}">
-                                                        <td [ngStyle]="{'width':85/row.cells.length+'%'}" *ngFor="let column of row.cells">
+                                                        <td [ngStyle]="{'width':85/row.cells.length+'%'}" *ngFor="let column of row.cells" [innerHTML]="column.value">
                                                             <span *ngIf="column.operand!='='">
                                                                 {{column.operand}}
                                                             </span>
@@ -915,42 +915,38 @@
                                             </tr>
                                             <tr>
                                                 <td>
-                                                    <table class="dataTable">
-                                                        <tr>
-                                                            <td [colSpan]="currentFinding.numberOfColumns+1">
-                                                                <h5>Column Data</h5><br />
-                                                            </td>
-                                                        </tr>
-                                                        <tr>
-                                                            <th *ngFor="let columnHeader of currentFinding.columnHeaders; let columnHeaderIndex=index">
-                                                                <a [routerLink]="[]" (click)="editColumnForm(columnHeader, columnHeaderIndex)">
-                                                                    {{columnHeader.columnName}}
-                                                                </a>
-                                                            </th>
-                                                            <th></th>
-                                                            <th></th>
-                                                        </tr>
-                                                        <ng-container *ngFor="let row of currentFinding.rows;let rIndex=index; let odd=odd; let last=last">
-                                                            <tr [ngClass]="{'rowOdd':odd}" *ngIf="!csvRowsIsEdit[rIndex]">
-                                                                <td *ngFor="let column of row.cells; let cIndex=index;">
-                                                                    {{ column.value}}
-                                                                </td>
 
-                                                                <td>
-                                                                    <button (click)="editFindingRow(rIndex, true)" class="btn-canano btn-canano-primary btn-canano-xs mr-1">
-                                                                        Edit
-                                                                    </button>
-                                                                </td>
+                                                    <h5>Table Data</h5><br />
+                                                    <div class="scroll-table-container">
+                                                        <table class="dataTable">
+                                                            <tr>
+                                                                <th></th>
 
-                                                                <td>
-                                                                    <button (click)="deleteFindingRow(rIndex)" class="btn-canano btn-canano-danger btn-canano-xs mr-1">
-                                                                        Delete
-                                                                    </button>
-                                                                </td>
+                                                                <th *ngFor="let columnHeader of currentFinding.columnHeaders; let columnHeaderIndex=index">
+                                                                    <a [routerLink]="[]" (click)="editColumnForm(columnHeader, columnHeaderIndex)">
+                                                                        {{columnHeader.columnName}}
+                                                                    </a>
+                                                                </th>
                                                             </tr>
-                                                             
-                                                            <tr [ngClass]="{'rowOdd':odd}" *ngIf="csvRowsIsEdit[rIndex]">
-                                                                
+                                                            
+                                                            <ng-container *ngFor="let row of currentFinding.rows;let rIndex=index; let odd=odd; let last=last">
+                                                                <tr [ngClass]="{'rowOdd':odd}" *ngIf="!csvRowsIsEdit[rIndex] && isTooManyCells">
+                                                                    <td>
+                                                                        <button (click)="editFindingRow(rIndex, true)" class="btn-canano btn-canano-primary btn-canano-xs mr-1">
+                                                                            Edit
+                                                                        </button>
+                                                                    </td>
+
+                                                                    <td *ngFor="let column of row.cells; let cIndex=index;" [innerHtml]="column.value">
+                                                                        {{ column.value}}
+                                                                    </td>                                                        
+                                                                </tr>
+                                                                 
+                                                                <tr [ngClass]="{'rowOdd':odd}" *ngIf="csvRowsIsEdit[rIndex] || !isTooManyCells">
+                                                                    <td>
+                                                                        <button (click)="deleteFindingRow(rIndex)" class="btn-canano btn-canano-danger btn-canano-xs mr-1">Delete</button>
+                                                                    </td>
+
                                                                     <td *ngFor="let column of row.cells; let cIndex=index;">
                                                                        <select [name]="'column.operand'+rIndex+cIndex" [(ngModel)]="column.operand">
                                                                             <option *ngFor="let modifier of setupData.datumNumberModifier" [selected]="column.operand===modifier" [ngValue]="modifier">{{modifier}}</option>
@@ -958,20 +954,13 @@
                                                                         <input type="number" *ngIf="currentFinding.columnHeaders[cIndex]['columnType']=='datum'" [name]="'column.value'+rIndex+cIndex" [(ngModel)]="column.value" size="10">
                                                                         <input type="text" *ngIf="currentFinding.columnHeaders[cIndex]['columnType']=='condition'||currentFinding.columnHeaders[cIndex]['columnType']==null" [name]="'column.value'+rIndex+cIndex" [(ngModel)]="column.value" size="10">
                                                                     </td>
-                                                                    
-                                                                    <td>
-                                                                        <button (click)="editFindingRow(rIndex, false)" class="btn-canano btn-canano-success btn-canano-xs mr-1">
-                                                                            Done
-                                                                        </button>
-                                                                    </td>
+                                                                </tr>
 
-                                                                    <td>
-                                                                        <button (click)="deleteFindingRow(rIndex)" class="btn-canano btn-canano-danger btn-canano-xs mr-1">Delete</button>
-                                                                    </td>
                                                                 
-                                                            </tr>
-                                                        </ng-container>
-                                                    </table>
+                                                            </ng-container>
+                                                        </table>
+                                                    </div>
+
                                                 </td>
                                             </tr>
                                             <tr>

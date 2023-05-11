@@ -51,6 +51,7 @@ export class EditcharacterizationComponent implements OnInit {
     csvDataRowCount;
     csvImportError = '';
     serverUrl = Properties.API_SERVER_URL;
+    isTooManyCells = false;
 
     csvHeaderDataObj;
 
@@ -512,10 +513,11 @@ export class EditcharacterizationComponent implements OnInit {
                     this.currentFinding.numberOfColumns = this.csvDataColCount;
                     this.currentFinding.numberOfRows = this.csvDataRowCount;
 
+
                     this.csvRowsIsEdit = new Array(this.csvDataRowCount).fill(false);
 
                     this.updateRowsColsForFinding();
-
+                    this.updateIfTooManyCells();
                 },
                 error: (error: NgxCSVParserError): void => {
                   console.log('ngxCsvParser Error', error);
@@ -847,6 +849,7 @@ export class EditcharacterizationComponent implements OnInit {
         url.subscribe(data => {
             this.errors = {};
             this.currentFinding = data;
+            this.updateIfTooManyCells();
         },
         error => {
             this.errors = error;
@@ -860,5 +863,11 @@ export class EditcharacterizationComponent implements OnInit {
         console.log(tFile)
         this.theFile.append('myFile', tFile, tFile.name);
         this.fileName = tFile.name;
+    }
+
+    updateIfTooManyCells() {
+        // If there is too many cells, the front end will take a long time load them and look like frozen
+        // In that case, we make the table rows not editable and give the user edit button to turn on
+        this.isTooManyCells = (this.currentFinding.numberOfRows * this.currentFinding.numberOfColumns >= Consts.tooManyTableCellLimit);
     }
 }
