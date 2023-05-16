@@ -237,7 +237,6 @@ public class CharacterizationServiceHelper
 		return characterizationArrayList;
 	}
 
-	@Transactional(readOnly=true, propagation=Propagation.REQUIRES_NEW)
 	public Characterization findCharacterizationById(Long charId) throws Exception
 	{
 		System.out.println("findCharacterizationById charId=="+charId);
@@ -285,14 +284,14 @@ public class CharacterizationServiceHelper
 							for(Datum myDatum:myDatumCollection) {
 								myDatum.toString(); // force load
 								Set<Condition> myConditionCollection = myDatum.getConditionCollection();
-	System.out.println("finding id "+id+" myDatum.getId()=="+ myDatum.getId()+ " myConditionCollection.size():" + myConditionCollection.size() );
+	//System.out.println("finding id "+id+" myDatum.getId()=="+ myDatum.getId()+ " myConditionCollection.size():" + myConditionCollection.size() );
 								for(Condition myCondition:myConditionCollection) {
 									//System.out.println("------>"+id+"."+myDatum.getId()+"."+myCondition.getId()+".");
 									myCondition.toString();
 								}
-								myDatum.setConditionCollection(myConditionCollection);
+								//myDatum.setConditionCollection(myConditionCollection);
 							}
-							myFinding.setDatumCollection(myDatumCollection);
+							//myFinding.setDatumCollection(myDatumCollection);
 
 							// similarly, go through FileCollection and add all its Keywords
 							Collection<File> myFileCollection= myFinding.getFileCollection();
@@ -300,14 +299,14 @@ public class CharacterizationServiceHelper
 							for(File myFile:myFileCollection) {
 								myFile.toString(); // force load
 								Set<Keyword> myKeywordCollection = myFile.getKeywordCollection();
-	System.out.println("finding id "+id+" myFile.getId()=="+ myFile.getId()+ " myKeywordCollection.size():" + myKeywordCollection.size() );
+	//System.out.println("finding id "+id+" myFile.getId()=="+ myFile.getId()+ " myKeywordCollection.size():" + myKeywordCollection.size() );
 								for(Keyword myKeyword:myKeywordCollection) {
 									//System.out.println("------>"+id+"."+myFile.getId()+"."+myKeyword.getId()+".");
 									myKeyword.toString();
 								}
-								myFile.setKeywordCollection(myKeywordCollection);
+								//myFile.setKeywordCollection(myKeywordCollection);
 							}
-							myFinding.setFileCollection(myFileCollection);
+							//myFinding.setFileCollection(myFileCollection);
 
 							findingCollection.add(myFinding);
 							System.out.println("findCharacterizationById added id=="+id);

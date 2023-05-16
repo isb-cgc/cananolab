@@ -156,10 +156,8 @@ public abstract class BaseAnnotationBO extends AbstractDispatchBO
 		}
 		catch (Exception e) {
 			String msg = PropertyUtil.getProperty("sample", "error.noFile");
-			//System.out.println("GCPStorage downloadFile() throw exception: " + e.toString());
-			System.out.println("fileUri does not exist:"+fileUri);
-			System.out.println("GCPStorage downloadFile() exception: " + e.toString());
-			//throw new FileException("Target download file doesn't exist");
+			System.out.println("GCPStorage downloadFile() throw exception: " + e.toString());
+			throw new FileException("Target download file doesn't exist");
 		}
 		
 		return null;
