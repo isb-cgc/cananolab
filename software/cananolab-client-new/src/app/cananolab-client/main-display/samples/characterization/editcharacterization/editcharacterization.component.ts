@@ -49,6 +49,7 @@ export class EditcharacterizationComponent implements OnInit {
     csvDataColCount = 0;
     csvDataObj;
     csvDataRowCount;
+    csvFirstDataRow = 0;
     csvImportError = '';
     serverUrl = Properties.API_SERVER_URL;
     isTooManyCells = false;
@@ -445,51 +446,6 @@ export class EditcharacterizationComponent implements OnInit {
         });
     };
 
-    importCSVHeader(event) {
-        let csvFile = event.target.files.item(0);
-        this.ngxCsvParser.parse(csvFile, { header: true, delimiter: ',', encoding: 'utf8' })
-            .pipe().subscribe({
-                next: (result): void => {
-                    console.log('ngxCsvParser Header Result', result);
-                    this.csvHeaderDataObj = result;
-
-                    if (this.csvHeaderDataObj === null) {
-                        alert('CSV header parse error: ' + this.csvImportError);
-                        return;
-                    }
-
-                    let rowCount = this.csvHeaderDataObj.length;
-                    this.currentFinding.columnHeaders = [];
-                    for (let r = 0; r < rowCount; r++) {
-                        let headerObj = this.csvHeaderDataObj[r];
-                        let header = {
-                            'columnType':    headerObj.columnType,
-                            'columnName':    headerObj.columnName,
-                            'valueType':     headerObj.valueType,
-                            'valueUnit':     headerObj.valueUnit,
-                            'constantValue': headerObj.constantValue
-                        }
-
-                        this.currentFinding.columnHeaders.push(header);
-
-                        if (headerObj.constantValue) {
-                            this.currentFinding['rows'].forEach(row => {
-                                if (!row['cells'][r]['value']) {
-                                    row['cells'][r]['value'] = headerObj.constantValue;
-                                }
-                            });
-                        }
-                    }
-
-                    // this.updateRowsColsForFinding();
-
-                },
-                error: (error: NgxCSVParserError): void => {
-                  console.log('ngxCsvParser Header Error', error);
-                }
-            });
-    }
-
     importCSV(event) {
         let csvFile = event.target.files.item(0);
         this.ngxCsvParser.parse(csvFile, { header: false, delimiter: ',', encoding: 'utf8' })
@@ -497,9 +453,10 @@ export class EditcharacterizationComponent implements OnInit {
                 next: (result): void => {
                     console.log('ngxCsvParser Result', result);
                     this.csvDataObj = result;
+                    this.csvImportError = "";
 
                     if (this.csvDataObj === null) {
-                        alert('CSV import parse error: ' + this.csvImportError);
+                        this.csvImportError = "Csv parsing failed.";
                         return;
                     }
 
@@ -510,9 +467,16 @@ export class EditcharacterizationComponent implements OnInit {
                             this.csvDataColCount = this.csvDataObj[y].length;
                         }
                     }
+
+                    this.csvFirstDataRow = this.processCsvHeaders();
+                    this.csvDataRowCount -= this.csvFirstDataRow;
+
+                    if (this.csvImportError != "") {
+                        return;
+                    }
+
                     this.currentFinding.numberOfColumns = this.csvDataColCount;
                     this.currentFinding.numberOfRows = this.csvDataRowCount;
-
 
                     this.csvRowsIsEdit = new Array(this.csvDataRowCount).fill(false);
 
@@ -523,6 +487,74 @@ export class EditcharacterizationComponent implements OnInit {
                   console.log('ngxCsvParser Error', error);
                 }
             });
+    }
+
+    processCsvHeaders() {
+        var currentRowNotHeader = false;
+        var currentRow = 0;
+
+        var columnNameRow = -1;
+        var columnTypeRow = -1;
+        var valueTypeRow = -1;
+        var valueUnitRow = -1;
+        var constantValueRow = -1;
+        var firstDataRow = 0;
+
+        while (currentRow < this.csvDataObj.length && !currentRowNotHeader) {
+            var firstCell = this.csvDataObj[currentRow][0];
+            if (firstCell.startsWith("column_name:")) {
+                columnNameRow = currentRow;
+            } else if (firstCell.startsWith("column_type:")) {
+                columnTypeRow = currentRow;
+            } else if (firstCell.startsWith("value_type:")) {
+                valueTypeRow = currentRow;
+            } else if (firstCell.startsWith("value_unit:")) {
+                valueUnitRow = currentRow;
+            } else if (firstCell.startsWith("constant_value:")) {
+                constantValueRow = currentRow;
+            } else {
+                firstDataRow = currentRow;
+                break;
+            }
+            currentRow++;
+        }
+
+        // Has headers, so need to process headers
+        if (firstDataRow > 0) {
+            // Must have column name and type row together
+            if (columnNameRow == -1 || columnTypeRow == -1) {
+                this.csvImportError = "Must have both column_name and column_type rows, or no header rows";
+                return;
+            }
+
+            var col = 0;
+            for (let col = 0; col < this.csvDataColCount; ++col) {
+                let columnType = this.csvDataObj[columnTypeRow][col].replace(/(^column_type:)/gi, "");
+                let columnName = this.csvDataObj[columnNameRow][col].replace(/(^column_name:)/gi, "");
+                if (columnType == "" || columnName == "") {
+                    // Every column must have column name and column type
+                    this.csvImportError = `Column ${col + 1} does not have column_type or column_name`;
+                    this.currentFinding.columnHeaders = [];
+                    return;
+                }
+
+                let valueType = (valueTypeRow == -1) ? "" : this.csvDataObj[valueTypeRow][col].replace(/(^value_type:)/gi, "");
+                let valueUnit = (valueUnitRow == -1) ? "" : this.csvDataObj[valueUnitRow][col].replace(/(^value_unit:)/gi, "");
+                let constantValue = (constantValueRow == -1) ? "" : this.csvDataObj[constantValueRow][col].replace(/(^constant_value:)/gi, "");
+
+                let header = {
+                    'columnType':    columnType,
+                    'columnName':    columnName,
+                    'valueType':     valueType,
+                    'valueUnit':     valueUnit,
+                    'constantValue': constantValue
+                }
+
+                this.currentFinding.columnHeaders.push(header);
+            }
+        }
+
+        return firstDataRow;
     }
 
     createArray(len) {
@@ -562,7 +594,7 @@ export class EditcharacterizationComponent implements OnInit {
                     for (let x = 0; x < this.csvDataColCount; x++) {
                         // If the user has reduced the number of columns, make sure we don't try to update columns that no longer exist.
                         if ((data.rows[y].cells[x] !== null) && (data.rows[y].cells[x] !== undefined)) {
-                            data.rows[y].cells[x].value = Object(this.csvDataObj[y][x]);
+                            data.rows[y].cells[x].value = Object(this.csvDataObj[y + this.csvFirstDataRow][x]);
                             if (x < this.currentFinding.length) {
                                 data.rows[y].cells[x].datumOrCondition = this.currentFinding.columnHeaders[x].columnType;
                             }

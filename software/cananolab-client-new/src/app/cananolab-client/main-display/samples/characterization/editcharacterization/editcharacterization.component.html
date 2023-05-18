@@ -753,19 +753,14 @@
                                                     <label for="finding.rows">
                                                         &nbsp;Rows
                                                     </label>
-                                                    <input type="number" name="rows" id="finding.rows" [(ngModel)]="currentFinding.numberOfRows"><br />
+                                                    <input type="number" name="rows" id="finding.rows" [(ngModel)]="currentFinding.numberOfRows"> <br />
                                                     <button (click)="updateRowsColumns()" class="btn-canano btn-canano-primary btn-canano-xs mr-1">Update</button>
+
                                                     <button *ngIf="findingIndex!=-1" (click)="editColumnOrder()" class="btn-canano btn-canano-primary btn-canano-xs mr-1">Set Column Order</button>
                                                     <label class="btn-canano btn-canano-primary btn-canano-xs">
-                                                        Import csv
+                                                        Import CSV
                                                         <input type="file" id="csvFile" style="display: none" (change)="importCSV($event)">
                                                     </label>
-
-                                                    <label class="btn-canano btn-canano-primary btn-canano-xs">
-                                                        Import header
-                                                        <input type="file" id="csvHeaderFile" style="display: none" (change)="importCSVHeader($event)">
-                                                    </label>
-
                                                 </td>
                                             </tr>
                                             <tr *ngIf="columnOrder!=null">
@@ -791,10 +786,15 @@
                                                 </td>
                                             </tr>
                                             <tr>
+                                                <div class="error" *ngIf="csvImportError">
+                                                    CSV import error: {{csvImportError}}
+                                                </div>
+                                            </tr>
+                                           <!--  <tr>
                                                 <td class="label">
                                                     Data and Conditions
                                                 </td>
-                                            </tr>
+                                            </tr> -->
                                             <tr *ngIf="columnHeaderIndex!=null">
                                                 <td>
                                                     <div class="mainBorder">
