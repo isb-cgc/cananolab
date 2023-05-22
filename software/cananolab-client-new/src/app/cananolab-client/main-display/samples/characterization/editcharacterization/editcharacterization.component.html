@@ -684,21 +684,23 @@
                                                 <div class="dataConditions"><B>Data and Conditions</B>
                                                         <button  (click)="editFinding(fIndex, finding)" class="btn-canano btn-canano-primary btn-canano-xs mr-1">Edit</button>
                                                 </div>
-                                                <table class="dataTable">
-                                                    <tr>
-                                                        <th *ngFor="let header of finding.columnHeaders">
-                                                            {{header.columnName}}
-                                                        </th>
-                                                    </tr>
-                                                    <tr *ngFor="let row of finding.rows; let rowIndex=index; let odd=odd" [ngClass]="{'rowOdd':odd}">
-                                                        <td [ngStyle]="{'width':85/row.cells.length+'%'}" *ngFor="let column of row.cells" [innerHTML]="column.value">
-                                                            <span *ngIf="column.operand!='='">
-                                                                {{column.operand}}
-                                                            </span>
-                                                            {{column.value}}
-                                                        </td>
-                                                    </tr>
-                                                </table>
+                                                <div class="scroll-table-container">
+                                                    <table class="dataTable">
+                                                        <tr>
+                                                            <th *ngFor="let header of finding.columnHeaders">
+                                                                {{header.columnName}}
+                                                            </th>
+                                                        </tr>
+                                                        <tr *ngFor="let row of finding.rows; let rowIndex=index; let odd=odd" [ngClass]="{'rowOdd':odd}">
+                                                            <td [ngStyle]="{'width':85/row.cells.length+'%'}" *ngFor="let column of row.cells" [innerHTML]="column.value">
+                                                                <span *ngIf="column.operand!='='">
+                                                                    {{column.operand}}
+                                                                </span>
+                                                                {{column.value}}
+                                                            </td>
+                                                        </tr>
+                                                    </table>
+                                                </div>
                                             <ng-container *ngIf="finding.files.length">
                                                 <br /><B>Files</B>
                                                 <table class="dataTable">
