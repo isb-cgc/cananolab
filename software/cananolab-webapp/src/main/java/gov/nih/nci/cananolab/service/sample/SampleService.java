@@ -53,6 +53,10 @@ public interface SampleService extends BaseService {
 	SampleBean findSampleById(String sampleId, Boolean loadAccessInfo)
 			throws SampleException, NoAccessException;
 
+
+	SampleBean findSampleForSearchById(String sampleId, Boolean loadAccessInfo)
+			throws SampleException, NoAccessException;
+
 	SampleBean findSampleByName(String sampleName)
 			throws SampleException, NoAccessException;
 
