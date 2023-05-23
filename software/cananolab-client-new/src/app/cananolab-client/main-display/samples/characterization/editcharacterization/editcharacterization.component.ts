@@ -44,16 +44,17 @@ export class EditcharacterizationComponent implements OnInit {
     fileName;
     type;
     rowData;
+    csvRowsIsEdit;
 
-    csvColumnMaxCount = 25; // Maximum number of columns allowed
-    csvMaxNumberOfLines = 5000; // Maximum number of rows allowed
-    csvMaxLenOfEntry = 450;
-    runaway = 10240; // A counter used to prevent an endless loop if something goes wrong.  @TODO needs a better name
     csvDataColCount = 0;
     csvDataObj;
     csvDataRowCount;
+    csvFirstDataRow = 0;
     csvImportError = '';
     serverUrl = Properties.API_SERVER_URL;
+    isTooManyCells = false;
+
+    csvHeaderDataObj;
 
     constructor( private httpClient: HttpClient, private apiService: ApiService, private navigationService: NavigationService, private router: Router, private route: ActivatedRoute, private ngxCsvParser: NgxCsvParser) {
     }
@@ -332,8 +333,13 @@ export class EditcharacterizationComponent implements OnInit {
     deleteFindingRow(index) {
         if (confirm('Are you sure you wish to delete this finding row?')) {
             this.currentFinding.rows.splice([index], 1);
+            this.csvRowsIsEdit.splice([index], 1);
         }
     };
+
+    editFindingRow(index, isEdit) {
+        this.csvRowsIsEdit[index] = isEdit;
+    }
 
     deleteInstrument() {
         if (confirm('Are you sure you want to delete this instrument?')) {
@@ -447,9 +453,10 @@ export class EditcharacterizationComponent implements OnInit {
                 next: (result): void => {
                     console.log('ngxCsvParser Result', result);
                     this.csvDataObj = result;
+                    this.csvImportError = "";
 
                     if (this.csvDataObj === null) {
-                        alert('CSV import parse error: ' + this.csvImportError);
+                        this.csvImportError = "Csv parsing failed.";
                         return;
                     }
 
@@ -460,16 +467,94 @@ export class EditcharacterizationComponent implements OnInit {
                             this.csvDataColCount = this.csvDataObj[y].length;
                         }
                     }
+
+                    this.csvFirstDataRow = this.processCsvHeaders();
+                    this.csvDataRowCount -= this.csvFirstDataRow;
+
+                    if (this.csvImportError != "") {
+                        return;
+                    }
+
                     this.currentFinding.numberOfColumns = this.csvDataColCount;
                     this.currentFinding.numberOfRows = this.csvDataRowCount;
 
-                    this.updateRowsColsForFinding();
+                    this.csvRowsIsEdit = new Array(this.csvDataRowCount).fill(false);
 
+                    this.updateRowsColsForFinding();
+                    this.updateIfTooManyCells();
                 },
                 error: (error: NgxCSVParserError): void => {
                   console.log('ngxCsvParser Error', error);
                 }
             });
+    }
+
+    processCsvHeaders() {
+        var currentRowNotHeader = false;
+        var currentRow = 0;
+
+        var columnNameRow = -1;
+        var columnTypeRow = -1;
+        var valueTypeRow = -1;
+        var valueUnitRow = -1;
+        var constantValueRow = -1;
+        var firstDataRow = 0;
+
+        while (currentRow < this.csvDataObj.length && !currentRowNotHeader) {
+            var firstCell = this.csvDataObj[currentRow][0];
+            if (firstCell.startsWith("column_name:")) {
+                columnNameRow = currentRow;
+            } else if (firstCell.startsWith("column_type:")) {
+                columnTypeRow = currentRow;
+            } else if (firstCell.startsWith("value_type:")) {
+                valueTypeRow = currentRow;
+            } else if (firstCell.startsWith("value_unit:")) {
+                valueUnitRow = currentRow;
+            } else if (firstCell.startsWith("constant_value:")) {
+                constantValueRow = currentRow;
+            } else {
+                firstDataRow = currentRow;
+                break;
+            }
+            currentRow++;
+        }
+
+        // Has headers, so need to process headers
+        if (firstDataRow > 0) {
+            // Must have column name and type row together
+            if (columnNameRow == -1 || columnTypeRow == -1) {
+                this.csvImportError = "Must have both column_name and column_type rows, or no header rows";
+                return;
+            }
+
+            var col = 0;
+            for (let col = 0; col < this.csvDataColCount; ++col) {
+                let columnType = this.csvDataObj[columnTypeRow][col].replace(/(^column_type:)/gi, "");
+                let columnName = this.csvDataObj[columnNameRow][col].replace(/(^column_name:)/gi, "");
+                if (columnType == "" || columnName == "") {
+                    // Every column must have column name and column type
+                    this.csvImportError = `Column ${col + 1} does not have column_type or column_name`;
+                    this.currentFinding.columnHeaders = [];
+                    return;
+                }
+
+                let valueType = (valueTypeRow == -1) ? "" : this.csvDataObj[valueTypeRow][col].replace(/(^value_type:)/gi, "");
+                let valueUnit = (valueUnitRow == -1) ? "" : this.csvDataObj[valueUnitRow][col].replace(/(^value_unit:)/gi, "");
+                let constantValue = (constantValueRow == -1) ? "" : this.csvDataObj[constantValueRow][col].replace(/(^constant_value:)/gi, "");
+
+                let header = {
+                    'columnType':    columnType,
+                    'columnName':    columnName,
+                    'valueType':     valueType,
+                    'valueUnit':     valueUnit,
+                    'constantValue': constantValue
+                }
+
+                this.currentFinding.columnHeaders.push(header);
+            }
+        }
+
+        return firstDataRow;
     }
 
     createArray(len) {
@@ -509,7 +594,7 @@ export class EditcharacterizationComponent implements OnInit {
                     for (let x = 0; x < this.csvDataColCount; x++) {
                         // If the user has reduced the number of columns, make sure we don't try to update columns that no longer exist.
                         if ((data.rows[y].cells[x] !== null) && (data.rows[y].cells[x] !== undefined)) {
-                            data.rows[y].cells[x].value = Object(this.csvDataObj[y][x]);
+                            data.rows[y].cells[x].value = Object(this.csvDataObj[y + this.csvFirstDataRow][x]);
                             if (x < this.currentFinding.length) {
                                 data.rows[y].cells[x].datumOrCondition = this.currentFinding.columnHeaders[x].columnType;
                             }
@@ -790,10 +875,13 @@ export class EditcharacterizationComponent implements OnInit {
     };
 
     updateRowsColumns() {
+        this.csvRowsIsEdit = new Array(this.currentFinding.numberOfRows).fill(false);
+
         let url = this.apiService.doPost(Consts.QUERY_CHARACTERIZTAION_UPDATE_FINDING, this.currentFinding)
         url.subscribe(data => {
             this.errors = {};
             this.currentFinding = data;
+            this.updateIfTooManyCells();
         },
         error => {
             this.errors = error;
@@ -807,5 +895,11 @@ export class EditcharacterizationComponent implements OnInit {
         console.log(tFile)
         this.theFile.append('myFile', tFile, tFile.name);
         this.fileName = tFile.name;
+    }
+
+    updateIfTooManyCells() {
+        // If there is too many cells, the front end will take a long time load them and look like frozen
+        // In that case, we make the table rows not editable and give the user edit button to turn on
+        this.isTooManyCells = (this.currentFinding.numberOfRows * this.currentFinding.numberOfColumns >= Consts.tooManyTableCellLimit);
     }
 }
