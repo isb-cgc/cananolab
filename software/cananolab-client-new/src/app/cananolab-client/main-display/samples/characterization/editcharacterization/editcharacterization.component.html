@@ -761,7 +761,7 @@
                                                     <button *ngIf="findingIndex!=-1" (click)="editColumnOrder()" class="btn-canano btn-canano-primary btn-canano-xs mr-1">Set Column Order</button>
                                                     <label class="btn-canano btn-canano-primary btn-canano-xs">
                                                         Import CSV
-                                                        <input type="file" id="csvFile" style="display: none" (change)="importCSV($event)">
+                                                        <input type="file" id="csvFile" style="display: none" (change)="importCSV($event)" accept=".csv">
                                                     </label>
                                                 </td>
                                             </tr>
