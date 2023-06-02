@@ -405,6 +405,7 @@ export class EditcharacterizationComponent implements OnInit {
         this.columnOrder = null;
         // Replace JSON.parse(JSON.stringify())
         this.currentFinding = Util.deepCopy(finding, false);
+        this.csvRowsIsEdit = new Array(this.currentFinding.numberOfRows).fill(false);
         this.findingIndex = index;
         setTimeout(function() {
             document.getElementById('findingsEditForm').scrollIntoView();
@@ -540,7 +541,7 @@ export class EditcharacterizationComponent implements OnInit {
 
                 let valueType = (valueTypeRow == -1) ? "" : this.csvDataObj[valueTypeRow][col].replace(/(^value_type:)/gi, "");
                 let valueUnit = (valueUnitRow == -1) ? "" : this.csvDataObj[valueUnitRow][col].replace(/(^value_unit:)/gi, "");
-                let constantValue = (constantValueRow == -1) ? "" : this.csvDataObj[constantValueRow][col].replace(/(^constant_value:)/gi, "");
+                let constantValue = (constantValueRow == -1) ? "" : this.csvDataObj[constantValueRow][col].replace(/(^constant_value:)/gi, "");  
 
                 let header = {
                     'columnType':    columnType,
