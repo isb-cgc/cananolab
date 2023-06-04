@@ -46,11 +46,15 @@ export class EditcharacterizationComponent implements OnInit {
     rowData;
     csvRowsIsEdit;
 
+    existingDatumNames;
+    existingConditionNames;
+
     csvDataColCount = 0;
     csvDataObj;
     csvDataRowCount;
     csvFirstDataRow = 0;
     csvImportError = '';
+    csvHeaderNameTypeMap;
     serverUrl = Properties.API_SERVER_URL;
     isTooManyCells = false;
 
@@ -79,8 +83,6 @@ export class EditcharacterizationComponent implements OnInit {
                 this.apiService.getSampleName(this.sampleId).subscribe(
                     data => this.toolHeadingNameManage = 'Edit ' + data['sampleName'] + ' Characterization')
 
-
-
                 if (!this.charId) {
                     let url = this.apiService.doGet(Consts.QUERY_CHARACTERIZATION_SETUP_ADD, 'sampleId=' + this.sampleId + '&charType=' + this.type);
                     url.subscribe(
@@ -96,6 +98,7 @@ export class EditcharacterizationComponent implements OnInit {
                                 this.addOtherValue('type', this.data.type)
                             }
 
+                            this.getExistingDatumConditionNames();
                         },
                         error => {
                             this.errors = error;
@@ -115,6 +118,8 @@ export class EditcharacterizationComponent implements OnInit {
                                 this.data.characterizationDate = new Date()
                             }
                             this.setCharacterizationData();
+
+                            this.getExistingDatumConditionNames();
                         },
                         error => {
                             this.errors = error;
@@ -122,10 +127,30 @@ export class EditcharacterizationComponent implements OnInit {
                         });
                 }
 
+                
             }
         );
     }
 
+    getExistingDatumConditionNames() {
+        var url = this.apiService.doGet(Consts.QUERY_CHARACTERIZATION_GET_COLUMN_NAME_OPTIONS_BY_TYPE, 'columnType=datum' + '&charName=' + this.data.name + '&assayType=');
+        url.subscribe(data => {
+            this.existingDatumNames = data;
+            this.errors = {};
+        },
+        error => {
+            this.errors = error;
+        })
+
+        url = this.apiService.doGet(Consts.QUERY_CHARACTERIZATION_GET_COLUMN_NAME_OPTIONS_BY_TYPE, 'columnType=condition' + '&charName=' + this.data.name + '&assayType=');
+        url.subscribe(data => {
+            this.existingConditionNames = data;
+            this.errors = {};
+        },
+        error => {
+            this.errors = error;
+        })
+    }
 
     addFileForm() {
         this.currentFile = {
@@ -473,6 +498,7 @@ export class EditcharacterizationComponent implements OnInit {
                     this.csvDataRowCount -= this.csvFirstDataRow;
 
                     if (this.csvImportError != "") {
+                        this.currentFinding.columnHeaders = [];
                         return;
                     }
 
@@ -528,17 +554,27 @@ export class EditcharacterizationComponent implements OnInit {
                 return;
             }
 
+            // Must have at least datum column
+            var hasDatum = false;
+            for (let col = 0; col < this.csvDataColCount; ++col) {
+                let columnType = this.csvDataObj[columnTypeRow][col].replace(/(^column_type:)/gi, "");
+                if (columnType == "datum") {
+                    hasDatum = true;
+                    break;
+                }
+            }
+
+            if (!hasDatum) {
+                this.csvImportError = "Must have at least one datum column";
+                return;
+            }
+
+            this.csvHeaderNameTypeMap = new Map();
+
             var col = 0;
             for (let col = 0; col < this.csvDataColCount; ++col) {
                 let columnType = this.csvDataObj[columnTypeRow][col].replace(/(^column_type:)/gi, "");
                 let columnName = this.csvDataObj[columnNameRow][col].replace(/(^column_name:)/gi, "");
-                if (columnType == "" || columnName == "") {
-                    // Every column must have column name and column type
-                    this.csvImportError = `Column ${col + 1} does not have column_type or column_name`;
-                    this.currentFinding.columnHeaders = [];
-                    return;
-                }
-
                 let valueType = (valueTypeRow == -1) ? "" : this.csvDataObj[valueTypeRow][col].replace(/(^value_type:)/gi, "");
                 let valueUnit = (valueUnitRow == -1) ? "" : this.csvDataObj[valueUnitRow][col].replace(/(^value_unit:)/gi, "");
                 let constantValue = (constantValueRow == -1) ? "" : this.csvDataObj[constantValueRow][col].replace(/(^constant_value:)/gi, "");  
@@ -551,11 +587,80 @@ export class EditcharacterizationComponent implements OnInit {
                     'constantValue': constantValue
                 }
 
+                this.validateColumnHeader(header, col);
+
+                if (this.csvImportError != "") {
+                    return;
+                }
+
+                header['columnName'] = header['columnName'].replace(/(^\(other\):)/gi, "");
+                header['valueType'] = header['valueType'].replace(/(^\(other\):)/gi, "");
+                header['valueUnit'] = header['valueUnit'].replace(/(^\(other\):)/gi, "");
+
                 this.currentFinding.columnHeaders.push(header);
             }
         }
 
         return firstDataRow;
+    }
+
+    validateColumnHeader(columnHeader, index) {
+        var columnType = columnHeader['columnType'];
+        var columnName = columnHeader['columnName'];
+
+        // Every column must have column name and column type
+        if (columnType == "" || columnName == "") {
+            this.csvImportError = `Column ${index + 1} does not have column_type or column_name`;
+            return;
+        }
+
+        // If a columnName does not exist, it must be like "(other):columnName"
+        if (columnType == "datum") {
+            if (columnName.startsWith("(other):")) {
+                columnName = columnName.replace(/(^\(other\):)/gi, "");
+                if (!this.existingDatumNames.includes(columnName)) {
+                    this.existingDatumNames.push(columnName);
+                }
+            } else if (!this.existingDatumNames.includes(columnName)) {
+                this.csvImportError = `Datum column name ${columnName} does not exist, write the column as "(other):NewColumnName" to add it to the database"`;
+                return;
+            }
+
+        }
+
+        if (columnType == "condition") {
+            if (columnName.startsWith("(other):")) {
+                columnName = columnName.replace(/(^\(other\):)/gi, "");
+                if (!this.existingConditionNames.includes(columnName)) {
+                    this.existingConditionNames.push(columnName);
+                }
+            } else if (!this.existingConditionNames.includes(columnName)) {
+                this.csvImportError = `Condition column name ${columnName} does not exist, write the column as "(other):NewColumnName" to add it to the database"`;
+                return;
+            }
+        }
+
+        // If a valueType does not exist, it must be like "(other):valueType"
+        var valueType = columnHeader['valueType'];
+        if (valueType != "") {
+            if (valueType.startsWith("(other):")) {
+                valueType = valueType.replace(/(^\(other\):)/gi, "");
+                if (!this.data.datumConditionValueTypeLookup.includes(valueType)) {
+                    this.data.datumConditionValueTypeLookup.push(valueType);
+                }
+            } else if (!this.data.datumConditionValueTypeLookup.includes(valueType)) {
+                this.csvImportError = `Value type ${valueType} does not exist, write the column as "(other):NewValueType" to add it to the database"`;
+                return;
+            }
+        }
+
+        // Every columnName + columnValueType combination must be unique
+        let combination = columnName + "," + valueType;
+        if (this.csvHeaderNameTypeMap.has(combination)) {
+            this.csvImportError = `Column ${index + 1} column name and value type combination (${combination}) is not unique`;
+            return;
+        }
+        this.csvHeaderNameTypeMap.set(combination, true);
     }
 
     createArray(len) {
@@ -876,12 +981,12 @@ export class EditcharacterizationComponent implements OnInit {
     };
 
     updateRowsColumns() {
-        this.csvRowsIsEdit = new Array(this.currentFinding.numberOfRows).fill(false);
-
         let url = this.apiService.doPost(Consts.QUERY_CHARACTERIZTAION_UPDATE_FINDING, this.currentFinding)
         url.subscribe(data => {
             this.errors = {};
             this.currentFinding = data;
+            this.csvRowsIsEdit = new Array(this.currentFinding.numberOfRows).fill(false);
+
             this.updateIfTooManyCells();
         },
         error => {
