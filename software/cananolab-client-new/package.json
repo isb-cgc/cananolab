@@ -29,7 +29,7 @@
     "angular2-draggable": "^2.3.2",
     "bootstrap": "^4.6.2",
     "clone": "^1.0.4",
-    "ngx-csv-parser": "^1.2.2",
+    "ngx-csv-parser": "1.2.2",
     "rxjs": "~6.6.0",
     "tslib": "^2.0.0",
     "zone.js": "~0.11.4"
