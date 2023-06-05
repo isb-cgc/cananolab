@@ -58,6 +58,8 @@ export class EditcharacterizationComponent implements OnInit {
     serverUrl = Properties.API_SERVER_URL;
     isTooManyCells = false;
 
+    currentSavingFindingIndex = -1;
+
     csvHeaderDataObj;
 
     constructor( private httpClient: HttpClient, private apiService: ApiService, private navigationService: NavigationService, private router: Router, private route: ActivatedRoute, private ngxCsvParser: NgxCsvParser) {
@@ -517,7 +519,6 @@ export class EditcharacterizationComponent implements OnInit {
     }
 
     processCsvHeaders() {
-        var currentRowNotHeader = false;
         var currentRow = 0;
 
         var columnNameRow = -1;
@@ -527,7 +528,7 @@ export class EditcharacterizationComponent implements OnInit {
         var constantValueRow = -1;
         var firstDataRow = 0;
 
-        while (currentRow < this.csvDataObj.length && !currentRowNotHeader) {
+        while (currentRow < this.csvDataObj.length) {
             var firstCell = this.csvDataObj[currentRow][0];
             if (firstCell.startsWith("column_name:")) {
                 columnNameRow = currentRow;
@@ -570,6 +571,8 @@ export class EditcharacterizationComponent implements OnInit {
             }
 
             this.csvHeaderNameTypeMap = new Map();
+
+            this.currentFinding.columnHeaders = [];
 
             var col = 0;
             for (let col = 0; col < this.csvDataColCount; ++col) {
@@ -860,10 +863,12 @@ export class EditcharacterizationComponent implements OnInit {
         this.currentFinding.dirty = 1;
         if (this.findingIndex == -1) {
             this.data.finding.push(this.currentFinding);
+            this.currentSavingFindingIndex = 0;
         }
         else {
             // Replace JSON.parse(JSON.stringify()):
             this.data.finding[this.findingIndex] = Util.deepCopy(this.currentFinding, false);
+            this.currentSavingFindingIndex = this.findingIndex;
         }
         let url = this.apiService.doPost(Consts.QUERY_CHARACTERIZATION_SAVE_FINDING, this.data);
         url.subscribe(data => {
@@ -872,13 +877,16 @@ export class EditcharacterizationComponent implements OnInit {
             this.data = data;
             this.setCharacterizationData();
 
+            this.columnHeaderIndex = null;
+            this.fileIndex = null;
+
+            this.currentSavingFindingIndex = null;
         },
         error => {
             this.errors = error;
+            this.currentSavingFindingIndex = null;
         })
-        this.columnHeaderIndex = null;
         this.findingIndex = null;
-        this.fileIndex = null;
     };
 
     saveInstrument() {

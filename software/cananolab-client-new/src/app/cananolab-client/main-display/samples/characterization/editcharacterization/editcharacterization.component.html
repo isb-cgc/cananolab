@@ -680,9 +680,15 @@
                     <td></td>
                     <td>
                         <ng-container *ngFor="let finding of data.finding; let fIndex=index">
+                            
                             <div *ngIf="finding.rows.length||finding.files.length" class="mainBorder">
-                                                <div class="dataConditions"><B>Data and Conditions</B>
-                                                        <button  (click)="editFinding(fIndex, finding)" class="btn-canano btn-canano-primary btn-canano-xs mr-1">Edit</button>
+                                                <div class="dataConditions">
+                                                    <b>Data and Conditions</b>
+                                                    <label style="color:blue; display:block"  *ngIf="fIndex == currentSavingFindingIndex">
+                                                       This table is currently saving...
+                                                    </label>
+
+                                                    <button *ngIf="fIndex != currentSavingFindingIndex" (click)="editFinding(fIndex, finding)" class="btn-canano btn-canano-primary btn-canano-xs mr-1">Edit</button>
                                                 </div>
                                                 <div class="scroll-table-container">
                                                     <table class="dataTable">
@@ -940,7 +946,7 @@
                                                                     </td>
 
                                                                     <td *ngFor="let column of row.cells; let cIndex=index;" [innerHtml]="column.value">
-                                                                        {{ column.value}}
+                                                                        {{column.value}}
                                                                     </td>                                                        
                                                                 </tr>
                                                                  
