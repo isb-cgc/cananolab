@@ -55,20 +55,24 @@
                                         </label>
                                         <div *ngIf="f['Data and Conditions']">
                                             <!--  These are the data tables -->
-                                            <table class="dataTable" id="dataConditions">
-                                                <ng-container *ngFor="let entry of f['Data and Conditions']; let even=even">
-                                                    <tr *ngIf="entry.name=='colTitles'">
-                                                        <th *ngFor="let title of entry.value">
-                                                            <span [innerHTML]="title">{{title}}</span>
-                                                        </th>
-                                                    </tr>
-                                                    <tr [ngClass]="{'rowOdd':even}" *ngIf="entry.name=='colValues'">
-                                                        <td *ngFor="let title of entry.value">
-                                                            {{title}}
-                                                        </td>
-                                                    </tr>
-                                                </ng-container>
-                                            </table>
+                                            <div class="scroll-table-container">
+                                                <table class="dataTable" id="dataConditions">
+                                                    <ng-container *ngFor="let entry of f['Data and Conditions']; let even=even">
+                                                        <tr *ngIf="entry.name=='colTitles'">
+                                                            <th *ngFor="let title of entry.value">
+                                                                <span [innerHTML]="title">{{title}}</span>
+                                                            </th>
+                                                        </tr>
+                                                        <tr [ngClass]="{'rowOdd':even}" *ngIf="entry.name=='colValues'">
+                                                            <td *ngFor="let title of entry.value">
+                                                                <span [innerHTML]="title">
+                                                                {{title}}
+                                                                </span>
+                                                            </td>
+                                                        </tr>
+                                                    </ng-container>
+                                                </table>
+                                            </div>
                                         </div>
                                         <!--  Next comes the files -->
                                         <div *ngIf="f['Files']"><br />

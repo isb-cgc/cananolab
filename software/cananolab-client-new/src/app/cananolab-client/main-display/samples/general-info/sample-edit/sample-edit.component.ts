@@ -327,6 +327,7 @@ export class SampleEditComponent implements OnInit, OnDestroy{
             },
             ( err ) => {
                 su['keywords'] = keywordString;
+                this.errors = err;
                 console.log( 'ERROR QUERY_SAMPLE_UPDATE: ', err );
             } );
 

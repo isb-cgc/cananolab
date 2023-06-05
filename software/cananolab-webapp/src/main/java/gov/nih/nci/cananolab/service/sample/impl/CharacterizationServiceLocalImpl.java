@@ -474,7 +474,8 @@ public class CharacterizationServiceLocalImpl extends BaseServiceLocalImpl imple
 
 			List result = appService.query(crit);
 			System.out.println("FOCBAC Issue60: " + result.size());
-			for (Object obj : result) {
+			for (int i = 0; i < result.size(); i++) {
+   				Object obj =  result.get(i);
 				String charName = ((OtherCharacterization) obj).getName();
 				if (!charNames.contains(charName)) {
 					charNames.add(charName);

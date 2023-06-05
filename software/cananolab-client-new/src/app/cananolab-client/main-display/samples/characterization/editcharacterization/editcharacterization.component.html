@@ -680,25 +680,33 @@
                     <td></td>
                     <td>
                         <ng-container *ngFor="let finding of data.finding; let fIndex=index">
+                            
                             <div *ngIf="finding.rows.length||finding.files.length" class="mainBorder">
-                                                <div class="dataConditions"><B>Data and Conditions</B>
-                                                        <button  (click)="editFinding(fIndex, finding)" class="btn-canano btn-canano-primary btn-canano-xs mr-1">Edit</button>
+                                                <div class="dataConditions">
+                                                    <b>Data and Conditions</b>
+                                                    <label style="color:blue; display:block"  *ngIf="fIndex == currentSavingFindingIndex">
+                                                       This table is currently saving...
+                                                    </label>
+
+                                                    <button *ngIf="fIndex != currentSavingFindingIndex" (click)="editFinding(fIndex, finding)" class="btn-canano btn-canano-primary btn-canano-xs mr-1">Edit</button>
                                                 </div>
-                                                <table class="dataTable">
-                                                    <tr>
-                                                        <th *ngFor="let header of finding.columnHeaders">
-                                                            {{header.columnName}}
-                                                        </th>
-                                                    </tr>
-                                                    <tr *ngFor="let row of finding.rows; let rowIndex=index; let odd=odd" [ngClass]="{'rowOdd':odd}">
-                                                        <td [ngStyle]="{'width':85/row.cells.length+'%'}" *ngFor="let column of row.cells" [innerHTML]="column.value">
-                                                            <span *ngIf="column.operand!='='">
-                                                                {{column.operand}}
-                                                            </span>
-                                                            {{column.value}}
-                                                        </td>
-                                                    </tr>
-                                                </table>
+                                                <div class="scroll-table-container">
+                                                    <table class="dataTable">
+                                                        <tr>
+                                                            <th *ngFor="let header of finding.columnHeaders">
+                                                                {{header.columnName}}
+                                                            </th>
+                                                        </tr>
+                                                        <tr *ngFor="let row of finding.rows; let rowIndex=index; let odd=odd" [ngClass]="{'rowOdd':odd}">
+                                                            <td [ngStyle]="{'width':85/row.cells.length+'%'}" *ngFor="let column of row.cells" [innerHTML]="column.value">
+                                                                <span *ngIf="column.operand!='='">
+                                                                    {{column.operand}}
+                                                                </span>
+                                                                {{column.value}}
+                                                            </td>
+                                                        </tr>
+                                                    </table>
+                                                </div>
                                             <ng-container *ngIf="finding.files.length">
                                                 <br /><B>Files</B>
                                                 <table class="dataTable">
@@ -753,19 +761,14 @@
                                                     <label for="finding.rows">
                                                         &nbsp;Rows
                                                     </label>
-                                                    <input type="number" name="rows" id="finding.rows" [(ngModel)]="currentFinding.numberOfRows"><br />
+                                                    <input type="number" name="rows" id="finding.rows" [(ngModel)]="currentFinding.numberOfRows"> <br />
                                                     <button (click)="updateRowsColumns()" class="btn-canano btn-canano-primary btn-canano-xs mr-1">Update</button>
+
                                                     <button *ngIf="findingIndex!=-1" (click)="editColumnOrder()" class="btn-canano btn-canano-primary btn-canano-xs mr-1">Set Column Order</button>
                                                     <label class="btn-canano btn-canano-primary btn-canano-xs">
-                                                        Import csv
-                                                        <input type="file" id="csvFile" style="display: none" (change)="importCSV($event)">
+                                                        Import CSV
+                                                        <input type="file" id="csvFile" style="display: none" (change)="importCSV($event)" accept=".csv">
                                                     </label>
-
-                                                    <label class="btn-canano btn-canano-primary btn-canano-xs">
-                                                        Import header
-                                                        <input type="file" id="csvHeaderFile" style="display: none" (change)="importCSVHeader($event)">
-                                                    </label>
-
                                                 </td>
                                             </tr>
                                             <tr *ngIf="columnOrder!=null">
@@ -791,10 +794,15 @@
                                                 </td>
                                             </tr>
                                             <tr>
+                                                <div class="error" *ngIf="csvImportError">
+                                                    CSV import error: {{csvImportError}}
+                                                </div>
+                                            </tr>
+                                           <!--  <tr>
                                                 <td class="label">
                                                     Data and Conditions
                                                 </td>
-                                            </tr>
+                                            </tr> -->
                                             <tr *ngIf="columnHeaderIndex!=null">
                                                 <td>
                                                     <div class="mainBorder">
@@ -938,7 +946,7 @@
                                                                     </td>
 
                                                                     <td *ngFor="let column of row.cells; let cIndex=index;" [innerHtml]="column.value">
-                                                                        {{ column.value}}
+                                                                        {{column.value}}
                                                                     </td>                                                        
                                                                 </tr>
                                                                  
