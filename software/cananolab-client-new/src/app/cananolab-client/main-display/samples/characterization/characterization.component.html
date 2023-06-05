@@ -65,7 +65,9 @@
                                                         </tr>
                                                         <tr [ngClass]="{'rowOdd':even}" *ngIf="entry.name=='colValues'">
                                                             <td *ngFor="let title of entry.value">
+                                                                <span [innerHTML]="title">
                                                                 {{title}}
+                                                                </span>
                                                             </td>
                                                         </tr>
                                                     </ng-container>
