@@ -195,6 +195,7 @@ public class SynthesisBO extends BaseAnnotationBO {
 
         SampleBean sampleBean = setupSampleById(sampleId, request);
 
+        System.out.println("->findSynthesisBySampleId sampleId=="+sampleId);
         SynthesisBean synthesisBean = synthesisService.findSynthesisBySampleId(new Long(sampleId));
         form.setSynthesisBean(synthesisBean);
 
