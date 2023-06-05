@@ -67,7 +67,17 @@ public class CharacterizationManager
 
 	/**
 	 * Get characterization options in Advanced Sample Search page, based on characterization type.
-	 * The options include char names and assay types
+	 * The options include char names and assay types.
+	 *
+	 * WJRL 5/23: This is called dynamically by the UI
+	 * after the type dropdown is selected, and not part of the page setup. Note this returns display/value
+	 * tuples (LabelValueBean). It appears that this allows the user to either select the straight characterization
+	 * (e.g. "molecular weight") or the assay type for that characterization (e.g. "[gel permeation chromatography]").
+	 * It appears that the characterization name appears itself usually, but not always, under itself ("molecular weight",
+	 * and (under it) " --[molecular weight]"). It appears that the selection is returned as "name:assay".
+	 * It appears that we only get back list items for characterizations that have assays, or if
+	 *  The "other" characterizations
+	 * do not appear and cannot be used in a search??
 	 */
 	public List<LabelValueBean> getDecoratedCharacterizationOptions(HttpServletRequest request,
 			String characterizationType) throws Exception {

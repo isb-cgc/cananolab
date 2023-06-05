@@ -267,6 +267,10 @@ public class InitCharacterizationSetup {
 		return charNameBeans;
 	}
 
+	//
+	// WJRL 5/23 This is used in the advanced sample search to decide if a characterization appears in the dropdown if it
+	// lacks an assay. It only shows up there if this result is non-empty?
+	//
 	public SortedSet<String> getDatumNamesByCharName(
 			HttpServletRequest request, String charType, String charName,
 			String assayType) throws Exception {

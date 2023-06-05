@@ -90,15 +90,19 @@ public class InitSampleSetup {
 
 		return sortedFormatted;
 	}
-	
+
+	// WJRL 5/23: Used for advanced sample search (among other uses). The standard type names show up plain, while the
+	// "other" type names show up inside brackets [].
 	public List<String> getNanomaterialEntityTypes(HttpServletRequest request)
 	throws Exception {
 
+		// WJRL 5/23: Subclasses of NanomaterialEntity, as defined in gov/nih/nci/cananolab/domain/particle/NanomaterialEntity.hbm.xml
         SortedSet<String> defaultTypes = InitSetup.getInstance().getDefaultTypesByReflection(
 				request.getSession().getServletContext(), 
 				"defaultNanomaterialEntityTypes", "gov.nih.nci.cananolab.domain.particle.NanomaterialEntity");
         List<String> sortedFormatted = new ArrayList<String>(defaultTypes);
-		
+
+		// WJRL 5/23: Same results as "Select DISTINCT type from other_nanomaterial_entity;"
 		SortedSet<String> otherTypes = LookupService
 				.getAllOtherObjectTypes("gov.nih.nci.cananolab.domain.nanomaterial.OtherNanomaterialEntity");
 		

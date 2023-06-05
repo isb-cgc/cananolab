@@ -291,6 +291,9 @@ public class AdvancedSampleSearchBean {
 		return columnNames;
 	}
 
+	//
+	// WJRL 5/23: Massages the query settings coming in from the advanced sample search page before doing the search
+	//
 	public void updateQueries() {
 		pocCount = 0;
 		nanoEntityCount = 0;
@@ -312,13 +315,16 @@ public class AdvancedSampleSearchBean {
 					funcEntityCount++;
 
 					break;
+				// WJRL 5/23 For functions, if no operand was set, it forces to "contains":
 				case "function":
 					funcCount++;
 					if (query.getOperand() == null || query.getOperand().length() == 0)
 						query.setOperand("contains");
 					break;
 			}
-			
+			//
+			// WJRL 5/23: Yes, this is where the [] are stripped off of the "other" entity types and then stuck back in as the entity:
+			//
 			String entType = query.getEntityType();
 			if (entType != null && entType.startsWith("["))
 				query.setEntityType(entType.substring(1, entType.length()-1));
@@ -329,6 +335,8 @@ public class AdvancedSampleSearchBean {
 		Set<String> datumNames = new HashSet<String>();
 		for (CharacterizationQueryBean query : getCharacterizationQueries()) {
 			// set assay type and characterization name
+			// WJRL 5/23: Looks like if the user selects an assay under a type, the result "type:assay" is
+			// returned. The user can also select just the type, just "type"
 			if (query.getCharacterizationName().contains(":")) {
 				int ind = query.getCharacterizationName().indexOf(":");
 				query.setAssayType(query.getCharacterizationName().substring(

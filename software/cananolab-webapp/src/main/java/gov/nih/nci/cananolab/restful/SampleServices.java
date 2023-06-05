@@ -743,7 +743,12 @@ public class SampleServices {
 					.entity(CommonUtil.wrapErrorMessageInList("Error while setting up drop down lists")).build();
 		}
 	}
-	
+
+
+	//
+	// WJRL 5/23 Used for advanced sample search (and others?). Once the user selects e.g. physio-chemical
+	// characterization or [ex vivo], this stocks the next dropdown that pops up.
+	//
 	@GET
 	@Path("/getDecoratedCharacterizationOptions")
 	@Produces ("application/json")
@@ -811,7 +816,10 @@ public class SampleServices {
 			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(CommonUtil.wrapErrorMessageInList(e.getMessage())).build();
 		}
 	}
-	
+
+
+	//
+	// WJRL 5/23: This endpoint does the advanced sample search
 	@POST
 	@Path("/searchSampleAdvanced")
 	@Produces ("application/json")
@@ -827,7 +835,7 @@ public class SampleServices {
 			
 			
 			if (resultView.getErrors().size() > 0) {
-				logger.debug("Search sampel has error: " + resultView.getErrors().get(0));
+				logger.debug("Search sample has error: " + resultView.getErrors().get(0));
 				return Response.status(Response.Status.NOT_FOUND).entity(resultView.getErrors()).build();
 			} else {
 				logger.debug("Sample search successful");

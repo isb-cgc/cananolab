@@ -67,6 +67,10 @@ public class AdvancedSampleSearchBO extends BaseAnnotationBO
 	// Partial URL for viewing detailed sample info from Excel report file.
 	public static final String VIEW_SAMPLE_URL = "sample.do?dispatch=summaryView&page=0";
 
+
+	//
+	// WJRL 5/23 this is the guts of advanced sample search
+	//
 	public SimpleAdvancedSearchResultView search(HttpServletRequest request, AdvancedSampleSearchBean searchBean)
 			throws Exception {
 		
@@ -303,7 +307,11 @@ public class AdvancedSampleSearchBO extends BaseAnnotationBO
 //		request.getSession().removeAttribute("samplesFullList");
 //		//return mapping.getInputForward();
 //	}
-	
+
+	//
+	// WJRL 5/23: This is the function that stocks the advanced search page
+	// Exploring issue CANANOLAB-737 (legacy tickets)
+	//
 	public Map<String, Object> setup(HttpServletRequest request)
 			throws Exception {
 		request.getSession().removeAttribute("advancedSampleSearchForm");
@@ -311,10 +319,24 @@ public class AdvancedSampleSearchBO extends BaseAnnotationBO
 		request.getSession().removeAttribute("advancedSampleSearchResults");
 		request.getSession().removeAttribute("samplesResultList");
 		request.getSession().removeAttribute("samplesFullList");
-		
+
+		//
+		// WJRL 5/23
+		// LabelValueBean is just a pair of display string & associated string values. This
+		// lets the system display [clinical trial] for the value clinical trial
+		//
+		// This list just stocks the first high-level Characterization Criteria dropdown. Any
+		// selection from this list in the UI causes a server hit to stock the next level of
+		// dropdowns
+		//
 		List<LabelValueBean> charTypes = InitCharacterizationSetup.getInstance()
 				.getDecoratedCharacterizationTypes(request);
-		
+
+		//
+		// WJRL 5/23
+		// These three lists appear to allow the page to fully stock the Composition Criteria dropdowns
+		// without requiring another server hit:
+		//
 		List<String> nanomaterialTypes = InitSampleSetup.getInstance().getNanomaterialEntityTypes(request);
 		List<String> fetypes = InitSampleSetup.getInstance().getFunctionalizingEntityTypes(request);
 		List<String> functionTypes = InitSampleSetup.getInstance().getFunctionTypes(request);
