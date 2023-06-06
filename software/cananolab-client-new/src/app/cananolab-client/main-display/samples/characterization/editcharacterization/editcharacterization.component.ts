@@ -496,6 +496,11 @@ export class EditcharacterizationComponent implements OnInit {
                         }
                     }
 
+                    if (this.csvDataRowCount * this.csvDataColCount > Consts.maxTableCellLimit) {
+                        this.csvImportError = "Maximum allowed table cell count is 50,000"
+                        return;
+                    }
+
                     this.csvFirstDataRow = this.processCsvHeaders();
                     this.csvDataRowCount -= this.csvFirstDataRow;
 
@@ -989,6 +994,11 @@ export class EditcharacterizationComponent implements OnInit {
     };
 
     updateRowsColumns() {
+        if (this.currentFinding.numberOfRows * this.currentFinding.numberOfColumns > Consts.maxTableCellLimit) {
+            this.csvImportError = "Maximum allowed table cell count is 50,000"
+            return;
+        }
+
         let url = this.apiService.doPost(Consts.QUERY_CHARACTERIZTAION_UPDATE_FINDING, this.currentFinding)
         url.subscribe(data => {
             this.errors = {};
