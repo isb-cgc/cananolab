@@ -592,56 +592,17 @@ public class SampleServiceHelper
 	}
 
 
-
-	//TODO add Synthesis to all of the sample returns
-	public Sample findSampleByName(String sampleName)
-			throws ApplicationException, NoAccessException, ApplicationProviderException
+	public Sample findSampleByName(String sampleName) throws ApplicationException, NoAccessException, ApplicationProviderException
 	{
-		Sample sample = null;
-		CaNanoLabApplicationService appService = (CaNanoLabApplicationService) ApplicationServiceProvider
-				.getApplicationService();
-
-		DetachedCriteria crit = DetachedCriteria.forClass(Sample.class).add(
-				Property.forName("name").eq(sampleName).ignoreCase());
-		crit.setFetchMode("primaryPointOfContact", FetchMode.JOIN);
-		crit.setFetchMode("primaryPointOfContact.organization", FetchMode.JOIN);
-		crit.setFetchMode("otherPointOfContactCollection", FetchMode.JOIN);
-		crit.setFetchMode("otherPointOfContactCollection.organization",
-				FetchMode.JOIN);
-		crit.setFetchMode("keywordCollection", FetchMode.JOIN);
-		crit.setFetchMode("characterizationCollection", FetchMode.JOIN);
-		crit.setFetchMode("sampleComposition.chemicalAssociationCollection",
-				FetchMode.JOIN);
-		crit.setFetchMode("sampleComposition.nanomaterialEntityCollection",
-				FetchMode.JOIN);
-		crit.setFetchMode(
-				"sampleComposition.nanomaterialEntityCollection.composingElementCollection",
-				FetchMode.JOIN);
-		crit.setFetchMode(
-				"sampleComposition.nanomaterialEntityCollection.composingElementCollection.inherentFunctionCollection",
-				FetchMode.JOIN);
-
-		crit.setFetchMode("sampleComposition.functionalizingEntityCollection",
-				FetchMode.JOIN);
-		crit.setFetchMode(
-				"sampleComposition.functionalizingEntityCollection.functionCollection",
-				FetchMode.JOIN);
-		crit.setFetchMode("publicationCollection", FetchMode.JOIN);
-		crit.setFetchMode("synthesis", FetchMode.JOIN);
-		crit.setFetchMode("synthesis.synthesisMaterials", FetchMode.JOIN);
-		crit.setFetchMode("synthesis.synthesisFunctionalizations", FetchMode.JOIN);
-		crit.setFetchMode("synthesis.synthesisPurifications",FetchMode.JOIN);
-		crit.setResultTransformer(CriteriaSpecification.DISTINCT_ROOT_ENTITY);
-
-		List result = appService.query(crit);
-		if (!result.isEmpty()) {
-			sample = (Sample) result.get(0);
-			if (!springSecurityAclService.currentUserHasReadPermission(sample.getId(), SecureClassesEnum.SAMPLE.getClazz()) &&
-				!springSecurityAclService.currentUserHasWritePermission(sample.getId(), SecureClassesEnum.SAMPLE.getClazz())) {
-				throw new NoAccessException("User has no access to the sample " + sampleName);
-			}
-		}
-		return sample;
+		logger.debug("findSampleByName sampleName=="+sampleName+";");
+		Sample mySample= null;
+		CaNanoLabApplicationService appService= (CaNanoLabApplicationService) ApplicationServiceProvider.getApplicationService();
+		DetachedCriteria myDetachedCriteria= DetachedCriteria.forClass(Sample.class).add( Property.forName("name").eq(sampleName).ignoreCase());
+		myDetachedCriteria.setResultTransformer(CriteriaSpecification.DISTINCT_ROOT_ENTITY);
+		TransactionInsertion<Sample> myTransactionInsertion= getSampleTransactionInsertion();
+        	mySample= appService.queryAndProcess(myDetachedCriteria, myTransactionInsertion);
+        	logger.debug("ran appService.queryAndProcess");
+        	return mySample;
 	}
 
 	public List<Keyword> findKeywordsBySampleId(String sampleId) throws Exception
@@ -724,17 +685,7 @@ public class SampleServiceHelper
         }
     	}
 
-	public Sample findSampleById(Long sampleId) throws Exception {
-		if (!springSecurityAclService.currentUserHasReadPermission(sampleId, SecureClassesEnum.SAMPLE.getClazz()) &&
-			!springSecurityAclService.currentUserHasWritePermission(sampleId, SecureClassesEnum.SAMPLE.getClazz())) {
-			throw new NoAccessException("User has no access to sampleId " + sampleId);
-		}
-		logger.debug("findSampleById sampleId=="+sampleId);
-		Sample mySample= null;
-		CaNanoLabApplicationService appService= (CaNanoLabApplicationService) ApplicationServiceProvider.getApplicationService();
-		DetachedCriteria crit= DetachedCriteria.forClass(Sample.class).add( Property.forName("id").eq(sampleId));
-		crit.setResultTransformer(CriteriaSpecification.DISTINCT_ROOT_ENTITY);
-
+	private TransactionInsertion<Sample> getSampleTransactionInsertion() {
 		TransactionInsertion<Sample> myTransactionInsertion = new TransactionInsertion<Sample>() {
             	@Override
             	public boolean executeInsideTransaction(Sample mySample) {
@@ -1469,6 +1420,21 @@ public class SampleServiceHelper
 		}
 
 		};
+		return myTransactionInsertion;
+	}
+
+
+	public Sample findSampleById(Long sampleId) throws Exception {
+		if (!springSecurityAclService.currentUserHasReadPermission(sampleId, SecureClassesEnum.SAMPLE.getClazz()) &&
+			!springSecurityAclService.currentUserHasWritePermission(sampleId, SecureClassesEnum.SAMPLE.getClazz())) {
+			throw new NoAccessException("User has no access to sampleId " + sampleId);
+		}
+		logger.debug("findSampleById sampleId=="+sampleId+";");
+		Sample mySample= null;
+		CaNanoLabApplicationService appService= (CaNanoLabApplicationService) ApplicationServiceProvider.getApplicationService();
+		DetachedCriteria crit= DetachedCriteria.forClass(Sample.class).add( Property.forName("id").eq(sampleId));
+		crit.setResultTransformer(CriteriaSpecification.DISTINCT_ROOT_ENTITY);
+		TransactionInsertion<Sample> myTransactionInsertion= getSampleTransactionInsertion();
         	mySample = appService.queryAndProcess(crit, myTransactionInsertion);
         	logger.debug("ran appService.queryAndProcess");
         	return mySample;
