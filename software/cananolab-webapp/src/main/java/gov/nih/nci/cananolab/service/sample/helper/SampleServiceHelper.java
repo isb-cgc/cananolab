@@ -1433,6 +1433,7 @@ public class SampleServiceHelper
 		Sample mySample= null;
 		CaNanoLabApplicationService appService= (CaNanoLabApplicationService) ApplicationServiceProvider.getApplicationService();
 		DetachedCriteria crit= DetachedCriteria.forClass(Sample.class).add( Property.forName("id").eq(sampleId));
+		crit.setFetchMode("publicationCollection", FetchMode.JOIN);
 		crit.setResultTransformer(CriteriaSpecification.DISTINCT_ROOT_ENTITY);
 		TransactionInsertion<Sample> myTransactionInsertion= getSampleTransactionInsertion();
         	mySample = appService.queryAndProcess(crit, myTransactionInsertion);
