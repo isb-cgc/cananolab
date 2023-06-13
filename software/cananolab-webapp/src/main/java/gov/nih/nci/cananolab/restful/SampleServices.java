@@ -229,21 +229,23 @@ public class SampleServices {
 	@Path("/downloadImage")
 	@Produces({"image/png", "application/json"})
 	 public Response downloadImage(@Context HttpServletRequest httpRequest, @Context HttpServletResponse httpResponse,
+				@DefaultValue("") @QueryParam("charId") String charId,
 	    		@DefaultValue("") @QueryParam("fileId") String fileId)
 	{
-		return download(httpRequest, httpResponse, fileId);
+		return download(httpRequest, httpResponse, charId, fileId);
 	}
 	
 	@GET
 	@Path("/download")
 	@Produces({"image/png", "application/json"})
 	 public Response download(@Context HttpServletRequest httpRequest, @Context HttpServletResponse httpResponse,
+                @DefaultValue("") @QueryParam("charId") String charId,
 	    		@DefaultValue("") @QueryParam("fileId") String fileId){
 		try {
 			CharacterizationBO characterizationBO = 
 					(CharacterizationBO) SpringApplicationContext.getBean(httpRequest, "characterizationBO");
-			
-			String result = characterizationBO.download(fileId, httpRequest, httpResponse);
+
+			String result = characterizationBO.download(fileId, charId, httpRequest, httpResponse);
 			return Response.ok(result).build();
 		} 
 		
