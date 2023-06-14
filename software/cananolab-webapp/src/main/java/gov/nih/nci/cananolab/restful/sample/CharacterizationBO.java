@@ -1330,15 +1330,13 @@ public class CharacterizationBO extends BaseAnnotationBO {
 	}
 	
 	public String download(String fileId, String charId, HttpServletRequest request, HttpServletResponse response) throws Exception {
-		if (charId != "") {
-			CharacterizationBean charBean = characterizationService.findCharacterizationById(charId);
-			if (!SpringSecurityUtil.isUserLoggedIn() &&
-					!springSecurityAclService.checkObjectPublic(charBean.getDomainChar().getId(), SecureClassesEnum.CHAR.getClazz())) {
-				throw new Exception("Public user cannot see non-public file");
-			}
+		try {
+			// findCharacterizationById throws error if user is not authorized for the characterization
+			characterizationService.findCharacterizationById(charId);
+			return downloadFile(characterizationService, fileId, request, response);
+		} catch (Exception e) {
+			throw new Exception(e);
 		}
-
-		return downloadFile(characterizationService, fileId, request, response);
 	}
 
 	protected boolean validCharTypeAndName(String charType, String charName, List<String> errors) {
