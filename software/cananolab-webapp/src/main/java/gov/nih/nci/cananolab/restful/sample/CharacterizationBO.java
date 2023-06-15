@@ -1329,16 +1329,17 @@ public class CharacterizationBO extends BaseAnnotationBO {
 		}
 	}
 	
-	public String download(String fileId, String charId, HttpServletRequest request, HttpServletResponse response) throws Exception {
-		if (charId != "") {
-			CharacterizationBean charBean = characterizationService.findCharacterizationById(charId);
-			if (!SpringSecurityUtil.isUserLoggedIn() &&
-					!springSecurityAclService.checkObjectPublic(charBean.getDomainChar().getId(), SecureClassesEnum.CHAR.getClazz())) {
-				throw new Exception("Public user cannot see non-public file");
+	public String download(String fileId, String sampleId, HttpServletRequest request, HttpServletResponse response) throws Exception {
+		try {
+			if (sampleId != "") {
+				// findCharacterizationsBySampleId throws error if user is not authorized for the sample
+				characterizationService.findCharacterizationsBySampleId(sampleId);
 			}
-		}
 
-		return downloadFile(characterizationService, fileId, request, response);
+			return downloadFile(characterizationService, fileId, request, response);
+		} catch (Exception e) {
+			throw new Exception(e);
+		}
 	}
 
 	protected boolean validCharTypeAndName(String charType, String charName, List<String> errors) {
