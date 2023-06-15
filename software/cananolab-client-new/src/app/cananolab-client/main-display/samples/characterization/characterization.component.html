@@ -100,7 +100,7 @@
 
                                                         <!-- Text file -->
                                                         <a  *ngIf="file['title'] !== undefined"
-                                                            [href]="serverUrl+'/rest/sample/download?fileId='+file.fileId">
+                                                            [href]="serverUrl+'/rest/sample/download?sampleId='+sampleId+'&fileId='+file.fileId">
                                                             {{file['title']}}
                                                         </a>
                                                         <!-- Everything else -->
