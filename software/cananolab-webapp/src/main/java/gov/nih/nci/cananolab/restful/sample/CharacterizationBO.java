@@ -1329,10 +1329,13 @@ public class CharacterizationBO extends BaseAnnotationBO {
 		}
 	}
 	
-	public String download(String fileId, String charId, HttpServletRequest request, HttpServletResponse response) throws Exception {
+	public String download(String fileId, String sampleId, HttpServletRequest request, HttpServletResponse response) throws Exception {
 		try {
-			// findCharacterizationById throws error if user is not authorized for the characterization
-			characterizationService.findCharacterizationById(charId);
+			if (sampleId != "") {
+				// findCharacterizationsBySampleId throws error if user is not authorized for the sample
+				characterizationService.findCharacterizationsBySampleId(sampleId);
+			}
+
 			return downloadFile(characterizationService, fileId, request, response);
 		} catch (Exception e) {
 			throw new Exception(e);
