@@ -127,7 +127,7 @@
                                                         border="0" width="150" alt="uploaded image">
                                                 </span>
                                                 <ng-template #elseBlock>
-                                                    <a href="/rest/sample/download?fileId={{file.fileId}}"
+                                                    <a href="/rest/sample/download?sampleId={{sampleId}}&fileId={{file.fileId}}"
                                                         target="blank" [innerHtml]="file.Title"></a>
                                                 </ng-template>
                                             </ng-template>
@@ -241,7 +241,7 @@
                                                     border="0" width="150" alt="uploaded image">
                                             </span>
                                             <ng-template #elseBlock>
-                                                <a href="/rest/sample/download?fileId={{file.fileId}}"
+                                                <a href="/rest/sample/download?sampleId={{sampleId}}&fileId={{file.fileId}}"
                                                     target="blank" [innerHtml]="file.Title"></a>
                                             </ng-template>
                                         </ng-template>
@@ -324,7 +324,7 @@
                                                     border="0" width="150" alt="uploaded image">
                                             </span>
                                             <ng-template #elseBlock>
-                                                <a href="/rest/sample/download?fileId={{file.fileId}}"
+                                                <a href="/rest/sample/download?sampleId={{sampleId}}&fileId={{file.fileId}}"
                                                     target="blank" [innerHtml]="file.Title"></a>
                                             </ng-template>
                                         </ng-template>
@@ -371,7 +371,7 @@
                                     width="150" alt="uploaded image">
                             </span>
                             <ng-template #elseBlock>
-                                <a href="/rest/sample/download?fileId={{file.fileId}}" target="blank" [innerHTML]="file.Title"></a>
+                                <a href="/rest/sample/download?sampleId={{sampleId}}&fileId={{file.fileId}}" target="blank" [innerHTML]="file.Title"></a>
                             </ng-template>
                         </ng-template>
                     </td>
