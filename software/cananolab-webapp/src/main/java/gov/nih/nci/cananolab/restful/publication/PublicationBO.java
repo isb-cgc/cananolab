@@ -871,9 +871,15 @@ public class PublicationBO extends BaseAnnotationBO
 		//	PublicationBean publication = (PublicationBean) theForm.getPublicationBean();
 	}
 
-	public String download(String fileId, HttpServletRequest request, HttpServletResponse response) throws Exception
+	public String download(String pubId, String fileId, HttpServletRequest request, HttpServletResponse response) throws Exception
 	{
 		System.out.println("Inside download from publication BO");
+
+		if (pubId != "") {
+			// findPublicationById throws error if user is not authorized for the sample
+			publicationService.findPublicationById(pubId, true);
+		}
+
 		return downloadFile(publicationService, fileId, request, response);
 	}
 
