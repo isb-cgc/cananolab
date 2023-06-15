@@ -290,7 +290,7 @@ public class CharacterizationBO extends BaseAnnotationBO {
 
 		characterizationService.saveCharacterization(sampleBean, charBean);
 		// retract from public if updating an existing public record and not curator
-		if (!newChar && !SpringSecurityUtil.getPrincipal().isCurator() && 
+		if (!newChar && !SpringSecurityUtil.getPrincipal().isCurator() &&
 			springSecurityAclService.checkObjectPublic(sampleBean.getDomain().getId(), SecureClassesEnum.SAMPLE.getClazz()))
 		{
 			retractFromPublic(request, sampleBean.getDomain().getId(), sampleBean.getDomain().getName(), "sample", SecureClassesEnum.SAMPLE.getClazz());
@@ -1329,8 +1329,17 @@ public class CharacterizationBO extends BaseAnnotationBO {
 		}
 	}
 	
-	public String download(String fileId, HttpServletRequest request, HttpServletResponse response) throws Exception {
-		return downloadFile(characterizationService, fileId, request, response);
+	public String download(String fileId, String sampleId, HttpServletRequest request, HttpServletResponse response) throws Exception {
+		try {
+			if (sampleId != "") {
+				// findCharacterizationsBySampleId throws error if user is not authorized for the sample
+				characterizationService.findCharacterizationsBySampleId(sampleId);
+			}
+
+			return downloadFile(characterizationService, fileId, request, response);
+		} catch (Exception e) {
+			throw new Exception(e);
+		}
 	}
 
 	protected boolean validCharTypeAndName(String charType, String charName, List<String> errors) {

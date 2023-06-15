@@ -93,9 +93,9 @@
                                                         <!--  First column: image or file title  -->
                                                         <!-- Image -->
                                                         <a *ngIf="file['imageTitle'] !== undefined"
-                                                           [href]="serverUrl+'/rest/sample/downloadImage?fileId='+file.fileId"
+                                                           [href]="serverUrl+'/rest/sample/downloadImage?sampleId='+sampleId+'&fileId='+file.fileId"
                                                         >
-                                                            <img  [src]="serverUrl+'/rest/sample/downloadImage?fileId='+file.fileId" width="150">
+                                                            <img  [src]="serverUrl+'/rest/sample/downloadImage?sampleId='+sampleId+'&fileId='+file.fileId" width="150">
                                                         </a>
 
                                                         <!-- Text file -->
