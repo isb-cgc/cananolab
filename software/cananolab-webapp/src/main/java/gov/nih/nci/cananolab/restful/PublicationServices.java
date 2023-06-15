@@ -73,12 +73,14 @@ public class PublicationServices {
 	@GET
 	@Path("/download")
 	@Produces({"application/pdf", "application/json"})
-	public Response download(@Context HttpServletRequest httpRequest, @Context HttpServletResponse httpResponse, @DefaultValue("") @QueryParam("fileId") String fileId)
+	public Response download(@Context HttpServletRequest httpRequest, @Context HttpServletResponse httpResponse,
+	                         @DefaultValue("") @QueryParam("publicationId") String pubId,
+	                         @DefaultValue("") @QueryParam("fileId") String fileId)
 	{
 		try { 
 			PublicationBO publicationBO = (PublicationBO) SpringApplicationContext.getBean(httpRequest, "publicationBO");
 
-			String result = publicationBO.download(fileId, httpRequest, httpResponse);
+			String result = publicationBO.download(pubId, fileId, httpRequest, httpResponse);
 
 			return Response.ok(result).build();
 
