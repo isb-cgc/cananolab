@@ -89,13 +89,14 @@ public class ProtocolServices
 	@GET
 	@Path("/download")
 	@Produces ({"application/pdf", "application/json"})
-	public Response download(@Context HttpServletRequest httpRequest, @Context HttpServletResponse httpResponse, 
-			@DefaultValue("") @QueryParam("fileId") String fileId)
+	public Response download(@Context HttpServletRequest httpRequest, @Context HttpServletResponse httpResponse,
+	                         @DefaultValue("") @QueryParam("protocolId") String protocolId,
+	                         @DefaultValue("") @QueryParam("fileId") String fileId)
 	{
 		try { 
 			ProtocolBO protocolBO = (ProtocolBO) SpringApplicationContext.getBean(httpRequest, "protocolBO");
 
-			String result = protocolBO.download(fileId, httpRequest, httpResponse);
+			String result = protocolBO.download(protocolId, fileId, httpRequest, httpResponse);
 
 			return Response.ok(result).build();
 

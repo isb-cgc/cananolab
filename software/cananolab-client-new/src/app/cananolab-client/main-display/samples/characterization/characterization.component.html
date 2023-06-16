@@ -93,14 +93,14 @@
                                                         <!--  First column: image or file title  -->
                                                         <!-- Image -->
                                                         <a *ngIf="file['imageTitle'] !== undefined"
-                                                           [href]="serverUrl+'/rest/sample/download?fileId='+file.fileId"
+                                                           [href]="serverUrl+'/rest/sample/downloadImage?sampleId='+sampleId+'&fileId='+file.fileId"
                                                         >
-                                                            <img  [src]="serverUrl+'/rest/sample/download?fileId='+file.fileId" width="150">
+                                                            <img  [src]="serverUrl+'/rest/sample/downloadImage?sampleId='+sampleId+'&fileId='+file.fileId" width="150">
                                                         </a>
 
                                                         <!-- Text file -->
                                                         <a  *ngIf="file['title'] !== undefined"
-                                                            [href]="serverUrl+'/rest/sample/download?fileId='+file.fileId">
+                                                            [href]="serverUrl+'/rest/sample/download?sampleId='+sampleId+'&fileId='+file.fileId">
                                                             {{file['title']}}
                                                         </a>
                                                         <!-- Everything else -->
