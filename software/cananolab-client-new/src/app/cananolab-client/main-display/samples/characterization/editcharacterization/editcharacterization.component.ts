@@ -170,6 +170,7 @@ export class EditcharacterizationComponent implements OnInit {
 
     addFinding() {
         this.findingIndex = -1;
+        this.csvImportError = "";
         setTimeout(function() {
             document.getElementById('findingsEditForm').scrollIntoView();
         }, 100);
@@ -430,6 +431,7 @@ export class EditcharacterizationComponent implements OnInit {
 
     editFinding(index, finding) {
         this.columnOrder = null;
+        this.csvImportError = "";
         // Replace JSON.parse(JSON.stringify())
         this.currentFinding = Util.deepCopy(finding, false);
         this.csvRowsIsEdit = new Array(this.currentFinding.numberOfRows).fill(false);
@@ -552,6 +554,11 @@ export class EditcharacterizationComponent implements OnInit {
             currentRow++;
         }
 
+        if (firstDataRow == 0 && columnNameRow != -1) {
+            this.csvImportError = "Found header information but no data row";
+            return;
+        }
+
         // Has headers, so need to process headers
         if (firstDataRow > 0) {
             // Must have column name and type row together
@@ -626,11 +633,11 @@ export class EditcharacterizationComponent implements OnInit {
         if (columnType == "datum") {
             if (columnName.startsWith("(other):")) {
                 columnName = columnName.replace(/(^\(other\):)/gi, "");
-                if (!this.existingDatumNames.includes(columnName)) {
+                if (!this.checkIncludesCaseInsensitive(this.existingDatumNames, columnName)) {
                     this.existingDatumNames.push(columnName);
                 }
-            } else if (!this.existingDatumNames.includes(columnName)) {
-                this.csvImportError = `Datum column name ${columnName} does not exist, write the column as "(other):NewColumnName" to add it to the database"`;
+            } else if (!this.checkIncludesCaseInsensitive(this.existingDatumNames, columnName)) {
+                this.csvImportError = `Datum column name ${columnName} does not exist, write the column as "(other):${columnName}" to add it to the system (parentheses are required)`;
                 return;
             }
 
@@ -639,11 +646,11 @@ export class EditcharacterizationComponent implements OnInit {
         if (columnType == "condition") {
             if (columnName.startsWith("(other):")) {
                 columnName = columnName.replace(/(^\(other\):)/gi, "");
-                if (!this.existingConditionNames.includes(columnName)) {
+                if (!this.checkIncludesCaseInsensitive(this.existingConditionNames, columnName)) {
                     this.existingConditionNames.push(columnName);
                 }
-            } else if (!this.existingConditionNames.includes(columnName)) {
-                this.csvImportError = `Condition column name ${columnName} does not exist, write the column as "(other):NewColumnName" to add it to the database"`;
+            } else if (!this.checkIncludesCaseInsensitive(this.existingConditionNames, columnName)) {
+                this.csvImportError = `Condition column name ${columnName} does not exist, write the column as "(other):${columnName}" to add it to the system (parentheses are required)`;
                 return;
             }
         }
@@ -653,11 +660,11 @@ export class EditcharacterizationComponent implements OnInit {
         if (valueType != "") {
             if (valueType.startsWith("(other):")) {
                 valueType = valueType.replace(/(^\(other\):)/gi, "");
-                if (!this.data.datumConditionValueTypeLookup.includes(valueType)) {
+                if (!this.checkIncludesCaseInsensitive(this.data.datumConditionValueTypeLookup, valueType)) {
                     this.data.datumConditionValueTypeLookup.push(valueType);
                 }
-            } else if (!this.data.datumConditionValueTypeLookup.includes(valueType)) {
-                this.csvImportError = `Value type ${valueType} does not exist, write the column as "(other):NewValueType" to add it to the database"`;
+            } else if (!this.checkIncludesCaseInsensitive(this.data.datumConditionValueTypeLookup, valueType)) {
+                this.csvImportError = `Value type ${valueType} does not exist, write the column as "(other):${valueType}" to add it to the system (parentheses are required)`;
                 return;
             }
         }
@@ -669,6 +676,14 @@ export class EditcharacterizationComponent implements OnInit {
             return;
         }
         this.csvHeaderNameTypeMap.set(combination, true);
+    }
+
+    checkIncludesCaseInsensitive(arr, val) {
+        const index = arr.findIndex(element => {
+          return element.toLowerCase() === val.toLowerCase();
+        });
+
+        return (index !== -1) ? true : false;
     }
 
     createArray(len) {
