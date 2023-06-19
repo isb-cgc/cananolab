@@ -53,7 +53,7 @@ export class EditcharacterizationComponent implements OnInit {
     csvDataObj;
     csvDataRowCount;
     csvFirstDataRow = 0;
-    csvImportError = '';
+    findingTableError = '';
     csvHeaderNameTypeMap;
     serverUrl = Properties.API_SERVER_URL;
     isTooManyCells = false;
@@ -170,7 +170,7 @@ export class EditcharacterizationComponent implements OnInit {
 
     addFinding() {
         this.findingIndex = -1;
-        this.csvImportError = "";
+        this.findingTableError = "";
         setTimeout(function() {
             document.getElementById('findingsEditForm').scrollIntoView();
         }, 100);
@@ -205,6 +205,7 @@ export class EditcharacterizationComponent implements OnInit {
     };
 
     cancelColumnForm() {
+        this.findingTableError = "";
         this.columnHeaderIndex = null;
     };
 
@@ -431,7 +432,7 @@ export class EditcharacterizationComponent implements OnInit {
 
     editFinding(index, finding) {
         this.columnOrder = null;
-        this.csvImportError = "";
+        this.findingTableError = "";
         // Replace JSON.parse(JSON.stringify())
         this.currentFinding = Util.deepCopy(finding, false);
         this.csvRowsIsEdit = new Array(this.currentFinding.numberOfRows).fill(false);
@@ -483,10 +484,10 @@ export class EditcharacterizationComponent implements OnInit {
                 next: (result): void => {
                     console.log('ngxCsvParser Result', result);
                     this.csvDataObj = result;
-                    this.csvImportError = "";
+                    this.findingTableError = "";
 
                     if (this.csvDataObj === null) {
-                        this.csvImportError = "Csv parsing failed.";
+                        this.findingTableError = "Csv parsing failed.";
                         return;
                     }
 
@@ -499,14 +500,14 @@ export class EditcharacterizationComponent implements OnInit {
                     }
 
                     if (this.csvDataRowCount * this.csvDataColCount > Consts.maxTableCellLimit) {
-                        this.csvImportError = "Maximum allowed table cell count is 50,000"
+                        this.findingTableError = "Maximum allowed table cell count is 50,000"
                         return;
                     }
 
                     this.csvFirstDataRow = this.processCsvHeaders();
                     this.csvDataRowCount -= this.csvFirstDataRow;
 
-                    if (this.csvImportError != "") {
+                    if (this.findingTableError != "") {
                         this.currentFinding.columnHeaders = [];
                         return;
                     }
@@ -555,7 +556,7 @@ export class EditcharacterizationComponent implements OnInit {
         }
 
         if (firstDataRow == 0 && columnNameRow != -1) {
-            this.csvImportError = "Found header information but no data row";
+            this.findingTableError = "Found header information but no data row";
             return;
         }
 
@@ -563,7 +564,7 @@ export class EditcharacterizationComponent implements OnInit {
         if (firstDataRow > 0) {
             // Must have column name and type row together
             if (columnNameRow == -1 || columnTypeRow == -1) {
-                this.csvImportError = "Must have both column_name and column_type rows, or no header rows";
+                this.findingTableError = "Must have both column_name and column_type rows, or no header rows";
                 return;
             }
 
@@ -578,11 +579,9 @@ export class EditcharacterizationComponent implements OnInit {
             }
 
             if (!hasDatum) {
-                this.csvImportError = "Must have at least one datum column";
+                this.findingTableError = "Must have at least one datum column";
                 return;
             }
-
-            this.csvHeaderNameTypeMap = new Map();
 
             this.currentFinding.columnHeaders = [];
 
@@ -604,7 +603,7 @@ export class EditcharacterizationComponent implements OnInit {
 
                 this.validateColumnHeader(header, col);
 
-                if (this.csvImportError != "") {
+                if (this.findingTableError != "") {
                     return;
                 }
 
@@ -625,7 +624,7 @@ export class EditcharacterizationComponent implements OnInit {
 
         // Every column must have column name and column type
         if (columnType == "" || columnName == "") {
-            this.csvImportError = `Column ${index + 1} does not have column_type or column_name`;
+            this.findingTableError = `Column ${index + 1} does not have column_type or column_name`;
             return;
         }
 
@@ -637,7 +636,7 @@ export class EditcharacterizationComponent implements OnInit {
                     this.existingDatumNames.push(columnName);
                 }
             } else if (!this.checkIncludesCaseInsensitive(this.existingDatumNames, columnName)) {
-                this.csvImportError = `Datum column name ${columnName} does not exist, write the column as "(other):${columnName}" to add it to the system (parentheses are required)`;
+                this.findingTableError = `Datum column name ${columnName} does not exist, write the column as "(other):${columnName}" to add it to the system (parentheses are required)`;
                 return;
             }
 
@@ -650,7 +649,7 @@ export class EditcharacterizationComponent implements OnInit {
                     this.existingConditionNames.push(columnName);
                 }
             } else if (!this.checkIncludesCaseInsensitive(this.existingConditionNames, columnName)) {
-                this.csvImportError = `Condition column name ${columnName} does not exist, write the column as "(other):${columnName}" to add it to the system (parentheses are required)`;
+                this.findingTableError = `Condition column name ${columnName} does not exist, write the column as "(other):${columnName}" to add it to the system (parentheses are required)`;
                 return;
             }
         }
@@ -664,15 +663,19 @@ export class EditcharacterizationComponent implements OnInit {
                     this.data.datumConditionValueTypeLookup.push(valueType);
                 }
             } else if (!this.checkIncludesCaseInsensitive(this.data.datumConditionValueTypeLookup, valueType)) {
-                this.csvImportError = `Value type ${valueType} does not exist, write the column as "(other):${valueType}" to add it to the system (parentheses are required)`;
+                this.findingTableError = `Value type ${valueType} does not exist, write the column as "(other):${valueType}" to add it to the system (parentheses are required)`;
                 return;
             }
         }
 
         // Every columnName + columnValueType combination must be unique
+        if (this.csvHeaderNameTypeMap == null) {
+            this.csvHeaderNameTypeMap = new Map();
+        }
+
         let combination = columnName + "," + valueType;
         if (this.csvHeaderNameTypeMap.has(combination)) {
-            this.csvImportError = `Column ${index + 1} column name and value type combination (${combination}) is not unique`;
+            this.findingTableError = `Column ${index + 1} column name and value type combination (${combination}) is not unique`;
             return;
         }
         this.csvHeaderNameTypeMap.set(combination, true);
@@ -778,16 +781,27 @@ export class EditcharacterizationComponent implements OnInit {
 
     resetColumnForm() {
         // Replace JSON.parse(JSON.stringify()):
+        this.findingTableError = "";
         this.columnHeader = Util.deepCopy(this.columnHeaderTrailer, false);
     }
 
     saveColumnForm() {
+        this.findingTableError = "";
+
+        this.validateColumnHeader(this.columnHeader, this.columnHeaderIndex);
+
+        if (this.findingTableError != "") {
+            return;
+        }
+
         if (this.columnHeader['constantValue'] != '') {
             this.currentFinding['rows'].forEach(row => {
                 row['cells'][this.columnHeaderIndex]['value'] = this.columnHeader['constantValue'];
             });
         }
+
         this.currentFinding.columnHeaders[this.columnHeaderIndex] = this.columnHeader;
+
         this.columnHeaderIndex = null;
         this.fileIndex = null;
     };
@@ -1010,7 +1024,7 @@ export class EditcharacterizationComponent implements OnInit {
 
     updateRowsColumns() {
         if (this.currentFinding.numberOfRows * this.currentFinding.numberOfColumns > Consts.maxTableCellLimit) {
-            this.csvImportError = "Maximum allowed table cell count is 50,000"
+            this.findingTableError = "Maximum allowed table cell count is 50,000"
             return;
         }
 
