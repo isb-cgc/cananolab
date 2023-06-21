@@ -623,7 +623,7 @@ export class EditcharacterizationComponent implements OnInit {
         var columnName = columnHeader['columnName'];
 
         // Every column must have column name and column type
-        if (columnType == "" || columnName == "") {
+        if (columnType == null || columnName == null || columnType == "" || columnName == "") {
             this.findingTableError = `Column ${index + 1} does not have column_type or column_name`;
             return;
         }
@@ -656,7 +656,7 @@ export class EditcharacterizationComponent implements OnInit {
 
         // If a valueType does not exist, it must be like "(other):valueType"
         var valueType = columnHeader['valueType'];
-        if (valueType != "") {
+        if (valueType != null && valueType != "") {
             if (valueType.startsWith("(other):")) {
                 valueType = valueType.replace(/(^\(other\):)/gi, "");
                 if (!this.checkIncludesCaseInsensitive(this.data.datumConditionValueTypeLookup, valueType)) {
@@ -674,11 +674,11 @@ export class EditcharacterizationComponent implements OnInit {
         }
 
         let combination = columnName + "," + valueType;
-        if (this.csvHeaderNameTypeMap.has(combination)) {
+        if (this.csvHeaderNameTypeMap.has(combination) && this.csvHeaderNameTypeMap.get(combination) != index) {
             this.findingTableError = `Column ${index + 1} column name and value type combination (${combination}) is not unique`;
             return;
         }
-        this.csvHeaderNameTypeMap.set(combination, true);
+        this.csvHeaderNameTypeMap.set(combination, index);
     }
 
     checkIncludesCaseInsensitive(arr, val) {
