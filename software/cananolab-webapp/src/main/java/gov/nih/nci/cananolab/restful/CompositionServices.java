@@ -103,20 +103,22 @@ public class CompositionServices {
 	@Path("/downloadImage")
 	@Produces({"image/png", "application/json"})
 	public Response characterizationImage(@Context HttpServletRequest httpRequest, @Context HttpServletResponse httpResponse,
-			@DefaultValue("") @QueryParam("fileId") String fileId)
+	                                      @DefaultValue("") @QueryParam("sampleId") String sampleId,
+	                                      @DefaultValue("") @QueryParam("fileId") String fileId)
 	{
-		return download(httpRequest, httpResponse, fileId);
+		return download(httpRequest, httpResponse, sampleId, fileId);
 	}
 
 	@GET
 	@Path("/download")
 	@Produces({"image/png", "application/json"})
 	public Response download(@Context HttpServletRequest httpRequest, @Context HttpServletResponse httpResponse,
-			@DefaultValue("") @QueryParam("fileId") String fileId)
+	                         @DefaultValue("") @QueryParam("sampleId") String sampleId,
+	                         @DefaultValue("") @QueryParam("fileId") String fileId)
 	{
 		try {
 			CompositionBO compositionBO = (CompositionBO) SpringApplicationContext.getBean(httpRequest, "compositionBO");
-			String result = compositionBO.download(fileId, httpRequest, httpResponse);
+			String result = compositionBO.download(sampleId, fileId, httpRequest, httpResponse);
 
 			return Response.ok(result).build();
 		}

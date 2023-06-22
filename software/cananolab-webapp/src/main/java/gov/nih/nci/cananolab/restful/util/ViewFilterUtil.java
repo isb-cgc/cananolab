@@ -7,17 +7,11 @@ import org.apache.logging.log4j.LogManager;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.codehaus.jackson.map.ObjectMapper;
-import org.codehaus.jackson.map.ObjectWriter;
-import org.codehaus.jackson.map.ser.FilterProvider;
-import org.codehaus.jackson.map.ser.impl.SimpleBeanPropertyFilter;
-import org.codehaus.jackson.map.ser.impl.SimpleFilterProvider;
-//import org.codehaus.jackson.map.ObjectMapper;
-//import org.codehaus.jackson.map.ObjectWriter;
-//import org.codehaus.jackson.map.annotate.JsonFilter;
-//import org.codehaus.jackson.map.ser.FilterProvider;
-//import org.codehaus.jackson.map.ser.impl.SimpleBeanPropertyFilter;
-//import org.codehaus.jackson.map.ser.impl.SimpleFilterProvider;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.ObjectWriter;
+import com.fasterxml.jackson.databind.ser.FilterProvider;
+import com.fasterxml.jackson.databind.ser.impl.SimpleBeanPropertyFilter;
+import com.fasterxml.jackson.databind.ser.impl.SimpleFilterProvider;
 
 
 public class ViewFilterUtil {

@@ -8,10 +8,18 @@
 
 package gov.nih.nci.cananolab.service.sample.helper;
 
+import gov.nih.nci.cananolab.service.sample.helper.SampleServiceHelper;
 import gov.nih.nci.cananolab.domain.common.ExperimentConfig;
 import gov.nih.nci.cananolab.domain.common.File;
 import gov.nih.nci.cananolab.domain.common.Finding;
 import gov.nih.nci.cananolab.domain.common.Protocol;
+import gov.nih.nci.cananolab.domain.common.Datum;
+import gov.nih.nci.cananolab.domain.common.Condition;
+import gov.nih.nci.cananolab.domain.common.Keyword;
+import gov.nih.nci.cananolab.domain.common.PointOfContact;
+import gov.nih.nci.cananolab.domain.common.Organization;
+import gov.nih.nci.cananolab.domain.common.Technique;
+import gov.nih.nci.cananolab.domain.common.Instrument;
 import gov.nih.nci.cananolab.domain.particle.Characterization;
 import gov.nih.nci.cananolab.exception.NoAccessException;
 import gov.nih.nci.cananolab.security.dao.AclDao;
@@ -19,6 +27,7 @@ import gov.nih.nci.cananolab.security.enums.CaNanoRoleEnum;
 import gov.nih.nci.cananolab.security.enums.SecureClassesEnum;
 import gov.nih.nci.cananolab.security.service.SpringSecurityAclService;
 import gov.nih.nci.cananolab.system.applicationservice.CaNanoLabApplicationService;
+import gov.nih.nci.cananolab.system.applicationservice.TransactionInsertion;
 import gov.nih.nci.cananolab.util.ClassUtils;
 import gov.nih.nci.cananolab.system.applicationservice.client.ApplicationServiceProvider;
 import gov.nih.nci.cananolab.system.query.hibernate.HQLCriteria;
@@ -38,6 +47,9 @@ import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Property;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import gov.nih.nci.cananolab.domain.particle.Sample;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.transaction.annotation.Propagation;
 
 /**
  * Service methods involving characterizations
@@ -49,6 +61,9 @@ public class CharacterizationServiceHelper
 {
 	private static Logger logger = LogManager.getLogger(CharacterizationServiceHelper.class);
 	
+	@Autowired
+	private SampleServiceHelper sampleServiceHelper;
+
 	@Autowired
 	private SpringSecurityAclService springSecurityAclService;
 
@@ -85,23 +100,68 @@ public class CharacterizationServiceHelper
 //			!springSecurityAclService.currentUserHasWritePermission(Long.valueOf(charId), SecureClassesEnum.CHAR.getClazz())) {
 //			new NoAccessException("User has no access to the characterization " + charId);
 //		}
+			List<Finding> findings = new ArrayList<Finding>();
+
+			CaNanoLabApplicationService appService = (CaNanoLabApplicationService) ApplicationServiceProvider.getApplicationService();
+			DetachedCriteria crit = DetachedCriteria.forClass(
+					Characterization.class).add(
+					Property.forName("id").eq(new Long(charId)));
+			crit.setFetchMode("findingCollection", FetchMode.JOIN);
+			crit.setFetchMode("findingCollection.fileCollection", FetchMode.JOIN);
+			crit.setFetchMode("findingCollection.fileCollection.keywordCollection",
+					FetchMode.JOIN);
+			crit.setFetchMode("findingCollection.datumCollection", FetchMode.JOIN);
+			crit.setFetchMode(
+					"findingCollection.datumCollection.conditionCollection",
+					FetchMode.JOIN);
+			List result = appService.query(crit);
+			if (!result.isEmpty()) {
+				Characterization achar = (Characterization) result.get(0);
+				findings.addAll(achar.getFindingCollection());
+			}
+			return findings;
+		}
+
+	public List<Finding> findFindingsByCharacterizationIdLazyLoad(String charId)
+			throws Exception {
+//		if (!springSecurityAclService.currentUserHasReadPermission(Long.valueOf(charId), SecureClassesEnum.CHAR.getClazz()) &&
+//			!springSecurityAclService.currentUserHasWritePermission(Long.valueOf(charId), SecureClassesEnum.CHAR.getClazz())) {
+//			new NoAccessException("User has no access to the characterization " + charId);
+//		}
 		List<Finding> findings = new ArrayList<Finding>();
 
 		CaNanoLabApplicationService appService = (CaNanoLabApplicationService) ApplicationServiceProvider.getApplicationService();
 		DetachedCriteria crit = DetachedCriteria.forClass(
 				Characterization.class).add(
 				Property.forName("id").eq(new Long(charId)));
-		crit.setFetchMode("findingCollection", FetchMode.JOIN);
-		crit.setFetchMode("findingCollection.fileCollection", FetchMode.JOIN);
-		crit.setFetchMode("findingCollection.fileCollection.keywordCollection",
-				FetchMode.JOIN);
-		crit.setFetchMode("findingCollection.datumCollection", FetchMode.JOIN);
-		crit.setFetchMode(
-				"findingCollection.datumCollection.conditionCollection",
-				FetchMode.JOIN);
-		List result = appService.query(crit);
-		if (!result.isEmpty()) {
-			Characterization achar = (Characterization) result.get(0);
+		TransactionInsertion<Characterization> lazyLoads = new TransactionInsertion<Characterization>() {
+			@Override
+			public boolean executeInsideTransaction(Characterization ca) {
+
+				String id;
+				Set<Finding> fic = ca.getFindingCollection();
+				for (Finding fi : fic) {
+					Collection<Datum> dac = fi.getDatumCollection();
+					for (Datum da : dac) {
+						Set<Condition> coc = da.getConditionCollection();
+						for (Condition co : coc) {
+							id = co.toString();
+						}
+					}
+					Collection<File> flic = fi.getFileCollection();
+					for (File fli : flic) {
+						Set<Keyword> fikc = fli.getKeywordCollection();
+						for (Keyword kw : fikc) {
+							id = kw.toString();
+						}
+					}
+				}
+				return true;
+			}
+		};
+
+		Characterization achar = appService.queryAndProcess(crit, lazyLoads);
+		if (achar != null) {
 			findings.addAll(achar.getFindingCollection());
 		}
 		return findings;
@@ -154,13 +214,40 @@ public class CharacterizationServiceHelper
 
 	public List<Characterization> findCharacterizationsBySampleId(String sampleId) throws Exception
 	{
-		List<Characterization> chars = new ArrayList<Characterization>();
+		List<Characterization> characterizationArrayList = new ArrayList<Characterization>();
+		Sample mySample = sampleServiceHelper.findSampleById(sampleId);
+		Set<Characterization> characterizationSet= mySample.getCharacterizationCollection();
 
+		for(Characterization aCharacterization:characterizationSet) {
+			Long id= aCharacterization.getId();
+			System.out.println("aCharacterization.getId()=="+id);
+			Characterization myCharacterization= findCharacterizationById( id );
+			// this should never happen but doesn't hurt to check
+			if( !myCharacterization.getId().equals(id)) {
+				throw new Exception("id mismatch!"+id+" vs. "+myCharacterization.getId());
+
+			}
+			if (springSecurityAclService.currentUserHasReadPermission(id, SecureClassesEnum.CHAR.getClazz()) ||
+			    springSecurityAclService.currentUserHasWritePermission(id, SecureClassesEnum.CHAR.getClazz())) 
+			{
+					checkAssociatedVisibility(myCharacterization);
+					characterizationArrayList.add(myCharacterization);
+			}
+		}
+		return characterizationArrayList;
+	}
+
+	public Characterization findCharacterizationById(Long charId) throws Exception
+	{
+		System.out.println("findCharacterizationById charId=="+charId);
+		if (!springSecurityAclService.currentUserHasReadPermission(charId, SecureClassesEnum.CHAR.getClazz()) &&
+			!springSecurityAclService.currentUserHasWritePermission(charId, SecureClassesEnum.CHAR.getClazz())) {
+			throw new NoAccessException("User has no access to the characterization " + charId);
+		}
+		Characterization achar = null;
 		CaNanoLabApplicationService appService = (CaNanoLabApplicationService) ApplicationServiceProvider.getApplicationService();
-		DetachedCriteria crit = DetachedCriteria.forClass(Characterization.class);
-		crit.createAlias("sample", "sample");
-		crit.add(Property.forName("sample.id").eq(new Long(sampleId)));
-		// fully load characterization
+		DetachedCriteria crit = DetachedCriteria.forClass(Characterization.class).add(Property.forName("id").eq(charId));
+		//  load characterization with everything except datumCollection and fileCollection
 		crit.setFetchMode("pointOfContact", FetchMode.JOIN);
 		crit.setFetchMode("pointOfContact.organization", FetchMode.JOIN);
 		crit.setFetchMode("protocol", FetchMode.JOIN);
@@ -170,17 +257,153 @@ public class CharacterizationServiceHelper
 		crit.setFetchMode("experimentConfigCollection.technique", FetchMode.JOIN);
 		crit.setFetchMode("experimentConfigCollection.instrumentCollection", FetchMode.JOIN);
 		crit.setFetchMode("findingCollection", FetchMode.JOIN);
-		crit.setFetchMode("findingCollection.datumCollection", FetchMode.JOIN);
-		crit.setFetchMode("findingCollection.datumCollection.conditionCollection", FetchMode.JOIN);
-		crit.setFetchMode("findingCollection.fileCollection", FetchMode.JOIN);
-		crit.setFetchMode("findingCollection.fileCollection.keywordCollection", FetchMode.JOIN);
+		//crit.setFetchMode("findingCollection.datumCollection", FetchMode.JOIN);
+		//crit.setFetchMode("findingCollection.datumCollection.conditionCollection", FetchMode.JOIN);
+		//crit.setFetchMode("findingCollection.fileCollection", FetchMode.JOIN);
+		//crit.setFetchMode("findingCollection.fileCollection.keywordCollection", FetchMode.JOIN);
 		crit.setResultTransformer(CriteriaSpecification.DISTINCT_ROOT_ENTITY);
-		List results = appService.query(crit);
 
+		TransactionInsertion<Characterization> myTransactionInsertion = new TransactionInsertion<Characterization>() {
+                        @Override
+                        public boolean executeInsideTransaction(Characterization achar) {
+					// piece together findingCollection with its DatumCollection and FileCollection
+					Set<Finding> findingCollection = new HashSet<Finding>();
+					Set<Finding> mySet = achar.getFindingCollection();
+					if(mySet.size()<1) {
+						System.out.println("findCharacterizationById no findings for charId=="+charId);
+						return true;
+					}
+					int cnt= 0;
+					for(Finding myFinding:mySet) {
+						Long id = myFinding.getId();
+						System.out.println("myTransactionInsertion, myFinding.getId()=="+id);
+						try {
+							// got thru DatumCollection and add all its conditions
+							Collection<Datum> myDatumCollection = myFinding.getDatumCollection();
+							System.out.println("finding id "+id+" myDatumCollection.size():"+myDatumCollection.size() );
+							for(Datum myDatum:myDatumCollection) {
+								myDatum.toString(); // force load
+								Set<Condition> myConditionCollection = myDatum.getConditionCollection();
+	//System.out.println("finding id "+id+" myDatum.getId()=="+ myDatum.getId()+ " myConditionCollection.size():" + myConditionCollection.size() );
+								for(Condition myCondition:myConditionCollection) {
+									//System.out.println("------>"+id+"."+myDatum.getId()+"."+myCondition.getId()+".");
+									myCondition.toString();
+								}
+								//myDatum.setConditionCollection(myConditionCollection);
+							}
+							//myFinding.setDatumCollection(myDatumCollection);
+
+							// similarly, go through FileCollection and add all its Keywords
+							Collection<File> myFileCollection= myFinding.getFileCollection();
+							System.out.println("finding id "+id+" myFileCollection.size():"+myFileCollection.size() );
+							for(File myFile:myFileCollection) {
+								myFile.toString(); // force load
+								Set<Keyword> myKeywordCollection = myFile.getKeywordCollection();
+	//System.out.println("finding id "+id+" myFile.getId()=="+ myFile.getId()+ " myKeywordCollection.size():" + myKeywordCollection.size() );
+								for(Keyword myKeyword:myKeywordCollection) {
+									//System.out.println("------>"+id+"."+myFile.getId()+"."+myKeyword.getId()+".");
+									myKeyword.toString();
+								}
+								//myFile.setKeywordCollection(myKeywordCollection);
+							}
+							//myFinding.setFileCollection(myFileCollection);
+
+							findingCollection.add(myFinding);
+							System.out.println("findCharacterizationById added id=="+id);
+							cnt++;
+						} catch (Exception e) {
+							System.out.println("findCharacterizationById general exception with id=="+id);
+							System.out.println(e);
+						}
+					}
+					System.out.println("findCharacterizationById added "+cnt+" findings for charId=="+charId);
+					achar.setFindingCollection(findingCollection);
+			return true;
+			}
+		};
+		achar = appService.queryAndProcess(crit, myTransactionInsertion);
+		checkAssociatedVisibility(achar);
+		System.out.println("end findCharacterizationById charId=="+charId);
+		return achar;
+	}
+
+
+	public List<Characterization> findCharacterizationsBySampleIdLazyLoad(String sampleId) throws Exception
+	{
+		List<Characterization> chars = new ArrayList<Characterization>();
+
+		CaNanoLabApplicationService appService = (CaNanoLabApplicationService) ApplicationServiceProvider.getApplicationService();
+		DetachedCriteria crit = DetachedCriteria.forClass(Characterization.class);
+		crit.createAlias("sample", "sample");
+		crit.add(Property.forName("sample.id").eq(new Long(sampleId)));
+		crit.setResultTransformer(CriteriaSpecification.DISTINCT_ROOT_ENTITY);
+
+		TransactionInsertion<Characterization> lazyLoads = new TransactionInsertion<Characterization>() {
+			@Override
+			public boolean executeInsideTransaction(Characterization ca) {
+
+				String id;
+				int fcount = 0;
+				int count = 0;
+
+				Set<Finding> fic = ca.getFindingCollection();
+				for (Finding fi : fic) {
+					fcount++;
+					Collection<Datum> dac = fi.getDatumCollection();
+					for (Datum da : dac) {
+						count++;
+						Set<Condition> coc = da.getConditionCollection();
+						for (Condition co : coc) {
+							id = co.toString();
+						}
+					}
+					Collection<File> flic = fi.getFileCollection();
+					for (File fli : flic) {
+						Set<Keyword> fikc = fli.getKeywordCollection();
+						for (Keyword kw : fikc) {
+							id = kw.toString();
+						}
+					}
+				}
+				Set<ExperimentConfig> ecc = ca.getExperimentConfigCollection();
+				if (ecc != null) {
+					for (ExperimentConfig ec : ecc) {
+						Collection<Instrument> inc = ec.getInstrumentCollection();
+						for (Instrument in : inc) {
+							id = in.toString();
+						}
+						Technique tq = ec.getTechnique();
+						if (tq != null) {
+							id = tq.getType();
+						}
+					}
+				}
+				PointOfContact pc = ca.getPointOfContact();
+				if (pc != null) {
+					Organization org = pc.getOrganization();
+					id = org.toString();
+				}
+				Protocol pro = ca.getProtocol();
+				if (pro != null) {
+					File fli = pro.getFile();
+					if (fli != null) {
+						Set<Keyword> fikc = fli.getKeywordCollection();
+						for (Keyword kw : fikc) {
+							id = kw.toString();
+						}
+					}
+				}
+				System.out.println("saw " + fcount + " findings");
+				System.out.println("saw " + count + " datum");
+				return true;
+			}
+		};
+
+		List<Characterization> results = appService.queryAndProcessList(crit, lazyLoads);
 		for (int i = 0; i < results.size(); i++) {
 			Characterization achar = (Characterization) results.get(i);
 			if (springSecurityAclService.currentUserHasReadPermission(achar.getId(), SecureClassesEnum.CHAR.getClazz()) ||
-				springSecurityAclService.currentUserHasWritePermission(achar.getId(), SecureClassesEnum.CHAR.getClazz())) {
+					springSecurityAclService.currentUserHasWritePermission(achar.getId(), SecureClassesEnum.CHAR.getClazz())) {
 				checkAssociatedVisibility(achar);
 				chars.add(achar);
 			} else {
