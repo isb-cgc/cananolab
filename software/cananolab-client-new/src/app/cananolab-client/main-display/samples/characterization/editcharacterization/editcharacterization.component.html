@@ -680,25 +680,33 @@
                     <td></td>
                     <td>
                         <ng-container *ngFor="let finding of data.finding; let fIndex=index">
+                            
                             <div *ngIf="finding.rows.length||finding.files.length" class="mainBorder">
-                                                <div class="dataConditions"><B>Data and Conditions</B>
-                                                        <button  (click)="editFinding(fIndex, finding)" class="btn-canano btn-canano-primary btn-canano-xs mr-1">Edit</button>
+                                                <div class="dataConditions">
+                                                    <b>Data and Conditions</b>
+                                                    <label style="color:blue; display:block"  *ngIf="fIndex == currentSavingFindingIndex">
+                                                       This table is currently saving...
+                                                    </label>
+
+                                                    <button *ngIf="fIndex != currentSavingFindingIndex" (click)="editFinding(fIndex, finding)" class="btn-canano btn-canano-primary btn-canano-xs mr-1">Edit</button>
                                                 </div>
-                                                <table class="dataTable">
-                                                    <tr>
-                                                        <th *ngFor="let header of finding.columnHeaders">
-                                                            {{header.columnName}}
-                                                        </th>
-                                                    </tr>
-                                                    <tr *ngFor="let row of finding.rows; let rowIndex=index; let odd=odd" [ngClass]="{'rowOdd':odd}">
-                                                        <td [ngStyle]="{'width':85/row.cells.length+'%'}" *ngFor="let column of row.cells">
-                                                            <span *ngIf="column.operand!='='">
-                                                                {{column.operand}}
-                                                            </span>
-                                                            {{column.value}}
-                                                        </td>
-                                                    </tr>
-                                                </table>
+                                                <div class="scroll-table-container">
+                                                    <table class="dataTable">
+                                                        <tr>
+                                                            <th *ngFor="let header of finding.columnHeaders">
+                                                                {{header.columnName}}
+                                                            </th>
+                                                        </tr>
+                                                        <tr *ngFor="let row of finding.rows; let rowIndex=index; let odd=odd" [ngClass]="{'rowOdd':odd}">
+                                                            <td [ngStyle]="{'width':85/row.cells.length+'%'}" *ngFor="let column of row.cells" [innerHTML]="column.value">
+                                                                <span *ngIf="column.operand!='='">
+                                                                    {{column.operand}}
+                                                                </span>
+                                                                {{column.value}}
+                                                            </td>
+                                                        </tr>
+                                                    </table>
+                                                </div>
                                             <ng-container *ngIf="finding.files.length">
                                                 <br /><B>Files</B>
                                                 <table class="dataTable">
@@ -712,13 +720,13 @@
                                                         <td>{{file.type}}</td>
                                                         <td>
                                                             <a href="" *ngIf="!file.uriExternal && file.type !=='image'"
-                                                               [href]="serverUrl+'/rest/sample/download?fileId='+file.id">
+                                                               [href]="serverUrl+'/rest/sample/download?sampleId='+sampleId+'&fileId='+file.id">
                                                                 <span [innerHTML]="file.title"></span>
                                                             </a>
                                                             <a *ngIf="file['type'] === 'image'"
-                                                               [href]="serverUrl+'/rest/sample/download?fileId='+file.id"
+                                                               [href]="serverUrl+'/rest/sample/download?sampleId='+sampleId+'&fileId='+file.id"
                                                             >
-                                                                <img  [src]="serverUrl+'/rest/sample/download?fileId='+file.id" width="150">
+                                                                <img  [src]="serverUrl+'/rest/sample/download?sampleId='+sampleId+'&fileId='+file.id" width="150">
                                                             </a>
 
                                                             <a  *ngIf="file.uriExternal" [href]="file.externalUrl" target="_blank" rel="nofollow noreferrer">
@@ -753,14 +761,14 @@
                                                     <label for="finding.rows">
                                                         &nbsp;Rows
                                                     </label>
-                                                    <input type="number" name="rows" id="finding.rows" [(ngModel)]="currentFinding.numberOfRows"><br />
+                                                    <input type="number" name="rows" id="finding.rows" [(ngModel)]="currentFinding.numberOfRows"> <br />
                                                     <button (click)="updateRowsColumns()" class="btn-canano btn-canano-primary btn-canano-xs mr-1">Update</button>
+
                                                     <button *ngIf="findingIndex!=-1" (click)="editColumnOrder()" class="btn-canano btn-canano-primary btn-canano-xs mr-1">Set Column Order</button>
                                                     <label class="btn-canano btn-canano-primary btn-canano-xs">
-                                                        Import csv
-                                                        <input type="file" id="csvFile" style="display: none" (change)="importCSV($event)">
+                                                        Import CSV
+                                                        <input type="file" id="csvFile" style="display: none" (change)="importCSV($event)" accept=".csv">
                                                     </label>
-
                                                 </td>
                                             </tr>
                                             <tr *ngIf="columnOrder!=null">
@@ -786,10 +794,15 @@
                                                 </td>
                                             </tr>
                                             <tr>
+                                                <div class="error" *ngIf="findingTableError">
+                                                    CSV import error: {{findingTableError}}
+                                                </div>
+                                            </tr>
+                                           <!--  <tr>
                                                 <td class="label">
                                                     Data and Conditions
                                                 </td>
-                                            </tr>
+                                            </tr> -->
                                             <tr *ngIf="columnHeaderIndex!=null">
                                                 <td>
                                                     <div class="mainBorder">
@@ -910,35 +923,52 @@
                                             </tr>
                                             <tr>
                                                 <td>
-                                                    <table class="dataTable">
-                                                        <tr>
-                                                            <td [colSpan]="currentFinding.numberOfColumns+1">
-                                                                <h5>Column Data</h5><br />
-                                                            </td>
-                                                        </tr>
-                                                        <tr>
-                                                            <th *ngFor="let columnHeader of currentFinding.columnHeaders; let columnHeaderIndex=index">
-                                                                <a [routerLink]="" (click)="editColumnForm(columnHeader, columnHeaderIndex)">
-                                                                    {{columnHeader.columnName}}
-                                                                </a>
-                                                            </th>
-                                                            <th></th>
-                                                        </tr>
-                                                        <ng-container *ngFor="let row of currentFinding.rows;let rIndex=index; let odd=odd; let last=last">
-                                                            <tr [ngClass]="{'rowOdd':odd}">
-                                                                <td *ngFor="let column of row.cells; let cIndex=index;">
-                                                                    <select [name]="'column.operand'+rIndex+cIndex" [(ngModel)]="column.operand">
-                                                                        <option *ngFor="let modifier of setupData.datumNumberModifier" [selected]="column.operand===modifier" [ngValue]="modifier">{{modifier}}</option>
-                                                                    </select>
-                                                                    <input type="number" *ngIf="currentFinding.columnHeaders[cIndex]['columnType']=='datum'" [name]="'column.value'+rIndex+cIndex" [(ngModel)]="column.value" size="10">
-                                                                    <input type="text" *ngIf="currentFinding.columnHeaders[cIndex]['columnType']=='condition'||currentFinding.columnHeaders[cIndex]['columnType']==null" [name]="'column.value'+rIndex+cIndex" [(ngModel)]="column.value" size="10">
-                                                                </td>
-                                                                <td>
-                                                                    <button (click)="deleteFindingRow(rIndex)" class="btn-canano btn-canano-danger btn-canano-xs mr-1">Delete</button>
-                                                                </td>
+
+                                                    <h5>Table Data</h5><br />
+                                                    <div class="scroll-table-container">
+                                                        <table class="dataTable">
+                                                            <tr>
+                                                                <th></th>
+
+                                                                <th *ngFor="let columnHeader of currentFinding.columnHeaders; let columnHeaderIndex=index">
+                                                                    <a [routerLink]="[]" (click)="editColumnForm(columnHeader, columnHeaderIndex)">
+                                                                        {{columnHeader.columnName}}
+                                                                    </a>
+                                                                </th>
                                                             </tr>
-                                                        </ng-container>
-                                                    </table>
+                                                            
+                                                            <ng-container *ngFor="let row of currentFinding.rows;let rIndex=index; let odd=odd; let last=last">
+                                                                <tr [ngClass]="{'rowOdd':odd}" *ngIf="!csvRowsIsEdit[rIndex] && isTooManyCells">
+                                                                    <td>
+                                                                        <button (click)="editFindingRow(rIndex, true)" class="btn-canano btn-canano-primary btn-canano-xs mr-1">
+                                                                            Edit
+                                                                        </button>
+                                                                    </td>
+
+                                                                    <td *ngFor="let column of row.cells; let cIndex=index;" [innerHtml]="column.value">
+                                                                        {{column.value}}
+                                                                    </td>                                                        
+                                                                </tr>
+                                                                 
+                                                                <tr [ngClass]="{'rowOdd':odd}" *ngIf="csvRowsIsEdit[rIndex] || !isTooManyCells">
+                                                                    <td>
+                                                                        <button (click)="deleteFindingRow(rIndex)" class="btn-canano btn-canano-danger btn-canano-xs mr-1">Delete</button>
+                                                                    </td>
+
+                                                                    <td *ngFor="let column of row.cells; let cIndex=index;">
+                                                                       <select [name]="'column.operand'+rIndex+cIndex" [(ngModel)]="column.operand">
+                                                                            <option *ngFor="let modifier of setupData.datumNumberModifier" [selected]="column.operand===modifier" [ngValue]="modifier">{{modifier}}</option>
+                                                                        </select>
+                                                                        <input type="number" *ngIf="currentFinding.columnHeaders[cIndex]['columnType']=='datum'" [name]="'column.value'+rIndex+cIndex" [(ngModel)]="column.value" size="10">
+                                                                        <input type="text" *ngIf="currentFinding.columnHeaders[cIndex]['columnType']=='condition'||currentFinding.columnHeaders[cIndex]['columnType']==null" [name]="'column.value'+rIndex+cIndex" [(ngModel)]="column.value" size="10">
+                                                                    </td>
+                                                                </tr>
+
+                                                                
+                                                            </ng-container>
+                                                        </table>
+                                                    </div>
+
                                                 </td>
                                             </tr>
                                             <tr>
@@ -959,7 +989,7 @@
                                                         <tr *ngFor="let file of currentFinding.files; let fileIndex=index">
                                                             <td>{{file.type}}</td>
                                                             <td>
-                                                                <a href="" [href]="serverUrl+'/rest/sample/download?fileId='+file.id">
+                                                                <a href="" [href]="serverUrl+'/rest/sample/download?sampleId='+sampleId+'&fileId='+file.id">
                                                                     {{file['title']}}
                                                                 </a>
 

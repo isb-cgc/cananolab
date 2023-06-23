@@ -18,6 +18,7 @@ import { DisclaimerModule } from './cananolab-client/common/components/disclaime
 import { NgIdleKeepaliveModule } from '@ng-idle/keepalive';
 import { IdleDialog} from "./cananolab-client/common/components/idle-dialog/idle.dialog.component";
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { NgxCsvParserModule } from 'ngx-csv-parser';
 
 
 @NgModule({
@@ -42,7 +43,8 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
         DisclaimerModule,
         BrowserAnimationsModule,
         NgIdleKeepaliveModule.forRoot(),
-        NgbModule
+        NgbModule,
+        NgxCsvParserModule
     ],
   providers: [{provide: LocationStrategy, useClass: HashLocationStrategy}],
   bootstrap: [AppComponent]

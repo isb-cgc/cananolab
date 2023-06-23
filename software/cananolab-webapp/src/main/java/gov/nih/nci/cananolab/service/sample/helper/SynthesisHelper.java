@@ -17,6 +17,7 @@ import gov.nih.nci.cananolab.system.applicationservice.client.ApplicationService
 import gov.nih.nci.cananolab.system.query.hibernate.HQLCriteria;
 import gov.nih.nci.cananolab.util.ClassUtils;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -28,6 +29,12 @@ import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Property;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import gov.nih.nci.cananolab.system.applicationservice.TransactionInsertion;
+import gov.nih.nci.cananolab.domain.common.Protocol;
+import gov.nih.nci.cananolab.domain.common.Keyword;
+import gov.nih.nci.cananolab.domain.common.Supplier;
+import gov.nih.nci.cananolab.domain.common.PurityColumnHeader;
+import gov.nih.nci.cananolab.domain.common.Technique;
 
 @Component("synthesisHelper")
 public class SynthesisHelper
@@ -130,7 +137,207 @@ public class SynthesisHelper
         }
     }
 
+    // 2023.5.29 rewrite per issue #214
     public Synthesis findSynthesisBySampleId(Long sampleId) throws Exception {
+    	// test synthesis
+        logger.debug("findSynthesisBySampleId sampleId==" + sampleId);
+        Synthesis mySynthesis = null;
+        CaNanoLabApplicationService appService = (CaNanoLabApplicationService) ApplicationServiceProvider.getApplicationService();
+        DetachedCriteria crit = DetachedCriteria.forClass(Synthesis.class);
+        crit.createAlias("sample", "sample");
+        crit.add(Property.forName("sample.id").eq(sampleId));
+        crit.setFetchMode("synthesis", FetchMode.JOIN);
+        crit.setFetchMode("synthesisMaterials", FetchMode.JOIN);
+        crit.setResultTransformer(CriteriaSpecification.DISTINCT_ROOT_ENTITY);
+        TransactionInsertion<Synthesis> myTransactionInsertion = new TransactionInsertion<Synthesis>() {
+            @Override
+            public boolean executeInsideTransaction(Synthesis mySynthesis) {
+                // synthesis
+                mySynthesis.getSample().setSynthesis(mySynthesis);
+                logger.debug("mySynthesis.getId()==" + mySynthesis.getId());
+                // synthesisMaterials
+                Set<SynthesisMaterial> mySynthesisMaterialSet = mySynthesis.getSynthesisMaterials();
+                for (SynthesisMaterial mySynthesisMaterial : mySynthesisMaterialSet) {
+                    mySynthesisMaterial.toString();
+                    logger.debug("mySynthesisMaterial.getId()==" + mySynthesisMaterial.getId());
+                    // synthesisMaterials.protocol
+                    Protocol myProtocol = mySynthesisMaterial.getProtocol();
+                    if (myProtocol != null) {
+                        myProtocol.toString();
+                        logger.debug("mySynthesisMaterial.myProtocol.getId()=="+ myProtocol.getId());
+                        // synthesisMaterials.protocol.file
+                        File myFile = myProtocol.getFile();
+                        if (myFile != null) {
+                            myFile.toString();
+                            logger.debug("mySynthesisMaterial.myProtocol.myFile.getId()=="+ myFile.getId());
+                            // synthesisMaterials.protocol.file.keywordCollection
+                            Collection<Keyword> myKeywordCollection = myFile.getKeywordCollection();
+                            logger.debug("myKeywordCollection.size()==" + myKeywordCollection.size());
+                            for (Keyword myKeyword : myKeywordCollection) {
+                                myKeyword.toString();
+                            }
+                        }
+                    }
+                    // synthesisMaterials.files
+                    Collection<File> myFileCollection = mySynthesisMaterial.getFileCollection();
+                    logger.debug("myFileCollection.size()==" + myFileCollection.size());
+                    for (File myFile : myFileCollection) {
+                        myFile.toString();
+                        // synthesisMaterials.files.keywordCollection
+                        Collection<Keyword> myKeywordCollection = myFile.getKeywordCollection();
+                        logger.debug("myKeywordCollection.size()==" + myKeywordCollection.size());
+                        for (Keyword myKeyword : myKeywordCollection) {
+                            myKeyword.toString();
+                        }
+                    }
+                    // synthesisMaterials.synthesisMaterialElements
+                    Set<SynthesisMaterialElement> mySynthesisMaterialElementSet = mySynthesisMaterial.getSynthesisMaterialElements();
+                    for (SynthesisMaterialElement mySynthesisMaterialElement : mySynthesisMaterialElementSet) {
+                        mySynthesisMaterialElement.toString();
+                        logger.debug("mySynthesisMaterial.mySynthesisMaterialElement.getId()=="+ mySynthesisMaterialElement.getId());
+                        // synthesisMaterials.synthesisMaterialElements.files
+                        Set<File> myFileSet = mySynthesisMaterialElement.getFiles();
+                        for (File myFile : myFileSet) {
+                            myFile.toString();
+                            logger.debug("mySynthesisMaterialElement.myFile.getId()=="+ myFile.getId());
+                        }
+                        // synthesisMaterials.synthesisMaterialElements.supplier
+                        Supplier mySupplier = mySynthesisMaterialElement.getSupplier();
+                        if (mySupplier != null) {
+                            mySupplier.toString();
+                            logger.debug("mySynthesisMaterialElement.mySupplier.getId()=="+ mySupplier.getId());
+                        }
+                        // synthesisMaterials.synthesisMaterialElements.smeInherentFunctions
+                        Set<SmeInherentFunction> mySmeInherentFunctionSet = mySynthesisMaterialElement.getSmeInherentFunctions();
+                        for (SmeInherentFunction mySmeInherentFunction : mySmeInherentFunctionSet) {
+                            mySmeInherentFunction.toString();
+                            logger.debug("mySynthesisMaterialElement.mySmeInherentFunction.getId()=="+ mySmeInherentFunction.getId());
+                        }
+                    }
+                } // SynthesisMaterial
+
+                // synthesisFunctionalizations
+                Set<SynthesisFunctionalization> mySynthesisFunctionalizationSet = mySynthesis.getSynthesisFunctionalizations();
+                for (SynthesisFunctionalization mySynthesisFunctionalization : mySynthesisFunctionalizationSet) {
+                    mySynthesisFunctionalization.toString();
+                    logger.debug("mySynthesisFunctionalization.getId()=="+ mySynthesisFunctionalization.getId());
+                    // synthesisFunctionalizations.protocol
+                    Protocol myProtocol = mySynthesisFunctionalization.getProtocol();
+                    if (myProtocol != null) {
+                        myProtocol.toString();
+                        logger.debug("mySynthesisFunctionalization.myProtocol.getId()=="+ myProtocol.getId());
+                    }
+                    // synthesisFunctionalizations.synthesisFunctionalizationElements
+                    Set<SynthesisFunctionalizationElement> mySynthesisFunctionalizationElementSet = mySynthesisFunctionalization.getSynthesisFunctionalizationElements();
+                    for (SynthesisFunctionalizationElement mySynthesisFunctionalizationElement : mySynthesisFunctionalizationElementSet) {
+                        mySynthesisFunctionalizationElement.toString();
+                        logger.debug("mySynthesisFunctionalization.mySynthesisFunctionalizationElement.getId()=="+ mySynthesisFunctionalizationElement.getId());
+                        // synthesisFunctionalizations.synthesisFunctionalizationElements.sfeInherentFunctions
+                        Set<SfeInherentFunction> mySfeInherentFunctionSet = mySynthesisFunctionalizationElement.getSfeInherentFunctions();
+                        for (SfeInherentFunction mySfeInherentFunction : mySfeInherentFunctionSet) {
+                            mySfeInherentFunction.toString();
+                            logger.debug("mySynthesisFunctionalizationElement.mySfeInherentFunction.getId()=="+ mySfeInherentFunction.getId());
+                        }
+                        // synthesisFunctionalizations.synthesisFunctionalizationElements.files
+                        Set<File> myFileSet = mySynthesisFunctionalizationElement.getFiles();
+                        for (File myFile : myFileSet) {
+                            myFile.toString();
+                            logger.debug("mySynthesisFunctionalizationElement.myFile.getId()==" + myFile.getId());
+
+                            // synthesisFunctionalizations.synthesisFunctionalizationElements.files.keywordCollection
+                            Collection<Keyword> myKeywordCollection = myFile.getKeywordCollection();
+                            logger.debug("myKeywordCollection.size()==" + myKeywordCollection.size());
+                            for (Keyword myKeyword : myKeywordCollection) {
+                                myKeyword.toString();
+                            }
+                        }
+                    }
+                } // SynthesisFunctionalization
+
+                // synthesisPurifications
+                Set<SynthesisPurification> mySynthesisPurificationSet = mySynthesis.getSynthesisPurifications();
+                for (SynthesisPurification mySynthesisPurification : mySynthesisPurificationSet) {
+                    mySynthesisPurification.toString();
+                    logger.debug("mySynthesisPurification.getId()=="+ mySynthesisPurification.getId());
+                    // synthesisPurifications.protocol
+                    Protocol myProtocol = mySynthesisPurification.getProtocol();
+                    if (myProtocol != null) {
+                        myProtocol.toString();
+                        logger.debug("mySynthesisPurification.myProtocol.getId()==" + myProtocol.getId());
+                        // synthesisPurifications.protocol.file
+                        File myFile = myProtocol.getFile();
+                        if (myFile != null) {
+                            myFile.toString();
+                            logger.debug("myProtocol.myFile.getId()==" + myFile.getId());
+                            // synthesisPurifications.protocol.file.keywordCollection
+                            Collection<Keyword> myKeywordCollection = myFile.getKeywordCollection();
+                            logger.debug("myKeywordCollection.size()==" + myKeywordCollection.size());
+                            for (Keyword myKeyword : myKeywordCollection) {
+                                myKeyword.toString();
+                            }
+                        }
+                    }
+
+                    // synthesisPurifications.purities
+                    Set<SynthesisPurity> mySynthesisPuritySet = mySynthesisPurification.getPurities();
+                    for (SynthesisPurity mySynthesisPurity : mySynthesisPuritySet) {
+                        mySynthesisPurity.toString();
+                        logger.debug("mySynthesisPurification.mySynthesisPurity.getId()==" + mySynthesisPurity.getId());
+                        // synthesisPurifications.purities.purityDatumCollection
+                        Set<PurityDatumCondition> myPurityDatumConditionSet = mySynthesisPurity.getPurityDatumCollection();
+                        for (PurityDatumCondition myPurityDatumCondition : myPurityDatumConditionSet) {
+                            myPurityDatumCondition.toString();
+                            logger.debug("mySynthesisPurity.myPurityDatumCondition.getId()=="+ myPurityDatumCondition.getId());
+                            // synthesisPurifications.purities.purityDatumCollection.columnHeader
+                            PurityColumnHeader myPurityColumnHeader = myPurityDatumCondition.getColumnHeader();
+                            if (myPurityColumnHeader != null) {
+                                myPurityColumnHeader.toString();
+                                logger.debug("myPurityDatumCondition.myPurityColumnHeader.getId()=="+ myPurityColumnHeader.getId());
+                            }
+                        }
+                        // synthesisPurifications.purities.files
+                        Set<File> myFileSet = mySynthesisPurity.getFiles();
+                        for (File myFile : myFileSet) {
+                            myFile.toString();
+                            logger.debug("mySynthesisPurity.myFile.getId()==" + myFile.getId());
+                            // synthesisPurifications.purities.files.keywordCollection
+                            Collection<Keyword> myKeywordCollection = myFile.getKeywordCollection();
+                            logger.debug("myKeywordCollection.size()==" + myKeywordCollection.size());
+                            for (Keyword myKeyword : myKeywordCollection) {
+                                myKeyword.toString();
+                            }
+                        }
+                    }
+
+                    // synthesisPurifications.purificationConfigs
+                    Set<PurificationConfig> myPurificationConfigSet = mySynthesisPurification.getPurificationConfigs();
+                    for (PurificationConfig myPurificationConfig : myPurificationConfigSet) {
+                        myPurificationConfig.toString();
+                        logger.debug("mySynthesisPurification.myPurificationConfig.getDescription()=="+ myPurificationConfig.getDescription());
+                        // synthesisPurifications.purificationConfigs.technique
+                        Technique myTechnique = myPurificationConfig.getTechnique();
+                        if (myTechnique != null) {
+                            myTechnique.toString();
+                            logger.debug("myPurificationConfig.myTechnique.getId()=="+ myTechnique.getId());
+                        }
+                        // synthesisPurifications.purificationConfigs.instrumentCollection
+                        Collection<Instrument> myInstrumentCollection = myPurificationConfig.getInstrumentCollection();
+                        logger.debug("myInstrumentCollection.size()==" + myInstrumentCollection.size());
+                        for (Instrument myInstrument : myInstrumentCollection) {
+                            myInstrument.toString();
+                        }
+                    } // PurificationConfig
+                } // SynthesisPurification
+
+                return true;
+            }
+        };
+        mySynthesis = appService.queryAndProcess(crit, myTransactionInsertion);
+        logger.debug("ran appService.queryAndProcess");
+        return mySynthesis;
+    }
+
+    public Synthesis old_findSynthesisBySampleId(Long sampleId) throws Exception {
         if (!springSecurityAclService.currentUserHasReadPermission(sampleId, SecureClassesEnum.SAMPLE.getClazz()) &&
                 !springSecurityAclService.currentUserHasWritePermission(sampleId, SecureClassesEnum.SAMPLE.getClazz())) {
             throw new NoAccessException("User has no access to the sample " + sampleId);

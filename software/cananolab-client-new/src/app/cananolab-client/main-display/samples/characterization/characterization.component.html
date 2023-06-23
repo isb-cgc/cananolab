@@ -55,20 +55,24 @@
                                         </label>
                                         <div *ngIf="f['Data and Conditions']">
                                             <!--  These are the data tables -->
-                                            <table class="dataTable" id="dataConditions">
-                                                <ng-container *ngFor="let entry of f['Data and Conditions']; let even=even">
-                                                    <tr *ngIf="entry.name=='colTitles'">
-                                                        <th *ngFor="let title of entry.value">
-                                                            <span [innerHTML]="title">{{title}}</span>
-                                                        </th>
-                                                    </tr>
-                                                    <tr [ngClass]="{'rowOdd':even}" *ngIf="entry.name=='colValues'">
-                                                        <td *ngFor="let title of entry.value">
-                                                            {{title}}
-                                                        </td>
-                                                    </tr>
-                                                </ng-container>
-                                            </table>
+                                            <div class="scroll-table-container">
+                                                <table class="dataTable" id="dataConditions">
+                                                    <ng-container *ngFor="let entry of f['Data and Conditions']; let even=even">
+                                                        <tr *ngIf="entry.name=='colTitles'">
+                                                            <th *ngFor="let title of entry.value">
+                                                                <span [innerHTML]="title">{{title}}</span>
+                                                            </th>
+                                                        </tr>
+                                                        <tr [ngClass]="{'rowOdd':even}" *ngIf="entry.name=='colValues'">
+                                                            <td *ngFor="let title of entry.value">
+                                                                <span [innerHTML]="title">
+                                                                {{title}}
+                                                                </span>
+                                                            </td>
+                                                        </tr>
+                                                    </ng-container>
+                                                </table>
+                                            </div>
                                         </div>
                                         <!--  Next comes the files -->
                                         <div *ngIf="f['Files']"><br />
@@ -89,14 +93,14 @@
                                                         <!--  First column: image or file title  -->
                                                         <!-- Image -->
                                                         <a *ngIf="file['imageTitle'] !== undefined"
-                                                           [href]="serverUrl+'/rest/sample/download?fileId='+file.fileId"
+                                                           [href]="serverUrl+'/rest/sample/downloadImage?sampleId='+sampleId+'&fileId='+file.fileId"
                                                         >
-                                                            <img  [src]="serverUrl+'/rest/sample/download?fileId='+file.fileId" width="150">
+                                                            <img  [src]="serverUrl+'/rest/sample/downloadImage?sampleId='+sampleId+'&fileId='+file.fileId" width="150">
                                                         </a>
 
                                                         <!-- Text file -->
                                                         <a  *ngIf="file['title'] !== undefined"
-                                                            [href]="serverUrl+'/rest/sample/download?fileId='+file.fileId">
+                                                            [href]="serverUrl+'/rest/sample/download?sampleId='+sampleId+'&fileId='+file.fileId">
                                                             {{file['title']}}
                                                         </a>
                                                         <!-- Everything else -->

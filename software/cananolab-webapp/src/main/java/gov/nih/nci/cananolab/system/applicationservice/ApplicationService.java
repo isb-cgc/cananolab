@@ -218,22 +218,17 @@ public interface ApplicationService
 	 */
     <E> List<E> getAssociation(Object source, String associationName) throws ApplicationException;
 
-
 	/**
-	 * Retrieves the result from the data source using the caGrid's CQL query. The CQL query structure is converted into the
-	 * data source specific query language. For the Object Relational Mapping based persistence tier, the CQL query
-	 * structure is converted in the Hibernate Query Language (HQL). Hibernate converts the HQL into SQL and executes
-	 * it against the relational database. 
-	 * 
-	 * The retrieved results are converted into a list which may not be completely loaded. If the retrieved results 
-	 * are more than the maximum number of supported records as indicated by {@link #getMaxRecordsCount()} then the
-	 * result set will be partially loaded. The client framework will execute a subsequent query (transparent to the
-	 * client application) against the <code>ApplicationService</code> to load the remaining results in the chunk 
-	 * no greater than value specified by {@link #getMaxRecordsCount()}.
-	 * 
-	 * @param cqlQuery
+	 * WJRL 4/28/23: All the methods for ApplicationService are transactional. Thus, once this
+	 * call is done, we no longer have a session. Thus, lazy loads are impossible. To eliminate
+	 * the requirement that entire samples be assembled in one query through 20-way joins,
+	 * we place subsequent lazy loads into a TransactipnInsertion class and get those operations
+	 * to execute in the same Transaction as the query itself.
+	 * @param detachedCriteria
+	 * @param post
 	 * @return
 	 * @throws ApplicationException
 	 */
-
+	<E> E queryAndProcess(DetachedCriteria detachedCriteria, TransactionInsertion<E> post) throws ApplicationException;
+	<E> List<E> queryAndProcessList(DetachedCriteria detachedCriteria, TransactionInsertion<E> post) throws ApplicationException;
 }

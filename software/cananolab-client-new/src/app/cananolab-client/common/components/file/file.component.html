@@ -18,7 +18,7 @@
     <tr *ngFor="let file of data[fileArray]; let odd=odd; let fileIndex=index" [ngClass]="{'rowOdd':odd}">
         <td [innerHTML]="file.type"></td>
         <td>
-            <a href="" [href]="serverUrl+'/rest/sample/download?fileId='+file.id" *ngIf="!file.uriExternal" [innerHTML]="file['title']"></a>
+            <a href="" [href]="serverUrl+'/rest/sample/download?sampleId='+sampleId+'&fileId='+file.id" *ngIf="!file.uriExternal" [innerHTML]="file['title']"></a>
             <a href="" [href]="file.externalUrl" *ngIf="file.uriExternal" [innerHTML]="file['title']"></a>
         </td>
         <td>
