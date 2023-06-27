@@ -1,6 +1,6 @@
-<canano-main-display-heading [helpUrl]="
-        'https://wiki.nci.nih.gov/display/caNanoLab/Managing+Publications+in+caNanoLab#ManagingPublicationsincaNanoLab-SearchPublications'
-    " [toolHeadingName]="'Search Results'">
+<canano-main-display-heading
+    [helpUrl]="helpUrl"
+    [toolHeadingName]="toolHeadingName">
 </canano-main-display-heading>
 
 <div class="mainSection" *ngIf="searchResults">
@@ -37,7 +37,7 @@
 
             <!-- Pager buttons -->
         </span><br /><br />
-        <table class="dataTable">
+        <table id="collapsible-table" class="dataTable">
             <!-- -----  Header row  ----- -->
             <tr>
                 <ng-container *ngFor="let col of columnHeadings; let i = index">
@@ -81,7 +81,7 @@
                     '': even,
                     rowOdd: odd
                 }">
-                <td class="search-results-td">
+                <td class="search-results-td" data-title="Action">
                     <a *ngIf="properties.LOGGED_IN" (click)="navigateToResultEdit(result)">Edit</a>
 
                     <ng-container *ngIf="!properties.LOGGED_IN">
@@ -99,16 +99,16 @@
                     <a *ngIf="properties.LOGGED_IN&&!result['addedToFavorites']" (click)="addToFavorites(result)">Add to Favorites</a>
                 </td>
 
-                <td class="search-results-td">{{ result.type }}</td>
+                <td class="search-results-td" data-title="Type">{{ result.type }}</td>
 
-                <td class="search-results-td">
+                <td class="search-results-td" data-title="Name">
                     {{ result.name }}
                 </td>
 
-                <td class="search-results-td">
+                <td class="search-results-td" data-title="Created Date">
                     {{ result["createdDate"] | date: "shortDate" }}
                 </td>
-                <td class="search-results-td">
+                <td class="search-results-td" data-title="Description">
                     {{ result.description }}
                 </td>
             </tr>

@@ -48,7 +48,7 @@ public class ClassUtils {
 	 */
 	protected static Logger logger = LogManager.getLogger(ClassUtils.class);
 
-	public static Collection<Class> getDomainClasses() throws Exception {
+	public static Collection<Class> getDomainClasses() throws IOException, ClassNotFoundException {
 		logger.debug("In ClassUtils.getDomainClasses");
 		
 		// get the URL of the jar containing the Dendrimer class
@@ -173,7 +173,7 @@ public class ClassUtils {
 	 * @throws Exception
 	 */
 	public static List<Class> getChildClasses(String parentClassName)
-			throws Exception {
+			throws IOException, ClassNotFoundException {
 		Collection<Class> classes = getDomainClasses();
 		List<Class> childClasses = new ArrayList<Class>();
 		for (Class c : classes) {
@@ -192,7 +192,7 @@ public class ClassUtils {
 	 * @throws Exception
 	 */
 	public static List<String> getChildClassNames(String parentClassName)
-			throws Exception {
+			throws IOException, ClassNotFoundException {
 		List<Class> childClasses = getChildClasses(parentClassName);
 		List<String> childClassNames = new ArrayList<String>();
 		for (Class c : childClasses) {
@@ -232,7 +232,8 @@ public class ClassUtils {
 	 * @return
 	 * @throws Exception
 	 */
-	public static Class getFullClass(String shortClassName) throws Exception {
+	public static Class getFullClass(String shortClassName)
+			throws IOException, ClassNotFoundException {
 		if (shortClassName == null || shortClassName.length() == 0) {
 			return null;
 		}

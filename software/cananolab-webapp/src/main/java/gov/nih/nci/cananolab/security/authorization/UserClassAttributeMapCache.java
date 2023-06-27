@@ -17,8 +17,12 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import javax.persistence.EntityManager;
+import java.util.Arrays;
+import java.util.Collection;
+import org.hibernate.metamodel.spi.MetamodelImplementor;
+import org.hibernate.persister.entity.AbstractEntityPersister;
+import org.hibernate.persister.entity.EntityPersister;
 
 import net.sf.ehcache.Cache;
 import net.sf.ehcache.CacheException;
@@ -26,13 +30,18 @@ import net.sf.ehcache.CacheManager;
 import net.sf.ehcache.Element;
 
 import org.hibernate.SessionFactory;
+import org.hibernate.Session;
 import org.springframework.dao.DataRetrievalFailureException;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 
 public class UserClassAttributeMapCache
 {
 	//private static HashMap cache = new HashMap();
 	private static Cache cache=null;
+	protected static Logger log = LogManager.getLogger(UserClassAttributeMapCache.class.getName());
 	
 	private static void initializeCache()
 	{
@@ -113,53 +122,67 @@ public class UserClassAttributeMapCache
 		if(cache==null) initializeCache();
 		
 		String privilegeName = "READ";
-
-		Map map = sessionFactory.getAllClassMetadata();
-		Set set = map.keySet();
-		ArrayList list = new ArrayList(set);
-
-		List<ClassAttributeMap> classAttributeMapList = new ArrayList<ClassAttributeMap>();
-			
-		Iterator iterator = list.iterator();
-		while (iterator.hasNext())
-		{
-			String className = (String)iterator.next();
-			ClassAttributeMap classAttributeMap=null;
-			if(!StringUtilities.isBlank(className))
-			{
-				classAttributeMap = new ClassAttributeMap(className); 
-			}
-			List  attributeList = authorizationManager.getAttributeMap(userName, className, privilegeName);
-			if (null!= attributeList && attributeList.size() != 0)
-			{
-				if(classAttributeMap!=null)
-				{
-					classAttributeMap.setAttributes(attributeList);
-				}
-			}
-			if(classAttributeMap!=null) classAttributeMapList.add(classAttributeMap);
-		}
-		
-		putClassAttributeMapInCache(userName,classAttributeMapList);	
-		
+		EntityManager myEntityManager= sessionFactory.createEntityManager();
+		Session mySession = myEntityManager.unwrap(Session.class);
+		MetamodelImplementor myMetamodelImplementor = (MetamodelImplementor)mySession.getMetamodel();
+		Collection<EntityPersister> myEntityPersisterCollection = myMetamodelImplementor.entityPersisters().values();
+		List<String> myClassNames = new ArrayList<String>();
+		for (EntityPersister ep : myEntityPersisterCollection) {
+			AbstractEntityPersister aep = (AbstractEntityPersister)ep;
+			System.out.println("setAttributeMap: TableName=="+aep.getTableName());
+			System.out.println(Arrays.toString(aep.getIdentifierColumnNames()));
+			String name = aep.getClassMetadata().getMappedClass().getName();
+			myClassNames.add(name);
+	 	}
+		 List<ClassAttributeMap> classAttributeMapList = new ArrayList<ClassAttributeMap>();
+		 Iterator<String> iterator = myClassNames.iterator();
+		 while (iterator.hasNext())
+		 {
+			 String className = iterator.next();
+			 ClassAttributeMap classAttributeMap=null;
+			 if(!StringUtilities.isBlank(className))
+			 {
+				 classAttributeMap = new ClassAttributeMap(className); 
+			 }
+			 List<String>  attributeList = authorizationManager.getAttributeMap(userName, className, privilegeName);
+			 if (null!= attributeList && attributeList.size() != 0)
+			 {
+				 if(classAttributeMap!=null)
+				 {
+					 classAttributeMap.setAttributes(attributeList);
+				 }
+			 }
+			 if(classAttributeMap!=null) classAttributeMapList.add(classAttributeMap);
+		 }
+		 
+		 putClassAttributeMapInCache(userName,classAttributeMapList);
+		 myEntityManager.close();
 	}
 	
 	public static void setAttributeMapForGroup(String[] groupNames, SessionFactory sessionFactory, AuthorizationManager authorizationManager)
 	{		
 		if(cache==null) initializeCache();
-				
 		String privilegeName = "READ";
-		Map map = sessionFactory.getAllClassMetadata();
-		Set set = map.keySet();
-		ArrayList list = new ArrayList(set);
 
-		for(int i=0;i<groupNames.length;i++)
+		EntityManager myEntityManager= sessionFactory.createEntityManager();
+		Session mySession = myEntityManager.unwrap(Session.class);
+		MetamodelImplementor myMetamodelImplementor = (MetamodelImplementor)mySession.getMetamodel();
+		Collection<EntityPersister> myEntityPersisterCollection = myMetamodelImplementor.entityPersisters().values();
+		List<String> myClassNames = new ArrayList<String>();
+		for (EntityPersister ep : myEntityPersisterCollection) {
+			AbstractEntityPersister aep = (AbstractEntityPersister)ep;
+			System.out.println(aep.getTableName());
+			System.out.println(Arrays.toString(aep.getIdentifierColumnNames()));
+			String name = aep.getClassMetadata().getMappedClass().getName();
+			myClassNames.add(name);
+	 	}
+	 	for(int i=0;i<groupNames.length;i++)
 		{
 			List<ClassAttributeMap> classAttributeMapList = new ArrayList<ClassAttributeMap>();
 			
 			String groupName = groupNames[i];
 			
-			Iterator iterator = list.iterator();
+			Iterator iterator = myClassNames.iterator();
 			while (iterator.hasNext())
 			{
 				String className = (String)iterator.next();
@@ -181,6 +204,7 @@ public class UserClassAttributeMapCache
 			putClassAttributeMapInCache(groupName,classAttributeMapList);
 			
 		}
+		myEntityManager.close();
 	}
 	
 	public static void removeAttributeMap(String userName)
@@ -209,7 +233,7 @@ public class UserClassAttributeMapCache
 	private static void putClassAttributeMapInCache(String userOrGroupName, List<ClassAttributeMap> groupClassAttributeMapList) 
 	{
 		ArrayList arrayList = new ArrayList(groupClassAttributeMapList);
-		Element element = new Element(userOrGroupName, arrayList);
+		Element element = new Element(userOrGroupName, (List)arrayList);
 		cache.put(element);
 	}
 	

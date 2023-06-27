@@ -11,6 +11,8 @@ import { ProtocolsService } from '../../protocols.service';
 import { ApiService } from '../../../../common/services/api.service';
 import { StatusDisplayService } from '../../../../status-display/status-display.service';
 import { Router } from '@angular/router';
+import { timeoutWith } from 'rxjs/operators'
+import { throwError } from 'rxjs'
 
 @Component({
     selector: 'canano-protocol-search-results',
@@ -35,6 +37,7 @@ export class ProtocolSearchResultsComponent implements OnInit, OnDestroy {
     searchResultsCount = -1;
     currentPage = 0;
     searchResultsPageToDisplay;
+    helpUrl=Consts.HELP_URL_PROTOCOL_SEARCH_RESULTS;
     sortingStates = [
         SortState.NO_SORT,
         SortState.NO_SORT,
@@ -74,7 +77,6 @@ export class ProtocolSearchResultsComponent implements OnInit, OnDestroy {
             });
 
         this.statusDisplayService.updateUserEmitter
-            .pipe(timeout(Properties.HTTP_TIMEOUT))
             .subscribe((data) => {
                 this.userName = data;
             });

@@ -12,7 +12,7 @@ L-->
 	version="3.0">
 	<display-name>caNanoLab</display-name>
 	<session-config>
-    	<session-timeout>30</session-timeout>
+    	<session-timeout>15</session-timeout>
 	</session-config>
 	<filter>
 		<filter-name>springSecurityFilterChain</filter-name>
@@ -38,7 +38,12 @@ L-->
 		<param-name>resteasy.resources</param-name>
 		<param-value>gov.nih.nci.cananolab.restful.CoreServices</param-value>
 	</context-param>
-	
+
+	<context-param>
+		<param-name>resteasy.providers</param-name>
+		<param-value>gov.nih.nci.cananolab.restful.MultipartInterceptor</param-value>
+	</context-param>
+
 	<context-param>
         <param-name>contextConfigLocation</param-name>
         <param-value>/WEB-INF/applicationContext-strutsless.xml,
@@ -51,8 +56,8 @@ L-->
 
 	<listener>
     	<listener-class>org.jboss.resteasy.plugins.server.servlet.ResteasyBootstrap</listener-class>
-	</listener>    
-    
+	</listener>
+
     <servlet>
 	    <servlet-name>resteasy-servlet</servlet-name>
 	    <servlet-class>org.jboss.resteasy.plugins.server.servlet.HttpServletDispatcher</servlet-class>

@@ -1,7 +1,7 @@
-import { Component, OnInit,OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { AdvancedSearchService } from '../advanced-search/advanced-search.service';
 import { Properties } from 'src/assets/properties';
-import { SortState,Consts } from 'src/app/constants';
+import { SortState, Consts } from 'src/app/constants';
 import { SearchResultsPagerService } from 'src/app/cananolab-client/common/components/search-results-pager/search-results-pager.service';
 import { StatusDisplayService } from 'src/app/cananolab-client/status-display/status-display.service';
 import { SampleAvailabilityDisplayService } from '../sample-search-results/sample-availability-display/sample-availability-display.service';
@@ -9,12 +9,15 @@ import { takeUntil, timeout } from 'rxjs/operators';
 import { ApiService } from 'src/app/cananolab-client/common/services/api.service';
 import { Router } from '@angular/router';
 import { Subject } from 'rxjs';
+import { timeoutWith } from 'rxjs/operators'
+import { throwError } from 'rxjs'
+
 @Component({
   selector: 'canano-advanced-search-results',
   templateUrl: './advanced-search-results.component.html',
   styleUrls: ['./advanced-search-results.component.scss']
 })
-export class AdvancedSearchResultsComponent implements OnInit,OnDestroy {
+export class AdvancedSearchResultsComponent implements OnInit, OnDestroy {
     columnHeadings = [
     ];
 
@@ -23,6 +26,8 @@ export class AdvancedSearchResultsComponent implements OnInit,OnDestroy {
         SortState.NO_SORT
     ];
     data;
+    helpUrl = Consts.HELP_URL_SAMPLE_SEARCH_RESULTS;
+    toolHeadingName = 'Advanced Sample Search Results';
     sampleIds;
     loading;
     searchResults;
@@ -38,7 +43,7 @@ export class AdvancedSearchResultsComponent implements OnInit,OnDestroy {
     private ngUnsubscribe: Subject<boolean> = new Subject<boolean>();
 
     constructor(
-        private advancedSearchService:AdvancedSearchService,
+        private advancedSearchService: AdvancedSearchService,
         private searchResultsPagerService: SearchResultsPagerService,
         private statusDisplayService: StatusDisplayService,
         private apiService: ApiService,
@@ -49,13 +54,13 @@ export class AdvancedSearchResultsComponent implements OnInit,OnDestroy {
 
 
     ngOnInit(): void {
-        setTimeout(()=> {
+        setTimeout(() => {
             Properties.SAMPLE_TOOLS = false;
         })
-        this.data=this.advancedSearchService.getAdvancedSearchResults();
-        this.sampleIds=this.advancedSearchService.getSampleIds();
+        this.data = this.advancedSearchService.getAdvancedSearchResults();
+        this.sampleIds = this.advancedSearchService.getSampleIds();
 
-        this.searchResults=this.data['resultTable']['dataRows'];
+        this.searchResults = this.data['resultTable']['dataRows'];
         this.setupColumnHeadings();
         this.searchResultsCount = this.searchResults.length;
 
@@ -67,7 +72,6 @@ export class AdvancedSearchResultsComponent implements OnInit,OnDestroy {
             });
 
         this.statusDisplayService.updateUserEmitter
-            .pipe(timeout(Properties.HTTP_TIMEOUT))
             .subscribe((data) => {
                 this.userName = data;
             });
@@ -113,17 +117,17 @@ export class AdvancedSearchResultsComponent implements OnInit,OnDestroy {
         this.setupPage(); // Sets this page as the currently vied search results.
     }
     downloadReady(event) {
-        if (event==true) {
-            this.loading=null;
+        if (event == true) {
+            this.loading = null;
         }
-        if (event==false) {
-            this.loading=true;
+        if (event == false) {
+            this.loading = true;
         }
     }
 
 
     onSortClick(i, key) {
-        if (i>=0) {
+        if (i >= 0) {
             if (this.sortingStates[i]) {
                 // clicking on column that already is sorted on //
                 this.sortingStates[i] = this.sortingStates[i] == 1 ? 2 : 1;
@@ -157,9 +161,9 @@ export class AdvancedSearchResultsComponent implements OnInit,OnDestroy {
     }
 
     setupColumnHeadings(){
-        this.data['resultTable']['columnTitles'].forEach(item=> {
-            let heading={};
-            heading[item['value']]=item['label'];
+        this.data['resultTable']['columnTitles'].forEach(item => {
+            let heading = {};
+            heading[item['value']] = item['label'];
             this.sortingStates.push(SortState.NO_SORT);
             this.columnHeadings.push(heading);
         })

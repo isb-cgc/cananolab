@@ -14,8 +14,7 @@ import java.util.Map;
 import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.codehaus.jackson.annotate.JsonIgnore;
-//import org.codehaus.jackson.annotate.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public class SimpleAdvancedSearchSampleBean extends SimpleSearchSampleBean {
 	private Logger logger = LogManager.getLogger(SimpleAdvancedSearchSampleBean.class);
@@ -136,6 +135,7 @@ public class SimpleAdvancedSearchSampleBean extends SimpleSearchSampleBean {
 		Map<String, Object> displayMap = new HashMap<String, Object>();
 		
 		for (LinkableItem item :items) {
+			// WJRL 2/6/23: Item display name is HTML escaped with breaks
 			String dn = item.getDisplayName();
 			List<String> dnStrs = item.getDisplayStrings();
 			String dataId = item.getAction();

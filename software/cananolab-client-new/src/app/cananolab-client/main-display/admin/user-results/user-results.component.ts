@@ -8,6 +8,9 @@ import { UtilService } from 'src/app/cananolab-client/common/services/util.servi
 import { StatusDisplayService } from 'src/app/cananolab-client/status-display/status-display.service';
 import { takeUntil,timeout } from 'rxjs/operators';
 import { Subject } from 'rxjs';
+import { timeoutWith } from 'rxjs/operators'
+import { throwError } from 'rxjs'
+
 @Component({
   selector: 'canano-user-results',
   templateUrl: './user-results.component.html',
@@ -66,9 +69,8 @@ export class UserResultsComponent implements OnInit {
             });
 
         this.statusDisplayService.updateUserEmitter
-            .pipe(timeout(Properties.HTTP_TIMEOUT))
             .subscribe((data) => {
-                this.userName = Properties.current_user;
+                this.userName = data;
             });
             this.searchResultsCount = this.searchResults.length;
             this.pageCount = Math.ceil(this.searchResultsCount / this.pageLength);

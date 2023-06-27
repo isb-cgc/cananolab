@@ -14,6 +14,7 @@ import gov.nih.nci.cananolab.dto.particle.composition.ChemicalAssociationBean;
 import gov.nih.nci.cananolab.dto.particle.composition.CompositionBean;
 import gov.nih.nci.cananolab.dto.particle.composition.FunctionalizingEntityBean;
 import gov.nih.nci.cananolab.dto.particle.composition.NanomaterialEntityBean;
+import gov.nih.nci.cananolab.exception.NoAccessException;
 import gov.nih.nci.cananolab.restful.core.BaseAnnotationBO;
 import gov.nih.nci.cananolab.security.service.SpringSecurityAclService;
 import gov.nih.nci.cananolab.service.curation.CurationService;
@@ -23,8 +24,9 @@ import gov.nih.nci.cananolab.service.sample.exporter.CompositionExporter;
 import gov.nih.nci.cananolab.ui.form.CompositionForm;
 import gov.nih.nci.cananolab.util.ExportUtils;
 import gov.nih.nci.cananolab.util.StringUtils;
-
 import gov.nih.nci.cananolab.exception.NotExistException;
+import gov.nih.nci.cananolab.exception.SampleException;
+
 import java.util.Collections;
 import java.util.List;
 
@@ -283,9 +285,13 @@ public class CompositionBO extends BaseAnnotationBO
 		}
 	}
 
-	public String download(String fileId,
-			HttpServletRequest request, HttpServletResponse response)
+	public String download(String fileId, String sampleId, HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
+		if (sampleId != "") {
+			// findCompositionBySampleId throws error if user is not authorized for the sample
+			compositionService.findCompositionBySampleId(sampleId);
+		}
+
 		return downloadFile(compositionService, fileId, request, response);
 	}
 
@@ -314,8 +320,8 @@ public class CompositionBO extends BaseAnnotationBO
 	}
 	
 	@Override
-	protected SampleBean setupSampleById(String sampleId, HttpServletRequest request) throws Exception
-	{
+	protected SampleBean setupSampleById(String sampleId, HttpServletRequest request)
+		throws  SampleException, NoAccessException, NotExistException {
 		if (StringUtils.isEmpty(sampleId)) 
 			throw new NotExistException("Null or empty sample Id passed in setupSampleById()");
 		SampleBean sampleBean=null;

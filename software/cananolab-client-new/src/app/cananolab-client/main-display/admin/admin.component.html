@@ -29,21 +29,17 @@
         <div class="mainBorder">
             <table class="dataMain">
                 <tr *ngIf="errors['error']">
-                    <td colspan="2" class="message">
-                        {{errors['error']}}
-                    </td>
+                    <td colspan="2" class="message" innerHTML="errors['error']"></td>
                 </tr>
                 <tr *ngIf="message!=''">
-                    <td colspan="2" class="message">
-                        {{message}}
-                    </td>
+                    <td colspan="2" class="message" innerHTML="message"></td>>
                 </tr>
                 <tr>
                     <td class="label">
                         Username
                     </td>
                     <td>
-                        <B>{{username}}</B>
+                        <b><span [innerHTML]="username"></span></b>
                     </td>
                 </tr>
                 <tr>

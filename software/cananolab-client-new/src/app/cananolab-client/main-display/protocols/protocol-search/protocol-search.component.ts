@@ -21,7 +21,6 @@ export class ProtocolSearchComponent implements OnInit, OnDestroy{
     loading;
     loadingMessage=Consts.searchingMessage;
     helpUrl = Consts.HELP_URL_PROTOCOL_SEARCH;
-    helpUrlSearchResults = Consts.HELP_URL_PROTOCOL_SEARCH_RESULTS;
     toolHeadingName = 'Protocol Search';
     toolHeadingNameSearchResults = 'Protocol Search Results';
     errors;
@@ -57,7 +56,6 @@ export class ProtocolSearchComponent implements OnInit, OnDestroy{
 
     ngOnInit(): void{
         this.errors={};
-        console.log('test')
         this.protocolSearchForm={
             "nameOperand":this.defaultOperand,
             "titleOperand":this.defaultOperand,

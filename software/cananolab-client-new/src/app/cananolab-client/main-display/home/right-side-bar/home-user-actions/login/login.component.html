@@ -1,7 +1,6 @@
 <canano-main-display-heading *ngIf="loaded&&!homePage"
-[helpUrl]="'https://wiki.nci.nih.gov/display/caNanoLab/Getting+Started+in+caNanoLab#GettingStartedincaNanoLab-LoggingIn'"
-[toolHeadingName]="'Log into caNanoLab'"
->
+  [helpUrl]="helpUrl"
+  [toolHeadingName]="toolHeadingName">
 </canano-main-display-heading>
 
 <div [ngClass]="{'mainSection':loaded&&!homePage,'right-side-bar-content':homePage}">

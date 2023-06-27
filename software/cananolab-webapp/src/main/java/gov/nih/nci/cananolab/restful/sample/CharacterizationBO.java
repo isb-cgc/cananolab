@@ -103,11 +103,30 @@ public class CharacterizationBO extends BaseAnnotationBO {
 		
 		simpleEdit.getErrors().clear();
 		simpleEdit.getMessages().clear();
-		
+
+		// WJRL 12/16/22: If there was an exception in CharacterizationServices.saveCharacterization(), the char bean will
+		// be a null. When we do a transferToCharacterizationBean() below, it will create a new CharBean from scratch,
+		// instead of using an existing one. For a new char, maybe that is ok? But for editing, do we lose info from the
+		// existing char bean we started out with?
+		// For the time being, just restore previous functionality with null checks:
+		if (charBean != null) {
+			System.out.println("Issue 181 BO subOrUp " + charBean.getDomainChar());
+		} else {
+			System.out.println("Issue 181 BO subOrUp NULL Char bean");
+		}
+		System.out.println("Issue 181 BO subOrUp 2 " + simpleEdit.getType() + "  " +  simpleEdit.getName() + "  " +  simpleEdit.getCharId());
 		charBean = simpleEdit.transferToCharacterizationBean(charBean);
+		// WJRL 10/24/22: If trying to save an ex-vivo characterization with type Pharmacokinetics,
+		// by the time you get here getDomainChar() is returning NULL:
+		if (charBean != null) {
+			System.out.println("Issue 181 BO subOrUp 2a " + charBean.getDomainChar());
+		} else {
+			System.out.println("Issue 181 BO subOrUp 2a NULL Char bean");
+		}
 		if (simpleEdit.getCharId() == 0)
 			simpleEdit.setSubmitNewChar(true);
-		
+		System.out.println("Issue 181 BO subOrUp 2b " + simpleEdit.isSubmitNewChar());
+
 		List<String> errs = new ArrayList<String>();
 		if (!validateInputs(request, charBean, errs)) {
 			SimpleCharacterizationSummaryEditBean emptyView = new SimpleCharacterizationSummaryEditBean();
@@ -124,6 +143,7 @@ public class CharacterizationBO extends BaseAnnotationBO {
 		
 		SimpleCharacterizationSummaryEditBean success = new SimpleCharacterizationSummaryEditBean();
 		success.getMessages().add("The characterization has been saved successfully");
+		System.out.println("Issue 181 BO subOrUp 3 " + success);
 		return success;
 	}
 
@@ -175,6 +195,7 @@ public class CharacterizationBO extends BaseAnnotationBO {
 		editBean.transferFromCharacterizationBean(request, charBean, sampleId, sampleService, characterizationService, protocolService, springSecurityAclService);
 		
 		request.getSession().setAttribute("theEditChar", editBean);
+		// WJRL 12/16/22: This is pulled out in submitOrUpdate. It is how the bean gets into that function:
 		request.getSession().setAttribute("theChar", charBean);
 		return editBean;
 	}
@@ -224,6 +245,7 @@ public class CharacterizationBO extends BaseAnnotationBO {
 		//SY: new
 		System.out.println("B Issue 50 setting sampleId to " + sampleId);
 		request.getSession().setAttribute("sampleId", sampleId);
+		// WJRL 12/16/22: This is pulled out in submitOrUpdate. It is how the bean gets into that function:
 		request.getSession().setAttribute("theChar", charBean);
 		logger.debug("Setting theChar in session: " + request.getSession().getId());
 
@@ -261,10 +283,14 @@ public class CharacterizationBO extends BaseAnnotationBO {
 			newChar = false;
 		}
 		logger.debug("Saving new char? " + newChar);
-		
+		// WJRL 10/24/22: If trying to save an ex-vivo charactirization with type Pharmacokinetics,
+		// by the time you get here the charBean is of type
+		// gov.nih.nci.cananolab.domain.characterization.invivo.Pharmacokinetics@0
+		System.out.println("Issue 181 cbo.saveCharacterization gdc " + charBean.getDomainChar());
+
 		characterizationService.saveCharacterization(sampleBean, charBean);
 		// retract from public if updating an existing public record and not curator
-		if (!newChar && !SpringSecurityUtil.getPrincipal().isCurator() && 
+		if (!newChar && !SpringSecurityUtil.getPrincipal().isCurator() &&
 			springSecurityAclService.checkObjectPublic(sampleBean.getDomain().getId(), SecureClassesEnum.SAMPLE.getClazz()))
 		{
 			retractFromPublic(request, sampleBean.getDomain().getId(), sampleBean.getDomain().getName(), "sample", SecureClassesEnum.SAMPLE.getClazz());
@@ -624,18 +650,28 @@ public class CharacterizationBO extends BaseAnnotationBO {
 //				(SimpleCharacterizationEditBean) request.getSession().getAttribute("theEditChar");
 		
 		SimpleFindingBean simpleFinding = editBean.getDirtyFindingBean();
-		
+		//System.out.println("CBO dirty " + simpleFinding);
+		//if (editBean != null) {
+		//	System.out.println("CBO eb Name " + editBean.getName());
+		//}
+		//if (achar != null) {
+		//	System.out.println("CBO ac Name " + achar.getCharacterizationName());
+		//}
+
 		if (simpleFinding == null)
 			throw new Exception("Can't find dirty finding object"); //temp
 		
 		FindingBean findingBean = this.findMatchFindingBean(achar, simpleFinding);
-		
+
 		//FindingBean findingBean = achar.getTheFinding();
 		String theFindingId = String.valueOf(simpleFinding.getFindingId());
-		
+
+		//System.out.println("CBO saveFinding " + theFindingId);
+
 		simpleFinding.transferToFindingBean(findingBean);
 		
 		if (!validateEmptyFinding(request, findingBean, editBean.getErrors())) {
+		//	System.out.println("CBO saveFinding VEF not validating " + editBean.getErrors());
 			return editBean;
 		}
 		
@@ -648,18 +684,23 @@ public class CharacterizationBO extends BaseAnnotationBO {
 				+ StringUtils.getOneWordLowerCaseFirstLetter(achar
 						.getCharacterizationName());
 
+		//System.out.println("CBO saveFinding internalUriPath " + internalUriPath);
 		findingBean.setupDomain(internalUriPath, SpringSecurityUtil.getLoggedInUserName());
+		//System.out.println("CBO saveFinding calling cs saveFinding ");
 		characterizationService.saveFinding(findingBean);
 		achar.addFinding(findingBean);
 		
 		//transfer other data fields of the char
+		//System.out.println("CBO saveFinding calling transfer ");
 		editBean.transferToCharacterizationBean(achar);
 
 		// also save characterization
 		if (!validateInputs(request, achar, editBean.getMessages())) {
+			//System.out.println("CBO saveFinding VI not validating " + editBean.getMessages());
 			return editBean;
 		}
-		
+
+		//System.out.println("CBO saveFinding calling saveChar ");
 		this.saveCharacterization(request, achar, editBean);
 		characterizationService.assignAccesses(achar.getDomainChar(), findingBean.getDomain());
 		//this.checkOpenForms(achar, theForm, request);
@@ -672,6 +713,7 @@ public class CharacterizationBO extends BaseAnnotationBO {
 		// after saving to database.
 		request.setAttribute("charId", achar.getDomainChar().getId().toString());
 		request.setAttribute("charType", achar.getCharacterizationType());
+		//System.out.println("CBO returning  " + achar.getDomainChar().getId().toString());
 		
 		return setupUpdate(request, String.valueOf(editBean.getParentSampleId()), achar.getDomainChar().getId().toString(), 
 				achar.getClassName(), achar.getCharacterizationType());
@@ -743,6 +785,7 @@ public class CharacterizationBO extends BaseAnnotationBO {
 //			.persistCharacterizationDropdowns(request, achar);
 		
 		request.getSession().removeAttribute("newFileData");
+		// WJRL 12/16/22: This is pulled out in submitOrUpdate. It is how the bean gets into that function:
 		request.getSession().setAttribute("theChar", achar);
 		
 		/// save char to session
@@ -1036,6 +1079,7 @@ public class CharacterizationBO extends BaseAnnotationBO {
 			throw new Exception("Current characterization has no finding matching input finding id: " + simpleFinding.getFindingId());
 		
 		for (FindingBean finding : findingBeans) {
+			//System.out.println("fmfb cols " + finding.getNumberOfColumns());
 			if (finding.getDomain() != null) {
 				Long id = finding.getDomain().getId(); 
 				if (id == null && simpleFinding.getFindingId() == 0 || //could be a new finding bean added when saving a file
@@ -1047,6 +1091,7 @@ public class CharacterizationBO extends BaseAnnotationBO {
 		}
 		
 		if (simpleFinding.getFindingId() <= 0) {//new finding
+			//System.out.println("fmfb new finding " + simpleFinding.getFindingId());
 			FindingBean newBean = new FindingBean();
 			achar.setTheFinding(newBean);
 			return newBean;
@@ -1284,8 +1329,17 @@ public class CharacterizationBO extends BaseAnnotationBO {
 		}
 	}
 	
-	public String download(String fileId, HttpServletRequest request, HttpServletResponse response) throws Exception {
-		return downloadFile(characterizationService, fileId, request, response);
+	public String download(String fileId, String sampleId, HttpServletRequest request, HttpServletResponse response) throws Exception {
+		try {
+			if (sampleId != "") {
+				// findCharacterizationsBySampleId throws error if user is not authorized for the sample
+				characterizationService.findCharacterizationsBySampleId(sampleId);
+			}
+
+			return downloadFile(characterizationService, fileId, request, response);
+		} catch (Exception e) {
+			throw new Exception(e);
+		}
 	}
 
 	protected boolean validCharTypeAndName(String charType, String charName, List<String> errors) {

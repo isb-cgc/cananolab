@@ -14,10 +14,12 @@ import gov.nih.nci.cananolab.dto.particle.composition.ChemicalAssociationBean;
 import gov.nih.nci.cananolab.dto.particle.composition.ComposingElementBean;
 import gov.nih.nci.cananolab.dto.particle.composition.FunctionalizingEntityBean;
 import gov.nih.nci.cananolab.dto.particle.composition.NanomaterialEntityBean;
-import gov.nih.nci.cananolab.exception.BaseException;
+import gov.nih.nci.cananolab.exception.CompositionException;
+import gov.nih.nci.cananolab.exception.LookupException;
 import gov.nih.nci.cananolab.restful.core.InitSetup;
 import gov.nih.nci.cananolab.util.ClassUtils;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.SortedSet;
@@ -38,7 +40,7 @@ public class InitCompositionSetup {
 	}
 
 	public void setNanomaterialEntityDropdowns(HttpServletRequest request)
-			throws Exception {
+			throws IOException, ClassNotFoundException, LookupException, CompositionException {
 		InitSampleSetup.getInstance().setSharedDropdowns(request);
 		getEmulsionComposingElementTypes(request);
 		InitSetup.getInstance().getDefaultAndOtherTypesByReflection(request,
@@ -73,8 +75,8 @@ public class InitCompositionSetup {
 				"dimensionUnits", "dimension", "unit", "otherUnit", true);
 	}
 
-	public void persistNanomaterialEntityDropdowns(HttpServletRequest request,
-			NanomaterialEntityBean entityBean) throws Exception {
+	public void persistNanomaterialEntityDropdowns(HttpServletRequest request, NanomaterialEntityBean entityBean)
+			throws IOException, ClassNotFoundException, LookupException, CompositionException {
 		InitSetup.getInstance().persistLookup(request, "biopolymer", "type",
 				"otherType", entityBean.getBiopolymer().getType());
 		InitSetup.getInstance().persistLookup(request, "fullerene",
@@ -236,7 +238,7 @@ public class InitCompositionSetup {
 	}
 
 	public List<String> getEmulsionComposingElementTypes(
-			HttpServletRequest request) throws BaseException {
+			HttpServletRequest request) throws LookupException {
         SortedSet<String> emulsionCETypes = InitSetup.getInstance()
 				.getDefaultAndOtherTypesByLookup(request,
 						"emulsionComposingElementTypes", "emulsion",
@@ -253,12 +255,9 @@ public class InitCompositionSetup {
 		return allTypes;
 	}
 
-	public String getDetailPage(String entityType, String parentPath)
-			throws Exception {
+	public String getDetailPage(String entityType, String parentPath) {
         return "/views/sample/composition/" + parentPath +"/"
                 + ClassUtils.getShortClassNameFromDisplayName(entityType)
                 + "Info.html";
 	}
-
-
 }

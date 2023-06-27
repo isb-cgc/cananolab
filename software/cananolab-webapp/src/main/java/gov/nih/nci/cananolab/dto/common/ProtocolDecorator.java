@@ -44,6 +44,7 @@ public class ProtocolDecorator extends TableDecorator {
 
 	// per app scan, to filter out special characters
 	public String getFileInfo() {
+		// WJRL 2/6/23: Embedded description is HTML escaped with breaks
 		ProtocolBean protocol = (ProtocolBean) getCurrentRowObject();
 		FileBean file = protocol.getFileBean();
 		StringBuilder sb = new StringBuilder();

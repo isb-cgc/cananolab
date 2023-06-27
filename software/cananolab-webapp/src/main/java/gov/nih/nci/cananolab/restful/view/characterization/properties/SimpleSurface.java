@@ -8,9 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
-import org.codehaus.jackson.annotate.JsonTypeName;
-
-//import org.codehaus.jackson.annotate.JsonTypeName;
+import com.fasterxml.jackson.annotation.JsonTypeName;
 
 @JsonTypeName("SimpleSurface")
 public class SimpleSurface extends SimpleCharacterizationProperty {

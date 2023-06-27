@@ -53,6 +53,7 @@ public class SimpleAdvacedSampleCompositionBean {
 		nanomaterialentity = new MultiValueMap();
 		nanoentitiy = new HashMap<String, Object>();
 		String entityType = nanoMaterialEntity.getType();
+		// WJRL 2/6/23: Description display name is HTML escaped with breaks
 		nanoentitiy.put("Description",
 				nanoMaterialEntity.getDescriptionDisplayName());
 		nanoentitiy.put("dataId", nanoMaterialEntity.getDomainEntity().getId());
@@ -169,6 +170,7 @@ public class SimpleAdvacedSampleCompositionBean {
 					.getComposingElements()) {
 				composingElement = new HashMap<String, Object>();
 
+				// WJRL 2/6/23: Description is HTML escaped with breaks
 				composingElement.put("Description",
 						compElement.getDescription());
 				composingElement.put("DisplayName",
@@ -304,6 +306,7 @@ public class SimpleAdvacedSampleCompositionBean {
 						func.getTargetDisplayNames());
 				Functions.put("FunctionDescription",
 						func.getDescription());
+				// WJRL 2/6/23: Description is HTML escaped with breaks
 				Functions.put("FunctionDescriptionDisplayName",
 						func.getDescriptionDisplayName());
 				Functions.put("Type", func.getType());
@@ -323,6 +326,7 @@ public class SimpleAdvacedSampleCompositionBean {
 		}
 		if (funcBean.getDescription() != null) {
 			function.put("Desc", funcBean.getDescription());
+			// WJRL 2/6/23: Description display name is HTML escaped with breaks
 			function.put("Decription",
 					funcBean.getDescriptionDisplayName());
 		}

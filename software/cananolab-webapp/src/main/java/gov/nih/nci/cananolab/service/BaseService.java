@@ -9,10 +9,10 @@
 package gov.nih.nci.cananolab.service;
 
 import gov.nih.nci.cananolab.dto.common.FileBean;
-import gov.nih.nci.cananolab.exception.FileException;
-import gov.nih.nci.cananolab.exception.NoAccessException;
+import gov.nih.nci.cananolab.exception.ApplicationProviderException;
+import gov.nih.nci.cananolab.system.applicationservice.ApplicationException;
 
 public interface BaseService
 {
-	FileBean findFileById(String id) throws FileException, NoAccessException;
+	FileBean findFileById(String id) throws ApplicationException, ApplicationProviderException;
 }

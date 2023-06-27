@@ -261,8 +261,9 @@ public class SimpleSynthesisPurificationBean {
         setAnalysis(synthesisPurification.getAnalysis());
         setYield(synthesisPurification.getYield());
         setDisplayName(synBean.getDisplayName());
+
+        simplePurityBeans = new ArrayList<SimplePurityBean>();
         if ((synBean.getPurityBeans() != null) && (synBean.getPurityBeans().size()>0)) {
-            simplePurityBeans = new ArrayList<SimplePurityBean>();
 //            columnHeaders = synBean.getPurityBeans().get(0).getColumnHeaders();
 //            columnHeaders = synBean.getPurityBeans().get(0).getPurityColumnHeaders();
             for (SynthesisPurityBean purityBean : synBean.getPurityBeans()) {
@@ -270,8 +271,8 @@ public class SimpleSynthesisPurificationBean {
                 simplePurityBean.transferFromPurityBean(purityBean, sampleId);
                 simplePurityBeans.add(simplePurityBean);
             }
-
         }
+        setPurityBeans(simplePurityBeans);
 
         //*** Testing SimpleRowBean**//
 
@@ -293,6 +294,7 @@ public class SimpleSynthesisPurificationBean {
                 SimplePurificationConfigBean simpleExperimentBean = new SimplePurificationConfigBean();
                 simpleExperimentBean.setId(purificationConfigBean.getDomain().getPurificationConfigPkId());
 //                simpleExperimentBean.setTechniqueDisplayName(purificationConfigBean.getTechniqueDisplayName());
+                // WJRL 2/6/23: Purification description is HTML escaped with breaks
                 simpleExperimentBean.setDescription(purificationConfigBean.getDescription());
                 if(purificationConfigBean.getDomain().getTechnique()!=null) {
                     simpleExperimentBean.setTechniqueid(purificationConfigBean.getDomain().getTechnique().getId());
@@ -349,8 +351,9 @@ public class SimpleSynthesisPurificationBean {
         setAnalysis(synthesisPurification.getAnalysis());
         setYield(synthesisPurification.getYield());
         setDisplayName(synBean.getDisplayName());
+
+        simplePurityBeans = new ArrayList<SimplePurityBean>();
         if ((synBean.getPurityBeans() != null) && (synBean.getPurityBeans().size()>0)) {
-            simplePurityBeans = new ArrayList<SimplePurityBean>();
 //            columnHeaders = synBean.getPurityBeans().get(0).getColumnHeaders();
 //            columnHeaders = synBean.getPurityBeans().get(0).getPurityColumnHeaders();
             for (SynthesisPurityBean purityBean : synBean.getPurityBeans()) {
@@ -358,12 +361,10 @@ public class SimpleSynthesisPurificationBean {
                 simplePurityBean.transferFromPurityBean(purityBean, sampleId);
                 simplePurityBeans.add(simplePurityBean);
             }
-
         }
+        setPurityBeans(simplePurityBeans);
 
         //*** Testing SimpleRowBean**//
-
-
 //        editBean.transferPurificationToPurificationEdit(this);
 
         if (synBean != null) {
@@ -381,6 +382,7 @@ public class SimpleSynthesisPurificationBean {
                 SimplePurificationConfigBean simpleExperimentBean = new SimplePurificationConfigBean();
                 simpleExperimentBean.setId(purificationConfigBean.getDomain().getPurificationConfigPkId());
 //                simpleExperimentBean.setTechniqueDisplayName(purificationConfigBean.getTechniqueDisplayName());
+                // WJRL 2/6/23: Purification description is HTML escaped with breaks
                 simpleExperimentBean.setDescription(purificationConfigBean.getDescription());
                 simpleExperimentBean.setTechniqueid(purificationConfigBean.getDomain().getTechnique().getId());
                 simpleExperimentBean.setTechniqueType(purificationConfigBean.getDomain().getTechnique().getType());

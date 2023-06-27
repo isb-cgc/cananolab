@@ -9,9 +9,12 @@
 package gov.nih.nci.cananolab.restful.sample;
 
 import gov.nih.nci.cananolab.dto.particle.SampleBean;
+import gov.nih.nci.cananolab.exception.PointOfContactException;
 import gov.nih.nci.cananolab.restful.core.InitSetup;
 import gov.nih.nci.cananolab.service.common.LookupService;
 import gov.nih.nci.cananolab.service.sample.SampleService;
+import gov.nih.nci.cananolab.exception.SampleException;
+import gov.nih.nci.cananolab.exception.LookupException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -123,19 +126,20 @@ public class InitSampleSetup {
 		return sortedFormatted;
 	}
 
-	public List<String> getOtherSampleNames(HttpServletRequest request, String sampleId, SampleService service) throws Exception
+	public List<String> getOtherSampleNames(HttpServletRequest request, String sampleId, SampleService service)
+			throws SampleException
 	{
 		List<String> names = service.findOtherSampleNamesFromSamePrimaryOrganization(sampleId);
 		request.getSession().setAttribute("otherSampleNames", names);
 		return names;
 	}
 
-	public void setSharedDropdowns(HttpServletRequest request) throws Exception {
+	public void setSharedDropdowns(HttpServletRequest request) throws LookupException {
 		InitSetup.getInstance().getDefaultAndOtherTypesByLookup(request,
 				"fileTypes", "file", "type", "otherType", true);
 	}
 
-	public void setPOCDropdowns(HttpServletRequest request, SampleService service) throws Exception {
+	public void setPOCDropdowns(HttpServletRequest request, SampleService service) throws LookupException, PointOfContactException {
 		InitSetup.getInstance().getDefaultAndOtherTypesByLookup(request,
 				"contactRoles", "point of contact", "role", "otherRole", true);
 		SortedSet<String> organizationNames = service.getAllOrganizationNames();

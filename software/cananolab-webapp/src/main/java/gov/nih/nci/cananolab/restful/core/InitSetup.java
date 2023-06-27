@@ -9,7 +9,8 @@
 package gov.nih.nci.cananolab.restful.core;
 
 import gov.nih.nci.cananolab.dto.common.PublicDataCountBean;
-import gov.nih.nci.cananolab.exception.BaseException;
+import gov.nih.nci.cananolab.exception.LookupException;
+import gov.nih.nci.cananolab.exception.CompositionException;
 import gov.nih.nci.cananolab.restful.bean.LabelValueBean;
 import gov.nih.nci.cananolab.service.PublicDataCountJob;
 import gov.nih.nci.cananolab.service.common.LookupService;
@@ -24,6 +25,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.SortedSet;
 import java.util.TreeSet;
+import java.io.IOException;
 
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
@@ -54,9 +56,9 @@ public class InitSetup {
 	 *
 	 * @param appContext
 	 * @return
-	 * @throws BaseException
+	 * @throws LookupException
 	 */
-	public Map<String, Map<String, SortedSet<String>>> getDefaultLookupTable(ServletContext appContext) throws BaseException {
+	public Map<String, Map<String, SortedSet<String>>> getDefaultLookupTable(ServletContext appContext) throws LookupException {
 		Map<String, Map<String, SortedSet<String>>> defaultLookupTable = null;
 		if (appContext.getAttribute("defaultLookupTable") == null) {
 			defaultLookupTable = LookupService.findAllLookups();
@@ -77,10 +79,10 @@ public class InitSetup {
 	 * @param contextAttribute
 	 * @param name
 	 * @return
-	 * @throws BaseException
+	 * @throws LookupException
 	 */
 	public Map<String, String> getLookupByName(ServletContext appContext,
-			String contextAttribute, String name) throws BaseException {
+			String contextAttribute, String name) throws LookupException {
 		Map<String, Map<String, SortedSet<String>>> defaultLookupTable = getDefaultLookupTable(appContext);
 		Map<String, SortedSet<String>> lookupByNameMap = defaultLookupTable.get(name);
 		Map<String, String> lookupMap = new HashMap<String, String>();
@@ -102,11 +104,11 @@ public class InitSetup {
 	 * @param lookupName
 	 * @param lookupAttribute
 	 * @return
-	 * @throws BaseException
+	 * @throws LookupException
 	 */
 	public SortedSet<String> getDefaultTypesByLookup(ServletContext appContext,
 			String contextAttribute, String lookupName, String lookupAttribute)
-			throws BaseException {
+			throws LookupException {
 		Map<String, Map<String, SortedSet<String>>> defaultLookupTable = getDefaultLookupTable(appContext);
 		SortedSet<String> types = new TreeSet<String>();
 		if (defaultLookupTable.get(lookupName) != null) {
@@ -129,12 +131,12 @@ public class InitSetup {
 	 * @param otherTypeAttribute
 	 * @aparam updateSession
 	 * @return
-	 * @throws BaseException
+	 * @throws LookupException
 	 */
 	public SortedSet<String> getDefaultAndOtherTypesByLookup(HttpServletRequest request, String sessionAttribute,
 			String lookupName, String lookupAttribute,
 			String otherTypeAttribute, boolean updateSession)
-			throws BaseException {
+			throws LookupException {
 		SortedSet<String> types = null;
 		if (updateSession) {
 			types = LookupService.getDefaultAndOtherLookupTypes(lookupName,
@@ -157,12 +159,12 @@ public class InitSetup {
 	 * @param otherTypeAttribute
 	 * @aparam updateSession
 	 * @return
-	 * @throws BaseException
+	 * @throws LookupException
 	 */
 	public SortedSet<String> getOtherTypesByLookup(HttpServletRequest request,
 			String sessionAttribute, String lookupName,
 			String otherTypeAttribute, boolean updateSession)
-			throws BaseException
+			throws LookupException
 	{
 		SortedSet<String> types = null;
 		if (updateSession) {
@@ -194,10 +196,9 @@ public class InitSetup {
 	 * @return
 	 * @throws Exception
 	 */
-	public SortedSet<String> getDefaultTypesByReflection(
-			ServletContext appContext, String contextAttribute,
-			String fullParentClassName) throws Exception
-	{
+	public SortedSet<String> getDefaultTypesByReflection(ServletContext appContext, String contextAttribute,
+														 String fullParentClassName)
+			throws IOException, ClassNotFoundException {
 		SortedSet<String> types = new TreeSet<String>();
 		List<String> classNames = ClassUtils.getChildClassNames(fullParentClassName);
 		for (String name : classNames) {
@@ -224,12 +225,13 @@ public class InitSetup {
 	 * @return
 	 * @throws Exception
 	 */
-	public SortedSet<String> getDefaultAndOtherTypesByReflection(
-			HttpServletRequest request, String contextAttributeForDefaults,
-			String sessionAttribute, String fullParentClassName,
-			String otherFullParentClassName, boolean updateSession)
-			throws Exception
-	{
+	public SortedSet<String> getDefaultAndOtherTypesByReflection(HttpServletRequest request,
+																 String contextAttributeForDefaults,
+																 String sessionAttribute,
+																 String fullParentClassName,
+																 String otherFullParentClassName,
+																 boolean updateSession)
+			throws IOException, ClassNotFoundException, LookupException, CompositionException {
 		ServletContext appContext = request.getSession().getServletContext();
 		SortedSet<String> defaultTypes = getDefaultTypesByReflection(
 				appContext, contextAttributeForDefaults, fullParentClassName);
@@ -277,11 +279,11 @@ public class InitSetup {
 	 * @param otherAttribute
 	 * @param value
 	 * @return
-	 * @throws BaseException
+	 * @throws LookupException
 	 */
 	private Boolean isLookupInContext(HttpServletRequest request,
 			String lookupName, String attribute, String otherAttribute,
-			String value) throws BaseException {
+			String value) throws LookupException {
 		Map<String, Map<String, SortedSet<String>>> defaultLookupTable = getDefaultLookupTable(request
 				.getSession().getServletContext());
 		SortedSet<String> defaultValues = null;
@@ -306,11 +308,11 @@ public class InitSetup {
 	 * @param attribute
 	 * @param otherAttribute
 	 * @param value
-	 * @throws BaseException
+	 * @throws LookupException
 	 */
 	public void persistLookup(HttpServletRequest request, String lookupName,
 			String attribute, String otherAttribute, String value)
-			throws BaseException {
+		throws LookupException {
 		if (value == null || value.length() == 0) {
 			return;
 		}

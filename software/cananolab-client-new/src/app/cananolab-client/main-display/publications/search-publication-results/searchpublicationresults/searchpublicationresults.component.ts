@@ -8,6 +8,9 @@ import { StatusDisplayService } from '../../../../status-display/status-display.
 import { Subject } from 'rxjs';
 import { Router } from '@angular/router';
 import { ApiService } from '../../../../common/services/api.service';
+import { timeoutWith } from 'rxjs/operators'
+import { throwError } from 'rxjs'
+
 @Component({
     selector: 'canano-searchpublicationresults',
     templateUrl: './searchpublicationresults.component.html',
@@ -28,8 +31,8 @@ export class SearchpublicationresultsComponent implements OnInit {
     ];
     errors = {};
     searchResults;
-    helpUrl = Consts.HELP_URL_SAMPLE_SEARCH;
-    toolHeadingNameSearchSample = 'Sample Search Results';
+    helpUrl = Consts.HELP_URL_PUBLICATION_SEARCH_RESULTS;
+    toolHeadingName = 'Publication Search Results';
     pageCount = 10;
     searchResultsCount = -1;
     currentPage = 0;
@@ -81,7 +84,6 @@ export class SearchpublicationresultsComponent implements OnInit {
 
         console.log(this.properties);
         this.statusDisplayService.updateUserEmitter
-            .pipe(timeout(Properties.HTTP_TIMEOUT))
             .subscribe(
                 (data) => {
                     this.errors = {};

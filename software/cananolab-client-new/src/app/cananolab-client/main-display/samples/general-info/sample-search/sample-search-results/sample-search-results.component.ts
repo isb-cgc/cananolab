@@ -9,6 +9,8 @@ import { StatusDisplayService } from '../../../../../status-display/status-displ
 import { ApiService } from '../../../../../common/services/api.service';
 import { SampleAvailabilityDisplayService } from './sample-availability-display/sample-availability-display.service';
 import { Router } from '@angular/router';
+import { timeoutWith } from 'rxjs/operators'
+import { throwError } from 'rxjs'
 
 @Component({
     selector: 'canano-sample-search-results',
@@ -31,8 +33,8 @@ export class SampleSearchResultsComponent implements OnInit, OnDestroy {
     pageLength = Properties.DEFAULT_PAGE_LENGTH;
     loading;
     searchResults;
-    sampleIds=[];
-    helpUrl = Consts.HELP_URL_SAMPLE_SEARCH;
+    sampleIds = [];
+    helpUrl = Consts.HELP_URL_SAMPLE_SEARCH_RESULTS;
     toolHeadingNameSearchSample = 'Sample Search Results';
     pageCount = 10;
     searchResultsCount = -1;
@@ -80,7 +82,6 @@ export class SampleSearchResultsComponent implements OnInit, OnDestroy {
             });
 
         this.statusDisplayService.updateUserEmitter
-            .pipe(timeout(Properties.HTTP_TIMEOUT))
             .subscribe((data) => {
                 this.userName = data;
             });
@@ -91,7 +92,6 @@ export class SampleSearchResultsComponent implements OnInit, OnDestroy {
     }
 
     navigateToSampleEdit(sampleId) {
-        console.log('test');
         this.router.navigate(['home/samples/sample', sampleId]); // @FIXME  Don't hard code these
     }
 
