@@ -18,7 +18,7 @@ export class LoginComponent implements OnInit{
     homePage = true;
     loaded=false;
     showResetPassword=false;
-    constructor( private idleService:IdleService,private router:Router,private apiService: ApiService, private statusDisplayService: StatusDisplayService ){
+    constructor(private router:Router,private apiService: ApiService, private statusDisplayService: StatusDisplayService ){
     }
 
     ngOnInit(): void {
@@ -32,7 +32,6 @@ export class LoginComponent implements OnInit{
         if(!Properties.LOGGED_IN) {
             this.apiService.authenticateUser( this.user, this.password ).then((user) => {
                     this.statusDisplayService.updateUser( user );
-                    this.idleService.startTimer();
                     this.router.navigateByUrl('home');
                 },
                 // ERROR
@@ -54,7 +53,6 @@ export class LoginComponent implements OnInit{
 
     onResetClick() {
         this.apiService.resetUserPassword(this.email);
-        this.idleService.startTimer();
         console.log(this.email);
     }
 }
