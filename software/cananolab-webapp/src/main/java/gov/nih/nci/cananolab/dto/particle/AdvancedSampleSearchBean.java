@@ -18,7 +18,9 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import org.codehaus.jackson.annotate.JsonIgnoreProperties;
+
+//import org.codehaus.jackson.annotate.JsonIgnoreProperties;
 
 /**
  * information needed for the advanced sample search form
