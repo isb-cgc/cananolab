@@ -12,9 +12,9 @@ package gov.nih.nci.cananolab.dto;
 import gov.nih.nci.cananolab.dto.particle.CharacterizationQueryBean;
 import gov.nih.nci.cananolab.dto.particle.CompositionQueryBean;
 import gov.nih.nci.cananolab.dto.particle.SampleQueryBean;
-import com.fasterxml.jackson.annotation.JsonSubTypes;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import org.codehaus.jackson.annotate.JsonSubTypes;
+import org.codehaus.jackson.annotate.JsonTypeInfo;
+import org.codehaus.jackson.annotate.JsonTypeName;
 
 
 

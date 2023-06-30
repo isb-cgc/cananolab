@@ -1,8 +1,10 @@
 package gov.nih.nci.cananolab.security;
 
+//import org.codehaus.jackson.annotate.JsonIgnoreProperties;
+
 
 import gov.nih.nci.cananolab.security.enums.AccessTypeEnum;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import org.codehaus.jackson.annotate.JsonIgnoreProperties;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class AccessControlInfo
