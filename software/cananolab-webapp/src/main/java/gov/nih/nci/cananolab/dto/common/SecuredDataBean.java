@@ -12,8 +12,10 @@ package gov.nih.nci.cananolab.dto.common;
 import java.util.ArrayList;
 import java.util.List;
 
+//import org.codehaus.jackson.annotate.JsonIgnore;
+
 import gov.nih.nci.cananolab.security.AccessControlInfo;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.codehaus.jackson.annotate.JsonIgnore;
 
 public class SecuredDataBean
 {

@@ -3,10 +3,10 @@ package gov.nih.nci.cananolab.restful;
 import javax.ws.rs.ext.ContextResolver;
 import javax.ws.rs.ext.Provider;
 
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializationFeature;
-import com.fasterxml.jackson.databind.DeserializationFeature;
+import org.codehaus.jackson.map.DeserializationConfig;
+import org.codehaus.jackson.map.ObjectMapper;
+import org.codehaus.jackson.map.SerializationConfig;
+import org.codehaus.jackson.map.annotate.JsonSerialize;
 
 @Provider
 public class ObjectMapperProvider implements ContextResolver<ObjectMapper> {
@@ -24,9 +24,9 @@ public class ObjectMapperProvider implements ContextResolver<ObjectMapper> {
 
     public static ObjectMapper getObjectMapper() {
         return new ObjectMapper()
-                .configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false /* force ISO8601 */)
-                .configure(SerializationFeature.WRITE_ENUMS_USING_TO_STRING, true)
-                .configure(DeserializationFeature.READ_ENUMS_USING_TO_STRING, true)
-                .setSerializationInclusion(JsonInclude.Include.ALWAYS);
+                .configure(SerializationConfig.Feature.WRITE_DATES_AS_TIMESTAMPS, false /* force ISO8601 */)
+                .configure(SerializationConfig.Feature.WRITE_ENUMS_USING_TO_STRING, true)
+                .configure(DeserializationConfig.Feature.READ_ENUMS_USING_TO_STRING, true)
+                .setSerializationInclusion(JsonSerialize.Inclusion.ALWAYS);
     }
 }
