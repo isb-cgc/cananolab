@@ -5,7 +5,9 @@ import gov.nih.nci.cananolab.restful.bean.LabelValueBean;
 
 import java.util.ArrayList;
 import java.util.List;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.codehaus.jackson.annotate.JsonIgnore;
+
+//import org.codehaus.jackson.annotate.JsonIgnore;
 
 public class SimpleAdvancedSearchResultView {
 	
