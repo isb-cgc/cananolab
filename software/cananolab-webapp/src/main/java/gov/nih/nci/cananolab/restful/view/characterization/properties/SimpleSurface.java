@@ -43,13 +43,13 @@ public class SimpleSurface extends SimpleCharacterizationProperty {
 	@Override
 	public void transferToPropertyBean(CharacterizationBean charBean)
 			throws Exception {
-		
 		Surface surface = charBean.getSurface();
-		if (this.isHydrophobic != null && this.isHydrophobic.length() > 0) 
-			surface.setIsHydrophobic(Boolean.valueOf(this.isHydrophobic));
+		if (this.isHydrophobic != null && this.isHydrophobic.length() > 0)  {
+			Boolean val = this.isHydrophobic.equals("yes") ? true : false;
+			surface.setIsHydrophobic(val);
+			charBean.setIsHydrophobic(this.isHydrophobic);
+		}
 	}
-
-
 
 	@Override
 	public List<String> getPropertyViewTitles() {

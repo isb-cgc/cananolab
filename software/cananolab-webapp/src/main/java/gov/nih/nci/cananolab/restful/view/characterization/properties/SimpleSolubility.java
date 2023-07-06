@@ -84,7 +84,9 @@ public class SimpleSolubility extends SimpleCharacterizationProperty {
 		solubility.setSolvent(solvent);
 		
 		if (this.isSoluble != null && this.isSoluble.trim().length() > 0) {
-			solubility.setIsSoluble(Boolean.parseBoolean(isSoluble));
+			Boolean val = this.isSoluble.equals("yes") ? true : false;
+			solubility.setIsSoluble(val);
+			charBean.setIsSoluble(this.isSoluble);
 		}
 			
 	}
