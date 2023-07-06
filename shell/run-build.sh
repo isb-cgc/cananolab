@@ -51,6 +51,20 @@ else
   rm ${TMP_FILE}
 fi
 
+# Determine the build and version of this release and place it into the front end files
+SEMVER="${TIER}"
+if [ -n "$CIRCLE_TAG" ]; then
+  SEMVER=$CIRCLE_TAG
+  echo "[STATUS] Tag for production release deployment: ${SEMVER}"
+else
+  COUNT=`git rev-list --count HEAD`
+  SEMVER="${SEMVER}.${COUNT}"
+  echo "[STATUS] Version for merge build: ${SEMVER}"
+fi
+
+sed -i "s/\[\[RELEASE_AND_BUILD_INFO\]\]/caNanoLab Release ${SEMVER} Build cananolab-${SEMVER}-${APP_SHA}/g" ${HOME}/software/cananolab-client-new/src/app/cananolab-client/cananolab-client.component.html
+sed -i "s/\[\[RELEASE_VERSION\]\]/${SEMVER}/g" ${HOME}/software/cananolab-client-new/src/app/cananolab-client/main-display/home/right-side-bar/home-whats-new/home-whats-new.component.html
+
 export CANANODIR=${HOME}/staged/caNanoLab
 cd ${HOME}/software/cananolab-client-new/
 
@@ -107,19 +121,6 @@ if [ -n "$CI" ] || [ ! -d "${HOME}/software/cananolab-webapp/lib/sdk" ]; then
   cp -v ${SETTINGS}/jars/*.jar ${HOME}/software/cananolab-webapp/lib/
   cp -v ${SETTINGS}/jars/sdk/*.jar ${HOME}/software/cananolab-webapp/lib/sdk/
 fi
-
-SEMVER="${TIER}"
-if [ -n "$CIRCLE_TAG" ]; then
-  SEMVER=$CIRCLE_TAG
-  echo "[STATUS] Tag for production release deployment: ${SEMVER}"
-else
-  COUNT=`git rev-list --count HEAD`
-  SEMVER="${SEMVER}.${COUNT}"
-  echo "[STATUS] Version for merge build: ${SEMVER}"
-fi
-
-sed -i "s/\[\[RELEASE_AND_BUILD_INFO\]\]/caNanoLab Release ${SEMVER} Build cananolab-${SEMVER}-${APP_SHA}/g" ${HOME}/software/cananolab-webapp/web/main.js
-sed -i "s/\[\[RELEASE_VERSION\]\]/${SEMVER}/g" ${HOME}/software/cananolab-webapp/web/cananolab-client-main-display-home-home-module.js
 
 cd ${HOME}/software/cananolab-webapp/
 

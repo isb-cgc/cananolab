@@ -8,7 +8,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import org.codehaus.jackson.annotate.JsonTypeName;
+
+//import org.codehaus.jackson.annotate.JsonTypeName;
 
 @JsonTypeName("SimpleTargeting")
 public class SimpleTargeting extends SimpleCharacterizationProperty {
