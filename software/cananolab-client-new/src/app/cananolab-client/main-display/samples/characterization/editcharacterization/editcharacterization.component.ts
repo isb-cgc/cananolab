@@ -601,7 +601,7 @@ export class EditcharacterizationComponent implements OnInit {
                     'constantValue': constantValue
                 }
 
-                this.validateColumnHeader(header, col);
+                this.validateColumnHeader(header, col, true);
 
                 if (this.findingTableError != "") {
                     return;
@@ -618,7 +618,7 @@ export class EditcharacterizationComponent implements OnInit {
         return firstDataRow;
     }
 
-    validateColumnHeader(columnHeader, index) {
+    validateColumnHeader(columnHeader, index, isFromCsv) {
         var columnType = columnHeader['columnType'];
         var columnName = columnHeader['columnName'];
 
@@ -628,43 +628,48 @@ export class EditcharacterizationComponent implements OnInit {
             return;
         }
 
-        // If a columnName does not exist, it must be like "(other):columnName"
-        if (columnType == "datum") {
-            if (columnName.startsWith("(other):")) {
-                columnName = columnName.replace(/(^\(other\):)/gi, "");
-                if (!this.checkIncludesCaseInsensitive(this.existingDatumNames, columnName)) {
-                    this.existingDatumNames.push(columnName);
+        if (isFromCsv) {
+            // Only require adding new value as "(other):newValue" when added from Csv file
+            // New value added from UI can only be done correctly using the Other dialog
+
+            // If a columnName does not exist, it must be like "(other):columnName"
+            if (columnType == "datum") {
+                if (columnName.startsWith("(other):")) {
+                    columnName = columnName.replace(/(^\(other\):)/gi, "");
+                    if (!this.checkIncludesCaseInsensitive(this.existingDatumNames, columnName)) {
+                        this.existingDatumNames.push(columnName);
+                    }
+                } else if (!this.checkIncludesCaseInsensitive(this.existingDatumNames, columnName)) {
+                    this.findingTableError = `Datum column name ${columnName} does not exist, write the column as "(other):${columnName}" to add it to the system (parentheses are required)`;
+                    return;
                 }
-            } else if (!this.checkIncludesCaseInsensitive(this.existingDatumNames, columnName)) {
-                this.findingTableError = `Datum column name ${columnName} does not exist, write the column as "(other):${columnName}" to add it to the system (parentheses are required)`;
-                return;
+
             }
 
-        }
-
-        if (columnType == "condition") {
-            if (columnName.startsWith("(other):")) {
-                columnName = columnName.replace(/(^\(other\):)/gi, "");
-                if (!this.checkIncludesCaseInsensitive(this.existingConditionNames, columnName)) {
-                    this.existingConditionNames.push(columnName);
+            if (columnType == "condition") {
+                if (columnName.startsWith("(other):")) {
+                    columnName = columnName.replace(/(^\(other\):)/gi, "");
+                    if (!this.checkIncludesCaseInsensitive(this.existingConditionNames, columnName)) {
+                        this.existingConditionNames.push(columnName);
+                    }
+                } else if (!this.checkIncludesCaseInsensitive(this.existingConditionNames, columnName)) {
+                    this.findingTableError = `Condition column name ${columnName} does not exist, write the column as "(other):${columnName}" to add it to the system (parentheses are required)`;
+                    return;
                 }
-            } else if (!this.checkIncludesCaseInsensitive(this.existingConditionNames, columnName)) {
-                this.findingTableError = `Condition column name ${columnName} does not exist, write the column as "(other):${columnName}" to add it to the system (parentheses are required)`;
-                return;
             }
-        }
 
-        // If a valueType does not exist, it must be like "(other):valueType"
-        var valueType = columnHeader['valueType'];
-        if (valueType != null && valueType != "") {
-            if (valueType.startsWith("(other):")) {
-                valueType = valueType.replace(/(^\(other\):)/gi, "");
-                if (!this.checkIncludesCaseInsensitive(this.data.datumConditionValueTypeLookup, valueType)) {
-                    this.data.datumConditionValueTypeLookup.push(valueType);
+            // If a valueType does not exist, it must be like "(other):valueType"
+            var valueType = columnHeader['valueType'];
+            if (valueType != null && valueType != "") {
+                if (valueType.startsWith("(other):")) {
+                    valueType = valueType.replace(/(^\(other\):)/gi, "");
+                    if (!this.checkIncludesCaseInsensitive(this.data.datumConditionValueTypeLookup, valueType)) {
+                        this.data.datumConditionValueTypeLookup.push(valueType);
+                    }
+                } else if (!this.checkIncludesCaseInsensitive(this.data.datumConditionValueTypeLookup, valueType)) {
+                    this.findingTableError = `Value type ${valueType} does not exist, write the column as "(other):${valueType}" to add it to the system (parentheses are required)`;
+                    return;
                 }
-            } else if (!this.checkIncludesCaseInsensitive(this.data.datumConditionValueTypeLookup, valueType)) {
-                this.findingTableError = `Value type ${valueType} does not exist, write the column as "(other):${valueType}" to add it to the system (parentheses are required)`;
-                return;
             }
         }
 
@@ -788,7 +793,7 @@ export class EditcharacterizationComponent implements OnInit {
     saveColumnForm() {
         this.findingTableError = "";
 
-        this.validateColumnHeader(this.columnHeader, this.columnHeaderIndex);
+        this.validateColumnHeader(this.columnHeader, this.columnHeaderIndex, false);
 
         if (this.findingTableError != "") {
             return;
