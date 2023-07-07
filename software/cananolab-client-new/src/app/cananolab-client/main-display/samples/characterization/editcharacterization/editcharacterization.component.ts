@@ -628,6 +628,8 @@ export class EditcharacterizationComponent implements OnInit {
             return;
         }
 
+        var valueType = columnHeader['valueType'];
+
         if (isFromCsv) {
             // Only require adding new value as "(other):newValue" when added from Csv file
             // New value added from UI can only be done correctly using the Other dialog
@@ -659,7 +661,6 @@ export class EditcharacterizationComponent implements OnInit {
             }
 
             // If a valueType does not exist, it must be like "(other):valueType"
-            var valueType = columnHeader['valueType'];
             if (valueType != null && valueType != "") {
                 if (valueType.startsWith("(other):")) {
                     valueType = valueType.replace(/(^\(other\):)/gi, "");
