@@ -60,6 +60,8 @@ export class EditcharacterizationComponent implements OnInit {
 
     currentSavingFindingIndex = -1;
 
+    isSubmitting = false;
+
     csvHeaderDataObj;
 
     constructor( private httpClient: HttpClient, private apiService: ApiService, private navigationService: NavigationService, private router: Router, private route: ActivatedRoute, private ngxCsvParser: NgxCsvParser) {
@@ -1017,12 +1019,15 @@ export class EditcharacterizationComponent implements OnInit {
     submitCharacterization() {
         this.data.characterizationDate = new Date(this.data.characterizationDate + ' 00:00');
         let url = this.apiService.doPost(Consts.QUERY_CHARACTERIZATION_SAVE, this.data);
+        this.isSubmitting = true;
         url.subscribe(
             data => {
                 this.errors = {};
+                this.isSubmitting = false;
                 this.router.navigate( ['home/samples/characterization', Properties.CURRENT_SAMPLE_ID] );  // @FIXME  Don't hard code these
             },
             error => {
+                this.isSubmitting = false;
                 this.errors = error;
             }
         )
