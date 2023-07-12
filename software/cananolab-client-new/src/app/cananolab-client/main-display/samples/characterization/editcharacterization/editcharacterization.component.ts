@@ -1028,6 +1028,7 @@ export class EditcharacterizationComponent implements OnInit {
             },
             error => {
                 this.isSubmitting = false;
+                this.message = "Submit characterization failed";
                 this.errors = error;
             }
         )
