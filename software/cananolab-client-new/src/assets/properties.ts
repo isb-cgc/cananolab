@@ -14,7 +14,7 @@ export let Properties = {
     DEBUG_CURL: true,
 
     // This value can be changed in the config file.
-    HTTP_TIMEOUT: 180000, // Thousands of a second
+    HTTP_TIMEOUT: 1800000, // Thousands of a second
 
     MAX_WIDTH: '1600px',  // @TODO make this a configuration file thing
 
