@@ -8,7 +8,7 @@ export const Consts = {
     copyingMessage: 'Copying',
     serverlUrl: '/',
     tooManyTableCellLimit: 500,
-    maxTableCellLimit: 50000,
+    maxTableCellLimit: 15000,
 
     ENABLE_SYNTHESIS: false,
 
