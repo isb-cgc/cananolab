@@ -46,8 +46,8 @@ public class SimpleSolubility extends SimpleCharacterizationProperty {
 		//TODO this isn't returning the actual list with "other" added.
 		CommonUtil.addOtherToList(concentrationUnitOptions);
 		
-		isSolubleOptions.add("yes");
-		isSolubleOptions.add("no");
+		isSolubleOptions.add("true");
+		isSolubleOptions.add("false");
 	}
 	
 	
@@ -84,7 +84,7 @@ public class SimpleSolubility extends SimpleCharacterizationProperty {
 		solubility.setSolvent(solvent);
 		
 		if (this.isSoluble != null && this.isSoluble.trim().length() > 0) {
-			Boolean val = this.isSoluble.equals("yes") ? true : false;
+			Boolean val = Boolean.parseBoolean(this.isSoluble);
 			solubility.setIsSoluble(val);
 			charBean.setIsSoluble(this.isSoluble);
 		}

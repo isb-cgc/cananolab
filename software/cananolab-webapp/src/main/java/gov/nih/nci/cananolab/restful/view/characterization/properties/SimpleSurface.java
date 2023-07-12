@@ -21,8 +21,8 @@ public class SimpleSurface extends SimpleCharacterizationProperty {
 	
 	@Override
 	public void setLookups(HttpServletRequest request) {
-		isHydrophobicOptions.add("yes");
-		isHydrophobicOptions.add("no");
+		isHydrophobicOptions.add("true");
+		isHydrophobicOptions.add("false");
 	}
 
 	@Override
@@ -45,7 +45,7 @@ public class SimpleSurface extends SimpleCharacterizationProperty {
 			throws Exception {
 		Surface surface = charBean.getSurface();
 		if (this.isHydrophobic != null && this.isHydrophobic.length() > 0)  {
-			Boolean val = this.isHydrophobic.equals("yes") ? true : false;
+			Boolean val = Boolean.parseBoolean(this.isHydrophobic);
 			surface.setIsHydrophobic(val);
 			charBean.setIsHydrophobic(this.isHydrophobic);
 		}
