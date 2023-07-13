@@ -13,6 +13,9 @@
    
     <label style="color:blue; display:block; font-size:medium;"  *ngIf="isSubmitting">
        This characterization is submitting, please wait...
+       <p *ngIf="isTableTooSlowToSubmit">
+        (The finding table is very large, submission can take several minutes)
+       </p>
     </label>
 
     <!-- If you click on add/edit for any characterization type, this is where you land -->

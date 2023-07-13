@@ -57,6 +57,7 @@ export class EditcharacterizationComponent implements OnInit {
     csvHeaderNameTypeMap;
     serverUrl = Properties.API_SERVER_URL;
     isTooManyCells = false;
+    isTableTooSlowToSubmit = false;
 
     currentSavingFindingIndex = -1;
 
@@ -1065,6 +1066,8 @@ export class EditcharacterizationComponent implements OnInit {
     updateIfTooManyCells() {
         // If there is too many cells, the front end will take a long time load them and look like frozen
         // In that case, we make the table rows not editable and give the user edit button to turn on
-        this.isTooManyCells = (this.currentFinding.numberOfRows * this.currentFinding.numberOfColumns >= Consts.tooManyTableCellLimit);
+        var numCells = this.currentFinding.numberOfRows * this.currentFinding.numberOfColumns;
+        this.isTooManyCells = (numCells >= Consts.tooManyTableCellLimit);
+        this.isTableTooSlowToSubmit = (numCells >= Consts.tableCellCountSlowSubmit);
     }
 }
