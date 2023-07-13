@@ -10,6 +10,14 @@
     <div class="error" *ngIf="message">
         {{message}}
     </div>
+   
+    <label style="color:blue; display:block; font-size:medium;"  *ngIf="isSubmitting">
+       This characterization is submitting, please wait...
+       <p *ngIf="isTableTooSlowToSubmit">
+        (The finding table is very large, submission can take several minutes)
+       </p>
+    </label>
+
     <!-- If you click on add/edit for any characterization type, this is where you land -->
     <form action="" method="get" name="characterizationForm">
         <div class="mainBorder">
@@ -795,7 +803,7 @@
                                             </tr>
                                             <tr>
                                                 <div class="error" *ngIf="findingTableError">
-                                                    CSV import error: {{findingTableError}}
+                                                    Error: {{findingTableError}}
                                                 </div>
                                             </tr>
                                            <!--  <tr>
@@ -1172,11 +1180,11 @@
             <table class="dataMain submit">
                 <tr>
                     <td *ngIf="charId" style="text-align:left;">
-                        <button (click)="deleteCharacterization()" class="btn-canano btn-canano-danger btn-canano-lg mr-1">Delete</button>
+                        <button [disabled]="isSubmitting" (click)="deleteCharacterization()" class="btn-canano btn-canano-danger btn-canano-lg mr-1">Delete</button>
                     </td>
                     <td>
-                        <button (click)="resetCharacterization()" class="btn-canano btn-canano-danger btn-canano-lg mr-1">Reset</button>
-                        <button [disabled]="data.type=='' || data.name==''" (click)="submitCharacterization()" class="btn-canano btn-canano-primary btn-canano-lg mr-1">Submit</button>
+                        <button [disabled]="isSubmitting" (click)="resetCharacterization()" class="btn-canano btn-canano-danger btn-canano-lg mr-1">Reset</button>
+                        <button [disabled]="data.type=='' || data.name=='' || isSubmitting" (click)="submitCharacterization()" class="btn-canano btn-canano-primary btn-canano-lg mr-1">Submit</button>
                     </td>
                 </tr>
             </table>
