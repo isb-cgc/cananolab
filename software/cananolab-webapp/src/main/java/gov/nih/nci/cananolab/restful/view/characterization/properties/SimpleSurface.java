@@ -8,7 +8,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import org.codehaus.jackson.annotate.JsonTypeName;
+
+//import org.codehaus.jackson.annotate.JsonTypeName;
 
 @JsonTypeName("SimpleSurface")
 public class SimpleSurface extends SimpleCharacterizationProperty {
@@ -19,8 +21,8 @@ public class SimpleSurface extends SimpleCharacterizationProperty {
 	
 	@Override
 	public void setLookups(HttpServletRequest request) {
-		isHydrophobicOptions.add("yes");
-		isHydrophobicOptions.add("no");
+		isHydrophobicOptions.add("true");
+		isHydrophobicOptions.add("false");
 	}
 
 	@Override
@@ -41,13 +43,13 @@ public class SimpleSurface extends SimpleCharacterizationProperty {
 	@Override
 	public void transferToPropertyBean(CharacterizationBean charBean)
 			throws Exception {
-		
 		Surface surface = charBean.getSurface();
-		if (this.isHydrophobic != null && this.isHydrophobic.length() > 0) 
-			surface.setIsHydrophobic(Boolean.valueOf(this.isHydrophobic));
+		if (this.isHydrophobic != null && this.isHydrophobic.length() > 0)  {
+			Boolean val = Boolean.parseBoolean(this.isHydrophobic);
+			surface.setIsHydrophobic(val);
+			charBean.setIsHydrophobic(this.isHydrophobic);
+		}
 	}
-
-
 
 	@Override
 	public List<String> getPropertyViewTitles() {
