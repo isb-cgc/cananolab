@@ -2,6 +2,7 @@ package gov.nih.nci.cananolab.restful;
 
 import gov.nih.nci.cananolab.restful.useraccount.UserAccountBO;
 import gov.nih.nci.cananolab.restful.util.CommonUtil;
+import gov.nih.nci.cananolab.restful.util.MailServiceUtil;
 import gov.nih.nci.cananolab.security.CananoUserDetails;
 import gov.nih.nci.cananolab.security.service.PasswordResetToken;
 import gov.nih.nci.cananolab.security.utils.SpringSecurityUtil;
@@ -52,7 +53,7 @@ public class UserSelfManageServices
 				String baseUrl = "http://" + URI.create(httpRequest.getRequestURL().toString()).getHost();
 
 				// TODO: for local
-				resetPasswordUrl = baseUrl + ":8080/rest/userself/changepwd?token=" + token;
+				resetPasswordUrl = "http://localhost:4200/rest/userself/changepwd?token=" + token;
 				// TODO: for deploy
 				// resetPasswordUrl = baseUrl + "/userself/changepwd?token=" + token;
 
@@ -67,6 +68,8 @@ public class UserSelfManageServices
 				else
 					throw new Exception("Username is required to create a password reset token.");
 
+				MailServiceUtil.send(email, "Hello Mi", "This link can reset: " + resetPasswordUrl);
+				
 				// TODO Mi: Send email to the user
 //				userService.createPasswordResetTokenForUser(user, token);
 //				mailSender.send(constructResetTokenEmail(getAppUrl(request),
@@ -134,7 +137,7 @@ public class UserSelfManageServices
 				String baseUrl = "http://" + URI.create(httpRequest.getRequestURL().toString()).getHost();
 
 				// TODO: for local
-				redirectUri = baseUrl + ":8080/#/home/change-password?token=" + token;
+				redirectUri = "http://localhost:4200/#/home/change-password?token=" + token;
 //				redirectUri = "/updatePassword";
 
 				return Response.seeOther(new URI(redirectUri)).build();

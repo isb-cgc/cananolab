@@ -1,0 +1,35 @@
+package gov.nih.nci.cananolab.restful.util;
+
+import javax.mail.Message;
+import javax.mail.Session;
+import javax.mail.Transport;
+import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeMessage;
+import javax.naming.Context;
+import javax.naming.InitialContext;
+
+public class MailServiceUtil {
+
+//    private static final Logger LOG = LoggerFactory.getLogger(MailService.class);
+
+    // This must match the jndi-name property in the mail-session
+    // configuration specified before
+//    @Resource(name = "java:jboss/mail/Default")
+//    private Session session;
+
+    public static void send(final String addresses, final String subject, final String text) {
+        try {
+            Context ictx = new InitialContext();
+            Session session = (Session) ictx.lookup("java:jboss/mail/Default");
+
+            final Message message = new MimeMessage(session);
+            message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(addresses));
+            message.setSubject(subject);
+            message.setText(text);
+
+            Transport.send(message);
+        } catch (Exception e) {
+//            LOG.error("Cannot send mail", e);
+        }
+    }
+}
