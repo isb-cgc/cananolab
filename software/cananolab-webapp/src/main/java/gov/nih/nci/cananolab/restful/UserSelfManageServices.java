@@ -96,25 +96,6 @@ public class UserSelfManageServices
 		}
 	}
 
-//
-//	private SimpleMailMessage constructResetTokenEmail(
-//			String contextPath, Locale locale, String token, User user) {
-//		String url = contextPath + "/user/changePassword?token=" + token;
-//		String message = messages.getMessage("message.resetPassword",
-//				null, locale);
-//		return constructEmail("Reset Password", message + " \r\n" + url, user);
-//	}
-//
-//	private SimpleMailMessage constructEmail(String subject, String body,
-//	                                         User user) {
-//		SimpleMailMessage email = new SimpleMailMessage();
-//		email.setSubject(subject);
-//		email.setText(body);
-//		email.setTo(user.getEmail());
-//		email.setFrom(env.getProperty("support.email"));
-//		return email;
-//	}
-//
 	@GET
 	@Path("/changepwd")
 	@Produces ({"application/json", "text/plain"})
@@ -180,10 +161,10 @@ public class UserSelfManageServices
 				if (!StringUtils.isEmpty(username) && !StringUtils.isEmpty(newpassword)) {
 					userAccountBO.changeUserAccountPassword(newpassword, username);
 				} else {
-					throw new Exception("Username and new passwords are required for changing password.");
+					throw new Exception("Password saving failed.");
 				}
 			} else {
-				// Token invalid, something went wrong
+				throw new Exception("Invalid password change request.");
 			}
 
 			JsonBuilderFactory factory = Json.createBuilderFactory(null);
@@ -194,7 +175,7 @@ public class UserSelfManageServices
 					Response.ok(value).build();
 		}
 		catch (Exception e) {
-			logger.error("Error in resetting password for account: ", e);
+			logger.error("Error in handling password change request: ", e);
 			return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
 					.entity(CommonUtil.wrapErrorMessageInList(e.getMessage())).build();
 		}
