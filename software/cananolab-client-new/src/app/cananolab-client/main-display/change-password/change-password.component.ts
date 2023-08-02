@@ -36,6 +36,7 @@ export class ChangePasswordComponent implements OnInit {
 
   onCancelClick(): void {
     console.log("Redirecting to home page...");
+    this.router.navigate(['']);
   }
 
   onChangePasswordClick(): void {
@@ -89,7 +90,7 @@ export class ChangePasswordComponent implements OnInit {
   saveResetUserPassword(token, newPwd) {
     var resetData = {
       'token': this.token,
-      'newPassword': this.newPwd
+      'newpassword': this.newPwd
     }
 
     let params =[];
@@ -105,7 +106,9 @@ export class ChangePasswordComponent implements OnInit {
       method:'post',
     }
     this.httpClient.post(Consts.SAVE_RESET_PASSWORD_URL, params.join('&'), options).subscribe(data=> {
+      console.log("'Password Reset Successfully");
       this.message='Password Reset Successfully';
+      this.router.navigate(['']);
     },
     errors=> {
       if (errors.error.text=='success') {
