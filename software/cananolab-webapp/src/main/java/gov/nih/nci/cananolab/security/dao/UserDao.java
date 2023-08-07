@@ -31,5 +31,7 @@ public interface UserDao
 
 	int insertPasswordResetToken(PasswordResetToken prt);
 
+	int deletePasswordResetTokens(String username);
+
 	PasswordResetToken getPasswordResetToken(String token);
 }

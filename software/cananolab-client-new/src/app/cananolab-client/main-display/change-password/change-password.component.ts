@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import {ActivatedRoute} from '@angular/router';
+import { ActivatedRoute} from '@angular/router';
 import { HttpClient,HttpHeaders } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { Consts } from '../../../constants';
@@ -60,7 +60,7 @@ export class ChangePasswordComponent implements OnInit {
   }
 
   checkAllValidations(): void {
-    this.isPwdMatch = (this.newPwd === this.confirmPwd);
+    this.isPwdMatch = (this.newPwd === this.confirmPwd) && this.newPwd != "";
     this.hasNumber = this.checkValidations(this.newPwd, 'number');
     this.hasLowercase = this.checkValidations(this.newPwd, 'lowercase');
     this.hasUppercase = this.checkValidations(this.newPwd, 'uppercase');

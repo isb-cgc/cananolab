@@ -17,7 +17,7 @@ public class MailServiceUtil {
 //    @Resource(name = "java:jboss/mail/Default")
 //    private Session session;
 
-    public static void send(final String addresses, final String subject, final String text) {
+    public static void send(final String addresses, final String subject, final String content) {
         try {
             Context ictx = new InitialContext();
             Session session = (Session) ictx.lookup("java:jboss/mail/Default");
@@ -25,7 +25,9 @@ public class MailServiceUtil {
             final Message message = new MimeMessage(session);
             message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(addresses));
             message.setSubject(subject);
-            message.setText(text);
+
+            // Send the actual HTML message, as big as you like
+            message.setContent(content, "text/html");
 
             Transport.send(message);
         } catch (Exception e) {

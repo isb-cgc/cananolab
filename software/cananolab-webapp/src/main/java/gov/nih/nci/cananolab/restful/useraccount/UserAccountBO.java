@@ -53,6 +53,12 @@ public class UserAccountBO
 		return userService.loadPasswordResetToken(prt.getToken());
 	}
 
+	public void deletePasswordResetTokens(CananoUserDetails userDetails) throws NoAccessException
+	{
+		System.out.println("All password reset tokens for user: " + userDetails.getUsername() + " will be deleted");
+		userService.deletePasswordResetTokens(userDetails);
+	}
+
 	public void changeUserAccountPassword(String newPassword, String userName) throws Exception
 	{
 		userService.changePasswordForUser(newPassword, userName);

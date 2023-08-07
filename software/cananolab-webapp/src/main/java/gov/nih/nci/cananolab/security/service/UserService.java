@@ -14,6 +14,8 @@ public interface UserService
 
 	void createPasswordResetToken(PasswordResetToken prt);
 
+	void deletePasswordResetTokens(CananoUserDetails userDetails);
+
 	PasswordResetToken loadPasswordResetToken(String matchStr);
 
 	int resetPasswordForUser(String oldPassword, String newPassword, String userName) throws Exception;

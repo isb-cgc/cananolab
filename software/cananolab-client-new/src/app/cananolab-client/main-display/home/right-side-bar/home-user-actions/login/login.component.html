@@ -5,6 +5,8 @@
 
 <div [ngClass]="{'mainSection':loaded&&!homePage,'right-side-bar-content':homePage}">
 <div [ngClass]="{'mainBorder':loaded&&!homePage}">
+    <div *ngIf="infoMessage" style="color:blue">{{infoMessage}}</div>
+    <div *ngIf="errorMessage" style="color:red">{{errorMessage}}</div>
     <div *ngIf="!showResetPassword">
         <table class="login">
             <tr>

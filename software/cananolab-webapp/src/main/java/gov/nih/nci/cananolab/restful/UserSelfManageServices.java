@@ -68,15 +68,11 @@ public class UserSelfManageServices
 				else
 					throw new Exception("Username is required to create a password reset token.");
 
-				MailServiceUtil.send(email, "Hello Mi", "This link can reset: " + resetPasswordUrl);
-				
-				// TODO Mi: Send email to the user
-//				userService.createPasswordResetTokenForUser(user, token);
-//				mailSender.send(constructResetTokenEmail(getAppUrl(request),
-//						request.getLocale(), token, user));
-//				return new GenericResponse(
-//						messages.getMessage("message.resetPasswordEmail", null,
-//								request.getLocale()));
+				MailServiceUtil.send(email, "Reset your caNanoLab account password",
+						"<div style=\"font-family:arial\"><p>You're receiving this e-mail because you or someone else has requested a password change for your user account.<br>" +
+								"Click the button below to reset your password.<br><br>" +
+								"<a href=\"" + resetPasswordUrl + "\" target=\"_blank\" style=\"padding: 8px 12px;border-radius: 4px;font-size: 16px;" +
+								" background-color:#1111FF;color: #FFFFFF;text-decoration: none;display: inline-block;\">Reset Password</a></div>");
 			}
 			else
 				throw new Exception("Email is required for resetting password.");
@@ -108,12 +104,10 @@ public class UserSelfManageServices
 
 			String redirectUri = "";
 			if (validateResult != null) {
-				redirectUri = "/login.html?" + "&message=" + validateResult;
-				JsonBuilderFactory factory = Json.createBuilderFactory(null);
-				JsonObject value = factory.createObjectBuilder()
-						.add("status", "success")
-						.add("customMessage", redirectUri).build();
-				return Response.ok(value).build();
+				// TODO: redirect to home page with message
+				redirectUri = "http://localhost:4200/#/home/?errorMessage=Unable to change password because " + validateResult;
+				redirectUri = redirectUri.replace(" ", "%20");
+				return Response.seeOther(new URI(redirectUri)).build();
 			} else {
 				String baseUrl = "http://" + URI.create(httpRequest.getRequestURL().toString()).getHost();
 
@@ -133,12 +127,12 @@ public class UserSelfManageServices
 
 	private String validateToken(PasswordResetToken prt) {
 		if (prt == null) {
-			return "invalidToken";
+			return "token is invalid.";
 		} else {
 			Date expiryDate = prt.getExpiryDate();
 			Date now = new Date();
 			if (now.after(expiryDate)) {
-				return "expiredToken";
+				return "token is expired";
 			} else {
 				return null;
 			}
@@ -165,6 +159,16 @@ public class UserSelfManageServices
 				}
 			} else {
 				throw new Exception("Invalid password change request.");
+			}
+
+			MailServiceUtil.send(email, "Your caNanoLab account password was reset",
+					"<div style=\"font-family:arial\"><p>Your caNanoLab password has been successfully reset.<br>" +
+							"If you did not request this password change, please contact caNanoLab admin at [email TBD]</p></div>");
+
+			CananoUserDetails userDetails = userAccountBO.readUserAccount(prt.getUserName());
+			if (userDetails != null) {
+				// Delete all existing tokens because password has been changed
+				userAccountBO.deletePasswordResetTokens(userDetails);
 			}
 
 			JsonBuilderFactory factory = Json.createBuilderFactory(null);

@@ -67,6 +67,8 @@ public class UserDaoImpl extends JdbcDaoSupport implements UserDao
 
 	private static final String FETCH_PASSWORD_RESET_TOKEN = "select p.token, p.username, p.expiry_date from password_reset_tokens p where p.token = ?";
 
+	private static final String DELETE_PASSWORD_RESET_TOKENS = "DELETE FROM password_reset_tokens WHERE username = ?";
+
 	@Override
 	public CananoUserDetails getUserByName(String username)
 	{
@@ -218,6 +220,13 @@ public class UserDaoImpl extends JdbcDaoSupport implements UserDao
 		logger.debug("Insert password reset token : " + prt.getToken());
 		Object[] params = new Object[] { prt.getToken(), prt.getUserName(), prt.getExpiryDate() };
 		return getJdbcTemplate().update(INSERT_PASSWORD_RESET_TOKEN, params);
+	}
+
+	@Override
+	public int deletePasswordResetTokens(String username) {
+		logger.debug("Clear all password reset tokens for : " + username);
+		Object[] params = new Object[] { username };
+		return getJdbcTemplate().update(DELETE_PASSWORD_RESET_TOKENS, params);
 	}
 
 	@Override

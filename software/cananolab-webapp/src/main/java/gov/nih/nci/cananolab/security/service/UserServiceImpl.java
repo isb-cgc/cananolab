@@ -101,10 +101,19 @@ public class UserServiceImpl implements UserService
 			// Calculate future date when token will expire
 			Calendar cal = Calendar.getInstance();
 			cal.setTime(new Date());
-			cal.add(Calendar.DATE, PasswordResetToken.EXPIRATION_HOURS);
+			cal.add(Calendar.DATE, PasswordResetToken.EXPIRATION_DAY);
 			Date expiryDate = cal.getTime();
 			prt.setExpiryDate(expiryDate);
 			int status = userDao.insertPasswordResetToken(prt);
+		}
+	}
+
+	@Override
+	public void deletePasswordResetTokens(CananoUserDetails userDetails) {
+		String username = userDetails.getUsername();
+		if (userDetails != null && !StringUtils.isEmpty(username))
+		{
+			int status = userDao.deletePasswordResetTokens(username);
 		}
 	}
 	
