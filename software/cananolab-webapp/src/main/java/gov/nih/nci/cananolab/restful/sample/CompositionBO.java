@@ -285,9 +285,13 @@ public class CompositionBO extends BaseAnnotationBO
 		}
 	}
 
-	public String download(String fileId,
-			HttpServletRequest request, HttpServletResponse response)
+	public String download(String fileId, String sampleId, HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
+		if (sampleId != "") {
+			// findCompositionBySampleId throws error if user is not authorized for the sample
+			compositionService.findCompositionBySampleId(sampleId);
+		}
+
 		return downloadFile(compositionService, fileId, request, response);
 	}
 

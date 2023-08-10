@@ -37,6 +37,7 @@ export class EditpublicationComponent implements OnInit {
     type;
     downloadUrl=Consts.QUERY_PUBLICATION_DOWNLOAD;
     submitReviewButton=true;
+    editingAccessRow = false;
 
   constructor(private apiService:ApiService,private navigationService:NavigationService,private httpClient:HttpClient,private route:ActivatedRoute,private router:Router) { }
 
@@ -80,6 +81,9 @@ export class EditpublicationComponent implements OnInit {
                 if (this.sampleId) { Properties.SAMPLE_TOOLS = true; }
                 this.setupData=data;
                 this.setupData['otherSampleNames']=[];
+                if (!this.publicationId || this.publicationId == -1) {
+                    this.data["isCuratorEditing"] = this.setupData["isCuratorEditing"];
+                }
             },
             error=> {
                 this.errors=error;
@@ -135,7 +139,7 @@ export class EditpublicationComponent implements OnInit {
                 "recipientDisplayName":""
             }
 
-
+        this.editingAccessRow = false;
     }
 
     addAuthor() {
@@ -169,6 +173,7 @@ export class EditpublicationComponent implements OnInit {
         this.accessIndex=index;
         this.recipientList=null;
         this.theAccess=JSON.parse(JSON.stringify(access));
+        this.editingAccessRow = true;
     }
 
     editAuthor(index,author) {
@@ -469,20 +474,25 @@ export class EditpublicationComponent implements OnInit {
         this.theFile.append('theAccess',this.theAccess);
         this.theFile.append('category',this.data['category']);
         this.theFile.append('status',this.data['status']);
-  }
+    }
+
+    shouldShowAccessEditButton(group) {
+        if (group.recipient == 'ROLE_CURATOR') {
+            return false;
+        } else if (group.recipient == 'ROLE_ANONYMOUS') {
+            return this.data != null && this.data['isCuratorEditing'];
+        }
+
+        return true;
+    }
 
 
-  submitForReview() {
-      console.log(this.data)
-    let url = this.apiService.doPost(Consts.QUERY_PUBLICATION_SUBMIT_REVIEW,{dataId:this.data.fileId,dataName:this.data.title,dataType:"publication"},'text');
-    url.subscribe(data=> {
-        this.submitReviewButton=false;
-    })
-}
-
-
-
-
-
+    submitForReview() {
+        console.log(this.data)
+        let url = this.apiService.doPost(Consts.QUERY_PUBLICATION_SUBMIT_REVIEW,{dataId: this.data.fileId, dataName: this.data.title, dataType:"publication"},'text');
+        url.subscribe(data=> {
+            this.submitReviewButton=false;
+        })
+    }
 
 }

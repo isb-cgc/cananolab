@@ -405,8 +405,13 @@ public class ProtocolBO extends BaseAnnotationBO
 		springSecurityAclService.retractObjectFromPublic(protocol.getDomain().getId(), SecureClassesEnum.PROTOCOL.getClazz());
 	}
 
-	public String download(String fileId, HttpServletRequest request, HttpServletResponse response) throws Exception 
+	public String download(String protocolId, String fileId, HttpServletRequest request, HttpServletResponse response) throws Exception
 	{
+		if (protocolId != "") {
+			// findProtocolById throws error if user is not authorized for the sample
+			protocolService.findProtocolById(protocolId);
+		}
+
 		return downloadFile(protocolService, fileId, request, response);
 	}
 

@@ -268,7 +268,13 @@ table.dataTable th{
     font-weight: bold;
     padding:3px 3px 3px 5px;
     border:1px solid #ccc;
-    text-transform: capitalize;
+    position: sticky;
+    top: 0;
+    z-index: 1;
+}
+
+table.dataTable th:first-letter {
+    text-transform: uppercase;
 }
 
 table.dataTable td{
@@ -285,6 +291,12 @@ table.dataTable td.actions  {
 table.dataTable td.actions div {
 	display:inline-block;
 	margin:0px 4px 0px 0px;
+}
+
+div.scroll-table-container {
+    overflow: scroll;
+    max-width: 1200px;
+    max-height: 800px;
 }
 
 .actions div {

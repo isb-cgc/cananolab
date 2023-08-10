@@ -48,11 +48,7 @@ import gov.nih.nci.cananolab.dto.particle.synthesis.SynthesisMaterialBean;
 import gov.nih.nci.cananolab.dto.particle.synthesis.SynthesisMaterialElementBean;
 import gov.nih.nci.cananolab.dto.particle.synthesis.SynthesisPurificationBean;
 import gov.nih.nci.cananolab.dto.particle.synthesis.SynthesisPurityBean;
-import gov.nih.nci.cananolab.exception.DuplicateEntriesException;
-import gov.nih.nci.cananolab.exception.NoAccessException;
-import gov.nih.nci.cananolab.exception.NotExistException;
-import gov.nih.nci.cananolab.exception.PointOfContactException;
-import gov.nih.nci.cananolab.exception.SampleException;
+import gov.nih.nci.cananolab.exception.*;
 import gov.nih.nci.cananolab.security.AccessControlInfo;
 import gov.nih.nci.cananolab.security.CananoUserDetails;
 import gov.nih.nci.cananolab.security.dao.AclDao;
@@ -68,6 +64,7 @@ import gov.nih.nci.cananolab.service.sample.SampleService;
 import gov.nih.nci.cananolab.service.sample.SynthesisService;
 import gov.nih.nci.cananolab.service.sample.helper.AdvancedSampleServiceHelper;
 import gov.nih.nci.cananolab.service.sample.helper.SampleServiceHelper;
+import gov.nih.nci.cananolab.system.applicationservice.ApplicationException;
 import gov.nih.nci.cananolab.system.applicationservice.CaNanoLabApplicationService;
 import gov.nih.nci.cananolab.util.Comparators;
 import gov.nih.nci.cananolab.util.Constants;
@@ -185,9 +182,8 @@ public class SampleServiceLocalImpl extends BaseServiceLocalImpl implements Samp
 			}
 		} catch (NoAccessException | DuplicateEntriesException e) {
 			throw e;
-		}
-        catch (Exception e) {
-			logger.error("Error in saving the sample. ", e);
+		} catch (ApplicationException | ApplicationProviderException e) {
+			logger.error("ApplicationException/ApplicationProviderException  in saving the sample. ", e);
 			throw new SampleException("Error in saving the sample. ", e);
 		}
 	}
@@ -333,6 +329,28 @@ public class SampleServiceLocalImpl extends BaseServiceLocalImpl implements Samp
 		return sampleBean;
 	}
 
+	public SampleBean findSampleForSearchById(String sampleId, Boolean loadAccessInfo) throws SampleException, NoAccessException
+	{
+		SampleBean sampleBean = null;
+		try {
+			Sample sample = sampleServiceHelper.findShallowSampleByIdLazyLoad(sampleId);
+			if (sample != null) {
+				if (loadAccessInfo) {
+					sampleBean = loadSampleBean(sample);
+				} else {
+					sampleBean = new SampleBean(sample);
+				}
+			}
+		} catch (NoAccessException e) {
+			throw e;
+		} catch (Exception e) {
+			String err = "Problem finding the sample by id: " + sampleId + ". " + e.getMessage();
+			logger.error(err, e);
+			throw new SampleException(err, e);
+		}
+		return sampleBean;
+	}
+
 	/**
 	 * Only load sample core data.
 	 * 
@@ -360,7 +378,8 @@ public class SampleServiceLocalImpl extends BaseServiceLocalImpl implements Samp
 		return sampleBean;
 	}
 
-	private Sample findFullyLoadedSampleByName(String sampleName) throws Exception
+	private Sample findFullyLoadedSampleByName(String sampleName)
+		throws ApplicationException, ApplicationProviderException, NotExistException
 	{
 		CaNanoLabApplicationService appService = (CaNanoLabApplicationService) ApplicationServiceProvider.getApplicationService();
 		// load composition and characterization separate because of Hibernate
@@ -402,7 +421,8 @@ public class SampleServiceLocalImpl extends BaseServiceLocalImpl implements Samp
 		return sample;
 	}
 
-	private SampleComposition loadComposition(String sampleId) throws Exception
+	private SampleComposition loadComposition(String sampleId)
+		throws ApplicationException, ApplicationProviderException
 	{
 		SampleComposition composition = null;
 
@@ -438,7 +458,8 @@ public class SampleServiceLocalImpl extends BaseServiceLocalImpl implements Samp
 		return composition;
 	}
 
-	private List<Characterization> loadCharacterizations(String sampleId) throws Exception
+	private List<Characterization> loadCharacterizations(String sampleId)
+		throws ApplicationException, ApplicationProviderException
 	{
 		List<Characterization> chars = new ArrayList<Characterization>();
 
@@ -471,8 +492,8 @@ public class SampleServiceLocalImpl extends BaseServiceLocalImpl implements Samp
 		return chars;
 	}
 
-	
-	private SampleBean loadSampleBean(Sample sample) throws Exception
+	private SampleBean loadSampleBean(Sample sample)
+			throws NoAccessException
 	{
 		SampleBean sampleBean = new SampleBean(sample);
 		if (springSecurityAclService.currentUserHasReadPermission(sample.getId(), SecureClassesEnum.SAMPLE.getClazz()))
@@ -482,7 +503,9 @@ public class SampleServiceLocalImpl extends BaseServiceLocalImpl implements Samp
 		return sampleBean;
 	}
 
-	public void loadAccessesForBasicSampleBean(SampleBasicBean sampleBean) throws Exception {
+	public void loadAccessesForBasicSampleBean(SampleBasicBean sampleBean)
+			throws NoAccessException
+	{
 		Sample sample = sampleBean.getDomain();
 		if (springSecurityAclService.currentUserHasReadPermission(sample.getId(), SecureClassesEnum.SAMPLE.getClazz()))
 			springSecurityAclService.loadAccessControlInfoForObject(sample.getId(), SecureClassesEnum.SAMPLE.getClazz(), sampleBean);
@@ -491,7 +514,8 @@ public class SampleServiceLocalImpl extends BaseServiceLocalImpl implements Samp
 		
 	}
 	
-	private SampleBasicBean loadSampleBean(Sample sample, boolean checkReadPermission) throws Exception
+	private SampleBasicBean loadSampleBean(Sample sample, boolean checkReadPermission)
+			throws NoAccessException
 	{
 		SampleBasicBean sampleBean = new SampleBasicBean(sample);
 		if (springSecurityAclService.currentUserHasReadPermission(sample.getId(), SecureClassesEnum.SAMPLE.getClazz()))
@@ -642,8 +666,13 @@ public class SampleServiceLocalImpl extends BaseServiceLocalImpl implements Samp
 		}
 	}
 
-	public SampleBean cloneSample(String originalSampleName, String newSampleName) throws SampleException, NoAccessException,
-			DuplicateEntriesException, NotExistException
+	public SampleBean cloneSample(String originalSampleName, String newSampleName)
+			throws SampleException, NoAccessException,
+			       DuplicateEntriesException, NotExistException, PointOfContactException,
+			       ExperimentConfigException, ApplicationException,
+			       ApplicationProviderException, CompositionException,
+	               FileException, CharacterizationException,
+			       PublicationException, SynthesisException
 	{
 		if (SpringSecurityUtil.getPrincipal() == null) {
 			throw new NoAccessException();
@@ -651,9 +680,12 @@ public class SampleServiceLocalImpl extends BaseServiceLocalImpl implements Samp
 		SampleBean newSampleBean = null;
 		Sample origSample = null;
 		SampleBean origSampleBean = null;
+		SampleBean newSampleBean0 = null;
 		Sample newSample0 = new Sample();
+		Long newID = 0L;
 		try {
 			CaNanoLabApplicationService appService = (CaNanoLabApplicationService) ApplicationServiceProvider.getApplicationService();
+			// WJRL 3/2023: THIS IS A DETACHED CRITERIA SEARCH
 			Sample dbNewSample = (Sample) appService.getObject(Sample.class, "name", newSampleName);
 			if (dbNewSample != null) {
 				throw new DuplicateEntriesException();
@@ -666,19 +698,15 @@ public class SampleServiceLocalImpl extends BaseServiceLocalImpl implements Samp
 			newSample0.setCreatedDate(new Date());
 			// save the sample so later up just update the cloned the
 			// associations.
-			SampleBean newSampleBean0 = new SampleBean(newSample0);
-			// WJRL 2/13/23: This is a problem with issue #258. This is causing:
-			// nested exception is org.hibernate.NonUniqueObjectException: A different object with the same
-			// identifier value was already associated with the session :
-			// [gov.nih.nci.cananolab.domain.particle.Sample#115900438]
-			// Original comment:
-			//
+			newSampleBean0 = new SampleBean(newSample0);
+
 			// save the sample to get an ID before saving associations
+			// This calls a detached query for the sample before it saves it!
 			saveSample(newSampleBean0);
+			newID = newSample0.getId();
 		} catch (NotExistException | DuplicateEntriesException e) {
 			throw e;
-		}
-        catch (Exception e) {
+	 	} catch (ApplicationException e) {
 			String err = "Error in loading the original sample " + originalSampleName + ". " + e.getMessage();
 			logger.error(err, e);
 			throw new SampleException(err, e);
@@ -691,18 +719,16 @@ public class SampleServiceLocalImpl extends BaseServiceLocalImpl implements Samp
 			//
 			Sample newSample = origSampleBean.getDomainCopy(SpringSecurityUtil.getLoggedInUserName());
 			newSample.setName(newSampleName);
-			// WJRL 2/13/23: This here is potentially the cause of issue #258? We have previously
-			// created a database object, and hold onto the object while we reuse the domain ID.
-			// Original comment:
+			newSample.setCreatedBy(SpringSecurityUtil.getLoggedInUserName() + ":" + Constants.AUTO_COPY_ANNOTATION_PREFIX);
+			newSample.setCreatedDate(new Date());
 
 			// keep the id
-			newSample.setId(newSample0.getId());
+			newSample.setId(newID);
 			newSampleBean = new SampleBean(newSample);
 
 			// retrieve accessibilities of the original sample
 			springSecurityAclService.loadAccessControlInfoForObject(origSampleBean.getDomain().getId(), SecureClassesEnum.SAMPLE.getClazz(), origSampleBean);
 
-			//
 			// WJRL 2/13/23 Here is where we take the Java objects hanging off of the newSampleBean, which
 			// were generated using getDomainCopy() above, and get them persisted into the
 			// database. Original comment:
@@ -711,20 +737,48 @@ public class SampleServiceLocalImpl extends BaseServiceLocalImpl implements Samp
 			// Hibernate mapping settings for most use cases
 			saveClonedPOCs(newSampleBean);
 			saveClonedCharacterizations(origSample.getName(), newSampleBean);
+			// This was cause of #258, so I broke it out to isolate the issue:
+			saveClonedCompositionFiles(origSampleBean, newSampleBean);
 			saveClonedComposition(origSampleBean, newSampleBean);
 			saveClonedSynthesis(origSampleBean, newSampleBean);
+			//
+			// WJRL 3/23: Issue #270: If the user is public/anonymous, they can try to copy a sample that
+			// has a non-public publication attached. They will not see the attached publication, and will
+			// have no understanding why the clone failed. We should catch that access error here and be specific
+			// with the error message:
+			//
 			saveClonedPublications(origSampleBean, newSampleBean);
+			CaNanoLabApplicationService appService = (CaNanoLabApplicationService)ApplicationServiceProvider.getApplicationService();
+			// WJRL 3/23: I originally tried this, to merge the two copies, but there were lots of issues.
+			// It appears that Hibernate does not mind the first saved sample used above to harvest the
+			// sample ID, followed by the creation of a clone with the same domain ID. What it did not like
+			// was a sample created with the same domain ID to do a search for the associated SampleComposition.
+			// With that sample duplication eliminated it worked fine; merge was not needed.
+			//newSampleBean.setDomain(mergeSample(newSampleBean.getDomain()));
+
+			// WJRL 2/13/23: This was where issue #258 was triggered. This caused:
+			// nested exception is org.hibernate.NonUniqueObjectException: A different object with the same
+			// identifier value was already associated with the session
+			//
+			// WJRL 3/23: This originally reported two objects with same ID, and failed.
+			// Trying to use merge, the merge was complaining it was read only (flush-mode = manual)
+			// Forcing the flush mode to auto, it then complained that multiple representations of the same entity
+			// cannot be merged. That resulted in finding and ditching the sample creation needed to do a
+			// findCompositionBySampleId() call used to clone files. Once that was fixed, the merge was actually
+			// not needed.
+			//
 			saveSample(newSampleBean);
-			
+
 			//Commented while removing CSM
 			//newSampleBean.setUser(user);
-			
-			
+
 			// assign accessibility for the new sample
 			for (AccessControlInfo access : origSampleBean.getAllAccesses()) {
 				this.assignAccessibility(access, newSampleBean.getDomain());
 			}
-		} catch (Exception e) {
+		} catch (RuntimeException | NoAccessException | PointOfContactException | ExperimentConfigException |
+				 ApplicationException | ApplicationProviderException | CompositionException |
+				 FileException | CharacterizationException | PublicationException | SynthesisException e) {
 			// delete the already persisted new sample in case of error
 			try {
 				this.deleteSampleWhenError(newSample0.getName());
@@ -736,12 +790,12 @@ public class SampleServiceLocalImpl extends BaseServiceLocalImpl implements Samp
 			}
 			String err = "Error in cloning the sample " + originalSampleName + ". " + e.getMessage();
 			logger.error(err, e);
-			throw new SampleException(err, e);
+			throw e;
 		}
 		return newSampleBean;
 	}
 
-	private void saveClonedPOCs(SampleBean sampleBean) throws Exception {
+	private void saveClonedPOCs(SampleBean sampleBean) throws PointOfContactException, NoAccessException {
 		savePointOfContact(sampleBean.getPrimaryPOCBean());
 		if (sampleBean.getOtherPOCBeans() != null && !sampleBean.getOtherPOCBeans().isEmpty()) {
 			for (PointOfContactBean pocBean : sampleBean.getOtherPOCBeans()) {
@@ -752,8 +806,10 @@ public class SampleServiceLocalImpl extends BaseServiceLocalImpl implements Samp
 
 
 
-	private void saveClonedCharacterizations(String origSampleName,
-			SampleBean sampleBean) throws Exception {
+	private void saveClonedCharacterizations(String origSampleName, SampleBean sampleBean)
+			throws ExperimentConfigException, NoAccessException, ApplicationException,
+			ApplicationProviderException, FileException, CharacterizationException
+	{
 		if (sampleBean.getDomain().getCharacterizationCollection() != null) {
 			String newSampleName = sampleBean.getDomain().getName();
 			for (Characterization achar : sampleBean.getDomain()
@@ -779,8 +835,9 @@ public class SampleServiceLocalImpl extends BaseServiceLocalImpl implements Samp
 		}
 	}
 
-	private void saveClonedSynthesis(SampleBean origSampleBean, SampleBean sampleBean) throws Exception {
-
+	private void saveClonedSynthesis(SampleBean origSampleBean, SampleBean sampleBean)
+			throws SynthesisException, NoAccessException, ApplicationException,
+			       ApplicationProviderException, FileException {
 
 		if (sampleBean.getDomain().getSynthesis()!=null){
 			synthesisService.createSynthesis(sampleBean);
@@ -796,8 +853,10 @@ public class SampleServiceLocalImpl extends BaseServiceLocalImpl implements Samp
 		}
 	}
 
-	private void saveClonedSynthesisMaterials(SampleBean origSampleBean, SampleBean sampleBean)throws Exception{
-
+	private void saveClonedSynthesisMaterials(SampleBean origSampleBean, SampleBean sampleBean)
+			throws ApplicationException, ApplicationProviderException, FileException,
+			SynthesisException, NoAccessException
+		{
 		Collection<SynthesisMaterial> materials = sampleBean.getDomain().getSynthesis().getSynthesisMaterials();
 		for(SynthesisMaterial material:materials){
 			SynthesisMaterialBean materialBean = new SynthesisMaterialBean(material);
@@ -824,7 +883,10 @@ public class SampleServiceLocalImpl extends BaseServiceLocalImpl implements Samp
 		}
 	}
 
-	private void saveClonedSynthesisFunctionalization(SampleBean origSampleBean, SampleBean sampleBean) throws Exception {
+	private void saveClonedSynthesisFunctionalization(SampleBean origSampleBean, SampleBean sampleBean)
+			throws ApplicationException, ApplicationProviderException, FileException,
+			SynthesisException, NoAccessException
+	{
 		Collection<SynthesisFunctionalization> functionalizations = sampleBean.getDomain().getSynthesis().getSynthesisFunctionalizations();
 		for(SynthesisFunctionalization functionalization: functionalizations){
 			SynthesisFunctionalizationBean functionalizationBean = new SynthesisFunctionalizationBean(functionalization);
@@ -843,7 +905,10 @@ public class SampleServiceLocalImpl extends BaseServiceLocalImpl implements Samp
 		}
 	}
 
-	private void saveClonedSynthesisPurification(SampleBean origSampleBean, SampleBean sampleBean) throws Exception {
+	private void saveClonedSynthesisPurification(SampleBean origSampleBean, SampleBean sampleBean)
+			throws SynthesisException, NoAccessException, ApplicationException,
+			ApplicationProviderException, FileException
+	{
 		Collection<SynthesisPurification> purifications = sampleBean.getDomain().getSynthesis().getSynthesisPurifications();
 		for(SynthesisPurification purification: purifications){
 			SynthesisPurificationBean purificationBean = new SynthesisPurificationBean(purification);
@@ -862,8 +927,12 @@ public class SampleServiceLocalImpl extends BaseServiceLocalImpl implements Samp
 		}
 	}
 
-
-	private void saveClonedComposition(SampleBean origSampleBean, SampleBean sampleBean) throws Exception {
+	//
+	// Decided to break this out from function below to isolate cloning issue
+	//
+	private void saveClonedCompositionFiles(SampleBean origSampleBean, SampleBean sampleBean)
+			throws ApplicationException, ApplicationProviderException,
+			       FileException, NoAccessException, CompositionException {
 		String origSampleName = origSampleBean.getDomain().getName();
 		String newSampleName = sampleBean.getDomain().getName();
 
@@ -873,9 +942,19 @@ public class SampleServiceLocalImpl extends BaseServiceLocalImpl implements Samp
 				for (File file : sampleBean.getDomain().getSampleComposition().getFileCollection()) {
 					FileBean fileBean = new FileBean(file);
 					fileUtils.updateClonedFileInfo(fileBean, origSampleName, newSampleName);
-					compositionService.saveCompositionFile(sampleBean, fileBean);
+					compositionService.saveCompositionFile(sampleBean, fileBean, true);
 				}
 			}
+		}
+	}
+
+	private void saveClonedComposition(SampleBean origSampleBean, SampleBean sampleBean)
+			throws ApplicationException, ApplicationProviderException,
+			       FileException, NoAccessException, CompositionException {
+		String origSampleName = origSampleBean.getDomain().getName();
+		String newSampleName = sampleBean.getDomain().getName();
+
+		if (sampleBean.getDomain().getSampleComposition() != null) {
 
 			// save nanomaterial entities
 			if (sampleBean.getDomain().getSampleComposition().getNanomaterialEntityCollection() != null) {
@@ -926,8 +1005,7 @@ public class SampleServiceLocalImpl extends BaseServiceLocalImpl implements Samp
 		}
 	}
 
-	private void updateAssociatedElementId(SampleComposition comp,
-			AssociatedElement associatedElement) {
+	private void updateAssociatedElementId(SampleComposition comp, AssociatedElement associatedElement) {
 		if (associatedElement != null) {
 			int copyInd = associatedElement.getCreatedBy().indexOf(
 					Constants.AUTO_COPY_ANNOTATION_PREFIX);
@@ -978,8 +1056,8 @@ public class SampleServiceLocalImpl extends BaseServiceLocalImpl implements Samp
 		}
 	}
 
-	private void saveClonedPublications(SampleBean origSampleBean,
-			SampleBean sampleBean) throws Exception {
+	private void saveClonedPublications(SampleBean origSampleBean, SampleBean sampleBean)
+			throws PublicationException, NoAccessException {
 		if (sampleBean.getDomain().getPublicationCollection() != null) {
 			for (Publication pub : sampleBean.getDomain()
 					.getPublicationCollection()) {
@@ -994,7 +1072,11 @@ public class SampleServiceLocalImpl extends BaseServiceLocalImpl implements Samp
 		}
 	}
 
-	private void deleteSampleWhenError(String sampleName) throws Exception {
+	private void deleteSampleWhenError(String sampleName)
+		throws ApplicationException, ApplicationProviderException,
+			   NotExistException, NoAccessException,
+			   CharacterizationException, ChemicalAssociationViolationException, CompositionException
+	{
 		Sample sample = this.findFullyLoadedSampleByName(sampleName);
 		CaNanoLabApplicationService appService = (CaNanoLabApplicationService) ApplicationServiceProvider
 				.getApplicationService();
@@ -1137,7 +1219,8 @@ public class SampleServiceLocalImpl extends BaseServiceLocalImpl implements Samp
 		return sortedNames;
 	}
 
-	public void assignAccessibility(AccessControlInfo accessInfo, Sample sample) throws SampleException, NoAccessException
+	public void assignAccessibility(AccessControlInfo accessInfo, Sample sample)
+			throws SampleException, NoAccessException
 	{
 		Long sampleId = sample.getId();
 		
@@ -1177,9 +1260,7 @@ public class SampleServiceLocalImpl extends BaseServiceLocalImpl implements Samp
 				springSecurityAclService.saveAccessForChildObject(sampleId, SecureClassesEnum.SAMPLE.getClazz(), 
 						  										  sample.getSampleComposition().getId(), SecureClassesEnum.COMPOSITION.getClazz());
 			}*/
-		} catch (NoAccessException e) {
-			throw e;
-		} catch (Exception e) {
+		} catch (ApplicationException | ApplicationProviderException | NotExistException e) {
 			String err = "Error in assigning accessibility to the sample " + sampleId + ". " + e.getMessage();
 			logger.error(err, e);
 			throw new SampleException(err, e);
@@ -1198,10 +1279,8 @@ public class SampleServiceLocalImpl extends BaseServiceLocalImpl implements Samp
 			sample = this.findFullyLoadedSampleByName(sample.getName());
 			// keep POC public
 			//Characterization and Composition access automatically deleted due to inheritance set up.
-			
-		} catch (NoAccessException e) {
-			throw e;
-		} catch (Exception e) {
+
+		} catch (ApplicationException | ApplicationProviderException | NotExistException e) {
 			String err = "Error in deleting the access for sample " + sampleId + ". " + e.getMessage();
 			logger.error(err, e);
 			throw new SampleException(err, e);

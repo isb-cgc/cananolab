@@ -32,9 +32,11 @@ export class SampleEditComponent implements OnInit, OnDestroy{
     pointOfContact;
     pointOfContactIndex;
     sampleId = -1;
+    recipientList;
     toolHeadingNameSearchSample = 'Update Sample';
     submitReviewButton = true;
     piiConfirmed = false;
+    editingAccessRow = false;
 
 
     constructor( private router: Router, private navigationService: NavigationService, private route: ActivatedRoute, private httpClient: HttpClient,
@@ -45,6 +47,7 @@ export class SampleEditComponent implements OnInit, OnDestroy{
     ngOnInit(): void{
         this.navigationService.setCurrentSelectedItem(0);
         this.currentDropdownValues = {};
+        this.recipientList;
         this.errors = {};
         this.route.params.subscribe(
             ( params: Params ) => {
@@ -75,6 +78,7 @@ export class SampleEditComponent implements OnInit, OnDestroy{
 
     addAccess() {
         this.theAccessIndex = -1;
+        this.recipientList = null;
         this.theAccess = {
             accessType: '',
             recipient: '',
@@ -87,27 +91,36 @@ export class SampleEditComponent implements OnInit, OnDestroy{
         }, 100);
         this.getUserGroups();
         this.getUsers();
-
+        this.editingAccessRow = false;
     }
 
     saveAccess() {
         this.data.theAccess = this.theAccess;
+        let keywordString = this.data['keywords'];
         this.data['keywords'] = this.data['keywords'].split('\n');
-        this.apiService.doPost(Consts.QUERY_SAMPLE_SAVE_ACCESS, this.data).subscribe(data => {
+        let url = this.apiService.doPost(Consts.QUERY_SAMPLE_SAVE_ACCESS, this.data);
+        url.subscribe(data => {
             this.data = data;
             this.data['keywords'] = this.joinKeywords(this.data['keywords']);
             this.dataTrailer = JSON.parse(JSON.stringify(this.data));
-            this.theAccessIndex = null;
-        })
+        },
+        error=> {
+            this.data['keywords'] = keywordString;
+            this.errors= error;
+        });
+
+        this.theAccessIndex = null;
     }
 
     changeAccessType(event: string) {
         this.theAccess.recipient = '';
         this.theAccess.roleName = '';
+        this.recipientList=null;
         // The value "role" is sent in only when the "Access By" is set to public
         if (event === 'role') {
             this.theAccess['recipient'] = 'ROLE_ANONYMOUS';
             this.theAccess['recipientDisplayName'] = 'Public';
+            this.theAccess['roleName']="R";
         }
     }
 
@@ -118,13 +131,36 @@ export class SampleEditComponent implements OnInit, OnDestroy{
         if (confirm('Are you sure you wish to delete this access?')) {
             this.theAccessIndex = null;
             this.data['theAccess'] = this.theAccess;
+            let keywordString = this.data['keywords'];
             this.data['keywords'] = this.data['keywords'].split('\n');
             this.apiService.doPost(Consts.QUERY_SAMPLE_DELETE_ACCESS, this.data).subscribe(data => {
                 this.data = data;
                 this.data.keywords = this.joinKeywords(this.data['keywords']);
                 this.dataTrailer = JSON.parse(JSON.stringify(this.data));
-            })
+            },
+            error => {
+                this.data['keywords'] = keywordString;
+                this.errors = error;
+            });
         }
+    }
+
+    getRecipientList() {
+        var url;
+        if (this.theAccess.accessType=='group') {
+            url = this.apiService.doGet(Consts.QUERY_GET_COLLABORATION_GROUPS,'searchStr=');
+        }
+        if (this.theAccess.accessType=='user') {
+            url = this.apiService.doGet(Consts.QUERY_GET_USERS,'searchStr=');
+        }
+        url.subscribe(data=> {
+            this.recipientList=data;
+            this.errors={};
+        },
+        error=> {
+            this.errors=error;
+
+        })
     }
 
     delete() {
@@ -145,13 +181,15 @@ export class SampleEditComponent implements OnInit, OnDestroy{
     editAccess(index, access) {
         this.theAccessIndex = index;
         this.theAccess = access;
+        this.recipientList=null;
         setTimeout(function () {
             document.getElementById('accessForm').scrollIntoView();
         }, 100);
         this.getUserGroups();
         this.getUsers();
-
+        this.editingAccessRow = true;
     }
+
     // set pointer fields to old values when adding other //
     addOtherValue(field, currentValue) {
         this.currentDropdownValues[field] = currentValue;
@@ -217,12 +255,9 @@ export class SampleEditComponent implements OnInit, OnDestroy{
         } else {
             this.data['pointOfContacts'][this.pointOfContactIndex] = this.pointOfContact;
         }
-        // WJRL If there is an error in saving a POC and you try again, this line dumps with "TypeError: this.data.keywords.split is not a function"
-        // BECAUSE IT IS AN ARRAY OF STRINGS
-        console.log(this.data['keywords']);
-        if ((typeof this.data['keywords']) === 'string') {
-          this.data['keywords'] = this.data['keywords'].split('\n');
-        }
+
+        let keywordString = this.data['keywords'];
+        this.data['keywords'] = this.data['keywords'].split('\n');
 
         this.apiService.doPost(Consts.QUERY_SAMPLE_POC_UPDATE_SAVE, this.data).subscribe(data => {
             data['keywords'] = this.joinKeywords(this.data['keywords'])
@@ -233,6 +268,7 @@ export class SampleEditComponent implements OnInit, OnDestroy{
         },
         errors => {
             console.log(errors);
+            this.data['keywords'] = keywordString;
             this.errors = errors;
         })
     }
@@ -279,6 +315,7 @@ export class SampleEditComponent implements OnInit, OnDestroy{
         let su = {};
         su['sampleName'] = this.data['sampleName'];
         su['sampleId'] = this.data['sampleId'];
+        let keywordString = su['keywords'];
         su['keywords'] = this.data['keywords'].split('\n');
 
         this.apiService.doPost( Consts.QUERY_SAMPLE_UPDATE, su ).subscribe(
@@ -289,6 +326,8 @@ export class SampleEditComponent implements OnInit, OnDestroy{
                 this.message = 'Sample Updated'
             },
             ( err ) => {
+                su['keywords'] = keywordString;
+                this.errors = err;
                 console.log( 'ERROR QUERY_SAMPLE_UPDATE: ', err );
             } );
 
@@ -305,6 +344,16 @@ export class SampleEditComponent implements OnInit, OnDestroy{
         this.apiService.doGet(Consts.QUERY_GET_USER_GROUPS, 'searchStr').subscribe(data => {
             this.userGroups = data;
         })
+    }
+
+    shouldShowAccessEditButton(group) {
+        if (group.recipient == 'ROLE_CURATOR') {
+            return false;
+        } else if (group.recipient == 'ROLE_ANONYMOUS') {
+            return this.data != null && this.data['isCuratorEditing'];
+        }
+
+        return true;
     }
 
     getSampleEditData(){
@@ -352,6 +401,7 @@ export class SampleEditComponent implements OnInit, OnDestroy{
 
     onAvailabilityDeleteClick( ){
         if (confirm('Are you sure you wish to delete the data availability metric?')) {
+            let keywordString = this.data['keywords'];
             this.data['keywords'] = this.data['keywords'].split('\n');
 
             this.apiService.doPost( Consts.QUERY_SAMPLE_DELETE_AVAILABILITY, this.data).subscribe(
@@ -361,6 +411,7 @@ export class SampleEditComponent implements OnInit, OnDestroy{
                     this.dataTrailer = JSON.parse(JSON.stringify(this.data));
                 },
                 ( err ) => {
+                    this.data['keywords'] = keywordString;
                     console.log( 'ERROR QUERY_SAMPLE_AVAILABILITY: ', err );
                 } );
         }

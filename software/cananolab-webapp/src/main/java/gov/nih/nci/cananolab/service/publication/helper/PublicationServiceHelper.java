@@ -3,10 +3,12 @@ package gov.nih.nci.cananolab.service.publication.helper;
 import gov.nih.nci.cananolab.domain.common.Publication;
 import gov.nih.nci.cananolab.domain.particle.Sample;
 import gov.nih.nci.cananolab.exception.NoAccessException;
+import gov.nih.nci.cananolab.exception.ApplicationProviderException;
 import gov.nih.nci.cananolab.security.dao.AclDao;
 import gov.nih.nci.cananolab.security.enums.CaNanoRoleEnum;
 import gov.nih.nci.cananolab.security.enums.SecureClassesEnum;
 import gov.nih.nci.cananolab.security.service.SpringSecurityAclService;
+import gov.nih.nci.cananolab.system.applicationservice.ApplicationException;
 import gov.nih.nci.cananolab.system.applicationservice.CaNanoLabApplicationService;
 import gov.nih.nci.cananolab.util.Comparators;
 import gov.nih.nci.cananolab.util.Constants;
@@ -71,15 +73,16 @@ public class PublicationServiceHelper
 		// Set<String> compositionPublicationIds = new HashSet<String>();
 		// Set<String> otherPublicationIds = new HashSet<String>();
 		// Set<String> allPublicationIds = new HashSet<String>();
-		Set<Publication> samplePublications = new HashSet<Publication>();
-		Set<Publication> compositionPublications = new HashSet<Publication>();
-		Set<Publication> otherPublications = new HashSet<Publication>();
+		Set<Publication> samplePublications = null;
+		Set<Publication> compositionPublications = null;
+		Set<Publication> otherPublications = null;
 		Set<Publication> allPublications = new HashSet<Publication>();
 
 		// check if sample is accessible
 		if (!StringUtils.isEmpty(sampleName)) {
 			List<Publication> publications = this
 					.findPublicationsBySampleName(sampleName);
+			samplePublications = new HashSet<Publication>();
 			samplePublications.addAll(publications);
 			// allPublicationIds.addAll(samplePublicationIds);
 			allPublications.addAll(samplePublications);
@@ -115,12 +118,18 @@ public class PublicationServiceHelper
 								.add(Projections.property("createdDate")));
 
 		if (!StringUtils.isEmpty(title)) {
+			if (otherPublications == null) {
+				otherPublications = new HashSet<Publication>();
+			}
 			TextMatchMode titleMatchMode = new TextMatchMode(title);
 			crit.add(Restrictions.ilike("title",
 					titleMatchMode.getUpdatedText(),
 					titleMatchMode.getMatchMode()));
 		}
 		if (!StringUtils.isEmpty(category)) {
+			if (otherPublications == null) {
+				otherPublications = new HashSet<Publication>();
+			}
 			TextMatchMode categoryMatchMode = new TextMatchMode(category);
 			crit.add(Restrictions.ilike("category",
 					categoryMatchMode.getUpdatedText(),
@@ -129,6 +138,9 @@ public class PublicationServiceHelper
 
 		// pubMedId
 		if (!StringUtils.isEmpty(pubMedId)) {
+			if (otherPublications == null) {
+				otherPublications = new HashSet<Publication>();
+			}
 			TextMatchMode pubMedIdMatchMode = new TextMatchMode(pubMedId);
 			Long pubMedIdLong = null;
 			try {
@@ -140,6 +152,9 @@ public class PublicationServiceHelper
 			crit.add(Restrictions.eq("pubMedId", pubMedIdLong));
 		}
 		if (!StringUtils.isEmpty(digitalObjectId)) {
+			if (otherPublications == null) {
+				otherPublications = new HashSet<Publication>();
+			}
 			TextMatchMode digitalObjectIdMatchMode = new TextMatchMode(
 					digitalObjectId);
 			crit.add(Restrictions.ilike("digitalObjectId",
@@ -149,7 +164,9 @@ public class PublicationServiceHelper
 
 		// researchArea
 		if (researchArea != null && researchArea.length > 0) {
-
+			if (otherPublications == null) {
+				otherPublications = new HashSet<Publication>();
+			}
 			Disjunction disjunction = Restrictions.disjunction();
 			for (String research : researchArea) {
 				Criterion crit1 = Restrictions.like("researchArea", research,
@@ -161,6 +178,9 @@ public class PublicationServiceHelper
 
 		// keywords
 		if (keywords != null && keywords.length > 0) {
+			if (otherPublications == null) {
+				otherPublications = new HashSet<Publication>();
+			}
 			Disjunction disjunction = Restrictions.disjunction();
 			crit.createAlias("keywordCollection", "keyword");
 			for (String keyword : keywords) {
@@ -173,6 +193,9 @@ public class PublicationServiceHelper
 
 		// authors
 		if (authors != null && authors.length > 0) {
+			if (otherPublications == null) {
+				otherPublications = new HashSet<Publication>();
+			}
 			Disjunction disjunction = Restrictions.disjunction();
 			crit.createAlias("authorCollection", "author");
 			for (String author : authors) {
@@ -194,7 +217,10 @@ public class PublicationServiceHelper
 
 		CaNanoLabApplicationService appService = (CaNanoLabApplicationService) ApplicationServiceProvider.getApplicationService();
 		List results = appService.query(crit);
-		for(int i = 0; i < results.size(); i++){
+		for (int i = 0; i < results.size(); i++){
+			if (otherPublications == null) {
+				otherPublications = new HashSet<Publication>();
+			}
 			Object[] row = (Object[]) results.get(i);
 			// otherPublicationIds.add(obj.toString());
 			Publication publication = new Publication();
@@ -204,8 +230,14 @@ public class PublicationServiceHelper
 			otherPublications.add(publication);
 		}
 		// allPublicationIds.addAll(otherPublicationIds);
-		allPublications.addAll(otherPublications);
 
+		//
+		// At this point, we either have an empty list of otherPubs, or the result
+		// of the applied filters:
+		//
+		if (otherPublications != null) {
+			allPublications.addAll(otherPublications);
+		}
 		// find the union of all publication Ids
 		// if (!samplePublicationIds.isEmpty()) {
 		// allPublicationIds.retainAll(samplePublicationIds);
@@ -217,13 +249,19 @@ public class PublicationServiceHelper
 		// allPublicationIds.retainAll(otherPublicationIds);
 		// }
 		//
-		if (!samplePublications.isEmpty()) {
+		//
+		// WJRL 4/21/23 See issue #332. There was a flaw in equating an empty list
+		// with a search not having been applied, not that the search was applied and
+		// returned zero objects! Above code now makes null equivalence the condition
+		// for the filter not having been applied.
+		//
+		if (samplePublications != null) {
 			allPublications.retainAll(samplePublications);
 		}
-		if (!compositionPublications.isEmpty()) {
+		if (compositionPublications != null) {
 			allPublications.retainAll(compositionPublications);
 		}
-		if (!otherPublications.isEmpty()) {
+		if (otherPublications != null) {
 			allPublications.retainAll(otherPublications);
 		}
 		// order publications by createdDate
@@ -267,7 +305,7 @@ public class PublicationServiceHelper
 	}
 
 	public Publication findPublicationByKey(String keyName, Object keyValue)
-			throws Exception {
+			throws NoAccessException, ApplicationProviderException, ApplicationException {
 		CaNanoLabApplicationService appService = (CaNanoLabApplicationService) ApplicationServiceProvider
 				.getApplicationService();
 
@@ -310,7 +348,8 @@ public class PublicationServiceHelper
         return (publicData != null) ? publicData.size() : 0;
 	}
 
-	public String[] findSampleNamesByPublicationId(String publicationId) throws Exception
+	public String[] findSampleNamesByPublicationId(String publicationId)
+			throws NoAccessException, ApplicationProviderException, ApplicationException
 	{
 		if (!springSecurityAclService.currentUserHasReadPermission(Long.valueOf(publicationId), SecureClassesEnum.PUBLICATION.getClazz()) &&
 			!springSecurityAclService.currentUserHasWritePermission(Long.valueOf(publicationId), SecureClassesEnum.PUBLICATION.getClazz())) {
@@ -562,7 +601,14 @@ public class PublicationServiceHelper
 		}
 		crit.setFetchMode("publicationCollection", FetchMode.JOIN);
 		List results = appService.query(crit);
-		for (Object result : results) {
+		//
+		// WJRL 4/21/23 See issue #333. The ListProxy class does not currently implement "public Iterator<E> iterator()"
+		// So the : operator is useless for the moment
+		//
+		//for (Object result : results) {
+
+		for (int i = 0; i < results.size(); i++) {
+			Object result =  results.get(i);
 			sample = (Sample) result;
 			if (!springSecurityAclService.currentUserHasReadPermission(sample.getId(), SecureClassesEnum.SAMPLE.getClazz()) &&
 				!springSecurityAclService.currentUserHasWritePermission(sample.getId(), SecureClassesEnum.SAMPLE.getClazz())) {
@@ -676,8 +722,8 @@ public class PublicationServiceHelper
 	 * @return
 	 * @throws Exception
 	 */
-	public List<Sample> findSamplesByPublicationId(long pubId) 
-			throws Exception {
+	public List<Sample> findSamplesByPublicationId(long pubId)
+			throws ApplicationException, ApplicationProviderException {
 
 		List<String> sampleIds = new ArrayList<String>();
 
@@ -728,7 +774,7 @@ public class PublicationServiceHelper
 		return orderedSamples;
 	}
 	
-	public List<String> getAllPublications() throws Exception {
+	public List<String> getAllPublications() throws ApplicationProviderException, ApplicationException {
 		CaNanoLabApplicationService appService = (CaNanoLabApplicationService) ApplicationServiceProvider
 				.getApplicationService();
 		HQLCriteria crit = new HQLCriteria(

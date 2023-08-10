@@ -13,10 +13,8 @@ import gov.nih.nci.cananolab.dto.common.DataReviewStatusBean;
 import gov.nih.nci.cananolab.dto.common.PointOfContactBean;
 import gov.nih.nci.cananolab.dto.particle.DataAvailabilityBean;
 import gov.nih.nci.cananolab.dto.particle.SampleBean;
-import gov.nih.nci.cananolab.exception.DuplicateEntriesException;
-import gov.nih.nci.cananolab.exception.NoAccessException;
-import gov.nih.nci.cananolab.exception.NotExistException;
-import gov.nih.nci.cananolab.exception.SampleException;
+import gov.nih.nci.cananolab.exception.*;
+import gov.nih.nci.cananolab.exception.SecurityException;
 import gov.nih.nci.cananolab.restful.core.BaseAnnotationBO;
 import gov.nih.nci.cananolab.restful.util.InputValidationUtil;
 import gov.nih.nci.cananolab.restful.util.PropertyUtil;
@@ -37,6 +35,7 @@ import gov.nih.nci.cananolab.security.utils.SpringSecurityUtil;
 import gov.nih.nci.cananolab.service.curation.CurationService;
 import gov.nih.nci.cananolab.service.sample.DataAvailabilityService;
 import gov.nih.nci.cananolab.service.sample.SampleService;
+import gov.nih.nci.cananolab.system.applicationservice.ApplicationException;
 import gov.nih.nci.cananolab.ui.form.SampleForm;
 import gov.nih.nci.cananolab.util.Comparators;
 import gov.nih.nci.cananolab.util.StringUtils;
@@ -247,7 +246,9 @@ public class SampleBO extends BaseAnnotationBO {
 	 * @return
 	 * @throws Exception
 	 */
-	private Boolean hasNullPOC(HttpServletRequest request, SampleBean sampleBean, List<String> errors) throws Exception {
+	private Boolean hasNullPOC(HttpServletRequest request, SampleBean sampleBean, List<String> errors)
+			throws SampleException, NoAccessException, NotExistException
+	{
 
 		//What's the buss logic here?
 
@@ -276,7 +277,9 @@ public class SampleBO extends BaseAnnotationBO {
 	 * @return
 	 * @throws Exception
 	 */
-	public SampleEditGeneralBean summaryEdit(String sampleId, HttpServletRequest request) throws Exception {
+	public SampleEditGeneralBean summaryEdit(String sampleId, HttpServletRequest request)
+			throws LookupException, PointOfContactException, DataAvailabilityException,
+			       NoAccessException, SecurityException, SampleException, NotExistException, CurationException {
 
 		SampleEditGeneralBean sampleEdit = new SampleEditGeneralBean();		
 		SampleBean sampleBean = setupSampleById(sampleId, request);
@@ -325,11 +328,13 @@ public class SampleBO extends BaseAnnotationBO {
 		return sampleEdit;
 	}
 	
-	public void transferSampleBeanData(HttpServletRequest request, 
-			CurationService curatorService, SampleBean sampleBean, String[] availableEntityNames, SampleEditGeneralBean sampleEdit) 
-					throws Exception {
+	public void transferSampleBeanData(HttpServletRequest request, CurationService curatorService,
+									   SampleBean sampleBean, String[] availableEntityNames,
+									   SampleEditGeneralBean sampleEdit)
+			throws CurationException, NoAccessException, PointOfContactException, LookupException
+	{
 
-		logger.debug("Start transferming data to simple bean");
+		logger.debug("Start transferring data to simple bean");
 
 		sampleEdit.setSampleName(sampleBean.getDomain().getName());
 		sampleEdit.setSampleId(sampleBean.getDomain().getId());
@@ -466,7 +471,9 @@ public class SampleBO extends BaseAnnotationBO {
 	 * @param request
 	 * @throws Exception
 	 */
-	private void setupLookups(HttpServletRequest request) throws Exception {
+	private void setupLookups(HttpServletRequest request)
+		throws LookupException, PointOfContactException
+	{
 		InitSampleSetup.getInstance().setPOCDropdowns(request, sampleService);
 		SortedSet<String> organizationNames = sampleService.getAllOrganizationNames();
 		request.getSession().setAttribute("allOrganizationNames", organizationNames);
@@ -707,8 +714,7 @@ public class SampleBO extends BaseAnnotationBO {
 	 * @return
 	 * @throws Exception
 	 */
-	public SampleEditGeneralBean clone(SampleEditGeneralBean simpleEditBean, HttpServletRequest request) throws Exception
-	{		
+	public SampleEditGeneralBean clone(SampleEditGeneralBean simpleEditBean, HttpServletRequest request) {
 		String newNameForClone = simpleEditBean.getNewSampleName();
 		String orgSampleName = simpleEditBean.getSampleName();
 		String error = validateSampleName(newNameForClone);
@@ -720,25 +726,31 @@ public class SampleBO extends BaseAnnotationBO {
 		// Instrumentation to track issue #54
 		try {
 			clonedSampleBean = sampleService.cloneSample(orgSampleName, newNameForClone);
+			//what's this for?
+			request.setAttribute("sampleId", clonedSampleBean.getDomain().getId().toString());
+			return summaryEdit(String.valueOf(clonedSampleBean.getDomain().getId()), request);
 		} catch (NotExistException e) {
 			error =  PropertyUtil.getPropertyReplacingToken("sample", "error.cloneSample.noOriginalSample",  "0", orgSampleName);
-			logger.error(error, e);
+			logger.info("User entered an non-existing original ID for cloning: " + newNameForClone);
 			return wrapErrorInEditBean(error);
 		} catch (DuplicateEntriesException e) {
-			error =  PropertyUtil.getProperty("sample", "error.cloneSample.duplicateSample");
+			error = PropertyUtil.getProperty("sample", "error.cloneSample.duplicateSample");
+			logger.info("User entered an existing ID for cloning: " + newNameForClone);
+			return wrapErrorInEditBean(error);
+		} catch (NoAccessException e) {
+			error = PropertyUtil.getPropertyReplacingToken("sample", "error.cloneSample.nonPublicData",  "0", orgSampleName);
 			logger.error(error, e);
 			return wrapErrorInEditBean(error);
-		} catch (SampleException e) {
+		} catch (RuntimeException | SampleException | PointOfContactException |
+				 ExperimentConfigException | ApplicationException | CompositionException |
+				 FileException | CharacterizationException | PublicationException | SynthesisException |
+				 LookupException | DataAvailabilityException | SecurityException |
+				 CurationException | ApplicationProviderException e) {
+			// TO DO: Make individual messages for each error type
 			error =  PropertyUtil.getProperty("sample", "error.cloneSample");
 			logger.error(error, e);
 			return wrapErrorInEditBean(error);
 		}
-
-
-		//what's this for?
-		request.setAttribute("sampleId", clonedSampleBean.getDomain().getId().toString());
-
-		return summaryEdit(String.valueOf(clonedSampleBean.getDomain().getId()), request);
 	}
 
 	//

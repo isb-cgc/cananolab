@@ -75,7 +75,7 @@ public class SampleExporter {
 		HSSFCellStyle hlinkStyle = wb.createCellStyle();
 		HSSFFont hlinkFont = wb.createFont();
 		hlinkFont.setUnderline(HSSFFont.U_SINGLE);
-		hlinkFont.setColor(HSSFColor.BLUE.index);
+		hlinkFont.setColor(HSSFColor.HSSFColorPredefined.BLUE.getIndex());
 		hlinkStyle.setFont(hlinkFont);
 
 		int rowIndex = 0;

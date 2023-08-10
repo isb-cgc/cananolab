@@ -21,7 +21,6 @@ app.yaml
 vpproject/
 
 software/cananolab-webapp/build.properties
-software/cananolab-webapp/project.properties
 
 software/common/lib/globus/
 software/common/lib/sdk/
