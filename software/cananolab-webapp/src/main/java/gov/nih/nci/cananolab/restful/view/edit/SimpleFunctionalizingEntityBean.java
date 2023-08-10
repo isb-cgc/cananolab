@@ -220,6 +220,7 @@ public class SimpleFunctionalizingEntityBean {
 		for(FileBean files : bean.getFiles()){
 			SimpleFileBean fBean = new SimpleFileBean();
 
+			// WJRL 2/6/23: File Description is HTML escaped with breaks
 			fBean.setDescription(files.getDescription());
 			fBean.setId(files.getDomainFile().getId());
 			fBean.setKeywordsStr(files.getKeywordsStr());

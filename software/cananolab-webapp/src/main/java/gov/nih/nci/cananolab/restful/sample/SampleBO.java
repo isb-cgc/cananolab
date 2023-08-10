@@ -741,6 +741,10 @@ public class SampleBO extends BaseAnnotationBO {
 		return summaryEdit(String.valueOf(clonedSampleBean.getDomain().getId()), request);
 	}
 
+	//
+	// WJRL 2/2023: This is what gets called from /rest/sample/deleteSample (the lower left red button
+	// on the sample edit page). This works.
+	//
 	public String delete(String sampleId, HttpServletRequest request) throws Exception {
 
 		SampleBean sampleBean = findMatchSampleInSession(request, Long.parseLong(sampleId));
@@ -1242,6 +1246,13 @@ public class SampleBO extends BaseAnnotationBO {
 
 	}
 
+
+
+	//
+	// WJRL 2/2023 This is what gets called when a sample is deleted from the user's workspace using
+	// /rest/deleteSampleFromWorkspace. This caused issue #220, as permissions to delete (and view!)
+	// were removed prior to the deletion attempt. This now matches "delete()" function and works correctly.
+	//
 	public String deleteSampleById(String sampleId, HttpServletRequest request) throws Exception
 	{
 		SampleBean sampleBean = sampleService.findSampleById(sampleId, true);
@@ -1253,8 +1264,6 @@ public class SampleBO extends BaseAnnotationBO {
 		// remove all access associated with sample takes too long. Set up the
 		// delete job in scheduler
 		//InitSampleSetup.getInstance().updateCSMCleanupEntriesInContext(sampleBean.getDomain(), request, sampleService);
-		
-		springSecurityAclService.deleteAccessObject(Long.parseLong(sampleId), SecureClassesEnum.SAMPLE.getClazz());
 
 		// update data review status to "DELETED"
 		updateReviewStatusTo(DataReviewStatusBean.DELETED_STATUS, request,
@@ -1263,6 +1272,8 @@ public class SampleBO extends BaseAnnotationBO {
 			dataAvailabilityServiceDAO.deleteDataAvailability(sampleBean.getDomain().getId().toString());
 		}
 		sampleService.deleteSample(sampleBean.getDomain().getName());
+		// WJRL 2/2023 Moving this here matches delete()
+		springSecurityAclService.deleteAccessObject(Long.parseLong(sampleId), SecureClassesEnum.SAMPLE.getClazz());
 		request.getSession().removeAttribute("theSample");
 
 		return PropertyUtil.getPropertyReplacingToken("sample", "message.deleteSample", "0", sampleName);

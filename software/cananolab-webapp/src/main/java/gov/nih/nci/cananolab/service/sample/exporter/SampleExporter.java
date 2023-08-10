@@ -169,6 +169,7 @@ public class SampleExporter {
 				List<LinkableItem> items = (List<LinkableItem>) columns
 						.get(key);
 				for (LinkableItem item : items) {
+					// WJRL 2/6/23: Item display name is HTML escaped with breaks
 					sb.append(item.getDisplayName()).append(' ');
 				}
 				ExportUtils.createCell(row, columnIndex++, sb.toString());

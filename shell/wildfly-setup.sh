@@ -34,14 +34,16 @@ function check_for_wildfly() {
 ############## END Helper Functions ##############
 
 # This check must differentiate between CircleCI and an AppEngine VM or a local dev instance.
-# As a result, IS_DEV should only ever be set in local developer .env files; setting it here
+# As a result, IS_DEV should only ever be set in local developer .env files or env.sh files; setting it here
 # will break the deployment build.
 if [ "${IS_DEV,,}" != "true" ]; then
+  echo "[STATUS] Detected CircleCI or AppEngine Build"
   export HOME=/local
   export SETTINGS=${HOME}/content
   export CANANODIR=${SETTINGS}/caNanoLab
   export $(cat ${SETTINGS}/.env | grep -v ^# | xargs) 2> /dev/null
 else
+  echo "[STATUS] Detected local development build."
   if ( "/home/vagrant/cananolab/shell/get_env.sh" ) ; then
     export $(cat ${ENV_FILE_PATH} | grep -v ^# | xargs) 2> /dev/null
   else
@@ -75,15 +77,17 @@ if [ $? -ne 0 ]; then
 fi
 
 echo "Wildfly is now running - continuing setup and deployment:"
-# If this is a new database, uncomment these lines *once* to add an admin user
-# echo "Adding admin console user."
-# ${WILDFLY_BIN}/add-user.sh -a -u "${WILDFLY_ADMIN}" -p "${WILDFLY_ADMIN_PASSWORD}" -g "admin"
+# Add an admin user for local deployment
+if [ "${IS_DEV,,}" == "true" ]; then
+  echo "Adding admin console user."
+  ${WILDFLY_BIN}/add-user.sh -a -u "${WILDFLY_ADMIN}" -p "${WILDFLY_ADMIN_PASSWORD}" -g "admin"
+fi
 echo "Adding BouncyCastle and JDBC driver to Wildfly"
 ${JBOSS_CLI} --file=${ARTIFACTS}/caNanoLab_modules.cli
 # Note that unlike the other scripts, module addition scripts DO change the filesystem and so will
 # persist between VM cycling. Most other .cli scripts will modify only in-memory files and be lost
 # at the end of this script.
-
+echo "Done, waiting for Wildfly to restart."
 # Wait for Wildfly to reload...
 wait_for_server "read-attribute server-state" "running" "Wildfly"
 

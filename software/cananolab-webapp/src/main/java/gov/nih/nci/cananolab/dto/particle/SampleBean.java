@@ -390,9 +390,24 @@ public class SampleBean extends SecuredDataBean {
 	}
 
 	public Sample getDomainCopy(String createdBy) {
+		//
+		// WJRL 2/13/23 It appears this 12/2011 function creates a copy of the
+		// sample by serializing to a Byte array, then deserializing it back
+		// into a new object:
+		//
 		Sample copy = (Sample) ClassUtils.deepCopy(domain);
 		copy.setId(null);
 		copy.setCreatedBy(createdBy + ":" + Constants.AUTO_COPY_ANNOTATION_PREFIX);
+
+		//
+		// WJRL 2/13/23 Another comment in the deepCopy function says:
+		//
+		// "in particular, Before persist using Hibernate, need to create a new
+		//  collection using the cloned collection otherwise Hibernate complains."
+		//
+		// This code appears to be addressing this. We have new collections, and
+		// the pieces have IDs nulled out and created by tags tagged as copies.
+		//
 
 		// copy characterizations
 		Collection<Characterization> oldChars = copy

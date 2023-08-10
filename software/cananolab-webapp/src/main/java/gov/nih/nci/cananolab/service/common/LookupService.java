@@ -15,7 +15,7 @@ import gov.nih.nci.cananolab.domain.function.OtherFunction;
 import gov.nih.nci.cananolab.domain.function.OtherTarget;
 import gov.nih.nci.cananolab.domain.linkage.OtherChemicalAssociation;
 import gov.nih.nci.cananolab.domain.nanomaterial.OtherNanomaterialEntity;
-import gov.nih.nci.cananolab.exception.BaseException;
+import gov.nih.nci.cananolab.exception.LookupException;
 import gov.nih.nci.cananolab.exception.CompositionException;
 import gov.nih.nci.cananolab.system.applicationservice.CaNanoLabApplicationService;
 import gov.nih.nci.cananolab.system.applicationservice.client.ApplicationServiceProvider;
@@ -46,10 +46,10 @@ public class LookupService {
 	 * ordered list of strings.
 	 *
 	 * @return
-	 * @throws BaseException
+	 * @throws LookupException
 	 */
 	public static Map<String, Map<String, SortedSet<String>>> findAllLookups()
-			throws BaseException {
+		throws LookupException {
 		Map<String, Map<String, SortedSet<String>>> lookupMap = new HashMap<String, Map<String, SortedSet<String>>>();
 		try {
 			CaNanoLabApplicationService appService = (CaNanoLabApplicationService) ApplicationServiceProvider
@@ -82,12 +82,12 @@ public class LookupService {
 		} catch (Exception e) {
 			String err = "Error in retrieving all common lookup values .";
 			logger.error(err, e);
-			throw new BaseException(err, e);
+			throw new LookupException(err, e);
 		}
 	}
 
 	public static SortedSet<String> findLookupValues(String name,
-			String attribute) throws BaseException {
+			String attribute) throws LookupException {
 		SortedSet<String> lookupValues = new TreeSet<String>(
 				new Comparator<String>() {
 					public int compare(String s1, String s2) {
@@ -112,13 +112,13 @@ public class LookupService {
 		} catch (Exception e) {
 			logger.error("Error in retrieving common lookup values for name "
 					+ name + " and attribute " + attribute, e);
-			throw new BaseException();
+			throw new LookupException();
 		}
 		return lookupValues;
 	}
 
 	public static Map<String, String> findSingleAttributeLookupMap(
-			String attribute) throws BaseException {
+			String attribute) throws LookupException {
 		Map<String, String> lookup = new HashMap<String, String>();
 		try {
 			CaNanoLabApplicationService appService = (CaNanoLabApplicationService) ApplicationServiceProvider
@@ -134,7 +134,7 @@ public class LookupService {
 		} catch (Exception e) {
 			logger.error("Error in retrieving " + attribute
 					+ " from CommonLookup", e);
-			throw new BaseException();
+			throw new LookupException();
 		}
 		return lookup;
 	}
@@ -146,11 +146,11 @@ public class LookupService {
 	 * @param lookupAttribute
 	 * @param otherTypeAttribute
 	 * @return
-	 * @throws BaseException
+	 * @throws LookupException
 	 */
 	public static SortedSet<String> getDefaultAndOtherLookupTypes(
 			String lookupName, String lookupAttribute, String otherTypeAttribute)
-			throws BaseException {
+			throws LookupException {
 		SortedSet<String> types = LookupService.findLookupValues(lookupName,
 				lookupAttribute);
 		SortedSet<String> otherTypes = LookupService.findLookupValues(
@@ -160,7 +160,7 @@ public class LookupService {
 	}
 
 	public static SortedSet<String> getAllOtherObjectTypes(String fullClassName)
-			throws BaseException {
+			throws LookupException, CompositionException {
 		SortedSet<String> types = new TreeSet<String>();
 		try {
 			CaNanoLabApplicationService appService = (CaNanoLabApplicationService) ApplicationServiceProvider
@@ -194,7 +194,7 @@ public class LookupService {
 	}
 
 	public static void saveOtherType(String lookupName, String otherAttribute,
-			String otherAttributeValue) throws BaseException {
+			String otherAttributeValue) throws LookupException {
 		try {
 			CaNanoLabApplicationService appService = (CaNanoLabApplicationService) ApplicationServiceProvider
 					.getApplicationService();
@@ -221,7 +221,7 @@ public class LookupService {
 			String err = "Error in saving other attribute types for "
 					+ lookupName;
 			logger.error(err, e);
-			throw new BaseException(err, e);
+			throw new LookupException(err, e);
 		}
 	}
 }

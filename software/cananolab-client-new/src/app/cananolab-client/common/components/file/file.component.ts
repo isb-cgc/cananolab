@@ -2,6 +2,8 @@ import { Component, OnInit, OnChanges, Output, EventEmitter, Input } from '@angu
 import { Properties } from '../../../../../assets/properties';
 import { HttpClient } from '@angular/common/http';
 import { Consts } from 'src/app/constants';
+import {Util} from 'src/app/utilities';
+
 @Component({
   selector: 'canano-file',
   templateUrl: './file.component.html',
@@ -78,17 +80,17 @@ serverUrl = Properties.API_SERVER_URL;
     if (confirm('Are you sure you wish to delete this file?')) {
         this.data[this.fileVariable] = file;
         console.log(this.deleteUrl)
-        let deleteUrl = this.httpClient.post(this.deleteUrl,this.data);
+        let deleteUrl = this.httpClient.post(this.deleteUrl, this.data);
         deleteUrl.subscribe(data => {
             this.data = data;
             this.changeFile.emit({
-                "fileIndex":null,
-                "data":data,
-                "type":"delete"
+                'fileIndex': null,
+                'data': data,
+                'type': 'delete'
             });
-            this.fileIndex=null;
+            this.fileIndex = null;
         },
-        error=> {
+        error => {
 
         })
     }
@@ -97,7 +99,8 @@ serverUrl = Properties.API_SERVER_URL;
 
   editFile(file) {
       this.fileIndex = 1;
-      this.currentFile = JSON.parse(JSON.stringify(file));
+      // Previously JSON.parse(JSON.stringify(file))
+      this.currentFile = Util.deepCopy(file, false);
   }
 
   isFileUploadValid() {
@@ -169,53 +172,53 @@ serverUrl = Properties.API_SERVER_URL;
                     'uri': data['fileName'],
                     'uriExternal': false,
                 };
-                if (this.fileIndex==1) {
-                    this.data[this.fileVariable]['id']=this.currentFile['id'];
+                if (this.fileIndex == 1) {
+                    this.data[this.fileVariable]['id'] = this.currentFile['id'];
                 }
-                let saveUrl=this.httpClient.post(this.saveUrl,this.data) ;
-                saveUrl.subscribe(data=> {
-                    this.data=data;
+                let saveUrl = this.httpClient.post(this.saveUrl, this.data) ;
+                saveUrl.subscribe(data => {
+                    this.data = data;
                     this.changeFile.emit({
-                        "fileIndex":null,
-                        "data":data,
-                        "type":"save"
+                        'fileIndex': null,
+                        'data': data,
+                        'type': 'save'
                     });
-                    this.fileIndex=null;
+                    this.fileIndex = null;
                 },
-                error=> {
+                error => {
                     this.getError.emit(error)
                     console.log('file save error 2')
                 })
             },
-            error=> {
+            error => {
 
             })
 
         }
         else {
             console.log(this.currentFile)
-            this.data[this.fileVariable]={
-                "description":this.currentFile.description,
-                "keywordsStr":this.currentFile.keywordsStr,
-                "title":this.currentFile.title,
-                "type":this.currentFile.type,
-                "uri":this.currentFile.uri,
-                "uriExternal":false,
+            this.data[this.fileVariable] = {
+                'description': this.currentFile.description,
+                'keywordsStr': this.currentFile.keywordsStr,
+                'title': this.currentFile.title,
+                'type': this.currentFile.type,
+                'uri': this.currentFile.uri,
+                'uriExternal': false,
             };
-            if (this.fileIndex==1) {
-                this.data[this.fileVariable]['id']=this.currentFile['id'];
+            if (this.fileIndex == 1) {
+                this.data[this.fileVariable]['id'] = this.currentFile['id'];
             }
-            let saveUrl=this.httpClient.post(this.saveUrl,this.data) ;
-            saveUrl.subscribe(data=> {
-                this.data=data;
+            let saveUrl = this.httpClient.post(this.saveUrl, this.data) ;
+            saveUrl.subscribe(data => {
+                this.data = data;
                 this.changeFile.emit({
-                    "fileIndex":null,
-                    "data":data,
-                    "type":"save"
+                    'fileIndex': null,
+                    'data': data,
+                    'type': 'save'
                 });
-                this.fileIndex=null;
+                this.fileIndex = null;
             },
-            error=> {
+            error => {
                 console.log('file save error 2')
             })
         }
@@ -224,15 +227,15 @@ serverUrl = Properties.API_SERVER_URL;
   }
 
   setupCurrentFile() {
-    this.currentFile={
-        "uriExternal":false,
-        "externalUrl":"",
-        "title":"",
-        "keywordsStr":"",
-        "type":"",
-        "description":"",
-        "sampleId":this.sampleId,
-        "uri":""
+    this.currentFile = {
+        'uriExternal': false,
+        'externalUrl': '',
+        'title': '',
+        'keywordsStr': '',
+        'type': '',
+        'description': '',
+        'sampleId': this.sampleId,
+        'uri': ''
       };
   }
 

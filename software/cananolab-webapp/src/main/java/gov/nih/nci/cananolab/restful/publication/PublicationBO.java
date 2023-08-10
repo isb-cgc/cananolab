@@ -241,21 +241,21 @@ public class PublicationBO extends BaseAnnotationBO
 
 		Publication publication = (Publication) publicationBean.getDomainFile();
 		String category = publication.getCategory();
-		if(category == null||category == ""){
+		if(category == null||category.equals("")){
 			errors.add("Publication Type is required.");
 		}
 		if(InputValidationUtil.isTextFieldWhiteList(category)){
 			errors.add(PropertyUtil.getProperty("publication", "publication.category.invalid"));
 		}
 		String status = publication.getStatus();
-		if(status == null||status == ""){
+		if(status == null||status.equals("")){
 			errors.add("Publication Status is required.");
 		}
 		if(InputValidationUtil.isTextFieldWhiteList(status)){
 			errors.add(PropertyUtil.getProperty("publication", "publication.status.invalid"));
 		}
 		String title = publication.getTitle();
-		if(title == null || title == ""){
+		if(title == null || title.equals("")){
 			errors.add("Title is required.");
 		}
 		if(InputValidationUtil.isTextFieldWhiteList(title)){

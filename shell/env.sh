@@ -17,3 +17,5 @@ else
     export ENV_FILE_PATH=$(cat /home/vagrant/cananolab/secure_path.env)
     echo ".env file assumed to be found at ${ENV_FILE_PATH}"
 fi
+
+export IS_DEV=True

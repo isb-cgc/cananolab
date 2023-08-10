@@ -5,9 +5,10 @@ export const Consts = {
     keepAliveInterval: 600,
     loadingMessage: 'Loading Data',
     searchingMessage: 'Searching',
+    copyingMessage: 'Copying',
     serverlUrl: '/',
 
-    ENABLE_SYNTHESIS: true,
+    ENABLE_SYNTHESIS: false,
 
     // For each rest service
     LOGIN_URL: 'login',

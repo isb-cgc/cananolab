@@ -38,7 +38,12 @@ L-->
 		<param-name>resteasy.resources</param-name>
 		<param-value>gov.nih.nci.cananolab.restful.CoreServices</param-value>
 	</context-param>
-	
+
+	<context-param>
+		<param-name>resteasy.providers</param-name>
+		<param-value>gov.nih.nci.cananolab.restful.MultipartInterceptor</param-value>
+	</context-param>
+
 	<context-param>
         <param-name>contextConfigLocation</param-name>
         <param-value>/WEB-INF/applicationContext-strutsless.xml,

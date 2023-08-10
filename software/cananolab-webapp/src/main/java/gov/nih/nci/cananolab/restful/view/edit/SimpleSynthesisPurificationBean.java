@@ -294,6 +294,7 @@ public class SimpleSynthesisPurificationBean {
                 SimplePurificationConfigBean simpleExperimentBean = new SimplePurificationConfigBean();
                 simpleExperimentBean.setId(purificationConfigBean.getDomain().getPurificationConfigPkId());
 //                simpleExperimentBean.setTechniqueDisplayName(purificationConfigBean.getTechniqueDisplayName());
+                // WJRL 2/6/23: Purification description is HTML escaped with breaks
                 simpleExperimentBean.setDescription(purificationConfigBean.getDescription());
                 if(purificationConfigBean.getDomain().getTechnique()!=null) {
                     simpleExperimentBean.setTechniqueid(purificationConfigBean.getDomain().getTechnique().getId());
@@ -381,6 +382,7 @@ public class SimpleSynthesisPurificationBean {
                 SimplePurificationConfigBean simpleExperimentBean = new SimplePurificationConfigBean();
                 simpleExperimentBean.setId(purificationConfigBean.getDomain().getPurificationConfigPkId());
 //                simpleExperimentBean.setTechniqueDisplayName(purificationConfigBean.getTechniqueDisplayName());
+                // WJRL 2/6/23: Purification description is HTML escaped with breaks
                 simpleExperimentBean.setDescription(purificationConfigBean.getDescription());
                 simpleExperimentBean.setTechniqueid(purificationConfigBean.getDomain().getTechnique().getId());
                 simpleExperimentBean.setTechniqueType(purificationConfigBean.getDomain().getTechnique().getType());
