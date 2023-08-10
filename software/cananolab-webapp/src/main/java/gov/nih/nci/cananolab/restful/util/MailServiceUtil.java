@@ -17,12 +17,12 @@ public class MailServiceUtil {
     private static MailgunMessagesApi mailgunMessagesApi;
 
     public static void setup() {
-//        mailgunMessagesApi = MailgunClient.config("key-389af02a2a1f3f48d93ea55933050ebb")
+//        mailgunMessagesApi = MailgunClient.config("")
 //                .createApi(MailgunMessagesApi.class);
     }
 
     public static MessageResponse sendMail(final String address, final String subject, final String content) {
-        MailgunMessagesApi mailgunMessagesApi = MailgunClient.config("key-389af02a2a1f3f48d93ea55933050ebb")
+        MailgunMessagesApi mailgunMessagesApi = MailgunClient.config("")
                 .createApi(MailgunMessagesApi.class);
 
         Message message = Message.builder()

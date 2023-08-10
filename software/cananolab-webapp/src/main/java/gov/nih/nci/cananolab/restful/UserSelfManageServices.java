@@ -73,7 +73,7 @@ public class UserSelfManageServices
 					throw new Exception("Username is required to create a password reset token.");
 
 				try {
-					MailgunMessagesApi mailgunMessagesApi = MailgunClient.config("key-389af02a2a1f3f48d93ea55933050ebb")
+					MailgunMessagesApi mailgunMessagesApi = MailgunClient.config("")
 							.createApi(MailgunMessagesApi.class);
 
 					Message message = Message.builder()
