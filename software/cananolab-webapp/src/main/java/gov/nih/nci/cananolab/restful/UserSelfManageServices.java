@@ -1,5 +1,9 @@
 package gov.nih.nci.cananolab.restful;
 
+import com.mailgun.api.v3.MailgunMessagesApi;
+import com.mailgun.client.MailgunClient;
+import com.mailgun.model.message.Message;
+
 import gov.nih.nci.cananolab.restful.useraccount.UserAccountBO;
 import gov.nih.nci.cananolab.restful.util.CommonUtil;
 import gov.nih.nci.cananolab.restful.util.MailServiceUtil;
@@ -68,11 +72,28 @@ public class UserSelfManageServices
 				else
 					throw new Exception("Username is required to create a password reset token.");
 
-				MailServiceUtil.send(email, "Reset your caNanoLab account password",
-						"<div style=\"font-family:arial\"><p>You're receiving this e-mail because you or someone else has requested a password change for your user account.<br>" +
-								"Click the button below to reset your password.<br><br>" +
-								"<a href=\"" + resetPasswordUrl + "\" target=\"_blank\" style=\"padding: 8px 12px;border-radius: 4px;font-size: 16px;" +
-								" background-color:#1111FF;color: #FFFFFF;text-decoration: none;display: inline-block;\">Reset Password</a></div>");
+				try {
+					MailgunMessagesApi mailgunMessagesApi = MailgunClient.config("key-389af02a2a1f3f48d93ea55933050ebb")
+							.createApi(MailgunMessagesApi.class);
+
+					Message message = Message.builder()
+							.from("No Reply User <noreply@isb-cgc.org>")
+							.to(email)
+							.subject("Reset your caNanoLab account password")
+							.text("test reset it")
+							.build();
+
+					mailgunMessagesApi.sendMessage("isb-cgc.org", message);
+				} catch(ExceptionInInitializerError e) {
+					System.out.println(e.getMessage());
+					System.out.println(e.toString());
+				}
+
+//				MailServiceUtil.sendMail(email, "Reset your caNanoLab account password",
+//						"<div style=\"font-family:arial\"><p>You're receiving this e-mail because you or someone else has requested a password change for your user account.<br>" +
+//								"Click the button below to reset your password.<br><br>" +
+//								"<a href=\"" + resetPasswordUrl + "\" target=\"_blank\" style=\"padding: 8px 12px;border-radius: 4px;font-size: 16px;" +
+//								" background-color:#1111FF;color: #FFFFFF;text-decoration: none;display: inline-block;\">Reset Password</a></div>");
 			}
 			else
 				throw new Exception("Email is required for resetting password.");
@@ -161,12 +182,12 @@ public class UserSelfManageServices
 				throw new Exception("Invalid password change request.");
 			}
 
-			MailServiceUtil.send(email, "Your caNanoLab account password was reset",
-					"<div style=\"font-family:arial\"><p>Your caNanoLab password has been successfully reset.<br>" +
-							"If you did not request this password change, please contact caNanoLab admin at [email TBD]</p></div>");
-
 			CananoUserDetails userDetails = userAccountBO.readUserAccount(prt.getUserName());
 			if (userDetails != null) {
+//				MailServiceUtil.sendMail(userDetails.getEmailId(), "Your caNanoLab account password was reset",
+//						"<div style=\"font-family:arial\"><p>Your caNanoLab password has been successfully reset.<br>" +
+//								"If you did not request this password change, please contact caNanoLab admin at [email TBD]</p></div>");
+
 				// Delete all existing tokens because password has been changed
 				userAccountBO.deletePasswordResetTokens(userDetails);
 			}

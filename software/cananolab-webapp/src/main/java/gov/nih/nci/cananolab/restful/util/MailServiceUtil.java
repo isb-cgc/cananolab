@@ -1,12 +1,9 @@
 package gov.nih.nci.cananolab.restful.util;
 
-import javax.mail.Message;
-import javax.mail.Session;
-import javax.mail.Transport;
-import javax.mail.internet.InternetAddress;
-import javax.mail.internet.MimeMessage;
-import javax.naming.Context;
-import javax.naming.InitialContext;
+import com.mailgun.api.v3.MailgunMessagesApi;
+import com.mailgun.client.MailgunClient;
+import com.mailgun.model.message.Message;
+import com.mailgun.model.message.MessageResponse;
 
 public class MailServiceUtil {
 
@@ -17,6 +14,43 @@ public class MailServiceUtil {
 //    @Resource(name = "java:jboss/mail/Default")
 //    private Session session;
 
+    private static MailgunMessagesApi mailgunMessagesApi;
+
+    public static void setup() {
+//        mailgunMessagesApi = MailgunClient.config("key-389af02a2a1f3f48d93ea55933050ebb")
+//                .createApi(MailgunMessagesApi.class);
+    }
+
+    public static MessageResponse sendMail(final String address, final String subject, final String content) {
+        MailgunMessagesApi mailgunMessagesApi = MailgunClient.config("key-389af02a2a1f3f48d93ea55933050ebb")
+                .createApi(MailgunMessagesApi.class);
+
+        Message message = Message.builder()
+                .from("No Reply User <noreply@isb-cgc.org>")
+                .to(address)
+                .subject(subject)
+                .text(content)
+                .build();
+
+        return mailgunMessagesApi.sendMessage("isb-cgc.org", message);
+    }
+
+    public static void sendMail2(final String address, final String subject, final String content) {
+        if (mailgunMessagesApi == null) {
+            setup();
+        }
+
+        Message message = Message.builder()
+                .from("noreply@isb-cgc.org")
+                .to(address)
+                .subject(subject)
+                .text(content)
+                .build();
+
+        MessageResponse messageResponse = mailgunMessagesApi.sendMessage("https://api.mailgun.net/v3/isb-cgc.org/messages", message);
+    }
+
+    /*
     public static void send(final String addresses, final String subject, final String content) {
         try {
             Context ictx = new InitialContext();
@@ -33,5 +67,5 @@ public class MailServiceUtil {
         } catch (Exception e) {
 //            LOG.error("Cannot send mail", e);
         }
-    }
+    }*/
 }

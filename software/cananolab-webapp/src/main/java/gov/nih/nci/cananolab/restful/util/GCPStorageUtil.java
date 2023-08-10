@@ -24,11 +24,11 @@ public class GCPStorageUtil {
     }
 
     public static String getGCPStorageBucketPath() {
-        String bucketPath = AppPropertyUtil.getAppProperty("GCP_STORAGE_BUCKET_PATH");
-        System.out.println("GCPStorageUtil get bucket path: " + bucketPath);
+//        String bucketPath = AppPropertyUtil.getAppProperty("GCP_STORAGE_BUCKET_PATH");
+//        System.out.println("GCPStorageUtil get bucket path: " + bucketPath);
 //        if (bucketPath == "" || bucketPath == null) {
-//             Temporary to check if dev tier work
-//            bucketPath = "isb-cgc-ca-nano-dev-cbiit-assets";
+            // Temporary to check if dev tier work
+        String bucketPath = "isb-cgc-ca-nano-dev-cbiit-assets";
 //          printAllSystemVars();
 //        }
         return bucketPath;
@@ -41,11 +41,11 @@ public class GCPStorageUtil {
     }
 
     public static String getGCPStorageRootFolderPath() {
-        String folderPath = AppPropertyUtil.getAppProperty("GCP_STORAGE_ROOT_FOLDER_PATH");
-        System.out.println("GCPStorageUtil get folder path: " + folderPath);
+//        String folderPath = AppPropertyUtil.getAppProperty("GCP_STORAGE_ROOT_FOLDER_PATH");
+//        System.out.println("GCPStorageUtil get folder path: " + folderPath);
 //        if (folderPath == "" || folderPath == null) {
-//            //Temporary to check if dev tier work
-//            folderPath = "caNanoLab_asset_files";
+            //Temporary to check if dev tier work
+            String folderPath = "caNanoLab_asset_files";
 //         printAllSystemVars();
 //        }
         return folderPath;
