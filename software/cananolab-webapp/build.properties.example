@@ -1,41 +1,39 @@
-## Ignore target, build, C: directories ##
+#L
+#  Copyright Leidos
+#  Copyright Leidos Biomedical
+#
+#  Distributed under the OSI-approved BSD 3-Clause License.
+#  See http://ncip.github.com/cananolab/LICENSE.txt for details.
+#L
 
-.DS_Store
-**/.DS_Store
-.classpath
-.project
-indexDir/*
+release.version=3.1.2
 
-## Ignore node modules ##
+################################
+#### BUILD SETTINGS
+################################
+mysql.connector.jar=mysql-connector-j-8.0.31.jar
 
-node_modules/
+############################################
+#### WEB APP SETTINGS
+############################################
+file.repository.dir=/home/vagrant/cananolab/software/cananolab-webapp/local_build
+admin.email=admin@isb-cgc.org
+client.port=9990
 
-app.yaml
+###########################
+###  DATABASE SETTINGS  ###
+###########################
+database.server=localhost
+database.port=3306
+database.user=canano-user
+database.password=password
+database.name=canano
 
-\.settings/
-
-.idea/
-
-.env
-
-vpproject/
-
-software/cananolab-webapp/build.properties
-software/cananolab-webapp/project.properties
-
-software/common/lib/globus/
-software/common/lib/sdk/
-software/common/lib/caNanoLab-beans\.jar
-software/cananolab-webapp/ijbuild/
-
-localDev/jars/
-
-software/cananolab-webapp/.settings/*
-software/cananolab-webapp/build/
-software/cananolab-webapp/target/
-software/cananolab-webapp/local_build/
-software/cananolab-webapp/lib/
-software/cananolab-client-new/build/
-software/cananolab-webapp/lib/caNanoLab-beans\.jar
-
-*.iml
+######################
+### ARTIFACT SETTINGS ###
+######################
+## used for placing artifacts for deployment to Wildfly ###
+jboss.server.dir=/opt/wildfly-23.0.2.Final
+jboss.help.dir=${jboss.server.dir}/config
+jboss.artifacts.dir=${file.repository.dir}/artifacts
+jboss.deploy.dir=${jboss.server.dir}/server/default/deploy
