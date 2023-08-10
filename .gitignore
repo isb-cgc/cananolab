@@ -34,7 +34,7 @@ software/cananolab-webapp/.settings/*
 software/cananolab-webapp/build/
 software/cananolab-webapp/target/
 software/cananolab-webapp/local_build/
-#software/cananolab-webapp/lib/
+software/cananolab-webapp/lib/
 software/cananolab-client-new/build/
 software/cananolab-webapp/lib/caNanoLab-beans\.jar
 
