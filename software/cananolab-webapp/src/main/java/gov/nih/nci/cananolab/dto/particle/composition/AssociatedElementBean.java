@@ -116,10 +116,12 @@ public class AssociatedElementBean {
 			// before deleting. But if an erroneous deletion occurs through other means, this method
 			// will throw an NPE. Instrument this to make it easier to track down in the future.
 			//
+			System.out.println("updateType A: " + composingElement);
 			if (composingElement.getId() != null) {
 				compositionType = ClassUtils.getDisplayName("NanomaterialEntity");
 				NanomaterialEntity entity = composingElement
 						.getNanomaterialEntity();
+				System.out.println("updateType B: " + entity);
 				if (entity instanceof OtherNanomaterialEntity) {
 					entityDisplayName = ((OtherNanomaterialEntity) entity)
 							.getType();
@@ -133,9 +135,11 @@ public class AssociatedElementBean {
 				compositionType = ClassUtils
 						.getDisplayName("FunctionalizingEntity");
 				if (domainElement instanceof OtherFunctionalizingEntity) {
+					System.out.println("updateType C: " + domainElement);
 					entityDisplayName = ((OtherFunctionalizingEntity) domainElement)
 							.getType();
 				} else {
+					System.out.println("updateType D: " + className);
 					entityDisplayName = ClassUtils.getDisplayName(className);
 				}
 			}
