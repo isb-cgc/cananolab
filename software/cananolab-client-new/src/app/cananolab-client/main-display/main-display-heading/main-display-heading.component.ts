@@ -4,7 +4,7 @@
 // ----------   Contains topic name, context sensitive Help link, and Glossary link  ------
 // ----------------------------------------------------------------------------------------
 
-import { Component, Input, OnDestroy, OnInit, Output,EventEmitter } from '@angular/core';
+import { Component, Input, OnDestroy, OnInit, Output, EventEmitter } from '@angular/core';
 import { TopMenuItems } from '../../top-main-menu/top-main-menu.service';
 import { takeUntil } from 'rxjs/operators';
 import { MainDisplayService } from '../main-display.service';
@@ -30,7 +30,7 @@ export class MainDisplayHeadingComponent implements OnInit, OnDestroy{
     @Input() exportXML;
     @Input() sampleIds;
     @Input() toolHeadingName = '';
-    @Input() print=false;
+    @Input() print = false;
     @Output() downloadReady = new EventEmitter<Boolean>();
 
     // For HTML access
@@ -38,7 +38,7 @@ export class MainDisplayHeadingComponent implements OnInit, OnDestroy{
 
     private ngUnsubscribe: Subject<boolean> = new Subject<boolean>();
 
-    constructor(private router:Router,private httpClient:HttpClient,private apiService:ApiService,private mainDisplayService: MainDisplayService) {
+    constructor(private router: Router, private httpClient: HttpClient, private apiService: ApiService, private mainDisplayService: MainDisplayService) {
     }
 
     ngOnInit(): void {
@@ -62,23 +62,23 @@ export class MainDisplayHeadingComponent implements OnInit, OnDestroy{
         switch( this.toolHeadingName ){
 
             case TopMenuItems.HOME:
-                this.helpUrl = 'https://wiki.nci.nih.gov/display/caNanoLab/Getting+Started+in+caNanoLab#GettingStartedincaNanoLab-UsingtheWorkflowtoGetStarted';
+                this.helpUrl = 'https://wiki.nci.nih.gov/x/14CUBg';
                 break;
 
             case TopMenuItems.WORKFLOW:
-                this.helpUrl = 'https://wiki.nci.nih.gov/display/caNanoLab/Getting+Started+in+caNanoLab#GettingStartedincaNanoLab-UsingtheWorkflowtoGetStarted';
+                this.helpUrl = 'https://wiki.nci.nih.gov/x/GIIyHg';
                 break;
 
             case TopMenuItems.PROTOCOLS:
-                this.helpUrl = 'https://wiki.nci.nih.gov/display/caNanoLab/Managing+Protocols+in+caNanoLab';
+                this.helpUrl = Consts.HELP_URL_PROTOCOL_MANAGE;
                 break;
 
            case TopMenuItems.SAMPLES:
-                this.helpUrl = 'https://wiki.nci.nih.gov/display/caNanoLab/Managing+Samples+in+caNanoLab#ManagingSamplesincaNanoLab-ManageSamples';
+                this.helpUrl = 'https://wiki.nci.nih.gov/x/t4HWDw';
                 break;
 
            case TopMenuItems.SEARCH_SAMPLES_BY_PUBLICATIONS:
-               this.helpUrl = 'https://wiki.nci.nih.gov/display/caNanoLab/Searching+Existing+Samples';
+               this.helpUrl = 'https://wiki.nci.nih.gov/x/ioS8HQ';
                break;
 
            case TopMenuItems.PUBLICATIONS:
@@ -110,18 +110,18 @@ export class MainDisplayHeadingComponent implements OnInit, OnDestroy{
     }
 
     exportAsXLS() {
-        let sampleId=this.export[0];
-        let type=this.export[1];
-        let query='QUERY_'+type+'_EXPORT_XLS';
+        let sampleId = this.export[0];
+        let type = this.export[1];
+        let query = 'QUERY_' + type + '_EXPORT_XLS';
         // console.log(query)
-        window.open(Consts[query]+'?sampleId='+sampleId+'&type=all');
+        window.open(Consts[query] + '?sampleId=' + sampleId + '&type=all');
         // <a ng-disabled="loader" class="helpText" ng-href="/rest/publication/summaryExport?sampleId=66945032&amp;type=all" href="/rest/publication/summaryExport?sampleId=66945032&amp;type=all">Export</a>
     }
 
     exportAsJSON() {
         this.downloadReady.emit(false);
-        let sampleIds=this.sampleIds.join();
-        this.apiService.doPost(Consts.QUERY_SAMPLE_EXPORT_JSON,{sampleIds:sampleIds}).subscribe(data=> {
+        let sampleIds = this.sampleIds.join();
+        this.apiService.doPost(Consts.QUERY_SAMPLE_EXPORT_JSON, {sampleIds: sampleIds}).subscribe(data => {
             let a = (window).document.createElement('a');
             a.href = (window).URL.createObjectURL(new Blob([JSON.stringify(data)], {
               type: 'application/json'
@@ -132,17 +132,17 @@ export class MainDisplayHeadingComponent implements OnInit, OnDestroy{
             a.click();
             this.downloadReady.emit(true);
         },
-        error=> {
+        error => {
             this.downloadReady.emit(true);
         });
     }
 
     exportAsXML() {
         this.downloadReady.emit(false);
-        let sampleIds=this.sampleIds.join();
+        let sampleIds = this.sampleIds.join();
         this.httpClient.post(Consts.QUERY_SAMPLE_EXPORT_XML,
-            {sampleIds:sampleIds},
-            {responseType:'text'}).subscribe(data=> {
+            {sampleIds: sampleIds},
+            {responseType: 'text'}).subscribe(data => {
             let a = (window).document.createElement('a');
             a.href = (window).URL.createObjectURL(new Blob([data], {
               type: 'application/xml'
@@ -153,7 +153,7 @@ export class MainDisplayHeadingComponent implements OnInit, OnDestroy{
             (window).document.body.removeChild(a);
             this.downloadReady.emit(true);
         },
-        error=> {
+        error => {
             console.log(error);
             this.downloadReady.emit(true)
         })
@@ -169,7 +169,7 @@ export class MainDisplayHeadingComponent implements OnInit, OnDestroy{
 
     printPage() {
         let url = window.location;
-        window.open(url+'?print=true')
+        window.open(url + '?print=true')
     }
 
 

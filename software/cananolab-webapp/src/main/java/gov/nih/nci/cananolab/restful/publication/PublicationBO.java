@@ -182,7 +182,12 @@ public class PublicationBO extends BaseAnnotationBO
 		//	msgs.add("success");
 
 		System.out.println("Setting this attribute here causes issue #37" + publicationBean.getDomainFile().getId().toString());
-		session.setAttribute("publicationBean", publicationBean);
+		// WJRL 4/19/23 Commenting out this attribute setting. The *only* place that we appear to read the
+		// session "publicationBean" attribute is setting access for the publication, where the attribute overrides
+		// the bean in the request. There is no clear motivation in the code to do this; it was added in 2014 but
+		// no statement provided as to why. Perhaps there was other functionality that needed it but that has
+		// been torn out since then?
+		// session.setAttribute("publicationBean", publicationBean);
 		request.setAttribute("publicationId", publicationBean.getDomainFile().getId().toString());
 
 		InitPublicationSetup.getInstance().persistPublicationDropdowns(request, publicationBean);
@@ -241,21 +246,21 @@ public class PublicationBO extends BaseAnnotationBO
 
 		Publication publication = (Publication) publicationBean.getDomainFile();
 		String category = publication.getCategory();
-		if(category == null||category == ""){
+		if(category == null||category.equals("")){
 			errors.add("Publication Type is required.");
 		}
 		if(InputValidationUtil.isTextFieldWhiteList(category)){
 			errors.add(PropertyUtil.getProperty("publication", "publication.category.invalid"));
 		}
 		String status = publication.getStatus();
-		if(status == null||status == ""){
+		if(status == null||status.equals("")){
 			errors.add("Publication Status is required.");
 		}
 		if(InputValidationUtil.isTextFieldWhiteList(status)){
 			errors.add(PropertyUtil.getProperty("publication", "publication.status.invalid"));
 		}
 		String title = publication.getTitle();
-		if(title == null || title == ""){
+		if(title == null || title.equals("")){
 			errors.add("Title is required.");
 		}
 		if(InputValidationUtil.isTextFieldWhiteList(title)){
@@ -386,7 +391,7 @@ public class PublicationBO extends BaseAnnotationBO
 		InitPublicationSetup.getInstance().setPublicationDropdowns(request);
 		request.setAttribute("onloadJavascript",
 				"updateSubmitFormBasedOnCategory();updateFormFields('" + publicationId + "')");
-		setUpSubmitForReviewButton(request, pubBean.getDomainFile().getId().toString(), 
+		setUpSubmitForReviewButton(request, pubBean.getDomainFile().getId().toString(), DataReviewStatusBean.getDataTypeTag(SecureClassesEnum.PUBLICATION),
 				springSecurityAclService.checkObjectPublic(pubBean.getDomainFile().getId(), SecureClassesEnum.PUBLICATION.getClazz()));
 		request.getSession().setAttribute("updatePublication", "true");
 
@@ -758,7 +763,7 @@ public class PublicationBO extends BaseAnnotationBO
 	{
 		//	DynaValidatorForm theForm = (DynaValidatorForm) form;
 		PublicationBean publication = (PublicationBean) transferSimpleSubmitPublicationBean(simplePubBean);//(PublicationBean) theForm.getPublicationBean();
-		System.out.println("PublicationBean " + publication);
+		//System.out.println("PublicationBean " + publication);
 		AccessControlInfo theAccess = publication.getTheAccess();
 		List<String> errors = super.validateAccess(request, theAccess);
 		if (errors.size() > 0) {
@@ -768,6 +773,12 @@ public class PublicationBO extends BaseAnnotationBO
 		}
 		//TODO: saveAccess() should return an object that contains a list of errors;
 		// if publication is new, save publication first
+
+		// WJRL 4/2023: So here we see where saving an aspect of an object is the same as
+		// submitting it...the whole object is saved without even hitting the submit button. Note the
+		// reverse is NOT true...if you change the access and do not save it, it does not appear
+		// that the Submit operation goes back and makes sure access changes get pulled in as well.
+		//
 		if (publication.getDomainFile().getId() == null || publication.getDomainFile().getId() != null && 
 			publication.getDomainFile().getId() == 0) {
 			errors = this.savePublication(request, publication);
@@ -778,18 +789,27 @@ public class PublicationBO extends BaseAnnotationBO
 			}
 
 		}
-		System.out.println("PublicationBean DF ID " + publication.getDomainFile().getId());
+		// ORIGINAL COMMENT:
 		// if publication is public, the access is not public, retract
 		// public
 		// privilege would be handled in the service method
-		System.out.println("This causes issue #37, as the uncleared attribute is retained from the last edit");
-		System.out.println("BUT this hack must be here for a reason that we need to determine.");
-		PublicationBean pub =  (PublicationBean) request.getSession().getAttribute("publicationBean");
-		System.out.println("PublicationBean direct from session " + pub);
-		if(pub == null){
-			pub = publication;
-		}
-		System.out.println("PublicationBean after session " + pub.getDomainFile().getId());
+
+		//System.out.println("PublicationBean DF ID " + publication.getDomainFile().getId());
+		//System.out.println("This causes issue #37, as the uncleared attribute is retained from the last edit");
+		//System.out.println("BUT this hack must be here for a reason that we need to determine.");
+		// WJRL 4/19/23 Commenting out this attribute getting. See the above comment where "publicationBean" was
+		// formerly set. The *only* place that we appear to read the
+		// session "publicationBean" attribute is setting access for the publication, where the attribute overrides
+		// the bean in the request. There is no clear motivation in the code to do this; it was added in 2014 but
+		// no statement provided as to why. Perhaps there was other functionality that needed it but that has
+		// been torn out since then? Right now, all this does is make the last submitted publication be the one
+		// that will have access changed until the entire session is ended: issue #37
+		PublicationBean pub = publication; // (PublicationBean) request.getSession().getAttribute("publicationBean");
+		//System.out.println("PublicationBean direct from session " + pub);
+		//if (pub == null){
+		//	pub = publication;
+		//}
+		//System.out.println("PublicationBean after session " + pub.getDomainFile().getId());
 		publicationService.assignAccessibility(theAccess, (Publication) pub.getDomainFile());
 		// update status to retracted if the access is not public and
 		// publication is public
@@ -804,7 +824,8 @@ public class PublicationBO extends BaseAnnotationBO
 		// status to public
 		if (CaNanoRoleEnum.ROLE_ANONYMOUS.toString().equalsIgnoreCase(theAccess.getRecipient())) {
 			System.out.println("PublicationBean into switch " + pub.getDomainFile().getId().toString());
-			this.switchPendingReviewToPublic(request, pub.getDomainFile().getId().toString());
+			this.switchPendingReviewToPublic(request, pub.getDomainFile().getId().toString(),
+					                         DataReviewStatusBean.getDataTypeTag(SecureClassesEnum.PUBLICATION));
 		}
 
 		PublicationBean pBean = this.setAccesses(request, pub);
@@ -850,9 +871,15 @@ public class PublicationBO extends BaseAnnotationBO
 		//	PublicationBean publication = (PublicationBean) theForm.getPublicationBean();
 	}
 
-	public String download(String fileId, HttpServletRequest request, HttpServletResponse response) throws Exception
+	public String download(String pubId, String fileId, HttpServletRequest request, HttpServletResponse response) throws Exception
 	{
 		System.out.println("Inside download from publication BO");
+
+		if (pubId != "") {
+			// findPublicationById throws error if user is not authorized for the sample
+			publicationService.findPublicationById(pubId, true);
+		}
+
 		return downloadFile(publicationService, fileId, request, response);
 	}
 

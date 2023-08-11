@@ -31,8 +31,8 @@ export class SearchpublicationresultsComponent implements OnInit {
     ];
     errors = {};
     searchResults;
-    helpUrl = Consts.HELP_URL_SAMPLE_SEARCH;
-    toolHeadingNameSearchSample = 'Sample Search Results';
+    helpUrl = Consts.HELP_URL_PUBLICATION_SEARCH_RESULTS;
+    toolHeadingName = 'Publication Search Results';
     pageCount = 10;
     searchResultsCount = -1;
     currentPage = 0;

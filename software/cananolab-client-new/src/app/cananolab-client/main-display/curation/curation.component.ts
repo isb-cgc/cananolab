@@ -10,75 +10,75 @@ import { ActivatedRoute } from '@angular/router';
 })
 export class CurationComponent implements OnInit {
     data;
-    errors={};
-    message='';
+    errors = {};
+    message = '';
     currationResults;
     currentUrl = 'curation';
-    generateOptions={option:""};
-    helpUrl=Consts.HELP_URL_CURATION;
+    generateOptions = {option: ''};
+    helpUrl = Consts.HELP_URL_CURATION;
     toolHeadingNameManage = 'Manage Curation';
-    constructor(private activatedRoute:ActivatedRoute,private apiService:ApiService,private router:Router) { }
+    constructor(private activatedRoute: ActivatedRoute, private apiService: ApiService, private router: Router) { }
 
     ngOnInit(): void {
         if (this.router.url.includes('manage-availability')) {
             this.currentUrl = 'manage-availability';
-            this.helpUrl='https://wiki.nci.nih.gov/display/caNanoLab/Managing+Data+Curation#ManagingDataCuration-ManageBatch';
-            this.toolHeadingNameManage='Manage Batch Data Availability';
+            this.helpUrl = Consts.HELP_URL_CURATION_MANAGE_BATCH_DATA;
+            this.toolHeadingNameManage = 'Manage Batch Data Availability';
         }
         if (this.router.url.includes('review-data')) {
             this.currentUrl = 'review-data';
-            this.helpUrl='https://wiki.nci.nih.gov/display/caNanoLab/Managing+Data+Curation#ManagingDataCuration-ReviewBatchResults';
-            this.toolHeadingNameManage='Review By Curator';
+            this.helpUrl = Consts.HELP_URL_CURATION_REVIEW_DATA_PENDING_RELEASE;
+            this.toolHeadingNameManage = 'Review By Curator';
         }
-        let reviewDataUrl=this.apiService.doGet(Consts.QUERY_CURATION_REVIEW_DATA,'');
-        if (this.currentUrl=='review-data') {
-            reviewDataUrl.subscribe(data=> {
-                this.data=data;
-                this.errors={};
+        let reviewDataUrl = this.apiService.doGet(Consts.QUERY_CURATION_REVIEW_DATA, '');
+        if (this.currentUrl == 'review-data') {
+            reviewDataUrl.subscribe(data => {
+                this.data = data;
+                this.errors = {};
             },
-            error=> {
-                this.errors=error;
+            error => {
+                this.errors = error;
             })
         }
 
         if (this.router.url.includes('results')) {
             this.currentUrl = 'results';
-            this.helpUrl='https://wiki.nci.nih.gov/display/caNanoLab/Managing+Data+Curation';
-            this.toolHeadingNameManage='Long Running Processes';
+            this.helpUrl = 'https://wiki.nci.nih.gov/x/uoGAEQ';
+            this.toolHeadingNameManage = 'Long Running Processes';
             this.getCurationResults();
         }
 
-        let generateUrl=this.apiService.doPost(Consts.QUERY_CURATION_GENERATE_BATCH_AVAILABILITY,this.generateOptions);
+        let generateUrl = this.apiService.doPost(Consts.QUERY_CURATION_GENERATE_BATCH_AVAILABILITY, this.generateOptions);
 
 
     }
 
     edit(record) {
-        if (record.dataType=='sample') {
-            this.router.navigate(['/home/samples/sample',record.dataId]);
+        if (record.dataType == 'sample') {
+            this.router.navigate(['/home/samples/sample', record.dataId]);
         };
-        if (record.dataType=='protocol') {
-            this.router.navigate(['/home/protocols/edit-protocol',record.dataId]);
+        if (record.dataType == 'protocol') {
+            this.router.navigate(['/home/protocols/edit-protocol', record.dataId]);
         };
-        if (record.dataType=='publication') {
-            this.router.navigate(['/home/samples/publications/publication',record.dataId]);
+        if (record.dataType == 'publication') {
+            this.router.navigate(['/home/samples/publications/publication', record.dataId]);
         };
     };
 
     resetGenerateOptions() {
-        this.generateOptions={option:""}
+        this.generateOptions = {option: ''}
     }
 
     submitGenerateOptions() {
-        let url = this.apiService.doPost(Consts.QUERY_CURATION_GENERATE_BATCH_AVAILABILITY,this.generateOptions);
-        url.subscribe(data=> {
-            this.message=data;
+        let url = this.apiService.doPost(Consts.QUERY_CURATION_GENERATE_BATCH_AVAILABILITY, this.generateOptions);
+        url.subscribe(data => {
+            this.message = data;
         })
     }
 
     getCurationResults() {
-        this.apiService.doGet(Consts.QUERY_CURATION_RESULTS,'').subscribe(data=> {
-            this.currationResults=data;
+        this.apiService.doGet(Consts.QUERY_CURATION_RESULTS, '').subscribe(data => {
+            this.currationResults = data;
         })
     }
 }

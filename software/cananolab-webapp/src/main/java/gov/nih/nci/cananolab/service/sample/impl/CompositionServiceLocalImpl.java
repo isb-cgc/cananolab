@@ -26,12 +26,15 @@ import gov.nih.nci.cananolab.dto.particle.composition.NanomaterialEntityBean;
 import gov.nih.nci.cananolab.exception.ChemicalAssociationViolationException;
 import gov.nih.nci.cananolab.exception.CompositionException;
 import gov.nih.nci.cananolab.exception.NoAccessException;
+import gov.nih.nci.cananolab.exception.FileException;
+import gov.nih.nci.cananolab.exception.ApplicationProviderException;
 import gov.nih.nci.cananolab.security.enums.SecureClassesEnum;
 import gov.nih.nci.cananolab.security.service.SpringSecurityAclService;
 import gov.nih.nci.cananolab.security.utils.SpringSecurityUtil;
 import gov.nih.nci.cananolab.service.BaseServiceLocalImpl;
 import gov.nih.nci.cananolab.service.sample.CompositionService;
 import gov.nih.nci.cananolab.service.sample.helper.CompositionServiceHelper;
+import gov.nih.nci.cananolab.system.applicationservice.ApplicationException;
 import gov.nih.nci.cananolab.system.applicationservice.CaNanoLabApplicationService;
 import gov.nih.nci.cananolab.system.applicationservice.client.ApplicationServiceProvider;
 
@@ -155,7 +158,7 @@ public class CompositionServiceLocalImpl extends BaseServiceLocalImpl implements
 		} catch (NoAccessException e) {
 			logger.error(e);
 			throw e;
-		} catch (Exception e) {
+		} catch (ApplicationException | ApplicationProviderException | FileException e) {
 			String err = "Error in saving a nanomaterial entity.";
 			logger.error(err, e);
 			throw new CompositionException(err, e);
@@ -363,8 +366,8 @@ public class CompositionServiceLocalImpl extends BaseServiceLocalImpl implements
 		}
 	}
 
-	public void saveCompositionFile(SampleBean sampleBean, FileBean fileBean)
-			throws CompositionException, NoAccessException {
+	public void saveCompositionFile(SampleBean sampleBean, FileBean fileBean, boolean forClone)
+			throws CompositionException, NoAccessException, FileException {
 		if (SpringSecurityUtil.getPrincipal() == null) {
 			throw new NoAccessException();
 		}
@@ -405,14 +408,24 @@ public class CompositionServiceLocalImpl extends BaseServiceLocalImpl implements
 					// composition
 					// because of
 					// unidirectional relationship between composition and file
-
-					comp = compositionServiceHelper.findCompositionBySampleId(sample.getId().toString());
+					//
+					// WJRL 3/23: THIS CALL WAS THE REASON FOR ISSUE #258
+					// The clone operation complained there were two objects with the same sample domain ID. This
+					// is because this search for the composition service via sample ID creates another Sample with
+					// the same domain ID as the copy we are making. Note we already have a CompositionSample in the
+					// clone operation, and experiment shows it appears to be sufficient to make the clone work
+					// with composition files present. Note that I cannot speak to how essential this is for all
+					// other operations, so I only drop the search during the cloning operation.
+					if (!forClone) {
+						comp = compositionServiceHelper.findCompositionBySampleId(sample.getId().toString());
+					}
 				}
 				comp.getFileCollection().add(file);
 				sample.setSampleComposition(comp);
 				if (file.getId() == null) { // because of unidirectional
 					// relationship between composition
 					// and lab files
+					// WJRL 3/23: First time through in a clone, this path is taken, we save the Sample Composition.
 					appService.saveOrUpdate(comp);
 				} else {
 					appService.saveOrUpdate(file);
@@ -422,7 +435,7 @@ public class CompositionServiceLocalImpl extends BaseServiceLocalImpl implements
 			}
 		} catch (NoAccessException e) {
 			throw e;
-		} catch (Exception e) {
+		} catch (ApplicationProviderException | ApplicationException e) {
 			String err = "Error in saving the composition file.";
 			logger.error(err, e);
 			throw new CompositionException(err, e);
@@ -597,6 +610,7 @@ public class CompositionServiceLocalImpl extends BaseServiceLocalImpl implements
 				comp = new CompositionBean(composition);
 			}
 		} catch (Exception e) {
+			System.out.println(e.getMessage() + " " + e.getClass());
 			String err = "Error finding composition by sample ID: " + sampleId;
 			throw new CompositionException(err, e);
 		}

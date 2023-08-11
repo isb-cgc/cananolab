@@ -66,6 +66,12 @@ public class UserServiceImpl implements UserService
 	public void createUserAccount(CananoUserDetails userDetails)
 	{
 		String username = userDetails.getUsername();
+		System.out.println("New user is being created. Call stack follows." + userDetails.getUsername());
+		java.lang.StackTraceElement traces[] = Thread.currentThread().getStackTrace();
+		for (java.lang.StackTraceElement trace: traces) {
+			System.out.println(trace);
+		}
+
 		if (userDetails != null && !StringUtils.isEmpty(username))
 		{
 			String encryptedString = passwordEncoder.encode(username);

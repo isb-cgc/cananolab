@@ -2,6 +2,7 @@ package gov.nih.nci.cananolab.restful;
 
 import gov.nih.nci.cananolab.dto.particle.synthesis.SynthesisBean;
 import gov.nih.nci.cananolab.restful.synthesis.SynthesisBO;
+import gov.nih.nci.cananolab.restful.util.AppPropertyUtil;
 import gov.nih.nci.cananolab.restful.view.SimpleSynthesisBean;
 import gov.nih.nci.cananolab.ui.form.SynthesisForm;
 import javax.servlet.http.HttpServletRequest;
@@ -31,6 +32,10 @@ public class SynthesisServices {
     @Produces ("application/json")
     public Response view(@Context HttpServletRequest httpRequest, @DefaultValue("") @QueryParam("sampleId") String sampleId)
     {
+        if (!Boolean.parseBoolean(AppPropertyUtil.getAppProperty("SYNTHESIS_ENABLED"))) {
+            return Response.ok("{\"message\": \"Feature under development\"}").build();
+        }
+
         try {
             SynthesisForm form = new SynthesisForm();
             form.setSampleId(sampleId);
@@ -62,6 +67,10 @@ public class SynthesisServices {
     @Produces ("application/json")
     public Response summaryPrint(@Context HttpServletRequest httpRequest, @DefaultValue("") @QueryParam("sampleId") String sampleId)
     {
+        if (!Boolean.parseBoolean(AppPropertyUtil.getAppProperty("SYNTHESIS_ENABLED"))) {
+            return Response.ok("{\"message\": \"Feature under development\"}").build();
+        }
+
         try {
         SynthesisForm form = new SynthesisForm();
         form.setSampleId(sampleId);
@@ -89,6 +98,10 @@ public class SynthesisServices {
     public Response summaryExport(@Context HttpServletRequest httpRequest, @Context HttpServletResponse httpResponse,
                                   @DefaultValue("") @QueryParam("sampleId") String sampleId, @DefaultValue("") @QueryParam("type") String type)
     {
+        if (!Boolean.parseBoolean(AppPropertyUtil.getAppProperty("SYNTHESIS_ENABLED"))) {
+            return Response.ok("{\"message\": \"Feature under development\"}").build();
+        }
+
         try {
             SynthesisForm form = new SynthesisForm();
             form.setSampleId(sampleId);
@@ -101,6 +114,7 @@ public class SynthesisServices {
         } catch (Exception e) {
             return Response.ok("Error while exporting the file").build();
         }
+        
     }
 
 //    @GET

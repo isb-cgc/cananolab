@@ -336,7 +336,7 @@ public class SearchSampleBO extends AbstractDispatchBO {
 				String sampleId = sampleBeans.get(i).getDomain().getId().toString();
 
 				//SampleBean sampleBean = service.findSampleBasicById(sampleId, false);
-				SampleBean sampleBean = sampleService.findSampleById(sampleId, false);
+				SampleBean sampleBean = sampleService.findSampleForSearchById(sampleId, false);
 				if (sampleBean != null) {
 					Sample sample = sampleBean.getDomain();
 					// load summary information

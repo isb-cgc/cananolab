@@ -113,6 +113,7 @@ public class SimpleFileBean {
 	
 	public void transferSimpleFileBean(FileBean simpleBean, HttpServletRequest request)
 	{
+		// WJRL 2/6/23:File Description is HTML escaped with breaks
 		this.setDescription(simpleBean.getDescription());
 		this.setId(simpleBean.getDomainFile().getId());
 		this.setKeywordsStr(simpleBean.getKeywordsStr());
@@ -130,6 +131,7 @@ public class SimpleFileBean {
 
 	public SimpleFileBean(FileBean simpleBean, String sampleId)
 	{
+		// WJRL 2/6/23: File Description is HTML escaped with breaks
 		this.setDescription(simpleBean.getDescription());
 		this.setId(simpleBean.getDomainFile().getId());
 		this.setKeywordsStr(simpleBean.getKeywordsStr());

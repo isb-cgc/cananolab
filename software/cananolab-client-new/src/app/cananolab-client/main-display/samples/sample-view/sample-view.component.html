@@ -30,9 +30,7 @@
                 Keywords
             </td>
             <td>
-                <div *ngFor="let keyword of keyWords">
-                    {{keyword}}
-                </div>
+                <div *ngFor="let keyword of keyWords" [innerHTML]="keyword"></div>
             </td>
         </tr>
         <tr>
@@ -64,17 +62,9 @@
                                 No
                             </ng-container>
                         </td>
-                        <td>
-                            {{contact.contactPerson}}
-                        </td>
-                        <td>
-                            <span [innerHtml]="contact.organizationDisplayName">
-                                Org Name
-                            </span>
-                        </td>
-                        <td>
-                            {{contact.role}}
-                        </td>
+                        <td [innerHtml]="contact.contactPerson"></td>
+                        <td [innerHtml]="contact.organizationDisplayName"></td>
+                        <td [innerHtml]="contact.role"></td>
                     </tr>
                 </table>
             </td>

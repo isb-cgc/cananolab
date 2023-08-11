@@ -16,9 +16,9 @@ export class SearchSamplesByPublicationService {
         return this.samplesByPublicationResults;
     }
 
-    // sets publicastion search results //
+    // sets publication search results //
     setPublicationSearchResults(data) {
-        this.samplesByPublicationResults=data;
-        localStorage.setItem('cananolab_samples_by_publication_results',JSON.stringify(data));
+        this.samplesByPublicationResults = data;
+        localStorage.setItem('cananolab_samples_by_publication_results', JSON.stringify(data));
     }
 }

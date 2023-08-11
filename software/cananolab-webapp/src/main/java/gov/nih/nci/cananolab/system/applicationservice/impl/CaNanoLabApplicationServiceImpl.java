@@ -56,7 +56,12 @@ public class CaNanoLabApplicationServiceImpl extends WritableApplicationServiceI
 
 	public void saveOrUpdate(Object object) throws ApplicationException {
 		try {
+			// System.out.println("CNLASL saveOrUpdate " + object.getClass().getCanonicalName());
 			CaNanoLabORMDAO dao = (CaNanoLabORMDAO) classCache.getDAOForClass(object.getClass().getCanonicalName());
+			// WJRL 2/13/23: This is a problem with issue #258. Sample copy failing here with: "nested exception is
+			// org.hibernate.NonUniqueObjectException: A different object with the same identifier value was
+			// already associated with the session : [gov.nih.nci.cananolab.domain.particle.Sample#115900438]
+			// See: https://stackoverflow.com/questions/2144697/spring-hibernate-a-different-object-with-the-same-identifier-value-was-alrea
 			dao.saveOrUpdate(object);
 		} catch (Exception e) {
 			e.printStackTrace();

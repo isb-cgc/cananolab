@@ -484,7 +484,7 @@
                                                         </tr>
                                                         <tr>
                                                             <th *ngFor="let columnHeader of currentFinding.columnHeaders; let columnHeaderIndex=index">
-                                                                <a [routerLink]="" (click)="editColumnForm(columnHeader, columnHeaderIndex)">
+                                                                <a [routerLink]="[]" (click)="editColumnForm(columnHeader, columnHeaderIndex)">
                                                                     {{columnHeader.name}}
                                                                 </a>
                                                             </th>

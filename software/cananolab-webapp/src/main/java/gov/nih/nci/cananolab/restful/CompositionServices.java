@@ -44,13 +44,10 @@ public class CompositionServices {
 			return Response.ok(view).build();
 
 		} catch (Exception e) {
-			JsonBuilderFactory factory = Json.createBuilderFactory(null);
-			JsonObject value = factory.createObjectBuilder()
-					.add("status", "Error while viewing the composition results").build();
-
-			return
-					Response.ok(value).build();
-//			return Response.ok("Error while viewing the composition results" +e).build();
+			logger.error(e.getMessage());
+			e.printStackTrace();
+			// WJRL 2/24/23: An internal exception caught here is unexpected and should not return OK with just a status reporting an error.
+			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity("Error while building the composition results").build();
 		}
 	}
 	
@@ -76,8 +73,7 @@ public class CompositionServices {
 			JsonObject value = factory.createObjectBuilder()
 					.add("status", "Error while printing the file").build();
 
-			return
-					Response.ok(value).build();
+			return Response.ok(value).build();
 //			return Response.ok("Error while printing the file").build();
 		}
 	}
@@ -107,20 +103,22 @@ public class CompositionServices {
 	@Path("/downloadImage")
 	@Produces({"image/png", "application/json"})
 	public Response characterizationImage(@Context HttpServletRequest httpRequest, @Context HttpServletResponse httpResponse,
-			@DefaultValue("") @QueryParam("fileId") String fileId)
+	                                      @DefaultValue("") @QueryParam("sampleId") String sampleId,
+	                                      @DefaultValue("") @QueryParam("fileId") String fileId)
 	{
-		return download(httpRequest, httpResponse, fileId);
+		return download(httpRequest, httpResponse, sampleId, fileId);
 	}
 
 	@GET
 	@Path("/download")
 	@Produces({"image/png", "application/json"})
 	public Response download(@Context HttpServletRequest httpRequest, @Context HttpServletResponse httpResponse,
-			@DefaultValue("") @QueryParam("fileId") String fileId)
+	                         @DefaultValue("") @QueryParam("sampleId") String sampleId,
+	                         @DefaultValue("") @QueryParam("fileId") String fileId)
 	{
 		try {
 			CompositionBO compositionBO = (CompositionBO) SpringApplicationContext.getBean(httpRequest, "compositionBO");
-			String result = compositionBO.download(fileId, httpRequest, httpResponse);
+			String result = compositionBO.download(sampleId, fileId, httpRequest, httpResponse);
 
 			return Response.ok(result).build();
 		}

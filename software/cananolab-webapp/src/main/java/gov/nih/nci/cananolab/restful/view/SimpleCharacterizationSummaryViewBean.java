@@ -81,8 +81,12 @@ public class SimpleCharacterizationSummaryViewBean {
 				List<SimpleCharacterizationViewBean> charBeansByCharName = new ArrayList<SimpleCharacterizationViewBean>();
 				
 				for (CharacterizationBean charBean : charBeans) {
+					if (!charBean.getCharacterizationType().equals(type)) {
+						continue;
+					}
+
 					logger.debug("Proccessing char bean: " + charBean.getCharacterizationName());
-					
+
 					SimpleCharacterizationViewBean aView = new SimpleCharacterizationViewBean();
 		
 					List<SimpleCharacterizationUnitBean> aBeanUnitList = tranferCharacterizationBeanData(request, charBean);
@@ -375,6 +379,7 @@ public class SimpleCharacterizationSummaryViewBean {
 			
 			if (fileBean.getDomainFile().getDescription() != null && fileBean.getDomainFile().getDescription().length() > 0) {
 				logger.debug("File description: " + fileBean.getDescription());
+				// WJRL 2/6/23: File Description is HTML escaped with breaks
 				aFile.put("description", fileBean.getDescription());
 			}
 			

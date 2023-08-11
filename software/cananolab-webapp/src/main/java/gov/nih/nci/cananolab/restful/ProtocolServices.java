@@ -24,6 +24,7 @@ import gov.nih.nci.cananolab.restful.protocol.SearchProtocolBO;
 import gov.nih.nci.cananolab.restful.util.CommonUtil;
 import gov.nih.nci.cananolab.restful.view.edit.SimpleSubmitProtocolBean;
 import gov.nih.nci.cananolab.security.utils.SpringSecurityUtil;
+import gov.nih.nci.cananolab.security.CananoUserDetails;
 import gov.nih.nci.cananolab.ui.form.SearchProtocolForm;
 import gov.nih.nci.cananolab.util.Constants;
 import org.apache.logging.log4j.Logger;
@@ -42,6 +43,15 @@ public class ProtocolServices
 		{
 			SearchProtocolBO searchProtocolBO = (SearchProtocolBO) SpringApplicationContext.getBean(httpRequest, "searchProtocolBO");
 			Map<String, Object> dropdownMap = searchProtocolBO.setup(httpRequest);
+
+			// Curator can directly set public access when create protocol
+			boolean isCurator = false;
+			if (SpringSecurityUtil.isUserLoggedIn()) {
+				CananoUserDetails userDetails = SpringSecurityUtil.getPrincipal();
+				isCurator = userDetails.isCurator();
+			}
+			dropdownMap.put("isCuratorEditing", isCurator);
+
 			return Response.ok(dropdownMap).header("Access-Control-Allow-Credentials", "true").header("Access-Control-Allow-Origin", "*").header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS").header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization").build();
 
 			// return Response.ok(dropdownMap).build();
@@ -79,13 +89,14 @@ public class ProtocolServices
 	@GET
 	@Path("/download")
 	@Produces ({"application/pdf", "application/json"})
-	public Response download(@Context HttpServletRequest httpRequest, @Context HttpServletResponse httpResponse, 
-			@DefaultValue("") @QueryParam("fileId") String fileId)
+	public Response download(@Context HttpServletRequest httpRequest, @Context HttpServletResponse httpResponse,
+	                         @DefaultValue("") @QueryParam("protocolId") String protocolId,
+	                         @DefaultValue("") @QueryParam("fileId") String fileId)
 	{
 		try { 
 			ProtocolBO protocolBO = (ProtocolBO) SpringApplicationContext.getBean(httpRequest, "protocolBO");
 
-			String result = protocolBO.download(fileId, httpRequest, httpResponse);
+			String result = protocolBO.download(protocolId, fileId, httpRequest, httpResponse);
 
 			return Response.ok(result).build();
 
@@ -131,6 +142,10 @@ public class ProtocolServices
 				return Response.status(Response.Status.UNAUTHORIZED).entity(Constants.MSG_SESSION_INVALID).build();
 
 			SimpleSubmitProtocolBean view = protocolBO.setupUpdate(protocolId, httpRequest);
+			CananoUserDetails userDetails = SpringSecurityUtil.getPrincipal();
+			boolean isCurator = userDetails.isCurator();
+
+			view.setIsCuratorEditing(isCurator);
 
 			List<String> errors = view.getErrors();
 			return (errors == null || errors.size() == 0) ?

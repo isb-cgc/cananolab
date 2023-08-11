@@ -14,14 +14,14 @@ import { Properties } from 'src/assets/properties';
 export class SampleSearchComponent implements OnInit {
     @ViewChild( 'f', { static: false } ) sampleSearchForm: NgForm;
     helpUrl = Consts.HELP_URL_SAMPLE_SEARCH;
-    toolHeadingNameSearchSample = 'Sample Search';
+    toolHeadingName = 'Sample Search';
     keywords;
     data;
     dataTrailer;
     errors;
-    sampleSetupData={};
+    sampleSetupData = {};
     loading;
-    loadingMessage=Consts.searchingMessage;
+    loadingMessage = Consts.searchingMessage;
     pocOperand = 'contains';
     nameOperand = 'contains';
     sampleName;
@@ -41,36 +41,36 @@ export class SampleSearchComponent implements OnInit {
     }
 
     ngOnInit(): void{
-        setTimeout(()=> {
+        setTimeout(() => {
             Properties.SAMPLE_TOOLS = false;
         })
-        this.errors={};
-        this.data={
-            "text":"",
-            "sampleName":"",
-            "samplePointOfContact":"",
-            "pocOperand":"contains",
-            "nameOperand":"contains",
-            "nanomaterialEntityTypes":[],
-            "functionalizingEntityTypes":[],
-            "functionTypes":[],
-            "characterizationType":"",
-            "characterizations":[]
+        this.errors = {};
+        this.data = {
+            'text': '',
+            'sampleName': '',
+            'samplePointOfContact': '',
+            'pocOperand': 'contains',
+            'nameOperand': 'contains',
+            'nanomaterialEntityTypes': [],
+            'functionalizingEntityTypes': [],
+            'functionTypes': [],
+            'characterizationType': '',
+            'characterizations': []
         };
-        this.dataTrailer=JSON.parse(JSON.stringify(this.data));
+        this.dataTrailer = JSON.parse(JSON.stringify(this.data));
         this.init();
     }
 
     init(){
-        this.loading=true;
-        this.loadingMessage=Consts.loadingMessage;
+        this.loading = true;
+        this.loadingMessage = Consts.loadingMessage;
         this.apiService.doGet( Consts.QUERY_SAMPLE_SETUP, '' ).subscribe(
             data => {
-                this.loading=null;
+                this.loading = null;
                 this.sampleSetupData = data;
             },
-            error=> {
-                this.loading=null;
+            error => {
+                this.loading = null;
             } );
     }
 
@@ -85,25 +85,25 @@ export class SampleSearchComponent implements OnInit {
     }
 
     onSubmit(){
-        this.loading=true;
-        this.loadingMessage=Consts.searchingMessage;
+        this.loading = true;
+        this.loadingMessage = Consts.searchingMessage;
         // QUERY_SEARCH_SAMPLE
         this.apiService.doPost( Consts.QUERY_SEARCH_SAMPLE, this.data ).subscribe(
             data => {
                 this.searchResults = <any>data;
-                this.loading=null;
+                this.loading = null;
                 // send search results to samplesSearchResults
                 this.sampleSearchResultsService.setSearchResults( this.searchResults );
                 this.router.navigate(['home/samples/sample-search-results']); // @FIXME TESTING  Don't hard code this!!!
             },
-            error=> {
-                this.loading=null;
-                this.errors=error;
+            error => {
+                this.loading = null;
+                this.errors = error;
             } );
     }
 
     reset() {
-        this.data=JSON.parse(JSON.stringify(this.dataTrailer));
+        this.data = JSON.parse(JSON.stringify(this.dataTrailer));
     }
 
 }

@@ -92,7 +92,7 @@ public class CompositionFileBO extends BaseAnnotationBO
 				theFile.getDomainFile().setUri(null);
 			}
 		}
-		compositionService.saveCompositionFile(sampleBean, theFile);
+		compositionService.saveCompositionFile(sampleBean, theFile, false);
 		// retract from public if updating an existing public record and not
 		// curator
 		if (!newFile && !SpringSecurityUtil.getPrincipal().isCurator() && 
