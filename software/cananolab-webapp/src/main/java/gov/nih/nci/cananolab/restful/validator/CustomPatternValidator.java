@@ -81,19 +81,19 @@ public class CustomPatternValidator implements ConstraintValidator<PatternMatchI
 	
 	protected void populateRegexpNameValues() {
 		this.regexpMap.put("zip", "^(\\d{5}(-\\d{4})?)|([a-zA-Z0-9\\s])$");
-		this.regexpMap.put("alphabetic", "^[a-zA-Z\\s]*$");
-		
-		this.regexpMap.put("relaxedAlphabetic", "^[a-zA-Z\\s\\-\\.\\']*$");
+		this.regexpMap.put("alphabetic", "^[\\p{L}\\s]*$");
+		// WARNING! This is *also* checked by gov.nih.nci.cananolab.restful.util.InputValidationUtil
+		this.regexpMap.put("relaxedAlphabetic", "^[\\p{L}\\s\\-\\.\\']*$");
 		this.regexpMap.put("numeric", "^[0-9]*$");
 		this.regexpMap.put("number", "^[-+]?[0-9]*\\.?[0-9]+$");
-		this.regexpMap.put("alphanumeric", "^[a-zA-Z0-9\\s]*$");
-		this.regexpMap.put("relaxedAlphanumeric", "^[a-zA-Z0-9\\s\\-\\.\\(\\)]*$");
+		this.regexpMap.put("alphanumeric", "^[\\p{L}0-9\\s]*$");
+		this.regexpMap.put("relaxedAlphanumeric", "^[\\p{L}0-9\\s\\-\\.\\(\\)]*$");
 		this.regexpMap.put("loginName", "^[a-zA-Z0-9\\s\\_]*$");
 		this.regexpMap.put("phone", "^\\+?[0-9()\\-\\s]*((ext\\.|extension)\\s[0-9]+)?$");
 		this.regexpMap.put("textFieldWhiteList", "^(?!.*(<script|<%00script|\\%3C\\%73\\%63\\%72\\%69\\%70\\%74|<script|<script|<%00script|\\%uff1cscript\\%uff1e|\\%BC\\%F3\\%E3\\%F2\\%E9\\%F0\\%F4|\\+ADw\\-SCRIPT\\+AD4|\\u003Cscript|javascript\\:|\\%6A\\%61\\%76\\%61\\%73\\%63%\\%72\\%69\\%70\\%74\\%3A|javascript:|javascript:|<iframe|<frame|etc/passwd|/bin/id|\\.ini|;vol\\||id\\||AVAK\\$\\(RETURN_CODE\\)OS|sys\\.dba_user|\\+select\\+|\\+and\\+|WFXSSProbe|WF_XSRF|alert\\(|TEXT/VBSCRIPT|=\"|\\.\\./|\\.\\.\\|\\'|\\\"|background\\:|\\'\\+|\\\"\\+|%\\d+)).*$");
 		
-		this.regexpMap.put("relaxedTextFieldWhiteList0", "^[a-zA-Z0-9\\-\\_\\s\\(\\)\\:\\.\\,\\/\\?\\*]*$");
-		this.regexpMap.put("doi", "^[a-zA-Z0-9\\/\\-\\_\\s\\(\\)\\:\\.]*$");
+		this.regexpMap.put("relaxedTextFieldWhiteList0", "^[\\p{L}0-9\\-\\_\\s\\(\\)\\:\\.\\,\\/\\?\\*]*$");
+		this.regexpMap.put("doi", "^[\\p{L}0-9\\/\\-\\_\\s\\(\\)\\:\\.]*$");
 	}
 	
 	/**

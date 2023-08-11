@@ -219,14 +219,20 @@ public class CharacterizationBean {
 	}
 
 	public void setupDomain(String createdBy) throws Exception {
-		className = ClassUtils.getShortClassNameFromDisplayName(characterizationName);
-		System.out.println("Issue 181 charBean A " + characterizationName);
-		System.out.println("Issue 181 charBean B " + className);
-		Class clazz = ClassUtils.getFullClass(className);
-		System.out.println("Issue 181 charBean C " + clazz);
-		if (clazz == null) {
+		String subClassName = ClassUtils.getShortClassNameFromDisplayName(characterizationName);
+		String parentClassName = ClassUtils.getShortClassNameFromDisplayName(characterizationType);
+		Class subClass = ClassUtils.getFullClass(subClassName);
+		Class parentClass = ClassUtils.getFullClass(parentClassName);
+
+		Class clazz = subClass;
+		if (subClass == null || parentClass == null || !subClass.getSuperclass().getName().equals(parentClass.getName())) {
 			clazz = OtherCharacterization.class;
 		}
+
+//		System.out.println("Issue 181 charBean A " + characterizationName);
+//		System.out.println("Issue 181 charBean B " + className);
+//		System.out.println("Issue 181 charBean C " + clazz);
+
 		if (domainChar == null) {
 			domainChar = (Characterization) clazz.newInstance();
 		}
@@ -303,9 +309,10 @@ public class CharacterizationBean {
 		return description;
 	}
 
-	public String getDescriptionDisplayName() {
+	// WJRL 2/6/23: Appears to be unused
+	/*public String getDescriptionDisplayName() {
 		return StringUtils.escapeXmlButPreserveLineBreaks(description);
-	}
+	}*/
 
 	public void setDescription(String description) {
 		this.description = description;

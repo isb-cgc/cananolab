@@ -132,7 +132,7 @@ public class CharacterizationExporter {
 		HSSFCellStyle hlinkStyle = wb.createCellStyle();
 		HSSFFont hlinkFont = wb.createFont();
 		hlinkFont.setUnderline(HSSFFont.U_SINGLE);
-		hlinkFont.setColor(HSSFColor.BLUE.index);
+		hlinkFont.setColor(HSSFColor.HSSFColorPredefined.BLUE.getIndex());
 		hlinkStyle.setFont(hlinkFont);
 
 		int charCount = 1;

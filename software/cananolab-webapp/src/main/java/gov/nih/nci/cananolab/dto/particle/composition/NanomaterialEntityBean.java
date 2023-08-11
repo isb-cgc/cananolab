@@ -32,6 +32,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
+import java.io.IOException;
 
 /**
  * Represents the view bean for the NanomaterialEntity domain object
@@ -256,7 +257,8 @@ public class NanomaterialEntityBean extends BaseCompositionEntityBean {
 		this.fullerene = fullerene;
 	}
 
-	public void setupDomainEntity(String createdBy) throws Exception {
+	public void setupDomainEntity(String createdBy)
+			throws InstantiationException, IllegalAccessException, IOException, ClassNotFoundException {
 		className = ClassUtils.getShortClassNameFromDisplayName(type);
 		Class clazz = ClassUtils.getFullClass("nanomaterial." + className);
 		if (clazz == null) {
@@ -441,6 +443,12 @@ public class NanomaterialEntityBean extends BaseCompositionEntityBean {
 		}
 	}
 
+	//
+	// WJRL 2/2023 This appears to be used to reference a single composing element
+	// in contexts where that is needed. Example: deleting a composing element.
+	// Other use appears to be to refer to a particular composing element that
+	// is being worked on.
+	//
 
 	//TODO This is evil and should be eliminated
 	private ComposingElementBean theComposingElement = new ComposingElementBean();

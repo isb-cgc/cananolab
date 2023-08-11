@@ -63,7 +63,8 @@ public class CharacterizationServiceLocalImpl extends BaseServiceLocalImpl imple
 	@Autowired
 	private CharacterizationServiceHelper characterizationServiceHelper;
 
-	public void saveCharacterization(SampleBean sampleBean, CharacterizationBean charBean) throws CharacterizationException, NoAccessException
+	public void saveCharacterization(SampleBean sampleBean, CharacterizationBean charBean)
+			throws CharacterizationException, NoAccessException
 	{
 		if (SpringSecurityUtil.getPrincipal() == null) {
 			logger.error("Throwing no access Point A");
@@ -195,6 +196,7 @@ public class CharacterizationServiceLocalImpl extends BaseServiceLocalImpl imple
 			for (FileBean fileBean : finding.getFiles()) {
 				fileUtils.prepareSaveFile(fileBean.getDomainFile());
 			}
+			//System.out.println("CSLI saveFinding calling appService sOu " + finding.getDomain());
 			appService.saveOrUpdate(finding.getDomain());
 			// save file data to file system
 			for (FileBean fileBean : finding.getFiles()) {
@@ -472,7 +474,8 @@ public class CharacterizationServiceLocalImpl extends BaseServiceLocalImpl imple
 
 			List result = appService.query(crit);
 			System.out.println("FOCBAC Issue60: " + result.size());
-			for (Object obj : result) {
+			for (int i = 0; i < result.size(); i++) {
+   				Object obj =  result.get(i);
 				String charName = ((OtherCharacterization) obj).getName();
 				if (!charNames.contains(charName)) {
 					charNames.add(charName);

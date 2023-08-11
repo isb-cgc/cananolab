@@ -71,6 +71,7 @@ public class SimplePublicationSummaryViewBean {
 					publicationBean = new SimplePublicationBean();
 
 					publicationBean.setDisplayName(pBean.getDisplayName());
+					// WJRL 2/6/23: Publication Description is HTML escaped with breaks
 					publicationBean.setDescription(pBean.getDescription());
 					publicationBean.setResearchAreas(pBean.getResearchAreas());
 					publicationBean.setKeywordsDisplayName(pBean.getKeywordsDisplayName());

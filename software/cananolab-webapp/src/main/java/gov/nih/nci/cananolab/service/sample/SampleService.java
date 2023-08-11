@@ -14,14 +14,12 @@ import gov.nih.nci.cananolab.dto.particle.AdvancedSampleBean;
 import gov.nih.nci.cananolab.dto.particle.AdvancedSampleSearchBean;
 import gov.nih.nci.cananolab.dto.particle.SampleBasicBean;
 import gov.nih.nci.cananolab.dto.particle.SampleBean;
-import gov.nih.nci.cananolab.exception.DuplicateEntriesException;
-import gov.nih.nci.cananolab.exception.NoAccessException;
-import gov.nih.nci.cananolab.exception.NotExistException;
-import gov.nih.nci.cananolab.exception.PointOfContactException;
-import gov.nih.nci.cananolab.exception.SampleException;
+import gov.nih.nci.cananolab.exception.*;
 import gov.nih.nci.cananolab.security.AccessControlInfo;
 import gov.nih.nci.cananolab.security.CananoUserDetails;
 import gov.nih.nci.cananolab.service.BaseService;
+import gov.nih.nci.cananolab.system.applicationservice.ApplicationException;
+
 import java.util.List;
 import java.util.Map;
 import java.util.SortedSet;
@@ -55,6 +53,10 @@ public interface SampleService extends BaseService {
 	SampleBean findSampleById(String sampleId, Boolean loadAccessInfo)
 			throws SampleException, NoAccessException;
 
+
+	SampleBean findSampleForSearchById(String sampleId, Boolean loadAccessInfo)
+			throws SampleException, NoAccessException;
+
 	SampleBean findSampleByName(String sampleName)
 			throws SampleException, NoAccessException;
 
@@ -77,8 +79,13 @@ public interface SampleService extends BaseService {
 			throws SampleException;
 
 	SampleBean cloneSample(String originalSampleName,
-                           String newSampleName) throws SampleException, NoAccessException,
-			DuplicateEntriesException, NotExistException;
+                           String newSampleName)
+			throws SampleException, NoAccessException,
+			DuplicateEntriesException, NotExistException, PointOfContactException,
+			ExperimentConfigException, ApplicationException,
+			ApplicationProviderException, CompositionException,
+			FileException, CharacterizationException,
+			PublicationException, SynthesisException;
 
 	void deleteSample(String sampleName) throws SampleException,
 			NoAccessException, NotExistException;
@@ -90,7 +97,8 @@ public interface SampleService extends BaseService {
 	List<String> findOtherSampleNamesFromSamePrimaryOrganization(
             String sampleId) throws SampleException;
 	
-	void assignAccessibility(AccessControlInfo accessInfo, Sample sample) throws SampleException, NoAccessException;
+	void assignAccessibility(AccessControlInfo accessInfo, Sample sample)
+			throws SampleException, NoAccessException;
 
 	void removeAccessibility(AccessControlInfo access, Sample sample)
 			throws SampleException, NoAccessException;

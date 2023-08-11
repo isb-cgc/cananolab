@@ -98,6 +98,7 @@ public class SimpleSearchProtocolBean {
 		this.setViewName(bean.getDomain().getName());
 		this.setAbbreviation(bean.getDomain().getAbbreviation());
 		this.setVersion(bean.getDomain().getVersion());
+		// WJRL 2/6/23: File info is (partially) HTML escaped with breaks
 		String fileInformation = fileInfo(bean);
 		this.setFileInfo(fileInformation);
 		this.setCreatedDate(bean.getDomain().getCreatedDate());
@@ -106,6 +107,8 @@ public class SimpleSearchProtocolBean {
 		this.setFileTitle(bean.getFileBean().getDomainFile().getTitle());
 		id = bean.getDomain().getId();
 	}
+	//
+	// This is the text that appears in the "File" column of protocol search results.
 	private String fileInfo(ProtocolBean protocol) {
 		// TODO Auto-generated method stub
 		FileBean file = protocol.getFileBean();

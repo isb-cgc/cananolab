@@ -19,56 +19,59 @@ export class CharacterizationComponent implements OnInit{
     tempData;
     toolHeadingNameManage;
     helpUrl = Consts.HELP_URL_SAMPLE_CHARACTERIZATION;
-    sectionToShow='all';
+    sectionToShow = 'all';
     serverUrl = Properties.API_SERVER_URL;
     setupData;
 
+    // This is all the data that is being displayed on the page!
     characterizationData =
         {
         }
     types = []
-    editUrl=false;
+    editUrl = false;
 
-    constructor( private statusDisplayService:StatusDisplayService,private apiService:ApiService,private navigationService:NavigationService, private router: Router, private route: ActivatedRoute, private utilService: UtilService  ){
+    constructor( private statusDisplayService: StatusDisplayService, private apiService: ApiService, private navigationService: NavigationService, private router: Router, private route: ActivatedRoute, private utilService: UtilService  ){
     }
 
     ngOnInit(): void{
-        this.editUrl=this.statusDisplayService.isEditUrl();
+        this.editUrl = this.statusDisplayService.isEditUrl();
         this.navigationService.setCurrentSelectedItem(2);
         this.route.params.subscribe(
             ( params: Params ) => {
-                setTimeout(()=> {
+                setTimeout(() => {
                     Properties.SAMPLE_TOOLS = true;
 
-                },200)
+                }, 200)
                 this.sampleId = params['sampleId'];
                 this.apiService.getSampleName(this.sampleId).subscribe(
-                    data=>this.toolHeadingNameManage='Sample ' +data['sampleName'] + ' Characterization'
+                    data => this.toolHeadingNameManage = 'Sample ' + data['sampleName'] + ' Characterization'
                 )
-                if(
-                    this.sampleId <= 0 ){
+                if (this.sampleId <= 0) {
                     this.sampleId = Properties.CURRENT_SAMPLE_ID;
-                }else{
+                } else {
                     Properties.CURRENT_SAMPLE_ID = this.sampleId;
-                };
+                }
 
-                this.apiService.doGet(Consts.QUERY_CHARACTERIZATION_SETUP_EDIT,'sampleId='+this.sampleId).subscribe(data=> {
-                    for (var x=0; x<data.length;x++) {
+                // WJRL 2/2023: This called the setup edit page even in view mode:
+                let useURL = (this.editUrl) ? Consts.QUERY_CHARACTERIZATION_SETUP_EDIT : Consts.QUERY_CHARACTERIZATION_VIEW;
+
+                this.apiService.doGet(useURL, 'sampleId=' + this.sampleId).subscribe(data => {
+                    for (let x = 0; x < data.length; x++) {
                         this.types.push(data[x]['type']);
-                        this.characterizationData[data[x]['type']]=[];
+                        this.characterizationData[data[x]['type']] = [];
                     }
                     console.log(this.types)
                     console.log(this.characterizationData)
                     this.getCharacterizationData().subscribe( data => {
-                        this.tempData=data;
+                        this.tempData = data;
                         this.separateDataSets(data);
                     },
                     err => {
                         console.error( 'Error ', err );
                     });
                 },
-                errors=> {
-                    this.errors=errors;
+                errors => {
+                    this.errors = errors;
                 })
             }
         );
@@ -78,7 +81,7 @@ export class CharacterizationComponent implements OnInit{
     getCharacterizationData() {
         let results;
         try{
-            results = this.apiService.doGet(Consts.QUERY_CHARACTERIZATION_VIEW,'sampleId='+this.sampleId).pipe( timeout( Properties.HTTP_TIMEOUT ) );
+            results = this.apiService.doGet(Consts.QUERY_CHARACTERIZATION_VIEW, 'sampleId=' + this.sampleId).pipe( timeout( Properties.HTTP_TIMEOUT ) );
         }catch( e ){
             console.error( 'doGet Exception: ' + e );
         }
@@ -88,34 +91,34 @@ export class CharacterizationComponent implements OnInit{
 
 
     getExperiments(data) {
-        let value=data.value;
-        let rows=[];
-        let rowLength=0;
-        let headers=[];
-        value.forEach((data,index)=> {
-            let key=Object.keys(data)[0];
+        let value = data.value;
+        let rows = [];
+        let rowLength = 0;
+        let headers = [];
+        value.forEach((data, index) => {
+            let key = Object.keys(data)[0];
           headers.push(key);
-          rowLength=data[key].length;
+          rowLength = data[key].length;
         })
 
 
-        for (var x=0;x<rowLength;x++) {
-            let currentRow=[];
-            value.forEach((data,index)=> {
-              let key=Object.keys(data)[0];
+        for (let x = 0; x < rowLength; x++) {
+            let currentRow = [];
+            value.forEach((data, index) => {
+              let key = Object.keys(data)[0];
               currentRow.push(data[key][x]);
           })
           rows.push(currentRow);
         }
-        return [rows,headers]
+        return [rows, headers]
     }
 
     // separates out all data into subsets of physico, in vivo, in vitro and other characterization types //
     separateDataSets(data) {
-        //console.log(data)
+        // console.log(data)
         // let types =['in vitro characterization','in vivo characterization','physico-chemical characterization']
-        data.forEach(item=> {
-            item.charName=Object.keys(item.charsByAssayType)[0];
+        data.forEach(item => {
+            item.charName = Object.keys(item.charsByAssayType)[0];
             this.characterizationData[item.type].push(item)
         })
     }
@@ -132,16 +135,16 @@ export class CharacterizationComponent implements OnInit{
 
     // brings up new characterization form //
     addCharacterization(type) {
-        this.router.navigate( ['home/samples/characterization/edit-characterization', Properties.CURRENT_SAMPLE_ID,type] );  // @FIXME  Don't hard code these
+        this.router.navigate( ['home/samples/characterization/edit-characterization', Properties.CURRENT_SAMPLE_ID, type] );  // @FIXME  Don't hard code these
     }
 
     // brings up existing characterization form //
-    editCharacterization(charId,type, charClassName) {
-        this.router.navigate( ['home/samples/characterization/edit-characterization', Properties.CURRENT_SAMPLE_ID,charId, charClassName, type] );  // @FIXME  Don't hard code these
+    editCharacterization(charId, type, charClassName) {
+        this.router.navigate( ['home/samples/characterization/edit-characterization', Properties.CURRENT_SAMPLE_ID, charId, charClassName, type] );  // @FIXME  Don't hard code these
     }
 
 
     showSection(value) {
-        this.sectionToShow=value;
+        this.sectionToShow = value;
     }
 }

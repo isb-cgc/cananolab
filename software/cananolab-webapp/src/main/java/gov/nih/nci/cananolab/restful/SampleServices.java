@@ -37,6 +37,7 @@ import gov.nih.nci.cananolab.restful.view.SimpleSynthesisExportBean;
 import gov.nih.nci.cananolab.restful.view.edit.SampleEditGeneralBean;
 import gov.nih.nci.cananolab.restful.view.edit.SimplePointOfContactBean;
 import gov.nih.nci.cananolab.security.utils.SpringSecurityUtil;
+import gov.nih.nci.cananolab.security.CananoUserDetails;
 import gov.nih.nci.cananolab.service.protocol.ProtocolService;
 import gov.nih.nci.cananolab.ui.form.CompositionForm;
 import gov.nih.nci.cananolab.ui.form.PublicationForm;
@@ -228,21 +229,23 @@ public class SampleServices {
 	@Path("/downloadImage")
 	@Produces({"image/png", "application/json"})
 	 public Response downloadImage(@Context HttpServletRequest httpRequest, @Context HttpServletResponse httpResponse,
+				@DefaultValue("") @QueryParam("sampleId") String sampleId,
 	    		@DefaultValue("") @QueryParam("fileId") String fileId)
 	{
-		return download(httpRequest, httpResponse, fileId);
+		return download(httpRequest, httpResponse, sampleId, fileId);
 	}
 	
 	@GET
 	@Path("/download")
 	@Produces({"image/png", "application/json"})
 	 public Response download(@Context HttpServletRequest httpRequest, @Context HttpServletResponse httpResponse,
+                @DefaultValue("") @QueryParam("sampleId") String sampleId,
 	    		@DefaultValue("") @QueryParam("fileId") String fileId){
 		try {
 			CharacterizationBO characterizationBO = 
 					(CharacterizationBO) SpringApplicationContext.getBean(httpRequest, "characterizationBO");
-			
-			String result = characterizationBO.download(fileId, httpRequest, httpResponse);
+
+			String result = characterizationBO.download(fileId, sampleId, httpRequest, httpResponse);
 			return Response.ok(result).build();
 		} 
 		
@@ -289,8 +292,12 @@ public class SampleServices {
 		}
 		SampleBO sampleBO = (SampleBO) SpringApplicationContext.getBean(httpRequest, "sampleBO");
 
+		CananoUserDetails userDetails = SpringSecurityUtil.getPrincipal();
+		boolean isCurator = userDetails.isCurator();
+
 		try {
 			SampleEditGeneralBean sampleBean = sampleBO.summaryEdit(sampleId,httpRequest);
+			sampleBean.setIsCuratorEditing(isCurator);
 			return (sampleBean.getErrors().size() == 0) ?
 					Response.ok(sampleBean).build() :
 						Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(sampleBean.getErrors()).build();

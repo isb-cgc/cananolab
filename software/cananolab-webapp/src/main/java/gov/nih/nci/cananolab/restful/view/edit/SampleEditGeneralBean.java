@@ -4,6 +4,8 @@ import gov.nih.nci.cananolab.domain.common.PointOfContact;
 import gov.nih.nci.cananolab.dto.common.DataReviewStatusBean;
 import gov.nih.nci.cananolab.dto.common.PointOfContactBean;
 import gov.nih.nci.cananolab.dto.particle.SampleBean;
+import gov.nih.nci.cananolab.exception.CurationException;
+import gov.nih.nci.cananolab.exception.NoAccessException;
 import gov.nih.nci.cananolab.restful.sample.InitSampleSetup;
 import gov.nih.nci.cananolab.security.AccessControlInfo;
 import gov.nih.nci.cananolab.security.enums.CaNanoPermissionEnum;
@@ -47,6 +49,8 @@ public class SampleEditGeneralBean {
 	Map<String, String> filteredUsers;
 	Map<String, String> roleNames;
 	Boolean isPublic = false;
+
+	Boolean isCuratorEditing = false;
 
 	boolean showReviewButton;
 
@@ -214,6 +218,13 @@ public class SampleEditGeneralBean {
 		this.isPublic = isPublic;
 	}
 
+	public Boolean getIsCuratorEditing() {
+		return this.isCuratorEditing;
+	}
+	public void setIsCuratorEditing(Boolean isCuratorEditing) {
+		this.isCuratorEditing = isCuratorEditing;
+	}
+
 	public void setupRoleNameMap() {
 		this.roleNames = new HashMap<String, String>();
 		roleNames.put("R", CaNanoPermissionEnum.R.getPermValue());
@@ -228,13 +239,16 @@ public class SampleEditGeneralBean {
 	 * @param sampleBean
 	 * @throws Exception
 	 */
-	public void setupReviewButton(HttpServletRequest request, CurationService curatorService, SampleBean sampleBean, 
-								  SpringSecurityAclService springSecurityAclService) throws Exception
+	public void setupReviewButton(HttpServletRequest request, CurationService curatorService,
+								  SampleBean sampleBean,
+								  SpringSecurityAclService springSecurityAclService)
+		throws CurationException, NoAccessException
 	{
 		boolean publicData = springSecurityAclService.checkObjectPublic(sampleBean.getDomain().getId(), SecureClassesEnum.SAMPLE.getClazz());
 		if (!publicData)
 		{
-			DataReviewStatusBean reviewStatus = curatorService.findDataReviewStatusBeanByDataId(sampleBean.getDomain().getId().toString());
+			DataReviewStatusBean reviewStatus = curatorService.findDataReviewStatusBeanByDataId(sampleBean.getDomain().getId().toString(),
+					                                              DataReviewStatusBean.getDataTypeTag(SecureClassesEnum.SAMPLE));
 
             this.showReviewButton = !SpringSecurityUtil.getPrincipal().isCurator() && (reviewStatus == null || reviewStatus != null &&
                     reviewStatus.getReviewStatus().equals(DataReviewStatusBean.RETRACTED_STATUS));
@@ -363,6 +377,7 @@ public class SampleEditGeneralBean {
 	{
 		poc.setFirstName(samplePOC.getFirstName());
 		poc.setLastName(samplePOC.getLastName());
+		poc.setContactPerson(samplePOC.getFirstName() + " " + samplePOC.getMiddleInitial() + " " + samplePOC.getLastName());
 		poc.setMiddleInitial(samplePOC.getMiddleInitial());
 		poc.setSampleId(sampleId);
 

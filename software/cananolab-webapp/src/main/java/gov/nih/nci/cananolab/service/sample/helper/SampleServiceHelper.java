@@ -13,6 +13,7 @@ import gov.nih.nci.cananolab.domain.characterization.OtherCharacterization;
 import gov.nih.nci.cananolab.domain.common.Keyword;
 import gov.nih.nci.cananolab.domain.common.Organization;
 import gov.nih.nci.cananolab.domain.common.PointOfContact;
+import gov.nih.nci.cananolab.domain.common.Protocol;
 import gov.nih.nci.cananolab.domain.function.OtherFunction;
 import gov.nih.nci.cananolab.domain.linkage.OtherChemicalAssociation;
 import gov.nih.nci.cananolab.domain.nanomaterial.OtherNanomaterialEntity;
@@ -24,13 +25,43 @@ import gov.nih.nci.cananolab.domain.particle.FunctionalizingEntity;
 import gov.nih.nci.cananolab.domain.particle.NanomaterialEntity;
 import gov.nih.nci.cananolab.domain.particle.Sample;
 import gov.nih.nci.cananolab.domain.particle.SampleComposition;
+import gov.nih.nci.cananolab.domain.particle.SfeInherentFunction;
+import gov.nih.nci.cananolab.domain.particle.SmeInherentFunction;
+import gov.nih.nci.cananolab.domain.particle.SynthesisFunctionalization;
+import gov.nih.nci.cananolab.domain.particle.SynthesisFunctionalizationElement;
+import gov.nih.nci.cananolab.domain.particle.SynthesisPurification;
+import gov.nih.nci.cananolab.domain.particle.AssociatedElement;
+import gov.nih.nci.cananolab.domain.particle.ActivationMethod;
+import gov.nih.nci.cananolab.domain.common.Supplier;
+import gov.nih.nci.cananolab.domain.common.Author;
+import gov.nih.nci.cananolab.domain.particle.SynthesisPurity;
+import gov.nih.nci.cananolab.domain.common.PurityDatumCondition;
+import gov.nih.nci.cananolab.domain.common.PurityColumnHeader;
+import gov.nih.nci.cananolab.domain.common.PurificationConfig;
+
 import gov.nih.nci.cananolab.domain.particle.Synthesis;
+import gov.nih.nci.cananolab.domain.particle.SynthesisMaterial;
+import gov.nih.nci.cananolab.domain.particle.SynthesisMaterialElement;
+import gov.nih.nci.cananolab.domain.common.File;
+import gov.nih.nci.cananolab.domain.common.Finding;
+import gov.nih.nci.cananolab.domain.common.Datum;
+import gov.nih.nci.cananolab.domain.common.Condition;
+import gov.nih.nci.cananolab.domain.common.ExperimentConfig;
+import gov.nih.nci.cananolab.domain.common.Instrument;
+import gov.nih.nci.cananolab.domain.common.Technique;
+import gov.nih.nci.cananolab.domain.common.PointOfContact;
+import gov.nih.nci.cananolab.domain.common.Publication;
+
+import gov.nih.nci.cananolab.exception.ApplicationProviderException;
 import gov.nih.nci.cananolab.exception.NoAccessException;
+import gov.nih.nci.cananolab.exception.SampleException;
 import gov.nih.nci.cananolab.security.dao.AclDao;
 import gov.nih.nci.cananolab.security.enums.CaNanoRoleEnum;
 import gov.nih.nci.cananolab.security.enums.SecureClassesEnum;
 import gov.nih.nci.cananolab.security.service.SpringSecurityAclService;
+import gov.nih.nci.cananolab.system.applicationservice.ApplicationException;
 import gov.nih.nci.cananolab.system.applicationservice.CaNanoLabApplicationService;
+import gov.nih.nci.cananolab.system.applicationservice.TransactionInsertion;
 import gov.nih.nci.cananolab.util.ClassUtils;
 import gov.nih.nci.cananolab.util.Comparators;
 import gov.nih.nci.cananolab.util.Constants;
@@ -182,7 +213,7 @@ public class SampleServiceHelper
 			if (nanomaterialEntityClassNames != null
 					&& nanomaterialEntityClassNames.length > 0) {
 				Criterion nanoEntityCrit = Restrictions.in("nanoEntity.class",
-						nanomaterialEntityClassNames);
+						(Object[])nanomaterialEntityClassNames);
 				disjunction.add(nanoEntityCrit);
 			}
 			if (otherNanomaterialEntityTypes != null
@@ -190,7 +221,7 @@ public class SampleServiceHelper
 				Criterion otherNanoCrit1 = Restrictions.eq("nanoEntity.class",
 						"OtherNanomaterialEntity");
 				Criterion otherNanoCrit2 = Restrictions.in("nanoEntity.type",
-						otherNanomaterialEntityTypes);
+						(Object[])otherNanomaterialEntityTypes);
 				Criterion otherNanoCrit = Restrictions.and(otherNanoCrit1,
 						otherNanoCrit2);
 				disjunction.add(otherNanoCrit);
@@ -213,7 +244,7 @@ public class SampleServiceHelper
 				Integer[] functionalizingEntityClassNameIntegers = this
 						.convertToFunctionalizingEntityClassOrderNumber(functionalizingEntityClassNames);
 				Criterion funcEntityCrit = Restrictions.in("funcEntity.class",
-						functionalizingEntityClassNameIntegers);
+						(Object[])functionalizingEntityClassNameIntegers);
 				disjunction.add(funcEntityCrit);
 			}
 			if (otherFunctionalizingEntityTypes != null
@@ -223,7 +254,7 @@ public class SampleServiceHelper
 				Criterion otherFuncCrit1 = Restrictions.eq("funcEntity.class",
 						classOrderNumber);
 				Criterion otherFuncCrit2 = Restrictions.in("funcEntity.type",
-						otherFunctionalizingEntityTypes);
+						(Object[])otherFunctionalizingEntityTypes);
 				Criterion otherFuncCrit = Restrictions.and(otherFuncCrit1,
 						otherFuncCrit2);
 				disjunction.add(otherFuncCrit);
@@ -243,18 +274,18 @@ public class SampleServiceHelper
 					CriteriaSpecification.LEFT_JOIN);
 			if (functionClassNames != null && functionClassNames.length > 0) {
 				Criterion funcCrit1 = Restrictions.in("inFunc.class",
-						functionClassNames);
+						(Object[])functionClassNames);
 				Criterion funcCrit2 = Restrictions.in("func.class",
-						functionClassNames);
+						(Object[])functionClassNames);
 				disjunction.add(funcCrit1).add(funcCrit2);
 			}
 			if (otherFunctionTypes != null && otherFunctionTypes.length > 0) {
 				Criterion otherFuncCrit1 = Restrictions.and(
 						Restrictions.eq("inFunc.class", "OtherFunction"),
-						Restrictions.in("inFunc.type", otherFunctionTypes));
+						Restrictions.in("inFunc.type", (Object[])otherFunctionTypes));
 				Criterion otherFuncCrit2 = Restrictions.and(
 						Restrictions.eq("func.class", "OtherFunction"),
-						Restrictions.in("func.type", otherFunctionTypes));
+						Restrictions.in("func.type", (Object[])otherFunctionTypes));
 				disjunction.add(otherFuncCrit1).add(otherFuncCrit2);
 			}
 			crit.add(disjunction);
@@ -278,7 +309,7 @@ public class SampleServiceHelper
 			if (characterizationClassNames != null
 					&& characterizationClassNames.length > 0) {
 				Criterion charCrit = Restrictions.in("chara.class",
-						characterizationClassNames);
+						(Object[])characterizationClassNames);
 				disjunction.add(charCrit);
 			}
 			if (otherCharacterizationTypes != null
@@ -286,7 +317,7 @@ public class SampleServiceHelper
 				Criterion otherCharCrit1 = Restrictions.eq("chara.class",
 						"OtherCharacterization");
 				Criterion otherCharCrit2 = Restrictions.in("chara.name",
-						otherCharacterizationTypes);
+						(Object[])otherCharacterizationTypes);
 				Criterion otherCharCrit = Restrictions.and(otherCharCrit1,
 						otherCharCrit2);
 				disjunction.add(otherCharCrit);
@@ -561,54 +592,17 @@ public class SampleServiceHelper
 	}
 
 
-
-	//TODO add Synthesis to all of the sample returns
-	public Sample findSampleByName(String sampleName) throws Exception {
-		Sample sample = null;
-		CaNanoLabApplicationService appService = (CaNanoLabApplicationService) ApplicationServiceProvider
-				.getApplicationService();
-
-		DetachedCriteria crit = DetachedCriteria.forClass(Sample.class).add(
-				Property.forName("name").eq(sampleName).ignoreCase());
-		crit.setFetchMode("primaryPointOfContact", FetchMode.JOIN);
-		crit.setFetchMode("primaryPointOfContact.organization", FetchMode.JOIN);
-		crit.setFetchMode("otherPointOfContactCollection", FetchMode.JOIN);
-		crit.setFetchMode("otherPointOfContactCollection.organization",
-				FetchMode.JOIN);
-		crit.setFetchMode("keywordCollection", FetchMode.JOIN);
-		crit.setFetchMode("characterizationCollection", FetchMode.JOIN);
-		crit.setFetchMode("sampleComposition.chemicalAssociationCollection",
-				FetchMode.JOIN);
-		crit.setFetchMode("sampleComposition.nanomaterialEntityCollection",
-				FetchMode.JOIN);
-		crit.setFetchMode(
-				"sampleComposition.nanomaterialEntityCollection.composingElementCollection",
-				FetchMode.JOIN);
-		crit.setFetchMode(
-				"sampleComposition.nanomaterialEntityCollection.composingElementCollection.inherentFunctionCollection",
-				FetchMode.JOIN);
-
-		crit.setFetchMode("sampleComposition.functionalizingEntityCollection",
-				FetchMode.JOIN);
-		crit.setFetchMode(
-				"sampleComposition.functionalizingEntityCollection.functionCollection",
-				FetchMode.JOIN);
-		crit.setFetchMode("publicationCollection", FetchMode.JOIN);
-		crit.setFetchMode("synthesis", FetchMode.JOIN);
-		crit.setFetchMode("synthesis.synthesisMaterials", FetchMode.JOIN);
-		crit.setFetchMode("synthesis.synthesisFunctionalizations", FetchMode.JOIN);
-		crit.setFetchMode("synthesis.synthesisPurifications",FetchMode.JOIN);
-		crit.setResultTransformer(CriteriaSpecification.DISTINCT_ROOT_ENTITY);
-
-		List result = appService.query(crit);
-		if (!result.isEmpty()) {
-			sample = (Sample) result.get(0);
-			if (!springSecurityAclService.currentUserHasReadPermission(sample.getId(), SecureClassesEnum.SAMPLE.getClazz()) &&
-				!springSecurityAclService.currentUserHasWritePermission(sample.getId(), SecureClassesEnum.SAMPLE.getClazz())) {
-				throw new NoAccessException("User has no access to the sample " + sampleName);
-			}
-		}
-		return sample;
+	public Sample findSampleByName(String sampleName) throws ApplicationException, NoAccessException, ApplicationProviderException
+	{
+		logger.debug("findSampleByName sampleName=="+sampleName+";");
+		Sample mySample= null;
+		CaNanoLabApplicationService appService= (CaNanoLabApplicationService) ApplicationServiceProvider.getApplicationService();
+		DetachedCriteria myDetachedCriteria= DetachedCriteria.forClass(Sample.class).add( Property.forName("name").eq(sampleName).ignoreCase());
+		myDetachedCriteria.setResultTransformer(CriteriaSpecification.DISTINCT_ROOT_ENTITY);
+		TransactionInsertion<Sample> myTransactionInsertion= getSampleTransactionInsertion();
+        	mySample= appService.queryAndProcess(myDetachedCriteria, myTransactionInsertion);
+        	logger.debug("ran appService.queryAndProcess");
+        	return mySample;
 	}
 
 	public List<Keyword> findKeywordsBySampleId(String sampleId) throws Exception
@@ -678,7 +672,814 @@ public class SampleServiceHelper
 		return pointOfContacts;
 	}
 
-	public Sample findSampleById(String sampleId) throws Exception
+
+	public Sample findSampleById(String sampleId) throws SampleException {
+        try{
+            Long id = new Long(sampleId);
+            return findSampleById(id);
+        } catch (NumberFormatException nfex) {
+			logger.error("sampleId is not integer: "+ sampleId);
+			logger.error("Exception: " + nfex.getMessage());
+			throw new SampleException("sampleId " + sampleId + " is not an integer", nfex);
+		} catch (ApplicationException aex) {
+			logger.error("Application Exception: "+ sampleId);
+			logger.error("Exception: " + aex.getMessage());
+			throw new SampleException("sampleId " + sampleId + " generates Application Exception", aex);
+		} catch (NoAccessException naex) {
+			logger.error("No Access: "+ sampleId);
+			logger.error("Exception: " + naex.getMessage());
+			throw new SampleException("sampleId " + sampleId + " generates No Access Exception", naex);
+		} catch (ApplicationProviderException apex) {
+            logger.error("Application Provider Exception: "+ sampleId);
+            logger.error("Exception: " + apex.getMessage());
+			throw new SampleException("sampleId " + sampleId + " generates Application Provider Exception", apex);
+		} catch (NullPointerException npex) {
+			logger.error("Null Pointer Exception: "+ sampleId);
+			logger.error("Exception: " + npex.getMessage());
+			throw new SampleException("sampleId " + sampleId + " generates Null Pointer Exception", npex);
+		}
+	}
+
+private TransactionInsertion<Sample> getSampleTransactionInsertion() {
+
+    /* generated by convert_hibernate_method.py on 2023.16.06
+       code is commented with the following:
+        1. comments such as "// crit.setFetchMode(..." to indicate code blocks that replaced specific crit.setFetchMode lines in original method
+        2. file names used during parsing/code generation
+            e.g. "// Sample fn ./software/cananolab-webapp/src-domain/gov/nih/nci/cananolab/domain/particle/Sample.java
+        3. comments such as "// (PointOfContact)" to indicate nested classes ommitted from parsing to avoid infinite recursion
+            note: as opposed to "// PointOfContact" which simply labels the end of an iteration over a collection of PointOfContact
+    */ 
+            TransactionInsertion<Sample> myTransactionInsertion = new TransactionInsertion<Sample>() {
+            @Override
+            public boolean executeInsideTransaction(Sample mySample) {
+            String myString= null;
+ // Sample fn ./software/cananolab-webapp/src-domain/gov/nih/nci/cananolab/domain/particle/Sample.java
+// crit.setFetchMode("primaryPointOfContact", FetchMode.JOIN);
+PointOfContact myPrimaryPointOfContact= mySample.getPrimaryPointOfContact();
+if(myPrimaryPointOfContact!=null) {
+    myString= myPrimaryPointOfContact.toString();
+    logger.debug("mySample.myPrimaryPointOfContact.getId()==" + myPrimaryPointOfContact.getId());
+     // PrimaryPointOfContact fn ./software/cananolab-webapp/src-domain/gov/nih/nci/cananolab/domain/common/PointOfContact.java
+// crit.setFetchMode("primaryPointOfContact.organization", FetchMode.JOIN);
+    Organization myOrganization= myPrimaryPointOfContact.getOrganization();
+    if(myOrganization!=null) {
+        myString= myOrganization.toString();
+        logger.debug("myPrimaryPointOfContact.myOrganization.getId()==" + myOrganization.getId());
+         // Organization fn ./software/cananolab-webapp/src-domain/gov/nih/nci/cananolab/domain/common/Organization.java
+        Collection<PointOfContact> myOrganizationPointOfContactCollection= myOrganization.getPointOfContactCollection();
+        for(PointOfContact myOrganizationPointOfContact:myOrganizationPointOfContactCollection) {
+            myString= myOrganizationPointOfContact.toString();
+            logger.debug("myOrganizationPointOfContact.getId()==" + myOrganizationPointOfContact.getId());
+            // (PointOfContact)
+        } // PointOfContact
+
+    }
+} // myPrimaryPointOfContact
+// crit.setFetchMode("characterizationCollection", FetchMode.JOIN);
+Set<Characterization> myCharacterizationSet= mySample.getCharacterizationCollection();
+for(Characterization myCharacterization : myCharacterizationSet) {
+    myString= myCharacterization.toString();
+    logger.debug("mySample.myCharacterization.getId()==" + myCharacterization.getId());
+     // Characterization fn ./software/cananolab-webapp/src-domain/gov/nih/nci/cananolab/domain/particle/Characterization.java
+    Protocol myProtocol= myCharacterization.getProtocol();
+    if(myProtocol!=null) {
+        myString= myProtocol.toString();
+        logger.debug("myCharacterization.myProtocol.getId()==" + myProtocol.getId());
+         // Protocol fn ./software/cananolab-webapp/src-domain/gov/nih/nci/cananolab/domain/common/Protocol.java
+        File myFile= myProtocol.getFile();
+        if(myFile!=null) {
+            myString= myFile.toString();
+            logger.debug("myProtocol.myFile.getId()==" + myFile.getId());
+             // File fn ./software/cananolab-webapp/src-domain/gov/nih/nci/cananolab/domain/common/File.java
+            Set<Keyword> myKeywordSet= myFile.getKeywordCollection();
+            for(Keyword myKeyword : myKeywordSet) {
+                myString= myKeyword.toString();
+                logger.debug("myFile.myKeyword.getId()==" + myKeyword.getId());
+                 // Keyword fn ./software/cananolab-webapp/src-domain/gov/nih/nci/cananolab/domain/common/Keyword.java
+                // (File)
+            } // Keyword
+
+        }
+    }
+    Set<ExperimentConfig> myExperimentConfigSet= myCharacterization.getExperimentConfigCollection();
+    for(ExperimentConfig myExperimentConfig : myExperimentConfigSet) {
+        myString= myExperimentConfig.toString();
+        logger.debug("myCharacterization.myExperimentConfig.getId()==" + myExperimentConfig.getId());
+         // ExperimentConfig fn ./software/cananolab-webapp/src-domain/gov/nih/nci/cananolab/domain/common/ExperimentConfig.java
+        Collection<Instrument> myInstrumentCollection= myExperimentConfig.getInstrumentCollection();
+        for(Instrument myInstrument:myInstrumentCollection) {
+            myString= myInstrument.toString();
+            logger.debug("myExperimentConfig.myInstrument.getId()==" + myInstrument.getId());
+             // Instrument fn ./software/cananolab-webapp/src-domain/gov/nih/nci/cananolab/domain/common/Instrument.java
+        } // Instrument
+
+        Technique myTechnique= myExperimentConfig.getTechnique();
+        if(myTechnique!=null) {
+            myString= myTechnique.toString();
+            logger.debug("myExperimentConfig.myTechnique.getId()==" + myTechnique.getId());
+             // Technique fn ./software/cananolab-webapp/src-domain/gov/nih/nci/cananolab/domain/common/Technique.java
+        }
+    } // ExperimentConfig
+
+    PointOfContact myCharacterizationPointOfContact= myCharacterization.getPointOfContact();
+    if(myCharacterizationPointOfContact!=null) {
+        myString= myCharacterizationPointOfContact.toString();
+        logger.debug("myCharacterizationPointOfContact.getId()==" + myCharacterizationPointOfContact.getId());
+         // PointOfContact fn ./software/cananolab-webapp/src-domain/gov/nih/nci/cananolab/domain/common/PointOfContact.java
+// crit.setFetchMode("otherPointOfContactCollection.organization",FetchMode.JOIN);
+        Organization myPointOfContactOrganization= myCharacterizationPointOfContact.getOrganization();
+        if(myPointOfContactOrganization!=null) {
+            myString= myPointOfContactOrganization.toString();
+            logger.debug("myCharacterizationPointOfContact.myPointOfContactOrganization.getId()==" + myPointOfContactOrganization.getId());
+             // Organization fn ./software/cananolab-webapp/src-domain/gov/nih/nci/cananolab/domain/common/Organization.java
+            Collection<PointOfContact> myOrganizationPointOfContactCollection= myPointOfContactOrganization.getPointOfContactCollection();
+            for(PointOfContact myOrganizationPointOfContact:myOrganizationPointOfContactCollection) {
+                myString= myOrganizationPointOfContact.toString();
+                logger.debug("myPointOfContactOrganization.myOrganizationPointOfContact.getId()==" + myOrganizationPointOfContact.getId());
+                // (PointOfContact)
+            } // PointOfContact
+
+        }
+    }
+    Set<Finding> myFindingSet= myCharacterization.getFindingCollection();
+    for(Finding myFinding : myFindingSet) {
+        myString= myFinding.toString();
+        logger.debug("myCharacterization.myFinding.getId()==" + myFinding.getId());
+         // Finding fn ./software/cananolab-webapp/src-domain/gov/nih/nci/cananolab/domain/common/Finding.java
+        Collection<Datum> myDatumCollection= myFinding.getDatumCollection();
+        for(Datum myDatum:myDatumCollection) {
+            myString= myDatum.toString();
+            logger.debug("myFinding.myDatum.getId()==" + myDatum.getId());
+             // Datum fn ./software/cananolab-webapp/src-domain/gov/nih/nci/cananolab/domain/common/Datum.java
+            Set<Condition> myConditionSet= myDatum.getConditionCollection();
+            for(Condition myCondition : myConditionSet) {
+                myString= myCondition.toString();
+                logger.debug("myDatum.myCondition.getId()==" + myCondition.getId());
+                 // Condition fn ./software/cananolab-webapp/src-domain/gov/nih/nci/cananolab/domain/common/Condition.java
+            } // Condition
+
+            Finding myDatumFinding= myDatum.getFinding();
+            if(myDatumFinding!=null) {
+                myString= myDatumFinding.toString();
+                logger.debug("myDatumFinding.getId()==" + myDatumFinding.getId());
+                // (Finding)
+            }
+        } // Datum
+
+        Collection<File> myFindingFileCollection= myFinding.getFileCollection();
+        for(File myFindingFile:myFindingFileCollection) {
+            myString= myFindingFile.toString();
+            logger.debug("myFindingFile.getId()==" + myFindingFile.getId());
+             // File fn ./software/cananolab-webapp/src-domain/gov/nih/nci/cananolab/domain/common/File.java
+            Set<Keyword> myFileKeywordSet= myFindingFile.getKeywordCollection();
+            for(Keyword myFileKeyword : myFileKeywordSet) {
+                myString= myFileKeyword.toString();
+                logger.debug("myFindingFile.myKeyword.getId()==" + myFileKeyword.getId());
+                 // Keyword fn ./software/cananolab-webapp/src-domain/gov/nih/nci/cananolab/domain/common/Keyword.java
+                // (File)
+            } // Keyword
+
+        } // File
+
+    } // Finding
+
+    Sample myCharacterizationSample= myCharacterization.getSample();
+    if(myCharacterizationSample!=null) {
+        myString= myCharacterizationSample.toString();
+        logger.debug("myCharacterizationSample.getId()==" + myCharacterizationSample.getId());
+        // (Sample)
+    }
+} // Characterization
+
+SampleComposition mySampleComposition= mySample.getSampleComposition();
+if(mySampleComposition!=null) {
+    myString= mySampleComposition.toString();
+    logger.debug("mySampleComposition.getId()==" + mySampleComposition.getId());
+     // SampleComposition fn ./software/cananolab-webapp/src-domain/gov/nih/nci/cananolab/domain/particle/SampleComposition.java
+// crit.setFetchMode("sampleComposition.nanomaterialEntityCollection",FetchMode.JOIN);
+    Set<NanomaterialEntity> myNanomaterialEntitySet= mySampleComposition.getNanomaterialEntityCollection();
+    for(NanomaterialEntity myNanomaterialEntity : myNanomaterialEntitySet) {
+        myString= myNanomaterialEntity.toString();
+        logger.debug("mySampleComposition.myNanomaterialEntity.getId()==" + myNanomaterialEntity.getId());
+         // NanomaterialEntity fn ./software/cananolab-webapp/src-domain/gov/nih/nci/cananolab/domain/particle/NanomaterialEntity.java
+// crit.setFetchMode("sampleComposition.nanomaterialEntityCollection.composingElementCollection",FetchMode.JOIN);
+        Collection<ComposingElement> myComposingElementCollection= myNanomaterialEntity.getComposingElementCollection();
+        for(ComposingElement myComposingElement:myComposingElementCollection) {
+            myString= myComposingElement.toString();
+            logger.debug("myNanomaterialEntity.myComposingElement.getId()==" + myComposingElement.getId());
+             // ComposingElement fn ./software/cananolab-webapp/src-domain/gov/nih/nci/cananolab/domain/particle/ComposingElement.java
+// crit.setFetchMode("sampleComposition.nanomaterialEntityCollection.composingElementCollection.inherentFunctionCollection",FetchMode.JOIN);
+            Collection<Function> myFunctionCollection= myComposingElement.getInherentFunctionCollection();
+            for(Function myFunction:myFunctionCollection) {
+                myString= myFunction.toString();
+                logger.debug("myComposingElement.myFunction.getId()==" + myFunction.getId());
+                 // Function fn ./software/cananolab-webapp/src-domain/gov/nih/nci/cananolab/domain/particle/Function.java
+                ComposingElement myFunctionComposingElement= myFunction.getComposingElement();
+                if(myFunctionComposingElement!=null) {
+                    myString= myFunctionComposingElement.toString();
+                    logger.debug("myFunctionComposingElement.getId()==" + myFunctionComposingElement.getId());
+                    // (ComposingElement)
+                }
+                FunctionalizingEntity myFunctionalizingEntity= myFunction.getFunctionalizingEntity();
+                if(myFunctionalizingEntity!=null) {
+                    myString= myFunctionalizingEntity.toString();
+                    logger.debug("myFunctionalizingEntity.getId()==" + myFunctionalizingEntity.getId());
+                     // FunctionalizingEntity fn ./software/cananolab-webapp/src-domain/gov/nih/nci/cananolab/domain/particle/FunctionalizingEntity.java
+                    Set<File> myFunctionalizingEntityFileSet= myFunctionalizingEntity.getFileCollection();
+                    for(File myFunctionalizingEntityFile : myFunctionalizingEntityFileSet) {
+                        myString= myFunctionalizingEntityFile.toString();
+                        logger.debug("myFunctionalizingEntity.myFile.getId()==" + myFunctionalizingEntityFile.getId());
+                         // File fn ./software/cananolab-webapp/src-domain/gov/nih/nci/cananolab/domain/common/File.java
+                        Set<Keyword> myFileKeywordSet= myFunctionalizingEntityFile.getKeywordCollection();
+                        for(Keyword myFileKeyword : myFileKeywordSet) {
+                            myString= myFileKeyword.toString();
+                            logger.debug("myFunctionalizingEntityFile.myKeyword.getId()==" + myFileKeyword.getId());
+                             // Keyword fn ./software/cananolab-webapp/src-domain/gov/nih/nci/cananolab/domain/common/Keyword.java
+                            // (File)
+                        } // Keyword
+
+                    } // File
+
+                    SampleComposition myFunctionalizingEntitySampleComposition= myFunctionalizingEntity.getSampleComposition();
+                    if(myFunctionalizingEntitySampleComposition!=null) {
+                        myString= myFunctionalizingEntitySampleComposition.toString();
+                        logger.debug("myFunctionalizingEntitySampleComposition.getId()==" + myFunctionalizingEntitySampleComposition.getId());
+                        // (SampleComposition)
+                    }
+                    ActivationMethod myActivationMethod= myFunctionalizingEntity.getActivationMethod();
+                    if(myActivationMethod!=null) {
+                        myString= myActivationMethod.toString();
+                        logger.debug("myFunctionalizingEntity.myActivationMethod.getId()==" + myActivationMethod.getId());
+                         // ActivationMethod fn ./software/cananolab-webapp/src-domain/gov/nih/nci/cananolab/domain/particle/ActivationMethod.java
+                        FunctionalizingEntity myActivationMethodFunctionalizingEntity= myActivationMethod.getFunctionalizingEntity();
+                        if(myActivationMethodFunctionalizingEntity!=null) {
+                            myString= myActivationMethodFunctionalizingEntity.toString();
+                            logger.debug("myActivationMethodFunctionalizingEntity.getId()==" + myActivationMethodFunctionalizingEntity.getId());
+                            // (FunctionalizingEntity)
+                        }
+                    }
+// crit.setFetchMode("sampleComposition.functionalizingEntityCollection.functionCollection",FetchMode.JOIN);
+                    Set<Function> myFunctionalizingEntityFunctionSet= myFunctionalizingEntity.getFunctionCollection();
+                    for(Function myFunctionalizingEntityFunction : myFunctionalizingEntityFunctionSet) {
+                        myString= myFunctionalizingEntityFunction.toString();
+                        logger.debug("myFunctionalizingEntity.myFunction.getId()==" + myFunctionalizingEntityFunction.getId());
+                        // (Function)
+                    } // Function
+
+                }
+            } // Function
+
+            NanomaterialEntity myComposingElementNanomaterialEntity= myComposingElement.getNanomaterialEntity();
+            if(myComposingElementNanomaterialEntity!=null) {
+                myString= myComposingElementNanomaterialEntity.toString();
+                logger.debug("myComposingElementNanomaterialEntity.getId()==" + myComposingElementNanomaterialEntity.getId());
+                // (NanomaterialEntity)
+            }
+        } // ComposingElement
+
+        Collection<File> myNanomaterialEntityFileCollection= myNanomaterialEntity.getFileCollection();
+        for(File myNanomaterialEntityFile:myNanomaterialEntityFileCollection) {
+            myString= myNanomaterialEntityFile.toString();
+            logger.debug("myNanomaterialEntityFile.getId()==" + myNanomaterialEntityFile.getId());
+             // File fn ./software/cananolab-webapp/src-domain/gov/nih/nci/cananolab/domain/common/File.java
+            Set<Keyword> myFileKeywordSet= myNanomaterialEntityFile.getKeywordCollection();
+            for(Keyword myFileKeyword : myFileKeywordSet) {
+                myString= myFileKeyword.toString();
+                logger.debug("myNanomaterialEntityFile.myKeyword.getId()==" + myFileKeyword.getId());
+                 // Keyword fn ./software/cananolab-webapp/src-domain/gov/nih/nci/cananolab/domain/common/Keyword.java
+                // (File)
+            } // Keyword
+
+        } // File
+
+        SampleComposition myNanomaterialEntitySampleComposition= myNanomaterialEntity.getSampleComposition();
+        if(myNanomaterialEntitySampleComposition!=null) {
+            myString= myNanomaterialEntitySampleComposition.toString();
+            logger.debug("myNanomaterialEntitySampleComposition.getId()==" + myNanomaterialEntitySampleComposition.getId());
+            // (SampleComposition)
+        }
+    } // NanomaterialEntity
+
+// crit.setFetchMode("sampleComposition.functionalizingEntityCollection",FetchMode.JOIN);
+    Set<FunctionalizingEntity> mySampleCompositionFunctionalizingEntitySet= mySampleComposition.getFunctionalizingEntityCollection();
+    for(FunctionalizingEntity mySampleCompositionFunctionalizingEntity : mySampleCompositionFunctionalizingEntitySet) {
+        myString= mySampleCompositionFunctionalizingEntity.toString();
+         // FunctionalizingEntity fn ./software/cananolab-webapp/src-domain/gov/nih/nci/cananolab/domain/particle/FunctionalizingEntity.java
+        Set<File> myFunctionalizingEntityFileSet= mySampleCompositionFunctionalizingEntity.getFileCollection();
+        for(File myFunctionalizingEntityFile : myFunctionalizingEntityFileSet) {
+            myString= myFunctionalizingEntityFile.toString();
+            logger.debug("mySampleCompositionFunctionalizingEntity.myFile.getId()==" + myFunctionalizingEntityFile.getId());
+             // File fn ./software/cananolab-webapp/src-domain/gov/nih/nci/cananolab/domain/common/File.java
+            Set<Keyword> myFileKeywordSet= myFunctionalizingEntityFile.getKeywordCollection();
+            for(Keyword myFileKeyword : myFileKeywordSet) {
+                myString= myFileKeyword.toString();
+                logger.debug("myFunctionalizingEntityFile.myKeyword.getId()==" + myFileKeyword.getId());
+                 // Keyword fn ./software/cananolab-webapp/src-domain/gov/nih/nci/cananolab/domain/common/Keyword.java
+                // (File)
+            } // Keyword
+
+        } // File
+
+        SampleComposition myFunctionalizingEntitySampleComposition= mySampleCompositionFunctionalizingEntity.getSampleComposition();
+        if(myFunctionalizingEntitySampleComposition!=null) {
+            myString= myFunctionalizingEntitySampleComposition.toString();
+            logger.debug("mySampleCompositionFunctionalizingEntity.myFunctionalizingEntitySampleComposition.getId()==" + myFunctionalizingEntitySampleComposition.getId());
+            // (SampleComposition)
+        }
+        ActivationMethod myFunctionalizingEntityActivationMethod= mySampleCompositionFunctionalizingEntity.getActivationMethod();
+        if(myFunctionalizingEntityActivationMethod!=null) {
+            myString= myFunctionalizingEntityActivationMethod.toString();
+            logger.debug("mySampleCompositionFunctionalizingEntity.myFunctionalizingEntityActivationMethod.getId()==" + myFunctionalizingEntityActivationMethod.getId());
+             // ActivationMethod fn ./software/cananolab-webapp/src-domain/gov/nih/nci/cananolab/domain/particle/ActivationMethod.java
+            FunctionalizingEntity myActivationMethodFunctionalizingEntity= myFunctionalizingEntityActivationMethod.getFunctionalizingEntity();
+            if(myActivationMethodFunctionalizingEntity!=null) {
+                myString= myActivationMethodFunctionalizingEntity.toString();
+                logger.debug("myFunctionalizingEntityActivationMethod.myActivationMethodFunctionalizingEntity.getId()==" + myActivationMethodFunctionalizingEntity.getId());
+                // (FunctionalizingEntity)
+            }
+        }
+        Set<Function> myFunctionalizingEntityFunctionSet= mySampleCompositionFunctionalizingEntity.getFunctionCollection();
+        for(Function myFunctionalizingEntityFunction : myFunctionalizingEntityFunctionSet) {
+            myString= myFunctionalizingEntityFunction.toString();
+            logger.debug("mySampleCompositionFunctionalizingEntity.myFunction.getId()==" + myFunctionalizingEntityFunction.getId());
+             // Function fn ./software/cananolab-webapp/src-domain/gov/nih/nci/cananolab/domain/particle/Function.java
+            ComposingElement myFunctionComposingElement= myFunctionalizingEntityFunction.getComposingElement();
+            if(myFunctionComposingElement!=null) {
+                myString= myFunctionComposingElement.toString();
+                logger.debug("myFunctionalizingEntityFunction.myFunctionComposingElement.getId()==" + myFunctionComposingElement.getId());
+                 // ComposingElement fn ./software/cananolab-webapp/src-domain/gov/nih/nci/cananolab/domain/particle/ComposingElement.java
+                Collection<Function> myComposingElementFunctionCollection= myFunctionComposingElement.getInherentFunctionCollection();
+                for(Function myComposingElementFunction:myComposingElementFunctionCollection) {
+                    myString= myComposingElementFunction.toString();
+                    logger.debug("myFunctionComposingElement.myComposingElementFunction.getId()==" + myComposingElementFunction.getId());
+                    // (Function)
+                } // Function
+
+                NanomaterialEntity myComposingElementNanomaterialEntity= myFunctionComposingElement.getNanomaterialEntity();
+                if(myComposingElementNanomaterialEntity!=null) {
+                    myString= myComposingElementNanomaterialEntity.toString();
+                    logger.debug("myFunctionComposingElement.myComposingElementNanomaterialEntity.getId()==" + myComposingElementNanomaterialEntity.getId());
+                    // (NanomaterialEntity)
+                }
+            }
+            FunctionalizingEntity myFunctionFunctionalizingEntity= myFunctionalizingEntityFunction.getFunctionalizingEntity();
+            if(myFunctionFunctionalizingEntity!=null) {
+                myString= myFunctionFunctionalizingEntity.toString();
+                logger.debug("myFunctionalizingEntityFunction.myFunctionFunctionalizingEntity.getId()==" + myFunctionFunctionalizingEntity.getId());
+                // (FunctionalizingEntity)
+            }
+        } // Function
+
+    } // FunctionalizingEntity
+
+// crit.setFetchMode("sampleComposition.chemicalAssociationCollection",FetchMode.JOIN);
+    Set<ChemicalAssociation> myChemicalAssociationSet= mySampleComposition.getChemicalAssociationCollection();
+    for(ChemicalAssociation myChemicalAssociation : myChemicalAssociationSet) {
+        myString= myChemicalAssociation.toString();
+        logger.debug("mySampleComposition.myChemicalAssociation.getId()==" + myChemicalAssociation.getId());
+         // ChemicalAssociation fn ./software/cananolab-webapp/src-domain/gov/nih/nci/cananolab/domain/particle/ChemicalAssociation.java
+        AssociatedElement myAssociatedElement= myChemicalAssociation.getAssociatedElementA();
+        if(myAssociatedElement!=null) {
+            myString= myAssociatedElement.toString();
+            logger.debug("myChemicalAssociation.myAssociatedElement.getId()==" + myAssociatedElement.getId());
+             // AssociatedElement fn ./software/cananolab-webapp/src-domain/gov/nih/nci/cananolab/domain/particle/AssociatedElement.java
+            // (ChemicalAssociation)
+            // (ChemicalAssociation)
+        }
+        AssociatedElement myChemicalAssociationAssociatedElement= myChemicalAssociation.getAssociatedElementB();
+        if(myChemicalAssociationAssociatedElement!=null) {
+            myString= myChemicalAssociationAssociatedElement.toString();
+            logger.debug("myChemicalAssociationAssociatedElement.getId()==" + myChemicalAssociationAssociatedElement.getId());
+             // AssociatedElement fn ./software/cananolab-webapp/src-domain/gov/nih/nci/cananolab/domain/particle/AssociatedElement.java
+            // (ChemicalAssociation)
+            // (ChemicalAssociation)
+        }
+        SampleComposition myChemicalAssociationSampleComposition= myChemicalAssociation.getSampleComposition();
+        if(myChemicalAssociationSampleComposition!=null) {
+            myString= myChemicalAssociationSampleComposition.toString();
+            logger.debug("myChemicalAssociationSampleComposition.getId()==" + myChemicalAssociationSampleComposition.getId());
+            // (SampleComposition)
+        }
+        Collection<File> myChemicalAssociationFileCollection= myChemicalAssociation.getFileCollection();
+        for(File myChemicalAssociationFile:myChemicalAssociationFileCollection) {
+            myString= myChemicalAssociationFile.toString();
+            logger.debug("myChemicalAssociationFile.getId()==" + myChemicalAssociationFile.getId());
+             // File fn ./software/cananolab-webapp/src-domain/gov/nih/nci/cananolab/domain/common/File.java
+            Set<Keyword> myFileKeywordSet= myChemicalAssociationFile.getKeywordCollection();
+            for(Keyword myFileKeyword : myFileKeywordSet) {
+                myString= myFileKeyword.toString();
+                logger.debug("myChemicalAssociationFile.myKeyword.getId()==" + myFileKeyword.getId());
+                 // Keyword fn ./software/cananolab-webapp/src-domain/gov/nih/nci/cananolab/domain/common/Keyword.java
+                // (File)
+            } // Keyword
+
+        } // File
+
+    } // ChemicalAssociation
+
+    Set<File> mySampleCompositionFileSet= mySampleComposition.getFileCollection();
+    for(File mySampleCompositionFile : mySampleCompositionFileSet) {
+        myString= mySampleCompositionFile.toString();
+        logger.debug("mySampleComposition.myFile.getId()==" + mySampleCompositionFile.getId());
+         // File fn ./software/cananolab-webapp/src-domain/gov/nih/nci/cananolab/domain/common/File.java
+        Set<Keyword> myFileKeywordSet= mySampleCompositionFile.getKeywordCollection();
+        for(Keyword myFileKeyword : myFileKeywordSet) {
+            myString= myFileKeyword.toString();
+            logger.debug("mySampleCompositionFile.myKeyword.getId()==" + myFileKeyword.getId());
+             // Keyword fn ./software/cananolab-webapp/src-domain/gov/nih/nci/cananolab/domain/common/Keyword.java
+            // (File)
+        } // Keyword
+
+    } // File
+
+    Sample mySampleCompositionSample= mySampleComposition.getSample();
+    if(mySampleCompositionSample!=null) {
+        myString= mySampleCompositionSample.toString();
+        logger.debug("mySampleCompositionSample.getId()==" + mySampleCompositionSample.getId());
+        // (Sample)
+    }
+}
+// crit.setFetchMode("publicationCollection", FetchMode.JOIN);
+Set<Publication> myPublicationSet= mySample.getPublicationCollection();
+for(Publication myPublication : myPublicationSet) {
+    myString= myPublication.toString();
+     // Publication fn ./software/cananolab-webapp/src-domain/gov/nih/nci/cananolab/domain/common/Publication.java
+    Collection<Author> myAuthorCollection= myPublication.getAuthorCollection();
+    for(Author myAuthor:myAuthorCollection) {
+        myString= myAuthor.toString();
+        logger.debug("myPublication.myAuthor.getId()==" + myAuthor.getId());
+         // Author fn ./software/cananolab-webapp/src-domain/gov/nih/nci/cananolab/domain/common/Author.java
+        Collection<Publication> myAuthorPublicationCollection= myAuthor.getPublicationCollection();
+        for(Publication myAuthorPublication:myAuthorPublicationCollection) {
+            myString= myAuthorPublication.toString();
+            logger.debug("myAuthorPublication.getId()==" + myAuthorPublication.getId());
+            // (Publication)
+        } // Publication
+
+    } // Author
+
+} // Publication
+
+// crit.setFetchMode("otherPointOfContactCollection", FetchMode.JOIN);
+Set<PointOfContact> mySamplePointOfContactSet= mySample.getOtherPointOfContactCollection();
+for(PointOfContact mySamplePointOfContact : mySamplePointOfContactSet) {
+    myString= mySamplePointOfContact.toString();
+    logger.debug("mySample.myPointOfContact.getId()==" + mySamplePointOfContact.getId());
+     // PointOfContact fn ./software/cananolab-webapp/src-domain/gov/nih/nci/cananolab/domain/common/PointOfContact.java
+    Organization myPointOfContactOrganization= mySamplePointOfContact.getOrganization();
+    if(myPointOfContactOrganization!=null) {
+        myString= myPointOfContactOrganization.toString();
+        logger.debug("mySamplePointOfContact.myPointOfContactOrganization.getId()==" + myPointOfContactOrganization.getId());
+         // Organization fn ./software/cananolab-webapp/src-domain/gov/nih/nci/cananolab/domain/common/Organization.java
+        Collection<PointOfContact> myOrganizationPointOfContactCollection= myPointOfContactOrganization.getPointOfContactCollection();
+        for(PointOfContact myOrganizationPointOfContact:myOrganizationPointOfContactCollection) {
+            myString= myOrganizationPointOfContact.toString();
+            logger.debug("myPointOfContactOrganization.myOrganizationPointOfContact.getId()==" + myOrganizationPointOfContact.getId());
+            // (PointOfContact)
+        } // PointOfContact
+
+    }
+} // PointOfContact
+
+// crit.setFetchMode("keywordCollection", FetchMode.JOIN);
+Set<Keyword> mySampleKeywordSet= mySample.getKeywordCollection();
+for(Keyword mySampleKeyword : mySampleKeywordSet) {
+    myString= mySampleKeyword.toString();
+    logger.debug("mySample.myKeyword.getId()==" + mySampleKeyword.getId());
+     // Keyword fn ./software/cananolab-webapp/src-domain/gov/nih/nci/cananolab/domain/common/Keyword.java
+    Set<File> myKeywordFileSet= mySampleKeyword.getFileCollection();
+    for(File myKeywordFile:myKeywordFileSet) {
+        myString= myKeywordFile.toString();
+        logger.debug("myKeywordFile.getId()==" + myKeywordFile.getId());
+         // File fn ./software/cananolab-webapp/src-domain/gov/nih/nci/cananolab/domain/common/File.java
+        Set<Keyword> myFileKeywordSet= myKeywordFile.getKeywordCollection();
+        for(Keyword myFileKeyword : myFileKeywordSet) {
+            myString= myFileKeyword.toString();
+            logger.debug("myKeywordFile.myKeyword.getId()==" + myFileKeyword.getId());
+            // (Keyword)
+        } // Keyword
+
+    } // File
+
+} // Keyword
+
+// crit.setFetchMode("synthesis", FetchMode.JOIN);
+Synthesis mySynthesis= mySample.getSynthesis();
+if(mySynthesis!=null) {
+    myString= mySynthesis.toString();
+    logger.debug("mySample.mySynthesis.getId()==" + mySynthesis.getId());
+     // Synthesis fn ./software/cananolab-webapp/src-domain/gov/nih/nci/cananolab/domain/particle/Synthesis.java
+// crit.setFetchMode("synthesis.synthesisPurifications",FetchMode.JOIN);
+    Set<SynthesisPurification> mySynthesisPurificationSet= mySynthesis.getSynthesisPurifications();
+    for(SynthesisPurification mySynthesisPurification : mySynthesisPurificationSet) {
+        myString= mySynthesisPurification.toString();
+        logger.debug("mySynthesisPurification.getId()==" + mySynthesisPurification.getId());
+         // SynthesisPurification fn ./software/cananolab-webapp/src-domain/gov/nih/nci/cananolab/domain/particle/SynthesisPurification.java
+        Synthesis mySynthesisPurificationSynthesis= mySynthesisPurification.getSynthesis();
+        if(mySynthesisPurificationSynthesis!=null) {
+            myString= mySynthesisPurificationSynthesis.toString();
+            logger.debug("mySynthesisPurificationSynthesis.getId()==" + mySynthesisPurificationSynthesis.getId());
+            // (Synthesis)
+        }
+        Protocol mySynthesisPurificationProtocol= mySynthesisPurification.getProtocol();
+        if(mySynthesisPurificationProtocol!=null) {
+            myString= mySynthesisPurificationProtocol.toString();
+            logger.debug("mySynthesisPurificationProtocol.getId()==" + mySynthesisPurificationProtocol.getId());
+             // Protocol fn ./software/cananolab-webapp/src-domain/gov/nih/nci/cananolab/domain/common/Protocol.java
+            File myProtocolFile= mySynthesisPurificationProtocol.getFile();
+            if(myProtocolFile!=null) {
+                myString= myProtocolFile.toString();
+                logger.debug("mySynthesisPurificationProtocol.myProtocolFile.getId()==" + myProtocolFile.getId());
+                 // File fn ./software/cananolab-webapp/src-domain/gov/nih/nci/cananolab/domain/common/File.java
+                Set<Keyword> myFileKeywordSet= myProtocolFile.getKeywordCollection();
+                for(Keyword myFileKeyword : myFileKeywordSet) {
+                    myString= myFileKeyword.toString();
+                    logger.debug("myProtocolFile.myKeyword.getId()==" + myFileKeyword.getId());
+                    // (Keyword)
+                } // Keyword
+
+            }
+        }
+        Set<SynthesisPurity> mySynthesisPuritySet= mySynthesisPurification.getPurities();
+        for(SynthesisPurity mySynthesisPurity : mySynthesisPuritySet) {
+            myString= mySynthesisPurity.toString();
+            logger.debug("mySynthesisPurification.mySynthesisPurity.getId()==" + mySynthesisPurity.getId());
+             // SynthesisPurity fn ./software/cananolab-webapp/src-domain/gov/nih/nci/cananolab/domain/particle/SynthesisPurity.java
+            Set<File> mySynthesisPurityFileSet= mySynthesisPurity.getFiles();
+            for(File mySynthesisPurityFile : mySynthesisPurityFileSet) {
+                myString= mySynthesisPurityFile.toString();
+                logger.debug("mySynthesisPurity.myFile.getId()==" + mySynthesisPurityFile.getId());
+                 // File fn ./software/cananolab-webapp/src-domain/gov/nih/nci/cananolab/domain/common/File.java
+                Set<Keyword> myFileKeywordSet= mySynthesisPurityFile.getKeywordCollection();
+                for(Keyword myFileKeyword : myFileKeywordSet) {
+                    myString= myFileKeyword.toString();
+                    logger.debug("mySynthesisPurityFile.myKeyword.getId()==" + myFileKeyword.getId());
+                    // (Keyword)
+                } // Keyword
+
+            } // File
+
+            Set<PurityDatumCondition> myPurityDatumConditionSet= mySynthesisPurity.getPurityDatumCollection();
+            for(PurityDatumCondition myPurityDatumCondition : myPurityDatumConditionSet) {
+                myString= myPurityDatumCondition.toString();
+                logger.debug("mySynthesisPurity.myPurityDatumCondition.getPurityPkId()==" + myPurityDatumCondition.getPurityPkId());
+                 // PurityDatumCondition fn ./software/cananolab-webapp/src-domain/gov/nih/nci/cananolab/domain/common/PurityDatumCondition.java
+                SynthesisPurity myPurityDatumConditionSynthesisPurity= myPurityDatumCondition.getPurity();
+                if(myPurityDatumConditionSynthesisPurity!=null) {
+                    myString= myPurityDatumConditionSynthesisPurity.toString();
+                    logger.debug("myPurityDatumConditionSynthesisPurity.getId()==" + myPurityDatumConditionSynthesisPurity.getId());
+                // (SynthesisPurity)
+                }
+                PurityColumnHeader myPurityColumnHeader= myPurityDatumCondition.getColumnHeader();
+                if(myPurityColumnHeader!=null) {
+                    myString= myPurityColumnHeader.toString();
+                    logger.debug("myPurityDatumCondition.myPurityColumnHeader.getId()==" + myPurityColumnHeader.getId());
+                     // PurityColumnHeader fn ./software/cananolab-webapp/src-domain/gov/nih/nci/cananolab/domain/common/PurityColumnHeader.java
+                }
+            } // PurityDatumCondition
+
+            SynthesisPurification mySynthesisPuritySynthesisPurification= mySynthesisPurity.getSynthesisPurification();
+            if(mySynthesisPuritySynthesisPurification!=null) {
+                myString= mySynthesisPuritySynthesisPurification.toString();
+                logger.debug("mySynthesisPuritySynthesisPurification.getId()==" + mySynthesisPuritySynthesisPurification.getId());
+                // (SynthesisPurification)
+            }
+        } // SynthesisPurity
+
+        Set<PurificationConfig> myPurificationConfigSet= mySynthesisPurification.getPurificationConfigs();
+        for(PurificationConfig myPurificationConfig : myPurificationConfigSet) {
+            myString= myPurificationConfig.toString();
+            logger.debug("mySynthesisPurification.myPurificationConfig.getPurificationConfigPkId()==" + myPurificationConfig.getPurificationConfigPkId());
+             // PurificationConfig fn ./software/cananolab-webapp/src-domain/gov/nih/nci/cananolab/domain/common/PurificationConfig.java
+            Technique myPurificationConfigTechnique= myPurificationConfig.getTechnique();
+            if(myPurificationConfigTechnique!=null) {
+                myString= myPurificationConfigTechnique.toString();
+                logger.debug("myPurificationConfigTechnique.getId()==" + myPurificationConfigTechnique.getId());
+                 // Technique fn ./software/cananolab-webapp/src-domain/gov/nih/nci/cananolab/domain/common/Technique.java
+            }
+            Collection<Instrument> myPurificationConfigInstrumentCollection= myPurificationConfig.getInstrumentCollection();
+            for(Instrument myPurificationConfigInstrument:myPurificationConfigInstrumentCollection) {
+                myString= myPurificationConfigInstrument.toString();
+                logger.debug("myPurificationConfigInstrument.getId()==" + myPurificationConfigInstrument.getId());
+                 // Instrument fn ./software/cananolab-webapp/src-domain/gov/nih/nci/cananolab/domain/common/Instrument.java
+            } // Instrument
+
+        } // PurificationConfig
+
+        Set<File> mySynthesisPurificationFileSet= mySynthesisPurification.getFiles();
+        for(File mySynthesisPurificationFile : mySynthesisPurificationFileSet) {
+            myString= mySynthesisPurificationFile.toString();
+            logger.debug("mySynthesisPurification.myFile.getId()==" + mySynthesisPurificationFile.getId());
+             // File fn ./software/cananolab-webapp/src-domain/gov/nih/nci/cananolab/domain/common/File.java
+            Set<Keyword> myFileKeywordSet= mySynthesisPurificationFile.getKeywordCollection();
+            for(Keyword myFileKeyword : myFileKeywordSet) {
+                myString= myFileKeyword.toString();
+                logger.debug("mySynthesisPurificationFile.myKeyword.getId()==" + myFileKeyword.getId());
+                // (Keyword)
+            } // Keyword
+
+        } // File
+
+    } // SynthesisPurification
+
+// crit.setFetchMode("synthesis.synthesisFunctionalizations", FetchMode.JOIN);
+    Set<SynthesisFunctionalization> mySynthesisFunctionalizationSet= mySynthesis.getSynthesisFunctionalizations();
+    for(SynthesisFunctionalization mySynthesisFunctionalization : mySynthesisFunctionalizationSet) {
+        myString= mySynthesisFunctionalization.toString();
+        logger.debug("mySynthesisFunctionalization.getSynthesisFunctionalizationPkId()==" + mySynthesisFunctionalization.getSynthesisFunctionalizationPkId());
+         // SynthesisFunctionalization fn ./software/cananolab-webapp/src-domain/gov/nih/nci/cananolab/domain/particle/SynthesisFunctionalization.java
+        Synthesis mySynthesisFunctionalizationSynthesis= mySynthesisFunctionalization.getSynthesis();
+        if(mySynthesisFunctionalizationSynthesis!=null) {
+            myString= mySynthesisFunctionalizationSynthesis.toString();
+            logger.debug("mySynthesisFunctionalizationSynthesis.getId()==" + mySynthesisFunctionalizationSynthesis.getId());
+            // (Synthesis)
+        }
+        Protocol mySynthesisFunctionalizationProtocol= mySynthesisFunctionalization.getProtocol();
+        if(mySynthesisFunctionalizationProtocol!=null) {
+            myString= mySynthesisFunctionalizationProtocol.toString();
+            logger.debug("mySynthesisFunctionalizationProtocol.getId()==" + mySynthesisFunctionalizationProtocol.getId());
+             // Protocol fn ./software/cananolab-webapp/src-domain/gov/nih/nci/cananolab/domain/common/Protocol.java
+            File myProtocolFile= mySynthesisFunctionalizationProtocol.getFile();
+            if(myProtocolFile!=null) {
+                myString= myProtocolFile.toString();
+                logger.debug("mySynthesisFunctionalizationProtocol.myProtocolFile.getId()==" + myProtocolFile.getId());
+                 // File fn ./software/cananolab-webapp/src-domain/gov/nih/nci/cananolab/domain/common/File.java
+                Set<Keyword> myFileKeywordSet= myProtocolFile.getKeywordCollection();
+                for(Keyword myFileKeyword : myFileKeywordSet) {
+                    myString= myFileKeyword.toString();
+                    logger.debug("myProtocolFile.myKeyword.getId()==" + myFileKeyword.getId());
+                    // (Keyword)
+                } // Keyword
+
+            }
+        }
+        Set<SynthesisFunctionalizationElement> mySynthesisFunctionalizationElementSet= mySynthesisFunctionalization.getSynthesisFunctionalizationElements();
+        for(SynthesisFunctionalizationElement mySynthesisFunctionalizationElement : mySynthesisFunctionalizationElementSet) {
+            myString= mySynthesisFunctionalizationElement.toString();
+            logger.debug("mySynthesisFunctionalizationElement.getId()==" + mySynthesisFunctionalizationElement.getId());
+             // SynthesisFunctionalizationElement fn ./software/cananolab-webapp/src-domain/gov/nih/nci/cananolab/domain/particle/SynthesisFunctionalizationElement.java
+            SynthesisFunctionalization mySynthesisFunctionalizationElementSynthesisFunctionalization= mySynthesisFunctionalizationElement.getSynthesisFunctionalization();
+            if(mySynthesisFunctionalizationElementSynthesisFunctionalization!=null) {
+                myString= mySynthesisFunctionalizationElementSynthesisFunctionalization.toString();
+                logger.debug("mySynthesisFunctionalizationElementSynthesisFunctionalization.getId()==" + mySynthesisFunctionalizationElementSynthesisFunctionalization.getId());
+                // (SynthesisFunctionalization)
+            }
+            Set<SfeInherentFunction> mySfeInherentFunctionSet= mySynthesisFunctionalizationElement.getSfeInherentFunctions();
+            for(SfeInherentFunction mySfeInherentFunction : mySfeInherentFunctionSet) {
+                myString= mySfeInherentFunction.toString();
+                logger.debug("mySynthesisFunctionalizationElement.mySfeInherentFunction.getId()==" + mySfeInherentFunction.getId());
+                 // SfeInherentFunction fn ./software/cananolab-webapp/src-domain/gov/nih/nci/cananolab/domain/particle/SfeInherentFunction.java
+                SynthesisFunctionalizationElement mySfeInherentFunctionSynthesisFunctionalizationElement= mySfeInherentFunction.getSynthesisFunctionalizationElement();
+                if(mySfeInherentFunctionSynthesisFunctionalizationElement!=null) {
+                    myString= mySfeInherentFunctionSynthesisFunctionalizationElement.toString();
+                    logger.debug("mySfeInherentFunctionSynthesisFunctionalizationElement.getId()==" + mySfeInherentFunctionSynthesisFunctionalizationElement.getId());
+                    // (SynthesisFunctionalizationElement)
+                }
+            } // SfeInherentFunction
+
+            Set<File> mySynthesisFunctionalizationElementFileSet= mySynthesisFunctionalizationElement.getFiles();
+            for(File mySynthesisFunctionalizationElementFile : mySynthesisFunctionalizationElementFileSet) {
+                myString= mySynthesisFunctionalizationElementFile.toString();
+                logger.debug("mySynthesisFunctionalizationElement.myFile.getId()==" + mySynthesisFunctionalizationElementFile.getId());
+                 // File fn ./software/cananolab-webapp/src-domain/gov/nih/nci/cananolab/domain/common/File.java
+                Set<Keyword> myFileKeywordSet= mySynthesisFunctionalizationElementFile.getKeywordCollection();
+                for(Keyword myFileKeyword : myFileKeywordSet) {
+                    myString= myFileKeyword.toString();
+                    logger.debug("mySynthesisFunctionalizationElementFile.myKeyword.getId()==" + myFileKeyword.getId());
+                    // (Keyword)
+                } // Keyword
+
+            } // File
+
+        } // SynthesisFunctionalizationElement
+
+        Set<File> mySynthesisFunctionalizationFileSet= mySynthesisFunctionalization.getFiles();
+        for(File mySynthesisFunctionalizationFile : mySynthesisFunctionalizationFileSet) {
+            myString= mySynthesisFunctionalizationFile.toString();
+            logger.debug("mySynthesisFunctionalization.myFile.getId()==" + mySynthesisFunctionalizationFile.getId());
+             // File fn ./software/cananolab-webapp/src-domain/gov/nih/nci/cananolab/domain/common/File.java
+            Set<Keyword> myFileKeywordSet= mySynthesisFunctionalizationFile.getKeywordCollection();
+            for(Keyword myFileKeyword : myFileKeywordSet) {
+                myString= myFileKeyword.toString();
+                logger.debug("mySynthesisFunctionalizationFile.myKeyword.getId()==" + myFileKeyword.getId());
+                // (Keyword)
+            } // Keyword
+
+        } // File
+
+    } // SynthesisFunctionalization
+
+// crit.setFetchMode("synthesis.synthesisMaterials", FetchMode.JOIN);
+    Set<SynthesisMaterial> mySynthesisMaterialSet= mySynthesis.getSynthesisMaterials();
+    for(SynthesisMaterial mySynthesisMaterial : mySynthesisMaterialSet) {
+        myString= mySynthesisMaterial.toString();
+        logger.debug("mySynthesisMaterial.getId()==" + mySynthesisMaterial.getId());
+         // SynthesisMaterial fn ./software/cananolab-webapp/src-domain/gov/nih/nci/cananolab/domain/particle/SynthesisMaterial.java
+        Set<File> mySynthesisMaterialFileSet= mySynthesisMaterial.getFileCollection();
+        for(File mySynthesisMaterialFile : mySynthesisMaterialFileSet) {
+            myString= mySynthesisMaterialFile.toString();
+            logger.debug("mySynthesisMaterial.myFile.getId()==" + mySynthesisMaterialFile.getId());
+             // File fn ./software/cananolab-webapp/src-domain/gov/nih/nci/cananolab/domain/common/File.java
+            Set<Keyword> myFileKeywordSet= mySynthesisMaterialFile.getKeywordCollection();
+            for(Keyword myFileKeyword : myFileKeywordSet) {
+                myString= myFileKeyword.toString();
+                logger.debug("mySynthesisMaterialFile.myKeyword.getId()==" + myFileKeyword.getId());
+                // (Keyword)
+            } // Keyword
+
+        } // File
+
+        Protocol mySynthesisMaterialProtocol= mySynthesisMaterial.getProtocol();
+        if(mySynthesisMaterialProtocol!=null) {
+            myString= mySynthesisMaterialProtocol.toString();
+            logger.debug("mySynthesisMaterialProtocol.getId()==" + mySynthesisMaterialProtocol.getId());
+             // Protocol fn ./software/cananolab-webapp/src-domain/gov/nih/nci/cananolab/domain/common/Protocol.java
+            File myProtocolFile= mySynthesisMaterialProtocol.getFile();
+            if(myProtocolFile!=null) {
+                myString= myProtocolFile.toString();
+                logger.debug("mySynthesisMaterialProtocol.myProtocolFile.getId()==" + myProtocolFile.getId());
+                // (File)
+            }
+        }
+        Synthesis mySynthesisMaterialSynthesis= mySynthesisMaterial.getSynthesis();
+        if(mySynthesisMaterialSynthesis!=null) {
+            myString= mySynthesisMaterialSynthesis.toString();
+            logger.debug("mySynthesisMaterialSynthesis.getId()==" + mySynthesisMaterialSynthesis.getId());
+            // (Synthesis)
+        }
+        Set<SynthesisMaterialElement> mySynthesisMaterialElementSet= mySynthesisMaterial.getSynthesisMaterialElements();
+        for(SynthesisMaterialElement mySynthesisMaterialElement : mySynthesisMaterialElementSet) {
+            myString= mySynthesisMaterialElement.toString();
+            logger.debug("mySynthesisMaterialElement.getId()==" + mySynthesisMaterialElement.getId());
+             // SynthesisMaterialElement fn ./software/cananolab-webapp/src-domain/gov/nih/nci/cananolab/domain/particle/SynthesisMaterialElement.java
+            SynthesisMaterial mySynthesisMaterialElementSynthesisMaterial= mySynthesisMaterialElement.getSynthesisMaterial();
+            if(mySynthesisMaterialElementSynthesisMaterial!=null) {
+                myString= mySynthesisMaterialElementSynthesisMaterial.toString();
+                logger.debug("mySynthesisMaterialElementSynthesisMaterial.getId()==" + mySynthesisMaterialElementSynthesisMaterial.getId());
+                // (SynthesisMaterial)
+            }
+            Set<SmeInherentFunction> mySmeInherentFunctionSet= mySynthesisMaterialElement.getSmeInherentFunctions();
+            for(SmeInherentFunction mySmeInherentFunction : mySmeInherentFunctionSet) {
+                myString= mySmeInherentFunction.toString();
+                logger.debug("mySynthesisMaterialElement.mySmeInherentFunction.getId()==" + mySmeInherentFunction.getId());
+                 // SmeInherentFunction fn ./software/cananolab-webapp/src-domain/gov/nih/nci/cananolab/domain/particle/SmeInherentFunction.java
+                SynthesisMaterialElement mySmeInherentFunctionSynthesisMaterialElement= mySmeInherentFunction.getSynthesisMaterialElement();
+                if(mySmeInherentFunctionSynthesisMaterialElement!=null) {
+                    myString= mySmeInherentFunctionSynthesisMaterialElement.toString();
+                    logger.debug("mySmeInherentFunctionSynthesisMaterialElement.getId()==" + mySmeInherentFunctionSynthesisMaterialElement.getId());
+                    // (SynthesisMaterialElement)
+                }
+            } // SmeInherentFunction
+
+            Supplier mySupplier= mySynthesisMaterialElement.getSupplier();
+            if(mySupplier!=null) {
+                myString= mySupplier.toString();
+                logger.debug("mySynthesisMaterialElement.mySupplier.getId()==" + mySupplier.getId());
+                 // Supplier fn ./software/cananolab-webapp/src-domain/gov/nih/nci/cananolab/domain/common/Supplier.java
+            }
+            Set<File> mySynthesisMaterialElementFileSet= mySynthesisMaterialElement.getFiles();
+            for(File mySynthesisMaterialElementFile : mySynthesisMaterialElementFileSet) {
+                myString= mySynthesisMaterialElementFile.toString();
+                logger.debug("mySynthesisMaterialElement.myFile.getId()==" + mySynthesisMaterialElementFile.getId());
+                // (File)
+            } // File
+
+        } // SynthesisMaterialElement
+
+    } // SynthesisMaterial
+
+    Sample mySynthesisSample= mySynthesis.getSample();
+    if(mySynthesisSample!=null) {
+        myString= mySynthesisSample.toString();
+        logger.debug("mySynthesisSample.getId()==" + mySynthesisSample.getId());
+        // (Sample)
+    }
+}
+return true;
+}
+};
+return myTransactionInsertion;
+}
+
+	public Sample findSampleById(Long sampleId) throws ApplicationException, NoAccessException, ApplicationProviderException {
+		if (!springSecurityAclService.currentUserHasReadPermission(sampleId, SecureClassesEnum.SAMPLE.getClazz()) &&
+			!springSecurityAclService.currentUserHasWritePermission(sampleId, SecureClassesEnum.SAMPLE.getClazz())) {
+			throw new NoAccessException("User has no access to sampleId " + sampleId);
+		}
+		logger.debug("findSampleById sampleId=="+sampleId+";");
+		Sample mySample= null;
+		CaNanoLabApplicationService appService= (CaNanoLabApplicationService) ApplicationServiceProvider.getApplicationService();
+		DetachedCriteria crit= DetachedCriteria.forClass(Sample.class).add( Property.forName("id").eq(sampleId));
+		//crit.setFetchMode("publicationCollection", FetchMode.JOIN);
+		crit.setResultTransformer(CriteriaSpecification.DISTINCT_ROOT_ENTITY);
+		TransactionInsertion<Sample> myTransactionInsertion= getSampleTransactionInsertion();
+        	mySample = appService.queryAndProcess(crit, myTransactionInsertion);
+        	logger.debug("ran appService.queryAndProcess");
+        	return mySample;
+	}
+
+	public Sample old_findSampleById(String sampleId) throws Exception
 	{
 		if (!springSecurityAclService.currentUserHasReadPermission(Long.valueOf(sampleId), SecureClassesEnum.SAMPLE.getClazz()) &&
 			!springSecurityAclService.currentUserHasWritePermission(Long.valueOf(sampleId), SecureClassesEnum.SAMPLE.getClazz())) {
@@ -722,12 +1523,231 @@ public class SampleServiceHelper
 		crit.setResultTransformer(CriteriaSpecification.DISTINCT_ROOT_ENTITY);
 
 		List result = appService.query(crit);
-		if (!result.isEmpty() || result.size() > 0) {
+		if (result.size() != 0) {
 			sample = (Sample) result.get(0);
 		}
 		return sample;
 	}
 
+	public Sample findSampleByIdLazyLoad(String sampleId) throws Exception
+	{
+		if (!springSecurityAclService.currentUserHasReadPermission(Long.valueOf(sampleId), SecureClassesEnum.SAMPLE.getClazz()) &&
+			!springSecurityAclService.currentUserHasWritePermission(Long.valueOf(sampleId), SecureClassesEnum.SAMPLE.getClazz())) {
+			throw new NoAccessException("User has no access to the sample " + sampleId);
+		}
+
+		logger.debug("===============Finding a sample by id: " + System.currentTimeMillis());
+		Sample sample = null;
+		CaNanoLabApplicationService appService = (CaNanoLabApplicationService) ApplicationServiceProvider.getApplicationService();
+
+		DetachedCriteria crit = DetachedCriteria.forClass(Sample.class).add(
+				Property.forName("id").eq(new Long(sampleId)));
+
+		crit.setFetchMode("publicationCollection", FetchMode.JOIN);
+		crit.setFetchMode("synthesis", FetchMode.JOIN);
+		crit.setFetchMode("synthesis.synthesisMaterials", FetchMode.JOIN);
+		crit.setFetchMode("synthesis.synthesisFunctionalizations", FetchMode.JOIN);
+		crit.setFetchMode("synthesis.synthesisPurifications",FetchMode.JOIN);
+		crit.setResultTransformer(CriteriaSpecification.DISTINCT_ROOT_ENTITY);
+
+		TransactionInsertion<Sample> lazyLoads = new TransactionInsertion<Sample>() {
+			@Override
+			public boolean executeInsideTransaction(Sample sample) {
+				PointOfContact poc = sample.getPrimaryPointOfContact();
+				String id = poc.toString();
+				Organization org = poc.getOrganization();
+				// It appears we actually need to do something with the org to get it to lazy load:
+				id = org.toString();
+				Set<PointOfContact> others = sample.getOtherPointOfContactCollection();
+				for (PointOfContact poci : others) {
+					Organization orgi = poci.getOrganization();
+					id = orgi.toString();
+				}
+				Set<Keyword> keys = sample.getKeywordCollection();
+				for (Keyword key : keys) {
+					id = key.toString();
+				}
+				SampleComposition scomp = sample.getSampleComposition();
+				if (scomp != null) {
+					Set<NanomaterialEntity> nec = scomp.getNanomaterialEntityCollection();
+					if (nec != null) {
+						for (NanomaterialEntity ne : nec) {
+							Collection<ComposingElement> cec = ne.getComposingElementCollection();
+							if (cec != null) {
+								for (ComposingElement ce : cec) {
+									Collection<Function> ifc = ce.getInherentFunctionCollection();
+									if (ifc != null) {
+										for (Function fc : ifc) {
+											FunctionalizingEntity fe = fc.getFunctionalizingEntity();
+											id = fc.toString();
+										}
+									}
+								}
+							}
+						}
+					}
+					Set<ChemicalAssociation> cac = scomp.getChemicalAssociationCollection();
+					for (ChemicalAssociation ca : cac) {
+						AssociatedElement a = ca.getAssociatedElementA();
+						id = a.toString();
+						AssociatedElement b = ca.getAssociatedElementB();
+						id = b.toString();
+						SampleComposition sa = ca.getSampleComposition();
+						id = sa.toString();
+						Collection<File> fic = ca.getFileCollection();
+						for (File fi : fic) {
+							Set<Keyword> fikc = fi.getKeywordCollection();
+							for (Keyword kw : fikc) {
+								id = kw.toString();
+							}
+						}
+					}
+					Set<FunctionalizingEntity> fec = scomp.getFunctionalizingEntityCollection();
+					for (FunctionalizingEntity fe : fec) {
+						Collection<Function> ifc = fe.getFunctionCollection();
+						for (Function fc : ifc) {
+							FunctionalizingEntity fet = fc.getFunctionalizingEntity();
+							id = fet.toString();
+						}
+						Collection<File> fic = fe.getFileCollection();
+						for (File fi : fic) {
+							Set<Keyword> fikc = fi.getKeywordCollection();
+							for (Keyword kw : fikc) {
+								id = kw.toString();
+							}
+						}
+						ActivationMethod am = fe.getActivationMethod();
+						SampleComposition sa = fe.getSampleComposition();
+					}
+				}
+				Set<Characterization> cs = sample.getCharacterizationCollection();
+				for (Characterization ca : cs) {
+					Set<Finding> fic = ca.getFindingCollection();
+					for (Finding fi : fic) {
+						Collection<Datum> dac = fi.getDatumCollection();
+						for (Datum da : dac) {
+							Set<Condition> coc = da.getConditionCollection();
+							for (Condition co : coc) {
+								id = co.toString();
+							}
+						}
+						Collection<File> flic = fi.getFileCollection();
+						for (File fli : flic) {
+							Set<Keyword> fikc = fli.getKeywordCollection();
+							for (Keyword kw : fikc) {
+								id = kw.toString();
+							}
+						}
+					}
+					Set<ExperimentConfig> ecc = ca.getExperimentConfigCollection();
+					for (ExperimentConfig ec : ecc) {
+						Collection<Instrument> inc = ec.getInstrumentCollection();
+						for (Instrument in : inc) {
+							id = in.toString();
+						}
+						Technique tq = ec.getTechnique();
+						id = tq.getType();
+					}
+					PointOfContact pc = ca.getPointOfContact();
+				}
+				return true;
+			}
+		};
+
+		sample = appService.queryAndProcess(crit, lazyLoads);
+		return sample;
+	}
+
+	/**
+	 * WJRL 4/30/23: Use this for loading sample search results. Note that the system currently requires that a
+	 * Sample gets wrapped into a SampleBean so it can then be handed to:
+	 * SimpleSearchSampleBean.transferSampleBeanForBasicResultView(SampleBean sampleBean)
+	 * and thus more stuff is loaded to create the SampleBean than is needed for the final result. Investigate
+	 * ways to minimize the database queries even more.
+	*/
+
+	public Sample findShallowSampleByIdLazyLoad(String sampleId) throws Exception
+	{
+		if (!springSecurityAclService.currentUserHasReadPermission(Long.valueOf(sampleId), SecureClassesEnum.SAMPLE.getClazz()) &&
+				!springSecurityAclService.currentUserHasWritePermission(Long.valueOf(sampleId), SecureClassesEnum.SAMPLE.getClazz())) {
+			throw new NoAccessException("User has no access to the sample " + sampleId);
+		}
+
+		logger.debug("===============Finding a sample by id: " + System.currentTimeMillis());
+		Sample sample = null;
+		CaNanoLabApplicationService appService = (CaNanoLabApplicationService) ApplicationServiceProvider.getApplicationService();
+
+		DetachedCriteria crit = DetachedCriteria.forClass(Sample.class).add(
+				Property.forName("id").eq(new Long(sampleId)));
+		crit.setFetchMode("publicationCollection", FetchMode.JOIN);
+		crit.setResultTransformer(CriteriaSpecification.DISTINCT_ROOT_ENTITY);
+		System.out.println("Shallow Lazy load for search");
+
+		TransactionInsertion<Sample> lazyLoads = new TransactionInsertion<Sample>() {
+			@Override
+			public boolean executeInsideTransaction(Sample sample) {
+				PointOfContact poc = sample.getPrimaryPointOfContact();
+				String id = poc.toString();
+				Organization org = poc.getOrganization();
+				// It appears we actually need to do something with the org to get it to lazy load:
+				id = org.toString();
+				Set<PointOfContact> others = sample.getOtherPointOfContactCollection();
+				for (PointOfContact poci : others) {
+					Organization orgi = poci.getOrganization();
+					id = orgi.toString();
+				}
+				Set<Keyword> keys = sample.getKeywordCollection();
+				for (Keyword key : keys) {
+					id = key.toString();
+				}
+				SampleComposition scomp = sample.getSampleComposition();
+				if (scomp != null) {
+					Set<NanomaterialEntity> nec = scomp.getNanomaterialEntityCollection();
+					if (nec != null) {
+						for (NanomaterialEntity ne : nec) {
+							Collection<ComposingElement> cec = ne.getComposingElementCollection();
+							if (cec != null) {
+								for (ComposingElement ce : cec) {
+									Collection<Function> ifc = ce.getInherentFunctionCollection();
+									if (ifc != null) {
+										for (Function fc : ifc) {
+											FunctionalizingEntity fe = fc.getFunctionalizingEntity();
+											if (fe != null) {
+												fe.getClass();
+											}
+										}
+									}
+								}
+							}
+						}
+					}
+					Set<FunctionalizingEntity> fec = scomp.getFunctionalizingEntityCollection();
+					if (fec != null) {
+						for (FunctionalizingEntity fe : fec) {
+							Collection<Function> ifc = fe.getFunctionCollection();
+							if (ifc != null) {
+								for (Function fc : ifc) {
+									FunctionalizingEntity fet = fc.getFunctionalizingEntity();
+									if (fet != null) {
+										fet.getClass();
+									}
+								}
+							}
+						}
+					}
+				}
+				Set<Characterization> cs = sample.getCharacterizationCollection();
+				for (Characterization ca : cs) {
+					PointOfContact pc = ca.getPointOfContact();
+					ca.getClass();
+				}
+				return true;
+			}
+		};
+
+		sample = appService.queryAndProcess(crit, lazyLoads);
+		return sample;
+	}
 
 	public Sample findSampleBasicById(String sampleId) throws Exception {
 		if (!springSecurityAclService.currentUserHasReadPermission(Long.valueOf(sampleId), SecureClassesEnum.SAMPLE.getClazz()) &&
@@ -956,7 +1976,9 @@ public class SampleServiceHelper
 	}
 
 	public PointOfContact findPointOfContactByNameAndOrg(String firstName,
-			String lastName, String orgName) throws Exception {
+			String lastName, String orgName)
+		throws ApplicationException, ApplicationProviderException
+	{
 		PointOfContact poc = null;
 
 		CaNanoLabApplicationService appService = (CaNanoLabApplicationService) ApplicationServiceProvider
@@ -979,7 +2001,8 @@ public class SampleServiceHelper
 	}
 
 	public List<String> findSampleIdsByOwner(String currentOwner)
-			throws Exception {
+			throws ApplicationException, ApplicationProviderException
+	{
 		List<String> sampleIds = new ArrayList<String>();
 
 		// can't query for the entire Sample object due to
@@ -1010,7 +2033,9 @@ public class SampleServiceHelper
 		return sampleIds;
 	}
 
-	public List<String> getAllSamples() throws Exception {
+	public List<String> getAllSamples()
+			throws ApplicationException, ApplicationProviderException
+	{
 		CaNanoLabApplicationService appService = (CaNanoLabApplicationService) ApplicationServiceProvider
 				.getApplicationService();
 		HQLCriteria crit = new HQLCriteria(
@@ -1031,7 +2056,8 @@ public class SampleServiceHelper
 			String[] functionClassNames, String[] otherFunctionTypes,
 			String[] characterizationClassNames,
 			String[] otherCharacterizationTypes, String[] wordList)
-			throws Exception {
+			throws ApplicationException, ApplicationProviderException
+	{
 		List<String> sampleIds = new ArrayList<String>();
 
 		//logger.error("Processing: " + sampleName);
@@ -1121,7 +2147,7 @@ public class SampleServiceHelper
 			if (nanomaterialEntityClassNames != null
 					&& nanomaterialEntityClassNames.length > 0) {
 				Criterion nanoEntityCrit = Restrictions.in("nanoEntity.class",
-						nanomaterialEntityClassNames);
+						(Object[])nanomaterialEntityClassNames);
 				disjunction.add(nanoEntityCrit);
 			}
 			if (otherNanomaterialEntityTypes != null
@@ -1129,7 +2155,7 @@ public class SampleServiceHelper
 				Criterion otherNanoCrit1 = Restrictions.eq("nanoEntity.class",
 						"OtherNanomaterialEntity");
 				Criterion otherNanoCrit2 = Restrictions.in("nanoEntity.type",
-						otherNanomaterialEntityTypes);
+						(Object[])otherNanomaterialEntityTypes);
 				Criterion otherNanoCrit = Restrictions.and(otherNanoCrit1,
 						otherNanoCrit2);
 				disjunction.add(otherNanoCrit);
@@ -1152,7 +2178,7 @@ public class SampleServiceHelper
 				Integer[] functionalizingEntityClassNameIntegers = this
 						.convertToFunctionalizingEntityClassOrderNumber(functionalizingEntityClassNames);
 				Criterion funcEntityCrit = Restrictions.in("funcEntity.class",
-						functionalizingEntityClassNameIntegers);
+						(Object[])functionalizingEntityClassNameIntegers);
 				disjunction.add(funcEntityCrit);
 			}
 			if (otherFunctionalizingEntityTypes != null
@@ -1162,7 +2188,7 @@ public class SampleServiceHelper
 				Criterion otherFuncCrit1 = Restrictions.eq("funcEntity.class",
 						classOrderNumber);
 				Criterion otherFuncCrit2 = Restrictions.in("funcEntity.type",
-						otherFunctionalizingEntityTypes);
+						(Object[])otherFunctionalizingEntityTypes);
 				Criterion otherFuncCrit = Restrictions.and(otherFuncCrit1,
 						otherFuncCrit2);
 				disjunction.add(otherFuncCrit);
@@ -1182,18 +2208,18 @@ public class SampleServiceHelper
 					CriteriaSpecification.LEFT_JOIN);
 			if (functionClassNames != null && functionClassNames.length > 0) {
 				Criterion funcCrit1 = Restrictions.in("inFunc.class",
-						functionClassNames);
+						(Object[])functionClassNames);
 				Criterion funcCrit2 = Restrictions.in("func.class",
-						functionClassNames);
+						(Object[])functionClassNames);
 				disjunction.add(funcCrit1).add(funcCrit2);
 			}
 			if (otherFunctionTypes != null && otherFunctionTypes.length > 0) {
 				Criterion otherFuncCrit1 = Restrictions.and(
 						Restrictions.eq("inFunc.class", "OtherFunction"),
-						Restrictions.in("inFunc.type", otherFunctionTypes));
+						Restrictions.in("inFunc.type", (Object[])otherFunctionTypes));
 				Criterion otherFuncCrit2 = Restrictions.and(
 						Restrictions.eq("func.class", "OtherFunction"),
-						Restrictions.in("func.type", otherFunctionTypes));
+						Restrictions.in("func.type", (Object[])otherFunctionTypes));
 				disjunction.add(otherFuncCrit1).add(otherFuncCrit2);
 			}
 			crit.add(disjunction);
@@ -1217,7 +2243,7 @@ public class SampleServiceHelper
 			if (characterizationClassNames != null
 					&& characterizationClassNames.length > 0) {
 				Criterion charCrit = Restrictions.in("chara.class",
-						characterizationClassNames);
+						(Object[])characterizationClassNames);
 				disjunction.add(charCrit);
 			}
 			if (otherCharacterizationTypes != null
@@ -1225,7 +2251,7 @@ public class SampleServiceHelper
 				Criterion otherCharCrit1 = Restrictions.eq("chara.class",
 						"OtherCharacterization");
 				Criterion otherCharCrit2 = Restrictions.in("chara.name",
-						otherCharacterizationTypes);
+						(Object[])otherCharacterizationTypes);
 				Criterion otherCharCrit = Restrictions.and(otherCharCrit1,
 						otherCharCrit2);
 				disjunction.add(otherCharCrit);

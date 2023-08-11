@@ -2,6 +2,7 @@ package gov.nih.nci.cananolab.restful;
 
 import gov.nih.nci.cananolab.dto.particle.synthesis.SynthesisMaterialBean;
 import gov.nih.nci.cananolab.restful.synthesis.SynthesisMaterialBO;
+import gov.nih.nci.cananolab.restful.util.AppPropertyUtil;
 import gov.nih.nci.cananolab.restful.util.CommonUtil;
 import gov.nih.nci.cananolab.restful.view.SimpleAdvancedSearchSynthesisBean;
 import gov.nih.nci.cananolab.restful.view.edit.SimpleFileBean;
@@ -34,6 +35,14 @@ public class SynthesisMaterialServices {
     @Produces("application/json")
     public Response setup(@Context HttpServletRequest httpRequest, @QueryParam("sampleId") String sampleId) {
 
+
+        String apoProp = AppPropertyUtil.getAppProperty("SYNTHESIS_ENABLED");
+        System.out.println("Enable Synth = " + apoProp);
+        if (!Boolean.parseBoolean(AppPropertyUtil.getAppProperty("SYNTHESIS_ENABLED"))) {
+            return Response.ok("{\"message\": \"Feature under development\"}").build();
+        }
+
+
         try {
             SynthesisMaterialBO synthesisMaterialBO =
                     (SynthesisMaterialBO) SpringApplicationContext.getBean(httpRequest, "synthesisMaterialBO");
@@ -44,6 +53,7 @@ public class SynthesisMaterialServices {
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(CommonUtil.wrapErrorMessageInList("Error while setting up drop down lists. " + e.getMessage())).build();
 
         }
+
     }
 
     /**
@@ -57,6 +67,10 @@ public class SynthesisMaterialServices {
     @Path("/edit")
     @Produces ("application/json")
     public Response  edit(@Context HttpServletRequest httpRequest, @QueryParam("sampleId") String sampleId, @QueryParam("synMaterialId") String synMaterialId) {
+
+        if (!Boolean.parseBoolean(AppPropertyUtil.getAppProperty("SYNTHESIS_ENABLED"))) {
+            return Response.ok("{\"message\": \"Feature under development\"}").build();
+        }
 
         try {
             SynthesisMaterialBO synthesisMaterialBO =
@@ -76,6 +90,7 @@ public class SynthesisMaterialServices {
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(CommonUtil.wrapErrorMessageInList("Error while viewing the Synthesis Entity. " + e.getMessage())).build();
 
         }
+
     }
 
     /**
@@ -88,6 +103,11 @@ public class SynthesisMaterialServices {
     @Path("/saveSynthesisMaterialElement")
     @Produces ("application/json")
     public Response saveSynthesisMaterialElement(@Context HttpServletRequest httpRequest, SimpleSynthesisMaterialBean simpleSynthesisMaterialBean) {
+
+        if (!Boolean.parseBoolean(AppPropertyUtil.getAppProperty("SYNTHESIS_ENABLED"))) {
+            return Response.ok("{\"message\": \"Feature under development\"}").build();
+        }
+
         try{
             SynthesisMaterialBO synthesisMaterialBO = (SynthesisMaterialBO) SpringApplicationContext.getBean(httpRequest, "synthesisMaterialBO");
             if(!SpringSecurityUtil.isUserLoggedIn())
@@ -102,6 +122,7 @@ public class SynthesisMaterialServices {
         } catch(Exception e){
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity((CommonUtil.wrapErrorMessageInList("Error while saving Synthesis Material Element "+ e.getStackTrace()))).build();
         }
+
     }
 
     /**
@@ -114,6 +135,11 @@ public class SynthesisMaterialServices {
     @Path("/removeSynthesisMaterialElement")
     @Produces ("application/json")
     public Response removeSynthesisMaterialElement(@Context HttpServletRequest httpRequest, SimpleSynthesisMaterialBean simpleSynthesisMaterialBean) {
+
+        if (!Boolean.parseBoolean(AppPropertyUtil.getAppProperty("SYNTHESIS_ENABLED"))) {
+            return Response.ok("{\"message\": \"Feature under development\"}").build();
+        }
+
         try{
             SynthesisMaterialBO synthesisMaterialBO = (SynthesisMaterialBO) SpringApplicationContext.getBean(httpRequest, "synthesisMaterialBO");
             if(!SpringSecurityUtil.isUserLoggedIn()){
@@ -127,6 +153,7 @@ public class SynthesisMaterialServices {
         }catch(Exception e){
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(CommonUtil.wrapErrorMessageInList("Error while removing Material Element "+ e.getMessage())).build();
         }
+
     }
 
     /**
@@ -139,6 +166,11 @@ public class SynthesisMaterialServices {
     @Path("/saveFileSingle")
     @Produces ("application/json")
     public Response saveFile_ORIG(@Context HttpServletRequest httpRequest, SimpleSynthesisMaterialBean simpleSynthesisMaterialBean) {
+
+        if (!Boolean.parseBoolean(AppPropertyUtil.getAppProperty("SYNTHESIS_ENABLED"))) {
+            return Response.ok("{\"message\": \"Feature under development\"}").build();
+        }
+
         try {
             SynthesisMaterialBO synthesisMaterialBO = (SynthesisMaterialBO) SpringApplicationContext.getBean(httpRequest,"synthesisMaterialBO");
             if (!SpringSecurityUtil.isUserLoggedIn())
@@ -153,6 +185,7 @@ public class SynthesisMaterialServices {
             e.printStackTrace();
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(CommonUtil.wrapErrorMessageInList("Error while saving the Syn Mat File. " + e.getMessage())).build();
         }
+
     }
 
 
@@ -203,6 +236,11 @@ public class SynthesisMaterialServices {
     //    public Response saveFile(@Context HttpServletRequest httpRequest, SimpleSynthesisMaterialBean simpleSynthesisMaterialBean, SimpleFileBean fileBean) {
 
     public Response saveFile(@Context HttpServletRequest httpRequest, SimpleSynthesisMaterialBean simpleSynthesisMaterialBean) {
+
+        if (!Boolean.parseBoolean(AppPropertyUtil.getAppProperty("SYNTHESIS_ENABLED"))) {
+            return Response.ok("{\"message\": \"Feature under development\"}").build();
+        }
+
         try {
             SynthesisMaterialBO synthesisMaterialBO = (SynthesisMaterialBO) SpringApplicationContext.getBean(httpRequest,"synthesisMaterialBO");
 
@@ -218,6 +256,7 @@ public class SynthesisMaterialServices {
         } catch (Exception e){
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(CommonUtil.wrapErrorMessageInList("Error while saving the Syn Mat File. " + e.getMessage())).build();
         }
+
     }
 
 //    @POST
@@ -250,6 +289,11 @@ public class SynthesisMaterialServices {
     @Path("/removeFile")
     @Produces ("application/json")
     public Response removeFile(@Context HttpServletRequest httpRequest,SimpleSynthesisMaterialBean simpleSynthesisMaterialBean) {
+
+        if (!Boolean.parseBoolean(AppPropertyUtil.getAppProperty("SYNTHESIS_ENABLED"))) {
+            return Response.ok("{\"message\": \"Feature under development\"}").build();
+        }
+
         try{
             SynthesisMaterialBO synthesisMaterialBO = (SynthesisMaterialBO) SpringApplicationContext.getBean(httpRequest,"synthesisMaterialBO");
             if (!SpringSecurityUtil.isUserLoggedIn()) {
@@ -268,6 +312,7 @@ public class SynthesisMaterialServices {
                     .entity(CommonUtil.wrapErrorMessageInList("Error while removing the File " + e.getMessage())).build();
 
         }
+
     }
 
     /**
@@ -280,6 +325,11 @@ public class SynthesisMaterialServices {
     @Path("/submit")
     @Produces ("application/json")
     public Response submit(@Context HttpServletRequest httpRequest, SimpleSynthesisMaterialBean simpleSynthesisMaterialBean) {
+
+        if (!Boolean.parseBoolean(AppPropertyUtil.getAppProperty("SYNTHESIS_ENABLED"))) {
+            return Response.ok("{\"message\": \"Feature under development\"}").build();
+        }
+
         try{
             SynthesisMaterialBO synthesisMaterialBO = (SynthesisMaterialBO) SpringApplicationContext.getBean(httpRequest,"synthesisMaterialBO");
             if (!SpringSecurityUtil.isUserLoggedIn())
@@ -292,6 +342,7 @@ public class SynthesisMaterialServices {
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(CommonUtil.wrapErrorMessageInList("Error while saving the synthesis material :" + e.getMessage())).build();
 
         }
+
     }
 
     /**
@@ -304,6 +355,11 @@ public class SynthesisMaterialServices {
     @Path("/delete")
     @Produces ("application/json")
     public Response delete(@Context HttpServletRequest httpRequest, SimpleSynthesisMaterialBean simpleSynthesisMaterialBean) {
+
+        if (!Boolean.parseBoolean(AppPropertyUtil.getAppProperty("SYNTHESIS_ENABLED"))) {
+            return Response.ok("{\"message\": \"Feature under development\"}").build();
+        }
+
         try{
             SynthesisMaterialBO synthesisMaterialBO = (SynthesisMaterialBO) SpringApplicationContext.getBean(httpRequest,"synthesisMaterialBO");
             if (!SpringSecurityUtil.isUserLoggedIn())
@@ -315,6 +371,7 @@ public class SynthesisMaterialServices {
         }catch (Exception e){
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(CommonUtil.wrapErrorMessageInList("Error while deleting the synthesis material " + e.getMessage())).build();
         }
+
     }
 
     /**
@@ -327,6 +384,11 @@ public class SynthesisMaterialServices {
     @Path("/viewDetails")
     @Produces ("application/json")
     public Response viewDetails(@Context HttpServletRequest httpRequest, SimpleSynthesisMaterialBean simpleSynthesisMaterialBean) {
+
+        if (!Boolean.parseBoolean(AppPropertyUtil.getAppProperty("SYNTHESIS_ENABLED"))) {
+            return Response.ok("{\"message\": \"Feature under development\"}").build();
+        }
+
         try{
             SynthesisMaterialBO synthesisMaterialBO = (SynthesisMaterialBO) SpringApplicationContext.getBean(httpRequest, "synthesisMaterialBO");
             SynthesisMaterialBean synthesisMaterialBean = synthesisMaterialBO.setupSynMaterialForAdvSearch(simpleSynthesisMaterialBean.getSampleId().toString(), simpleSynthesisMaterialBean.getId(), httpRequest);

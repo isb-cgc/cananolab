@@ -228,12 +228,15 @@ public class SimpleSampleBean {
 		setSampleName(sampleBean.getDomain().getName());
 		setCreatedDate(sampleBean.getPrimaryPOCBean().getDomain()
 				.getCreatedDate());
+		// WJRL 2/6/23: Keywords display name is HTML escaped with breaks
 		setKeywords(sampleBean.getKeywordsDisplayName());
 		setPocBeanDomainId(sampleBean.getPrimaryPOCBean().getDomain().getId());
 
 		if (sampleBean.getPrimaryPOCBean().getDomain().getId() != null) {
+			// WJRL 2/6/23: PersonDisplayName is HTML escaped with breaks
 			pointOfContactMap.put("contactPerson", sampleBean
 					.getPrimaryPOCBean().getPersonDisplayName());
+			// WJRL 2/6/23: OrganizationDisplayName is HTML escaped with breaks
 			pointOfContactMap.put("organizationDisplayName", sampleBean
 					.getPrimaryPOCBean().getOrganizationDisplayName());
 			pointOfContactMap.put("role", sampleBean.getPrimaryPOCBean()
@@ -245,9 +248,10 @@ public class SimpleSampleBean {
 
 		if (sampleBean.getOtherPOCBeans().size() != 0) {
 			for (PointOfContactBean poc : sampleBean.getOtherPOCBeans()) {
-
+				// WJRL 2/6/23: PersonDisplayName is HTML escaped with breaks
 				pointOfContactMap.put("contactPerson",
 						poc.getPersonDisplayName());
+				// WJRL 2/6/23: OrganizationDisplayName is HTML escaped with breaks
 				pointOfContactMap.put("organizationDisplayName",
 						poc.getOrganizationDisplayName());
 				pointOfContactMap.put("role", poc.getDomain().getRole());
