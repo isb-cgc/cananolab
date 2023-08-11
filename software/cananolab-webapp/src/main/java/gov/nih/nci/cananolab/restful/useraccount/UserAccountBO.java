@@ -2,6 +2,7 @@ package gov.nih.nci.cananolab.restful.useraccount;
 
 import java.util.List;
 
+import gov.nih.nci.cananolab.security.service.PasswordResetToken;
 import gov.nih.nci.cananolab.util.SessionListener;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -40,7 +41,29 @@ public class UserAccountBO
 		logger.warn("Successful creation of user: " + userDetails.getUsername());
         return (CananoUserDetails) userDetailsService.loadUserByUsername(userDetails.getUsername());
 	}
-	
+
+	public PasswordResetToken readPasswordResetToken(String token) throws NoAccessException
+	{
+		return userService.loadPasswordResetToken(token);
+	}
+
+	public PasswordResetToken createPasswordResetToken(PasswordResetToken prt) throws NoAccessException
+	{
+		userService.createPasswordResetToken(prt);
+		return userService.loadPasswordResetToken(prt.getToken());
+	}
+
+	public void deletePasswordResetTokens(CananoUserDetails userDetails) throws NoAccessException
+	{
+		System.out.println("All password reset tokens for user: " + userDetails.getUsername() + " will be deleted");
+		userService.deletePasswordResetTokens(userDetails);
+	}
+
+	public void changeUserAccountPassword(String newPassword, String userName) throws Exception
+	{
+		userService.changePasswordForUser(newPassword, userName);
+	}
+
 	public void resetUserAccountPassword(String oldPassword, String newPassword, String userName) throws Exception
 	{
 		userService.resetPasswordForUser(oldPassword, newPassword, userName);
@@ -61,6 +84,11 @@ public class UserAccountBO
 		System.out.println("Searching for users by string: " +  searchStr);
 		logger.warn("Searching for users by string: " + searchStr);
         return userService.loadUsers(searchStr);
+	}
+
+	public CananoUserDetails getByEmail(String emailStr) throws NoAccessException
+	{
+		return userService.getUserAccountByEmail(emailStr);
 	}
 	
 }
