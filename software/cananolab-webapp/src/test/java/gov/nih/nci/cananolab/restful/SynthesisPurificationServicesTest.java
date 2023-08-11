@@ -20,8 +20,8 @@ import io.restassured.response.ResponseBody;
 import io.restassured.specification.RequestSpecification;
 import java.util.ArrayList;
 import java.util.List;
-import com.fasterxml.jackson.databind.ObjectMapper;
-//import org.json.JSONObject;
+import org.codehaus.jackson.map.ObjectMapper;
+import org.json.JSONObject;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -610,58 +610,58 @@ public class SynthesisPurificationServicesTest {
     }
 
     private SimpleProtocol getProtocol(String protocolId){
-//        try{
-//            Response response = given().spec(specification)
-//                    .queryParam("protocolId", protocolId)
-//                    .when().get("protocol/getProtocolById")
-//                    .then().statusCode(200).extract().response();
-//
-//            JSONObject jResponse = new JSONObject(response.body().asString());
-//            ObjectMapper mapper = new ObjectMapper();
-//            SimpleSubmitProtocolBean submitProtocolBean = mapper.readValue(jResponse.toString(), SimpleSubmitProtocolBean.class);
-//            SimpleProtocol protocol = new SimpleProtocol();
-//            protocol.transferFromSimpleSubmitProtocol(submitProtocolBean);
-//            return protocol;
-//
-//        } catch (Exception e){
-//            e.printStackTrace();
-//        }
+        try{
+            Response response = given().spec(specification)
+                    .queryParam("protocolId", protocolId)
+                    .when().get("protocol/getProtocolById")
+                    .then().statusCode(200).extract().response();
+
+            JSONObject jResponse = new JSONObject(response.body().asString());
+            ObjectMapper mapper = new ObjectMapper();
+            SimpleSubmitProtocolBean submitProtocolBean = mapper.readValue(jResponse.toString(), SimpleSubmitProtocolBean.class);
+            SimpleProtocol protocol = new SimpleProtocol();
+            protocol.transferFromSimpleSubmitProtocol(submitProtocolBean);
+            return protocol;
+
+        } catch (Exception e){
+            e.printStackTrace();
+        }
         return null;
     }
 
     private SimpleSynthesisBean getSimpleSynthesisBean(String sampleId){
-//        try{
-//            Response response = given().spec(specification)
-//                    .queryParam("sampleId", sampleId)
-//                    .when().get("synthesis/summaryView")
-//                    .then().statusCode(200).extract().response();
-//            JSONObject jResponse = new JSONObject(response.body().asString());
-//            ObjectMapper mapper = new ObjectMapper();
-//            return mapper.readValue(jResponse.toString(), SimpleSynthesisBean.class);
-//
-//        }catch(Exception e){
-//            e.printStackTrace();
-//        }
+        try{
+            Response response = given().spec(specification)
+                    .queryParam("sampleId", sampleId)
+                    .when().get("synthesis/summaryView")
+                    .then().statusCode(200).extract().response();
+            JSONObject jResponse = new JSONObject(response.body().asString());
+            ObjectMapper mapper = new ObjectMapper();
+            return mapper.readValue(jResponse.toString(), SimpleSynthesisBean.class);
+
+        }catch(Exception e){
+            e.printStackTrace();
+        }
         return null;
     }
 
     private SimpleSynthesisPurificationBean getSimpleSynthesisPurificationBean(String sampleId, String purificationId){
-//        try {
-//            Response response = given().spec(specification)
-//                    .queryParam("sampleId", sampleId)
-//                    .queryParam("dataId",purificationId)
-//                    .when().get("synthesisPurification/setupEdit")
-//                    .then().statusCode(200).extract().response();
-//
-//
-//            JSONObject jResponse = new JSONObject(response.body().asString());
-//            ObjectMapper mapper = new ObjectMapper();
-//            return mapper.readValue(jResponse.toString(), SimpleSynthesisPurificationBean.class);
-//
-//        }
-//        catch (Exception e) {
-//            e.printStackTrace();
-//        }
+        try {
+            Response response = given().spec(specification)
+                    .queryParam("sampleId", sampleId)
+                    .queryParam("dataId",purificationId)
+                    .when().get("synthesisPurification/setupEdit")
+                    .then().statusCode(200).extract().response();
+
+
+            JSONObject jResponse = new JSONObject(response.body().asString());
+            ObjectMapper mapper = new ObjectMapper();
+            return mapper.readValue(jResponse.toString(), SimpleSynthesisPurificationBean.class);
+
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+        }
         return null;
     }
 

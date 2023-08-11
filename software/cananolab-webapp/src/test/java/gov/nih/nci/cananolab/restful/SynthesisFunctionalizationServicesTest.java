@@ -14,8 +14,8 @@ import io.restassured.http.ContentType;
 import io.restassured.response.Response;
 import io.restassured.specification.RequestSpecification;
 import org.apache.commons.io.FileUtils;
-import com.fasterxml.jackson.databind.ObjectMapper;
-//import org.json.JSONObject;
+import org.codehaus.jackson.map.ObjectMapper;
+import org.json.JSONObject;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
@@ -97,35 +97,35 @@ public class SynthesisFunctionalizationServicesTest {
 
     @Test
     public void testEdit() {
-//        //Test the edit form retrieval of an existing functionalization element
-//        try {
-//            Response response = given().spec( specification )
-//                    .queryParam( "sampleId", "1000" )
-//                    .queryParam( "dataId", "1000" )
-//                    .when().get( "synthesisFunctionalization/edit" )
-//                    .then().statusCode( 200 ).extract().response();
-//
-//            assertNotNull( response );
-//            String id = response.path( "id" ).toString();
-//            assertTrue( id.equals( "1000" ) );
-//            ArrayList<SimpleSynthesisFunctionalizationElementBean> functionalizationElements = response.path( "functionalizationElements" );
-//
-//            assertTrue( functionalizationElements.size() > 0 );
-//            JSONObject jResponse = new JSONObject( response.body().asString() );
-//            ObjectMapper mapper = new ObjectMapper();
-//            SimpleSynthesisFunctionalizationBean synthesisFunctionalizationBean = mapper.readValue( jResponse.toString(), SimpleSynthesisFunctionalizationBean.class );
-//            assertTrue( synthesisFunctionalizationBean.getType().equalsIgnoreCase( "Synthesis" ) );
-//            assertTrue( synthesisFunctionalizationBean.getCreatedBy() != null );
-//            assertTrue( synthesisFunctionalizationBean.getCreatedBy().length() > 0 );
-//
-//
-//            assertTrue( functionalizationElements.get( 0 ).getInherentFunctionList() != null );
-//            assertTrue( functionalizationElements.get( 0 ).getInherentFunctionList().size() > 0 );
-//
-//
-//        } catch( Exception e ) {
-//            e.printStackTrace();
-//        }
+        //Test the edit form retrieval of an existing functionalization element
+        try {
+            Response response = given().spec( specification )
+                    .queryParam( "sampleId", "1000" )
+                    .queryParam( "dataId", "1000" )
+                    .when().get( "synthesisFunctionalization/edit" )
+                    .then().statusCode( 200 ).extract().response();
+
+            assertNotNull( response );
+            String id = response.path( "id" ).toString();
+            assertTrue( id.equals( "1000" ) );
+            ArrayList<SimpleSynthesisFunctionalizationElementBean> functionalizationElements = response.path( "functionalizationElements" );
+
+            assertTrue( functionalizationElements.size() > 0 );
+            JSONObject jResponse = new JSONObject( response.body().asString() );
+            ObjectMapper mapper = new ObjectMapper();
+            SimpleSynthesisFunctionalizationBean synthesisFunctionalizationBean = mapper.readValue( jResponse.toString(), SimpleSynthesisFunctionalizationBean.class );
+            assertTrue( synthesisFunctionalizationBean.getType().equalsIgnoreCase( "Synthesis" ) );
+            assertTrue( synthesisFunctionalizationBean.getCreatedBy() != null );
+            assertTrue( synthesisFunctionalizationBean.getCreatedBy().length() > 0 );
+
+
+            assertTrue( functionalizationElements.get( 0 ).getInherentFunctionList() != null );
+            assertTrue( functionalizationElements.get( 0 ).getInherentFunctionList().size() > 0 );
+
+
+        } catch( Exception e ) {
+            e.printStackTrace();
+        }
 
     }
 
@@ -493,20 +493,20 @@ public class SynthesisFunctionalizationServicesTest {
 
 
     private SimpleSynthesisFunctionalizationBean getSimpleSynthesisFunctionalizationBean( String sampleId, String dataId ) {
-//        try {
-//            Response response = given().spec( specification )
-//                    .queryParam( "sampleId", sampleId )
-//                    .queryParam( "dataId", dataId )
-//                    .when().get( "synthesisFunctionalization/edit" )
-//                    .then().statusCode( 200 ).extract().response();
-//
-//            JSONObject jResponse = new JSONObject( response.body().asString() );
-//            ObjectMapper mapper = new ObjectMapper();
-//            return mapper.readValue( jResponse.toString(), SimpleSynthesisFunctionalizationBean.class );
-//
-//        } catch( Exception e ) {
-//            e.printStackTrace();
-//        }
+        try {
+            Response response = given().spec( specification )
+                    .queryParam( "sampleId", sampleId )
+                    .queryParam( "dataId", dataId )
+                    .when().get( "synthesisFunctionalization/edit" )
+                    .then().statusCode( 200 ).extract().response();
+
+            JSONObject jResponse = new JSONObject( response.body().asString() );
+            ObjectMapper mapper = new ObjectMapper();
+            return mapper.readValue( jResponse.toString(), SimpleSynthesisFunctionalizationBean.class );
+
+        } catch( Exception e ) {
+            e.printStackTrace();
+        }
         return null;
     }
 

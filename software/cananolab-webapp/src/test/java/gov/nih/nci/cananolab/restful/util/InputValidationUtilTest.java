@@ -39,24 +39,24 @@ public class InputValidationUtilTest {
 	
 	@Test
 	public void testIsEmailValid() {
-//		String email = "s.y@nih.gov";
-//		boolean is = InputValidationUtil.isEmailValid(email);
-//		assertTrue(is);
-//		
-//		email = null;
-//		is = InputValidationUtil.isEmailValid(email);
-//		assertTrue(is);
-//		
-//		email = "";
-//		is = InputValidationUtil.isEmailValid(email);
-//		assertTrue(is);
-//		
-//		email = "s.y";
-//		is = InputValidationUtil.isEmailValid(email);
-//		assertFalse(is);
-//		
-//		email = "@nih.gov";
-//		is = InputValidationUtil.isEmailValid(email);
-//		assertFalse(is);
+		String email = "s.y@nih.gov";
+		boolean is = InputValidationUtil.isEmailValid(email);
+		assertTrue(is);
+		
+		email = null;
+		is = InputValidationUtil.isEmailValid(email);
+		assertTrue(is);
+		
+		email = "";
+		is = InputValidationUtil.isEmailValid(email);
+		assertTrue(is);
+		
+		email = "s.y";
+		is = InputValidationUtil.isEmailValid(email);
+		assertFalse(is);
+		
+		email = "@nih.gov";
+		is = InputValidationUtil.isEmailValid(email);
+		assertFalse(is);
 	}
  }

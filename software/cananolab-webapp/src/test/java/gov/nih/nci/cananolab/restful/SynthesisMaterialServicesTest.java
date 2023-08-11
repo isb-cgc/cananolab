@@ -27,8 +27,8 @@ import java.util.Map;
 import javax.mail.Multipart;
 import javax.ws.rs.core.MediaType;
 import net.sf.ehcache.search.parser.MValue;
-import com.fasterxml.jackson.databind.ObjectMapper;
-//import org.json.JSONObject;
+import org.codehaus.jackson.map.ObjectMapper;
+import org.json.JSONObject;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -90,49 +90,28 @@ private static RequestSpecification specification;
 
     @Test
     public void testEdit() {
-//        //Test the edit form retrieval of an existing material element
-//        try {
-//            Response response = given().spec(specification)
-//                    .queryParam("sampleId", "1000")
-//                    .queryParam("synMaterialId","1000")
-//                    .when().get("synthesisMaterial/edit")
-//                    .then().statusCode(200).extract().response();
-//
-//            assertNotNull(response);
-//            String id = response.path("id").toString();
-//            assertTrue(id.equals("1000"));
-//            ArrayList<SimpleSynthesisMaterialElementBean> materialElements = response.path("materialElements");
-//            assertTrue(materialElements.size()>0);
-//            JSONObject jResponse = new JSONObject(response.body().asString());
-//            ObjectMapper mapper = new ObjectMapper();
-//            SimpleSynthesisMaterialBean synthesisMaterialBean = mapper.readValue(jResponse.toString(), SimpleSynthesisMaterialBean.class);
-//            assertTrue(synthesisMaterialBean.getType().equalsIgnoreCase("Synthesis"));
-//
-//       }
-//        catch (Exception e) { //Test the edit form retrieval of an existing material element
-////        try {
-////            Response response = given().spec(specification)
-////                    .queryParam("sampleId", "1000")
-////                    .queryParam("synMaterialId","1000")
-////                    .when().get("synthesisMaterial/edit")
-////                    .then().statusCode(200).extract().response();
-////
-////            assertNotNull(response);
-////            String id = response.path("id").toString();
-////            assertTrue(id.equals("1000"));
-////            ArrayList<SimpleSynthesisMaterialElementBean> materialElements = response.path("materialElements");
-////            assertTrue(materialElements.size()>0);
-////            JSONObject jResponse = new JSONObject(response.body().asString());
-////            ObjectMapper mapper = new ObjectMapper();
-////            SimpleSynthesisMaterialBean synthesisMaterialBean = mapper.readValue(jResponse.toString(), SimpleSynthesisMaterialBean.class);
-////            assertTrue(synthesisMaterialBean.getType().equalsIgnoreCase("Synthesis"));
-////
-////       }
-////        catch (Exception e) {
-////            e.printStackTrace();
-////        }
-//            e.printStackTrace();
-//        }
+        //Test the edit form retrieval of an existing material element
+        try {
+            Response response = given().spec(specification)
+                    .queryParam("sampleId", "1000")
+                    .queryParam("synMaterialId","1000")
+                    .when().get("synthesisMaterial/edit")
+                    .then().statusCode(200).extract().response();
+
+            assertNotNull(response);
+            String id = response.path("id").toString();
+            assertTrue(id.equals("1000"));
+            ArrayList<SimpleSynthesisMaterialElementBean> materialElements = response.path("materialElements");
+            assertTrue(materialElements.size()>0);
+            JSONObject jResponse = new JSONObject(response.body().asString());
+            ObjectMapper mapper = new ObjectMapper();
+            SimpleSynthesisMaterialBean synthesisMaterialBean = mapper.readValue(jResponse.toString(), SimpleSynthesisMaterialBean.class);
+            assertTrue(synthesisMaterialBean.getType().equalsIgnoreCase("Synthesis"));
+
+       }
+        catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     @Test
@@ -583,22 +562,22 @@ private static RequestSpecification specification;
     }
 
     private SimpleSynthesisMaterialBean getSimpleSynthesisMaterialBean(String sampleId, String materialId){
-//        try {
-//            Response response = given().spec(specification)
-//                    .queryParam("sampleId", sampleId)
-//                    .queryParam("synMaterialId",materialId)
-//                    .when().get("synthesisMaterial/edit")
-//                    .then().statusCode(200).extract().response();
-//
-//
-//            JSONObject jResponse = new JSONObject(response.body().asString());
-//            ObjectMapper mapper = new ObjectMapper();
-//            return mapper.readValue(jResponse.toString(), SimpleSynthesisMaterialBean.class);
-//
-//        }
-//        catch (Exception e) {
-//            e.printStackTrace();
-//        }
+        try {
+            Response response = given().spec(specification)
+                    .queryParam("sampleId", sampleId)
+                    .queryParam("synMaterialId",materialId)
+                    .when().get("synthesisMaterial/edit")
+                    .then().statusCode(200).extract().response();
+
+
+            JSONObject jResponse = new JSONObject(response.body().asString());
+            ObjectMapper mapper = new ObjectMapper();
+            return mapper.readValue(jResponse.toString(), SimpleSynthesisMaterialBean.class);
+
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+        }
         return null;
     }
 
