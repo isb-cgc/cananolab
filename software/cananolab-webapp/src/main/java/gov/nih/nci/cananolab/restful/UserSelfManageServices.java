@@ -87,6 +87,7 @@ public class UserSelfManageServices
 				} catch(ExceptionInInitializerError e) {
 					System.out.println(e.getMessage());
 					System.out.println(e.toString());
+					throw e;
 				}
 
 //				MailServiceUtil.sendMail(email, "Reset your caNanoLab account password",
