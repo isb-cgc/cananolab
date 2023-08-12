@@ -11,9 +11,7 @@ import java.util.List;
 import java.util.SortedSet;
 
 import javax.servlet.http.HttpServletRequest;
-import org.codehaus.jackson.annotate.JsonTypeName;
-
-//import org.codehaus.jackson.annotate.JsonTypeName;
+import com.fasterxml.jackson.annotation.JsonTypeName;
 
 @JsonTypeName("SimpleEnzymeInduction")
 public class SimpleEnzymeInduction extends SimpleCharacterizationProperty{
