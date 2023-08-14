@@ -1,8 +1,8 @@
 package gov.nih.nci.cananolab.restful;
 
-import com.mailgun.api.v3.MailgunMessagesApi;
-import com.mailgun.client.MailgunClient;
-import com.mailgun.model.message.Message;
+import gov.nih.nci.cananolab.restful.util.AppPropertyUtil;
+import net.sargue.mailgun.Configuration;
+import net.sargue.mailgun.Mail;
 
 import gov.nih.nci.cananolab.restful.useraccount.UserAccountBO;
 import gov.nih.nci.cananolab.restful.util.CommonUtil;
@@ -73,17 +73,24 @@ public class UserSelfManageServices
 					throw new Exception("Username is required to create a password reset token.");
 
 				try {
-					MailgunMessagesApi mailgunMessagesApi = MailgunClient.config("")
-							.createApi(MailgunMessagesApi.class);
+					String mailgun_domain = AppPropertyUtil.getAppProperty("MAILGUN_DOMAIN");
+					String mailgun_apiUrl = AppPropertyUtil.getAppProperty("MAILGUN_API_URL");
+					String mailgun_apiKey = AppPropertyUtil.getAppProperty("MAILGUN_API_KEY");
+					String mailgun_fromEmailName = AppPropertyUtil.getAppProperty("MAILGUN_FROM_EMAIL_NAME");
+					String mailgun_fromEmail = AppPropertyUtil.getAppProperty("MAILGUN_FROM_EMAIL");
 
-					Message message = Message.builder()
-							.from("No Reply User <noreply@isb-cgc.org>")
+					Configuration configuration = new Configuration()
+							.domain(mailgun_domain)
+							.apiUrl(mailgun_apiUrl)
+							.apiKey(mailgun_apiKey)
+							.from(mailgun_fromEmailName, mailgun_fromEmail);
+
+					Mail.using(configuration)
 							.to(email)
-							.subject("Reset your caNanoLab account password")
-							.text("test reset it")
-							.build();
-
-					mailgunMessagesApi.sendMessage("isb-cgc.org", message);
+							.subject("Reset your password test")
+							.text("Use this to reset your password")
+							.build()
+							.send();
 				} catch(ExceptionInInitializerError e) {
 					System.out.println(e.getMessage());
 					System.out.println(e.toString());
