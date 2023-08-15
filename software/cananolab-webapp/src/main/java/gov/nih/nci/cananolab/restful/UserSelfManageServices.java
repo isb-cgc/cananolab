@@ -1,8 +1,8 @@
 package gov.nih.nci.cananolab.restful;
 
-import com.mailgun.api.v3.MailgunMessagesApi;
-import com.mailgun.client.MailgunClient;
-import com.mailgun.model.message.Message;
+import gov.nih.nci.cananolab.restful.util.AppPropertyUtil;
+import net.sargue.mailgun.Configuration;
+import net.sargue.mailgun.Mail;
 
 import gov.nih.nci.cananolab.restful.useraccount.UserAccountBO;
 import gov.nih.nci.cananolab.restful.util.CommonUtil;
@@ -72,29 +72,12 @@ public class UserSelfManageServices
 				else
 					throw new Exception("Username is required to create a password reset token.");
 
-				try {
-					MailgunMessagesApi mailgunMessagesApi = MailgunClient.config("")
-							.createApi(MailgunMessagesApi.class);
-
-					Message message = Message.builder()
-							.from("No Reply User <noreply@isb-cgc.org>")
-							.to(email)
-							.subject("Reset your caNanoLab account password")
-							.text("test reset it")
-							.build();
-
-					mailgunMessagesApi.sendMessage("isb-cgc.org", message);
-				} catch(ExceptionInInitializerError e) {
-					System.out.println(e.getMessage());
-					System.out.println(e.toString());
-					throw e;
-				}
-
-//				MailServiceUtil.sendMail(email, "Reset your caNanoLab account password",
-//						"<div style=\"font-family:arial\"><p>You're receiving this e-mail because you or someone else has requested a password change for your user account.<br>" +
-//								"Click the button below to reset your password.<br><br>" +
-//								"<a href=\"" + resetPasswordUrl + "\" target=\"_blank\" style=\"padding: 8px 12px;border-radius: 4px;font-size: 16px;" +
-//								" background-color:#1111FF;color: #FFFFFF;text-decoration: none;display: inline-block;\">Reset Password</a></div>");
+				String emailBody =
+						"You're receiving this e-mail because you or someone else has requested a password change for your user account." +
+						"Click the link below to reset your password." +
+						resetPasswordUrl;
+				MailServiceUtil.sendMail(email, "Reset your caNanoLab account password",
+						emailBody);
 			}
 			else
 				throw new Exception("Email is required for resetting password.");
