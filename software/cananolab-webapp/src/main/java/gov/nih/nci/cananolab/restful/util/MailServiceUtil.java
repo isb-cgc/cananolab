@@ -1,22 +1,45 @@
 package gov.nih.nci.cananolab.restful.util;
 
+import net.sargue.mailgun.Configuration;
+import net.sargue.mailgun.Mail;
+
 public class MailServiceUtil {
-    /*
-    public static void send(final String addresses, final String subject, final String content) {
-        try {
-            Context ictx = new InitialContext();
-            Session session = (Session) ictx.lookup("java:jboss/mail/Default");
+    public static Configuration mailgunConfiguration = null;
 
-            final Message message = new MimeMessage(session);
-            message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(addresses));
-            message.setSubject(subject);
+    private static void tryInitialize() {
+        if (mailgunConfiguration == null) {
+            try {
+                String mailgun_domain = AppPropertyUtil.getAppProperty("MAILGUN_DOMAIN");
+                String mailgun_apiUrl = AppPropertyUtil.getAppProperty("MAILGUN_API_URL");
+                String mailgun_apiKey = AppPropertyUtil.getAppProperty("MAILGUN_API_KEY");
+                String mailgun_fromEmailName = AppPropertyUtil.getAppProperty("MAILGUN_FROM_EMAIL_NAME");
+                String mailgun_fromEmail = AppPropertyUtil.getAppProperty("MAILGUN_FROM_EMAIL");
 
-            // Send the actual HTML message, as big as you like
-            message.setContent(content, "text/html");
-
-            Transport.send(message);
-        } catch (Exception e) {
-//            LOG.error("Cannot send mail", e);
+                mailgunConfiguration = new Configuration()
+                        .domain(mailgun_domain)
+                        .apiUrl(mailgun_apiUrl)
+                        .apiKey(mailgun_apiKey)
+                        .from(mailgun_fromEmailName, mailgun_fromEmail);
+            } catch (Exception e) {
+                System.out.println("Mailgun initialize failed due to " + e.toString());
+            }
         }
-    }*/
+    }
+
+    public static void sendMail(final String address, final String subject, final String content) {
+        tryInitialize();
+
+        if (mailgunConfiguration != null) {
+            try {
+                Mail.using(mailgunConfiguration)
+                        .to(address)
+                        .subject(subject)
+                        .text(content)
+                        .build()
+                        .send();
+            } catch (Exception e) {
+                System.out.println("Mailgun send mail failed due to " + e.toString());
+            }
+        }
+    }
 }
