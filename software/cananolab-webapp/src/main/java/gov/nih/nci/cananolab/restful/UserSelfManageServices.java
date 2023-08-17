@@ -54,12 +54,11 @@ public class UserSelfManageServices
 
 				// Reset password token
 				String token = UUID.randomUUID().toString();
-				String baseUrl = "http://" + URI.create(httpRequest.getRequestURL().toString()).getHost();
+				String baseUrl = "https://" + URI.create(httpRequest.getRequestURL().toString()).getHost();
 
-				// TODO: for local
-				resetPasswordUrl = "http://localhost:4200/rest/userself/changepwd?token=" + token;
-				// TODO: for deploy
-				// resetPasswordUrl = baseUrl + "/userself/changepwd?token=" + token;
+				// Test: for local testing
+				// resetPasswordUrl = "http://localhost:4200/rest/userself/changepwd?token=" + token;
+				resetPasswordUrl = baseUrl + "/rest/userself/changepwd?token=" + token;
 
 				if (!StringUtils.isEmpty(userDetails.getUsername()))
 				{
@@ -73,8 +72,8 @@ public class UserSelfManageServices
 					throw new Exception("Username is required to create a password reset token.");
 
 				String emailBody =
-						"You're receiving this e-mail because you or someone else has requested a password change for your user account." +
-						"Click the link below to reset your password." +
+						"You're receiving this e-mail because you or someone else has requested a password change for your user account. " +
+						"Click the link below to reset your password. " +
 						resetPasswordUrl;
 				MailServiceUtil.sendMail(email, "Reset your caNanoLab account password",
 						emailBody);
@@ -108,17 +107,18 @@ public class UserSelfManageServices
 			String validateResult = validateToken(prt);
 
 			String redirectUri = "";
+			String baseUrl = "https://" + URI.create(httpRequest.getRequestURL().toString()).getHost();
+
 			if (validateResult != null) {
-				// TODO: redirect to home page with message
-				redirectUri = "http://localhost:4200/#/home/?errorMessage=Unable to change password because " + validateResult;
+				// Test: Local
+				// redirectUri = "http://localhost:4200/#/home/?errorMessage=Unable to change password because " + validateResult;
+				redirectUri = baseUrl + "?errorMessage=Unable to change password because " + validateResult;
 				redirectUri = redirectUri.replace(" ", "%20");
 				return Response.seeOther(new URI(redirectUri)).build();
 			} else {
-				String baseUrl = "http://" + URI.create(httpRequest.getRequestURL().toString()).getHost();
-
-				// TODO: for local
-				redirectUri = "http://localhost:4200/#/home/change-password?token=" + token;
-//				redirectUri = "/updatePassword";
+				// Test: for local
+				// redirectUri = "http://localhost:4200/#/home/change-password?token=" + token;
+				redirectUri = baseUrl + "/change-password?token=" + token;
 
 				return Response.seeOther(new URI(redirectUri)).build();
 			}
@@ -168,9 +168,11 @@ public class UserSelfManageServices
 
 			CananoUserDetails userDetails = userAccountBO.readUserAccount(prt.getUserName());
 			if (userDetails != null) {
-//				MailServiceUtil.sendMail(userDetails.getEmailId(), "Your caNanoLab account password was reset",
-//						"<div style=\"font-family:arial\"><p>Your caNanoLab password has been successfully reset.<br>" +
-//								"If you did not request this password change, please contact caNanoLab admin at [email TBD]</p></div>");
+				String emailBody =
+						"Your caNanoLab password has been successfully reset. If you did not request this password change," +
+								" please contact caNanoLab support at [email].";
+				MailServiceUtil.sendMail(userDetails.getEmailId(), "You caNanoLab account password was reset",
+						emailBody);
 
 				// Delete all existing tokens because password has been changed
 				userAccountBO.deletePasswordResetTokens(userDetails);
