@@ -118,7 +118,7 @@ public class UserSelfManageServices
 			} else {
 				// Test: for local
 				// redirectUri = "http://localhost:4200/#/home/change-password?token=" + token;
-				redirectUri = baseUrl + "/change-password?token=" + token;
+				redirectUri = baseUrl + "/#/home/change-password?token=" + token;
 
 				return Response.seeOther(new URI(redirectUri)).build();
 			}
