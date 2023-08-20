@@ -34,6 +34,40 @@ public class UserSelfManageServices
 	private static final Logger logger = LogManager.getLogger(UserSelfManageServices.class);
 
 	@GET
+	@Path("/accounttype")
+	@Produces ({"application/json", "text/plain"})
+	public Response getAccountType(@Context HttpServletRequest httpRequest, @DefaultValue("") @QueryParam("token") String token)
+	{
+		try {
+			UserAccountBO userAccountBO = (UserAccountBO) SpringApplicationContext.getBean(httpRequest, "userAccountBO");
+			PasswordResetToken prt = userAccountBO.readPasswordResetToken(token);
+			String validateResult = validateToken(prt);
+
+			if (validateResult == null) {
+				CananoUserDetails userDetails = userAccountBO.readUserAccount(prt.getUserName());
+				if (userDetails != null) {
+					boolean isPrivilegeUser = userDetails.isCurator() || userDetails.isAdmin() || userDetails.isResearcher();
+
+					JsonBuilderFactory factory = Json.createBuilderFactory(null);
+					JsonObject value = factory.createObjectBuilder()
+							.add("status", "success")
+							.add("isPrivilegeUser", isPrivilegeUser).build();
+
+					return Response.ok(value).build();
+				} else {
+					throw new Exception("Cannot get user info when trying to prepare password change");
+				}
+			} else {
+				throw new Exception("Invalid token when trying to prepare password change");
+			}
+		} catch (Exception e) {
+			logger.error("Error in handling password change request: ", e);
+			return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
+					.entity(CommonUtil.wrapErrorMessageInList(e.getMessage())).build();
+		}
+	}
+
+	@GET
 	@Path("/resetpwd")
 	@Produces ({"application/json", "text/plain"})
 	public Response resetPassword(@Context HttpServletRequest httpRequest, @DefaultValue("") @QueryParam("email") String email)
