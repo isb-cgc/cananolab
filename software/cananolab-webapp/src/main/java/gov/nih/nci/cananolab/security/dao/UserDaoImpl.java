@@ -2,6 +2,7 @@ package gov.nih.nci.cananolab.security.dao;
 
 import gov.nih.nci.cananolab.security.CananoUserDetails;
 import gov.nih.nci.cananolab.security.enums.CaNanoRoleEnum;
+import gov.nih.nci.cananolab.security.service.PasswordHistory;
 import gov.nih.nci.cananolab.util.StringUtils;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -69,6 +70,12 @@ public class UserDaoImpl extends JdbcDaoSupport implements UserDao
 
 	private static final String DELETE_PASSWORD_RESET_TOKENS = "DELETE FROM password_reset_tokens WHERE username = ?";
 
+	private static final String INSERT_PASSWORD_HISTORY = "INSERT INTO password_history(password, username, createdate, expirydate) " + "values (?, ?, ?, ?)";
+
+	private static final String DELETE_PASSWORD_HISTORY = "DELETE FROM password_history WHERE password = ?";
+
+	private static final String FETCH_PASSWORD_HISTORY = "select p.password, p.username, p.createdate, p.expirydate from password_history p where p.username = ? order by expirydate asc";
+
 	@Override
 	public CananoUserDetails getUserByName(String username)
 	{
@@ -97,8 +104,15 @@ public class UserDaoImpl extends JdbcDaoSupport implements UserDao
 		{
 			Object[] params = new Object[] {email};
 			List<CananoUserDetails> userList = (List<CananoUserDetails>) getJdbcTemplate().query(FETCH_USER_BY_EMAIL_SQL, params, new UserMapper());
-			if (userList != null && userList.size() == 1)
-				user = userList.get(0);
+			if (userList != null) {
+				if (userList.size() > 1) {
+					logger.error("Found more than one users with same email " + email);
+					System.out.println("Found more than one users with same email " + email);
+					return null;
+				} else if (userList.size() == 1){
+					user = userList.get(0);
+				}
+			}
 		}
 		return user;
 	}
@@ -256,6 +270,51 @@ public class UserDaoImpl extends JdbcDaoSupport implements UserDao
 			prt.setExpiryDate(rs.getDate("EXPIRY_DATE"));
 
 			return prt;
+		}
+	}
+
+	@Override
+	public int insertPasswordHistory(PasswordHistory history)
+	{
+		logger.debug("Insert password history for: " + history.getUserName());
+		Object[] params = new Object[] { history.getPassword(), history.getUserName(), history.getCreateDate(), history.getExpiryDate() };
+		return getJdbcTemplate().update(INSERT_PASSWORD_HISTORY, params);
+	}
+
+	@Override
+	public int deletePasswordHistory(String password) {
+		logger.debug("Delete password history for password:" + password);
+		Object[] params = new Object[] { password };
+		return getJdbcTemplate().update(DELETE_PASSWORD_HISTORY, params);
+	}
+
+	@Override
+	public List<PasswordHistory> getPasswordHistory(String username)
+	{
+		logger.debug("Fetching password history for user: " + username);
+
+		List<PasswordHistory> histories = new ArrayList<>();
+
+		if (!StringUtils.isEmpty(username))
+		{
+			Object[] params = new Object[] { username };
+			histories = (List<PasswordHistory>) getJdbcTemplate().query(FETCH_PASSWORD_HISTORY, params, new PasswordHistoryMapper());
+		}
+
+		return histories;
+	}
+
+	private static final class PasswordHistoryMapper implements RowMapper
+	{
+		public Object mapRow(ResultSet rs, int rowNum) throws SQLException
+		{
+			PasswordHistory history = new PasswordHistory();
+			history.setPassword(rs.getString("PASSWORD"));
+			history.setUserName(rs.getString("USERNAME"));
+			history.setCreateDate(rs.getDate("CREATEDATE"));
+			history.setExpiryDate(rs.getDate("EXPIRYDATE"));
+
+			return history;
 		}
 	}
 	

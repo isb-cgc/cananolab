@@ -25,4 +25,10 @@ public interface UserService
 	void updateUserAccount(CananoUserDetails userDetails);
 
 	CananoUserDetails getUserAccountByEmail(String email);
+
+	int insertPasswordHistory(String password, String userName);
+
+	List<PasswordHistory> getPasswordHistory(String userName);
+
+	String checkPasswordRequirement(String password, String userName);
 }

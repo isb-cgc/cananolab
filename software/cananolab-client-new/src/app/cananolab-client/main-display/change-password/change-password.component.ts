@@ -24,7 +24,8 @@ export class ChangePasswordComponent implements OnInit {
   isPrivilegeUser = false;
   minCharCount = 8;
   token = "";
-  message = "";
+  message="";
+  errorMessage = "";
   errors = {};
 
   constructor(private apiService: ApiService, private activatedRoute:ActivatedRoute,private router:Router,private httpClient:HttpClient) { }
@@ -130,8 +131,7 @@ export class ChangePasswordComponent implements OnInit {
         this.message='Password Reset Successfully'
       }
       else {
-        alert('Reset password error[' + errors.error.status + ']: ' + '\n' + errors.error.message);
-        this.message='';
+        this.errorMessage=errors.error;
         this.errors=errors;
       }
     })
