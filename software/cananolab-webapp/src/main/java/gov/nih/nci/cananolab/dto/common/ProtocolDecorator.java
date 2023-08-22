@@ -67,7 +67,7 @@ public class ProtocolDecorator extends TableDecorator {
 								.escapeXmlButPreserveLineBreaks(description)).append("<br>");
 			}
 			if (file.getDomainFile().getId() != null) {
-				String link = "protocol.do?dispatch=download&fileId="
+				String link = "protocol.do?dispatch=download&protocolId=" + protocol.getDomain().getId().toString() + "&fileId="
 						+ file.getDomainFile().getId();
 				String linkText = "View";
 				sb.append("<br>").append("<a href=");
