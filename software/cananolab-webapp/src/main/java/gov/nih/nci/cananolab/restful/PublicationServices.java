@@ -72,7 +72,7 @@ public class PublicationServices {
 
 	@GET
 	@Path("/download")
-	@Produces({"application/pdf", "application/json"})
+	@Produces({"application/pdf", "application/json", "application/octet-stream"})
 	public Response download(@Context HttpServletRequest httpRequest, @Context HttpServletResponse httpResponse,
 	                         @DefaultValue("") @QueryParam("publicationId") String pubId,
 	                         @DefaultValue("") @QueryParam("fileId") String fileId)

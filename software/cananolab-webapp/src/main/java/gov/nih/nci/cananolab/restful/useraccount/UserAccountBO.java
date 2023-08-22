@@ -61,11 +61,25 @@ public class UserAccountBO
 
 	public void changeUserAccountPassword(String newPassword, String userName) throws Exception
 	{
+		String checkResult = checkPasswordRequirement(newPassword, userName);
+		if (checkResult != "") {
+			System.out.println("New password does not meet password requirement because " + checkResult);
+			throw new Exception("New password does not meet password requirement because " + checkResult);
+		}
+
 		userService.changePasswordForUser(newPassword, userName);
+		System.out.println("Password changed for user: " +  userName);
+		logger.warn("Successful changed password for user: " + userName);
 	}
 
 	public void resetUserAccountPassword(String oldPassword, String newPassword, String userName) throws Exception
 	{
+		String checkResult = checkPasswordRequirement(newPassword, userName);
+		if (checkResult != "") {
+			System.out.println("New password does not meet password requirement because " + checkResult);
+			throw new Exception("New password does not meet password requirement because " + checkResult);
+		}
+
 		userService.resetPasswordForUser(oldPassword, newPassword, userName);
 		System.out.println("Password reset for user: " +  userName);
 		logger.warn("Successful password reset for user: " + userName);
@@ -86,9 +100,12 @@ public class UserAccountBO
         return userService.loadUsers(searchStr);
 	}
 
+	private String checkPasswordRequirement(String password, String userName) {
+		return userService.checkPasswordRequirement(password, userName);
+	}
+
 	public CananoUserDetails getByEmail(String emailStr) throws NoAccessException
 	{
 		return userService.getUserAccountByEmail(emailStr);
 	}
-	
 }

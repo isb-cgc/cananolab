@@ -3,6 +3,7 @@ import { ActivatedRoute} from '@angular/router';
 import { HttpClient,HttpHeaders } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { Consts } from '../../../constants';
+import { ApiService } from '../../common/services/api.service';
 
 
 @Component({
@@ -20,16 +21,30 @@ export class ChangePasswordComponent implements OnInit {
   isGoodLength = false;
   hasSpecialChar = false;
   allValidationPassed = false;
+  isPrivilegeUser = false;
+  minCharCount = 8;
   token = "";
-  message = "";
+  message="";
+  errorMessage = "";
   errors = {};
 
-  constructor(private activatedRoute:ActivatedRoute,private router:Router,private httpClient:HttpClient) { }
+  constructor(private apiService: ApiService, private activatedRoute:ActivatedRoute,private router:Router,private httpClient:HttpClient) { }
 
   ngOnInit(): void {
     this.activatedRoute.queryParams
       .subscribe(params => {
         this.token = params.token;
+
+        let url = this.apiService.doGet(Consts.QUERY_RESET_PASSWORD_ACCOUNT_TYPE, 'token=' + this.token);
+        url.subscribe(
+            data => {
+              this.isPrivilegeUser = data['isPrivilegeUser'];
+              this.minCharCount = this.isPrivilegeUser ? 15 : 8;
+            },
+            error => {
+              this.errors = error;
+            }
+        );
       }
     );
   }
@@ -81,7 +96,7 @@ export class ChangePasswordComponent implements OnInit {
       case 'uppercase':
         return /[A-Z]/.test(value);
       case 'length':
-        return value.length >= 8 && value.length <= 32;
+        return value.length >= this.minCharCount && value.length <= 32;
       default:
         return false
     }
@@ -116,8 +131,7 @@ export class ChangePasswordComponent implements OnInit {
         this.message='Password Reset Successfully'
       }
       else {
-        alert('Reset password error[' + errors.error.status + ']: ' + '\n' + errors.error.message);
-        this.message='';
+        this.errorMessage=errors.error;
         this.errors=errors;
       }
     })

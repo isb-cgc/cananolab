@@ -1,7 +1,9 @@
 package gov.nih.nci.cananolab.restful;
 
+import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 import javax.json.Json;
 import javax.json.JsonBuilderFactory;
@@ -18,6 +20,8 @@ import javax.ws.rs.core.Context;
 import javax.ws.rs.core.Response;
 
 import gov.nih.nci.cananolab.exception.NoAccessException;
+import gov.nih.nci.cananolab.restful.util.MailServiceUtil;
+import gov.nih.nci.cananolab.security.service.PasswordResetToken;
 import org.apache.logging.log4j.LogManager;
 
 import gov.nih.nci.cananolab.restful.useraccount.UserAccountBO;
@@ -137,15 +141,56 @@ public class UserAccountServices
 				return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity("Admin permissions required").build();
 			}
 
+			if (userDetails.getEmailId() == "") {
+				System.out.println("Cannot create new user account without email");
+				return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity("Email is required for new account").build();
+			}
+
 			CananoUserDetails newUserDetails = new CananoUserDetails();
 			if (!StringUtils.isEmpty(userDetails.getUsername()) && !StringUtils.isEmpty(userDetails.getFirstName()) && !StringUtils.isEmpty(userDetails.getLastName()))
 			{
 				UserAccountBO userAccountBO = (UserAccountBO) SpringApplicationContext.getBean(httpRequest, "userAccountBO");
+
+				if (userAccountBO.getByEmail(userDetails.getEmailId()) != null) {
+					System.out.println("Cannot create new user account because email already exist for " + userDetails.getEmailId());
+					return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity("Email already exist in the system").build();
+				}
+
 				newUserDetails = userAccountBO.createUserAccount(userDetails);
 			} else {
 				throw new Exception("Username, First and Last names are required to create an account.");
 			}
 			System.out.println("CUA Complete");
+
+			// Send email to user with link to set password
+			String resetPasswordUrl = "";
+			UserAccountBO userAccountBO = (UserAccountBO) SpringApplicationContext.getBean(httpRequest, "userAccountBO");
+
+			// Reset password token
+			String token = UUID.randomUUID().toString();
+			String baseUrl = "https://" + URI.create(httpRequest.getRequestURL().toString()).getHost();
+
+			// Test: for local testing
+			// resetPasswordUrl = "http://localhost:4200/rest/userself/changepwd?token=" + token;
+			resetPasswordUrl = baseUrl + "/rest/userself/changepwd?token=" + token;
+
+			if (!StringUtils.isEmpty(newUserDetails.getUsername()))
+			{
+				PasswordResetToken prt = new PasswordResetToken();
+				prt.setToken(token);
+				prt.setUserName(userDetails.getUsername());
+
+				userAccountBO.createPasswordResetToken(prt);
+			}
+			else
+				throw new Exception("Username is required to create a password reset token.");
+
+			String emailBody =
+					"A new caNanoLab user account has been created for this email address. Click the link below to set your password. " +
+							resetPasswordUrl;
+			MailServiceUtil.sendMail(newUserDetails.getEmailId(), "Reset your caNanoLab account password",
+					emailBody);
+
 			return Response.ok(newUserDetails).build();
 		}
 		catch (Exception e) {

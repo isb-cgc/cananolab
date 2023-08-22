@@ -4,6 +4,7 @@ import java.util.List;
 
 import gov.nih.nci.cananolab.security.CananoUserDetails;
 import gov.nih.nci.cananolab.security.service.PasswordResetToken;
+import gov.nih.nci.cananolab.security.service.PasswordHistory;
 
 public interface UserDao 
 {
@@ -34,4 +35,10 @@ public interface UserDao
 	int deletePasswordResetTokens(String username);
 
 	PasswordResetToken getPasswordResetToken(String token);
+
+	int insertPasswordHistory(PasswordHistory history);
+
+	int deletePasswordHistory(String password);
+
+	List<PasswordHistory> getPasswordHistory(String username);
 }
