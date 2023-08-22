@@ -94,7 +94,7 @@ public class ExportUtils {
 	 * @param response HttpServletResponse
 	 * @param fileName String
 	 */
-	public static void prepareReponseForImage(HttpServletResponse response, String fileName) {
+	public static void prepareResponseForImage(HttpServletResponse response, String fileName) {
 		prepareDownloadResponse(response);
 		StringBuilder sb = new StringBuilder();
 		sb.append(ATTACHMENT).append(fileName).append("\"");

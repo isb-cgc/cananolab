@@ -1330,15 +1330,12 @@ public class CharacterizationBO extends BaseAnnotationBO {
 	}
 	
 	public String download(String fileId, String sampleId, HttpServletRequest request, HttpServletResponse response) throws Exception {
-		try {
-			if (sampleId != "") {
-				// findCharacterizationsBySampleId throws error if user is not authorized for the sample
-				characterizationService.findCharacterizationsBySampleId(sampleId);
-			}
-
+		if (!sampleId.equals("")) {
+			// findCharacterizationsBySampleId throws error if user is not authorized for the sample
+			characterizationService.findCharacterizationsBySampleId(sampleId);
 			return downloadFile(characterizationService, fileId, request, response);
-		} catch (Exception e) {
-			throw new Exception(e);
+		} else {
+			throw new Exception("Cannot download characterization because sampleId is empty");
 		}
 	}
 

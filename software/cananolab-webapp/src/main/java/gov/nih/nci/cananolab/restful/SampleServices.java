@@ -237,7 +237,7 @@ public class SampleServices {
 	
 	@GET
 	@Path("/download")
-	@Produces({"image/png", "application/json"})
+	@Produces({"image/png", "application/json", "application/octet-stream"})
 	 public Response download(@Context HttpServletRequest httpRequest, @Context HttpServletResponse httpResponse,
                 @DefaultValue("") @QueryParam("sampleId") String sampleId,
 	    		@DefaultValue("") @QueryParam("fileId") String fileId){
