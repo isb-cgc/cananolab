@@ -15,6 +15,7 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.Response;
+import javax.ws.rs.core.MediaType;
 
 import gov.nih.nci.cananolab.exception.ApplicationProviderException;
 import gov.nih.nci.cananolab.exception.NoAccessException;
@@ -87,7 +88,8 @@ public class PublicationServices {
 		} catch (Exception e) {
 			logger.error(e.getMessage());
 			e.printStackTrace();
-			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(CommonUtil.wrapErrorMessageInList("Error while downloading the file" + e.getMessage())).build();
+			String msgAsJson = "\"" + "Error while downloading the file " + e.getMessage() + "\"";
+			return (Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(msgAsJson).type(MediaType.APPLICATION_JSON).build());
 		}
 	}
 
