@@ -105,11 +105,11 @@ public class UserDaoImpl extends JdbcDaoSupport implements UserDao
 			Object[] params = new Object[] {email};
 			List<CananoUserDetails> userList = (List<CananoUserDetails>) getJdbcTemplate().query(FETCH_USER_BY_EMAIL_SQL, params, new UserMapper());
 			if (userList != null) {
-				if (userList.size() > 1) {
-					logger.error("Found more than one users with same email " + email);
-					System.out.println("Found more than one users with same email " + email);
-					return null;
-				} else if (userList.size() == 1){
+				if (userList.size() > 0) {
+					if (userList.size() > 1) {
+						logger.warn("Found more than one users with same email " + email);
+						System.out.println("Found more than one users with same email " + email);
+					}
 					user = userList.get(0);
 				}
 			}
