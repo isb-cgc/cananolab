@@ -875,12 +875,13 @@ public class PublicationBO extends BaseAnnotationBO
 	{
 		System.out.println("Inside download from publication BO");
 
-		if (pubId != "") {
+		if (!pubId.equals("")) {
 			// findPublicationById throws error if user is not authorized for the sample
 			publicationService.findPublicationById(pubId, true);
+			return downloadFile(publicationService, fileId, request, response);
+		} else {
+			throw new Exception("Cannot download publication because pubId is empty");
 		}
-
-		return downloadFile(publicationService, fileId, request, response);
 	}
 
 	public String[] getMatchedSampleNames(String searchStr, HttpServletRequest request)
