@@ -146,7 +146,7 @@ public abstract class BaseAnnotationBO extends AbstractDispatchBO
 			if (blob.exists()) {
 				System.out.println("GCPStorage found blob for requested file, downloading...");
 
-				ExportUtils.prepareReponseForImage(response, fileBean.getDomainFile().getUri());
+				ExportUtils.prepareResponseForImage(response, fileBean.getDomainFile().getUri());
 
 				OutputStream out = response.getOutputStream();
 				blob.downloadTo(out);
