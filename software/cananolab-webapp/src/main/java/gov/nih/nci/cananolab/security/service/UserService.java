@@ -31,4 +31,6 @@ public interface UserService
 	List<PasswordHistory> getPasswordHistory(String userName);
 
 	String checkPasswordRequirement(String password, String userName);
+
+	int updateLastLogin(String userName);
 }

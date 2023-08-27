@@ -140,6 +140,9 @@ public class UserServiceImpl implements UserService
 
 				// Add to password history for this user
 				insertPasswordHistory(encryptedPassword, userName);
+
+				// If user account was disabled because of password expire, enable it no
+				status = userDao.enableUserAccount(userName);
 			}
 			else
 				throw new Exception("Incorrect old password.");
@@ -158,6 +161,9 @@ public class UserServiceImpl implements UserService
 
 			// Add to password history for this user
 			insertPasswordHistory(encryptedPassword, userName);
+
+			// If user account was disabled because of password expire, enable it no
+			status = userDao.enableUserAccount(userName);
 		}
 		return status;
 	}
@@ -183,6 +189,11 @@ public class UserServiceImpl implements UserService
 	@Override
 	public CananoUserDetails getUserAccountByEmail(String email) {
 		return userDao.getUserByEmail(email);
+	}
+
+	@Override
+	public int updateLastLogin(String userName) {
+		return userDao.updateLastLogin(userName);
 	}
 
 	@Override

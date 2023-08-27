@@ -76,6 +76,10 @@ public class UserDaoImpl extends JdbcDaoSupport implements UserDao
 
 	private static final String FETCH_PASSWORD_HISTORY = "select p.password, p.username, p.createdate, p.expirydate from password_history p where p.username = ? order by expirydate asc";
 
+	private static final String ENABLE_USER_ACCOUNT = "UPDATE users SET enabled = 1 WHERE username = ?";
+
+	private static final String UPDATE_LAST_LOGIN = "UPDATE users SET last_login = ? WHERE username = ?";
+
 	@Override
 	public CananoUserDetails getUserByName(String username)
 	{
@@ -105,11 +109,11 @@ public class UserDaoImpl extends JdbcDaoSupport implements UserDao
 			Object[] params = new Object[] {email};
 			List<CananoUserDetails> userList = (List<CananoUserDetails>) getJdbcTemplate().query(FETCH_USER_BY_EMAIL_SQL, params, new UserMapper());
 			if (userList != null) {
-				if (userList.size() > 1) {
-					logger.error("Found more than one users with same email " + email);
-					System.out.println("Found more than one users with same email " + email);
-					return null;
-				} else if (userList.size() == 1){
+				if (userList.size() > 0) {
+					if (userList.size() > 1) {
+						logger.warn("Found more than one users with same email " + email);
+						System.out.println("Found more than one users with same email " + email);
+					}
 					user = userList.get(0);
 				}
 			}
@@ -184,6 +188,21 @@ public class UserDaoImpl extends JdbcDaoSupport implements UserDao
 		Object[] params = new Object[] {userName, authority};
 
         return getJdbcTemplate().update(INSERT_USER_AUTHORITY_SQL, params);
+	}
+
+	@Override
+	public int enableUserAccount(String userName) {
+		logger.info("Enabling user account for user: " + userName);
+		Object[] params = new Object[] { userName };
+		return getJdbcTemplate().update(ENABLE_USER_ACCOUNT, params);
+	}
+
+	@Override
+	public int updateLastLogin(String userName) {
+		logger.info("Update last login for user: " + userName);
+		Date loginDate = new Date();
+		Object[] params = new Object[] { loginDate, userName };
+		return getJdbcTemplate().update(UPDATE_LAST_LOGIN, params);
 	}
 	
 	@Override
