@@ -108,4 +108,9 @@ public class UserAccountBO
 	{
 		return userService.getUserAccountByEmail(emailStr);
 	}
+
+	public int updateLastLogin(String userName) throws NoAccessException
+	{
+		return userService.updateLastLogin(userName);
+	}
 }

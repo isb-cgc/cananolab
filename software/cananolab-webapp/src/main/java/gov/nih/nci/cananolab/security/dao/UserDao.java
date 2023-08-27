@@ -23,7 +23,11 @@ public interface UserDao
 	int updateUser(CananoUserDetails user);
 
 	int insertUserAuthority(String userName, String authority);
-	
+
+	int enableUserAccount(String userName);
+
+	int updateLastLogin(String userName);
+
 	int resetPassword(String userName, String password);
 	
 	String readPassword(String userName);

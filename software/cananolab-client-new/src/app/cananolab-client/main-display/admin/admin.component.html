@@ -173,7 +173,7 @@
                 <tr>
                     <td class="label">
                         <label for="userData.emailId">
-                            Email
+                            Email*
                         </label>
                     </td>
                     <td>
@@ -219,7 +219,7 @@
                 <tr>
                     <td>
                         <button (click)="reset()" class="btn-canano btn-canano-danger btn-canano-lg mr-1">Reset</button>
-                        <button (click)="submit()" [disabled]="userData.username==''||userData.firstName==''||userData.lastName==''||!piiConfirmed" class="btn-canano btn-canano-primary btn-canano-lg mr-1">Submit</button>
+                        <button (click)="submit()" [disabled]="userData.emailId==''||userData.username==''||userData.firstName==''||userData.lastName==''||!piiConfirmed" class="btn-canano btn-canano-primary btn-canano-lg mr-1">Submit</button>
                     </td>
                 </tr>
             </table>
