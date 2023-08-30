@@ -17,11 +17,8 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.List;
-import org.codehaus.jackson.annotate.JsonIgnoreProperties;
-import org.codehaus.jackson.annotate.JsonTypeName;
-
-//import org.codehaus.jackson.annotate.JsonIgnoreProperties;
-//import org.codehaus.jackson.annotate.JsonTypeName;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonTypeName;
 
 /**
  * Information for the sample query form

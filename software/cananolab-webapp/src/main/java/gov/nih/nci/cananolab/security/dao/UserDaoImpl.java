@@ -2,6 +2,7 @@ package gov.nih.nci.cananolab.security.dao;
 
 import gov.nih.nci.cananolab.security.CananoUserDetails;
 import gov.nih.nci.cananolab.security.enums.CaNanoRoleEnum;
+import gov.nih.nci.cananolab.security.service.PasswordHistory;
 import gov.nih.nci.cananolab.util.StringUtils;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -16,6 +17,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.support.JdbcDaoSupport;
 import org.springframework.stereotype.Component;
+import gov.nih.nci.cananolab.security.service.PasswordResetToken;
 
 @Component("userDao")
 public class UserDaoImpl extends JdbcDaoSupport implements UserDao 
@@ -32,6 +34,9 @@ public class UserDaoImpl extends JdbcDaoSupport implements UserDao
 	
 	private static final String FETCH_USER_SQL = "select u.username, u.first_name, u.last_name, u.password, u.organization, u.department, " +
 												 "u.title, u.phone_number, u.email_id, u.enabled from users u where u.username = ?";
+
+	private static final String FETCH_USER_BY_EMAIL_SQL = "select u.username, u.first_name, u.last_name, u.password, u.organization, u.department, " +
+			"u.title, u.phone_number, u.email_id, u.enabled from users u where u.email_id = ?";
 	
 	private static final String FETCH_USER_ROLES_SQL = "SELECT a.authority rolename FROM authorities a where a.username = ?";
 	
@@ -58,6 +63,23 @@ public class UserDaoImpl extends JdbcDaoSupport implements UserDao
 	
 	private static final String DELETE_ROLES_SQL = "DELETE FROM authorities WHERE username = ? AND authority != '" + CaNanoRoleEnum.ROLE_ANONYMOUS.toString() + "'";
 
+	private static final String INSERT_PASSWORD_RESET_TOKEN = "INSERT INTO password_reset_tokens(token, username, expiry_date) " +
+													"values (?, ?, ?)";
+
+	private static final String FETCH_PASSWORD_RESET_TOKEN = "select p.token, p.username, p.expiry_date from password_reset_tokens p where p.token = ?";
+
+	private static final String DELETE_PASSWORD_RESET_TOKENS = "DELETE FROM password_reset_tokens WHERE username = ?";
+
+	private static final String INSERT_PASSWORD_HISTORY = "INSERT INTO password_history(password, username, createdate, expirydate) " + "values (?, ?, ?, ?)";
+
+	private static final String DELETE_PASSWORD_HISTORY = "DELETE FROM password_history WHERE password = ?";
+
+	private static final String FETCH_PASSWORD_HISTORY = "select p.password, p.username, p.createdate, p.expirydate from password_history p where p.username = ? order by expirydate asc";
+
+	private static final String ENABLE_USER_ACCOUNT = "UPDATE users SET enabled = 1 WHERE username = ?";
+
+	private static final String UPDATE_LAST_LOGIN = "UPDATE users SET last_login = ? WHERE username = ?";
+
 	@Override
 	public CananoUserDetails getUserByName(String username)
 	{
@@ -71,6 +93,30 @@ public class UserDaoImpl extends JdbcDaoSupport implements UserDao
 			List<CananoUserDetails> userList = (List<CananoUserDetails>) getJdbcTemplate().query(FETCH_USER_SQL, params, new UserMapper());
 			if (userList != null && userList.size() == 1)
 				user = userList.get(0);
+		}
+		return user;
+	}
+
+	@Override
+	public CananoUserDetails getUserByEmail(String email)
+	{
+		logger.debug("Fetching user details for user with email: " + email);
+
+		CananoUserDetails user = null;
+
+		if (!StringUtils.isEmpty(email))
+		{
+			Object[] params = new Object[] {email};
+			List<CananoUserDetails> userList = (List<CananoUserDetails>) getJdbcTemplate().query(FETCH_USER_BY_EMAIL_SQL, params, new UserMapper());
+			if (userList != null) {
+				if (userList.size() > 0) {
+					if (userList.size() > 1) {
+						logger.warn("Found more than one users with same email " + email);
+						System.out.println("Found more than one users with same email " + email);
+					}
+					user = userList.get(0);
+				}
+			}
 		}
 		return user;
 	}
@@ -143,6 +189,21 @@ public class UserDaoImpl extends JdbcDaoSupport implements UserDao
 
         return getJdbcTemplate().update(INSERT_USER_AUTHORITY_SQL, params);
 	}
+
+	@Override
+	public int enableUserAccount(String userName) {
+		logger.info("Enabling user account for user: " + userName);
+		Object[] params = new Object[] { userName };
+		return getJdbcTemplate().update(ENABLE_USER_ACCOUNT, params);
+	}
+
+	@Override
+	public int updateLastLogin(String userName) {
+		logger.info("Update last login for user: " + userName);
+		Date loginDate = new Date();
+		Object[] params = new Object[] { loginDate, userName };
+		return getJdbcTemplate().update(UPDATE_LAST_LOGIN, params);
+	}
 	
 	@Override
 	public int resetPassword(String userName, String password)
@@ -184,6 +245,96 @@ public class UserDaoImpl extends JdbcDaoSupport implements UserDao
 		Object[] params = new Object[] {username};
 
         return getJdbcTemplate().update(DELETE_ROLES_SQL, params);
+	}
+
+	@Override
+	public int insertPasswordResetToken(PasswordResetToken prt)
+	{
+		logger.debug("Insert password reset token : " + prt.getToken());
+		Object[] params = new Object[] { prt.getToken(), prt.getUserName(), prt.getExpiryDate() };
+		return getJdbcTemplate().update(INSERT_PASSWORD_RESET_TOKEN, params);
+	}
+
+	@Override
+	public int deletePasswordResetTokens(String username) {
+		logger.debug("Clear all password reset tokens for : " + username);
+		Object[] params = new Object[] { username };
+		return getJdbcTemplate().update(DELETE_PASSWORD_RESET_TOKENS, params);
+	}
+
+	@Override
+	public PasswordResetToken getPasswordResetToken(String token)
+	{
+		logger.debug("Fetching password reset token for token string: " + token);
+
+		PasswordResetToken prt = null;
+
+		if (!StringUtils.isEmpty(token))
+		{
+			Object[] params = new Object[] { token };
+			List<PasswordResetToken> tokenList = (List<PasswordResetToken>) getJdbcTemplate().query(FETCH_PASSWORD_RESET_TOKEN, params, new PasswordResetTokenMapper());
+			if (tokenList != null && tokenList.size() == 1)
+				prt = tokenList.get(0);
+		}
+		return prt;
+	}
+
+	private static final class PasswordResetTokenMapper implements RowMapper
+	{
+		public Object mapRow(ResultSet rs, int rowNum) throws SQLException
+		{
+			PasswordResetToken prt = new PasswordResetToken();
+			prt.setToken(rs.getString("TOKEN"));
+			prt.setUserName(rs.getString("USERNAME"));
+			prt.setExpiryDate(rs.getDate("EXPIRY_DATE"));
+
+			return prt;
+		}
+	}
+
+	@Override
+	public int insertPasswordHistory(PasswordHistory history)
+	{
+		logger.debug("Insert password history for: " + history.getUserName());
+		Object[] params = new Object[] { history.getPassword(), history.getUserName(), history.getCreateDate(), history.getExpiryDate() };
+		return getJdbcTemplate().update(INSERT_PASSWORD_HISTORY, params);
+	}
+
+	@Override
+	public int deletePasswordHistory(String password) {
+		logger.debug("Delete password history for password:" + password);
+		Object[] params = new Object[] { password };
+		return getJdbcTemplate().update(DELETE_PASSWORD_HISTORY, params);
+	}
+
+	@Override
+	public List<PasswordHistory> getPasswordHistory(String username)
+	{
+		logger.debug("Fetching password history for user: " + username);
+
+		List<PasswordHistory> histories = new ArrayList<>();
+
+		if (!StringUtils.isEmpty(username))
+		{
+			Object[] params = new Object[] { username };
+			histories = (List<PasswordHistory>) getJdbcTemplate().query(FETCH_PASSWORD_HISTORY, params, new PasswordHistoryMapper());
+		}
+
+		return histories;
+	}
+
+	private static final class PasswordHistoryMapper implements RowMapper
+	{
+		public Object mapRow(ResultSet rs, int rowNum) throws SQLException
+		{
+			PasswordHistory history = new PasswordHistory();
+			history.setPassword(rs.getString("PASSWORD"));
+			history.setUserName(rs.getString("USERNAME"));
+			history.setCreateDate(rs.getDate("CREATEDATE"));
+			history.setExpiryDate(rs.getDate("EXPIRYDATE"));
+
+			return history;
+		}
 	}
 	
 	private static final class UserMapper implements RowMapper

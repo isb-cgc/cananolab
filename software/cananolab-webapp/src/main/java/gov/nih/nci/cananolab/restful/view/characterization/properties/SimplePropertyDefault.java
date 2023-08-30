@@ -4,9 +4,7 @@ package gov.nih.nci.cananolab.restful.view.characterization.properties;
 import gov.nih.nci.cananolab.dto.particle.characterization.CharacterizationBean;
 
 import java.util.List;
-import org.codehaus.jackson.annotate.JsonTypeName;
-
-//import org.codehaus.jackson.annotate.JsonTypeName;
+import com.fasterxml.jackson.annotation.JsonTypeName;
 
 @JsonTypeName("SimplePropertyDefault")
 public class SimplePropertyDefault extends SimpleCharacterizationProperty {

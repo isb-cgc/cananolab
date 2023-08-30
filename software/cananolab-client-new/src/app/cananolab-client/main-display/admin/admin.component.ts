@@ -15,7 +15,6 @@ export class AdminComponent implements OnInit {
     currentUrl='admin';
     message='';
     errors={};
-    resetData={oldpassword:"",newpassword:""};
     toolHeadingName='Manage Users';
     userData={};
     username='';
@@ -29,7 +28,6 @@ export class AdminComponent implements OnInit {
             this.username=data['username'];
             this.searchAll=data['all'];
             if (this.username) {
-                this.resetData['username']=this.username;
                 this.apiService.doGet(Consts.QUERY_ADMIN_USER_READ,'username='+this.username).subscribe(data=> {
                     let userData=this.setupUserData();
                     Object.keys(userData).forEach(element=> { // we dont want credentials so create new object first then get keys //
@@ -59,16 +57,6 @@ export class AdminComponent implements OnInit {
                 this.searchForUsers();
             }
         }
-        if (this.router.url.includes('reset-password')) {
-            this.currentUrl='reset-password';
-            this.toolHeadingName='Reset Password';
-        }
-
-
-    }
-
-    cancelResetPassword() {
-        this.router.navigate(['home/admin/search-user/all'])
     }
 
     reset() {
@@ -84,36 +72,6 @@ export class AdminComponent implements OnInit {
 
     resetSearch() {
         this.searchUserName='';
-    }
-    resetPassword() {
-        let params =[];
-        Object.keys(this.resetData).forEach(key=> {
-           params.push(key+'='+this.resetData[key])
-        })
-        // let resetData='oldpassword=asad&newpassword=sadasds&username=abcdefu'
-
-        let headers = new HttpHeaders( {
-            'Content-Type': 'application/x-www-form-urlencoded',
-            } );
-        let options={
-            headers:headers,
-            method:'post',
-        }
-        this.httpClient.post( Consts.QUERY_ADMIN_RESET_PASSWORD,params.join('&'),options).subscribe(data=> {
-            this.message='Password Reset Successfully';
-        },
-        errors=> {
-            if (errors.error.text=='success') {
-                this.errors={};
-                this.message='Password Reset Successfully'
-            }
-            else {
-                console.log('a')
-                this.message='';
-                this.errors=errors;
-            }
-        })
-
     }
 
     setupUserData() {
