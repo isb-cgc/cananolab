@@ -88,7 +88,7 @@ public class UserSelfManageServices
 					throw new Exception("Cannot find user by email " + email);
 				}
 
-				if (!StringUtils.isEmpty(userDetails.getUsername())) {
+				if (StringUtils.isEmpty(userDetails.getUsername())) {
 					throw new Exception("Username is required to create a password reset token.");
 				}
 

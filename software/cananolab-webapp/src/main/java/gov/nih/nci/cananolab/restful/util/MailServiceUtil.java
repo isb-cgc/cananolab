@@ -31,7 +31,7 @@ public class MailServiceUtil {
 
         if (mailgunConfiguration != null) {
             try {
-                content = "Dear " + address + ",\r\n\r\n" + content + "\r\nSincerely,\r\nISB-CGC Team";
+                content = "Dear " + address + ",\r\n\r\n" + content + "\r\n\r\nSincerely,\r\nISB-CGC Team";
                 Mail.using(mailgunConfiguration)
                         .to(address)
                         .subject(subject)
