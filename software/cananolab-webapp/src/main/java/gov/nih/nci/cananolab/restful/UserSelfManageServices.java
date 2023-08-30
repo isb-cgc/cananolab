@@ -1,6 +1,7 @@
 package gov.nih.nci.cananolab.restful;
 
 import gov.nih.nci.cananolab.restful.util.AppPropertyUtil;
+import gov.nih.nci.cananolab.security.service.PasswordHistory;
 import net.sargue.mailgun.Configuration;
 import net.sargue.mailgun.Mail;
 
@@ -12,6 +13,7 @@ import gov.nih.nci.cananolab.security.service.PasswordResetToken;
 import gov.nih.nci.cananolab.security.utils.SpringSecurityUtil;
 import gov.nih.nci.cananolab.util.Constants;
 import gov.nih.nci.cananolab.util.StringUtils;
+import org.apache.commons.lang.time.DateUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -86,6 +88,21 @@ public class UserSelfManageServices
 					throw new Exception("Cannot find user by email " + email);
 				}
 
+				if (!StringUtils.isEmpty(userDetails.getUsername())) {
+					throw new Exception("Username is required to create a password reset token.");
+				}
+
+				String userName = userDetails.getUsername();
+
+				// Check if last password is still not used for one day
+				List<PasswordHistory> histories = userAccountBO.getPasswordHistory(userName);
+				if (histories.size() > 0) {
+					PasswordHistory last = histories.get(histories.size() - 1);
+					if (DateUtils.isSameDay(last.getCreateDate(), new Date())) {
+						throw new Exception("Last password has not been used for more than one day.");
+					}
+				}
+
 				// Reset password token
 				String token = UUID.randomUUID().toString();
 				String baseUrl = "https://" + URI.create(httpRequest.getRequestURL().toString()).getHost();
@@ -94,22 +111,16 @@ public class UserSelfManageServices
 				// resetPasswordUrl = "http://localhost:4200/rest/userself/changepwd?token=" + token;
 				resetPasswordUrl = baseUrl + "/rest/userself/changepwd?token=" + token;
 
-				if (!StringUtils.isEmpty(userDetails.getUsername()))
-				{
-					PasswordResetToken prt = new PasswordResetToken();
-					prt.setToken(token);
-					prt.setUserName(userDetails.getUsername());
-
-					userAccountBO.createPasswordResetToken(prt);
-				}
-				else
-					throw new Exception("Username is required to create a password reset token.");
+				PasswordResetToken prt = new PasswordResetToken();
+				prt.setToken(token);
+				prt.setUserName(userDetails.getUsername());
+				userAccountBO.createPasswordResetToken(prt);
 
 				String emailBody =
-						"You're receiving this e-mail because you or someone else has requested a password change for your user account. " +
-						"Click the link below to reset your password. " +
+						"You're receiving this e-mail because you or someone else has requested a password change for your user account.\r\n" +
+						"Please click the link below to reset your password.\r\n" +
 						resetPasswordUrl;
-				MailServiceUtil.sendMail(email, "Reset your caNanoLab account password",
+				MailServiceUtil.sendMail(email, "[caNanoLab] Reset your caNanoLab account password.",
 						emailBody);
 			}
 			else
@@ -203,9 +214,9 @@ public class UserSelfManageServices
 			CananoUserDetails userDetails = userAccountBO.readUserAccount(prt.getUserName());
 			if (userDetails != null) {
 				String emailBody =
-						"Your caNanoLab password has been successfully reset. If you did not request this password change," +
-								" please contact caNanoLab support at [email].";
-				MailServiceUtil.sendMail(userDetails.getEmailId(), "You caNanoLab account password was reset",
+						"Your caNanoLab password has been successfully reset.\r\nIf you did not request this password change," +
+								" please contact caNanoLab support at caNanoLab-Support@isb-cgc.org.";
+				MailServiceUtil.sendMail(userDetails.getEmailId(), "[caNanoLab] Your caNanoLab account password was reset",
 						emailBody);
 
 				// Delete all existing tokens because password has been changed

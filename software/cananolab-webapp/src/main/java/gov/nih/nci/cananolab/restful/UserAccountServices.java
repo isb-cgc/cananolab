@@ -185,10 +185,9 @@ public class UserAccountServices
 			else
 				throw new Exception("Username is required to create a password reset token.");
 
-			String emailBody =
-					"A new caNanoLab user account has been created for this email address. Click the link below to set your password. " +
+			String emailBody = "A new caNanoLab user account has been created for you.\r\nPlease click the link below to set your password.\r\n" +
 							resetPasswordUrl;
-			MailServiceUtil.sendMail(newUserDetails.getEmailId(), "Reset your caNanoLab account password",
+			MailServiceUtil.sendMail(newUserDetails.getEmailId(), "[caNanoLab] Set your caNanoLab account password.",
 					emailBody);
 
 			return Response.ok(newUserDetails).build();
