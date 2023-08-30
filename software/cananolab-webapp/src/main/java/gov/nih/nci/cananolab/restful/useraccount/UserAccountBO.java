@@ -2,6 +2,7 @@ package gov.nih.nci.cananolab.restful.useraccount;
 
 import java.util.List;
 
+import gov.nih.nci.cananolab.security.service.PasswordHistory;
 import gov.nih.nci.cananolab.security.service.PasswordResetToken;
 import gov.nih.nci.cananolab.util.SessionListener;
 import org.apache.logging.log4j.LogManager;
@@ -112,5 +113,10 @@ public class UserAccountBO
 	public int updateLastLogin(String userName) throws NoAccessException
 	{
 		return userService.updateLastLogin(userName);
+	}
+
+	public List<PasswordHistory> getPasswordHistory(String userName) throws NoAccessException
+	{
+		return userService.getPasswordHistory(userName);
 	}
 }

@@ -8,6 +8,7 @@ import gov.nih.nci.cananolab.util.StringUtils;
 
 import java.util.*;
 
+import org.apache.commons.lang.time.DateUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -104,10 +105,7 @@ public class UserServiceImpl implements UserService
 		String token = prt.getToken();
 		if (prt != null && !StringUtils.isEmpty(token)) {
 			// Calculate future date when token will expire
-			Calendar cal = Calendar.getInstance();
-			cal.setTime(new Date());
-			cal.add(Calendar.DATE, PasswordResetToken.EXPIRATION_DAY);
-			Date expiryDate = cal.getTime();
+			Date expiryDate = DateUtils.addHours(new Date(), PasswordResetToken.EXPIRATION_HOURS);
 			prt.setExpiryDate(expiryDate);
 			int status = userDao.insertPasswordResetToken(prt);
 		}
