@@ -1,19 +1,13 @@
 package gov.nih.nci.cananolab.restful;
 
-import gov.nih.nci.cananolab.restful.util.AppPropertyUtil;
 import gov.nih.nci.cananolab.security.service.PasswordHistory;
-import net.sargue.mailgun.Configuration;
-import net.sargue.mailgun.Mail;
 
 import gov.nih.nci.cananolab.restful.useraccount.UserAccountBO;
 import gov.nih.nci.cananolab.restful.util.CommonUtil;
 import gov.nih.nci.cananolab.restful.util.MailServiceUtil;
 import gov.nih.nci.cananolab.security.CananoUserDetails;
 import gov.nih.nci.cananolab.security.service.PasswordResetToken;
-import gov.nih.nci.cananolab.security.utils.SpringSecurityUtil;
-import gov.nih.nci.cananolab.util.Constants;
 import gov.nih.nci.cananolab.util.StringUtils;
-import org.apache.commons.lang.time.DateUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -25,8 +19,7 @@ import javax.ws.rs.*;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.Response;
 import java.net.URI;
-import java.util.ArrayList;
-import java.util.Date;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 
@@ -98,7 +91,8 @@ public class UserSelfManageServices
 				List<PasswordHistory> histories = userAccountBO.getPasswordHistory(userName);
 				if (histories.size() > 0) {
 					PasswordHistory last = histories.get(histories.size() - 1);
-					if (DateUtils.isSameDay(last.getCreateDate(), new Date())) {
+					LocalDateTime oneDayLater = last.getCreateDate().plusDays(1);
+					if (oneDayLater.isAfter(LocalDateTime.now())) {
 						throw new Exception("Last password has not been used for more than one day.");
 					}
 				}
@@ -179,9 +173,8 @@ public class UserSelfManageServices
 		if (prt == null) {
 			return "token is invalid.";
 		} else {
-			Date expiryDate = prt.getExpiryDate();
-			Date now = new Date();
-			if (now.after(expiryDate)) {
+			LocalDateTime expiryDate = prt.getExpiryDate();
+			if (LocalDateTime.now().isAfter(expiryDate)) {
 				return "token is expired";
 			} else {
 				return null;

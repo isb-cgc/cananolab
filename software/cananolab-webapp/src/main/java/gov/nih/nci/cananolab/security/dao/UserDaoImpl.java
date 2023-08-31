@@ -6,6 +6,7 @@ import gov.nih.nci.cananolab.security.service.PasswordHistory;
 import gov.nih.nci.cananolab.util.StringUtils;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -286,7 +287,7 @@ public class UserDaoImpl extends JdbcDaoSupport implements UserDao
 			PasswordResetToken prt = new PasswordResetToken();
 			prt.setToken(rs.getString("TOKEN"));
 			prt.setUserName(rs.getString("USERNAME"));
-			prt.setExpiryDate(rs.getDate("EXPIRY_DATE"));
+			prt.setExpiryDate(rs.getObject("EXPIRY_DATE", LocalDateTime.class));
 
 			return prt;
 		}
@@ -330,8 +331,8 @@ public class UserDaoImpl extends JdbcDaoSupport implements UserDao
 			PasswordHistory history = new PasswordHistory();
 			history.setPassword(rs.getString("PASSWORD"));
 			history.setUserName(rs.getString("USERNAME"));
-			history.setCreateDate(rs.getDate("CREATEDATE"));
-			history.setExpiryDate(rs.getDate("EXPIRYDATE"));
+			history.setCreateDate(rs.getObject("CREATEDATE", LocalDateTime.class));
+			history.setExpiryDate(rs.getObject("EXPIRYDATE", LocalDateTime.class));
 
 			return history;
 		}

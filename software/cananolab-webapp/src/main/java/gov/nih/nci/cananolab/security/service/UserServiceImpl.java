@@ -6,6 +6,7 @@ import gov.nih.nci.cananolab.security.enums.CaNanoRoleEnum;
 import gov.nih.nci.cananolab.security.utils.SpringSecurityUtil;
 import gov.nih.nci.cananolab.util.StringUtils;
 
+import java.time.LocalDateTime;
 import java.util.*;
 
 import org.apache.commons.lang.time.DateUtils;
@@ -105,7 +106,7 @@ public class UserServiceImpl implements UserService
 		String token = prt.getToken();
 		if (prt != null && !StringUtils.isEmpty(token)) {
 			// Calculate future date when token will expire
-			Date expiryDate = DateUtils.addHours(new Date(), PasswordResetToken.EXPIRATION_HOURS);
+			LocalDateTime expiryDate = LocalDateTime.now().plusHours(PasswordResetToken.EXPIRATION_HOURS);
 			prt.setExpiryDate(expiryDate);
 			int status = userDao.insertPasswordResetToken(prt);
 		}
@@ -202,13 +203,10 @@ public class UserServiceImpl implements UserService
 		newHistory.setPassword(encodedPassword);
 		newHistory.setUserName(userName);
 
-		Calendar cal = Calendar.getInstance();
-		cal.setTime(new Date());
-		Date createDate = cal.getTime();
+		LocalDateTime createDate = LocalDateTime.now();
 		newHistory.setCreateDate(createDate);
 
-		cal.add(Calendar.DATE, PasswordHistory.EXPIRATION_DAY);
-		Date expiryDate = cal.getTime();
+		LocalDateTime expiryDate = createDate.plusDays(PasswordHistory.EXPIRATION_DAY);
 		newHistory.setExpiryDate(expiryDate);
 
 		// Make sure there are at most 6 password in history

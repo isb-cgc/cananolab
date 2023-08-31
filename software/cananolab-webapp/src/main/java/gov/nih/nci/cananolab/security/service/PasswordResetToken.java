@@ -1,7 +1,6 @@
 package gov.nih.nci.cananolab.security.service;
 
-import gov.nih.nci.cananolab.security.CananoUserDetails;
-
+import java.time.LocalDateTime;
 import java.util.Date;
 
 public class PasswordResetToken {
@@ -12,7 +11,7 @@ public class PasswordResetToken {
 
     private String username;
 
-    private Date expiryDate;
+    private LocalDateTime expiryDate;
 
     public String getToken() { return this.token; }
 
@@ -22,7 +21,7 @@ public class PasswordResetToken {
 
     public void setUserName(String username) { this.username = username; }
 
-    public Date getExpiryDate() { return this.expiryDate; }
+    public LocalDateTime getExpiryDate() { return this.expiryDate; }
 
-    public void setExpiryDate(Date expiryDate) { this.expiryDate = expiryDate; }
+    public void setExpiryDate(LocalDateTime expiryDate) { this.expiryDate = expiryDate; }
 }
