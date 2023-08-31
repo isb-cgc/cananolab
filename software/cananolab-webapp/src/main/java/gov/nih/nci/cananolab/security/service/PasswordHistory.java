@@ -1,5 +1,5 @@
 package gov.nih.nci.cananolab.security.service;
-import java.util.Date;
+import java.time.LocalDateTime;
 
 public class PasswordHistory {
     public static final int EXPIRATION_DAY = 120;
@@ -8,9 +8,9 @@ public class PasswordHistory {
 
     private String username;
 
-    private Date createDate;
+    private LocalDateTime createDate;
 
-    private Date expiryDate;
+    private LocalDateTime expiryDate;
 
     public String getPassword() { return this.password; }
 
@@ -20,11 +20,11 @@ public class PasswordHistory {
 
     public void setUserName(String username) { this.username = username; }
 
-    public Date getCreateDate() { return this.createDate; }
+    public LocalDateTime getCreateDate() { return this.createDate; }
 
-    public void setCreateDate(Date createDate) { this.createDate = createDate; }
+    public void setCreateDate(LocalDateTime createDate) { this.createDate = createDate; }
 
-    public Date getExpiryDate() { return this.expiryDate; }
+    public LocalDateTime getExpiryDate() { return this.expiryDate; }
 
-    public void setExpiryDate(Date expiryDate) { this.expiryDate = expiryDate; }
+    public void setExpiryDate(LocalDateTime expiryDate) { this.expiryDate = expiryDate; }
 }
