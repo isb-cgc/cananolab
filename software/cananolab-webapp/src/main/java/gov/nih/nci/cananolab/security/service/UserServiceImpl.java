@@ -6,8 +6,10 @@ import gov.nih.nci.cananolab.security.enums.CaNanoRoleEnum;
 import gov.nih.nci.cananolab.security.utils.SpringSecurityUtil;
 import gov.nih.nci.cananolab.util.StringUtils;
 
+import java.time.LocalDateTime;
 import java.util.*;
 
+import org.apache.commons.lang.time.DateUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -104,10 +106,7 @@ public class UserServiceImpl implements UserService
 		String token = prt.getToken();
 		if (prt != null && !StringUtils.isEmpty(token)) {
 			// Calculate future date when token will expire
-			Calendar cal = Calendar.getInstance();
-			cal.setTime(new Date());
-			cal.add(Calendar.DATE, PasswordResetToken.EXPIRATION_DAY);
-			Date expiryDate = cal.getTime();
+			LocalDateTime expiryDate = LocalDateTime.now().plusHours(PasswordResetToken.EXPIRATION_HOURS);
 			prt.setExpiryDate(expiryDate);
 			int status = userDao.insertPasswordResetToken(prt);
 		}
@@ -140,6 +139,9 @@ public class UserServiceImpl implements UserService
 
 				// Add to password history for this user
 				insertPasswordHistory(encryptedPassword, userName);
+
+				// If user account was disabled because of password expire, enable it no
+				status = userDao.enableUserAccount(userName);
 			}
 			else
 				throw new Exception("Incorrect old password.");
@@ -158,6 +160,9 @@ public class UserServiceImpl implements UserService
 
 			// Add to password history for this user
 			insertPasswordHistory(encryptedPassword, userName);
+
+			// If user account was disabled because of password expire, enable it no
+			status = userDao.enableUserAccount(userName);
 		}
 		return status;
 	}
@@ -186,6 +191,11 @@ public class UserServiceImpl implements UserService
 	}
 
 	@Override
+	public int updateLastLogin(String userName) {
+		return userDao.updateLastLogin(userName);
+	}
+
+	@Override
 	public int insertPasswordHistory(String encodedPassword, String userName)
 	{
 		PasswordHistory newHistory = new PasswordHistory();
@@ -193,13 +203,10 @@ public class UserServiceImpl implements UserService
 		newHistory.setPassword(encodedPassword);
 		newHistory.setUserName(userName);
 
-		Calendar cal = Calendar.getInstance();
-		cal.setTime(new Date());
-		Date createDate = cal.getTime();
+		LocalDateTime createDate = LocalDateTime.now();
 		newHistory.setCreateDate(createDate);
 
-		cal.add(Calendar.DATE, PasswordHistory.EXPIRATION_DAY);
-		Date expiryDate = cal.getTime();
+		LocalDateTime expiryDate = createDate.plusDays(PasswordHistory.EXPIRATION_DAY);
 		newHistory.setExpiryDate(expiryDate);
 
 		// Make sure there are at most 6 password in history

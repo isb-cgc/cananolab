@@ -131,10 +131,6 @@ export class UserResultsComponent implements OnInit {
         this.router.navigate(['/home/admin/update-user',user])
     }
 
-    navigateToResetPassword(user) {
-        this.router.navigate(['/home/admin/reset-password',user])
-    }
-
     getStringValue(val) {
         if (val) {
             return val.toString().toUpperCase()

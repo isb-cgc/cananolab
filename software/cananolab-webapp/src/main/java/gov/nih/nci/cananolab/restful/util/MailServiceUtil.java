@@ -26,11 +26,12 @@ public class MailServiceUtil {
         }
     }
 
-    public static void sendMail(final String address, final String subject, final String content) {
+    public static void sendMail(final String address, final String subject, String content) {
         tryInitialize();
 
         if (mailgunConfiguration != null) {
             try {
+                content = "Dear " + address + ",\r\n\r\n" + content + "\r\n\r\nSincerely,\r\nISB-CGC Team";
                 Mail.using(mailgunConfiguration)
                         .to(address)
                         .subject(subject)
