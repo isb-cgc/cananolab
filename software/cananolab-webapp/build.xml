@@ -229,11 +229,6 @@ L-->
 			</fileset>
 		</copy>
 
-		<!-- tag footer with release version and build tag -->
-		<property name="build_tag" value="trunk"/>
-		<propertyregex override="true" property="build_tag" input="${build.tag}"
-					   regexp="\$HeadURL\: .*/cananolab/tags/([^/]*)/.*" select="\1"/>
-
 		<!-- package WAR file -->
 		<jar destfile="${dist.dir}/caNanoLab.war" basedir="${build.dir}"/>
 	</target>
