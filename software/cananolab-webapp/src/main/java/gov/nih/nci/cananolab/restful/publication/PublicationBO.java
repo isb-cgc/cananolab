@@ -289,7 +289,7 @@ public class PublicationBO extends BaseAnnotationBO
 			errors.add(PropertyUtil.getProperty("publication", "publication.doi.invalid"));
 		}
 		String externalUrl = publicationBean.getExternalUrl();
-		if (InputValidationUtil.isUrlValid(externalUrl)){
+		if (InputValidationUtil.isUrlInvalid(externalUrl)){
 			errors.add("External URL is invalid");
 		}
 		return errors;

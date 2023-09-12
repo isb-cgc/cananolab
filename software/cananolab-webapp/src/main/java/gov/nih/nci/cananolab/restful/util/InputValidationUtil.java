@@ -38,10 +38,14 @@ public class InputValidationUtil {
 		return input.matches(reg);
 	}
 
-	public static boolean isUrlValid(String input){
+	public static boolean isUrlInvalid(String input){
 		if(input == null || input.equals(""))
 			return false;
 		String reg = "((http://|https://|ftp://)([\\S.]+))|((\\\\)(.+)(\\.)(\\w+))";
+		boolean isInvalid = !input.matches(reg);
+		if (isInvalid) {
+			System.out.println("Failed URL: >>>{}<<<".format(input));
+		}
 		return !input.matches(reg);
 	}
 
