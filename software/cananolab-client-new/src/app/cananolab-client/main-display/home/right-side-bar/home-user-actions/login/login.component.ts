@@ -90,7 +90,7 @@ export class LoginComponent implements OnInit{
 
         let get_url = Properties.API_SERVER_URL + '/' + Consts.RESET_PASSWORD_URL;
         get_url = get_url.replace(/(?<!:)\/+/g, "/");
-        get_url += '?email=' + email;
+        get_url += '?email=' + encodeURI(email);
 
         var url = this.apiService.doGet(Consts.RESET_PASSWORD_URL, 'email=' + email);
         url.subscribe(data => {

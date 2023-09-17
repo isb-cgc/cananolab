@@ -19,6 +19,7 @@ import javax.ws.rs.*;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.Response;
 import java.net.URI;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
@@ -27,6 +28,8 @@ import java.util.UUID;
 public class UserSelfManageServices
 {
 	private static final Logger logger = LogManager.getLogger(UserSelfManageServices.class);
+
+	private static final int MAX_INACTIVE_PERIOD_DAYS = 90;
 
 	@GET
 	@Path("/accounttype")
@@ -94,6 +97,28 @@ public class UserSelfManageServices
 					LocalDateTime oneDayLater = last.getCreateDate().plusDays(1);
 					if (oneDayLater.isAfter(LocalDateTime.now())) {
 						throw new Exception("Last password has not been used for more than one day.");
+					}
+				}
+
+				boolean isEnabled = userDetails.isEnabled();
+
+				if (!isEnabled) {
+					// If user account is disabled, we need to find out why
+					boolean isPasswordExpired = false;
+					if (histories.size() > 0) {
+						PasswordHistory last = histories.get(histories.size() - 1);
+						if (last.getExpiryDate().isBefore(LocalDateTime.now())) {
+							// Most recent password has expired, so account was disabled
+							isPasswordExpired = true;
+						}
+					}
+
+					LocalDateTime lastLogin = userAccountBO.getLastLogin(userName);
+					LocalDateTime inactiveAccountDate = lastLogin.plusDays(MAX_INACTIVE_PERIOD_DAYS);
+					boolean isAccountInactive = inactiveAccountDate.isBefore(LocalDateTime.now());
+
+					if (isAccountInactive || !isPasswordExpired) {
+						throw new Exception("Your account has been deactivated, please contact caNanoLab support at caNanoLab-Support@isb-cgc.org.");
 					}
 				}
 

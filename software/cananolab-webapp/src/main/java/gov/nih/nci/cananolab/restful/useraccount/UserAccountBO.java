@@ -1,5 +1,6 @@
 package gov.nih.nci.cananolab.restful.useraccount;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 import gov.nih.nci.cananolab.security.service.PasswordHistory;
@@ -113,6 +114,11 @@ public class UserAccountBO
 	public int updateLastLogin(String userName) throws NoAccessException
 	{
 		return userService.updateLastLogin(userName);
+	}
+
+	public LocalDateTime getLastLogin(String userName) throws NoAccessException
+	{
+		return userService.getLastLogin(userName);
 	}
 
 	public List<PasswordHistory> getPasswordHistory(String userName) throws NoAccessException

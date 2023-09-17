@@ -196,6 +196,12 @@ public class UserServiceImpl implements UserService
 	}
 
 	@Override
+	public LocalDateTime getLastLogin(String userName)
+	{
+		return userDao.getLastLogin(userName);
+	}
+
+	@Override
 	public int insertPasswordHistory(String encodedPassword, String userName)
 	{
 		PasswordHistory newHistory = new PasswordHistory();
