@@ -212,7 +212,7 @@ public class UserDaoImpl extends JdbcDaoSupport implements UserDao
 	public LocalDateTime getLastLogin(String username)
 	{
 		logger.debug("Fetching last login time of user: " + username);
-		return (LocalDateTime) getJdbcTemplate().queryForObject(FETCH_PASSWORD_SQL, new Object[] {username}, LocalDateTime.class);
+		return (LocalDateTime) getJdbcTemplate().queryForObject(FETCH_LAST_LOGIN, new Object[] {username}, LocalDateTime.class);
 	}
 
 	@Override

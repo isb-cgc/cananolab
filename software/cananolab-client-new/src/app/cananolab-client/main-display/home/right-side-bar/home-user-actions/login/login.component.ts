@@ -51,6 +51,7 @@ export class LoginComponent implements OnInit{
                 // ERROR
                 ( err ) => {
                     console.log(err);
+                    this.errorMessage = err;
                     this.statusDisplayService.updateUser( "guest" );
                 }
             );
