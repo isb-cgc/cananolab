@@ -1,5 +1,6 @@
 package gov.nih.nci.cananolab.security.dao;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 import gov.nih.nci.cananolab.security.CananoUserDetails;
@@ -27,6 +28,8 @@ public interface UserDao
 	int enableUserAccount(String userName);
 
 	int updateLastLogin(String userName);
+
+	LocalDateTime getLastLogin(String userName);
 
 	int resetPassword(String userName, String password);
 	
