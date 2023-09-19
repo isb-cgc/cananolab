@@ -65,19 +65,15 @@ public class LoginFailureHandler implements AuthenticationFailureHandler
 				// Check if does not have an email
 				boolean hasNoEmail = userDetails.getEmailId() == null || userDetails.getEmailId().isEmpty();
 
-				if (hasNoEmail) {
-					return "Login failed: Account has been deactivated due to lack of email.";
-				}
-
-				if (isAccountInactive) {
-					return "Login failed: Account has been deactivated due to inactivity.";
+				if (hasNoEmail || isAccountInactive) {
+					return "Login failed: Account has been deactivated due to inactivity. Please contact us at caNanoLab-Support@isb-cgc.org.";
 				}
 
 				if (isPasswordExpired) {
 					return "Login failed: Last password has expired. Please reset your password.";
 				}
 
-				return "Login failed: Account has been deactivated by admin.";
+				return "Login failed: Account has been deactivated by admin. Please contact us at caNanoLab-Support@isb-cgc.org.";
 			}
 		} catch (Exception e) {
 			return e.getMessage();
