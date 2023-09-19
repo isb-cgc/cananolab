@@ -1,5 +1,6 @@
 package gov.nih.nci.cananolab.security.service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 import gov.nih.nci.cananolab.security.CananoUserDetails;
@@ -33,4 +34,6 @@ public interface UserService
 	String checkPasswordRequirement(String password, String userName);
 
 	int updateLastLogin(String userName);
+
+	LocalDateTime getLastLogin(String userName);
 }
