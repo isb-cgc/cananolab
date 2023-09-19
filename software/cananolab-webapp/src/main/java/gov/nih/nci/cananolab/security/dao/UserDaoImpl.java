@@ -81,6 +81,8 @@ public class UserDaoImpl extends JdbcDaoSupport implements UserDao
 
 	private static final String UPDATE_LAST_LOGIN = "UPDATE users SET last_login = ? WHERE username = ?";
 
+	private static final String FETCH_LAST_LOGIN = "select last_login from users where username = ?";
+
 	@Override
 	public CananoUserDetails getUserByName(String username)
 	{
@@ -205,7 +207,14 @@ public class UserDaoImpl extends JdbcDaoSupport implements UserDao
 		Object[] params = new Object[] { loginDate, userName };
 		return getJdbcTemplate().update(UPDATE_LAST_LOGIN, params);
 	}
-	
+
+	@Override
+	public LocalDateTime getLastLogin(String username)
+	{
+		logger.debug("Fetching last login time of user: " + username);
+		return (LocalDateTime) getJdbcTemplate().queryForObject(FETCH_LAST_LOGIN, new Object[] {username}, LocalDateTime.class);
+	}
+
 	@Override
 	public int resetPassword(String userName, String password)
 	{
