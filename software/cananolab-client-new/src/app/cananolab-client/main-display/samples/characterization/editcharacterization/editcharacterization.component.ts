@@ -29,7 +29,7 @@ export class EditcharacterizationComponent implements OnInit {
     data;
     dataTrailer;
     errors = {};
-    findingIndex;
+    findingIndex = null;
     fileIndex;
     importingCSV = false;
     instrument;
@@ -924,12 +924,13 @@ export class EditcharacterizationComponent implements OnInit {
             this.fileIndex = null;
 
             this.currentSavingFindingIndex = null;
+            this.findingIndex = null;
         },
         error => {
             this.errors = error;
             this.currentSavingFindingIndex = null;
+            this.findingIndex = null;
         })
-        this.findingIndex = null;
     };
 
     saveInstrument() {
@@ -1018,6 +1019,11 @@ export class EditcharacterizationComponent implements OnInit {
     }
 
     submitCharacterization() {
+        if (this.findingIndex != null) {
+            alert("You are editing a finding. Please save your change or cancel the edit to continue.")
+            return;
+        }
+
         this.data.characterizationDate = new Date(this.data.characterizationDate + ' 00:00');
         let url = this.apiService.doPost(Consts.QUERY_CHARACTERIZATION_SAVE, this.data);
         this.isSubmitting = true;
