@@ -601,6 +601,11 @@ public class SampleBO extends BaseAnnotationBO {
 				return this.wrapErrorInEditBean("Current sample id doesn't match sample id in session");
 		}
 
+		logger.debug("========== Check if user has write access to sample");
+		if (!sampleService.checkIfCurrentUserHasWriteAccess(sample)) {
+			throw new NoAccessException();
+		}
+
 		logger.debug("========== Resolving Input");
 		PointOfContactBean thePOC = resolveThePOCToSaveFromInput(sample, simplePOC, SpringSecurityUtil.getLoggedInUserName());
 		Long oldPOCId = thePOC.getDomain().getId();
