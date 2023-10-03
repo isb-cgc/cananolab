@@ -15,6 +15,7 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.Response;
+import javax.ws.rs.core.MediaType;
 
 import gov.nih.nci.cananolab.exception.ApplicationProviderException;
 import gov.nih.nci.cananolab.exception.NoAccessException;
@@ -72,7 +73,7 @@ public class PublicationServices {
 
 	@GET
 	@Path("/download")
-	@Produces({"application/pdf", "application/json"})
+	@Produces({"application/pdf", "application/json", "application/octet-stream"})
 	public Response download(@Context HttpServletRequest httpRequest, @Context HttpServletResponse httpResponse,
 	                         @DefaultValue("") @QueryParam("publicationId") String pubId,
 	                         @DefaultValue("") @QueryParam("fileId") String fileId)
@@ -87,7 +88,8 @@ public class PublicationServices {
 		} catch (Exception e) {
 			logger.error(e.getMessage());
 			e.printStackTrace();
-			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(CommonUtil.wrapErrorMessageInList("Error while downloading the file" + e.getMessage())).build();
+			String msgAsJson = "\"" + "Error while downloading the file " + e.getMessage() + "\"";
+			return (Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(msgAsJson).type(MediaType.APPLICATION_JSON).build());
 		}
 	}
 

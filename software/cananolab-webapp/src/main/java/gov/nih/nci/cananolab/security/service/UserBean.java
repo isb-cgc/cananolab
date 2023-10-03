@@ -15,9 +15,7 @@ import gov.nih.nci.cananolab.util.StringUtils;
 
 import java.util.SortedSet;
 import java.util.TreeSet;
-import org.codehaus.jackson.annotate.JsonIgnore;
-
-//import org.codehaus.jackson.annotate.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 /**
  * This class represents properties of a user object to be shown in the view

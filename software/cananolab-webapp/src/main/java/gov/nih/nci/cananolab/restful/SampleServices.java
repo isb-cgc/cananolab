@@ -60,6 +60,7 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.Response;
+import javax.ws.rs.core.MediaType;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -237,7 +238,7 @@ public class SampleServices {
 	
 	@GET
 	@Path("/download")
-	@Produces({"image/png", "application/json"})
+	@Produces({"image/png", "application/json", "application/octet-stream"})
 	 public Response download(@Context HttpServletRequest httpRequest, @Context HttpServletResponse httpResponse,
                 @DefaultValue("") @QueryParam("sampleId") String sampleId,
 	    		@DefaultValue("") @QueryParam("fileId") String fileId){
@@ -249,11 +250,11 @@ public class SampleServices {
 			return Response.ok(result).build();
 		} 
 		
-		catch (Exception ioe) {
-			logger.error(ioe.getMessage());
-			ioe.printStackTrace();
-			return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
-					.entity(CommonUtil.wrapErrorMessageInList(ioe.getMessage())).build();
+		catch (Exception e) {
+			logger.error(e.getMessage());
+			e.printStackTrace();
+			String msgAsJson = "\"" + "Error while downloading the file " + e.getMessage() + "\"";
+			return (Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(msgAsJson).type(MediaType.APPLICATION_JSON).build());
 		}
 	}
 	

@@ -135,5 +135,6 @@ public interface SampleService extends BaseService {
 	List<String> findSampleNamesBy(String nameStr) throws Exception;
 	
 	void setUpdateDeleteFlags(SampleBean sample);
-	
+
+	boolean checkIfCurrentUserHasWriteAccess(SampleBean sampleBean);
 }

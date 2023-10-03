@@ -146,7 +146,7 @@ public abstract class BaseAnnotationBO extends AbstractDispatchBO
 			if (blob.exists()) {
 				System.out.println("GCPStorage found blob for requested file, downloading...");
 
-				ExportUtils.prepareReponseForImage(response, fileBean.getDomainFile().getUri());
+				ExportUtils.prepareResponseForImage(response, fileBean.getDomainFile().getUri());
 
 				OutputStream out = response.getOutputStream();
 				blob.downloadTo(out);
@@ -211,7 +211,7 @@ public abstract class BaseAnnotationBO extends AbstractDispatchBO
 					|| fileBean.getExternalUrl().trim().length() == 0) {
 				msgs.add("External URL is required.");
 			}else{
-				if(InputValidationUtil.isUrlValid(fileBean.getExternalUrl())){
+				if(InputValidationUtil.isUrlInvalid(fileBean.getExternalUrl())){
 					msgs.add("External URL is invalid");
 				}
 			}

@@ -289,7 +289,7 @@ public class PublicationBO extends BaseAnnotationBO
 			errors.add(PropertyUtil.getProperty("publication", "publication.doi.invalid"));
 		}
 		String externalUrl = publicationBean.getExternalUrl();
-		if (InputValidationUtil.isUrlValid(externalUrl)){
+		if (InputValidationUtil.isUrlInvalid(externalUrl)){
 			errors.add("External URL is invalid");
 		}
 		return errors;
@@ -875,12 +875,13 @@ public class PublicationBO extends BaseAnnotationBO
 	{
 		System.out.println("Inside download from publication BO");
 
-		if (pubId != "") {
+		if (!pubId.equals("")) {
 			// findPublicationById throws error if user is not authorized for the sample
 			publicationService.findPublicationById(pubId, true);
+			return downloadFile(publicationService, fileId, request, response);
+		} else {
+			throw new Exception("Cannot download publication because pubId is empty");
 		}
-
-		return downloadFile(publicationService, fileId, request, response);
 	}
 
 	public String[] getMatchedSampleNames(String searchStr, HttpServletRequest request)

@@ -5,6 +5,7 @@ const routes: Routes = [
     { path: 'home', loadChildren: () => import('./cananolab-client/main-display/home/home.module').then(m => m.HomeModule) },
     { path: 'home/logout', loadChildren: () => import('./cananolab-client/main-display/logout/logout.module').then(m => m.LogoutModule) },
     { path: 'home/login', loadChildren: () => import('./cananolab-client/main-display/home/right-side-bar/home-user-actions/login/login.module').then(m => m.LoginModule) },
+    { path: 'home/change-password', loadChildren: () => import('./cananolab-client/main-display/change-password/change-password.module').then(m => m.ChangePasswordModule) },
 
     { path: 'home/samples', loadChildren: () => import('./cananolab-client/main-display/samples/samples.module').then(m => m.SamplesModule) },
     { path: 'home/samples/sample-search', loadChildren: () => import('./cananolab-client/main-display/samples/general-info/sample-search/sample-search.module').then(m => m.SampleSearchModule) },

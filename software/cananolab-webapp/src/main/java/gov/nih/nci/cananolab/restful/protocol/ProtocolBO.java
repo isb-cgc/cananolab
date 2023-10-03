@@ -200,7 +200,7 @@ public class ProtocolBO extends BaseAnnotationBO
 		}
 		
 		String externalUrl = protocolBean.getFileBean().getExternalUrl();
-		if(InputValidationUtil.isUrlValid(externalUrl)){
+		if(InputValidationUtil.isUrlInvalid(externalUrl)){
 			errors.add("External URL is invalid");
 		}
 		
@@ -407,12 +407,13 @@ public class ProtocolBO extends BaseAnnotationBO
 
 	public String download(String protocolId, String fileId, HttpServletRequest request, HttpServletResponse response) throws Exception
 	{
-		if (protocolId != "") {
+		if (!protocolId.equals("")) {
 			// findProtocolById throws error if user is not authorized for the sample
 			protocolService.findProtocolById(protocolId);
+			return downloadFile(protocolService, fileId, request, response);
+		} else {
+			throw new Exception("Cannot download protocol because protocolId is empty");
 		}
-
-		return downloadFile(protocolService, fileId, request, response);
 	}
 
 	public void saveFile(InputStream fileInputStream, String fileName, HttpServletRequest request)
