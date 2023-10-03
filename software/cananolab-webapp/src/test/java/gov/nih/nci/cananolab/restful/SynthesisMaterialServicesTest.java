@@ -27,7 +27,7 @@ import java.util.Map;
 import javax.mail.Multipart;
 import javax.ws.rs.core.MediaType;
 import net.sf.ehcache.search.parser.MValue;
-import org.codehaus.jackson.map.ObjectMapper;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.json.JSONObject;
 import org.junit.After;
 import org.junit.Before;

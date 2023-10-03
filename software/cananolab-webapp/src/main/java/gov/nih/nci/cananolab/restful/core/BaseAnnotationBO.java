@@ -211,7 +211,7 @@ public abstract class BaseAnnotationBO extends AbstractDispatchBO
 					|| fileBean.getExternalUrl().trim().length() == 0) {
 				msgs.add("External URL is required.");
 			}else{
-				if(InputValidationUtil.isUrlValid(fileBean.getExternalUrl())){
+				if(InputValidationUtil.isUrlInvalid(fileBean.getExternalUrl())){
 					msgs.add("External URL is invalid");
 				}
 			}
