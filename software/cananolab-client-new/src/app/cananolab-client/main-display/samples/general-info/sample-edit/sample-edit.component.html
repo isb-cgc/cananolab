@@ -67,13 +67,16 @@
                             </td>
                             <td [innerHTML]="contact.contactPerson"></td>
                             <td>
-                                <span>{{contact.organization.name}}</span>
-                                <div *ngIf="contact.address.line1">{{contact.address.line1}}</div>
-                                <div *ngIf="contact.address.line2">{{contact.address.line2}}</div>
-                                <span *ngIf="contact.address.city">{{contact.address.city}}, </span>
-                                <span *ngIf="contact.address.stateProvince">{{contact.address.stateProvince}} </span>
-                                <span *ngIf="contact.address.zip">{{contact.address.zip}}</span>
-                                <span *ngIf="contact.address.country"><br>{{contact.address.country}}</span>
+                                <span [innerHTML]="contact.organization.name"></span>
+                                <div *ngIf="contact.address.line1" [innerHTML]="contact.address.line1"></div>
+                                <div *ngIf="contact.address.line2" [innerHTML]="contact.address.line2"></div>
+                                <span *ngIf="contact.address.city" [innerHTML]="contact.address.city"></span>
+                                <span *ngIf="contact.address.city">, </span>
+                                <span *ngIf="contact.address.stateProvince" [innerHTML]="contact.address.stateProvince"></span>
+                                <span *ngIf="contact.address.stateProvince">&nbsp;</span>
+                                <span *ngIf="contact.address.zip" [innerHTML]="contact.address.zip"></span>
+                                <span *ngIf="contact.address.country"><br></span>
+                                <span *ngIf="contact.address.country" [innerHTML]="contact.address.country"></span>
                             </td>
                             <td [innerHTML]="contact.role"></td>
                             <td>
