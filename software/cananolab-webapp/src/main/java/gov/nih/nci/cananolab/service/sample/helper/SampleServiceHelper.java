@@ -677,13 +677,28 @@ public class SampleServiceHelper
         try{
             Long id = new Long(sampleId);
             return findSampleById(id);
-        }
-        catch (Exception e) {
-            logger.error("sampleId is not integer: "+ sampleId);
-            logger.error("Exception: " + e.getMessage());
-            throw new SampleException("sampleId is not an integer", e);
-        }
-    	}
+        } catch (NumberFormatException nfex) {
+			logger.error("sampleId is not integer: "+ sampleId);
+			logger.error("Exception: " + nfex.getMessage());
+			throw new SampleException("sampleId " + sampleId + " is not an integer", nfex);
+		} catch (ApplicationException aex) {
+			logger.error("Application Exception: "+ sampleId);
+			logger.error("Exception: " + aex.getMessage());
+			throw new SampleException("sampleId " + sampleId + " generates Application Exception", aex);
+		} catch (NoAccessException naex) {
+			logger.error("No Access: "+ sampleId);
+			logger.error("Exception: " + naex.getMessage());
+			throw new SampleException("sampleId " + sampleId + " generates No Access Exception", naex);
+		} catch (ApplicationProviderException apex) {
+            logger.error("Application Provider Exception: "+ sampleId);
+            logger.error("Exception: " + apex.getMessage());
+			throw new SampleException("sampleId " + sampleId + " generates Application Provider Exception", apex);
+		} catch (NullPointerException npex) {
+			logger.error("Null Pointer Exception: "+ sampleId);
+			logger.error("Exception: " + npex.getMessage());
+			throw new SampleException("sampleId " + sampleId + " generates Null Pointer Exception", npex);
+		}
+	}
 
 private TransactionInsertion<Sample> getSampleTransactionInsertion() {
 
@@ -1447,7 +1462,7 @@ return true;
 return myTransactionInsertion;
 }
 
-	public Sample findSampleById(Long sampleId) throws Exception {
+	public Sample findSampleById(Long sampleId) throws ApplicationException, NoAccessException, ApplicationProviderException {
 		if (!springSecurityAclService.currentUserHasReadPermission(sampleId, SecureClassesEnum.SAMPLE.getClazz()) &&
 			!springSecurityAclService.currentUserHasWritePermission(sampleId, SecureClassesEnum.SAMPLE.getClazz())) {
 			throw new NoAccessException("User has no access to sampleId " + sampleId);

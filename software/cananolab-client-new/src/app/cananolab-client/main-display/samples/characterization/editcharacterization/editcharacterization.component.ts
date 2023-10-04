@@ -29,7 +29,7 @@ export class EditcharacterizationComponent implements OnInit {
     data;
     dataTrailer;
     errors = {};
-    findingIndex;
+    findingIndex = null;
     fileIndex;
     importingCSV = false;
     instrument;
@@ -621,6 +621,17 @@ export class EditcharacterizationComponent implements OnInit {
         return firstDataRow;
     }
 
+    validateAllColumnHeaders() {
+        var headerLength = this.currentFinding.columnHeaders.length;
+        for (let index = 0; index < headerLength; ++index) {
+            var columnHeader = this.currentFinding.columnHeaders[index];
+            if (!this.validateColumnHeader(columnHeader, index, false)) {
+                return false;
+            }
+        }
+        return true;
+    }
+
     validateColumnHeader(columnHeader, index, isFromCsv) {
         var columnType = columnHeader['columnType'];
         var columnName = columnHeader['columnName'];
@@ -628,7 +639,7 @@ export class EditcharacterizationComponent implements OnInit {
         // Every column must have column name and column type
         if (columnType == null || columnName == null || columnType == "" || columnName == "") {
             this.findingTableError = `Column ${index + 1} does not have column_type or column_name`;
-            return;
+            return false;
         }
 
         var valueType = columnHeader['valueType'];
@@ -646,7 +657,7 @@ export class EditcharacterizationComponent implements OnInit {
                     }
                 } else if (!this.checkIncludesCaseInsensitive(this.existingDatumNames, columnName)) {
                     this.findingTableError = `Datum column name ${columnName} does not exist, write the column as "(other):${columnName}" to add it to the system (parentheses are required)`;
-                    return;
+                    return false;
                 }
 
             }
@@ -659,7 +670,7 @@ export class EditcharacterizationComponent implements OnInit {
                     }
                 } else if (!this.checkIncludesCaseInsensitive(this.existingConditionNames, columnName)) {
                     this.findingTableError = `Condition column name ${columnName} does not exist, write the column as "(other):${columnName}" to add it to the system (parentheses are required)`;
-                    return;
+                    return false;
                 }
             }
 
@@ -672,7 +683,7 @@ export class EditcharacterizationComponent implements OnInit {
                     }
                 } else if (!this.checkIncludesCaseInsensitive(this.data.datumConditionValueTypeLookup, valueType)) {
                     this.findingTableError = `Value type ${valueType} does not exist, write the column as "(other):${valueType}" to add it to the system (parentheses are required)`;
-                    return;
+                    return false;
                 }
             }
         }
@@ -685,9 +696,11 @@ export class EditcharacterizationComponent implements OnInit {
         let combination = columnName + "," + valueType;
         if (this.csvHeaderNameTypeMap.has(combination) && this.csvHeaderNameTypeMap.get(combination) != index) {
             this.findingTableError = `Column ${index + 1} column name and value type combination (${combination}) is not unique`;
-            return;
+            return false;
         }
+
         this.csvHeaderNameTypeMap.set(combination, index);
+        return true;
     }
 
     checkIncludesCaseInsensitive(arr, val) {
@@ -903,6 +916,10 @@ export class EditcharacterizationComponent implements OnInit {
     }
 
     saveFinding() {
+        if (!this.validateAllColumnHeaders()) {
+            return;
+        }
+
         this.currentFinding.dirty = 1;
         if (this.findingIndex == -1) {
             this.data.finding.push(this.currentFinding);
@@ -924,12 +941,13 @@ export class EditcharacterizationComponent implements OnInit {
             this.fileIndex = null;
 
             this.currentSavingFindingIndex = null;
+            this.findingIndex = null;
         },
         error => {
             this.errors = error;
             this.currentSavingFindingIndex = null;
+            this.findingIndex = null;
         })
-        this.findingIndex = null;
     };
 
     saveInstrument() {
@@ -1018,6 +1036,11 @@ export class EditcharacterizationComponent implements OnInit {
     }
 
     submitCharacterization() {
+        if (this.findingIndex != null) {
+            alert("You are editing a finding. Please save your change or cancel the edit to continue.")
+            return;
+        }
+
         this.data.characterizationDate = new Date(this.data.characterizationDate + ' 00:00');
         let url = this.apiService.doPost(Consts.QUERY_CHARACTERIZATION_SAVE, this.data);
         this.isSubmitting = true;

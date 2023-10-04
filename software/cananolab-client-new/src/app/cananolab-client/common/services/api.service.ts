@@ -328,12 +328,11 @@ export class ApiService {
                         },
                         // ERROR
                         (err) => {
-                            alert('Login error[' + err.status + ']: ' +
-                                '\n' + err.message);
+                            // alert(err.error);
                             this.currentlyAuthenticatingUser = false;
                             Properties.LOGGED_IN = false;
                             Properties.logged_in = false;
-                            reject(err.message);
+                            reject(err.error);
                         }
                     );
                 });

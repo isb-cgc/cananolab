@@ -21,16 +21,17 @@ FROM marketplace.gcr.io/google/debian10
 RUN apt-get update
 ENV DEBIAN_FRONTEND=noninteractive
 RUN apt-get install -y software-properties-common
-RUN apt-get install -y wget gnupg2 procps
+RUN apt-get install -y wget gnupg2 procps apt-transport-https
 
 # fetch the updated package metadata
 RUN apt-get update
 
 # Install OpenJDK8
-RUN wget -qO - https://adoptopenjdk.jfrog.io/adoptopenjdk/api/gpg/key/public | apt-key add -
-RUN add-apt-repository --yes https://adoptopenjdk.jfrog.io/adoptopenjdk/deb/
-RUN apt-get update && apt-get -y install adoptopenjdk-8-hotspot
-ENV JAVA_HOME=/usr/lib/jvm/adoptopenjdk-8-hotspot-amd64/jre/
+RUN wget -O - https://packages.adoptium.net/artifactory/api/gpg/key/public | apt-key add -
+RUN echo "deb https://packages.adoptium.net/artifactory/deb $(awk -F= '/^VERSION_CODENAME/{print$2}' /etc/os-release) main" | tee /etc/apt/sources.list.d/adoptium.list
+RUN apt-get update && apt-get -y install temurin-8-jdk
+RUN ls -l /usr/lib/jvm/
+ENV JAVA_HOME=/usr/lib/jvm/temurin-8-jdk-amd64/jre/
 RUN echo "Java Version:"
 RUN java -version
 
