@@ -359,6 +359,8 @@ public class SampleEditGeneralBean {
 		if (samplePOC != null && samplePOC.getId() > 0) {
 			SimplePointOfContactBean poc = new SimplePointOfContactBean();
 			transferPointOfContactData(samplePOC, poc, sampleId);
+			System.out.println("transfer" + samplePOC.getId());
+			Thread.dumpStack();
 			poc.setPrimaryContact(true);
 			pointOfContacts.add(poc);
 		}

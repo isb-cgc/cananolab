@@ -410,8 +410,9 @@ public class ProtocolBO extends BaseAnnotationBO
 		if (protocolId != "") {
 			// findProtocolById throws error if user is not authorized for the sample
 			protocolService.findProtocolById(protocolId);
+		} else {
+			System.out.println("No ID provided " + protocolId);
 		}
-
 		return downloadFile(protocolService, fileId, request, response);
 	}
 

@@ -301,6 +301,7 @@ public class SampleServiceHelper
 					CriteriaSpecification.LEFT_JOIN);
 		}
 		// characterization
+		System.out.println("characterization class names length " + characterizationClassNames.length);
 		if (characterizationClassNames != null
 				&& characterizationClassNames.length > 0
 				|| otherCharacterizationTypes != null
@@ -308,14 +309,17 @@ public class SampleServiceHelper
 			Disjunction disjunction = Restrictions.disjunction();
 			if (characterizationClassNames != null
 					&& characterizationClassNames.length > 0) {
+				System.out.println("characterization class names " + characterizationClassNames[0]);
 				Criterion charCrit = Restrictions.in("chara.class",
 						(Object[])characterizationClassNames);
 				disjunction.add(charCrit);
 			}
+			System.out.println("Other characterization types length " + otherCharacterizationTypes.length);
 			if (otherCharacterizationTypes != null
 					&& otherCharacterizationTypes.length > 0) {
 				Criterion otherCharCrit1 = Restrictions.eq("chara.class",
 						"OtherCharacterization");
+				System.out.println("Other characterization types 0 " + otherCharacterizationTypes[0]);
 				Criterion otherCharCrit2 = Restrictions.in("chara.name",
 						(Object[])otherCharacterizationTypes);
 				Criterion otherCharCrit = Restrictions.and(otherCharCrit1,
