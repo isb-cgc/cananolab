@@ -62,22 +62,37 @@ public class LoginFailureHandler implements AuthenticationFailureHandler
 						isPasswordExpired = true;
 					}
 					System.out.println("history expiry " + last.getExpiryDate());
+				} else {
+					//
+					// If we have no history of passwords, the account predates
+					// the new system and is expired by default
+					//
+					isPasswordExpired = true;
 				}
 
 				// Check if inactive for too long
 				LocalDateTime lastLogin = userAccountBO.getLastLogin(userName);
+                //
+                // Inactive accounts that predate last login tracking will
+                // have no lastLogin value. This can be inferred to be
+                // inactive.
+                //
+
 				System.out.println("last login " + lastLogin);
-				LocalDateTime inactiveAccountDate = lastLogin.plusDays(UserSelfManageServices.MAX_INACTIVE_PERIOD_DAYS);
-				System.out.println("inactiveAccountDate " + inactiveAccountDate);
-				boolean isAccountInactive = inactiveAccountDate.isBefore(LocalDateTime.now());
-				System.out.println("isAccountInactive " + isAccountInactive);
+                boolean isAccountInactive = true;
+                if (lastLogin != null) {
+                    LocalDateTime inactiveAccountDate = lastLogin.plusDays(UserSelfManageServices.MAX_INACTIVE_PERIOD_DAYS);
+                    System.out.println("inactiveAccountDate " + inactiveAccountDate);
+                    isAccountInactive = inactiveAccountDate.isBefore(LocalDateTime.now());
+                    System.out.println("isAccountInactive " + isAccountInactive);
+                }
 
 				// Check if does not have an email
 				boolean hasNoEmail = userDetails.getEmailId() == null || userDetails.getEmailId().isEmpty();
 				System.out.println("hasNoEmail " + hasNoEmail);
 
 				if (hasNoEmail || isAccountInactive) {
-					return "Login failed: Account has been deactivated due to inactivity. Please contact us at caNanoLab-Support@isb-cgc.org.";
+					return "Login failed: Account has been deactivated due to inactivity. Please contact caNanoLab-Support@isb-cgc.org.";
 				}
 
 				System.out.println("isPasswordExpired " + isPasswordExpired);
@@ -85,12 +100,15 @@ public class LoginFailureHandler implements AuthenticationFailureHandler
 					return "Login failed: Last password has expired. Please reset your password.";
 				}
 
-				return "Login failed: Account has been deactivated by admin. Please contact us at caNanoLab-Support@isb-cgc.org.";
+				return "Login failed: Account has been deactivated by admin. Please contact caNanoLab-Support@isb-cgc.org.";
 			}
 		} catch (Exception e) {
+			// Do NOT send the exception message to the user. There might not even be
+			// an exception message.
 			System.out.println("Exception caught " + e);
-			System.out.println("e message " + e.getMessage());
-			return e.getMessage();
+			String message = e.getMessage();
+			System.out.println("Exception message " + message);
+			return ("Login failed with unexpected error: Please contact caNanoLab-Support@isb-cgc.org.");
 		}
 	}
 }
