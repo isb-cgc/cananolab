@@ -269,7 +269,7 @@ public class PublicationServices {
 		// latter case, you can attach a sample (theoretically, multiple samples, but that appears
 		// to be broken) when it is created.
 		//
-
+		System.out.println("in submitPublication");
 		try {
 			PublicationBO pubBO = (PublicationBO) SpringApplicationContext.getBean(httpRequest, "publicationBO");
 
