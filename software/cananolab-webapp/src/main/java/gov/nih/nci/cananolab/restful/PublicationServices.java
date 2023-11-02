@@ -262,6 +262,14 @@ public class PublicationServices {
 	@Produces ("application/json")
 	public Response submitPublication(@Context HttpServletRequest httpRequest, SimpleSubmitPublicationBean form)
 	{
+
+		//
+		// WJRL 11/1/23: It appears this routine is called both to add a publication off of
+		// a sample, and to create a publication from the publications operations page. In the
+		// latter case, you can attach a sample (theoretically, multiple samples, but that appears
+		// to be broken) when it is created.
+		//
+
 		try {
 			PublicationBO pubBO = (PublicationBO) SpringApplicationContext.getBean(httpRequest, "publicationBO");
 
