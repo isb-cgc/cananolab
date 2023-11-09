@@ -125,7 +125,7 @@ public class PublicationBO extends BaseAnnotationBO
 		return msgs;
 	}
 
-	public List<String> savePublication(HttpServletRequest request, PublicationBean publicationBean) throws Exception 
+	public List<String> savePublication(HttpServletRequest request, PublicationBean publicationBean) throws Exception
 	{
 		System.out.println("In save publication ");
 		List<String> msgs = new ArrayList<String>();
@@ -148,6 +148,29 @@ public class PublicationBO extends BaseAnnotationBO
 			msgs.add(PropertyUtil.getProperty("publication", "error.submitPublication.invalidSample"));
 			//	return false;
 			return msgs;
+		}
+
+		// Check if user has write access to the samples need associate
+		if (!StringUtils.isEmpty(sampleId)) {
+			SampleBean sampleBean = sampleService.findSampleById(sampleId, true);
+			if (sampleBean != null) {
+				if (!sampleService.checkIfCurrentUserHasWriteAccess(sampleBean)) {
+					logger.error("Throwing no access: cannot write to sample");
+					throw new Exception("You don't have write access to this sample");
+				}
+			}
+		}
+
+		for (String sampleName : publicationBean.getSampleNames()) {
+			if (!StringUtils.isEmpty(sampleName)) {
+				SampleBean sampleBean = sampleService.findSampleByName(sampleName);
+				if (sampleBean != null) {
+					if (!sampleService.checkIfCurrentUserHasWriteAccess(sampleBean)) {
+						logger.error("Throwing no access: cannot write to sample");
+						throw new Exception("You don't have write access to this sample");
+					}
+				}
+			}
 		}
 
 		/**
