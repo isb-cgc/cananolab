@@ -30,30 +30,30 @@
     "bootstrap": "^4.6.2",
     "clone": "^1.0.4",
     "ngx-csv-parser": "1.2.2",
-    "rxjs": "~6.6.0",
+    "rxjs": "^6.6.0",
     "tslib": "^2.0.0",
-    "zone.js": "~0.11.4"
+    "zone.js": "^0.11.4"
   },
   "devDependencies": {
     "@angular-devkit/build-angular": "^15.2.6",
     "@angular/cli": "^15.2.6",
     "@angular/compiler-cli": "^15.2.8",
-    "@types/jasmine": "~3.6.0",
+    "@types/jasmine": "^3.6.0",
     "@types/node": "^12.11.1",
     "clone": "^1.0.4",
     "codelyzer": "^6.0.0",
-    "jasmine-core": "~3.8.0",
-    "jasmine-spec-reporter": "~5.0.0",
-    "karma": "~6.4.1",
-    "karma-chrome-launcher": "~3.1.0",
-    "karma-coverage": "~2.0.3",
-    "karma-jasmine": "~4.0.0",
+    "jasmine-core": "^3.8.0",
+    "jasmine-spec-reporter": "^5.0.0",
+    "karma": "^6.4.1",
+    "karma-chrome-launcher": "^3.1.0",
+    "karma-coverage": "^2.0.3",
+    "karma-jasmine": "^4.0.0",
     "karma-jasmine-html-reporter": "^1.5.0",
-    "protractor": "~7.0.0",
+    "protractor": "^7.0.0",
     "stylelint": "^13.12.0",
     "stylelint-config-standard": "^21.0.0",
-    "ts-node": "~8.3.0",
-    "tslint": "~6.1.0",
-    "typescript": "~4.9.5"
+    "ts-node": "^8.3.0",
+    "tslint": "^6.1.0",
+    "typescript": "^4.9.5"
   }
 }
