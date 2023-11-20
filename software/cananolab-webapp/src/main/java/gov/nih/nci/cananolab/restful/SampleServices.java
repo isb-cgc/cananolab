@@ -6,6 +6,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonParser;
 import com.google.gson.JsonSyntaxException;
+import gov.nih.nci.cananolab.domain.particle.Sample;
 import gov.nih.nci.cananolab.dto.common.DataReviewStatusBean;
 import gov.nih.nci.cananolab.dto.common.ProtocolBean;
 import gov.nih.nci.cananolab.dto.common.PublicationBean;
@@ -14,6 +15,7 @@ import gov.nih.nci.cananolab.dto.particle.AdvancedSampleSearchBean;
 import gov.nih.nci.cananolab.dto.particle.characterization.CharacterizationSummaryViewBean;
 import gov.nih.nci.cananolab.dto.particle.composition.CompositionBean;
 import gov.nih.nci.cananolab.dto.particle.synthesis.SynthesisBean;
+import gov.nih.nci.cananolab.exception.NoAccessException;
 import gov.nih.nci.cananolab.restful.bean.LabelValueBean;
 import gov.nih.nci.cananolab.restful.publication.PublicationBO;
 import gov.nih.nci.cananolab.restful.publication.PublicationManager;
@@ -36,6 +38,7 @@ import gov.nih.nci.cananolab.restful.view.SimpleSynthesisBean;
 import gov.nih.nci.cananolab.restful.view.SimpleSynthesisExportBean;
 import gov.nih.nci.cananolab.restful.view.edit.SampleEditGeneralBean;
 import gov.nih.nci.cananolab.restful.view.edit.SimplePointOfContactBean;
+import gov.nih.nci.cananolab.security.enums.SecureClassesEnum;
 import gov.nih.nci.cananolab.security.utils.SpringSecurityUtil;
 import gov.nih.nci.cananolab.security.CananoUserDetails;
 import gov.nih.nci.cananolab.service.protocol.ProtocolService;
@@ -45,6 +48,7 @@ import gov.nih.nci.cananolab.ui.form.SearchSampleForm;
 import gov.nih.nci.cananolab.ui.form.SynthesisForm;
 import gov.nih.nci.cananolab.util.Constants;
 import java.io.PrintWriter;
+import java.net.URI;
 import java.util.List;
 import java.util.Map;
 import javax.json.Json;
@@ -297,13 +301,18 @@ public class SampleServices {
 		boolean isCurator = userDetails.isCurator();
 
 		try {
+			if (!sampleBO.isSampleEditableByCurrentUser(httpRequest, sampleId)) {
+				String baseUrl = "https://" + URI.create(httpRequest.getRequestURL().toString()).getHost();
+				String redirectUri = baseUrl + "/samples/view-sample/" + sampleId;
+				return Response.seeOther(new URI(redirectUri)).build();
+			}
+
 			SampleEditGeneralBean sampleBean = sampleBO.summaryEdit(sampleId,httpRequest);
 			sampleBean.setIsCuratorEditing(isCurator);
 			return (sampleBean.getErrors().size() == 0) ?
 					Response.ok(sampleBean).build() :
 						Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(sampleBean.getErrors()).build();
-		} 
-
+		}
 		catch (Exception ioe) {
 			logger.error(ioe.getMessage());
 			ioe.printStackTrace();
