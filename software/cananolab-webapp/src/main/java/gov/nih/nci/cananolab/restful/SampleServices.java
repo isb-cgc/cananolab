@@ -304,7 +304,7 @@ public class SampleServices {
 			if (!sampleBO.isSampleEditableByCurrentUser(httpRequest, sampleId)) {
 				String baseUrl = "https://" + URI.create(httpRequest.getRequestURL().toString()).getHost();
 				String redirectUri = baseUrl + "/samples/view-sample/" + sampleId;
-				return Response.seeOther(new URI(redirectUri)).build();
+				return Response.temporaryRedirect(new URI(redirectUri)).build();
 			}
 
 			SampleEditGeneralBean sampleBean = sampleBO.summaryEdit(sampleId,httpRequest);
