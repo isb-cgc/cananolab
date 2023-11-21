@@ -303,7 +303,7 @@ public class SampleServices {
 		try {
 			if (!sampleBO.isSampleEditableByCurrentUser(httpRequest, sampleId)) {
 				String baseUrl = "https://" + URI.create(httpRequest.getRequestURL().toString()).getHost();
-				String redirectUri = baseUrl + "/samples/view-sample/" + sampleId;
+				String redirectUri = baseUrl + "/home/samples/view-sample/" + sampleId;
 				return Response.temporaryRedirect(new URI(redirectUri)).build();
 			}
 
