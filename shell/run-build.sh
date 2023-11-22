@@ -73,7 +73,7 @@ if [ -n "$CI" ]; then
   echo "[STATUS] Building Angular front end"
   npm i
   # Install Angular CLI globally
-  npm install -g @angular/cli@latest
+  npm install -g @angular/cli@16.2.10
   ng build --base-href / --output-path ./build/
 
   cp -av ./build/. ${HOME}/software/cananolab-webapp/web/
