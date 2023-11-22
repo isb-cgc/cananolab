@@ -6,7 +6,7 @@
 </canano-main-display-heading>
 <div class="mainSection">
     <div class="error" *ngIf="errors['error']">
-        {{errors['message']}}
+        {{errors['error']}}
     </div>
     <canano-loader [loading]="loading" [message]="loadingMessage"></canano-loader>
 
@@ -363,12 +363,12 @@
             Or
         </label>
     </div>
-    <div class="spacer center"><i>Searching without any parameters returns all samples.</i></div>
+    <div class="spacer center"><i>A filter must be provided. To return all samples, use the <a class="link-clicker" routerLink="/home/samples/sample-search">standard search page</a>.</i></div>
     <div>
         <table class="submit">
             <tr>
                 <td>
-                    <button [disabled]="loading" (click)="search()" class="btn btn-primary float-right">Search</button>
+                    <button [disabled]="loading || (query.sampleQueries.length==0 && query.compositionQueries.length==0 && query.characterizationQueries.length==0)" (click)="search()" class="btn btn-primary float-right">Search</button>
                     <button [disabled]="loading" (click)="reset()" class="btn btn-danger float-right mr-1">Reset</button>
                 </td>
             </tr>

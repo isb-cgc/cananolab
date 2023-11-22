@@ -1411,5 +1411,25 @@ public class SampleServiceLocalImpl extends BaseServiceLocalImpl implements Samp
 	public SpringSecurityAclService getSpringSecurityAclService() {
 		return springSecurityAclService;
 	}
-	
+
+	@Override
+	public boolean checkIfCurrentUserHasWriteAccess(SampleBean sampleBean) {
+
+		if (SpringSecurityUtil.getPrincipal() == null) {
+			return false;
+		}
+
+		Boolean newSample = true;
+		if (sampleBean.getDomain().getId() != null) {
+			newSample = false;
+		}
+
+		try {
+			return newSample || springSecurityAclService.currentUserHasWritePermission(sampleBean.getDomain().getId(), SecureClassesEnum.SAMPLE.getClazz());
+		} catch (Exception e) {
+			String err = "Error in checkIfCurrentUserHasWriteAccess.";
+			logger.error(err, e);
+			return false;
+		}
+	}
 }
