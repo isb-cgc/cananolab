@@ -72,6 +72,7 @@ export const Consts = {
     QUERY_SAMPLE_GET_CHARACTERIZATION_OPTIONS:  '/rest/sample/getDecoratedCharacterizationOptions',
     QUERY_SAMPLE_GET_DATUM_OPTIONS:  '/rest/sample/getDecoratedDatumOptions',
     QUERY_SAMPLE_GET_DATUM_UNIT_OPTIONS:  '/rest/sample/getDatumUnitOptions',
+    QUERY_SAMPLE_WRITE_ACCESS: '/rest/sample/checkWriteAccess',
 
     QUERY_NANOMATERIAL_UPDATE: '/rest/nanomaterialEntity/submit',
     QUERY_NANOMATERIAL_EDIT: '/rest/nanomaterialEntity/edit',
