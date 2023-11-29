@@ -48,7 +48,6 @@ import gov.nih.nci.cananolab.ui.form.SearchSampleForm;
 import gov.nih.nci.cananolab.ui.form.SynthesisForm;
 import gov.nih.nci.cananolab.util.Constants;
 import java.io.PrintWriter;
-import java.net.URI;
 import java.util.List;
 import java.util.Map;
 import javax.json.Json;
@@ -62,9 +61,8 @@ import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
-import javax.ws.rs.core.Context;
-import javax.ws.rs.core.Response;
-import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.*;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -301,12 +299,6 @@ public class SampleServices {
 		boolean isCurator = userDetails.isCurator();
 
 		try {
-			if (!sampleBO.isSampleEditableByCurrentUser(httpRequest, sampleId)) {
-				String baseUrl = "https://" + URI.create(httpRequest.getRequestURL().toString()).getHost();
-				String redirectUri = baseUrl + "/home/samples/view-sample/" + sampleId;
-				return Response.temporaryRedirect(new URI(redirectUri)).build();
-			}
-
 			SampleEditGeneralBean sampleBean = sampleBO.summaryEdit(sampleId,httpRequest);
 			sampleBean.setIsCuratorEditing(isCurator);
 			return (sampleBean.getErrors().size() == 0) ?
@@ -350,6 +342,35 @@ public class SampleServices {
 			e.printStackTrace();
 			return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
 					.entity(CommonUtil.wrapErrorMessageInList("Error while saving Point of Contact: " + e.getMessage())).build();
+		}
+	}
+
+	@GET
+	@Path("/checkWriteAccess")
+	@Produces("application/json")
+	public Response checkWriteAccess(@Context HttpServletRequest httpRequest,
+	                     @DefaultValue("") @QueryParam("sampleId") String sampleId)
+	{
+		logger.debug("In checkWriteAccess");
+
+		if (!SpringSecurityUtil.isUserLoggedIn()) {
+			logger.info("User not logged in");
+			return Response.ok(false).build();
+		}
+		SampleBO sampleBO = (SampleBO) SpringApplicationContext.getBean(httpRequest, "sampleBO");
+
+		try {
+			if (!sampleBO.isSampleEditableByCurrentUser(httpRequest, sampleId)) {
+				logger.info("User has no write access to sample");
+				return Response.ok(false).build();
+			} else {
+				return Response.ok(true).build();
+			}
+		} catch (Exception ioe) {
+			logger.error(ioe.getMessage());
+			ioe.printStackTrace();
+			return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
+					.entity(CommonUtil.wrapErrorMessageInList(ioe.getMessage())).build();
 		}
 	}
 	
