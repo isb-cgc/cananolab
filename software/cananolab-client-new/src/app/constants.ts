@@ -92,6 +92,7 @@ export const Consts = {
     QUERY_UPDATE_PROTOCOL: '/rest/protocol/submitProtocol', // SAME AS create
     QUERY_EDIT_PROTOCOL: '/rest/protocol/edit',
     QUERY_GET_PROTOCOL: '/rest/protocol/getProtocol',
+    QUERY_PROTOCOL_WRITE_ACCESS: 'rest/protocol/checkWriteAccess',
     QUERY_PROTOCOL_DELETE_ACCESS: '/rest/protocol/deleteAccess',
     QUERY_DOWNLOAD_FILE: '/rest/protocol/download',
     QUERY_PUBLICATION_DOWNLOAD_FILE: '/',
@@ -234,6 +235,7 @@ export const Consts = {
     HELP_URL_PROTOCOL_MANAGE: 'https://wiki.nci.nih.gov/x/eIQfEQ',
     HELP_URL_PROTOCOL_CREATE: 'https://wiki.nci.nih.gov/x/SIFDHg',
     HELP_URL_PROTOCOL_EDIT: 'https://wiki.nci.nih.gov/x/S4FDHg',
+    HELP_URL_PROTOCOL_VIEW: 'https://wiki.nci.nih.gov/x/S4FDHg',
     HELP_URL_PROTOCOL_SEARCH_RESULTS: 'https://wiki.nci.nih.gov/x/VoFDHg',
 
     // Mi TODO: change this to real link

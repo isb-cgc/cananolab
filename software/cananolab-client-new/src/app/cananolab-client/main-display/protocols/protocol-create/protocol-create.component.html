@@ -21,11 +21,14 @@
                         Protocol Type*
                     </label>
                 </td>
-                <td>
+                <td *ngIf="!viewOnly">
                     <select id="protocolType" [(ngModel)]="data.type" name="type">
                         <option [ngValue]="''" [selected]="true">--Select--</option>
                         <option *ngFor="let type of setupData.protocolTypes" value="{{type}}">{{type}}</option>
                     </select>
+                </td>
+                <td *ngIf="viewOnly">
+                    {{data.type}}
                 </td>
             </tr>
             <!-- -----  END Protocol Type  ----- -->
@@ -36,8 +39,11 @@
                         Protocol Name<sup><b>*</b></sup>
                     </label>
                 </td>
-                <td>
+                <td *ngIf="!viewOnly">
                     <input (focusout)="getProtocol($event)" type="text" name="name" id="protocolName" [(ngModel)]="data.name">
+                </td>
+                <td *ngIf="viewOnly">
+                    {{data.name}}
                 </td>
             </tr>
             <!--  -----  END Protocol Name  ----- -->
@@ -49,8 +55,11 @@
                         <div>Abbreviation</div>
                     </label>
                 </td>
-                <td>
+                <td *ngIf="!viewOnly">
                     <input id="abbreviation" name="abbreviation" type="text" [(ngModel)]="data.abbreviation">
+                </td>
+                <td *ngIf="viewOnly">
+                    {{data.abbreviation}}
                 </td>
             </tr>
             <!-- END Protocol Abbreviation -->
@@ -61,8 +70,11 @@
                         Protocol Version
                     </label>
                 </td>
-                <td>
+                <td *ngIf="!viewOnly">
                     <input id="protocolVersion" name="version" type="text" [(ngModel)]="data.version">
+                </td>
+                <td *ngIf="viewOnly">
+                    {{data.version}}
                 </td>
             </tr>
             <!--            END Protocol Version-->
