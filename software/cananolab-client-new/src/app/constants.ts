@@ -103,6 +103,7 @@ export const Consts = {
     QUERY_SAMPLE_SEARCH_BY_PUBLICATION: '/rest/publication/searchById',
     QUERY_PUBLICATION_SUMMARY_VIEW: '/rest/publication/summaryView',
     QUERY_PUBLICATION_EDIT: '/rest/publication/edit',
+    QUERY_PUBLICATION_WRITE_ACCESS: 'rest/publication/checkWriteAccess',
     QUERY_PUBLICATION_DELETE: '/rest/publication/deletePublication',
     QUERY_PUBLICATION_DELETE_ACCESS: '/rest/publication/deleteAccess',
     QUERY_PUBLICATION_SAVE_ACCESS: '/rest/publication/saveAccess',
@@ -205,6 +206,7 @@ export const Consts = {
     HELP_URL_PUBLICATIONS: 'https://wiki.nci.nih.gov/x/e4QfEQ',
     HELP_URL_CREATE_PUBLICATIONS: 'https://wiki.nci.nih.gov/x/kIFDHg',
     HELP_URL_EDIT_PUBLICATIONS: 'https://wiki.nci.nih.gov/x/koFDHg',
+    HELP_URL_VIEW_PUBLICATIONS: 'https://wiki.nci.nih.gov/x/koFDHg',
 
     // Publications within sample
     HELP_URL_SAMPLE_PUBLICATIONS: 'https://wiki.nci.nih.gov/x/nYFDHg',
