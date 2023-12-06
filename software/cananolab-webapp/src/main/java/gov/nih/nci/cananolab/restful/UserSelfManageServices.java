@@ -29,7 +29,7 @@ public class UserSelfManageServices
 {
 	private static final Logger logger = LogManager.getLogger(UserSelfManageServices.class);
 
-	public static final int MAX_INACTIVE_PERIOD_DAYS = 90;
+	public static final int MAX_INACTIVE_PERIOD_DAYS = 60;
 
 	@GET
 	@Path("/accounttype")
