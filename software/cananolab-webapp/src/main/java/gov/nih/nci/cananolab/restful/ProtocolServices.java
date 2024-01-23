@@ -231,6 +231,39 @@ public class ProtocolServices
 	}
 
 	@GET
+	@Path("/checkWriteAccess")
+	@Produces("application/json")
+	public Response checkWriteAccess(@Context HttpServletRequest httpRequest,
+	                                 @DefaultValue("") @QueryParam("protocolId") String protocolId)
+	{
+		logger.debug("In checkWriteAccess");
+
+		if (!SpringSecurityUtil.isUserLoggedIn()) {
+			logger.info("User not logged in");
+			return Response.ok(false).build();
+		}
+
+		ProtocolBO protocolBO = (ProtocolBO) SpringApplicationContext.getBean(httpRequest, "protocolBO");
+
+		if (!SpringSecurityUtil.isUserLoggedIn())
+			return Response.status(Response.Status.UNAUTHORIZED).entity(Constants.MSG_SESSION_INVALID).build();
+
+		try {
+			if (!protocolBO.isProtocolEditableByCurrentUser(httpRequest, protocolId)) {
+				logger.info("User has no write access to protocol");
+				return Response.ok(false).build();
+			} else {
+				return Response.ok(true).build();
+			}
+		} catch (Exception ioe) {
+			logger.error(ioe.getMessage());
+			ioe.printStackTrace();
+			return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
+					.entity(CommonUtil.wrapErrorMessageInList(ioe.getMessage())).build();
+		}
+	}
+
+	@GET
 	@Path("/getProtocol")
 	@Produces ("application/json")
 	public Response getProtocol(@Context HttpServletRequest httpRequest, 

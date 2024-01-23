@@ -60,7 +60,7 @@
                 '': even,
                 'rowOdd': odd
             }">
-				<td class="search-results-td" [ngClass]="{'hidden':!properties.LOGGED_IN}"> <a *ngIf="properties.LOGGED_IN" (click)="onEditClick(res)">Edit</a>
+				<td class="search-results-td" [ngClass]="{'hidden':!properties.LOGGED_IN}"> <a *ngIf="properties.LOGGED_IN" (click)="onEditClick(res)">Details</a>
 					<!--  I thought we showed the "View" if they are not logged in (I was wrong)
            <div *ngIf="! properties.logged_in"
                 class="protocol-search-results-edit-button mb-2"

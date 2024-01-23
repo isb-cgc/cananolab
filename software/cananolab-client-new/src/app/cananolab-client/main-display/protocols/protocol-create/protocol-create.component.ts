@@ -30,6 +30,7 @@ export class ProtocolCreateComponent implements OnInit, AfterViewInit{
     helpUrl=Consts.HELP_URL_PROTOCOL_CREATE;
     submitReviewButton=true;
     editingAccessRow = false;
+    viewOnly=false;
 
     constructor(private httpClient:HttpClient, private route:ActivatedRoute,private router:Router,private apiService: ApiService, private utilService: UtilService,
                  ){
@@ -199,18 +200,39 @@ export class ProtocolCreateComponent implements OnInit, AfterViewInit{
 
     init(){
         if (this.protocolId) {
+            // Editing or Viewing
             this.currentRoute='edit-protocol';
-            this.toolHeadingName='Edit Protocol';
-            this.helpUrl=Consts.HELP_URL_PROTOCOL_EDIT;
-            this.apiService.doGet( Consts.QUERY_EDIT_PROTOCOL, 'protocolId='+this.protocolId ).subscribe(
-                data => {
-                    this.data = data;
-                },
-                errors=> {
-                    this.errors=errors;
-                } );
+
+            var url = this.apiService.doGet(Consts.QUERY_PROTOCOL_WRITE_ACCESS,'protocolId=' + this.protocolId);
+            url.subscribe(data=> {
+                var hasWriteAccess = data;
+
+                this.apiService.doGet( Consts.QUERY_EDIT_PROTOCOL, 'protocolId='+this.protocolId ).subscribe(
+                    data => {
+                        this.data = data;
+
+                        if (hasWriteAccess) {
+                            // current user have write access
+                            this.toolHeadingName='Edit Protocol';
+                            this.viewOnly = false;
+                            this.helpUrl=Consts.HELP_URL_PROTOCOL_EDIT;                            
+                        } else {
+                            this.toolHeadingName='View Protocol';
+                            this.viewOnly = true;
+                            this.helpUrl=Consts.HELP_URL_PROTOCOL_VIEW;
+                        }
+                    },
+                    errors=> {
+                        this.errors=errors;
+                    } );
+                
+            },
+            error=> {
+                console.log(error);
+            })
         }
         else {
+            // Creating
             this.toolHeadingName='Create Protocol';
             this.helpUrl=Consts.HELP_URL_PROTOCOL_CREATE;
             this.data={
@@ -223,6 +245,7 @@ export class ProtocolCreateComponent implements OnInit, AfterViewInit{
                 "fileDescription":""
             }
         }
+
         // Get list of Protocol types for dropdown
         this.apiService.doGet( Consts.QUERY_PROTOCOL_SETUP, '' ).subscribe(
             data => {

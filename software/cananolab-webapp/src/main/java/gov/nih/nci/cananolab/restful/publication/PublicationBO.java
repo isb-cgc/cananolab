@@ -334,6 +334,17 @@ public class PublicationBO extends BaseAnnotationBO
 		return errors;
 	}
 
+	public boolean isPublicationEditableByCurrentUser(HttpServletRequest request, String publicationId) throws Exception
+	{
+		if (!SpringSecurityUtil.isUserLoggedIn())
+			return false;
+
+		if (publicationId == null || publicationId.length() == 0)
+			return false;
+
+		return springSecurityAclService.currentUserHasWritePermission(Long.valueOf(publicationId), SecureClassesEnum.PUBLICATION.getClazz());
+	}
+
 	private boolean validateAssociatedSamples(HttpServletRequest request, PublicationBean publicationBean) throws Exception
 	{
 		// sample service has already been created
