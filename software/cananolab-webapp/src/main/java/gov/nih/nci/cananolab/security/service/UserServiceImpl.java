@@ -103,12 +103,13 @@ public class UserServiceImpl implements UserService
 	}
 
 	@Override
-	public void createPasswordResetToken(PasswordResetToken prt)
+	public void createPasswordResetToken(PasswordResetToken prt, boolean newUser)
 	{
 		String token = prt.getToken();
 		if (prt != null && !StringUtils.isEmpty(token)) {
 			// Calculate future date when token will expire
-			LocalDateTime expiryDate = LocalDateTime.now().plusHours(PasswordResetToken.EXPIRATION_HOURS);
+			int expireHours = newUser ? PasswordResetToken.EXPIRATION_HOURS_NEW_USER : PasswordResetToken.EXPIRATION_HOURS;
+			LocalDateTime expiryDate = LocalDateTime.now().plusHours(expireHours);
 			prt.setExpiryDate(expiryDate);
 			int status = userDao.insertPasswordResetToken(prt);
 		}
