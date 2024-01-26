@@ -180,7 +180,7 @@ public class UserAccountServices
 				prt.setToken(token);
 				prt.setUserName(userDetails.getUsername());
 
-				userAccountBO.createPasswordResetToken(prt);
+				userAccountBO.createPasswordResetToken(prt, true);
 			}
 			else
 				throw new Exception("Username is required to create a password reset token.");

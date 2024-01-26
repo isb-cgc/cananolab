@@ -6,6 +6,7 @@ import java.util.Date;
 public class PasswordResetToken {
 
     public static final int EXPIRATION_HOURS = 2;
+    public static final int EXPIRATION_HOURS_NEW_USER = 48;
 
     private String token;
 
