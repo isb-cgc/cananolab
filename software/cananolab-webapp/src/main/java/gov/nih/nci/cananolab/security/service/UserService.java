@@ -13,7 +13,7 @@ public interface UserService
 	
 	void createUserAccount(CananoUserDetails userDetails);
 
-	void createPasswordResetToken(PasswordResetToken prt);
+	void createPasswordResetToken(PasswordResetToken prt, boolean newUser);
 
 	void deletePasswordResetTokens(CananoUserDetails userDetails);
 
