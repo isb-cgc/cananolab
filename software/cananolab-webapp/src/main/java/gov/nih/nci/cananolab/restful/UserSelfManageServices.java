@@ -133,7 +133,7 @@ public class UserSelfManageServices
 				PasswordResetToken prt = new PasswordResetToken();
 				prt.setToken(token);
 				prt.setUserName(userDetails.getUsername());
-				userAccountBO.createPasswordResetToken(prt);
+				userAccountBO.createPasswordResetToken(prt, false);
 
 				String emailBody =
 						"You're receiving this e-mail because you or someone else has requested a password change for your user account.\r\n" +
