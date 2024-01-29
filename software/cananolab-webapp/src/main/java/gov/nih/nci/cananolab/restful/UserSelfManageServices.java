@@ -176,7 +176,7 @@ public class UserSelfManageServices
 			if (validateResult != null) {
 				// Test: Local
 				// redirectUri = "http://localhost:4200/#/home/?errorMessage=Unable to change password because " + validateResult;
-				redirectUri = baseUrl + "?errorMessage=Unable to change password because " + validateResult;
+				redirectUri = baseUrl + "/#/?errorMessage=Unable to change password because " + validateResult;
 				redirectUri = redirectUri.replace(" ", "%20");
 				return Response.seeOther(new URI(redirectUri)).build();
 			} else {
