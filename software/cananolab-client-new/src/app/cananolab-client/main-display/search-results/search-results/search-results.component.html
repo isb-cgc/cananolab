@@ -81,8 +81,9 @@
                     '': even,
                     rowOdd: odd
                 }">
+
                 <td class="search-results-td" data-title="Action">
-                    <a *ngIf="properties.LOGGED_IN" (click)="navigateToResultEdit(result)">Edit</a>
+                    <a *ngIf="properties.LOGGED_IN" (click)="navigateToResultEdit(result)">Details</a>
 
                     <ng-container *ngIf="!properties.LOGGED_IN">
                         <a *ngIf="result.type == 'protocol' && result.fileId" (click)="navigateToResultView(result)">
