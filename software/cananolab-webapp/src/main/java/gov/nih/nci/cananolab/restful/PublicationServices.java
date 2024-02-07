@@ -21,6 +21,7 @@ import gov.nih.nci.cananolab.exception.ApplicationProviderException;
 import gov.nih.nci.cananolab.exception.NoAccessException;
 import gov.nih.nci.cananolab.exception.PublicationException;
 import gov.nih.nci.cananolab.exception.UserInputException;
+import gov.nih.nci.cananolab.restful.protocol.ProtocolBO;
 import gov.nih.nci.cananolab.restful.util.PropertyUtil;
 import gov.nih.nci.cananolab.system.applicationservice.ApplicationException;
 import org.apache.logging.log4j.LogManager;
@@ -199,6 +200,39 @@ public class PublicationServices {
 			logger.error(e.getMessage());
 			e.printStackTrace();
 			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(CommonUtil.wrapErrorMessageInList("Error while searching for publication " + e.getMessage())).build();
+		}
+	}
+
+	@GET
+	@Path("/checkWriteAccess")
+	@Produces("application/json")
+	public Response checkWriteAccess(@Context HttpServletRequest httpRequest,
+	                                 @DefaultValue("") @QueryParam("publicationId") String publicationId)
+	{
+		logger.debug("In checkWriteAccess");
+
+		if (!SpringSecurityUtil.isUserLoggedIn()) {
+			logger.info("User not logged in");
+			return Response.ok(false).build();
+		}
+
+		PublicationBO publicationBO = (PublicationBO) SpringApplicationContext.getBean(httpRequest, "publicationBO");
+
+		if (!SpringSecurityUtil.isUserLoggedIn())
+			return Response.status(Response.Status.UNAUTHORIZED).entity(Constants.MSG_SESSION_INVALID).build();
+
+		try {
+			if (!publicationBO.isPublicationEditableByCurrentUser(httpRequest, publicationId)) {
+				logger.info("User has no write access to publication");
+				return Response.ok(false).build();
+			} else {
+				return Response.ok(true).build();
+			}
+		} catch (Exception ioe) {
+			logger.error(ioe.getMessage());
+			ioe.printStackTrace();
+			return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
+					.entity(CommonUtil.wrapErrorMessageInList(ioe.getMessage())).build();
 		}
 	}
 

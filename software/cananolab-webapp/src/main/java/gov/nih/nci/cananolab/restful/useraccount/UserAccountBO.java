@@ -49,9 +49,9 @@ public class UserAccountBO
 		return userService.loadPasswordResetToken(token);
 	}
 
-	public PasswordResetToken createPasswordResetToken(PasswordResetToken prt) throws NoAccessException
+	public PasswordResetToken createPasswordResetToken(PasswordResetToken prt, boolean newUser) throws NoAccessException
 	{
-		userService.createPasswordResetToken(prt);
+		userService.createPasswordResetToken(prt, newUser);
 		return userService.loadPasswordResetToken(prt.getToken());
 	}
 
