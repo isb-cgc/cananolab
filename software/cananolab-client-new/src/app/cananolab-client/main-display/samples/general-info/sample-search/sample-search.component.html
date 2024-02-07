@@ -121,7 +121,7 @@
                     <td colspan="3">
                         <ng-container *ngIf="data.characterizationType!=''">
                             <select [size]="7" class="multiple" multiple name="data.characterizations" id="characterizations" [(ngModel)]="data.characterizations">
-                                <option *ngFor="let samp of characterizationsList">
+                                <option *ngFor="let samp of characterizationsList" [value]="samp">
                                     {{samp}}
                                 </option>
                             </select>

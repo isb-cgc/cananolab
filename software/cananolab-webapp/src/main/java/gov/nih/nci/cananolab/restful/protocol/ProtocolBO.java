@@ -451,6 +451,17 @@ public class ProtocolBO extends BaseAnnotationBO
 		return msgs;
 	}
 
+	public boolean isProtocolEditableByCurrentUser(HttpServletRequest request, String protocolId) throws Exception
+	{
+		if (!SpringSecurityUtil.isUserLoggedIn())
+			return false;
+
+		if (protocolId == null || protocolId.length() == 0)
+			return false;
+
+		return springSecurityAclService.currentUserHasWritePermission(Long.valueOf(protocolId), SecureClassesEnum.PROTOCOL.getClazz());
+	}
+
 	@Override
 	public CurationService getCurationServiceDAO() {
 		return curationServiceDAO;
