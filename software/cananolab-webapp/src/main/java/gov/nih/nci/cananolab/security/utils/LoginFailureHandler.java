@@ -17,6 +17,7 @@ import gov.nih.nci.cananolab.security.service.PasswordHistory;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 
 public class LoginFailureHandler implements AuthenticationFailureHandler
@@ -102,6 +103,10 @@ public class LoginFailureHandler implements AuthenticationFailureHandler
 
 				return "Login failed: Account has been deactivated by admin. Please contact caNanoLab-Support@isb-cgc.org.";
 			}
+		} catch (UsernameNotFoundException usernameNotFoundException) {
+			String message = usernameNotFoundException.getMessage();
+			System.out.println("Exception message " + message);
+			return ("Login failed: Invalid user name or password.");
 		} catch (Exception e) {
 			// Do NOT send the exception message to the user. There might not even be
 			// an exception message.
