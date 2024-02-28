@@ -38,6 +38,8 @@ export class EditpublicationComponent implements OnInit {
     downloadUrl=Consts.QUERY_PUBLICATION_DOWNLOAD;
     submitReviewButton=true;
     editingAccessRow = false;
+    viewOnly = false;
+
 
   constructor(private apiService:ApiService,private navigationService:NavigationService,private httpClient:HttpClient,private route:ActivatedRoute,private router:Router) { }
 
@@ -50,9 +52,8 @@ export class EditpublicationComponent implements OnInit {
     this.sampleList=[];
     this.currentFile={
         "uriExternal":false,
-
-
     }
+
     this.route.params.subscribe(
         ( params: Params ) => {
             this.sampleId=params['sampleId'];
@@ -105,6 +106,25 @@ export class EditpublicationComponent implements OnInit {
                         this.currentFile['uriExternal']=data['uriExternal'];
                         this.currentFile['externalUrl']=data['uri'];
                         this.errors={};
+
+                        // Check if user has write access to publication, to show view or edit page
+                        var url = this.apiService.doGet(Consts.QUERY_PUBLICATION_WRITE_ACCESS,'publicationId=' + this.publicationId);
+                        url.subscribe(data=> {
+                            var hasWriteAccess = data;
+                            if (hasWriteAccess) {
+                                // current user have write access
+                                this.toolHeadingNameManage='Edit Publication';
+                                this.viewOnly = false;
+                                this.helpUrl=Consts.HELP_URL_EDIT_PUBLICATIONS;                            
+                            } else {
+                                this.toolHeadingNameManage='View Publication';
+                                this.viewOnly = true;
+                                this.helpUrl=Consts.HELP_URL_VIEW_PUBLICATIONS;
+                            }
+                        },
+                        error=> {
+                            console.log(error);
+                        })
                     },
                     error=>{
                         this.errors=error;

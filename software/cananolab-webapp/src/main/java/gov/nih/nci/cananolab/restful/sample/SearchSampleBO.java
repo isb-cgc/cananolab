@@ -293,7 +293,8 @@ public class SearchSampleBO extends AbstractDispatchBO {
 		List<String> otherCharacterizationTypes = new ArrayList<String>();
 		for (int i = 0; i < characterizations.length; i++) {
 			String className = ClassUtils.getShortClassNameFromDisplayName(characterizations[i]);
-			if (className.length() == 0 || characterizations[i].startsWith("other") ) {
+			Class clazz = ClassUtils.getFullClass(className);
+			if (clazz == null || className.length() == 0 || characterizations[i].startsWith("other") ) {
 				className = "OtherCharacterization";
 				otherCharacterizationTypes.add(characterizations[i]);
 			} else {

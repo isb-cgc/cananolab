@@ -21,11 +21,14 @@
                         Protocol Type*
                     </label>
                 </td>
-                <td>
+                <td *ngIf="!viewOnly">
                     <select id="protocolType" [(ngModel)]="data.type" name="type">
                         <option [ngValue]="''" [selected]="true">--Select--</option>
                         <option *ngFor="let type of setupData.protocolTypes" value="{{type}}">{{type}}</option>
                     </select>
+                </td>
+                <td *ngIf="viewOnly">
+                    {{data.type}}
                 </td>
             </tr>
             <!-- -----  END Protocol Type  ----- -->
@@ -36,8 +39,11 @@
                         Protocol Name<sup><b>*</b></sup>
                     </label>
                 </td>
-                <td>
+                <td *ngIf="!viewOnly">
                     <input (focusout)="getProtocol($event)" type="text" name="name" id="protocolName" [(ngModel)]="data.name">
+                </td>
+                <td *ngIf="viewOnly">
+                    {{data.name}}
                 </td>
             </tr>
             <!--  -----  END Protocol Name  ----- -->
@@ -49,8 +55,11 @@
                         <div>Abbreviation</div>
                     </label>
                 </td>
-                <td>
+                <td *ngIf="!viewOnly">
                     <input id="abbreviation" name="abbreviation" type="text" [(ngModel)]="data.abbreviation">
+                </td>
+                <td *ngIf="viewOnly">
+                    {{data.abbreviation}}
                 </td>
             </tr>
             <!-- END Protocol Abbreviation -->
@@ -61,13 +70,16 @@
                         Protocol Version
                     </label>
                 </td>
-                <td>
+                <td *ngIf="!viewOnly">
                     <input id="protocolVersion" name="version" type="text" [(ngModel)]="data.version">
+                </td>
+                <td *ngIf="viewOnly">
+                    {{data.version}}
                 </td>
             </tr>
             <!--            END Protocol Version-->
             <!--            Protocol File-->
-            <tr>
+            <tr *ngIf="!viewOnly">
                 <td class="label">
                     <label for="protocolFile">
                         Protocol File
@@ -104,6 +116,21 @@
                     <!-- File URL text input -->
                 </td>
             </tr>
+            <tr *ngIf="viewOnly">
+                <td class="label">
+                    <label for="protocolFile">
+                        Protocol File
+                    </label>
+                </td>
+                <td>
+                     <div *ngIf="data.uri">
+                        <a [href]="downloadUrl+'?protocolId='+protocolId+'&fileId='+data.fileId">
+                            {{data.uri}}
+                        </a>
+                    </div>
+                </td>
+            </tr>
+
             <!-- Protocol File Title -->
             <tr>
                 <td class="label">
@@ -111,11 +138,15 @@
                         File Title
                     </label>
                 </td>
-                <td>
+                <td *ngIf="!viewOnly">
                     <input name="fileTitle" id="fileTitle" type="text" [(ngModel)]="data.fileTitle">
+                </td>
+                <td *ngIf="viewOnly">
+                    {{data.fileTitle}}
                 </td>
             </tr>
             <!-- END Protocol File Title -->
+
             <!--  Description  -->
             <tr>
                 <td class="label">
@@ -123,13 +154,17 @@
                         Description
                     </label>
                 </td>
-                <td>
+                <td *ngIf="!viewOnly">
                     <textarea name="fileDescription" id="description" cols="60" rows="3" [(ngModel)]="data.fileDescription">
                     </textarea>
                 </td>
+                <td *ngIf="viewOnly">
+                    {{data.fileDescription}}
+                </td>
             </tr>
             <!--  END Description  -->
-            <tr>
+
+            <tr *ngIf="!viewOnly">
                 <td class="label">
                     <label for="accessToProtocol">
                         Access to the Protocol
@@ -141,7 +176,7 @@
                     </button>
                 </td>
             </tr>
-            <ng-container *ngIf="data['groupAccesses']">
+            <ng-container *ngIf="data['groupAccesses']&&!viewOnly">
                 <tr *ngIf="data.groupAccesses.length">
                     <td></td>
                     <td>
@@ -267,11 +302,11 @@
                                 </td>
                             </tr>
                         </table>
-                    </div>
-                </td>
-            </tr>
+                        </div>
+                    </td>
+                </tr>
         </table>
-        <div id="buttons">
+        <div id="buttons" *ngIf="!viewOnly">
             <table class="dataMain submit">
                 <tr>
                     <td>

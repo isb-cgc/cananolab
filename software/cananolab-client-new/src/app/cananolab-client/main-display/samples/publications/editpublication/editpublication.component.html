@@ -21,7 +21,7 @@
                                 Publication Type*
                             </label>
                         </td>
-                        <td>
+                        <td *ngIf="!viewOnly">
                             <select (ngModelChange)="addOtherValue('category',data.category)" id="category" name="data.category" [(ngModel)]="data.category">
                                 <option [selected]="data.category===''" [ngValue]="''">--Select--</option>
                                 <option *ngFor="let type of setupData['publicationCategories']" [selected]="type==data.type">{{type}}</option>
@@ -33,12 +33,16 @@
                                 </canano-other-dropdown>
                             </div>
                         </td>
+                        <td *ngIf="viewOnly">
+                            {{data.category}}
+                        </td>
+
                         <td class="label">
                             <label for="status">
                                 Publication Status*
                             </label>
                         </td>
-                        <td colspan="4">
+                        <td colspan="4" *ngIf="!viewOnly">
                             <select (ngModelChange)="addOtherValue('status',data.status)" id="category" name="status" [(ngModel)]="data.status">
                                 <option [selected]="data.status===''" [ngValue]="''">--Select--</option>
                                 <option *ngFor="let type of setupData['publicationStatuses']" [selected]="type==data.status">{{type}}</option>
@@ -50,90 +54,129 @@
                                 </canano-other-dropdown>
                             </div>
                         </td>
+                        <td colspan="4" *ngIf="viewOnly">
+                            {{data.status}}
+                        </td>
                     </tr>
+
                     <tr *ngIf="['book chapter','report'].indexOf(data.category)==-1">
                         <td class="label">
                             <label for="pubMedId">
                                 PubMed ID
                             </label>
                         </td>
-                        <td colspan="5">
+                        <td colspan="5" *ngIf="!viewOnly">
                             <a href="http://www.ncbi.nlm.nih.gov/pubmed/" target="_blank" rel="nofollow noreferrer">Click to look up PubMed Identifier</a><br />
                             <input (focusout)="lookupPubMedId($event)" id="pubMedId" type="text" name="pubMedId" size="70" [(ngModel)]="data.pubMedId"><br />
                             <i>clicking outside of the text field after entering a valid PubMed ID enables auto-population of PubMed related fields</i>
                         </td>
+                        <td colspan="5" *ngIf="viewOnly">
+                            {{data.pubMedId}}
+                        </td>
                     </tr>
+
+
                     <tr *ngIf="['book chapter','report'].indexOf(data.category)==-1">
                         <td class="label">
                             <label for="digitalObjectId">
                                 Digital Object ID
                             </label>
                         </td>
-                        <td colspan="5">
+                        <td colspan="5" *ngIf="!viewOnly">
                             <input id="digitalObjectId" type="text" name="digitalObjectId" size="70" [(ngModel)]="data.digitalObjectId">
                         </td>
+                        <td colspan="5" *ngIf="viewOnly">
+                            {{data.digitalObjectId}}
+                        </td>
                     </tr>
+
                     <tr>
                         <td class="label">
                             <label for="title">
                                 Title*
                             </label>
                         </td>
-                        <td colspan="5">
+                        <td colspan="5" *ngIf="!viewOnly">
                             <input id="title" type="text" name="title" size="70" [(ngModel)]="data.title">
                         </td>
+                        <td colspan="5" *ngIf="viewOnly">
+                            {{data.title}}
+                        </td>
                     </tr>
+
                     <tr *ngIf="['book chapter','report'].indexOf(data.category)==-1">
                         <td class="label">
                             <label for="journal">
                                 Journal
                             </label>
                         </td>
-                        <td colspan="5">
+                        <td colspan="5" *ngIf="!viewOnly">
                             <input id="journal" type="text" name="journal" size="70" [(ngModel)]="data.journalName">
                         </td>
+                        <td colspan="5" *ngIf="viewOnly">
+                            {{data.journalName}}
+                        </td>
                     </tr>
+
                     <tr>
                         <td class="label">
                             <label for="year">
                                 Year of Publication
                             </label>
                         </td>
-                        <td colspan="5">
+                        <td colspan="5" *ngIf="!viewOnly">
                             <input id="year" type="text" name="year" size="4" [(ngModel)]="data.year">
                         </td>
+                        <td colspan="5" *ngIf="viewOnly">
+                            {{data.year}}
+                        </td>
                     </tr>
+
                     <tr *ngIf="['book chapter','report'].indexOf(data.category)==-1">
                         <td class="label">
                             <label for="volume">
                                 Volume
                             </label>
                         </td>
-                        <td>
+                        <td *ngIf="!viewOnly">
                             <input id="volume" type="text" name="volume" size="6" [(ngModel)]="data.volume">
                         </td>
+                        <td *ngIf="viewOnly">
+                            {{data.volume}}
+                        </td>
+
+
                         <td class="label">
                             <label for="startPage">
                                 Start Page
                             </label>
                         </td>
-                        <td>
+                        <td *ngIf="!viewOnly">
                             <input id="startPage" type="text" name="startPage" size="6" [(ngModel)]="data.startPage">
                         </td>
+                        <td *ngIf="viewOnly">
+                            {{data.startPage}}
+                        </td>
+
+
                         <td class="label">
                             <label for="endPage">
                                 End Page
                             </label>
                         </td>
-                        <td>
+                        <td *ngIf="!viewOnly">
                             <input id="endPage" type="text" name="endPage" size="6" [(ngModel)]="data.endPage">
                         </td>
+                        <td *ngIf="viewOnly">
+                            {{data.endPage}}
+                        </td>
                     </tr>
+
                     <tr>
                         <td class="label">
                             Authors
                         </td>
-                        <td colspan="5">
+                        <td colspan="5" *ngIf="!viewOnly">
                             <button (click)="addAuthor()" class="btn-canano btn-canano-primary btn-canano-xs mr-1">Add</button>
                         </td>
                     </tr>
@@ -145,7 +188,7 @@
                                     <th>Last Name</th>
                                     <th>First Name</th>
                                     <th>Initials</th>
-                                    <th></th>
+                                    <th *ngIf="!viewOnly"></th>
                                 </tr>
                                 <tr *ngFor="let author of data['authors'];let authorIndex=index; let odd=odd" [ngClass]="{'rowOdd':odd}">
                                     <td>
@@ -157,7 +200,7 @@
                                     <td>
                                         {{author.initial}}
                                     </td>
-                                    <td>
+                                    <td *ngIf="!viewOnly">
                                         <button (click)="editAuthor(authorIndex,author)" class="btn-canano btn-canano-primary btn-canano-xs mr-1">Edit</button>
                                     </td>
                                 </tr>
@@ -235,10 +278,13 @@
                                 (one keyword per line)
                             </label>
                         </td>
-                        <td colspan="5">
+                        <td colspan="5" *ngIf="!viewOnly">
                             <textarea id="keywordsStr" name="keywordsStr" rows="5" cols="70" [(ngModel)]="data.keywordsStr">
                                 {{data.keywordsStr}}
                             </textarea>
+                        </td>
+                        <td colspan="5" *ngIf="viewOnly">
+                            {{data.keywordsStr}}
                         </td>
                     </tr>
                     <tr>
@@ -248,10 +294,12 @@
                             </label>
 
                         </td>
-                        <td colspan="5">
+                        <td colspan="5" *ngIf="!viewOnly">
                             <textarea id="description" name="description" rows="5" cols="70" [(ngModel)]="data.description">
-
                             </textarea>
+                        </td>
+                        <td colspan="5" *ngIf="viewOnly">
+                            {{data.description}}
                         </td>
                     </tr>
                     <tr>
@@ -260,17 +308,20 @@
                                 Research Category
                             </label>
                         </td>
-                        <td colspan="5">
+                        <td colspan="5" *ngIf="!viewOnly">
                             <select size="7" id="researchAreas" name="researchAreas" multiple="multiple" [(ngModel)]="data.researchAreas">
                                 <option *ngFor="let area of setupData['publicationResearchAreas']" [ngValue]="area">{{area}}</option>
                             </select>
+                        </td>
+                        <td colspan="5" *ngIf="viewOnly">
+                            {{data.researchAreas}}
                         </td>
                     </tr>
                 </table>
             </div><br />
             <div class="mainBorder">
                 <table class="dataMain">
-                    <tr>
+                    <tr *ngIf="!viewOnly">
                         <td class="label">File</td>
                         <td class="files">
                             <label for="fileUpload">
@@ -295,6 +346,16 @@
                                     <a [href]="downloadUrl+'?publicationId='+publicationId+'&fileId='+data.fileId">{{data.uri}}</a>
                                 </ng-container>
                             </ng-container>
+                        </td>
+                    </tr>
+                    <tr *ngIf="viewOnly">
+                        <td class="label">File</td>
+                        <td>
+                             <div *ngIf="data.uri">
+                                <a [href]="downloadUrl+'?publicationId='+publicationId+'&fileId='+data.fileId">
+                                    {{data.uri}}
+                                </a>
+                            </div>
                         </td>
                     </tr>
                 </table>
@@ -328,19 +389,22 @@
                         <td class="label">
                             Sample Name
                         </td>
-                        <td>
+                        <td *ngIf="!viewOnly">
                             <textarea name="sampleName" [(ngModel)]="data.sampleNamesStr" rows="5" cols="60">
 
                             </textarea><i>one name per line</i>
                         </td>
+                        <td *ngIf="viewOnly">
+                            {{data.sampleNamesStr}}
+                        </td>
                     </tr>
                     <tr>
                         <td></td>
-                        <td>
+                        <td *ngIf="!viewOnly">
                             <button (click)="getSampleList()" class="btn-canano btn-canano-primary btn-canano-xs mr-1">Search for Samples</button>
                         </td>
                     </tr>
-                    <tr *ngIf="sampleList.length">
+                    <tr *ngIf="sampleList.length&&!viewOnly">
                         <td></td>
                         <td>
                             <table class="noSpacing">
@@ -371,7 +435,7 @@
                 </table>
             </div><br />
 
-            <div class="mainBorder">
+            <div class="mainBorder" *ngIf="!viewOnly">
                 <table class="dataMain">
                     <tr>
                         <td class="label">
@@ -509,7 +573,7 @@
                 </table>
             </div>
             <br />
-            <div>
+            <div *ngIf="!viewOnly">
                 <table class="dataMain submit">
                     <tr>
                         <td>
