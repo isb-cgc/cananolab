@@ -85,10 +85,7 @@
 
 
             <td class="search-results-td">
-                <a *ngIf="properties.LOGGED_IN" (click)="navigateToSampleEdit(samp['sampleId'])">Edit</a>
-
-
-                <a *ngIf="! properties.LOGGED_IN" (click)="navigateToSampleView(samp['sampleId'])">View</a>
+                <a (click)="navigateToSample(samp['sampleId'])">Details</a>
                 <br>
                 <div *ngIf="samp['addedToFavorites']">
                     {{samp['addedToFavorites'][0]}}
