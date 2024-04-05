@@ -119,6 +119,7 @@ public class ProtocolBO extends BaseAnnotationBO
 		protocol.setId(bean.getId());
 		protocol.setCreatedBy(bean.getCreatedBy());
 		protocol.setAbbreviation(bean.getAbbreviation());
+		// todo uncomment after getter and setter created: protocol.setDOI(bean.getDOI());
 		proBean.setFileBean(fileBean);
 		proBean.setGroupAccesses(bean.getGroupAccesses());
 		proBean.setUserAccesses(bean.getUserAccesses());
@@ -165,6 +166,7 @@ public class ProtocolBO extends BaseAnnotationBO
 		if(InputValidationUtil.isTextFieldWhiteList(name)){
 			errors.add(PropertyUtil.getProperty("protocol", "protocol.name.invalid"));
 		}
+
 		String type = protocol.getType();
 		if(type == null||type == ""){
 			errors.add("Protocol Type is required.");
@@ -172,28 +174,39 @@ public class ProtocolBO extends BaseAnnotationBO
 		if(InputValidationUtil.isTextFieldWhiteList(type)){
 			errors.add(PropertyUtil.getProperty("protocol", "protocol.type.invalid"));
 		}
+
 		String version = protocol.getVersion();
 		
 		if(InputValidationUtil.isTextFieldWhiteList(version)){
 			errors.add(PropertyUtil.getProperty("protocol", "protocol.version.invalid"));
 		}
+
+		/* todo uncomment after doi getter/setter generation
+		String doi = protocol.getDoi();
+
+		if(InputValidationUtil.isTextFieldWhiteList(doi)) {
+			errors.add(PropertyUtil.getProperty("protocol", "protocol.doi.invalid"));
+		}
+		*/
+
 		String abbreviation = protocol.getAbbreviation();
 		
 		if(InputValidationUtil.isTextFieldWhiteList(abbreviation)){
 			errors.add(PropertyUtil.getProperty("protocol", "protocol.abbreviation.invalid"));
 		}
+
 		String title = protocolBean.getFileBean().getDomainFile().getTitle();
 		
 		if(InputValidationUtil.isTextFieldWhiteList(title)){
 			errors.add(PropertyUtil.getProperty("protocol", "protocol.title.invalid"));
 		}
+
 		String fileName = protocolBean.getFileBean().getDomainFile().getName();
 		
 		if(InputValidationUtil.isTextFieldWhiteList(fileName)){
 			errors.add(PropertyUtil.getProperty("protocol", "protocol.file.name.invalid"));
 		}
-		
-		
+
 		String uri = protocolBean.getFileBean().getDomainFile().getUri();
 		if(InputValidationUtil.isTextFieldWhiteList(uri)){
 			errors.add(PropertyUtil.getProperty("protocol", "file.uri.invalid"));
