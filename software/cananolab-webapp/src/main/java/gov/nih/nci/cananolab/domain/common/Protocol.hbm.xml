@@ -21,6 +21,7 @@ L-->
 		<property name="name" type="string" column="protocol_name"/>
 		<property name="type" type="string" column="protocol_type"/>
 		<property name="version" type="string" column="protocol_version"/>
+		<property name="doi" type="string" column="doi"/>
 		<!-- Associations mapping for the Protocol class -->
 		<many-to-one name="file" class="File" column="file_pk_id" unique="true" lazy="false" cascade="save-update, delete"/>
 	</class>
