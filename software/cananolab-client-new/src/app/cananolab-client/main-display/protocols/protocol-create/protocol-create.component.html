@@ -77,8 +77,23 @@
                     {{data.version}}
                 </td>
             </tr>
-            <!--            END Protocol Version-->
-            <!--            Protocol File-->
+            <!-- ----- END Protocol Version-->
+            <!-- ----- Protocol DOI ----- -->
+            <tr>
+                <td class="label">
+                    <label for="protocolDOI">
+                        DOI
+                    </label>
+                </td>
+                <td *ngIf="!viewOnly">
+                    <input id="protocolDOI" name="doi" type="text" [(ngModel)]="data.doi">
+                </td>
+                <td *ngIf="viewOnly">
+                    {{data.doi}}
+                </td>
+            </tr>
+            <!-- ----- END Protocol DOI ----- -->
+            <!-- ----- Protocol File ----- -->
             <tr *ngIf="!viewOnly">
                 <td class="label">
                     <label for="protocolFile">
