@@ -1,2 +1,93 @@
-<p>protocol-view works!</p>
-currentProtocol: {{currentProtocol}}
+<canano-main-display-heading
+    [helpUrl]="helpUrl"
+    [toolHeadingName]="toolHeadingName">
+</canano-main-display-heading>
+<div class="mainSection" *ngIf="data&&setupData">
+    <div class="error" *ngIf="errors['error']">
+        {{errors['error']}}
+    </div>
+
+    <div class="error" *ngIf="message">
+        {{message}}
+    </div>
+    <div class="mainBorder">
+        <table class="dataMain">
+            <!-- Protocol Type -->
+            <tr>
+                <td class="label">
+                    Protocol Type
+                </td>
+                <td>
+                    {{data.type}}
+                </td>
+            </tr>
+            <!-- -----  END Protocol Type  ----- -->
+            <!-- -----  Protocol Name  ----- -->
+            <tr>
+                <td class="label">
+                    Protocol Name
+                </td>
+                <td>
+                    {{data.name}}
+                </td>
+            </tr>
+            <!--  -----  END Protocol Name  ----- -->
+            <!--  -----  Protocol Abbreviation  ----- -->
+            <tr>
+                <td class="label">
+                    <div>Protocol</div>
+                    <div>Abbreviation</div>
+                </td>
+                <td>
+                    {{data.abbreviation}}
+                </td>
+            </tr>
+            <!-- END Protocol Abbreviation -->
+            <!-- Protocol Version-->
+            <tr>
+                <td class="label">
+                    Protocol Version
+                </td>
+                <td>
+                    {{data.version}}
+                </td>
+            </tr>
+            <!--            END Protocol Version-->
+            <!--            Protocol File-->
+            <tr>
+                <td class="label">
+                    Protocol File
+                </td>
+                <td>
+                    <div *ngIf="data.uri">
+                        <a [href]="downloadUrl+'?protocolId='+protocolId+'&fileId='+data.fileId">
+                            {{data.uri}}
+                        </a>
+                    </div>
+                </td>
+            </tr>
+
+            <!-- Protocol File Title -->
+            <tr>
+                <td class="label">
+                    File Title
+                </td>
+                <td>
+                    {{data.fileTitle}}
+                </td>
+            </tr>
+            <!-- END Protocol File Title -->
+
+            <!--  Description  -->
+            <tr>
+                <td class="label">
+                    Description
+                </td>
+                <td>
+                    {{data.fileDescription}}
+                </td>
+            </tr>
+            <!--  END Description  -->
+        </table>
+    </div>
+</div>

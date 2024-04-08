@@ -72,6 +72,7 @@ export const Consts = {
     QUERY_SAMPLE_GET_CHARACTERIZATION_OPTIONS:  '/rest/sample/getDecoratedCharacterizationOptions',
     QUERY_SAMPLE_GET_DATUM_OPTIONS:  '/rest/sample/getDecoratedDatumOptions',
     QUERY_SAMPLE_GET_DATUM_UNIT_OPTIONS:  '/rest/sample/getDatumUnitOptions',
+    QUERY_SAMPLE_WRITE_ACCESS: '/rest/sample/checkWriteAccess',
 
     QUERY_NANOMATERIAL_UPDATE: '/rest/nanomaterialEntity/submit',
     QUERY_NANOMATERIAL_EDIT: '/rest/nanomaterialEntity/edit',
@@ -90,7 +91,9 @@ export const Consts = {
     QUERY_CREATE_PROTOCOL: '/rest/protocol/submitProtocol',
     QUERY_UPDATE_PROTOCOL: '/rest/protocol/submitProtocol', // SAME AS create
     QUERY_EDIT_PROTOCOL: '/rest/protocol/edit',
+    QUERY_VIEW_PROTOCOL: '/rest/protocol/view',
     QUERY_GET_PROTOCOL: '/rest/protocol/getProtocol',
+    QUERY_PROTOCOL_WRITE_ACCESS: 'rest/protocol/checkWriteAccess',
     QUERY_PROTOCOL_DELETE_ACCESS: '/rest/protocol/deleteAccess',
     QUERY_DOWNLOAD_FILE: '/rest/protocol/download',
     QUERY_PUBLICATION_DOWNLOAD_FILE: '/',
@@ -101,6 +104,7 @@ export const Consts = {
     QUERY_SAMPLE_SEARCH_BY_PUBLICATION: '/rest/publication/searchById',
     QUERY_PUBLICATION_SUMMARY_VIEW: '/rest/publication/summaryView',
     QUERY_PUBLICATION_EDIT: '/rest/publication/edit',
+    QUERY_PUBLICATION_WRITE_ACCESS: 'rest/publication/checkWriteAccess',
     QUERY_PUBLICATION_DELETE: '/rest/publication/deletePublication',
     QUERY_PUBLICATION_DELETE_ACCESS: '/rest/publication/deleteAccess',
     QUERY_PUBLICATION_SAVE_ACCESS: '/rest/publication/saveAccess',
@@ -203,6 +207,7 @@ export const Consts = {
     HELP_URL_PUBLICATIONS: 'https://wiki.nci.nih.gov/x/e4QfEQ',
     HELP_URL_CREATE_PUBLICATIONS: 'https://wiki.nci.nih.gov/x/kIFDHg',
     HELP_URL_EDIT_PUBLICATIONS: 'https://wiki.nci.nih.gov/x/koFDHg',
+    HELP_URL_VIEW_PUBLICATIONS: 'https://wiki.nci.nih.gov/x/koFDHg',
 
     // Publications within sample
     HELP_URL_SAMPLE_PUBLICATIONS: 'https://wiki.nci.nih.gov/x/nYFDHg',
@@ -233,6 +238,7 @@ export const Consts = {
     HELP_URL_PROTOCOL_MANAGE: 'https://wiki.nci.nih.gov/x/eIQfEQ',
     HELP_URL_PROTOCOL_CREATE: 'https://wiki.nci.nih.gov/x/SIFDHg',
     HELP_URL_PROTOCOL_EDIT: 'https://wiki.nci.nih.gov/x/S4FDHg',
+    HELP_URL_PROTOCOL_VIEW: 'https://wiki.nci.nih.gov/x/S4FDHg',
     HELP_URL_PROTOCOL_SEARCH_RESULTS: 'https://wiki.nci.nih.gov/x/VoFDHg',
 
     // Mi TODO: change this to real link

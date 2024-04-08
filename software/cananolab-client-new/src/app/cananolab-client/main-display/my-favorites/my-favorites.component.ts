@@ -10,7 +10,7 @@ import { ProtocolsService } from '../protocols/protocols.service';
     styleUrls: ['./my-favorites.component.scss']
 } )
 export class MyFavoritesComponent implements OnInit{
-    errors={};
+    errors = {};
     helpUrl = Consts.HELP_URL_FAVORITE;
     toolHeadingNameSearchSample = 'My Favorites';
     showSampleFavs = true;
@@ -30,14 +30,14 @@ export class MyFavoritesComponent implements OnInit{
     ngOnInit(): void{
         this.apiService.doGet( Consts.QUERY_GET_FAVORITE, '' ).subscribe(
             data => {
-                this.errors={};
+                this.errors = {};
                 this.favSamples = <any>data['samples'];
                 this.favProtocols = <any>data['protocols'];
                 this.favPublications = <any>data['publications'];
             },
 
             ( err ) => {
-                this.errors=err;
+                this.errors = err;
                 console.error( 'ERROR QUERY_GET_FAVORITE: ', err );
             } );
 
@@ -46,13 +46,13 @@ export class MyFavoritesComponent implements OnInit{
     deleteProtocolFromFavorites( favToDelete ){
         this.apiService.doPost( Consts.QUERY_DELETE_FAVORITE, favToDelete ).subscribe(
             data => {
-                this.errors={};
+                this.errors = {};
                 this.favSamples = <any>data['samples'];
                 this.favProtocols = <any>data['protocols'];
                 this.favPublications = <any>data['publications'];
             },
             err => {
-                this.errors=err;
+                this.errors = err;
                 console.log( 'ERROR deleteSampleFromFavorites: ', err );
             }
         );
@@ -61,13 +61,13 @@ export class MyFavoritesComponent implements OnInit{
     deletePublicationFromFavorites( favToDelete ){
         this.apiService.doPost( Consts.QUERY_DELETE_FAVORITE, favToDelete ).subscribe(
             data => {
-                this.errors={};
+                this.errors = {};
                 this.favSamples = <any>data['samples'];
                 this.favProtocols = <any>data['protocols'];
                 this.favPublications = <any>data['publications'];
             },
             err => {
-                this.errors=err;
+                this.errors = err;
                 console.error( 'ERROR deleteSampleFromFavorites: ', err );
 
             }
@@ -77,35 +77,40 @@ export class MyFavoritesComponent implements OnInit{
     deleteSampleFromFavorites( favToDelete ){
         this.apiService.doPost( Consts.QUERY_DELETE_FAVORITE, favToDelete ).subscribe(
             data => {
-                this.errors={};
+                this.errors = {};
                 this.favSamples = <any>data['samples'];
                 this.favProtocols = <any>data['protocols'];
                 this.favPublications = <any>data['publications'];
 
             },
             err => {
-                this.errors=err;
+                this.errors = err;
                 console.log( 'ERROR deleteSampleFromFavorites: ', err );
             }
         );
     }
 
     navigateToSampleEdit( sampleId ){
-        this.router.navigate( ['home/samples/sample',sampleId] );  // @FIXME  Don't hard code these
+        this.router.navigate( ['home/samples/sample', sampleId] );  // @FIXME  Don't hard code these
     }
 
     navigateToSampleView( sampleId ){
-        this.router.navigate( ['home/samples/view-sample',sampleId] );  // @FIXME  Don't hard code these
+        this.router.navigate( ['home/samples/view-sample', sampleId] );  // @FIXME  Don't hard code these
+    }
+
+    navigateToProtocolView( protocolId ) {
+        // this.protocolsService.setCurrentProtocolScreen( ProtocolScreen.PROTOCOL_VIEW_SCREEN, protocolId );
+        this.router.navigate( ['home/protocols/view-protocol', protocolId] );  // @FIXME  Don't hard code these
     }
 
     navigateToProtocolEdit( protocolId ){
         this.protocolsService.setCurrentProtocolScreen( ProtocolScreen.PROTOCOL_EDIT_SCREEN, protocolId );
-        this.router.navigate( ['home/protocols/edit-protocol',protocolId] );  // @FIXME  Don't hard code these
+        this.router.navigate( ['home/protocols/edit-protocol', protocolId] );  // @FIXME  Don't hard code these
     }
 
 
     navigateToPublicationEdit( publicationId ){
-        this.router.navigate( ['home/samples/publications/publication',publicationId] );  // @FIXME  Don't hard code these
+        this.router.navigate( ['home/samples/publications/publication', publicationId] );  // @FIXME  Don't hard code these
     }
 
 }

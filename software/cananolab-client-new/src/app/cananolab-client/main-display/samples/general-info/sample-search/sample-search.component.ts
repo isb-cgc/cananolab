@@ -80,6 +80,9 @@ export class SampleSearchComponent implements OnInit {
         this.apiService.doGet( Consts.QUERY_GET_CHARACTERIZATION_BY_TYPE, 'type=' + charType ).subscribe(
             data => {
                 this.characterizationsList = <any>data;
+                if (this.characterizationsList.length > 0) {
+                    this.data.characterizations.push(this.characterizationsList[0]);
+                }
             } );
 
     }
