@@ -91,6 +91,7 @@ export const Consts = {
     QUERY_CREATE_PROTOCOL: '/rest/protocol/submitProtocol',
     QUERY_UPDATE_PROTOCOL: '/rest/protocol/submitProtocol', // SAME AS create
     QUERY_EDIT_PROTOCOL: '/rest/protocol/edit',
+    QUERY_VIEW_PROTOCOL: '/rest/protocol/view',
     QUERY_GET_PROTOCOL: '/rest/protocol/getProtocol',
     QUERY_PROTOCOL_WRITE_ACCESS: 'rest/protocol/checkWriteAccess',
     QUERY_PROTOCOL_DELETE_ACCESS: '/rest/protocol/deleteAccess',

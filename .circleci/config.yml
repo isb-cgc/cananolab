@@ -186,7 +186,7 @@ jobs:
       - deploy:
           nane: Deployment
           command: |
-            sudo -E gcloud app deploy --verbosity=debug ./app.yaml --quiet
+            sudo -E gcloud app deploy --verbosity=debug ./app.yaml --service-account=${WEB_RUNTIME_SA_NAME} --quiet
 workflows:
   version: 2
   build_and_deploy:

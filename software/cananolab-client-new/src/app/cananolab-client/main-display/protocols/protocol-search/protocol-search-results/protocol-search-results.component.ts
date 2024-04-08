@@ -22,22 +22,22 @@ import { throwError } from 'rxjs'
 export class ProtocolSearchResultsComponent implements OnInit, OnDestroy {
     searchResults;
     columnHeadings = [
-        {Actions:'Actions'},
-        {type:'Protocol Type'},
-        {viewName:'Protocol Name'},
-        {abbreviation:'Abbreviation'},
-        {version:'Version'},
-        {fileInfo:'File'},
-        {createdDate:'Created'}
+        {Actions: 'Actions'},
+        {type: 'Protocol Type'},
+        {viewName: 'Protocol Name'},
+        {abbreviation: 'Abbreviation'},
+        {version: 'Version'},
+        {fileInfo: 'File'},
+        {createdDate: 'Created'}
     ];
-    consts=Consts;
+    consts = Consts;
     maxPageLength = Properties.MAX_PAGE_LENGTH;
     pageLength = Properties.DEFAULT_PAGE_LENGTH;
     pageCount = 10;
     searchResultsCount = -1;
     currentPage = 0;
     searchResultsPageToDisplay;
-    helpUrl=Consts.HELP_URL_PROTOCOL_SEARCH_RESULTS;
+    helpUrl = Consts.HELP_URL_PROTOCOL_SEARCH_RESULTS;
     sortingStates = [
         SortState.NO_SORT,
         SortState.NO_SORT,
@@ -88,7 +88,7 @@ export class ProtocolSearchResultsComponent implements OnInit, OnDestroy {
 
     isProtocolView(column) {
         if (!Properties.LOGGED_IN) {
-            if (column['key']=='Actions') {
+            if (column['key'] == 'Actions') {
                 return true
             }
         }
@@ -116,8 +116,8 @@ export class ProtocolSearchResultsComponent implements OnInit, OnDestroy {
     }
 
     formatFileField(data) {
-        //console.log(data)
-        data = data.replace(/(^[^\/])/,"/$1");
+        // console.log(data)
+        data = data.replace(/(^[^\/])/, '/$1');
         return data;
     }
 
@@ -153,19 +153,53 @@ export class ProtocolSearchResultsComponent implements OnInit, OnDestroy {
     }
 
     onEditClick(protocolToEdit) {
-        this.router.navigate([
-            'home/protocols/edit-protocol',
-            protocolToEdit.id,
-        ]);
+        if (protocolToEdit.editable) {
+            this.router.navigate([
+                'home/protocols/edit-protocol',
+                protocolToEdit.id,
+            ]);
+        } else {
+            this.router.navigate([
+                'home/protocols/view-protocol',
+                protocolToEdit.id,
+            ]);
+        }
         // this.protocolsService.setCurrentProtocolScreen( ProtocolScreen.PROTOCOL_EDIT_SCREEN, protocolToEdit.id );
     }
 
+    navigateToProtocol(protocolId) {
+        if (this.properties.LOGGED_IN) {
+            let url = this.apiService.doGet(
+                Consts.QUERY_PROTOCOL_WRITE_ACCESS,
+                'protocolId=' + protocolId
+            );
+
+            url.subscribe(data => {
+                let hasWriteAccess = data;
+
+                if (hasWriteAccess) {
+                    this.router.navigate(['home/protocols/edit-protocol'], protocolId);
+                } else {
+                    this.router.navigate(['home/protocols/edit-protocol'], protocolId);
+                }
+            },
+            error => {
+                console.log(error)
+            })
+        } else {
+            // not logged in
+            this.router.navigate(['home/protocols/view-protocol', protocolId])
+        }
+    }
+
+    /*
     onViewClick(protocolToView) {
         this.protocolsService.setCurrentProtocolScreen(
             ProtocolScreen.PROTOCOL_VIEW_SCREEN,
             protocolToView.id
         );
     }
+    */
 
     addToFavorites(res,
         protocolId,
@@ -190,7 +224,7 @@ export class ProtocolSearchResultsComponent implements OnInit, OnDestroy {
             .doPost(Consts.QUERY_ADD_FAVORITE, <any>queryData)
             .subscribe(
                 (data) => {
-                    res['addedToFavorites']=data;
+                    res['addedToFavorites'] = data;
                     console.log('Data back from addToFavorites: ', data);
                 },
                 (err) => {
