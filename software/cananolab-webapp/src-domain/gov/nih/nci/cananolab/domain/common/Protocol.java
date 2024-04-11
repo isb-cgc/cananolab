@@ -1,6 +1,6 @@
 package gov.nih.nci.cananolab.domain.common;
 
-import javax.persistence.*;
+//import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
 
@@ -8,8 +8,6 @@ import java.util.Date;
 	* The formal plan of an experiment or research activity, including the objective, rationale, design, materials and methods for the conduct of the study; intervention description, and method of data analysis
 	**/
 
-@Entity
-@Table(name = "protocol")
 public class Protocol  implements Serializable
 {
 	/**
@@ -30,8 +28,6 @@ public class Protocol  implements Serializable
 	* @return abbreviation
 	**/
 
-	@Basic
-	@Column(name = "protocol_abbreviation")
 	public String getAbbreviation(){
 		return abbreviation;
 	}
@@ -54,8 +50,6 @@ public class Protocol  implements Serializable
 	* @return createdBy
 	**/
 
-	@Basic
-	@Column(name = "created_by")
 	public String getCreatedBy(){
 		return createdBy;
 	}
@@ -78,8 +72,6 @@ public class Protocol  implements Serializable
 	* @return createdDate
 	**/
 
-	@Basic
-	@Column(name = "created_date")
 	public Date getCreatedDate(){
 		return createdDate;
 	}
@@ -102,9 +94,6 @@ public class Protocol  implements Serializable
 	* @return id
 	**/
 
-	@Id
-	@GeneratedValue
-	@Column(name = "protocol_pk_id")
 	public Long getId(){
 		return id;
 	}
@@ -127,8 +116,6 @@ public class Protocol  implements Serializable
 	* @return name
 	**/
 
-	@Basic
-	@Column(name = "protocol_name")
 	public String getName(){
 		return name;
 	}
@@ -151,8 +138,6 @@ public class Protocol  implements Serializable
 	* @return type
 	**/
 
-	@Basic
-	@Column(name = "protocol_type")
 	public String getType(){
 		return type;
 	}
@@ -175,8 +160,6 @@ public class Protocol  implements Serializable
 	* @return version
 	**/
 
-	@Basic
-	@Column(name = "protocol_version")
 	public String getVersion(){
 		return version;
 	}
@@ -199,8 +182,6 @@ public class Protocol  implements Serializable
 	* @return file
 	**/
 	
-	@ManyToOne
-	@JoinColumn(name = "file_pk_id", unique = true)
 	public File getFile(){
 		return file;
 	}
@@ -237,8 +218,6 @@ public class Protocol  implements Serializable
 		return 0;
 	}
 
-	@Basic
-	@Column(name = "doi")
 	public String getDoi() {
 		return doi;
 	}
