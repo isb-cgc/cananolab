@@ -13,9 +13,7 @@ public class SimpleSubmitProtocolBean {
 	String name = "";
 	String abbreviation = "";
 	String version = "";
-	/* todo uncomment after doi getter/setter generation
 	String doi = "";
-	*/
 	Long fileId;
 	Long id = 0L;
 	String fileTitle = "";
