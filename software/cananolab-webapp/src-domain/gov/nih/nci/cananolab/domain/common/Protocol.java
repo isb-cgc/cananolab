@@ -194,7 +194,7 @@ public class Protocol  implements Serializable
 	}
 			
 	/**
-	* Compares <code>obj</code> to it self and returns true if they both are same
+	* Compares <code>obj</code> to itself and returns true if they both are same
 	*
 	* @param obj
 	**/
