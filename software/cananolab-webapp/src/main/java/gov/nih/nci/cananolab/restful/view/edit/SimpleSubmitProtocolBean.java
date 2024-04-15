@@ -128,10 +128,10 @@ public class SimpleSubmitProtocolBean {
 	public void setAbbreviation(String abbreviation) {
 		this.abbreviation = abbreviation;
 	}
-	public String getDOI() {
+	public String getDoi() {
 		return doi;
 	}
-	public void setDOI(String doi) {
+	public void setDoi(String doi) {
 		this.doi = doi;
 	}
 	public String getVersion() {

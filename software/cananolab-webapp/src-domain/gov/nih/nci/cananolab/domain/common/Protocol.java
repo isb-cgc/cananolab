@@ -21,8 +21,6 @@ public class Protocol  implements Serializable
 	**/
 	
 	private String abbreviation;
-	private String doi;
-
 	/**
 	* Retrieves the value of the abbreviation attribute
 	* @return abbreviation
@@ -171,6 +169,16 @@ public class Protocol  implements Serializable
 	public void setVersion(String version){
 		this.version = version;
 	}
+
+	private String doi;
+
+	public String getDoi() {
+		return doi;
+	}
+
+	public void setDoi(String doi) {
+		this.doi = doi;
+	}
 	
 	/**
 	* An associated gov.nih.nci.cananolab.domain.common.File object
@@ -216,13 +224,5 @@ public class Protocol  implements Serializable
 		if(getId() != null)
 			return getId().hashCode();
 		return 0;
-	}
-
-	public String getDoi() {
-		return doi;
-	}
-
-	public void setDoi(String doi) {
-		this.doi = doi;
 	}
 }

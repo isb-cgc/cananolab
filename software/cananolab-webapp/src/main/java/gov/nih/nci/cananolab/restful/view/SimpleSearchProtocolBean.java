@@ -12,6 +12,7 @@ public class SimpleSearchProtocolBean {
 	String viewName;
 	String abbreviation;
 	String version;
+	String doi;
 	Date createdDate;
 	String fileInfo;
 	long id;
@@ -74,6 +75,12 @@ public class SimpleSearchProtocolBean {
 	public void setAbbreviation(String abbreviation) {
 		this.abbreviation = abbreviation;
 	}
+	public String getDoi() {
+		return doi;
+	}
+	public void setDoi(String doi) {
+		this.doi = doi;
+	}
 	public String getVersion() {
 		return version;
 	}
@@ -97,6 +104,7 @@ public class SimpleSearchProtocolBean {
 		this.setType(bean.getDomain().getType());
 		this.setViewName(bean.getDomain().getName());
 		this.setAbbreviation(bean.getDomain().getAbbreviation());
+		this.setDoi(bean.getDomain().getDoi());
 		this.setVersion(bean.getDomain().getVersion());
 		// WJRL 2/6/23: File info is (partially) HTML escaped with breaks
 		String fileInformation = fileInfo(bean);

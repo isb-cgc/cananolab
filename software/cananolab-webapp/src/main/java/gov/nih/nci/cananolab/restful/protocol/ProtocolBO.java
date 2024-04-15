@@ -119,7 +119,7 @@ public class ProtocolBO extends BaseAnnotationBO
 		protocol.setId(bean.getId());
 		protocol.setCreatedBy(bean.getCreatedBy());
 		protocol.setAbbreviation(bean.getAbbreviation());
-		// todo uncomment after getter and setter created: protocol.setDOI(bean.getDOI());
+		protocol.setDoi(bean.getDoi());
 		proBean.setFileBean(fileBean);
 		proBean.setGroupAccesses(bean.getGroupAccesses());
 		proBean.setUserAccesses(bean.getUserAccesses());
@@ -181,13 +181,11 @@ public class ProtocolBO extends BaseAnnotationBO
 			errors.add(PropertyUtil.getProperty("protocol", "protocol.version.invalid"));
 		}
 
-		/* todo uncomment after doi getter/setter generation
 		String doi = protocol.getDoi();
 
 		if(InputValidationUtil.isTextFieldWhiteList(doi)) {
 			errors.add(PropertyUtil.getProperty("protocol", "protocol.doi.invalid"));
 		}
-		*/
 
 		String abbreviation = protocol.getAbbreviation();
 		
@@ -304,6 +302,7 @@ public class ProtocolBO extends BaseAnnotationBO
 		bean.setAbbreviation(protocolBean.getDomain().getAbbreviation());
 		bean.setCreatedBy(protocolBean.getDomain().getCreatedBy());
 		bean.setCreatedDate(protocolBean.getDomain().getCreatedDate());
+		bean.setDoi(protocolBean.getDomain().getDoi());
 		
 		if(protocolBean.getDomain().getFile()!= null){
 		//	setFileDescription(bean.getDomain().getFile().getDescription());
