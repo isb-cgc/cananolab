@@ -86,15 +86,6 @@ export class ProtocolSearchResultsComponent implements OnInit, OnDestroy {
         this.onPageLengthChange();
     }
 
-    isProtocolView(column) {
-        if (!Properties.LOGGED_IN) {
-            if (column['key'] == 'Actions') {
-                return true
-            }
-        }
-        return false
-    }
-
     onPageLengthChange() {
         if (this.pageLength < 1) {
             this.pageLength = 1;
@@ -180,7 +171,7 @@ export class ProtocolSearchResultsComponent implements OnInit, OnDestroy {
                 if (hasWriteAccess) {
                     this.router.navigate(['home/protocols/edit-protocol'], protocolId);
                 } else {
-                    this.router.navigate(['home/protocols/edit-protocol'], protocolId);
+                    this.router.navigate(['home/protocols/view-protocol'], protocolId);
                 }
             },
             error => {

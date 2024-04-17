@@ -9,6 +9,7 @@ import gov.nih.nci.cananolab.exception.NotExistException;
 import gov.nih.nci.cananolab.restful.core.BaseAnnotationBO;
 import gov.nih.nci.cananolab.restful.util.InputValidationUtil;
 import gov.nih.nci.cananolab.restful.util.PropertyUtil;
+import gov.nih.nci.cananolab.restful.view.SimpleProtocolBean;
 import gov.nih.nci.cananolab.restful.view.edit.SimpleSubmitProtocolBean;
 import gov.nih.nci.cananolab.security.AccessControlInfo;
 import gov.nih.nci.cananolab.security.CananoUserDetails;
@@ -296,7 +297,33 @@ public class ProtocolBO extends BaseAnnotationBO
 		transferProtocolBeanForEdit(protocolBean, bean, request);
 		return bean;
 	}
-	
+
+	/**
+	 * Handle read-only protocol view request.
+	 * @param protocolId id of protocol object
+	 * @param request http request object
+	 * @return SimpleProtocolBean containing the display data
+	 * @throws Exception NotExistException, if provided protocol id is invalid
+	 */
+	public SimpleProtocolBean summaryView(String protocolId, HttpServletRequest request) throws Exception {
+		ProtocolForm form = new ProtocolForm();
+		SimpleProtocolBean simpleBean = new SimpleProtocolBean();
+		protocolId = super.validateId(request, "protocolId");
+		ProtocolBean protocolBean = protocolService.findProtocolById(protocolId);
+
+		if (protocolBean == null)
+			throw new NotExistException("No such protocol in the database");
+
+		form.setProtocol(protocolBean);
+
+		request.getSession().setAttribute("updateProtocol", "true");
+		request.getSession().setAttribute("theProtocol", protocolBean);
+
+		simpleBean.transferProtocolBeanForSummaryView(protocolBean);
+
+		return simpleBean;
+	}
+
 	public void transferProtocolBeanForEdit(ProtocolBean protocolBean, SimpleSubmitProtocolBean bean, HttpServletRequest request)
 	{
 		bean.setAbbreviation(protocolBean.getDomain().getAbbreviation());

@@ -140,6 +140,7 @@ public class SimpleSearchProtocolBean {
 						.append(StringUtils
 								.escapeXmlButPreserveLineBreaks(description)).append("<br>");
 			}
+			/* LAW: removing the old "View" link which triggered a file download
 			if (file.getDomainFile().getId() != null) {
 				// set fileId for favorites section
 				this.setFileId(file.getDomainFile().getId());
@@ -151,6 +152,7 @@ public class SimpleSearchProtocolBean {
 				sb.append(linkText);
 				sb.append("</a>");
 			}
+			*/
 		}
 		return sb.toString();
 	}

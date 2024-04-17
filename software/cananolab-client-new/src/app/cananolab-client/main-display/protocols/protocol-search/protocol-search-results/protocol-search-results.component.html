@@ -27,7 +27,7 @@
 		<table class="dataTable">
 			<tr>
                 <ng-container *ngFor="let col of columnHeadings; let i = index">
-					<th *ngFor="let colKeyValue of col | keyvalue" [ngClass]="{'hidden':isProtocolView(colKeyValue)}" class="unselectable hand" (click)="onSortClick(i,colKeyValue.key)">
+					<th *ngFor="let colKeyValue of col | keyvalue" class="unselectable hand" (click)="onSortClick(i,colKeyValue.key)">
                         <label for="sortClick" class="hand">
                             {{ colKeyValue.value }}
                             <span *ngIf="i > 0" id="sortClick" class="inline">
@@ -59,11 +59,16 @@
                 '': even,
                 'rowOdd': odd
             }">
+                <td class="search-results-td">
+                <!--
 				<td class="search-results-td" [ngClass]="{'hidden':!properties.LOGGED_IN}">
+
                     <a *ngIf="properties.LOGGED_IN&&!res['editable']" (click)="onEditClick(res)">
                         View
                     </a>
                     <a *ngIf="properties.LOGGED_IN&&res['editable']" (click)="onEditClick(res)">
+                    -->
+                    <a (click)="onEditClick(res)">
                         Details
                     </a>
 

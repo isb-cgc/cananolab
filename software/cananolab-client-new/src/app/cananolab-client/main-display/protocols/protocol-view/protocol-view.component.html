@@ -2,7 +2,7 @@
     [helpUrl]="helpUrl"
     [toolHeadingName]="toolHeadingName">
 </canano-main-display-heading>
-<div class="mainSection" *ngIf="data&&setupData">
+<div class="mainSection" *ngIf="protocolData">
     <div class="error" *ngIf="errors['error']">
         {{errors['error']}}
     </div>
@@ -18,7 +18,7 @@
                     Protocol Type
                 </td>
                 <td>
-                    {{data.type}}
+                    {{protocolData.protocolType}}
                 </td>
             </tr>
             <!-- -----  END Protocol Type  ----- -->
@@ -28,7 +28,7 @@
                     Protocol Name
                 </td>
                 <td>
-                    {{data.name}}
+                    {{protocolData.protocolName}}
                 </td>
             </tr>
             <!--  -----  END Protocol Name  ----- -->
@@ -39,7 +39,7 @@
                     <div>Abbreviation</div>
                 </td>
                 <td>
-                    {{data.abbreviation}}
+                    {{protocolData.protocolAbbreviation}}
                 </td>
             </tr>
             <!-- END Protocol Abbreviation -->
@@ -49,19 +49,29 @@
                     Protocol Version
                 </td>
                 <td>
-                    {{data.version}}
+                    {{protocolData.protocolVersion}}
                 </td>
             </tr>
             <!--            END Protocol Version-->
+            <!-- Protocol DOI-->
+            <tr>
+                <td class="label">
+                    DOI
+                </td>
+                <td>
+                    {{protocolData.doi}}
+                </td>
+            </tr>
+            <!--            END Protocol DOI-->
             <!--            Protocol File-->
             <tr>
                 <td class="label">
                     Protocol File
                 </td>
                 <td>
-                    <div *ngIf="data.uri">
-                        <a [href]="downloadUrl+'?protocolId='+protocolId+'&fileId='+data.fileId">
-                            {{data.uri}}
+                    <div *ngIf="protocolData.uri">
+                        <a [href]="downloadUrl+'?protocolId='+protocolId+'&fileId='+protocolData.fileId">
+                            {{protocolData.uri}}
                         </a>
                     </div>
                 </td>
@@ -73,7 +83,7 @@
                     File Title
                 </td>
                 <td>
-                    {{data.fileTitle}}
+                    {{protocolData.fileTitle}}
                 </td>
             </tr>
             <!-- END Protocol File Title -->
@@ -84,7 +94,7 @@
                     Description
                 </td>
                 <td>
-                    {{data.fileDescription}}
+                    {{protocolData.fileDescription}}
                 </td>
             </tr>
             <!--  END Description  -->
