@@ -60,24 +60,12 @@
                 'rowOdd': odd
             }">
                 <td class="search-results-td">
-                <!--
-				<td class="search-results-td" [ngClass]="{'hidden':!properties.LOGGED_IN}">
-
-                    <a *ngIf="properties.LOGGED_IN&&!res['editable']" (click)="onEditClick(res)">
-                        View
-                    </a>
-                    <a *ngIf="properties.LOGGED_IN&&res['editable']" (click)="onEditClick(res)">
-                    -->
-                    <a (click)="onEditClick(res)">
+                    <a *ngIf="properties.LOGGED_IN" (click)="navigateToProtocol(res.id)">
                         Details
                     </a>
-
-					<!--  I thought we showed the "View" if they are not logged in (I was wrong)
-                       <div *ngIf="! properties.logged_in"
-                            class="protocol-search-results-edit-button mb-2"
-                            (click)="onViewClick(res)"
-                        >View</div>
-                    -->
+                    <a *ngIf="!properties.LOGGED_IN" (click)="navigateToProtocol(res.id)">
+                        View
+                    </a>
                     <div *ngIf="res['addedToFavorites']">
                         {{res['addedToFavorites'][0]}}
                     </div>

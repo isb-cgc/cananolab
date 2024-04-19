@@ -144,54 +144,77 @@ export class ProtocolSearchResultsComponent implements OnInit, OnDestroy {
     }
 
     onEditClick(protocolToEdit) {
-        if (protocolToEdit.editable) {
-            this.router.navigate([
-                'home/protocols/edit-protocol',
-                protocolToEdit.id,
-            ]);
-        } else {
-            this.router.navigate([
-                'home/protocols/view-protocol',
-                protocolToEdit.id,
-            ]);
-        }
+        this.router.navigate(['home/protocols/edit-protocol', protocolToEdit.id]);
         // this.protocolsService.setCurrentProtocolScreen( ProtocolScreen.PROTOCOL_EDIT_SCREEN, protocolToEdit.id );
+    }
+
+    onViewClick(protocolToView) {
+        this.router.navigate(['home/protocols/view-protocol', protocolToView.id]);
     }
 
     navigateToProtocol(protocolId) {
         if (this.properties.LOGGED_IN) {
-            let url = this.apiService.doGet(
-                Consts.QUERY_PROTOCOL_WRITE_ACCESS,
-                'protocolId=' + protocolId
-            );
-
+            let url = this.apiService.doGet(Consts.QUERY_PROTOCOL_WRITE_ACCESS, 'protocolId=' + protocolId);
             url.subscribe(data => {
-                let hasWriteAccess = data;
-
-                if (hasWriteAccess) {
-                    this.router.navigate(['home/protocols/edit-protocol'], protocolId);
-                } else {
-                    this.router.navigate(['home/protocols/view-protocol'], protocolId);
-                }
-            },
-            error => {
-                console.log(error)
-            })
-        } else {
-            // not logged in
-            this.router.navigate(['home/protocols/view-protocol', protocolId])
+                    let hasWriteAccess = data;
+                    if (hasWriteAccess) {
+                        console.log('has write access');
+                        // current user have write access
+                        this.router.navigate(['home/protocols/edit-protocol', protocolId]); // @FIXME  Don't hard code these
+                    } else {
+                        console.log('no write access');
+                        this.router.navigate(['home/protocols/view-protocol', protocolId]); // @FIXME  Don't hard code these
+                    }
+                },
+                error => {
+                    console.log(error);
+                })
+        }
+        else {
+            // Not logged in
+            console.log('not logged in');
+            this.router.navigate(['home/protocols/view-protocol', protocolId]); // @FIXME  Don't hard code these
         }
     }
 
-    /*
-    onViewClick(protocolToView) {
-        this.protocolsService.setCurrentProtocolScreen(
-            ProtocolScreen.PROTOCOL_VIEW_SCREEN,
-            protocolToView.id
-        );
-    }
-    */
+/*
 
+    navigateToProtocol(protocol) {
+        if (!this.properties.LOGGED_IN) {
+            // not logged in
+            this.router.navigate(['home/protocols/view-protocol', protocol.id]);
+        } else {
+            this.hasWriteAccess(protocol.id).subscribe(
+                data => {
+                    console.log(data);
+                    let hasWriteAccess = data;
+
+                    if (hasWriteAccess) {
+                        this.router.navigate(['home/protocols/edit-protocol'], protocol.id);
+                    } else {
+                        this.router.navigate(['home/protocols/view-protocol'], protocol.id);
+                    }
+                },
+                error => {
+                    console.log(error);
+                });
+        }
+    }
+
+    hasWriteAccess(protocolId) {
+        let hasWriteAccess;
+        let getUrl = Consts.QUERY_PROTOCOL_WRITE_ACCESS;
+
+        try {
+            hasWriteAccess = this.apiService.doGet(getUrl, 'protocolId=' + protocolId);
+        } catch(err) {
+            console.error('doGet Exception: ' + err);
+        }
+
+        return hasWriteAccess;
+    }
+
+ */
     addToFavorites(res,
         protocolId,
         protocolName,

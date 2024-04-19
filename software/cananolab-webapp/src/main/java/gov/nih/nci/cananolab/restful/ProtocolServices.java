@@ -281,9 +281,10 @@ public class ProtocolServices
 
 		ProtocolBO protocolBO = (ProtocolBO) SpringApplicationContext.getBean(httpRequest, "protocolBO");
 
+		/*
 		if (!SpringSecurityUtil.isUserLoggedIn())
 			return Response.status(Response.Status.UNAUTHORIZED).entity(Constants.MSG_SESSION_INVALID).build();
-
+		*/
 		try {
 			if (!protocolBO.isProtocolEditableByCurrentUser(httpRequest, protocolId)) {
 				logger.info("User has no write access to protocol");
