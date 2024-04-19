@@ -207,11 +207,11 @@ public class ProtocolServiceLocalImpl extends BaseServiceLocalImpl implements Pr
 	}
 
 	public List<ProtocolBean> findProtocolsBy(String protocolType,
-			String protocolName, String protocolAbbreviation, String fileTitle)
+			String protocolName, String protocolAbbreviation, String fileTitle, String doi)
 			throws ProtocolException {
 		List<ProtocolBean> protocolBeans = new ArrayList<ProtocolBean>();
 		try {
-			List<Protocol> protocols = protocolServiceHelper.findProtocolsBy(protocolType, protocolName, protocolAbbreviation, fileTitle);
+			List<Protocol> protocols = protocolServiceHelper.findProtocolsBy(protocolType, protocolName, protocolAbbreviation, fileTitle, doi);
 			Collections.sort(protocols, new Comparators.ProtocolDateComparator());
 			for (Protocol protocol : protocols) {
 				// don't need to load accessibility
@@ -422,7 +422,7 @@ public class ProtocolServiceLocalImpl extends BaseServiceLocalImpl implements Pr
 		} else {
 			protocolType = null; // update if in vivo is implemented
 		}
-		List<ProtocolBean> protocols = findProtocolsBy(protocolType, null, null, null);
+		List<ProtocolBean> protocols = findProtocolsBy(protocolType, null, null, null, null);
 		request.getSession().setAttribute("characterizationProtocols", protocols);
 		return protocols;
 	}
@@ -430,7 +430,7 @@ public class ProtocolServiceLocalImpl extends BaseServiceLocalImpl implements Pr
 	public List<ProtocolBean> getSynthesisProtocols(HttpServletRequest request) throws Exception {
 		String protocolType = "synthesis";
 
-		List<ProtocolBean> protocols = findProtocolsBy(protocolType, null, null, null);
+		List<ProtocolBean> protocols = findProtocolsBy(protocolType, null, null, null, null);
 		request.getSession().setAttribute("synthesisProtocols", protocols);
 		return protocols;
 	}

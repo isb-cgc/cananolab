@@ -303,8 +303,11 @@ public class ProtocolServices
 	@GET
 	@Path("/getProtocol")
 	@Produces ("application/json")
-	public Response getProtocol(@Context HttpServletRequest httpRequest, 
-			@DefaultValue("") @QueryParam("protocolType") String protocolType, @DefaultValue("") @QueryParam("protocolName") String protocolName, @DefaultValue("") @QueryParam("protocolVersion") String protocolVersion){
+	public Response getProtocol(
+			@Context HttpServletRequest httpRequest,
+			@DefaultValue("") @QueryParam("protocolType") String protocolType,
+			@DefaultValue("") @QueryParam("protocolName") String protocolName,
+			@DefaultValue("") @QueryParam("protocolVersion") String protocolVersion){
 
 		try { 
 			ProtocolManager protocolManager = (ProtocolManager) SpringApplicationContext.getBean(httpRequest, "protocolManager");
