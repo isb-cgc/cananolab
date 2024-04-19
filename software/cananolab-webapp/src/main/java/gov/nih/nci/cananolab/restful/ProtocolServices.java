@@ -15,6 +15,8 @@ import javax.ws.rs.core.Context;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.MediaType;
 
+import gov.nih.nci.cananolab.restful.view.SimpleProtocolBean;
+import gov.nih.nci.cananolab.restful.view.SimpleSampleBean;
 import org.apache.logging.log4j.LogManager;
 
 import gov.nih.nci.cananolab.dto.common.DataReviewStatusBean;
@@ -137,7 +139,7 @@ public class ProtocolServices
 	@Produces ("application/json")
 	public Response edit(@Context HttpServletRequest httpRequest, @DefaultValue("") @QueryParam("protocolId") String protocolId)
 	{
-		try { 
+		try {
 			ProtocolBO protocolBO = (ProtocolBO) SpringApplicationContext.getBean(httpRequest, "protocolBO");
 
 			if (!SpringSecurityUtil.isUserLoggedIn())
@@ -162,6 +164,40 @@ public class ProtocolServices
 		}
 	}
 
+	@GET
+	@Path("/view")
+	@Produces("application/json")
+	public Response view(@Context HttpServletRequest httpRequest,
+						 @DefaultValue("") @QueryParam("protocolId") String protocolId) {
+		System.out.println("Hitting endpoint");
+		try {
+			ProtocolBO protocolBO = (ProtocolBO) SpringApplicationContext.getBean(httpRequest, "protocolBO");
+			SimpleProtocolBean protocolBean = protocolBO.summaryView(protocolId, httpRequest);
+
+			// SimpleSubmitProtocolBean view = protocolBO.setupUpdate(protocolId, httpRequest);
+
+			List<String> errors = protocolBean.getErrors();
+
+
+			if (errors == null || errors.isEmpty()) {
+				// return Response.ok(protocolBean).build();
+				return Response.ok(protocolBean)
+						.header("Access-Control-Allow-Credentials", "true")
+						.header("Access-Control-Allow-Origin", "*")
+						.header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS")
+						.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization")
+						.build();
+			} else {
+				System.out.println("Error, server.");
+				return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(errors).build();
+			}
+		} catch (Exception e) {
+			logger.error(e.getMessage());
+			System.out.println("Error, exception handled.");
+			e.printStackTrace();
+			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(CommonUtil.wrapErrorMessageInList("Error while viewing for protocol " + e.getMessage())).build();
+		}
+	}
 
 	@POST
 	@Path("/saveAccess")
@@ -245,9 +281,10 @@ public class ProtocolServices
 
 		ProtocolBO protocolBO = (ProtocolBO) SpringApplicationContext.getBean(httpRequest, "protocolBO");
 
+		/*
 		if (!SpringSecurityUtil.isUserLoggedIn())
 			return Response.status(Response.Status.UNAUTHORIZED).entity(Constants.MSG_SESSION_INVALID).build();
-
+		*/
 		try {
 			if (!protocolBO.isProtocolEditableByCurrentUser(httpRequest, protocolId)) {
 				logger.info("User has no write access to protocol");

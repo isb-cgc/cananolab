@@ -64,7 +64,9 @@
 		<intercept-url pattern="/rest/protocol/searchProtocol" access="permitAll" />
 		<intercept-url pattern="/rest/protocol/download" access="permitAll" />
 		<intercept-url pattern="/rest/protocol/setup" access="permitAll" />
-		
+		<intercept-url pattern="/rest/protocol/view" access="permitAll" />
+		<intercept-url pattern="/rest/protocol/checkWriteAccess" access="permitAll" />
+
 		<intercept-url pattern="/rest/synthesis/summaryView" access="permitAll()"/>
 		<intercept-url pattern="/rest/synthesisMaterial/setup" access="permitAll()"/>
 		<intercept-url pattern="/rest/synthesisPurification/setup" access="permitAll()"/>
