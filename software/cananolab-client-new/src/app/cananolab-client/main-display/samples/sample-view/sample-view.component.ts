@@ -42,10 +42,9 @@ export class SampleViewComponent implements OnInit{
         this.route.params.subscribe(
             ( params: Params ) => {
                 this.sampleId = params['sampleId'].replace( /^.*\?sampleId=/, '' );
-                if(
-                    this.sampleId <= 0 ){
+                if (this.sampleId <= 0) {
                     this.sampleId = Properties.CURRENT_SAMPLE_ID;
-                }else{
+                } else {
                     Properties.CURRENT_SAMPLE_ID = this.sampleId;
                 }
 

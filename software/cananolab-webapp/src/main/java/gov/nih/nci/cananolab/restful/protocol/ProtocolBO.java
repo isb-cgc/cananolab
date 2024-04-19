@@ -9,6 +9,7 @@ import gov.nih.nci.cananolab.exception.NotExistException;
 import gov.nih.nci.cananolab.restful.core.BaseAnnotationBO;
 import gov.nih.nci.cananolab.restful.util.InputValidationUtil;
 import gov.nih.nci.cananolab.restful.util.PropertyUtil;
+import gov.nih.nci.cananolab.restful.view.SimpleProtocolBean;
 import gov.nih.nci.cananolab.restful.view.edit.SimpleSubmitProtocolBean;
 import gov.nih.nci.cananolab.security.AccessControlInfo;
 import gov.nih.nci.cananolab.security.CananoUserDetails;
@@ -119,6 +120,7 @@ public class ProtocolBO extends BaseAnnotationBO
 		protocol.setId(bean.getId());
 		protocol.setCreatedBy(bean.getCreatedBy());
 		protocol.setAbbreviation(bean.getAbbreviation());
+		protocol.setDoi(bean.getDoi());
 		proBean.setFileBean(fileBean);
 		proBean.setGroupAccesses(bean.getGroupAccesses());
 		proBean.setUserAccesses(bean.getUserAccesses());
@@ -165,6 +167,7 @@ public class ProtocolBO extends BaseAnnotationBO
 		if(InputValidationUtil.isTextFieldWhiteList(name)){
 			errors.add(PropertyUtil.getProperty("protocol", "protocol.name.invalid"));
 		}
+
 		String type = protocol.getType();
 		if(type == null||type == ""){
 			errors.add("Protocol Type is required.");
@@ -172,28 +175,37 @@ public class ProtocolBO extends BaseAnnotationBO
 		if(InputValidationUtil.isTextFieldWhiteList(type)){
 			errors.add(PropertyUtil.getProperty("protocol", "protocol.type.invalid"));
 		}
+
 		String version = protocol.getVersion();
 		
 		if(InputValidationUtil.isTextFieldWhiteList(version)){
 			errors.add(PropertyUtil.getProperty("protocol", "protocol.version.invalid"));
 		}
+
+		String doi = protocol.getDoi();
+
+		if(InputValidationUtil.isTextFieldWhiteList(doi)) {
+			errors.add(PropertyUtil.getProperty("protocol", "protocol.doi.invalid"));
+		}
+
 		String abbreviation = protocol.getAbbreviation();
 		
 		if(InputValidationUtil.isTextFieldWhiteList(abbreviation)){
 			errors.add(PropertyUtil.getProperty("protocol", "protocol.abbreviation.invalid"));
 		}
+
 		String title = protocolBean.getFileBean().getDomainFile().getTitle();
 		
 		if(InputValidationUtil.isTextFieldWhiteList(title)){
 			errors.add(PropertyUtil.getProperty("protocol", "protocol.title.invalid"));
 		}
+
 		String fileName = protocolBean.getFileBean().getDomainFile().getName();
 		
 		if(InputValidationUtil.isTextFieldWhiteList(fileName)){
 			errors.add(PropertyUtil.getProperty("protocol", "protocol.file.name.invalid"));
 		}
-		
-		
+
 		String uri = protocolBean.getFileBean().getDomainFile().getUri();
 		if(InputValidationUtil.isTextFieldWhiteList(uri)){
 			errors.add(PropertyUtil.getProperty("protocol", "file.uri.invalid"));
@@ -285,12 +297,39 @@ public class ProtocolBO extends BaseAnnotationBO
 		transferProtocolBeanForEdit(protocolBean, bean, request);
 		return bean;
 	}
-	
+
+	/**
+	 * Handle read-only protocol view request.
+	 * @param protocolId id of protocol object
+	 * @param request http request object
+	 * @return SimpleProtocolBean containing the display data
+	 * @throws Exception NotExistException, if provided protocol id is invalid
+	 */
+	public SimpleProtocolBean summaryView(String protocolId, HttpServletRequest request) throws Exception {
+		ProtocolForm form = new ProtocolForm();
+		SimpleProtocolBean simpleBean = new SimpleProtocolBean();
+		protocolId = super.validateId(request, "protocolId");
+		ProtocolBean protocolBean = protocolService.findProtocolById(protocolId);
+
+		if (protocolBean == null)
+			throw new NotExistException("No such protocol in the database");
+
+		form.setProtocol(protocolBean);
+
+		request.getSession().setAttribute("updateProtocol", "true");
+		request.getSession().setAttribute("theProtocol", protocolBean);
+
+		simpleBean.transferProtocolBeanForSummaryView(protocolBean);
+
+		return simpleBean;
+	}
+
 	public void transferProtocolBeanForEdit(ProtocolBean protocolBean, SimpleSubmitProtocolBean bean, HttpServletRequest request)
 	{
 		bean.setAbbreviation(protocolBean.getDomain().getAbbreviation());
 		bean.setCreatedBy(protocolBean.getDomain().getCreatedBy());
 		bean.setCreatedDate(protocolBean.getDomain().getCreatedDate());
+		bean.setDoi(protocolBean.getDomain().getDoi());
 		
 		if(protocolBean.getDomain().getFile()!= null){
 		//	setFileDescription(bean.getDomain().getFile().getDescription());

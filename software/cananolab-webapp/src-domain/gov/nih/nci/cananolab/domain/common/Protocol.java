@@ -1,6 +1,9 @@
 package gov.nih.nci.cananolab.domain.common;
 
+//import javax.persistence.*;
 import java.io.Serializable;
+import java.util.Date;
+
 /**
 	* The formal plan of an experiment or research activity, including the objective, rationale, design, materials and methods for the conduct of the study; intervention description, and method of data analysis
 	**/
@@ -61,13 +64,13 @@ public class Protocol  implements Serializable
 	* The date of the process by which something is brought into existence; having been brought into existence.
 	**/
 	
-	private java.util.Date createdDate;
+	private Date createdDate;
 	/**
 	* Retrieves the value of the createdDate attribute
 	* @return createdDate
 	**/
 
-	public java.util.Date getCreatedDate(){
+	public Date getCreatedDate(){
 		return createdDate;
 	}
 
@@ -75,7 +78,7 @@ public class Protocol  implements Serializable
 	* Sets the value of createdDate attribute
 	**/
 
-	public void setCreatedDate(java.util.Date createdDate){
+	public void setCreatedDate(Date createdDate){
 		this.createdDate = createdDate;
 	}
 	
@@ -166,6 +169,16 @@ public class Protocol  implements Serializable
 	public void setVersion(String version){
 		this.version = version;
 	}
+
+	private String doi;
+
+	public String getDoi() {
+		return doi;
+	}
+
+	public void setDoi(String doi) {
+		this.doi = doi;
+	}
 	
 	/**
 	* An associated gov.nih.nci.cananolab.domain.common.File object
@@ -189,7 +202,7 @@ public class Protocol  implements Serializable
 	}
 			
 	/**
-	* Compares <code>obj</code> to it self and returns true if they both are same
+	* Compares <code>obj</code> to itself and returns true if they both are same
 	*
 	* @param obj
 	**/
@@ -212,5 +225,4 @@ public class Protocol  implements Serializable
 			return getId().hashCode();
 		return 0;
 	}
-	
 }

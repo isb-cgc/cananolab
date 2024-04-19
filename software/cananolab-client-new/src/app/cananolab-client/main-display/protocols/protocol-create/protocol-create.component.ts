@@ -240,6 +240,7 @@ export class ProtocolCreateComponent implements OnInit, AfterViewInit{
                 'type': '',
                 'name': '',
                 'abbreviation': '',
+                'doi': '',
                 'version': '',
                 'fileTitle': '',
                 'fileDescription': ''

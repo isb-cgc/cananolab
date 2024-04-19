@@ -107,7 +107,7 @@ export class SearchResultsComponent implements OnInit {
         }
         this.apiService.doPost(Consts.QUERY_ADD_FAVORITE, data).subscribe(
             (data) => {
-                result['addedToFavorites']=data;
+                result['addedToFavorites'] = data;
                 this.errors = {};
             },
             (error) => {
@@ -117,29 +117,52 @@ export class SearchResultsComponent implements OnInit {
     }
 
     navigateToResultEdit(result) {
-        if (result.type == 'sample') {
+        if (result.type === 'sample') {
             this.router.navigate(['/home/samples/sample', result.id]);
         }
-        if (result.type == 'publication') {
+        if (result.type === 'publication') {
             this.router.navigate([
                 '/home/samples/publications/publication',
                 result.id,
             ]);
         }
-        if (result.type == 'protocol') {
+        if (result.type === 'protocol') {
             this.router.navigate(['/home/protocols/edit-protocol', result.id]);
         }
     }
 
     navigateToResultView(result) {
-        if (result.type == 'sample') {
+        if (result.type === 'sample') {
             this.router.navigate(['/home/samples/view-sample', result.id]);
+        } else if (result.type === 'publication') {
+            console.log(result);
+        } else if (result.type === 'protocol') {
+            this.router.navigate(['/home/protocols/view-protocol', result.id]);
         }
-        if (result.type == 'publication') {
-            console.log(result)
+    }
+
+    navigateToProtocol(protocolId) {
+        if (this.properties.LOGGED_IN) {
+            let url = this.apiService.doGet(Consts.QUERY_PROTOCOL_WRITE_ACCESS, 'protocolId=' + protocolId);
+            url.subscribe(data => {
+                    let hasWriteAccess = data;
+                    if (hasWriteAccess) {
+                        console.log('has write access');
+                        // current user have write access
+                        this.router.navigate(['home/protocols/edit-protocol', protocolId]); // @FIXME  Don't hard code these
+                    } else {
+                        console.log('no write access');
+                        this.router.navigate(['home/protocols/view-protocol', protocolId]); // @FIXME  Don't hard code these
+                    }
+                },
+                error => {
+                    console.log(error);
+                })
         }
-        if (result.type == 'protocol') {
-            window.open(Consts.QUERY_DOWNLOAD_FILE+'?fileId='+result.fileId)
+        else {
+            // Not logged in
+            console.log('not logged in');
+            this.router.navigate(['home/protocols/view-protocol', protocolId]); // @FIXME  Don't hard code these
         }
     }
 
