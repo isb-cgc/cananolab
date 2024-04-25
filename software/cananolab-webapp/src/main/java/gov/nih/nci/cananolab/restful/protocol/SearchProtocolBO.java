@@ -143,7 +143,16 @@ public class SearchProtocolBO extends BaseAnnotationBO
 			protocolAbbreviation = "*" + protocolAbbreviation + "*";
 		}
 
-        return protocolService.findProtocolsBy(protocolType, protocolName, protocolAbbreviation, fileTitle);
+		String doi = form.getDoi();
+		// unlikely that the user would be using wildcards here, but I don't see any harm in stripping them anyway
+		doi = StringUtils.stripWildcards(doi);
+		
+		String doiOperand = form.getDoiOperand();
+		if (doiOperand.equals(Constants.STRING_OPERAND_CONTAINS) && !StringUtils.isEmpty(doi)) {
+			doi = "*" + doi + "*";
+		}
+
+        return protocolService.findProtocolsBy(protocolType, protocolName, protocolAbbreviation, fileTitle, doi);
 	}
 
 	private void loadUserAccess(HttpServletRequest request, List<ProtocolBean> protocolBeans) throws Exception

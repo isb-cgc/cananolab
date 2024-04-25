@@ -98,16 +98,21 @@ export class MyFavoritesComponent implements OnInit{
         this.router.navigate( ['home/samples/view-sample', sampleId] );  // @FIXME  Don't hard code these
     }
 
-    navigateToProtocolView( protocolId ) {
-        // this.protocolsService.setCurrentProtocolScreen( ProtocolScreen.PROTOCOL_VIEW_SCREEN, protocolId );
-        this.router.navigate( ['home/protocols/view-protocol', protocolId] );  // @FIXME  Don't hard code these
+    navigateToProtocol(protocolId) {
+        let url = this.apiService.doGet(Consts.QUERY_PROTOCOL_WRITE_ACCESS, 'protocolId=' + protocolId);
+        url.subscribe(data => {
+                let hasWriteAccess = data;
+                if (hasWriteAccess) {
+                    // current user have write access
+                    this.router.navigate(['home/protocols/edit-protocol', protocolId]);
+                } else {
+                    this.router.navigate(['home/protocols/view-protocol', protocolId]);
+                }
+            },
+            error => {
+                console.log(error);
+            })
     }
-
-    navigateToProtocolEdit( protocolId ){
-        this.protocolsService.setCurrentProtocolScreen( ProtocolScreen.PROTOCOL_EDIT_SCREEN, protocolId );
-        this.router.navigate( ['home/protocols/edit-protocol', protocolId] );  // @FIXME  Don't hard code these
-    }
-
 
     navigateToPublicationEdit( publicationId ){
         this.router.navigate( ['home/samples/publications/publication', publicationId] );  // @FIXME  Don't hard code these
