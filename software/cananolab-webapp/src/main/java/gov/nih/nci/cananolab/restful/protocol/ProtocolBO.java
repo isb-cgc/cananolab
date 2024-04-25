@@ -218,7 +218,6 @@ public class ProtocolBO extends BaseAnnotationBO
 		
 		return errors;
 	}
-	
 
 	// for retaining user selected values during validation
 	public void input(ProtocolForm form, HttpServletRequest request, HttpServletResponse response)

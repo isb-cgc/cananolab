@@ -56,7 +56,7 @@ public class ProtocolServiceHelper
 	@Autowired
 	private AclDao aclDao;
 
-	public List<Protocol> findProtocolsBy(String protocolType, String protocolName, String protocolAbbreviation, String fileTitle)
+	public List<Protocol> findProtocolsBy(String protocolType, String protocolName, String protocolAbbreviation, String fileTitle, String doi)
 			throws Exception {
 		List<Protocol> protocols = new ArrayList<Protocol>();
 		CaNanoLabApplicationService appService = (CaNanoLabApplicationService) ApplicationServiceProvider.getApplicationService();
@@ -85,9 +85,15 @@ public class ProtocolServiceHelper
 					titleMatchMode.getUpdatedText(),
 					titleMatchMode.getMatchMode()));
 		}
+		if (!StringUtils.isEmpty(doi)) {
+			TextMatchMode doiMatchMode = new TextMatchMode(doi);
+			crit.add(Restrictions.ilike("doi",
+					doiMatchMode.getUpdatedText(),
+					doiMatchMode.getMatchMode()));
+		}
 		crit.setResultTransformer(CriteriaSpecification.DISTINCT_ROOT_ENTITY);
 		List results = appService.query(crit);
-		for(int i=0;i< results.size();i++){
+		for (int i=0; i< results.size(); i++) {
 			Protocol protocol = (Protocol) results.get(i);
 			if (springSecurityAclService.currentUserHasReadPermission(protocol.getId(), SecureClassesEnum.PROTOCOL.getClazz()) ||
 				springSecurityAclService.currentUserHasWritePermission(protocol.getId(), SecureClassesEnum.PROTOCOL.getClazz())) {
@@ -211,7 +217,7 @@ public class ProtocolServiceHelper
 	public SortedSet<String> getProtocolNamesBy(String protocolType) throws Exception
 	{
 		SortedSet<String> protocolNames = new TreeSet<String>();
-		List<Protocol> protocols = this.findProtocolsBy(protocolType, null, null, null);
+		List<Protocol> protocols = this.findProtocolsBy(protocolType, null, null, null, null);
 		for (Protocol protocol : protocols) {
 			protocolNames.add(protocol.getName());
 		}
@@ -221,7 +227,7 @@ public class ProtocolServiceHelper
 	public SortedSet<String> getProtocolVersionsBy(String protocolType,
 			String protocolName) throws Exception {
 		SortedSet<String> protocolVersions = new TreeSet<String>();
-		List<Protocol> protocols = this.findProtocolsBy(protocolType, protocolName, null, null);
+		List<Protocol> protocols = this.findProtocolsBy(protocolType, protocolName, null, null, null);
 		for (Protocol protocol : protocols) {
 			protocolVersions.add(protocol.getVersion());
 		}
