@@ -23,11 +23,11 @@ export class SampleViewComponent implements OnInit{
     keyWords = [];
 
     constructor(
-        private navigationService:NavigationService,
+        private navigationService: NavigationService,
         private route: ActivatedRoute,
         private httpClient: HttpClient,
         private router: Router,
-        private apiService:ApiService){
+        private apiService: ApiService){
     }
 
     ngOnInit(): void{
@@ -42,10 +42,9 @@ export class SampleViewComponent implements OnInit{
         this.route.params.subscribe(
             ( params: Params ) => {
                 this.sampleId = params['sampleId'].replace( /^.*\?sampleId=/, '' );
-                if(
-                    this.sampleId <= 0 ){
+                if (this.sampleId <= 0) {
                     this.sampleId = Properties.CURRENT_SAMPLE_ID;
-                }else{
+                } else {
                     Properties.CURRENT_SAMPLE_ID = this.sampleId;
                 }
 
@@ -65,11 +64,11 @@ export class SampleViewComponent implements OnInit{
 
 
     downloadReady(event) {
-        if (event==true) {
-            this.loading=null;
+        if (event == true) {
+            this.loading = null;
         }
-        if (event==false) {
-            this.loading=true;
+        if (event == false) {
+            this.loading = true;
         }
     }
 

@@ -24,8 +24,8 @@ export class ProtocolsService{
 
     // sets publicastion search results //
     setProtocolSearchResults(data) {
-        this.protocolSearchResults=data;
-        localStorage.setItem('cananolab_protocol_search_results',JSON.stringify(data));
+        this.protocolSearchResults = data;
+        localStorage.setItem('cananolab_protocol_search_results', JSON.stringify(data));
     }
     setCurrentProtocolScreen( ps, info? ){
         this.currentProtocolScreen = ps;

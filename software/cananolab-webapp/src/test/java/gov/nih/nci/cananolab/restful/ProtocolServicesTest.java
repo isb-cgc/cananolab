@@ -57,6 +57,7 @@ public class ProtocolServicesTest {
 		form.setTitleOperand("contains");
 		form.setNameOperand("contains");
 		form.setAbbreviationOperand("contains");
+		form.setDoiOperand("contains");
 		
 		final Client aClient = ClientBuilder.newBuilder()
 		        .register(ObjectMapperProvider.class)
