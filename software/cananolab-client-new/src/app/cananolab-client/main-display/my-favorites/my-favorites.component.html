@@ -96,9 +96,9 @@
                 </tr>
                 <tr *ngFor="let fav of favProtocols;let odd=odd" [ngClass]="{'rowOdd':odd}">
                     <td class="actions favorites">
-                        <div *ngIf="fav.editable">
-                            <a (click)="navigateToProtocolEdit(fav['dataId'])">
-                                Edit
+                        <div>
+                            <a (click)="navigateToProtocol(fav['dataId'])">
+                                Details
                             </a>
                         </div>
                         <div>

@@ -13,6 +13,7 @@ public class SimpleSubmitProtocolBean {
 	String name = "";
 	String abbreviation = "";
 	String version = "";
+	String doi = "";
 	Long fileId;
 	Long id = 0L;
 	String fileTitle = "";
@@ -127,6 +128,12 @@ public class SimpleSubmitProtocolBean {
 	public void setAbbreviation(String abbreviation) {
 		this.abbreviation = abbreviation;
 	}
+	public String getDoi() {
+		return doi;
+	}
+	public void setDoi(String doi) {
+		this.doi = doi;
+	}
 	public String getVersion() {
 		return version;
 	}
@@ -139,7 +146,6 @@ public class SimpleSubmitProtocolBean {
 	public void setFileId(Long fileId) {
 		this.fileId = fileId;
 	}
-	
 	public String getFileTitle() {
 		return fileTitle;
 	}

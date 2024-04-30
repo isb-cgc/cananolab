@@ -103,7 +103,7 @@ export class SampleSearchResultsComponent implements OnInit, OnDestroy {
                     this.router.navigate(['home/samples/view-sample', sampleId]); // @FIXME  Don't hard code these
                 }
             },
-            error=> {
+            error => {
                 console.log(error);
             })
         }

@@ -72,6 +72,21 @@
                         <input name="fileTitle" id="fileTitle" type="text" [(ngModel)]="protocolSearchForm.fileTitle">
                     </td>
                 </tr>
+                <tr>
+                    <td>
+                        <label for="doi">
+                            DOI
+                        </label>
+                    </td>
+                    <td>
+                        <label for="doiOperand">
+                            <select [(ngModel)]="protocolSearchForm.doiOperand" name="doiOperand" id="doiOperand">
+                                <option value="equals">equals</option>
+                            </select>
+                        </label>
+                        <input id="doi" name="doi" type="text" [(ngModel)]="protocolSearchForm.doi">
+                    </td>
+                </tr>
             </table>
 
         </div>
