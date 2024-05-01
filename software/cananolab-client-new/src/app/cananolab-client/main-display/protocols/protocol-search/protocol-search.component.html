@@ -6,6 +6,9 @@
 
 <div class="mainSection" *ngIf="protocolSearchForm">
     <canano-loader [loading]="loading" [message]="loadingMessage"></canano-loader>
+    <div class="error" *ngIf="errors['error']">
+        {{errors['error']}}
+    </div>
     <form name="protocolSearchForm">
         <div class="mainBorder">
             <table>
