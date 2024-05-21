@@ -75,6 +75,21 @@ public class FavoritesServiceLocalImpl extends BaseServiceLocalImpl implements F
 	}
 
 	@Override
+	public List<FavoriteBean> findAllFavoritesById(String dataId, String dataType) throws FavoriteException, NoAccessException {
+		List<FavoriteBean> list = null;
+
+		try {
+			list = favoritesServiceHelper.findAllFavouritesById(dataId, dataType);
+		} catch (Exception e) {
+			String err = "Problem retreiving favorites by id: " + dataId + " type: " + dataType;
+			logger.error(err, e);
+
+			throw new FavoriteException(err, e);
+		}
+		return list;
+	}
+
+	@Override
 	public List<FavoriteBean> findFavorites(HttpServletRequest request) throws FavoriteException, NoAccessException
 	{
 		List<FavoriteBean> list = null;

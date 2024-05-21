@@ -26,6 +26,9 @@ public interface FavoritesService extends BaseService{
 	FavoriteBean findFavoriteById(String dataId, String loginName)
 			throws FavoriteException, NoAccessException;
 
+	List<FavoriteBean> findAllFavoritesById(String dataId, String dataType)
+			throws FavoriteException, NoAccessException;
+
 	List<FavoriteBean> findFavorites(HttpServletRequest request)
 			throws FavoriteException, NoAccessException;
 }

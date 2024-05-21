@@ -1,6 +1,7 @@
 package gov.nih.nci.cananolab.service.favorites.helper;
 
 import gov.nih.nci.cananolab.dto.common.FavoriteBean;
+import gov.nih.nci.cananolab.restful.favorites.FavoritesBO;
 import gov.nih.nci.cananolab.security.utils.SpringSecurityUtil;
 import gov.nih.nci.cananolab.service.protocol.helper.ProtocolServiceHelper;
 import gov.nih.nci.cananolab.system.applicationservice.CaNanoLabApplicationService;
@@ -42,6 +43,32 @@ public class FavoritesServiceHelper
 		}
 
 		return bean;
+	}
+
+	public List<FavoriteBean> findAllFavouritesById(String dataId, String dataType) {
+		List<FavoriteBean> list = new ArrayList<FavoriteBean>();
+
+		CaNanoLabApplicationService appService;
+
+		try {
+			appService = (CaNanoLabApplicationService) ApplicationServiceProvider.getApplicationService();
+			DetachedCriteria criteria = DetachedCriteria.forClass(FavoriteBean.class);
+			Criterion criteria1 = Restrictions.eq("dataId", dataId);
+			Criterion criteria2 = Restrictions.eq("dataType", dataType);
+			criteria.add(Expression.and(criteria1, criteria2));
+
+			List result = appService.query(criteria);
+
+            for (Object o : result) {
+                FavoriteBean bean = (FavoriteBean) o;
+                list.add(bean);
+            }
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		return list;
+
 	}
 
 	public List<FavoriteBean> findFavourites(HttpServletRequest request)

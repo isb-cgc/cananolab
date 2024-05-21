@@ -10,6 +10,7 @@ package gov.nih.nci.cananolab.service.protocol.impl;
 
 import gov.nih.nci.cananolab.domain.common.Protocol;
 import gov.nih.nci.cananolab.domain.particle.Characterization;
+import gov.nih.nci.cananolab.dto.common.FavoriteBean;
 import gov.nih.nci.cananolab.dto.common.ProtocolBean;
 import gov.nih.nci.cananolab.exception.NoAccessException;
 import gov.nih.nci.cananolab.exception.ProtocolException;
@@ -34,9 +35,7 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.hibernate.criterion.DetachedCriteria;
-import org.hibernate.criterion.Projections;
-import org.hibernate.criterion.Property;
+import org.hibernate.criterion.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -271,6 +270,13 @@ public class ProtocolServiceLocalImpl extends BaseServiceLocalImpl implements Pr
 				achar.setProtocol(null);
 				appService.saveOrUpdate(achar);
 			}
+
+			List<FavoriteBean> favoriteBeans = this.findFavoritesByProtocolId(protocol.getId().toString());
+
+			for (FavoriteBean bean : favoriteBeans) {
+				appService.delete(bean);
+			}
+
 			appService.delete(protocol);
 		} catch (Exception e) {
 			String err = "Error in deleting the protocol.";
@@ -307,6 +313,25 @@ public class ProtocolServiceLocalImpl extends BaseServiceLocalImpl implements Pr
 			chars.add(achar);
 		}
 		return chars;
+	}
+
+	private List<FavoriteBean> findFavoritesByProtocolId(String protocolId) throws Exception {
+		CaNanoLabApplicationService appService = (CaNanoLabApplicationService) ApplicationServiceProvider.getApplicationService();
+		DetachedCriteria criteria = DetachedCriteria.forClass(FavoriteBean.class);
+
+		Criterion criteria1 = Restrictions.eq("dataId", protocolId);
+		Criterion criteria2 = Restrictions.eq("dataType", "protocol");
+		criteria.add(Expression.and(criteria1, criteria2));
+
+		List<Object> results = appService.query(criteria);
+		List<FavoriteBean> favoriteBeans = new ArrayList<>();
+
+		for(Object o : results) {
+			FavoriteBean bean = (FavoriteBean) o;
+			results.add(bean);
+		}
+
+		return favoriteBeans;
 	}
 
 	public void assignAccessibility(AccessControlInfo access, Protocol protocol) throws ProtocolException, NoAccessException
