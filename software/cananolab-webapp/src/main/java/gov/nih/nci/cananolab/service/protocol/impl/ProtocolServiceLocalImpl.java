@@ -271,9 +271,11 @@ public class ProtocolServiceLocalImpl extends BaseServiceLocalImpl implements Pr
 				appService.saveOrUpdate(achar);
 			}
 
+			System.out.println("get favorites!");
 			List<FavoriteBean> favoriteBeans = this.findFavoritesByProtocolId(protocol.getId().toString());
 
 			for (FavoriteBean bean : favoriteBeans) {
+				System.out.println("dataId: " + bean.getDataId());
 				appService.delete(bean);
 			}
 
@@ -328,7 +330,7 @@ public class ProtocolServiceLocalImpl extends BaseServiceLocalImpl implements Pr
 
 		for(Object o : results) {
 			FavoriteBean bean = (FavoriteBean) o;
-			results.add(bean);
+			favoriteBeans.add(bean);
 		}
 
 		return favoriteBeans;
