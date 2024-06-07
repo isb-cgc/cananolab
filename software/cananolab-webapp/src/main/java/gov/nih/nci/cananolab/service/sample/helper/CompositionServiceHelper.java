@@ -152,6 +152,7 @@ public class CompositionServiceHelper
 		List result = appService.query(crit);
 
 		if (!result.isEmpty()) {
+			// LAW 6/6/24: this is returning 0 linked to the issue with Sample?
 			composition = (SampleComposition) result.get(0);
 			/*if (!springSecurityAclService.currentUserHasReadPermission(composition.getId(), SecureClassesEnum.COMPOSITION.getClazz()) &&
 				!springSecurityAclService.currentUserHasWritePermission(composition.getId(), SecureClassesEnum.COMPOSITION.getClazz())) {

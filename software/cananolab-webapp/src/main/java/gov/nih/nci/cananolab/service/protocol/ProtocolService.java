@@ -46,8 +46,10 @@ public interface ProtocolService extends BaseService {
                                        String protocolName, String protocolAbbreviation, String fileTitle, String doi)
 			throws ProtocolException;
 
-	ProtocolBean findProtocolBy(String protocolType,
-                                String protocolName, String protocolVersion)
+	ProtocolBean findProtocolBy(String protocolType, String protocolName, String protocolVersion, String doi)
+			throws ProtocolException, NoAccessException;
+
+	ProtocolBean findProtocolByDoi(String doi)
 			throws ProtocolException, NoAccessException;
 
 	int getNumberOfPublicProtocols() throws ProtocolException;

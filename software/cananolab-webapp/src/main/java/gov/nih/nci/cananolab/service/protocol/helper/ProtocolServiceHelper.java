@@ -128,11 +128,13 @@ public class ProtocolServiceHelper
 		return protocols;
 	}
 
-	public Protocol findProtocolBy(String protocolType, String protocolName, String protocolVersion) throws Exception {
+	public Protocol findProtocolBy(String protocolType, String protocolName, String protocolVersion, String doi)
+			throws Exception {
 		// protocol type and protocol name are required
 		if (StringUtils.isEmpty(protocolType) && StringUtils.isEmpty(protocolName)) {
 			return null;
 		}
+
 		Protocol protocol = null;
 		CaNanoLabApplicationService appService = (CaNanoLabApplicationService) ApplicationServiceProvider.getApplicationService();
 		DetachedCriteria crit = DetachedCriteria.forClass(Protocol.class)
@@ -141,6 +143,10 @@ public class ProtocolServiceHelper
 		if (!StringUtils.isEmpty(protocolVersion)) {
 			crit.add(Property.forName("version").eq(protocolVersion).ignoreCase());
 		}
+		if (!StringUtils.isEmpty(doi)) {
+			crit.add(Property.forName("doi").eq(doi).ignoreCase());
+		}
+
 		crit.setFetchMode("file", FetchMode.JOIN);
 		crit.setFetchMode("file.keywordCollection", FetchMode.JOIN);
 		crit.setResultTransformer(CriteriaSpecification.DISTINCT_ROOT_ENTITY);
@@ -149,12 +155,48 @@ public class ProtocolServiceHelper
 			return null;
 		}
 		if (results.size() > 1) {
+			String warning_str = "More than one protocol found for type: " + protocolType
+					+ ", name: " + protocolName
+					+ ", version: " + protocolVersion
+					+ ", doi: " + doi;
+			System.out.println(warning_str);
 			return null;
 		}
 		protocol = (Protocol) results.get(0);
 		
 		if (springSecurityAclService.currentUserHasReadPermission(protocol.getId(), SecureClassesEnum.PROTOCOL.getClazz()) ||
 			springSecurityAclService.currentUserHasWritePermission(protocol.getId(), SecureClassesEnum.PROTOCOL.getClazz())) {
+			return protocol;
+		} else {
+			throw new NoAccessException();
+		}
+	}
+
+
+	public Protocol findProtocolByDoi(String doi)
+			throws Exception {
+		Protocol protocol = null;
+		CaNanoLabApplicationService appService = (CaNanoLabApplicationService) ApplicationServiceProvider.getApplicationService();
+		DetachedCriteria crit = DetachedCriteria.forClass(Protocol.class)
+				.add(Property.forName("doi").eq(doi).ignoreCase());
+
+		crit.setFetchMode("file", FetchMode.JOIN);
+		crit.setFetchMode("file.keywordCollection", FetchMode.JOIN);
+		crit.setResultTransformer(CriteriaSpecification.DISTINCT_ROOT_ENTITY);
+
+		List results = appService.query(crit);
+
+		if (results.isEmpty()) {
+			return null;
+		}
+		if (results.size() > 1) {
+			System.out.println("More than one protocol found for doi: " + doi);
+			return null;
+		}
+		protocol = (Protocol) results.get(0);
+
+		if (springSecurityAclService.currentUserHasReadPermission(protocol.getId(), SecureClassesEnum.PROTOCOL.getClazz()) ||
+				springSecurityAclService.currentUserHasWritePermission(protocol.getId(), SecureClassesEnum.PROTOCOL.getClazz())) {
 			return protocol;
 		} else {
 			throw new NoAccessException();

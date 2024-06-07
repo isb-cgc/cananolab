@@ -307,8 +307,8 @@ public class ProtocolServices
 			@Context HttpServletRequest httpRequest,
 			@DefaultValue("") @QueryParam("protocolType") String protocolType,
 			@DefaultValue("") @QueryParam("protocolName") String protocolName,
-			@DefaultValue("") @QueryParam("protocolVersion") String protocolVersion){
-
+			@DefaultValue("") @QueryParam("protocolVersion") String protocolVersion,
+			@DefaultValue("") @QueryParam("doi") String doi){
 		try { 
 			ProtocolManager protocolManager = (ProtocolManager) SpringApplicationContext.getBean(httpRequest, "protocolManager");
 			ProtocolBO protocolBO = (ProtocolBO) SpringApplicationContext.getBean(httpRequest, "protocolBO");
@@ -316,7 +316,7 @@ public class ProtocolServices
 			if (!SpringSecurityUtil.isUserLoggedIn())
 				return Response.status(Response.Status.UNAUTHORIZED).entity(Constants.MSG_SESSION_INVALID).build();
 
-			ProtocolBean bean = protocolManager.getProtocol(httpRequest, protocolType, protocolName, protocolVersion);
+			ProtocolBean bean = protocolManager.getProtocol(httpRequest, protocolType, protocolName, protocolVersion, doi);
 			SimpleSubmitProtocolBean view = new SimpleSubmitProtocolBean();
 			protocolBO.transferProtocolBeanForEdit(bean, view, httpRequest);
 
@@ -324,7 +324,30 @@ public class ProtocolServices
 
 		} catch (Exception e) {
 			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(CommonUtil.wrapErrorMessageInList("Error while viewing for protocol " + e.getMessage())).build();
+		}
+	}
 
+	@GET
+	@Path("/getProtocolByDoi")
+	@Produces("application/json")
+	public Response getProtocolByDoi(
+			@Context HttpServletRequest httpRequest,
+			@DefaultValue("") @QueryParam("doi") String doi) {
+		try {
+			ProtocolManager protocolManager = (ProtocolManager) SpringApplicationContext.getBean(httpRequest, "protocolManager");
+			ProtocolBO protocolBO = (ProtocolBO) SpringApplicationContext.getBean(httpRequest, "protocolBO");
+
+			if (!SpringSecurityUtil.isUserLoggedIn())
+				return Response.status(Response.Status.UNAUTHORIZED).entity(Constants.MSG_SESSION_INVALID).build();
+
+			ProtocolBean bean = protocolManager.getProtocolByDoi(httpRequest, doi);
+			SimpleSubmitProtocolBean view = new SimpleSubmitProtocolBean();
+			protocolBO.transferProtocolBeanForEdit(bean, view, httpRequest);
+
+			return Response.ok(view).header("Access-Control-Allow-Credentials", "true").header("Access-Control-Allow-Origin", "*").header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS").header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization").build();
+
+		} catch (Exception e) {
+			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(CommonUtil.wrapErrorMessageInList("Error while viewing for protocol " + e.getMessage())).build();
 		}
 	}
 

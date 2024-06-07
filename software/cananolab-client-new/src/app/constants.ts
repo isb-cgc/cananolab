@@ -93,6 +93,7 @@ export const Consts = {
     QUERY_EDIT_PROTOCOL: '/rest/protocol/edit',
     QUERY_VIEW_PROTOCOL: '/rest/protocol/view',
     QUERY_GET_PROTOCOL: '/rest/protocol/getProtocol',
+    QUERY_GET_PROTOCOL_DOI: '/rest/protocol/getProtocolByDoi',
     QUERY_PROTOCOL_WRITE_ACCESS: 'rest/protocol/checkWriteAccess',
     QUERY_PROTOCOL_DELETE_ACCESS: '/rest/protocol/deleteAccess',
     QUERY_DOWNLOAD_FILE: '/rest/protocol/download',

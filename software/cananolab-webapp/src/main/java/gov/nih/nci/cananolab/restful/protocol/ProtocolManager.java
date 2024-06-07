@@ -46,24 +46,44 @@ public class ProtocolManager
 	}
 
 	public ProtocolBean getProtocol(HttpServletRequest request, String protocolType, String protocolName,
-			String protocolVersion) {
+			String protocolVersion, String doi) {
 		// protocolType and protocolName have to be present
-		if (StringUtils.isEmpty(protocolType) || StringUtils.isEmpty(protocolName))
-		{
+		if (StringUtils.isEmpty(protocolType) || StringUtils.isEmpty(protocolName)) {
 			return null;
 		}
 		
 		try {
-			ProtocolBean protocolBean = protocolService.findProtocolBy(protocolType, protocolName, protocolVersion);
+			ProtocolBean protocolBean = protocolService.findProtocolBy(protocolType, protocolName, protocolVersion, doi);
+
 			if (protocolBean != null
 					&& protocolBean.getDomain().getFile() != null
 					&& !StringUtils.xssValidate(protocolBean.getDomain().getFile().getUri())) {
 				return null;
 			}
+
 			return protocolBean;
 		} catch (Exception e) {
 			logger.error("Error in retrieving the protocol " + protocolName);
 		}
+
+		return null;
+	}
+
+	public ProtocolBean getProtocolByDoi(HttpServletRequest request, String doi) {
+		try {
+			ProtocolBean protocolBean = protocolService.findProtocolByDoi(doi);
+
+			if (protocolBean != null
+					&& protocolBean.getDomain().getFile() != null
+					&& !StringUtils.xssValidate(protocolBean.getDomain().getFile().getUri())) {
+				return null;
+			}
+
+			return protocolBean;
+		} catch (Exception e) {
+			logger.error("Error in retrieving protocol with DOI " + doi);
+		}
+
 		return null;
 	}
 

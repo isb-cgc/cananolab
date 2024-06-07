@@ -76,6 +76,8 @@ public class ProtocolServiceLocalImpl extends BaseServiceLocalImpl implements Pr
 		}
 		return protocolBean;
 	}
+
+
 	
 	public ProtocolBean findWorkspaceProtocolById(String protocolId) throws ProtocolException, NoAccessException
 	{
@@ -187,10 +189,10 @@ public class ProtocolServiceLocalImpl extends BaseServiceLocalImpl implements Pr
 		}
 	}
 
-	public ProtocolBean findProtocolBy(String protocolType, String protocolName, String protocolVersion) throws ProtocolException, NoAccessException
-	{
+	public ProtocolBean findProtocolBy(String protocolType, String protocolName, String protocolVersion, String doi)
+			throws ProtocolException, NoAccessException {
 		try {
-			Protocol protocol = protocolServiceHelper.findProtocolBy(protocolType, protocolName, protocolVersion);
+			Protocol protocol = protocolServiceHelper.findProtocolBy(protocolType, protocolName, protocolVersion, doi);
 			if (protocol != null) {
                 return loadProtocolBean(protocol);
 			} else {
@@ -200,6 +202,24 @@ public class ProtocolServiceLocalImpl extends BaseServiceLocalImpl implements Pr
 			throw e;
 		} catch (Exception e) {
 			String err = "Problem finding protocol by name and type.";
+			logger.error(err, e);
+			throw new ProtocolException(err, e);
+		}
+	}
+
+	public ProtocolBean findProtocolByDoi(String doi)
+			throws ProtocolException, NoAccessException {
+		try {
+			Protocol protocol = protocolServiceHelper.findProtocolByDoi(doi);
+			if (protocol != null) {
+				return loadProtocolBean(protocol);
+			} else {
+				return null;
+			}
+		} catch (NoAccessException e) {
+			throw e;
+		} catch (Exception e) {
+			String err = "Problem finding protocol by doi.";
 			logger.error(err, e);
 			throw new ProtocolException(err, e);
 		}
