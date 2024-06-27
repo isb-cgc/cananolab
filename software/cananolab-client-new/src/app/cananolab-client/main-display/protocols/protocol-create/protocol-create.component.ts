@@ -164,9 +164,17 @@ export class ProtocolCreateComponent implements OnInit, AfterViewInit{
             data => {
                 this.existingData = data;
                 this.errors = {};
-                this.isDup = true;
-                this.haveDupStatus = true;
-                return true;
+                if (this.protocolId != this.existingData['id']) {
+                    // protocol id doesn't match -- true duplicate
+                    this.isDup = true;
+                    this.haveDupStatus = true;
+                    return true;
+                } else {
+                    // protocol id found matches the current id
+                    this.isDup = false;
+                    this.haveDupStatus = true;
+                    return false;
+                }
             },
             // It does NOT already exist
             ( err ) => {
@@ -179,25 +187,30 @@ export class ProtocolCreateComponent implements OnInit, AfterViewInit{
     duplicateDoiCheck() {
         let formValues = this.data;
 
-        if (formValues['doi'] !== undefined) {
-            let dupQuery = 'doi=' + formValues['doi']
+        let dupQuery = 'doi=' + formValues['doi']
 
-            this.apiService.doGet(Consts.QUERY_GET_PROTOCOL_DOI, dupQuery).subscribe(
-                // If data is returned, a protocol with this DOI already exists
-                data => {
-                    this.existingData = data;
-                    this.errors = {};
+        this.apiService.doGet(Consts.QUERY_GET_PROTOCOL_DOI, dupQuery).subscribe(
+            // If data is returned, a protocol with this DOI already exists
+            data => {
+                this.existingData = data;
+                this.errors = {};
+                if (this.protocolId != this.existingData['id']) {
                     this.isDupDoi = true;
                     this.haveDupStatusDoi = true;
                     return true;
-                },
-                // It does NOT already exist
-                ( err ) => {
+                } else {
                     this.isDupDoi = false;
                     this.haveDupStatusDoi = true;
                     return false;
-                });
-        }
+                }
+            },
+            // It does NOT already exist
+            ( err ) => {
+                this.isDupDoi = false;
+                this.haveDupStatusDoi = true;
+                return false;
+            });
+
     }
 
     editAccess(index, access) {
@@ -300,32 +313,31 @@ export class ProtocolCreateComponent implements OnInit, AfterViewInit{
         // ////////////////////////////////////////////////////////
         // Check for dups
         // 6/7/24 LAW: removing !this.protocolId should force the check even when editing a protocol
-        if (!this.protocolId) {
-            this.haveDupStatus = false;
-            console.log('duplicate check?')
-            this.duplicateCheck();
-            // Wait until we know if it already exists
-            while( !this.haveDupStatus ){
-                await this.utilService.sleep( Consts.waitTime );
+        // if (!this.protocolId) {
+        this.haveDupStatus = false;
+        this.duplicateCheck();
+        // Wait until we know if it already exists
+        while (!this.haveDupStatus) {
+            await this.utilService.sleep( Consts.waitTime );
+        }
+        if (this.isDup) {
+            if (confirm('A database record with the same protocol type and protocol name already exists. Load it and update?')) {
+                this.router.navigate(['home/protocols/edit-protocol', this.existingData['id']]);
             }
-            if( this.isDup ){
-                if (confirm('A database record with the same protocol type and protocol name already exists. Load it and update?')) {
-                    this.router.navigate(['home/protocols/edit-protocol', this.existingData['id']]);
-                }
-                return;
-            }
-
+            return;
         }
 
-        if(this.data['doi']) {
+        // }
+
+        if (this.data['doi']) {
             this.haveDupStatusDoi = false;
             this.duplicateDoiCheck();
 
-            while(!this.haveDupStatusDoi) {
+            while (!this.haveDupStatusDoi) {
                 await this.utilService.sleep(Consts.waitTime);
             }
 
-            if(this.isDupDoi) {
+            if (this.isDupDoi) {
                 alert('A protocol record with this DOI already exists. Please enter a unique value.');
                 return;
             }
