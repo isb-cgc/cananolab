@@ -31,7 +31,8 @@ RUN wget -O - https://packages.adoptium.net/artifactory/api/gpg/key/public | apt
 RUN echo "deb https://packages.adoptium.net/artifactory/deb $(awk -F= '/^VERSION_CODENAME/{print$2}' /etc/os-release) main" | tee /etc/apt/sources.list.d/adoptium.list
 RUN apt-get update && apt-get -y install temurin-17-jdk
 RUN ls -l /usr/lib/jvm/
-ENV JAVA_HOME=/usr/lib/jvm/temurin-17-jdk-amd64/jre/
+RUN ls -l /usr/lib/jvm/temurin-17-jdk-amd64/
+ENV JAVA_HOME=/usr/lib/jvm/temurin-17-jdk-amd64/
 RUN echo "Java Version:"
 RUN java -version
 
