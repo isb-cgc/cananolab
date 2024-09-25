@@ -28,6 +28,7 @@ const routes: Routes = [
     { path: 'home/protocols', loadChildren: () => import('./cananolab-client/main-display/protocols/protocols.module').then(m => m.ProtocolsModule) },
     { path: 'home/protocols/protocol-create', loadChildren: () => import('./cananolab-client/main-display/protocols/protocol-create/protocol-create.module').then(m => m.ProtocolCreateModule) },
     { path: 'home/protocols/protocol-create/:message', loadChildren: () => import('./cananolab-client/main-display/protocols/protocol-create/protocol-create.module').then(m => m.ProtocolCreateModule) },
+    { path: 'home/protocols/view-protocol/:protocolId', loadChildren: () => import('./cananolab-client/main-display/protocols/protocol-view/protocol-view.module').then(m => m.ProtocolViewModule)},
     { path: 'home/protocols/edit-protocol/:protocolId', loadChildren: () => import('./cananolab-client/main-display/protocols/protocol-create/protocol-create.module').then(m => m.ProtocolCreateModule) },
     { path: 'home/protocols/edit-protocol/:protocolId/:message', loadChildren: () => import('./cananolab-client/main-display/protocols/protocol-create/protocol-create.module').then(m => m.ProtocolCreateModule) },
     { path: 'home/protocols/protocol-search', loadChildren: () => import('./cananolab-client/main-display/protocols/protocol-search/protocol-search.module').then(m => m.ProtocolSearchModule) },

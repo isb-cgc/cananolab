@@ -26,9 +26,8 @@
 		</span>
 		<table class="dataTable">
 			<tr>
-
                 <ng-container *ngFor="let col of columnHeadings; let i = index">
-					<th *ngFor="let colKeyValue of col | keyvalue" [ngClass]="{'hidden':isProtocolView(colKeyValue)}" class="unselectable hand" (click)="onSortClick(i,colKeyValue.key)">
+					<th *ngFor="let colKeyValue of col | keyvalue" class="unselectable hand" (click)="onSortClick(i,colKeyValue.key)">
                         <label for="sortClick" class="hand">
                             {{ colKeyValue.value }}
                             <span *ngIf="i > 0" id="sortClick" class="inline">
@@ -60,30 +59,33 @@
                 '': even,
                 'rowOdd': odd
             }">
-				<td class="search-results-td" [ngClass]="{'hidden':!properties.LOGGED_IN}"> <a *ngIf="properties.LOGGED_IN" (click)="onEditClick(res)">Details</a>
-					<!--  I thought we showed the "View" if they are not logged in (I was wrong)
-           <div *ngIf="! properties.logged_in"
-                class="protocol-search-results-edit-button mb-2"
-                (click)="onViewClick(res)"
-            >View</div>
-            -->
-            <div *ngIf="res['addedToFavorites']">
-                {{res['addedToFavorites'][0]}}
-            </div>
-					<br /> <a *ngIf="properties.LOGGED_IN&&!res['addedToFavorites']"
-                              (click)="addToFavorites(res, res.id, res.viewName, res.fileId, res.editable, res.fileTitle, '' )">Add to
-                    Favorites</a> </td>
-				<td class="search-results-td protocol-search-results-type-td"> {{res['type']}} </td>
-				<td class="search-results-td"> {{res['viewName']}} </td>
-				<td class="search-results-td protocol-search-results-abbreviation-td"> {{res['abbreviation']}} </td>
-				<td class="search-results-td protocol-search-results-version-td"> {{res['version']}} </td>
-				<td class="search-results-td">
+                <td class="search-results-td">
+                    <a *ngIf="properties.LOGGED_IN" (click)="navigateToProtocol(res.id)">
+                        Details
+                    </a>
+                    <a *ngIf="!properties.LOGGED_IN" (click)="navigateToProtocol(res.id)">
+                        View
+                    </a>
+                    <div *ngIf="res['addedToFavorites']">
+                        {{res['addedToFavorites'][0]}}
+                    </div>
+                    <br />
+                    <a *ngIf="properties.LOGGED_IN&&!res['addedToFavorites']"
+                      (click)="addToFavorites(res, res.id, res.viewName, res.fileId, res.editable, res.fileTitle, '' )">
+                        Add to Favorites
+                    </a>
+                </td>
+                <td class="search-results-td protocol-search-results-type-td"> {{res['type']}} </td>
+                <td class="search-results-td"> {{res['viewName']}} </td>
+                <td class="search-results-td protocol-search-results-abbreviation-td"> {{res['abbreviation']}} </td>
+                <td class="search-results-td protocol-search-results-version-td"> {{res['version']}} </td>
+                <td class="search-results-td">
                     <span *ngIf="res['fileInfo'].length > 0 ">
                         <span [innerHtml]="formatFileField(res['fileInfo'])"></span>
                     </span>
-	</td>
-	<td class="search-results-td protocol-search-results-created-td"> {{res['createdDate'] | date : "shortDate"}} </td>
-	</tr>
+                </td>
+	        <td class="search-results-td protocol-search-results-created-td"> {{res['createdDate'] | date : "shortDate"}} </td>
+	    </tr>
 	</table>
 	<!-- Pager buttons -->
 	<br />

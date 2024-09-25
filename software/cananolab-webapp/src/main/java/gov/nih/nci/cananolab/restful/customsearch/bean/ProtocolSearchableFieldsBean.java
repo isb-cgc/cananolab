@@ -10,6 +10,7 @@ public class ProtocolSearchableFieldsBean {
 	private String protocolFileDesc;
 	private Date createdDate;
 	private String protocolFileId;
+	private String doi;
 	
 	public String getProtocolName() {
 		return protocolName;
@@ -47,5 +48,6 @@ public class ProtocolSearchableFieldsBean {
 	public void setProtocolFileId(String protocolFileId) {
 		this.protocolFileId = protocolFileId;
 	}
-	
+	public String getDoi() { return doi; }
+	public void setDoi(String doi) { this.doi = doi; }
 }

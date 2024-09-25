@@ -8,11 +8,12 @@ public class CustomSearchBean {
 	private String createdDate;
 	private String description;
 	private String id;
+	private String doi;
 	private boolean isEditable;
 	private String pubmedId;
 	private String fileId;
 	private String fileTitle;
-	
+
 	public String getType() {
 		return type;
 	}
@@ -43,6 +44,8 @@ public class CustomSearchBean {
 	public void setId(String id) {
 		this.id = id;
 	}
+	public String getDoi() { return doi; }
+	public void setDoi(String doi) { this.doi = doi; }
 	public boolean isEditable() {
 		return isEditable;
 	}

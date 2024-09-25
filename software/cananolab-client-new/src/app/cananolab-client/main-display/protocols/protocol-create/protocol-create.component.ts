@@ -11,57 +11,57 @@ import { HttpClient } from '@angular/common/http';
 } )
 export class ProtocolCreateComponent implements OnInit, AfterViewInit{
     accessIndex;
-    currentRoute='protocol-create';
+    currentRoute = 'protocol-create';
     data;
     defaultProtocolType = 'radio labeling'; // Find a way to set this in time to protocolTypes[0]
-    downloadUrl=Consts.QUERY_DOWNLOAD_FILE;
+    downloadUrl = Consts.QUERY_DOWNLOAD_FILE;
     errors;
     existingData;
     externalUrl;
     fileToUpload;
     haveDupStatus = false;
-    toolHeadingName='Create Protocol';
+    toolHeadingName = 'Create Protocol';
     isDup = false;
     message;
     protocolId;
     recipientList;
-    setupData={};
-    theAccess={};
-    helpUrl=Consts.HELP_URL_PROTOCOL_CREATE;
-    submitReviewButton=true;
+    setupData = {};
+    theAccess = {};
+    helpUrl = Consts.HELP_URL_PROTOCOL_CREATE;
+    submitReviewButton = true;
     editingAccessRow = false;
-    viewOnly=false;
+    viewOnly = false;
 
-    constructor(private httpClient:HttpClient, private route:ActivatedRoute,private router:Router,private apiService: ApiService, private utilService: UtilService,
+    constructor(private httpClient: HttpClient, private route: ActivatedRoute, private router: Router, private apiService: ApiService, private utilService: UtilService,
                  ){
     }
 
     ngOnInit(): void{
         this.route.params.subscribe(
             ( params: Params ) => {
-                this.protocolId=params['protocolId'];
+                this.protocolId = params['protocolId'];
                 if (params['message']) {
-                    if (params['message']=='deleted') {
-                        this.message='Protocol Deleted Successfully'
+                    if (params['message'] == 'deleted') {
+                        this.message = 'Protocol Deleted Successfully'
                     }
                     else {
-                        this.message='Protocol Created Successfully'
+                        this.message = 'Protocol Created Successfully'
                     }
                 }
                 this.init();
             });
 
-        this.errors={};
+        this.errors = {};
     }
 
     addAccess() {
-        this.accessIndex=-1;
-        this.recipientList=null;
-        this.theAccess={
-                "accessType":"",
-                "recipient":"",
-                "roleName":"",
-                "recipientDisplayName":""
+        this.accessIndex = -1;
+        this.recipientList = null;
+        this.theAccess = {
+                'accessType': '',
+                'recipient': '',
+                'roleName': '',
+                'recipientDisplayName': ''
             }
         this.editingAccessRow = false;
     }
@@ -86,7 +86,7 @@ export class ProtocolCreateComponent implements OnInit, AfterViewInit{
     };
 
     cancelAccess() {
-        this.accessIndex=null;
+        this.accessIndex = null;
     }
 
     uploadFile(event) {
@@ -101,12 +101,12 @@ export class ProtocolCreateComponent implements OnInit, AfterViewInit{
     }
 
     delete() {
-        if (confirm("Are you sure you wish to delete this protocol?")) {
-            this.apiService.doPost(Consts.QUERY_DELETE_PROTOCOL,this.data).subscribe(data=> {
+        if (confirm('Are you sure you wish to delete this protocol?')) {
+            this.apiService.doPost(Consts.QUERY_DELETE_PROTOCOL, this.data).subscribe(data => {
                 this.router.navigate(['home/protocols/protocol-create/deleted'])
             },
-            errors=> {
-                this.errors=errors;
+            errors => {
+                this.errors = errors;
             })
         }
     }
@@ -119,27 +119,27 @@ export class ProtocolCreateComponent implements OnInit, AfterViewInit{
     }
 
     changeAccessType(event) {
-        this.recipientList=null;
-        this.theAccess['recipient']='';
-        this.theAccess['roleName']='';
-        if (event=='role') {
-            this.theAccess['recipientDisplayName']='Public';
-            this.theAccess['recipient']='ROLE_ANONYMOUS';
-            this.theAccess['roleName']="R";
+        this.recipientList = null;
+        this.theAccess['recipient'] = '';
+        this.theAccess['roleName'] = '';
+        if (event == 'role') {
+            this.theAccess['recipientDisplayName'] = 'Public';
+            this.theAccess['recipient'] = 'ROLE_ANONYMOUS';
+            this.theAccess['roleName'] = 'R';
         };
     };
 
     deleteAccess() {
-        if (confirm("Are you sure you wish to delete this " + this.theAccess['accessType'] + "?")) {
-            this.data['theAccess']=this.theAccess;
-            let url = this.apiService.doPost(Consts.QUERY_PROTOCOL_DELETE_ACCESS,this.data);
-            url.subscribe(data=>{
-                this.data=data;
-                this.accessIndex=null;
-                this.errors={};
+        if (confirm('Are you sure you wish to delete this ' + this.theAccess['accessType'] + '?')) {
+            this.data['theAccess'] = this.theAccess;
+            let url = this.apiService.doPost(Consts.QUERY_PROTOCOL_DELETE_ACCESS, this.data);
+            url.subscribe(data => {
+                this.data = data;
+                this.accessIndex = null;
+                this.errors = {};
             },
-            error=> {
-                this.errors=error;
+            error => {
+                this.errors = error;
             })
         }
 
@@ -156,8 +156,8 @@ export class ProtocolCreateComponent implements OnInit, AfterViewInit{
         this.apiService.doGet( Consts.QUERY_GET_PROTOCOL, dupQuery ).subscribe(
             // It already exists
             data => {
-                this.existingData=data;
-                this.errors={};
+                this.existingData = data;
+                this.errors = {};
                 this.isDup = true;
                 this.haveDupStatus = true;
                 return true;
@@ -172,28 +172,28 @@ export class ProtocolCreateComponent implements OnInit, AfterViewInit{
 
     };
 
-    editAccess(index,access) {
-        console.log(index,access)
-        this.accessIndex=index;
-        this.recipientList=null;
-        this.theAccess=JSON.parse(JSON.stringify(access));
+    editAccess(index, access) {
+        console.log(index, access)
+        this.accessIndex = index;
+        this.recipientList =  null;
+        this.theAccess = JSON.parse(JSON.stringify(access));
         this.editingAccessRow = true;
     };
 
     getRecipientList() {
         var url;
-        if (this.theAccess['accessType']=='group') {
-            url=this.apiService.doGet(Consts.QUERY_GET_COLLABORATION_GROUPS,'searchStr=');
+        if (this.theAccess['accessType'] == 'group') {
+            url = this.apiService.doGet(Consts.QUERY_GET_COLLABORATION_GROUPS, 'searchStr=');
         }
-        if (this.theAccess['accessType']=='user') {
-            url=this.apiService.doGet(Consts.QUERY_GET_USERS,'searchStr=');
+        if (this.theAccess['accessType'] == 'user') {
+            url = this.apiService.doGet(Consts.QUERY_GET_USERS, 'searchStr=');
         }
-        url.subscribe(data=> {
-            this.recipientList=data;
-            this.errors={};
+        url.subscribe(data => {
+            this.recipientList = data;
+            this.errors = {};
         },
-        error=> {
-            this.errors=error;
+        error => {
+            this.errors = error;
 
         })
     };
@@ -201,63 +201,64 @@ export class ProtocolCreateComponent implements OnInit, AfterViewInit{
     init(){
         if (this.protocolId) {
             // Editing or Viewing
-            this.currentRoute='edit-protocol';
+            this.currentRoute = 'edit-protocol';
 
-            var url = this.apiService.doGet(Consts.QUERY_PROTOCOL_WRITE_ACCESS,'protocolId=' + this.protocolId);
-            url.subscribe(data=> {
-                var hasWriteAccess = data;
+            let url = this.apiService.doGet(Consts.QUERY_PROTOCOL_WRITE_ACCESS, 'protocolId=' + this.protocolId);
+            url.subscribe(data => {
+                let hasWriteAccess = data;
 
-                this.apiService.doGet( Consts.QUERY_EDIT_PROTOCOL, 'protocolId='+this.protocolId ).subscribe(
+                this.apiService.doGet( Consts.QUERY_EDIT_PROTOCOL, 'protocolId=' + this.protocolId ).subscribe(
                     data => {
                         this.data = data;
 
                         if (hasWriteAccess) {
                             // current user have write access
-                            this.toolHeadingName='Edit Protocol';
+                            this.toolHeadingName = 'Edit Protocol';
                             this.viewOnly = false;
-                            this.helpUrl=Consts.HELP_URL_PROTOCOL_EDIT;                            
+                            this.helpUrl = Consts.HELP_URL_PROTOCOL_EDIT;
                         } else {
-                            this.toolHeadingName='View Protocol';
+                            this.toolHeadingName = 'View Protocol';
                             this.viewOnly = true;
-                            this.helpUrl=Consts.HELP_URL_PROTOCOL_VIEW;
+                            this.helpUrl = Consts.HELP_URL_PROTOCOL_VIEW;
                         }
                     },
-                    errors=> {
-                        this.errors=errors;
+                    errors => {
+                        this.errors = errors;
                     } );
-                
+
             },
-            error=> {
+            error => {
                 console.log(error);
             })
         }
         else {
             // Creating
-            this.toolHeadingName='Create Protocol';
-            this.helpUrl=Consts.HELP_URL_PROTOCOL_CREATE;
-            this.data={
-                "uriExternal":false,
-                "type":"",
-                "name":"",
-                "abbreviation":"",
-                "version":"",
-                "fileTitle":"",
-                "fileDescription":""
+            this.toolHeadingName = 'Create Protocol';
+            this.helpUrl = Consts.HELP_URL_PROTOCOL_CREATE;
+            this.data = {
+                'uriExternal': false,
+                'type': '',
+                'name': '',
+                'abbreviation': '',
+                'doi': '',
+                'version': '',
+                'fileTitle': '',
+                'fileDescription': ''
             }
         }
 
         // Get list of Protocol types for dropdown
         this.apiService.doGet( Consts.QUERY_PROTOCOL_SETUP, '' ).subscribe(
             data => {
-                this.errors={};
+                this.errors = {};
                 this.setupData = data;
                 if (!this.protocolId) {
-                    this.data["isCuratorEditing"] = this.setupData["isCuratorEditing"];
+                    this.data['isCuratorEditing'] = this.setupData['isCuratorEditing'];
                 }
                 // this.defaultProtocolType = this.protocolTypes[0]; // SET default - This doesn't work @CHECKME  I had to hard code the default
             },
-            errors=> {
-                this.errors=errors;
+            errors => {
+                this.errors = errors;
             } );
 
     }
@@ -279,8 +280,8 @@ export class ProtocolCreateComponent implements OnInit, AfterViewInit{
                 await this.utilService.sleep( Consts.waitTime );
             }
             if( this.isDup ){
-                if (confirm("A database record with the same protocol type and protocol name already exists. Load it and update?")) {
-                    this.router.navigate(['home/protocols/edit-protocol',this.existingData['id']]);
+                if (confirm('A database record with the same protocol type and protocol name already exists. Load it and update?')) {
+                    this.router.navigate(['home/protocols/edit-protocol', this.existingData['id']]);
                 }
                 return;
             }
@@ -294,13 +295,13 @@ export class ProtocolCreateComponent implements OnInit, AfterViewInit{
         if( !this.data.uriExternal ){
             if (this.fileToUpload) {
             let uploadUrl = this.httpClient.post(Consts.QUERY_UPLOAD_FILE, this.fileToUpload);
-            uploadUrl.subscribe(data=> {
-                    this.errors={};
-                    this.data.fileId="0";
-                    this.data.uri=data['fileName'];
+            uploadUrl.subscribe(data => {
+                    this.errors = {};
+                    this.data.fileId = '0';
+                    this.data.uri = data['fileName'];
                     this.submitProtocol();
             },
-            error=> {
+            error => {
 
             })
             }
@@ -315,7 +316,7 @@ export class ProtocolCreateComponent implements OnInit, AfterViewInit{
           // Send an external URI
         else{
             let formData = this.buildExternalUriForm();
-            this.data.uriExternal=true;
+            this.data.uriExternal = true;
             this.submitProtocol();
         }
     };
@@ -335,61 +336,61 @@ export class ProtocolCreateComponent implements OnInit, AfterViewInit{
     };
 
     saveAccess() {
-        this.data['theAccess']=this.theAccess;
-        let url=this.apiService.doPost(Consts.QUERY_PROTOCOL_SAVE_ACCESS,this.data);
-        url.subscribe(data=> {
-            this.data=data;
-            this.errors={};
+        this.data['theAccess'] = this.theAccess;
+        let url = this.apiService.doPost(Consts.QUERY_PROTOCOL_SAVE_ACCESS, this.data);
+        url.subscribe(data => {
+            this.data = data;
+            this.errors = {};
             if (this.fileToUpload) {
                 this.onSubmit();
             }
             else {
-                if (this.currentRoute=='protocol-create') {
-                    this.router.navigate(['home/protocols/edit-protocol',data['id'],'success'])
+                if (this.currentRoute == 'protocol-create') {
+                    this.router.navigate(['home/protocols/edit-protocol', data['id'], 'success'])
                 }
-            };
+            }
         },
-        error=> {
-            this.errors=error;
+        error => {
+            this.errors = error;
         });
-        this.accessIndex=null;
+        this.accessIndex = null;
     }
 
     submitProtocol() {
         this.apiService.doPost( Consts.QUERY_CREATE_PROTOCOL, this.data ).subscribe(
             data => {
-                this.errors={};
-                this.data.theAccess=this.theAccess;
+                this.errors = {};
+                this.data.theAccess = this.theAccess;
                 this.externalUrl = decodeURIComponent( this.externalUrl ); // Make it look right in the UI
-                let protocolId=data.replaceAll('"','').replace('[','').replace(']','').split(',')[1];
-                if (this.currentRoute=='protocol-create') {
-                    this.router.navigate(['home/protocols/edit-protocol',protocolId,'success'])
+                let protocolId = data.replaceAll('"', '').replace('[', '').replace(']', '').split(',')[1];
+                if (this.currentRoute == 'protocol-create') {
+                    this.router.navigate(['home/protocols/edit-protocol', protocolId, 'success'])
                 }
                 else {
-                    this.message='Protocol Successfully Updated';
+                    this.message = 'Protocol Successfully Updated';
                 }
             },
             err => {
-                this.errors=err;
+                this.errors = err;
                 this.externalUrl = decodeURIComponent( this.externalUrl ); // Make it look right in the UI
             }
         );
     }
 
     getProtocol(event) {
-        let url = this.apiService.doGet(Consts.QUERY_GET_PROTOCOL,'protocolType='+this.data.type+'&protocolName='+this.data.name+'&protocolVersion='+this.data.version);
-        url.subscribe(data=> {
-            if (confirm("A database record with the same protocol type and protocol name already exists. Load it and update?")) {
-                this.router.navigate(['home/protocols/edit-protocol',data['id']])
+        let url = this.apiService.doGet(Consts.QUERY_GET_PROTOCOL, 'protocolType=' + this.data.type + '&protocolName=' + this.data.name + '&protocolVersion=' + this.data.version);
+        url.subscribe(data => {
+            if (confirm('A database record with the same protocol type and protocol name already exists. Load it and update?')) {
+                this.router.navigate(['home/protocols/edit-protocol', data['id']])
             }
         })
     }
 
     submitForReview() {
         console.log(this.data)
-        let url = this.apiService.doPost(Consts.QUERY_PROTOCOL_SUBMIT_REVIEW,{dataId:this.data.id,dataName:this.data.name,dataType:"protocol"},'text');
-        url.subscribe(data=> {
-            this.submitReviewButton=false;
+        let url = this.apiService.doPost(Consts.QUERY_PROTOCOL_SUBMIT_REVIEW, {dataId: this.data.id, dataName: this.data.name, dataType: 'protocol'}, 'text');
+        url.subscribe(data => {
+            this.submitReviewButton = false;
         })
     }
 

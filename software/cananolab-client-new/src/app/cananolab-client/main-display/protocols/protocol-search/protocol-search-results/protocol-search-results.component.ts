@@ -22,22 +22,22 @@ import { throwError } from 'rxjs'
 export class ProtocolSearchResultsComponent implements OnInit, OnDestroy {
     searchResults;
     columnHeadings = [
-        {Actions:'Actions'},
-        {type:'Protocol Type'},
-        {viewName:'Protocol Name'},
-        {abbreviation:'Abbreviation'},
-        {version:'Version'},
-        {fileInfo:'File'},
-        {createdDate:'Created'}
+        {Actions: 'Actions'},
+        {type: 'Protocol Type'},
+        {viewName: 'Protocol Name'},
+        {abbreviation: 'Abbreviation'},
+        {version: 'Version'},
+        {fileInfo: 'File'},
+        {createdDate: 'Created'}
     ];
-    consts=Consts;
+    consts = Consts;
     maxPageLength = Properties.MAX_PAGE_LENGTH;
     pageLength = Properties.DEFAULT_PAGE_LENGTH;
     pageCount = 10;
     searchResultsCount = -1;
     currentPage = 0;
     searchResultsPageToDisplay;
-    helpUrl=Consts.HELP_URL_PROTOCOL_SEARCH_RESULTS;
+    helpUrl = Consts.HELP_URL_PROTOCOL_SEARCH_RESULTS;
     sortingStates = [
         SortState.NO_SORT,
         SortState.NO_SORT,
@@ -86,15 +86,6 @@ export class ProtocolSearchResultsComponent implements OnInit, OnDestroy {
         this.onPageLengthChange();
     }
 
-    isProtocolView(column) {
-        if (!Properties.LOGGED_IN) {
-            if (column['key']=='Actions') {
-                return true
-            }
-        }
-        return false
-    }
-
     onPageLengthChange() {
         if (this.pageLength < 1) {
             this.pageLength = 1;
@@ -116,8 +107,8 @@ export class ProtocolSearchResultsComponent implements OnInit, OnDestroy {
     }
 
     formatFileField(data) {
-        //console.log(data)
-        data = data.replace(/(^[^\/])/,"/$1");
+        // console.log(data)
+        data = data.replace(/(^[^\/])/, '/$1');
         return data;
     }
 
@@ -153,20 +144,77 @@ export class ProtocolSearchResultsComponent implements OnInit, OnDestroy {
     }
 
     onEditClick(protocolToEdit) {
-        this.router.navigate([
-            'home/protocols/edit-protocol',
-            protocolToEdit.id,
-        ]);
+        this.router.navigate(['home/protocols/edit-protocol', protocolToEdit.id]);
         // this.protocolsService.setCurrentProtocolScreen( ProtocolScreen.PROTOCOL_EDIT_SCREEN, protocolToEdit.id );
     }
 
     onViewClick(protocolToView) {
-        this.protocolsService.setCurrentProtocolScreen(
-            ProtocolScreen.PROTOCOL_VIEW_SCREEN,
-            protocolToView.id
-        );
+        this.router.navigate(['home/protocols/view-protocol', protocolToView.id]);
     }
 
+    navigateToProtocol(protocolId) {
+        if (this.properties.LOGGED_IN) {
+            let url = this.apiService.doGet(Consts.QUERY_PROTOCOL_WRITE_ACCESS, 'protocolId=' + protocolId);
+            url.subscribe(data => {
+                    let hasWriteAccess = data;
+                    if (hasWriteAccess) {
+                        console.log('has write access');
+                        // current user have write access
+                        this.router.navigate(['home/protocols/edit-protocol', protocolId]); // @FIXME  Don't hard code these
+                    } else {
+                        console.log('no write access');
+                        this.router.navigate(['home/protocols/view-protocol', protocolId]); // @FIXME  Don't hard code these
+                    }
+                },
+                error => {
+                    console.log(error);
+                })
+        }
+        else {
+            // Not logged in
+            console.log('not logged in');
+            this.router.navigate(['home/protocols/view-protocol', protocolId]); // @FIXME  Don't hard code these
+        }
+    }
+
+/*
+
+    navigateToProtocol(protocol) {
+        if (!this.properties.LOGGED_IN) {
+            // not logged in
+            this.router.navigate(['home/protocols/view-protocol', protocol.id]);
+        } else {
+            this.hasWriteAccess(protocol.id).subscribe(
+                data => {
+                    console.log(data);
+                    let hasWriteAccess = data;
+
+                    if (hasWriteAccess) {
+                        this.router.navigate(['home/protocols/edit-protocol'], protocol.id);
+                    } else {
+                        this.router.navigate(['home/protocols/view-protocol'], protocol.id);
+                    }
+                },
+                error => {
+                    console.log(error);
+                });
+        }
+    }
+
+    hasWriteAccess(protocolId) {
+        let hasWriteAccess;
+        let getUrl = Consts.QUERY_PROTOCOL_WRITE_ACCESS;
+
+        try {
+            hasWriteAccess = this.apiService.doGet(getUrl, 'protocolId=' + protocolId);
+        } catch(err) {
+            console.error('doGet Exception: ' + err);
+        }
+
+        return hasWriteAccess;
+    }
+
+ */
     addToFavorites(res,
         protocolId,
         protocolName,
@@ -190,7 +238,7 @@ export class ProtocolSearchResultsComponent implements OnInit, OnDestroy {
             .doPost(Consts.QUERY_ADD_FAVORITE, <any>queryData)
             .subscribe(
                 (data) => {
-                    res['addedToFavorites']=data;
+                    res['addedToFavorites'] = data;
                     console.log('Data back from addToFavorites: ', data);
                 },
                 (err) => {

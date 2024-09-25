@@ -43,7 +43,7 @@ public interface ProtocolService extends BaseService {
 			throws ProtocolException, NoAccessException;
 
 	List<ProtocolBean> findProtocolsBy(String protocolType,
-                                       String protocolName, String protocolAbbreviation, String fileTite)
+                                       String protocolName, String protocolAbbreviation, String fileTitle, String doi)
 			throws ProtocolException;
 
 	ProtocolBean findProtocolBy(String protocolType,

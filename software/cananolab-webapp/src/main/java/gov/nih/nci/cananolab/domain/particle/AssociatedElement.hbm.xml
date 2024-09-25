@@ -58,7 +58,7 @@ L-->
 				<property name="type" type="string" column="type"/>
 
 			</joined-subclass>
-			<joined-subclass name="gov.nih.nci.cananolab.domain.agentmaterial.Biopolymer" table="biopolymer_f" lazy="true">
+			<joined-subclass name="gov.nih.nci.cananolab.domain.agentmaterial.Biopolymer" entity-name="AgentBiopolymer" table="biopolymer_f" lazy="true">
 				<key column="biopolymer_pk_id" />
 				<!-- Attributes mapping for the Biopolymer class -->
 				<property name="sequence" type="string" column="sequence"/>

@@ -9,6 +9,8 @@ public class SearchProtocolForm {
 	String nameOperand = "";
 	String protocolAbbreviation = "";
 	String abbreviationOperand = "";
+	String doi = "";
+	String doiOperand = "";
 	int page;
 	
 	public String getFileTitle() {
@@ -53,6 +55,11 @@ public class SearchProtocolForm {
 	public void setAbbreviationOperand(String abbreviationOperand) {
 		this.abbreviationOperand = abbreviationOperand;
 	}
+	public String getDoi() { return doi; }
+	public void setDoi(String doi) { this.doi = doi; }
+	public String getDoiOperand() { return doiOperand; }
+	public void setDoiOperand(String doiOperand) { this.doiOperand = doiOperand; }
+
 	public int getPage() {
 		return page;
 	}
