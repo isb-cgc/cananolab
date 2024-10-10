@@ -523,7 +523,7 @@ public class OwnershipTransferServiceImpl implements OwnershipTransferService {
 		CaNanoLabApplicationService appService = (CaNanoLabApplicationService) ApplicationServiceProvider.getApplicationService();
 		// load composition and characterization separate because of Hibernate
 		// join limitation
-		DetachedCriteria crit = DetachedCriteria.forClass(Sample.class).add(Property.forName("id").eq(new Long(sampleId)));
+		DetachedCriteria crit = DetachedCriteria.forClass(Sample.class).add(Property.forName("id").eq(Long.valueOf(sampleId)));
 		Sample sample = null;
 
 		// load composition and characterization separate because of
@@ -567,7 +567,7 @@ public class OwnershipTransferServiceImpl implements OwnershipTransferService {
 		CaNanoLabApplicationService appService = (CaNanoLabApplicationService) ApplicationServiceProvider.getApplicationService();
 		DetachedCriteria crit = DetachedCriteria.forClass(SampleComposition.class);
 		crit.createAlias("sample", "sample");
-		crit.add(Property.forName("sample.id").eq(new Long(sampleId)));
+		crit.add(Property.forName("sample.id").eq(Long.valueOf(sampleId)));
 		crit.setFetchMode("nanomaterialEntityCollection", FetchMode.JOIN);
 		crit.setFetchMode("nanomaterialEntityCollection.fileCollection", FetchMode.JOIN);
 		crit.setFetchMode("nanomaterialEntityCollection.fileCollection.keywordCollection", FetchMode.JOIN);
@@ -603,7 +603,7 @@ public class OwnershipTransferServiceImpl implements OwnershipTransferService {
 		CaNanoLabApplicationService appService = (CaNanoLabApplicationService) ApplicationServiceProvider.getApplicationService();
 		DetachedCriteria crit = DetachedCriteria.forClass(Characterization.class);
 		crit.createAlias("sample", "sample");
-		crit.add(Property.forName("sample.id").eq(new Long(sampleId)));
+		crit.add(Property.forName("sample.id").eq(Long.valueOf(sampleId)));
 		// fully load characterization
 		crit.setFetchMode("pointOfContact", FetchMode.JOIN);
 		crit.setFetchMode("pointOfContact.organization", FetchMode.JOIN);

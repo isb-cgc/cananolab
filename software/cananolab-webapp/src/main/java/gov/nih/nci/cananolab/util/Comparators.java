@@ -466,8 +466,8 @@ public class Comparators {
 		public int compare(PurityDatumCondition datum1, PurityDatumCondition datum2) {
 			//TODO compare on row and column number
 			if (datum1.getRowNumber() == datum2.getRowNumber()) {
-				Integer int1 = new Integer(datum1.getColumnHeader().getColumnOrder());
-				Integer int2 = new Integer(datum2.getColumnHeader().getColumnOrder());
+				Integer int1 = Integer.valueOf(datum1.getColumnHeader().getColumnOrder());
+				Integer int2 = Integer.valueOf(datum2.getColumnHeader().getColumnOrder());
 				return int1.compareTo(int2);
 			}
 			Integer int1 = datum1.getRowNumber();

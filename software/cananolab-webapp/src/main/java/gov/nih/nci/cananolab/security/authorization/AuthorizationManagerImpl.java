@@ -395,7 +395,7 @@ public class AuthorizationManagerImpl implements UserProvisioningManager {
 		catch ( Exception e)
 		{
 			protectionGroup = new ProtectionGroup();
-			protectionGroup.setProtectionGroupId(new Long(protectionGroupId));
+			protectionGroup.setProtectionGroupId(Long.valueOf(protectionGroupId));
 			protectionGroup.setProtectionGroupName("XX");
 			protectionGroup.setProtectionGroupDescription("XX");
 			protectionGroup.setUpdateDate(new Date());
@@ -418,7 +418,7 @@ public class AuthorizationManagerImpl implements UserProvisioningManager {
 		catch ( Exception e)
 		{
 			protectionElement = new ProtectionElement();
-			protectionElement.setProtectionElementId(new Long(protectionElementId));
+			protectionElement.setProtectionElementId(Long.valueOf(protectionElementId));
 			protectionElement.setProtectionElementName("XX");
 			protectionElement.setProtectionElementDescription("XX");
 			protectionElement.setUpdateDate(new Date());
@@ -602,7 +602,7 @@ public class AuthorizationManagerImpl implements UserProvisioningManager {
 		catch ( Exception e){
 
 		r = new Role();
-		r.setId(new Long(roleId));
+		r.setId(Long.valueOf(roleId));
 		r.setName("XX");
 		r.setDesc("XX");
 		r.setUpdateDate(new Date());
@@ -814,7 +814,7 @@ public class AuthorizationManagerImpl implements UserProvisioningManager {
 		}
 		catch ( Exception e){
 		group = new Group();
-		group.setId(new Long(groupId));
+		group.setId(Long.valueOf(groupId));
 		group.setGroupName("XX");
 		group.setGroupDesc("XX");
 //		group.setUpdateDate(new Date());

@@ -341,7 +341,7 @@ public class SynthesisFunctionalizationBO extends BaseAnnotationBO {
         List<String> msgs = new ArrayList<String>();
         SampleBean sampleBean = setupSampleById(sampleIdString, request);
         CananoUserDetails userDetails = SpringSecurityUtil.getPrincipal();
-        Long sampleId = new Long(sampleIdString);
+        Long sampleId = Long.valueOf(sampleIdString);
 
         boolean newEntity = true;
 
@@ -438,7 +438,7 @@ public class SynthesisFunctionalizationBO extends BaseAnnotationBO {
         SynthesisFunctionalizationBean entityBean = transferSynthesisFunctionalizationBean(synthesisFunctionalizationBean, request);
         entityBean.setUpDomainEntity(SpringSecurityUtil.getLoggedInUserName());
         String sampleId = synthesisFunctionalizationBean.getSampleId();
-        msgs = synthesisService.deleteSynthesisFunctionalization(new Long(sampleId),entityBean.getDomainEntity());
+        msgs = synthesisService.deleteSynthesisFunctionalization(Long.valueOf(sampleId),entityBean.getDomainEntity());
 
         if(msgs.isEmpty()){
         msgs.add("success");}
@@ -526,10 +526,10 @@ public class SynthesisFunctionalizationBO extends BaseAnnotationBO {
 //        InitSampleSetup.getInstance().getOtherSampleNames(httpRequest, sampleId, sampleService);
 
         try {
-            SynthesisFunctionalizationBean synthesisFunctionalizationBean = synthesisService.findSynthesisFunctionalizationById(new Long(sampleId),
-                    new Long(synFunctId));
+            SynthesisFunctionalizationBean synthesisFunctionalizationBean = synthesisService.findSynthesisFunctionalizationById(Long.valueOf(sampleId),
+                    Long.valueOf(synFunctId));
 
-            SynthesisBean synthesisBean = synthesisService.findSynthesisBySampleId(new Long(sampleId));
+            SynthesisBean synthesisBean = synthesisService.findSynthesisBySampleId(Long.valueOf(sampleId));
             synthesisFunctionalizationBean.setSynthesis(synthesisBean);
 //            synthesisFunctionalizationBean.setSynthesisId(synthesisBean.getDomainId());
             form.setSynthesisFunctionalizationBean(synthesisFunctionalizationBean);
