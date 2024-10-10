@@ -33,12 +33,11 @@
 	</pluginRepositories>
 	<properties>
 		<hibernate.version>5.6.15.Final</hibernate.version>
-		<spring.version>5.2.21.RELEASE</spring.version>
-		<spring.security.version>5.2.10.RELEASE</spring.security.version>
+		<spring.version>5.2.25.RELEASE</spring.version>
+		<spring.security.version>5.3.13.RELEASE</spring.security.version>
 		<base.dir>/software/cananolab-webapp</base.dir>
-		<compilerVersion>1.8</compilerVersion>
-		<maven.compiler.source>1.8</maven.compiler.source>
-		<maven.compiler.target>1.8</maven.compiler.target>
+		<compilerVersion>17</compilerVersion>
+		<maven.compiler.release>17</maven.compiler.release>
 	</properties>
 	<dependencies>
 		<dependency>
@@ -245,13 +244,19 @@
 			<version>${hibernate.version}</version>
 		</dependency>
 
+		<!-- https://mvnrepository.com/artifact/org.hibernate/hibernate-core-jakarta -->
+		<dependency>
+			<groupId>org.hibernate</groupId>
+			<artifactId>hibernate-core-jakarta</artifactId>
+			<version>${hibernate.version}</version>
+		</dependency>
+
 		<!-- https://mvnrepository.com/artifact/org.hibernate/hibernate-ehcache -->
 		<dependency>
 			<groupId>org.hibernate</groupId>
 			<artifactId>hibernate-ehcache</artifactId>
 			<version>${hibernate.version}</version>
 		</dependency>
-		
 
 		<dependency>
 			<groupId>org.ehcache</groupId>
