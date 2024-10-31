@@ -57,7 +57,7 @@ fi
 
 export ARTIFACTS=${CANANODIR}/artifacts
 
-export WILDFLY_HOME=/opt/wildfly-23.0.2.Final
+export WILDFLY_HOME=/opt/wildfly-25.0.1.Final
 export WILDFLY_BIN=$WILDFLY_HOME/bin
 export JBOSS_CLI=$WILDFLY_BIN/jboss-cli.sh
 

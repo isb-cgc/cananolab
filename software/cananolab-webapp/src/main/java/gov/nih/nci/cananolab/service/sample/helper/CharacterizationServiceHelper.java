@@ -105,7 +105,7 @@ public class CharacterizationServiceHelper
 			CaNanoLabApplicationService appService = (CaNanoLabApplicationService) ApplicationServiceProvider.getApplicationService();
 			DetachedCriteria crit = DetachedCriteria.forClass(
 					Characterization.class).add(
-					Property.forName("id").eq(new Long(charId)));
+					Property.forName("id").eq(Long.valueOf(charId)));
 			crit.setFetchMode("findingCollection", FetchMode.JOIN);
 			crit.setFetchMode("findingCollection.fileCollection", FetchMode.JOIN);
 			crit.setFetchMode("findingCollection.fileCollection.keywordCollection",
@@ -133,7 +133,7 @@ public class CharacterizationServiceHelper
 		CaNanoLabApplicationService appService = (CaNanoLabApplicationService) ApplicationServiceProvider.getApplicationService();
 		DetachedCriteria crit = DetachedCriteria.forClass(
 				Characterization.class).add(
-				Property.forName("id").eq(new Long(charId)));
+				Property.forName("id").eq(Long.valueOf(charId)));
 		TransactionInsertion<Characterization> lazyLoads = new TransactionInsertion<Characterization>() {
 			@Override
 			public boolean executeInsideTransaction(Characterization ca) {
@@ -177,7 +177,7 @@ public class CharacterizationServiceHelper
 		CaNanoLabApplicationService appService = (CaNanoLabApplicationService) ApplicationServiceProvider.getApplicationService();
 		DetachedCriteria crit = DetachedCriteria.forClass(
 				Characterization.class).add(
-				Property.forName("id").eq(new Long(charId)));
+				Property.forName("id").eq(Long.valueOf(charId)));
 		crit.setFetchMode("experimentConfigCollection", FetchMode.JOIN);
 		crit.setFetchMode("experimentConfigCollection.technique",
 				FetchMode.JOIN);
@@ -202,7 +202,7 @@ public class CharacterizationServiceHelper
 		CaNanoLabApplicationService appService = (CaNanoLabApplicationService) ApplicationServiceProvider.getApplicationService();
 		DetachedCriteria crit = DetachedCriteria.forClass(
 				ExperimentConfig.class).add(
-				Property.forName("id").eq(new Long(id)));
+				Property.forName("id").eq(Long.valueOf(id)));
 		crit.setFetchMode("technique", FetchMode.JOIN);
 		crit.setFetchMode("instrumentCollection", FetchMode.JOIN);
 		List result = appService.query(crit);
@@ -335,7 +335,7 @@ public class CharacterizationServiceHelper
 		CaNanoLabApplicationService appService = (CaNanoLabApplicationService) ApplicationServiceProvider.getApplicationService();
 		DetachedCriteria crit = DetachedCriteria.forClass(Characterization.class);
 		crit.createAlias("sample", "sample");
-		crit.add(Property.forName("sample.id").eq(new Long(sampleId)));
+		crit.add(Property.forName("sample.id").eq(Long.valueOf(sampleId)));
 		crit.setResultTransformer(CriteriaSpecification.DISTINCT_ROOT_ENTITY);
 
 		TransactionInsertion<Characterization> lazyLoads = new TransactionInsertion<Characterization>() {
@@ -421,7 +421,7 @@ public class CharacterizationServiceHelper
 		}
 		Characterization achar = null;
 		CaNanoLabApplicationService appService = (CaNanoLabApplicationService) ApplicationServiceProvider.getApplicationService();
-		DetachedCriteria crit = DetachedCriteria.forClass(Characterization.class).add(Property.forName("id").eq(new Long(charId)));
+		DetachedCriteria crit = DetachedCriteria.forClass(Characterization.class).add(Property.forName("id").eq(Long.valueOf(charId)));
 		// fully load characterization
 		crit.setFetchMode("pointOfContact", FetchMode.JOIN);
 		crit.setFetchMode("pointOfContact.organization", FetchMode.JOIN);
@@ -466,7 +466,7 @@ public class CharacterizationServiceHelper
 			throw new NoAccessException("User has no access to the finding " + findingId);
 		}
 		CaNanoLabApplicationService appService = (CaNanoLabApplicationService) ApplicationServiceProvider.getApplicationService();
-		DetachedCriteria crit = DetachedCriteria.forClass(Finding.class).add(Property.forName("id").eq(new Long(findingId)));
+		DetachedCriteria crit = DetachedCriteria.forClass(Finding.class).add(Property.forName("id").eq(Long.valueOf(findingId)));
 		crit.setFetchMode("datumCollection", FetchMode.JOIN);
 		crit.setFetchMode("datumCollection.conditionCollection", FetchMode.JOIN);
 		crit.setFetchMode("fileCollection", FetchMode.JOIN);

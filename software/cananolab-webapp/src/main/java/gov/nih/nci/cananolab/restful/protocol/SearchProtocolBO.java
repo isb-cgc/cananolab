@@ -80,7 +80,7 @@ public class SearchProtocolBO extends BaseAnnotationBO
 		// get the pagination to work
 		// set in sessionScope so user can go back to the result from the sample
 		// summary page
-		request.getSession().setAttribute("resultSize", new Integer(protocolBeans.size()));
+		request.getSession().setAttribute("resultSize", Integer.valueOf(protocolBeans.size()));
 
 		//return protocolBeansPerPage;
         return transfertoSimpleProtocolBeans(protocolBeansPerPage);
