@@ -453,6 +453,7 @@
 			<scope>provided</scope>
 		</dependency>
 
+		<!--changed 11/4/24 LAW-->
 		<dependency>
 			<groupId>com.google.cloud.sql</groupId>
 			<artifactId>mysql-socket-factory-connector-j-8</artifactId>
