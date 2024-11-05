@@ -144,10 +144,10 @@ public class PublicationServiceHelper
 			TextMatchMode pubMedIdMatchMode = new TextMatchMode(pubMedId);
 			Long pubMedIdLong = null;
 			try {
-				pubMedIdLong = new Long(pubMedIdMatchMode.getUpdatedText());
+				pubMedIdLong = Long.valueOf(pubMedIdMatchMode.getUpdatedText());
 			} catch (Exception ex) {
 				// ignore
-				pubMedIdLong = new Long(0);
+				pubMedIdLong = Long.valueOf(0);
 			}
 			crit.add(Restrictions.eq("pubMedId", pubMedIdLong));
 		}
@@ -389,7 +389,7 @@ public class PublicationServiceHelper
 		Sample sample = null;
 		CaNanoLabApplicationService appService = (CaNanoLabApplicationService) ApplicationServiceProvider.getApplicationService();
 
-		DetachedCriteria crit = DetachedCriteria.forClass(Sample.class).add(Property.forName("id").eq(new Long(sampleId)));
+		DetachedCriteria crit = DetachedCriteria.forClass(Sample.class).add(Property.forName("id").eq(Long.valueOf(sampleId)));
 		crit.setFetchMode("publicationCollection", FetchMode.JOIN);
 		crit.setFetchMode("publicationCollection.authorCollection", FetchMode.JOIN);
 		crit.setFetchMode("publicationCollection.keywordCollection", FetchMode.JOIN);

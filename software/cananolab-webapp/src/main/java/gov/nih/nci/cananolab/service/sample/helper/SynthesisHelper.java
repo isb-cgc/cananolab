@@ -70,7 +70,7 @@ public class SynthesisHelper
 //        DetachedCriteria crit = DetachedCriteria.forClass(SynthesisPurification.class).add(
 //                Property.forName("id").eq(new Long(entityId)));
         DetachedCriteria crit = DetachedCriteria.forClass(PurityColumnHeader.class).add(
-                Property.forName("id").eq(new Long(id)));
+                Property.forName("id").eq(Long.valueOf(id)));
         List result = appService.query(crit);
         if (!result.isEmpty()){
             header = (PurityColumnHeader)result.get(0);
@@ -127,7 +127,7 @@ public class SynthesisHelper
 
     public Synthesis findSynthesisBySampleId(String sampleId) throws SynthesisException {
         try{
-            Long id = new Long(sampleId);
+            Long id = Long.valueOf(sampleId);
             return findSynthesisBySampleId(id);
         }
         catch (Exception e) {
@@ -396,7 +396,7 @@ public class SynthesisHelper
         }
         CaNanoLabApplicationService appService = (CaNanoLabApplicationService) ApplicationServiceProvider.getApplicationService();
         DetachedCriteria crit = DetachedCriteria.forClass(SynthesisFunctionalization.class).add(
-                Property.forName("id").eq(new Long(entityId)));
+                Property.forName("id").eq(Long.valueOf(entityId)));
         crit.setFetchMode("files", FetchMode.JOIN);
         crit.setFetchMode("files.keywordConnection", FetchMode.JOIN);
         crit.setFetchMode("protocol", FetchMode.JOIN);
@@ -454,7 +454,7 @@ public class SynthesisHelper
         }
         CaNanoLabApplicationService appService = (CaNanoLabApplicationService) ApplicationServiceProvider.getApplicationService();
         DetachedCriteria crit = DetachedCriteria.forClass(SynthesisMaterial.class).add(
-                Property.forName("id").eq(new Long(entityId)));
+                Property.forName("id").eq(Long.valueOf(entityId)));
 
         crit.setFetchMode("files", FetchMode.JOIN);
         crit.setFetchMode("files.keywordCollection", FetchMode.JOIN);
@@ -537,7 +537,7 @@ public class SynthesisHelper
 //        DetachedCriteria crit = DetachedCriteria.forClass(SynthesisPurification.class).add(
 //                Property.forName("id").eq(new Long(entityId)));
         DetachedCriteria crit = DetachedCriteria.forClass(SynthesisPurification.class).add(
-                Property.forName("id").eq(new Long(entityId)));
+                Property.forName("id").eq(Long.valueOf(entityId)));
         crit.setFetchMode("files", FetchMode.JOIN);
         crit.setFetchMode("files.keywordCollection", FetchMode.JOIN);
         crit.setFetchMode("purities", FetchMode.JOIN);

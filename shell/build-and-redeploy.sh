@@ -52,7 +52,7 @@ if [ -z "$CI" ]; then
     fi
     export JAVA_HOME=/usr/lib/jvm/adoptopenjdk-8-hotspot-amd64/jre/
     export PATH=/opt/apache-maven/bin:/opt/apache-ant-1.9.9/bin:$PATH
-    export WILDFLY_HOME=/opt/wildfly-23.0.2.Final
+    export WILDFLY_HOME=/opt/wildfly-25.0.1.Final
     export WILDFLY_BIN=$WILDFLY_HOME/bin
     export JBOSS_CLI=$WILDFLY_BIN/jboss-cli.sh
     export ARTIFACTS=/home/vagrant/cananolab/software/cananolab-webapp/local_build/artifacts

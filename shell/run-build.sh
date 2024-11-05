@@ -13,7 +13,7 @@ else
         exit 1
     fi
     export JAVA_HOME=/usr/lib/jvm/adoptopenjdk-8-hotspot-amd64/jre/
-    export JBOSS_HOME=/opt/wildfly-23.0.2.Final
+    export JBOSS_HOME=/opt/wildfly-25.0.1.Final
     export PATH=/opt/apache-maven/bin:/opt/apache-ant-1.9.9/bin:$PATH
 fi
 

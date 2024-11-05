@@ -472,8 +472,7 @@ public class FunctionalizingEntityBean extends BaseCompositionEntityBean {
 	public String getPubChemLink() {
 		if (!StringUtils.isEmpty(pubChemId)
 				&& !StringUtils.isEmpty(pubChemDataSourceName)) {
-			pubChemLink = StringUtils.getPubChemURL(pubChemDataSourceName,
-					new Long(pubChemId));
+			pubChemLink = StringUtils.getPubChemURL(pubChemDataSourceName, Long.valueOf(pubChemId));
 		}
 		return pubChemLink;
 	}
@@ -504,12 +503,12 @@ public class FunctionalizingEntityBean extends BaseCompositionEntityBean {
 
 	public void updateEmptyFieldsToNull() {
 		if (!StringUtils.isEmpty(value)) {
-			domainEntity.setValue(new Float(value));
+			domainEntity.setValue(Float.valueOf(value));
 		} else {
 			domainEntity.setValue(null);
 		}
 		if (!StringUtils.isEmpty(pubChemId)) {
-			domainEntity.setPubChemId(new Long(pubChemId));
+			domainEntity.setPubChemId(Long.valueOf(pubChemId));
 		} else {
 			domainEntity.setPubChemId(null);
 		}
