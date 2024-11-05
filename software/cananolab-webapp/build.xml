@@ -128,9 +128,12 @@ L-->
 				<exclude name="maven-resolver-ant-tasks-*uber.jar"/>
 			</fileset>
 		</path>
-		<javac srcdir="${src.dir}" destdir="${build.dir}/WEB-INF/classes" debug="true" source="1.8" target="1.8">
+		<javac srcdir="${src.dir}" destdir="${build.dir}/WEB-INF/classes" debug="true" source="17" target="17" includeantruntime="false">
 			<classpath refid="classpath"/>
 			<classpath refid="compiletime.dependencies.path"  />
+			<compilerarg value="--add-exports=java.base/sun.security.provider=ALL-UNNAMED" />
+			<compilerarg value="--add-opens=java.base/sun.security.provider=ALL-UNNAMED" />
+
 		</javac>
 	</target>
 	<target name="compile-beans" depends="init">
@@ -145,7 +148,7 @@ L-->
 				<exclude name="**/ant-contrib-*.jar"/>
 			</fileset>
 		</path>
-		<javac srcdir="${domainsrc.dir}" destdir="${domainbuild.dir}" debug="true" source="1.8" target="1.8">
+		<javac srcdir="${domainsrc.dir}" destdir="${domainbuild.dir}" debug="true" source="17" target="17">
 			<classpath refid="classpath"/>
 			<classpath refid="compiletime.dependencies.path" />
 		</javac>
@@ -421,7 +424,7 @@ L-->
 				<exclude name="**/log4j-1.2.13.jar" />
 			</fileset>
 		</path>
-		<javac destdir="${build.dir}/WEB-INF/classes" debug="true" source="1.8" target="1.8">
+		<javac destdir="${build.dir}/WEB-INF/classes" debug="true" source="17" target="17">
 			<classpath refid="classpath"/>
 			<classpath refid="test.classpath"/>
 			<src path="${src.dir}"/>

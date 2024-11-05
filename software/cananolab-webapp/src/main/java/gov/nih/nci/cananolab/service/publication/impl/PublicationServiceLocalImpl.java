@@ -232,7 +232,7 @@ public class PublicationServiceLocalImpl extends BaseServiceLocalImpl implements
 
 	public PublicationBean findPublicationById(String publicationId, Boolean loadAccessInfo) throws PublicationException,
 			NoAccessException {
-		return findPublicationByKey("id", new Long(publicationId), loadAccessInfo);
+		return findPublicationByKey("id", Long.valueOf(publicationId), loadAccessInfo);
 	}
 
 	public PublicationBean findPublicationByKey(String keyName,
@@ -477,7 +477,7 @@ public class PublicationServiceLocalImpl extends BaseServiceLocalImpl implements
 	{
 		PublicationBean publicationBean = null;
 		try {
-			Publication publication = publicationServiceHelper.findPublicationByKey("id", new Long(id));
+			Publication publication = publicationServiceHelper.findPublicationByKey("id", Long.valueOf(id));
 			if (publication != null) {
 				if (loadAccessInfo) {
 					publicationBean = loadPublicationBean(publication);

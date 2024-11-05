@@ -33,7 +33,6 @@ public interface ProtocolService extends BaseService {
 			throws ProtocolException, NoAccessException;
 
 
-
 	/**
 	 * Persist a new protocol or update an existing protocol
 	 *

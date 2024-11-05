@@ -284,7 +284,7 @@ public class ProtocolServiceLocalImpl extends BaseServiceLocalImpl implements Pr
 		CaNanoLabApplicationService appService = (CaNanoLabApplicationService) ApplicationServiceProvider.getApplicationService();
 		DetachedCriteria crit = DetachedCriteria.forClass(Characterization.class).setProjection(Projections.distinct(Property.forName("id")));
 		crit.createAlias("protocol", "protocol");
-		crit.add(Property.forName("protocol.id").eq(new Long(protocolId)));
+		crit.add(Property.forName("protocol.id").eq(Long.valueOf(protocolId)));
 		List results = appService.query(crit);
 		List<Long> ids = new ArrayList<Long>();
 		for (int i = 0; i< results.size(); i++) {
@@ -299,7 +299,7 @@ public class ProtocolServiceLocalImpl extends BaseServiceLocalImpl implements Pr
 		CaNanoLabApplicationService appService = (CaNanoLabApplicationService) ApplicationServiceProvider.getApplicationService();
 		DetachedCriteria crit = DetachedCriteria.forClass(Characterization.class);
 		crit.createAlias("protocol", "protocol");
-		crit.add(Property.forName("protocol.id").eq(new Long(protocolId)));
+		crit.add(Property.forName("protocol.id").eq(Long.valueOf(protocolId)));
 		List results = appService.query(crit);
 		List<Characterization> chars = new ArrayList<Characterization>();
 		for (int i = 0; i< results.size(); i++) {
