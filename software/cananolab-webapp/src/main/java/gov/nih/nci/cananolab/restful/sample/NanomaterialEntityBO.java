@@ -474,8 +474,8 @@ public class NanomaterialEntityBO extends BaseAnnotationBO {
 
                     function.setDescription((String) funclist.get(j).get("description"));
 
-                    if (new Long((String) funclist.get(j).get("id")) > 0) {
-                        function.setId(new Long((String) funclist.get(j).get("id")));
+                    if (Long.valueOf((String) funclist.get(j).get("id")) > 0) {
+                        function.setId(Long.valueOf((String) funclist.get(j).get("id")));
                         functionBean.setId((String) funclist.get(j).get("id"));
                         function.setCreatedBy((String) funclist.get(j).get("createdBy"));
                         function.setCreatedDate(new Date((Long) funclist.get(j).get("createdDate")));
@@ -562,8 +562,8 @@ public class NanomaterialEntityBO extends BaseAnnotationBO {
                             ((OtherFunction) function).setType(functionBean.getType());
                         }
                         function.setDescription((String) funclist.get(j).get("description"));
-                        if (new Long((String) funclist.get(j).get("id")) > 0) {
-                            function.setId(new Long((String) funclist.get(j).get("id")));
+                        if (Long.valueOf((String) funclist.get(j).get("id")) > 0) {
+                            function.setId(Long.valueOf((String) funclist.get(j).get("id")));
                             functionBean.setId((String) funclist.get(j).get("id"));
                             function.setCreatedBy((String) funclist.get(j).get("createdBy"));
                             function.setCreatedDate(new Date((Long) funclist.get(j).get("createdDate")));
@@ -658,13 +658,13 @@ public class NanomaterialEntityBO extends BaseAnnotationBO {
             Fullerene fullerene = new Fullerene();
             if (nanoBean.getDomainEntity() != null) {
                 if (nanoBean.getDomainEntity().get("averageDiameter") != null)
-                    fullerene.setAverageDiameter(new Float((String) nanoBean.getDomainEntity().get("averageDiameter")));
+                    fullerene.setAverageDiameter(Float.valueOf((String) nanoBean.getDomainEntity().get("averageDiameter")));
                 if (nanoBean.getDomainEntity().get("averageDiameterUnit") != null)
                     fullerene.setAverageDiameterUnit((String) nanoBean.getDomainEntity().get("averageDiameterUnit"));
                 if (nanoBean.getDomainEntity().get("numberOfCarbon") != null)
-                    fullerene.setNumberOfCarbon(new Integer((String) nanoBean.getDomainEntity().get("numberOfCarbon")));
+                    fullerene.setNumberOfCarbon(Integer.valueOf((String) nanoBean.getDomainEntity().get("numberOfCarbon")));
                 if (nanoBean.getDomainEntity().get("id") != null) {
-                    fullerene.setId(new Long((Integer) nanoBean.getDomainEntity().get("id")));
+                    fullerene.setId(Long.valueOf((Integer) nanoBean.getDomainEntity().get("id")));
                     fullerene.setCreatedBy((String) nanoBean.getDomainEntity().get("createdBy"));
                     fullerene.setCreatedDate(new Date((Long) nanoBean.getDomainEntity().get("createdDate")));
                     fullerene.setSampleComposition(sampleComp);
@@ -684,9 +684,9 @@ public class NanomaterialEntityBO extends BaseAnnotationBO {
                 if (nanoBean.getDomainEntity().get("branch") != null)
                     den.setBranch((String) nanoBean.getDomainEntity().get("branch"));
                 if (nanoBean.getDomainEntity().get("generation") != null)
-                    den.setGeneration(new Float((String) nanoBean.getDomainEntity().get("generation")));
+                    den.setGeneration(Float.valueOf((String) nanoBean.getDomainEntity().get("generation")));
                 if (nanoBean.getDomainEntity().get("id") != null) {
-                    den.setId(new Long((Integer) nanoBean.getDomainEntity().get("id")));
+                    den.setId(Long.valueOf((Integer) nanoBean.getDomainEntity().get("id")));
                     den.setCreatedBy((String) nanoBean.getDomainEntity().get("createdBy"));
                     den.setCreatedDate(new Date((Long) nanoBean.getDomainEntity().get("createdDate")));
                     den.setSampleComposition(sampleComp);
@@ -710,7 +710,7 @@ public class NanomaterialEntityBO extends BaseAnnotationBO {
                 if (nanoBean.getDomainEntity().get("sequence") != null)
                     bio.setSequence((String) nanoBean.getDomainEntity().get("sequence"));
                 if (nanoBean.getDomainEntity().get("id") != null) {
-                    bio.setId(new Long((Integer) nanoBean.getDomainEntity().get("id")));
+                    bio.setId(Long.valueOf((Integer) nanoBean.getDomainEntity().get("id")));
                     bio.setCreatedBy((String) nanoBean.getDomainEntity().get("createdBy"));
                     bio.setCreatedDate(new Date((Long) nanoBean.getDomainEntity().get("createdDate")));
                     bio.setSampleComposition(sampleComp);
@@ -735,7 +735,7 @@ public class NanomaterialEntityBO extends BaseAnnotationBO {
                 if (nanoBean.getDomainEntity().get("polymerName") != null)
                     lipo.setPolymerName((String) nanoBean.getDomainEntity().get("polymerName"));
                 if (nanoBean.getDomainEntity().get("id") != null) {
-                    lipo.setId(new Long((Integer) nanoBean.getDomainEntity().get("id")));
+                    lipo.setId(Long.valueOf((Integer) nanoBean.getDomainEntity().get("id")));
                     lipo.setCreatedBy((String) nanoBean.getDomainEntity().get("createdBy"));
                     lipo.setCreatedDate(new Date((Long) nanoBean.getDomainEntity().get("createdDate")));
                     lipo.setSampleComposition(sampleComp);
@@ -759,7 +759,7 @@ public class NanomaterialEntityBO extends BaseAnnotationBO {
                 if (nanoBean.getDomainEntity().get("polymerName") != null)
                     em.setPolymerName((String) nanoBean.getDomainEntity().get("polymerName"));
                 if (nanoBean.getDomainEntity().get("id") != null) {
-                    em.setId(new Long((Integer) nanoBean.getDomainEntity().get("id")));
+                    em.setId(Long.valueOf((Integer) nanoBean.getDomainEntity().get("id")));
                     em.setCreatedBy((String) nanoBean.getDomainEntity().get("createdBy"));
                     em.setCreatedDate(new Date((Long) nanoBean.getDomainEntity().get("createdDate")));
                     em.setSampleComposition(sampleComp);
@@ -781,11 +781,11 @@ public class NanomaterialEntityBO extends BaseAnnotationBO {
                     nanomaterialEntityBean.setIsCrossLinked((String) nanoBean.getDomainEntity().get("isCrossLinked"));
                 }
                 if (nanoBean.getDomainEntity().get("crossLinkDegree") != null)
-                    poly.setCrossLinkDegree(new Float((String) nanoBean.getDomainEntity().get("crossLinkDegree")));
+                    poly.setCrossLinkDegree(Float.valueOf((String) nanoBean.getDomainEntity().get("crossLinkDegree")));
                 if (nanoBean.getDomainEntity().get("initiator") != null)
                     poly.setInitiator((String) nanoBean.getDomainEntity().get("initiator"));
                 if (nanoBean.getDomainEntity().get("id") != null) {
-                    poly.setId(new Long((Integer) nanoBean.getDomainEntity().get("id")));
+                    poly.setId(Long.valueOf((Integer) nanoBean.getDomainEntity().get("id")));
                     poly.setCreatedBy((String) nanoBean.getDomainEntity().get("createdBy"));
                     poly.setCreatedDate(new Date((Long) nanoBean.getDomainEntity().get("createdDate")));
                     poly.setSampleComposition(sampleComp);
@@ -803,19 +803,19 @@ public class NanomaterialEntityBO extends BaseAnnotationBO {
             CarbonNanotube ctube = new CarbonNanotube();
             if (nanoBean.getDomainEntity() != null) {
                 if (nanoBean.getDomainEntity().get("averageLength") != null)
-                    ctube.setAverageLength(new Float((String) nanoBean.getDomainEntity().get("averageLength")));
+                    ctube.setAverageLength(Float.valueOf((String) nanoBean.getDomainEntity().get("averageLength")));
                 if (nanoBean.getDomainEntity().get("averageLengthUnit") != null)
                     ctube.setAverageLengthUnit((String) nanoBean.getDomainEntity().get("averageLengthUnit"));
                 if (nanoBean.getDomainEntity().get("chirality") != null)
                     ctube.setChirality((String) nanoBean.getDomainEntity().get("chirality"));
                 if (nanoBean.getDomainEntity().get("diameter") != null)
-                    ctube.setDiameter(new Float((String) nanoBean.getDomainEntity().get("diameter")));
+                    ctube.setDiameter(Float.valueOf((String) nanoBean.getDomainEntity().get("diameter")));
                 if (nanoBean.getDomainEntity().get("diameterUnit") != null)
                     ctube.setDiameterUnit((String) nanoBean.getDomainEntity().get("diameterUnit"));
                 if (nanoBean.getDomainEntity().get("wallType") != null)
                     ctube.setWallType((String) nanoBean.getDomainEntity().get("wallType"));
                 if (nanoBean.getDomainEntity().get("id") != null) {
-                    ctube.setId(new Long((Integer) nanoBean.getDomainEntity().get("id")));
+                    ctube.setId(Long.valueOf((Integer) nanoBean.getDomainEntity().get("id")));
                     ctube.setCreatedBy((String) nanoBean.getDomainEntity().get("createdBy"));
                     ctube.setCreatedDate(new Date((Long) nanoBean.getDomainEntity().get("createdDate")));
                     ctube.setSampleComposition(sampleComp);
@@ -834,7 +834,7 @@ public class NanomaterialEntityBO extends BaseAnnotationBO {
             nanoEntity = new OtherNanomaterialEntity();
             if (nanoBean.getDomainEntity() != null) {
                 if (nanoBean.getDomainEntity().get("id") != null) {
-                    nanoEntity.setId(new Long((Integer) nanoBean.getDomainEntity().get("id")));
+                    nanoEntity.setId(Long.valueOf((Integer) nanoBean.getDomainEntity().get("id")));
                     nanoEntity.setCreatedBy((String) nanoBean.getDomainEntity().get("createdBy"));
                     nanoEntity.setCreatedDate((Date) nanoBean.getDomainEntity().get("createdDate"));
                     nanoEntity.setSampleComposition(sampleComp);

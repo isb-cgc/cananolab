@@ -1,2 +1,103 @@
-<p>protocol-view works!</p>
-currentProtocol: {{currentProtocol}}
+<canano-main-display-heading
+    [helpUrl]="helpUrl"
+    [toolHeadingName]="toolHeadingName">
+</canano-main-display-heading>
+<div class="mainSection" *ngIf="protocolData">
+    <div class="error" *ngIf="errors['error']">
+        {{errors['error']}}
+    </div>
+
+    <div class="error" *ngIf="message">
+        {{message}}
+    </div>
+    <div class="mainBorder">
+        <table class="dataMain">
+            <!-- Protocol Type -->
+            <tr>
+                <td class="label">
+                    Protocol Type
+                </td>
+                <td>
+                    {{protocolData.protocolType}}
+                </td>
+            </tr>
+            <!-- -----  END Protocol Type  ----- -->
+            <!-- -----  Protocol Name  ----- -->
+            <tr>
+                <td class="label">
+                    Protocol Name
+                </td>
+                <td>
+                    {{protocolData.protocolName}}
+                </td>
+            </tr>
+            <!--  -----  END Protocol Name  ----- -->
+            <!--  -----  Protocol Abbreviation  ----- -->
+            <tr>
+                <td class="label">
+                    <div>Protocol</div>
+                    <div>Abbreviation</div>
+                </td>
+                <td>
+                    {{protocolData.protocolAbbreviation}}
+                </td>
+            </tr>
+            <!-- END Protocol Abbreviation -->
+            <!-- Protocol Version-->
+            <tr>
+                <td class="label">
+                    Protocol Version
+                </td>
+                <td>
+                    {{protocolData.protocolVersion}}
+                </td>
+            </tr>
+            <!--            END Protocol Version-->
+            <!-- Protocol DOI-->
+            <tr>
+                <td class="label">
+                    DOI
+                </td>
+                <td>
+                    {{protocolData.doi}}
+                </td>
+            </tr>
+            <!--            END Protocol DOI-->
+            <!--            Protocol File-->
+            <tr>
+                <td class="label">
+                    Protocol File
+                </td>
+                <td>
+                    <div *ngIf="protocolData.uri">
+                        <a [href]="downloadUrl+'?protocolId='+protocolId+'&fileId='+protocolData.fileId">
+                            {{protocolData.uri}}
+                        </a>
+                    </div>
+                </td>
+            </tr>
+
+            <!-- Protocol File Title -->
+            <tr>
+                <td class="label">
+                    File Title
+                </td>
+                <td>
+                    {{protocolData.fileTitle}}
+                </td>
+            </tr>
+            <!-- END Protocol File Title -->
+
+            <!--  Description  -->
+            <tr>
+                <td class="label">
+                    Description
+                </td>
+                <td>
+                    {{protocolData.fileDescription}}
+                </td>
+            </tr>
+            <!--  END Description  -->
+        </table>
+    </div>
+</div>

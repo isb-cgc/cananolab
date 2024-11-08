@@ -41,8 +41,8 @@ if [ -z "$CI" ]; then
   apt-get update
   wget -qO - https://adoptopenjdk.jfrog.io/adoptopenjdk/api/gpg/key/public | apt-key add -
   add-apt-repository --yes https://adoptopenjdk.jfrog.io/adoptopenjdk/deb/
-  apt-get update && apt-get -y install adoptopenjdk-8-hotspot
-  export JAVA_HOME=/usr/lib/jvm/adoptopenjdk-8-hotspot-amd64/jre/
+  apt-get update && apt-get -y install adoptopenjdk-17-hotspot
+  export JAVA_HOME=/usr/lib/jvm/adoptopenjdk-17-hotspot-amd64/jre/
   echo "Java Version:"
   java -version
 

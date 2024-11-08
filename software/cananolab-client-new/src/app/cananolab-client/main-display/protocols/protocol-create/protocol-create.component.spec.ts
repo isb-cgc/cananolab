@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { ProtocolCreateComponent } from './protocol-create-charlie.component';
+import { ProtocolCreateComponent } from './protocol-create.component';
 
 describe('ProtocolCreateComponent', () => {
   let component: ProtocolCreateComponent;

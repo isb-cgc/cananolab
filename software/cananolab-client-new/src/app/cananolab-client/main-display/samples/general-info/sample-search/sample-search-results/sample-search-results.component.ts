@@ -91,12 +91,26 @@ export class SampleSearchResultsComponent implements OnInit, OnDestroy {
         this.onPageLengthChange();
     }
 
-    navigateToSampleEdit(sampleId) {
-        this.router.navigate(['home/samples/sample', sampleId]); // @FIXME  Don't hard code these
-    }
-
-    navigateToSampleView(sampleId, sampleName) {
-        this.router.navigate(['home/samples/view-sample', sampleId]); // @FIXME  Don't hard code these
+    navigateToSample(sampleId) {
+        if (this.properties.LOGGED_IN) {
+            var url = this.apiService.doGet(Consts.QUERY_SAMPLE_WRITE_ACCESS,'sampleId=' + sampleId);
+            url.subscribe(data=> {
+                var hasWriteAccess = data;
+                if (hasWriteAccess) {
+                    // current user have write access
+                    this.router.navigate(['home/samples/sample', sampleId]); // @FIXME  Don't hard code these
+                } else {
+                    this.router.navigate(['home/samples/view-sample', sampleId]); // @FIXME  Don't hard code these
+                }
+            },
+            error => {
+                console.log(error);
+            })
+        }
+        else {
+            // Not logged in
+            this.router.navigate(['home/samples/view-sample', sampleId]); // @FIXME  Don't hard code these
+        }
     }
 
     addToFavorites(samp) {

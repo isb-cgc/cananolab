@@ -125,8 +125,9 @@ public class PublicationBO extends BaseAnnotationBO
 		return msgs;
 	}
 
-	public List<String> savePublication(HttpServletRequest request, PublicationBean publicationBean) throws Exception 
+	public List<String> savePublication(HttpServletRequest request, PublicationBean publicationBean) throws Exception
 	{
+		System.out.println("In save publication ");
 		List<String> msgs = new ArrayList<String>();
 		HttpSession session = request.getSession();
 		msgs = validateInputForPublication(publicationBean);
@@ -140,6 +141,7 @@ public class PublicationBO extends BaseAnnotationBO
 			//	return false;
 			return msgs;
 		}
+		System.out.println("In save sampleID: " + sampleId);
 		// validate associated sample names
 
 		if (StringUtils.isEmpty(sampleId) && !validateAssociatedSamples(request, publicationBean)) {
@@ -148,10 +150,42 @@ public class PublicationBO extends BaseAnnotationBO
 			return msgs;
 		}
 
+		// Check if user has write access to the samples need associate
+		if (!StringUtils.isEmpty(sampleId)) {
+			SampleBean sampleBean = sampleService.findSampleById(sampleId, true);
+			if (sampleBean != null) {
+				if (!sampleService.checkIfCurrentUserHasWriteAccess(sampleBean)) {
+					logger.error("Throwing no access: cannot write to sample");
+					throw new Exception("You don't have write access to this sample");
+				}
+			}
+		}
+
+		for (String sampleName : publicationBean.getSampleNames()) {
+			if (!StringUtils.isEmpty(sampleName)) {
+				SampleBean sampleBean = sampleService.findSampleByName(sampleName);
+				if (sampleBean != null) {
+					if (!sampleService.checkIfCurrentUserHasWriteAccess(sampleBean)) {
+						logger.error("Throwing no access: cannot write to sample");
+						throw new Exception("You don't have write access to this sample");
+					}
+				}
+			}
+		}
+
 		/**
 		 * add current sample to associated samples if from sample publication
 		 * page
 		 */
+
+		//
+		// WJRL 11/1/23: This appears to be how publications get attached to samples, *either* from
+		// the publication creation page, or the sample add publication page. At this time, it appears that
+		// adding "other samples" is broken in both places. On the publication page, the separate sample
+		// IDs are not broken out from a \r or \n separated list. On the sample attach publication page,
+		// it is not working?
+		//
+
 		if (!StringUtils.isEmpty(sampleId)) {
 			publicationBean.setFromSamplePage(true);
 			Set<String> sampleNames = new HashSet<String>();
@@ -162,13 +196,18 @@ public class PublicationBO extends BaseAnnotationBO
 			 * samples.
 			 */
 			String[] otherSamples = (String[]) publicationBean.getSampleNames();
+			System.out.println("otherSamples length " + otherSamples.length);
 			if (otherSamples.length > 0) {
 				sampleNames.addAll(Arrays.asList(otherSamples));
+			}
+			for (String sampName: sampleNames) {
+				System.out.println("sample " + sampName);
 			}
 			publicationBean.setSampleNames(sampleNames.toArray(new String[0]));
 		} else {
 			publicationBean.setFromSamplePage(false);
 		}
+		System.out.println("From sample page? " + publicationBean.getFromSamplePage());
 
 		publicationBean.setupDomain(Constants.FOLDER_PUBLICATION, SpringSecurityUtil.getLoggedInUserName());
 		String timestamp = DateUtils.convertDateToString(new Date(), "yyyyMMdd_HH-mm-ss-SSS");
@@ -293,6 +332,17 @@ public class PublicationBO extends BaseAnnotationBO
 			errors.add("External URL is invalid");
 		}
 		return errors;
+	}
+
+	public boolean isPublicationEditableByCurrentUser(HttpServletRequest request, String publicationId) throws Exception
+	{
+		if (!SpringSecurityUtil.isUserLoggedIn())
+			return false;
+
+		if (publicationId == null || publicationId.length() == 0)
+			return false;
+
+		return springSecurityAclService.currentUserHasWritePermission(Long.valueOf(publicationId), SecureClassesEnum.PUBLICATION.getClazz());
 	}
 
 	private boolean validateAssociatedSamples(HttpServletRequest request, PublicationBean publicationBean) throws Exception

@@ -376,7 +376,7 @@ public class SynthesisMaterialBO extends BaseAnnotationBO {
         List<String> msgs = new ArrayList<String>();
         SampleBean sampleBean = setupSampleById(sampleIdString, request);
         CananoUserDetails userDetails = SpringSecurityUtil.getPrincipal();
-        Long sampleId = new Long(sampleIdString);
+        Long sampleId = Long.valueOf(sampleIdString);
 
         boolean newEntity = true;
 
@@ -472,7 +472,7 @@ public class SynthesisMaterialBO extends BaseAnnotationBO {
         SynthesisMaterialBean entityBean = transferSynthesisMaterialBean(synthesisMaterialBean, request);
         entityBean.setUpDomainEntity(SpringSecurityUtil.getLoggedInUserName());
         String sampleId = synthesisMaterialBean.getSampleId();
-        synthesisService.deleteSynthesisMaterial(new Long(sampleId),entityBean.getDomainEntity());
+        synthesisService.deleteSynthesisMaterial(Long.valueOf(sampleId),entityBean.getDomainEntity());
 
         msgs.add("success");
         return msgs;
@@ -559,10 +559,10 @@ public class SynthesisMaterialBO extends BaseAnnotationBO {
 //        InitSampleSetup.getInstance().getOtherSampleNames(httpRequest, sampleId, sampleService);
 
         try {
-            SynthesisMaterialBean synthesisMaterialBean = synthesisService.findSynthesisMaterialById(new Long(sampleId),
-                    new Long(synMatId));
+            SynthesisMaterialBean synthesisMaterialBean = synthesisService.findSynthesisMaterialById(Long.valueOf(sampleId),
+                    Long.valueOf(synMatId));
 
-            SynthesisBean synthesisBean = synthesisService.findSynthesisBySampleId(new Long(sampleId));
+            SynthesisBean synthesisBean = synthesisService.findSynthesisBySampleId(Long.valueOf(sampleId));
             synthesisMaterialBean.setSynthesis(synthesisBean);
 //            synthesisMaterialBean.setSynthesisId(synthesisBean.getDomainId());
             form.setSynthesisMaterialBean(synthesisMaterialBean);

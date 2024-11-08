@@ -4,9 +4,7 @@ package gov.nih.nci.cananolab.restful.util;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-
 import java.io.InputStream;
-
 import java.util.Properties;
 import java.util.Set;
 
@@ -18,9 +16,9 @@ public class AppPropertyUtil {
 
     public static String getAppProperty(String key) {
         System.out.println("key=="+key+";");
+
         if (!isLoaded) {
             try {
-
                 final Properties systemProperties = System.getProperties();
                 final Set<String> keys = systemProperties.stringPropertyNames();
                 System.out.println("System.getProperties().size()=="+keys.size());
@@ -29,7 +27,7 @@ public class AppPropertyUtil {
                     final String value = systemProperties.getProperty(myKey);
                     System.out.println("myKey==" + myKey + "; value==" + value+";");
                 }
-                    
+
                 InputStream inputStream = AppPropertyUtil.class.getResourceAsStream(System.getProperty("app.props.path","/.env"));
                 System.out.println("[STATUS] Application properties file should be at: " + System.getProperty("app.props.path","/.env"));
                 if (inputStream != null) {

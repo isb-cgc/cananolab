@@ -81,11 +81,21 @@
                     '': even,
                     rowOdd: odd
                 }">
-                <td class="search-results-td" data-title="Action">
-                    <a *ngIf="properties.LOGGED_IN" (click)="navigateToResultEdit(result)">Edit</a>
 
+                <td class="search-results-td" data-title="Action">
+                    <ng-container *ngIf="properties.LOGGED_IN">
+                        <a *ngIf="result.type == 'protocol'" (click)="navigateToProtocol(result.id)">
+                            Details
+                        </a>
+                        <a *ngIf="result.type == 'sample'" (click)="navigateToResultEdit(result)">
+                            Details
+                        </a>
+                        <a *ngIf="result.type == 'publication'" (click)="navigateToResultEdit(result)">
+                            Details
+                        </a>
+                    </ng-container>
                     <ng-container *ngIf="!properties.LOGGED_IN">
-                        <a *ngIf="result.type == 'protocol' && result.fileId" (click)="navigateToResultView(result)">
+                        <a *ngIf="result.type == 'protocol' && result.fileId" (click)="navigateToProtocol(result.id)">
                             View
                         </a>
                         <a *ngIf="result.type == 'sample'" (click)="navigateToResultView(result)">

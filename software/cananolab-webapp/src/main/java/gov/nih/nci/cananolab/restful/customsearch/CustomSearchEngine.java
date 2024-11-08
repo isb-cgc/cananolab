@@ -184,6 +184,7 @@ public class CustomSearchEngine
 				protocolFieldsBean.setCreatedDate(protocol.getCreatedDate());
 				protocolFieldsBean.setProtocolId(protocol.getId().toString());
 				protocolFieldsBean.setProtocolName(protocol.getName());
+				protocolFieldsBean.setDoi(protocol.getDoi());
 				File file = protocol.getFile();
 				if(file!=null){
 					if(file.getTitle()!=null)

@@ -616,7 +616,7 @@ public class SampleServiceHelper
 		List<Keyword> keywords = new ArrayList<Keyword>();
 
 		CaNanoLabApplicationService appService = (CaNanoLabApplicationService) ApplicationServiceProvider.getApplicationService();
-		DetachedCriteria crit = DetachedCriteria.forClass(Sample.class).add(Property.forName("id").eq(new Long(sampleId)));
+		DetachedCriteria crit = DetachedCriteria.forClass(Sample.class).add(Property.forName("id").eq(Long.valueOf(sampleId)));
 		crit.setFetchMode("keywordCollection", FetchMode.JOIN);
 		List result = appService.query(crit);
 		Sample sample = null;
@@ -635,7 +635,7 @@ public class SampleServiceHelper
 		}
 		CaNanoLabApplicationService appService = (CaNanoLabApplicationService) ApplicationServiceProvider.getApplicationService();
 		DetachedCriteria crit = DetachedCriteria.forClass(Sample.class).add(
-				Property.forName("id").eq(new Long(sampleId)));
+				Property.forName("id").eq(Long.valueOf(sampleId)));
 		crit.setFetchMode("primaryPointOfContact", FetchMode.JOIN);
 		crit.setFetchMode("primaryPointOfContact.organization", FetchMode.JOIN);
 		crit.setResultTransformer(CriteriaSpecification.DISTINCT_ROOT_ENTITY);
@@ -656,7 +656,7 @@ public class SampleServiceHelper
 		CaNanoLabApplicationService appService = (CaNanoLabApplicationService) ApplicationServiceProvider
 				.getApplicationService();
 		DetachedCriteria crit = DetachedCriteria.forClass(Sample.class).add(
-				Property.forName("id").eq(new Long(sampleId)));
+				Property.forName("id").eq(Long.valueOf(sampleId)));
 		crit.setFetchMode("otherPointOfContactCollection", FetchMode.JOIN);
 		crit.setFetchMode("otherPointOfContactCollection.organization",
 				FetchMode.JOIN);
@@ -675,7 +675,7 @@ public class SampleServiceHelper
 
 	public Sample findSampleById(String sampleId) throws SampleException {
         try{
-            Long id = new Long(sampleId);
+            Long id = Long.valueOf(sampleId);
             return findSampleById(id);
         } catch (NumberFormatException nfex) {
 			logger.error("sampleId is not integer: "+ sampleId);
@@ -1491,7 +1491,7 @@ return myTransactionInsertion;
 		CaNanoLabApplicationService appService = (CaNanoLabApplicationService) ApplicationServiceProvider.getApplicationService();
 
 		DetachedCriteria crit = DetachedCriteria.forClass(Sample.class).add(
-				Property.forName("id").eq(new Long(sampleId)));
+				Property.forName("id").eq(Long.valueOf(sampleId)));
 		crit.setFetchMode("primaryPointOfContact", FetchMode.JOIN);
 		crit.setFetchMode("primaryPointOfContact.organization", FetchMode.JOIN);
 		crit.setFetchMode("otherPointOfContactCollection", FetchMode.JOIN);
@@ -1541,7 +1541,7 @@ return myTransactionInsertion;
 		CaNanoLabApplicationService appService = (CaNanoLabApplicationService) ApplicationServiceProvider.getApplicationService();
 
 		DetachedCriteria crit = DetachedCriteria.forClass(Sample.class).add(
-				Property.forName("id").eq(new Long(sampleId)));
+				Property.forName("id").eq(Long.valueOf(sampleId)));
 
 		crit.setFetchMode("publicationCollection", FetchMode.JOIN);
 		crit.setFetchMode("synthesis", FetchMode.JOIN);
@@ -1678,7 +1678,7 @@ return myTransactionInsertion;
 		CaNanoLabApplicationService appService = (CaNanoLabApplicationService) ApplicationServiceProvider.getApplicationService();
 
 		DetachedCriteria crit = DetachedCriteria.forClass(Sample.class).add(
-				Property.forName("id").eq(new Long(sampleId)));
+				Property.forName("id").eq(Long.valueOf(sampleId)));
 		crit.setFetchMode("publicationCollection", FetchMode.JOIN);
 		crit.setResultTransformer(CriteriaSpecification.DISTINCT_ROOT_ENTITY);
 		System.out.println("Shallow Lazy load for search");
@@ -1759,7 +1759,7 @@ return myTransactionInsertion;
 				.getApplicationService();
 
 		DetachedCriteria crit = DetachedCriteria.forClass(Sample.class).add(
-				Property.forName("id").eq(new Long(sampleId)));
+				Property.forName("id").eq(Long.valueOf(sampleId)));
 
 		crit.setResultTransformer(CriteriaSpecification.DISTINCT_ROOT_ENTITY);
 
@@ -1870,7 +1870,7 @@ return myTransactionInsertion;
 
 		CaNanoLabApplicationService appService = (CaNanoLabApplicationService) ApplicationServiceProvider
 				.getApplicationService();
-		DetachedCriteria crit = DetachedCriteria.forClass(PointOfContact.class).add(Property.forName("id").eq(new Long(pocId)));
+		DetachedCriteria crit = DetachedCriteria.forClass(PointOfContact.class).add(Property.forName("id").eq(Long.valueOf(pocId)));
 		crit.setFetchMode("organization", FetchMode.JOIN);
 		List results = appService.query(crit);
 		for(int i = 0; i < results.size(); i++){
@@ -1888,7 +1888,7 @@ return myTransactionInsertion;
 		CaNanoLabApplicationService appService = (CaNanoLabApplicationService) ApplicationServiceProvider
 				.getApplicationService();
 		DetachedCriteria crit = DetachedCriteria.forClass(Sample.class).add(
-				Property.forName("id").eq(new Long(sampleId)));
+				Property.forName("id").eq(Long.valueOf(sampleId)));
 		crit.setFetchMode("primaryPointOfContact", FetchMode.JOIN);
 		crit.setFetchMode("primaryPointOfContact.organization", FetchMode.JOIN);
 		crit.setFetchMode("otherPointOfContactCollection", FetchMode.JOIN);

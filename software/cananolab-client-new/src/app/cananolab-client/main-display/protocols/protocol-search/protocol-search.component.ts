@@ -8,18 +8,20 @@ import { ProtocolsService } from '../protocols.service';
 import { takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs';
 import { Router } from '@angular/router';
+
 @Component( {
     selector: 'canano-protocol-search',
     templateUrl: './protocol-search.component.html',
     styleUrls: ['./protocol-search.component.scss']
 } )
+
 export class ProtocolSearchComponent implements OnInit, OnDestroy{
     protocolSearchForm;
     /**
      * For canano-main-display-heading @Input()
      */
     loading;
-    loadingMessage=Consts.searchingMessage;
+    loadingMessage = Consts.searchingMessage;
     helpUrl = Consts.HELP_URL_PROTOCOL_SEARCH;
     toolHeadingName = 'Protocol Search';
     toolHeadingNameSearchResults = 'Protocol Search Results';
@@ -40,6 +42,7 @@ export class ProtocolSearchComponent implements OnInit, OnDestroy{
     nameOperand = '';
     titleOperand = '';
     abbreviationOperand = '';
+    doiOperand = '';
 
     protocolType = '';
 
@@ -50,31 +53,33 @@ export class ProtocolSearchComponent implements OnInit, OnDestroy{
 
     private ngUnsubscribe: Subject<boolean> = new Subject<boolean>();
 
-    constructor( private router:Router,private topMainMenuService: TopMainMenuService, private apiService: ApiService,
+    constructor( private router: Router, private topMainMenuService: TopMainMenuService, private apiService: ApiService,
                  private utilService: UtilService, private protocolsService: ProtocolsService ){
     }
 
     ngOnInit(): void{
-        this.errors={};
-        this.protocolSearchForm={
-            "nameOperand":this.defaultOperand,
-            "titleOperand":this.defaultOperand,
-            "abbreviationOperand":this.defaultOperand,
-            "fileTitle":"",
-            "protocolType":"",
-            "protocolName":""
+        this.errors = {};
+        this.protocolSearchForm = {
+            'nameOperand': this.defaultOperand,
+            'titleOperand': this.defaultOperand,
+            'abbreviationOperand': this.defaultOperand,
+            'doiOperand': 'equals',
+            'fileTitle': '',
+            'protocolType': '',
+            'protocolName': '',
+            'doi': ''
         };
-        this.initData=JSON.parse(JSON.stringify(this.protocolSearchForm))
+        this.initData = JSON.parse(JSON.stringify(this.protocolSearchForm))
 
         // Listen for changing Protocol screens
         this.protocolsService.currentProtocolScreenEmitter.pipe( takeUntil( this.ngUnsubscribe ) ).subscribe(
             ( data ) => {
-                this.errors={};
+                this.errors = {};
                 this.protocolScreenToShow = data.ps;
                 this.protocolScreenInfo = data.info;
             },
-            error=> {
-                this.errors=error;
+            error => {
+                this.errors = error;
             } );
 
 
@@ -85,19 +90,19 @@ export class ProtocolSearchComponent implements OnInit, OnDestroy{
 
 
     onSubmit(  ){
-        this.loading=true;
-        this.loadingMessage=Consts.searchingMessage;
+        this.loading = true;
+        this.loadingMessage = Consts.searchingMessage;
         this.apiService.doPost( Consts.QUERY_SEARCH_PROTOCOL, this.protocolSearchForm ).subscribe(
             data => {
                 this.protocolsService.setProtocolSearchResults(data);
                 this.router.navigate(['home/protocols/protocol-search-results']);
-                this.errors={};
-                this.loading=null;
+                this.errors = {};
+                this.loading = null;
             },
             err => {
                 if( err.status === 404 ){ // @checkme
-                    this.errors=err;
-                    this.loading=null;
+                    this.errors = err;
+                    this.loading = null;
                 }
             }
         );
@@ -107,18 +112,18 @@ export class ProtocolSearchComponent implements OnInit, OnDestroy{
     init(){
         // Get list of Protocol types for dropdown
         if( Properties.PROTOCOL_TYPES.length < 1){
-            this.loading=true;
-            this.loadingMessage=Consts.loadingMessage;
+            this.loading = true;
+            this.loadingMessage = Consts.loadingMessage;
             this.apiService.doGet( Consts.QUERY_PROTOCOL_SETUP, '' ).subscribe(
                 data => {
-                    this.errors={};
+                    this.errors = {};
                     this.protocolTypes = <any>data['protocolTypes'];
                     Properties.PROTOCOL_TYPES = this.protocolTypes; // Cache it
-                    this.loading=false;
+                    this.loading = false;
                 },
-                error=> {
-                    this.loading=null;
-                    this.errors=error;
+                error => {
+                    this.loading = null;
+                    this.errors = error;
                 } );
         }else{
             this.protocolTypes = Properties.PROTOCOL_TYPES;
@@ -127,7 +132,7 @@ export class ProtocolSearchComponent implements OnInit, OnDestroy{
 
     onResetClick(){
         this.resetting = true;
-        this.protocolSearchForm=JSON.parse(JSON.stringify(this.initData));
+        this.protocolSearchForm = JSON.parse(JSON.stringify(this.initData));
     }
 
 

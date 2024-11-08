@@ -84,7 +84,7 @@ public class AssociatedElementBean {
 				this.setCompositionType(null);
 				throw new ClassCastException(tmpType);
 			}
-			domainElement.setId(new Long(entityId));
+			domainElement.setId(Long.valueOf(entityId));
 		} else {
 			domainElement = composingElement;
 		}

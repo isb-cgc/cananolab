@@ -6,6 +6,9 @@
 
 <div class="mainSection" *ngIf="protocolSearchForm">
     <canano-loader [loading]="loading" [message]="loadingMessage"></canano-loader>
+    <div class="error" *ngIf="errors['error']">
+        {{errors['error']}}
+    </div>
     <form name="protocolSearchForm">
         <div class="mainBorder">
             <table>
@@ -70,6 +73,21 @@
                             </select>
                         </label>
                         <input name="fileTitle" id="fileTitle" type="text" [(ngModel)]="protocolSearchForm.fileTitle">
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label for="doi">
+                            DOI
+                        </label>
+                    </td>
+                    <td>
+                        <label for="doiOperand">
+                            <select [(ngModel)]="protocolSearchForm.doiOperand" name="doiOperand" id="doiOperand">
+                                <option value="equals">equals</option>
+                            </select>
+                        </label>
+                        <input id="doi" name="doi" type="text" [(ngModel)]="protocolSearchForm.doi">
                     </td>
                 </tr>
             </table>

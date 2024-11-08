@@ -13,7 +13,7 @@ else
         exit 1
     fi
     export JAVA_HOME=/usr/lib/jvm/adoptopenjdk-8-hotspot-amd64/jre/
-    export JBOSS_HOME=/opt/wildfly-23.0.2.Final
+    export JBOSS_HOME=/opt/wildfly-25.0.1.Final
     export PATH=/opt/apache-maven/bin:/opt/apache-ant-1.9.9/bin:$PATH
 fi
 
@@ -73,7 +73,7 @@ if [ -n "$CI" ]; then
   echo "[STATUS] Building Angular front end"
   npm i
   # Install Angular CLI globally
-  npm install -g @angular/cli@latest
+  npm install -g @angular/cli@16.2.10
   ng build --base-href / --output-path ./build/
 
   cp -av ./build/. ${HOME}/software/cananolab-webapp/web/

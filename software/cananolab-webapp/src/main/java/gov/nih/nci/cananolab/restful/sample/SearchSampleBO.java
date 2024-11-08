@@ -118,7 +118,7 @@ public class SearchSampleBO extends AbstractDispatchBO {
 
 		// set in sessionScope so user can go back to the result from the sample
 		// summary page
-		request.getSession().setAttribute("resultSize", new Integer(sampleBeans.size()));
+		request.getSession().setAttribute("resultSize", Integer.valueOf(sampleBeans.size()));
 		
 		//return mapping.findForward("success");
 		//UserBean user = (UserBean) (request.getSession().getAttribute("user"));
@@ -293,7 +293,8 @@ public class SearchSampleBO extends AbstractDispatchBO {
 		List<String> otherCharacterizationTypes = new ArrayList<String>();
 		for (int i = 0; i < characterizations.length; i++) {
 			String className = ClassUtils.getShortClassNameFromDisplayName(characterizations[i]);
-			if (className.length() == 0 || characterizations[i].startsWith("other") ) {
+			Class clazz = ClassUtils.getFullClass(className);
+			if (clazz == null || className.length() == 0 || characterizations[i].startsWith("other") ) {
 				className = "OtherCharacterization";
 				otherCharacterizationTypes.add(characterizations[i]);
 			} else {
