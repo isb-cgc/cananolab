@@ -25,6 +25,10 @@ import sys
 
 USER = os.environ["USER"]
 PASSWORD = os.environ["PASSWORD"]
+PROD_SERVER = os.environ["PROD_SERVER"]
+TEST_SERVER = os.environ["TEST_SERVER"]
+PROD_PREFIX = os.environ["PROD_PREFIX"]
+TEST_PREFIX = os.environ["TEST_PREFIX"]
 
 #
 # A DOI record is viewed just by calling with a URL that includes the DOI, and using a GET
@@ -40,11 +44,11 @@ def main(args):
     doi_suffix = args[2]
 
     if tier == "prod":
-        server = "api.datacite.org"
-        doi_prefix = "10.17917"
+        server = PROD_SERVER
+        doi_prefix = PROD_PREFIX
     else:
-        server = "api.test.datacite.org"
-        doi_prefix = "10.24368"
+        server = TEST_SERVER
+        doi_prefix = TEST_PREFIX
 
     headers = {
         "accept": "application/vnd.api+json",

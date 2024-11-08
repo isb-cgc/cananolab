@@ -9,6 +9,10 @@ export PY_PATH="Path to python"
 export DOI_SUFFIX="DOI suffix to update"
 export TIER="test or prod"
 export JSON_FILE="Path to JSON file"
+export PROD_SERVER="prod host"
+export TEST_SERVER="test host"
+export PROD_PREFIX="prod repo ID"
+export TEST_PREFIX="test repo ID"
 
 if [ -f "${HOME}/.bash_profile" ]; then
     source ${HOME}/.bash_profile

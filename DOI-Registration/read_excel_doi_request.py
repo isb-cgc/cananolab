@@ -51,6 +51,9 @@ json_dict = {
   }
 }
 
+PROD_PREFIX = os.environ["PROD_PREFIX"]
+TEST_PREFIX = os.environ["TEST_PREFIX"]
+
 def main(args):
 
     if len(args) != 4:
@@ -62,9 +65,9 @@ def main(args):
     json_output = args[3]
 
     if tier == "prod":
-        doi_prefix = "10.17917"
+        doi_prefix = PROD_PREFIX
     else:
-        doi_prefix = "10.24368"
+        doi_prefix = TEST_PREFIX
 
     json_dict['data']['attributes']['prefix'] = doi_prefix
 

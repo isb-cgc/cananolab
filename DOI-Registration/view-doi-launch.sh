@@ -8,6 +8,10 @@ export PY_PATH="Path to python"
 # Note DOI prefix is set by the tier
 export DOI_SUFFIX="DOI suffix to update"
 export TIER="test or prod"
+export PROD_SERVER="prod host"
+export TEST_SERVER="test host"
+export PROD_PREFIX="prod repo ID"
+export TEST_PREFIX="test repo ID"
 
 if [ -f "${HOME}/.bash_profile" ]; then
     source ${HOME}/.bash_profile

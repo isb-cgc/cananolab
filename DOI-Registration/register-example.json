@@ -2,7 +2,7 @@
   "data": {
     "type": "dois",
     "attributes": {
-      "prefix": "10.24368",
+      "prefix": null,
       "creators": [
         {
           "name": "Doe, Jane",

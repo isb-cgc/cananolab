@@ -6,6 +6,8 @@ export PY_PATH="Path to python"
 export EXCEL_FILE="Excel-file-to-read.xlsx"
 export TIER="test or prod"
 export JSON_FILE="JSON-file-to-write.json"
+export PROD_PREFIX="prod repo ID"
+export TEST_PREFIX="test repo ID"
 
 if [ -f "${HOME}/.bash_profile" ]; then
     source ${HOME}/.bash_profile

@@ -26,6 +26,10 @@ from datetime import datetime
 
 USER = os.environ["USER"]
 PASSWORD = os.environ["PASSWORD"]
+PROD_SERVER = os.environ["PROD_SERVER"]
+TEST_SERVER = os.environ["TEST_SERVER"]
+PROD_PREFIX = os.environ["PROD_PREFIX"]
+TEST_PREFIX = os.environ["TEST_PREFIX"]
 
 #
 # A DOI record is created by sending it JSON that includes all the desired items.
@@ -42,18 +46,17 @@ def main(args):
     json_file = args[2]
 
     if tier == "prod":
-        server = "api.datacite.org"
-        doi_prefix = "10.17917"
+        server = PROD_SERVER
+        doi_prefix = PROD_PREFIX
     else:
-        server = "api.test.datacite.org"
-        doi_prefix = "10.24368"
+        server = TEST_SERVER
+        doi_prefix = TEST_PREFIX
 
     with open(json_file, 'r') as file:
-      payload = json.load(file)
+        payload = json.load(file)
 
-    if payload['data']['attributes']['prefix'] != doi_prefix:
-        print("JSON prefix mismatch with tier")
-        exit(-1)
+    if payload['data']['attributes']['prefix'] is None:
+        payload['data']['attributes']['prefix'] = doi_prefix
 
     #
     # We only want to create drafts. So this key is not allowed:

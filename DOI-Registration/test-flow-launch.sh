@@ -9,6 +9,10 @@ export TIER="test or prod"
 export EXCEL_FILE="Excel-file-to-read.xlsx"
 export ORIG_JSON_FILE="Path to JSON file"
 export UPDATE_JSON_FILE="Path to update JSON file"
+export PROD_SERVER="prod host"
+export TEST_SERVER="test host"
+export PROD_PREFIX="prod repo ID"
+export TEST_PREFIX="test repo ID"
 
 if [ -f "${HOME}/.bash_profile" ]; then
     source ${HOME}/.bash_profile
