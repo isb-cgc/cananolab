@@ -1,0 +1,53 @@
+{
+  "data": {
+    "type": "dois",
+    "attributes": {
+      "prefix": "10.24368",
+      "creators": [
+        {
+          "name": "Doe, Jane",
+          "nameType": "Personal",
+          "givenName": "Jane",
+          "familyName": "Doe"
+        },
+        {
+          "name": "Public, Joe",
+          "nameType": "Personal",
+          "givenName": "Joe",
+          "familyName": "Public"
+        }
+      ],
+      "titles": [
+        {
+          "lang": null,
+          "title": "NCL Dummy Method ITA-9999",
+          "titleType": null
+        }
+      ],
+      "language": "en",
+      "publisher": "NCI caNanoLab",
+      "publicationYear": 2024,
+      "contributors": [
+        {
+          "name": "Leader, Sally",
+          "nameType": "Personal",
+          "givenName": "Sally",
+          "familyName": "Leader",
+          "contributorType": "ProjectLeader"
+        }
+      ],
+      "types": {
+        "resourceTypeGeneral": "Dataset"
+      },
+      "url":"https://cananolab.cancer.gov/#/home/protocols/view-protocol/114131119",
+      "version": "1.0",
+      "descriptions": [
+        {
+          "lang": null,
+          "description": "Not really a protocol. Just a dummy.",
+          "descriptionType": "Abstract"
+        }
+      ]
+    }
+  }
+}
