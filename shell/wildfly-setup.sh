@@ -57,7 +57,7 @@ fi
 
 export ARTIFACTS=${CANANODIR}/artifacts
 
-export WILDFLY_HOME=/opt/wildfly-23.0.2.Final
+export WILDFLY_HOME=/opt/wildfly-25.0.1.Final
 export WILDFLY_BIN=$WILDFLY_HOME/bin
 export JBOSS_CLI=$WILDFLY_BIN/jboss-cli.sh
 
@@ -102,7 +102,7 @@ ${JBOSS_CLI} --file=${ARTIFACTS}/caNanoLab_checks.cli
 
 # Drop the WAR file into standalone/deployments, which will start a deployment
 echo "Deploying caNano WAR"
-cp -v ${ARTIFACTS}/caNanoLab.war /opt/wildfly-23.0.2.Final/standalone/deployments
+cp -v ${ARTIFACTS}/caNanoLab.war /opt/wildfly-25.0.1.Final/standalone/deployments
 
 wait_for_server "deployment-info --name=caNanoLab.war" "OK" "Deployment"
 

@@ -82,7 +82,7 @@ public class SynthesisFunctionalizationBean extends BaseSynthesisEntityBean {
 
 
     public SynthesisFunctionalizationElementBean getSynthesisFunctionalizationElementById( String id ) {
-        return getSynthesisFunctionalizationElementById( new Long( id ) );
+        return getSynthesisFunctionalizationElementById(Long.valueOf(id));
     }
 
     public SynthesisFunctionalizationElementBean getSynthesisFunctionalizationElementById( Long id ) {

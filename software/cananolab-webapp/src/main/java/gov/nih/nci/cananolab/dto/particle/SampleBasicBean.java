@@ -61,7 +61,7 @@ public class SampleBasicBean extends SecuredDataBean {
 	}
 
 	public SampleBasicBean(String sampleId) {
-		domain.setId(new Long(sampleId));
+		domain.setId(Long.valueOf(sampleId));
 	}
 
 	public SampleBasicBean(Sample sample) {
