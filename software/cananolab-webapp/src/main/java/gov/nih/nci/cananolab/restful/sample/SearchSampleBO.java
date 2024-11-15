@@ -118,7 +118,7 @@ public class SearchSampleBO extends AbstractDispatchBO {
 
 		// set in sessionScope so user can go back to the result from the sample
 		// summary page
-		request.getSession().setAttribute("resultSize", new Integer(sampleBeans.size()));
+		request.getSession().setAttribute("resultSize", Integer.valueOf(sampleBeans.size()));
 		
 		//return mapping.findForward("success");
 		//UserBean user = (UserBean) (request.getSession().getAttribute("user"));

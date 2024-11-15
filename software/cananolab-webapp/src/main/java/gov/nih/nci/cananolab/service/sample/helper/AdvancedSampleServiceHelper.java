@@ -416,7 +416,7 @@ public class AdvancedSampleServiceHelper
 		// load sample first with point of contact info and function info and
 		// datum info
 		DetachedCriteria crit = DetachedCriteria.forClass(Sample.class).add(
-				Restrictions.eq("id", new Long(sampleId)));
+				Restrictions.eq("id", Long.valueOf(sampleId)));
 		crit.setFetchMode("primaryPointOfContact", FetchMode.JOIN);
 		crit.setFetchMode("primaryPointOfContact.organization", FetchMode.JOIN);
 		crit.setFetchMode("otherPointOfContactCollection", FetchMode.JOIN);
@@ -474,7 +474,7 @@ public class AdvancedSampleServiceHelper
 		if (searchBean.getCharacterizationQueries().isEmpty()) {
 			return chars;
 		}
-		Long id = new Long(sampleId);
+		Long id = Long.valueOf(sampleId);
 		CaNanoLabApplicationService appService = (CaNanoLabApplicationService) ApplicationServiceProvider
 				.getApplicationService();
 		if (searchBean.getCharacterizationQueries().size() == 1
@@ -572,7 +572,7 @@ public class AdvancedSampleServiceHelper
 		}
 		// datum value
 		if (!StringUtils.isEmpty(charQuery.getDatumValue())) {
-			Float datumValue = new Float(charQuery.getDatumValue());
+			Float datumValue = Float.valueOf(charQuery.getDatumValue());
 			datumCrit = Restrictions.and(datumCrit, Restrictions.eq(
 					"valueUnit", charQuery.getDatumValueUnit()));
 			if ("=".equals(charQuery.getOperand())) {
@@ -657,7 +657,7 @@ public class AdvancedSampleServiceHelper
 		if (!searchBean.getHasAgentMaterial()) {
 			return entities;
 		}
-		Long id = new Long(sampleId);
+		Long id = Long.valueOf(sampleId);
 		CaNanoLabApplicationService appService = (CaNanoLabApplicationService) ApplicationServiceProvider
 				.getApplicationService();
 		DetachedCriteria crit = DetachedCriteria
@@ -725,7 +725,7 @@ public class AdvancedSampleServiceHelper
 		if (!searchBean.getHasFunction()) {
 			return functions;
 		}
-		Long id = new Long(sampleId);
+		Long id = Long.valueOf(sampleId);
 		CaNanoLabApplicationService appService = (CaNanoLabApplicationService) ApplicationServiceProvider
 				.getApplicationService();
 		DetachedCriteria crit = DetachedCriteria.forClass(Function.class);
@@ -800,7 +800,7 @@ public class AdvancedSampleServiceHelper
 			String sampleId, AdvancedSampleSearchBean searchBean)
 			throws Exception {
 		List<NanomaterialEntity> entities = new ArrayList<NanomaterialEntity>();
-		Long id = new Long(sampleId);
+		Long id = Long.valueOf(sampleId);
 		if (!searchBean.getHasNanomaterial()) {
 			return entities;
 		}
@@ -965,7 +965,7 @@ public class AdvancedSampleServiceHelper
 		}
 		// datum value
 		if (!StringUtils.isEmpty(charQuery.getDatumValue())) {
-			Float datumValue = new Float(charQuery.getDatumValue());
+			Float datumValue = Float.valueOf(charQuery.getDatumValue());
 			if(!(charQuery.getDatumValueUnit().isEmpty())) {
 				charCrit = Restrictions.and(charCrit, Restrictions.eq(
 						"datum.valueUnit", charQuery.getDatumValueUnit()));

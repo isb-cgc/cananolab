@@ -9,7 +9,7 @@
 
 export $(cat /local/content/.env | grep -v ^# | xargs) 2> /dev/null
 
-export WILDFLY_HOME=/opt/wildfly-23.0.2.Final
+export WILDFLY_HOME=/opt/wildfly-25.0.1.Final
 export WILDFLY_BIN=$WILDFLY_HOME/bin
 
 # Call the setup script which will load up the modules and stage the WAR file.

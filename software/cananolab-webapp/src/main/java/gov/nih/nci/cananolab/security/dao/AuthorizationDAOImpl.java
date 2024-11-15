@@ -6357,7 +6357,7 @@ return null;
 //		Get Mapping Table Entries for Instance Level Security performance.
 		InstanceLevelMappingElement mappingElement = new InstanceLevelMappingElement();
 		if(!StringUtilities.isBlank(instanceLevelMappingElementId)){
-			mappingElement.setMappingId(new Long(instanceLevelMappingElementId));
+			mappingElement.setMappingId(Long.valueOf(instanceLevelMappingElementId));
 		}
 //		List<InstanceLevelMappingElement> mappingElements = getObjects(new InstanceLevelMappingElementSearchCriteria(mappingElement));
 //		if (mappingElements== null || mappingElements.size() == 0)

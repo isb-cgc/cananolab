@@ -68,7 +68,7 @@ public abstract class BaseServiceLocalImpl implements BaseService
 		public File findFileById(String fileId) throws ApplicationException, ApplicationProviderException {
 			CaNanoLabApplicationService appService = (CaNanoLabApplicationService) ApplicationServiceProvider.getApplicationService();
 
-			DetachedCriteria crit = DetachedCriteria.forClass(File.class).add(Property.forName("id").eq(new Long(fileId)));
+			DetachedCriteria crit = DetachedCriteria.forClass(File.class).add(Property.forName("id").eq(Long.valueOf(fileId)));
 			crit.setFetchMode("keywordCollection", FetchMode.JOIN);
 			List result = appService.query(crit);
 			File file = null;
@@ -213,7 +213,7 @@ public abstract class BaseServiceLocalImpl implements BaseService
 				origId = copy.getDomainFile().getCreatedBy().substring(copyInd + 5);
 			}
 			if (origId != null) {
-				byte[] content = this.getFileContent(new Long(origId));
+				byte[] content = this.getFileContent(Long.valueOf(origId));
 				copy.setNewFileData(content);
 			}
 			// replace file URI with new sample name

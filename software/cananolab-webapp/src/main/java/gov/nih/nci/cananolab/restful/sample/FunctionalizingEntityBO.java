@@ -664,7 +664,7 @@ public class FunctionalizingEntityBO extends BaseAnnotationBO
 				if(bean.getDomainEntity().get("alternateName")!=null)
 					mol.setAlternateName((String) bean.getDomainEntity().get("alternateName"));
 				if (bean.getDomainEntity().get("id") != null) {
-					mol.setId(new Long((Integer) bean.getDomainEntity().get("id")));
+					mol.setId(Long.valueOf((Integer) bean.getDomainEntity().get("id")));
 					mol.setCreatedBy((String) bean.getDomainEntity().get(
 							"createdBy"));
 					mol.setCreatedDate(new Date((Long) bean.getDomainEntity().get(
@@ -689,7 +689,7 @@ public class FunctionalizingEntityBO extends BaseAnnotationBO
 				if(bean.getDomainEntity().get("sequence")!=null)
 					bio.setSequence((String) bean.getDomainEntity().get("sequence"));
 				if (bean.getDomainEntity().get("id") != null) {
-					bio.setId(new Long((Integer) bean.getDomainEntity().get("id")));
+					bio.setId(Long.valueOf((Integer) bean.getDomainEntity().get("id")));
 					bio.setCreatedBy((String) bean.getDomainEntity().get(
 							"createdBy"));
 					bio.setCreatedDate(new Date((Long) bean.getDomainEntity().get(
@@ -715,7 +715,7 @@ public class FunctionalizingEntityBO extends BaseAnnotationBO
 				if(bean.getDomainEntity().get("species") != null)
 					body.setSpecies((String) bean.getDomainEntity().get("species"));
 				if (bean.getDomainEntity().get("id") != null) {
-					body.setId(new Long((Integer) bean.getDomainEntity().get("id")));
+					body.setId(Long.valueOf((Integer) bean.getDomainEntity().get("id")));
 					body.setCreatedBy((String) bean.getDomainEntity().get(
 							"createdBy"));
 					body.setCreatedDate(new Date((Long) bean.getDomainEntity().get(
@@ -734,7 +734,7 @@ public class FunctionalizingEntityBO extends BaseAnnotationBO
 			domainEntity = new OtherFunctionalizingEntity();
 			if (bean.getDomainEntity() != null) {
 				if (bean.getDomainEntity().get("id") != null) {
-					domainEntity.setId(new Long((Integer) bean
+					domainEntity.setId(Long.valueOf((Integer) bean
 							.getDomainEntity().get("id")));
 					domainEntity.setCreatedBy((String) bean.getDomainEntity()
 							.get("createdBy"));
