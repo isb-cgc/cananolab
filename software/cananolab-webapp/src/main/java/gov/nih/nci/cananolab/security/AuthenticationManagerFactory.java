@@ -104,12 +104,12 @@ import org.apache.logging.log4j.Logger;
 
 
 /**
- * This factory class instantiate and returns the appropriate implementation of the {@link AuthenticationManager}
+ * This factory class instantiates and returns the appropriate implementation of the {@link AuthenticationManager}
  * interface. This class reads the <code>Authentication.Properties</code> file to determine which implementation of the
  * <code>AuthenticationManager</code> is to be used. If the client application wants to use its own
  * Authentication Class, then it should implement the {@link AuthenticationManager} interface. Also an entry should be configured
  * in the <code>ApplicationSecurityConfig</code> file against the Application
- * Context Name regsitering the class, which it wants to use, as shown below
+ * Context Name registering the class, which it wants to use, as shown below
  * <p>
  * <blockquote>
  *
@@ -147,7 +147,7 @@ public class AuthenticationManagerFactory
 
 	public static final Logger log = LogManager.getLogger(AuthenticationManagerFactory.class);
 	/**
-	 * This methods instantiate an implementation of the {@link AuthenticationManager} and returns it to the calling method.
+	 * This method instantiates an implementation of the {@link AuthenticationManager} and returns it to the calling method.
 	 * It reads the config file using the Application Context/Name provided as parameter. If an entry is found,
 	 * it retrieves the name of the class and instantiate an object of the same and returns it to the calling method.
 	 * However if the entry is not found, then the default {@link CommonAuthenticationManager} Class is instantiated and
