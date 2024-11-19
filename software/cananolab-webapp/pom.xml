@@ -42,13 +42,14 @@
 		<maven.compiler.release>17</maven.compiler.release>
 	</properties>
 	<dependencies>
-		<!-- LAW 11/18/24: This appears to be a duplicate? -->
+		<!-- LAW 11/18/24: This appears to be a duplicate?
 		<dependency>
 			<groupId>mysql</groupId>
 			<artifactId>mysql-connector-java</artifactId>
 			<version>[8.0.28,)</version>
 			<scope>provided</scope>
 		</dependency>
+		-->
 		<dependency>
 			<groupId>javax.servlet</groupId>
 			<artifactId>javax.servlet-api</artifactId>
