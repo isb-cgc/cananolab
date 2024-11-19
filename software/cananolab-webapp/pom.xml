@@ -452,7 +452,6 @@
 			<artifactId>jboss-logging</artifactId>
 			<version>3.3.0.Final</version>
 		</dependency>
-
 		<!-- LAW 11/18/24 these jars are provided independently via GCS bucket -->
 		<dependency>
 			<groupId>com.mysql</groupId>
@@ -460,7 +459,6 @@
 			<version>8.4.0</version>
 			<scope>provided</scope>
 		</dependency>
-
 		<!--changed 11/18/24 LAW-->
 		<dependency>
 			<groupId>com.google.cloud.sql</groupId>
