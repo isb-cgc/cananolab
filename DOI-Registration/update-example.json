@@ -1,0 +1,12 @@
+{
+  "data": {
+    "type": "dois",
+    "attributes": {
+      "descriptions": [
+        {
+          "description": "Fix the description to something new."
+        }
+      ]
+    }
+  }
+}
