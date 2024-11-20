@@ -115,7 +115,6 @@ export class SampleViewComponent implements OnInit{
     }
 
     getPointOfContacts(data) {
-
         data['pointOfContactMap']['contactPerson'].forEach((element, index) => {
             let pointOfContact = {
                 primaryContact: data['pointOfContactMap']['primaryContact'][index],
