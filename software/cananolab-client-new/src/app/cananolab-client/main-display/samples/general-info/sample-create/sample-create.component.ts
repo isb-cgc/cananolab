@@ -62,7 +62,7 @@ export class SampleCreateComponent implements OnInit{
 
     reset() {
         this.data = JSON.parse(JSON.stringify(this.dataTrailer));
-        this.pointOfContact = {dirty: true, organization:{name: ''}, address: {}, role: ''};
+        this.pointOfContact = {dirty: true, organization: {name: ''}, address: {}, role: ''};
         this.errors = {};
         this.piiConfirmed = false;
     }
