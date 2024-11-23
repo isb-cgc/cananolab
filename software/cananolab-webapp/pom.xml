@@ -97,7 +97,7 @@
 		<dependency>
 			<groupId>com.google.guava</groupId>
 			<artifactId>guava</artifactId>
-			<version>31.1-jre</version> <!-- Or a newer version -->
+			<version>31.1-jre</version>
 		</dependency>
 		<dependency>
 			<groupId>commons-configuration</groupId>
