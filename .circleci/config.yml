@@ -18,7 +18,15 @@ commands:
           command: |
             TIER=DEV
             if [[ -n ${CIRCLE_TAG} ]]; then
-              TIER=$(git ls-remote --heads origin | grep $CIRCLE_SHA1  | sed "s/.*\///" | awk '{print toupper($1)}')
+              if [[ ${CIRCLE_TAG} =~ [0-9\.]+-r$ ]]; then
+                TIER=PROD
+                CIRCLE_BRANCH=prod
+              elif [[ ${CIRCLE_TAG} =~ [0-9\.]+-rc$ ]]; then
+                TIER=TEST
+                CIRCLE_BRANCH=test
+              else
+                echo "Tier not identifiable via tag name ${CIRCLE_TAG}, defaulting to DEV." 
+              fi
             elif [[ ${CIRCLE_BRANCH} =~ (prod|uat|test).* ]]; then
               TIER=$(awk -F[\-_] '{print toupper($1)}' \<<< ${CIRCLE_BRANCH})
             fi
