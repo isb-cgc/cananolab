@@ -242,8 +242,7 @@ public class SimpleSampleBean {
 			pointOfContactMap.put("role", sampleBean.getPrimaryPOCBean()
 					.getDomain().getRole());
 			pointOfContactMap.put("primaryContact", sampleBean
-					.getPrimaryPOCBean().getPrimaryStatus().toString());
-
+					.getPrimaryPOCBean().getPrimaryStatus());
 		}
 
 		if (sampleBean.getOtherPOCBeans().size() != 0) {
@@ -255,15 +254,11 @@ public class SimpleSampleBean {
 				pointOfContactMap.put("organizationDisplayName",
 						poc.getOrganizationDisplayName());
 				pointOfContactMap.put("role", poc.getDomain().getRole());
-				pointOfContactMap.put("primaryContact", poc.getPrimaryStatus()
-						.toString());
-
+				pointOfContactMap.put("primaryContact", poc.getPrimaryStatus());
 			}
-
 		}
 
 		setPointOfContactMap(pointOfContactMap);
-
 	}
 
 	public void transferSampleBeanForDataAvailability(SampleBean sampleBean,
