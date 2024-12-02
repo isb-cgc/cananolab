@@ -6,7 +6,7 @@ import gov.nih.nci.cananolab.domain.function.ImagingFunction;
 import gov.nih.nci.cananolab.domain.function.OtherFunction;
 import gov.nih.nci.cananolab.domain.function.TargetingFunction;
 import gov.nih.nci.cananolab.domain.function.TherapeuticFunction;
-import gov.nih.nci.cananolab.domain.nanomaterial.Biopolymer;
+import gov.nih.nci.cananolab.domain.nanomaterial.NanoBiopolymer;
 import gov.nih.nci.cananolab.domain.nanomaterial.CarbonNanotube;
 import gov.nih.nci.cananolab.domain.nanomaterial.Dendrimer;
 import gov.nih.nci.cananolab.domain.nanomaterial.Emulsion;
@@ -701,7 +701,7 @@ public class NanomaterialEntityBO extends BaseAnnotationBO {
             nanoEntity = den;
             nanomaterialEntityBean.setDendrimer(den);
         } else if (nanoBean.getType().equalsIgnoreCase("biopolymer")) {
-            Biopolymer bio = new Biopolymer();
+            NanoBiopolymer bio = new NanoBiopolymer();
             if (nanoBean.getDomainEntity() != null) {
                 if (nanoBean.getDomainEntity().get("type") != null)
                     bio.setType((String) nanoBean.getDomainEntity().get("type"));

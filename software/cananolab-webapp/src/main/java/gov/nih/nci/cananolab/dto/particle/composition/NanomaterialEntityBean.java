@@ -9,7 +9,7 @@
 package gov.nih.nci.cananolab.dto.particle.composition;
 
 import gov.nih.nci.cananolab.domain.common.File;
-import gov.nih.nci.cananolab.domain.nanomaterial.Biopolymer;
+import gov.nih.nci.cananolab.domain.nanomaterial.NanoBiopolymer;
 import gov.nih.nci.cananolab.domain.nanomaterial.CarbonNanotube;
 import gov.nih.nci.cananolab.domain.nanomaterial.Dendrimer;
 import gov.nih.nci.cananolab.domain.nanomaterial.Emulsion;
@@ -43,7 +43,7 @@ import java.io.IOException;
 public class NanomaterialEntityBean extends BaseCompositionEntityBean {
 	private Polymer polymer = new Polymer();
 
-	private Biopolymer biopolymer = new Biopolymer();
+	private NanoBiopolymer biopolymer = new NanoBiopolymer();
 
 	private Dendrimer dendrimer = new Dendrimer();
 
@@ -73,8 +73,8 @@ public class NanomaterialEntityBean extends BaseCompositionEntityBean {
 	public NanomaterialEntityBean(NanomaterialEntity nanomaterialEntity) {
 		description = nanomaterialEntity.getDescription();
 		domainEntity = nanomaterialEntity;
-		if (domainEntity instanceof Biopolymer) {
-			biopolymer = (Biopolymer) domainEntity;
+		if (domainEntity instanceof NanoBiopolymer) {
+			biopolymer = (NanoBiopolymer) domainEntity;
 			withProperties = true;
 		} else if (domainEntity instanceof Dendrimer) {
 			dendrimer = (Dendrimer) domainEntity;
@@ -190,7 +190,7 @@ public class NanomaterialEntityBean extends BaseCompositionEntityBean {
 		return dendrimer;
 	}
 
-	public Biopolymer getBiopolymer() {
+	public NanoBiopolymer getBiopolymer() {
 		return biopolymer;
 	}
 
@@ -233,7 +233,7 @@ public class NanomaterialEntityBean extends BaseCompositionEntityBean {
 		this.polymer = polymer;
 	}
 
-	public void setBiopolymer(Biopolymer biopolymer) {
+	public void setBiopolymer(NanoBiopolymer biopolymer) {
 		this.biopolymer = biopolymer;
 	}
 
@@ -270,7 +270,7 @@ public class NanomaterialEntityBean extends BaseCompositionEntityBean {
 		this.updateEmptyFieldsToNull();
 		if (domainEntity instanceof OtherNanomaterialEntity) {
 			((OtherNanomaterialEntity) domainEntity).setType(type);
-		} else if (domainEntity instanceof Biopolymer) {
+		} else if (domainEntity instanceof NanoBiopolymer) {
 			domainEntity = biopolymer;
 		} else if (domainEntity instanceof Dendrimer) {
 			domainEntity = dendrimer;
@@ -364,6 +364,7 @@ public class NanomaterialEntityBean extends BaseCompositionEntityBean {
 
 	// used for DWR ajax
 	public String getDisplayName() {
+		System.out.println("getDisplayName() in NanomaterialEntityBean.java: " + type);
 		return type;
 	}
 

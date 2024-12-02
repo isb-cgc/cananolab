@@ -293,7 +293,7 @@ L-->
 		timeToLiveSeconds="100000"
 		overflowToDisk="true"/>
 		
-	<cache name="gov.nih.nci.cananolab.domain.nanomaterial.Biopolymer"
+	<cache name="gov.nih.nci.cananolab.domain.nanomaterial.NanoBiopolymer"
 		maxElementsInMemory="500"
 		eternal="false"
 		timeToIdleSeconds="1800"

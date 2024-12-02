@@ -230,7 +230,9 @@ public class FunctionBean {
 			}
 			buffer.append(")");
 		}
-		return buffer.toString();
+		String bufferStr = buffer.toString();
+		System.out.println("getDisplayName() in FunctionBean.java: " + bufferStr);
+		return bufferStr;
 	}
 
 	public String getId() {
