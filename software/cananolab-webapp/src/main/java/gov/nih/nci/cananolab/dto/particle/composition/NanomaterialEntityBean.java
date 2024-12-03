@@ -106,14 +106,12 @@ public class NanomaterialEntityBean extends BaseCompositionEntityBean {
 		}
 		className = ClassUtils.getShortClassName(nanomaterialEntity.getClass()
 				.getName());
+		System.out.println("className in NanomaterialEntityBean.java: " + className);
 		if (nanomaterialEntity.getComposingElementCollection() != null) {
-			for (ComposingElement composingElement : nanomaterialEntity
-					.getComposingElementCollection()) {
-				composingElements
-						.add(new ComposingElementBean(composingElement));
+			for (ComposingElement composingElement : nanomaterialEntity.getComposingElementCollection()) {
+				composingElements.add(new ComposingElementBean(composingElement));
 			}
-			Collections.sort(composingElements,
-					new Comparators.ComposingElementBeanDateComparator());
+			Collections.sort(composingElements, new Comparators.ComposingElementBeanDateComparator());
 		}
 		if (nanomaterialEntity.getFileCollection() != null) {
 			for (File file : nanomaterialEntity.getFileCollection()) {
@@ -365,7 +363,12 @@ public class NanomaterialEntityBean extends BaseCompositionEntityBean {
 	// used for DWR ajax
 	public String getDisplayName() {
 		System.out.println("getDisplayName() in NanomaterialEntityBean.java: " + type);
-		return type;
+
+		if(type.equals("nano biopolymer")) {
+			return "biopolymer";
+		} else {
+			return type;
+		}
 	}
 
 	public String getIsPolymerized() {

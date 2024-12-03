@@ -548,7 +548,7 @@ public class ClassUtils {
 		displayName = displayName.replaceAll("invivo", "in vivo")
 				.replaceAll("invitro", "in vitro")
 				.replaceAll("physico ", "physico-")
-				.replaceAll("nanobiopolymer", "biopolymer");
+				.replaceAll("nano biopolymer", "biopolymer");
 
 		System.out.println("getDisplayName() in ClassUtils.java: " + displayName);
 
@@ -568,7 +568,7 @@ public class ClassUtils {
 				.replaceAll("physico-chemical", "physico chemical")
 				.replaceAll("in vivo", "invivo")
 				.replaceAll("in vitro", "invitro")
-				.replaceAll("nanobiopolymer", "biopolymer");
+				.replaceAll("NanoBiopolymer", "biopolymer");
 		String[] words = displayName.toLowerCase().split(" ");
 		List<String> newWords = new ArrayList<String>();
 		for (String word : words) {
