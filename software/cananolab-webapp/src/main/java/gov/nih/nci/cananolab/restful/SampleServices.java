@@ -860,7 +860,7 @@ public class SampleServices {
 			
 			
 			if (resultView.getErrors().size() > 0) {
-				logger.debug("Search sampel has error: " + resultView.getErrors().get(0));
+				logger.debug("Search sample has error: " + resultView.getErrors().get(0));
 				return Response.status(Response.Status.NOT_FOUND).entity(resultView.getErrors()).build();
 			} else {
 				logger.debug("Sample search successful");
