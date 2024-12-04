@@ -20,12 +20,7 @@ import java.lang.reflect.Method;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Enumeration;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 import java.util.jar.JarInputStream;
@@ -209,7 +204,13 @@ public class ClassUtils {
 	 */
 	public static String getShortClassName(String className) {
 		String[] strs = className.split("\\.");
-		return strs[strs.length - 1];
+		String shortClassName = strs[strs.length - 1];
+
+		if (Objects.equals(shortClassName, "NanoBiopolymer")) {
+			shortClassName = "Biopolymer";
+		}
+
+		return shortClassName;
 	}
 
 
@@ -568,7 +569,7 @@ public class ClassUtils {
 				.replaceAll("physico-chemical", "physico chemical")
 				.replaceAll("in vivo", "invivo")
 				.replaceAll("in vitro", "invitro")
-				.replaceAll("NanoBiopolymer", "biopolymer");
+				.replaceAll("biopolymer", "nano biopolymer");
 		String[] words = displayName.toLowerCase().split(" ");
 		List<String> newWords = new ArrayList<String>();
 		for (String word : words) {
