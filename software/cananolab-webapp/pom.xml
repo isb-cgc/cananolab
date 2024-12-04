@@ -373,21 +373,20 @@
 			<version>4.10.0</version>
 		</dependency>
 
-		<dependency>
+		<!--<dependency>
 			<groupId>org.bouncycastle</groupId>
 			<artifactId>bcprov-jdk15on</artifactId>
 			<version>1.69</version>
-		</dependency>
+		</dependency>-->
 
 		<!-- This jar is provided via GCS bucket -->
-<!--
+
 		<dependency>
 			<groupId>org.bouncycastle</groupId>
 			<artifactId>bcprov-jdk18on</artifactId>
 			<version>1.79</version>
 			<scope>provided</scope>
 		</dependency>
--->
 
 		<dependency>
 			<groupId>org.javassist</groupId>
