@@ -138,8 +138,7 @@ jobs:
             sudo -E /bin/bash ./shell/compareConfig.sh "gs://${DEPLOYMENT_BUCKET}/maven-settings.xml"
             sudo -E /bin/bash ./shell/compareConfig.sh "gs://${DEPLOYMENT_BUCKET}/standalone-full.xml"
             sudo -E /bin/bash ./shell/compareConfig.sh "gs://${DEPLOYMENT_BUCKET}/standalone.conf"
-            sudo -E /bin/bash ./shell/compareConfig.sh "gs://${DEPLOYMENT_BUCKET}/log4j2.xml"     
-
+            sudo -E /bin/bash ./shell/compareConfig.sh "gs://${DEPLOYMENT_BUCKET}/log4j2.xml"
       - run:
           name: Build
           command: |
@@ -186,7 +185,7 @@ jobs:
       - deploy:
           nane: Deployment
           command: |
-            sudo -E gcloud app deploy --verbosity=debug ./app.yaml --quiet
+            sudo -E gcloud app deploy --verbosity=debug ./app.yaml --service-account=${WEB_RUNTIME_SA_NAME} --quiet
 workflows:
   version: 2
   build_and_deploy:
