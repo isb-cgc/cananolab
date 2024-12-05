@@ -68,6 +68,9 @@ sed -i "s/\[\[RELEASE_VERSION\]\]/${SEMVER}/g" ${HOME}/software/cananolab-client
 export CANANODIR=${HOME}/staged/caNanoLab
 cd ${HOME}/software/cananolab-client-new/
 
+# We need to enforce loading of angular-cli 15 with NodeJS 16 for now
+export NG_DISABLE_VERSION_CHECK=1
+
 if [ -n "$CI" ]; then
   # Build the Angular front end
   echo "[STATUS] Building Angular front end"
