@@ -18,10 +18,10 @@ commands:
           command: |
             TIER=DEV
             if [[ -n ${CIRCLE_TAG} ]]; then
-              if [[ ${CIRCLE_TAG} =~ [0-9\.]+-r$ ]]; then
+              if [[ ${CIRCLE_TAG} =~ [0-9\.\-]+-r$ ]]; then
                 TIER=PROD
                 CIRCLE_BRANCH=prod
-              elif [[ ${CIRCLE_TAG} =~ [0-9\.]+-rc$ ]]; then
+              elif [[ ${CIRCLE_TAG} =~ [0-9\.\-]+-rc$ ]]; then
                 TIER=TEST
                 CIRCLE_BRANCH=test
               else
