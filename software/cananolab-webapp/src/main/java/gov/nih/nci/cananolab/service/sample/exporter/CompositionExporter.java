@@ -12,7 +12,7 @@ import gov.nih.nci.cananolab.domain.agentmaterial.Antibody;
 import gov.nih.nci.cananolab.domain.agentmaterial.SmallMolecule;
 import gov.nih.nci.cananolab.domain.common.File;
 import gov.nih.nci.cananolab.domain.common.Keyword;
-import gov.nih.nci.cananolab.domain.nanomaterial.Biopolymer;
+import gov.nih.nci.cananolab.domain.nanomaterial.NanoBiopolymer;
 import gov.nih.nci.cananolab.domain.nanomaterial.CarbonNanotube;
 import gov.nih.nci.cananolab.domain.nanomaterial.Dendrimer;
 import gov.nih.nci.cananolab.domain.nanomaterial.Emulsion;
@@ -738,9 +738,9 @@ public class CompositionExporter {
 
 						NanomaterialEntity domainEntity = nanoEntity
 								.getDomainEntity();
-						if (domainEntity instanceof Biopolymer) {
+						if (domainEntity instanceof NanoBiopolymer) {
 							rowIndex = outputNanoProperties(
-									(Biopolymer) domainEntity, sheet,
+									(NanoBiopolymer) domainEntity, sheet,
 									headerStyle, rowIndex);
 						} else if (domainEntity instanceof Dendrimer) {
 							rowIndex = outputNanoProperties(
@@ -867,7 +867,7 @@ public class CompositionExporter {
 	 * @param rowIndex
 	 * @return
 	 */
-	private static int outputNanoProperties(Biopolymer entityBean,
+	private static int outputNanoProperties(NanoBiopolymer entityBean,
 			HSSFSheet sheet, HSSFCellStyle headerStyle, int rowIndex) {
 
 		// 1. Output table header.

@@ -1678,29 +1678,28 @@ public class AdvancedSampleServiceHelper
 			AdvancedSampleSearchBean searchBean, DetachedCriteria crit) throws Exception {
 		for (CompositionQueryBean query : searchBean.getCompositionQueries()) {
 			if (query.getCompositionType().equals("nanomaterial entity")) {
-				DetachedCriteria subCrit = getNanomaterialEntitySubquery(query,
-						"nanoEntity.", "id");
+				DetachedCriteria subCrit = getNanomaterialEntitySubquery(query, "nanoEntity.", "id");
 				crit.add(Subqueries.exists(subCrit));
 			}
 		}
 	}
 
-	private DetachedCriteria getNanomaterialEntitySubquery(
-			CompositionQueryBean query, String nanoEntityAlias,
-			String projectionProperty) throws Exception {
-		DetachedCriteria subCrit = DetachedCriteria.forClass(
-				NanomaterialEntity.class, "subCrit");
-		subCrit.setProjection(Projections.distinct(Property
-				.forName(projectionProperty)));
+	private DetachedCriteria getNanomaterialEntitySubquery(CompositionQueryBean query,
+														   String nanoEntityAlias,
+														   String projectionProperty) throws Exception {
+		DetachedCriteria subCrit = DetachedCriteria.forClass(NanomaterialEntity.class, "subCrit");
+		subCrit.setProjection(Projections.distinct(Property.forName(projectionProperty)));
 		// join composing element
+		System.out.println("AdvancedSampleServiceHelper.java getChemicalName: " + query.getChemicalName());
+		System.out.println("AdvancedSampleServiceHelper.java getDisplayName: " + query.getDisplayName());
+		System.out.println("AdvancedSampleServiceHelper.java getEntityType: " + query.getEntityType());
+
 		if (!StringUtils.isEmpty(query.getChemicalName())) {
-			subCrit.createAlias("subCrit.composingElementCollection",
-					"compElement", CriteriaSpecification.LEFT_JOIN);
+			subCrit.createAlias("subCrit.composingElementCollection", "compElement", CriteriaSpecification.LEFT_JOIN);
 		}
 		Criterion nanoCrit = getNanomaterialEntityCriterion(query, "");
 		subCrit.add(nanoCrit);
-		subCrit.add(Restrictions.eqProperty("subCrit." + projectionProperty,
-				nanoEntityAlias + "id"));
+		subCrit.add(Restrictions.eqProperty("subCrit." + projectionProperty, nanoEntityAlias + "id"));
 		return subCrit;
 	}
 
