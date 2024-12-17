@@ -133,7 +133,7 @@ public class UserSelfManageServices
 				PasswordResetToken prt = new PasswordResetToken();
 				prt.setToken(token);
 				prt.setUserName(userDetails.getUsername());
-				userAccountBO.createPasswordResetToken(prt);
+				userAccountBO.createPasswordResetToken(prt, false);
 
 				String emailBody =
 						"You're receiving this e-mail because you or someone else has requested a password change for your user account.\r\n" +
@@ -176,7 +176,7 @@ public class UserSelfManageServices
 			if (validateResult != null) {
 				// Test: Local
 				// redirectUri = "http://localhost:4200/#/home/?errorMessage=Unable to change password because " + validateResult;
-				redirectUri = baseUrl + "?errorMessage=Unable to change password because " + validateResult;
+				redirectUri = baseUrl + "/#/?errorMessage=Unable to change password because " + validateResult;
 				redirectUri = redirectUri.replace(" ", "%20");
 				return Response.seeOther(new URI(redirectUri)).build();
 			} else {

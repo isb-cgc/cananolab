@@ -6,6 +6,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonParser;
 import com.google.gson.JsonSyntaxException;
+import gov.nih.nci.cananolab.domain.particle.Sample;
 import gov.nih.nci.cananolab.dto.common.DataReviewStatusBean;
 import gov.nih.nci.cananolab.dto.common.ProtocolBean;
 import gov.nih.nci.cananolab.dto.common.PublicationBean;
@@ -14,6 +15,7 @@ import gov.nih.nci.cananolab.dto.particle.AdvancedSampleSearchBean;
 import gov.nih.nci.cananolab.dto.particle.characterization.CharacterizationSummaryViewBean;
 import gov.nih.nci.cananolab.dto.particle.composition.CompositionBean;
 import gov.nih.nci.cananolab.dto.particle.synthesis.SynthesisBean;
+import gov.nih.nci.cananolab.exception.NoAccessException;
 import gov.nih.nci.cananolab.restful.bean.LabelValueBean;
 import gov.nih.nci.cananolab.restful.publication.PublicationBO;
 import gov.nih.nci.cananolab.restful.publication.PublicationManager;
@@ -36,6 +38,7 @@ import gov.nih.nci.cananolab.restful.view.SimpleSynthesisBean;
 import gov.nih.nci.cananolab.restful.view.SimpleSynthesisExportBean;
 import gov.nih.nci.cananolab.restful.view.edit.SampleEditGeneralBean;
 import gov.nih.nci.cananolab.restful.view.edit.SimplePointOfContactBean;
+import gov.nih.nci.cananolab.security.enums.SecureClassesEnum;
 import gov.nih.nci.cananolab.security.utils.SpringSecurityUtil;
 import gov.nih.nci.cananolab.security.CananoUserDetails;
 import gov.nih.nci.cananolab.service.protocol.ProtocolService;
@@ -58,9 +61,8 @@ import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
-import javax.ws.rs.core.Context;
-import javax.ws.rs.core.Response;
-import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.*;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -302,8 +304,7 @@ public class SampleServices {
 			return (sampleBean.getErrors().size() == 0) ?
 					Response.ok(sampleBean).build() :
 						Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(sampleBean.getErrors()).build();
-		} 
-
+		}
 		catch (Exception ioe) {
 			logger.error(ioe.getMessage());
 			ioe.printStackTrace();
@@ -341,6 +342,35 @@ public class SampleServices {
 			e.printStackTrace();
 			return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
 					.entity(CommonUtil.wrapErrorMessageInList("Error while saving Point of Contact: " + e.getMessage())).build();
+		}
+	}
+
+	@GET
+	@Path("/checkWriteAccess")
+	@Produces("application/json")
+	public Response checkWriteAccess(@Context HttpServletRequest httpRequest,
+	                     @DefaultValue("") @QueryParam("sampleId") String sampleId)
+	{
+		logger.debug("In checkWriteAccess");
+
+		if (!SpringSecurityUtil.isUserLoggedIn()) {
+			logger.info("User not logged in");
+			return Response.ok(false).build();
+		}
+		SampleBO sampleBO = (SampleBO) SpringApplicationContext.getBean(httpRequest, "sampleBO");
+
+		try {
+			if (!sampleBO.isSampleEditableByCurrentUser(httpRequest, sampleId)) {
+				logger.info("User has no write access to sample");
+				return Response.ok(false).build();
+			} else {
+				return Response.ok(true).build();
+			}
+		} catch (Exception ioe) {
+			logger.error(ioe.getMessage());
+			ioe.printStackTrace();
+			return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
+					.entity(CommonUtil.wrapErrorMessageInList(ioe.getMessage())).build();
 		}
 	}
 	
@@ -830,7 +860,7 @@ public class SampleServices {
 			
 			
 			if (resultView.getErrors().size() > 0) {
-				logger.debug("Search sampel has error: " + resultView.getErrors().get(0));
+				logger.debug("Search sample has error: " + resultView.getErrors().get(0));
 				return Response.status(Response.Status.NOT_FOUND).entity(resultView.getErrors()).build();
 			} else {
 				logger.debug("Sample search successful");

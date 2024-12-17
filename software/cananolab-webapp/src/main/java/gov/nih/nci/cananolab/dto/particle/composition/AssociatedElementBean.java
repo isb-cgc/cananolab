@@ -84,7 +84,7 @@ public class AssociatedElementBean {
 				this.setCompositionType(null);
 				throw new ClassCastException(tmpType);
 			}
-			domainElement.setId(new Long(entityId));
+			domainElement.setId(Long.valueOf(entityId));
 		} else {
 			domainElement = composingElement;
 		}
@@ -116,30 +116,31 @@ public class AssociatedElementBean {
 			// before deleting. But if an erroneous deletion occurs through other means, this method
 			// will throw an NPE. Instrument this to make it easier to track down in the future.
 			//
-			System.out.println("updateType A: " + composingElement);
+			System.out.println("updateType A-- composingElement type: " + composingElement.getType()
+								+ " name: " + composingElement.getName()
+								+ " desc: " + composingElement.getDescription());
 			if (composingElement.getId() != null) {
 				compositionType = ClassUtils.getDisplayName("NanomaterialEntity");
-				NanomaterialEntity entity = composingElement
-						.getNanomaterialEntity();
-				System.out.println("updateType B: " + entity);
+				NanomaterialEntity entity = composingElement.getNanomaterialEntity();
+				System.out.println("updateType B-- entity id:" + entity.getId().toString()
+									+ "desc: " + entity.getDescription());
 				if (entity instanceof OtherNanomaterialEntity) {
-					entityDisplayName = ((OtherNanomaterialEntity) entity)
-							.getType();
+					entityDisplayName = ((OtherNanomaterialEntity) entity).getType();
 				} else {
 					String entityClassName = ClassUtils
-							.getShortClassName(composingElement
-									.getNanomaterialEntity().getClass().getName());
+							.getShortClassName(composingElement.getNanomaterialEntity().getClass().getName());
 					entityDisplayName = ClassUtils.getDisplayName(entityClassName);
 				}
 			} else {
 				compositionType = ClassUtils
 						.getDisplayName("FunctionalizingEntity");
 				if (domainElement instanceof OtherFunctionalizingEntity) {
-					System.out.println("updateType C: " + domainElement);
+					System.out.println("updateType C-- domainElement name: " + domainElement.getName()
+										+ " type: " + ((OtherFunctionalizingEntity) domainElement).getType());
 					entityDisplayName = ((OtherFunctionalizingEntity) domainElement)
 							.getType();
 				} else {
-					System.out.println("updateType D: " + className);
+					System.out.println("updateType D-- className: " + className);
 					entityDisplayName = ClassUtils.getDisplayName(className);
 				}
 			}

@@ -58,7 +58,7 @@ public class CompositionServiceHelper
 		CaNanoLabApplicationService appService = (CaNanoLabApplicationService) ApplicationServiceProvider.getApplicationService();
 
 		DetachedCriteria crit = DetachedCriteria.forClass(Function.class).add(
-				Property.forName("id").eq(new Long(funcId)));
+				Property.forName("id").eq(Long.valueOf(funcId)));
 		crit.setFetchMode("targetCollection", FetchMode.JOIN);
 		crit.setResultTransformer(CriteriaSpecification.DISTINCT_ROOT_ENTITY);
 		List result = appService.query(crit);
@@ -78,7 +78,7 @@ public class CompositionServiceHelper
 		}
 		CaNanoLabApplicationService appService = (CaNanoLabApplicationService) ApplicationServiceProvider.getApplicationService();
 
-		DetachedCriteria crit = DetachedCriteria.forClass(ComposingElement.class).add(Property.forName("id").eq(new Long(ceId)));
+		DetachedCriteria crit = DetachedCriteria.forClass(ComposingElement.class).add(Property.forName("id").eq(Long.valueOf(ceId)));
 		crit.setFetchMode("inherentFunctionCollection", FetchMode.JOIN);
 		crit.setFetchMode("inherentFunctionCollection.targetCollection", FetchMode.JOIN);
 		crit.setResultTransformer(CriteriaSpecification.DISTINCT_ROOT_ENTITY);
@@ -126,7 +126,7 @@ public class CompositionServiceHelper
 		CaNanoLabApplicationService appService = (CaNanoLabApplicationService) ApplicationServiceProvider.getApplicationService();
 		DetachedCriteria crit = DetachedCriteria.forClass(SampleComposition.class);
 		crit.createAlias("sample", "sample");
-		crit.add(Property.forName("sample.id").eq(new Long(sampleId)));
+		crit.add(Property.forName("sample.id").eq(Long.valueOf(sampleId)));
 		crit.setFetchMode("nanomaterialEntityCollection", FetchMode.JOIN);
 		crit.setFetchMode("nanomaterialEntityCollection.fileCollection", FetchMode.JOIN);
 		crit.setFetchMode("nanomaterialEntityCollection.fileCollection.keywordCollection", FetchMode.JOIN);
@@ -172,7 +172,7 @@ public class CompositionServiceHelper
 		CaNanoLabApplicationService appService = (CaNanoLabApplicationService) ApplicationServiceProvider.getApplicationService();
 
 		DetachedCriteria crit = DetachedCriteria.forClass(NanomaterialEntity.class).add(
-				Property.forName("id").eq(new Long(entityId)));
+				Property.forName("id").eq(Long.valueOf(entityId)));
 		crit.setFetchMode("sampleComposition", FetchMode.JOIN);
 		crit.setFetchMode("sampleComposition.chemicalAssociationCollection", FetchMode.JOIN);
 		crit.setFetchMode("sampleComposition.chemicalAssociationCollection.associatedElementA", FetchMode.JOIN);
@@ -202,7 +202,7 @@ public class CompositionServiceHelper
 		CaNanoLabApplicationService appService = (CaNanoLabApplicationService) ApplicationServiceProvider.getApplicationService();
 
 		DetachedCriteria crit = DetachedCriteria.forClass(FunctionalizingEntity.class).add(
-				Property.forName("id").eq(new Long(entityId)));
+				Property.forName("id").eq(Long.valueOf(entityId)));
 		crit.setFetchMode("activationMethod", FetchMode.JOIN);
 		crit.setFetchMode("fileCollection", FetchMode.JOIN);
 		crit.setFetchMode("fileCollection.keywordCollection", FetchMode.JOIN);
@@ -231,7 +231,7 @@ public class CompositionServiceHelper
 
 		CaNanoLabApplicationService appService = (CaNanoLabApplicationService) ApplicationServiceProvider.getApplicationService();
 
-		DetachedCriteria crit = DetachedCriteria.forClass(ChemicalAssociation.class).add(Property.forName("id").eq(new Long(assocId)));
+		DetachedCriteria crit = DetachedCriteria.forClass(ChemicalAssociation.class).add(Property.forName("id").eq(Long.valueOf(assocId)));
 		crit.setFetchMode("fileCollection", FetchMode.JOIN);
 		crit.setFetchMode("fileCollection.keywordCollection", FetchMode.JOIN);
 		crit.setFetchMode("associatedElementA", FetchMode.JOIN);

@@ -49,7 +49,6 @@ import gov.nih.nci.cananolab.domain.common.Condition;
 import gov.nih.nci.cananolab.domain.common.ExperimentConfig;
 import gov.nih.nci.cananolab.domain.common.Instrument;
 import gov.nih.nci.cananolab.domain.common.Technique;
-import gov.nih.nci.cananolab.domain.common.PointOfContact;
 import gov.nih.nci.cananolab.domain.common.Publication;
 
 import gov.nih.nci.cananolab.exception.ApplicationProviderException;
@@ -616,7 +615,7 @@ public class SampleServiceHelper
 		List<Keyword> keywords = new ArrayList<Keyword>();
 
 		CaNanoLabApplicationService appService = (CaNanoLabApplicationService) ApplicationServiceProvider.getApplicationService();
-		DetachedCriteria crit = DetachedCriteria.forClass(Sample.class).add(Property.forName("id").eq(new Long(sampleId)));
+		DetachedCriteria crit = DetachedCriteria.forClass(Sample.class).add(Property.forName("id").eq(Long.valueOf(sampleId)));
 		crit.setFetchMode("keywordCollection", FetchMode.JOIN);
 		List result = appService.query(crit);
 		Sample sample = null;
@@ -635,7 +634,7 @@ public class SampleServiceHelper
 		}
 		CaNanoLabApplicationService appService = (CaNanoLabApplicationService) ApplicationServiceProvider.getApplicationService();
 		DetachedCriteria crit = DetachedCriteria.forClass(Sample.class).add(
-				Property.forName("id").eq(new Long(sampleId)));
+				Property.forName("id").eq(Long.valueOf(sampleId)));
 		crit.setFetchMode("primaryPointOfContact", FetchMode.JOIN);
 		crit.setFetchMode("primaryPointOfContact.organization", FetchMode.JOIN);
 		crit.setResultTransformer(CriteriaSpecification.DISTINCT_ROOT_ENTITY);
@@ -656,7 +655,7 @@ public class SampleServiceHelper
 		CaNanoLabApplicationService appService = (CaNanoLabApplicationService) ApplicationServiceProvider
 				.getApplicationService();
 		DetachedCriteria crit = DetachedCriteria.forClass(Sample.class).add(
-				Property.forName("id").eq(new Long(sampleId)));
+				Property.forName("id").eq(Long.valueOf(sampleId)));
 		crit.setFetchMode("otherPointOfContactCollection", FetchMode.JOIN);
 		crit.setFetchMode("otherPointOfContactCollection.organization",
 				FetchMode.JOIN);
@@ -675,7 +674,7 @@ public class SampleServiceHelper
 
 	public Sample findSampleById(String sampleId) throws SampleException {
         try{
-            Long id = new Long(sampleId);
+            Long id = Long.valueOf(sampleId);
             return findSampleById(id);
         } catch (NumberFormatException nfex) {
 			logger.error("sampleId is not integer: "+ sampleId);
@@ -1491,7 +1490,7 @@ return myTransactionInsertion;
 		CaNanoLabApplicationService appService = (CaNanoLabApplicationService) ApplicationServiceProvider.getApplicationService();
 
 		DetachedCriteria crit = DetachedCriteria.forClass(Sample.class).add(
-				Property.forName("id").eq(new Long(sampleId)));
+				Property.forName("id").eq(Long.valueOf(sampleId)));
 		crit.setFetchMode("primaryPointOfContact", FetchMode.JOIN);
 		crit.setFetchMode("primaryPointOfContact.organization", FetchMode.JOIN);
 		crit.setFetchMode("otherPointOfContactCollection", FetchMode.JOIN);
@@ -1541,7 +1540,7 @@ return myTransactionInsertion;
 		CaNanoLabApplicationService appService = (CaNanoLabApplicationService) ApplicationServiceProvider.getApplicationService();
 
 		DetachedCriteria crit = DetachedCriteria.forClass(Sample.class).add(
-				Property.forName("id").eq(new Long(sampleId)));
+				Property.forName("id").eq(Long.valueOf(sampleId)));
 
 		crit.setFetchMode("publicationCollection", FetchMode.JOIN);
 		crit.setFetchMode("synthesis", FetchMode.JOIN);
@@ -1678,7 +1677,7 @@ return myTransactionInsertion;
 		CaNanoLabApplicationService appService = (CaNanoLabApplicationService) ApplicationServiceProvider.getApplicationService();
 
 		DetachedCriteria crit = DetachedCriteria.forClass(Sample.class).add(
-				Property.forName("id").eq(new Long(sampleId)));
+				Property.forName("id").eq(Long.valueOf(sampleId)));
 		crit.setFetchMode("publicationCollection", FetchMode.JOIN);
 		crit.setResultTransformer(CriteriaSpecification.DISTINCT_ROOT_ENTITY);
 		System.out.println("Shallow Lazy load for search");
@@ -1759,7 +1758,7 @@ return myTransactionInsertion;
 				.getApplicationService();
 
 		DetachedCriteria crit = DetachedCriteria.forClass(Sample.class).add(
-				Property.forName("id").eq(new Long(sampleId)));
+				Property.forName("id").eq(Long.valueOf(sampleId)));
 
 		crit.setResultTransformer(CriteriaSpecification.DISTINCT_ROOT_ENTITY);
 
@@ -1870,12 +1869,12 @@ return myTransactionInsertion;
 
 		CaNanoLabApplicationService appService = (CaNanoLabApplicationService) ApplicationServiceProvider
 				.getApplicationService();
-		DetachedCriteria crit = DetachedCriteria.forClass(PointOfContact.class).add(Property.forName("id").eq(new Long(pocId)));
+		DetachedCriteria crit = DetachedCriteria.forClass(PointOfContact.class).add(Property.forName("id").eq(Long.valueOf(pocId)));
 		crit.setFetchMode("organization", FetchMode.JOIN);
 		List results = appService.query(crit);
-		for(int i = 0; i < results.size(); i++){
-			poc = (PointOfContact) results.get(i);
-		}
+        for (Object result : results) {
+            poc = (PointOfContact) result;
+        }
 		return poc;
 	}
 
@@ -1888,23 +1887,22 @@ return myTransactionInsertion;
 		CaNanoLabApplicationService appService = (CaNanoLabApplicationService) ApplicationServiceProvider
 				.getApplicationService();
 		DetachedCriteria crit = DetachedCriteria.forClass(Sample.class).add(
-				Property.forName("id").eq(new Long(sampleId)));
+				Property.forName("id").eq(Long.valueOf(sampleId)));
 		crit.setFetchMode("primaryPointOfContact", FetchMode.JOIN);
 		crit.setFetchMode("primaryPointOfContact.organization", FetchMode.JOIN);
 		crit.setFetchMode("otherPointOfContactCollection", FetchMode.JOIN);
 		crit.setFetchMode("otherPointOfContactCollection.organization",
 				FetchMode.JOIN);
 		crit.setResultTransformer(CriteriaSpecification.DISTINCT_ROOT_ENTITY);
-		List results = appService.query(crit);
+		List<Object> results = appService.query(crit);
 		List<PointOfContact> pointOfContacts = new ArrayList<PointOfContact>();
-		for(int i = 0; i < results.size(); i++){
-			Sample sample = (Sample) results.get(i);
-			PointOfContact primaryPOC = sample.getPrimaryPointOfContact();
-			pointOfContacts.add(primaryPOC);
-			Collection<PointOfContact> otherPOCs = sample
-					.getOtherPointOfContactCollection();
-			pointOfContacts.addAll(otherPOCs);
-		}
+        for (Object result : results) {
+            Sample sample = (Sample) result;
+            PointOfContact primaryPOC = sample.getPrimaryPointOfContact();
+            pointOfContacts.add(primaryPOC);
+            Collection<PointOfContact> otherPOCs = sample.getOtherPointOfContactCollection();
+            pointOfContacts.addAll(otherPOCs);
+        }
 		return pointOfContacts;
 	}
 
@@ -2020,16 +2018,16 @@ return myTransactionInsertion;
 		CaNanoLabApplicationService appService = (CaNanoLabApplicationService) ApplicationServiceProvider
 				.getApplicationService();
 
-		List results = appService.query(crit);
-		for(int i = 0; i < results.size(); i++){
-			String id = results.get(i).toString();
-			if (springSecurityAclService.currentUserHasReadPermission(Long.valueOf(id), SecureClassesEnum.SAMPLE.getClazz()) ||
-				springSecurityAclService.currentUserHasWritePermission(Long.valueOf(id), SecureClassesEnum.SAMPLE.getClazz())) {
-				sampleIds.add(id);
-			} else {
-				logger.debug("User doesn't have access to sample of ID: " + id);
-			}
-		}
+		List<Object> results = appService.query(crit);
+        for (Object result : results) {
+            String id = result.toString();
+            if (springSecurityAclService.currentUserHasReadPermission(Long.valueOf(id), SecureClassesEnum.SAMPLE.getClazz()) ||
+                    springSecurityAclService.currentUserHasWritePermission(Long.valueOf(id), SecureClassesEnum.SAMPLE.getClazz())) {
+                sampleIds.add(id);
+            } else {
+                logger.debug("User doesn't have access to sample of ID: " + id);
+            }
+        }
 		return sampleIds;
 	}
 
@@ -2040,12 +2038,12 @@ return myTransactionInsertion;
 				.getApplicationService();
 		HQLCriteria crit = new HQLCriteria(
 				"select id from gov.nih.nci.cananolab.domain.particle.Sample");
-		List results = appService.query(crit);
+		List<Object> results = appService.query(crit);
 		List<String> publicIds = new ArrayList<String>();
-		for(int i = 0; i< results.size(); i++){
-			String id = (String) results.get(i).toString();
-			publicIds.add(id);
-		}
+        for (Object result : results) {
+            String id = (String) result.toString();
+            publicIds.add(id);
+        }
 		return publicIds;
 	}
 	public List<Sample> findSamplesBy(String sampleName,

@@ -15,6 +15,8 @@ import javax.ws.rs.core.Context;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.MediaType;
 
+import gov.nih.nci.cananolab.restful.view.SimpleProtocolBean;
+import gov.nih.nci.cananolab.restful.view.SimpleSampleBean;
 import org.apache.logging.log4j.LogManager;
 
 import gov.nih.nci.cananolab.dto.common.DataReviewStatusBean;
@@ -137,7 +139,7 @@ public class ProtocolServices
 	@Produces ("application/json")
 	public Response edit(@Context HttpServletRequest httpRequest, @DefaultValue("") @QueryParam("protocolId") String protocolId)
 	{
-		try { 
+		try {
 			ProtocolBO protocolBO = (ProtocolBO) SpringApplicationContext.getBean(httpRequest, "protocolBO");
 
 			if (!SpringSecurityUtil.isUserLoggedIn())
@@ -162,6 +164,40 @@ public class ProtocolServices
 		}
 	}
 
+	@GET
+	@Path("/view")
+	@Produces("application/json")
+	public Response view(@Context HttpServletRequest httpRequest,
+						 @DefaultValue("") @QueryParam("protocolId") String protocolId) {
+		System.out.println("Hitting endpoint");
+		try {
+			ProtocolBO protocolBO = (ProtocolBO) SpringApplicationContext.getBean(httpRequest, "protocolBO");
+			SimpleProtocolBean protocolBean = protocolBO.summaryView(protocolId, httpRequest);
+
+			// SimpleSubmitProtocolBean view = protocolBO.setupUpdate(protocolId, httpRequest);
+
+			List<String> errors = protocolBean.getErrors();
+
+
+			if (errors == null || errors.isEmpty()) {
+				// return Response.ok(protocolBean).build();
+				return Response.ok(protocolBean)
+						.header("Access-Control-Allow-Credentials", "true")
+						.header("Access-Control-Allow-Origin", "*")
+						.header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS")
+						.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization")
+						.build();
+			} else {
+				System.out.println("Error, server.");
+				return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(errors).build();
+			}
+		} catch (Exception e) {
+			logger.error(e.getMessage());
+			System.out.println("Error, exception handled.");
+			e.printStackTrace();
+			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(CommonUtil.wrapErrorMessageInList("Error while viewing for protocol " + e.getMessage())).build();
+		}
+	}
 
 	@POST
 	@Path("/saveAccess")
@@ -231,10 +267,47 @@ public class ProtocolServices
 	}
 
 	@GET
+	@Path("/checkWriteAccess")
+	@Produces("application/json")
+	public Response checkWriteAccess(@Context HttpServletRequest httpRequest,
+	                                 @DefaultValue("") @QueryParam("protocolId") String protocolId)
+	{
+		logger.debug("In checkWriteAccess");
+
+		if (!SpringSecurityUtil.isUserLoggedIn()) {
+			logger.info("User not logged in");
+			return Response.ok(false).build();
+		}
+
+		ProtocolBO protocolBO = (ProtocolBO) SpringApplicationContext.getBean(httpRequest, "protocolBO");
+
+		/*
+		if (!SpringSecurityUtil.isUserLoggedIn())
+			return Response.status(Response.Status.UNAUTHORIZED).entity(Constants.MSG_SESSION_INVALID).build();
+		*/
+		try {
+			if (!protocolBO.isProtocolEditableByCurrentUser(httpRequest, protocolId)) {
+				logger.info("User has no write access to protocol");
+				return Response.ok(false).build();
+			} else {
+				return Response.ok(true).build();
+			}
+		} catch (Exception ioe) {
+			logger.error(ioe.getMessage());
+			ioe.printStackTrace();
+			return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
+					.entity(CommonUtil.wrapErrorMessageInList(ioe.getMessage())).build();
+		}
+	}
+
+	@GET
 	@Path("/getProtocol")
 	@Produces ("application/json")
-	public Response getProtocol(@Context HttpServletRequest httpRequest, 
-			@DefaultValue("") @QueryParam("protocolType") String protocolType, @DefaultValue("") @QueryParam("protocolName") String protocolName, @DefaultValue("") @QueryParam("protocolVersion") String protocolVersion){
+	public Response getProtocol(
+			@Context HttpServletRequest httpRequest,
+			@DefaultValue("") @QueryParam("protocolType") String protocolType,
+			@DefaultValue("") @QueryParam("protocolName") String protocolName,
+			@DefaultValue("") @QueryParam("protocolVersion") String protocolVersion){
 
 		try { 
 			ProtocolManager protocolManager = (ProtocolManager) SpringApplicationContext.getBean(httpRequest, "protocolManager");

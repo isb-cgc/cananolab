@@ -76,8 +76,19 @@ public class CharacterizationServiceLocalImpl extends BaseServiceLocalImpl imple
 			Characterization achar = charBean.getDomainChar();
 			CaNanoLabApplicationService appService = (CaNanoLabApplicationService) ApplicationServiceProvider.getApplicationService();
 			Boolean newChar = true;
+			//
+			// WJRL 11/1/23: If you want to be able to add a characterization to a sample, you need to have
+			// write access to the sample itself. Issue 430:
+			//
+			if (!springSecurityAclService.currentUserHasWritePermission(sample.getId(),
+					SecureClassesEnum.SAMPLE.getClazz())) {
+				logger.error("Throwing no access: cannot write to sample");
+				throw new NoAccessException();
+			}
+
 			if (achar.getId() != null) {
 				newChar = false;
+				// WJRL 11/1/23: Does adding the above check make this superfluous? Probably??
 				if (!springSecurityAclService.currentUserHasWritePermission(achar.getId(), SecureClassesEnum.CHAR.getClazz())) {
 					logger.error("Throwing no access Point B");
 					throw new NoAccessException();

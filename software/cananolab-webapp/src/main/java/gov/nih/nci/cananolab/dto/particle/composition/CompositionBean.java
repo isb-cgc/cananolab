@@ -57,8 +57,7 @@ public class CompositionBean {
 	public CompositionBean(SampleComposition comp) {
 		domain = comp;
 		if (comp.getNanomaterialEntityCollection() != null) {
-			for (NanomaterialEntity entity : comp
-					.getNanomaterialEntityCollection()) {
+			for (NanomaterialEntity entity : comp.getNanomaterialEntityCollection()) {
 				nanomaterialEntities.add(new NanomaterialEntityBean(entity));
 			}
 		}
