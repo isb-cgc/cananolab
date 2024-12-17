@@ -10,7 +10,7 @@ package gov.nih.nci.cananolab.dto.particle;
 
 import gov.nih.nci.cananolab.util.SortableName;
 
-import org.displaytag.decorator.TableDecorator;
+//import org.displaytag.decorator.TableDecorator;
 
 /**
  * This decorator is used to for decorate different properties of a sample
@@ -20,6 +20,7 @@ import org.displaytag.decorator.TableDecorator;
  * @author pansu
  *
  */
+/*
 public class AdvancedSampleDecorator extends TableDecorator {
 
 	public SortableName getEditSampleURL() {
@@ -48,3 +49,4 @@ public class AdvancedSampleDecorator extends TableDecorator {
         return new SortableName(sampleName, link);
 	}
 }
+ */

@@ -132,6 +132,7 @@
 			<artifactId>poi</artifactId>
 			<version>[4.1.1,)</version>
 		</dependency>
+		<!--
 		<dependency>
 			<groupId>displaytag</groupId>
 			<artifactId>displaytag-export-poi</artifactId>
@@ -147,6 +148,7 @@
 				</exclusion>
 			</exclusions>
 		</dependency>
+		-->
 		<dependency>
 			<groupId>org.directwebremoting</groupId>
 			<artifactId>dwr</artifactId>
