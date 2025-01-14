@@ -253,6 +253,7 @@ public class ProtocolServiceHelper
 				protocolIds.add(protocolId);
 			} else {
 				logger.debug("User doesn't have access to protocol of ID: " + protocolId);
+				System.out.println("User doesn't have access to protocol of ID: " + protocolId);
 			}
 		}
 		return protocolIds;

@@ -1869,12 +1869,28 @@ return myTransactionInsertion;
 
 		CaNanoLabApplicationService appService = (CaNanoLabApplicationService) ApplicationServiceProvider
 				.getApplicationService();
-		DetachedCriteria crit = DetachedCriteria.forClass(PointOfContact.class).add(Property.forName("id").eq(Long.valueOf(pocId)));
+
+		System.out.println("Long.valueOf(pocId): " + Long.valueOf(pocId));
+
+		DetachedCriteria crit = DetachedCriteria.forClass(PointOfContact.class).add(
+				Property.forName("id").eq(Long.valueOf(pocId)));
 		crit.setFetchMode("organization", FetchMode.JOIN);
 		List results = appService.query(crit);
+		System.out.println("SampleServiceHelper results: " + results);
+		System.out.println("SampleServiceHelper result size: " + results.size());
+
+		// LAW 1/14/25: ListProxies don't play well with iteration, use indexed access
+		for (int i = 0; i < results.size(); i++) {
+			poc = (PointOfContact) results.get(i);
+		}
+
+		/*
         for (Object result : results) {
+			System.out.println("******* result: " + result);
             poc = (PointOfContact) result;
         }
+		*/
+
 		return poc;
 	}
 
@@ -1891,11 +1907,12 @@ return myTransactionInsertion;
 		crit.setFetchMode("primaryPointOfContact", FetchMode.JOIN);
 		crit.setFetchMode("primaryPointOfContact.organization", FetchMode.JOIN);
 		crit.setFetchMode("otherPointOfContactCollection", FetchMode.JOIN);
-		crit.setFetchMode("otherPointOfContactCollection.organization",
-				FetchMode.JOIN);
+		crit.setFetchMode("otherPointOfContactCollection.organization", FetchMode.JOIN);
 		crit.setResultTransformer(CriteriaSpecification.DISTINCT_ROOT_ENTITY);
 		List<Object> results = appService.query(crit);
 		List<PointOfContact> pointOfContacts = new ArrayList<PointOfContact>();
+		// LAW 1/14/25: if this function is ever implemented in future, this might be broken due to ListProxy iterator
+		// issue. However, it's not currently being used so I'm not messing with it.
         for (Object result : results) {
             Sample sample = (Sample) result;
             PointOfContact primaryPOC = sample.getPrimaryPointOfContact();
@@ -1979,6 +1996,9 @@ return myTransactionInsertion;
 	{
 		PointOfContact poc = null;
 
+		System.out.println("findPointOfContactByNameAndOrg-- lastName: " + lastName
+				+ " firstName: " + firstName + " orgName: " + orgName);
+
 		CaNanoLabApplicationService appService = (CaNanoLabApplicationService) ApplicationServiceProvider
 				.getApplicationService();
 		DetachedCriteria crit = DetachedCriteria.forClass(PointOfContact.class);
@@ -2019,6 +2039,17 @@ return myTransactionInsertion;
 				.getApplicationService();
 
 		List<Object> results = appService.query(crit);
+		for (int i = 0; i < results.size(); i++) {
+			String id = results.get(i).toString();
+			if (springSecurityAclService.currentUserHasReadPermission(Long.valueOf(id), SecureClassesEnum.SAMPLE.getClazz()) ||
+					springSecurityAclService.currentUserHasWritePermission(Long.valueOf(id), SecureClassesEnum.SAMPLE.getClazz())) {
+				sampleIds.add(id);
+			} else {
+				logger.debug("User doesn't have access to sample of ID: " + id);
+				System.out.println("User doesn't have access to sample of ID: " + id);
+			}
+		}
+		/*
         for (Object result : results) {
             String id = result.toString();
             if (springSecurityAclService.currentUserHasReadPermission(Long.valueOf(id), SecureClassesEnum.SAMPLE.getClazz()) ||
@@ -2028,6 +2059,7 @@ return myTransactionInsertion;
                 logger.debug("User doesn't have access to sample of ID: " + id);
             }
         }
+		*/
 		return sampleIds;
 	}
 
@@ -2040,10 +2072,12 @@ return myTransactionInsertion;
 				"select id from gov.nih.nci.cananolab.domain.particle.Sample");
 		List<Object> results = appService.query(crit);
 		List<String> publicIds = new ArrayList<String>();
-        for (Object result : results) {
-            String id = (String) result.toString();
-            publicIds.add(id);
-        }
+
+		for (int i = 0; i < results.size(); i++) {
+			String id = (String) results.get(i).toString();
+			publicIds.add(id);
+		}
+
 		return publicIds;
 	}
 	public List<Sample> findSamplesBy(String sampleName,

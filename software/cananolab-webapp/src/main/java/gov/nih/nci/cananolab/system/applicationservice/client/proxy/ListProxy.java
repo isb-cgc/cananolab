@@ -244,12 +244,18 @@ public class ListProxy extends ArrayList implements Set {
 	public boolean addAll(Collection c) {
 		if (hasAllRecords_) {
 			boolean result = listChunk_.addAll(c);
+			System.out.println("addAll c: " + c);
+			System.out.println("addAll result: " + result);
+			System.out.println("addAll listChunk_: " + listChunk_);
 			calculateRealSize();
 			return result;
 		} else {
 			if (listChunk_.size() == 0){
 				boolean result = listChunk_.addAll(c);
 				calculateRealSize();
+				//System.out.println("addAll 2 c: " + c);
+				//System.out.println("addAll 2 result: " + result);
+				//System.out.println("addAll 2 listChunk_: " + listChunk_);
 			}else {
 				try {
 					throw new Exception(
