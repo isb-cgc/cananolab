@@ -3,18 +3,18 @@ package gov.nih.nci.cananolab.system.applicationservice.client.proxy;
 import gov.nih.nci.cananolab.system.applicationservice.ApplicationService;
 //import gov.nih.nci.gov.nih.nci.cananolab.system.applicationservice.ApplicationServiceProvider;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
+import java.lang.Iterable;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import javax.validation.constraints.NotNull;
+
 /**
  * @author SDK Team
  */
-public class ListProxy extends ArrayList implements Set {
+public class ListProxy extends ArrayList implements Set, Iterable {
 	private static final long serialVersionUID = 1L;
 	
 	// the real size of actual list if competely materialized, the record count
@@ -624,5 +624,29 @@ public class ListProxy extends ArrayList implements Set {
 			realSize_ = listChunk_.size(); 
 			hasAllRecords_ = true;
 		}
+	}
+
+	@NotNull
+	public Iterator iterator() {
+		return new ListProxyIterator(this);
+	}
+
+}
+
+class ListProxyIterator<E> implements Iterator<E> {
+	ListProxyIterator(ListProxy lp) {
+		throw new UnsupportedOperationException("Iterator not implemented for ListProxy; use index access.");
+	}
+
+	public boolean hasNext() {
+		return false;
+	}
+
+	public E next() {
+		return null;
+	}
+
+	public void remove() {
+
 	}
 }

@@ -1785,6 +1785,7 @@ return myTransactionInsertion;
 		crit.setFetchMode("organization", FetchMode.JOIN);
 		List results = appService.query(crit);
 		// get organizations associated with public point of contacts
+
 		for(int i = 0; i< results.size(); i++)
 		{
 			PointOfContact poc = (PointOfContact) results.get(i);
@@ -1880,6 +1881,7 @@ return myTransactionInsertion;
 		System.out.println("SampleServiceHelper result size: " + results.size());
 
 		// LAW 1/14/25: ListProxies don't play well with iteration, use indexed access
+
 		for (int i = 0; i < results.size(); i++) {
 			poc = (PointOfContact) results.get(i);
 		}
@@ -1889,6 +1891,8 @@ return myTransactionInsertion;
 			System.out.println("******* result: " + result);
             poc = (PointOfContact) result;
         }
+
+		System.out.println("SampleServiceHelper poc: " + poc);
 		*/
 
 		return poc;

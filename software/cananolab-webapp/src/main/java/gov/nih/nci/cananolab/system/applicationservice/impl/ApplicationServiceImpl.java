@@ -285,9 +285,7 @@ public class ApplicationServiceImpl implements ApplicationService {
 
 		List resultList = convertToListProxy(results,criteria,targetClassName);
 		log.debug("response.getRowCount(): " + response.getRowCount());
-		System.out.println("privateQuery response.getRowCount(): " + response.getRowCount());
-		//System.out.println("privateQuery resultList.size(): " + resultList.size());
-		
+
 		return resultList;
 
 	}	
