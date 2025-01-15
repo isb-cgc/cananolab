@@ -635,7 +635,6 @@ public class ListProxy extends ArrayList implements Set, Iterable {
 
 class ListProxyIterator<E> implements Iterator<E> {
 	ListProxyIterator(ListProxy lp) {
-		throw new UnsupportedOperationException("Iterator not implemented for ListProxy; use index access.");
 	}
 
 	public boolean hasNext() {
@@ -643,7 +642,7 @@ class ListProxyIterator<E> implements Iterator<E> {
 	}
 
 	public E next() {
-		return null;
+		throw new UnsupportedOperationException("Iterator not implemented for ListProxy; use index access.");
 	}
 
 	public void remove() {
