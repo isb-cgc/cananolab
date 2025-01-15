@@ -61,6 +61,8 @@ public class CustomSearchEngine
 			
 			List<String> publicSamples = sampleServiceHelper.getAllSamples();
 
+			System.out.println("publicSamples.size(): " + publicSamples.size());
+
 			for (int i = 0; i < publicSamples.size(); i++) {
 				Long id = Long.valueOf(publicSamples.get(i));
 
@@ -71,7 +73,7 @@ public class CustomSearchEngine
 
 				sampleCriteria.setFetchMode("primaryPointOfContact", FetchMode.EAGER);
 				sampleCriteria.setFetchMode("sampleComposition", FetchMode.EAGER);
-				sampleCriteria.setFetchMode( "sampleComposition.nanomaterialEntityCollection", FetchMode.EAGER);
+				sampleCriteria.setFetchMode("sampleComposition.nanomaterialEntityCollection", FetchMode.EAGER);
 				sampleCriteria.setFetchMode("sampleComposition.functionalizingEntityCollection", FetchMode.EAGER);
 				sampleCriteria.setFetchMode("sampleComposition.nanomaterialEntityCollection.composingElementCollection", FetchMode.EAGER);
 				sampleCriteria.setFetchMode("sampleComposition.nanomaterialEntityCollection.composingElementCollection.inherentFunctionCollection",
@@ -86,73 +88,73 @@ public class CustomSearchEngine
 				List result = appService.query(sampleCriteria);
 				if (!result.isEmpty()) {
 					sample = (Sample) result.get(0);
-				}
 
-				SampleSearchableFieldsBean sampleFieldsBean = new SampleSearchableFieldsBean();
-				sampleFieldsBean.setSampleId(sample.getId().toString());
-				sampleFieldsBean.setSampleName(sample.getName());
-				sampleFieldsBean.setCreatedDate(sample.getCreatedDate());
-				sampleFieldsBean.setSamplePocName(sample.getPrimaryPointOfContact().getFirstName());
-				Collection<Keyword> keywordCollection = sample.getKeywordCollection();
-				Iterator<Keyword> keywordItr = keywordCollection.iterator();
-				List<String> keywords = new ArrayList<String>();
-				while (keywordItr.hasNext()) {
-					Keyword keywrd = keywordItr.next();
-					keywords.add(keywrd.getName());
-				}
-				sampleFieldsBean.setSampleKeywords(keywords);
-				// sampleFieldsBean.setNanoEntityName(nanoEntityName);
-				SampleComposition sampleComp = null;
-				if (sample.getSampleComposition() != null) {
-					sampleComp = sample.getSampleComposition();
-					Collection<NanomaterialEntity> nanoCollection = null;
-					if (sampleComp.getNanomaterialEntityCollection() != null) {
-						nanoCollection = sampleComp.getNanomaterialEntityCollection();
+					SampleSearchableFieldsBean sampleFieldsBean = new SampleSearchableFieldsBean();
+					sampleFieldsBean.setSampleId(sample.getId().toString());
+					sampleFieldsBean.setSampleName(sample.getName());
+					sampleFieldsBean.setCreatedDate(sample.getCreatedDate());
+					sampleFieldsBean.setSamplePocName(sample.getPrimaryPointOfContact().getFirstName());
+					Collection<Keyword> keywordCollection = sample.getKeywordCollection();
+					Iterator<Keyword> keywordItr = keywordCollection.iterator();
+					List<String> keywords = new ArrayList<String>();
+					while (keywordItr.hasNext()) {
+						Keyword keywrd = keywordItr.next();
+						keywords.add(keywrd.getName());
 					}
-					Iterator<NanomaterialEntity> itr = nanoCollection.iterator();
-					while (itr.hasNext()) {
-						NanomaterialEntity nanoEntity = itr.next();
-						sampleFieldsBean.setNanoEntityDesc(nanoEntity.getDescription());
-						sampleFieldsBean.setNanoEntityName(nanoEntity.getClass().getSimpleName());
-					}
+					sampleFieldsBean.setSampleKeywords(keywords);
+					// sampleFieldsBean.setNanoEntityName(nanoEntityName);
+					SampleComposition sampleComp = null;
+					if (sample.getSampleComposition() != null) {
+						sampleComp = sample.getSampleComposition();
+						Collection<NanomaterialEntity> nanoCollection = null;
+						if (sampleComp.getNanomaterialEntityCollection() != null) {
+							nanoCollection = sampleComp.getNanomaterialEntityCollection();
+						}
+						Iterator<NanomaterialEntity> itr = nanoCollection.iterator();
+						while (itr.hasNext()) {
+							NanomaterialEntity nanoEntity = itr.next();
+							sampleFieldsBean.setNanoEntityDesc(nanoEntity.getDescription());
+							sampleFieldsBean.setNanoEntityName(nanoEntity.getClass().getSimpleName());
+						}
 
-					Collection<FunctionalizingEntity> funcCollection = null;
-					if (sampleComp.getFunctionalizingEntityCollection() != null) {
-						funcCollection = sampleComp.getFunctionalizingEntityCollection();
-					}
-					Iterator<FunctionalizingEntity> funcitr = funcCollection.iterator();
-					while (funcitr.hasNext()) {
-						FunctionalizingEntity funcEntity = funcitr.next();
-						sampleFieldsBean.setFuncEntityName(funcEntity.getClass().getSimpleName());
-						if (funcEntity.getFunctionCollection() != null) {
-							Collection functionCollection = funcEntity.getFunctionCollection();
-							Iterator<Function> functionItr = functionCollection.iterator();
-							while (functionItr.hasNext()) {
-								Function function = functionItr.next();
-								sampleFieldsBean.setFunction(function.getClass().getSimpleName());
+						Collection<FunctionalizingEntity> funcCollection = null;
+						if (sampleComp.getFunctionalizingEntityCollection() != null) {
+							funcCollection = sampleComp.getFunctionalizingEntityCollection();
+						}
+						Iterator<FunctionalizingEntity> funcitr = funcCollection.iterator();
+						while (funcitr.hasNext()) {
+							FunctionalizingEntity funcEntity = funcitr.next();
+							sampleFieldsBean.setFuncEntityName(funcEntity.getClass().getSimpleName());
+							if (funcEntity.getFunctionCollection() != null) {
+								Collection functionCollection = funcEntity.getFunctionCollection();
+								Iterator<Function> functionItr = functionCollection.iterator();
+								while (functionItr.hasNext()) {
+									Function function = functionItr.next();
+									sampleFieldsBean.setFunction(function.getClass().getSimpleName());
+								}
 							}
 						}
 					}
-				}
 
-				if (sample.getCharacterizationCollection() != null) {
-					Collection charCollection = sample.getCharacterizationCollection();
+					if (sample.getCharacterizationCollection() != null) {
+						Collection charCollection = sample.getCharacterizationCollection();
 
-					Iterator<Characterization> itr = charCollection.iterator();
-					while (itr.hasNext()) {
-						Characterization charc = itr.next();
-						sampleFieldsBean.setCharacterization(charc.getClass().getSimpleName());
+						Iterator<Characterization> itr = charCollection.iterator();
+						while (itr.hasNext()) {
+							Characterization charc = itr.next();
+							sampleFieldsBean.setCharacterization(charc.getClass().getSimpleName());
+						}
 					}
+
+					sampleResults.add(sampleFieldsBean);
+				} else {
+					System.out.println("CustomSearchEngine retrieveSamplesForIndexing(): Sample " + id + " not found.");
 				}
-
-				sampleResults.add(sampleFieldsBean);
-				//}
-
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		System.out.println("sample Results size ==="+sampleResults.size());
+		System.out.println("CustomSearchEngine sampleResults.size(): " + sampleResults.size());
 		return sampleResults;
 	}
 

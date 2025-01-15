@@ -200,8 +200,12 @@ public class SampleServiceLocalImpl extends BaseServiceLocalImpl implements Samp
 			Boolean newPOC = true;
 			Boolean newOrg = true;
 			CaNanoLabApplicationService appService = (CaNanoLabApplicationService) ApplicationServiceProvider.getApplicationService();
+			System.out.println("SampleServiceLocalImpl savePointOfContact pocBean.getDomain(): " + pocBean.getDomain());
+			System.out.println();
 			PointOfContact domainPOC = pocBean.getDomain();
+			System.out.println("Point A domainPOC");
 			Organization domainOrg = domainPOC.getOrganization();
+			System.out.println("domainOrg: " + domainOrg);
 			// get existing organization from database and reuse ID,
 			// created by and created date
 			// address information will be updated
@@ -233,7 +237,9 @@ public class SampleServiceLocalImpl extends BaseServiceLocalImpl implements Samp
 				}
 			} else {
 				// check if organization is changed
+				System.out.println("domainPOC.getId().toString(): " + domainPOC.getId().toString());
 				dbPointOfContact = sampleServiceHelper.findPointOfContactById(domainPOC.getId().toString());
+				System.out.println("dbPointOfContact: " + dbPointOfContact);
 				Organization dbOrg = dbPointOfContact.getOrganization();
 				// if organization information is changed, create a new POC
 				if (!dbOrg.getName().equals(domainOrg.getName())) {

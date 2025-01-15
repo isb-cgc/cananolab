@@ -17,7 +17,7 @@ import gov.nih.nci.cananolab.util.StringUtils;
 import java.util.SortedSet;
 import java.util.TreeSet;
 
-import org.displaytag.decorator.TableDecorator;
+//import org.displaytag.decorator.TableDecorator;
 
 /**
  * This decorator is used to for decorate different properties of a sample to be
@@ -26,6 +26,7 @@ import org.displaytag.decorator.TableDecorator;
  * @author pansu
  *
  */
+/*
 public class SampleDecorator extends TableDecorator {
 
 	public String getDetailURL() {
@@ -120,8 +121,10 @@ public class SampleDecorator extends TableDecorator {
 		return StringUtils.escapeXmlButPreserveLineBreaks(str);
 	}*/
 
+/*
 	public String getPointOfContactName() throws BaseException {
 		SampleBean sample = (SampleBean) getCurrentRowObject();
 		return sample.getPrimaryPOCBean().getDisplayName();
 	}
 }
+*/
