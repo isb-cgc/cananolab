@@ -24,7 +24,7 @@ public class SimpleCompositionBean {
 	String sampleName;
 
 	Map<String, Object> properties;
-	Map<String, Object> nanoentitiy;
+	Map<String, Object> nanoentity;
 	Map<String, Object> composingElement;
 	Map<String, Object> files;
 	MultiMap nanomaterialentity;
@@ -102,30 +102,30 @@ public class SimpleCompositionBean {
 		if (compBean.getNanomaterialEntities() != null) {
 
 			for (String entityType : compBean.getNanoEntityTypes()) {
-				nanoentitiy = new HashMap<String, Object>();
-				for (NanomaterialEntityBean nanoMaterialEntity : compBean
-						.getType2NanoEntities().get(entityType)) {
-					nanoentitiy = new HashMap<String, Object>();
+				nanoentity = new HashMap<String, Object>();
+				for (NanomaterialEntityBean nanoMaterialEntity : compBean.getType2NanoEntities().get(entityType)) {
+					nanoentity = new HashMap<String, Object>();
+					System.out.println("nanoentity-- display name: " + nanoMaterialEntity.getDisplayName()
+							+ " description display name: " + nanoMaterialEntity.getDescriptionDisplayName()
+							+ " desc: " + nanoMaterialEntity.getDescription());
 				//	System.out.println("dataId Testing=== "+ nanoMaterialEntity.getDomainEntity().getId());
 					// WJRL 2/6/23: Description display name is HTML escaped with breaks
-					nanoentitiy.put("Description",
+					nanoentity.put("Description",
 							nanoMaterialEntity.getDescriptionDisplayName());
-					nanoentitiy.put("dataId", nanoMaterialEntity.getDomainEntity().getId());
+					nanoentity.put("dataId", nanoMaterialEntity.getDomainEntity().getId());
 
 					if (nanoMaterialEntity.isWithProperties()) {
 
 						System.out.println("****** Is WIth Properties*****"
 								+ nanoMaterialEntity.isWithProperties());
-						nanoentitiy.put("isWithProperties",
+						nanoentity.put("isWithProperties",
 								nanoMaterialEntity.isWithProperties());
 
 						try {
 							String detailPage = gov.nih.nci.cananolab.restful.sample.InitCompositionSetup
-									.getInstance().getDetailPage(entityType,
-											"nanomaterialEntity");
-							System.out.println("**** Details Page *****"
-									+ detailPage);
-							nanoentitiy.put("detailsPage", detailPage);
+									.getInstance().getDetailPage(entityType, "nanomaterialEntity");
+							System.out.println("**** Details Page ***** " + detailPage);
+							nanoentity.put("detailsPage", detailPage);
 							if (detailPage.contains("Dendrimer")) {
 								properties = new HashMap<String, Object>();
 								properties.put("Branch", nanoMaterialEntity
@@ -146,7 +146,8 @@ public class SimpleCompositionBean {
 												.getCrossLinkDegree());
 
 							}
-							if (detailPage.contains("Biopolymer")) {
+							//if (detailPage.contains("Biopolymer")) {
+							if (detailPage.contains("Biopolymer") || detailPage.contains("NanoBiopolymer")) {
 								properties = new HashMap<String, Object>();
 								properties.put("Name", nanoMaterialEntity
 										.getBiopolymer().getName());
@@ -215,7 +216,7 @@ public class SimpleCompositionBean {
 							e.printStackTrace();
 						}
 
-						nanoentitiy.put("Properties", properties);
+						nanoentity.put("Properties", properties);
 					}
 					composingElements = new ArrayList<Map<String, Object>>();
 					if (nanoMaterialEntity.getComposingElements() != null) {
@@ -243,7 +244,7 @@ public class SimpleCompositionBean {
 									.getDomain().getPubChemId());
 							composingElements.add(composingElement);
 						}
-						nanoentitiy.put("ComposingElements", composingElements);
+						nanoentity.put("ComposingElements", composingElements);
 					}
 					fileList = new ArrayList<Map<String, Object>>();
 					if (nanoMaterialEntity.getFiles() != null) {
@@ -268,9 +269,9 @@ public class SimpleCompositionBean {
 							fileList.add(files);
 						}
 
-						nanoentitiy.put("Files", fileList);
+						nanoentity.put("Files", fileList);
 					}
-					nanomaterialentity.put(entityType, nanoentitiy);
+					nanomaterialentity.put(entityType, nanoentity);
 
 				}
 

@@ -100,7 +100,9 @@ public class ComposingElementBean {
 			}
 			buffer.append(")");
 		}
-		return buffer.toString();
+		String bufferStr = buffer.toString();
+		System.out.println("bufferStr in ComposingElementBean.java: " + bufferStr);
+		return bufferStr;
 	}
 
 	public String getAdvancedSearchDisplayName() {

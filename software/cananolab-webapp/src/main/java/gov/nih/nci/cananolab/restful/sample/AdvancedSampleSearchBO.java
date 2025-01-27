@@ -71,9 +71,7 @@ public class AdvancedSampleSearchBO extends BaseAnnotationBO
 			throws Exception {
 		
 		HttpSession session = request.getSession();
-		session
-		.setAttribute("advancedSampleSearchBean",
-				searchBean);
+		session.setAttribute("advancedSampleSearchBean", searchBean);
 		
 //		searchBean.updateQueries();
 //		
@@ -113,6 +111,7 @@ public class AdvancedSampleSearchBO extends BaseAnnotationBO
 			loadedSampleBeans.add(loadedAdvancedSample);
 			
 			logger.debug("Processing sample #: " + idx++);
+			System.out.println();
 		}
 		
 		// save sample result set in session for printing.

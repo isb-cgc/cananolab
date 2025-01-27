@@ -49,7 +49,6 @@ import gov.nih.nci.cananolab.domain.common.Condition;
 import gov.nih.nci.cananolab.domain.common.ExperimentConfig;
 import gov.nih.nci.cananolab.domain.common.Instrument;
 import gov.nih.nci.cananolab.domain.common.Technique;
-import gov.nih.nci.cananolab.domain.common.PointOfContact;
 import gov.nih.nci.cananolab.domain.common.Publication;
 
 import gov.nih.nci.cananolab.exception.ApplicationProviderException;
@@ -1786,6 +1785,7 @@ return myTransactionInsertion;
 		crit.setFetchMode("organization", FetchMode.JOIN);
 		List results = appService.query(crit);
 		// get organizations associated with public point of contacts
+
 		for(int i = 0; i< results.size(); i++)
 		{
 			PointOfContact poc = (PointOfContact) results.get(i);
@@ -1870,12 +1870,31 @@ return myTransactionInsertion;
 
 		CaNanoLabApplicationService appService = (CaNanoLabApplicationService) ApplicationServiceProvider
 				.getApplicationService();
-		DetachedCriteria crit = DetachedCriteria.forClass(PointOfContact.class).add(Property.forName("id").eq(Long.valueOf(pocId)));
+
+		System.out.println("Long.valueOf(pocId): " + Long.valueOf(pocId));
+
+		DetachedCriteria crit = DetachedCriteria.forClass(PointOfContact.class).add(
+				Property.forName("id").eq(Long.valueOf(pocId)));
 		crit.setFetchMode("organization", FetchMode.JOIN);
 		List results = appService.query(crit);
-		for(int i = 0; i < results.size(); i++){
+		System.out.println("SampleServiceHelper results: " + results);
+		System.out.println("SampleServiceHelper result size: " + results.size());
+
+		// LAW 1/14/25: ListProxies don't play well with iteration, use indexed access
+
+		for (int i = 0; i < results.size(); i++) {
 			poc = (PointOfContact) results.get(i);
 		}
+
+		/*
+        for (Object result : results) {
+			System.out.println("******* result: " + result);
+            poc = (PointOfContact) result;
+        }
+
+		System.out.println("SampleServiceHelper poc: " + poc);
+		*/
+
 		return poc;
 	}
 
@@ -1892,19 +1911,19 @@ return myTransactionInsertion;
 		crit.setFetchMode("primaryPointOfContact", FetchMode.JOIN);
 		crit.setFetchMode("primaryPointOfContact.organization", FetchMode.JOIN);
 		crit.setFetchMode("otherPointOfContactCollection", FetchMode.JOIN);
-		crit.setFetchMode("otherPointOfContactCollection.organization",
-				FetchMode.JOIN);
+		crit.setFetchMode("otherPointOfContactCollection.organization", FetchMode.JOIN);
 		crit.setResultTransformer(CriteriaSpecification.DISTINCT_ROOT_ENTITY);
-		List results = appService.query(crit);
+		List<Object> results = appService.query(crit);
 		List<PointOfContact> pointOfContacts = new ArrayList<PointOfContact>();
-		for(int i = 0; i < results.size(); i++){
-			Sample sample = (Sample) results.get(i);
-			PointOfContact primaryPOC = sample.getPrimaryPointOfContact();
-			pointOfContacts.add(primaryPOC);
-			Collection<PointOfContact> otherPOCs = sample
-					.getOtherPointOfContactCollection();
-			pointOfContacts.addAll(otherPOCs);
-		}
+		// LAW 1/14/25: if this function is ever implemented in future, this might be broken due to ListProxy iterator
+		// issue. However, it's not currently being used so I'm not messing with it.
+        for (Object result : results) {
+            Sample sample = (Sample) result;
+            PointOfContact primaryPOC = sample.getPrimaryPointOfContact();
+            pointOfContacts.add(primaryPOC);
+            Collection<PointOfContact> otherPOCs = sample.getOtherPointOfContactCollection();
+            pointOfContacts.addAll(otherPOCs);
+        }
 		return pointOfContacts;
 	}
 
@@ -1981,6 +2000,9 @@ return myTransactionInsertion;
 	{
 		PointOfContact poc = null;
 
+		System.out.println("findPointOfContactByNameAndOrg-- lastName: " + lastName
+				+ " firstName: " + firstName + " orgName: " + orgName);
+
 		CaNanoLabApplicationService appService = (CaNanoLabApplicationService) ApplicationServiceProvider
 				.getApplicationService();
 		DetachedCriteria crit = DetachedCriteria.forClass(PointOfContact.class);
@@ -2020,16 +2042,28 @@ return myTransactionInsertion;
 		CaNanoLabApplicationService appService = (CaNanoLabApplicationService) ApplicationServiceProvider
 				.getApplicationService();
 
-		List results = appService.query(crit);
-		for(int i = 0; i < results.size(); i++){
+		List<Object> results = appService.query(crit);
+		for (int i = 0; i < results.size(); i++) {
 			String id = results.get(i).toString();
 			if (springSecurityAclService.currentUserHasReadPermission(Long.valueOf(id), SecureClassesEnum.SAMPLE.getClazz()) ||
-				springSecurityAclService.currentUserHasWritePermission(Long.valueOf(id), SecureClassesEnum.SAMPLE.getClazz())) {
+					springSecurityAclService.currentUserHasWritePermission(Long.valueOf(id), SecureClassesEnum.SAMPLE.getClazz())) {
 				sampleIds.add(id);
 			} else {
 				logger.debug("User doesn't have access to sample of ID: " + id);
+				System.out.println("User doesn't have access to sample of ID: " + id);
 			}
 		}
+		/*
+        for (Object result : results) {
+            String id = result.toString();
+            if (springSecurityAclService.currentUserHasReadPermission(Long.valueOf(id), SecureClassesEnum.SAMPLE.getClazz()) ||
+                    springSecurityAclService.currentUserHasWritePermission(Long.valueOf(id), SecureClassesEnum.SAMPLE.getClazz())) {
+                sampleIds.add(id);
+            } else {
+                logger.debug("User doesn't have access to sample of ID: " + id);
+            }
+        }
+		*/
 		return sampleIds;
 	}
 
@@ -2040,12 +2074,14 @@ return myTransactionInsertion;
 				.getApplicationService();
 		HQLCriteria crit = new HQLCriteria(
 				"select id from gov.nih.nci.cananolab.domain.particle.Sample");
-		List results = appService.query(crit);
+		List<Object> results = appService.query(crit);
 		List<String> publicIds = new ArrayList<String>();
-		for(int i = 0; i< results.size(); i++){
+
+		for (int i = 0; i < results.size(); i++) {
 			String id = (String) results.get(i).toString();
 			publicIds.add(id);
 		}
+
 		return publicIds;
 	}
 	public List<Sample> findSamplesBy(String sampleName,

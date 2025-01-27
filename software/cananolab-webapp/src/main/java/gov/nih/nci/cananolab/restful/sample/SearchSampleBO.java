@@ -98,8 +98,7 @@ public class SearchSampleBO extends AbstractDispatchBO {
 
 		// load sampleBean details 25 at a time for displaying
 		// pass in page and size
-		List<SampleBean> sampleBeansPerPage = getSamplesPerPage(sampleBeans,
-				displayPage, request);
+		List<SampleBean> sampleBeansPerPage = getSamplesPerPage(sampleBeans, displayPage, request);
 		// in case any samples has been filtered during loading of sample
 		// information. e.g. POC is missing
 		
