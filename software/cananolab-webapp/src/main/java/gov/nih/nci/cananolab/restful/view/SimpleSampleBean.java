@@ -258,6 +258,10 @@ public class SimpleSampleBean {
 				pointOfContactMap.put("organizationDisplayName",
 						poc.getOrganizationDisplayName());
 				pointOfContactMap.put("role", poc.getDomain().getRole());
+
+				// LAW 11/20/24: removed toString here--the value should be passed as boolean.
+				// Have confirmed that the other parts of the script which use this function aren't impacted
+				// by this change (export to XML and json--both can handle booleans)
 				pointOfContactMap.put("primaryContact", poc.getPrimaryStatus());
 
 			}
