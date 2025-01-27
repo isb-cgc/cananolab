@@ -129,22 +129,18 @@ public class AdvancedSampleBean {//extends SecuredDataBean{
 				items.add(item);
 			} else if (columnName.contains("nanomaterial entity")) {
 				boolean hasName = false;
+				System.out.println("In AdvancedSampleBean.java line 132");
 				for (NanomaterialEntity entity : nanomaterialEntities) {
-					NanomaterialEntityBean entityBean = new NanomaterialEntityBean(
-							entity);
+					NanomaterialEntityBean entityBean = new NanomaterialEntityBean(entity);
 					// chemical name column
-					String entityName = ClassUtils.getDisplayName(ClassUtils
-							.getShortClassName(entity.getClass().getName()));
+					String entityName = ClassUtils.getDisplayName(ClassUtils.getShortClassName(entity.getClass().getName()));
 					if (columnName.contains(entityName)) {
 						LinkableItem item = new LinkableItem();
 						item.setAction("" + entity.getId());
 						item.getDisplayStrings().add(entityBean.getType());
-						for (ComposingElement ce : entity
-								.getComposingElementCollection()) {
-							ComposingElementBean ceBean = new ComposingElementBean(
-									ce);
-							item.getDisplayStrings().add(
-									ceBean.getAdvancedSearchDisplayName());
+						for (ComposingElement ce : entity.getComposingElementCollection()) {
+							ComposingElementBean ceBean = new ComposingElementBean(ce);
+							item.getDisplayStrings().add(ceBean.getAdvancedSearchDisplayName());
 						}
 						hasName = true;
 						items.add(item);
@@ -153,15 +149,12 @@ public class AdvancedSampleBean {//extends SecuredDataBean{
 				// entity type column
 				if (!hasName) {
 					for (NanomaterialEntity entity : nanomaterialEntities) {
-						NanomaterialEntityBean entityBean = new NanomaterialEntityBean(
-								entity);
+						NanomaterialEntityBean entityBean = new NanomaterialEntityBean(entity);
 						LinkableItem item = new LinkableItem();
 						item.setAction("" + entity.getId());
 						item.getDisplayStrings().add(entityBean.getType());
-						for (ComposingElementBean ceBean : entityBean
-								.getComposingElements()) {
-							item.getDisplayStrings().add(
-									ceBean.getAdvancedSearchDisplayName());
+						for (ComposingElementBean ceBean : entityBean.getComposingElements()) {
+							item.getDisplayStrings().add(ceBean.getAdvancedSearchDisplayName());
 						}
 						items.add(item);
 					}

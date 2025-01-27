@@ -98,7 +98,7 @@ L-->
 
 			</join>
 		</subclass>
-		<subclass name="gov.nih.nci.cananolab.domain.nanomaterial.Biopolymer" discriminator-value="Biopolymer">
+		<subclass name="gov.nih.nci.cananolab.domain.nanomaterial.NanoBiopolymer" discriminator-value="NanoBiopolymer">
 			<join table="biopolymer_p">
 				<key column="biopolymer_pk_id" />
 			<!-- Attributes mapping for the Biopolymer class -->

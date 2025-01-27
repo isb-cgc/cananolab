@@ -147,7 +147,7 @@ public class SynthesisMaterialBean extends BaseSynthesisEntityBean {
 //            }
 //        }
 //        return null;
-        return getSynthesisMaterialElementById(new Long(id));
+        return getSynthesisMaterialElementById(Long.valueOf(id));
     }
 
     public  SynthesisMaterialElementBean getSynthesisMaterialElementById(Long id){

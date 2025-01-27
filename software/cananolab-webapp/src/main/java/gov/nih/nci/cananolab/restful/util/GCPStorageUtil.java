@@ -15,7 +15,10 @@ public class GCPStorageUtil {
         }
 
         try {
-            gcpStorageService = StorageOptions.getDefaultInstance().getService();
+            // LAW 11/26/24: potential workaround for issues accessing GCS locally
+            //gcpStorageService = StorageOptions.getDefaultInstance().getService();
+            gcpStorageService = StorageOptions.newBuilder().setProjectId("Test").build().getService();
+            printAllSystemVars();
             return gcpStorageService;
         } catch (Exception e) {
             System.out.println("ERROR: Cannot get GCP storage service");

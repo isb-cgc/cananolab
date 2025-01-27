@@ -68,12 +68,12 @@ export class SampleSearchResultsComponent implements OnInit, OnDestroy {
     ) {}
 
     ngOnInit(): void {
-        setTimeout(()=> {
+        setTimeout(() => {
             Properties.SAMPLE_TOOLS = false;
         })
         this.searchResults = this.sampleSearchResultsService.getSearchResults();
         this.searchResultsCount = this.searchResults.length;
-        this.sampleIds=this.sampleSearchResultsService.getSampleIds();
+        this.sampleIds = this.sampleSearchResultsService.getSampleIds();
         this.searchResultsPagerService.currentPageChangeEmitter
             .pipe(takeUntil(this.ngUnsubscribe))
             .subscribe((data) => {
@@ -93,9 +93,9 @@ export class SampleSearchResultsComponent implements OnInit, OnDestroy {
 
     navigateToSample(sampleId) {
         if (this.properties.LOGGED_IN) {
-            var url = this.apiService.doGet(Consts.QUERY_SAMPLE_WRITE_ACCESS,'sampleId=' + sampleId);
-            url.subscribe(data=> {
-                var hasWriteAccess = data;
+            let url = this.apiService.doGet(Consts.QUERY_SAMPLE_WRITE_ACCESS, 'sampleId=' + sampleId);
+            url.subscribe(data => {
+                let hasWriteAccess = data;
                 if (hasWriteAccess) {
                     // current user have write access
                     this.router.navigate(['home/samples/sample', sampleId]); // @FIXME  Don't hard code these
@@ -120,13 +120,13 @@ export class SampleSearchResultsComponent implements OnInit, OnDestroy {
         favObj['dataId'] = samp['sampleId'];
         favObj['description'] = samp['nanoEntityDesc'];
         favObj['editable'] = samp['editable'];
-        favObj['loginName']=Properties.current_user;
+        favObj['loginName'] = Properties.current_user;
 
         console.log('favObj:', favObj);
 
         this.apiService.doPost(Consts.QUERY_ADD_FAVORITE, favObj).subscribe(
             (data) => {
-                samp['addedToFavorites']=data;
+                samp['addedToFavorites'] = data;
                 console.log(samp)
                 // console.log('set Fave results: ', data);
             },
@@ -151,11 +151,11 @@ export class SampleSearchResultsComponent implements OnInit, OnDestroy {
 
 
     downloadReady(event) {
-        if (event==true) {
-            this.loading=null;
+        if (event == true) {
+            this.loading = null;
         }
-        if (event==false) {
-            this.loading=true;
+        if (event == false) {
+            this.loading = true;
         }
     }
 

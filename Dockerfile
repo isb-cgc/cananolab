@@ -26,12 +26,13 @@ RUN apt-get install -y wget gnupg2 procps apt-transport-https
 # fetch the updated package metadata
 RUN apt-get update
 
-# Install OpenJDK8
+# Install OpenJDK17
 RUN wget -O - https://packages.adoptium.net/artifactory/api/gpg/key/public | apt-key add -
 RUN echo "deb https://packages.adoptium.net/artifactory/deb $(awk -F= '/^VERSION_CODENAME/{print$2}' /etc/os-release) main" | tee /etc/apt/sources.list.d/adoptium.list
-RUN apt-get update && apt-get -y install temurin-8-jdk
+RUN apt-get update && apt-get -y install temurin-17-jdk
 RUN ls -l /usr/lib/jvm/
-ENV JAVA_HOME=/usr/lib/jvm/temurin-8-jdk-amd64/jre/
+RUN ls -l /usr/lib/jvm/temurin-17-jdk-amd64/
+ENV JAVA_HOME=/usr/lib/jvm/temurin-17-jdk-amd64/
 RUN echo "Java Version:"
 RUN java -version
 
@@ -42,11 +43,11 @@ RUN apt-get -y install unzip libffi-dev libssl-dev git ruby g++ curl
 COPY ./staged /local/content/
 
 WORKDIR /tmp
-RUN wget https://download.jboss.org/wildfly/23.0.2.Final/wildfly-23.0.2.Final.tar.gz \
-    && tar xvfz wildfly-23.0.2.Final.tar.gz \
-    && mv wildfly-23.0.2.Final /opt
+RUN wget https://github.com/wildfly/wildfly/releases/download/25.0.1.Final/wildfly-25.0.1.Final.tar.gz \
+    && tar xvfz wildfly-25.0.1.Final.tar.gz \
+    && mv wildfly-25.0.1.Final /opt
 
-ENV JBOSS_HOME=/opt/wildfly-23.0.2.Final
+ENV JBOSS_HOME=/opt/wildfly-25.0.1.Final
 ENV PATH=/opt/apache-maven/bin:/opt/apache-ant-1.9.9/bin:$PATH
 
 EXPOSE 8080 9990

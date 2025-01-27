@@ -48,7 +48,8 @@ export class CompositionComponent implements OnInit{
                     data => {
                         this.errors = {};
                         this.data = data;
-                        console.log(data.status);
+                        console.log("Data: ");
+                        console.log(data);
                         Properties.CURRENT_SAMPLE_NAME = data['sampleName'];
                     },
                     error => {
@@ -62,7 +63,7 @@ export class CompositionComponent implements OnInit{
     convertTitlesToRealWords(title) {
         const wordRegex = /[A-Z]?[a-z]+|[0-9]+|[A-Z]+(?![a-z])/g;
         const result = title.match(wordRegex);
-        return result.join(' ')
+        return result.join(' ');
     }
 
     getCompositionEditData(){

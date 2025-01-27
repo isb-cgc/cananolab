@@ -85,8 +85,7 @@ public class CompositionBO extends BaseAnnotationBO
 	 * @return ActionForward
 	 * @throws Exception
 	 */
-	public CompositionBean summaryView(CompositionForm form,
-		HttpServletRequest request) throws Exception {
+	public CompositionBean summaryView(CompositionForm form, HttpServletRequest request) throws Exception {
 			System.out.println("MHL summaryView sampleId: " + form.getSampleId());
 			if( form == null ){
 				System.out.println("summaryView form==null");
@@ -224,14 +223,10 @@ public class CompositionBO extends BaseAnnotationBO
 		session.setAttribute("compBean", compBean);
 		session.setAttribute("theSample", sampleBean); // for showing title.
 		if (compBean != null) {
-			session.setAttribute(CompositionBean.CHEMICAL_SELECTION, compBean
-					.getChemicalAssociations());
-			session.setAttribute(CompositionBean.FILE_SELECTION, compBean
-					.getFiles());
-			session.setAttribute(CompositionBean.FUNCTIONALIZING_SELECTION,
-					compBean.getFunctionalizingEntities());
-			session.setAttribute(CompositionBean.NANOMATERIAL_SELECTION,
-					compBean.getNanomaterialEntities());
+			session.setAttribute(CompositionBean.CHEMICAL_SELECTION, compBean.getChemicalAssociations());
+			session.setAttribute(CompositionBean.FILE_SELECTION, compBean.getFiles());
+			session.setAttribute(CompositionBean.FUNCTIONALIZING_SELECTION, compBean.getFunctionalizingEntities());
+			session.setAttribute(CompositionBean.NANOMATERIAL_SELECTION, compBean.getNanomaterialEntities());
 		}
 
 		// retain action messages from send redirects

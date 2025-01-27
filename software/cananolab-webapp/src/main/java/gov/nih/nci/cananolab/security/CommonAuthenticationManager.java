@@ -137,12 +137,12 @@ import org.apache.logging.log4j.Logger;
 
 
 /**
- * This is the default implmentation of the {@link AuthenticationManager} interface.
- * It provides methods to perform the authentication using the  provided user credentials.
+ * This is the default implementation of the {@link AuthenticationManager} interface.
+ * It provides methods to perform the authentication using the provided user credentials.
  * It uses JAAS to perform this authentication. This class accepts the Application Context/Name,
  * and instantiate a corresponding {@link LoginContext} for the same. It accepts the
  * user credentials and creates a {@link CallbackHandler} class using the same. Using the
- * {@link LoginContext} and the {@link CallbackHandler} created JAAS instatiate the configured
+ * {@link LoginContext} and the {@link CallbackHandler} created JAAS instantiate the configured
  * {@link LoginModule} for the application and uses the same to authenticate the user credentials
  * against the credential providers.
  *
@@ -164,46 +164,43 @@ public class CommonAuthenticationManager implements AuthenticationManager{
 	 * and populates the same with the user credentials. It also creates a JAAS {@link LoginContext} class using the
 	 * Application Context/Name as parameter. It then calls the <code>login</code> method on the {@link LoginContext} class.
 	 * The login Method then uses the registered {@link LoginModule} for the given Application Context/Name in the JAAS policy file
-	 * and authenticate the user credentails. There can be more than one {@link LoginModule} class registered for the application.
+	 * and authenticate the user credentials. There can be more than one {@link LoginModule} class registered for the application.
 
 	 *
-
 	 */
-	public boolean login(String userName, String password)
-	{
+	public boolean login(String userName, String password) {
 		boolean result = false;
-		try
-		{
+		try {
 			result = this.login(userName, password, null);
-		}
-		catch (Exception e)
-		{
+		} catch (Exception e) {
 			// Should never occur
 			e.printStackTrace();
 		}
 		return result;
 	}
 
-	/**
+	/*
 	 * This method accepts the user credentials as parameter and uses the same to authenticate the user
 	 * against the registered credential providers. It creates an instance of the  CSMCallbackHandler class
 	 * and populates the same with the user credentials. It also creates a JAAS {@link LoginContext} class using the
 	 * Application Context/Name as parameter. It then calls the <code>login</code> method on the {@link LoginContext} class.
 	 * The login Method then uses the registered {@link LoginModule} for the given Application Context/Name in the JAAS policy file
 	 * and authenticate the user credentails. There can be more than one {@link LoginModule} class registered for the application.
-
 	 *
-
 	 */
+	/*
 	public Subject authenticate(String userName, String password) throws Exception {
 		Subject subject = new Subject();
 		this.login(userName, password, subject);
 		return subject;
 	}
+	*/
+
 
 	/* (non-Javadoc)
 	 * @see gov.nih.nci.security.AuthenticationManager#authenticate(javax.security.auth.Subject)
 	 */
+	/*
 	public boolean authenticate(Subject subject) throws Exception {
 		 LoginContext ctx = null;
 
@@ -211,7 +208,7 @@ public class CommonAuthenticationManager implements AuthenticationManager{
 		{
 			throw new Exception("Subject cannot be blank");
 		}
-		//TODO Check if subject - username or Cerfiticate is available. Atleast one should be available.
+		// Check if subject - username or Cerfiticate is available. Atleast one should be available.
 	    try {
 
 			ctx = new LoginContext( "gov.nih.nci.security.authentication.loginmodules.X509LoginModule", subject );
@@ -226,27 +223,23 @@ public class CommonAuthenticationManager implements AuthenticationManager{
 		subject.setReadOnly();
 		return true;
 	}
+	 */
 
 
-
-	private boolean login(String userName, String password, Subject subject) throws Exception
-	{
-		if (null == userName || userName.trim().length() == 0)
-		{
+	private boolean login(String userName, String password, Subject subject) throws Exception {
+		if (null == userName || userName.trim().isEmpty()) {
 			throw new Exception("User Name cannot be blank");
 		}
-		if (null == password || password.trim().length() == 0)
-		{
+		if (null == password || password.trim().isEmpty()) {
 			throw new Exception("Password cannot be blank");
 		}
 
-
 //		LockoutManager lockoutManager = LockoutManager.getInstance();
 //		UserInfoHelper.setUserInfo(userName, null);
+
 		boolean loginSuccessful = false;
 		LoginContext loginContext = null;
-		try
-		{
+		try {
 			//System.out.println("lockoutManager.getAllowedAttempts:::" + lockoutManager.getAllowedAttempts());
 //			if (lockoutManager.isUserLockedOut(userName))
 //			{
@@ -263,10 +256,7 @@ public class CommonAuthenticationManager implements AuthenticationManager{
 			if (log.isDebugEnabled())
 				log.debug("Authentication|"+applicationContextName+"|"+userName+"|login|Success| Authentication is "+loginSuccessful+" for user "+userName+"|");
 			auditLog.info("Successful Login attempt for user "+ userName);
-		}
-
-		catch (Exception csiiae)
-		{
+		} catch (Exception csiiae) {
 			csiiae.printStackTrace();
 			loginSuccessful = false;
 			if (log.isDebugEnabled())
@@ -334,8 +324,7 @@ public class CommonAuthenticationManager implements AuthenticationManager{
 	/* (non-Javadoc)
 	 * @see gov.nih.nci.security.AuthenticationManager#initialize(java.lang.String)
 	 */
-	public void initialize(String applicationContextName)
-	{
+	public void initialize(String applicationContextName) {
 		this.applicationContextName = applicationContextName;
 		//new ConfigurationHelper(applicationContextName);
 	}
@@ -343,16 +332,14 @@ public class CommonAuthenticationManager implements AuthenticationManager{
 	/* (non-Javadoc)
 	 * @see gov.nih.nci.security.AuthenticationManager#setApplicationContextName(java.lang.String)
 	 */
-	public void setApplicationContextName(String applicationContextName)
-	{
+	public void setApplicationContextName(String applicationContextName) {
 		this.applicationContextName = applicationContextName;
 	}
 
 	/* (non-Javadoc)
 	 * @see gov.nih.nci.security.AuthenticationManager#getApplicationContextName()
 	 */
-	public String getApplicationContextName()
-	{
+	public String getApplicationContextName() {
 		return this.applicationContextName;
 	}
 
@@ -389,31 +376,24 @@ public class CommonAuthenticationManager implements AuthenticationManager{
 //		auditLog.info("Successful log out for user "+ userName);
 	}
 
-	public boolean changePassword(String userName, String password, String newPassword,  String passwordConfirmation) throws Exception
-	{
-		if (null == userName || userName.trim().length() == 0)
-		{
+	public boolean changePassword(String userName, String password, String newPassword, String passwordConfirmation) throws Exception {
+		if (null == userName || userName.trim().isEmpty()) {
 			throw new Exception("User Name cannot be blank");
 		}
-		if (null == password || password.trim().length() == 0)
-		{
+		if (null == password || password.trim().isEmpty()) {
 			throw new Exception("Password cannot be blank");
 		}
-		if (null == newPassword || newPassword.trim().length() == 0)
-		{
+		if (null == newPassword || newPassword.trim().isEmpty()) {
 			throw new Exception("New Password cannot be blank");
 		}
-		if (null == passwordConfirmation || passwordConfirmation.trim().length() == 0)
-		{
-			throw new Exception("Password Confimation cannot be blank");
+		if (null == passwordConfirmation || passwordConfirmation.trim().isEmpty()) {
+			throw new Exception("Password Confirmation cannot be blank");
 		}
-		if(!newPassword.equals(passwordConfirmation))
-		{
-			throw new Exception("Password and Password Confimation should match");
+		if(!newPassword.equals(passwordConfirmation)) {
+			throw new Exception("Password and Password Confirmation should match");
 		}
-		if(!validatePassword(passwordConfirmation))
-		{
-			throw new Exception("The password should have atleast 8 characters, a special character, a number and an upper case character");
+		if(!validatePassword(passwordConfirmation)) {
+			throw new Exception("The password should have at least 8 characters, a special character, a number and an upper case character");
 		}
 //		LockoutManager lockoutManager = LockoutManager.getInstance();
 //

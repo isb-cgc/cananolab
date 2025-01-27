@@ -92,7 +92,7 @@ public class SimpleAdvacedSampleCompositionBean {
 									.getCrossLinkDegree());
 
 				}
-				if (detailPage.contains("Biopolymer")) {
+				if (detailPage.contains("NanoBiopolymer")) {
 					properties = new HashMap<String, Object>();
 					properties.put("Name", nanoMaterialEntity
 							.getBiopolymer().getName());
@@ -201,7 +201,7 @@ public class SimpleAdvacedSampleCompositionBean {
 				files.put("isImage", file.isImage());
 //				files.put("ExternalURI", file.getDomainFile()
 //						.getUriExternal().toString());
-				files.put("ExternalURI", new Boolean(file.getDomainFile().getUriExternal()).toString());
+				files.put("ExternalURI", Boolean.valueOf(file.getDomainFile().getUriExternal()).toString());
 				files.put("Title", file.getDomainFile().getTitle());
 
 				files.put("URI", file.getDomainFile().getUri());
@@ -248,14 +248,14 @@ public class SimpleAdvacedSampleCompositionBean {
 			properties = new HashMap<String, Object>();
 			properties.put("isWithProperties",
 					funcBean.isWithProperties());
-			System.out.println("****** Is WIth Properties*****"
+			System.out.println("****** Is With Properties*****"
 					+ funcBean.isWithProperties());
 			try {
 				String detailPage = gov.nih.nci.cananolab.restful.sample.InitCompositionSetup
 						.getInstance().getDetailPage(
 								entityType,
 								"functionalizingentity");
-				System.out.println("**** Deatils Page *****"
+				System.out.println("**** Details Page *****"
 						+ detailPage);
 				function.put("detailsPage", detailPage);
 				if (detailPage.contains("SmallMolecule")) {
@@ -341,7 +341,7 @@ public class SimpleAdvacedSampleCompositionBean {
 				files.put("isImage", file.isImage());
 //				files.put("ExternalURI", file.getDomainFile()
 //						.getUriExternal().toString());
-				files.put("ExternalURI", new Boolean(file.getDomainFile().getUriExternal()).toString());
+				files.put("ExternalURI", Boolean.valueOf(file.getDomainFile().getUriExternal()).toString());
 				files.put("Title", file.getDomainFile()
 						.getTitle());
 

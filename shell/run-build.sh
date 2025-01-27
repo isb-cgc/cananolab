@@ -13,7 +13,7 @@ else
         exit 1
     fi
     export JAVA_HOME=/usr/lib/jvm/adoptopenjdk-8-hotspot-amd64/jre/
-    export JBOSS_HOME=/opt/wildfly-23.0.2.Final
+    export JBOSS_HOME=/opt/wildfly-25.0.1.Final
     export PATH=/opt/apache-maven/bin:/opt/apache-ant-1.9.9/bin:$PATH
 fi
 
@@ -67,6 +67,9 @@ sed -i "s/\[\[RELEASE_VERSION\]\]/${SEMVER}/g" ${HOME}/software/cananolab-client
 
 export CANANODIR=${HOME}/staged/caNanoLab
 cd ${HOME}/software/cananolab-client-new/
+
+# We need to enforce loading of angular-cli 15 with NodeJS 16 for now
+export NG_DISABLE_VERSION_CHECK=1
 
 if [ -n "$CI" ]; then
   # Build the Angular front end

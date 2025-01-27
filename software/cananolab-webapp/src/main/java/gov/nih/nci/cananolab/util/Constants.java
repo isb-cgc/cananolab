@@ -99,13 +99,13 @@ public class Constants {
 	public static final Map<String, Integer> FUNCTIONALIZING_ENTITY_SUBCLASS_ORDER_MAP = new HashMap<String, Integer>();
 	static {
 		FUNCTIONALIZING_ENTITY_SUBCLASS_ORDER_MAP.put(new String(
-				"OtherFunctionalizingEntity"), new Integer(2));
+				"OtherFunctionalizingEntity"), Integer.valueOf(2));
 		FUNCTIONALIZING_ENTITY_SUBCLASS_ORDER_MAP.put(new String("Biopolymer"),
-				new Integer(3));
+				Integer.valueOf(3));
 		FUNCTIONALIZING_ENTITY_SUBCLASS_ORDER_MAP.put(new String("Antibody"),
-				new Integer(4));
+				Integer.valueOf(4));
 		FUNCTIONALIZING_ENTITY_SUBCLASS_ORDER_MAP.put(new String(
-				"SmallMolecule"), new Integer(5));
+				"SmallMolecule"), Integer.valueOf(5));
 	}
 
 	/* image file name extension */

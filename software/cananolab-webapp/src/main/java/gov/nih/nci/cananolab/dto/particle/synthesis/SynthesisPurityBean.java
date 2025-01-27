@@ -408,7 +408,7 @@ public class SynthesisPurityBean
             for( int i = rows.size(); i < numberOfRows; i++)
             {
                 PurityRow row = new PurityRow();
-                row.setRowNumber(new Integer(i+1));
+                row.setRowNumber(Integer.valueOf(i+1));
                 newRows.add( row );
             }
         }
@@ -434,7 +434,7 @@ public class SynthesisPurityBean
                 {
                     PurityTableCell cell = new PurityTableCell();
                     cell.setRowNumber(row.getRowNumber());
-                    cell.setColumnOrder(new Integer(j+1));
+                    cell.setColumnOrder(Integer.valueOf(j+1));
                     PurityColumnHeader headerTemp = headerHashMap.get(j+1);
                     cell.setColumnId(headerTemp.getId());
                     cell.setDatumOrCondition(headerTemp.getColumnType());

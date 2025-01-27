@@ -310,7 +310,7 @@ public class SimpleSynthesisBean {
 
             files.put("fileId", file.getDomainFile().getId());
             files.put("isImage", file.isImage());
-            files.put("ExternalURI", new Boolean(file.getDomainFile().getUriExternal()).toString());
+            files.put("ExternalURI", Boolean.valueOf(file.getDomainFile().getUriExternal()).toString());
             files.put("Title", file.getDomainFile().getTitle());
 
             files.put("URI", file.getDomainFile().getUri());

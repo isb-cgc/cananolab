@@ -18,7 +18,15 @@ commands:
           command: |
             TIER=DEV
             if [[ -n ${CIRCLE_TAG} ]]; then
-              TIER=$(git ls-remote --heads origin | grep $CIRCLE_SHA1  | sed "s/.*\///" | awk '{print toupper($1)}')
+              if [[ ${CIRCLE_TAG} =~ [0-9\.\-]+-r$ ]]; then
+                TIER=PROD
+                CIRCLE_BRANCH=prod
+              elif [[ ${CIRCLE_TAG} =~ [0-9\.\-]+-rc$ ]]; then
+                TIER=TEST
+                CIRCLE_BRANCH=test
+              else
+                echo "Tier not identifiable via tag name ${CIRCLE_TAG}, defaulting to DEV." 
+              fi
             elif [[ ${CIRCLE_BRANCH} =~ (prod|uat|test).* ]]; then
               TIER=$(awk -F[\-_] '{print toupper($1)}' \<<< ${CIRCLE_BRANCH})
             fi
@@ -92,14 +100,14 @@ commands:
             echo "deb [signed-by=/usr/share/keyrings/cloud.google.gpg] http://packages.cloud.google.com/apt cloud-sdk main" | sudo tee -a /etc/apt/sources.list.d/google-cloud-sdk.list
             curl https://packages.cloud.google.com/apt/doc/apt-key.gpg | sudo apt-key --keyring /usr/share/keyrings/cloud.google.gpg add -
             sudo apt-get update -qq
-            sudo apt-get -y install google-cloud-sdk google-cloud-sdk-app-engine-java
+            sudo apt-get -y install google-cloud-sdk
 jobs:
   build_job:
     environment:
       TZ: "/usr/share/zoneinfo/America/Los_Angeles"
     working_directory: ~/cananolab
     docker:
-      - image: cimg/openjdk:8.0.302
+      - image: cimg/openjdk:17.0
       - image: cimg/mysql:5.7.36
         environment:
           MYSQL_ROOT_HOST: "%"
@@ -138,8 +146,7 @@ jobs:
             sudo -E /bin/bash ./shell/compareConfig.sh "gs://${DEPLOYMENT_BUCKET}/maven-settings.xml"
             sudo -E /bin/bash ./shell/compareConfig.sh "gs://${DEPLOYMENT_BUCKET}/standalone-full.xml"
             sudo -E /bin/bash ./shell/compareConfig.sh "gs://${DEPLOYMENT_BUCKET}/standalone.conf"
-            sudo -E /bin/bash ./shell/compareConfig.sh "gs://${DEPLOYMENT_BUCKET}/log4j2.xml"     
-
+            sudo -E /bin/bash ./shell/compareConfig.sh "gs://${DEPLOYMENT_BUCKET}/log4j2.xml"
       - run:
           name: Build
           command: |
@@ -161,7 +168,7 @@ jobs:
     environment:
       TZ: "/usr/share/zoneinfo/America/Los_Angeles"
     docker:
-      - image: cimg/openjdk:8.0.302
+      - image: cimg/openjdk:17.0
     working_directory: ~/cananolab
     steps:
       - restore_cache:
