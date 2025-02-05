@@ -119,20 +119,23 @@ public class ORMDAOImpl extends HibernateDaoSupport implements DAO
 	{
 		Response rsp = new Response();
 		log.info("Detached Criteria Query :"+obj.toString());
+		//System.out.println("Detached Criteria Query: " + obj.toString());
 
-		if(request.getIsCount() != null && request.getIsCount())
-		{
+		if(request.getIsCount() != null && request.getIsCount()) {
 			HibernateCallback callBack = getExecuteCountCriteriaHibernateCallback(obj);
 			Long rowCount = (Long)getHibernateTemplate().executeWithNativeSession(callBack);
-			log.debug("DetachedCriteria ORMDAOImpl ===== count = " + rowCount);
+
+			log.debug("ORMDAOImpl DetachedCriteria ===== count = " + rowCount);
+			//System.out.println("ORMDAOImpl DetachedCriteria ===== count = " + rowCount);
 
 			rsp.setRowCount(Integer.valueOf(rowCount.intValue()));
-		}
-		else
-		{
+		} else {
 			List rs = getHibernateTemplate().findByCriteria(obj, request.getFirstRow() == null?-1:request.getFirstRow(), resultCountPerQuery);
+			//System.out.println("ORMDAOImpl query rs: " + rs);
 			rsp.setRowCount(rs.size());
 			rsp.setResponse(rs);
+			//System.out.println("ORMDAOImpl query rsp.getRowCount(): " + rsp.getRowCount());
+			//System.out.println("ORMDAOImpl query rsp.getResponse(): " + rsp.getResponse());
 		}
 
 		return rsp;
@@ -142,6 +145,7 @@ public class ORMDAOImpl extends HibernateDaoSupport implements DAO
 	protected Response query(Request request, NestedCriteriaPath obj) throws Exception
 	{
 		log.info("Nested Criteria Query :"+obj.toString());
+		System.out.println("Nested Criteria Query: " + obj.toString());
 		NestedCriteria nc = Path2NestedCriteria.createNestedCriteria(obj.getpathString(), obj.getParameters(), request.getClassCache());
 		NestedCriteria2HQL converter = new NestedCriteria2HQL(nc, config, caseSensitive);
 		HQLCriteria hqlCriteria = converter.translate();
@@ -166,10 +170,14 @@ public class ORMDAOImpl extends HibernateDaoSupport implements DAO
 			if(countQ == null)
 				countQ = getCountQuery(hqlCriteria.getHqlString());
 			log.info("HQL Query :"+countQ);
+			System.out.println("HQL Query: " + countQ);
 			Response rsp = new Response();
 			HibernateCallback callBack = getExecuteCountQueryHibernateCallback(countQ,hqlCriteria.getParameters());
 			Integer rowCount = Integer.parseInt(getHibernateTemplate().execute(callBack)+"");
+
 			log.debug("HQL Query : count = " + rowCount);
+			System.out.println("HQL Query : count = " + rowCount);
+
 			rsp.setRowCount(rowCount);
 			return rsp;
 		}

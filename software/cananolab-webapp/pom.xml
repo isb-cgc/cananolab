@@ -105,7 +105,7 @@
 		<dependency>
 			<groupId>com.google.cloud</groupId>
 			<artifactId>google-cloud-storage</artifactId>
-			<version>2.3.0</version>
+			<version>2.36.1</version>
 		</dependency>
 		<dependency>
 			<groupId>commons-configuration</groupId>
@@ -132,6 +132,7 @@
 			<artifactId>poi</artifactId>
 			<version>[4.1.1,)</version>
 		</dependency>
+		<!--
 		<dependency>
 			<groupId>displaytag</groupId>
 			<artifactId>displaytag-export-poi</artifactId>
@@ -147,6 +148,7 @@
 				</exclusion>
 			</exclusions>
 		</dependency>
+		-->
 		<dependency>
 			<groupId>org.directwebremoting</groupId>
 			<artifactId>dwr</artifactId>
@@ -260,6 +262,7 @@
 			<version>3.15.1.Final</version>
 			<scope>provided</scope>
 		</dependency>
+
 <!--		<dependency>-->
 <!--			<groupId>org.jboss.resteasy</groupId>-->
 <!--			<artifactId>resteasy-client</artifactId>-->

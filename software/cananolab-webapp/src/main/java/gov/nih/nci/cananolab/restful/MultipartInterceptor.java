@@ -73,8 +73,8 @@ public class MultipartInterceptor implements ContainerRequestFilter {
         Method method = methodInvoker.getMethod();
 
         System.out.println("method.getName() " + method.getName());
-        System.out.println("containerRequestContext.getHeaders() " + containerRequestContext.getHeaders().toString());
-        System.out.println("containerRequestContext.getPropertyNames() " + containerRequestContext.getPropertyNames().toString());
+        // System.out.println("containerRequestContext.getHeaders() " + containerRequestContext.getHeaders().toString());
+        // System.out.println("containerRequestContext.getPropertyNames() " + containerRequestContext.getPropertyNames().toString());
 
         if (method.getName().equals("uploadFile")
                 && method.getDeclaringClass().getCanonicalName().equals("gov.nih.nci.cananolab.restful.CoreServices")) {

@@ -75,6 +75,9 @@ public class ApplicationServiceImpl implements ApplicationService {
 	public <E> List<E> query(DetachedCriteria detachedCriteria) throws ApplicationException {
 		CriteriaImpl crit = (CriteriaImpl)detachedCriteria.getExecutableCriteria(null);
 		String targetClassName = crit.getEntityOrClassName();
+
+		//System.out.println("query targetClassName: " + targetClassName);
+
 		return privateQuery(detachedCriteria, targetClassName);
 	}
 
@@ -269,8 +272,7 @@ public class ApplicationServiceImpl implements ApplicationService {
 	 * @return
 	 * @throws ApplicationException
 	 */
-	protected <E> List<E> privateQuery(Object criteria, String targetClassName) throws ApplicationException
-	{
+	protected <E> List<E> privateQuery(Object criteria, String targetClassName) throws ApplicationException {
 		
 		Request request = new Request(criteria);
 		request.setIsCount(Boolean.FALSE);
@@ -279,10 +281,11 @@ public class ApplicationServiceImpl implements ApplicationService {
 
 		Response response = query(request);
 		List results = (List) response.getResponse();
+		//System.out.println("privateQuery results: " + results);
 
 		List resultList = convertToListProxy(results,criteria,targetClassName);
 		log.debug("response.getRowCount(): " + response.getRowCount());
-		
+
 		return resultList;
 
 	}	
@@ -292,17 +295,22 @@ public class ApplicationServiceImpl implements ApplicationService {
 		ListProxy resultList = new ListProxy();
 		resultList.setAppService(this);
 
+		//System.out.println("convertToListProxy originalList: " + originalList);
+
 		// Set the value for ListProxy
 		if (originalList != null) {
 			resultList.addAll(originalList);
 		}
-		
+
 		resultList.setOriginalStart(0);
 		resultList.setMaxRecordsPerQuery(getMaxRecordsCount());
 		resultList.setOriginalCriteria(query);
 		resultList.setTargetClassName(classname);
 		resultList.calculateRealSize();
-		
+
+		//System.out.println("convertToListProxy resultList.getListChunk(): " + resultList.getListChunk());
+		//System.out.println("convertToListProxy resultList: " + resultList);
+
 		return resultList;
 	}
 	
