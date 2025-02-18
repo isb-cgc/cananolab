@@ -16,7 +16,7 @@ import gov.nih.nci.cananolab.util.StringUtils;
 import java.io.UnsupportedEncodingException;
 import java.util.Arrays;
 
-import org.displaytag.decorator.TableDecorator;
+//import org.displaytag.decorator.TableDecorator;
 
 /**
  * This decorator is used to for decorate different properties of a publication
@@ -25,6 +25,7 @@ import org.displaytag.decorator.TableDecorator;
  * @author tanq, pansu
  *
  */
+/*
 public class PublicationDecorator extends TableDecorator {
 
 	public SortableName getPublicationType()
@@ -52,6 +53,7 @@ public class PublicationDecorator extends TableDecorator {
                 .escapeXmlButPreserveLineBreaks(researchArea));
 	}*/
 
+/*
 	public String getDetailURL() {
 		PublicationBean publication = (PublicationBean) getCurrentRowObject();
 		if (publication.getUserUpdatable()) {
@@ -111,4 +113,4 @@ public class PublicationDecorator extends TableDecorator {
 		sb.append("</table></div>");
 		return sb.toString();
 	}*/
-}
+//}

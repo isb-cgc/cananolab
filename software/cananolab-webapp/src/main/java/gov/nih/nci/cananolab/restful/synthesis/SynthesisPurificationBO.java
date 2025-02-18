@@ -729,7 +729,7 @@ public class SynthesisPurificationBO extends BaseAnnotationBO {
 //            }
 
             //refresh synthesispurification bean
-            Long sampleId = new Long(editBean.getSampleId());
+            Long sampleId = Long.valueOf(editBean.getSampleId());
             SynthesisPurificationBean purificationBean = synthesisService.findSynthesisPurificationById(sampleId,
                     editBean.getId());
             SimpleSynthesisPurificationBean simpleSynthesisPurificationBean =
@@ -769,9 +769,9 @@ public class SynthesisPurificationBO extends BaseAnnotationBO {
             entityBean.setUpDomainEntity(SpringSecurityUtil.getLoggedInUserName());
 
             String sampleId = editBean.getSampleId();
-            synthesisService.deleteSynthesisPurification(new Long(sampleId), entityBean.getDomainEntity());
+            synthesisService.deleteSynthesisPurification(Long.valueOf(sampleId), entityBean.getDomainEntity());
 
-            SynthesisBean synthesisBean = synthesisService.findSynthesisBySampleId(new Long(sampleId));
+            SynthesisBean synthesisBean = synthesisService.findSynthesisBySampleId(Long.valueOf(sampleId));
             SimpleSynthesisBean simpleSynthesisBean = new SimpleSynthesisBean();
             simpleSynthesisBean.transferSynthesisForSummaryView(synthesisBean);
 
@@ -847,7 +847,7 @@ public class SynthesisPurificationBO extends BaseAnnotationBO {
             if (editBean.getId() != null) {
                 //Only need to delete from Database if it has been saved already
 
-                SynthesisPurity purity = synthesisService.getHelper().getPurityById(new Long(editBean.getId()));
+                SynthesisPurity purity = synthesisService.getHelper().getPurityById(Long.valueOf(editBean.getId()));
                 SynthesisPurification purification = purity.getSynthesisPurification();
                 Long purificationId = purification.getId();
                 purification = synthesisService.getHelper().findSynthesisPurificationById(purificationId);
@@ -891,7 +891,7 @@ public class SynthesisPurificationBO extends BaseAnnotationBO {
        List<String> msgs = new ArrayList<String>();
         try {
             if (editBean.getId() != null) {
-                Set<PurificationConfig> config = synthesisService.getHelper().findConfigByPurificationId(new Long(editBean.getId()));
+                Set<PurificationConfig> config = synthesisService.getHelper().findConfigByPurificationId(Long.valueOf(editBean.getId()));
             }
         } catch (SynthesisException s){
             throw s;
@@ -1074,8 +1074,8 @@ public class SynthesisPurificationBO extends BaseAnnotationBO {
 //        InitSampleSetup.getInstance().getOtherSampleNames(httpRequest, sampleId, sampleService);
 
         try {
-            SynthesisPurificationBean synBean = synthesisService.findSynthesisPurificationById(new Long(sampleId),
-                    new Long(dataId));
+            SynthesisPurificationBean synBean = synthesisService.findSynthesisPurificationById(Long.valueOf(sampleId),
+                    Long.valueOf(dataId));
 //            assignColumnHeadersForPurification(synBean);
             form.setSynthesisPurificationBean(synBean);
             this.setDataAndConditionLookup(httpRequest, sampleId);
@@ -1453,7 +1453,7 @@ public class SynthesisPurificationBO extends BaseAnnotationBO {
 
 
         SynthesisPurificationBean synBean = synthesisService.findSynthesisPurificationById(
-                new Long(dataId));
+                Long.valueOf(dataId));
         Synthesis synthesis = synBean.getDomainEntity().getSynthesis();
         Long sampleId = synthesis.getSample().getId();
 

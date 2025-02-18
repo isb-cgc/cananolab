@@ -98,8 +98,7 @@ public class SearchSampleBO extends AbstractDispatchBO {
 
 		// load sampleBean details 25 at a time for displaying
 		// pass in page and size
-		List<SampleBean> sampleBeansPerPage = getSamplesPerPage(sampleBeans,
-				displayPage, request);
+		List<SampleBean> sampleBeansPerPage = getSamplesPerPage(sampleBeans, displayPage, request);
 		// in case any samples has been filtered during loading of sample
 		// information. e.g. POC is missing
 		
@@ -118,7 +117,7 @@ public class SearchSampleBO extends AbstractDispatchBO {
 
 		// set in sessionScope so user can go back to the result from the sample
 		// summary page
-		request.getSession().setAttribute("resultSize", new Integer(sampleBeans.size()));
+		request.getSession().setAttribute("resultSize", Integer.valueOf(sampleBeans.size()));
 		
 		//return mapping.findForward("success");
 		//UserBean user = (UserBean) (request.getSession().getAttribute("user"));

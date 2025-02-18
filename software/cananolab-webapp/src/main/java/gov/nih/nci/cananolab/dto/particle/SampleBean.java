@@ -89,7 +89,7 @@ public class SampleBean extends SecuredDataBean {
 	}
 
 	public SampleBean(String sampleId) {
-		domain.setId(new Long(sampleId));
+		domain.setId(Long.valueOf(sampleId));
 	}
 
 	public SampleBean(Sample sample) {
@@ -510,9 +510,8 @@ public class SampleBean extends SecuredDataBean {
 				}
 			}
 		}
-		Double caNanoLabScore = new Double(size * 100
-				/ Constants.CANANOLAB_AVAILABLE_ENTITY);
-		Double minCharScore = new Double(minCharSize * 100 / totalMinCharSize);
+		Double caNanoLabScore = Double.valueOf(size * 100 / Constants.CANANOLAB_AVAILABLE_ENTITY);
+		Double minCharScore = Double.valueOf(minCharSize * 100 / totalMinCharSize);
 
 		this.setDataAvailabilityMetricsScore("caNanoLab: "
 				+ caNanoLabScore.intValue() + "%; MINChar: "

@@ -20,12 +20,7 @@ import java.lang.reflect.Method;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Enumeration;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 import java.util.jar.JarInputStream;
@@ -209,7 +204,13 @@ public class ClassUtils {
 	 */
 	public static String getShortClassName(String className) {
 		String[] strs = className.split("\\.");
-		return strs[strs.length - 1];
+		String shortClassName = strs[strs.length - 1];
+
+		if (Objects.equals(shortClassName, "NanoBiopolymer")) {
+			shortClassName = "Biopolymer";
+		}
+
+		return shortClassName;
 	}
 
 
@@ -540,13 +541,18 @@ public class ClassUtils {
 	 * @return
 	 */
 	public static String getDisplayName(String shortClassName) {
+		System.out.println("in getDisplayName() in ClassUtils.java: " + shortClassName);
 		String displayName = shortClassName.replaceAll("([A-Z])", " $1").trim()
 				.toLowerCase();
 		// replace invivo with in vivo, invitro with in vitro, physico chemical
 		// with physico-chemical
 		displayName = displayName.replaceAll("invivo", "in vivo")
 				.replaceAll("invitro", "in vitro")
-				.replaceAll("physico ", "physico-");
+				.replaceAll("physico ", "physico-")
+				.replaceAll("nano biopolymer", "biopolymer");
+
+		System.out.println("getDisplayName() in ClassUtils.java: " + displayName);
+
 		return displayName;
 	}
 
@@ -558,10 +564,12 @@ public class ClassUtils {
 	public static String getShortClassNameFromDisplayName(String displayName) {
 		// replace physico-chemical with physico chemical, in vivo with invivo,
 		// In vitro with invitro
+		System.out.println("in getShortClassNameFromDisplayName() in ClassUtils.java:  " + displayName);
 		displayName = displayName
 				.replaceAll("physico-chemical", "physico chemical")
 				.replaceAll("in vivo", "invivo")
-				.replaceAll("in vitro", "invitro");
+				.replaceAll("in vitro", "invitro")
+				.replaceAll("biopolymer", "nano biopolymer");
 		String[] words = displayName.toLowerCase().split(" ");
 		List<String> newWords = new ArrayList<String>();
 		for (String word : words) {
@@ -569,7 +577,9 @@ public class ClassUtils {
 					+ word.substring(1);
 			newWords.add(newWord);
 		}
-		return StringUtils.join(newWords, "");
+		String newWordsStr = StringUtils.join(newWords, "");
+		System.out.println("getShortClassNameFromDisplayName() in ClassUtils.java: " + newWordsStr);
+		return newWordsStr;
 	}
 
 	/**

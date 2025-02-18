@@ -89,7 +89,7 @@ public class SearchPublicationBO extends BaseAnnotationBO
 		// get the total size of collection , required for display tag to
 		// get the pagination to work
 		//set in sessionScope so user can go back to the result from the sample summary page
-		request.getSession().setAttribute("resultSize", new Integer(publicationBeans.size()));
+		request.getSession().setAttribute("resultSize", Integer.valueOf(publicationBeans.size()));
 	//	return mapping.findForward("success");
         return transfertoSimplePubBeans(pubBeansPerPage);
 	}

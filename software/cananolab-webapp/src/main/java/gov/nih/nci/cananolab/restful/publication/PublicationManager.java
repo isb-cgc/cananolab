@@ -92,7 +92,7 @@ public class PublicationManager
 	{
 		String publicationId = null;
 		try {
-			Publication publication = publicationService.getPublicationServiceHelper().findPublicationByKey("pubMedId", new Long(pubmedID));
+			Publication publication = publicationService.getPublicationServiceHelper().findPublicationByKey("pubMedId", Long.valueOf(pubmedID));
 			if (publication != null) {
 				publicationId = publication.getId().toString();
 			}

@@ -200,8 +200,12 @@ public class SampleServiceLocalImpl extends BaseServiceLocalImpl implements Samp
 			Boolean newPOC = true;
 			Boolean newOrg = true;
 			CaNanoLabApplicationService appService = (CaNanoLabApplicationService) ApplicationServiceProvider.getApplicationService();
+			System.out.println("SampleServiceLocalImpl savePointOfContact pocBean.getDomain(): " + pocBean.getDomain());
+			System.out.println();
 			PointOfContact domainPOC = pocBean.getDomain();
+			System.out.println("Point A domainPOC");
 			Organization domainOrg = domainPOC.getOrganization();
+			System.out.println("domainOrg: " + domainOrg);
 			// get existing organization from database and reuse ID,
 			// created by and created date
 			// address information will be updated
@@ -233,7 +237,9 @@ public class SampleServiceLocalImpl extends BaseServiceLocalImpl implements Samp
 				}
 			} else {
 				// check if organization is changed
+				System.out.println("domainPOC.getId().toString(): " + domainPOC.getId().toString());
 				dbPointOfContact = sampleServiceHelper.findPointOfContactById(domainPOC.getId().toString());
+				System.out.println("dbPointOfContact: " + dbPointOfContact);
 				Organization dbOrg = dbPointOfContact.getOrganization();
 				// if organization information is changed, create a new POC
 				if (!dbOrg.getName().equals(domainOrg.getName())) {
@@ -429,7 +435,7 @@ public class SampleServiceLocalImpl extends BaseServiceLocalImpl implements Samp
 		CaNanoLabApplicationService appService = (CaNanoLabApplicationService) ApplicationServiceProvider.getApplicationService();
 		DetachedCriteria crit = DetachedCriteria.forClass(SampleComposition.class);
 		crit.createAlias("sample", "sample");
-		crit.add(Property.forName("sample.id").eq(new Long(sampleId)));
+		crit.add(Property.forName("sample.id").eq(Long.valueOf(sampleId)));
 		crit.setFetchMode("nanomaterialEntityCollection", FetchMode.JOIN);
 		crit.setFetchMode("nanomaterialEntityCollection.fileCollection", FetchMode.JOIN);
 		crit.setFetchMode("nanomaterialEntityCollection.fileCollection.keywordCollection", FetchMode.JOIN);
@@ -466,7 +472,7 @@ public class SampleServiceLocalImpl extends BaseServiceLocalImpl implements Samp
 		CaNanoLabApplicationService appService = (CaNanoLabApplicationService) ApplicationServiceProvider.getApplicationService();
 		DetachedCriteria crit = DetachedCriteria.forClass(Characterization.class);
 		crit.createAlias("sample", "sample");
-		crit.add(Property.forName("sample.id").eq(new Long(sampleId)));
+		crit.add(Property.forName("sample.id").eq(Long.valueOf(sampleId)));
 		// fully load characterization
 		crit.setFetchMode("pointOfContact", FetchMode.JOIN);
 		crit.setFetchMode("pointOfContact.organization", FetchMode.JOIN);
@@ -597,7 +603,7 @@ public class SampleServiceLocalImpl extends BaseServiceLocalImpl implements Samp
 	{
 		try {
 			CaNanoLabApplicationService appService = (CaNanoLabApplicationService) ApplicationServiceProvider.getApplicationService();
-			DetachedCriteria crit = DetachedCriteria.forClass(Sample.class).add(Property.forName("id").eq(new Long(sampleId)));
+			DetachedCriteria crit = DetachedCriteria.forClass(Sample.class).add(Property.forName("id").eq(Long.valueOf(sampleId)));
 			crit.setFetchMode("primaryPointOfContact", FetchMode.JOIN);
 			crit.setFetchMode("primaryPointOfContact.organization", FetchMode.JOIN);
 			crit.setFetchMode("otherPointOfContactCollection", FetchMode.JOIN);

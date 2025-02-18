@@ -204,7 +204,7 @@ public class ProtocolServiceHelper
 		Protocol protocol = null;
 
 		CaNanoLabApplicationService appService = (CaNanoLabApplicationService) ApplicationServiceProvider.getApplicationService();
-		DetachedCriteria crit = DetachedCriteria.forClass(Protocol.class).add(Property.forName("id").eq(new Long(protocolId)));
+		DetachedCriteria crit = DetachedCriteria.forClass(Protocol.class).add(Property.forName("id").eq(Long.valueOf(protocolId)));
 		crit.setFetchMode("file", FetchMode.JOIN);
 		crit.setFetchMode("file.keywordCollection", FetchMode.JOIN);
 		List result = appService.query(crit);
@@ -253,6 +253,7 @@ public class ProtocolServiceHelper
 				protocolIds.add(protocolId);
 			} else {
 				logger.debug("User doesn't have access to protocol of ID: " + protocolId);
+				System.out.println("User doesn't have access to protocol of ID: " + protocolId);
 			}
 		}
 		return protocolIds;

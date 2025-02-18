@@ -13,7 +13,7 @@ import gov.nih.nci.cananolab.util.StringUtils;
 
 import java.io.UnsupportedEncodingException;
 
-import org.displaytag.decorator.TableDecorator;
+//import org.displaytag.decorator.TableDecorator;
 
 /**
  * This decorator is used to for decorate different properties of a protocol
@@ -22,6 +22,8 @@ import org.displaytag.decorator.TableDecorator;
  * @author pansu
  * 
  */
+
+/*
 public class ProtocolDecorator extends TableDecorator {
 	public String getDetailURL() {
 		ProtocolBean protocol = (ProtocolBean) getCurrentRowObject();
@@ -79,3 +81,4 @@ public class ProtocolDecorator extends TableDecorator {
 		return sb.toString();
 	}
 }
+ */

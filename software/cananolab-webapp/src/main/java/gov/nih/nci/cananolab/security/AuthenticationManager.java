@@ -169,7 +169,7 @@ public interface AuthenticationManager {
 	 */
 	public boolean login(String userName, String password) throws Exception;
 
-	/**
+	/*
 	 * This method is primarily provided to be used by the <code>CSM - caGrid Integration Module</code> to authenticate the 
 	 * user using the credentials and once authenticated it retrieve all the attributes for that user from the <code>Credential Provider</code>.
 	 * In order for the proper execution of this method additional parameters need to be configured in the JAAS login configuration file for the corresponding
@@ -195,10 +195,11 @@ public interface AuthenticationManager {
 	 * 			should contain all the valid {@link Principal} for the grid component to be able to generate a <code>SAML</code> from it.
 	 * @throws CSFirstTimeLoginExceptionDel 
 	 */
-	public Subject authenticate(String userName, String password) throws Exception;
+
+	//public Subject authenticate(String userName, String password) throws Exception;
 
 	
-	/**
+	/*
 	 * This method is primarily provided to authenticate the user using the X509 digitial certificate ({@link X509Certificate}) as credentials and once authenticated it retrieves all 
 	 * {@link Principal} from validated {@link X509Certificate} and adds them to the users {@link Subject}.
 	 * 
@@ -225,7 +226,7 @@ public interface AuthenticationManager {
 	 * 			should contain all the valid {@link Principal} for validating the certificate against the keystore.
 	 * @throws CSFirstTimeLoginExceptionDel 
 	 */
-	public boolean authenticate(Subject subject) throws Exception;
+	//public boolean authenticate(Subject subject) throws Exception;
 
 	
 	/**
