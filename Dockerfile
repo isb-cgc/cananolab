@@ -16,7 +16,7 @@
 #
 ###
 
-FROM marketplace.gcr.io/google/debian10
+FROM marketplace.gcr.io/google/debian11
 
 RUN apt-get update
 ENV DEBIAN_FRONTEND=noninteractive
