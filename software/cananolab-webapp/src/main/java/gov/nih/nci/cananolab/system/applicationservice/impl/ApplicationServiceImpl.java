@@ -76,7 +76,7 @@ public class ApplicationServiceImpl implements ApplicationService {
 		CriteriaImpl crit = (CriteriaImpl)detachedCriteria.getExecutableCriteria(null);
 		String targetClassName = crit.getEntityOrClassName();
 
-		System.out.println("query targetClassName: " + targetClassName);
+		//System.out.println("query targetClassName: " + targetClassName);
 
 		return privateQuery(detachedCriteria, targetClassName);
 	}
