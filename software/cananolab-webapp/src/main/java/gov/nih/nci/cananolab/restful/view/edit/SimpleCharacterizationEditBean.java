@@ -161,6 +161,19 @@ public class SimpleCharacterizationEditBean
 			throws Exception {
 		if (this.property == null) return;
 
+		// LAW 25-04-09: fix for issue 488
+        switch (this.name) {
+            case "physical state" -> ((SimplePhysicalState) property).transferToPropertyBean(charBean);
+            case "shape" -> ((SimpleShape) property).transferToPropertyBean(charBean);
+            case "solubility" -> ((SimpleSolubility) property).transferToPropertyBean(charBean);
+            case "surface" -> ((SimpleSurface) property).transferToPropertyBean(charBean);
+            case "cytotoxicity" -> ((SimpleCytotoxicity) property).transferToPropertyBean(charBean);
+            case "enzyme induction" -> ((SimpleEnzymeInduction) property).transferToPropertyBean(charBean);
+            case "transfection" -> ((SimpleTransfection) property).transferToPropertyBean(charBean);
+            case "targeting" -> ((SimpleTargeting) property).transferToPropertyBean(charBean);
+        }
+
+		/*
 		if (this.name.contains("physical"))
 			((SimplePhysicalState)property).transferToPropertyBean(charBean);
 		else if (name.contains("shape"))
@@ -177,7 +190,7 @@ public class SimpleCharacterizationEditBean
 			((SimpleTransfection)property).transferToPropertyBean(charBean);
 		else if (name.contains("targeting"))
 			((SimpleTargeting)property).transferToPropertyBean(charBean);
-
+		*/
 	}
 
 	protected void transferProperty(HttpServletRequest request, CharacterizationBean charBean) 
