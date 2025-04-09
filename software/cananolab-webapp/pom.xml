@@ -5,8 +5,8 @@
 	details. L -->
 
 <project
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd"
-	xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+		xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd"
+		xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>gov.nih.nci.cananolab</groupId>
 	<artifactId>cananolab-web</artifactId>
@@ -32,28 +32,14 @@
 		</pluginRepository>
 	</pluginRepositories>
 	<properties>
-		<!-- use this version for Spring 6+ -->
-		<!--<hibernate.version>5.6.15.Final</hibernate.version>-->
-		<hibernate.version>5.4.33.Final</hibernate.version>
+		<hibernate.version>5.6.15.Final</hibernate.version>
+		<!--<hibernate.version>6.1.5.Final</hibernate.version>-->
 		<spring.version>5.3.39</spring.version>
-		<spring.security.version>5.8.15</spring.security.version>
+		<spring.security.version>5.8.16</spring.security.version>
 		<base.dir>/software/cananolab-webapp</base.dir>
 		<compilerVersion>17</compilerVersion>
 		<maven.compiler.release>17</maven.compiler.release>
 	</properties>
-	<!--
-	<dependencyManagement>
-		<dependencies>
-			<dependency>
-				<groupId>com.google.cloud</groupId>
-				<artifactId>libraries-bom</artifactId>
-				<version>26.50.0</version>
-				<type>pom</type>
-				<scope>import</scope>
-			</dependency>
-		</dependencies>
-	</dependencyManagement>
-	-->
 	<dependencies>
 		<dependency>
 			<groupId>javax.servlet</groupId>
@@ -236,8 +222,14 @@
 			<artifactId>hibernate-core</artifactId>
 			<version>${hibernate.version}</version>
 		</dependency>
+		<dependency>
+			<groupId>org.hibernate</groupId>
+			<artifactId>hibernate-entitymanager</artifactId>
+			<version>${hibernate.version}</version>
+		</dependency>
+
 		<!-- https://mvnrepository.com/artifact/org.hibernate/hibernate-core-jakarta -->
-		<!-- Add this for spring 6
+		<!--
 		<dependency>
 			<groupId>org.hibernate</groupId>
 			<artifactId>hibernate-core-jakarta</artifactId>
@@ -248,6 +240,8 @@
 		<dependency>
 			<groupId>org.hibernate</groupId>
 			<artifactId>hibernate-ehcache</artifactId>
+			<!-- Needed for Hibernate 6+ -->
+			<!--<artifactId>hibernate-jcache</artifactId>-->
 			<version>${hibernate.version}</version>
 		</dependency>
 		<dependency>
@@ -263,21 +257,21 @@
 			<scope>provided</scope>
 		</dependency>
 
-<!--		<dependency>-->
-<!--			<groupId>org.jboss.resteasy</groupId>-->
-<!--			<artifactId>resteasy-client</artifactId>-->
-<!--			<version>4.7.3.Final</version>-->
-<!--		</dependency>-->
+		<!--		<dependency>-->
+		<!--			<groupId>org.jboss.resteasy</groupId>-->
+		<!--			<artifactId>resteasy-client</artifactId>-->
+		<!--			<version>4.7.3.Final</version>-->
+		<!--		</dependency>-->
 		<dependency>
 			<groupId>org.jboss.resteasy</groupId>
 			<artifactId>resteasy-jackson2-provider</artifactId>
-<!--			<version>4.7.2.Final</version> -->
+			<!--			<version>4.7.2.Final</version> -->
 			<version>3.15.1.Final</version>
 		</dependency>
 		<dependency>
 			<groupId>org.jboss.resteasy</groupId>
 			<artifactId>resteasy-multipart-provider</artifactId>
-<!--			<version>4.7.2.Final</version> -->
+			<!--			<version>4.7.2.Final</version> -->
 			<version>3.15.1.Final</version>
 		</dependency>
 		<dependency>
@@ -316,17 +310,17 @@
 			<artifactId>javax.annotation-api</artifactId>
 			<version>1.2</version>
 		</dependency>
-        <dependency>
-            <groupId>com.google.code.gson</groupId>
-            <artifactId>gson</artifactId>
-            <version>[2.8.9,)</version>
-        </dependency>
-        <dependency>
-            <groupId>org.json</groupId>
-            <artifactId>json</artifactId>
-            <version>[20230227,)</version>
-        </dependency>
-  		<dependency>
+		<dependency>
+			<groupId>com.google.code.gson</groupId>
+			<artifactId>gson</artifactId>
+			<version>[2.8.9,)</version>
+		</dependency>
+		<dependency>
+			<groupId>org.json</groupId>
+			<artifactId>json</artifactId>
+			<version>[20230227,)</version>
+		</dependency>
+		<dependency>
 			<groupId>antlr</groupId>
 			<artifactId>antlr</artifactId>
 			<version>2.7.7</version>
@@ -397,11 +391,11 @@
 			<version>3.25.0-GA</version>
 		</dependency>
 
-<!--	<dependency>-->
-<!--		<groupId>org.jdom</groupId>-->
-<!--		<artifactId>jdom</artifactId>-->
-<!--		<version>1.1</version>-->
-<!--	</dependency>-->
+		<!--	<dependency>-->
+		<!--		<groupId>org.jdom</groupId>-->
+		<!--		<artifactId>jdom</artifactId>-->
+		<!--		<version>1.1</version>-->
+		<!--	</dependency>-->
 
 		<dependency>
 			<groupId>org.jdom</groupId>

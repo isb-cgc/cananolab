@@ -176,6 +176,15 @@ L-->
 			</fileset>
 		</copy>
 
+		<!-- Needed for using JPA persistence API, if we end up implementing that -->
+		<!--
+		<copy todir="${build.dir}/WEB-INF/classes/META-INF">
+			<fileset dir="${src-resources}/META-INF">
+				<include name="persistence.xml"/>
+			</fileset>
+		</copy>
+		-->
+
 		<!-- copy web files and lib files -->
 		<copy todir="${build.dir}">
 			<fileset dir="${webroot.dir}">
