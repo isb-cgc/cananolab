@@ -231,7 +231,7 @@ public class FunctionBean {
 			buffer.append(")");
 		}
 		String bufferStr = buffer.toString();
-		System.out.println("getDisplayName() in FunctionBean.java: " + bufferStr);
+		//System.out.println("getDisplayName() in FunctionBean.java: " + bufferStr);
 		return bufferStr;
 	}
 
