@@ -541,7 +541,7 @@ public class ClassUtils {
 	 * @return
 	 */
 	public static String getDisplayName(String shortClassName) {
-		System.out.println("in getDisplayName() in ClassUtils.java: " + shortClassName);
+		//System.out.println("in getDisplayName() in ClassUtils.java: " + shortClassName);
 		String displayName = shortClassName.replaceAll("([A-Z])", " $1").trim()
 				.toLowerCase();
 		// replace invivo with in vivo, invitro with in vitro, physico chemical
@@ -551,7 +551,7 @@ public class ClassUtils {
 				.replaceAll("physico ", "physico-")
 				.replaceAll("nano biopolymer", "biopolymer");
 
-		System.out.println("getDisplayName() in ClassUtils.java: " + displayName);
+		//System.out.println("getDisplayName() in ClassUtils.java: " + displayName);
 
 		return displayName;
 	}
