@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<persistence version="2.2"
+                 xmlns="http://xmlns.jcp.org/xml/ns/persistence"
+                 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                 xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/persistence http://xmlns.jcp.org/xml/ns/persistence/persistence_2_2.xsd">
+    <persistence-unit name="canano-persistence-unit">
+        <provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
+        <!--
+        <mapping-file>gov/nih/nci/cananolab/domain/common/Finding.hbm.xml</mapping-file>
+        <mapping-file>gov/nih/nci/cananolab/domain/common/Keyword.hbm.xml</mapping-file>
+        <mapping-file>gov/nih/nci/cananolab/domain/common/Instrument.hbm.xml</mapping-file>
+        <mapping-file>gov/nih/nci/cananolab/domain/common/Condition.hbm.xml</mapping-file>
+        <mapping-file>gov/nih/nci/cananolab/domain/common/Technique.hbm.xml</mapping-file>
+        <mapping-file>gov/nih/nci/cananolab/domain/common/Datum.hbm.xml</mapping-file>
+        <mapping-file>gov/nih/nci/cananolab/domain/common/Author.hbm.xml</mapping-file>
+        <mapping-file>gov/nih/nci/cananolab/domain/common/Organization.hbm.xml</mapping-file>
+        <mapping-file>gov/nih/nci/cananolab/domain/common/CommonLookup.hbm.xml</mapping-file>
+        <mapping-file>gov/nih/nci/cananolab/domain/common/PointOfContact.hbm.xml</mapping-file>
+        <mapping-file>gov/nih/nci/cananolab/domain/common/Protocol.hbm.xml</mapping-file>
+        <mapping-file>gov/nih/nci/cananolab/domain/common/ExperimentConfig.hbm.xml</mapping-file>
+        <mapping-file>gov/nih/nci/cananolab/domain/common/File.hbm.xml</mapping-file>
+        <mapping-file>gov/nih/nci/cananolab/domain/function/Target.hbm.xml</mapping-file>
+        <mapping-file>gov/nih/nci/cananolab/domain/particle/AssociatedElement.hbm.xml</mapping-file>
+        <mapping-file>gov/nih/nci/cananolab/domain/particle/Sample.hbm.xml</mapping-file>
+        <mapping-file>gov/nih/nci/cananolab/domain/particle/SampleComposition.hbm.xml</mapping-file>
+        <mapping-file>gov/nih/nci/cananolab/domain/particle/ActivationMethod.hbm.xml</mapping-file>
+        <mapping-file>gov/nih/nci/cananolab/domain/particle/Characterization.hbm.xml</mapping-file>
+        <mapping-file>gov/nih/nci/cananolab/domain/particle/NanomaterialEntity.hbm.xml</mapping-file>
+        <mapping-file>gov/nih/nci/cananolab/domain/particle/Function.hbm.xml</mapping-file>
+        <mapping-file>gov/nih/nci/cananolab/domain/particle/ChemicalAssociation.hbm.xml</mapping-file>
+        <mapping-file>gov/nih/nci/cananolab/domain/common/Favorite.hbm.xml</mapping-file>
+        <mapping-file>gov/nih/nci/cananolab/domain/common/PurificationConfig.hbm.xml</mapping-file>
+        <mapping-file>gov/nih/nci/cananolab/domain/particle/SfeInherentFunction.hbm.xml</mapping-file>
+        <mapping-file>gov/nih/nci/cananolab/domain/particle/SmeInherentFunction.hbm.xml</mapping-file>
+        <mapping-file>gov/nih/nci/cananolab/domain/particle/Synthesis.hbm.xml</mapping-file>
+        <mapping-file>gov/nih/nci/cananolab/domain/particle/SynthesisFunctionalization.hbm.xml</mapping-file>
+        <mapping-file>gov/nih/nci/cananolab/domain/particle/SynthesisFunctionalizationElement.hbm.xml</mapping-file>
+        <mapping-file>gov/nih/nci/cananolab/domain/particle/SynthesisMaterial.hbm.xml</mapping-file>
+        <mapping-file>gov/nih/nci/cananolab/domain/particle/SynthesisMaterialElement.hbm.xml</mapping-file>
+        <mapping-file>gov/nih/nci/cananolab/domain/particle/SynthesisPurification.hbm.xml</mapping-file>
+        <mapping-file>gov/nih/nci/cananolab/domain/common/Supplier.hbm.xml</mapping-file>
+        <mapping-file>gov/nih/nci/cananolab/domain/particle/SynthesisPurity.hbm.xml</mapping-file>
+        <mapping-file>gov/nih/nci/cananolab/domain/common/PurityDatumCondition.hbm.xml</mapping-file>
+        <mapping-file>gov/nih/nci/cananolab/domain/common/PurityColumnHeader.hbm.xml</mapping-file>
+        -->
+        <!--<class>gov.nih.nci.cananolab.domain.common.Protocol</class>-->
+        <properties>
+            <property name="hibernate.ejb.cfgfile" value="hibernate.cfg.xml"/>
+            <property name="hibernate.dialect" value="org.hibernate.dialect.MySQLDialect" />
+        </properties>
+    </persistence-unit>
+</persistence>
