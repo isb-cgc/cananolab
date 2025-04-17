@@ -154,6 +154,8 @@ public class CharacterizationServiceLocalImpl extends BaseServiceLocalImpl imple
 		}
 		try {
 			CaNanoLabApplicationService appService = (CaNanoLabApplicationService) ApplicationServiceProvider.getApplicationService();
+			// LAW 25-04-17: fix for issue 524 and other characterization deletion issues
+ 			chara.setFindingCollection(null);
 			appService.delete(chara);
 		} catch (Exception e) {
 			String err = "Error deleting characterization " + chara.getId();
@@ -228,6 +230,7 @@ public class CharacterizationServiceLocalImpl extends BaseServiceLocalImpl imple
 		}
 		try {
 			CaNanoLabApplicationService appService = (CaNanoLabApplicationService) ApplicationServiceProvider.getApplicationService();
+			finding.setFileCollection(null);
 			appService.delete(finding);
 		} catch (Exception e) {
 			String err = "Error deleting finding " + finding.getId();
