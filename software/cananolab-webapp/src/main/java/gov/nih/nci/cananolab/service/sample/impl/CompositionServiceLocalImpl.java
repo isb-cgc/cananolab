@@ -38,10 +38,7 @@ import gov.nih.nci.cananolab.system.applicationservice.ApplicationException;
 import gov.nih.nci.cananolab.system.applicationservice.CaNanoLabApplicationService;
 import gov.nih.nci.cananolab.system.applicationservice.client.ApplicationServiceProvider;
 
-import java.util.Calendar;
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.List;
+import java.util.*;
 
 import gov.nih.nci.cananolab.util.Constants;
 
@@ -720,13 +717,19 @@ public class CompositionServiceLocalImpl extends BaseServiceLocalImpl implements
 				deleteCompositionFile(comp, file);
 			}
 		}
+
+		// LAW 25-04-17 fix for sample deletion issues
+
+		Set<ChemicalAssociation> chemicalAssociationCollection = comp.getChemicalAssociationCollection();
+
+		comp.setChemicalAssociationCollection(null);
+
 		// delete chemical association
-		if (comp.getChemicalAssociationCollection() != null) {
-			for (ChemicalAssociation assoc : comp.getChemicalAssociationCollection()) {
+		if (chemicalAssociationCollection != null) {
+			for (ChemicalAssociation assoc : chemicalAssociationCollection) {
 				deleteChemicalAssociation(assoc);
 			}
 		}
-		comp.setChemicalAssociationCollection(null);
 
 		// delete nanomaterial entities
 		if (comp.getNanomaterialEntityCollection() != null) {

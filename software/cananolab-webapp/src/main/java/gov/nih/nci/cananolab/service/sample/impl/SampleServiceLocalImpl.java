@@ -1132,11 +1132,16 @@ public class SampleServiceLocalImpl extends BaseServiceLocalImpl implements Samp
 				}
 			}
 
+			System.out.println("Sample deletion hitting here LAW");
 			// / / delete composition
-			if (sample.getSampleComposition() != null) {
-				compositionService.deleteComposition(sample.getSampleComposition());
-			}
+
+			SampleComposition compositon = sample.getSampleComposition();
+
 			sample.setSampleComposition(null);
+
+			if (compositon != null) {
+				compositionService.deleteComposition(compositon);
+			}
 
 			if(sample.getSynthesis() !=null){
 				synthesisService.deleteSynthesis(sample.getSynthesis());
