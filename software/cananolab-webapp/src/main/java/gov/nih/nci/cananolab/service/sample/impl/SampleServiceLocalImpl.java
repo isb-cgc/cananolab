@@ -1132,10 +1132,18 @@ public class SampleServiceLocalImpl extends BaseServiceLocalImpl implements Samp
 				}
 			}
 
-			System.out.println("Sample deletion hitting here LAW");
 			// / / delete composition
-
 			SampleComposition compositon = sample.getSampleComposition();
+
+			// LAW 25-04-17 Fixing issue with deleting chemical associations
+			Set<ChemicalAssociation> chemicalAssociations = compositon.getChemicalAssociationCollection();
+			compositon.setChemicalAssociationCollection(null);
+
+			if (chemicalAssociations != null) {
+				for (ChemicalAssociation chemicalAssociation : chemicalAssociations) {
+					compositionService.deleteChemicalAssociation(chemicalAssociation);
+				}
+			}
 
 			sample.setSampleComposition(null);
 
