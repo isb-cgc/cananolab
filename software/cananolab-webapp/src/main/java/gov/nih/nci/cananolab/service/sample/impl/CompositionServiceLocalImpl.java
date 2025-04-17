@@ -528,6 +528,8 @@ public class CompositionServiceLocalImpl extends BaseServiceLocalImpl implements
 		try {
 			CaNanoLabApplicationService appService = (CaNanoLabApplicationService) ApplicationServiceProvider
 					.getApplicationService();
+			// LAW 25-04-17 Trying to make chemical associations delete properly
+			assoc.setFileCollection(null);
 			appService.delete(assoc);
 		} catch (Exception e) {
 			String err = "Error deleting chemical association " + assoc.getId();
