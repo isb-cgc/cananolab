@@ -362,7 +362,7 @@ public class NanomaterialEntityBean extends BaseCompositionEntityBean {
 
 	// used for DWR ajax
 	public String getDisplayName() {
-		System.out.println("getDisplayName() in NanomaterialEntityBean.java: " + type);
+		//System.out.println("getDisplayName() in NanomaterialEntityBean.java: " + type);
 
 		if(type.equals("nano biopolymer")) {
 			return "biopolymer";

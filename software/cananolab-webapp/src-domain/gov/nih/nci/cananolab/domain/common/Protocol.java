@@ -1,6 +1,5 @@
 package gov.nih.nci.cananolab.domain.common;
 
-//import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
 
@@ -8,7 +7,7 @@ import java.util.Date;
 	* The formal plan of an experiment or research activity, including the objective, rationale, design, materials and methods for the conduct of the study; intervention description, and method of data analysis
 	**/
 
-public class Protocol  implements Serializable
+public class Protocol implements Serializable
 {
 	/**
 	* An attribute to allow serialization of the domain objects

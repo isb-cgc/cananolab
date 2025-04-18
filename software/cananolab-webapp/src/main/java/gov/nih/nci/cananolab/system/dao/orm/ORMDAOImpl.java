@@ -75,7 +75,6 @@ public class ORMDAOImpl extends HibernateDaoSupport implements DAO
 		try
 		{
 			log.debug("****** obj: " + obj.getClass());
-			System.out.println("****** obj: " + obj.getClass());
 			if (obj instanceof DetachedCriteria)
 				return query(request, (DetachedCriteria) obj);
 			else if (obj instanceof NestedCriteriaPath)

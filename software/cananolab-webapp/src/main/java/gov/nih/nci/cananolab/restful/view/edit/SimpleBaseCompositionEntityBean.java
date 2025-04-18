@@ -71,7 +71,7 @@ public class SimpleBaseCompositionEntityBean {
 	}
 
 	public String getDisplayName() {
-		System.out.println("getDisplayName() in SimpleBaseCompositionEntityBean.java: " + displayName);
+		//System.out.println("getDisplayName() in SimpleBaseCompositionEntityBean.java: " + displayName);
 		return displayName;
 	}
 
