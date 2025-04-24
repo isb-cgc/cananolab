@@ -110,6 +110,8 @@ public class ChemicalAssociationServices
 			if (!SpringSecurityUtil.isUserLoggedIn())
 				return Response.status(Response.Status.UNAUTHORIZED).entity(Constants.MSG_SESSION_INVALID).build();
 
+			System.out.println("getComposingElementsByNanomaterialEntityId() id: " + id);
+
 			List<ComposingElementBean> beans = comp.getComposingElementsByNanomaterialEntityId(id, httpRequest);
 			List<SimpleComposingElementBean> simpleBeans = new ArrayList<SimpleComposingElementBean>();
 			for(ComposingElementBean compBean : beans){
