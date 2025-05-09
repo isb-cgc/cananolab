@@ -19,6 +19,7 @@ import { NgIdleKeepaliveModule } from '@ng-idle/keepalive';
 import { IdleDialog} from './cananolab-client/common/components/idle-dialog/idle.dialog.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { NgxCsvParserModule } from 'ngx-csv-parser';
+import { TrimInputDirective } from './cananolab-client/common/directives/trim-input.directive';
 
 @NgModule({
     declarations: [
@@ -43,7 +44,8 @@ import { NgxCsvParserModule } from 'ngx-csv-parser';
         BrowserAnimationsModule,
         NgIdleKeepaliveModule.forRoot(),
         NgbModule,
-        NgxCsvParserModule
+        NgxCsvParserModule,
+        TrimInputDirective
     ],
     providers: [{provide: LocationStrategy, useClass: HashLocationStrategy}],
     exports: [
