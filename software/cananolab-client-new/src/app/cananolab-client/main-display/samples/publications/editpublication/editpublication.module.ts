@@ -7,10 +7,10 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { OtherDropdownModule } from 'src/app/cananolab-client/common/components/other-dropdown/other-dropdown.module';
 import { EditpublicationPipe } from './editpublication.pipe';
 import { DisclaimerModule } from 'src/app/cananolab-client/common/components/disclaimer/disclaimer.module';
-import {TrimInputDirective} from "../../../../common/directives/trim-input.directive";
+import {TrimInputDirective} from 'src/app/cananolab-client/common/directives/trim-input.directive';
 
 @NgModule({
-    declarations: [EditpublicationComponent,EditpublicationPipe],
+    declarations: [EditpublicationComponent, EditpublicationPipe],
     imports: [
         CommonModule,
         EditpublicationRoutingModule,
