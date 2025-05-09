@@ -16,23 +16,22 @@ import { TopKeywordSearchComponent } from './cananolab-client/header/top-keyword
 import { TopMainMenuComponent } from './cananolab-client/top-main-menu/top-main-menu.component';
 import { DisclaimerModule } from './cananolab-client/common/components/disclaimer/disclaimer.module';
 import { NgIdleKeepaliveModule } from '@ng-idle/keepalive';
-import { IdleDialog} from "./cananolab-client/common/components/idle-dialog/idle.dialog.component";
+import { IdleDialog} from './cananolab-client/common/components/idle-dialog/idle.dialog.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { NgxCsvParserModule } from 'ngx-csv-parser';
 
-
 @NgModule({
-  declarations: [
-    AppComponent,
-    CananolabClientComponent,
-    HeaderComponent,
-    LeftStaticMenuComponent,
-    LeftNavigationMenuComponent,
-    StatusDisplayComponent,
-    TopKeywordSearchComponent,
-    TopMainMenuComponent,
-    IdleDialog
-  ],
+    declarations: [
+        AppComponent,
+        CananolabClientComponent,
+        HeaderComponent,
+        LeftStaticMenuComponent,
+        LeftNavigationMenuComponent,
+        StatusDisplayComponent,
+        TopKeywordSearchComponent,
+        TopMainMenuComponent,
+        IdleDialog,
+    ],
     imports: [
         AppRoutingModule,
         BrowserModule,
@@ -46,7 +45,10 @@ import { NgxCsvParserModule } from 'ngx-csv-parser';
         NgbModule,
         NgxCsvParserModule
     ],
-  providers: [{provide: LocationStrategy, useClass: HashLocationStrategy}],
-  bootstrap: [AppComponent]
+    providers: [{provide: LocationStrategy, useClass: HashLocationStrategy}],
+    exports: [
+
+    ],
+    bootstrap: [AppComponent]
 })
 export class AppModule { }

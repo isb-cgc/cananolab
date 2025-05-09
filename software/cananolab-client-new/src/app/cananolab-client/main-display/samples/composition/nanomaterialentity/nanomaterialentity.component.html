@@ -63,7 +63,7 @@
                         </label>
                     </td>
                     <td>
-                        <input type="text" name="biopolymerName" [(ngModel)]="data.domainEntity['name']">
+                        <input type="text" name="biopolymerName" trimInput [(ngModel)]="data.domainEntity['name']">
                     </td>
                     <td class="label">
                         <label for="biopolymerType">Biopolymer Type*</label>
@@ -136,7 +136,7 @@
                         </label>
                     </td>
                     <td>
-                       <input type="text" name="chirality" [(ngModel)]="data.domainEntity.chirality">
+                       <input type="text" name="chirality" trimInput [(ngModel)]="data.domainEntity.chirality">
                     </td>
                 </tr>
                 <tr>
@@ -196,7 +196,7 @@
                         </label>
                     </td>
                     <td>
-                        <input type="text" name="branch" id="branch" [(ngModel)]="data.domainEntity.branch">
+                        <input type="text" name="branch" id="branch" trimInput [(ngModel)]="data.domainEntity.branch">
                     </td>
                     <td class="label">
                         <label for="generation">
@@ -237,7 +237,7 @@
                         </label>
                     </td>
                     <td>
-                        <input type="text" name="polymerName" id="polymerName" [(ngModel)]="data.domainEntity.polymerName">
+                        <input type="text" name="polymerName" id="polymerName" trimInput [(ngModel)]="data.domainEntity.polymerName">
                     </td>
                 </tr>
             </table>
@@ -315,7 +315,7 @@
                         </label>
                     </td>
                     <td>
-                        <input type="text" name="polymerName" id="polymerName" [(ngModel)]="data.domainEntity.polymerName">
+                        <input type="text" name="polymerName" id="polymerName" trimInput [(ngModel)]="data.domainEntity.polymerName">
                     </td>
                 </tr>
             </table>
@@ -452,7 +452,7 @@
                                         </label>
                                     </td>
                                     <td>
-                                        <input type="text" name="cName" [(ngModel)]="composingElement.name">
+                                        <input type="text" name="cName" trimInput [(ngModel)]="composingElement.name">
                                     </td>
                                 </tr>
                                 <tr>
