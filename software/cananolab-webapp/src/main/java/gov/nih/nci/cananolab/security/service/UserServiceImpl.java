@@ -239,7 +239,7 @@ public class UserServiceImpl implements UserService
 		// Must contain at least one lowercase letter
 		// Must contain at least one special character
 		// Must contain at least one number
-		// Must be minimum 8 letter long for public user, and 15 for other roles. Less than 32 letters
+		// Must be minimum 16 characters; Less than 32 letters
 		// Must not reuse password from last 6 generation
 
 		List<PasswordHistory> histories = getPasswordHistory(userName);
@@ -263,10 +263,10 @@ public class UserServiceImpl implements UserService
 		}
 
 		List<String> roles = userDao.getUserRoles(userName);
-		int minLength = 8;
+		int minLength = 16;
 		int maxLength = 32;
 		if (roles.contains("ROLE_ADMIN") || roles.contains("ROLE_RESEARCHER") || roles.contains("ROLE_CURATOR")) {
-			minLength = 15;
+			minLength = 16;
 		}
 
 		boolean hasRightLength = password.length() >= minLength && password.length() <= maxLength;
@@ -275,7 +275,7 @@ public class UserServiceImpl implements UserService
 		if (!hasLowercase) return "Password has no lowercase letter";
 		if (!hasSpecialChar) return "Password has no special character";
 		if (!hasNumber) return "Password has no digit";
-		if (!hasRightLength) return "Password has no correct length";
+		if (!hasRightLength) return "Password is not the correct length";
 
 		return "";
 	}

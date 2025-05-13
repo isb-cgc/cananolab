@@ -10,7 +10,7 @@
     <div class="error" *ngIf="message">
         {{message}}
     </div>
-   
+
     <label style="color:blue; display:block; font-size:medium;"  *ngIf="isSubmitting">
        This characterization is submitting, please wait...
        <p *ngIf="isTableTooSlowToSubmit">
@@ -186,7 +186,7 @@
                                 </label>
                             </td>
                             <td>
-                                <input type="text" name="property.aspectRatio" id="property.aspectRatio" [(ngModel)]="data.property.aspectRatio">
+                                <input type="text" name="property.aspectRatio" id="property.aspectRatio" trimInput [(ngModel)]="data.property.aspectRatio">
                             </td>
                         </tr>
                         <tr>
@@ -688,7 +688,7 @@
                     <td></td>
                     <td>
                         <ng-container *ngFor="let finding of data.finding; let fIndex=index">
-                            
+
                             <div *ngIf="finding.rows.length||finding.files.length" class="mainBorder">
                                                 <div class="dataConditions">
                                                     <b>Data and Conditions</b>
@@ -944,7 +944,7 @@
                                                                     </a>
                                                                 </th>
                                                             </tr>
-                                                            
+
                                                             <ng-container *ngFor="let row of currentFinding.rows;let rIndex=index; let odd=odd; let last=last">
                                                                 <tr [ngClass]="{'rowOdd':odd}" *ngIf="!csvRowsIsEdit[rIndex] && isTooManyCells">
                                                                     <td>
@@ -955,9 +955,9 @@
 
                                                                     <td *ngFor="let column of row.cells; let cIndex=index;" [innerHtml]="column.value">
                                                                         {{column.value}}
-                                                                    </td>                                                        
+                                                                    </td>
                                                                 </tr>
-                                                                 
+
                                                                 <tr [ngClass]="{'rowOdd':odd}" *ngIf="csvRowsIsEdit[rIndex] || !isTooManyCells">
                                                                     <td>
                                                                         <button (click)="deleteFindingRow(rIndex)" class="btn-canano btn-canano-danger btn-canano-xs mr-1">Delete</button>
@@ -972,7 +972,7 @@
                                                                     </td>
                                                                 </tr>
 
-                                                                
+
                                                             </ng-container>
                                                         </table>
                                                     </div>
