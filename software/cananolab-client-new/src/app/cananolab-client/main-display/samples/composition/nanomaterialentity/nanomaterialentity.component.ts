@@ -137,7 +137,7 @@ export class NanomaterialentityComponent implements OnInit {
                         fieldsToIgnore.indexOf(item) == -1
                     ) {
                         this.data.domainEntity[item] =
-                            this.data.domainEntity[item].toString();
+                            this.data.domainEntity[item].toString().trim();
                     }
                     if (this.data.domainEntity[item] == '') {
                         this.data.domainEntity[item] = null;

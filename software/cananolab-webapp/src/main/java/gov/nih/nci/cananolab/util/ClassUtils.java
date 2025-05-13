@@ -573,9 +573,11 @@ public class ClassUtils {
 		String[] words = displayName.toLowerCase().split(" ");
 		List<String> newWords = new ArrayList<String>();
 		for (String word : words) {
-			String newWord = Character.toString(word.charAt(0)).toUpperCase()
-					+ word.substring(1);
-			newWords.add(newWord);
+			if (!word.isEmpty()) {
+				String newWord = Character.toString(word.charAt(0)).toUpperCase()
+						+ word.substring(1);
+				newWords.add(newWord);
+			}
 		}
 		String newWordsStr = StringUtils.join(newWords, "");
 		System.out.println("getShortClassNameFromDisplayName() in ClassUtils.java: " + newWordsStr);

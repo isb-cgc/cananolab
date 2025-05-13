@@ -22,7 +22,7 @@ export class ChangePasswordComponent implements OnInit {
   hasSpecialChar = false;
   allValidationPassed = false;
   isPrivilegeUser = false;
-  minCharCount = 8;
+  minCharCount = 16;
   token = "";
   message="";
   errorMessage = "";

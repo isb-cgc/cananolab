@@ -35,7 +35,7 @@
                         </label>
                     </td>
                     <td>
-                        <input id="uriExternal" *ngIf="data.uriExternal==1" type="text" name="data.externalUrl" [(ngModel)]="data.externalUrl">
+                        <input id="uriExternal" *ngIf="data.uriExternal==1" type="text" name="data.externalUrl" trimInput [(ngModel)]="data.externalUrl">
                         [<canano-disclaimer *ngIf="data.uriExternal==1"></canano-disclaimer>]
                     </td>
                 </tr>
@@ -73,7 +73,7 @@
                         </label>
                     </td>
                     <td>
-                        <input id="data.title" type="text" name="data.title" [(ngModel)]="data.title">
+                        <input id="data.title" type="text" name="data.title" trimInput [(ngModel)]="data.title">
                     </td>
                 </tr>
                 <tr>

@@ -44,7 +44,7 @@
                     </label>
                 </td>
                 <td colspan="3">
-                    <input [(ngModel)]="data.name" id="chemicalName" type="text" name="name" size="70">
+                    <input [(ngModel)]="data.name" id="chemicalName" type="text" name="name" size="70" trimInput>
                 </td>
             </tr>
             <tr>
@@ -77,7 +77,7 @@
                     </label>
                 </td>
                 <td>
-                    <input [(ngModel)]="data.value" id="amount" type="text" name="value">
+                    <input [(ngModel)]="data.value" id="amount" type="text" name="value" trimInput>
                 </td>
                 <td class="label">
                     <label for="amountUnit">
@@ -161,7 +161,7 @@
                     </label>
                 </td>
                 <td>
-                    <input [(ngModel)]="data.activationEffect" id="activationEffect" type="text" name="activationEffect" size="70">
+                    <input [(ngModel)]="data.activationEffect" id="activationEffect" type="text" name="activationEffect" size="70" trimInput>
                 </td>
             </tr>
             <tr>
@@ -311,7 +311,7 @@
                     <label for="smallMoleculeAlternateName">Alternate Name</label>
                 </td>
                 <td>
-                    <input type="text" id="smallMoleculeAlternateName" name="smallMoleculeAlternateName" value="" [(ngModel)]="data.domainEntity.alternateName" size="90">
+                    <input type="text" id="smallMoleculeAlternateName" name="smallMoleculeAlternateName" value="" trimInput [(ngModel)]="data.domainEntity.alternateName" size="90">
                 </td>
             </tr>
         </table>
@@ -470,7 +470,7 @@
                                                                     </label>
                                                                 </td>
                                                                 <td>
-                                                                    <input type="text" name="targetingName" id="targetingName" [(ngModel)]="target.name">
+                                                                    <input type="text" name="targetingName" id="targetingName" trimInput [(ngModel)]="target.name">
                                                                 </td>
                                                             </tr>
                                                             <tr>
