@@ -123,12 +123,13 @@ public class CompositionManager
 		return entities;
 	}
 
-	public List<ComposingElementBean> getComposingElementsByNanomaterialEntityId(String id, HttpServletRequest request) throws Exception
+	public List<ComposingElementBean> getComposingElementsByNanomaterialEntityId(String sampleId, String id, HttpServletRequest request) throws Exception
 	{
 		if (!SpringSecurityUtil.isUserLoggedIn() || StringUtils.isEmpty(id))
 			return null;
-		
-		String sampleId = (String) request.getSession().getAttribute("sampleId");
+
+		//LAW 05-16-25: adding sampleId to the method parameters to avoid issue with sampleId not being set for session
+		//String sampleId = (String) request.getSession().getAttribute("sampleId");
 
 		System.out.println("Looking for issue 50 " + sampleId + " " + id);
 		System.out.println("FIXME using sample ID here not entity ID! " + sampleId + " " + id);
