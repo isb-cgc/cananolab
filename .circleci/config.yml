@@ -193,6 +193,7 @@ jobs:
       - deploy:
           nane: Deployment
           command: |
+            sudo -E gcloud config set app/cloud_build_timeout 1600
             sudo -E gcloud app deploy --verbosity=debug ./app.yaml --service-account=${WEB_RUNTIME_SA_NAME} --quiet
 workflows:
   version: 2
