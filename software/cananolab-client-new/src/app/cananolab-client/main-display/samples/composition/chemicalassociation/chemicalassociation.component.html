@@ -81,11 +81,11 @@
                         </select>
                     </div>
                     <div class="element" *ngIf="entityOptionsA.length && data.associatedElementA.compositionType">
-                        <select (ngModelChange)="changeEntityId('compositionTypeA',data.associatedElementA.compositionType,$event)" id="entityIdA" name="entityIdA" [(ngModel)]="data.associatedElementA.entityId">
+                        <select (ngModelChange)="changeEntityId('compositionTypeA',data.associatedElementA.compositionType,sampleId,$event)" id="entityIdA" name="entityIdA" [(ngModel)]="data.associatedElementA.entityId">
                             <option value="" [selected]="data.associatedElementA.entityId===''">--Select--</option>
                             <option *ngFor="let type of entityOptionsA" [ngValue]="type.domainId" [selected]="type.domainId==data.associatedElementA.entityId">
                                     {{type.type}}
-                                    <ng-container *ngIf="data.associatedElementA.compositionType=='functionalizing entity'">
+                                    <ng-container *ngIf="data.associatedElementA.compositionType==='functionalizing entity'">
                                         {{type.displayName}}
                                     </ng-container>
                             </option>
@@ -114,7 +114,7 @@
                             </select>
                         </div>
                         <div class="element" *ngIf="entityOptionsB.length && data.associatedElementB.compositionType">
-                            <select (ngModelChange)="changeEntityId('compositionTypeB',data.associatedElementB.compositionType,$event)" id="entityIdB" name="entityIdB" [(ngModel)]="data.associatedElementB.entityId">
+                            <select (ngModelChange)="changeEntityId('compositionTypeB', data.associatedElementB.compositionType, sampleId, $event)" id="entityIdB" name="entityIdB" [(ngModel)]="data.associatedElementB.entityId">
                                 <option value="" [selected]="data.associatedElementB.entityId===''">--Select--</option>
                                 <option *ngFor="let type of entityOptionsB" [ngValue]="type.domainId" [selected]="type.domainId==data.associatedElementB.entityId">
                                         {{type.type}}
