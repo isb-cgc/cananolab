@@ -204,12 +204,12 @@ saveOther(newItem: Object) {
     }
 };
 
-changeEntityId(compositionType, entity, val) {
+changeEntityId(compositionType, entity, sampleId, val) {
     // no need to do anything if functionalizing entity //
-    if (entity == 'nanomaterial entity') {
+    if (entity === 'nanomaterial entity') {
         if (compositionType === 'compositionTypeA') {
             this.data.assoentityDisplayName;
-            let url = this.apiService.doPost(Consts.QUERY_CHEMICAL_ASSOCIATION_GET_COMPOSING_ELEMENTS_BY_NANO_ID + '?id=' + val, {});
+            let url = this.apiService.doPost(Consts.QUERY_CHEMICAL_ASSOCIATION_GET_COMPOSING_ELEMENTS_BY_NANO_ID + '?sampleId=' + sampleId + '&id=' + val, {});
             url.subscribe( data => {
                 this.composingElementOptionsA = data;
                 this.errors = {};
@@ -219,7 +219,7 @@ changeEntityId(compositionType, entity, val) {
             });
         }
         else {
-            let url = this.apiService.doPost(Consts.QUERY_CHEMICAL_ASSOCIATION_GET_COMPOSING_ELEMENTS_BY_NANO_ID + '?id=' + val, {});
+            let url = this.apiService.doPost(Consts.QUERY_CHEMICAL_ASSOCIATION_GET_COMPOSING_ELEMENTS_BY_NANO_ID + '?sampleId=' + sampleId + '?id=' + val, {});
             url.subscribe( data => {
                 this.composingElementOptionsB = data;
                 this.errors = {};
@@ -230,16 +230,16 @@ changeEntityId(compositionType, entity, val) {
         }
     };
 
-    if (compositionType == 'compositionTypeA') {
+    if (compositionType === 'compositionTypeA') {
         this.entityOptionsA.forEach(element => {
-            if (element.domainId == val) {
+            if (element.domainId === val) {
                 this.data.associatedElementA.entityDisplayName = element.displayName;
             }
         });
     }
     else {
         this.entityOptionsB.forEach(element => {
-            if (element.domainId == val) {
+            if (element.domainId === val) {
                 this.data.associatedElementB.entityDisplayName = element.displayName;
             }
         });
@@ -303,10 +303,10 @@ selectAssociatedElement(entityId, domainId) {
 }
 
 loadDropdowns() {
-    this.changeEntityId('compositionTypeA', this.data.associatedElementA.compositionType,this.data.associatedElementA.entityId)
-    this.changeEntityId('compositionTypeB', this.data.associatedElementB.compositionType,this.data.associatedElementB.entityId)
-    this.changeCompositionType('compositionTypeA', this.data.associatedElementA.compositionType,true)
-    this.changeCompositionType('compositionTypeB', this.data.associatedElementB.compositionType,true)
+    this.changeEntityId('compositionTypeA', this.data.associatedElementA.compositionType, this.data.sampleId, this.data.associatedElementA.entityId)
+    this.changeEntityId('compositionTypeB', this.data.associatedElementB.compositionType, this.data.sampleId, this.data.associatedElementB.entityId)
+    this.changeCompositionType('compositionTypeA', this.data.associatedElementA.compositionType, true)
+    this.changeCompositionType('compositionTypeB', this.data.associatedElementB.compositionType, true)
 
 }
 

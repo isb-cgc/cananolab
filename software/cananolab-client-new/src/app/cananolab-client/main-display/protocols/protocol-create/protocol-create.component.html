@@ -39,7 +39,7 @@
                     </label>
                 </td>
                 <td *ngIf="!viewOnly">
-                    <input (focusout)="getProtocol($event)" type="text" name="name" id="protocolName" [(ngModel)]="data.name">
+                    <input (focusout)="getProtocol($event)" type="text" name="name" id="protocolName" trimInput [(ngModel)]="data.name">
                 </td>
                 <td *ngIf="viewOnly">
                     {{data.name}}
@@ -55,7 +55,7 @@
                     </label>
                 </td>
                 <td *ngIf="!viewOnly">
-                    <input id="abbreviation" name="abbreviation" type="text" [(ngModel)]="data.abbreviation">
+                    <input id="abbreviation" name="abbreviation" type="text" trimInput [(ngModel)]="data.abbreviation">
                 </td>
                 <td *ngIf="viewOnly">
                     {{data.abbreviation}}
@@ -70,7 +70,7 @@
                     </label>
                 </td>
                 <td *ngIf="!viewOnly">
-                    <input id="protocolVersion" name="version" type="text" [(ngModel)]="data.version">
+                    <input id="protocolVersion" name="version" type="text" trimInput [(ngModel)]="data.version">
                 </td>
                 <td *ngIf="viewOnly">
                     {{data.version}}
@@ -85,7 +85,7 @@
                     </label>
                 </td>
                 <td *ngIf="!viewOnly">
-                    <input id="protocolDOI" name="doi" type="text" [(ngModel)]="data.doi">
+                    <input id="protocolDOI" name="doi" type="text" trimInput [(ngModel)]="data.doi">
                 </td>
                 <td *ngIf="viewOnly">
                     {{data.doi}}
@@ -124,7 +124,7 @@
                     </div>
                     <!-- END File browser button -->
                     <!-- File URL text input -->
-                    <input [ngClass]="{'hide': ! data.uriExternal}" placeholder="File URL" type="text" id="externalUrl" name="externalUrl" [(ngModel)]="data.externalUrl">
+                    <input [ngClass]="{'hide': ! data.uriExternal}" placeholder="File URL" type="text" id="externalUrl" name="externalUrl" trimInput [(ngModel)]="data.externalUrl">
                     <span *ngIf="data.uriExternal"> [<canano-disclaimer></canano-disclaimer>]</span>
 
                     <!-- File URL text input -->
@@ -153,7 +153,7 @@
                     </label>
                 </td>
                 <td *ngIf="!viewOnly">
-                    <input name="fileTitle" id="fileTitle" type="text" [(ngModel)]="data.fileTitle">
+                    <input name="fileTitle" id="fileTitle" type="text" trimInput [(ngModel)]="data.fileTitle">
                 </td>
                 <td *ngIf="viewOnly">
                     {{data.fileTitle}}

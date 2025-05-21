@@ -23,11 +23,11 @@
             <tr>
                 <td class="label">
                     <label for="data.sampleName">
-                        Sample Name
+                        Sample Name*
                     </label>
                 </td>
                 <td>
-                    <input type="text" name="data.sampleName" id="data.sampleName" [(ngModel)]="data['sampleName']" size="100">
+                    <input type="text" name="data.sampleName" id="data.sampleName" [(ngModel)]="data['sampleName']" size="100" trimInput>
                 </td>
             </tr>
             <!--
@@ -139,7 +139,7 @@
                                     </label>
                                 </td>
                                 <td>
-                                    <input type="text" name="pointOfContact.firstName" id="pointOfContact.firstName" [(ngModel)]="pointOfContact.firstName">
+                                    <input type="text" name="pointOfContact.firstName" id="pointOfContact.firstName" trimInput [(ngModel)]="pointOfContact.firstName">
                                 </td>
                                 <td class="label">
                                     <label for="pointOfContact.middleInitial">
@@ -147,7 +147,7 @@
                                     </label>
                                 </td>
                                 <td>
-                                    <input type="text" name="pointOfContact.middleInitial" id="pointOfContact.middleInitial" [(ngModel)]="pointOfContact.middleInitial" size="4">
+                                    <input type="text" name="pointOfContact.middleInitial" id="pointOfContact.middleInitial" trimInput [(ngModel)]="pointOfContact.middleInitial" size="4">
                                 </td>
                                 <td class="label">
                                     <label for="pointOfContact.lastName">
@@ -155,7 +155,7 @@
                                     </label>
                                 </td>
                                 <td>
-                                    <input type="text" name="pointOfContact.lastName" id="pointOfContact.lastName" [(ngModel)]="pointOfContact.lastName">
+                                    <input type="text" name="pointOfContact.lastName" id="pointOfContact.lastName" trimInput [(ngModel)]="pointOfContact.lastName">
                                 </td>
                             </tr>
                             <tr>
@@ -165,7 +165,7 @@
                                     </label>
                                 </td>
                                 <td>
-                                    <input type="text" name="pointOfContact.phoneNumber" id="pointOfContact.phoneNumber" [(ngModel)]="pointOfContact.phoneNumber">
+                                    <input type="text" name="pointOfContact.phoneNumber" id="pointOfContact.phoneNumber" trimInput [(ngModel)]="pointOfContact.phoneNumber">
                                 </td>
                                 <td class="label">
                                     <label for="pointOfContact.email">
@@ -173,7 +173,7 @@
                                     </label>
                                 </td>
                                 <td colspan="3">
-                                    <input type="text" name="pointOfContact.email" id="pointOfContact.email" [(ngModel)]="pointOfContact.email">
+                                    <input type="text" name="pointOfContact.email" id="pointOfContact.email" trimInput [(ngModel)]="pointOfContact.email">
                                 </td>
                             </tr>
                             <tr>
@@ -183,7 +183,7 @@
                                     </label>
                                 </td>
                                 <td colspan="5">
-                                    <input type="text" name="pointOfContact.address.line1" id="pointOfContact.address.line1" [(ngModel)]="pointOfContact.address.line1">
+                                    <input type="text" name="pointOfContact.address.line1" id="pointOfContact.address.line1" trimInput [(ngModel)]="pointOfContact.address.line1">
                                 </td>
                             </tr>
                             <tr>
@@ -193,7 +193,7 @@
                                     </label>
                                 </td>
                                 <td colspan="5">
-                                    <input type="text" name="pointOfContact.address.line2" id="pointOfContact.address.line2" [(ngModel)]="pointOfContact.address.line2">
+                                    <input type="text" name="pointOfContact.address.line2" id="pointOfContact.address.line2" trimInput [(ngModel)]="pointOfContact.address.line2">
                                 </td>
                             </tr>
                             <tr>
@@ -203,7 +203,7 @@
                                     </label>
                                 </td>
                                 <td>
-                                    <input type="text" name="pointOfContact.address.city" id="pointOfContact.address.city" [(ngModel)]="pointOfContact.address.city">
+                                    <input type="text" name="pointOfContact.address.city" id="pointOfContact.address.city" trimInput [(ngModel)]="pointOfContact.address.city">
                                 </td>
                                 <td class="label">
                                     <label for="pointOfContact.address.stateProvince">
@@ -211,7 +211,7 @@
                                     </label>
                                 </td>
                                 <td>
-                                    <input type="text" name="pointOfContact.address.stateProvince" id="pointOfContact.address.stateProvince" [(ngModel)]="pointOfContact.address.stateProvince">
+                                    <input type="text" name="pointOfContact.address.stateProvince" id="pointOfContact.address.stateProvince" trimInput [(ngModel)]="pointOfContact.address.stateProvince">
                                 </td>
                                 <td class="label">
                                     <label for="pointOfContact.address.zip">
@@ -219,7 +219,7 @@
                                     </label>
                                 </td>
                                 <td>
-                                    <input type="text" name="pointOfContact.address.zip" id="pointOfContact.address.zip" [(ngModel)]="pointOfContact.address.zip" size="10">
+                                    <input type="text" name="pointOfContact.address.zip" id="pointOfContact.address.zip" trimInput [(ngModel)]="pointOfContact.address.zip" size="10">
                                 </td>
                             </tr>
                             <tr>
@@ -229,7 +229,7 @@
                                     </label>
                                 </td>
                                 <td colspan="5">
-                                    <input type="text" name="pointOfContact.address.country" id="pointOfContact.address.country" [(ngModel)]="pointOfContact.address.country">
+                                    <input type="text" name="pointOfContact.address.country" id="pointOfContact.address.country" trimInput [(ngModel)]="pointOfContact.address.country">
                                 </td>
                             </tr>
                             <tr>
