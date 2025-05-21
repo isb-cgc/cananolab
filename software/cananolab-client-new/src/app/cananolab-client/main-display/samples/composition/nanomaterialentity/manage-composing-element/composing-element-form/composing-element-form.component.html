@@ -60,6 +60,7 @@
                                     type="text"
                                     size="30"
                                     id="typeOther"
+                                    trimInput
                                     [(ngModel)]="otherTypeText"
                                     (ngModelChange)="updateTypeOther(otherTypeText)"
                                 >
@@ -96,6 +97,7 @@
                     type="text"
                     size="30"
                     id="elementName"
+                    trimInput
                     [(ngModel)]="currentEditComposingElement['name']"
                 >
                 <!-- END Chemical Name text input -->
@@ -138,6 +140,7 @@
             </td>
             <td>
                 <input type="text"
+                       trimInput
                        [(ngModel)]="currentEditComposingElement['pubChemId']"
                        size="30"
                        onkeydown="return"
@@ -213,6 +216,7 @@
                                     <input
                                         type="text"
                                         id="textUnit"
+                                        trimInput
                                         [(ngModel)]='localFormOtherAmountUnitText'
                                         class="promptBox"
                                     >
@@ -286,6 +290,7 @@
                                     <input
                                         type="text"
                                         id="textMFType"
+                                        trimInput
                                         [(ngModel)]='otherMolecularFormulaType'
                                         class="promptBox"
                                     >
@@ -318,6 +323,7 @@
                     type="text"
                     id="molecularFormula"
                     class="promptBox"
+                    trimInput
                     [(ngModel)]="currentEditComposingElement['molecularFormula']"
                 >
             </td>
@@ -329,6 +335,7 @@
             <td colspan="3">
                 <input type="text"
                        size="30"
+                       trimInput
                        [(ngModel)]="currentEditComposingElement['description']"
                        id="elementDescription"
                 >
@@ -396,6 +403,7 @@
                                         <input
                                             type="text"
                                             width="100%"
+                                            trimInput
                                             [(ngModel)]="otherFunctionTypeText"
                                             (ngModelChange)="functionTypeChange()">
                                     </div>

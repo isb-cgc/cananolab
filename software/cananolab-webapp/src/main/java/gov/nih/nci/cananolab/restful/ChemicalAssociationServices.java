@@ -103,16 +103,19 @@ public class ChemicalAssociationServices
 	@POST
 	@Path("/getComposingElementsByNanomaterialEntityId")   
 	@Produces ("application/json")
-	public Response getComposingElementsByNanomaterialEntityId(@Context HttpServletRequest httpRequest, @DefaultValue("") @QueryParam("id") String id)
-	{
+	public Response getComposingElementsByNanomaterialEntityId(
+			@Context HttpServletRequest httpRequest, @DefaultValue("")
+	        @QueryParam("sampleId") String sampleId,
+			@QueryParam("id") String id
+	) {
 		try { 
 			CompositionManager comp = (CompositionManager) SpringApplicationContext.getBean(httpRequest, "compositionManager");
 			if (!SpringSecurityUtil.isUserLoggedIn())
 				return Response.status(Response.Status.UNAUTHORIZED).entity(Constants.MSG_SESSION_INVALID).build();
 
-			System.out.println("getComposingElementsByNanomaterialEntityId() id: " + id);
+			System.out.println("getComposingElementsByNanomaterialEntityId() id: " + id + ", sampleId: " + sampleId);
 
-			List<ComposingElementBean> beans = comp.getComposingElementsByNanomaterialEntityId(id, httpRequest);
+			List<ComposingElementBean> beans = comp.getComposingElementsByNanomaterialEntityId(sampleId, id, httpRequest);
 			List<SimpleComposingElementBean> simpleBeans = new ArrayList<SimpleComposingElementBean>();
 			for(ComposingElementBean compBean : beans){
 				SimpleComposingElementBean simpleBean = new SimpleComposingElementBean();

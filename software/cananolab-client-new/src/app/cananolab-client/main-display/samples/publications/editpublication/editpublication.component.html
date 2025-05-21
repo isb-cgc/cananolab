@@ -67,7 +67,7 @@
                         </td>
                         <td colspan="5" *ngIf="!viewOnly">
                             <a href="http://www.ncbi.nlm.nih.gov/pubmed/" target="_blank" rel="nofollow noreferrer">Click to look up PubMed Identifier</a><br />
-                            <input (focusout)="lookupPubMedId($event)" id="pubMedId" type="text" name="pubMedId" size="70" [(ngModel)]="data.pubMedId"><br />
+                            <input (focusout)="lookupPubMedId($event)" id="pubMedId" type="text" name="pubMedId" size="70" trimInput [(ngModel)]="data.pubMedId"><br />
                             <i>clicking outside of the text field after entering a valid PubMed ID enables auto-population of PubMed related fields</i>
                         </td>
                         <td colspan="5" *ngIf="viewOnly">
@@ -83,7 +83,7 @@
                             </label>
                         </td>
                         <td colspan="5" *ngIf="!viewOnly">
-                            <input id="digitalObjectId" type="text" name="digitalObjectId" size="70" [(ngModel)]="data.digitalObjectId">
+                            <input id="digitalObjectId" type="text" name="digitalObjectId" size="70" trimInput [(ngModel)]="data.digitalObjectId">
                         </td>
                         <td colspan="5" *ngIf="viewOnly">
                             {{data.digitalObjectId}}
@@ -97,7 +97,7 @@
                             </label>
                         </td>
                         <td colspan="5" *ngIf="!viewOnly">
-                            <input id="title" type="text" name="title" size="70" [(ngModel)]="data.title">
+                            <input id="title" type="text" name="title" size="70" trimInput [(ngModel)]="data.title">
                         </td>
                         <td colspan="5" *ngIf="viewOnly">
                             {{data.title}}
@@ -111,7 +111,7 @@
                             </label>
                         </td>
                         <td colspan="5" *ngIf="!viewOnly">
-                            <input id="journal" type="text" name="journal" size="70" [(ngModel)]="data.journalName">
+                            <input id="journal" type="text" name="journal" size="70" trimInput [(ngModel)]="data.journalName">
                         </td>
                         <td colspan="5" *ngIf="viewOnly">
                             {{data.journalName}}
@@ -125,7 +125,7 @@
                             </label>
                         </td>
                         <td colspan="5" *ngIf="!viewOnly">
-                            <input id="year" type="text" name="year" size="4" [(ngModel)]="data.year">
+                            <input id="year" type="text" name="year" size="4" trimInput [(ngModel)]="data.year">
                         </td>
                         <td colspan="5" *ngIf="viewOnly">
                             {{data.year}}
@@ -139,7 +139,7 @@
                             </label>
                         </td>
                         <td *ngIf="!viewOnly">
-                            <input id="volume" type="text" name="volume" size="6" [(ngModel)]="data.volume">
+                            <input id="volume" type="text" name="volume" size="6" trimInput [(ngModel)]="data.volume">
                         </td>
                         <td *ngIf="viewOnly">
                             {{data.volume}}
@@ -152,7 +152,7 @@
                             </label>
                         </td>
                         <td *ngIf="!viewOnly">
-                            <input id="startPage" type="text" name="startPage" size="6" [(ngModel)]="data.startPage">
+                            <input id="startPage" type="text" name="startPage" size="6" trimInput [(ngModel)]="data.startPage">
                         </td>
                         <td *ngIf="viewOnly">
                             {{data.startPage}}
@@ -165,7 +165,7 @@
                             </label>
                         </td>
                         <td *ngIf="!viewOnly">
-                            <input id="endPage" type="text" name="endPage" size="6" [(ngModel)]="data.endPage">
+                            <input id="endPage" type="text" name="endPage" size="6" trimInput [(ngModel)]="data.endPage">
                         </td>
                         <td *ngIf="viewOnly">
                             {{data.endPage}}
@@ -219,7 +219,7 @@
                                         </label>
                                     </td>
                                     <td class="field">
-                                        <input type="text" name="lastName" [(ngModel)]="currentAuthor.lastName">
+                                        <input type="text" name="lastName" trimInput [(ngModel)]="currentAuthor.lastName">
                                     </td>
                                 </tr>
                                 <tr>
@@ -229,7 +229,7 @@
                                         </label>
                                     </td>
                                     <td class="field">
-                                        <input type="text" name="firstName" [(ngModel)]="currentAuthor.firstName">
+                                        <input type="text" name="firstName" trimInput [(ngModel)]="currentAuthor.firstName">
                                     </td>
                                 </tr>
                                 <tr>
@@ -239,7 +239,7 @@
                                         </label>
                                     </td>
                                     <td class="field">
-                                        <input type="text" name="initial" [(ngModel)]="currentAuthor.initial">
+                                        <input type="text" name="initial" trimInput [(ngModel)]="currentAuthor.initial">
                                     </td>
                                 </tr>
                                 <tr>
@@ -413,7 +413,7 @@
                                         <label for="sampleFilter">
                                             Filter Samples
                                         </label>
-                                        <input type="text" name="sampleFilter" id="sampleFilter" [(ngModel)]="sampleFilter">
+                                        <input type="text" name="sampleFilter" id="sampleFilter" trimInput [(ngModel)]="sampleFilter">
                                     </td>
                                 </tr>
                                 <tr>
