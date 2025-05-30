@@ -219,7 +219,7 @@ changeEntityId(compositionType, entity, sampleId, val) {
             });
         }
         else {
-            let url = this.apiService.doPost(Consts.QUERY_CHEMICAL_ASSOCIATION_GET_COMPOSING_ELEMENTS_BY_NANO_ID + '?sampleId=' + sampleId + '?id=' + val, {});
+            let url = this.apiService.doPost(Consts.QUERY_CHEMICAL_ASSOCIATION_GET_COMPOSING_ELEMENTS_BY_NANO_ID + '?sampleId=' + sampleId + '&id=' + val, {});
             url.subscribe( data => {
                 this.composingElementOptionsB = data;
                 this.errors = {};

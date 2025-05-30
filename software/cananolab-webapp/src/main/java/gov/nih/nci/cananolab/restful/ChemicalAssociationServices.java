@@ -104,14 +104,19 @@ public class ChemicalAssociationServices
 	@Path("/getComposingElementsByNanomaterialEntityId")   
 	@Produces ("application/json")
 	public Response getComposingElementsByNanomaterialEntityId(
-			@Context HttpServletRequest httpRequest, @DefaultValue("")
+			@Context HttpServletRequest httpRequest,
 	        @QueryParam("sampleId") String sampleId,
-			@QueryParam("id") String id
+			@DefaultValue("") @QueryParam("id") String id
 	) {
 		try { 
 			CompositionManager comp = (CompositionManager) SpringApplicationContext.getBean(httpRequest, "compositionManager");
 			if (!SpringSecurityUtil.isUserLoggedIn())
 				return Response.status(Response.Status.UNAUTHORIZED).entity(Constants.MSG_SESSION_INVALID).build();
+			/* LAW: todo error handling for null ids
+			if (id.isEmpty()) {
+				return Response.status(Response.Status.BAD_REQUEST).entity("Nullid value ")
+			}
+			 */
 
 			System.out.println("getComposingElementsByNanomaterialEntityId() id: " + id + ", sampleId: " + sampleId);
 
@@ -128,7 +133,6 @@ public class ChemicalAssociationServices
 			logger.error(e.getMessage());
 			e.printStackTrace();
 			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(CommonUtil.wrapErrorMessageInList("Error while getting ComposingElementsByNanomaterialEntityId" + e.getMessage())).build();
-
 		}
 	}
 
