@@ -377,7 +377,6 @@
 		</dependency>-->
 
 		<!-- This jar is provided via GCS bucket -->
-
 		<dependency>
 			<groupId>org.bouncycastle</groupId>
 			<artifactId>bcprov-jdk18on</artifactId>
